@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # FIXME: This is currently not enabled and configured. To be done.
 #
 # The user-facing webapp that can be used to generate one off visual diffs.

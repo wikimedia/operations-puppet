@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: visualdiff
 #
 # This module provides a standalone visual diffing service.
