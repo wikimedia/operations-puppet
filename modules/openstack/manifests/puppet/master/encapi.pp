@@ -30,6 +30,8 @@ class openstack::puppet::master::encapi(
         ensure_packages([
             'python3-flask',
             'python3-flask-keystone',  # this one is built and maintained by us
+            'python3-oslo.context',
+            'python3-oslo.policy',
             'python3-pymysql',
             'python3-yaml',
         ])

@@ -1,12 +1,19 @@
+#!/usr/bin/env python3
+# ^ above line exists purely to make Jenkins test this using Python 3
 import re
+
+from typing import Optional
 
 import pymysql
 import yaml
 
 from flask import Flask, request, g, Response
-from flask_keystone import FlaskKeystone
+from flask_keystone import FlaskKeystone, FlaskKeystoneForbidden
 from flask_oslolog import OsloLog
 from oslo_config import cfg
+from oslo_context import context
+from oslo_policy import policy
+
 
 cfgGroup = cfg.OptGroup('enc')
 opts = [
@@ -24,6 +31,20 @@ cfg.CONF.register_group(cfgGroup)
 cfg.CONF.register_opts(opts, group=cfgGroup)
 
 cfg.CONF(default_config_files=['/etc/puppet-enc-api/config.ini'])
+
+enforcer = policy.Enforcer(cfg.CONF)
+enforcer.register_defaults([
+    policy.RuleDefault('admin', 'role:admin'),
+    policy.RuleDefault('admin_or_projectadmin', 'rule:admin or role:projectadmin'),
+    policy.RuleDefault('prefix:index', ''),
+    policy.RuleDefault('prefix:view', ''),
+    policy.RuleDefault('prefix:create', 'rule:admin_or_projectadmin'),
+    policy.RuleDefault('prefix:update', 'rule:admin_or_projectadmin'),
+    policy.RuleDefault('prefix:delete', 'rule:admin_or_projectadmin'),
+    policy.RuleDefault('project:index', ''),
+    policy.RuleDefault('puppetrole:index', ''),
+    policy.RuleDefault('puppetrole:view', ''),
+])
 
 app = Flask(__name__)
 # Propogate exceptions to the uwsgi log
@@ -52,6 +73,41 @@ def _preprocess_prefix(prefix):
     return prefix
 
 
+def enforce_policy(rule: str, project_id: Optional[str]):
+    # headers in a specific format that oslo.context wants
+    headers = {
+        "HTTP_{}".format(name.upper().replace('-', '_')): value
+        for name, value in request.headers.items()
+    }
+
+    ctx = context.RequestContext.from_environ(headers)
+
+    if project_id:
+        # if the project in the url is for a different project than what
+        # the keystone token is, error out early.
+        if ctx.project_id != project_id:
+            log.logger.warning(
+                "Encountered project id %s but keystone token was for project %s",
+                project_id, ctx.project_id
+            )
+            raise FlaskKeystoneForbidden("Invalid project id.")
+
+    log.logger.info(
+        "Enforcing policy %s for user %s (%s) and project %s",
+        rule, ctx.user_id, ', '.join(ctx.roles), project_id
+    )
+
+    scope = {"project_id": project_id} if project_id else {}
+
+    enforcer.authorize(
+        rule,
+        scope,
+        ctx,
+        do_raise=True,
+        exc=FlaskKeystoneForbidden,
+    )
+
+
 @app.before_request
 def before_request():
     g.db = pymysql.connect(
@@ -77,6 +133,7 @@ def teardown_request(exception):
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['GET'])
 @key.login_required
 def get_roles(project, prefix):
+    enforce_policy("prefix:view", project)
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
     try:
@@ -104,6 +161,7 @@ def get_roles(project, prefix):
 @app.route('/v1/roles', methods=['GET'])
 @key.login_required
 def get_all_roles():
+    enforce_policy("puppetrole:index", None)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -128,6 +186,7 @@ def get_all_roles():
 @app.route('/v1/projects', methods=['GET'])
 @key.login_required
 def get_all_projects():
+    enforce_policy("project:index", None)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -152,6 +211,7 @@ def get_all_projects():
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 @key.login_required
 def set_roles(project, prefix):
+    enforce_policy("prefix:update", project)
     if request.remote_addr not in g.allowed_writers:
         return Response(
             yaml.dump({'status': 'forbidden'}),
@@ -213,6 +273,7 @@ def set_roles(project, prefix):
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['GET'])
 @key.login_required
 def get_hiera(project, prefix):
+    enforce_policy("prefix:view", project)
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
     try:
@@ -240,7 +301,7 @@ def get_hiera(project, prefix):
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
 @key.login_required
 def set_hiera(project, prefix):
-
+    enforce_policy("prefix:update", project)
     if request.remote_addr not in g.allowed_writers:
         return Response(
             yaml.dump({'status': 'forbidden'}),
@@ -344,6 +405,7 @@ def get_node_config(project, fqdn):
 @app.route('/v1/<string:project>/prefix', methods=['GET'])
 @key.login_required
 def get_prefixes(project):
+    enforce_policy("prefix:index", project)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -365,6 +427,7 @@ def get_prefixes(project):
 @app.route('/v1/<string:project>/prefix/<string:role>', methods=['GET'])
 @key.login_required
 def get_prefixes_for_project_and_role(project, role):
+    enforce_policy("prefix:index", project)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -389,6 +452,7 @@ def get_prefixes_for_project_and_role(project, role):
 @app.route('/v1/prefix/<string:role>', methods=['GET'])
 @key.login_required
 def get_prefixes_for_role(role):
+    enforce_policy("puppetrole:view", None)
     cur = g.db.cursor()
     try:
         cur.execute("""
@@ -415,7 +479,7 @@ def get_prefixes_for_role(role):
 @app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
 @key.login_required
 def delete_prefix(project, prefix):
-
+    enforce_policy("prefix:delete", project)
     if request.remote_addr not in g.allowed_writers:
         return Response(
             yaml.dump({'status': 'forbidden'}),
