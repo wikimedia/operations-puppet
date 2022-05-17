@@ -146,6 +146,10 @@ node 'an-tool1010.eqiad.wmnet' {
     role(analytics_cluster::ui::superset)
 }
 
+node 'an-tool1011.eqiad.wmnet' {
+    role(insetup)
+}
+
 # analytics-search instance of Apache Airflow
 node 'an-airflow1001.eqiad.wmnet' {
     role(search::airflow)
