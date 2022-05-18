@@ -47,13 +47,13 @@ class admin(
     # Note: the unique_users() custom function eliminates the need for virtual users.
 
     # List of users with SSH access
-    $users_set_ssh = unique_users($data, $regular_groups)
+    $users_set_ssh = admin::unique_users($regular_groups)
 
     # List of users without SSH access
     # Note: since a user may be listed among groups in $groups
     # and at the same time groups in $groups_no_ssh,
     # we need to make sure that the two sets don't overlap.
-    $users_set_nossh = unique_users($data, $groups_no_ssh).filter |$user| { !($user in $users_set_ssh) }
+    $users_set_nossh = admin::unique_users($groups_no_ssh).filter |$user| { !($user in $users_set_ssh) }
 
     # List of Kerberos enabled users
     $users_krb_enabled = admin::kerberos_users($data)
