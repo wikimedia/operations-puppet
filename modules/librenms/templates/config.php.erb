@@ -1,3 +1,34 @@
+<%-# SPDX-License-Identifier: Apache-2.0 -%>
+<%-
+def phpdump(o, level = 1)
+  indent = " " * 4
+
+  case o
+  when Hash
+    contents = ''
+    o.sort.each do |k, v|
+      contents += indent * level
+      contents += k.to_pson + " => " + phpdump(v, level + 1)
+      contents += ",\n"
+    end
+    "array(\n" + contents + indent * (level - 1) + ")"
+  when Array
+    "array(" + o.map { |x| phpdump(x, level + 1) }.join(', ') + ")"
+  when TrueClass
+    "TRUE"
+  when FalseClass
+    "FALSE"
+  when nil
+    "NULL"
+  else
+    begin
+      o.include?('.') ? Float(o).to_s : Integer(o).to_s
+    rescue
+      o.to_pson
+    end
+  end
+end
+-%>
 <?php
 
 # This file is managed by Puppet, do not modify manually.
@@ -23,6 +54,6 @@ $config['alert']['macros']['rule']['junos_alarm'] = '%sensors.sensor_class = "st
 # The plus is necessary to use TLS
 $config['irc_port'] = "+6697";
 
-$puppet_config = <%= scope.function_phpdump([@config]) %>;
+$puppet_config = <%= phpdump(@config) %>;
 
 $config = array_merge($config, $puppet_config);
