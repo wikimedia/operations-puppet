@@ -151,8 +151,10 @@ rsync_cdbs: True
 php_fpm: php7.2-fpm
 php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
 php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php7.2-fpm
+php_fpm_always_restart: true
 
 [deploy2002.codfw.wmnet]
 php_fpm: php7.2-fpm
 php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
 php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php7.2-fpm
+php_fpm_always_restart: true
