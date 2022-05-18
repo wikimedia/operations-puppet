@@ -19,9 +19,4 @@ class dumps::generation::server::jobswatcher(
         user        => $user,
         interval    => {'start' => 'OnCalendar', 'interval' => '00/8:10'}
     }
-
-    cron { 'dumps-jobs-watcher':
-        ensure => 'absent',
-        user   => $user,
-    }
 }

@@ -13,9 +13,4 @@ define graphite::carbon_cache_instance {
       ensure  => 'present',
       content => "e ${log_dir} - - - 15d",
     }
-
-    cron { "${service_name}-cleanup":
-        ensure => 'absent',
-        user   => '_graphite',
-    }
 }

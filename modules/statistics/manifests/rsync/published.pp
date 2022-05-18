@@ -51,9 +51,4 @@ class statistics::rsync::published(
         command     => '/usr/local/bin/published-sync -q',
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/15'},
     }
-
-    cron { 'rsync-published':
-        ensure => 'absent',
-        user   => 'root',
-    }
 }

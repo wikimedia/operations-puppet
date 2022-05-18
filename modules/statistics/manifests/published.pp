@@ -47,10 +47,4 @@ class statistics::published(
         command     => "/usr/local/bin/hardsync -t ${temp_dir} ${source}/* ${destination}",
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/15'},
     }
-
-    cron { 'hardsync-published':
-        ensure => absent,
-        user   => 'root',
-    }
-
 }

@@ -157,9 +157,4 @@ class profile::prometheus::beta (
         user        => 'prometheus',
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/10:00'},
     }
-
-    cron { 'prometheus_labs_project_targets':
-        ensure => 'absent',
-        user   => 'prometheus',
-    }
 }

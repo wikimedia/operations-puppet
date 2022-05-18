@@ -62,9 +62,4 @@ define dumps::web::fetches::job(
         environment => {'MAILTO' => $mailto},
         interval    => {'start' => 'OnCalendar', 'interval' => $interval},
     }
-
-    cron { "dumps-fetch-${title}":
-        ensure => 'absent',
-        user   => $user,
-    }
 }

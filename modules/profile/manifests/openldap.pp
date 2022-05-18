@@ -71,11 +71,6 @@ class profile::openldap (
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:0/${minutes}:00"},
     }
 
-    # restart slapd if it uses more than 50% of memory (T130593)
-    cron { 'restart_slapd':
-        ensure => 'absent',
-    }
-
     if $backup {
         backup::openldapset { 'openldap': }
     }
