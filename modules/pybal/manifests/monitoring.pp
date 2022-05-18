@@ -15,27 +15,18 @@ class pybal::monitoring(
         'python-requests',
     ])
 
-    file { '/usr/local/lib/nagios/plugins/check_pybal':
-        ensure => present,
+    nrpe::plugin { 'check_pybal':
         source => 'puppet:///modules/pybal/check_pybal',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     nrpe::monitor_service { 'pybal_backends':
         description  => 'PyBal backends health check',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_pybal --url http://localhost:9090/alerts',
-        require      => File['/usr/local/lib/nagios/plugins/check_pybal'],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/PyBal',
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff':
-        ensure => present,
+    nrpe::plugin { 'check_pybal_ipvs_diff':
         source => 'puppet:///modules/pybal/check_pybal_ipvs_diff.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     nrpe::monitor_service { 'pybal_ipvs_diff':
@@ -43,7 +34,6 @@ class pybal::monitoring(
         nrpe_command   => "/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff --req-timeout=10.0 --prometheus-url http://${::ipaddress}:9100/metrics",
         check_interval => 5,
         timeout        => 60,
-        require        => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
         notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
     }
 
@@ -59,7 +49,6 @@ class pybal::monitoring(
             nrpe_command   => "/usr/lib/nagios/plugins/check_established_connections ${config_host} ${etcd_port} ${n_etcd_connections}",
             check_interval => 5,
             timeout        => 60,
-            require        => File['/usr/lib/nagios/plugins/check_established_connections'],
             notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
         }
     }
