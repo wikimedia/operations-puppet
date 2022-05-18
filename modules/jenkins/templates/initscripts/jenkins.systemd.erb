@@ -12,7 +12,7 @@ LimitNOFILE=<%= @max_open_files %>
 
 Environment=JENKINS_HOME=/var/lib/jenkins
 ExecStart=<%= @java_path -%> <%= @java_args -%> \
-    -jar /usr/share/jenkins/jenkins.war \
+    -jar /usr/share/java/jenkins.war \
 <%- if @jenkins_access_log_arg -%>
     <%= @jenkins_access_log_arg -%> \
 <%- end -%>
