@@ -29,10 +29,9 @@ define burrow::check_consumer_lag(
 ) {
     $consumer_group = $title
 
-    if !defined(File['/usr/local/lib/nagios/plugins/check_kafka_consumer_lag']) {
-        file { '/usr/local/lib/nagios/plugins/check_kafka_consumer_lag':
+    if !defined(Nrpe::Plugin['check_kafka_consumer_lag']) {
+        nrpe::plugin { 'check_kafka_consumer_lag':
             source => 'puppet:///modules/burrow/check_kafka_consumer_lag.py',
-            mode   => '0555',
         }
     }
 
