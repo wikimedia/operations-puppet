@@ -81,10 +81,9 @@ class base::firewall (
         srange => '$CUMIN_MASTERS',
     }
 
-    # TODO: change to ensure => absent after a full puppet cycle, then remove completely after another
+    # TODO: remove after a puppet cycle
     file { '/usr/lib/nagios/plugins/check_conntrack':
-        source => 'puppet:///modules/base/firewall/check_conntrack.py',
-        mode   => '0755',
+        ensure => absent,
     }
 
     nrpe::plugin { 'check_conntrack':
@@ -102,7 +101,6 @@ class base::firewall (
         user       => 'nagios',
         privileges => [
             'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_ferm',
-            'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm',
         ],
     }
 
@@ -110,13 +108,9 @@ class base::firewall (
         source => 'puppet:///modules/base/firewall/check_ferm',
     }
 
-    # TODO: change to ensure => absent after a full puppet cycle (and remove the sudo rule),
-    # then remove completely after another
+    # TODO: remove after a puppet cycle
     file { '/usr/lib/nagios/plugins/check_ferm':
-        source => 'puppet:///modules/base/firewall/check_ferm',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => absent,
     }
 
     nrpe::monitor_service { 'ferm_active':
