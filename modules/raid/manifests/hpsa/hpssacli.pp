@@ -2,11 +2,7 @@
 class raid::hpsa::hpssacli {
   assert_private()
 
-  file { '/usr/local/lib/nagios/plugins/check_hpssacli':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0555',
+  nrpe::plugin { 'check_hpssacli':
     source => 'puppet:///modules/raid/dsa-check-hpssacli',
   }
 
@@ -47,18 +43,11 @@ class raid::hpsa::hpssacli {
     notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
   }
 
-  $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'
-
-  file { $get_raid_status_hpssacli:
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0555',
+  nrpe::plugin { 'get-raid-status-hpssacli':
     source => 'puppet:///modules/raid/get-raid-status-hpssacli.sh';
   }
 
   nrpe::check { 'get_raid_status_hpssacli':
-    command => "${get_raid_status_hpssacli} -c",
+    command => '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli -c',
   }
-
 }

@@ -25,18 +25,14 @@ class raid (
     }
 
     if 'raid' in $facts {
-      $facts['raid'].each |String $raid| {
-        include "raid::${raid}"
-      }
+        $facts['raid'].each |String $raid| {
+            include "raid::${raid}"
+        }
     } else {
       warning('no raid controller detected')
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_raid':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_raid':
         source => 'puppet:///modules/raid/check-raid.py';
     }
 

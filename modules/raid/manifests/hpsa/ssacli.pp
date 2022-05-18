@@ -31,23 +31,15 @@ class raid::hpsa::ssacli {
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_ssacli':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_ssacli':
         source => 'puppet:///modules/raid/dsa-check-hpssacli',
     }
 
-    $get_raid_status_ssacli = '/usr/local/lib/nagios/plugins/get-raid-status-ssacli'
-    file { $get_raid_status_ssacli:
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'get-raid-status-ssacli':
         source => 'puppet:///modules/raid/get-raid-status-ssacli.sh';
     }
+
     nrpe::check { 'get_raid_status_ssacli':
-        command => "${get_raid_status_ssacli} -c",
+        command => '/usr/local/lib/nagios/plugins/get-raid-status-ssacli -c',
     }
 }
