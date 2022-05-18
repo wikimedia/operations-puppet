@@ -59,12 +59,6 @@ class profile::doc (
         source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf'
     }
 
-    monitoring::service { 'doc-wikimedia-org-ssl':
-        description   => "doc.wikimedia.org SSL - ${facts['networking']['fqdn']}",
-        check_command => "check_ssl_on_host_port!doc.wikimedia.org!${facts['networking']['fqdn']}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Cergen'
-    }
-
     ferm::service { 'doc-http':
         proto  => 'tcp',
         port   => '80',
