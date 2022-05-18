@@ -18,7 +18,7 @@ class profile::mariadb::proxy::master (
 
     nrpe::monitor_service { 'haproxy_failover':
         description  => 'haproxy failover',
-        nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=failover',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_haproxy --check=failover',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/HAProxy',
     }
 }
