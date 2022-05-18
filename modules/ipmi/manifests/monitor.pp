@@ -26,11 +26,7 @@ class ipmi::monitor (
     }
 
     # ipmi_devintf needs to be loaded for the checks to work properly (T167121)
-    file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_ipmi_sensor':
         source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
     }
 
@@ -38,14 +34,7 @@ class ipmi::monitor (
         ensure => present,
     }
 
-    # rename nagios_ipmi_temp to nagios_ipmi_sensor
-    # this ensure absent can be removed after propagation
-    ::sudo::user { 'nagios_ipmi_temp':
-        ensure     => absent,
-        privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
-    }
-
-    ::sudo::user { 'nagios_ipmi_sensor':
+    sudo::user { 'nagios_ipmi_sensor':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
     }
