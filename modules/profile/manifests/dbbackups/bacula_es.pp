@@ -10,11 +10,11 @@ class profile::dbbackups::bacula_es (
         # Warning: because we do-cross dc backups, this can get confusing:
         if $::site == 'eqiad' {
             # backup hosts on eqiad store data on codfw (cross-dc)
-            $jobdefaults_rw = 'Weekly-Wed-EsRwCodfw'
+            $jobdefaults_rw = 'Weekly-Thu-EsRwCodfw'
             $jobdefaults_ro = 'Weekly-Mon-EsRoCodfw'
         } elsif $::site == 'codfw' {
             # backups hosts on codfw store data on eqiad (cross-dc)
-            $jobdefaults_rw = 'Weekly-Wed-EsRwEqiad'
+            $jobdefaults_rw = 'Weekly-Thu-EsRwEqiad'
             $jobdefaults_ro = 'Weekly-Mon-EsRoEqiad'
         } else {
             fail('Only eqiad or codfw pools are configured for content database backups.')

@@ -165,22 +165,23 @@ class profile::backup::director(
         pool => 'EsRoCodfw',
     }
 
-    # Jobdefaults for regular Database backups
-    $db_backup_day = 'Wed'
-    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-Databases":
-        day  => $db_backup_day,
+    # Jobdefaults for metadata Database backups
+    $metadata_db_backup_day = 'Wed'
+    backup::weeklyjobdefaults { "Weekly-${metadata_db_backup_day}-Databases":
+        day  => $metadata_db_backup_day,
         pool => 'Databases',  # pending pool rename
     }
-    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-DatabasesCodfw":
-        day  => $db_backup_day,
+    backup::weeklyjobdefaults { "Weekly-${metadata_db_backup_day}-DatabasesCodfw":
+        day  => $metadata_db_backup_day,
         pool => 'DatabasesCodfw',
     }
-    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-EsRwEqiad":
-        day  => $db_backup_day,
+    $es_db_backup_day = 'Thu'
+    backup::weeklyjobdefaults { "Weekly-${es_db_backup_day}-EsRwEqiad":
+        day  => $es_db_backup_day,
         pool => 'EsRwEqiad',
     }
-    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-EsRwCodfw":
-        day  => $db_backup_day,
+    backup::weeklyjobdefaults { "Weekly-${es_db_backup_day}-EsRwCodfw":
+        day  => $es_db_backup_day,
         pool => 'EsRwCodfw',
     }
 
