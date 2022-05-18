@@ -122,6 +122,7 @@ host apt2001 {
 host backupmon1001 {
     hardware ethernet aa:00:00:27:e1:89;
     fixed-address backupmon1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host bast3005 {
