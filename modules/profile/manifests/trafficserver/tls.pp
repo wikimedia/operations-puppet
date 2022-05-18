@@ -102,34 +102,6 @@ class profile::trafficserver::tls (
         }
     }
 
-    # Write configuration file for global TLS Lua script
-    # TODO: Remove entirely on a following commit
-    file { "${tls_lua_script_path}.conf":
-        ensure  => absent,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => "lua_websocket_support = ${websocket_arg}\nlua_keepalive_support = ${keepalive_arg}\n",
-        notify  => Service[$service_name],
-    }
-
-    file { '/usr/local/lib/nagios/plugins/check_tls_lua_conf':
-        ensure  => absent,
-        owner   => root,
-        group   => root,
-        mode    => '0555',
-        content => "#!/usr/bin/lua\ndofile('${tls_lua_script_path}.conf')\nassert(lua_websocket_support ~= nil)\nprint('OK')\n",
-        require => File["${tls_lua_script_path}.conf"],
-    }
-
-    nrpe::monitor_service { 'tls_lua_conf':
-        ensure       => absent,
-        description  => 'TLS Lua configuration file',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_tls_lua_conf',
-        require      => File['/usr/local/lib/nagios/plugins/check_tls_lua_conf'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
-    }
-
     systemd::tmpfile { "trafficserver_${instance_name}_secrets_tmpfile":
         content => "d ${paths['secretsdir']} 0700 root root -",
     }

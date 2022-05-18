@@ -30,11 +30,7 @@ class profile::mirrors {
     }
 
     # monitoring for Debian/Ubuntu mirrors being in sync with upstream
-    file { '/usr/local/lib/nagios/plugins/check_apt_mirror':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_apt_mirror':
         source => 'puppet:///modules/profile/mirrors/check_apt_mirror';
     }
 }

@@ -90,11 +90,7 @@ class profile::configmaster(
         srange => '$PRODUCTION_NETWORKS',
     }
 
-    file { '/usr/local/lib/nagios/plugins/disc_desired_state':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0555',
+    nrpe::plugin { 'disc_desired_state':
         source => 'puppet:///modules/profile/configmaster/disc_desired_state.py',
     }
 

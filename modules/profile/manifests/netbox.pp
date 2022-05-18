@@ -252,11 +252,7 @@ class profile::netbox (
     }
 
     # Deploy the report checker
-    file { '/usr/local/lib/nagios/plugins/check_netbox_report.py':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_netbox_report.py':
         source => 'puppet:///modules/icinga/check_netbox_report.py',
     }
 

@@ -89,12 +89,13 @@ class profile::puppetmaster::frontend(
             mode    => '0644',
             recurse => true,
         }
+
         $monitor_ensure = ($monitor_signed_certs and $ca).bool2str('present', 'absent')
-        file {'/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs':
+        nrpe::plugin { 'nrpe_check_puppetca_expired_certs':
             ensure => $monitor_ensure,
-            mode   => '0555',
             source => 'puppet:///modules/profile/puppetmaster/nrpe_check_puppetca_expired_certs.sh',
         }
+
         nrpe::monitor_service {'puppetca_expired_certs':
             ensure         => $monitor_ensure,
             description    => 'Puppet CA expired certs',

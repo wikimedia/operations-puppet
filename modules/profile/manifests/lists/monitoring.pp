@@ -123,11 +123,7 @@ class profile::lists::monitoring (
         outfile => '/var/lib/prometheus/node.d/mailman_queues.prom'
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_mailman_queue':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    nrpe::plugin { 'check_mailman_queue':
         source => 'puppet:///modules/icinga/check_mailman_queue.py',
     }
 

@@ -88,11 +88,7 @@ class profile::mail::smarthost (
     }
 
     # monitor mail queue size (T133110)
-    file { '/usr/local/lib/nagios/plugins/check_exim_queue':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_exim_queue':
         source => 'puppet:///modules/icinga/check_exim_queue.sh',
     }
 

@@ -28,20 +28,16 @@ class profile::analytics::cluster::hdfs_mount(
             $kerberos_prefix = ''
         }
 
-        file { '/usr/local/lib/nagios/plugins/check_mountpoint_readability':
-            ensure => present,
+        nrpe::plugin { 'check_mountpoint_readability':
             source => 'puppet:///modules/profile/analytics/check_mountpoint_readability',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
         }
+
         nrpe::monitor_service { 'check_hadoop_mount_readability':
             description    => 'Check if the Hadoop HDFS Fuse mountpoint is readable',
             nrpe_command   => "${kerberos_prefix}/usr/local/lib/nagios/plugins/check_mountpoint_readability ${bigtop::hadoop::mount::mount_point}",
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',
-            require        => File['/usr/local/lib/nagios/plugins/check_mountpoint_readability'],
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#Fixing_HDFS_mount_at_/mnt/hdfs',
         }
     }

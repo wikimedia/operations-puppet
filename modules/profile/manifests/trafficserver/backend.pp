@@ -48,14 +48,11 @@ class profile::trafficserver::backend (
         notify  => Service['trafficserver'],
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0555',
+    nrpe::plugin { 'check_default_ats_lua_conf':
         content => "#!/usr/bin/lua\ndofile('/etc/trafficserver/lua/${default_lua_script}.lua.conf')\nassert(lua_hostname)\nprint('OK')\n",
         require => File["/etc/trafficserver/lua/${default_lua_script}.lua.conf"],
     }
+
     file { $trusted_ca_path:
         ensure => file,
         owner  => root,
@@ -68,7 +65,6 @@ class profile::trafficserver::backend (
         nrpe::monitor_service { 'default_ats_lua_conf':
             description  => 'Default ATS Lua configuration file',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf',
-            require      => File['/usr/local/lib/nagios/plugins/check_default_ats_lua_conf'],
             notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
         }
     }

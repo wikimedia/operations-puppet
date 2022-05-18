@@ -2,10 +2,11 @@
 class profile::query_service::monitor::categories {
     ensure_packages('python3-requests')
     file { '/usr/lib/nagios/plugins/check_categories.py':
+        ensure => absent,
+    }
+
+    nrpe::plugin { 'check_categories.py':
         source => 'puppet:///modules/query_service/nagios/check_categories.py',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
     # categories are updated weekly, this is a low frequency check

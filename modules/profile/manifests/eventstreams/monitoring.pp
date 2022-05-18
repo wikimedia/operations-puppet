@@ -3,12 +3,8 @@
 #
 class profile::eventstreams::monitoring {
     $stream_url = 'https://stream.wikimedia.org/v2/stream/recentchange'
-    file { '/usr/local/lib/nagios/plugins/check_eventstreams':
-        ensure => 'present',
+    nrpe::plugin { 'check_eventstreams':
         source => 'puppet:///modules/profile/eventstreams/check_eventstreams.sh',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
 

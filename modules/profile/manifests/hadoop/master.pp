@@ -55,12 +55,8 @@ class profile::hadoop::master(
         require => Class['bigtop::hadoop::master'],
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_hdfs_topology':
-        ensure => present,
+    nrpe::plugin { 'check_hdfs_topology':
         source => 'puppet:///modules/profile/hadoop/check_hdfs_topology',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
     # Include icinga alerts if production realm.
@@ -125,7 +121,6 @@ class profile::hadoop::master(
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',
-            require        => File['/usr/local/lib/nagios/plugins/check_hdfs_topology'],
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_topology_check',
         }
         # Alert if there is no active NameNode

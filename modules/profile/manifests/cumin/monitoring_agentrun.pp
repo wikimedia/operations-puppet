@@ -8,12 +8,16 @@ class profile::cumin::monitoring_agentrun (
     ensure_packages(['python3-pypuppetdb'])
 
     file { '/usr/lib/nagios/plugins/check_puppet_run_changes':
-        mode    => '0555',
-        content => file('profile/cumin/check_puppet_run_changes.py'),
+        ensure => absent,
+    }
+
+    nrpe::plugin { 'check_puppet_run_changes':
+        source  => 'puppet:///modules/profile/cumin/check_puppet_run_changes.py',
         require => Package['python3-pypuppetdb'],
     }
+
     $nrpe_command = @("COMMAND"/L)
-    /usr/lib/nagios/plugins/check_puppet_run_changes \
+    /usr/local/lib/nagios/plugins/check_puppet_run_changes \
     -w ${warn} -c ${crit} \
     --ssl-key ${facts['puppet_config']['hostprivkey']} \
     --ssl-cert ${facts['puppet_config']['hostcert']} \
@@ -30,6 +34,5 @@ class profile::cumin::monitoring_agentrun (
         retry_interval => 5,
         retries        => 2,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Puppet#check_puppet_run_changes',
-        require        => File['/usr/lib/nagios/plugins/check_puppet_run_changes'],
     }
 }

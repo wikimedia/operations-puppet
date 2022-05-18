@@ -4,11 +4,8 @@ class profile::mediawiki::monitor_versions(
 
     ensure_packages('python3-requests')
 
-    file { '/usr/local/lib/nagios/plugins/check_mw_versions':
+    nrpe::plugin { 'check_mw_versions':
         source => 'puppet:///modules/profile/mediawiki/monitor_versions/check_mw_versions.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     nrpe::monitor_service { 'mw_wikiversion_difference':
