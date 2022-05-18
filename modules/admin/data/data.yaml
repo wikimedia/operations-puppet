@@ -366,7 +366,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti]
+              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5279,6 +5279,13 @@ users:
     krb: present
     expiry_date: 2022-08-11
     expiry_contact: ijohnson@wikimedia.org
+  mazevedo:
+    ensure: present
+    realname: Marina Azevedo
+    email: mazevedo@wikimedia.org
+    uid: 36080
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
