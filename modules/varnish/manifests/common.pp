@@ -89,11 +89,7 @@ class varnish::common(
         ensure => absent,
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_varnish_uds':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_varnish_uds':
         source => 'puppet:///modules/varnish/check_varnish_uds.py';
     }
 
