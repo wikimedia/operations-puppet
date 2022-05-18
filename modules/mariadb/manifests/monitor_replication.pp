@@ -15,7 +15,7 @@ define mariadb::monitor_replication(
     include passwords::nagios::mysql
     $password = $passwords::nagios::mysql::mysql_check_pass
 
-    $check_command = "/usr/lib/nagios/plugins/check_mariadb.pl --sock=${socket} --user=nagios --pass=${password}"
+    $check_command = "/usr/local/lib/nagios/plugins/check_mariadb --sock=${socket} --user=nagios --pass=${password}"
 
     $check_set = $multisource ? {
         true  => "--set=default_master_connection=${name}",
