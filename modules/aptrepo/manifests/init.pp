@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: aptrepo
 #
 #   Configures apt.wikimedia.org and reprepro on a server
@@ -29,22 +30,22 @@
 # TODO: add something that sets up /etc/environment for reprepro
 #
 class aptrepo (
-    $basedir,
-    $homedir         = '/var/lib/reprepro',
-    $user            = 'reprepro',
-    $group           = 'reprepro',
-    $notify_address  = 'root@wikimedia.org',
-    $options         = [],
-    $uploaders       = [],
-    $incomingdir     = 'incoming',
-    $incomingconf    = 'incoming',
-    $incominguser    = 'reprepro',
-    $incominggroup   = 'reprepro',
-    $default_distro  = 'buster',
-    $gpg_secring     = undef,
-    $gpg_pubring     = undef,
-    $gpg_user        = undef,
-    $authorized_keys = [],
+    Stdlib::Unixpath $basedir         = '/var/lib/reprepro',
+    Stdlib::Unixpath $homedir         = '/var/lib/reprepro',
+    String           $user            = 'reprepro',
+    String           $group           = 'reprepro',
+    String           $notify_address  = 'root@wikimedia.org',
+    Array[String]    $options         = [],
+    Array[String]    $uploaders       = [],
+    String           $incomingdir     = 'incoming',
+    String           $incomingconf    = 'incoming',
+    String           $incominguser    = 'reprepro',
+    String           $incominggroup   = 'reprepro',
+    String           $default_distro  = 'buster',
+    Optional[String] $gpg_secring     = undef,
+    Optional[String] $gpg_pubring     = undef,
+    Optional[String] $gpg_user        = undef,
+    Array[String]    $authorized_keys = [],
 ) {
 
     ensure_packages([
@@ -205,10 +206,10 @@ class aptrepo (
         }
     }
 
-    file { '/root/.gnupg/reprepro-updates-keys.d':
+    file { "${homedir}/.gnupg/reprepro-updates-keys.d":
         ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
+        owner   => $gpg_user,
+        group   => $gpg_user,
         mode    => '0550',
         recurse => true,
         purge   => true,
@@ -219,31 +220,12 @@ class aptrepo (
     exec { 'reprepro-import-updates-keys':
         refreshonly => true,
         provider    => 'shell',
-        command     => '/usr/bin/gpg --import /root/.gnupg/reprepro-updates-keys.d/*.gpg',
+        command     => "/usr/bin/gpg --import ${homedir}/.gnupg/reprepro-updates-keys.d/*.gpg",
     }
 
     file_line { 'reprepro_basedir':
       ensure => present,
-      path   => '/root/.bashrc',
+      path   => "${homedir}/.bashrc",
       line   => "export REPREPRO_BASE_DIR=${basedir}  # Managed by puppet",
-    }
-
-    # We also need /srv/tftboot populated from volatile on APT repo servers,
-    # not just install (TFTP) servers because installer files are fetched via HTTP (T252382)
-    file { '/srv/tftpboot':
-        # config files in the puppet repository,
-        # larger files like binary images in volatile
-        source       => [
-            'puppet:///modules/install_server/tftpboot',
-            # lint:ignore:puppet_url_without_modules
-            'puppet:///volatile/tftpboot',
-            # lint:endignore
-        ],
-        sourceselect => all,
-        mode         => '0444',
-        owner        => 'root',
-        group        => 'root',
-        recurse      => remote,
-        backup       => false,
     }
 }

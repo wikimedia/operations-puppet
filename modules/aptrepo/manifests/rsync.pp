@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up rsync of APT repos between 2 servers
 # activates rsync for push from the primary to secondary
 class aptrepo::rsync (

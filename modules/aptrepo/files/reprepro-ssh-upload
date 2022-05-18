@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 
 # use this script as a forced command in authorized_keys to allow scp of files
 # to the incoming directory or process the incoming queue otherwise

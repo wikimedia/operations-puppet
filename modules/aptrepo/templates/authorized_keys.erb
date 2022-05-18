@@ -1,3 +1,4 @@
+<%#- #SPDX-License-Identifier: Apache-2.0 -%>
 <% @authorized_keys.flatten.each do |key| -%>
 command="/usr/local/bin/reprepro-ssh-upload <%= [@basedir, @incomingdir].join(' ') %>",no-port-forwarding,no-x11-forwarding,no-agent-forwarding <%= key %>
 <% end -%>
