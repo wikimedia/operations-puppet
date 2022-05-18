@@ -200,10 +200,7 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
     LOGGER.info("Launching a vm with the new image")
     nics = [{"net-id": network_id}]
     instance = nova.servers.create(
-        name="buildvm-%s" % upstream_image.id,
-        image=upstream_image.id,
-        flavor=flavor_id,
-        nics=nics,
+        name="buildvm-%s" % upstream_image.id, image=upstream_image.id, flavor=flavor_id, nics=nics
     )
     LOGGER.info("Created temporary VM %s" % instance.id)
 
@@ -275,12 +272,7 @@ def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -
 def sparsify_image(workdir: Path, snapshot_path: Path, run: Callable) -> None:
     LOGGER.info("Making snapshot file sparse")
     sparse_snapshot_path = workdir / "snapshot.img.sparse"
-    run(
-        "cp",
-        "--sparse=always",
-        snapshot_path,
-        sparse_snapshot_path,
-    )
+    run("cp", "--sparse=always", snapshot_path, sparse_snapshot_path)
     return sparse_snapshot_path
 
 
@@ -367,9 +359,7 @@ def main(args: argparse.Namespace) -> None:
         ) as reply:
             if reply == AskReply.CONTINUE:
                 cleanup(
-                    instance_id=instance.id,
-                    vm_snap=vm_snap,
-                    upstream_image_id=upstream_image.id,
+                    instance_id=instance.id, vm_snap=vm_snap, upstream_image_id=upstream_image.id
                 )
 
         LOGGER.info("Finished creating new image: %s" % final_image.id)

@@ -6,11 +6,11 @@
 """
 
 import argparse
+import logging
 import os
 import subprocess
-import time
-import logging
 import sys
+import time
 
 import mwopenstackclients
 from novaclient import client
@@ -42,14 +42,7 @@ flavor_map = {
 
 class ScriptConfig:
     def __init__(
-        self,
-        datacenter,
-        destination,
-        mysql_password,
-        nova_db_server,
-        nova_db,
-        cleanup,
-        leak,
+        self, datacenter, destination, mysql_password, nova_db_server, nova_db, cleanup, leak
     ):
         self.datacenter = datacenter
         self.destination = destination
@@ -91,8 +84,7 @@ class NovaInstance(object):
         dest_flavor_name = flavor_map[source_flavor_name]
         self.dest_flavor_id = flavornamedict[dest_flavor_name]
         logging.warning(
-            "We will convert to flavor %s (%s)"
-            % (dest_flavor_name, self.dest_flavor_id)
+            "We will convert to flavor %s (%s)" % (dest_flavor_name, self.dest_flavor_id)
         )
 
     # Returns True if the status changed, otherwise False
@@ -180,9 +172,7 @@ class NovaInstance(object):
         source = self.instance._info["OS-EXT-SRV-ATTR:host"]
         virshid = self.instance._info["OS-EXT-SRV-ATTR:instance_name"]
         instance_fqdn = "{}.{}.{}.wmflabs".format(
-            self.instance._info["name"],
-            self.instance._info["tenant_id"],
-            config.datacenter,
+            self.instance._info["name"], self.instance._info["tenant_id"], config.datacenter
         )
         source_fqdn = "{}.{}.wmnet".format(source, config.datacenter)
 
@@ -205,8 +195,7 @@ class NovaInstance(object):
             "/root/.ssh/compute-hosts-key",
             "nova@%s" % source_fqdn,
             "qemu-img convert -f qcow2 -O raw %s/disk "
-            "rbd:eqiad1-compute/%s_disk:id=eqiad1-compute"
-            % (imagedir, self.instance_id),
+            "rbd:eqiad1-compute/%s_disk:id=eqiad1-compute" % (imagedir, self.instance_id),
         ]
 
         logging.info("{}".format(" ".join(args)))
@@ -215,9 +204,7 @@ class NovaInstance(object):
             logging.error("copy to ceph failed.")
             return 1
 
-        logging.info(
-            "{} instance copied. Now updating nova db...".format(self.instance_name)
-        )
+        logging.info("{} instance copied. Now updating nova db...".format(self.instance_name))
         host_moved = self.update_nova_db(config)
 
         if host_moved:
@@ -253,9 +240,7 @@ class NovaInstance(object):
                 ]
                 undefine_status = subprocess.call(undefine_args)
                 if undefine_status:
-                    logging.error(
-                        "undefine of {} on {} failed.".format(virshid, source)
-                    )
+                    logging.error("undefine of {} on {} failed.".format(virshid, source))
                     return 1
 
                 logging.info("cleaning up old instance files on {}".format(source))
@@ -269,9 +254,7 @@ class NovaInstance(object):
                 ]
                 rmimage_status = subprocess.call(rmimage_args)
                 if rmimage_status:
-                    logging.error(
-                        "cleanup of {} on {} failed.".format(imagedir, source)
-                    )
+                    logging.error("cleanup of {} on {} failed.".format(imagedir, source))
                     return 1
 
         if activated_image:
@@ -292,19 +275,13 @@ if __name__ == "__main__":
         "cold-migrate", description="Move an instance to a " "different compute node"
     )
     argparser.add_argument(
-        "--nova-user",
-        help="username for nova auth",
-        default=os.environ.get("OS_USERNAME", None),
+        "--nova-user", help="username for nova auth", default=os.environ.get("OS_USERNAME", None)
     )
     argparser.add_argument(
-        "--nova-pass",
-        help="password for nova auth",
-        default=os.environ.get("OS_PASSWORD", None),
+        "--nova-pass", help="password for nova auth", default=os.environ.get("OS_PASSWORD", None)
     )
     argparser.add_argument(
-        "--nova-url",
-        help="url for nova auth",
-        default=os.environ.get("OS_AUTH_URL", None),
+        "--nova-url", help="url for nova auth", default=os.environ.get("OS_AUTH_URL", None)
     )
     argparser.add_argument(
         "--nova-db-server",
@@ -312,9 +289,7 @@ if __name__ == "__main__":
         default="openstack.eqiad1.wikimediacloud.org",
     )
     argparser.add_argument(
-        "--nova-db",
-        help="nova database name. Default is nova_eqiad1",
-        default="nova_eqiad1",
+        "--nova-db", help="nova database name. Default is nova_eqiad1", default="nova_eqiad1"
     )
     argparser.add_argument(
         "--region", help="nova region", default=os.environ.get("OS_REGION_NAME", None)
@@ -332,16 +307,10 @@ if __name__ == "__main__":
         default="eqiad",
     )
     argparser.add_argument(
-        "--cleanup",
-        dest="cleanup",
-        action="store_true",
-        help="delete source VM without prompting",
+        "--cleanup", dest="cleanup", action="store_true", help="delete source VM without prompting"
     )
     argparser.add_argument(
-        "--leak",
-        dest="leak",
-        action="store_true",
-        help="exit without deleting source VM",
+        "--leak", dest="leak", action="store_true", help="exit without deleting source VM"
     )
 
     args = argparser.parse_args()
@@ -360,9 +329,7 @@ if __name__ == "__main__":
         args.leak,
     )
     logging.basicConfig(
-        format="%(filename)s: %(levelname)s: %(message)s",
-        level=logging.INFO,
-        stream=sys.stdout,
+        format="%(filename)s: %(levelname)s: %(message)s", level=logging.INFO, stream=sys.stdout
     )
 
     sshargs = [

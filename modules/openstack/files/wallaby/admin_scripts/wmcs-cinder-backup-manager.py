@@ -24,10 +24,10 @@ import logging
 import shutil
 import subprocess
 import sys
+
 import yaml
 
 import mwopenstackclients
-
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         logging.error("Unable to locate %s" % backup_tool_name)
         exit(1)
 
-    osclients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
+    osclients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
     total_errors = 0
 
     for project in conf:
@@ -93,9 +93,7 @@ if __name__ == "__main__":
                 if thisid:
                     volume_ids.append(thisid)
                 else:
-                    logging.warning(
-                        "Unabled to find requested volume %s" % requested_volume
-                    )
+                    logging.warning("Unabled to find requested volume %s" % requested_volume)
         if volume_ids:
             logging.info("Backing up %s in project %s" % (volume_ids, project))
             for volume_id in volume_ids:
@@ -114,12 +112,7 @@ if __name__ == "__main__":
                 logging.info("Purging old backups of %s" % volume_id)
 
                 # Purge old backups
-                purgeargs = [
-                    backup_tool,
-                    volume_id,
-                    "--purge-older-than",
-                    str(purge_after),
-                ]
+                purgeargs = [backup_tool, volume_id, "--purge-older-than", str(purge_after)]
                 r = subprocess.call(purgeargs)
                 if r:
                     logging.warning("Failed to purge backups for volume %s" % volume_id)

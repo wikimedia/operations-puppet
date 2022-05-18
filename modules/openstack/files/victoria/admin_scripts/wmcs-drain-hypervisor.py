@@ -12,14 +12,13 @@
 """
 
 import argparse
-import os
-import time
 import logging
+import os
 import sys
+import time
 
 import mwopenstackclients
 import novaclient.exceptions
-
 
 CANARY_PROJECT = "cloudvirt-canary"
 
@@ -70,9 +69,7 @@ class NovaInstance(object):
             self.refresh_instance()
 
     def stopped_migrate(self):
-        logging.info(
-            "Migrating stopped VM %s (%s)" % (self.instance.name, self.instance.id)
-        )
+        logging.info("Migrating stopped VM %s (%s)" % (self.instance.name, self.instance.id))
         self.instance.migrate()
         # Currently (Openstack Train) a cold migrate is implemented as a resize.
         #  I'm checking for alternate statuses here in case someone fixes that
@@ -92,9 +89,7 @@ class NovaInstance(object):
         )
 
     def paused_migrate(self):
-        logging.info(
-            "Migrating paused VM %s (%s)" % (self.instance.name, self.instance.id)
-        )
+        logging.info("Migrating paused VM %s (%s)" % (self.instance.name, self.instance.id))
         self.instance.unpause()
         self.wait_for_status(["ACTIVE"])
         self.live_migrate()
@@ -126,9 +121,7 @@ class NovaInstance(object):
             else:
                 logging.info(
                     "instance {} ({}) is in state {} which this script can't handle."
-                    " Skipping.".format(
-                        self.instance_id, self.instance_name, self.instance.status
-                    )
+                    " Skipping.".format(self.instance_id, self.instance_name, self.instance.status)
                 )
                 return False
         except TimeoutError:
@@ -154,19 +147,13 @@ if __name__ == "__main__":
         "wmcs-drain-hypervisor", description="Move all VMs off a given hypervisor"
     )
     argparser.add_argument(
-        "--nova-user",
-        help="username for nova auth",
-        default=os.environ.get("OS_USERNAME", None),
+        "--nova-user", help="username for nova auth", default=os.environ.get("OS_USERNAME", None)
     )
     argparser.add_argument(
-        "--nova-pass",
-        help="password for nova auth",
-        default=os.environ.get("OS_PASSWORD", None),
+        "--nova-pass", help="password for nova auth", default=os.environ.get("OS_PASSWORD", None)
     )
     argparser.add_argument(
-        "--nova-url",
-        help="url for nova auth",
-        default=os.environ.get("OS_AUTH_URL", None),
+        "--nova-url", help="url for nova auth", default=os.environ.get("OS_AUTH_URL", None)
     )
     argparser.add_argument("hypervisor", help="name of hypervisor to drain")
 
@@ -190,18 +177,13 @@ if __name__ == "__main__":
 
         for instance in all_instances:
             if _is_canary(instance):
-                logging.info(
-                    "Igoring canary instance %s (%s)" % (instance.name, instance.id)
-                )
+                logging.info("Igoring canary instance %s (%s)" % (instance.name, instance.id))
                 # Leave the canary behind; it won't do any good anywhere else
                 remaining_instances.remove(instance)
                 continue
             instanceobj = NovaInstance(osclients, instance.id)
             if instanceobj.migrate():
-                if (
-                    instanceobj.instance._info["OS-EXT-SRV-ATTR:host"]
-                    == args.hypervisor
-                ):
+                if instanceobj.instance._info["OS-EXT-SRV-ATTR:host"] == args.hypervisor:
                     logging.warning(
                         f"{instanceobj.instance_name} ({instanceobj.instance_id}) didn't actually "
                         "migrate, got scheduled on the same hypervisor. Will try again!"
@@ -218,14 +200,11 @@ if __name__ == "__main__":
             break
 
     remaining_instances = []
-    all_instances = nova.servers.list(
-        search_opts={"host": args.hypervisor, "all_tenants": True}
-    )
+    all_instances = nova.servers.list(search_opts={"host": args.hypervisor, "all_tenants": True})
     for instance in all_instances:
         if not _is_canary(instance):
             logging.warning(
-                "Failed to migrate %s.%s (%s)"
-                % (instance.name, instance.tenant_id, instance.id)
+                "Failed to migrate %s.%s (%s)" % (instance.name, instance.tenant_id, instance.id)
             )
             remaining_instances.append(instance)
 

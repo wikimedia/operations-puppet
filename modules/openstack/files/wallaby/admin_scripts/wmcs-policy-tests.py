@@ -15,19 +15,19 @@
 #   tests are mostly here to make sure that reader or user roles
 #   cannot create or destroy things.
 #
-from functools import reduce
-import pytest
 import time
 import uuid
+from functools import reduce
 
-from cinderclient import exceptions as cinderexceptions
+import pytest
+
 import keystoneauth1
-from novaclient import exceptions as novaexceptions
-from neutronclient.common import exceptions as neutronexceptions
-from designateclient import exceptions as designateexceptions
-from troveclient import exceptions as troveexceptions
-
 import mwopenstackclients
+from cinderclient import exceptions as cinderexceptions
+from designateclient import exceptions as designateexceptions
+from neutronclient.common import exceptions as neutronexceptions
+from novaclient import exceptions as novaexceptions
+from troveclient import exceptions as troveexceptions
 
 POLICY_TEST_PROJECT = "policy-test-project"
 
@@ -115,9 +115,7 @@ class TestKeystone:
         for role in rolelist:
             if role.name == "user":
                 userroleid = role.id
-        keystoneclient.roles.grant(
-            userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
-        )
+        keystoneclient.roles.grant(userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT)
 
     def test_keystone_observerclients(self):
         keystoneclient = observerclients.keystoneclient(project=POLICY_TEST_PROJECT)
@@ -238,13 +236,9 @@ class TestNova:
 
         secgroups = novaclient.servers.list_security_group(self.testserver.id)
         with pytest.raises(novaexceptions.Forbidden):
-            novaclient.servers.remove_security_group(
-                self.testserver.id, secgroups[0].id
-            )
+            novaclient.servers.remove_security_group(self.testserver.id, secgroups[0].id)
         with pytest.raises(novaexceptions.Forbidden):
-            novaclient.servers.add_security_group(
-                self.testserver.id, self.security_group["id"]
-            )
+            novaclient.servers.add_security_group(self.testserver.id, self.security_group["id"])
 
     def test_nova_canaryclients(self):
         novaclient = canaryclients.novaclient(project=POLICY_TEST_PROJECT)
@@ -258,13 +252,9 @@ class TestNova:
 
         secgroups = novaclient.servers.list_security_group(self.testserver.id)
         with pytest.raises(novaexceptions.Forbidden):
-            novaclient.servers.remove_security_group(
-                self.testserver.id, secgroups[0].id
-            )
+            novaclient.servers.remove_security_group(self.testserver.id, secgroups[0].id)
         with pytest.raises(novaexceptions.Forbidden):
-            novaclient.servers.add_security_group(
-                self.testserver.id, self.security_group["id"]
-            )
+            novaclient.servers.add_security_group(self.testserver.id, self.security_group["id"])
 
 
 class TestCinder:
@@ -370,9 +360,7 @@ class TestDesignate:
         designateclient = observerclients.designateclient(project=POLICY_TEST_PROJECT)
 
         with pytest.raises(designateexceptions.Forbidden):
-            designateclient.zones.create(
-                "observer.%s" % self.zonename, email="root@wmcloud.org"
-            )
+            designateclient.zones.create("observer.%s" % self.zonename, email="root@wmcloud.org")
 
         with pytest.raises(designateexceptions.Forbidden):
             designateclient.zones.delete(self.zone["id"])
@@ -386,9 +374,7 @@ class TestDesignate:
         designateclient = canaryclients.designateclient(project=POLICY_TEST_PROJECT)
 
         with pytest.raises(designateexceptions.Forbidden):
-            designateclient.zones.create(
-                "observer.%s" % self.zonename, email="root@wmcloud.org"
-            )
+            designateclient.zones.create("observer.%s" % self.zonename, email="root@wmcloud.org")
 
         with pytest.raises(designateexceptions.Forbidden):
             designateclient.zones.delete(self.zone["id"])
@@ -409,9 +395,7 @@ class TestTrove:
         nics = [{"net-id": cls.network["id"]}]
 
         databases = [{"name": "my_db"}]
-        users = [
-            {"name": "jsmith", "password": "12345", "databases": [{"name": "my_db"}]}
-        ]
+        users = [{"name": "jsmith", "password": "12345", "databases": [{"name": "my_db"}]}]
 
         troveclient = adminclients.troveclient(project=POLICY_TEST_PROJECT)
 

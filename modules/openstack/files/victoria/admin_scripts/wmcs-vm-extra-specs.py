@@ -10,11 +10,12 @@ import argparse
 import logging
 import os
 import sys
+
 from oslo_serialization import jsonutils
-from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy import MetaData, Table, create_engine
+from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
-from sqlalchemy.exc import SQLAlchemyError, DBAPIError
 
 logging.basicConfig(level=logging.INFO)
 
@@ -37,9 +38,7 @@ def bail(msg):
 class Instance:
     def __init__(self, session, engine, uuid):
         self.session = session
-        self.table = Table(
-            "instance_extra", MetaData(), autoload=True, autoload_with=engine
-        )
+        self.table = Table("instance_extra", MetaData(), autoload=True, autoload_with=engine)
         self.uuid = uuid
 
         try:
@@ -69,8 +68,7 @@ class Instance:
                 self.session.query(self.table)
                 .filter(self.table.c.instance_uuid == self.uuid)
                 .update(
-                    {self.table.c.flavor: jsonutils.dumps(self.flavor)},
-                    synchronize_session=False,
+                    {self.table.c.flavor: jsonutils.dumps(self.flavor)}, synchronize_session=False
                 )
             )
             # Rollback if multiple rows were targeted for updated
@@ -105,9 +103,7 @@ if __name__ == "__main__":
         default="openstack.eqiad1.wikimediacloud.org",
     )
     argparser.add_argument(
-        "--nova-db",
-        help="nova database name. Default is nova_eqiad1",
-        default="nova_eqiad1",
+        "--nova-db", help="nova database name. Default is nova_eqiad1", default="nova_eqiad1"
     )
     argparser.add_argument(
         "--mysql-password",
@@ -115,9 +111,7 @@ if __name__ == "__main__":
         default=os.environ.get("NOVA_MYSQL_PASS", None),
     )
     argparser.add_argument("uuid", help="instance UUID")
-    argparser.add_argument(
-        "spec_name", choices=SUPPORTED_SPECS, help="instance spec name"
-    )
+    argparser.add_argument("spec_name", choices=SUPPORTED_SPECS, help="instance spec name")
     argparser.add_argument("spec_value", help="instance spec value")
 
     args = argparser.parse_args()
@@ -131,11 +125,7 @@ if __name__ == "__main__":
     session = Session(bind=engine)
     instance = Instance(session, engine, args.uuid)
 
-    logging.debug(
-        "Before: %s", instance.flavor["cur"]["nova_object.data"]["extra_specs"]
-    )
+    logging.debug("Before: %s", instance.flavor["cur"]["nova_object.data"]["extra_specs"])
     if instance.set_extra_spec(args.spec_name, args.spec_value):
         logging.info("%s must be rebooted to pickup the new extra spec", args.uuid)
-    logging.debug(
-        " After: %s", instance.flavor["cur"]["nova_object.data"]["extra_specs"]
-    )
+    logging.debug(" After: %s", instance.flavor["cur"]["nova_object.data"]["extra_specs"])

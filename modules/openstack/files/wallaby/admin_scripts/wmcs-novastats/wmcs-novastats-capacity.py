@@ -21,11 +21,11 @@ with potential allocated space.
 
 """
 
-import mwopenstackclients
-import subprocess
-import os.path
 import collections
+import os.path
+import subprocess
 
+import mwopenstackclients
 
 ONEGIG = 1024 * 1024 * 1024
 ONEMEG = 1024 * 1024
@@ -97,13 +97,7 @@ for host in hosts:
                 computenodedict[host.hypervisor_hostname]["freefree"] = int(fields[6])
 
     # Learn about available space on this host
-    args = [
-        "ssh",
-        "-i",
-        "/root/.ssh/compute-hosts-key",
-        "nova@%s" % host.hypervisor_hostname,
-        "df",
-    ]
+    args = ["ssh", "-i", "/root/.ssh/compute-hosts-key", "nova@%s" % host.hypervisor_hostname, "df"]
     r = subprocess.check_output(args)
 
     computenodedict[host.hypervisor_hostname]["dfused"] = 1
@@ -156,17 +150,13 @@ for host in hosts:
 
 
 fsduplicates = [
-    instance
-    for instance in all_disk_instances.keys()
-    if len(all_disk_instances[instance]) > 1
+    instance for instance in all_disk_instances.keys() if len(all_disk_instances[instance]) > 1
 ]
 
 
 for instance in fsduplicates:
     printstat(
-        "In filesystem twice: %s (%s)"
-        % (instance, ", ".join(all_disk_instances[instance])),
-        True,
+        "In filesystem twice: %s (%s)" % (instance, ", ".join(all_disk_instances[instance])), True
     )
 
 instances = clients.allinstances()
@@ -179,9 +169,7 @@ for instance in instances:
 
 
 novaduplicates = [
-    instance
-    for instance, count in collections.Counter(all_nova_instances).items()
-    if count > 1
+    instance for instance, count in collections.Counter(all_nova_instances).items() if count > 1
 ]
 if novaduplicates:
     printstat("Instances in nova twice: %s" % novaduplicates, True)
@@ -191,9 +179,7 @@ diskset = set(all_disk_instances.keys())
 
 diskstrays = diskset - novaset
 for stray in diskstrays:
-    printstat(
-        "On disk but not in nova: %s on %s" % (stray, all_disk_instances[stray]), True
-    )
+    printstat("On disk but not in nova: %s on %s" % (stray, all_disk_instances[stray]), True)
 
 novastrays = novaset - diskset
 if novastrays:
@@ -217,15 +203,10 @@ for hostname in computenodedict.keys():
         accounted_for_space = instance_space_on_disk
 
     noninstancespace = hostdict["duused"] - accounted_for_space
-    printstat(
-        "Space in non-instance files: %sK" % noninstancespace, noninstancespace > ONEMEG
-    )
+    printstat("Space in non-instance files: %sK" % noninstancespace, noninstancespace > ONEMEG)
 
     missingfilespace = hostdict["dfused"] - hostdict["duused"]
-    printstat(
-        "Space in open but deleted files: %sK" % missingfilespace,
-        missingfilespace > ONEMEG,
-    )
+    printstat("Space in open but deleted files: %sK" % missingfilespace, missingfilespace > ONEMEG)
 
     percent = float(hostdict["dfused"]) / float(hostdict["dftotal"]) * 100
     printstat("%.2f%% filled" % percent, percent > 90)

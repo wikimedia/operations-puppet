@@ -20,11 +20,12 @@ existence of said domains.
 Without this, designate doesn't ever get around to informing pdns about these domains existing.
 """
 
-import mwopenstackclients
+import time
 
 import requests
 import yaml
-import time
+
+import mwopenstackclients
 
 clients = mwopenstackclients.clients()
 

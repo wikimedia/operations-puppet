@@ -19,10 +19,11 @@ missing dns and dns records for missing proxies.
 """
 
 import argparse
-import mwopenstackclients
-from designateclient.v2 import client as designateclientv2
 
 import requests
+
+import mwopenstackclients
+from designateclient.v2 import client as designateclientv2
 
 clients = mwopenstackclients.clients()
 
@@ -32,9 +33,8 @@ PROXY_BACKEND_IP = "185.15.56.49"
 def url_template():
     """Get the url template for accessing the proxy service."""
     keystone = clients.keystoneclient()
-    proxy = keystone.services.list(type='proxy')[0]
-    endpoint = keystone.endpoints.list(
-        service=proxy.id, interface='public', enabled=True)[0]
+    proxy = keystone.services.list(type="proxy")[0]
+    endpoint = keystone.endpoints.list(service=proxy.id, interface="public", enabled=True)[0]
     return endpoint.url
 
 
@@ -75,13 +75,13 @@ def get_project_dns_zones(project_id):
 def get_wmcloud_dns_recordsets(zone):
     session = clients.session("cloudinfra")
     client = designateclientv2.Client(session=session)
-    return(client.recordsets.list(zone["id"]))
+    return client.recordsets.list(zone["id"])
 
 
 def get_wmflabs_dns_recordsets(zone):
     session = clients.session("wmflabsdotorg")
     client = designateclientv2.Client(session=session)
-    return(client.recordsets.list(zone["id"]))
+    return client.recordsets.list(zone["id"])
 
 
 def get_project_dns_recordsets(project_id, zone):
@@ -93,14 +93,14 @@ def get_project_dns_recordsets(project_id, zone):
 
 def purge_leaks(delete=False):
     proxy_recordsets = {}
-    proxyzones = get_project_dns_zones('wmflabsdotorg')
+    proxyzones = get_project_dns_zones("wmflabsdotorg")
     for zone in proxyzones:
         if zone["name"] == "wmflabs.org.":
             for recordset in get_wmflabs_dns_recordsets(zone):
                 if recordset["records"][0] == PROXY_BACKEND_IP:
                     proxy_recordsets[recordset["name"]] = recordset
 
-    proxyzones = get_project_dns_zones('cloudinfra')
+    proxyzones = get_project_dns_zones("cloudinfra")
     for zone in proxyzones:
         if zone["name"] == "wmcloud.org.":
             for recordset in get_wmcloud_dns_recordsets(zone):
@@ -137,10 +137,7 @@ def purge_leaks(delete=False):
                     if delete:
                         delete_mapping(project.id, mapping["domain"])
                 else:
-                    print(
-                        "%s: proxy mapping outside of its project: %s"
-                        % (project.id, mapping)
-                    )
+                    print("%s: proxy mapping outside of its project: %s" % (project.id, mapping))
 
             searchname = mapping["domain"]
             if not searchname.endswith("."):
@@ -175,20 +172,15 @@ def purge_leaks(delete=False):
             print(" ----   We found a weird one, at %s" % url)
         else:
             if delete:
-                if 'wmflabs' in domain:
+                if "wmflabs" in domain:
                     dotorgclient.recordsets.delete(rset["zone_id"], rset["id"])
-                if 'wmcloud' in domain:
+                if "wmcloud" in domain:
                     infraclient.recordsets.delete(rset["zone_id"], rset["id"])
 
 
-parser = argparse.ArgumentParser(
-    description="Find (and, optionally, remove) leaked proxy entries."
-)
+parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked proxy entries.")
 parser.add_argument(
-    "--delete",
-    dest="delete",
-    help="Actually delete leaked records",
-    action="store_true",
+    "--delete", dest="delete", help="Actually delete leaked records", action="store_true"
 )
 args = parser.parse_args()
 

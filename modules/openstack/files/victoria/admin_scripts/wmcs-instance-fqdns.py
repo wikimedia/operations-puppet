@@ -9,9 +9,7 @@ hvnames = sorted([hv.host for hv in hypervisors])
 
 for hv in hvnames:
     print("\n== %s ==\n" % hv)
-    servers = clients.novaclient().servers.list(
-        search_opts={"all_tenants": True, "host": hv}
-    )
+    servers = clients.novaclient().servers.list(search_opts={"all_tenants": True, "host": hv})
     projdict = {}
     for server in servers:
         if server.tenant_id not in projdict:
@@ -21,6 +19,4 @@ for hv in hvnames:
 
     for project in sorted(projdict):
         for server in projdict[project]:
-            print(
-                "%s.%s.eqiad1.wikimedia.cloud (%s)" % (server.name, project, server.id)
-            )
+            print("%s.%s.eqiad1.wikimedia.cloud (%s)" % (server.name, project, server.id))

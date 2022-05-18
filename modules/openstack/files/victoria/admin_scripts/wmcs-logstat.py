@@ -32,11 +32,11 @@ Created by Ludovic Poitou on 2012-01-10.
 This program reads OpenDJ access logs and output statistics.
 """
 
-import sys
 import getopt
 import re
+import sys
 
-help_message = '''
+help_message = """
 Usage: logstat.py [options] file [file ...]
 options:
 \t -a SLA : specifies the SLA in milliseconds
@@ -45,11 +45,10 @@ options:
 \t -r : include replicated operations
 \t -v : verbose mode
 
-'''
+"""
 
 
-class OpStat():
-
+class OpStat:
     def __init__(self, type, sla):
         self.type = type
         self.count = long(0)
@@ -84,25 +83,44 @@ class OpStat():
 
     def printStats(self, outfile):
         if self.count != 0:
-            outfile.write(self.type + ":\t" + str(self.count) + "\tAvg: " +
-                          str(round(float(self.etime) / float(self.count), 3)) +
-                          " ms\tMax: " + str(self.maxEtime) + " ms\t>" + str(self.SLA) + "ms: " +
-                          str(self.countOverSLA) +
-                          " (" + str(self.countOverSLA * 100 / self.count) + "%)\t>" +
-                          str(self.SLA * 10) + "ms: " +
-                          str(self.countOver10SLA) +
-                          " (" + str(self.countOver10SLA * 100 / self.count) + "%)\n")
+            outfile.write(
+                self.type
+                + ":\t"
+                + str(self.count)
+                + "\tAvg: "
+                + str(round(float(self.etime) / float(self.count), 3))
+                + " ms\tMax: "
+                + str(self.maxEtime)
+                + " ms\t>"
+                + str(self.SLA)
+                + "ms: "
+                + str(self.countOverSLA)
+                + " ("
+                + str(self.countOverSLA * 100 / self.count)
+                + "%)\t>"
+                + str(self.SLA * 10)
+                + "ms: "
+                + str(self.countOver10SLA)
+                + " ("
+                + str(self.countOver10SLA * 100 / self.count)
+                + "%)\n"
+            )
         if self.retEntries != 0:
             outfile.write(
-                self.type + ":\tReturned " +
-                str(round(float(self.retEntries) / float(self.count), 1)) +
-                " entries in average, max: " + str(self.maxEntries) +
-                ", none: " + str(self.count0Entries) +
-                ", single: " + str(self.count1Entry) + "\n")
+                self.type
+                + ":\tReturned "
+                + str(round(float(self.retEntries) / float(self.count), 1))
+                + " entries in average, max: "
+                + str(self.maxEntries)
+                + ", none: "
+                + str(self.count0Entries)
+                + ", single: "
+                + str(self.count1Entry)
+                + "\n"
+            )
 
 
 class Usage(Exception):
-
     def __init__(self, msg):
         self.msg = msg
 
@@ -145,15 +163,15 @@ def main(argv=None):
                 sla = int(value)
 
     except Usage as err:
-        print >> sys.stderr, sys.argv[0].split("/")[-1] + ": " + str(err.msg)
-        print >> sys.stderr, "\t for help use --help"
+        print >>sys.stderr, sys.argv[0].split("/")[-1] + ": " + str(err.msg)
+        print >>sys.stderr, "\t for help use --help"
         return 2
 
     if output != "":
         try:
             outfile = open(output, "w")
         except Usage as err:
-            print >> sys.stderr, "Can't open output file: " + str(err.msg)
+            print >>sys.stderr, "Can't open output file: " + str(err.msg)
     else:
         outfile = sys.stdout
 
@@ -166,7 +184,7 @@ def main(argv=None):
         doExtended = False
         doModify = False
         doModDN = False
-        opers = ops.split(',')
+        opers = ops.split(",")
         for op in opers:
             if op == "Search":
                 doSearch = True
@@ -192,7 +210,7 @@ def main(argv=None):
             if op == "ModDN":
                 doModDN = True
                 continue
-            print >> sys.stderr, "Invalid op name in stats: " + op + ", ignored"
+            print >>sys.stderr, "Invalid op name in stats: " + op + ", ignored"
 
     searches = OpStat("Search", sla)
     adds = OpStat("Add", sla)
@@ -207,7 +225,7 @@ def main(argv=None):
         try:
             infile = open(logfile, "r")
         except err:
-            print >> sys.stderr, "Can't open file: " + str(err.msg)
+            print >>sys.stderr, "Can't open file: " + str(err.msg)
 
         outfile.write("processing file: " + logfile + "\n")
         for i in infile:

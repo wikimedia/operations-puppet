@@ -18,11 +18,12 @@ Dig through puppet configs, find and correct puppet definitions for missing inst
 """
 
 import argparse
-import mwopenstackclients
+import time
 
 import requests
 import yaml
-import time
+
+import mwopenstackclients
 
 clients = mwopenstackclients.clients()
 
@@ -102,14 +103,9 @@ def purge_duplicates(delete=False):
                     delete_prefix(project, prefix)
 
 
-parser = argparse.ArgumentParser(
-    description="Find (and, optionally, remove) leaked dns records."
-)
+parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked dns records.")
 parser.add_argument(
-    "--delete",
-    dest="delete",
-    help="Actually delete leaked records",
-    action="store_true",
+    "--delete", dest="delete", help="Actually delete leaked records", action="store_true"
 )
 args = parser.parse_args()
 

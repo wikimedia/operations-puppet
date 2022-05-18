@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+
 import mwopenstackclients
 
 parser = argparse.ArgumentParser(description="Learn about image usage.")

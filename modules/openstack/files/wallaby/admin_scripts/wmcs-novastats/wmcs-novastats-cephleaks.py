@@ -16,15 +16,16 @@
 
 import argparse
 import subprocess
+
 import mwopenstackclients
 
 clients = mwopenstackclients.clients()
 
 
 def purge_orphan_images(delete=False):
-    rbd_output = subprocess.check_output(
-        ["rbd", "--pool", "eqiad1-compute", "ls", "-l"]
-    ).decode("utf8")
+    rbd_output = subprocess.check_output(["rbd", "--pool", "eqiad1-compute", "ls", "-l"]).decode(
+        "utf8"
+    )
     ceph_vm_images = {}
     mystery_images = []
     # First line is column headers
@@ -54,9 +55,7 @@ def purge_orphan_images(delete=False):
     print("%s images without VMs" % len(leaked_images))
 
 
-parser = argparse.ArgumentParser(
-    description="Find (and, optionally, remove) leaked dns records."
-)
+parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked dns records.")
 parser.add_argument(
     "--delete", dest="delete", help="Actually delete leaked images", action="store_true"
 )

@@ -24,7 +24,6 @@ from novaclient.v1_1 import client
 
 
 class NovaInstance(object):
-
     def __init__(self, novaclient, instance_id):
         self.novaclient = novaclient
         self.instance_id = instance_id
@@ -39,91 +38,72 @@ class NovaInstance(object):
         while self.instance.status != desiredstatus:
             if self.instance.status != oldstatus:
                 oldstatus = self.instance.status
-                print("Current status is %s; waiting for it to change to %s." % (
-                    self.instance.status, desiredstatus))
+                print(
+                    "Current status is %s; waiting for it to change to %s."
+                    % (self.instance.status, desiredstatus)
+                )
 
             time.sleep(1)
             self.refresh_instance()
 
     def migrate(self, leave_stopped=False):
-        print("Instance %s is now on host %s with state %s" % (
-            self.instance_id,
-            self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status))
+        print(
+            "Instance %s is now on host %s with state %s"
+            % (self.instance_id, self.instance._info["OS-EXT-SRV-ATTR:host"], self.instance.status)
+        )
 
-        if self.instance.status != 'SHUTOFF':
+        if self.instance.status != "SHUTOFF":
             self.instance.stop()
-            self.wait_for_status('SHUTOFF')
+            self.wait_for_status("SHUTOFF")
 
-        if self.instance.status != 'SHUTOFF':
+        if self.instance.status != "SHUTOFF":
             print("Failed to stop instance, aborting.")
             exit(1)
 
         self.instance.migrate()
-        self.wait_for_status('VERIFY_RESIZE')
+        self.wait_for_status("VERIFY_RESIZE")
 
-        if self.instance.status != 'VERIFY_RESIZE':
+        if self.instance.status != "VERIFY_RESIZE":
             print("Failed to migrate instance, aborting.")
             exit(1)
 
         self.instance.confirm_resize()
-        self.wait_for_status('SHUTOFF')
+        self.wait_for_status("SHUTOFF")
 
-        if self.instance.status != 'SHUTOFF':
+        if self.instance.status != "SHUTOFF":
             print("Failed to confirm migrate, aborting.")
             exit(1)
 
         if not leave_stopped:
             self.instance.start()
-            self.wait_for_status('ACTIVE')
+            self.wait_for_status("ACTIVE")
 
         print()
-        print("Instance %s is now on host %s with status %s" % (
-            self.instance_id,
-            self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status))
+        print(
+            "Instance %s is now on host %s with status %s"
+            % (self.instance_id, self.instance._info["OS-EXT-SRV-ATTR:host"], self.instance.status)
+        )
 
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
-        'cold-migrate',
-        description='''Move an instance to a different compute node''')
-    argparser.add_argument(
-        '--nova-user',
-        help='username for nova auth',
-        default='novaadmin'
+        "cold-migrate", description="""Move an instance to a different compute node"""
     )
+    argparser.add_argument("--nova-user", help="username for nova auth", default="novaadmin")
+    argparser.add_argument("--nova-pass", help="password for nova auth", required=True)
     argparser.add_argument(
-        '--nova-pass',
-        help='password for nova auth',
-        required=True,
+        "--nova-url",
+        help="url for nova auth",
+        default="https://openstack.eqiad1.wikimediacloud.org:25357/v2.0",
     )
+    argparser.add_argument("--nova-project", help="project for nova auth", default="admin")
     argparser.add_argument(
-        '--nova-url',
-        help='url for nova auth',
-        default='https://openstack.eqiad1.wikimediacloud.org:25357/v2.0'
+        "--no-restart", help="Do not start instance after migrate", default=False
     )
-    argparser.add_argument(
-        '--nova-project',
-        help='project for nova auth',
-        default='admin'
-    )
-    argparser.add_argument(
-        '--no-restart',
-        help='Do not start instance after migrate',
-        default=False
-    )
-    argparser.add_argument(
-        'instanceid',
-        help='instance id to migrate',
-        default='testlabs'
-    )
+    argparser.add_argument("instanceid", help="instance id to migrate", default="testlabs")
     args = argparser.parse_args()
 
-    novaclient = client.Client(args.nova_user,
-                               args.nova_pass,
-                               args.nova_project,
-                               args.nova_url)
+    novaclient = client.Client(args.nova_user, args.nova_pass, args.nova_project, args.nova_url)
 
     instance = NovaInstance(novaclient, args.instanceid)
     instance.migrate(args.no_restart)

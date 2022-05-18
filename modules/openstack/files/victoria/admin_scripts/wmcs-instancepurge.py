@@ -18,9 +18,7 @@ def send_nag_email(email, project, instance, age, days_to_delete=0):
         "up space for others to use." % (instance, project, age)
     )
     if days_to_delete:
-        TEXT += "\n\nThis VM will be automatically deleted in %s days." % (
-            days_to_delete - age
-        )
+        TEXT += "\n\nThis VM will be automatically deleted in %s days." % (days_to_delete - age)
 
     message = """\
 From: %s
@@ -40,7 +38,7 @@ Subject: %s
 
 
 def check_instance_ages(project, days_to_nag, days_to_delete):
-    clients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
+    clients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
 
     keystone = clients.keystoneclient(project=project)
     for instance in clients.allinstances(projectid=project, allregions=True):
@@ -68,9 +66,7 @@ def check_instance_ages(project, days_to_nag, days_to_delete):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Purge old VMs from a project")
-    parser.add_argument(
-        "--project", help="Project to purge (e.g. sre-sandbox)", action="store"
-    )
+    parser.add_argument("--project", help="Project to purge (e.g. sre-sandbox)", action="store")
     parser.add_argument(
         "--days-to-delete",
         default=0,
