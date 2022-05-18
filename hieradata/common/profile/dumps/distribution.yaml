@@ -148,3 +148,13 @@ profile::dumps::distribution::mirrors:
     addedby: 'atg'
     addeddate: 'May 21, 2021'
     active: 'yes'
+  - url: 'https://mirror.clarkson.edu'
+    hostname: 'mirror.clarkson.edu'
+    ipv4: ['mirror.clarkson.edu']
+    ipv6: ['mirror.clarkson.edu']
+    contactname: 'Christopher Mahoney'
+    contactaddy: 'mirroradmin@clarkson.edu'
+    institution: 'Clarkson University'
+    addedby: 'hokwelum'
+    addeddate: 'May 18, 2022'
+    active: 'yes'
