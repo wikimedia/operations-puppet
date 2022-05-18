@@ -9,7 +9,7 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: true
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: false
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=127.0.0.1:11210'
+profile::prometheus::memcached_exporter::arguments: "--memcached.address=127.0.0.1:11210"
 has_lvs: true
 # TLS configuration: go via Envoy
 profile::mediawiki::webserver::has_tls: true
@@ -23,7 +23,7 @@ profile::tlsproxy::envoy::upstream_response_timeout: 203.0
 profile::tlsproxy::envoy::retries: false
 profile::tlsproxy::envoy::global_cert_name: "appservers.svc.eqiad.wmnet"
 profile::tlsproxy::envoy::access_log: true
-profile::tlsproxy::envoy::header_key_format: 'proper_case'
+profile::tlsproxy::envoy::header_key_format: "proper_case"
 profile::services_proxy::envoy::listen_ipv6: true
 profile::mediawiki::httpd::logrotate_retention: 12
 
@@ -43,6 +43,7 @@ profile::mediawiki::apc_shm_size: 6096M
 profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
+  opcache.validate_timestamps: 0
   max_execution_time: 210 # we don't really want max_execution_time to kick in ever, see T248564
 
 # Configure php-fpm restarts
@@ -52,7 +53,7 @@ profile::mediawiki::php::restarts::ensure: present
 profile::mediawiki::php::restarts::opcache_limit: 200
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ["ServiceOps"]
 
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true

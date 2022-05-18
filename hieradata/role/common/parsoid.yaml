@@ -48,6 +48,7 @@ profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
   apc.ttl: 10
+  opcache.validate_timestamps: 0
   max_execution_time: 210 # we don't really want max_execution_time to kick in ever, see T248564
 # Configure php-fpm restarts
 profile::mediawiki::php::restarts::ensure: present
