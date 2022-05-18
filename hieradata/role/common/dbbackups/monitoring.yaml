@@ -1,4 +1,3 @@
-profile::monitoring::notifications_enabled: false
 cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::mariadb::wmfmariadbpy::role: 'library'
