@@ -36,16 +36,21 @@ class profile::openstack::base::pdns::recursor::service(
 ) {
 
     include ::network::constants
-    $allow_from = flatten([$::network::constants::labs_networks, $extra_allow_from, $monitoring_hosts,
-                          $controllers.map |$host| { ipresolve($host, 4) },
-                          $controllers.map |$host| { ipresolve($host, 6)}
-                          ])
+    $allow_from = flatten([
+        $::network::constants::labs_networks,
+        $extra_allow_from,
+        $monitoring_hosts,
+        $controllers.map |$host| { ipresolve($host, 4) },
+        $controllers.map |$host| { ipresolve($host, 6)}
+    ])
 
-    $pdns_host_ip = ipresolve($pdns_host,4)
-    $pdns_recursor_ip = ipresolve($pdns_recursor,4)
+    $pdns_host_ip = ipresolve($pdns_host, 4)
+    $pdns_recursor_ip_v4 = ipresolve($pdns_recursor, 4)
+    $pdns_recursor_ip_v6 = ipresolve($pdns_recursor, 6)
 
     interface::alias { $title:
-        ipv4 => $pdns_recursor_ip,
+        ipv4 => $pdns_recursor_ip_v4,
+        ipv6 => $pdns_recursor_ip_v6,
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
@@ -80,19 +85,19 @@ class profile::openstack::base::pdns::recursor::service(
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_host_ip}, <% end %>")
 
     class { '::dnsrecursor':
-            listen_addresses         => [$pdns_recursor_ip],
-            allow_from               => $allow_from,
-            additional_forward_zones => "${tld}=${pdns_host_ip}, ${legacy_tld}=${pdns_host_ip}, ${reverse_zone_rules}",
-            auth_zones               => 'labsdb=/var/zones/labsdb',
-            lua_hooks                => $lua_hooks,
-            max_negative_ttl         => 900,
-            max_tcp_per_client       => 10,
-            max_cache_entries        => 3000000,
-            client_tcp_timeout       => 1,
-            dnssec                   => 'off',  # T226088 - off until 4.1.x
-            require                  => Interface::Alias[$title],
-            enable_webserver         => debian::codename::ge('bullseye'),
-            api_allow_from           => $pdns_api_allow_from,
+        listen_addresses         => [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6 ],
+        allow_from               => $allow_from,
+        additional_forward_zones => "${tld}=${pdns_host_ip}, ${legacy_tld}=${pdns_host_ip}, ${reverse_zone_rules}",
+        auth_zones               => 'labsdb=/var/zones/labsdb',
+        lua_hooks                => $lua_hooks,
+        max_negative_ttl         => 900,
+        max_tcp_per_client       => 10,
+        max_cache_entries        => 3000000,
+        client_tcp_timeout       => 1,
+        dnssec                   => 'off',  # T226088 - off until 4.1.x
+        require                  => Interface::Alias[$title],
+        enable_webserver         => debian::codename::ge('bullseye'),
+        api_allow_from           => $pdns_api_allow_from,
     }
 
     class { '::dnsrecursor::labsaliaser':
@@ -131,5 +136,5 @@ class profile::openstack::base::pdns::recursor::service(
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
-    ::dnsrecursor::monitor { $pdns_recursor_ip: }
+    dnsrecursor::monitor { [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6 ]: }
 }
