@@ -1,3 +1,4 @@
+profile::monitoring::notifications_enabled: false
 cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::mariadb::wmfmariadbpy::role: 'library'
@@ -106,5 +107,5 @@ profile::dbbackups::check::freshness:
 profile::dbbackups::check::db_user: backupcheck
 profile::dbbackups::check::db_database: dbbackups
 # db_password is on the private repo
-profile::dbbackups::check::warn_size_percentage: 5
-profile::dbbackups::check::crit_size_percentage: 15
+profile::dbbackups::check::warn_size_percentage: 5.0
+profile::dbbackups::check::crit_size_percentage: 15.0

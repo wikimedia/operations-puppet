@@ -148,8 +148,8 @@ profile::dbbackups::check::freshness:
 profile::dbbackups::check::db_host: db1128.eqiad.wmnet
 profile::dbbackups::check::db_user: backupcheck
 profile::dbbackups::check::db_database: dbbackups
-profile::dbbackups::check::warn_size_percentage: 5
-profile::dbbackups::check::crit_size_percentage: 15
+profile::dbbackups::check::warn_size_percentage: 5.0
+profile::dbbackups::check::crit_size_percentage: 15.0
 
 profile::klaxon::klaxon_config:
   admin_contact_email: root@wikimedia.org
