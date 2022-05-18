@@ -19,6 +19,10 @@ def check_spdx_licence(file_list)
   missing_licence = []
   file_list.each do |filename|
     next unless File.file?(filename)
+    # For now skip files with no extension as we are unable to detect the comment style
+    next unless filename.include?('.')
+    # Skip 3rd party files
+    next unless filename.ends_with?('.original.py')
     if File.binary?(filename)
       puts 'skipping ' + filename
       next
