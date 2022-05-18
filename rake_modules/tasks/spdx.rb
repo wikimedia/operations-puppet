@@ -22,7 +22,7 @@ def check_spdx_licence(file_list)
     # For now skip files with no extension as we are unable to detect the comment style
     next unless filename.include?('.')
     # Skip 3rd party files
-    next unless filename.ends_with?('.original.py')
+    next unless filename.end_with?('.original.py')
     if File.binary?(filename)
       puts 'skipping ' + filename
       next
