@@ -24,11 +24,15 @@ class admin(
 
     $module_path = get_module_path($module_name)
     $base_data = loadyaml("${module_path}/data/data.yaml")
-    # Fill the all-users group with all active users
-    $data = add_all_users($base_data)
 
-    $uinfo = $data['users']
-    $users = keys($uinfo)
+    $uinfo = $base_data['users']
+    $users = $uinfo.keys
+
+    # Fill the all-users group with all active users
+    $real_users = $uinfo.filter |$user, $config| {
+        $config['ensure'] == 'present' and (!('system' in $config) or $config['system'] == false)
+    }.keys
+    $data = deep_merge($base_data, {'groups' => {'all-users' => {'members' => $real_users}}})
 
     $system_users = $uinfo.filter |$user, $config| { $config['system'] == true }.keys
     $system_groups = $data['groups'].filter |$group, $config| { $config['system'] == true }.keys
