@@ -66,7 +66,7 @@ define confd::file (
         nrpe::monitor_service{ "confd${safe_name}":
             description  => "Confd template for ${name}",
             nrpe_command => "/usr/local/lib/nagios/plugins/check_confd_template '${name}'",
-            require      => File['/usr/local/lib/nagios/plugins/check_confd_template'],
+            require      => Nrpe::Plugin['check_confd_template'],
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Confd#Monitoring',
         }
     }

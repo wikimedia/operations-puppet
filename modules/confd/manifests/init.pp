@@ -90,11 +90,7 @@ class confd(
         source => 'puppet:///modules/confd/confd-lint-wrap.py',
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_confd_lint':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_confd_lint':
         source => 'puppet:///modules/confd/check_confd_lint.sh';
     }
 
@@ -117,11 +113,7 @@ class confd(
         require  => File['/etc/logrotate.d/confd'],
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_confd_template':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+    nrpe::plugin { 'check_confd_template':
         source => 'puppet:///modules/confd/check_confd_template';
     }
 }
