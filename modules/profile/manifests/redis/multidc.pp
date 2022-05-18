@@ -20,7 +20,12 @@ class profile::redis::multidc(
         require ::passwords::redis
         $shards = $all_shards[$category]
         $ip = $facts['ipaddress']
-        $instances = redis_get_instances($ip, $shards)
+        $instances = $shards[$::site].values.filter |$shard| {
+            $shard['host'] == $ip
+        }.map |$shard| { String($shard['port']) }.sort
+        if $instances.empty {
+            fail("No Redis instances found for ${ip}")
+        }
         $password = $passwords::redis::main_password
         $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
         $redis_ports = join($instances, ' ')
