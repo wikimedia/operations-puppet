@@ -79,13 +79,6 @@
           "description": "Google Aviator"
         },
         {
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7+R9dC4VFbbpuyOL+yy14ceAmEf7QGlo/EmtYU6DRzwat43f/3swtLr/L8ugFOOt1YU/RFmMjGCL17ixv66MZw==",
-          "mmd": 86400,
-          "url": "https://mammoth.ct.comodo.com/",
-          "log_id": "b1N2rDHwMRnYmQCkURX/dxUcEdkCwQApBo2yCJo32RM=",
-          "description": "Sectigo Mammoth"
-        },
-        {
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEi/8tkhjLRp0SXrlZdTzNkTd6HqmcmXiDJz3fAdWLgOhjmv4mohvRhwXul9bgW0ODgRwC9UGAgH/vpGHPvIS1qA==",
           "mmd": 86400,
           "url": "https://ct.cloudflare.com/logs/nimbus2023/",
