@@ -11,14 +11,8 @@ define monitoring::icinga::git_merge (
 
     $sane_title = regsubst($title, '\W', '_', 'G')
     $filename = "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge"
-    $file_resource = "check_${sane_title}_needs_merge"
 
-    file { $file_resource:
-        ensure  => present,
-        path    => $filename,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+    nrpe::plugin { "check_${sane_title}-needs-merge":
         content => template('monitoring/check_git-needs-merge.erb'),
     }
 
@@ -26,7 +20,6 @@ define monitoring::icinga::git_merge (
         description  => "Unmerged changes on repository ${title}",
         nrpe_command => "/usr/bin/sudo ${filename}",
         retries      => $interval,
-        require      => File[$file_resource],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/unmerged_changes',
     }
 

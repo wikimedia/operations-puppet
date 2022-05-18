@@ -17,11 +17,7 @@ define monitoring::icinga::bad_directory_owner (
     $safe_title = regsubst($title, '\/', '_', 'G')
     $filename = "/usr/local/lib/nagios/plugins/check${safe_title}-bad-owner"
 
-    file { $filename:
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+    nrpe::plugin { "check${safe_title}-bad-owner":
         content => template('monitoring/check_dir-not-bad-owner.erb'),
     }
 
@@ -30,7 +26,6 @@ define monitoring::icinga::bad_directory_owner (
         nrpe_command   => $filename,
         check_interval => $interval,
         timeout        => $timeout,
-        require        => File[$filename],
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/bad_directory_owner',
     }
 }
