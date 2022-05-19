@@ -1,0 +1,50 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+global
+<%
+    htsets = @facts['numa']['device_to_htset'][@numa_iface]
+    cpus = htsets.flatten.join(' ')
+    num_threads = htsets.flatten.size
+-%>
+    user haproxy
+    group haproxy
+    # we need to expose FDs to achieve hitless reload
+    stats socket /run/esitest/esitest.sock mode 600 expose-fd listeners level admin
+    # do not keep old processes longer than 5m after a reload
+    hard-stop-after 5m
+    nbproc 1
+    nbthread <%= num_threads %>
+    cpu-map 1/1- <%= cpus %>
+    maxconn 200000
+
+defaults
+    mode http
+
+# VG: just as a note for the future [about all the http-request inline content below], if we need to add more headers or a more complex content we could leverage "http-request return errorfile /full/path" where /full/path is a file that contains the content of the whole HTTP response, both headers and body
+
+# This is the default responder for all unknown paths, to avoid small errors or
+# mismatches from resulting in ESI recursions:
+backend default_output
+    http-request return status 404 hdr Cache-Control 'public, max-age=900' content-type 'text/html' string "<html><body>\n<p>Invalid URI for ESI testing</p>\n</body></html>\n"
+
+# This is the minimal ESI includer for manual testing using this service for
+# both the includer *and* the content in two seperate requests:
+backend esi_includer
+    http-request return status 200 hdr Cache-Control 'public, max-age=180' content-type 'text/html' string "<html><body>\n<p>Pre-ESI content</p>\n<!--esi <esi:include src=\"/esitest-fa8a495983347898/content\" /> -->\n<p>Post-ESI content</p>\n</body></html>\n"
+
+# The ESI content itself is a comment, so that it doesn't impact rendering when
+# included in real outputs for users later
+backend esi_content
+    http-request return status 200 hdr Cache-Control 'private, no-store, no-cache, max-age=0' content-type 'text/html' string "<!-- Test comment included via ESI tag -->\n"
+
+frontend esitest
+    bind 127.0.0.1:4321
+    timeout http-request 5s
+    timeout http-keep-alive 10s
+    timeout client 5s
+    default_backend default_output
+    # This will be routed (in ats-be) and enabled (in varnish) for all
+    # domainnames based on the unique prefix "/esitest-fa8a495983347898/" to
+    # avoid collisions with any existing path on any service we host.  The hex
+    # part is made from: "echo -n esitest|md5sum|cut -c-16"
+    use_backend esi_content if { path /esitest-fa8a495983347898/content }
+    use_backend esi_includer if { path /esitest-fa8a495983347898/includer }

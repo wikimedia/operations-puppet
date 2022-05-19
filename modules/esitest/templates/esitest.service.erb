@@ -1,0 +1,21 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=HAProxy special instance for ESI testing
+After=network.target syslog.service
+Wants=syslog.service
+Before=trafficserver.service
+
+[Service]
+Environment="CONFIG=/etc/haproxy/esitest.cfg" "PIDFILE=/run/esitest/haproxy.pid"
+ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q
+ExecStart=/usr/sbin/haproxy -Ws -f ${CONFIG} -p $PIDFILE
+ExecReload=/usr/sbin/haproxy -f ${CONFIG} -c
+ExecReload=/bin/kill -USR2 $MAINPID
+KillMode=mixed
+Restart=always
+SuccessExitStatus=143
+Type=notify
+LimitNOFILE=500000
+
+[Install]
+WantedBy=multi-user.target
