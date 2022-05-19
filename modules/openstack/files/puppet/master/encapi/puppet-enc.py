@@ -8,11 +8,12 @@ import pymysql
 import yaml
 
 from flask import Flask, request, g, Response
-from flask_keystone import FlaskKeystone, FlaskKeystoneForbidden
+from flask_keystone import FlaskKeystone
 from flask_oslolog import OsloLog
 from oslo_config import cfg
 from oslo_context import context
 from oslo_policy import policy
+from werkzeug.exceptions import HTTPException
 
 
 cfgGroup = cfg.OptGroup('enc')
@@ -47,8 +48,6 @@ enforcer.register_defaults([
 ])
 
 app = Flask(__name__)
-# Propogate exceptions to the uwsgi log
-app.config['PROPAGATE_EXCEPTIONS'] = True
 
 
 key.init_app(app)
@@ -73,6 +72,11 @@ def _preprocess_prefix(prefix):
     return prefix
 
 
+class Forbidden(HTTPException):
+    code = 403
+    description = 'Forbidden.'
+
+
 def enforce_policy(rule: str, project_id: Optional[str]):
     # headers in a specific format that oslo.context wants
     headers = {
@@ -90,7 +94,7 @@ def enforce_policy(rule: str, project_id: Optional[str]):
                 "Encountered project id %s but keystone token was for project %s",
                 project_id, ctx.project_id
             )
-            raise FlaskKeystoneForbidden("Invalid project id.")
+            raise Forbidden("Invalid project id.")
 
     log.logger.info(
         "Enforcing policy %s for user %s (%s) and project %s",
@@ -104,7 +108,7 @@ def enforce_policy(rule: str, project_id: Optional[str]):
         scope,
         ctx,
         do_raise=True,
-        exc=FlaskKeystoneForbidden,
+        exc=Forbidden,
     )
 
 
