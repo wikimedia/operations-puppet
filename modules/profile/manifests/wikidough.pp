@@ -99,22 +99,17 @@ class profile::wikidough (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
-    $service_check_file = '/usr/lib/nagios/plugins/service_restart_check'
-    file { $service_check_file:
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => file('profile/wikidough/servicerestartcheck.py'),
-        require => [
-            Package['python3-pystemd'],
-        ],
+    file { '/usr/lib/nagios/plugins/service_restart_check':
+        ensure => absent,
+    }
+
+    nrpe::plugin { 'service_restart_check':
+        source => 'puppet:///modules/profile/wikidough/servicerestartcheck.py',
     }
 
     sudo::user { 'nagios_service_restart_check':
         user       => 'nagios',
-        privileges => [ "ALL = NOPASSWD: ${service_check_file}" ],
-        require    => File[$service_check_file],
+        privileges => [ 'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/service_restart_check' ],
     }
 
     $service_to_check = {
@@ -122,17 +117,13 @@ class profile::wikidough (
         'pdns-recursor.service' => '/etc/powerdns/recursor.conf',
     }
     $service_to_check.each |$service, $conf_file| {
-      nrpe::monitor_service { "check_service_restart_${service}":
-          description    => "Check if ${service} has been restarted after ${conf_file} was changed",
-          nrpe_command   => "/usr/bin/sudo ${service_check_file} --service ${service} --file ${conf_file}",
-          check_interval => 360,  # 6h
-          retry_interval => 60,   # 1h
-          notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Service_Restart_Check',
-          require        => [
-              File[$service_check_file],
-              Sudo::User['nagios_service_restart_check'],
-          ],
-      }
+        nrpe::monitor_service { "check_service_restart_${service}":
+            description    => "Check if ${service} has been restarted after ${conf_file} was changed",
+            nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/service_restart_check --service ${service} --file ${conf_file}",
+            check_interval => 360,  # 6h
+            retry_interval => 60,   # 1h
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Service_Restart_Check',
+        }
     }
 
     class { 'auditd':
