@@ -118,7 +118,6 @@ profile::keyholder::server::agents:
     trusted_groups:
       - deployment
 
-
 # scap::source declarations.  These are created
 # by the profile::mediawiki::deployment::server class.
 # Each source listed here will be cloned on the scap deploy server.
@@ -282,7 +281,7 @@ profile::mediawiki::php::icu63: true
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
 
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ["ServiceOps"]
 
 # enable docker at the correct version with the desired settings
 profile::docker::engine::packagename: "docker.io"
@@ -296,3 +295,7 @@ profile::docker::engine::settings:
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
 
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+
+# The deployment group for mediawiki is called "deployment".
+# See T303857
+deployment_group: "deployment"
