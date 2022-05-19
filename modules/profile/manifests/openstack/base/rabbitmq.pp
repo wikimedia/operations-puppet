@@ -7,8 +7,12 @@ class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
-    $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
-    $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
+    String $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
+    String $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
+    String $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
+    String $neutron_rabbit_password = lookup('profile::openstack::base::neutron::rabbit_pass'),
+    String $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
+    String $trove_guest_rabbit_pass = lookup('profile::openstack::base::trove::trove_guest_rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
@@ -66,12 +70,20 @@ class profile::openstack::base::rabbitmq(
     }
     contain '::rabbitmq::cleanup'
 
-    class {'::openstack::nova::rabbit':
+    class { '::openstack::nova::rabbit':
         username => $nova_rabbit_user,
         password => $nova_rabbit_password,
-        require  => Class['::rabbitmq'],
     }
-    contain '::openstack::nova::rabbit'
+
+    class { '::openstack::neutron::rabbit':
+        username => $neutron_rabbit_user,
+        password => $neutron_rabbit_password,
+    }
+
+    class { '::openstack::trove::rabbit':
+        guest_username => $trove_guest_rabbit_user,
+        guest_password => $trove_guest_rabbit_pass,
+    }
 
     rabbitmq::plugin { 'rabbitmq_prometheus': }
 

@@ -1,10 +1,8 @@
 class openstack::neutron::rabbit(
-    $password,
-    $username,
-    ) {
-
-    rabbitmq::user{"${username}-rabbituser":
-        username => $username,
+    String[1] $username,
+    String[1] $password,
+) {
+    rabbitmq::user { $username:
         password => $password,
     }
 }

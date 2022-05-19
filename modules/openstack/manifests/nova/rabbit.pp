@@ -1,10 +1,8 @@
 class openstack::nova::rabbit(
-    $username,
-    $password,
-    ) {
-
-    rabbitmq::user{"${username}-rabbituser":
-        username => $username,
+    String[1] $username,
+    String[1] $password,
+) {
+    rabbitmq::user { $username:
         password => $password,
     }
 }

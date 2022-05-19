@@ -7,34 +7,35 @@ class profile::openstack::codfw1dev::rabbitmq(
     $labs_hosts_range = lookup('profile::openstack::codfw1dev::labs_hosts_range'),
     $labs_hosts_range_v6 = lookup('profile::openstack::codfw1dev::labs_hosts_range_v6'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
-    $nova_rabbit_password = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
-    $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
-    $neutron_rabbit_password = lookup('profile::openstack::codfw1dev::neutron::rabbit_pass'),
+    String $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
+    String $nova_rabbit_password = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
+    String $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
+    String $neutron_rabbit_password = lookup('profile::openstack::codfw1dev::neutron::rabbit_pass'),
+    String $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
+    String $trove_guest_rabbit_pass = lookup('profile::openstack::codfw1dev::trove::trove_guest_rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::codfw1dev::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::codfw1dev::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Array[Stdlib::Fqdn] $cinder_backup_nodes   = lookup('profile::openstack::codfw1dev::cinder::backup::nodes'),
 ){
 
     class {'::profile::openstack::base::rabbitmq':
-        openstack_controllers => $openstack_controllers,
-        monitor_user          => $monitor_user,
-        monitor_password      => $monitor_password,
-        cleanup_password      => $cleanup_password,
-        file_handles          => $file_handles,
-        labs_hosts_range      => $labs_hosts_range,
-        labs_hosts_range_v6   => $labs_hosts_range_v6,
-        designate_hosts       => $designate_hosts,
-        nova_rabbit_password  => $nova_rabbit_password,
-        rabbit_erlang_cookie  => $rabbit_erlang_cookie,
-        rabbit_cfssl_label    => $rabbit_cfssl_label,
-        cinder_backup_nodes   => $cinder_backup_nodes,
+        openstack_controllers   => $openstack_controllers,
+        monitor_user            => $monitor_user,
+        monitor_password        => $monitor_password,
+        cleanup_password        => $cleanup_password,
+        file_handles            => $file_handles,
+        labs_hosts_range        => $labs_hosts_range,
+        labs_hosts_range_v6     => $labs_hosts_range_v6,
+        designate_hosts         => $designate_hosts,
+        nova_rabbit_user        => $nova_rabbit_user,
+        nova_rabbit_password    => $nova_rabbit_password,
+        neutron_rabbit_user     => $neutron_rabbit_user,
+        neutron_rabbit_password => $neutron_rabbit_password,
+        trove_guest_rabbit_user => $trove_guest_rabbit_user,
+        trove_guest_rabbit_pass => $trove_guest_rabbit_pass,
+        rabbit_erlang_cookie    => $rabbit_erlang_cookie,
+        rabbit_cfssl_label      => $rabbit_cfssl_label,
+        cinder_backup_nodes     => $cinder_backup_nodes,
     }
     contain '::profile::openstack::base::rabbitmq'
-
-    # move to base when appropriate along with lookups above
-    class {'::openstack::neutron::rabbit':
-        username => $neutron_rabbit_user,
-        password => $neutron_rabbit_password,
-    }
-    contain '::openstack::neutron::rabbit'
 }

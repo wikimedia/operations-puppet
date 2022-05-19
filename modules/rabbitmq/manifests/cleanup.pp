@@ -26,8 +26,7 @@ class rabbitmq::cleanup(
     }
 
     # admin is needed for queue cleanup
-    rabbitmq::user{'drainqueue':
-        username      => $username,
+    rabbitmq::user{ $username:
         password      => $password,
         administrator => true,
     }
