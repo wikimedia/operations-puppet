@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: bird::anycast_healthchecker
 #
 # Install and configure the base of anycast_healthchecker

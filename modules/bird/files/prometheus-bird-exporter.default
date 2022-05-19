@@ -1,2 +1,3 @@
 # File managed by puppet
+# SPDX-License-Identifier: Apache-2.0
 ARGS="-format.new -bird.ipv6=false"

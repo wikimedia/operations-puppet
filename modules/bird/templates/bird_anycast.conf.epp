@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- |
   Array[Stdlib::IP::Address] $neighbors,
   Boolean $do_ipv6 = false,

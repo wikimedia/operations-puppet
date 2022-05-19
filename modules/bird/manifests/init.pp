@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: bird
 #
 # Installs Bird and its prometheus metrics exporter
