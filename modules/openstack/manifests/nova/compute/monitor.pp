@@ -16,11 +16,7 @@ class openstack::nova::compute::monitor(
     }
 
     file { '/usr/local/lib/nagios/plugins/check_ssl_certfile':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/nagios_common/check_commands/check_ssl_certfile',
+        ensure => absent,
     }
 
     # Having multiple nova-compute parent process running long term has been known to happen
