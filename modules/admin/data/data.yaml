@@ -366,7 +366,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo]
+              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5286,6 +5286,13 @@ users:
     uid: 36080
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  tsev:
+    ensure: present
+    realname: Toni Sevener
+    email: tsevener@wikimedia.org
+    uid: 21065
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -5714,10 +5721,6 @@ ldap_only_users:
     ensure: present
     realname: Dan Garry
     email: djgwiki@gmail.com
-  tsev:
-    ensure: present
-    realname: Toni Sevener
-    email: tsevener@wikimedia.org
   pbj:
     ensure: absent
     realname: Patrick Johnson
