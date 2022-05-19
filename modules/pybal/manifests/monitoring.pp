@@ -46,7 +46,7 @@ class pybal::monitoring(
 
         nrpe::monitor_service { 'pybal_etcd_connections':
             description    => 'PyBal connections to etcd',
-            nrpe_command   => "/usr/lib/nagios/plugins/check_established_connections ${config_host} ${etcd_port} ${n_etcd_connections}",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_established_connections ${config_host} ${etcd_port} ${n_etcd_connections}",
             check_interval => 5,
             timeout        => 60,
             notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',

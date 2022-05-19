@@ -102,13 +102,13 @@ define profile::trafficserver::monitoring(
             $check_args_acme_chief = '-c 518400 -w 432000 -d /etc/acmecerts -g "*/live/*.ocsp"'
             nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness":
                 description  => 'Freshness of OCSP Stapling files (ATS-TLS)',
-                nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
+                nrpe_command => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args}",
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
             }
             nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness_acme_chief":
                 ensure       => bool2str($acme_chief, 'present', 'absent'),
                 description  => 'Freshness of OCSP Stapling files (ATS-TLS acme-chief)',
-                nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args_acme_chief}",
+                nrpe_command => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args_acme_chief}",
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
             }
         }

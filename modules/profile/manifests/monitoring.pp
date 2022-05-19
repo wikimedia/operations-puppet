@@ -88,26 +88,31 @@ class profile::monitoring(
     contain nrpe  # lint:ignore:wmf_styleguide
 
     nrpe::plugin { 'check_puppetrun':
-        source => 'puppet:///modules/base/monitoring/check_puppetrun.rb',
+        source => 'puppet:///modules/profile/monitoring/check_puppetrun.rb',
     }
 
     nrpe::plugin { 'check_eth':
-        content => template('base/check_eth.erb'),
+        content => template('profile/monitoring/check_eth.erb'),
     }
 
-    # TODO: move these to nrpe::plugin (/usr/local/lib/nagios/plugins/ not /usr/lib/...)
-    file {
-        default:
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555';
-        '/usr/lib/nagios/plugins/check_sysctl':
-            source => 'puppet:///modules/base/check_sysctl';
-        '/usr/lib/nagios/plugins/check_established_connections':
-            source => 'puppet:///modules/base/monitoring/check_established_connections.sh';
-        '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
-            source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py';
+    nrpe::plugin { 'check_sysctl':
+        source => 'puppet:///modules/profile/monitoring/check_sysctl',
+    }
+
+    nrpe::plugin { 'check_established_connections':
+        source => 'puppet:///modules/profile/monitoring/check_established_connections.sh',
+    }
+
+    nrpe::plugin { 'check_fresh_files_in_dir':
+        source => 'puppet:///modules/profile/monitoring/check_fresh_files_in_dir.py'
+    }
+
+    file { [
+        '/usr/lib/nagios/plugins/check_sysctl',
+        '/usr/lib/nagios/plugins/check_established_connections',
+        '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py',
+    ]:
+        ensure => absent,
     }
 
     nrpe::monitor_service { 'disk_space':
@@ -155,7 +160,7 @@ class profile::monitoring(
 
     nrpe::plugin { 'check_systemd_state':
         ensure => $ensure_monitor_systemd,
-        source => 'puppet:///modules/base/check_systemd_state.py',
+        source => 'puppet:///modules/profile/monitoring/check_systemd_state.py',
     }
 
     nrpe::monitor_service { 'check_systemd_state':
@@ -168,7 +173,7 @@ class profile::monitoring(
     if $facts['productname'] == 'PowerEdge R320' {
 
         nrpe::plugin { 'check_cpufreq':
-            source => 'puppet:///modules/base/monitoring/check_cpufreq',
+            source => 'puppet:///modules/profile/monitoring/check_cpufreq',
         }
 
         nrpe::monitor_service { 'check_cpufreq':
