@@ -13,10 +13,11 @@
 
     Header always append X-Frame-Options DENY
     # Reports will be hosted to wikimediafoundation.org - T226066
-    RedirectMatch 302 ^/$ https://wikimediafoundation.org/about/annualreport/2020-annual-report/
+    RedirectMatch 302 ^/$ https://wikimediafoundation.org/about/annualreport/2020-2021-annual-report/
     RedirectMatch permanent ^/(2018)/?$ https://wikimediafoundation.org/about/2018-annual-report
     RedirectMatch permanent ^/(2019)/?$ https://wikimediafoundation.org/about/annualreport/2019-annual-report/
     RedirectMatch permanent ^/(2020)/?$ https://wikimediafoundation.org/about/annualreport/2020-annual-report/
+    RedirectMatch permanent ^/(2021)/?$ https://wikimediafoundation.org/about/annualreport/2020-2021-annual-report/
 
     <Directory /srv/org/wikimedia/annualreport>
         Require all granted
