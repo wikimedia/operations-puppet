@@ -93,7 +93,7 @@ class nginx(
         # nginx will buffer e.g. large body content into this directory
         #  very briefly, so keep it off the disks.
         mount { '/var/lib/nginx':
-            ensure  => ensure_mounted($ensure),
+            ensure  => stdlib::ensure($ensure, 'mounted'),
             device  => 'tmpfs',
             fstype  => 'tmpfs',
             options => "defaults,noatime,uid=0,gid=0,mode=755,size=${tmpfs_size}",
