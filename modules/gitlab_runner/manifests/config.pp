@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class gitlab_runner::config (
     Integer             $concurrent              = 3,
     String              $docker_image            = 'docker-registry.wikimedia.org/buster:latest',

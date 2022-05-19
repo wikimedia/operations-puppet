@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary manage backup timers
 class gitlab::backup (
     Wmflib::Ensure           $ensure                  = 'present',

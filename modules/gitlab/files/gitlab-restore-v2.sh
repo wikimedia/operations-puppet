@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Disable puppet to prevent stopped services from restart
 # during the backup restoration process

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # install restore script on secondary gitlab host
 class gitlab::restore(
     Wmflib::Ensure           $ensure_restore_script = 'present',

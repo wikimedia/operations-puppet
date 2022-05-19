@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 CONFIG_FILE=/etc/gitlab/gitlab.rb

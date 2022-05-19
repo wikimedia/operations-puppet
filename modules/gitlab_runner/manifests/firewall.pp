@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class gitlab_runner::firewall (
     Wmflib::Ensure                              $ensure            = present,
     Boolean                                     $restrict_firewall = false,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure and manage gitlab server
 class gitlab (
     Wmflib::Ensure   $ensure                            = 'present',

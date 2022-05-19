@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up rsync of backups between 2 GitLab servers
 # activates rsync for push from the primary to secondary
 # T285867
