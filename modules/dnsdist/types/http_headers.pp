@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary custom HTTP headers returned by dnsdist's webserver
 #
 # @param Dnsdist::Http_headers a hash of header name and value

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configuration for dnsdist's webserver.
 #
 # @param host/port

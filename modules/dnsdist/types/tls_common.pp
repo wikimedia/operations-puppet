@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary common TLS configuration for dnsdist's DoH and DoT frontends
 #
 # @param cert_chain_path

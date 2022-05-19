@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary: install and configure dnsdist with DoH and DoT support
 #
 # This class configures a dnsdist installation to act as a DoH and DoT resolver

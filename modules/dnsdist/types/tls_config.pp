@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary TLS configuration for dnsdist's DoH and DoT frontends
 #
 # @param min_tls_version

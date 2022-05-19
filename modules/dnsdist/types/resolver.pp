@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary dnsdist's recursive resolver and its configuration
 #
 # @param name
