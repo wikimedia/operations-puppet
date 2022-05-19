@@ -3,11 +3,13 @@
 #
 class profile::kubernetes::deployment_server::global_config(
     Hash[String, Hash] $cluster_groups = lookup('kubernetes_cluster_groups'),
-    Hash[String, Any] $general_values=lookup('profile::kubernetes::deployment_server::general', {'default_value' => {}}),
+    Hash[String, Any] $general_values = lookup('profile::kubernetes::deployment_server::general', {'default_value' => {}}),
     $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_all_nodes'),
     Hash[String, Hash] $kafka_clusters = lookup('kafka_clusters'),
+    String $helm_user_group = lookup('profile::kubernetes::deployment_server::helm_user_group'),
+
 ) {
     # General directory holding all configurations managed by puppet
     # that are used in helmfiles
@@ -16,12 +18,12 @@ class profile::kubernetes::deployment_server::global_config(
     }
 
     # directory holding private data for services
-    # This is only writable by root, and readable by group deployment
+    # This is only writable by root, and readable by $helm_user_group
     $general_private_dir = "${general_dir}/private"
     file { $general_private_dir:
         ensure => directory,
         owner  => 'root',
-        group  => 'deployment',
+        group  => $helm_user_group,
         mode   => '0750'
     }
 

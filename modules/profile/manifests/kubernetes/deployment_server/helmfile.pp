@@ -7,6 +7,7 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, Hash[String, Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', {'default_value' => {}}),
     Hash[String, Any] $services_secrets = lookup('profile::kubernetes::deployment_server_secrets::services', {'default_value' => {}}),
     Hash[String, Any] $default_secrets = lookup('profile::kubernetes::deployment_server_secrets::defaults', {'default_value' => {}}),
+    String $helm_user_group = lookup('profile::kubernetes::deployment_server::helm_user_group'),
 ){
     # Add the global configuration for all deployments.
     require ::profile::kubernetes::deployment_server::global_config
@@ -30,7 +31,7 @@ class profile::kubernetes::deployment_server::helmfile(
         file { $private_dir:
             ensure => directory,
             owner  => 'root',
-            group  => 'deployment',
+            group  => $helm_user_group,
             mode   => '0750',
         }
 
