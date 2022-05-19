@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%-
 if @enable_kafka
    kafka_cli=" -topics #{@kafka_topics.join ','} -kafkaConfig #{@kafka_conf_file}"
