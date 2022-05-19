@@ -25,7 +25,7 @@ profile::ceph::auth::deploy::selected_creds:
   - eqiad1-cinder
 
 profile::openstack::eqiad1::region: eqiad1-r
-profile::openstack::eqiad1::version: victoria
+profile::openstack::eqiad1::version: wallaby
 profile::openstack::eqiad1::cinder::db_host: openstack.eqiad1.wikimediacloud.org
 profile::openstack::eqiad1::keystone_api_fqdn: openstack.eqiad1.wikimediacloud.org
 profile::openstack::eqiad1::openstack_controllers:
