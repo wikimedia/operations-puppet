@@ -1,0 +1,35 @@
+Historically there has been no licence on the WMF puppet repo.  This means we
+have many contributions which were made when there was no explicit permission
+regarding licence.  In an effort to try and improve this going forward we have
+decided to adopt SPDX and will tag all new files with the Apache-2.0 licence
+
+To address historic contributions we have asked for contributors to indicate
+that they agree to retroactively license their contributors.  One can either
+indicate this by creating a Change/Pull Request adding your name and email
+below or adding your name to the T308013 phabricator tasks (listed below) It
+will be ensured that this list is updated with values from the phabricator task
+
+New contributors are not required to do anything as we now require any new
+contributions to include an SPDX header.  Further to this wikimedia Foundation
+Employees (commiting with a @wikimedia.org address) need not act as their
+contributions are already covered
+
+Please see the following tasks for relevant information and some historical
+context
+
+ * https://phabricator.wikimedia.org/T67270
+ * https://phabricator.wikimedia.org/T308013
+
+
+Adam Wight <adam.wight@wikimedia.de>
+Gehel <guillaume.lederrey@gmail.com>
+Kartik Mistry <kartik.mistry@gmail.com>
+Krinkle <krinkle@fastmail.com> <krinklemail@gmail.com>
+Ladsgroup <ladsgroup@gmail.com>
+Legoktm <legoktm@debian.org> <legoktm@member.fsf.org> <legoktm@gmail.com>
+Martin Urbanec <martin.urbanec@wikimedia.cz>
+RhinosF1 <rhinosf1@gmail.com>
+Taavi Väänänen <hi@taavi.wtf> <hi@tassu.me>
+Zabe <alec@vc-celle.de> <alexander.vorwerk@stud.uni-goettingen.de> <zabe@avorwerk.net>
+
+[1]https://en.wikipedia.org/wiki/Software_Package_Data_Exchange
