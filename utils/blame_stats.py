@@ -56,9 +56,8 @@ def get_log_level(args_level: int) -> int:
     }.get(args_level, logging.DEBUG)
 
 
-def get_sql_all(third_party_modules, excluded_committer):
+def get_sql_all(excluded_committer):
     """Build SQL string"""
-    module_constraint = [f"AND path NOT LIKE 'modules/{m}/%'" for m in third_party_modules]
     if excluded_committer:
         email_constraint = f"AND commits.author_email NOT LIKE '%{excluded_committer}'"
     else:
@@ -68,7 +67,7 @@ def get_sql_all(third_party_modules, excluded_committer):
     SELECT files.path, blame.line_no, commits.hash, commits.author_email
     FROM files, blame('', '', files.path)
     JOIN commits ON commits.hash = blame.commit_hash
-    WHERE path LIKE 'modules/%' {' '.join(module_constraint)}
+    WHERE path LIKE 'modules/%'
     {email_constraint}"""
     logging.debug("Generated SQL: %s", sql_str)
     return sql_str
@@ -129,13 +128,12 @@ def main() -> int:
     Returns:
         int: an int representing the exit code
     """
-    third_party_modules = ["stdlib", "concat", "puppetdbquery", "lvm"]
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
 
-    data = mergestat(get_sql_all(third_party_modules, args.exclude_committer))
+    # data = mergestat(get_sql_all(args.exclude_committer))
     # data = mergestat(TEST_SQL)
-    # data = mergestat(get_sql_module(args.module, args.exclude_committer))
+    data = mergestat(get_sql_module(args.module, args.exclude_committer))
     commiters = process_data(data)
     for commiter, commits in commiters.items():
         print(f'{commiter}:')
