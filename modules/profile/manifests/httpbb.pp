@@ -35,6 +35,8 @@ class profile::httpbb (
         }.reduce({}) |$mem, $val| {
             $mem.merge($val)
         }
+    } else {
+        $basicauth_credentials = undef
     }
 
     file {
