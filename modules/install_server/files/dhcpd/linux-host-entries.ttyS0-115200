@@ -1354,12 +1354,6 @@ host urldownloader2002.wikimedia.org {
     fixed-address urldownloader2002.wikimedia.org;
 }
 
-host webperf1001 {
-    hardware ethernet aa:00:00:5e:f4:43;
-    fixed-address webperf1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host webperf1002 {
     hardware ethernet aa:00:00:35:39:15;
     fixed-address webperf1002.eqiad.wmnet;
@@ -1376,12 +1370,6 @@ host webperf1004 {
     hardware ethernet aa:00:00:06:4f:2d;
     fixed-address webperf1004.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
-host webperf2001 {
-    hardware ethernet aa:00:00:02:8b:11;
-    fixed-address webperf2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host webperf2002 {
