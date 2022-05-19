@@ -12,7 +12,7 @@ class profile::query_service::monitor::categories {
     # categories are updated weekly, this is a low frequency check
     nrpe::monitor_service { 'Categories_Ping':
         description    => 'Categories endpoint',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_categories.py --ping',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_categories.py --ping',
         check_interval => 720, # every 6 hours
         retry_interval => 60,  # retry after 1 hour
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
@@ -20,7 +20,7 @@ class profile::query_service::monitor::categories {
 
     nrpe::monitor_service { 'Categories_Lag':
         description    => 'Categories update lag',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_categories.py --lag',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_categories.py --lag',
         check_interval => 720, # every 6 hours
         retry_interval => 60,  # retry after 1 hour
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Categories_update_lag',
