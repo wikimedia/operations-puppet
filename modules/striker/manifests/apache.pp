@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: striker::apache
 #
 # Serve static assets for Striker and route other requests to the Django

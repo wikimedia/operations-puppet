@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: striker::build
 #
 # Packages and config needed for a host that can build wheels for Striker

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: striker::uwsgi
 #
 # Striker is a Django application for managing data related to Toolforge
