@@ -2,6 +2,8 @@
 #
 # Sets up scap and the corresponding apache site, and rsync daemon.
 #
+# The parameter "deployment_group" only refers to the group of people able to deploy mediawiki
+# here, so to scap2 users. Scap3-related directories will be owned by wikidev unconditionally.
 class profile::mediawiki::deployment::server(
     Stdlib::Fqdn $apache_fqdn            = lookup('apache_fqdn', {default_value => $::fqdn}),
     String $deployment_group             = lookup('deployment_group', {default_value => 'wikidev'}),
@@ -29,6 +31,7 @@ class profile::mediawiki::deployment::server(
     # Install the scap master
     class { 'rsync::server': }
 
+    # This is the scap2 master server setup, used to deploy mediawiki.
     class { '::scap::master':
         deployment_hosts => $deployment_hosts,
     }
@@ -38,9 +41,10 @@ class profile::mediawiki::deployment::server(
         sql_scripts => 'present',
         statsd      => $statsd,
     }
+    ## End scap2 config ###
 
+    # Setup scap3 sources and server.
     # Create an instance of scap_source for each of the key specs in hiera.
-
     Scap::Source {
         base_path => $base_path,
     }
@@ -51,13 +55,10 @@ class profile::mediawiki::deployment::server(
         }
     }
 
-    ## End scap config ###
 
     class {'::deployment::umask_wikidev': }
 
-    class { '::deployment::deployment_server':
-        deployment_group => $deployment_group,
-    }
+    class { '::deployment::deployment_server': }
 
     class {'::httpd': }
 
@@ -114,11 +115,6 @@ class profile::mediawiki::deployment::server(
         group  => 'root',
     }
 
-    file { '/srv/deployment':
-        ensure => directory,
-        owner  => 'trebuchet',
-        group  => $deployment_group,
-    }
 
     # This is symlink is accessed indirectly by
     # modules/profile/files/mediawiki/monitor_versions/check_mw_versions.py

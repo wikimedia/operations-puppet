@@ -1,14 +1,8 @@
 # = Class: deployment::deployment_server
 #
-# Provision a deployment server.
+# Provision a deployment server for scap3 services.
 #
-# == Parameters:
-# - $deployment_group: Default value for group ownership of any trebuchet-
-#                      deployed repositories
-#
-class deployment::deployment_server(
-    $deployment_group = undef,
-) {
+class deployment::deployment_server() {
     include ::redis::client::python
 
     ensure_packages([
@@ -24,11 +18,10 @@ class deployment::deployment_server(
         require => Package['git'],
     }
 
-    file { '/srv/patches':
-        ensure => 'directory',
-        owner  => 'mwdeploy',
-        group  => $deployment_group,
-        mode   => '0775',
+    file { '/srv/deployment':
+        ensure => directory,
+        owner  => 'trebuchet',
+        group  => 'wikidev',
     }
 
     if $::realm != 'labs' {

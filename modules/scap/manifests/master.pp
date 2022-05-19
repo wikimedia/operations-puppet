@@ -37,6 +37,13 @@ class scap::master(
         shared    => true,
     }
 
+    file { $patches_path:
+        ensure => 'directory',
+        owner  => 'mwdeploy',
+        group  => $deployment_group,
+        mode   => '2775',
+    }
+
     # Install the commit-msg hook from gerrit
 
     file { "${common_source_path}/.git/hooks/commit-msg":
