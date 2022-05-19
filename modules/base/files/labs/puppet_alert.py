@@ -18,14 +18,20 @@ Send an alert email to project members about a puppet failure.  This is
 meant to be run on the affected instance.
 """
 import calendar
+import json
 import logging
 import os
 import socket
+import subprocess
 import sys
 import time
-import subprocess
+
+from enum import Enum
+from pathlib import Path
+from typing import Dict, List, Tuple
 
 import yaml
+
 from notify_maintainers import email_admins
 
 sys.path.append("/usr/local/sbin/")
@@ -39,56 +45,87 @@ OPT_OUT_PROJECTS = ["admin", "testlabs", "trove"]
 logger = logging.getLogger(__name__)
 
 
-def is_host_ready():
-    return os.path.exists(READY_FILE)
+def is_host_ready() -> bool:
+    """Return if the host is ready
 
+    Return:
+        indicating ready state
 
-def alerts_disabled():
-    return os.path.exists(DISABLE_FILE)
-
-
-def get_puppet_lastrunfile_path():
-    return subprocess.check_output([
-        "puppet", "config", "print", "lastrunfile"
-    ]).decode('utf-8').strip()
-
-
-def get_puppet_lastrunreport_path():
-    return subprocess.check_output([
-        "puppet", "config", "print", "lastrunreport"
-    ]).decode('utf-8').strip()
-
-
-def get_puppet_classfile_path():
-    # last_run_summary.yaml reports the last run but it updates the stamp even
-    # on failed runs. Instead, check to see the last time puppet actually did
-    # something.
-    return subprocess.check_output([
-        "puppet", "config", "print", "classfile"
-    ]).decode('utf-8').strip()
-
-
-def get_last_success_time():
-    return os.path.getmtime(get_puppet_classfile_path())
-
-
-def get_last_run_summary():
-    with open(get_puppet_lastrunfile_path(), encoding="utf-8") as puppet_state_fd:
-        return yaml.safe_load(puppet_state_fd)
-
-
-def get_last_run_report():
-    """The custom loader is to ignore the special tags that puppet adds.
-
-    It will just ignore them, for example, at the start of the report, puppet adds the following
-    loader tag to the yaml:
-    ```
-    --- !ruby/object:Puppet::Transaction::Report
-    ...
-    ```
     """
+    return Path(READY_FILE).is_file()
 
-    def unknown(loader, suffix, node):
+
+def alerts_disabled() -> bool:
+    """Indicate if the user has disabled alerts
+
+    Return:
+        indicating disabled state
+
+    """
+    return Path(DISABLE_FILE).is_file()
+
+
+def get_puppet_config(config_item: str) -> str:
+    """Run puppet config and return the config item
+
+    Parameters:
+        config_item: the config item to lookup
+
+    Return
+        the config value
+
+    """
+    return (
+        subprocess.check_output(["puppet", "config", "print", config_item])
+        .decode("utf-8")
+        .strip()
+    )
+
+
+def puppet_disabled() -> Tuple[bool, str]:
+    """check if puppet is disabled
+
+    returns:
+        Tuple with a bool indicating if the system is disabled and string indicating the reason
+
+    """
+    agent_disabled_lockfile = Path(get_puppet_config("agent_disabled_lockfile"))
+    if not agent_disabled_lockfile.is_file:
+        return False, ""
+    message = json.loads(agent_disabled_lockfile.read_text())
+    logger.info("puppet is disabled: %s", message["disabled_message"])
+    return True, message["disabled_message"]
+
+
+def get_last_success_time() -> float:
+    """Return the mtime of the classfile
+
+    Returns:
+        mtime value
+
+    """
+    return Path(get_puppet_config("classfile")).lstat().st_mtime
+
+
+def get_puppet_yaml_file(config_item) -> Dict:
+    """Read a and parse a puppet yaml
+
+    This method specifically handles the yaml ruby tags leftover from puppet
+
+    Arguments:
+        config_item: the config item pointing to the yaml file
+
+    Returns:
+        a dict representing the file content
+
+    Raises:
+        ValueError: if the config_item does not resolve to a valid file
+    """
+    yaml_file = Path(get_puppet_config(config_item))
+    if not yaml_file.is_file:
+        raise ValueError("%s: item dose not resolve to a file")
+
+    def unknown(loader, _, node):
         if isinstance(node, yaml.ScalarNode):
             constructor = loader.__class__.construct_scalar
         elif isinstance(node, yaml.SequenceNode):
@@ -98,14 +135,19 @@ def get_last_run_report():
         data = constructor(loader, node)
         return data
 
-    yaml.add_multi_constructor('!', unknown)
-    yaml.add_multi_constructor('tag:', unknown)
-    with open(get_puppet_lastrunreport_path(), encoding="utf-8") as puppet_report_fd:
-        return yaml.load(puppet_report_fd, Loader=yaml.Loader)
+    yaml.add_multi_constructor("!", unknown)
+    yaml.add_multi_constructor("tag:", unknown)
+    return yaml.load(yaml_file.read_text(), Loader=yaml.Loader)
 
 
-def get_last_run_report_failed_resources():
-    last_run_report = get_last_run_report()
+def get_last_run_report_failed_resources() -> List[str]:
+    """Get a list of failed resources
+
+    Returns:
+        A list of failed resources
+
+    """
+    last_run_report = get_puppet_yaml_file("lastrunreport")
     return [
         resource_name
         for resource_name, resource_data in last_run_report["resource_statuses"].items()
@@ -113,27 +155,59 @@ def get_last_run_report_failed_resources():
     ]
 
 
+class PuppetLogLevel(Enum):
+    """Enum to track puppet message levels"""
+
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+
+
+def get_last_run_log(level: PuppetLogLevel) -> List[str]:
+    """Parse the last_run_report.yaml file for log messages from the last run
+
+    Parameters:
+        level: The minimum log level to report.  i.e. PuppetLogLevel.INFO will return all messages
+
+    Returns:
+        a list of messages ordered by time stamp
+
+    """
+    lastrunreport = get_puppet_yaml_file("lastrunreport")
+    messages = dict()
+    for log in lastrunreport["logs"]:
+        if (
+            log["level"] == "info"
+            and level.value > 1
+            or log["level"] == "warning"
+            and level.value > 2
+        ):
+            continue
+        messages[log["time"]] = "{}: {}".format(log["level"].upper(), log["message"])
+    return dict(sorted(messages.items())).values()
+
+
 def main():
+    """Main entry point"""
     exception_msg = ""
     first_line = ""
     failed_resources = []
 
     if not is_host_ready():
-        logging.info("Host is not ready yet, file {} does not exist.".format(READY_FILE))
+        logging.info("Host is not ready yet, file %s does not exist.", READY_FILE)
         return
 
     if alerts_disabled():
-        logging.info("Puppet alerts are disabled, file {} exists.".format(DISABLE_FILE))
+        logging.info("Puppet alerts are disabled, file %s exists.", DISABLE_FILE)
         return
 
     try:
-        with open("/etc/wmcs-project", encoding="utf-8") as f:
-            project_name = f.read().strip()
+        project_name = Path("/etc/wmcs-project").read_text().strip()
 
     except Exception as error:
         logger.warning("Unable to determine the current vm project: %s", error)
-        exception_msg += (
-            "\nUnable to determine the current vm project: {}".format(error)
+        exception_msg += "\nUnable to determine the current vm project: {}".format(
+            error
         )
         project_name = "no_project"
 
@@ -142,20 +216,16 @@ def main():
         return
 
     try:
-        last_success_elapsed = (
-            calendar.timegm(time.gmtime()) - get_last_success_time()
-        )
+        last_success_elapsed = calendar.timegm(time.gmtime()) - get_last_success_time()
         too_old = last_success_elapsed > NAG_INTERVAL
     except os.error as error:
         logging.warning("Unable to check puppet last success time: %s", error)
-        exception_msg += (
-            "\nUnable to check puppet last success time: {}".format(error)
-        )
+        exception_msg += "\nUnable to check puppet last success time: {}".format(error)
         last_success_elapsed = -1
         too_old = True
 
     try:
-        last_run_summary = get_last_run_summary()
+        last_run_summary = get_puppet_yaml_file("lastrunfile")
         has_errors = (
             last_run_summary["events"]["failure"] > 0
             or last_run_summary["events"]["total"] == 0
@@ -164,26 +234,25 @@ def main():
             failed_resources = get_last_run_report_failed_resources()
     except Exception as error:
         logging.warning("Unable to read puppet last run summary: %s", error)
-        exception_msg += "\nUnable to read puppet last run summary: {}".format(
-            error
-        )
+        exception_msg += "\nUnable to read puppet last run summary: {}".format(error)
         last_run_summary = {}
         has_errors = True
 
-    if too_old and has_errors:
+    disabled, disable_message = puppet_disabled()
+    if disabled and too_old:
+        first_line = "Puppet has been disabled for {} secs, with the following message: {}".format(
+            last_success_elapsed, disable_message
+        )
+    elif too_old and has_errors:
         first_line = (
             "Puppet did not run in the last {} seconds, and the last run was "
-            "a failure.".format(
-                last_success_elapsed
-            )
+            "a failure.".format(last_success_elapsed)
         )
 
     elif too_old:
         first_line = (
             "Puppet did not run in the last {}, though the last run was a "
-            "success.".format(
-                last_success_elapsed
-            )
+            "success.".format(last_success_elapsed)
         )
 
     elif has_errors:
@@ -241,19 +310,25 @@ Some extra info follows:
 
 {failed_resources_str}
 
+--- Last run log:
+
+{last_run_log}
+
 ---- Exceptions that happened when running the script if any:
 {exception_msg}
     """.format(
-        fqdn=fqdn, ip=ip,
-        first_line=first_line,
+        fqdn=fqdn,
+        ip=ip,
         project_name=project_name,
-        last_run_summary=yaml.dump(last_run_summary),
-        exception_msg=exception_msg or '  No exceptions happened.',
-        failed_resources_str=(
-            ('  * ' if failed_resources else '  No failed resources.')
-            + '\n  * '.join(failed_resources)
-        ),
+        first_line=first_line,
         disable_file=DISABLE_FILE,
+        last_run_summary=yaml.dump(last_run_summary),
+        failed_resources_str=(
+            ("  * " if failed_resources else "  No failed resources.")
+            + "\n  * ".join(failed_resources)
+        ),
+        last_run_log="\n".join(get_last_run_log(PuppetLogLevel.WARN)),
+        exception_msg=exception_msg or "  No exceptions happened.",
     )
     email_admins(subject, body)
 
