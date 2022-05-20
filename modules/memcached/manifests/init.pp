@@ -116,10 +116,12 @@ class memcached(
         $listen = [$ip] + $notls_listen
     }
     if $enable_16 {
-        apt::package_from_component { 'memcached_16':
-            component => 'component/memcached16',
-            packages  => ['memcached'],
-            before    => Service['memcached'],
+        if debian::codename::eq('buster') {
+            apt::package_from_component { 'memcached_16':
+                component => 'component/memcached16',
+                packages  => ['memcached'],
+                before    => Service['memcached'],
+            }
         }
         $override = true
     } else {
