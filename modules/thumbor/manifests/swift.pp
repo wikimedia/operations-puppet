@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: thumbor::swift
 #
 # Sets up Thumbor's result storage to write to a Swift cluster.

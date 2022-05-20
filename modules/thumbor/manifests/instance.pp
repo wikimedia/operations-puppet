@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: thumbor::instance
 #
 # Sets up a new Thumbor instance.
