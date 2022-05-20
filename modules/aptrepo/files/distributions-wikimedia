@@ -196,6 +196,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/calico317
  component/elastic68
+ component/idp-test
  component/istio195
  component/jdk8
  component/kubernetes116
