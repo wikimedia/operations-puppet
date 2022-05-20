@@ -25,6 +25,13 @@ def check_module_contributors(module_path)
   module_contributors - allowed_contributors
 end
 
+def get_contributors_missing_permission
+  module_contributors = extract_email(`git shortlog -se`)
+                          .reject {|email| email.end_with?('@wikimedia.org') }
+  allowed_contributors = extract_email(File.read('CONTRIBUTORS'))
+  module_contributors - allowed_contributors
+end
+
 def check_spdx_licence(file_list)
   # Check a list of files for an spdx licence header
   missing_licence = []
@@ -163,6 +170,14 @@ namespace :spdx do
       missing_licence = check_spdx_licence(FileList[SPDX_GLOB])
       abort("The following are missing a SPDX licence header:\n#{missing_licence}".red) unless missing_licence.empty?
       puts 'SPDX licence: OK'.green
+    end
+    desc "Check all files"
+    task :missing_permission do
+      missing_permission = get_contributors_missing_permission
+      unless missing_permission.empty?
+        abort(("Still missing permissions from the following:\n" + missing_permission.join("\n")).red)
+      end
+      puts 'Have collected all required permission: OK'.green
     end
   end
   namespace :convert do
