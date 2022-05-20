@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 require_relative '../../../../rake_modules/spec_helper'
 describe 'debian::codename::ge' do
   on_supported_os(supported_os: ['operatingsystem' => 'Debian', 'operatingsystemrelease' => ['9']]).each do |os, os_facts|

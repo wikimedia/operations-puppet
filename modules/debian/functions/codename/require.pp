@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary fail to compile if the running debian codename against the codename passed using a specific operator.
 # @param codename the codename you want to test against
 # @param operator the comparison operator to us i.e

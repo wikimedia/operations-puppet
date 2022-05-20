@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary a type which can be used to validate debian and supported debian derivative codenames
 # @example
 #   apt::repository {'foo':

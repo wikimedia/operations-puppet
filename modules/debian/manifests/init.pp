@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary perform basic constraints tests and configure variables
 #          this class will be called automatically
 class debian {

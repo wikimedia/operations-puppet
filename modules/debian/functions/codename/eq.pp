@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Test if the running debian codename is equal to the codename passed
 # @param codename the codename you want to test against
 # @return [Boolean] result of the comparison

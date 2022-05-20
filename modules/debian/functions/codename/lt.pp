@@ -1,4 +1,5 @@
-# @summary Test if the running debian codename is less then the codname passed
+# SPDX-License-Identifier: Apache-2.0
+# @summary Test if the running debian codename is less then the codename passed
 # @param codename the codename you want to test against
 # @return [Boolean] result of the comparison
 # @example Assuming theses functions are compiled for a host running debian buster then
