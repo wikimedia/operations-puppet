@@ -51,7 +51,7 @@ class profile::icinga(
     class { 'facilities':
         mgmt_parents => $mgmt_parents
     }
-    class { 'service::monitor': }
+
     # Experimental load-balancer monitoring for services using service-checker
     class { 'lvs::monitor_services':
         main_datacenters => ['eqiad', 'codfw'],

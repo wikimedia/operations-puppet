@@ -11,6 +11,18 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
 
     $sites.each |$site| {
         $host = "search.svc.${site}.wmnet"
+
+        # Create the Icinga host for search.
+        # The service::catalog integration used to create these hosts
+        # automatically via 'monitoring' section (now deprecated).
+        # See also https://phabricator.wikimedia.org/T291946
+        @monitoring::host { $host:
+            ip_address    => ipresolve($host, 4),
+            contact_group => 'admins',
+            group         => 'lvs',
+            critical      => false,
+        }
+
         icinga::monitor::elasticsearch::base_checks { $host:
             host                => $host,
             scheme              => $scheme,

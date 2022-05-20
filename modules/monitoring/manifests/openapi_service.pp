@@ -19,6 +19,18 @@ define monitoring::openapi_service (  # aka swagger
     include monitoring
     $_contact_group = pick($contact_group, $monitoring::contact_group)
     $_notifications_enabled = pick($notifications_enabled, $monitoring::notifications_enabled)
+
+    # Create the Icinga host for this service.
+    # The service::catalog integration used to create these hosts
+    # automatically via 'monitoring' section (now deprecated).
+    # See also https://phabricator.wikimedia.org/T291946
+    @monitoring::host { $host:
+        ip_address    => ipresolve($host, 4),
+        contact_group => $_contact_group,
+        critical      => $critical,
+        group         => 'lvs',
+    }
+
     # only export if this is the active host
     if ($::fqdn == $active_host) {
         # Set up swagger exporter job if targets have been defined.
