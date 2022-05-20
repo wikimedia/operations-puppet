@@ -30,13 +30,6 @@ service::catalog:
     probes:
       - type: http
         path: /listPairs
-    monitoring:
-      check_command: check_https_lvs_on_port!apertium.discovery.wmnet!4737!/listPairs
-      sites:
-        codfw:
-          hostname: apertium.svc.codfw.wmnet
-        eqiad:
-          hostname: apertium.svc.eqiad.wmnet
     port: 4737
     sites:
       - codfw
@@ -73,13 +66,6 @@ service::catalog:
       - type: http
         path: /w/api.php?action=query&meta=siteinfo
         host: en.wikipedia.org
-    monitoring:
-      check_command: check_https_url!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
-      sites:
-        codfw:
-          hostname: api.svc.codfw.wmnet
-        eqiad:
-          hostname: api.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -122,13 +108,6 @@ service::catalog:
       - type: http
         path: /wiki/Special:Blankpage
         host: en.wikipedia.org
-    monitoring:
-      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        codfw:
-          hostname: appservers.svc.codfw.wmnet
-        eqiad:
-          hostname: appservers.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -165,11 +144,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_http_lvs_on_port!aqs.svc.eqiad.wmnet!7232!/
-      sites:
-        eqiad:
-          hostname: aqs.svc.eqiad.wmnet
     port: 7232
     sites:
       - eqiad
@@ -199,13 +173,6 @@ service::catalog:
     probes:
       - type: http
         path: /?spec
-    monitoring:
-      check_command: check_https_port_status!4666!200!/?spec
-      sites:
-        codfw:
-          hostname: blubberoid.svc.codfw.wmnet
-        eqiad:
-          hostname: blubberoid.svc.eqiad.wmnet
     port: 4666
     sites:
       - eqiad
@@ -238,14 +205,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!citoid.discovery.wmnet!4003!/_info
-      contact_group: admins,parsoid
-      sites:
-        codfw:
-          hostname: citoid.svc.codfw.wmnet
-        eqiad:
-          hostname: citoid.svc.eqiad.wmnet
     port: 4003
     sites:
       - eqiad
@@ -442,13 +401,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!cxserver.discovery.wmnet!4002!/_info
-      sites:
-        codfw:
-          hostname: cxserver.svc.codfw.wmnet
-        eqiad:
-          hostname: cxserver.svc.eqiad.wmnet
     port: 4002
     sites:
       - eqiad
@@ -478,11 +430,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_http_url_for_regexp_on_port!datahubsearch.svc.eqiad.wmnet!9200!/_cluster/health!"status":"green"
-      sites:
-        eqiad:
-          hostname: datahubsearch.svc.eqiad.wmnet
     port: 9200
     sites:
       - eqiad
@@ -512,13 +459,6 @@ service::catalog:
     probes:
       - type: http
         path: /v2/
-    monitoring:
-      check_command: check_https_url!docker-registry.discovery.wmnet!/v2/
-      sites:
-        codfw:
-          hostname: docker-registry.svc.codfw.wmnet
-        eqiad:
-          hostname: docker-registry.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -553,11 +493,6 @@ service::catalog:
     probes:
       - type: http
         path: /status
-    monitoring:
-      check_command: check_http_lvs_on_port!druid-public-broker.svc.eqiad.wmnet!8082!/status
-      sites:
-        eqiad:
-          hostname: druid-public-broker.svc.eqiad.wmnet
     port: 8082
     sites:
       - eqiad
@@ -587,13 +522,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_port_status!8082!200!/healthz
-      sites:
-        codfw:
-          hostname: echostore.svc.codfw.wmnet
-        eqiad:
-          hostname: echostore.svc.eqiad.wmnet
     port: 8082
     sites:
       - eqiad
@@ -626,13 +554,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!eventgate-analytics.discovery.wmnet!4592!/_info
-      sites:
-        codfw:
-          hostname: eventgate-analytics.svc.codfw.wmnet
-        eqiad:
-          hostname: eventgate-analytics.svc.eqiad.wmnet
     port: 4592
     sites:
       - eqiad
@@ -666,13 +587,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!eventgate-logging-external.discovery.wmnet!4392!/_info
-      sites:
-        codfw:
-          hostname: eventgate-logging-external.svc.codfw.wmnet
-        eqiad:
-          hostname: eventgate-logging-external.svc.eqiad.wmnet
     port: 4392
     sites:
       - eqiad
@@ -707,13 +621,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!eventgate-analytics-external.discovery.wmnet!4692!/_info
-      sites:
-        codfw:
-          hostname: eventgate-analytics-external.svc.codfw.wmnet
-        eqiad:
-          hostname: eventgate-analytics-external.svc.eqiad.wmnet
     port: 4692
     sites:
       - eqiad
@@ -746,13 +653,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!eventgate-main.discovery.wmnet!4492!/_info
-      sites:
-        codfw:
-          hostname: eventgate-main.svc.codfw.wmnet
-        eqiad:
-          hostname: eventgate-main.svc.eqiad.wmnet
     port: 4492
     sites:
       - eqiad
@@ -786,13 +686,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!eventstreams.discovery.wmnet!4892!/_info
-      sites:
-        codfw:
-          hostname: eventstreams.svc.codfw.wmnet
-        eqiad:
-          hostname: eventstreams.svc.eqiad.wmnet
     port: 4892
     sites:
       - eqiad
@@ -826,13 +719,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!eventstreams-internal.discovery.wmnet!4992!/_info
-      sites:
-        codfw:
-          hostname: eventstreams-internal.svc.codfw.wmnet
-        eqiad:
-          hostname: eventstreams-internal.svc.eqiad.wmnet
     port: 4992
     sites:
       - eqiad
@@ -896,13 +782,6 @@ service::catalog:
     probes:
       - type: http
         path: /w/health-check.php
-    monitoring:
-      check_command: check_https_url!jobrunner.discovery.wmnet!/w/health-check.php
-      sites:
-        codfw:
-          hostname: jobrunner.svc.codfw.wmnet
-        eqiad:
-          hostname: jobrunner.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -947,13 +826,6 @@ service::catalog:
     # leading this check and PyBal monitor to fail.
     probes:
       - type: tcp-notls
-    monitoring:
-      check_command: check_tcp!30443
-      sites:
-        eqiad:
-          hostname: k8s-ingress-staging.svc.eqiad.wmnet
-        codfw:
-          hostname: k8s-ingress-staging.svc.codfw.wmnet
     port: 30443
     sites:
       - codfw
@@ -998,13 +870,6 @@ service::catalog:
     # leading this check and PyBal monitor to fail.
     probes:
       - type: tcp-notls
-    monitoring:
-      check_command: check_tcp!30443
-      sites:
-        eqiad:
-          hostname: k8s-ingress-wikikube.svc.eqiad.wmnet
-        codfw:
-          hostname: k8s-ingress-wikikube.svc.codfw.wmnet
     port: &k8s-ingress-wikikube_port 30443
     sites:
       - codfw
@@ -1037,13 +902,6 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     page: false
-    monitoring:
-      check_command: check_http_lvs_on_port!kartotherian.discovery.wmnet!6533!/osm-intl/6/23/24.png
-      sites:
-        codfw:
-          hostname: kartotherian.svc.codfw.wmnet
-        eqiad:
-          hostname: kartotherian.svc.eqiad.wmnet
     port: 6533
     sites:
       - codfw
@@ -1077,13 +935,6 @@ service::catalog:
     probes:
       - type: http
         path: /osm-intl/6/23/24.png
-    monitoring:
-      check_command: check_https_url!kartotherian.discovery.wmnet!/osm-intl/6/23/24.png
-      sites:
-        codfw:
-          hostname: kartotherian.svc.codfw.wmnet
-        eqiad:
-          hostname: kartotherian.svc.eqiad.wmnet
     port: 443
     sites:
       - codfw
@@ -1120,13 +971,6 @@ service::catalog:
       - type: http
         path: /api/status
         host: logstash.wikimedia.org
-    monitoring:
-      check_command: check_https_url!logstash.wikimedia.org!/api/status
-      sites:
-        codfw:
-          hostname: kibana7.svc.codfw.wmnet
-        eqiad:
-          hostname: kibana7.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -1184,11 +1028,6 @@ service::catalog:
             - http://localhost
       scheduler: wrr
     page: false
-    monitoring:
-      check_command: check_http_on_port!80
-      sites:
-        eqiad:
-          hostname: labweb.svc.eqiad.wmnet
     port: 80
     sites:
       - eqiad
@@ -1306,13 +1145,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!mathoid.discovery.wmnet!4001!/_info
-      sites:
-        codfw:
-          hostname: mathoid.svc.codfw.wmnet
-        eqiad:
-          hostname: mathoid.svc.eqiad.wmnet
     port: 4001
     sites:
       - eqiad
@@ -1439,14 +1271,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!mobileapps.discovery.wmnet!4102!/_info
-      contact_group: mobileapps
-      sites:
-        codfw:
-          hostname: mobileapps.svc.codfw.wmnet
-        eqiad:
-          hostname: mobileapps.svc.eqiad.wmnet
     port: 4102
     sites:
       - eqiad
@@ -1482,13 +1306,6 @@ service::catalog:
       - type: http
         path: /wiki/Special:BlankPage
         host: en.wikipedia.org
-    monitoring:
-      check_command: check_https_lvs_on_port!en.wikipedia.org!4444!/wiki/Special:BlankPage
-      sites:
-        codfw:
-          hostname: mwdebug.svc.codfw.wmnet
-        eqiad:
-          hostname: mwdebug.svc.eqiad.wmnet
     port: 4444
     sites:
       - eqiad
@@ -1537,21 +1354,6 @@ service::catalog:
       - type: http
         host: en.wikipedia.com
         path: /_status
-    monitoring:
-      check_command: check_http_lvs!en.wikipedia.com!/_status
-      sites:
-        codfw:
-          hostname: ncredir-lb.codfw.wikimedia.org
-        eqiad:
-          hostname: ncredir-lb.eqiad.wikimedia.org
-        esams:
-          hostname: ncredir-lb.esams.wikimedia.org
-        eqsin:
-          hostname: ncredir-lb.eqsin.wikimedia.org
-        ulsfo:
-          hostname: ncredir-lb.ulsfo.wikimedia.org
-        drmrs:
-          hostname: ncredir-lb.drmrs.wikimedia.org
     port: 80
     sites:
       - eqiad
@@ -1582,21 +1384,6 @@ service::catalog:
       - type: http
         host: en.wikipedia.com
         path: /_status
-    monitoring:
-      check_command: check_https_url!en.wikipedia.com!/_status
-      sites:
-        codfw:
-          hostname: ncredir-lb.codfw.wikimedia.org
-        eqiad:
-          hostname: ncredir-lb.eqiad.wikimedia.org
-        esams:
-          hostname: ncredir-lb.esams.wikimedia.org
-        eqsin:
-          hostname: ncredir-lb.eqsin.wikimedia.org
-        ulsfo:
-          hostname: ncredir-lb.ulsfo.wikimedia.org
-        drmrs:
-          hostname: ncredir-lb.drmrs.wikimedia.org
     port: 443
     sites:
       - eqiad
@@ -1633,13 +1420,6 @@ service::catalog:
     probes:
       - type: http
         path: /v2/scores/
-    monitoring:
-      check_command: check_https_url!ores.discovery.wmnet!/v2/scores/
-      sites:
-        codfw:
-          hostname: ores.svc.codfw.wmnet
-        eqiad:
-          hostname: ores.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -1676,13 +1456,6 @@ service::catalog:
       - type: http
         path: /wiki/Special:BlankPage
         host: en.wikipedia.org
-    monitoring:
-      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        codfw:
-          hostname: parsoid.svc.codfw.wmnet
-        eqiad:
-          hostname: parsoid.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -1719,13 +1492,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_http_lvs_on_port!prometheus!80!/
-      sites:
-        codfw:
-          hostname: prometheus.svc.codfw.wmnet
-        eqiad:
-          hostname: prometheus.svc.eqiad.wmnet
     port: 80
     # note: PoPs run prometheus::pop role, but not a problem in this case
     role: "prometheus"
@@ -1758,13 +1524,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!proton.discovery.wmnet!4030!/_info
-      sites:
-        codfw:
-          hostname: proton.svc.codfw.wmnet
-        eqiad:
-          hostname: proton.svc.eqiad.wmnet
     port: 4030
     sites:
       - eqiad
@@ -1798,13 +1557,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4104!/_info
-      sites:
-        codfw:
-          hostname: push-notifications.svc.codfw.wmnet
-        eqiad:
-          hostname: push-notifications.svc.eqiad.wmnet
     port: 4104
     sites:
       - eqiad
@@ -1837,13 +1589,6 @@ service::catalog:
     probes:
       - type: http
         path: /robots.txt
-    monitoring:
-      check_command: check_https_lvs_on_port!recommendation-api.discovery.wmnet!4632!/robots.txt
-      sites:
-        codfw:
-          hostname: recommendation-api.svc.codfw.wmnet
-        eqiad:
-          hostname: recommendation-api.svc.eqiad.wmnet
     port: 4632
     sites:
       - eqiad
@@ -1907,13 +1652,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_https_lvs_on_port!restbase.discovery.wmnet!7443!/
-      sites:
-        codfw:
-          hostname: restbase.svc.codfw.wmnet
-        eqiad:
-          hostname: restbase.svc.eqiad.wmnet
     port: 7443
     sites:
       - eqiad
@@ -1952,13 +1690,6 @@ service::catalog:
     probes:
       - type: http
         path: /repositories/
-    monitoring:
-      check_command: check_https_lvs_on_port!schema.discovery.wmnet!443!/repositories/
-      sites:
-        codfw:
-          hostname: schema.svc.codfw.wmnet
-        eqiad:
-          hostname: schema.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -1991,13 +1722,6 @@ service::catalog:
           url:
             - http://localhost/
       scheduler: wrr
-    monitoring:
-      check_command: check_http_on_port!9200
-      sites:
-        codfw:
-          hostname: search.svc.codfw.wmnet
-        eqiad:
-          hostname: search.svc.eqiad.wmnet
     port: 9200
     sites:
       - eqiad
@@ -2029,13 +1753,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_https_on_port!9243
-      sites:
-        codfw:
-          hostname: search.svc.codfw.wmnet
-        eqiad:
-          hostname: search.svc.eqiad.wmnet
     port: 9243
     sites:
       - eqiad
@@ -2070,13 +1787,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_https_on_port!9443
-      sites:
-        codfw:
-          hostname: search.svc.codfw.wmnet
-        eqiad:
-          hostname: search.svc.eqiad.wmnet
     port: 9443
     sites:
       - eqiad
@@ -2110,13 +1820,6 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-    monitoring:
-      check_command: check_https_on_port!9643
-      sites:
-        codfw:
-          hostname: search.svc.codfw.wmnet
-        eqiad:
-          hostname: search.svc.eqiad.wmnet
     port: 9643
     sites:
       - eqiad
@@ -2148,13 +1851,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_port_status!8081!200!/healthz
-      sites:
-        codfw:
-          hostname: sessionstore.svc.codfw.wmnet
-        eqiad:
-          hostname: sessionstore.svc.eqiad.wmnet
     port: 8081
     sites:
       - eqiad
@@ -2188,13 +1884,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!shellbox.discovery.wmnet!4008!/healthz
-      sites:
-        codfw:
-          hostname: shellbox.svc.codfw.wmnet
-        eqiad:
-          hostname: shellbox.svc.eqiad.wmnet
     port: 4008
     sites:
       - eqiad
@@ -2228,13 +1917,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!shellbox-constraints.discovery.wmnet!4010!/healthz
-      sites:
-        codfw:
-          hostname: shellbox-constraints.svc.codfw.wmnet
-        eqiad:
-          hostname: shellbox-constraints.svc.eqiad.wmnet
     port: 4010
     sites:
       - eqiad
@@ -2268,13 +1950,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!shellbox-media.discovery.wmnet!4015!/healthz
-      sites:
-        codfw:
-          hostname: shellbox-media.svc.codfw.wmnet
-        eqiad:
-          hostname: shellbox-media.svc.eqiad.wmnet
     port: 4015
     sites:
       - eqiad
@@ -2308,13 +1983,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!shellbox-syntaxhighlight.discovery.wmnet!4014!/healthz
-      sites:
-        codfw:
-          hostname: shellbox-syntaxhighlight.svc.codfw.wmnet
-        eqiad:
-          hostname: shellbox-syntaxhighlight.svc.eqiad.wmnet
     port: 4014
     sites:
       - eqiad
@@ -2348,13 +2016,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!shellbox-timeline.discovery.wmnet!4012!/healthz
-      sites:
-        codfw:
-          hostname: shellbox-timeline.svc.codfw.wmnet
-        eqiad:
-          hostname: shellbox-timeline.svc.eqiad.wmnet
     port: 4012
     sites:
       - eqiad
@@ -2387,13 +2048,6 @@ service::catalog:
           url:
             - http://localhost/monitoring/frontend
       scheduler: wrr
-    monitoring:
-      check_command: check_http_lvs!localhost!/monitoring/frontend
-      sites:
-        codfw:
-          hostname: ms-fe.svc.codfw.wmnet
-        eqiad:
-          hostname: ms-fe.svc.eqiad.wmnet
     port: 80
     sites:
       - codfw
@@ -2428,13 +2082,6 @@ service::catalog:
     probes:
       - type: http
         path: /monitoring/frontend
-    monitoring:
-      check_command: check_https_url!localhost!/monitoring/frontend
-      sites:
-        codfw:
-          hostname: ms-fe.svc.codfw.wmnet
-        eqiad:
-          hostname: ms-fe.svc.eqiad.wmnet
     port: 443
     sites:
       - codfw
@@ -2475,13 +2122,6 @@ service::catalog:
     probes:
       - type: http
         path: /capabilities
-    monitoring:
-      check_command: check_https_lvs_on_port!tegola-vector-tiles.discovery.wmnet!4105!/capabilities
-      sites:
-        codfw:
-          hostname: tegola-vector-tiles.svc.codfw.wmnet
-        eqiad:
-          hostname: tegola-vector-tiles.svc.eqiad.wmnet
     port: 4105
     sites:
       - eqiad
@@ -2517,13 +2157,6 @@ service::catalog:
     probes:
       - type: http
         path: /-/ready
-    monitoring:
-      check_command: check_https_url!thanos-query.discovery.wmnet!/-/ready
-      sites:
-        codfw:
-          hostname: thanos-query.svc.codfw.wmnet
-        eqiad:
-          hostname: thanos-query.svc.eqiad.wmnet
     port: 443
     sites:
       - codfw
@@ -2564,13 +2197,6 @@ service::catalog:
         # Force Host: header to not include the port.
         # See also https://phabricator.wikimedia.org/T300119
         host: thanos-swift.discovery.wmnet
-    monitoring:
-      check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
-      sites:
-        codfw:
-          hostname: thanos-swift.svc.codfw.wmnet
-        eqiad:
-          hostname: thanos-swift.svc.eqiad.wmnet
     port: 443
     sites:
       - codfw
@@ -2604,13 +2230,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!termbox.discovery.wmnet!4004!/_info
-      sites:
-        codfw:
-          hostname: termbox.svc.codfw.wmnet
-        eqiad:
-          hostname: termbox.svc.eqiad.wmnet
     port: 4004
     sites:
       - eqiad
@@ -2671,21 +2290,6 @@ service::catalog:
         host: en.wikipedia.org
         path: /wiki/Special:BlankPage
         expect_redirect: true
-    monitoring:
-      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        codfw:
-          hostname: text-lb.codfw.wikimedia.org
-        eqiad:
-          hostname: text-lb.eqiad.wikimedia.org
-        eqsin:
-          hostname: text-lb.eqsin.wikimedia.org
-        esams:
-          hostname: text-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: text-lb.ulsfo.wikimedia.org
-        drmrs:
-          hostname: text-lb.drmrs.wikimedia.org
     port: 80
     sites:
       - codfw
@@ -2725,21 +2329,6 @@ service::catalog:
       - type: http
         host: en.wikipedia.org
         path: /wiki/Special:BlankPage
-    monitoring:
-      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        codfw:
-          hostname: text-lb.codfw.wikimedia.org
-        eqiad:
-          hostname: text-lb.eqiad.wikimedia.org
-        eqsin:
-          hostname: text-lb.eqsin.wikimedia.org
-        esams:
-          hostname: text-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: text-lb.ulsfo.wikimedia.org
-        drmrs:
-          hostname: text-lb.drmrs.wikimedia.org
     port: 443
     sites:
       - codfw
@@ -2778,13 +2367,6 @@ service::catalog:
       - type: http
         path: /healthcheck
         timeout: 15s # max value, cannot be higher than Prometheus' scrape_interval (15s)
-    monitoring:
-      check_command: check_http_lvs_on_port_timeout!thumbor.discovery.wmnet!8800!/healthcheck!20
-      sites:
-        codfw:
-          hostname: thumbor.svc.codfw.wmnet
-        eqiad:
-          hostname: thumbor.svc.eqiad.wmnet
     port: 8800
     sites:
       - eqiad
@@ -2816,13 +2398,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!toolhub.discovery.wmnet!4011!/healthz
-      sites:
-        codfw:
-          hostname: toolhub.svc.codfw.wmnet
-        eqiad:
-          hostname: toolhub.svc.eqiad.wmnet
     port: 4011
     sites:
       - eqiad
@@ -2871,21 +2446,6 @@ service::catalog:
         host: upload.wikimedia.org
         path: /monitoring/backend
         expect_redirect: true
-    monitoring:
-      check_command: check_http_lvs!upload.wikimedia.org!/monitoring/backend
-      sites:
-        codfw:
-          hostname: upload-lb.codfw.wikimedia.org
-        eqiad:
-          hostname: upload-lb.eqiad.wikimedia.org
-        eqsin:
-          hostname: upload-lb.eqsin.wikimedia.org
-        esams:
-          hostname: upload-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: upload-lb.ulsfo.wikimedia.org
-        drmrs:
-          hostname: upload-lb.drmrs.wikimedia.org
     port: 80
     sites:
       - codfw
@@ -2925,21 +2485,6 @@ service::catalog:
       - type: http
         host: upload.wikimedia.org
         path: /monitoring/backend
-    monitoring:
-      check_command: check_https_url!upload.wikimedia.org!/monitoring/backend
-      sites:
-        codfw:
-          hostname: upload-lb.codfw.wikimedia.org
-        eqiad:
-          hostname: upload-lb.eqiad.wikimedia.org
-        eqsin:
-          hostname: upload-lb.eqsin.wikimedia.org
-        esams:
-          hostname: upload-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: upload-lb.ulsfo.wikimedia.org
-        drmrs:
-          hostname: upload-lb.drmrs.wikimedia.org
     port: 443
     sites:
       - codfw
@@ -2976,13 +2521,6 @@ service::catalog:
     probes:
       - type: http
         path: /w/health-check.php
-    monitoring:
-      check_command: check_https_url!videoscaler.discovery.wmnet!/w/health-check.php
-      sites:
-        codfw:
-          hostname: videoscaler.svc.codfw.wmnet
-        eqiad:
-          hostname: videoscaler.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -3019,13 +2557,6 @@ service::catalog:
     probes:
       - type: http
         path: /readiness-probe
-    monitoring:
-      check_command: check_https_url!wcqs.discovery.wmnet!/readiness-probe
-      sites:
-        codfw:
-          hostname: wcqs.svc.codfw.wmnet
-        eqiad:
-          hostname: wcqs.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -3058,13 +2589,6 @@ service::catalog:
           url:
             - http://localhost/readiness-probe
       scheduler: wrr
-    monitoring:
-      check_command: check_http_lvs_on_port!wdqs.discovery.wmnet!80!/readiness-probe
-      sites:
-        codfw:
-          hostname: wdqs.svc.codfw.wmnet
-        eqiad:
-          hostname: wdqs.svc.eqiad.wmnet
     port: 80
     sites:
       - eqiad
@@ -3126,13 +2650,6 @@ service::catalog:
     probes:
       - type: http
         path: /readiness-probe
-    monitoring:
-      check_command: check_http_lvs_on_port!wdqs-internal.discovery.wmnet!80!/readiness-probe
-      sites:
-        codfw:
-          hostname: wdqs-internal.svc.codfw.wmnet
-        eqiad:
-          hostname: wdqs-internal.svc.eqiad.wmnet
     port: 80
     sites:
       - eqiad
@@ -3168,13 +2685,6 @@ service::catalog:
     probes:
       - type: http
         path: /readiness-probe
-    monitoring:
-      check_command: check_https_url!wdqs.discovery.wmnet!/readiness-probe
-      sites:
-        codfw:
-          hostname: wdqs.svc.codfw.wmnet
-        eqiad:
-          hostname: wdqs.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
@@ -3207,13 +2717,6 @@ service::catalog:
     probes:
       - type: http
         path: /_info
-    monitoring:
-      check_command: check_https_lvs_on_port!wikifeeds.discovery.wmnet!4101!/_info
-      sites:
-        codfw:
-          hostname: wikifeeds.svc.codfw.wmnet
-        eqiad:
-          hostname: wikifeeds.svc.eqiad.wmnet
     port: 4101
     sites:
       - eqiad
@@ -3247,13 +2750,6 @@ service::catalog:
       - type: http
         post_json: '[{"itemType":"journalArticle"}]'
         path: /export?format=wikipedia
-    monitoring:
-      check_command: check_https_zotero_lvs_on_port!zotero.discovery.wmnet!4969!/export?format=wikipedia
-      sites:
-        codfw:
-          hostname: zotero.svc.codfw.wmnet
-        eqiad:
-          hostname: zotero.svc.eqiad.wmnet
     port: 4969
     sites:
       - eqiad
@@ -3278,14 +2774,6 @@ service::catalog:
       - type: http
         path: /health
         must_contain_regexp: '"healthy".*:.*true'
-    monitoring:
-      check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
-      notes_url: "https://wikitech.wikimedia.org/wiki/ChartMuseum"
-      sites:
-        codfw:
-          hostname: chartmuseum2001
-        eqiad:
-          hostname: chartmuseum1001
     sites:
       - eqiad
       - codfw
@@ -3311,14 +2799,6 @@ service::catalog:
         path: /mediawiki
         host: releases.wikimedia.org
         must_contain_regexp: MediaWiki
-    monitoring:
-      check_command: check_https_url_for_string!releases.wikimedia.org!/mediawiki/!MediaWiki
-      notes_url: "https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org"
-      sites:
-        codfw:
-          hostname: releases2002
-        eqiad:
-          hostname: releases1002
     sites:
       - eqiad
       - codfw
@@ -3353,13 +2833,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!api-gateway.discovery.wmnet!8087!/healthz
-      sites:
-        codfw:
-          hostname: api-gateway.svc.codfw.wmnet
-        eqiad:
-          hostname: api-gateway.svc.eqiad.wmnet
     port: 8087
     sites:
       - eqiad
@@ -3394,13 +2867,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!similar-users.discovery.wmnet!4110!/healthz
-      sites:
-        codfw:
-          hostname: similar-users.svc.codfw.wmnet
-        eqiad:
-          hostname: similar-users.svc.eqiad.wmnet
     port: 4110
     sites:
       - eqiad
@@ -3435,13 +2901,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4005!/healthz
-      sites:
-        codfw:
-          hostname: linkrecommendation.svc.codfw.wmnet
-        eqiad:
-          hostname: linkrecommendation.svc.eqiad.wmnet
     port: 4005
     sites:
       - eqiad
@@ -3472,13 +2931,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4006!/healthz
-      sites:
-        codfw:
-          hostname: linkrecommendation.svc.codfw.wmnet
-        eqiad:
-          hostname: linkrecommendation.svc.eqiad.wmnet
     port: 4006
     sites:
       - eqiad
@@ -3514,13 +2966,6 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
-    monitoring:
-      check_command: check_https_lvs_on_port!apple-search.discovery.wmnet!4013!/healthz
-      sites:
-        codfw:
-          hostname: apple-search.svc.codfw.wmnet
-        eqiad:
-          hostname: apple-search.svc.eqiad.wmnet
     port: 4013
     sites:
       - eqiad
@@ -3660,14 +3105,6 @@ service::catalog:
     page: false
     probes:
       - type: http
-    monitoring:
-      check_command: "check_https_on_port!8090"
-      notes_url: "https://wikitech.wikimedia.org/wiki/Puppet#Micro_Service"
-      sites:
-        codfw:
-          hostname: puppetdb1002
-        eqiad:
-          hostname: puppetdb2002
     sites:
       - eqiad
       - codfw
@@ -3707,14 +3144,6 @@ service::catalog:
       - type: http
         host: graphite.wikimedia.org
         expect_sso: true
-    monitoring:
-      check_command: "check_https_on_port!443"
-      notes_url: "https://wikitech.wikimedia.org/wiki/Graphite"
-      sites:
-        codfw:
-          hostname: graphite2003
-        eqiad:
-          hostname: graphite1004
     sites:
       - codfw
       - eqiad
@@ -3739,14 +3168,6 @@ service::catalog:
     probes:
       - type: http
         host: grafana.wikimedia.org
-    monitoring:
-      check_command: "check_https_on_port!443"
-      notes_url: "https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org"
-      sites:
-        codfw:
-          hostname: grafana2001
-        eqiad:
-          hostname: grafana1002
     sites:
       - codfw
       - eqiad
@@ -3768,14 +3189,6 @@ service::catalog:
       - type: http
         host: librenms.wikimedia.org
         expect_sso: true
-    monitoring:
-      check_command: "check_https_on_port!443"
-      notes_url: "https://wikitech.wikimedia.org/wiki/LibreNMS"
-      sites:
-        codfw:
-          hostname: netmon2001
-        eqiad:
-          hostname: netmon1002
     sites:
       - codfw
       - eqiad
@@ -3820,13 +3233,6 @@ service::catalog:
       - type: http
         valid_status_codes:
           - 404
-    monitoring:
-      check_command: check_tcp_ssl!inference.discovery.wmnet!30443
-      sites:
-        eqiad:
-          hostname: inference.svc.eqiad.wmnet
-        codfw:
-          hostname: inference.svc.codfw.wmnet
     port: 30443
     sites:
       - eqiad
@@ -3857,11 +3263,6 @@ service::catalog:
     page: false
     probes:
       - type: tcp-notls
-    monitoring:
-      check_command: check_tcp!30443
-      sites:
-        codfw:
-          hostname: inference-staging.svc.codfw.wmnet
     port: 30443
     sites:
       - codfw
@@ -3882,14 +3283,6 @@ service::catalog:
       - type: http
         host: apt.wikimedia.org
         path: /wikimedia/
-    monitoring:
-      check_command: "check_http_url!apt.wikimedia.org!/wikimedia/"
-      notes_url: "https://wikitech.wikimedia.org/wiki/APT_repository"
-      sites:
-        codfw:
-          hostname: apt2001
-        eqiad:
-          hostname: apt1001
     sites:
       - eqiad
       - codfw
@@ -3914,14 +3307,6 @@ service::catalog:
       - type: http
         host: puppetboard.wikimedia.org
         expect_sso: true
-    monitoring:
-      check_command: "check_https_sso_redirect!puppetboard.wikimedia.org!/"
-      notes_url: "https://wikitech.wikimedia.org/wiki/Puppet"
-      sites:
-        codfw:
-          hostname: puppetboard2002
-        eqiad:
-          hostname: puppetboard1002
     sites:
       - eqiad
       - codfw
@@ -3973,14 +3358,6 @@ service::catalog:
       - type: http
         host: netbox.wikimedia.org
         expect_sso: true
-    monitoring:
-      check_command: "check_https_sso_redirect!netbox.wikimedia.org!/"
-      notes_url: "https://wikitech.wikimedia.org/wiki/Netbox"
-      sites:
-        codfw:
-          hostname: netbox2002
-        eqiad:
-          hostname: netbox1002
     sites:
       - eqiad
       - codfw

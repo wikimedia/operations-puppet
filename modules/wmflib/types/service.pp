@@ -15,8 +15,6 @@
 #     Whether the service uses TLS or not.
 # @param [Wmflib::Service::Lvs] lvs
 #     A collection of information on the load-balancing of the service
-# @param [Optional[Wmflib::Service::Monitoring]] monitoring
-#     A collection of information on the monitoring of the service.
 # @param [Optional[Wmflib::Service::Probes]] probes
 #     A list of network probes for the service.
 # @param [Optional[Boolean] page
@@ -52,7 +50,6 @@ type Wmflib::Service = Struct[
     'port'            => Stdlib::Port, # This used to be optional in lvs config
     'encryption'      => Boolean, # Whether we need TLS to connect
     'lvs'             => Optional[Wmflib::Service::Lvs],
-    'monitoring'      => Optional[Wmflib::Service::Monitoring],
     'probes'          => Optional[Wmflib::Service::Probes],
     'page'            => Optional[Boolean],
     'state'           => Enum['service_setup', 'lvs_setup', 'production'],
