@@ -11,6 +11,22 @@ class profile::aptrepo::private (
     Optional[String] $gpg_secring          = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
 ){
 
+    # Group and user is temporarily added, as CloudVPS does not have
+    # the user and group created automatically.
+    # TODO: REMOVE
+    group { 'reprepro':
+        ensure => present,
+        gid    => 901,
+    }
+
+    user { 'reprepro':
+        ensure => present,
+        shell  => '/bin/sh',
+        home   => '/var/lib/reprepro',
+        uid    => 901,
+        gid    => 901,
+    }
+
     class { '::aptrepo':
         basedir       => $basedir,
         homedir       => $homedir,
