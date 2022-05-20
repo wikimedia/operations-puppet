@@ -65,14 +65,6 @@ class profile::idp(
 
     $cas_daemon_user = 'tomcat'
 
-    if $is_staging_host {
-        apt::repository{ 'component-idp-test':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/idp-test',
-        }
-    }
-
     $ldap_port = $ldap_schema ? {
       'ldap'  => 389,
       default => 636,
