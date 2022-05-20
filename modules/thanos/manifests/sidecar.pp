@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: thanos::sidecar
 #
 # The sidecar sits alongside each Prometheus server instance. It exposes

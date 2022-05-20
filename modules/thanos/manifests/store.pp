@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: thanos::store
 #
 # The thanos store command (also known as Store Gateway) implements the Store

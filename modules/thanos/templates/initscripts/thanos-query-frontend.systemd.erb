@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 ExecStart=
 ExecStart=/usr/bin/thanos query-frontend --http-address <%= @http_address %> --cache-compression-type snappy --query-frontend.downstream-url <%= @downstream_url %> --query-range.response-cache-config-file <%= @cache_config_file %> --query-frontend.log-queries-longer-than <%= @log_queries_longer_than %> --query-frontend.compress-responses

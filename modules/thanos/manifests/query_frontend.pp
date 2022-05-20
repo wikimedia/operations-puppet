@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: thanos::query_frontend
 #
 # The thanos query-frontend command implements a service that can be put in front of Thanos Queriers

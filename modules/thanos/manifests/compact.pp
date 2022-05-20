@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: thanos::compact
 #
 # The thanos compact command (also known as Store Gateway) implements the Store

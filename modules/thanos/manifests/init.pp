@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class thanos {
     exec { 'reload thanos-rule':
         # Workaround for SIGHUP not working in thanos 0.21.1

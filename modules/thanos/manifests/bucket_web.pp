@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: thanos::bucket_web
 #
 # Web interface for remote storage bucket.

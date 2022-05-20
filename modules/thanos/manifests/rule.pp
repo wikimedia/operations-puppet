@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: thanos::rule
 #
 # The thanos rule component runs Prometheus queries and is in charge of evaluating the following
