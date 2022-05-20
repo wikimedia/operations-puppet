@@ -34,7 +34,6 @@ def check_spdx_licence(file_list)
     next unless filename.include?('.')
     # Skip 3rd party files
     next if filename.end_with?('.original.py')
-    puts "testing #{filename}"
     if File.binary?(filename)
       puts 'skipping ' + filename
       next
@@ -79,7 +78,6 @@ def add_spdx_tags(files)
   # Add the SPDX_TAGS near the top of a each file passed
   unknown_files = []
   files.each do |filename|
-    puts "testing #{filename}"
     begin
       tag = comment_line(filename, SPDX_TAG)
     rescue UnknownExtensionError => error
@@ -177,11 +175,8 @@ namespace :spdx do
         abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contibutors.join("\n")}".red)
       end
       glob = "#{module_path}/**/*"
-      puts 'HERE'
       missing_licence = check_spdx_licence(FileList[glob])
-      puts 'HERE'
       add_spdx_tags(missing_licence)
-      puts 'HERE'
     end
   end
 end
