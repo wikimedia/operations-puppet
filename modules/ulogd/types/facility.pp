@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # syslog facility
 # https://github.com/inliniac/ulogd2/blob/master/output/ulogd_output_SYSLOG.c#L96
 type Ulogd::Facility = Variant[

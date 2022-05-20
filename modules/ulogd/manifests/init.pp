@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class ulogd
 #
 # Set up and configure ulogd2

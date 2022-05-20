@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # type to define allowed input types
 # the outputs that are commented out are not implmented by this module
 type Ulogd::Output = Enum[
