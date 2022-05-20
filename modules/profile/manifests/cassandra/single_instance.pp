@@ -4,6 +4,8 @@ class profile::cassandra::single_instance(
   Array[Stdlib::Host] $cassandra_hosts      = lookup('profile::cassandra::single_instance::seeds'),
   String              $dc                   = lookup('profile::cassandra::single_instance::dc'),
   String              $super_pass           = lookup('profile::cassandra::single_instance::super_pass'),
+  Optional[String]    $target_version       = lookup('profile::cassandra::single_instance::target_version', {'default_value' => undef}),
+  Optional[String]    $rack                 = lookup('profile::cassandra::single_instance::rack', {'default_value' => undef}),
 ) {
   # localhost udp endpoint for logging pipeline
   class { 'profile::rsyslog::udp_json_logback_compat': }
@@ -13,8 +15,10 @@ class profile::cassandra::single_instance(
     cluster_name            => $cluster_name,
     seeds                   => $cassandra_hosts,
     dc                      => $dc,
+    rack                    => $rack,
     logstash_host           => 'localhost',
     java_package            => $profile::java::default_package_name,
+    target_version          => $target_version,
     default_instance_params => {
       data_directory_base    => '/srv/cassandra',
       commitlog_directory    => '/srv/cassandra/commitlog',
