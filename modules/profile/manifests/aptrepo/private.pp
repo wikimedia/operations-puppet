@@ -27,6 +27,7 @@ class profile::aptrepo::private (
         gid    => 901,
     }
 
+    class { 'httpd':}
     class { '::aptrepo':
         basedir       => $basedir,
         homedir       => $homedir,
