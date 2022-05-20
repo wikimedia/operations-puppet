@@ -36,7 +36,7 @@ class profile::aptrepo::private (
         content => template('aptrepo/private-apache-vhost.erb'),
     }
 
-    include ::profile::backup::host
+    # include ::profile::backup::host
 
     # The repository data
     backup::set { 'srv-wikimedia': }

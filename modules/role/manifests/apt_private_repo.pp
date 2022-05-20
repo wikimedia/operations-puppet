@@ -9,8 +9,6 @@ class role::apt_private_repo {
 
     include profile::base::production
     include profile::base::firewall
-    include profile::backup::host
-    include profile::base::cuminunpriv
 
     include profile::aptrepo::private
 }
