@@ -1958,7 +1958,7 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
 
 # New ml-cache node T299435
 node /^ml-cache100[123]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(ml_cache::storage)
 }
 
 # New ml-cache node T299433

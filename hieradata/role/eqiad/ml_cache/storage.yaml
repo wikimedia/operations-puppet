@@ -1,0 +1,17 @@
+profile::cassandra::client_ips:
+  # Add the kubernetes pod IPs here
+  # ml-serve-eqiad
+  - 10.67.16.0/21
+  - 2620:0:861:300::/64
+
+## Instances
+profile::cassandra::instances:
+  "ml-cache1001.eqiad.wmnet":
+    a:
+      listen_address: 10.64.130.9
+  "ml-cache1002.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.186
+  "ml-cache1003.eqiad.wmnet":
+    a:
+      listen_address: 10.64.134.8
