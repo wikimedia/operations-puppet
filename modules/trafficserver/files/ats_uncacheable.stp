@@ -1,4 +1,5 @@
 #!/usr/bin/env stap
+# SPDX-License-Identifier: Apache-2.0
 #
 # ats_uncacheable.stp - debug uncacheable origin server responses
 #

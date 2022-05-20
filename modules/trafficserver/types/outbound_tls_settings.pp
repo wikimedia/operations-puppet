@@ -1,3 +1,4 @@
+## SPDX-License-Identifier: Apache-2.0
 # Trafficserver::Outbound_TLS_settings wraps the specific settings for outbound TLS traffic
 #
 # [*verify_origin*]

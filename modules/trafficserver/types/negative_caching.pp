@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Trafficserver::Negative_Caching is the data type representing the settings
 # used to configure Negative Response Caching.
 # See https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/records.config.en.html#negative-response-caching

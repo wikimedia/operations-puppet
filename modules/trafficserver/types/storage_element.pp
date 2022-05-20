@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Trafficserver::Storage_element = Struct[{
     'pathname' => Optional[Stdlib::Absolutepath],
     'devname'  => Optional[String],

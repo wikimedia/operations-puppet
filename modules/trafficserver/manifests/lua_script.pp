@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: trafficserver::lua_script
 #
 # Add the Lua script defined in $source under /etc/trafficserver/lua/ and

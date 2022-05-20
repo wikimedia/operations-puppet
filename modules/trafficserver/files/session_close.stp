@@ -1,4 +1,5 @@
 #!/usr/bin/env stap
+# SPDX-License-Identifier: Apache-2.0
 #
 # session_close.stp - trace origin server connection teardown
 #

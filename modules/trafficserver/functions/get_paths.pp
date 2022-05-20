@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 function trafficserver::get_paths(Boolean $default_instance, String $instance_name) >> Hash {
     $libdir = '/usr/lib/trafficserver'
     $libexecdir = "${libdir}/modules"

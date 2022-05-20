@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Trafficserver::TLS_settings wraps the common TLS settings for incoming and outbound traffic
 #
 # [*outbound_tlsv1*]

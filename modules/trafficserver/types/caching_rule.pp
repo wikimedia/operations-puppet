@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Trafficserver::Caching_rule = Struct[{
     'primary_destination' => Enum['dest_domain', 'dest_host', 'dest_ip', 'host_regex', 'url_regex'],
     'value'               => String,

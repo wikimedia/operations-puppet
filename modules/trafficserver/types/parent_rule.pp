@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Trafficserver::Parent_rule provides partial support for Parent proxy rules.
 # See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/parent.config.en.html for more details.
 # Example of a valid parent rule:

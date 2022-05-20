@@ -1,3 +1,4 @@
+## SPDX-License-Identifier: Apache-2.0
 # Trafficserver::Inbound_TLS_settings wraps the specific settings for inbound TLS traffic
 #
 # [*cert_path*]

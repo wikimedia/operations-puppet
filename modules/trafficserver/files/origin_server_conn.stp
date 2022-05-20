@@ -1,4 +1,5 @@
 #!/usr/bin/env stap
+# SPDX-License-Identifier: Apache-2.0
 #
 # origin_server_conn.stp - trace origin server connection establishment
 #

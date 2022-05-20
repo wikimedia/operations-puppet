@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Trafficserver::Inbound_TLS_settings wraps the specific settings
 # for one or more certificates with the same SNI list
 # This gets translated in one single line of ssl_multicert.config

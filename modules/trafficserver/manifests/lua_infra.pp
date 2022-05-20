@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define trafficserver::lua_infra(
     String $service_name='trafficserver',
     Stdlib::Absolutepath $config_prefix='/etc/trafficserver',

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: trafficserver::instance
 #
 # This module provisions Apache Traffic Server -- a fast, scalable caching

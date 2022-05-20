@@ -1,4 +1,5 @@
 #!/usr/bin/env stap
+# SPDX-License-Identifier: Apache-2.0
 # ats_transaction_err.stp - debug ATS "abort" errors
 #
 # Line 8406 is case CLIENT_TRANSACTION_RESULT_ERROR_ABORT

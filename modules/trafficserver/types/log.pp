@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Trafficserver::Log = Struct[{
     'ensure'   => Wmflib::Ensure,
     'filename' => String,

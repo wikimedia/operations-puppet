@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Trafficserver::HTTP_settings wraps HTTP settings
 #
 # [*accept_no_activity_timeout*]

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Trafficserver::Paths = Struct[{
     'base_path'     => Optional[Stdlib::Absolutepath],
     'prefix'        => Stdlib::Absolutepath,

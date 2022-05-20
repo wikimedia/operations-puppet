@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define trafficserver::layout(
     Trafficserver::Paths $paths,
     Array[Stdlib::Absolutepath] $bins = [

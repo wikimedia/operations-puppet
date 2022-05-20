@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Trafficserver::Network_settings wraps Network settings defined on
 # https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/records.config.en.html#network
 #
