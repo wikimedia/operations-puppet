@@ -37,4 +37,11 @@ class profile::sretest {
         ensure  => file,
         content => $cache_nodes['upload'].to_yaml,
     }
+    # TEST T308826
+    systemd::sysuser { 'test_user01':
+        home_dir          => '/srv/test_user01',
+        managehome        => true,
+        id                => '-:reprepro',
+        additional_groups => ['analytics'],  # this should mean you don't need an entry in admin.yaml
+    }
 }
