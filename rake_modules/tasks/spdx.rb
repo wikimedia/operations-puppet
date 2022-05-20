@@ -25,7 +25,7 @@ def check_module_contributors(module_path)
   module_contributors - allowed_contributors
 end
 
-def get_contributors_missing_permission
+def contributors_missing_permission
   module_contributors = extract_email(`git shortlog -se`)
                           .reject {|email| email.end_with?('@wikimedia.org') }
   allowed_contributors = extract_email(File.read('CONTRIBUTORS'))
@@ -173,7 +173,7 @@ namespace :spdx do
     end
     desc "Check all files"
     task :missing_permission do
-      missing_permission = get_contributors_missing_permission
+      missing_permission = contributors_missing_permission
       unless missing_permission.empty?
         abort(("Still missing permissions from the following:\n" + missing_permission.join("\n")).red)
       end
