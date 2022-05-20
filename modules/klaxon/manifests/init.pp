@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: klaxon
 #
 # Install and configure klaxon, a simple webapp for users to page SRE.

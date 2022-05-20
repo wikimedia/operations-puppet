@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Type: Klaxon::Klaxon_config
 #
 # Configuration for Klaxon: a mix of secret data and some config knobs.
