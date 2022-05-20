@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class amd_rocm
 #
 # Deploy AMD's ROCm suite and GPU drivers.
