@@ -1,7 +1,7 @@
 # @summary Class to build debs for Apereo CAS
 class profile::idp::build {
     ensure_packages(['openjdk-11-jdk-headless', 'dpkg-dev', 'debhelper'])
-    ensure_packages(['dh-exec', 'build-essential'])
+    ensure_packages(['dh-exec', 'build-essential', 'default-jdk-headless'])
 
     file { '/srv/cas-build/cas':
         ensure => directory,
