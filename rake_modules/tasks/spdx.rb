@@ -14,6 +14,17 @@ end
 class NoCommentSupoportError < StandardError
 end
 
+def extract_email(string)
+   string.scan(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/).sort
+end
+
+def check_module_contributors(module_path)
+  module_contributors = extract_email(`git shortlog -se -- #{module_path}`)
+                          .reject {|email| email.end_with?('@wikimedia.org') }
+  allowed_contributors = extract_email(File.read('CONTRIBUTORS'))
+  module_contributors - allowed_contributors
+end
+
 def check_spdx_licence(file_list)
   # Check a list of files for an spdx licence header
   missing_licence = []
@@ -22,7 +33,8 @@ def check_spdx_licence(file_list)
     # For now skip files with no extension as we are unable to detect the comment style
     next unless filename.include?('.')
     # Skip 3rd party files
-    next unless filename.end_with?('.original.py')
+    next if filename.end_with?('.original.py')
+    puts "testing #{filename}"
     if File.binary?(filename)
       puts 'skipping ' + filename
       next
@@ -67,6 +79,7 @@ def add_spdx_tags(files)
   # Add the SPDX_TAGS near the top of a each file passed
   unknown_files = []
   files.each do |filename|
+    puts "testing #{filename}"
     begin
       tag = comment_line(filename, SPDX_TAG)
     rescue UnknownExtensionError => error
@@ -159,9 +172,16 @@ namespace :spdx do
     task :module, [:module] do |_t, args|
       module_path = "modules/#{args[:module]}"
       abort("#{args[:module]}: does not exist".red) unless File.directory?(module_path)
+      unsigned_contibutors = check_module_contributors(module_path)
+      unless unsigned_contibutors.empty?
+        abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contibutors.join("\n")}".red)
+      end
       glob = "#{module_path}/**/*"
+      puts 'HERE'
       missing_licence = check_spdx_licence(FileList[glob])
+      puts 'HERE'
       add_spdx_tags(missing_licence)
+      puts 'HERE'
     end
   end
 end
