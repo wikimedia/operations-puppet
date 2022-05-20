@@ -15,7 +15,7 @@ class NoCommentSupoportError < StandardError
 end
 
 def extract_email(string)
-   string.scan(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/).sort
+  string.scan(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/).sort.uniq
 end
 
 def check_module_contributors(module_path)
