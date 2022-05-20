@@ -16,21 +16,8 @@ class profile::fastnetmon (
         icinga_dir           => $icinga_dir,
     }
 
-    $nrpe_path = '/usr/local/lib/nagios/plugins/check_fastnetmon'
-    file { $nrpe_path:
-        ensure => present,
-        source => 'puppet:///modules/profile/fastnetmon/check_fastnetmon.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-    nrpe::monitor_service { 'fastnetmon':
-        description     => 'fastnetmon is alerting',
-        nrpe_command    => "${nrpe_path} ${icinga_dir}",
-        notes_url       => 'https://bit.ly/wmf-fastnetmon',
-        dashboard_links => [ 'https://w.wiki/8oU', ],
-        retries         => 15,
-        critical        => true,
+    file { '/usr/local/lib/nagios/plugins/check_fastnetmon':
+        ensure => absent,
     }
 
     # Export notifications count as a metric for alerting purposes.
