@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class helmfile {
     ensure_packages(['helmfile', 'helm-diff'])
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class helmfile::repository(
     String $repository,
     Stdlib::Unixpath $srcdir,

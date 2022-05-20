@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure helm
 # @param helm_home helm home directory
 # @param helm_data helm data directory

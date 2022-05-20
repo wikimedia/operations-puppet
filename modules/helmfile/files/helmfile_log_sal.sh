@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Tcpircbot-related env variables
 TCPIRCBOT_HOST=${TCPIRCBOT_HOST:-icinga.wikimedia.org}
