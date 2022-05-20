@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == udev::rule ==
 #
 # Add a custom udev rule and reload udev

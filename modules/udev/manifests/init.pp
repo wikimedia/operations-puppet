@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class udev {
     if debian::codename::le('buster') {
         $udevadm = '/sbin/udevadm'
