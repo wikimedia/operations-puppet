@@ -212,8 +212,7 @@ profile::base::firewall::log::log_rate: 1/second
 profile::base::firewall::log::log_burst: 5
 profile::base::firewall::log::separate_file: false
 
-prometheus_nodes:
-  - prometheus01.metricsinfra.eqiad.wmflabs
+prometheus_nodes: []
 
 # We don't want prometheus scraping NFS on the clients, it locks up
 prometheus::node_exporter::ignored_fs_types: '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nfs.*|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$'
@@ -632,3 +631,6 @@ profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
 
 profile::kubernetes::deployment_server::helm_user_group: deployment
+
+profile::wmcs::instance::metricsinfra_prometheus_nodes:
+  - prometheus01.metricsinfra.eqiad1.wikimedia.cloud

@@ -1,9 +1,10 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
-    Boolean      $mount_nfs      = lookup('mount_nfs',       {default_value => false}),
-    Boolean      $diamond_remove = lookup('diamond::remove', {default_value => false}),
-    String       $sudo_flavor    = lookup('sudo_flavor',     {default_value => 'sudoldap'}),
-    Stdlib::Fqdn $metrics_server = lookup('graphite_host',   {default_value => 'localhost'}),
+    Boolean             $mount_nfs                     = lookup('mount_nfs',       {default_value => false}),
+    Boolean             $diamond_remove                = lookup('diamond::remove', {default_value => false}),
+    String              $sudo_flavor                   = lookup('sudo_flavor',     {default_value => 'sudoldap'}),
+    Stdlib::Fqdn        $metrics_server                = lookup('graphite_host',   {default_value => 'localhost'}),
+    Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('profile::wmcs::instance::metricsinfra_prometheus_nodes'),
 ) {
     # force sudo on buster
     if $sudo_flavor == 'sudo' or debian::codename::ge('buster') {
@@ -205,4 +206,8 @@ class profile::wmcs::instance(
     }
 
     class {'::cinderutils': }
+
+    ferm::rule { 'metricsinfra-prometheus-all':
+        rule => "saddr @resolve((${metricsinfra_prometheus_nodes.join(' ')})) ACCEPT;"
+    }
 }

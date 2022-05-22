@@ -71,8 +71,10 @@ class base::firewall (
         }
     }
 
-    ferm::rule { 'prometheus-all':
-        rule   => "saddr @resolve((${prometheus_hosts.join(' ')})) ACCEPT;",
+    if !empty($prometheus_hosts) {
+        ferm::rule { 'prometheus-all':
+            rule   => "saddr @resolve((${prometheus_hosts.join(' ')})) ACCEPT;",
+        }
     }
 
     ferm::service { 'ssh-from-cumin-masters':
