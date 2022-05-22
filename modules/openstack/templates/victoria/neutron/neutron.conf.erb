@@ -8,7 +8,7 @@ default_log_levels = neutron.wsgi=WARN
 
 # debug = true
 
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 auth_strategy = keystone
 bind_port = <%= @bind_port %>
@@ -111,7 +111,10 @@ rabbit_retry_interval=1
 rabbit_retry_backoff=2
 rabbit_durable_queues=true
 rabbit_ha_queues=true
-ssl = False
+
+ssl = True
+ssl_ca_file = /etc/ssl/certs/wmf-ca-certificates.crt
+ssl_version = TLSv1_2
 
 [oslo_policy]
 policy_file = policy.yaml
