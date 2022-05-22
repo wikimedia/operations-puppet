@@ -14,8 +14,6 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     include ::profile::openstack::codfw1dev::nutcracker
     include ::profile::openstack::codfw1dev::cloudweb_mcrouter
 
-    include ::profile::lvs::realserver
-
     # Wikitech:
     include ::profile::openstack::codfw1dev::wikitech::web
     include ::profile::openstack::codfw1dev::wikitech::monitor
