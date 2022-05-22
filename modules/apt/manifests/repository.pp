@@ -14,6 +14,8 @@ define apt::repository(
     }
     if $trust_repo {
         $trustedline = '[trusted=yes] '
+    } elsif $keyfile {
+        $trustedline = "[signed-by=/var/lib/apt/keys/${name}.asc] "
     } else {
         $trustedline = ''
     }
@@ -51,7 +53,7 @@ define apt::repository(
     ensure_packages(['gnupg'])
 
     if $keyfile {
-        file { "/var/lib/apt/keys/${name}.gpg":
+        file { "/var/lib/apt/keys/${name}.asc":
             ensure  => present,
             owner   => 'root',
             group   => 'root',
@@ -61,9 +63,8 @@ define apt::repository(
             before  => File["/etc/apt/sources.list.d/${name}.list"],
         }
 
-        exec { "/usr/bin/apt-key add /var/lib/apt/keys/${name}.gpg":
-            subscribe   => File["/var/lib/apt/keys/${name}.gpg"],
-            refreshonly => true,
+        file { "/var/lib/apt/keys/${name}.gpg":
+            ensure => absent,
         }
     }
 }
