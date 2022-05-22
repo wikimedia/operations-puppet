@@ -706,7 +706,7 @@ def main():
                     server.name, server.tenant_id
                 )
                 dnsd = args.dns_resolvers.split(",")
-                vdns = verify_dns(host, addr, dnsd, timeout=30)
+                vdns = verify_dns(host, addr, dnsd, timeout=60)
                 stat("verify.dns", vdns)
                 vdns_reverse = verify_dns_reverse(host, addr, dnsd, timeout=30)
                 stat("verify.dns-reverse", vdns_reverse)
