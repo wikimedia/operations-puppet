@@ -74,8 +74,6 @@ profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
 profile::mediawiki::apc_shm_size: 128M
 
-lvs::realserver::realserver_ips:
-    - '208.80.153.41' # cloudweb2002-dev.wikimedia.org
 profile::base::firewall::block_abuse_nets: true
 profile::contacts::role_contacts: ['WMCS']
 
