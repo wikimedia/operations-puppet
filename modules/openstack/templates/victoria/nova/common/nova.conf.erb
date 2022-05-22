@@ -16,7 +16,7 @@ syslog_log_facility = LOG_LOCAL0
 default_log_levels = nova=WARN
 #debug = true
 
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 # Schedule things that are for some reason not in the [scheduler] section
 ram_allocation_ratio=1.0
@@ -103,7 +103,10 @@ rabbit_retry_interval=1
 rabbit_retry_backoff=2
 rabbit_durable_queues=true
 rabbit_ha_queues=true
-ssl = False
+
+ssl = True
+ssl_ca_file = /etc/ssl/certs/wmf-ca-certificates.crt
+ssl_version = TLSv1_2
 
 [oslo_concurrency]
 lock_path = /var/lock/nova
