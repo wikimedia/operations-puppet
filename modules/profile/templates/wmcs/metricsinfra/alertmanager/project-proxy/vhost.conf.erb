@@ -1,0 +1,24 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+Listen 8643
+
+<VirtualHost *:8643>
+    ServerName <%= @facts['fqdn'] %>
+    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+
+    <Location />
+        Require ip 127.0.0.1
+        <%- @trusted_ips.each do |ip| -%>
+        Require ip <%= ip %>
+        <%- end -%>
+
+        ProxyPreserveHost On
+        ProxyPass http://localhost:9093/
+        ProxyPassReverse http://localhost:9093/
+    </Location>
+
+    CustomLog /var/log/apache2/alertmanager-proxy-access.log wmf
+    ErrorLog /var/log/apache2/alertmanager-proxy-error.log
+    LogLevel warn
+</VirtualHost>

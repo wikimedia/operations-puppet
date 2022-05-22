@@ -13,7 +13,7 @@ class profile::wmcs::metricsinfra::alertmanager::karma (
         ],
     }
 
-    class { 'alertmanager::karma':
+    class { 'alertmanager::karma':
         vhost          => $vhost,
         config         => template('profile/wmcs/metricsinfra/alertmanager/karma.yml.erb'),
         listen_address => '0.0.0.0',
