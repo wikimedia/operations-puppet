@@ -4,8 +4,9 @@ Suite: stretch-wikimedia
 Codename: stretch-wikimedia
 Version: 9
 Architectures: source amd64
-Components: main
+Components: private
 Description: Wikimedia private packages for Debian stretch
+SignWith: AEB730EE24AC13AD8136F690E97EEFA63624CE90
 Log:
  log
 
@@ -15,8 +16,9 @@ Suite: buster-wikimedia
 Codename: buster-wikimedia
 Version: 10
 Architectures: source amd64
-Components: main
+Components: private
 Description: Wikimedia private packages for Debian buster
+SignWith: AEB730EE24AC13AD8136F690E97EEFA63624CE90
 Log:
  log
 
@@ -26,7 +28,8 @@ Suite: bullseye-wikimedia
 Codename: bullseye-wikimedia
 Version: 11
 Architectures: source amd64
-Components: main
+Components: private
 Description: Wikimedia private packages for Debian bullseye
+SignWith: AEB730EE24AC13AD8136F690E97EEFA63624CE90
 Log:
  log

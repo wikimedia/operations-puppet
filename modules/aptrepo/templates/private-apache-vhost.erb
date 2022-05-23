@@ -2,4 +2,24 @@
 <VirtualHost *:80>
     DocumentRoot "<%= @basedir %>"
     ServerName <%= @aptrepo_hostname %>
+    
+    <Directory "<%= @basedir %>" >
+        # We want the user to be able to browse the directory manually
+        Options Indexes FollowSymLinks Multiviews
+        Require all granted
+    </Directory>
+
+    # Denied access to internal reprepro directories.
+    <Directory "<%= @basedir %>/db/">
+        Require all denied
+    </Directory>
+
+    <Directory "<%= @basedir %>/conf/">
+        Require all denied
+    </Directory>
+
+    <Directory "<%= @basedir %>/incoming/">
+        Require all denied
+    </Directory>
+    
 </VirtualHost>
