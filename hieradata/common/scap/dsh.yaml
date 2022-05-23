@@ -121,6 +121,8 @@ scap::dsh::groups:
       - netbox-dev2002.codfw.wmnet
       - netbox1001.wikimedia.org
       - netbox2001.wikimedia.org
+      - netbox1002.eqiad.wmnet
+      - netbox2002.codfw.wmnet
   ores:
     conftool:
       - {'cluster': 'ores', 'service': 'ores'}

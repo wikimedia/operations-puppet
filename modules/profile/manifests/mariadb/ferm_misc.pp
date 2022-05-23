@@ -12,7 +12,7 @@ class profile::mariadb::ferm_misc {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((netbox1001.wikimedia.org netbox2001.wikimedia.org))',
+        srange  => '@resolve((netbox1001.wikimedia.org netbox2001.wikimedia.org netbox1002.eqiad.wmnet netbox2002.codfw.wmnet))',
     }
     ferm::service { 'rt':
         proto   => 'tcp',

@@ -9,6 +9,8 @@ profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org
 profile::netbox::automation::frontends:
   - netbox1001.wikimedia.org
   - netbox2001.wikimedia.org
+  - netbox1002.eqiad.wmnet
+  - netbox2002.codfw.wmnet
 
 profile::netbox::swift_auth_url: "https://swift.svc.%{::site}.wmnet"
 profile::netbox::active_server: netbox1001.wikimedia.org
