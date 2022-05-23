@@ -2,6 +2,8 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::monitoring::notifications_enabled: false
 
 # Netbox
+profile::netbox::discovery_name: netbox-next.discovery.wmnet
+profile::netbox::service_hostname: netbox-next.wikimedia.org
 profile::netbox::service_hostname: netbox-next.wikimedia.org
 profile::netbox::do_backup: false
 profile::netbox::ssl_provider: 'cfssl'
