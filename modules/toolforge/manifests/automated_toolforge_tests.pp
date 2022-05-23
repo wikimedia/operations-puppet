@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class toolforge::automated_toolforge_tests (
     Hash $envvars,
 ) {

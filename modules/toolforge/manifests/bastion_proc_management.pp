@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == toolforge::bastion_proc_management ==
 #
 # Directly interact with user processes on bastions, initially to limit long

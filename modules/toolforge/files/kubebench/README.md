@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 ## Toolforge Kubernetes Security Benchmarks
 
 The files in this folder are intended to be use with the kube-bench tool found

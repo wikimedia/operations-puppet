@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Process dynamicproxy access logs to compute usage data for Toolforge tools.
 class toolforge::toolviews (
     $mysql_host,

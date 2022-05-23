@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # toolforge specific config for our kubeadm-based k8s deployment
 class toolforge::k8s::config (
 ) {
