@@ -241,21 +241,22 @@ class acme_chief::server (
     }
 
     sudo::user { 'nagios_acme-chief_fileage_checks':
-        user       => 'nagios',
-        privileges => ['ALL = (acme-chief) NOPASSWD: /usr/lib/nagios/plugins/check_file_age'],
+        ensure => absent,
     }
 
     nrpe::monitor_service { 'cert_sync_active_node':
         ensure       => $ensure,
         description  => 'Ensure cert-sync script runs successfully in the active node',
-        nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.done",
+        nrpe_command => "/usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.done",
+        sudo_user    => 'acme-chief',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
     nrpe::monitor_service { 'cert_sync_passive_node':
         ensure       => $ensure_passive,
         description  => 'Ensure that passive node gets the certificates from the active node as expected',
-        nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.status",
+        nrpe_command => "/usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.status",
+        sudo_user    => 'acme-chief',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
