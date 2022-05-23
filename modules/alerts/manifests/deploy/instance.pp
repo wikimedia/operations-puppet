@@ -8,6 +8,7 @@ define alerts::deploy::instance (
   String $alerts_dir,
   String $deploy_dir,
   Optional[String] $deploy_tag = undef,
+  Optional[Wmflib::Sites] $deploy_site = undef,
 ) {
     if !defined(File[$deploy_dir]) {
         file { $deploy_dir:

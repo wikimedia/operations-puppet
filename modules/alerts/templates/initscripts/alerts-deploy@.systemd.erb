@@ -7,7 +7,11 @@ User=alerts-deploy
 SyslogIdentifier=alerts-deploy@%I
 # Nothing deployed is fine
 SuccessExitStatus=42
-ExecStart=/usr/local/bin/alerts-deploy --cleanup --alerts-dir <%= @alerts_dir %> <%= @deploy_tag ? "--deploy-tag #{@deploy_tag}" : '' %> <%= @deploy_dir %>
+ExecStart=/usr/local/bin/alerts-deploy --cleanup \
+  --alerts-dir <%= @alerts_dir %> \
+  <%= @deploy_tag ? "--deploy-tag #{@deploy_tag}" : '' %> \
+  <%= @deploy_site ? "--deploy-site #{@deploy_site}" : '' %> \
+  <%= @deploy_dir %>
 
 [Install]
 WantedBy=alerts-deploy.target

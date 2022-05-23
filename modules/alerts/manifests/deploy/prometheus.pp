@@ -9,16 +9,18 @@ class alerts::deploy::prometheus(
 
 
     alerts::deploy::instance { 'local':
-        alerts_dir => $git_dir,
-        deploy_dir => $deploy_dir,
+        alerts_dir  => $git_dir,
+        deploy_dir  => $deploy_dir,
+        deploy_site => $::site,
     }
 
     # Deploy instance-specific alerts
     $instances.each |$instance| {
         alerts::deploy::instance { $instance:
-            alerts_dir => $git_dir,
-            deploy_dir => "${deploy_dir}/${instance}",
-            deploy_tag => $instance,
+            alerts_dir  => $git_dir,
+            deploy_dir  => "${deploy_dir}/${instance}",
+            deploy_tag  => $instance,
+            deploy_site => $::site,
         }
     }
 
