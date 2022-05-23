@@ -1571,7 +1571,7 @@ node /^idp-test[12]001\.wikimedia\.org$/ {
 }
 
 node 'idp-test1002.wikimedia.org' {
-    role(insetup)
+    role(idp_test)
 }
 
 node 'idp-test2002.wikimedia.org' {
