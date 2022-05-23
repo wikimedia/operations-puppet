@@ -1,20 +1,11 @@
+# @summary
+#   Provides a way to add backups for postgresql.
+#   Uses pg_dumpall to dump all databases and meta information.
+# @param path Full path to a directory to dump to. No ending slash. default: /srv/postgres-backup
 #
-# Class: postgresql::backup
+# @param rotate_days Number of days after which old backups are deleted. default: 7
 #
-# Provides a way to add backups for postgresql.
-# Uses pg_dumpall to dump all databases and meta information.
-#
-# Parameters:
-# $path
-# Full path to a directory to dump to. No ending slash. default: /srv/postgres-backup
-#
-# $rotate_days
-# Number of days after which old backups are deleted. default: 7
-#
-# Requires:
-# postgresql-client, pg_dumpall, gzip, find
-#
-# Sample Usage:
+# @example
 #
 # class { '::postgresql::backup': }
 # backup::set { 'postgresql': }
@@ -25,7 +16,7 @@
 class postgresql::backup(
     String $path = '/srv/postgres-backup',
     Integer $rotate_days = 7,
-    ) {
+) {
 
     file { $path:
         ensure => 'directory',
@@ -35,11 +26,11 @@ class postgresql::backup(
     }
 
     file { '/usr/local/bin/dump_all.sh':
-        ensure => 'present',
+        ensure => 'file',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/postgresql/dump_all.sh'
+        source => 'puppet:///modules/postgresql/dump_all.sh',
     }
 
     $dump_hour = fqdn_rand(23, 'pgdump')
@@ -49,10 +40,10 @@ class postgresql::backup(
         ensure      => 'present',
         description => 'Regular jobs to dump all databases and meta information',
         user        => 'postgres',
-        command     => "/usr/local/bin/dump_all.sh ${path} $(date +\\%Y\\%m\\%d)",
+        command     => "/bin/bash -c '/usr/local/bin/dump_all.sh ${path} $(date +\\%Y\\%m\\%d)'",
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => "*-*-* ${dump_hour}:${dump_minute}:00"
+            'interval' => "*-*-* ${dump_hour}:${dump_minute}:00",
         },
     }
 
@@ -71,7 +62,7 @@ class postgresql::backup(
         command     => "/usr/bin/find ${path} -type f -name '*.sql.gz' -mtime +${rotate_days} -delete",
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => "*-*-* ${clean_hour}:${clean_minute}:00"
+            'interval' => "*-*-* ${clean_hour}:${clean_minute}:00",
         },
     }
 
