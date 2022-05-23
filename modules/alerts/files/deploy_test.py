@@ -24,6 +24,15 @@ class AlertsDeployTest(unittest.TestCase):
             with open(base_dir.joinpath(file), "w") as _:
                 pass
 
+    def _add_rulefile_with_tags(self, dir, *args, **kwargs):
+        base_dir = self.alerts_dir.joinpath(dir)
+        base_dir.mkdir(exist_ok=True)
+
+        for file in args:
+            with open(base_dir.joinpath(file), "w") as f:
+                for k, v in kwargs["tags"].items():
+                    f.write("# {}: {}\n".format(k, v))
+
     def testSimpleDeploy(self):
         self._add_rulefile("team-foo", "alert1.yaml", "test.yaml", "alert2_test.yaml")
         rulefiles = deploy.all_rulefiles([self.alerts_dir.joinpath("team-foo")])
@@ -38,6 +47,62 @@ class AlertsDeployTest(unittest.TestCase):
         assert sorted([x.name for x in outfiles]) == [
             "team-foo_alert1.yaml",
             "team-foo_test.yaml",
+        ]
+
+    def testTagDeploySimple(self):
+        self._add_rulefile("team-foo", "alert-notags.yaml")
+        self._add_rulefile_with_tags(
+            "team-foo",
+            "alert-tags.yaml",
+            tags={"deploy-tag": "ok", "deploy-site": "blah"},
+        )
+        self._add_rulefile_with_tags(
+            "team-foo",
+            "alert-tagsnotok.yaml",
+            tags={"deploy-tag": "notok", "deploy-site": "meh"},
+        )
+
+        rulefiles = deploy.all_rulefiles([self.alerts_dir.joinpath("team-foo")])
+        rulefiles = deploy.filter_tag(rulefiles, "deploy-tag", "ok", "local")
+        deployed_paths = deploy.deploy_rulefiles(
+            rulefiles, self.deploy_dir, self.alerts_dir
+        )
+
+        outfiles = list(self.deploy_dir.iterdir())
+
+        assert len(deployed_paths) == 2
+        assert len(outfiles) == 1
+        assert sorted([x.name for x in outfiles]) == [
+            "team-foo_alert-tags.yaml",
+        ]
+
+    def testTagDeployCombined(self):
+        self._add_rulefile("team-foo", "alert-notags.yaml")
+        self._add_rulefile_with_tags(
+            "team-foo",
+            "alert-tags.yaml",
+            tags={"deploy-tag": "ok", "deploy-site": "blah"},
+        )
+        self._add_rulefile_with_tags(
+            "team-foo",
+            "alert-tagsnotok.yaml",
+            tags={"deploy-tag": "notok", "deploy-site": "meh"},
+        )
+
+        rulefiles = deploy.all_rulefiles([self.alerts_dir.joinpath("team-foo")])
+        rulefiles = deploy.filter_tag(rulefiles, "deploy-tag", "ok", "ok")
+        rulefiles = deploy.filter_tag(rulefiles, "deploy-site", "blah", "blah")
+        deployed_paths = deploy.deploy_rulefiles(
+            rulefiles, self.deploy_dir, self.alerts_dir
+        )
+
+        outfiles = list(self.deploy_dir.iterdir())
+
+        assert len(deployed_paths) == 5
+        assert len(outfiles) == 2
+        assert sorted([x.name for x in outfiles]) == [
+            "team-foo_alert-notags.yaml",
+            "team-foo_alert-tags.yaml",
         ]
 
     def testCleanup(self):

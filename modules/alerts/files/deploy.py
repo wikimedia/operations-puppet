@@ -98,7 +98,7 @@ def filter_tag(files, tag_name, tag_value, default):
                 if tag_value == default:
                     res.append(filename)
             else:
-                tags = re.split(r',\s*', tag)
+                tags = re.split(r",\s*", tag)
                 # tag found and has the value we're looking for
                 if tag_value in tags:
                     res.append(filename)
@@ -133,7 +133,14 @@ def main():
         metavar="NAME",
         default="local",
         help="Deploy alert files with 'deploy-tag' NAME. Files without 'deploy-tag'"
-             " will be considered to have tag 'local'.",
+        " will be considered to have tag 'local'.",
+    )
+    parser.add_argument(
+        "--deploy-site",
+        metavar="NAME",
+        default=None,
+        help="Deploy alert files with 'deploy-site' NAME. Alerts with no"
+        " deploy-site tag will be deployed.",
     )
     parser.add_argument(
         "deploy_dir", metavar="DEPLOY_DIR", help="Deploy alerts to DEPLOY_DIR"
@@ -152,6 +159,10 @@ def main():
     log.debug("Inspecting %r", subdirs)
     rulefiles = all_rulefiles(subdirs)
     rulefiles = filter_tag(rulefiles, "deploy-tag", args.deploy_tag, "local")
+    if args.deploy_site is not None:
+        rulefiles = filter_tag(
+            rulefiles, "deploy-site", args.deploy_site, args.deploy_site
+        )
     log.debug("Found rulefiles %r", rulefiles)
     deployed_paths = deploy_rulefiles(rulefiles, deploy_dir, alerts_dir)
 
