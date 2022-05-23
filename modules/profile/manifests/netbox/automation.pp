@@ -47,7 +47,6 @@ class profile::netbox::automation (
     # (this reuses the Netbox certificates).
     httpd::site { $git_hostname:
         content => template('profile/netbox/netbox-exports.wikimedia.org.erb'),
-        require => Acme_chief::Cert['netbox'],
     }
 
     # Configuration for Netbox extras dns scripts
