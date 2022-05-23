@@ -2519,6 +2519,10 @@ node /^netbox(1001|2001)\.wikimedia\.org$/ {
     role(netbox::frontend)
 }
 
+node /^netbox[12]002\.(eqiad|codfw)\.wmnet$/ {
+    role(netbox::frontend)
+}
+
 node /^netboxdb(1001|2001)\.(eqiad|codfw)\.wmnet$/ {
     role(netbox::database)
 }

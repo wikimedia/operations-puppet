@@ -10,7 +10,7 @@ profile::netbox::db_primary: "%{facts.networking.fqdn}"
 # profile::netbox::db_password: === private repo ===
 # profile::netbox::secret_key: === private repo ===
 profile::netbox::authentication_provider: 'cas'
-profile::netbox::ssl_provider: 'acme'
+profile::netbox::ssl_provider: 'acme_chief'
 profile::netbox::acme_cetificate: netbox
 profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"
 profile::netbox::do_backup: false
