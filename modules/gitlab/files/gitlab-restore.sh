@@ -2,7 +2,6 @@
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 CONFIG_FILE=/etc/gitlab/gitlab.rb
-SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
 OLD_BACKUP_FILE=/mnt/gitlab-backup/latest/latest.tar
 NEW_BACKUP_FILE=/mnt/gitlab-backup/latest_gitlab_backup.tar
 CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
@@ -24,10 +23,9 @@ echo "Running Pre-requisites..." >> $LOGFILE
 
 # Create Backup Configuration Files
 
-if [ -f "$CONFIG_FILE" ] && [ -f "$SECRETS_FILE" ]; then
-    /usr/bin/echo "Creating backup of $CONFIG_FILE and $SECRETS_FILE" >> $LOGFILE
+if [ -f "$CONFIG_FILE" ]; then
+    /usr/bin/echo "Creating backup of $CONFIG_FILE" >> $LOGFILE
     /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.restore
-    /usr/bin/cp $SECRETS_FILE $SECRETS_FILE.restore
 else
     /usr/bin/echo "Configuration File: $CONFIG_FILE Not Found" >> $LOGFILE
     exit 1
@@ -48,12 +46,11 @@ echo "changing access permissions of backups"  >> $LOGFILE
 
 # Extract Configuration Backup
 /usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
-if [ -f $CONFIG_FILE.restore ] && [ -f $SECRETS_FILE.restore ]; then
+if [ -f $CONFIG_FILE.restore ]; then
     echo "Reverting configuration files to those of the replica..." >> $LOGFILE
     /usr/bin/cp $CONFIG_FILE.restore $CONFIG_FILE
-    /usr/bin/cp $SECRETS_FILE.restore $SECRETS_FILE
 else
-    echo "Configuration backup files $CONFIG_FILE.restore $SECRETS_FILE.restore not found" >> $LOGFILE
+    echo "Configuration backup files $CONFIG_FILE.restore not found" >> $LOGFILE
     exit
 fi
 
@@ -132,7 +129,9 @@ fi
 /usr/bin/gitlab-rake gitlab:check SANITIZE=true >> $LOGFILE
 /usr/bin/gitlab-rake gitlab:doctor:secrets >> $LOGFILE
 
-echo "ApplicationSetting.last.update(home_page_url: 'https://gitlab-replica.wikimedia.org/explore')" | /usr/bin/gitlab-rails console >> $LOGFILE
+for i in {1..10}; do
+    echo "ApplicationSetting.last.update(home_page_url: 'https://gitlab-replica.wikimedia.org/explore')" | /usr/bin/gitlab-rails console >> $LOGFILE && break || sleep 15
+done
 
 /usr/bin/systemctl restart ssh-gitlab
 
