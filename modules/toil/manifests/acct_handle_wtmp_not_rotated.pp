@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Resolves https://phabricator.wikimedia.org/T167035
 # Mitigate cronspam.  This fix is backported from acct-6.6.4-3.
 

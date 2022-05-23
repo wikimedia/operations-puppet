@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Restart rsyslog if its TLS listener endpoint isn't responsive
 # Bandaid while https://phabricator.wikimedia.org/T199406 is fixed
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Systemd fails to start/cleanup session scope under load, periodically cleanup as a bandaid.
 # See also https://phabricator.wikimedia.org/T199911
 

@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 #
 # cron script to perform monthly login accounting.
 #
