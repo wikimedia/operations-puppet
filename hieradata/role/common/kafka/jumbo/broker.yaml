@@ -9,8 +9,6 @@ profile::kafka::broker::kafka_cluster_name: jumbo
 # the expected location in ops/puppet/private.
 profile::kafka::broker::ssl_enabled: true
 
-profile::kafka::broker::use_fixed_uid_gid: true
-
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277
 profile::kafka::broker::auth_acls_enabled: true

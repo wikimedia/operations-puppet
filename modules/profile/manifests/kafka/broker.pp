@@ -185,7 +185,6 @@ class profile::kafka::broker(
     Optional[String] $max_heap_size                              = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
     Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
     Optional[Array[String]] $custom_ferm_srange_components       = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
-    Boolean $use_fixed_uid_gid                                   = lookup('profile::kafka::broker::use_fixed_uid_gid', { 'default_value' => false }),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
@@ -377,20 +376,10 @@ class profile::kafka::broker(
         }
     }
 
-    if $use_fixed_uid_gid {
-        # Value reserved in https://wikitech.wikimedia.org/wiki/UID
-        # and also in the admin module in puppet.
-        # This code may be removed when all clusters are migrated
-        # to the new user uid/gid (since we'll rely only on the admin module).
-        $kafka_uid_gid = 916
-    } else {
-        $kafka_uid_gid = undef
-    }
-
     class { '::confluent::kafka::common':
         scala_version => $scala_version,
         java_home     => $java_home,
-        user_group_id => $kafka_uid_gid,
+        user_group_id => 916, # Reserved uid/gid in the admin module
     }
 
     # If monitoring is enabled, then include the monitoring profile and set $java_opts

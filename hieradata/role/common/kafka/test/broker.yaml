@@ -41,5 +41,3 @@ profile::kafka::mirror::producer_ssl_enabled: true
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-
-profile::kafka::broker::use_fixed_uid_gid: true

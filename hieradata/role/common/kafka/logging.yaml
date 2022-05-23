@@ -50,5 +50,3 @@ profile::java::java_packages:
     variant: 'jdk'
 
 profile::contacts::role_contacts: ['Observability']
-
-profile::kafka::broker::use_fixed_uid_gid: true
