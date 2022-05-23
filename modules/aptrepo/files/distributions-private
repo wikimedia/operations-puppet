@@ -1,0 +1,32 @@
+Origin: Wikimedia
+Label: Wikimedia
+Suite: stretch-wikimedia
+Codename: stretch-wikimedia
+Version: 9
+Architectures: source amd64
+Components: main
+Description: Wikimedia private packages for Debian stretch
+Log:
+ log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: buster-wikimedia
+Codename: buster-wikimedia
+Version: 10
+Architectures: source amd64
+Components: main
+Description: Wikimedia private packages for Debian buster
+Log:
+ log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: bullseye-wikimedia
+Codename: bullseye-wikimedia
+Version: 11
+Architectures: source amd64
+Components: main
+Description: Wikimedia private packages for Debian bullseye
+Log:
+ log
