@@ -75,14 +75,6 @@ https://www.mediawiki.org:
   assert_status: 301
   assert_headers:
     Location: https://static-codereview.wikimedia.org/MediaWiki/1.html
-- path: /w/index.php?title=Special:CodeReview
-  assert_status: 302
-  assert_headers:
-    Location: https://www.mediawiki.org/wiki/Special:Code
-- path: /w/index.php?title=Special:CodeReview&path=foo
-  assert_status: 302
-  assert_headers:
-    Location: https://www.mediawiki.org/w/index.php?title=Special:Code&path=foo
 
 https://upload.wikimedia.org:
 - path: /mediawiki/test
