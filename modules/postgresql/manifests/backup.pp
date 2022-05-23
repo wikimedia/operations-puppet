@@ -40,7 +40,7 @@ class postgresql::backup(
         ensure      => 'present',
         description => 'Regular jobs to dump all databases and meta information',
         user        => 'postgres',
-        command     => "/bin/bash -c '/usr/local/bin/dump_all.sh ${path} $(date +\\%Y\\%m\\%d)'",
+        command     => "/usr/local/bin/dump_all.sh ${path}",
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => "*-*-* ${dump_hour}:${dump_minute}:00",
