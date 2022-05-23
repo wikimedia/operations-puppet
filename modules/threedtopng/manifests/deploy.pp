@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: threedtopng::deploy
 #
 # Deploy 3d2png via scap
