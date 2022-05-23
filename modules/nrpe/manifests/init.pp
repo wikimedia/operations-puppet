@@ -51,7 +51,6 @@ class nrpe($allowed_hosts='127.0.0.1') {
         recurse => true,
         purge   => true,
         force   => true,
-        source  => 'puppet:///modules/nrpe/plugins',
         require => File['/usr/local/lib/nagios/'],
     }
 

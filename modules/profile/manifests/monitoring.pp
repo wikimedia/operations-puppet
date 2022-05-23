@@ -98,7 +98,15 @@ class profile::monitoring(
     }
 
     nrpe::plugin { 'check_fresh_files_in_dir':
-        source => 'puppet:///modules/profile/monitoring/check_fresh_files_in_dir.py'
+        source => 'puppet:///modules/profile/monitoring/check_fresh_files_in_dir.py',
+    }
+
+    nrpe::plugin { 'check_dpkg':
+        source => 'puppet:///modules/profile/monitoring/check_dpkg.sh',
+    }
+
+    nrpe::plugin { 'check_newest_file_age':
+        source => 'puppet:///modules/profile/monitoring/check_newest_file_age.sh',
     }
 
     file { [

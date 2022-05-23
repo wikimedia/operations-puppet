@@ -1,4 +1,5 @@
-#! /bin/sh
+#!/bin/sh
+# SPDX-License-Identifier: MIT
 #
 # NOTE: This file is managed by Puppet.
 # Originally copied from https://github.com/thehunmonkgroup/nagios-plugin-newest-file-age

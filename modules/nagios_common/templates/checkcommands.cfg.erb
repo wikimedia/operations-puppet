@@ -399,10 +399,6 @@ define command {
     command_line    $USER1$/check_ircd -H $HOSTADDRESS$ -w 800 -c 1000
 }
 define command {
-    command_name    nrpe_check_dpkg
-    command_line    $USER1$/check_nrpe -2 -u -H $HOSTADDRESS$ -c check_dpkg
-}
-define command {
     command_name    nrpe_check_udp2log_log_age
     command_line    $USER1$/check_nrpe -2 -u -H $HOSTADDRESS$ -c check_udp2log_log
 }
