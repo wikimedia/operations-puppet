@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary module to install and configure tomcat
 class tomcat (
     Stdlib::Host           $hostname                 = 'localhost',
