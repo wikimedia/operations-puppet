@@ -9,7 +9,7 @@ profile::ssh::server::listen_addresses:
   - "%{facts.ipaddress}"
   - "%{facts.ipaddress6}"
 
-profile::gitlab::backup_dir_data: '/mnt/gitlab-backup'
+profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
 profile::gitlab::backup_keep_time: 259200
 profile::gitlab::enable_backup_sync: true
