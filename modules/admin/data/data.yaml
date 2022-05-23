@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte]
+              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -50,7 +50,7 @@ groups:
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
-              razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
+              dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -353,7 +353,7 @@ groups:
               aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
-              edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab, cwhite,
+              edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, pginer,
@@ -4252,15 +4252,13 @@ users:
     email: dvrandecic@wikimedia.org
     krb: present
   razzi:
-    ensure: present
+    ensure: absent
     gid: 500
     name: razzi
     realname: Razzi Abuissa
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDOETw1B56Sj5+s2mssruTQRZqaveOf2ortJbawxiUE3 razzi@razzi-macbook-air
+    ssh_keys: []
     uid: 26051
-    email: rabuissa@wikimedia.org
-    krb: present
+    krb: absent
   lsobanski:
     ensure: present
     name: lsobanski
