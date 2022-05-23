@@ -46,7 +46,7 @@ class profile::aptrepo::private (
         owner        => 'root',
         group        => 'root',
         source       => 'puppet:///modules/aptrepo/distributions-wikimedia',
-        validate_cmd => '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"',
+        validate_cmd => '/usr/bin/python3 -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"',
     }
 
     httpd::site{ 'private-apt-repo':
