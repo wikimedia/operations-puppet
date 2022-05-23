@@ -141,6 +141,7 @@ define cfssl::cert (
             command     => $gen_command,
             environment => $environment,
             unless      => $test_command,
+            subscribe   => File[$csr_json_path],
         }
         if $auto_renew {
             $_notify_service = $notify_service ? {
