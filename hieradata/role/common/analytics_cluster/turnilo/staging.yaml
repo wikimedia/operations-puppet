@@ -3,6 +3,7 @@ profile::druid::turnilo::monitoring_enabled: false
 profile::druid::turnilo::druid_clusters:
   - name: druid-analytics-eqiad
     host: 'an-druid1001.eqiad.wmnet:8082'
+    sourceListScan: enable
     sourceListRefreshInterval: 15000
     sourceReintrospectInterval: 120000
     type: druid
