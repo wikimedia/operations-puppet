@@ -50,10 +50,10 @@ class aptrepo (
 
     $common_packages = ['reprepro','dpkg-dev','dctrl-tools','gnupg',]
 
-    if(debian::codename::ge('bullseye')) {
-        $packages = $common_packages << 'python3-apt'
-    } else {
+    if(debian::codename::lt('bullseye')) {
         $packages = $common_packages << 'python-apt'
+    } else {
+        $packages = $common_packages
     }
 
     ensure_packages($packages)
