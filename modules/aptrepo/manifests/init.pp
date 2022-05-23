@@ -48,15 +48,21 @@ class aptrepo (
     Array[String]    $authorized_keys = [],
 ) {
 
-    ensure_packages([
-        'reprepro',
-        'dpkg-dev',
-        'dctrl-tools',
-        'gnupg',
-        'python-apt',
-    ])
+    $common_packages = ['reprepro','dpkg-dev','dctrl-tools','gnupg',]
 
-    $deb822_validate_cmd = '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
+    if(debian::codename::ge('bullseye')) {
+        $packages = $common_packages << 'python3-apt'
+    } else {
+        $packages = $common_packages << 'python-apt'
+    }
+
+    ensure_packages($packages)
+
+    if(debian::codename::ge('bullseye')) {
+        $deb822_validate_cmd = '/usr/bin/python3 -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
+    } else {
+        $deb822_validate_cmd = '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
+    }
 
     file { $basedir:
         ensure => directory,
