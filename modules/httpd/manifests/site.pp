@@ -4,7 +4,14 @@
 # a File resource for a /etc/apache2/sites-available config file and a
 # symlink pointing to it in /etc/apache/sites-enabled. By using it, you
 # don't have to worry about dependencies and ordering; the resource will
-# take care that Apache & all modules are provisioned before the site is.
+# take care that all modules are provisioned before the site is.
+# Note: you may need to include the httpd class, to ensure that that
+# puppet notify in httpd::conf will work.
+# Example:
+# class { 'httpd':}
+# httpd::site{ 'some-site':
+#     content => template('some-site/apache-vhost.erb'),
+# }
 #
 # === Parameters
 #
