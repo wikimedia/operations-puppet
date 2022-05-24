@@ -75,14 +75,14 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 2
 
   '03':
-    description: 'ecs-1.7.0 default: delete older than 12 weeks'
+    description: 'ecs-default policy rev 1: delete older than 12 weeks'
     action: delete_indices
     options:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
         kind: regex
-        value: '^ecs-1.7.0-\d\d?-default-.*$'
+        value: '^ecs-(1.7.0-\d\d?-default|default-1)-.*$'
       - filtertype: age
         source: name
         direction: older
@@ -91,14 +91,14 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 12
 
   '04':
-    description: 'ecs-1.7.0 test: delete older than 2 weeks'
+    description: 'ecs-test policy rev 1: delete older than 2 weeks'
     action: delete_indices
     options:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
         kind: regex
-        value: '^ecs-1.7.0-\d\d?-test-.*$'
+        value: '^ecs-(1.7.0-\d\d?-test|test-1)-.*$'
       - filtertype: age
         source: name
         direction: older
@@ -107,14 +107,14 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 2
 
   '05':
-    description: 'ecs-1.7.0 alerts: delete older than 106 weeks'
+    description: 'ecs-alerts policy rev 1: delete older than 106 weeks'
     action: delete_indices
     options:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
         kind: regex
-        value: '^ecs-1.7.0-\d\d?-alerts-.*$'
+        value: '^ecs-(1.7.0-\d\d?-alerts|alerts-1)-.*$'
       - filtertype: age
         source: name
         direction: older
@@ -123,34 +123,18 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 106
 
   '06':
-    description: 'w3creportingapi-1.0.0: delete older than 3 months'
+    description: 'w3creportingapi: delete older than 3 months'
     action: delete_indices
     options:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
         kind: regex
-        value: '^w3creportingapi-1.0.0-[2-9]-.*$'
+        value: '^w3creportingapi-.*$'
       - filtertype: age
         source: name
         direction: older
         timestring: '%Y.%W'
-        unit: months
-        unit_count: 3
-
-  '07':
-    description: 'w3creportingapi-1.0.0-1: delete older than 3 months - T274005 can be cleaned up in May 2021'
-    action: delete_indices
-    options:
-      ignore_empty_list: true
-    filters:
-      - filtertype: pattern
-        kind: regex
-        value: '^w3creportingapi-1.0.0-1-.*$'
-      - filtertype: age
-        source: name
-        direction: older
-        timestring: '%Y.%m'
         unit: months
         unit_count: 3
 
