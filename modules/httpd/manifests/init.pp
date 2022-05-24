@@ -25,19 +25,25 @@ class httpd(
 
     if $remove_default_ports {
         # the file is included in apache.conf so just empty it
-        file{'/etc/apache2/ports.conf':
+        file { '/etc/apache2/ports.conf':
             ensure  => file,
             content => "# Puppet: default ports are not used\n",
             notify  => Service['apache2'],
             require => Package['apache2'],
         }
-    }
-
-    # If set to true, listen on http/80 only regardless of mod_ssl being loaded, default: false (T277989)
-    if $http_only {
-        file{'/etc/apache2/ports.conf':
+    } elsif $http_only {
+        # If $http_only is set to true, listen on http/80 only regardless of mod_ssl being loaded, default: false (T277989)
+        file { '/etc/apache2/ports.conf':
             ensure  => file,
             content => inline_template("#This file is puppetized.\nListen 80\n"),
+            notify  => Service['apache2'],
+            require => Package['apache2'],
+        }
+    } else {
+        # Use the default ports.conf if nothing else was configured.
+        file { '/etc/apache2/ports.conf':
+            ensure  => file,
+            source  => 'puppet:///modules/httpd/default-ports.conf',
             notify  => Service['apache2'],
             require => Package['apache2'],
         }
