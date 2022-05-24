@@ -137,17 +137,24 @@ define cfssl::cert (
         "$(/usr/bin/openssl pkey -pubout -in ${key_path} 2>&1)"
         | TEST_COMMAND
     if $ensure == 'present' {
+        $_notify_service = $notify_service ? {
+            undef   => undef,
+            default => Service[$notify_service],
+        }
         exec{"Generate cert ${title}":
             command     => $gen_command,
             environment => $environment,
             unless      => $test_command,
+            notify      => $_notify_service,
+        }
+        exec{"Generate cert ${title} refresh":
+            command     => $gen_command,
+            environment => $environment,
+            refreshonly => true,
+            notify      => $_notify_service,
             subscribe   => File[$csr_json_path],
         }
         if $auto_renew {
-            $_notify_service = $notify_service ? {
-                undef   => undef,
-                default => Service[$notify_service],
-            }
             exec {"renew certificate - ${title}":
                 command     => $sign_command,
                 environment => $environment,
