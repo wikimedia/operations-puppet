@@ -32,8 +32,8 @@ class profile::puppetmaster::backend(
     }
 
     class { 'httpd':
-        remove_default_ports => true,
-        modules              => ['passenger'],
+        listen_ports => [],
+        modules      => ['passenger'],
     }
 
     class { 'puppetmaster':

@@ -93,9 +93,9 @@ class profile::puppetmaster::pontoon (
     }
 
     class { 'httpd':
-        remove_default_ports => true,
-        modules              => ['proxy', 'proxy_http', 'proxy_balancer',
-                                'passenger', 'rewrite', 'lbmethod_byrequests'],
+        listen_ports => [],
+        modules      => ['proxy', 'proxy_http', 'proxy_balancer',
+                        'passenger', 'rewrite', 'lbmethod_byrequests'],
     }
 
     class { 'puppetmaster':
