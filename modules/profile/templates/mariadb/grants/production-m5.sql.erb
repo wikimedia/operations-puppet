@@ -148,6 +148,9 @@ GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.32.180' IDENTIFIED BY '<%= @m
 GRANT ALL ON mailman3.* TO 'mailman3'@'10.192.48.47' IDENTIFIED BY '<%= @mailman3_pass %>';
 GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.192.48.47' IDENTIFIED BY '<%= @mailman3web_pass %>';
 
+-- section mapping database
+GRANT SELECT ON cxserverdb.* TO 'cxserver'@'10.%' IDENTIFIED BY '<%= @cxserver_pass %>';
+
 -- toolhub
 -- Grants from the k8s Pod IPs
 -- dbproxy hosts
