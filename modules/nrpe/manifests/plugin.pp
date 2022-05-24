@@ -8,7 +8,7 @@ define nrpe::plugin (
     Optional[String]             $content = undef,
     Wmflib::Ensure               $ensure  = present,
 ) {
-    if $source == undef and $content == undef {
+    if $ensure == 'present' and $source == undef and $content == undef {
         fail('Either source or content attribute needs to be given')
     }
     if $source != undef and $content != undef {
