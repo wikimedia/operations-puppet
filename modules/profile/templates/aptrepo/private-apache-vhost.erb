@@ -1,7 +1,6 @@
 <%#- #SPDX-License-Identifier: Apache-2.0 -%>
-Listen 8080
 
-<VirtualHost *:8080>
+<VirtualHost *:<%= @repo_port %>>
     DocumentRoot "<%= @basedir %>"
     ServerName <%= @aptrepo_hostname %>
 
@@ -23,5 +22,5 @@ Listen 8080
     <Directory "<%= @basedir %>/incoming/">
         Require all denied
     </Directory>
-    
+
 </VirtualHost>

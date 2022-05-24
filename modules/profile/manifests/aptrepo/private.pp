@@ -28,21 +28,16 @@ class profile::aptrepo::private (
         gid    => 901,
     }
 
-    class { 'httpd':}
-
-    # If the http port is not a standard port, disable port 80
-    # in ports.conf to avoid conflicts with other webservers.
-    # Currently only needed during a transition from nginx to
-    # Apache2.
-    if ($repo_port != 80 and $repo_port != 443) {
-        file_line { '/etc/apache2/ports.conf':
-            path  => '/etc/apache2/ports.conf',
-            line  => '# Listen 80',
-            match => 'Listen 80',
-        }
+    class { 'httpd':
+        remove_default_ports => true,
+    }
+    httpd::conf { 'listen on configured port':
+        ensure   => present,
+        priority => 0,
+        content  => "Listen ${repo_port}\n",
     }
 
-    class { '::aptrepo':
+    class { 'aptrepo':
         basedir       => $basedir,
         homedir       => $homedir,
         incomingconf  => 'incoming-wikimedia',
@@ -55,16 +50,16 @@ class profile::aptrepo::private (
     }
 
     file { "${basedir}/conf/distributions":
-        ensure       => present,
+        ensure       => file,
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
-        source       => 'puppet:///modules/aptrepo/distributions-private',
+        source       => 'puppet:///modules/profile/aptrepo/distributions-private',
         validate_cmd => '/usr/bin/python3 -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"',
     }
 
     httpd::site{ 'private-apt-repo':
-        content => template('aptrepo/private-apache-vhost.erb'),
+        content => template('profile/aptrepo/private-apache-vhost.erb'),
     }
 
     # include ::profile::backup::host
@@ -78,7 +73,7 @@ class profile::aptrepo::private (
     }
 
     motd::script { 'inactive_warning':
-        ensure   => if $primary_server == $::fqdn { 'absent' } else { 'present' },
+        ensure   => ($primary_server == $facts['networking']['fqdn']).bool2str('absent', 'present'),
         priority => 1,
         content  => template('profile/install_server/inactive.motd.erb'),
     }
