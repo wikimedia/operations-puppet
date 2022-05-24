@@ -157,7 +157,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, bmansurov, musikanimal, nahidunlimited,
               daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph,
-              komla]
+              komla, sgimeno]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
