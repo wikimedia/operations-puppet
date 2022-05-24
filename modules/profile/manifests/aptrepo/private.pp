@@ -9,6 +9,7 @@ class profile::aptrepo::private (
     String $gpg_user                       = lookup('profile::aptrepo::wikimedia::gpg_user'),
     Optional[String] $gpg_pubring          = lookup('profile::aptrepo::wikimedia::gpg_pubring', {'default_value' => undef}),
     Optional[String] $gpg_secring          = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
+    Optional[Integer] $repo_port           = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
 ){
 
     # Group and user is temporarily added, as CloudVPS does not have
@@ -28,6 +29,19 @@ class profile::aptrepo::private (
     }
 
     class { 'httpd':}
+
+    # If the http port is not a standard port, disable port 80
+    # in ports.conf to avoid conflicts with other webservers.
+    # Currently only needed during a transition from nginx to
+    # Apache2.
+    if ($repo_port != 80 and $repo_port != 443) {
+        file_line { '/etc/apache2/ports.conf':
+            path  => '/etc/apache2/ports.conf',
+            line  => '# Listen 80',
+            match => 'Listen 80',
+        }
+    }
+
     class { '::aptrepo':
         basedir       => $basedir,
         homedir       => $homedir,
