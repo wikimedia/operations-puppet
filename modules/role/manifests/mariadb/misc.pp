@@ -1,7 +1,7 @@
 # miscellaneous services clusters
 class role::mariadb::misc {
 
-    system::role { 'mariadb::core':
+    system::role { 'mariadb::misc':
         description => 'Misc DB Server',
     }
 

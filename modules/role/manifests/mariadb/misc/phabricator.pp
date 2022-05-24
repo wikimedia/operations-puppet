@@ -7,7 +7,7 @@ class role::mariadb::misc::phabricator(
     ) {
     $shard = lookup('mariadb::shard')
 
-    system::role { 'mariadb::misc':
+    system::role { 'mariadb::misc::phabricator':
         description => "Misc Services Database ${shard} (phabricator)",
     }
 
