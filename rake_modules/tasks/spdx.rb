@@ -37,8 +37,6 @@ def check_spdx_licence(file_list)
   missing_licence = []
   file_list.each do |filename|
     next unless File.file?(filename)
-    # For now skip files with no extension as we are unable to detect the comment style
-    next unless filename.include?('.')
     # Skip 3rd party files
     next if filename.end_with?('.original.py')
     if File.binary?(filename)
@@ -69,11 +67,11 @@ def comment_line(filename, line)
     "/* #{line} */\n"
   when /\A(?:vcl|php|groovy|js)\z/
     "// #{line}\n"
-  when /\A(?:cf|cfg|csh|ini|pl|pp|properties|py|R|rb|rc|service|sh|stp|vtc|yaml|yml)\z/
+  when /\A(?:conf|cf|cfg|csh|ini|pl|pp|properties|py|R|Rakefile|rb|rc|service|sh|stp|vtc|yaml|yml)\z/
     "# #{line}\n"
   when /\A(?:lua|sql)\z/
     "-- #{line}\n"
-  when /\A(?:json|pem|key)\z/
+  when /\A(?:CONTRIBUTORS|README|json|pem|key)\z/
     # Theses files don't support comments so skip them
     raise NoCommentSupoportError
   else
