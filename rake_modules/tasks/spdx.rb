@@ -39,7 +39,6 @@ def check_spdx_licence(file_list)
     next unless File.file?(filename)
     next if File.empty?(filename)
     next if filename.end_with?('.original.py')
-    puts "FOO #{filename}" unless File.text?(filename)
     next unless File.text?(filename)
     begin
       missing_licence << filename unless File.foreach(filename).grep(/SPDX-License-Identifier:/).any?
