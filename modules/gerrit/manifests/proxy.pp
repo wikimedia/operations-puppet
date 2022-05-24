@@ -27,18 +27,24 @@ class gerrit::proxy(
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+    # lint:ignore:wmf_styleguide
+    # TODO: this whole class should be a profile
+    class { 'httpd':
+        remove_default_ports => true,
+        modules              => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
+
+    }
+    # lint:endignore
 
     httpd::site { $tls_host:
         content => template('gerrit/apache.erb'),
     }
 
-    # Let Apache only listen on the service IP.
-    file { '/etc/apache2/ports.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('gerrit/apache.ports.conf.erb'),
+    # Let apache only listen on the service IP
+    httpd::conf{ 'gerrit_listen_service_ip':
+        ensure   => present,
+        priority => 0,
+        content  => template('gerrit/apache.ports.conf.erb')
     }
 
     $robots = ['User-Agent: *', 'Disallow: /g', 'Disallow: /r/plugins/gitiles', 'Crawl-delay: 1']
