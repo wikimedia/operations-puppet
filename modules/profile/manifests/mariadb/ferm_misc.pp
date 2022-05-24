@@ -32,7 +32,7 @@ class profile::mariadb::ferm_misc {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((idp-test1001.wikimedia.org idp-test2001.wikimedia.org))',
+        srange  => '@resolve((idp-test1001.wikimedia.org idp-test1002.wikimedia.org idp-test2001.wikimedia.org idp-test2002.wikimedia.org))',
     }
 
     ferm::service { 'idp':
