@@ -1,8 +1,10 @@
 <%#- #SPDX-License-Identifier: Apache-2.0 -%>
+Listen 8080
+
 <VirtualHost *:8080>
     DocumentRoot "<%= @basedir %>"
     ServerName <%= @aptrepo_hostname %>
-    
+
     <Directory "<%= @basedir %>" >
         # We want the user to be able to browse the directory manually
         Options Indexes FollowSymLinks Multiviews
