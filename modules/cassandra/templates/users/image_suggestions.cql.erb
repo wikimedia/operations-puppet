@@ -1,6 +1,6 @@
 
 CREATE ROLE IF NOT EXISTS image_suggestions
-    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = false AND SUPERUSER = false;
+    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
 
 GRANT SELECT ON KEYSPACE image_suggestions TO image_suggestions;
 GRANT MODIFY ON KEYSPACE image_suggestions TO image_suggestions;
