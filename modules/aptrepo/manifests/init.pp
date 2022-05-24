@@ -229,6 +229,12 @@ class aptrepo (
         command     => "/usr/bin/gpg --import ${homedir}/.gnupg/reprepro-updates-keys.d/*.gpg",
     }
 
+    file { "${homedir}/.bashrc":
+        ensure => file,
+        owner  => $user,
+        group  => $group,
+    }
+
     file_line { 'reprepro_basedir':
       ensure => present,
       path   => "${homedir}/.bashrc",
