@@ -13,7 +13,8 @@
 </VirtualHost>
 
 <VirtualHost *:443>
-    ServerName netbox.wikimedia.org
+    ServerName <%= @service_hostname %>
+    ServerAlias <%= @discovery_name %>
     ServerAdmin noc@wikimedia.org
 
     SSLEngine on
