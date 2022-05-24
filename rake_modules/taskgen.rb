@@ -386,7 +386,7 @@ class TaskGen < ::Rake::TaskLib
         shebang = File.open(source_file) {|f| f.readline}
         # If the first line is not correctly encoded its likely a binary file
         next unless shebang.valid_encoding?
-        mime_type = `file --mime-type -b '#{source_file}'`.chomp
+        mime_type = File.mime_type(source_file)
         if shebang =~ /^#!.*python/ || mime_type == 'text/x-python'
           failures = true
           $stderr.puts "#{source_file} have been recognized as a Python source file, hence MUST have a '.py' file extension".red

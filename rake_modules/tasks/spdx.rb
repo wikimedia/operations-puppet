@@ -37,12 +37,9 @@ def check_spdx_licence(file_list)
   missing_licence = []
   file_list.each do |filename|
     next unless File.file?(filename)
-    # Skip 3rd party files
+    next if File.empty?(filename)
     next if filename.end_with?('.original.py')
-    if File.binary?(filename)
-      puts 'skipping ' + filename
-      next
-    end
+    next unless File.text?(filename)
     begin
       missing_licence << filename unless File.foreach(filename).grep(/SPDX-License-Identifier:/).any?
     rescue ArgumentError => error
@@ -161,12 +158,18 @@ def setup_spdx(git)
   tasks
 end
 
+def git_files(path = '.')
+  `git ls-files -- #{path}`.split("\n")
+end
+
 namespace :spdx do
   namespace :check do
     desc "Check all files"
     task :all do
-      missing_licence = check_spdx_licence(FileList[SPDX_GLOB])
-      abort("The following are missing a SPDX licence header:\n#{missing_licence}".red) unless missing_licence.empty?
+      all_files = git_files.select{ |f| File.fnmatch(SPDX_GLOB, f, File::FNM_EXTGLOB) }
+      # missing_licence = check_spdx_licence(FileList[SPDX_GLOB])
+      missing_licence = check_spdx_licence(all_files)
+      abort("The following are missing a SPDX licence header:\n#{missing_licence.join("\n")}".red) unless missing_licence.empty?
       puts 'SPDX licence: OK'.green
     end
     desc "Check all files"
@@ -187,8 +190,7 @@ namespace :spdx do
       unless unsigned_contibutors.empty?
         abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contibutors.join("\n")}".red)
       end
-      glob = "#{module_path}/**/*"
-      missing_licence = check_spdx_licence(FileList[glob])
+      missing_licence = check_spdx_licence(git_files(path))
       add_spdx_tags(missing_licence)
     end
     desc "Convert a profile to SPDX"
@@ -208,8 +210,7 @@ namespace :spdx do
           puts unsigned_contibutors.join("\n").red
           next
         end
-        glob = "#{path}/**/*"
-        missing_licence = check_spdx_licence(FileList[glob])
+        missing_licence = check_spdx_licence(git_files(path))
         add_spdx_tags(missing_licence)
       end
     end
