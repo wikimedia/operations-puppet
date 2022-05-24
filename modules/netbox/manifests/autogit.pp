@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Definition: netbox::autogit
 #
 # Creates a bare Git repository ready to be used locally to the machine in question.

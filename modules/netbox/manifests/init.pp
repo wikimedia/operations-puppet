@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Installs Netbox
 # @param service_hostname The external hostname for this service.
 # @param secret_key Django secret key
