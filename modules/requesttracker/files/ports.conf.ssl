@@ -1,8 +1,0 @@
-# ! this file is managed by puppet !
-# simple Apache ports.conf with enabled SSL
-
-Listen 80
-
-<IfModule mod_ssl.c>
-    Listen 443
-</IfModule>

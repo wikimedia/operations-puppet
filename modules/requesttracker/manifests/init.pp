@@ -16,14 +16,10 @@ class requesttracker (
     $rt_mysql_port = $dbport
 
 
-    include ::requesttracker::packages
-    include ::requesttracker::config
-    include ::requesttracker::forms
-    include ::requesttracker::aliases
-
-    class { '::requesttracker::apache':
-        apache_site => $apache_site,
-    }
+    include requesttracker::packages
+    include requesttracker::config
+    include requesttracker::forms
+    include requesttracker::aliases
 
 }
 
