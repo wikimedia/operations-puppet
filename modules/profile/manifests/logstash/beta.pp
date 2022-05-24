@@ -137,8 +137,8 @@ filter {
   # logstash-* indexes output
   logstash::output::opensearch { 'logstash':
     host            => '127.0.0.1',
-    guard_condition => '"es" in [tags] and ![ecs]',
-    index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
+    guard_condition => '[@metadata][output] == "logstash"',
+    index           => 'logstash-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-7.0.0-1-%{[@metadata][datestamp_format]}',
     priority        => 90,
     template        => '/etc/logstash/templates/logstash_7.0-1.json',
     require         => File['/etc/logstash/templates'],
@@ -147,8 +147,8 @@ filter {
   # dlq-* indexes output
   logstash::output::opensearch { 'dlq-1.0.0-1':
     host            => '127.0.0.1',
-    guard_condition => '[type] == "dlq"',
-    index           => 'dlq-1.0.0-1-%{+YYYY.MM.dd}',
+    guard_condition => '[@metadata][output] == "dlq"',
+    index           => 'dlq-%{[@metadata][partition]-%{[@metadata][policy_revision]}-1.0.0-1-%{[@metadata][datestamp_format]}',
     priority        => 90,
     template        => '/etc/logstash/templates/dlq_1.0.0-1.json',
     require         => File['/etc/logstash/templates'],
@@ -186,8 +186,8 @@ filter {
   $ecs_versions.each |String $ecs_version, String $ecs_revision| {
     logstash::output::opensearch { "ecs_${ecs_version}-${ecs_revision}":
       host            => '127.0.0.1',
-      guard_condition => "\"es\" in [tags] and [ecs][version] == \"${ecs_version}\"",
-      index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+xxxx.ww}",
+      guard_condition => "[@metadata][output] == \"ecs\" and [@metadata][template_version] == \"${ecs_version}\"",
+      index           => "ecs-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${ecs_version}-${ecs_revision}-%{[@metadata][datestamp_format]}",
       priority        => 90,
       template        => "/etc/logstash/templates/ecs_${ecs_version}-${ecs_revision}.json",
       require         => File['/etc/logstash/templates'],
@@ -202,7 +202,7 @@ filter {
     logstash::output::opensearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
       host            => '127.0.0.1',
       guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
-      index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+xxxx.ww}",
+      index           => "w3creportingapi-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${w3creportingapi_version}-${w3creportingapi_revision}-%{+xxxx.ww}",
       priority        => 90,
       template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
       require         => File['/etc/logstash/templates'],
