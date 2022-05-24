@@ -39,6 +39,7 @@ def check_spdx_licence(file_list)
     next unless File.file?(filename)
     next if File.empty?(filename)
     next if filename.end_with?('.original.py')
+    puts "FOO #{filename}" unless File.text?(filename)
     next unless File.text?(filename)
     begin
       missing_licence << filename unless File.foreach(filename).grep(/SPDX-License-Identifier:/).any?
@@ -203,6 +204,25 @@ namespace :spdx do
         "modules/profile/types"
       ].each do |dir|
         path = "#{dir}/#{args[:profile]}"
+        next unless File.directory?(path)
+        unsigned_contibutors = check_path_contributors(path)
+        unless unsigned_contibutors.empty?
+          puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
+          puts unsigned_contibutors.join("\n").red
+          next
+        end
+        missing_licence = check_spdx_licence(git_files(path))
+        add_spdx_tags(missing_licence)
+      end
+    end
+    desc "Convert a profile to SPDX"
+    task :role, [:role] do |_t, args|
+      [
+        "modules/role/manifests",
+        "modules/role/files",
+        "modules/role/templates",
+      ].each do |dir|
+        path = "#{dir}/#{args[:role]}"
         next unless File.directory?(path)
         unsigned_contibutors = check_path_contributors(path)
         unless unsigned_contibutors.empty?
