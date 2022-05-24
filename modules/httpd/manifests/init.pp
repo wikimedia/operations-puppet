@@ -6,7 +6,8 @@
 # @param enable_forensic_log turn on forensic logs
 # @param extra_pkgs Extra packages to install which are not pulled in by the "apache2" base package in Debian.
 # @param purge_manual_config remove any unmanaged files in the apache directory
-# @param listen_ports list of ports to listen on
+# @param remove_default_ports if true remove the default port list
+# @param http_only if true only enable to http port
 class httpd(
     Array[String]           $modules              = [],
     Wmflib::Ensure          $legacy_compat        = present,
@@ -15,18 +16,31 @@ class httpd(
     Boolean                 $enable_forensic_log  = false,
     Array[String]           $extra_pkgs           = [],
     Boolean                 $purge_manual_config  = true,
-    Array[Stdlib::Port]     $listen_ports         = [80, 443]
+    Boolean                 $remove_default_ports = false,
+    Boolean                 $http_only            = false,
 ) {
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
     ensure_packages($base_pkgs + $extra_pkgs)
 
-    $ports_content = $listen_ports.map |$port| { "Listen ${port}" }.join("\n")
-    file{'/etc/apache2/ports.conf':
-        ensure  => file,
-        content => "# This file is managed by puppet\n${ports_content}",
-        notify  => Service['apache2'],
-        require => Package['apache2'],
+    if $remove_default_ports {
+        # the file is included in apache.conf so just empty it
+        file{'/etc/apache2/ports.conf':
+            ensure  => file,
+            content => "# Puppet: default ports are not used\n",
+            notify  => Service['apache2'],
+            require => Package['apache2'],
+        }
+    }
+
+    # If set to true, listen on http/80 only regardless of mod_ssl being loaded, default: false (T277989)
+    if $http_only {
+        file{'/etc/apache2/ports.conf':
+            ensure  => file,
+            content => inline_template("#This file is puppetized.\nListen 80\n"),
+            notify  => Service['apache2'],
+            require => Package['apache2'],
+        }
     }
 
     # Ensure the directories for apache config files are in place.

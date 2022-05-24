@@ -107,9 +107,9 @@ class profile::puppetmaster::frontend(
     }
 
     class { 'httpd':
-        listen_ports => [],
-        modules      => ['proxy', 'proxy_http', 'proxy_balancer',
-                        'passenger', 'rewrite', 'lbmethod_byrequests'],
+        remove_default_ports => true,
+        modules              => ['proxy', 'proxy_http', 'proxy_balancer',
+                                'passenger', 'rewrite', 'lbmethod_byrequests'],
     }
 
     class { 'puppetmaster::ca_server':
