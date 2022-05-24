@@ -132,7 +132,9 @@ groups:
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
-              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche]
+              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
+              aikochou, kevinbazira
+    ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
