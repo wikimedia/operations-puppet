@@ -18,8 +18,8 @@ def extract_email(string)
   string.scan(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/).sort.uniq
 end
 
-def check_module_contributors(module_path)
-  module_contributors = extract_email(`git shortlog -se -- #{module_path}`)
+def check_path_contributors(path)
+  module_contributors = extract_email(`git shortlog -se -- #{path}`)
                           .reject {|email| email.end_with?('@wikimedia.org') }
   allowed_contributors = extract_email(File.read('CONTRIBUTORS'))
   module_contributors - allowed_contributors
@@ -183,13 +183,35 @@ namespace :spdx do
     task :module, [:module] do |_t, args|
       module_path = "modules/#{args[:module]}"
       abort("#{args[:module]}: does not exist".red) unless File.directory?(module_path)
-      unsigned_contibutors = check_module_contributors(module_path)
+      unsigned_contibutors = check_path_contributors(module_path)
       unless unsigned_contibutors.empty?
         abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contibutors.join("\n")}".red)
       end
       glob = "#{module_path}/**/*"
       missing_licence = check_spdx_licence(FileList[glob])
       add_spdx_tags(missing_licence)
+    end
+    desc "Convert a profile to SPDX"
+    task :profile, [:profile] do |_t, args|
+      [
+        "modules/profile/manifests",
+        "modules/profile/files",
+        "modules/profile/functions",
+        "modules/profile/templates",
+        "modules/profile/types"
+      ].each do |dir|
+        path = "#{dir}/#{args[:profile]}"
+        next unless File.directory?(path)
+        unsigned_contibutors = check_path_contributors(path)
+        unless unsigned_contibutors.empty?
+          puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
+          puts unsigned_contibutors.join("\n").red
+          next
+        end
+        glob = "#{path}/**/*"
+        missing_licence = check_spdx_licence(FileList[glob])
+        add_spdx_tags(missing_licence)
+      end
     end
   end
 end
