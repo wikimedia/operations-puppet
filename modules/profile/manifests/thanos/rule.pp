@@ -16,6 +16,7 @@ class profile::thanos::rule (
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
     String $objstore_password = lookup('profile::thanos::objstore_password'),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers'),
+    String $public_domain = lookup('public_domain'),
 ) {
     $http_port = 17902
     $grpc_port = 17901
@@ -33,6 +34,7 @@ class profile::thanos::rule (
         objstore_password => $objstore_password,
         http_port         => $http_port,
         grpc_port         => $grpc_port,
+        query_url         => "https://thanos.${public_domain}",
     }
 
     if $::fqdn in $thanos_rule_hosts {

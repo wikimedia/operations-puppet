@@ -23,6 +23,7 @@
 # [*objstore_password*] The password to access object storage
 # [*alertmanagers*] All alertmanagers to send alerts to
 # [*rule_files*] A list of globs to files to evaluate as rules
+# [*query_url*] The publicly-reachable Thanos query URL to attach to alerts
 # [*http_port*] The port to use for HTTP
 # [*grpc_port*] The port to use for gRPC
 
@@ -32,6 +33,7 @@ class thanos::rule (
     String $objstore_password,
     Array[Stdlib::Host] $alertmanagers,
     Array[String] $rule_files,
+    Stdlib::HTTPSUrl $query_url,
     Wmflib::Ensure $ensure = present,
     Stdlib::Port::Unprivileged $query_port = 10902,
     Stdlib::Port::Unprivileged $http_port = 17902,
