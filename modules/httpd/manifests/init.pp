@@ -1,5 +1,13 @@
-# extra_pkgs: An Array of Debian package names of Apache modules which are
-#             not pulled in by the "apache" base package.
+# @summary configure httpd daemon
+# @param modules list of modules to install
+# @param legacy_compat Use Apache 2.2 compatible syntax.
+# @param period log rotation period
+# @param rotate amount of log rotated files to keep
+# @param enable_forensic_log turn on forensic logs
+# @param extra_pkgs Extra packages to install which are not pulled in by the "apache2" base package in Debian.
+# @param purge_manual_config remove any unmanaged files in the apache directory
+# @param remove_default_ports if true remove the default port list
+# @param http_only if true only enable to http port
 class httpd(
     Array[String]           $modules              = [],
     Wmflib::Ensure          $legacy_compat        = present,
@@ -81,7 +89,7 @@ class httpd(
 
 
     httpd::mod_conf { concat(['status'], $modules):
-        ensure => present
+        ensure => present,
     }
 
 
@@ -144,7 +152,7 @@ class httpd(
         # the main logs, and that apache gets restarted afterwards.
         logrotate::conf { 'apache2':
             ensure  => present,
-            content => template('httpd/logrotate.erb')
+            content => template('httpd/logrotate.erb'),
         }
     }
     else {
