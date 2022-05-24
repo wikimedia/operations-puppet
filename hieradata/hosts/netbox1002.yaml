@@ -1,1 +1,2 @@
 profile::netbox::ssl_provider: cfssl
+profile::netbox::discovery_name: netbox.discovery.wmnet
