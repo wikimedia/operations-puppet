@@ -33,8 +33,19 @@
 #
 # [*enable_tls*]
 #   Configure mcrouter using TLS on external interfaces. This
-#   parameter is only supported on memcached 1.6
+#   parameter is only supported on memcached 1.6. On Buster a
+#   TLS-enabled build is provided in component/memcached16 and
+#   on Bullseye in component/memcached-tls.
 #   Default: false
+#
+# [*enable_16*]
+#   Debian Buster has memcached 1.5.6. If this option is enabled
+#   a 1.6 backport gets installed. This backport also has TLS
+#   enabled. On Bullseye this option isn't needed, it has 1.6.9
+#   by default. If you however need TLS on Bullseye, see the
+#   'enable_tls' option.
+#   Default: false
+#
 # [*notls_port]
 #   By default, when we `enable_tls`, the host will listen
 #   `port` for TLS connections. By defining a `notls_port`,
@@ -90,9 +101,6 @@ class memcached(
     Optional[Stdlib::Unixpath] $ssl_cert              = undef,
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
 ) {
-    if $enable_tls and ! $enable_16 {
-        fail('you can only enable tls with memcached1.6')
-    }
     if $enable_tls and (!$ssl_key or !$ssl_key) {
         fail('you must provide ssl_cert and ssl_key if you enable_tls')
     }
@@ -116,6 +124,7 @@ class memcached(
         $listen = [$ip] + $notls_listen
     }
     if $enable_16 {
+        # The component for Buster also provides TLS support
         if debian::codename::eq('buster') {
             apt::package_from_component { 'memcached_16':
                 component => 'component/memcached16',
@@ -123,12 +132,28 @@ class memcached(
                 before    => Service['memcached'],
             }
         }
-        $override = true
     } else {
-        package { 'memcached':
-            ensure => $version,
-            before => Service['memcached'],
+        if debian::codename::eq('bullseye') and $enable_tls {
+            apt::package_from_component { 'memcached_tls':
+                component => 'component/memcached-tls',
+                packages  => ['memcached'],
+                priority  => 1002,
+                before    => Service['memcached'],
+            }
+        } else {
+            package { 'memcached':
+                ensure => $version,
+                before => Service['memcached'],
+            }
         }
+    }
+
+    if $enable_tls {
+        $override = true
+        if ! $enable_16 and debian::codename::eq('buster'){
+            fail('You must set \$enable_16 when using \$enable_tls on Buster')
+        }
+    } else {
         $override = false
     }
 
