@@ -43,30 +43,23 @@ class profile::aptrepo::private (
         content => template('profile/aptrepo/private-apache-vhost.erb'),
     }
 
+    class { 'aptrepo::common':
+        homedir     => $homedir,
+        basedir     => $public_basedir,
+        gpg_secring => $gpg_secring,
+        gpg_pubring => $gpg_pubring,
+    }
+
     # Private repo, served by Apache2
-    class { 'aptrepo':
-        basedir       => $private_basedir,
-        homedir       => $homedir,
-        incomingconf  => 'incoming-wikimedia',
-        incominguser  => 'root',
-        # Allow wikidev users to upload to /srv/wikimedia/incoming
-        incominggroup => 'wikidev',
-        gpg_pubring   => $gpg_pubring,
-        gpg_secring   => $gpg_secring,
-        gpg_user      => $gpg_user,
+    aptrepo::repo {'private_apt_repository':
+        basedir => $private_basedir,
+        homedir => $homedir,
     }
 
     # Public repo, servedby nginx
-    class { 'aptrepo':
-        basedir       => $public_basedir,
-        homedir       => $homedir,
-        incomingconf  => 'incoming-wikimedia',
-        incominguser  => 'root',
-        # Allow wikidev users to upload to /srv/wikimedia/incoming
-        incominggroup => 'wikidev',
-        gpg_pubring   => $gpg_pubring,
-        gpg_secring   => $gpg_secring,
-        gpg_user      => $gpg_user,
+    aptrepo::repo { 'public_apt_repository':
+        basedir => $public_basedir,
+        homedir => $homedir,
     }
 
     file { "${private_basedir}/conf/distributions":
