@@ -3872,3 +3872,16 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
+
+  developer-portal:
+    description: Static documentation site, developer-portal.svc.%{::site}.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
