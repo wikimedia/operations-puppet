@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class gdnsd::monitor_conf {
     # This is a local NRPE check to validate that the gdnsd server's config
     # and zonefiles still load.  This is an important gaurd against e.g.

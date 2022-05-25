@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 if /usr/bin/nice /usr/sbin/gdnsd -S checkconf; then
     echo "OK: gdnsd -S checkconf success"
     exit 0

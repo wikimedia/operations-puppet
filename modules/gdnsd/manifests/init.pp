@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class gdnsd {
     # The package would create this as well if missing, but this allows
     # puppetization to create directories and files owned by these before the
