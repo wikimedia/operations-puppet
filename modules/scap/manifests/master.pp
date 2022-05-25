@@ -79,11 +79,6 @@ class scap::master(
         hosts_allow => join($::network::constants::deployable_networks, ' ')
     }
 
-    class { 'scap::l10nupdate':
-        deployment_group => $deployment_group,
-        run_l10nupdate   => false,
-    }
-
     file { '/usr/local/bin/scap-master-sync':
         ensure => present,
         owner  => 'root',
