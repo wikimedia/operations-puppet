@@ -70,8 +70,8 @@ fi
 
 # Check If File Exists
 if [ $REQUESTED_BACKUP == "latest" ]; then
-    OLD_BACKUP_FILE=/mnt/gitlab-backup/latest/${BACKUP}.tar
-    NEW_BACKUP_FILE=/mnt/gitlab-backup/latest_gitlab_backup.tar
+    OLD_BACKUP_FILE=/srv/gitlab-backup/latest/${BACKUP}.tar
+    NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
     if [ -f "$OLD_BACKUP_FILE" ]; then
         /usr/bin/echo "Moving $OLD_BACKUP_FILE to $NEW_BACKUP_FILE"  >> $LOGFILE
         /usr/bin/cp $OLD_BACKUP_FILE $NEW_BACKUP_FILE  >> $LOGFILE
@@ -81,7 +81,7 @@ if [ $REQUESTED_BACKUP == "latest" ]; then
     fi
 fi
 
-CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
+CONFIG_BACKUP=/srv/gitlab-backup/latest_config_backup.tar
 
 # Change Permissions
 echo "changing permissions - chmod 600"  >> $LOGFILE
