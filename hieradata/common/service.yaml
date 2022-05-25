@@ -3876,7 +3876,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
 
   developer-portal:
     description: Static documentation site, developer-portal.svc.%{::site}.wmnet
