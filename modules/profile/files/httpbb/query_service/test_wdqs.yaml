@@ -1,10 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
 https://query.wikidata.org:
+# index.html and embed.html reference hashed JS/CSS file names
+# and should not be cached without validation
 - path: /
   assert_status: 200
+  assert_headers:
+    cache-control: no-cache
   assert_body_contains: "https://www.w3.org/TR/"
 - path: /embed.html
   assert_status: 200
+  assert_headers:
+    cache-control: no-cache
+# everything else should be fine to cache
+- path: /favicon.ico
+  assert_status: 200
+  assert_headers:
+    cache-control: max-age=3600, must-revalidate
 # check that the custom config file exists
 - path: /custom-config.json
   assert_status: 200

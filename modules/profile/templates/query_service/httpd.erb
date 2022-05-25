@@ -27,6 +27,10 @@
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
+
+        <FilesMatch "^(index|embed)\.html$">
+            Header set Cache-Control "no-cache"
+        </Files>
     </Directory>
 
     Alias /querybuilder    "/srv/org/wikidata/query-builder"
@@ -39,6 +43,10 @@
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
+
+        <Files "index.html">
+            Header set Cache-Control "no-cache"
+        </Files>
     </Directory>
 
 </VirtualHost>
