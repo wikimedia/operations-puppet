@@ -72,6 +72,7 @@ define service::docker(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
+            notify  => Service[$title],
         }
     }
 
@@ -81,7 +82,7 @@ define service::docker(
     exec { "docker pull of ${fqin} for ${title}":
         command => '/usr/bin/true',
         unless  => "/usr/bin/docker pull '${fqin}' | grep -q 'up to date'",
-        notify  => Systemd::Service[$title],
+        notify  => Service[$title],
     }
 
     systemd::service { $title:
