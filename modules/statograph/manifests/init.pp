@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Installs statograph and configures systemd timer
 #
 # @param api_key the api key for statuspage.io
