@@ -67,6 +67,8 @@ class nrpe($allowed_hosts='127.0.0.1') {
         require => Package['nagios-nrpe-server'],
     }
 
+    Sudo::User <| tag == 'nrpe::check' |>
+
     File <| tag == 'nrpe::plugin' |> {
         require => File['/usr/local/lib/nagios/plugins/'],
     }

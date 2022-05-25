@@ -413,16 +413,13 @@ define airflow::instance(
     $check_db_command = "/usr/local/bin/check_cmd ${airflow_cmd} db check"
 
     sudo::user { "airflow_checks_${title}":
-        ensure     => $monitoring_ensure,
-        user       => nagios,
-        privileges => [
-            "ALL = (${service_user}) NOPASSWD: ${check_scheduler_command}",
-            "ALL = (${service_user}) NOPASSWD: ${check_db_command}",
-            ],
+        ensure => absent,
     }
+
     nrpe::monitor_service { "airflow@${title}_check_scheduler":
         ensure       => $monitoring_ensure,
-        nrpe_command => "/usr/bin/sudo -u ${service_user} ${check_scheduler_command}",
+        nrpe_command => $check_scheduler_command,
+        sudo_user    => $service_user,
         description  => "Checks that the local airflow scheduler for airflow @${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
@@ -430,7 +427,8 @@ define airflow::instance(
     }
     nrpe::monitor_service { "airflow@${title}_check_db":
         ensure       => $monitoring_ensure,
-        nrpe_command => "/usr/bin/sudo -u ${service_user} ${check_db_command}",
+        nrpe_command => $check_db_command,
+        sudo_user    => $service_user,
         description  => "Checks that the airflow database for airflow ${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
