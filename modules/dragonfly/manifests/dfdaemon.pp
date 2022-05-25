@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary
 #   Install and configures Dragonfly dfdaemon and dfget to be used as HTTPS proxy by local docker.
 #

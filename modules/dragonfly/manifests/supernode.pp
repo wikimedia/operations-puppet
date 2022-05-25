@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary
 #   Install and configures Dragonfly supernode (with cdn pattern "source").
 #
