@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: opensearch::curator
 #
 # This class installs elasticsearch-curator and all of the curator

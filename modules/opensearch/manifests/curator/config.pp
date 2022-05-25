@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define opensearch::curator::config(
     Wmflib::Ensure   $ensure  = present,
     Optional[String] $content = undef,

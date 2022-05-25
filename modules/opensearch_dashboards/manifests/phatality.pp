@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class opensearch_dashboards::phatality () {
     $target = 'releng/phatality'
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: opensearch_dashboards
 #
 # OpenSearch Dashboards is a JavaScript web application for visualizing log data and other

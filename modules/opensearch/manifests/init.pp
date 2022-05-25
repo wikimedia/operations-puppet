@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: opensearch
 #
 # This class installs/configures/manages the opensearch service.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: opensearch::curator::job
 #
 # Define a curator Actions file and set to run on an interval

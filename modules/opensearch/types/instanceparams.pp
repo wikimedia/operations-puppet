@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # There are additional parameters to opensearch::instance that
 # are not mentioned here. Those are not to be set per-instance and
 # instead are globaly set and flow from the opensearch class.
