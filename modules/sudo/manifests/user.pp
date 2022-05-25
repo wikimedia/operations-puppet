@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sudo::user
 #
 # Manages a sudo specification in /etc/sudoers.d.

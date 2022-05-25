@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class sudo::sudoldap
 {
     # this cannot be used in Debian buster

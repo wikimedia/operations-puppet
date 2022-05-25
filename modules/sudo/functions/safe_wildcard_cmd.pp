@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary this function takes a command and a path containing a wildcard and
 #         returns a sudo command spec with additional negations to avoid path traversal
 # @param $cmd the sudo command to run

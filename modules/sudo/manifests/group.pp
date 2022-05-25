@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sudo::group
 #
 # Manages a sudo specification in /etc/sudoers.d.

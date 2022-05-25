@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary manage sudoers
 # param purge_sudoers_d if true purge unmanaged resources from /etc/sudoers.d
 class sudo (
