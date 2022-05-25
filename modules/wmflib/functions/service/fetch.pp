@@ -10,11 +10,10 @@ function wmflib::service::fetch(
     # Use when doing local development
     #$yaml = loadyaml('hieradata/common/service.yaml')
     #$catalog = $yaml['service::catalog']
+    include wmflib::service::catalog
 
-    $catalog = lookup('service::catalog', {'default_value' => {}})
-    wmflib::service::validate($catalog)
-    if $lvs_only {
-        return $catalog.filter |$service, $data| { has_key($data, 'lvs') }
+    $lvs_only ? {
+        true    => $wmflib::service::catalog::pools_lvs,
+        default => $wmflib::service::catalog::pools,
     }
-    return $catalog
 }
