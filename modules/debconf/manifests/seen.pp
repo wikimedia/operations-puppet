@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Mark the status flag of a debconf value as "seen", i.e. no longer prompt for it
 # This suppresses debconf prompts for values which are either configured via
 # debconf::set or configured via package defaults

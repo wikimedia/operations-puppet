@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: motd
 #
 # Module for customizing MOTD (Message of the Day) banners.

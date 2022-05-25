@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: kmod::blacklist
 #
 # Blacklist the given Linux kernel modules.

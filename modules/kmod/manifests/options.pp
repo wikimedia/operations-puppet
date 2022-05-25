@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: kmod::options
 #
 # Add options to the given module every time it is inserted into the kernel.

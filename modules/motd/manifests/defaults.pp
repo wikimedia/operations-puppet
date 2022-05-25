@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: motd::defaults
 #
 # This provides defaults motd scripts, a generic but cleaned up (no help text)

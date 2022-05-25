@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: debconf::set
 #
 # Sets a debconf value, useful for preseeding package configuration before

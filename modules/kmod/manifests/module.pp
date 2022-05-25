@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: kmod::module
 #
 # Make sure that the given kernel module is loaded (or not).
