@@ -33,8 +33,6 @@ class profile::openstack::base::keystone::service(
     $wiki_consumer_secret = lookup('profile::openstack::base::keystone::wiki_consumer_secret'),
     $wiki_access_token = lookup('profile::openstack::base::keystone::wiki_access_token'),
     $wiki_access_secret = lookup('profile::openstack::base::keystone::wiki_access_secret'),
-    $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
-    $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
@@ -103,24 +101,24 @@ class profile::openstack::base::keystone::service(
     }
     contain '::openstack::util::admin_scripts'
 
-    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
-    $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
-
     # keystone admin API only for openstack services that might need it.
     #
     # Note that because keystone admin uses a weird, extremely-high-number
     #  port by default, we need to use a non-standard port for its
     #  tls port as well: 25357 rather than the more expected 225357
-    ferm::rule{'keystone_admin':
-        ensure => 'present',
-        rule   => "saddr (${labs_hosts_range} ${labs_hosts_range_v6}
-                             @resolve((${join($openstack_controllers,' ')}))
-                             @resolve((${join($openstack_controllers,' ')}), AAAA)
-                             @resolve((${join($designate_hosts,' ')}))
-                             @resolve((${join($designate_hosts,' ')}), AAAA)
-                             ${labweb_ips} ${labweb_ip6s}
-                             @resolve(${osm_host})
-                             ) proto tcp dport (35357 25357) ACCEPT;",
+
+    ferm::service { 'keystone_admin':
+        proto  => 'tcp',
+        port   => '(35357 25357)',
+        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${labweb_hosts.join(' ')})))",
+    }
+
+    $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
+
+    ferm::service { 'keystone-admin-nova-hosts':
+        proto  => 'tcp',
+        port   => '(35357 25357)',
+        srange => "(${nova_hosts_ranges.join(' ')})",
     }
 
     ferm::rule{'keystone_public':

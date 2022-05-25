@@ -1,7 +1,6 @@
 class profile::openstack::base::nova::api::service(
     $version = lookup('profile::openstack::base::version'),
-    $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
-    $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
+    String $region = lookup('profile::openstack::base::region'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::nova::osapi_compute_listen_port'),
     Stdlib::Port $metadata_bind_port = lookup('profile::openstack::base::nova::metadata_listen_port'),
     String       $dhcp_domain               = lookup('profile::openstack::base::nova::dhcp_domain',
@@ -26,15 +25,14 @@ class profile::openstack::base::nova::api::service(
                              ) proto tcp dport (8774 28774) ACCEPT;",
     }
 
-    # Allow neutron hosts to access the metadata service
-    ferm::rule{'nova_metadata_labs_hosts':
-        ensure => 'present',
-        rule   => "saddr ${labs_hosts_range} proto tcp dport 8775 ACCEPT;",
-    }
+    $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
 
     # Allow neutron hosts to access the metadata service
-    ferm::rule{'nova_metadata_labs_hosts_v6':
-        ensure => 'present',
-        rule   => "saddr ${labs_hosts_range_v6} proto tcp dport 8775 ACCEPT;",
+    # TODO: check if this is used by neutron only (as the comment above claims), and if so,
+    # update this firewall rule to only permit traffic from the neutron hosts
+    ferm::service { 'nova-metadata-nova-hosts':
+        proto  => 'tcp',
+        port   => '8775',
+        srange => "(${nova_hosts_ranges.join(' ')})",
     }
 }

@@ -30,6 +30,18 @@ class network::constants {
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
 
+    # cloud nova hosts ranges per region
+    $cloud_nova_hosts_ranges = {
+        'eqiad1-r' => slice_network_constants('production', {
+            site        => $::site,
+            description => 'cloud-hosts',
+        }),
+        'codfw1dev-r' => slice_network_constants('production', {
+            site        => 'codfw',
+            description => 'cloud-hosts',
+        }),
+    }
+
     # Networks hosting MediaWiki application servers
     # These are:
     #  - public hosts in eqiad/codfw

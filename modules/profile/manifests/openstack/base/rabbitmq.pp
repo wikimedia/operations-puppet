@@ -1,12 +1,11 @@
 class profile::openstack::base::rabbitmq(
+    String $region = lookup('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
     $file_handles = lookup('profile::openstack::base::rabbit_file_handles'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
-    $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
     String $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
     String $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
@@ -94,10 +93,12 @@ class profile::openstack::base::rabbitmq(
         srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
 
+    $hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
+
     ferm::service { 'rabbitmq-nova-hosts':
         proto  => 'tcp',
         port   => '(5671 5672)',
-        srange => "(${labs_hosts_range} ${labs_hosts_range_v6})",
+        srange => "(${hosts_ranges.join(' ')})",
     }
 
     ferm::service { 'rabbitmq-openstack-control':
