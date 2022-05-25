@@ -199,6 +199,7 @@ Components: main
  component/istio195
  component/jdk8
  component/kubernetes116
+ component/memcached-tls
  component/prometheus-openstack-exporter
  component/rsyslog-k8s
  thirdparty/ceph-octopus
