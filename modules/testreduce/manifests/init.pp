@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: testreduce
 #
 # This file provides the testreduce code repository

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 [Unit]
 Description=parsoid-rt: Testreduce HTTP service for Parsoid roundtrip testing
 After=network.target

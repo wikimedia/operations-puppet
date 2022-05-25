@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 [Unit]
 Description=parsoid-vd: Testreduce HTTP service for visual-diff results
 After=network.target

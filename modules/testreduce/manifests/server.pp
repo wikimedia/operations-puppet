@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This file provides the definition for instantiating a testreduce server
 #
 # === Parameters
