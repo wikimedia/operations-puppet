@@ -2752,7 +2752,6 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-    page: false
 
   toolhub:
     description: Toolhub, toolhub.svc.%{::site}.wmnet
