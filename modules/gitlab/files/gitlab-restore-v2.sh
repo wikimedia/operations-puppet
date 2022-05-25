@@ -7,7 +7,7 @@
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 
-DEFAULT_BACKUP="latest"
+DEFAULT_BACKUP="latest-data"
 KEEP_CONFIG="false"
 REQUESTED_BACKUP=""
 
@@ -81,7 +81,7 @@ if [ $REQUESTED_BACKUP == "latest" ]; then
     fi
 fi
 
-CONFIG_BACKUP=/srv/gitlab-backup/latest_config_backup.tar
+CONFIG_BACKUP=/srv/gitlab-backup/latest/latest-config.tar
 
 # Change Permissions
 echo "changing permissions - chmod 600"  >> $LOGFILE

@@ -3,9 +3,9 @@
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 CONFIG_FILE=/etc/gitlab/gitlab.rb
-OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest.tar
+OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest-data.tar
 NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
-CONFIG_BACKUP=/srv/gitlab-backup/latest_config_backup.tar
+CONFIG_BACKUP=/srv/gitlab-backup/latest/latest-config.tar
 
 # check if installed GitLab version matches backup version
 installed_version=$(dpkg -l gitlab-ce | grep -Po "\\d*\.\\d*\.\\d*")

@@ -23,18 +23,12 @@ class gitlab::rsync (
         $ensure_sync = 'present'
     }
 
+    # On the replica, only one folder is used for config and data
+    # backup due to restrictions in writing to /etc/. So only one
+    # rsync server module is needed.
     rsync::server::module { 'data-backup':
         ensure         => $ensure_sync,
         path           => "${backup_dir_data}/latest/",
-        read_only      => 'no',
-        hosts_allow    => [$active_host],
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
-    }
-
-    rsync::server::module { 'config-backup':
-        ensure         => $ensure_sync,
-        path           => "${backup_dir_config}/latest/",
         read_only      => 'no',
         hosts_allow    => [$active_host],
         auto_ferm      => true,
@@ -53,7 +47,7 @@ class gitlab::rsync (
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab config backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete ${backup_dir_config}/latest/ rsync://${passive_host}/config-backup",
+            command     => "/usr/bin/rsync -avp --delete ${backup_dir_config}/latest/ rsync://${passive_host}/data-backup",
             interval    => $rsync_interval,
         }
     }

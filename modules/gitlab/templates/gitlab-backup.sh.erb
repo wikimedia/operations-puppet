@@ -23,11 +23,11 @@
 
 case "$1" in
     "full")
-    /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" SKIP=builds,artifacts,registry GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>" && ls -t "<%= @backup_dir_data %>"/*gitlab_backup.tar | head -n1 | xargs -i cp {} "<%= @backup_dir_data %>"/latest/latest.tar;;
+    /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" SKIP=builds,artifacts,registry GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>" && ls -t "<%= @backup_dir_data %>"/*gitlab_backup.tar | head -n1 | xargs -i cp {} "<%= @backup_dir_data %>"/latest/latest-data.tar;;
     "partial")
     /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" SKIP=uploads,builds,artifacts,lfs,registry,pages GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>";;
     "config")
-    /usr/bin/gitlab-ctl backup-etc && ls -t "<%= @backup_dir_config %>"/gitlab_config*.tar | head -n1 | xargs -i cp {} "<%= @backup_dir_config %>"/latest/latest.tar;;
+    /usr/bin/gitlab-ctl backup-etc && ls -t "<%= @backup_dir_config %>"/gitlab_config*.tar | head -n1 | xargs -i cp {} "<%= @backup_dir_config %>"/latest/latest-config.tar;;
     *)
     echo "Please run script with parameter [full, partial, config]"; exit 1 ;;
 esac
