@@ -7,7 +7,7 @@ class profile::idp::memcached (
     Stdlib::Unixpath    $ssl_key          = lookup('profile::idp::memcached::ssl_key'),
 ) {
     class { 'memcached':
-        enable_16  => true,
+        enable_16  => debian::codename::eq('buster'),
         enable_tls => $enable_tls,
         ssl_cert   => $ssl_cert,
         ssl_key    => $ssl_key,
