@@ -16,8 +16,9 @@
 #     Expect a SSO login from the endpoint (default false)
 # @param [Optional[Integer] timeout
 #     How long the probe will wait before giving up (in golang duration format).
-#     This value is set by Prometheus' job configuration via 'scrape_timeout' and defaults to 10s.
-#     It can be overridden here.
+#     Defaults to '3s' unless overridden. The maximum value is set by Prometheus'
+#     scrape_timeout, which in turn cannot be higher than scrape_interval.
+#     (15s for service::catalog probes)
 
 type Wmflib::Service::Probe = Struct[{
     'type'                  => Enum['http', 'tcp', 'tcp-notls'],

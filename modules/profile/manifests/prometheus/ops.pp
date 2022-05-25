@@ -195,7 +195,10 @@ class profile::prometheus::ops (
         'job_name'        => 'probes/service',
         'metrics_path'    => '/probe',
         'scrape_interval' => '15s',
-        'scrape_timeout'  => '3s',
+        # blackbox-exporter will use the lower value between this and
+        # the module configured timeout. We want the latter, therefore
+        # set a high timeout here (but no longer than scrape_interval)
+        'scrape_timeout'  => '15s',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/probes-service_*.yaml" ] }
         ],

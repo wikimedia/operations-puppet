@@ -2739,9 +2739,7 @@ service::catalog:
     probes:
       - type: http
         path: /healthcheck
-        # TODO(filippo) doesn't work as expected.
-        # Gets overridden by Prometheus' scrape_timeout
-        timeout: 20s
+        timeout: 15s # max value, cannot be higher than Prometheus' scrape_interval (15s)
     monitoring:
       check_command: check_http_lvs_on_port_timeout!thumbor.discovery.wmnet!8800!/healthcheck!20
       sites:

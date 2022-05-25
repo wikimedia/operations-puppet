@@ -12,10 +12,8 @@ function wmflib::service::probe::module_options(
     $probe = {}
   }
 
-  if 'timeout' in $probe {
-    $timeout = { timeout => $probe['timeout'] }
-  } else {
-    $timeout = {}
+  $timeout = {
+    timeout => pick($probe['timeout'], '3s')
   }
 
   # Use 'return deep_merge(...)' with more than one hash
