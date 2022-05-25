@@ -33,30 +33,25 @@
 #    $ensure
 #       Defaults to present
 #
-define nrpe::monitor_service(
-    Optional[Stdlib::HTTPSUrl] $notes_url = undef,
-    $description      = undef,
-    $nrpe_command     = undef,
-    $contact_group    = lookup('contactgroups', {default_value => 'admins'}),
-    $retries          = 3,
-    $timeout          = 10,
-    Boolean $critical = false,
-    $event_handler    = undef,
-    $check_interval   = 1,
-    $retry_interval   = 1,
-    Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
-    Optional[String] $sudo_user = undef,
-    Wmflib::Ensure $ensure = present,
-) {
+define nrpe::monitor_service( Optional[Stdlib::HTTPSUrl] $notes_url = undef,
+                              $description      = undef,
+                              $nrpe_command     = undef,
+                              $contact_group    = lookup('contactgroups', {default_value => 'admins'}),
+                              $retries          = 3,
+                              $timeout          = 10,
+                              Boolean $critical = false,
+                              $event_handler    = undef,
+                              $check_interval   = 1,
+                              $retry_interval   = 1,
+                              Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
+                              Wmflib::Ensure $ensure = present) {
     unless $ensure == 'absent' or ($description and $nrpe_command and $notes_url) {
         fail('Description, nrpe_command, and notes_url parameters are mandatory for ensure != absent')
     }
-
     nrpe::check { "check_${title}":
-        ensure    => $ensure,
-        command   => $nrpe_command,
-        sudo_user => $sudo_user,
-        before    => Monitoring::Service[$title],
+        ensure  => $ensure,
+        command => $nrpe_command,
+        before  => Monitoring::Service[$title],
     }
 
     $notes_urls = monitoring::build_notes_url($notes_url,

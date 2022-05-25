@@ -23,17 +23,7 @@
 #       $command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C myprocess'
 #   }
 #
-define nrpe::check(
-    String           $command,
-    Optional[String] $sudo_user = undef,
-    Wmflib::Ensure   $ensure    = 'present'
-) {
-    $real_command = $sudo_user ? {
-        undef   => $command,
-        'root'  => "/usr/bin/sudo ${command}",
-        default => "/usr/bin/sudo -u ${sudo_user} ${command}",
-    }
-
+define nrpe::check($command, $ensure='present') {
     # If the nrpe class is not included, this entire definition will never be
     # realized making it a no-op
     $title_safe  = regsubst($title, '[\W]', '-', 'G')
@@ -45,23 +35,5 @@ define nrpe::check(
         content => template('nrpe/check.erb'),
         notify  => Service['nagios-nrpe-server'],
         tag     => 'nrpe::check',
-    }
-
-    if $sudo_user {
-        @sudo::user { "nrpe-${title}":
-            ensure     => $ensure,
-            user       => 'nagios',
-            privileges => [
-                "ALL = (${sudo_user}) NOPASSWD: ${command}",
-            ],
-            tag        => 'nrpe::check',
-        }
-    } else {
-        @sudo::user { "nrpe-${title}":
-            ensure     => absent,
-            user       => 'nagios',
-            privileges => [],
-            tag        => 'nrpe::check',
-        }
     }
 }

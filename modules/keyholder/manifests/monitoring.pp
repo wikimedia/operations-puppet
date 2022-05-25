@@ -5,25 +5,30 @@
 #
 class keyholder::monitoring(
     Wmflib::Ensure $ensure = present,
-) {
-    file { '/usr/lib/nagios/plugins/check_keyholder':
-        ensure => absent,
-    }
+){
 
-    nrpe::plugin { 'check_keyholder':
+    $plugin_path = '/usr/lib/nagios/plugins/check_keyholder'
+
+    file { $plugin_path:
         ensure => $ensure,
         source => 'puppet:///modules/keyholder/check_keyholder',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     sudo::user { 'nagios_check_keyholder':
-        ensure => absent,
+        ensure     => $ensure,
+        user       => 'nagios',
+        privileges => [ "ALL = NOPASSWD: ${plugin_path}" ],
+        require    => File[$plugin_path],
     }
 
     nrpe::monitor_service { 'keyholder':
         ensure       => $ensure,
         description  => 'Keyholder SSH agent',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_keyholder',
-        sudo_user    => 'root',
+        nrpe_command => "/usr/bin/sudo ${plugin_path}",
+        require      => Sudo::User['nagios_check_keyholder'],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Keyholder',
     }
 }
