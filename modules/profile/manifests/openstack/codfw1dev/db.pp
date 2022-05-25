@@ -1,5 +1,3 @@
-# at some point this class should inherit all the code currently present
-# in profile::openstack::base::keystone::db
 class profile::openstack::codfw1dev::db(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
