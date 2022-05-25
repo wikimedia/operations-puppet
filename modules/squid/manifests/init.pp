@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: squid
 #
 # This class installs Squid and configures it
