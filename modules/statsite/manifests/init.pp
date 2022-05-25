@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: statsite
 #
 # Configure statsite https://github.com/armon/statsite

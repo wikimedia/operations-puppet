@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: statsite
 #
 # Configure an instance of statsite
