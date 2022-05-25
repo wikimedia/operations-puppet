@@ -16,11 +16,11 @@
 #    Default: []
 #
 class profile::hadoop::master(
-    String $cluster_name        = lookup('profile::hadoop::common::hadoop_cluster_name'),
+    String  $cluster_name       = lookup('profile::hadoop::common::hadoop_cluster_name'),
     Boolean $monitoring_enabled = lookup('profile::hadoop::master::monitoring_enabled', {'default_value' => false}),
-    String $hadoop_user_groups  = lookup('profile::hadoop::master::hadoop_user_groups'),
+    String  $hadoop_user_groups = lookup('profile::hadoop::master::hadoop_user_groups'),
     Boolean $use_kerberos       = lookup('profile::hadoop::master::use_kerberos', {'default_value' => false}),
-    Array $excluded_hosts       = lookup('profile::hadoop::master::excluded_hosts', {'default_value' => []}),
+    Array   $excluded_hosts     = lookup('profile::hadoop::master::excluded_hosts', {'default_value' => []}),
 ){
     require ::profile::hadoop::common
 
@@ -46,27 +46,16 @@ class profile::hadoop::master(
     }
 
     file { '/usr/local/sbin/hadoop_fairscheduler_log_cleaner.sh':
-        ensure => present,
-        source => 'puppet:///modules/profile/hadoop/hadoop_fairscheduler_log_cleaner.sh',
-        mode   => '0550',
-        owner  => 'root',
-        group  => 'root',
+        ensure => 'absent',
     }
 
     systemd::timer::job { 'hadoop-clean-fairscheduler-event-logs':
-        ensure      => 'present',
+        ensure      => 'absent',
         description => 'Cleanup FairScheduler event logs older than 14 days',
         command     => '/usr/local/sbin/hadoop_fairscheduler_log_cleaner.sh',
         user        => 'root',
         interval    => { 'start' => 'OnCalendar', 'interval' => '00:05:00'},
         require     => Class['bigtop::hadoop::master'],
-    }
-
-    # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
-    # It rotates them but does not delete old ones.  Set up cronjob to
-    # delete old files in this directory.
-    cron { 'hadoop-clean-fairscheduler-event-logs':
-        ensure => 'absent',
     }
 
     nrpe::plugin { 'check_hdfs_topology':
