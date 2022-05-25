@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """
 Discard held messages after a certain amount of days (T109838)
 Copyright (C) 2021 Kunal Mehta <legoktm@debian.org>

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class mailman3
 #
 # Provisions all the mailman3 software needed to

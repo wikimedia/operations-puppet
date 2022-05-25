@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class mailman3::web
 #
 # Installs the Django web app serving mailman3 to users

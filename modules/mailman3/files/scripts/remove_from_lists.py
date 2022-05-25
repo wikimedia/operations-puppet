@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """
 Remove an address from mailing lists
 Copyright (C) 2021 Kunal Mehta <legoktm@debian.org>

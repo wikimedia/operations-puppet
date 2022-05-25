@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class mailman3::listserve
 #
 # This class provisions all the resources necessary to
