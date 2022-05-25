@@ -34,6 +34,7 @@ class profile::mediawiki::deployment::server(
     # This is the scap2 master server setup, used to deploy mediawiki.
     class { '::scap::master':
         deployment_hosts => $deployment_hosts,
+        deployment_group => $deployment_group,
     }
 
     class { '::scap::scripts':
