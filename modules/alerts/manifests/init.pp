@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Provide the ability to deploy Prometheus alerting rules from git repository (typically
 # operations/alerts) into a directory for Prometheus to pick up.
 #

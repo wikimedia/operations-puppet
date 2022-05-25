@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Deploy alerts from operations/alerts to $deploy_dir for Prometheus to pick up.
 
 class alerts::deploy::prometheus(

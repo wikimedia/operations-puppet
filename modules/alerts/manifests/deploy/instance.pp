@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Wrap a call to alerts-deploy with a systemd unit.
 # The unit is normally not active (one-shot) and will be started when
 # alerts-deploy.target is started.
