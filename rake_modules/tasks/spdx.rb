@@ -184,9 +184,9 @@ namespace :spdx do
   namespace :convert do
     desc "Convert a module to SPDX"
     task :module, [:module] do |_t, args|
-      module_path = "modules/#{args[:module]}"
-      abort("#{args[:module]}: does not exist".red) unless File.directory?(module_path)
-      unsigned_contibutors = check_path_contributors(module_path)
+      path = "modules/#{args[:module]}"
+      abort("#{args[:module]}: does not exist".red) unless File.directory?(path)
+      unsigned_contibutors = check_path_contributors(path)
       unless unsigned_contibutors.empty?
         abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contibutors.join("\n")}".red)
       end
