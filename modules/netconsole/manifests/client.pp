@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: netconsole::client
 # Configure netconsole to log kernel messages to a remote server.
 # See https://www.kernel.org/doc/Documentation/networking/netconsole.txt

@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # SystemTap Puppet Module #
 
 A Puppet module for configuring SystemTap development servers.

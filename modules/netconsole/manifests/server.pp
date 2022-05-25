@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: netconsole::server
 # Configure a netconsole server reading messages from netconsole clients and
 # printing them to standard output.

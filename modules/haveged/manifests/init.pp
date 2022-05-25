@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Manage and install haveged deamon
 # @param buffer_size Buffer size [KW]
 # @param data_cache Data cache size [KB]
