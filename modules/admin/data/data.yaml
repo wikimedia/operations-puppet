@@ -5463,6 +5463,10 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
+  mabualruz:
+    ensure: present
+    realname: Moh'd Abualruz
+    email: mabualruz@wikimedia.org
   manuel-wmde:
     ensure: present
     realname: Manuel Merz
