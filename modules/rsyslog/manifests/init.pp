@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: rsyslog
 #
 # rsyslogd is a full-featured kernel logging daemon. It is the default

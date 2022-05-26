@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: rsyslog::receiver
 #
 # Setup the rsyslog daemon as a receiver for remote logs.

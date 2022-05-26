@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 #
 # rsyslog::input::file - ingest a log file with rsyslog imfile for processing/shipping
 #

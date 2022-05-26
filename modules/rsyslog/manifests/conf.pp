@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: rsyslog::conf
 #
 # Represents an rsyslogd config file. See rsyslog.conf(5).
