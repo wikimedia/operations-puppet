@@ -29,6 +29,7 @@
     {"index" : "input-file-apache2-access", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
     {"index" : "input-file-kubernetes", "value" : "kafka" },
+    {"index" : "input-file-docker", "value" : "kafka" },
     {"index" : "input-file-horizon", "value" : "kafka" },
     {"index" : "input-file-gitlab-gitaly-json", "value" : "kafka" },
     {"index" : "input-file-gitlab-rails-production-json", "value" : "kafka" },

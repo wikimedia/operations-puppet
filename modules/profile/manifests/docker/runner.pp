@@ -34,4 +34,14 @@ class profile::docker::runner(
             port  => $svc_params[$port]
         }
     }
+
+    # Configure rsyslog to ingest logs from containers so they can be forwarded to kafka/logstash.
+    rsyslog::input::file { 'docker-json':
+        path               => '/var/lib/docker/containers/*/*-json.log',
+        reopen_on_truncate => 'on',
+        addmetadata        => 'on',
+        addceetag          => 'on',
+        syslog_tag         => 'docker',
+        priority           => 8,
+    }
 }
