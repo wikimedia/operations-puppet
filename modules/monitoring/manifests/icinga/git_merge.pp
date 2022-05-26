@@ -23,11 +23,8 @@ define monitoring::icinga::git_merge (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/unmerged_changes',
     }
 
-    file { "sudo_nagios_${sane_title}":
-        path    => "/etc/sudoers.d/${sane_title}_needs_merge",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
-        content => template('monitoring/merge_sudoers.erb');
+    sudo::user { "${sane_title}_needs_merge":
+        user       => 'nagios',
+        privileges => [ "ALL = NOPASSWD: ${filename}" ],
     }
 }
