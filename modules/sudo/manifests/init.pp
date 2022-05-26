@@ -17,6 +17,7 @@ class sudo (
         require      => Package[sudo],
         validate_cmd => '/usr/sbin/visudo -c -f %'
     }
+
     file {'/etc/sudoers.d':
         ensure  => directory,
         owner   => 'root',
@@ -24,5 +25,9 @@ class sudo (
         mode    => '0755',
         purge   => $purge_sudoers_d,
         recurse => $purge_sudoers_d,
+    }
+
+    file { '/etc/sudoers.d/README':
+        ensure => absent,
     }
 }

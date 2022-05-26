@@ -187,6 +187,11 @@ class profile::wmcs::instance(
         mode    => '0644',
     }
 
+    # sudo rules added by cloud-init for the 'debian' user, not needed in our setup
+    file { [ '/etc/sudoers.d/90-cloud-init-users', '/etc/sudoers.d/debian-cloud-init' ]:
+        ensure => absent,
+    }
+
     # this seems to be installed by default but doesn't do much on a VM.
     #  T287309
     package { 'smartmontools':
