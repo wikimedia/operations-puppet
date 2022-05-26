@@ -43,6 +43,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://dbtree.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
+      target: http://developer.wikimedia.org
+      replacement: https://developer-portal.discovery.wmnet:30443
+    - type: map
       target: http://tendril.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map

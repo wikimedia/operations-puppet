@@ -39,6 +39,8 @@ cache::alternate_domains:
     caching: 'pass'
   design.wikimedia.org:
     caching: 'normal'
+  developer.wikimedia.org:
+    caching: 'normal'
   docker-registry.wikimedia.org:
     caching: 'normal'
   doc.wikimedia.org:
