@@ -5,13 +5,16 @@ class profile::gitlab::dump(
                 { 'default_value' => '/srv/gitlab-backup'}),
 ){
 
-        wmflib::dir::mkdir_p($backup_path)
+    wmflib::dir::mkdir_p($backup_path)
 
-        rsync::quickdatacopy { 'gitlab-backups':
-            source_host         => 'gitlab1001.wikimedia.org',
-            dest_host           => 'gitlab1004.wikimedia.org',
-            auto_sync           => false,
-            module_path         => $backup_path,
-            server_uses_stunnel => true,
-        }
+    ensure_packages(['rsync'])
+
+    rsync::server::module { 'gitlab-dump':
+        ensure         => present,
+        read_only      => 'no',
+        path           => $backup_path,
+        hosts_allow    => ['gitlab1001.wikimedia.org'],
+        auto_ferm      => true,
+        auto_ferm_ipv6 => true,
+    }
 }
