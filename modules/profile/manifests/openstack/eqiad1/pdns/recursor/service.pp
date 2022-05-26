@@ -43,6 +43,4 @@ class profile::openstack::eqiad1::pdns::recursor::service(
             $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 6) }
         ]),
     }
-
-    class{'::profile::openstack::base::pdns::recursor::monitor::rec_control':}
 }

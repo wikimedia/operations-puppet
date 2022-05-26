@@ -108,6 +108,11 @@ class profile::openstack::base::pdns::recursor::service(
         observer_project_name => $observer_project,
     }
 
+    # used by the old prometheus exporter, no longer needed
+    sudo::user { 'prometheus_sudo_for_pdns_recursor':
+        ensure => absent,
+    }
+
     $ferm_srange = "(${allow_from.join(' ')})"
 
     ferm::service { 'recursor_udp_dns_rec':

@@ -34,6 +34,4 @@ class profile::openstack::codfw1dev::pdns::auth::service(
             $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 6) }
         ]),
     }
-
-    class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
 }

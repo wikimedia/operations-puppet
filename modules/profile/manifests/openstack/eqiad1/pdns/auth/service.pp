@@ -36,8 +36,6 @@ class profile::openstack::eqiad1::pdns::auth::service(
         ]),
     }
 
-    class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
-
     class {'::profile::openstack::base::pdns::auth::monitor::host_check':
         target_host => $service_fqdn,
         target_fqdn => $monitor_target_fqdn,
