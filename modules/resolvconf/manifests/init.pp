@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary simple class to configure resolv.conf
 # @param nameservers a list of nameserveres to configre
 # @param timeout the timeout option
