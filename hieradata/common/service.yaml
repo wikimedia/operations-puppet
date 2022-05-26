@@ -2399,6 +2399,8 @@ service::catalog:
       - codfw
       - eqiad
     state: production
+    aliases:
+      - ms-fe
 
   swift-https:
     description: Swift media storage
@@ -3485,6 +3487,8 @@ service::catalog:
     discovery:
       - dnsdisc: linkrecommendation
         active_active: true
+    aliases:
+      - linkrecommendation
 
   apple-search:
     description: Apple search service, apple-search.svc.%{::site}.wmnet
@@ -3526,7 +3530,7 @@ service::catalog:
       - dnsdisc: apple-search
         active_active: true
 
-## WIKIREPLICAS sections.
+  ## WIKIREPLICAS sections.
   wikireplicas-a-s1: &wikireplica_a_default
     description: "lvs for a-side wikireplicas section s1"
     encryption: false

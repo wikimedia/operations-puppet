@@ -32,7 +32,13 @@ function wmflib::service::get_url(
         if $service == undef {
             fail("Service ${svc_name} not found in the catalog.")
         }
-
+        # The url is determined as follows:
+        # 1 - if we're requesting a discovery record, just return the discovery name if available
+        # 2 - if the service is not available in the datacenter $site or it doesn't have a loadbalancer,
+        #     fail
+        # 3 - If the service has an aliases entry, the hostname is set to "$aliases[0]", otherwise is set to
+        #     the service name, minus the -ssl or -https extensions
+        # 4 - If the service is internal, return "$hostname.svc.$site.wmnet", otherwise "$hostname-lb.$site.wikimedia.org"
         if $site == 'discovery' {
             if $service['discovery'] == undef {
                 fail("Service ${svc_name} doesn't have a discovery record!")
@@ -43,15 +49,19 @@ function wmflib::service::get_url(
             if !($site in $service['sites']) {
                 fail("Service ${svc_name} is not present in site ${site}.")
             }
-            if (
-                $service['monitoring'] == undef or
-                $service['monitoring']['sites'] == undef or
-                $service['monitoring']['sites'][$site] == undef or
-                $service['monitoring']['sites'][$site]['hostname'] == undef
-            ) {
-                fail("Service ${svc_name} does not have monitoring for site ${site} configured; cannot determine site specific hostname.")
+            if !($service['lvs']) {
+                fail("Service ${svc_name} does not have an LVS endpoint.")
             }
-            $host = $service['monitoring']['sites'][$site]['hostname']
+            $realname = $service['aliases'] ? {
+                undef => regsubst($svc_name, '\-(ssl|https)$',''),
+                default => $service['aliases'][0]
+            }
+
+            if ($service['lvs']['class'] == 'low-traffic') {
+                $host = "${realname}.svc.${site}.wmnet"
+            } else {
+                $host = "${realname}-lb.${site}.wikimedia.org"
+            }
         }
 
         $port = $service['port']
