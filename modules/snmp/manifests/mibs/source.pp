@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This define uses snmp-mibs-downloader to download and install SNMP MIBs.
 #
 # Parameters:

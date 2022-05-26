@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: snmp
 #
 # Install the set of basic SNMP client tools (via the snmp package)
