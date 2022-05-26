@@ -1,5 +1,4 @@
 # db1128
-profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'm1'
 profile::monitoring::is_critical: false 
 profile::monitoring::notifications_enabled: false
