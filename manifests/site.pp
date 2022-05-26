@@ -499,7 +499,7 @@ node 'db1163.eqiad.wmnet' {
 # eqiad replicas
 # See also db1099 and db1105 below
 # db1132 is a testing mariadb 10.6 host T303395
-node /^db1(118|119|132|134|135|164|169|184)\.eqiad\.wmnet/ {
+node /^db1(118|119|132|134|135|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -845,6 +845,12 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
 }
+
+# Future m1 master T309286
+node 'db1164.eqiad.wmnet' {
+    role(mariadb::misc)
+}
+
 
 # m1 codfw master
 node 'db2132.codfw.wmnet' {
