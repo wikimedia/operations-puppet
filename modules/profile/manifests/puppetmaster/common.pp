@@ -12,15 +12,13 @@
 #
 class profile::puppetmaster::common (
                                 $base_config,
-                                $storeconfigs        = lookup('profile::puppetmaster::common::storeconfigs'),
+    Enum['puppetdb', 'none']    $storeconfigs        = lookup('profile::puppetmaster::common::storeconfigs'),
     Array[Stdlib::Host]         $puppetdb_hosts      = lookup('profile::puppetmaster::common::puppetdb_hosts'),
     Boolean                     $command_broadcast   = lookup('profile::puppetmaster::common::command_broadcast'),
     Integer[1,2]                $ssl_verify_depth    = lookup('profile::puppetmaster::common::ssl_verify_depth'),
     Boolean                     $netbox_hiera_enable = lookup('profile::puppetmaster::common::netbox_hiera_enable'),
     Array[Puppetmaster::Report] $reports             = lookup('profile::puppetmaster::common::reports'),
 ) {
-    include passwords::puppet::database
-
     $env_config = {
         'environmentpath'  => '$confdir/environments',
         'default_manifest' => '$confdir/manifests',
@@ -29,13 +27,6 @@ class profile::puppetmaster::common (
     $activerecord_config =   {
         'storeconfigs'      => true,
         'thin_storeconfigs' => true,
-    }
-    $active_record_db = {
-        'dbadapter'         => 'mysql',
-        'dbuser'            => 'puppet',
-        'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-        'dbserver'          => 'm1-master.eqiad.wmnet',
-        'dbconnections'     => '256',
     }
 
     $puppetdb_config = {
@@ -50,10 +41,8 @@ class profile::puppetmaster::common (
             command_broadcast => $command_broadcast,
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
-    } elsif $storeconfigs == 'activerecord' {
-            $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
     } else {
-            $config = merge($base_config, $env_config)
+        $config = merge($base_config, $env_config)
     }
 
     # Don't attempt to use puppet-master service, we're using passenger.

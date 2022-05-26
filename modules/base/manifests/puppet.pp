@@ -11,8 +11,6 @@ class base::puppet(
     Optional[Stdlib::Filesource]    $ca_source              = undef,
     Optional[Enum['chain', 'leaf']] $certificate_revocation = undef,
 ) {
-    include ::passwords::puppet::database # lint:ignore:wmf_styleguide
-
     $crontime          = fqdn_rand(60, 'puppet-params-crontime')
 
     # augparse is required to resolve the augeasversion in facter3
