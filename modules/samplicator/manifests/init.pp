@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: samplicator
 #
 # Install and manage Samplicator
