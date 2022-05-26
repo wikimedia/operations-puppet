@@ -24,6 +24,7 @@ ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
          queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="udp_localhost_compat"
          queue.highWatermark="<%= (scope['queue_size'] * 0.7).to_i %>" queue.lowWatermark="<%= (scope['queue_size'] * 0.6).to_i %>"
          queue.checkpointInterval="5"
+         queue.maxDiskSpace="<%= (scope['queue_size'] * 4096).to_i %>"
      <%- end -%>
          confParam=[ "security.protocol=ssl",
                      "ssl.ca.location=<%= @trusted_ca_path %>",

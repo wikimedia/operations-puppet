@@ -30,6 +30,7 @@ if ($syslogfacility-text == 'auth' or
     queue.type="LinkedList" queue.size="<%= @queue_size %>" queue.filename="<%= log_host %>"
     queue.highWatermark="<%= (@queue_size * 0.7).to_i %>" queue.lowWatermark="<%= (@queue_size * 0.6).to_i %>"
     queue.checkpointInterval="5"
+    queue.maxDiskSpace="<%= (@queue_size * 4096).to_i %>"
 <% end -%>
     )
 <% end -%>
