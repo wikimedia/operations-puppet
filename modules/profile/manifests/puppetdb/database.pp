@@ -80,8 +80,8 @@ class profile::puppetdb::database(
     postgresql::db { 'puppetdb':
         owner   => 'puppetdb',
     }
-    # Ensure users created before db's
-    Postgresql::User<| |> -> Postgresql::Db<| |>
+    # Ensure dbs created before grants
+    Postgresql::Db<| |> -> Postgresql::Db_grant<| |>
 
     exec { 'create_tgrm_extension':
         command => '/usr/bin/psql puppetdb -c "create extension pg_trgm"',
