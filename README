@@ -6,7 +6,7 @@ to manage our server configuration. This is our Puppet repository.
 
 For an overview of how we use Puppet, and a review of the code conventions and
 patterns that apply to this repository, see:
- * https://wikitech.wikimedia.org/wiki/Puppet_coding
+  * https://wikitech.wikimedia.org/wiki/Puppet_coding
 
 The code in this repository is authored and maintained by Wikimedia engineers
 and a vibrant community of volunteer contributors. Get involved!
