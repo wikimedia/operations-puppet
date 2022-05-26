@@ -27,11 +27,12 @@ define cfssl::db (
 ) {
     include cfssl
     $_conf_file = pick($conf_file, "${cfssl::conf_dir}/db.conf")
+    $_sqlite_path = pick($sqlite_path, "${cfssl::conf_dir}/cfssl_sqlite.db")
     $db_data_source = $driver ? {
         # for now we need to unwrap the sensitive value otherwise it is not interpreted
         # Related bug: PUP-8969
         'mysql' => "${username}:${password.unwrap}@tcp(${host}:${port})/${dbname}?parseTime=true&tls=skip-verify",
-        default => $sqlite_path,
+        default => $_sqlite_path,
     }
     if $python_config {
         $ssl = $ssl_ca ? {
@@ -72,7 +73,6 @@ define cfssl::db (
         require   => Package[$cfssl::packages],
     }
     if $driver == 'sqlite3' {
-        $_sqlite_path = pick($sqlite_path, "${cfssl::conf_dir}/cfssl_sqlite.db")
         sqlite::db {"cfssl ${title} signer DB":
             db_path    => $_sqlite_path,
             sql_schema => "${cfssl::sql_dir}/sqlite_initdb.sql",
