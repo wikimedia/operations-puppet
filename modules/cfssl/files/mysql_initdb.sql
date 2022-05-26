@@ -9,6 +9,11 @@ CREATE TABLE certificates (
   expiry                   timestamp DEFAULT '0000-00-00 00:00:00',
   revoked_at               timestamp DEFAULT '0000-00-00 00:00:00',
   pem                      varbinary(4096) NOT NULL,
+  issued_at                timestamp DEFAULT '0000-00-00 00:00:00',
+  not_before               timestamp DEFAULT '0000-00-00 00:00:00',
+  metadata                 JSON,
+  sans                     JSON,
+  common_name              TEXT;
   PRIMARY KEY(serial_number, authority_key_identifier)
 );
 

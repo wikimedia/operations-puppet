@@ -7,6 +7,11 @@ CREATE TABLE certificates (
   expiry                   timestamp,
   revoked_at               timestamp,
   pem                      blob NOT NULL,
+  issued_at                timestamp;
+  not_before               timestamp;
+  metadata                 text;
+  sans                     text;
+  common_name              text;
   PRIMARY KEY(serial_number, authority_key_identifier)
 );
 
