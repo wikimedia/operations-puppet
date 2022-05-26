@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: shiny_sever
 #
 # Shiny Server enables users to host and manage Shiny applications on the

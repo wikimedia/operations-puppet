@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Shiny Server
 
 [Shiny Server](https://www.rstudio.com/products/shiny/shiny-server/) enables
