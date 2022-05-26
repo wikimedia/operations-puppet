@@ -1,7 +1,7 @@
-# == Class: base::restarts
+# == Class: profile::auto_restarts
 #
 # This class automates service restarts for stateless services after
-# a library upgrade
+# a library upgrade.
 #
 class profile::auto_restarts(
     Boolean $with_debdeploy = lookup('profile::auto_restarts::with_debdeploy'),

@@ -1,9 +1,9 @@
-# == Define base::restart_service
+# == Define profile::auto_restarts::service
 #
-# This define can be used to add an automatic restart for a stateless service:
-# wmf-auto-restart checks whether any dependant library has been refreshed and
+# This define can be used to add an automatic restart for a stateless service.
+# wmf-auto-restart checks whether any dependent library has been refreshed and
 # if that's the case, a restart is triggered. The restarts are spread out over
-# the course of the day via fqdn_rand()
+# the course of the day via fqdn_rand().
 #
 define profile::auto_restarts::service(
     Wmflib::Ensure $ensure  = present,
@@ -37,5 +37,4 @@ define profile::auto_restarts::service(
             }
         }
     }
-
 }
