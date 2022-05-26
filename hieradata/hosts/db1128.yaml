@@ -1,4 +1,5 @@
 # db1128
+# old m1 master, to be moved to s1
 mariadb::shard: 'm1'
-profile::monitoring::is_critical: false 
+profile::monitoring::is_critical: false
 profile::monitoring::notifications_enabled: false

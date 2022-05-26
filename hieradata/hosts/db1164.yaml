@@ -1,6 +1,5 @@
 # db1164
-# current m1 master
+# m1 master
 profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'm1'
-profile::monitoring::is_critical: false
-profile::monitoring::notifications_enabled: false
+profile::monitoring::is_critical: true

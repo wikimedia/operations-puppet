@@ -841,12 +841,12 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 ## m1 shard
 # See also multiinstance misc hosts db1117 and db2078 below
 
-# m1 eqiad master
+# old m1 eqiad master - will be moved away
 node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# Future m1 master T309286
+# m1 master T309286
 node 'db1164.eqiad.wmnet' {
     role(mariadb::misc)
 }
