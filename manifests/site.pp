@@ -1459,8 +1459,10 @@ node 'gitlab1001.wikimedia.org' {
 node 'gitlab1003.wikimedia.org' {
     role(gitlab)
 }
+
+# temporarily used as a place to dump gitlab backups
 node 'gitlab1004.wikimedia.org' {
-    role(insetup)
+    role(gitlab_dump)
 }
 
 # T295481 - gitlab-runner virtual machine
