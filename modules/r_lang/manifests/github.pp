@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Define: r_lang::github
 #
 # Facilitates installation of R packages from GitHub.

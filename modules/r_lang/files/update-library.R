@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+# SPDX-License-Identifier: Apache-2.0
 
 suppressPackageStartupMessages(library("optparse"))
 

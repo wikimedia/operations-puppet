@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Define: r_lang::cran
 #
 # Facilitates installation of R packages from Comprehensive R Archive Network.

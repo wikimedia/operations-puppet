@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # R: Statistical Software and Programming Language
 
 [R](https://www.r-project.org/) is a free software environment for statistical

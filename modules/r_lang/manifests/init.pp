@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: r_lang
 #
 # Class containing stuff for installing R and its packages from different sources:
