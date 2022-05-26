@@ -666,3 +666,5 @@ profile::cache::base::wmcs_domains:
   - wmflabs.org
   - toolforge.org
   - wmcloud.org
+
+swift_clusters: {}
