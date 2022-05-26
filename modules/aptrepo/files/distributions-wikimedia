@@ -146,6 +146,7 @@ Components: main
  thirdparty/kubeadm-k8s-1-21
  thirdparty/matomo
  thirdparty/opensearch1
+ thirdparty/opensearch2
  thirdparty/php56
  thirdparty/postgres96
  thirdparty/pyall
@@ -213,6 +214,7 @@ Components: main
  thirdparty/node14
  thirdparty/node16
  thirdparty/opensearch1
+ thirdparty/opensearch2
  thirdparty/openstack-db
  thirdparty/routinator
 UDebComponents: main
