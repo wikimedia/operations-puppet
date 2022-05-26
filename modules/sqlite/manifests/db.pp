@@ -1,4 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary define to create and manage sqlite db
+# @param ensure ensurable parameter
+# @param owner owner to use for files and execution
+# @param group group to use for files and execution
+# @param mode mode to use for created files
+# @param db_path path to the database
+# @param sql_schema sql schema to install
 define sqlite::db (
     Wmflib::Ensure             $ensure     = 'present',
     String                     $owner      = 'root',
@@ -25,6 +32,7 @@ define sqlite::db (
             command     => "cat ${sql_schema} | ${sqlite::sqlite_cmd} ${_db_path}",
             refreshonly => true,
             subscribe   => File[$_db_path],
+            require     => Package[$sqlite::package],
         }
     }
 }
