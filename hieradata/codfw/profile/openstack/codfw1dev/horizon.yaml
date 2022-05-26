@@ -5,5 +5,3 @@ profile::openstack::codfw1dev::horizon::proxy_zone_dict:
     project: cloudinfra-codfw1dev
     username: codfw1dev-proxy-dns-manager
     default: true
-
-profile::openstack::codfw1dev::horizon::puppet_enc_endpoint: "http://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8101/v1"

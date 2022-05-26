@@ -16,8 +16,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     String          $secret_key = lookup('profile::openstack::base::horizon::secret_key'),
     Hash            $proxy_zone_dict = lookup('profile::openstack::base::horizon::proxy_zone_dict'),
     Hash            $proxy_zone_passwords = lookup('profile::openstack::base::horizon::proxy_zone_passwords'),
-    Stdlib::HTTPUrl $puppet_enc_endpoint = lookup('profile::openstack::base::horizon::puppet_enc_endpoint'),
-    ) {
+) {
 
     $ldap_rw_host = $ldap_config['rw-server']
 
@@ -39,7 +38,6 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         secret_key           => $secret_key,
         proxy_zone_dict      => $proxy_zone_dict,
         proxy_zone_passwords => $proxy_zone_passwords,
-        puppet_enc_endpoint  => $puppet_enc_endpoint,
     }
 
     contain '::openstack::horizon::source_deploy'

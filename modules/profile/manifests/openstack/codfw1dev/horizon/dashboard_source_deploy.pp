@@ -15,8 +15,7 @@ class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
     String          $secret_key = lookup('profile::openstack::codfw1dev::horizon::secret_key'),
     Hash            $proxy_zone_dict = lookup('profile::openstack::codfw1dev::horizon::proxy_zone_dict'),
     Hash            $proxy_zone_passwords = lookup('profile::openstack::codfw1dev::horizon::proxy_zone_passwords'),
-    Stdlib::HTTPUrl $puppet_enc_endpoint = lookup('profile::openstack::codfw1dev::horizon::puppet_enc_endpoint'),
-    ) {
+) {
 
     require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::horizon::dashboard_source_deploy':
@@ -36,6 +35,5 @@ class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
         secret_key           => $secret_key,
         proxy_zone_dict      => $proxy_zone_dict,
         proxy_zone_passwords => $proxy_zone_passwords,
-        puppet_enc_endpoint  => $puppet_enc_endpoint,
     }
 }

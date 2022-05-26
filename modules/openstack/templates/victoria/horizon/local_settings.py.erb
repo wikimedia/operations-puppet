@@ -539,8 +539,6 @@ INSTANCE_TLD = '<%= @dhcp_domain %>'
 # Disable instance consoles for Horizon users
 CONSOLE_TYPE = False
 
-PUPPET_CONFIG_BACKEND  = "<%= @puppet_enc_endpoint %>"
-
 PUPPET_GIT_REPO_URL = "ssh://<%= @puppet_git_repo_user %>@gerrit.wikimedia.org:29418/cloud/<%= @puppet_git_repo_name %>"
 PUPPET_GIT_REPO_USER = "<%= @puppet_git_repo_user %>"
 PUPPET_GIT_REPO_KEY_PATH = "<%= @puppet_git_repo_key_path %>"
