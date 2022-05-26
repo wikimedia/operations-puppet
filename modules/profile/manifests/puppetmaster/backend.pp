@@ -5,7 +5,6 @@
 #   Otherwise, some magic is done to have local repositories and sync between puppetmasters.
 # @param ca_server the CA server
 # @param prevent_cherrypicks disable cherry picks
-# @param allow_from A list of hosts for the allowed from list
 # @param extra_auth_rules Addtional auth rules
 # @param servers list of puppetmaster backend servers with wieghts
 class profile::puppetmaster::backend(
@@ -14,7 +13,6 @@ class profile::puppetmaster::backend(
     Hash                                 $config              = lookup('profile::puppetmaster::backend::config'),
     Boolean                              $secure_private      = lookup('profile::puppetmaster::backend::secure_private'),
     Boolean                              $prevent_cherrypicks = lookup('profile::puppetmaster::backend::prevent_cherrypicks'),
-    Array[String]                        $allow_from          = lookup('profile::puppetmaster::backend::allow_from'),
     Optional[String]                     $extra_auth_rules    = lookup('profile::puppetmaster::backend::extra_auth_rules'),
 ) {
 
@@ -41,7 +39,6 @@ class profile::puppetmaster::backend(
         config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
-        allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
         netbox_hiera_enable => $profile::puppetmaster::common::netbox_hiera_enable,
         ca_server           => $ca_server,

@@ -1,12 +1,4 @@
 profile::puppetmaster::backend::config: {}
 profile::puppetmaster::backend::secure_private: true
 profile::puppetmaster::backend::prevent_cherrypicks: true
-profile::puppetmaster::backend::allow_from:
-- '*.wikimedia.org'
-- '*.eqiad.wmnet'
-- '*.ulsfo.wmnet'
-- '*.esams.wmnet'
-- '*.codfw.wmnet'
-- '*.eqsin.wmnet'
-- '*.drmrs.wmnet'
 profile::puppetmaster::backend::extra_auth_rules: ~

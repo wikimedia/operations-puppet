@@ -8,7 +8,6 @@
 # @param manage_ca_file if true manage the CA file
 # @param swift_clusters instance of Swift::Clusters (hash of cluster info)
 # @param prevent_cherrypicks disable cherry picks
-# @param allow_from A list of hosts for the allowed from list
 # @param monitor_signed_certs if true monitor signed certs for expiry
 # @param extra_auth_rules Addtional auth rules
 # @param signed_certs_warning Warn if agent certs are due to expire within this time
@@ -35,7 +34,6 @@ class profile::puppetmaster::frontend(
     Boolean                       $secure_private          = lookup('profile::puppetmaster::frontend::secure_private'),
     String                        $web_hostname            = lookup('profile::puppetmaster::frontend::web_hostname'),
     Boolean                       $prevent_cherrypicks     = lookup('profile::puppetmaster::frontend::prevent_cherrypicks'),
-    Array[String]                 $allow_from              = lookup('profile::puppetmaster::frontend::allow_from'),
     Boolean                       $monitor_signed_certs    = lookup('profile::puppetmaster::frontend::monitor_signed_certs'),
     Integer                       $signed_certs_warning    = lookup('profile::puppetmaster::frontend::signed_certs_warning'),
     Integer                       $signed_certs_critical   = lookup('profile::puppetmaster::frontend::signed_certs_critical'),
@@ -135,7 +133,6 @@ class profile::puppetmaster::frontend(
         config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
-        allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
         ca_server           => $ca_server,
         ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
@@ -196,8 +193,9 @@ class profile::puppetmaster::frontend(
     }
 
     ferm::service { 'puppetmaster-frontend':
-        proto => 'tcp',
-        port  => 8140,
+        srange => '$DOMAIN_NETWORKS',
+        proto  => 'tcp',
+        port   => 8140,
     }
 
     $puppetmaster_frontend_ferm = join(keys($servers), ' ')

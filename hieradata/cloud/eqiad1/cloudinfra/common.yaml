@@ -39,7 +39,6 @@ profile::openstack::eqiad1::puppetmaster::servers:
         loadfactor: 20,
         worker: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud,
       }
-profile::puppetmaster::frontend::allow_from: [.wmflabs]
 profile::openstack::eqiad1::puppetmaster::web_hostname: puppetmaster.cloudinfra.wmflabs.org
 
 puppetmaster::enable_geoip: false

@@ -11,16 +11,6 @@
     SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
     RackBaseURI /
 
-    <Location />
-        Order Allow,Deny
-        <%- @allow_from.each do |entry| -%>
-        Allow from <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-        <%- @deny_from.each do |entry| -%>
-        Deny from <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-    </Location>
-
     DocumentRoot <%= @puppetmaster_rack_path %>/public
     <Directory <%= @puppetmaster_rack_path %>/>
         Options None

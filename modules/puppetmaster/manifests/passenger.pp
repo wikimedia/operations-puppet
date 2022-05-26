@@ -7,17 +7,9 @@
 #        The IP address Apache will bind to
 #    - $verify_client:
 #        Whether apache mod_ssl will verify the client (SSLVerifyClient option)
-#    - $allow_from:
-#        Adds an Allow from statement (order Allow,Deny), limiting access
-#        to the passenger service.
-#    - $deny_from:
-#        Adds a Deny from statement (order Allow,Deny), limiting access
-#        to the passenger service.
 class puppetmaster::passenger(
     Variant[Stdlib::IP::Address, Enum['*']] $bind_address,
     Httpd::SSLVerifyClient $verify_client,
-    Array[String] $allow_from,
-    Array[String] $deny_from,
 ){
 
     include sslcert::dhparam

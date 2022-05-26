@@ -2,14 +2,6 @@ profile::puppetmaster::frontend::canary_hosts: []
 profile::puppetmaster::frontend::config: {}
 profile::puppetmaster::frontend::web_hostname: puppet
 profile::puppetmaster::frontend::prevent_cherrypicks: true
-profile::puppetmaster::frontend::allow_from:
-  - '*.wikimedia.org'
-  - '*.eqiad.wmnet'
-  - '*.ulsfo.wmnet'
-  - '*.esams.wmnet'
-  - '*.codfw.wmnet'
-  - '*.eqsin.wmnet'
-  - '*.drmrs.wmnet'
 profile::puppetmaster::frontend: chain
 profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::secure_private: true

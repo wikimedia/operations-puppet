@@ -100,7 +100,6 @@ class profile::puppetmaster::pontoon (
 
     class { 'puppetmaster':
         server_name         => $::fqdn,
-        allow_from          => ['10.0.0.0/8', '172.16.0.0/21'],
         secure_private      => false,
         prevent_cherrypicks => false,
         config              => $config,

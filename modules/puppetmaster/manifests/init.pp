@@ -3,8 +3,6 @@
 # @param server_name name of the server
 # @param bind_address The IP address Apache will bind to
 # @param verify_client Whether apache mod_ssl will verify the client (SSLVerifyClient option)
-# @param allow_from Adds an Allow from statement (order Allow,Deny), limiting access to the passenger service.
-# @param deny_from Adds a Deny from statement (order Allow,Deny), limiting access to the passenger service.
 # @param server_type frontend, backend or standalone
 # @param config Hash containing all config settings for the [master] section of puppet.conf (ini-style)
 # @param hiera_config Specifies which file to use for hiera.yaml.  Defaults to $::realm
@@ -31,18 +29,8 @@ class puppetmaster(
     String[1]                                $server_name        = 'puppet',
     String[1]                                $bind_address       = '*',
     Httpd::SSLVerifyClient                   $verify_client      = 'optional',
-    Array[String]                            $deny_from          = [],
     Puppetmaster::Server_type                $server_type        = 'standalone',
     Hash                                     $config             = {},
-    Array[String]                            $allow_from         = [
-                                                                    '*.wikimedia.org',
-                                                                    '*.eqiad.wmnet',
-                                                                    '*.ulsfo.wmnet',
-                                                                    '*.esams.wmnet',
-                                                                    '*.codfw.wmnet',
-                                                                    '*.eqsin.wmnet',
-                                                                    '*.drmrs.wmnet',
-                                                                  ],
     Boolean                                  $is_git_master       = false,
     String[1]                                $hiera_config        = $::realm,
     Boolean                                  $secure_private      = true,
@@ -86,8 +74,6 @@ class puppetmaster(
     class { 'puppetmaster::passenger':
         bind_address  => $bind_address,
         verify_client => $verify_client,
-        allow_from    => $allow_from,
-        deny_from     => $deny_from,
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong')

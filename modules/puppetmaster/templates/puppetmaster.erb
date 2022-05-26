@@ -16,14 +16,9 @@
 
     RackBaseURI /
 
-    <Location />
-        <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
-        Require ip <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-        <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
-        Require not ip <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-    </Location>
+    # Historically here was an Apache access control block which restricted access
+    # to the Wikimedia networks. That's been removed, and now access control now relies on
+    # Ferm (on production) and on Neutron security groups (on Cloud VPS).
 
     DocumentRoot <%= @puppetmaster_rack_path %>/public
     <Directory <%= @puppetmaster_rack_path %>/>

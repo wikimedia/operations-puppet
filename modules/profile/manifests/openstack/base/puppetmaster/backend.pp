@@ -6,10 +6,6 @@ class profile::openstack::base::puppetmaster::backend(
 
     class { 'profile::openstack::base::puppetmaster::common': }
 
-    # Only allow puppet access from the instances
-    $labs_networks = join($network::constants::labs_networks, ' ')
-    $allow_from = flatten([$network::constants::labs_networks, '.wikimedia.org'])
-
     $config = {
         'node_terminus'     => 'exec',
         'external_nodes'    => '/usr/local/bin/puppet-enc',
@@ -20,7 +16,6 @@ class profile::openstack::base::puppetmaster::backend(
     class { '::profile::puppetmaster::backend':
         config         => $config,
         secure_private => false,
-        allow_from     => $allow_from,
         servers        => $puppetmasters,
         ca_server      => $puppetmaster_ca,
     }

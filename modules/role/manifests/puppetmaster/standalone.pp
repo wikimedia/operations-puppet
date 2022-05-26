@@ -17,10 +17,6 @@
 #  Set to true to prevent manual cherry-picking / modification of
 #  the puppet git repository. Is accomplished using git hooks.
 #
-# [*allow_from*]
-#  Array of CIDRs from which to allow access to this puppetmaster.
-#  Defaults to the entire 10.x range, so no real access control.
-#
 # [*git_sync_minutes*]
 #  How frequently should the git repositories be sync'd to upstream.
 #  Defaults to 10.
@@ -46,7 +42,6 @@
 class role::puppetmaster::standalone(
     Boolean                            $autosign            = false,
     Boolean                            $prevent_cherrypicks = false,
-    Array[Stdlib::IP::Address]         $allow_from          = ['10.0.0.0/8', '172.16.0.0/21'],
     Integer[1,30]                      $git_sync_minutes    = 10,
     Optional[String]                   $extra_auth_rules    = undef,
     Stdlib::Host                       $server_name         = $facts['fqdn'],
@@ -127,7 +122,6 @@ class role::puppetmaster::standalone(
 
     class { 'puppetmaster':
         server_name         => $server_name,
-        allow_from          => $allow_from,
         secure_private      => false,
         prevent_cherrypicks => $prevent_cherrypicks,
         extra_auth_rules    => $extra_auth_rules,
