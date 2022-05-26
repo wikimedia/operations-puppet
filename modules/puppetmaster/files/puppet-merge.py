@@ -15,6 +15,7 @@ import shlex
 
 from argparse import ArgumentParser, RawTextHelpFormatter
 from getpass import getuser
+from syslog import syslog
 from pwd import getpwnam
 from subprocess import CalledProcessError, PIPE, run
 
@@ -102,6 +103,7 @@ def main():
     if running_user != git_user:
         setuid(git_user)
 
+    syslog(f'Starting puppet-merge for: {config["repo"]}')
     remote_url = git('config --get remote.origin.url', config['repo']).rstrip(os.linesep)
     print('Fetching new commits from: {}'.format(remote_url))
     git('fetch', config['repo'])
@@ -123,11 +125,14 @@ def main():
     if not args.yes:
         committers = git('log HEAD..{} --format=%ce'.format(target_sha1), config['repo'])
         confirm_merge(committers.split('\n'))
+    syslog(f'Merging: {head_sha1_old} -> {target_sha1}')
     print('HEAD is currently {}'.format(head_sha1_old))
     git('merge --ff-only {}'.format(target_sha1), config['repo'], None)
+    syslog(f'Merge complete: {target_sha1}')
     print('Running git clean to clean any untracked files.')
     git('clean -dffx -e /private/', config['repo'], None)
     head_sha1_new = git('rev-parse HEAD', config['repo']).rstrip(os.linesep)
+    syslog(f'HEAD is now: {head_sha1_new}')
     print('All done! HEAD is now {}'.format(head_sha1_new))
     if os.path.isdir(os.path.dirname(config['sha1'])):
         with open(config['sha1'], 'w') as sha1_fd:
