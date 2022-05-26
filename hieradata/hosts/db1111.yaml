@@ -1,3 +1,4 @@
 # db1111
 mariadb::shard: 's8'
 mariadb::package: 'wmf-mariadb106'
+profile::monitoring::notifications_enabled: false
