@@ -2,9 +2,8 @@ class profile::openstack::base::puppetmaster::backend(
     Stdlib::Host $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
     Hash[String, Puppetmaster::Backends] $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
 ) {
-
-    require ::profile::conftool::client
     include ::network::constants
+
     class { 'profile::openstack::base::puppetmaster::common': }
 
     # Only allow puppet access from the instances

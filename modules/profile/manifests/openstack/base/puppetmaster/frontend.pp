@@ -8,9 +8,6 @@ class profile::openstack::base::puppetmaster::frontend(
     ) {
 
     include ::network::constants
-    include ::profile::backup::host
-    include ::profile::conftool::client
-    include ::profile::conftool::master
 
     # validatelabsfqdn will look up an instance certname in nova
     #  and make sure it's for an actual instance before signing
@@ -29,15 +26,13 @@ class profile::openstack::base::puppetmaster::frontend(
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
     $openstack_controller_ips_v6 = $openstack_controllers.map |$host| { ipresolve($host, 6) }
 
-    if ! defined(Class['puppetmaster::certmanager']) {
-        class { 'puppetmaster::certmanager':
-            remote_cert_cleaners => flatten([
-                $designate_ips,
-                $designate_ips_v6,
-                $openstack_controller_ips,
-                $openstack_controller_ips_v6,
-            ])
-        }
+    class { 'puppetmaster::certmanager':
+        remote_cert_cleaners => flatten([
+            $designate_ips,
+            $designate_ips_v6,
+            $openstack_controller_ips,
+            $openstack_controller_ips_v6,
+        ])
     }
 
     $config = {

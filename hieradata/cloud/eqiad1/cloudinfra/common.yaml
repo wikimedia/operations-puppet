@@ -30,7 +30,6 @@ profile::openstack::eqiad1::puppetmaster::encapi::db_user: labspuppet
 profile::openstack::eqiad1::puppetmaster::encapi::token_validator_project: cloudinfra
 profile::openstack::eqiad1::puppetmaster::encapi::token_validator_username: cloudinfrakeystonevalidate
 
-profile::conftool::master::sync_dir: /etc/conftool/data
 profile::openstack::eqiad1::puppetmaster::ca: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
 profile::openstack::eqiad1::puppetmaster::cert_secret_path: puppetmaster
 profile::openstack::eqiad1::puppetmaster::servers:
