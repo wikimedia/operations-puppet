@@ -36,6 +36,7 @@ require 'shellwords'
 # Needed by docs
 require 'puppet-strings/tasks/generate'
 $LOAD_PATH.unshift File.expand_path('.')
+require 'rake_modules/monkey_patch_early'
 require 'rake_modules/taskgen'
 require_relative 'rake_modules/module_rake_tasks.rb'
 

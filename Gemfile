@@ -15,7 +15,7 @@ gem 'puppet-blacksmith', '~> 4.1.2'
 gem 'chronic', '~> 0.10.2'
 
 gem 'rake', '~> 12.0.0'
-gem 'git', '1.3.0'
+gem 'git', '~> 1.11.0'
 gem 'puppet-lint', '2.4.2'
 gem 'rubocop', '~> 0.49.1', require: false
 gem 'puppet-lint-wmf_styleguide-check', '1.1.0'
