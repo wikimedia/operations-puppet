@@ -358,8 +358,8 @@ node /^cloudcephmon200[4-6]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
-# new cloudstore hosts T302981
-node /^cloudstore1001[01]\.wikimedia\.org/ {
+# new dumps hosts T302981
+node /^clouddumps100[12]\.wikimedia\.org/ {
     role(insetup)
 }
 
