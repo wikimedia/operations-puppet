@@ -185,6 +185,12 @@ network::subnets:
         cloud-hosts1-f4-eqiad:
           ipv4: 10.64.149.0/24
           ipv6: 2620:0:861:11d::/64
+        cloud-hosts1-d5-eqiad:
+          ipv4: 10.64.150.0/24
+          ipv6: 2620:0:861:11e::/64
+        cloud-hosts1-c8-eqiad:
+          ipv4: 10.64.151.0/24
+          ipv6: 2620:0:861:11f::/64
 
     codfw:
       public:
