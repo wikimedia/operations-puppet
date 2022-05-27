@@ -425,7 +425,6 @@ oldimage,oi_sha1,K
 page,page_id,K
 page,page_namespace,K
 page,page_title,K
-page,page_restrictions,K
 page,page_counter,K
 page,page_is_redirect,K
 page,page_is_new,K

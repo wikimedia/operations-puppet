@@ -669,7 +669,7 @@ customviews:
   page_compat:
     source: page
     view: >
-      select page_id, page_namespace, page_title, page_restrictions, page_is_redirect,
+      select page_id, page_namespace, page_title, page_is_redirect,
       page_is_new, page_random, page_touched, page_links_updated, page_latest, page_len,
       if(content_models.model_name, content_models.model_name, page_content_model) as page_content_model,
       page_lang
