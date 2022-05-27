@@ -13,7 +13,7 @@ class profile::gitlab::dump(
         ensure         => present,
         read_only      => 'no',
         path           => $backup_path,
-        hosts_allow    => ['gitlab1001.wikimedia.org'],
+        hosts_allow    => ['gitlab1001.wikimedia.org', 'gitlab1004.wikimedia.org'],
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
     }
