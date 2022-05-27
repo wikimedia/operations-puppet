@@ -166,7 +166,7 @@ profile::idp::services:
       - wmf
   gitlab:
     id: 23
-    service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
+    service_id: 'https://gitlab(-new)?\.wikimedia\.org(/.*)?'
     # No required_groups defined for gitlab.wm.o as GitLab should be open to
     # any user with a Wikimedia developer account
   wmcs_idp:
