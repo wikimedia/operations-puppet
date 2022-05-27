@@ -13,6 +13,7 @@ class profile::openstack::codfw1dev::heat(
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
+    String[32] $auth_encryption_key = lookup('profile::openstack::codfw1dev::heat::auth_encryption_key'),
 ) {
     class {'::profile::openstack::base::heat':
         version               => $version,
@@ -27,5 +28,6 @@ class profile::openstack::codfw1dev::heat(
         ldap_user_pass        => $ldap_user_pass,
         rabbit_pass           => $rabbit_pass,
         region                => $region,
+        auth_encryption_key   => $auth_encryption_key,
     }
 }

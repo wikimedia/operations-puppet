@@ -12,6 +12,7 @@ class openstack::heat::service::wallaby(
     Stdlib::Port $cfn_api_bind_port,
     String $rabbit_user,
     String $rabbit_pass,
+    String[32] $auth_encryption_key,
 ) {
     require "openstack::serverpackages::wallaby::${::lsbdistcodename}"
 

@@ -16,6 +16,7 @@ class profile::openstack::base::heat(
     Stdlib::Port $cfn_api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),
     String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
+    String[32] $auth_encryption_key = lookup('profile::openstack::base::heat::auth_encryption_key'),
     ) {
 
     $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
@@ -33,6 +34,7 @@ class profile::openstack::base::heat(
         ldap_user_pass        => $ldap_user_pass,
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
+        auth_encryption_key   => $auth_encryption_key,
     }
 
     include ::network::constants

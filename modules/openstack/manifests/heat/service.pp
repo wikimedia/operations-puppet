@@ -12,6 +12,7 @@ class openstack::heat::service(
     Stdlib::Port $cfn_api_bind_port,
     String $rabbit_user,
     String $rabbit_pass,
+    String[32] $auth_encryption_key,
 ) {
     class { "openstack::heat::service::${version}":
         db_user               => $db_user,
@@ -25,6 +26,7 @@ class openstack::heat::service(
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
         openstack_controllers => $openstack_controllers,
+        auth_encryption_key   => $auth_encryption_key,
     }
 
     service { 'heat-api':
