@@ -17,28 +17,28 @@ profile::lvs::realserver::pools:
 # still be used as standby in the web service without changes there.
 # Any changes to the section_overrides key still require reloads of haproxy
 #
-#profile::mariadb::proxy::multiinstance_replicas::section_overrides:
-#   s1:
-#     clouddb1013.eqiad.wmnet:
-#       ipaddress: 10.64.0.28
-#   s2:
-#     clouddb1014.eqiad.wmnet:
-#       ipaddress: 10.64.0.29
-#   s3:
-#     clouddb1013.eqiad.wmnet:
-#       ipaddress: 10.64.0.28
-#   s4:
-#     clouddb1015.eqiad.wmnet:
-#       ipaddress: 10.64.16.141
-#   s5:
-#     clouddb1016.eqiad.wmnet:
-#       ipaddress: 10.64.16.142
-#   s6:
-#     clouddb1015.eqiad.wmnet:
-#       ipaddress: 10.64.16.141
-#   s7:
-#     clouddb1014.eqiad.wmnet:
-#       ipaddress: 10.64.0.29
-#   s8:
-#     clouddb1016.eqiad.wmnet:
-#       ipaddress: 10.64.16.142
+profile::mariadb::proxy::multiinstance_replicas::section_overrides:
+   s1:
+     clouddb1013.eqiad.wmnet:
+       ipaddress: 10.64.0.28
+   s2:
+     clouddb1014.eqiad.wmnet:
+       ipaddress: 10.64.0.29
+   s3:
+     clouddb1013.eqiad.wmnet:
+       ipaddress: 10.64.0.28
+   s4:
+     clouddb1015.eqiad.wmnet:
+       ipaddress: 10.64.16.141
+   s5:
+     clouddb1016.eqiad.wmnet:
+       ipaddress: 10.64.16.142
+   s6:
+     clouddb1015.eqiad.wmnet:
+       ipaddress: 10.64.16.141
+   s7:
+     clouddb1014.eqiad.wmnet:
+       ipaddress: 10.64.0.29
+   s8:
+     clouddb1016.eqiad.wmnet:
+       ipaddress: 10.64.16.142
