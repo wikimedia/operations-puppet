@@ -29,6 +29,15 @@ if ($programname startswith 'php7.')  then {
     stop
 }
 
+# Forward the output of scheduled maintenance scripts to the log aggregator
+if ($programname startswith 'mediawiki_job_') then {
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
+<% end -%>
+    stop
+}
+
 # Forward messages logged by the kernel and containing the string
 # "php7" (such as warnings that the process was killed or respawned)
 # to the log aggregator.
