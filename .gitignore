@@ -27,6 +27,9 @@
 /Gemfile.lock
 /.bundle/
 
+# bundle install adds gems to vendor/bundle
+/vendor/
+
 # python venv wrapper + test artifacts
 **/.tox
 **/.coverage
