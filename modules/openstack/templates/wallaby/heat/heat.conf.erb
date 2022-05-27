@@ -121,6 +121,17 @@ use_syslog = True
 # Facility to use. If unset defaults to LOG_USER.
 syslog_log_facility = LOG_LOCAL0
 
+# The network address and optional user credentials for connecting to the messaging backend, in URL format. The expected format is:
+#
+# driver://[user:pass@]host:port[,[userN:passN@]hostN:portN]/virtual_host?query
+#
+# Example: rabbit://rabbitmq:password@127.0.0.1:5672//
+#
+# For full details on the fields in the URL see the documentation of oslo_messaging.TransportURL at
+# https://docs.openstack.org/oslo.messaging/latest/reference/transport.html (string value)
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
+
+
 [clients_cinder]
 
 #
