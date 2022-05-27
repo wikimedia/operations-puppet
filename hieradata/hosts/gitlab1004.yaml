@@ -1,0 +1,6 @@
+# service IP for public https and ssh (T285870)
+profile::gitlab::service_ip_v4: '208.80.154.145'
+profile::gitlab::service_ip_v6: '2620:0:861:2:208:80:154:145'
+profile::gitlab::service_name: 'gitlab-new.wikimedia.org'
+# Restore-Backup Timer Job will be triggered manually
+profile::gitlab::enable_restore: false
