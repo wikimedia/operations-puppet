@@ -841,7 +841,8 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 ## m1 shard
 # See also multiinstance misc hosts db1117 and db2078 below
 
-# old m1 eqiad master - will be moved away
+# DO NOT POOL  old m1 eqiad master - will be moved away to s1
+# Faulty memory: T309303
 node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
 }
