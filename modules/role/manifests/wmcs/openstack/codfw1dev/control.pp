@@ -25,6 +25,7 @@ class role::wmcs::openstack::codfw1dev::control {
 
     # For testing purposes:
     include profile::openstack::codfw1dev::barbican
+    include profile::openstack::codfw1dev::heat
 
     include profile::openstack::codfw1dev::nova::common
     include profile::openstack::codfw1dev::nova::conductor::service

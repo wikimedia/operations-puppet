@@ -8,6 +8,8 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $trove_api_bind_port = lookup('profile::openstack::base::trove::api_bind_port'),
     Stdlib::Port $radosgw_api_bind_port = lookup('profile::openstack::base::radosgw::api_bind_port'),
     Stdlib::Port $barbican_bind_port = lookup('profile::openstack::codfw1dev::barbican::bind_port'),
+    Stdlib::Port $heat_bind_port = lookup('profile::openstack::codfw1dev::heat::api_bind_port'),
+    Stdlib::Port $cloudformation_bind_port = lookup('profile::openstack::codfw1dev::heat::cfn_api_bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::codfw1dev::keystone::admin_bind_port'),
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
@@ -150,6 +152,38 @@ class profile::openstack::codfw1dev::haproxy(
             },
             {
                 port                 => 29311,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
+    }
+
+    openstack::haproxy::site { 'heat':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $heat_bind_port,
+        frontends          => [
+            {
+                port => 9311,
+            },
+            {
+                port                 => 28004,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
+    }
+
+    openstack::haproxy::site { 'cloudformation':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $cloudformation_bind_port,
+        frontends          => [
+            {
+                port => 9311,
+            },
+            {
+                port                 => 28000,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
