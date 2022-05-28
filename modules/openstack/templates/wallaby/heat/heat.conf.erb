@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 [DEFAULT]
 
+num_engine_workers = 3
+
 # Template default for how the server should receive the metadata required for software configuration. POLL_SERVER_CFN will allow calls to
 # the cfn API action DescribeStackResource authenticated with the provided keypair (requires enabled heat-api-cfn). POLL_SERVER_HEAT will
 # allow calls to the Heat API resource-show using the provided keystone credentials (requires keystone v3 API, and configured stack_user_*
