@@ -10,7 +10,7 @@ class profile::openstack::base::heat(
     String $db_user = lookup('profile::openstack::base::heat::db_user'),
     String $db_name = lookup('profile::openstack::base::heat::db_name'),
     String $db_pass = lookup('profile::openstack::base::heat::db_pass'),
-    String $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::base::heat::service_user_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::heat::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),
     Stdlib::Port $cfn_api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),

@@ -10,7 +10,7 @@ class profile::openstack::codfw1dev::heat(
     String $db_name = lookup('profile::openstack::codfw1dev::heat::db_name'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::heat::api_bind_port'),
     Stdlib::Port $cfn_api_bind_port = lookup('profile::openstack::codfw1dev::heat::cfn_api_bind_port'),
-    String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::codfw1dev::heat::service_user_pass'),
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
     String[32] $auth_encryption_key = lookup('profile::openstack::codfw1dev::heat::auth_encryption_key'),
