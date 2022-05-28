@@ -8,6 +8,7 @@ class openstack::heat::service::wallaby(
     Stdlib::Fqdn $db_host,
     String $ldap_user_pass,
     String $keystone_admin_uri,
+    String $keystone_internal_uri,
     Stdlib::Port $api_bind_port,
     Stdlib::Port $cfn_api_bind_port,
     String $rabbit_user,
