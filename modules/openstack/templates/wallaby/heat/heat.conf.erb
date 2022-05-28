@@ -226,6 +226,14 @@ transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbi
 #url =
 
 
+[trustee]
+auth_type = password
+auth_url = <%= @keystone_internal_uri %>
+username = heat
+password = <%= @ldap_user_pass %>
+user_domain_name = default
+
+
 [clients_keystone]
 
 #
