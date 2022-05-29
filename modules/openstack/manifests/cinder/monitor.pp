@@ -17,7 +17,7 @@ class openstack::cinder::monitor(
     monitoring::service { 'cinder-api':
         ensure        => $ensure,
         description   => 'cinder-api http',
-        check_command => 'check_http_on_port!8776',
+        check_command => 'check_http_on_port!18776',
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
