@@ -50,7 +50,7 @@ class profile::openstack::base::heat(
     ferm::rule {'heat_api_all':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (8004 28004) ACCEPT;",
+                             ) proto tcp dport (28004) ACCEPT;",
     }
 
     openstack::db::project_grants { 'heat':

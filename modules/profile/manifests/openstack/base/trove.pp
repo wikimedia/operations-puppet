@@ -61,7 +61,7 @@ class profile::openstack::base::trove(
     ferm::rule {'trove_api_all':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (8779 28779) ACCEPT;",
+                             ) proto tcp dport (28779) ACCEPT;",
     }
 
     openstack::db::project_grants { 'trove':

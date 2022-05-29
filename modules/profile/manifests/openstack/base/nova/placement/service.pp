@@ -15,6 +15,6 @@ class profile::openstack::base::nova::placement::service(
 
     ferm::rule{'nova_placement_public':
         ensure => 'present',
-        rule   => "saddr (${prod_networks}) proto tcp dport (8778) ACCEPT;",
+        rule   => "saddr (${prod_networks}) proto tcp dport (28778) ACCEPT;",
     }
 }

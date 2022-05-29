@@ -19,9 +19,9 @@ sudo puppet agent --disable 'nova setup'
 #  IDENTIFIED BY '<%= @db_pass %>';
 
 openstack service create --name nova --description "OpenStack Compute" compute
-openstack endpoint create --region <%= @region %> compute public http://<%= @ipaddress %>:8774/v2.1
-openstack endpoint create --region <%= @region %> compute internal http://<%= @ipaddress %>:8774/v2.1
-openstack endpoint create --region <%= @region %> compute admin http://<%= @ipaddress %>:8774/v2.1
+openstack endpoint create --region <%= @region %> compute public https://<%= @ipaddress %>:28774/v2.1
+openstack endpoint create --region <%= @region %> compute internal https://<%= @ipaddress %>:28774/v2.1
+openstack endpoint create --region <%= @region %> compute admin https://<%= @ipaddress %>:28774/v2.1
 
 su -s /bin/sh -c "nova-manage api_db sync" nova; echo $?
 su -s /bin/sh -c "nova-manage db sync" nova; echo $?

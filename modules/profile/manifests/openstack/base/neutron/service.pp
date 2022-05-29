@@ -16,6 +16,6 @@ class profile::openstack::base::neutron::service(
 
     ferm::rule{'neutron-server-api':
         ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}) proto tcp dport (9696 29696) ACCEPT;",
+        rule   => "saddr (${prod_networks} ${labs_networks}) proto tcp dport (29696) ACCEPT;",
     }
 }

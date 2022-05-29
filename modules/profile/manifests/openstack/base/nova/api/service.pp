@@ -24,7 +24,7 @@ class profile::openstack::base::nova::api::service(
     ferm::rule{'nova_api_public':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (8774 28774) ACCEPT;",
+                             ) proto tcp dport (28774) ACCEPT;",
     }
 
     $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]

@@ -28,9 +28,9 @@ sudo service glance-api restart
 # You cna do this as root.
 source novaenv.sh
 openstack service create --name glance --description "OpenStack Image service" image
-openstack endpoint create --region <%= @region %> image public http://<%= @keystone_api_fqdn %>:9292
-openstack endpoint create --region <%= @region %> image internal http://<%= @keystone_api_fqdn %>:9292
-openstack endpoint create --region <%= @region %> image admin http://<%= @keystone_api_fqdn %>:9292
+openstack endpoint create --region <%= @region %> image public https://<%= @keystone_api_fqdn %>:29292
+openstack endpoint create --region <%= @region %> image internal https://<%= @keystone_api_fqdn %>:29292
+openstack endpoint create --region <%= @region %> image admin https://<%= @keystone_api_fqdn %>:29292
 openstack role add --user novaadmin --project admin glanceadmin
 
 #

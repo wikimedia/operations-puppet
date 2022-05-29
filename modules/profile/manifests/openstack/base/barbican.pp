@@ -36,7 +36,7 @@ class profile::openstack::base::barbican(
     ferm::rule {'barbican_api_all':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (${bind_port} 2${bind_port}) ACCEPT;",
+                             ) proto tcp dport (2${bind_port}) ACCEPT;",
     }
 
     openstack::db::project_grants { 'barbican':

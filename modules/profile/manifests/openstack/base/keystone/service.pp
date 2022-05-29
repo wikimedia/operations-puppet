@@ -109,7 +109,7 @@ class profile::openstack::base::keystone::service(
 
     ferm::service { 'keystone_admin':
         proto  => 'tcp',
-        port   => '(35357 25357)',
+        port   => '(25357)',
         srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${labweb_hosts.join(' ')})))",
     }
 
@@ -117,7 +117,7 @@ class profile::openstack::base::keystone::service(
 
     ferm::service { 'keystone-admin-nova-hosts':
         proto  => 'tcp',
-        port   => '(35357 25357)',
+        port   => '(25357)',
         srange => "(${nova_hosts_ranges.join(' ')})",
     }
 

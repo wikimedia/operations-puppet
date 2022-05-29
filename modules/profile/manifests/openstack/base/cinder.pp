@@ -60,7 +60,7 @@ class profile::openstack::base::cinder(
     ferm::rule {'cinder_api_all':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (8776 28776) ACCEPT;",
+                             ) proto tcp dport (28776) ACCEPT;",
     }
 
     openstack::db::project_grants { 'cinder':
