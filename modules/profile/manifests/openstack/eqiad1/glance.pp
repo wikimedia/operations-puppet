@@ -25,7 +25,7 @@ class profile::openstack::eqiad1::glance (
     }
     contain '::profile::openstack::base::glance'
 
-    class {'openstack::glance::monitor':
+    class { 'openstack::glance::monitor':
         contact_groups => 'wmcs-team-email,admins',
     }
 }
