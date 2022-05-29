@@ -34,9 +34,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => 9001,
         frontends          => [
             {
-                port => 9001,
-            },
-            {
                 port                 => 29001,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -52,9 +49,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_backend       => $keystone_admin_bind_port,
         frontends          => [
-            {
-                port => 35357,
-            },
             {
                 port                 => 25357,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -85,9 +79,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $glance_api_bind_port,
         frontends          => [
             {
-                port => 9292,
-            },
-            {
                 port                 => 29292,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -100,9 +91,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_backend       => $cinder_api_bind_port,
         frontends          => [
-            {
-                port => 8776,
-            },
             {
                 port                 => 28776,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -117,9 +105,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $trove_api_bind_port,
         frontends          => [
             {
-                port => 8779,
-            },
-            {
                 port                 => 28779,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -132,9 +117,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_backend       => $radosgw_api_bind_port,
         frontends          => [
-            {
-                port => 8080,
-            },
             {
                 port                 => 28080,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -149,9 +131,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $barbican_bind_port,
         frontends          => [
             {
-                port => 9311,
-            },
-            {
                 port                 => 29311,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -164,9 +143,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_backend       => $heat_bind_port,
         frontends          => [
-            {
-                port => 8004,
-            },
             {
                 port                 => 28004,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -181,9 +157,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $magnum_bind_port,
         frontends          => [
             {
-                port => 9511,
-            },
-            {
                 port                 => 29511,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -196,9 +169,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_backend       => $cloudformation_bind_port,
         frontends          => [
-            {
-                port => 8000,
-            },
             {
                 port                 => 28000,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -213,9 +183,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $neutron_bind_port,
         frontends          => [
             {
-                port => 9696,
-            },
-            {
                 port                 => 29696,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -229,9 +196,6 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $nova_osapi_compute_listen_port,
         frontends          => [
             {
-                port => 8774,
-            },
-            {
                 port                 => 28774,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -244,9 +208,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_backend       => $placement_api_bind_port,
         frontends          => [
-            {
-                port => 8778,
-            },
             {
                 port                 => 28778,
                 acme_chief_cert_name => $acme_chief_cert_name,
