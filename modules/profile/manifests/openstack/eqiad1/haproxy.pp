@@ -29,9 +29,6 @@ class profile::openstack::eqiad1::haproxy(
         port_backend       => 9001,
         frontends          => [
             {
-                port => 9001,
-            },
-            {
                 port                 => 29001,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -44,9 +41,6 @@ class profile::openstack::eqiad1::haproxy(
         healthcheck_path   => '/',
         port_backend       => $keystone_admin_bind_port,
         frontends          => [
-            {
-                port => 35357,
-            },
             {
                 port                 => 25357,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -77,9 +71,6 @@ class profile::openstack::eqiad1::haproxy(
         port_backend       => $glance_api_bind_port,
         frontends          => [
             {
-                port => 9292,
-            },
-            {
                 port                 => 29292,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -92,9 +83,6 @@ class profile::openstack::eqiad1::haproxy(
         healthcheck_path   => '/',
         port_backend       => $cinder_api_bind_port,
         frontends          => [
-            {
-                port => 8776,
-            },
             {
                 port                 => 28776,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -109,9 +97,6 @@ class profile::openstack::eqiad1::haproxy(
         port_backend       => $trove_api_bind_port,
         frontends          => [
             {
-                port => 8779,
-            },
-            {
                 port                 => 28779,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -124,9 +109,6 @@ class profile::openstack::eqiad1::haproxy(
         healthcheck_path   => '/',
         port_backend       => $neutron_bind_port,
         frontends          => [
-            {
-                port => 9696,
-            },
             {
                 port                 => 29696,
                 acme_chief_cert_name => $acme_chief_cert_name,
@@ -141,9 +123,6 @@ class profile::openstack::eqiad1::haproxy(
         port_backend       => $nova_osapi_compute_listen_port,
         frontends          => [
             {
-                port => 8774,
-            },
-            {
                 port                 => 28774,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
@@ -156,9 +135,6 @@ class profile::openstack::eqiad1::haproxy(
         healthcheck_path   => '/',
         port_backend       => $placement_api_bind_port,
         frontends          => [
-            {
-                port => 8778,
-            },
             {
                 port                 => 28778,
                 acme_chief_cert_name => $acme_chief_cert_name,
