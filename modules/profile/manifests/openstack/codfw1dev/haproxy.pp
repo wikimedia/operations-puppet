@@ -164,7 +164,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $heat_bind_port,
         frontends          => [
             {
-                port => 9311,
+                port => 8004,
             },
             {
                 port                 => 28004,
@@ -180,7 +180,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $cloudformation_bind_port,
         frontends          => [
             {
-                port => 9311,
+                port => 8000,
             },
             {
                 port                 => 28000,
