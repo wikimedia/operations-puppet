@@ -34,8 +34,8 @@ profile::idp::actuators:
   - ssoSessions
 profile::idp::server_name: https://idp-test.wikimedia.org
 profile::idp::idp_nodes:
-  - idp-test1001.wikimedia.org
-  - idp-test2001.wikimedia.org
+  - idp-test1002.wikimedia.org
+  - idp-test2002.wikimedia.org
 profile::idp::is_staging_host: true
 profile::idp::memcached_enable: true
 profile::idp::memcached::mcrouter_cluster: 'idp-test'
