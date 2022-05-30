@@ -1035,7 +1035,7 @@ host netbox2001 {
 
 host netbox2002 {
    hardware ethernet aa:00:00:d9:81:8a;
-   fixed-address netbox2001.wikimedia.org;
+   fixed-address netbox2002.codfw.wmnet;
    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
