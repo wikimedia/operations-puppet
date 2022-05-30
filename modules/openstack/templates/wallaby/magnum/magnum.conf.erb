@@ -412,7 +412,7 @@ region_name = <%= @region %>
 #
 
 # The queue to add conductor tasks to. (string value)
-#topic = magnum-conductor
+topic = magnum-conductor
 
 # RPC timeout for the conductor liveness check that is used for
 # cluster locking. (integer value)
@@ -420,7 +420,7 @@ region_name = <%= @region %>
 
 # Number of magnum-conductor processes to fork and run. Default to
 # number of CPUs on the host. (integer value)
-#workers = <None>
+workers = 2
 
 
 [cors]
@@ -681,7 +681,9 @@ user_domain_id = default
 username = magnum
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 
-
+# Some magnum code expects this to be available under the legacy
+#  names, so we duplicate things here:
+www_authenticate_uri = <%= @keystone_internal_uri %>
 
 
 [kubernetes]
@@ -1253,66 +1255,7 @@ transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbi
 
 
 [oslo_policy]
-
-#
-# From oslo.policy
-#
-
-# This option controls whether or not to enforce scope when evaluating
-# policies. If ``True``, the scope of the token used in the request is
-# compared to the ``scope_types`` of the policy being enforced. If the
-# scopes do not match, an ``InvalidScope`` exception will be raised.
-# If ``False``, a message will be logged informing operators that
-# policies are being invoked with mismatching scope. (boolean value)
-#enforce_scope = false
-
-# This option controls whether or not to use old deprecated defaults
-# when evaluating policies. If ``True``, the old deprecated defaults
-# are not going to be evaluated. This means if any existing token is
-# allowed for old defaults but is disallowed for new defaults, it will
-# be disallowed. It is encouraged to enable this flag along with the
-# ``enforce_scope`` flag so that you can get the benefits of new
-# defaults and ``scope_type`` together (boolean value)
-#enforce_new_defaults = false
-
-# The relative or absolute path of a file that maps roles to
-# permissions for a given service. Relative paths must be specified in
-# relation to the configuration file setting this option. (string
-# value)
-#policy_file = policy.json
-
-# Default rule. Enforced when a requested rule is not found. (string
-# value)
-#policy_default_rule = default
-
-# Directories where policy configuration files are stored. They can be
-# relative to any directory in the search path defined by the
-# config_dir option, or absolute paths. The file defined by
-# policy_file must exist for these directories to be searched.
-# Missing or empty directories are ignored. (multi valued)
-#policy_dirs = policy.d
-
-# Content Type to send and receive data for REST based policy check
-# (string value)
-# Possible values:
-# application/x-www-form-urlencoded - <No description provided>
-# application/json - <No description provided>
-#remote_content_type = application/x-www-form-urlencoded
-
-# server identity verification for REST based policy check (boolean
-# value)
-#remote_ssl_verify_server_crt = false
-
-# Absolute path to ca cert file for REST based policy check (string
-# value)
-#remote_ssl_ca_crt_file = <None>
-
-# Absolute path to client cert for REST based policy check (string
-# value)
-#remote_ssl_client_crt_file = <None>
-
-# Absolute path client key file REST based policy check (string value)
-#remote_ssl_client_key_file = <None>
+policy_file = policy.yaml
 
 
 [profiler]
