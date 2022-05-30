@@ -34,6 +34,7 @@ class profile::openstack::base::magnum(
         ldap_user_pass        => $ldap_user_pass,
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
+        region                => $region,
     }
 
     include ::network::constants

@@ -3,6 +3,7 @@ class openstack::heat::service(
     String $version,
     Array[Stdlib::Fqdn] $openstack_controllers,
     String $db_user,
+    String $region,
     String $db_pass,
     String $db_name,
     Stdlib::Fqdn $db_host,
@@ -29,6 +30,7 @@ class openstack::heat::service(
         rabbit_pass           => $rabbit_pass,
         openstack_controllers => $openstack_controllers,
         auth_encryption_key   => $auth_encryption_key,
+        region                => $region,
     }
 
     service { 'heat-api':

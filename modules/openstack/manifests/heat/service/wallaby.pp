@@ -3,6 +3,7 @@
 class openstack::heat::service::wallaby(
     String $db_user,
     Array[Stdlib::Fqdn] $openstack_controllers,
+    String $region,
     String $db_pass,
     String $db_name,
     Stdlib::Fqdn $db_host,

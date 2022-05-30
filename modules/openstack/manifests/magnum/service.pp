@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class openstack::magnum::service(
     String $version,
+    String $region,
     Array[Stdlib::Fqdn] $openstack_controllers,
     String $db_user,
     String $db_pass,
@@ -25,6 +26,7 @@ class openstack::magnum::service(
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
         openstack_controllers => $openstack_controllers,
+        region                => $region,
     }
 
     service { 'magnum-api':

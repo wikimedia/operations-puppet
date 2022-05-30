@@ -2,6 +2,7 @@
 
 class openstack::magnum::service::wallaby(
     String $db_user,
+    String $region,
     Array[Stdlib::Fqdn] $openstack_controllers,
     String $db_pass,
     String $db_name,

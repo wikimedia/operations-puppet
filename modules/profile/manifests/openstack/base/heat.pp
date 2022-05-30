@@ -38,6 +38,7 @@ class profile::openstack::base::heat(
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
         auth_encryption_key   => $auth_encryption_key,
+        region                => $region,
     }
 
     include ::network::constants
