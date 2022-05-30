@@ -72,6 +72,7 @@ class openstack::nova::common(
             managehome => false,
             before     => Package['nova-common'],
             system     => true,
+            groups     => ['libvirt', 'libvirt-qemu']
         }
     }
 
