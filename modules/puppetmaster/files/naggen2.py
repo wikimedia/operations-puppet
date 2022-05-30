@@ -19,7 +19,6 @@ STATIC_CONFIG = {
         # https://www.icinga.com/docs/icinga1/latest/en/objectdefinitions.html#host
         'valid_params': [
             'host_name',
-            'alias',
             'display_name',
             'address',
             'address6',
@@ -202,6 +201,9 @@ class NagiosGeneratorPuppetDB:
         # inject host_name parameter for host objects from title
         if 'host_name' not in entity['parameters']:
             entity['parameters']['host_name'] = entity['title']
+        # inject alias if we should be paging
+        if 'sms' in entity['parameters']['contact_groups'].split(','):
+            entity['parameters']['alias'] = f"{entity['parameters']['host_name']} #page"
         return entity['title'], {
             key: value for key, value in entity['parameters'].items() if key in valid_params
         }
