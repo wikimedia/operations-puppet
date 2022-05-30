@@ -133,7 +133,7 @@ groups:
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
-              aikochou, kevinbazira
+              aikochou, kevinbazira, tsepothoabala
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap) NOPASSWD: ALL',
@@ -5210,6 +5210,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZfnjboIHwyJ849bMbH9NspXL6dTjMkoZHflvrMLcvt sergio@wmf2988
     krb: present
+  tsepothoabala:
+    ensure: present
+    realname: Tsepo Thoabala
+    email: tthoabala@wikimedia.org
+    uid: 30134
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHfBugJ4n5MDbA92MCcSZ8oPDAFDrxAYlTDal55uUM58 tthoabala@wikimedia.org
   tchin:
     ensure: present
     realname: Thomas Chin
@@ -5585,10 +5593,6 @@ ldap_only_users:
   tschumann:
     ensure: absent
     realname: Tobias Schumann
-  tsepothoabala:
-    ensure: present
-    realname: Tsepo Thoabala
-    email: tthoabala@wikimedia.org
   ttaylor:
     ensure: present
     realname: Tajh Taylor
