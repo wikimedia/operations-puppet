@@ -31,7 +31,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho]
+              jcarvalho, sthart]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6060,9 +6060,8 @@ ldap_only_users:
     realname: Sérgio Lopes
     email: slopes@wikimedia.org
   sthart:
-    ensure: present
+    ensure: absent
     realname: STHart
-    email: sthart@wikimedia.org
   hartman:
     ensure: present
     realname: Derk-Jan Hartman
