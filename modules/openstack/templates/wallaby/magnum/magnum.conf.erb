@@ -1107,7 +1107,7 @@ driver = messaging
 # not set, we fall back to the same configuration used for RPC.
 # (string value)
 # Deprecated group/name - [DEFAULT]/notification_transport_url
-#transport_url = <None>
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 # AMQP topic used for OpenStack notifications. (list value)
 # Deprecated group/name - [rpc_notifier2]/topics
