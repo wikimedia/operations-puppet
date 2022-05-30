@@ -5217,7 +5217,7 @@ users:
     uid: 30134
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHfBugJ4n5MDbA92MCcSZ8oPDAFDrxAYlTDal55uUM58 tthoabala@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILQH9jvacif4CGZ1Hby7HYwtR/EJSy0XDbRtWzHFb+3E tthoabala@wikimedia.org
   tchin:
     ensure: present
     realname: Thomas Chin
