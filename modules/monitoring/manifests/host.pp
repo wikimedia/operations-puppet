@@ -22,15 +22,10 @@ define monitoring::host (
     $hostgroup              = pick($group, $monitoring::nagios_group)
     $nagios_address         = pick($host_fqdn, $ip_address)
 
-    case $critical {
-        true: {
-            $real_contact_groups = "${_contact_group},sms,admins"
-            $nagios_alias = "${title} #page"
-        }
-        default: {
-            $real_contact_groups = $_contact_group
-            $nagios_alias = $title
-        }
+    $real_contact_groups = $critical ? {
+        # TODO: we should probably move this to the profile
+        true    => "${_contact_group},sms,admins",
+        default => $_contact_group,
     }
 
     # Define the nagios host instance
@@ -108,21 +103,10 @@ define monitoring::host (
         $mgmt_host = undef
         $hostgroups = $hostgroup
     }
-    # This is a hack. We detect if we are running on the scope of an icinga
-    # host and avoid exporting the resource if yes
-    if defined(Class['icinga']) {
-        $rtype = 'nagios_host'
-        $alias_param = 'alias'
-    } else {
-        $rtype = 'monitoring::exported_nagios_host'
-        # PUP-6677: to future readers Sorry for this
-        $alias_param = 'nagios_alias'
-    }
     $host = {
         "${title}" => {
             ensure                => $ensure,
             host_name             => $title,
-            $alias_param          => $nagios_alias,
             parents               => $real_parents,
             address               => $nagios_address,
             hostgroups            => $hostgroups,
@@ -138,6 +122,13 @@ define monitoring::host (
             vrml_image            => $vrml_image,
             statusmap_image       => $statusmap_image,
         },
+    }
+    # This is a hack. We detect if we are running on the scope of an icinga
+    # host and avoid exporting the resource if yes
+    if defined(Class['icinga']) {
+        $rtype = 'nagios_host'
+    } else {
+        $rtype = 'monitoring::exported_nagios_host'
     }
     create_resources($rtype, $host)
     if !empty($mgmt_host) {

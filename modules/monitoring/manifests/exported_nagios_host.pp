@@ -17,12 +17,10 @@ define monitoring::exported_nagios_host (
     $statusmap_image,
     $parents=undef,
     $notifications_enabled='1',
-    Optional[String[1]] $nagios_alias = undef,
 ) {
     @@nagios_host { $title:
         ensure                => $ensure,
         host_name             => $host_name,
-        alias                 => $nagios_alias,
         parents               => $parents,
         address               => $address,
         hostgroups            => $hostgroups,
