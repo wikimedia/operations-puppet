@@ -499,7 +499,7 @@ node 'db1163.eqiad.wmnet' {
 # eqiad replicas
 # See also db1099 and db1105 below
 # db1132 is a testing mariadb 10.6 host T303395
-node /^db1(118|119|132|134|135|169|184)\.eqiad\.wmnet/ {
+node /^db1(118|119|128|132|134|135|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -840,12 +840,6 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 
 ## m1 shard
 # See also multiinstance misc hosts db1117 and db2078 below
-
-# DO NOT POOL  old m1 eqiad master - will be moved away to s1
-# Faulty memory: T309303
-node 'db1128.eqiad.wmnet' {
-    role(mariadb::misc)
-}
 
 # m1 master T309286
 node 'db1164.eqiad.wmnet' {

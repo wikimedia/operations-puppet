@@ -1,5 +1,4 @@
 # db1128
-# old m1 master, to be moved to s1
-mariadb::shard: 'm1'
-profile::monitoring::is_critical: false
+# s1 faulty memory T309291
+mariadb::shard: 's1'
 profile::monitoring::notifications_enabled: false
