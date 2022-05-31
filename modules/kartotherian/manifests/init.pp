@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: kartotherian
 #
 # This class installs and configures kartotherian
