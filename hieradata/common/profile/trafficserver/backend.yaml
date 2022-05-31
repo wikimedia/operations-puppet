@@ -320,19 +320,23 @@ profile::trafficserver::backend::mapping_rules:
       target: 'http://(.*)/w/rest.php'
       replacement: https://api-rw.discovery.wmnet/w/rest.php
       params:
-        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-        - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
-        # decode    :  @  !  $  (  )  *  ,  ;  '
-        - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
-        # encode    [  ]  &  +  =
-        - '@pparam="5B 5D 26 2B 3D"'
-        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-        - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
-        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-        - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
-        # Re-use origin server connections if origin IP and port match
-        - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-        - '@pparam=proxy.config.http.server_session_sharing.match=2'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=api-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=2'
     - type: regex_map
       target: 'http://(.*)/w/api.php'
       replacement: https://api-rw.discovery.wmnet/w/api.php
@@ -341,6 +345,10 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=api-ro.discovery.wmnet' # dest
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=2'
@@ -364,6 +372,10 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=appservers-ro.discovery.wmnet' # dest
     - type: map
       target: /
       replacement: https://appservers-rw.discovery.wmnet
@@ -378,6 +390,10 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=appservers-ro.discovery.wmnet' # dest
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=2'

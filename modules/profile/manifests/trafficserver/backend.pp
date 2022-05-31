@@ -143,6 +143,12 @@ class profile::trafficserver::backend (
         source    => 'puppet:///modules/profile/trafficserver/x-wikimedia-debug-routing.lua',
     }
 
+    trafficserver::lua_script { 'multi-dc':
+        source    => 'puppet:///modules/profile/trafficserver/multi-dc.lua',
+        unit_test => 'puppet:///modules/profile/trafficserver/multi-dc_test.lua',
+        config    => 'puppet:///modules/profile/trafficserver/multi-dc.lua.conf',
+    }
+
     if $monitor_enable {
         # Monitoring
         profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":

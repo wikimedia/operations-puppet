@@ -25,6 +25,7 @@
 define trafficserver::lua_script(
     Stdlib::Filesource           $source,
     Optional[Stdlib::Filesource] $unit_test     = undef,
+    Optional[Stdlib::Filesource] $config        = undef,
     String                       $service_name  = 'trafficserver',
     Stdlib::Absolutepath         $config_prefix = '/etc/trafficserver',
 ) {
@@ -40,6 +41,14 @@ define trafficserver::lua_script(
     $defaults = {
         owner   => $trafficserver::user,
         require => File[$lua_path],
+    }
+
+    if $config != undef {
+        file { "${lua_path}/${title}.lua.conf":
+            *      => $defaults,
+            source => $config,
+            before => File["${lua_path}/${title}.lua"],
+        }
     }
 
     if $unit_test != undef {
