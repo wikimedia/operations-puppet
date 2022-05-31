@@ -74,7 +74,7 @@ if ( $.log_outputs contains "kafka" ) then {
                    partitions.auto="on"
                    template="ecs_170"
                <%- if scope['queue_size'] > 0 -%>
-                   queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="output_kafka_json"
+                   queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="output_kafka_json_ecs"
                    queue.highWatermark="<%= (scope['queue_size'] * 0.7).to_i %>" queue.lowWatermark="<%= (scope['queue_size'] * 0.6).to_i %>"
                    queue.checkpointInterval="5"
                <%- end -%>
