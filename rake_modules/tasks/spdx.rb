@@ -11,7 +11,7 @@ class UnknownExtensionError < StandardError
   end
 end
 
-class NoCommentSupoportError < StandardError
+class NoCommentSupportError < StandardError
 end
 
 def extract_email(string)
@@ -70,7 +70,7 @@ def comment_line(filename, line)
     "-- #{line}\n"
   when /\A(?:CONTRIBUTORS|README|json|pem|key)\z/
     # Theses files don't support comments so skip them
-    raise NoCommentSupoportError
+    raise NoCommentSupportError
   else
     raise UnknownExtensionError, filename
   end
@@ -85,7 +85,7 @@ def add_spdx_tags(files)
     rescue UnknownExtensionError => error
       unknown_files << error.filename
       next
-    rescue NoCommentSupoportError
+    rescue NoCommentSupportError
       next
     end
     puts "#{filename}: adding spdx licence"
