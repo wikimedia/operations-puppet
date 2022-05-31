@@ -1412,11 +1412,12 @@ policy_file = policy.yaml
 
 
 [trust]
-trustee_domain_name = magnum
+trustee_domain_id = default
 trustee_domain_admin_name = magnum
 trustee_domain_admin_password = <%= @ldap_user_pass %>
 trustee_keystone_interface = internal
-
+trustee_keystone_region_name = <%= @region %>
+roles=projectadmin,user
 
 
 [x509]
