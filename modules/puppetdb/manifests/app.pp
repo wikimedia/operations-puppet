@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # ==  Class puppetdb::app
 #
 # Sets up the puppetdb clojure app.

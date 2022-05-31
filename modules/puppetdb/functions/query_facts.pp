@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summery query for custome facts for a host and return a hash of facts values keyed to the certname
 # @param filter a hash of fact name to fetch
 # @param a pql subquery to apply to the query
