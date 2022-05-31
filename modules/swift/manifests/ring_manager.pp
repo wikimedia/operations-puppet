@@ -57,7 +57,7 @@ class swift::ring_manager (
 
     systemd::timer::job { 'swift_ring_manager':
         ensure                    => $ensure,
-        command                   => "/usr/local/bin/swift_ring_manager -o ${ring_dir} --doit --syslog --skip-dispersion-check --skip-replication-check",
+        command                   => "/usr/local/bin/swift_ring_manager -o ${ring_dir} --doit --syslog",
         interval                  => {'start' => 'OnCalendar', 'interval' => '*:10:00'},
         monitoring_enabled        => true,
         monitoring_contact_groups => 'databases-testing',

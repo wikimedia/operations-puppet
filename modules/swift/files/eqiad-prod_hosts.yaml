@@ -54,8 +54,6 @@ hosts:
     - ms-be1056
     - ms-be1057
     - ms-be1058
-    - ms-be1059:
-      - drain
   prod24:
     - ms-be1060
     - ms-be1061
@@ -63,5 +61,6 @@ hosts:
     - ms-be1063
     - ms-be1064
     - ms-be1065
-    - ms-be1066
+    - ms-be1066:
+      - sdr1: failed
     - ms-be1067
