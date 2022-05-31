@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # ChartMuseum::SwiftBackend configures the swift backend for ChartMuseum.
 #
 type ChartMuseum::SwiftBackend = Struct[{

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: chartmuseum
 #
 # This class installs and configures ChartMuseum, a Helm chart repository server.
