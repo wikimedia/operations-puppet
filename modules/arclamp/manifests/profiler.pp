@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define arclamp::profiler(
     String $description,
     Stdlib::Host $redis_host,

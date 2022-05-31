@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: arclamp
 #
 # Aggregate captured stack traces from MediaWiki application servers,
