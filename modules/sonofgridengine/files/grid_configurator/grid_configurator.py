@@ -27,7 +27,7 @@ import subprocess
 import sys
 import re
 
-from typing import List
+from typing import Callable, List, Optional
 
 from keystoneauth1 import session
 from keystoneauth1.identity import v3
@@ -53,17 +53,27 @@ GRID_HOST_PREFIX = {
 }
 
 
-def cmd_run(cmd: List[str], **kwargs):
+def cmd_run(cmd: List[str], stderr_filter_out: Optional[Callable[[str], bool]] = None, **kwargs):
     cmd_string = " ".join(cmd)
     logging.debug(f"running cmd: {cmd_string}")
 
     r = subprocess.run(cmd_string, capture_output=True, shell=True, **kwargs)
 
-    stderr = r.stderr.decode("utf-8")
-    if stderr != "":
-        logging.warning(f"command '{cmd_string}' generated stderr: '{stderr}'")
+    stderr = [line for line in r.stderr.decode("utf-8").splitlines() if line.strip() != ""]
+    for line in stderr:
+        if stderr_filter_out and not stderr_filter_out(line):
+            continue
+        logging.warning(f"command '{cmd_string}' generated stderr: '{line}'")
 
     return r
+
+
+def is_normal_sge_warning(line: str) -> bool:
+    """
+    Intended to be used as a stderr_filter with cmd_run to remove warnings about normal
+    SGE output messages after modifying things.
+    """
+    return not re.match(r"^root@[a-z0-9\.\-]+ (added|modified|removed)", line)
 
 
 def sed_replace(filepath: str, string: str, replacement: str):
@@ -139,7 +149,7 @@ class GridConfig:
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = cmd_run(self.modcmd, timeout=60)
+            result = cmd_run(self.modcmd, stderr_filter=is_normal_sge_warning, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -147,7 +157,7 @@ class GridConfig:
     def create(self, input_file, dryrun):
         if not dryrun:
             self.addcmd.append(input_file)
-            result = cmd_run(self.addcmd, timeout=60)
+            result = cmd_run(self.addcmd, stderr_filter=is_normal_sge_warning, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -167,7 +177,7 @@ class GridConfig:
         return self.create(incoming_config, dryrun)
 
     def rundel(self):
-        return cmd_run(self.delcmd, timeout=60)
+        return cmd_run(self.delcmd, stderr_filter=is_normal_sge_warning, timeout=60)
 
     def _get_config(self):
         result = cmd_run(self.getcmd, timeout=60)
@@ -264,7 +274,7 @@ class GridHostGroup(GridConfig):
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = cmd_run(self.modcmd, timeout=60)
+            result = cmd_run(self.modcmd, stderr_filter=is_normal_sge_warning, timeout=60)
             return not bool(result.returncode)
 
         return True
