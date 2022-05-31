@@ -60,15 +60,6 @@ class profile::aptrepo::private (
         basedir => $public_basedir,
     }
 
-    file { "${private_basedir}/conf/distributions":
-        ensure       => file,
-        mode         => '0444',
-        owner        => 'root',
-        group        => 'root',
-        source       => 'puppet:///modules/profile/aptrepo/distributions-private',
-        validate_cmd => '/usr/bin/python3 -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"',
-    }
-
     # include ::profile::backup::host
 
     # The repository data
