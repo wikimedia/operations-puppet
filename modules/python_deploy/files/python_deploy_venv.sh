@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 #
 # Simple script to allow to deploy a Python repository that requires a
 # virtualenv in line with https://phabricator.wikimedia.org/T180023 to be used

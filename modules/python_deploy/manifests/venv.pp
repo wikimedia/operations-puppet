@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class python_deploy::venv
 #
 # Deploy the bits needed to be able to deploy Python code in a simple manner, basically
