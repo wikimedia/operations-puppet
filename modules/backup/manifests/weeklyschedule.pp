@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Same for weekly backups
 define backup::weeklyschedule(
     String $day,

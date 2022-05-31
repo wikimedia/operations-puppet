@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Utility definition used internally to deduplicate code
 define backup::monthlyschedule(
     String $day,

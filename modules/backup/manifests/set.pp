@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # backup::set is probably what you want.
 define backup::set(
     $extras=undef,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Same for daily backups
 define backup::dailyschedule() {
     bacula::director::schedule { 'Daily':

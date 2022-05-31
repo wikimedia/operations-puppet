@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Backups Puppet Module #
 
 A Puppet module for deduplicating configuration puppet stanzas for WMF
