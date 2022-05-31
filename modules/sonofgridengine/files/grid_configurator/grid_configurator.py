@@ -508,11 +508,12 @@ class HostProcessor:
         self._handle_dead_config_dir("gridengine/collectors/queues", dry_run)
         self._handle_dead_config_dir("gridengine/collectors/hostgroups", dry_run)
 
-        # TODO: the next few ones may clash with the rest of the logic in this script
+        self._handle_dead_config_hostlist("hostgroups", dry_run)
+        self._handle_dead_config_hostlist("queues", dry_run)
+
+        # TODO: the next one may clash with the rest of the logic in this script
         # turn them into dry mode for now. May delete later
         self._handle_dead_config_dir("gridengine/etc/hosts", dry_run=True)
-        self._handle_dead_config_hostlist("hostgroups", dry_run=True)
-        self._handle_dead_config_hostlist("queues", dry_run=True)
 
     def run_updates(self, dry_run, host_types):
         # pre-step: check for dead configuration that may prevent any further changes to
