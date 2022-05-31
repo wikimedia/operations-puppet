@@ -1,0 +1,6 @@
+profile::netbox::db::primary: netboxdb1002.eqiad.wmnet
+profile::netbox::db::frontends:
+  - netbox1002.eqiad.wmnet
+  - netbox2002.codfw.wmnet
+profile::netbox::db::replicas:
+  - netboxdb2002.codfw.wmnet

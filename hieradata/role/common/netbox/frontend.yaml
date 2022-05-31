@@ -9,13 +9,11 @@ profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org
 profile::netbox::automation::frontends:
   - netbox1001.wikimedia.org
   - netbox2001.wikimedia.org
-  - netbox1002.eqiad.wmnet
-  - netbox2002.codfw.wmnet
+profile::netbox::db_primary: netboxdb1001.eqiad.wmnet
+profile::netbox::active_server: netbox1001.wikimedia.org
 
 profile::netbox::swift_auth_url: "https://swift.svc.%{::site}.wmnet"
-profile::netbox::active_server: netbox1001.wikimedia.org
 profile::netbox::service_hostname: netbox.wikimedia.org
-profile::netbox::db_primary: netboxdb1001.eqiad.wmnet
 profile::netbox::do_backups: true
 
 profile::netbox::cas_rename_attributes:

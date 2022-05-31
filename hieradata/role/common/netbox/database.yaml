@@ -5,7 +5,5 @@ profile::netbox::db::primary: netboxdb1001.eqiad.wmnet
 profile::netbox::db::frontends:
   - netbox1001.wikimedia.org
   - netbox2001.wikimedia.org
-  - netbox1002.eqiad.wmnet
-  - netbox2002.codfw.wmnet
 profile::netbox::db::replicas:
     - netboxdb2001.codfw.wmnet
