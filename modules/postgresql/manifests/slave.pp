@@ -1,30 +1,21 @@
-# Class: postgresql::slave
-#
+# @summary
 # This class installs the server in a slave configuration
 # It will create the replication user
+#   Actions:
+#     Install/configure postgresql in a slave configuration
 #
-# Parameters:
-#   master_server
-#       The FQDN of the master server to connect to
-#   replication_pass
-#       The password the replication user should use
-#   pgversion
-#       Defaults to 9.6 in Debian Stretch and 11 in Buster
-#   ensure
-#       Defaults to present
-#   root_dir
-#       See $postgresql::server::root_dir
-#   use_ssl
-#       Enable ssl for both clients and replication
-#   rep_app
-#       The replication label to use for this host
-#
-# Actions:
-#  Install/configure postgresql in a slave configuration
-#
-# Requires:
-#
-# Sample Usage:
+# @param master_server The FQDN of the master server to connect to
+# @param replication_pass The password the replication user should use
+# @param pgversion Defaults to 9.6 in Debian Stretch and 11 in Buster
+# @param ensure Defaults to present
+# @param max_wal_senders the max wal senders
+# @param root_dir $postgresql::server::root_dir
+# @param use_ssl Enable ssl for both clients and replication
+# @param includes addtional include files
+# @param rep_app The replication label to use for this host
+# @param ssldir the ssl dir
+# @param log_min_duration_statement log statments that take longer then this (seconds)
+# @example
 #  class {'postgresql::slave':
 #       master_server => 'mserver',
 #       replication_pass => 'mypass',
@@ -55,7 +46,7 @@ class postgresql::slave(
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
 
-    class { '::postgresql::server':
+    class { 'postgresql::server':
         ensure                     => $ensure,
         pgversion                  => $_pgversion,
         includes                   => $includes + ['slave.conf'],
@@ -88,8 +79,10 @@ class postgresql::slave(
             group   => 'root',
             mode    => '0644',
             content => template('postgresql/recovery.conf.erb'),
-            before  => Service[$::postgresql::server::service_name],
+            before  => Service[$postgresql::server::service_name],
         }
+    } else {
+        notify {'Replication not initialised please run: resync_replica': }
     }
 
     # Having this file here helps perform slave initialization.
