@@ -52,7 +52,9 @@ class imagecatalog(
       restart => true,
   }
 
-  profile::auto_restarts::service { 'imagecatalog': }
+  profile::auto_restarts::service { 'imagecatalog':
+      ensure => $ensure,
+  }
 
   $clusters_flag = $kubernetes_clusters.map |$cluster| {
       $name = $cluster[0]
