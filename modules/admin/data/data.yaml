@@ -10,7 +10,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
-              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
+              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
@@ -3103,14 +3103,16 @@ users:
     uid: 11106
     email: lziemba@wikimedia.org
     krb: present
-  samtar:
-    ensure: absent
+  samtar:  # Was previously in the NDA group, same account, personal email (sam@theresnotime.co.uk)
+    ensure: present
     gid: 500
     name: samtar
     realname: Sam Tarling
-    ssh_keys: []
+    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
     uid: 12744
-    email: sam@theresnotime.co.uk
+    email: starling-ctr@wikimedia.org
+    expiry_date: 2022-10-17
+    expiry_contact: ksiebert@wikimedia.org
   nithum:
     ensure: absent
     gid: 500
@@ -5670,12 +5672,6 @@ ldap_only_users:
     ensure: present
     realname: Thea Skaff
     email: tskaff@wikimedia.org
-  samtar:  # Was previously in the NDA group, same account, personal email.
-    ensure: present
-    realname: Sam Tarling
-    email: starling-ctr@wikimedia.org
-    expiry_date: 2022-10-17
-    expiry_contact: ksiebert@wikimedia.org
   cgauthier:
     ensure: absent
     realname: Charlotte Gauthier
