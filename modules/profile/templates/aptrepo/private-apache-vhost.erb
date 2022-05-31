@@ -1,25 +1,25 @@
 <%#- #SPDX-License-Identifier: Apache-2.0 -%>
 
 <VirtualHost *:<%= @repo_port %>>
-    DocumentRoot "<%= @basedir %>"
+    DocumentRoot "<%= @private_basedir %>"
     ServerName <%= @aptrepo_hostname %>
 
-    <Directory "<%= @basedir %>" >
+    <Directory "<%= @private_basedir %>" >
         # We want the user to be able to browse the directory manually
         Options Indexes FollowSymLinks Multiviews
         Require all granted
     </Directory>
 
     # Denied access to internal reprepro directories.
-    <Directory "<%= @basedir %>/db/">
+    <Directory "<%= @private_basedir %>/db/">
         Require all denied
     </Directory>
 
-    <Directory "<%= @basedir %>/conf/">
+    <Directory "<%= @private_basedir %>/conf/">
         Require all denied
     </Directory>
 
-    <Directory "<%= @basedir %>/incoming/">
+    <Directory "<%= @private_basedir %>/incoming/">
         Require all denied
     </Directory>
 
