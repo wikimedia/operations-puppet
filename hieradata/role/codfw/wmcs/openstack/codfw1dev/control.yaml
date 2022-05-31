@@ -28,6 +28,7 @@ profile::ceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
 profile::monitoring::notifications_enabled: false
 profile::admin::groups:
+  - wmcs-roots
   - labtest-roots
 raid::md::cron_ensure: absent
 

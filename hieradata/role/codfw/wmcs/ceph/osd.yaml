@@ -1,3 +1,7 @@
+profile::admin::groups:
+  - wmcs-roots
+  - labtest-roots
+
 profile::monitoring::notifications_enabled: false
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:

@@ -11,6 +11,7 @@ profile::openstack::codfw1dev::horizon::puppet_git_repo_name: instance-puppet-de
 profile::openstack::codfw1dev::horizon::puppet_git_repo_user: instance-puppet-user
 profile::monitoring::notifications_enabled: false
 profile::admin::groups:
+  - wmcs-roots
   - labtest-roots
 # See T224828
 raid::md::cron_ensure: absent

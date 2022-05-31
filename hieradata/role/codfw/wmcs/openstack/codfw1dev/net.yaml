@@ -1,5 +1,6 @@
 profile::monitoring::notifications_enabled: false
 profile::base::production::enable_ip6_mapped: false
 profile::admin::groups:
+  - wmcs-roots
   - labtest-roots
 profile::contacts::role_contacts: ['WMCS']
