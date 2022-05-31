@@ -503,7 +503,10 @@ class HostProcessor:
                         )
                         sed_replace(fullpath, host, "")
 
-    def _handle_dead_config(self, dry_run):
+    def run_updates(self, dry_run, host_types):
+        # Remove deleted VMs from any queues
+        # VMs must be depooled before deletion, but removal from the grid
+        # can be left to this script after being deleted
         self._handle_dead_store(dry_run)
         self._handle_dead_config_dir("gridengine/collectors/queues", dry_run)
         self._handle_dead_config_dir("gridengine/collectors/hostgroups", dry_run)
@@ -511,18 +514,12 @@ class HostProcessor:
         self._handle_dead_config_hostlist("hostgroups", dry_run)
         self._handle_dead_config_hostlist("queues", dry_run)
 
-        # TODO: the next one may clash with the rest of the logic in this script
-        # turn them into dry mode for now. May delete later
-        self._handle_dead_config_dir("gridengine/etc/hosts", dry_run=True)
-
-    def run_updates(self, dry_run, host_types):
-        # pre-step: check for dead configuration that may prevent any further changes to
-        # the grid configuration. Dead config happens when a VM is deleted but we still
-        # have config files referencing the now missing VM
-        self._handle_dead_config(dry_run)
-
+        # Update exec/submit host lists (add new VMs and remove deleted ones)
         for host_class in sorted(host_types):
             self._run_updates(dry_run, host_types, host_class)
+
+        # Remove host objects for deleted VMs
+        self._handle_dead_config_dir("gridengine/etc/hosts", dry_run)
 
     def _run_updates(self, dry_run, host_types, host_class):
         if host_class == "exec":
