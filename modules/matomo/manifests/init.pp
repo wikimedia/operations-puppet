@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: matomo
 #
 # Matomo (formerly Piwik) is an open-source analytics platform.
