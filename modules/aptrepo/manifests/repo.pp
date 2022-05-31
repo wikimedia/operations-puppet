@@ -29,7 +29,7 @@ define aptrepo::repo (
     String           $notify_address  = 'root@wikimedia.org',
     Array[String]    $options         = [],
     Array[String]    $uploaders       = [],
-    String           $incomingdir     = undef,
+    Optional[String] $incomingdir     = undef,
     String           $incomingconf    = 'incoming-wikimedia',
     String           $incominguser    = 'root',
     String           $incominggroup   = 'wikidev',

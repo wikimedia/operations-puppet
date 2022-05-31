@@ -53,13 +53,11 @@ class profile::aptrepo::private (
     # Private repo, served by Apache2
     aptrepo::repo {'private_apt_repository':
         basedir => $private_basedir,
-        homedir => $homedir,
     }
 
     # Public repo, servedby nginx
     aptrepo::repo { 'public_apt_repository':
         basedir => $public_basedir,
-        homedir => $homedir,
     }
 
     file { "${private_basedir}/conf/distributions":
