@@ -128,6 +128,7 @@ class profile::netbox (
     class { 'profile::rsyslog::udp_json_logback_compat': }
     class { 'netbox':
         service_hostname            => $service_hostname,
+        discovery_name              => $discovery_name,
         directory                   => '/srv/deployment/netbox/deploy/src',
         db_host                     => $db_primary,
         db_password                 => $db_password,

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Installs Netbox
 # @param service_hostname The external hostname for this service.
+# @param discovery_name The fqdn name used internally
 # @param secret_key Django secret key
 # @param ldap_password Password of the LDAP bind user
 # @param db_host The database host address.
@@ -39,6 +40,7 @@ class netbox(
     String                        $ldap_password,
     Stdlib::Fqdn                  $db_host,
     String                        $db_password,
+    Stdlib::Fqdn                  $discovery_name              = $facts['networking']['fqdn'],
     Wmflib::Ensure                $ensure                      = 'present',
     Stdlib::Port                  $db_port                     = 5432,
     String                        $db_user                     = 'netbox',

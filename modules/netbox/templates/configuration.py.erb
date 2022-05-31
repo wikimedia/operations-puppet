@@ -15,7 +15,7 @@
 # We are behind an apache httpd server, so use X-Forwarded_Host header
 USE_X_FORWARDED_HOST = True
 
-ALLOWED_HOSTS = ['<%= @service_hostname %>', '<%= @fqdn %>']
+ALLOWED_HOSTS = ['<%= [@service_hostname, @facts['networking']['fqdn'], @discovery_name].uniq.join("','") %>']
 
 # PostgreSQL database configuration.
 DATABASE = {
