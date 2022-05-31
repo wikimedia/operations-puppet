@@ -153,7 +153,7 @@ class NagiosGeneratorPuppetDB:
             for entity in self._query(definition['puppet_resource_type']):
                 self.log.debug('Working on resource %s', entity['title'])
                 name, params = self._filter_entity(
-                    entity, definition['valid_params'])
+                    entity, definition['valid_params'], what)
                 if name in data.keys():
                     self.log.warning('Duplicate definition for %s', name)
                     continue
@@ -190,23 +190,25 @@ class NagiosGeneratorPuppetDB:
         return resources_raw.json()
 
     @staticmethod
-    def _filter_entity(entity, valid_params):
+    def _filter_entity(entity, valid_params, what):
         """
         ensure host_name is in parameters and filter out invalid parameters
 
         :param entity: the raw entity response from puppetdb
         :param valid_params: list of parameters that are valid for this entity
+        :param what: str the STATIC_CONFIG key to use
         :return: tuple str name, dict params
         """
-        # inject host_name parameter for host objects from title
-        if 'host_name' not in entity['parameters']:
-            entity['parameters']['host_name'] = entity['title']
-        # inject alias if we should be paging
-        if 'sms' in entity['parameters']['contact_groups'].split(','):
-            entity['parameters']['alias'] = f"{entity['parameters']['host_name']} #page"
-        return entity['title'], {
+        clean_paramaters = {
             key: value for key, value in entity['parameters'].items() if key in valid_params
         }
+        # inject host_name parameter for host objects from title
+        if 'host_name' not in clean_paramaters:
+            clean_paramaters['host_name'] = entity['title']
+        # inject alias if we should be paging
+        if what == 'hosts' and 'sms' in entity['parameters']['contact_groups'].split(','):
+            clean_paramaters['alias'] = f"{clean_paramaters['host_name']} #page"
+        return entity['title'], clean_paramaters
 
 
 def main():
