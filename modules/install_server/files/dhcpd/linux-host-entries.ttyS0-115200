@@ -1045,6 +1045,12 @@ host netbox2002 {
    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
+host netboxdb2002 {
+   hardware ethernet aa:00:00:e3:40:aa;
+   fixed-address netboxdb2002.codfw.wmnet;
+   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host netboxdb1001 {
    hardware ethernet aa:00:00:6e:fd:09;
    fixed-address netboxdb1001.eqiad.wmnet;
