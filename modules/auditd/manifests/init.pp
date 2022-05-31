@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: auditd
 #
 # Installs and configures auditd: the Linux audit daemon. This is only intended
