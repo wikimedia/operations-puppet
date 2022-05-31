@@ -73,7 +73,6 @@ kubernetes_cluster_groups:
     "ml-serve-codfw":
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
-  "ml-staging":
     "ml-staging-codfw":
       dc: codfw
       master: ml-staging-ctrl.svc.codfw.wmnet
