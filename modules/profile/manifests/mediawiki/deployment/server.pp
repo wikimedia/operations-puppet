@@ -75,7 +75,7 @@ class profile::mediawiki::deployment::server(
     ferm::service { 'rsyncd_scap_master':
         proto  => 'tcp',
         port   => '873',
-        srange => '$MW_APPSERVER_NETWORKS',
+        srange => "(${deployable_networks_ferm})",
     }
 
     # T113351
