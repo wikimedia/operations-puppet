@@ -1,1 +1,2 @@
+profile::dbbackups::check::enabled: true
 profile::dbbackups::check::db_host: db1164.eqiad.wmnet

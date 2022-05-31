@@ -1,0 +1,2 @@
+profile::dbbackups::check::enabled: false
+profile::dbbackups::check::db_host: db2132.codfw.wmnet
