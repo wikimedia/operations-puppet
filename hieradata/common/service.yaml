@@ -3912,7 +3912,7 @@ service::catalog:
       - eqiad
       - codfw
     port: 443
-    state: service_setup
+    state: monitoring_setup
     discovery:
       - dnsdisc: netbox
         active_active: false
