@@ -75,12 +75,6 @@ class profile::monitoring(
         services              => $services,
     }
 
-
-    sudo::user { 'nagios_puppetrun':
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
-    }
-
     class { 'nrpe':
         allowed_hosts => $monitoring_hosts.join(','),
     }
@@ -136,14 +130,19 @@ class profile::monitoring(
     $warninginterval = $puppet_interval * 60 * 6
     $criticalinterval = $warninginterval * 2
 
+    sudo::user { 'nagios_puppetrun':
+        ensure => absent,
+    }
+
     nrpe::monitor_service { 'puppet_checkpuppetrun':
         description    => 'puppet last run',
-        nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
+        nrpe_command   => "/usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
+        sudo_user      => 'root',
         check_interval => 5,
         retry_interval => 1,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/puppet_checkpuppetrun',
     }
-    nrpe::monitor_service {'check_eth':
+    nrpe::monitor_service { 'check_eth':
         description    => 'configured eth',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_eth',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',

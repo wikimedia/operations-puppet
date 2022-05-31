@@ -108,8 +108,7 @@ class profile::wikidough (
     }
 
     sudo::user { 'nagios_service_restart_check':
-        user       => 'nagios',
-        privileges => [ 'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/service_restart_check' ],
+        ensure => absent,
     }
 
     $service_to_check = {
@@ -119,7 +118,8 @@ class profile::wikidough (
     $service_to_check.each |$service, $conf_file| {
         nrpe::monitor_service { "check_service_restart_${service}":
             description    => "Check if ${service} has been restarted after ${conf_file} was changed",
-            nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/service_restart_check --service ${service} --file ${conf_file}",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/service_restart_check --service ${service} --file ${conf_file}",
+            sudo_user      => 'root',
             check_interval => 360,  # 6h
             retry_interval => 60,   # 1h
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Service_Restart_Check',

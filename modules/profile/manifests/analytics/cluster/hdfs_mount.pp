@@ -19,12 +19,14 @@ class profile::analytics::cluster::hdfs_mount(
             require ::profile::kerberos::client
 
             # The following requires a keytab for the analytics user deployed on the host.
-            $kerberos_prefix = "/usr/bin/sudo -u ${monitoring_user} ${::profile::kerberos::client::run_command_script} ${monitoring_user} "
+            $sudo_user = $monitoring_user
+            $kerberos_prefix = "${::profile::kerberos::client::run_command_script} ${monitoring_user} "
+
             sudo::user { 'nagios-check_hadoop_mount_readability':
-                user       => 'nagios',
-                privileges => ["ALL = (${monitoring_user}) NOPASSWD: ${::profile::kerberos::client::run_command_script} ${monitoring_user} /usr/local/lib/nagios/plugins/check_mountpoint_readability ${bigtop::hadoop::mount::mount_point}"],
+                ensure => absent,
             }
         } else {
+            $sudo_user = undef
             $kerberos_prefix = ''
         }
 
@@ -35,6 +37,7 @@ class profile::analytics::cluster::hdfs_mount(
         nrpe::monitor_service { 'check_hadoop_mount_readability':
             description    => 'Check if the Hadoop HDFS Fuse mountpoint is readable',
             nrpe_command   => "${kerberos_prefix}/usr/local/lib/nagios/plugins/check_mountpoint_readability ${bigtop::hadoop::mount::mount_point}",
+            sudo_user      => $sudo_user,
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',

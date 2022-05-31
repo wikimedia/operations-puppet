@@ -98,10 +98,7 @@ class base::firewall (
     }
 
     sudo::user { 'nagios_check_ferm':
-        user       => 'nagios',
-        privileges => [
-            'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_ferm',
-        ],
+        ensure => absent,
     }
 
     nrpe::plugin { 'check_ferm':
@@ -115,7 +112,8 @@ class base::firewall (
 
     nrpe::monitor_service { 'ferm_active':
         description    => 'Check whether ferm is active by checking the default input chain',
-        nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_ferm',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_ferm',
+        sudo_user      => 'root',
         contact_group  => 'admins',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
         check_interval => 30,
