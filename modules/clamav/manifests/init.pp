@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: clamav
 #
 # This class installs & manages ClamAV, http://www.clamav.net/
