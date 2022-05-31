@@ -2531,8 +2531,7 @@ node /^netbox[12]002\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^netboxdb[12]002\.(eqiad|codfw)\.wmnet$/ {
-    #role(netbox::database)
-    role(insetup)
+    role(netbox::database)
 }
 
 node /^netboxdb(1001|2001)\.(eqiad|codfw)\.wmnet$/ {
