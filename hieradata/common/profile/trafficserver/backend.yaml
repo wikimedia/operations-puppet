@@ -124,9 +124,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://maps.wikimedia.org
       replacement: https://kartotherian.discovery.wmnet
     - type: map
-      target: http://netbox.wikimedia.org
-      replacement: https://netbox.discovery.wmnet
-    - type: map
       target: http://netbox-next.wikimedia.org
       replacement: https://netbox-dev2002.codfw.wmnet
     - type: map
