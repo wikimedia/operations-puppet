@@ -1,5 +1,5 @@
 cluster: ml_staging
-profile::kubernetes::master::cluster_group: ml-staging
+profile::kubernetes::master::cluster_group: ml-serve
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::allow_privileged: true
