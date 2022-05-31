@@ -272,6 +272,11 @@ node 'backup2008.codfw.wmnet' {
     role(insetup)
 }
 
+# New backup node for codfw T307049
+node 'backup2009.codfw.wmnet' {
+    role(insetup)
+}
+
 node 'backupmon1001.eqiad.wmnet' {
     role(dbbackups::monitoring)
 }
