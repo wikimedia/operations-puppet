@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+https://query.wikidata.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: "https://www.w3.org/TR/"
+- path: /embed.html
+  assert_status: 200
+# check that the custom config file exists
+- path: /custom-config.json
+  assert_status: 200
+  assert_body_contains: Wikidata Query Service

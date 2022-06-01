@@ -108,6 +108,9 @@ class profile::httpbb (
     httpbb::test_suite {'ores/test_ores.yaml':
         source => 'puppet:///modules/profile/httpbb/ores/test_ores.yaml'
     }
+    httpbb::test_suite {'query_service/test_wdqs.yaml':
+        source => 'puppet:///modules/profile/httpbb/query_service/test_wdqs.yaml'
+    }
 
     if $basicauth_credentials and $basicauth_credentials['docker-registry'] {
         httpbb::test_suite {'docker-registry/test_docker-registry.yaml':
