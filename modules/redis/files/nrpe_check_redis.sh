@@ -27,4 +27,4 @@ done
 test "$_slaveof" && _opts="${_opts} -r ${REPLICA_WARN},${REPLICA_CRIT}"
 
 # Run the check
-/usr/lib/nagios/plugins/check_redis $_opts
+/usr/local/lib/nagios/plugins/check_redis $_opts
