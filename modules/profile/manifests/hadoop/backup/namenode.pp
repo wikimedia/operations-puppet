@@ -6,7 +6,7 @@
 #
 class profile::hadoop::backup::namenode(
     Boolean $monitoring_enabled = lookup('profile::hadoop::backup::namenode::monitoring_enabled', {default_value => false}),
-    Integer $fsimage_retention_days = lookup('profile::hadoop::backup::namenode::fsimage_retention_days', {default_value => 20}),
+    Integer $fsimage_retention_days = lookup('profile::hadoop::backup::namenode::fsimage_retention_days', {default_value => 10}),
 ) {
     require ::profile::hadoop::common
 
