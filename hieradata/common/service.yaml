@@ -1247,6 +1247,8 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     port: 389
+    probes:
+      - type: tcp
     sites:
       - codfw
       - eqiad
@@ -1273,6 +1275,8 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     port: 636
+    probes:
+      - type: tcp
     sites:
       - codfw
       - eqiad
