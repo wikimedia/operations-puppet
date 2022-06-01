@@ -5,7 +5,7 @@ Suite: buster-wikimedia-private
 Codename: buster-wikimedia-private
 Version: 10
 Architectures: source amd64
-Components: main non−free
+Components: main nonfree
 Description: Private Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 Log:
@@ -17,7 +17,7 @@ Suite: bullseye-wikimedia-private
 Codename: bullseye-wikimedia-private
 Version: 11
 Architectures: source amd64
-Components: main non−free
+Components: main nonfree
 Description: Private Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override

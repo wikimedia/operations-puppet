@@ -101,6 +101,17 @@ define aptrepo::repo (
         validate_cmd => $deb822_validate_cmd,
     }
 
+    # Reprepro needs the deb-override file to exist.
+    # For apt1001/2001 this file already exist and have
+    # content which is not managed by Puppet.
+    file { "${basedir}/conf/deb-override":
+        ensure  => present,
+        replace => 'no',
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     if $incomingdir != undef {
         file { "${basedir}/conf/incoming":
             ensure       => present,
