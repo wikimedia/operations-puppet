@@ -44,6 +44,7 @@
 # @param redis_maxmem redis maximum memory
 # @param ldap_config the ldap config for cas
 # @param do_backups if we should perform backups
+# @param http_proxy proxy server to use for outbound connections
 # @param cas_rename_attributes a mapping of attributes that should be renamed
 # @param cas_group_attribute_mapping a mapping of attributes to netbox groups
 # @param cas_group_mapping a mapping of ldap groups to local groups
@@ -51,23 +52,24 @@
 # @param cas_username_attribute cas attribute to use as a username
 # @param cas_server_url the location of the cas server
 class profile::netbox (
-    Hash                   $ldap_config             = lookup('ldap', Hash, hash, {}),
-    Stdlib::Fqdn           $active_server           = lookup('profile::netbox::active_server'),
-    Stdlib::Fqdn           $service_hostname        = lookup('profile::netbox::service_hostname'),
-    Stdlib::Fqdn           $discovery_name          = lookup('profile::netbox::discovery_name'),
-    Array[String]          $slaves                  = lookup('profile::netbox::slaves'),
-    String                 $scap_repo               = lookup('profile::netbox::scap_repo'),
-    String                 $rw_token                = lookup('profile::netbox::rw_token'),
-    String                 $ro_token                = lookup('profile::netbox::ro_token'),
-    String                 $dump_interval           = lookup('profile::netbox::dump_interval'),
-    Stdlib::Fqdn           $db_primary              = lookup('profile::netbox::db_primary'),
-    String                 $db_password             = lookup('profile::netbox::db_password'),
-    String                 $secret_key              = lookup('profile::netbox::secret_key'),
-    Enum['ldap', 'cas']    $authentication_provider = lookup('profile::netbox::authentication_provider'),
-    Profile::Pki::Provider $ssl_provider            = lookup('profile::netbox::ssl_provider'),
-    Optional[String[1]]    $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
-    Stdlib::HTTPSUrl       $netbox_api              = lookup('profile::netbox::netbox_api'),
-    Boolean                $do_backups              = lookup('profile::netbox::do_backup'),
+    Hash                      $ldap_config             = lookup('ldap', Hash, hash, {}),
+    Stdlib::Fqdn              $active_server           = lookup('profile::netbox::active_server'),
+    Stdlib::Fqdn              $service_hostname        = lookup('profile::netbox::service_hostname'),
+    Stdlib::Fqdn              $discovery_name          = lookup('profile::netbox::discovery_name'),
+    Array[String]             $slaves                  = lookup('profile::netbox::slaves'),
+    String                    $scap_repo               = lookup('profile::netbox::scap_repo'),
+    String                    $rw_token                = lookup('profile::netbox::rw_token'),
+    String                    $ro_token                = lookup('profile::netbox::ro_token'),
+    String                    $dump_interval           = lookup('profile::netbox::dump_interval'),
+    Stdlib::Fqdn              $db_primary              = lookup('profile::netbox::db_primary'),
+    String                    $db_password             = lookup('profile::netbox::db_password'),
+    String                    $secret_key              = lookup('profile::netbox::secret_key'),
+    Enum['ldap', 'cas']       $authentication_provider = lookup('profile::netbox::authentication_provider'),
+    Profile::Pki::Provider    $ssl_provider            = lookup('profile::netbox::ssl_provider'),
+    Optional[String[1]]       $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
+    Stdlib::HTTPSUrl          $netbox_api              = lookup('profile::netbox::netbox_api'),
+    Boolean                   $do_backups              = lookup('profile::netbox::do_backup'),
+    Optional[Stdlib::HTTPUrl] $http_proxy           = lookup('profile::netbox::http_proxy'),
     Array[Profile::Netbox::Report_check] $report_checks       = lookup('profile::netbox::report_checks'),
 
     #ganeti config
@@ -145,6 +147,7 @@ class profile::netbox (
         authentication_provider     => $authentication_provider,
         local_redis_port            => $redis_port,
         local_redis_maxmem          => $redis_maxmem,
+        http_proxy                  => $http_proxy,
         ca_certs                    => $ca_certs,
         cas_server_url              => $cas_server_url,
         cas_rename_attributes       => $cas_rename_attributes,

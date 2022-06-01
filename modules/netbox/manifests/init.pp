@@ -22,6 +22,7 @@
 # @param enable_ldap Enable/disable LDAP authentication
 # @param authentication_provider which auth provider to use ldap/cas
 # @param swift_auth_url The authentication URL to be used for image storage.
+# @param http_proxy the proxy for netbox to use for outbound connections
 # @param cas_rename_attributes hash of attributes to rename
 # @param cas_group_attribute_mapping hash of cas attributes to map
 # @param cas_group_mapping hash of nextbox group mappings
@@ -57,6 +58,7 @@ class netbox(
     Boolean                       $enable_ldap                 = false,
     Optional[Enum['ldap', 'cas']] $authentication_provider     = undef,
     Optional[Stdlib::HTTPUrl]     $swift_auth_url              = undef,
+    Optional[Stdlib::HTTPUrl]     $http_proxy                  = undef,
     # Cas specific config
     Hash[String, String]          $cas_rename_attributes       = {},
     Hash[String, Array]           $cas_group_attribute_mapping = {},

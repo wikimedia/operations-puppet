@@ -5,3 +5,4 @@ profile::netbox::automation::frontends:
   - netbox2002.codfw.wmnet
 profile::netbox::db_primary: netboxdb1002.eqiad.wmnet
 profile::netbox::active_server: netbox1002.eqiad.wmnet
+profile::netbox::http_proxy: "%{alias(http_proxy)}"
