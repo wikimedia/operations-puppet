@@ -25,15 +25,16 @@
 
 
 define aptrepo::repo (
-    Stdlib::Unixpath $basedir,
-    String           $notify_address  = 'root@wikimedia.org',
-    Array[String]    $options         = [],
-    Array[String]    $uploaders       = [],
-    Optional[String] $incomingdir     = undef,
-    String           $incomingconf    = 'incoming-wikimedia',
-    String           $incominguser    = 'root',
-    String           $incominggroup   = 'wikidev',
-    String           $default_distro  = 'buster',
+    Stdlib::Unixpath   $basedir,
+    Stdlib::Filesource $distributions_file,
+    String             $notify_address     = 'root@wikimedia.org',
+    Array[String]      $options            = [],
+    Array[String]      $uploaders          = [],
+    Optional[String]   $incomingdir        = undef,
+    String             $incomingconf       = 'incoming-wikimedia',
+    String             $incominguser       = 'root',
+    String             $incominggroup      = 'wikidev',
+    String             $default_distro     = 'buster',
 ) {
 
     $user = $aptrepo::common::user
@@ -96,7 +97,7 @@ define aptrepo::repo (
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
-        source       => 'puppet:///modules/aptrepo/distributions-wikimedia',
+        source       => $distributions_file,
         validate_cmd => $deb822_validate_cmd,
     }
 

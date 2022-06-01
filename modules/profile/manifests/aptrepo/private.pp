@@ -52,12 +52,14 @@ class profile::aptrepo::private (
 
     # Private repo, served by Apache2
     aptrepo::repo {'private_apt_repository':
-        basedir => $private_basedir,
+        basedir            => $private_basedir,
+        distributions_file => 'puppet:///modules/aptrepo/distributions-private',
     }
 
     # Public repo, servedby nginx
     aptrepo::repo { 'public_apt_repository':
-        basedir => $public_basedir,
+        basedir            => $public_basedir,
+        distributions_file => 'puppet:///modules/aptrepo/distributions-wikimedia',
     }
 
     # include ::profile::backup::host
