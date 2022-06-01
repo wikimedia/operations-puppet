@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: statsd_proxy
 #
 # statsd-proxy is a StatsD-compatible proxy which routes metrics to multiple
