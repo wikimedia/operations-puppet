@@ -20,3 +20,7 @@ gzip ${BACKUPDIR}/${OUTFILE}
 
 # Clean up old backups
 find ${BACKUPDIR} -type f -mtime +30 -delete
+
+# Copy latest backup to a predictable name for off-host backups
+# This cannot be a symlink
+cp ${BACKUPDIR}/${OUTFILE}.gz ${BACKUPDIR}/export_latest.ndjson.gz
