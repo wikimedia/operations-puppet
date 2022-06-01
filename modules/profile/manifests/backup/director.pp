@@ -212,12 +212,12 @@ class profile::backup::director(
     # install the general backup check and set it up to run every hour
     class { 'bacula::director::check': }
     sudo::user { 'nagios_backup_freshness':
-        user       => 'nagios',
-        privileges => ['ALL = (bacula) NOPASSWD: /usr/bin/check_bacula.py'],
+        ensure => absent,
     }
     nrpe::monitor_service { 'backup_freshness':
         description    => 'Backup freshness',
-        nrpe_command   => '/usr/bin/sudo -u bacula /usr/bin/check_bacula.py --icinga',
+        nrpe_command   => '/usr/bin/check_bacula.py --icinga',
+        sudo_user      => 'bacula',
         critical       => false,
         contact_group  => 'admins',
         check_interval => 60,  # check every hour
