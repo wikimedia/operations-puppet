@@ -19,8 +19,8 @@ profile::openstack::eqiad1::cloudgw::virt_floating: 185.15.56.0/25
 profile::openstack::eqiad1::cloudgw::wan_vlan: 1120
 profile::openstack::eqiad1::cloudgw::wan_addr: 185.15.56.245
 profile::openstack::eqiad1::cloudgw::wan_netm: 29
-# this is vrrp-gw-1120.eqiad1.wikimediacloud.org
-profile::openstack::eqiad1::cloudgw::wan_gw: 185.15.56.241
+# this is irb-1120.cloudsw1-c8-eqiad.eqiad1.wikimediacloud.org
+profile::openstack::eqiad1::cloudgw::wan_gw: 185.15.56.242
 
 # cloudgw1002 is our VRRP peer
 profile::openstack::eqiad1::cloudgw::vrrp_peer: 185.15.56.246
