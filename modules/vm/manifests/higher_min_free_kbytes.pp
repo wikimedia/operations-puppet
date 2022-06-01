@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 
 # Moved this here from generic module, should probably be replaced
 #  with vm::min_free_kbytes at usage sites by someone who

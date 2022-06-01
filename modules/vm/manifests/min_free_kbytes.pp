@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 
 # set vm.min_free_kbytes to $pct of total RAM, clamped
 #  to absolute $min/$max kbytes
