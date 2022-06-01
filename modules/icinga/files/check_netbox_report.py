@@ -111,13 +111,17 @@ def main():
         return print_status(
             STATUS_UNKNOWN,
             failedstatus,
-            "Netbox exception getting report data for report {}".format(report)
+            "Netbox exception getting report data for report {}".format(robj.url)
         )
 
     if robj.result.status.value != 'completed':
-        return print_status(STATUS_CRITICAL, failedstatus, "Netbox report {}".format(report))
+        return print_status(
+            STATUS_CRITICAL,
+            failedstatus,
+            "Netbox report {}\n{}".format(report, robj.url)
+        )
 
-    return print_status(STATUS_OK, failedstatus, "Netbox report {}".format(report))
+    return print_status(STATUS_OK, failedstatus, "Netbox report {}\n{}".format(report, robj.url))
 
 
 if __name__ == "__main__":
