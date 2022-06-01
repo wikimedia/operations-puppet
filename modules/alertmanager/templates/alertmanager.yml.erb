@@ -134,7 +134,19 @@ route:
         - receiver: 'search-platform-ircmail'
     - match:
         team: 'wmcs'
-      receiver: 'wmcs-irc'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'wmcs-pagetaskircmail'
+        - match:
+            severity: 'task'
+          receiver: 'wmcs-taskircmail'
+        - match:
+            severity: 'critical'
+          receiver: 'wmcs-taskircmail'
+        - match:
+            severity: 'warning'
+          receiver: 'wmcs-ircmail'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -252,9 +264,22 @@ receivers:
   email_configs:
     - to: 'discovery-alerts@lists.wikimedia.org'
 
-- name: 'wmcs-irc'
+- name: 'wmcs-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
+  email_configs:
+    - to: 'cloud-admin-feed@<%= scope.lookupvar('::domain') %>'
+
+- name: 'wmcs-pagetaskircmail'
+  victorops_configs:
+    - routing_key: 'wmcs'
+  webhook_configs:
+    # #wmcs tag, cloud-services-team is deprecated in favor of this one
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7sul7hj32btacinsnubq'
+      send_resolved: false
+    - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
+  email_configs:
+    - to: 'cloud-admin-feed@<%= scope.lookupvar('::domain') %>'
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
@@ -346,6 +371,15 @@ receivers:
     # #discovery-search
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-bhjb6gromuy5lppbjsut'
       send_resolved: false
+
+- name: 'wmcs-taskircmail'
+  webhook_configs:
+    # #wmcs tag, cloud-services-team is deprecated in favor of this one
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7sul7hj32btacinsnubq'
+      send_resolved: false
+    - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
+  email_configs:
+    - to: 'cloud-admin-feed@<%= scope.lookupvar('::domain') %>'
 
 - name: 'fr-ircmail'
   webhook_configs:
