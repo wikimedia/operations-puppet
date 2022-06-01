@@ -27,8 +27,8 @@ DATABASE = {
 }
 <%- if @http_proxy -%>
 HTTP_PROXIES = {
-  'http': <%= @http_proxy %>,
-  'https': <%= @http_proxy %>,
+  'http': '<%= @http_proxy %>',
+  'https': '<%= @http_proxy %>',
 }
 <%- end -%>
 # This key is used for secure generation of random numbers and strings. It must never be exposed outside of this file.
