@@ -214,4 +214,8 @@ class profile::backup::filesets(
             '/var/log/spicerack',
         ]
     }
+    # OpenSearch Dashboards (T237224)
+    bacula::director::fileset { 'opensearch-dashboards':
+      includes => [ '/srv/backups/opensearch_dashboards/export_latest.ndjson.gz' ]
+    }
 }

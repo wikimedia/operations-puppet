@@ -19,4 +19,12 @@ class profile::opensearch::dashboards (
       index              => $index,
       enable_warnings    => $enable_warnings,
     }
+
+    if ($enable_backups) {
+      include profile::backup::host
+
+      backup::set { 'opensearch-dashboards':
+        jobdefaults => 'Daily-production', # full backups every day
+      }
+    }
 }
