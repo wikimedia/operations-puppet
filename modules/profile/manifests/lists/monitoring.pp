@@ -33,13 +33,13 @@ class profile::lists::monitoring (
 
         nrpe::monitor_service { 'mailman_queue':
             description  => 'mailman_queue_size',
-            nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
+            sudo_user    => 'list',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
 
         sudo::user { 'nagios_mailman_queue':
-            user       => 'nagios',
-            privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
+            ensure => absent,
         }
 
         # mailman3 service
@@ -57,7 +57,8 @@ class profile::lists::monitoring (
         nrpe::monitor_service { 'mailman3_queue':
             description     => 'mailman3_queue_size',
             dashboard_links => ['https://grafana.wikimedia.org/d/GvuAmuuGk/mailman3'],
-            nrpe_command    => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
+            nrpe_command    => '/usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
+            sudo_user       => 'list',
             notes_url       => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
             check_interval  => 5,
             retry_interval  => 5,

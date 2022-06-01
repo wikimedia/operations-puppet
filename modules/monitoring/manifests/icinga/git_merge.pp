@@ -8,9 +8,7 @@ define monitoring::icinga::git_merge (
     $remote_branch = 'production',
     $interval      = 10
     ) {
-
     $sane_title = regsubst($title, '\W', '_', 'G')
-    $filename = "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge"
 
     nrpe::plugin { "check_${sane_title}-needs-merge":
         content => template('monitoring/check_git-needs-merge.erb'),
@@ -18,13 +16,13 @@ define monitoring::icinga::git_merge (
 
     nrpe::monitor_service { "${sane_title}_merged":
         description  => "Unmerged changes on repository ${title}",
-        nrpe_command => "/usr/bin/sudo ${filename}",
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge",
+        sudo_user    => 'root',
         retries      => $interval,
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/unmerged_changes',
     }
 
     sudo::user { "${sane_title}_needs_merge":
-        user       => 'nagios',
-        privileges => [ "ALL = NOPASSWD: ${filename}" ],
+        ensure => absent,
     }
 }

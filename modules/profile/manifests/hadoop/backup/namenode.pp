@@ -58,8 +58,7 @@ class profile::hadoop::backup::namenode(
 
     if !defined(Sudo::User['nagios_check_newest_file_age']) {
         sudo::user { 'nagios_check_newest_file_age':
-            user       => 'nagios',
-            privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_newest_file_age'],
+            ensure => absent,
         }
     }
 
@@ -69,7 +68,8 @@ class profile::hadoop::backup::namenode(
         $critical_threshold_hours = 48
         nrpe::monitor_service { 'hadoop-namenode-backup-age':
             description   => 'Age of most recent Hadoop NameNode backup files',
-            nrpe_command  => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${destination} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
+            nrpe_command  => "/usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${destination} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
+            sudo_user     => 'root',
             contact_group => 'analytics',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_backup_age',
         }

@@ -12,14 +12,14 @@ define profile::pki::multirootca::monitoring(
     $one_month_secs = 60 * 60 * 42 * 31
     $nrpe_command = "/usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}"
     sudo::user { "nrpe_certificate_check_${intermediate}":
-        user       => 'nagios',
-        privileges => [ "ALL = NOPASSWD: ${nrpe_command}"],
+        ensure => absent,
     }
     nrpe::monitor_service { "check_certificate_expiry_${intermediate}":
         ensure       => $ensure,
         description  => "Check to ensure the signer certificate is valid CA: ${intermediate}",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
-        nrpe_command => "/usr/bin/sudo ${nrpe_command}",
+        nrpe_command => "/usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}",
+        sudo_user    => 'root',
     }
 
     $check_command = [

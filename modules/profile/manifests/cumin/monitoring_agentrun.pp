@@ -23,13 +23,15 @@ class profile::cumin::monitoring_agentrun (
     --ssl-cert ${facts['puppet_config']['hostcert']} \
     --ssl-ca ${facts['puppet_config']['localcacert']}
     | COMMAND
-    sudo::user {'check_puppet_run command':
-        user       => 'nagios',
-        privileges => ["ALL = NOPASSWD: ${nrpe_command}"],
+
+    sudo::user { 'check_puppet_run command':
+        ensure => absent,
     }
-    nrpe::monitor_service{'puppet_run_changes':
+
+    nrpe::monitor_service { 'puppet_run_changes':
         description    => 'Ensure hosts are not performing a change on every puppet run',
-        nrpe_command   => "sudo ${nrpe_command}",
+        nrpe_command   => $nrpe_command,
+        sudo_user      => 'root',
         check_interval => 360,
         retry_interval => 5,
         retries        => 2,

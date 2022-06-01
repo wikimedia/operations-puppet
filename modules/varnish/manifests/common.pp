@@ -94,8 +94,6 @@ class varnish::common(
     }
 
     sudo::user { 'nagios_varnish_uds':
-        ensure     => 'present',
-        user       => 'nagios',
-        privileges => ['ALL = (root) NOPASSWD: /usr/local/lib/nagios/plugins/check_varnish_uds'],
+        ensure => absent,
     }
 }

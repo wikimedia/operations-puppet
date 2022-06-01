@@ -40,15 +40,14 @@ define profile::trafficserver::nrpe_monitor_script(
     }
 
     sudo::user { "nagios_trafficserver_${title}":
-        ensure     => $ensure,
-        user       => 'nagios',
-        privileges => ["ALL = (${sudo_user}) NOPASSWD: ${full_path}"],
+        ensure => absent,
     }
 
     nrpe::monitor_service { $title:
         ensure       => $ensure,
         description  => $title,
-        nrpe_command => "sudo -u ${sudo_user} ${full_path} ${args}",
+        nrpe_command => "${full_path} ${args}",
+        sudo_user    => $sudo_user,
         require      => File[$full_path],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
         timeout      => $timeout,

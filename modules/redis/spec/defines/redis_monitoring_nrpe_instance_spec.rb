@@ -14,7 +14,8 @@ describe "redis::monitoring::nrpe_instance", :type => :define do
       context "with ensure present" do
         it do
           is_expected.to contain_nrpe__monitor_service("redis_status_on_port_12345").with(
-            nrpe_command: "/usr/bin/sudo /usr/local/lib/nagios/plugins/nrpe_check_redis 12345 75 750",
+            nrpe_command: "/usr/local/lib/nagios/plugins/nrpe_check_redis 12345 75 750",
+            sudo_user: "root",
             ensure: "present"
           )
         end
