@@ -6100,3 +6100,9 @@ ldap_only_users:
     ensure: present
     realname: Deepak Mantena
     email: dmantena@wikimedia.org
+  ozhang:
+    ensure: present
+    realname: Olivia Zhang
+    email: ozhang-ctr@wikimedia.org
+    expiry_date: 2022-10-01
+    expiry_contact: abaso@wikimedia.org
