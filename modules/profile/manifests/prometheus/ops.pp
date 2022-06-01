@@ -19,6 +19,7 @@ class profile::prometheus::ops (
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_proxied_urls    = lookup('profile::prometheus::ops::blackbox_pingthing_proxied_urls', { 'default_value' => [] }),
     Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
     Wmflib::Infra::Devices $infra_devices                     = lookup('infra_devices'),
+    Array                  $alerting_relabel_configs_extra    = lookup('profile::prometheus::ops::alerting_relabel_configs_extra'),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -2268,15 +2269,15 @@ class profile::prometheus::ops (
     }
 
     prometheus::server { 'ops':
-        listen_address         => "127.0.0.1:${port}",
-        storage_retention      => $storage_retention,
-        storage_retention_size => $storage_retention_size,
-        max_chunks_to_persist  => $max_chunks_to_persist,
-        memory_chunks          => $memory_chunks,
-        min_block_duration     => '2h',
-        max_block_duration     => $max_block_duration,
-        alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
-        scrape_configs_extra   => [
+        listen_address                 => "127.0.0.1:${port}",
+        storage_retention              => $storage_retention,
+        storage_retention_size         => $storage_retention_size,
+        max_chunks_to_persist          => $max_chunks_to_persist,
+        memory_chunks                  => $memory_chunks,
+        min_block_duration             => '2h',
+        max_block_duration             => $max_block_duration,
+        alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
+        scrape_configs_extra           => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $ml_etcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $probes_jobs, $jmx_exporter_jobs,
@@ -2293,7 +2294,8 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $cache_envoy_jobs, $mini_textfile_jobs, $gitlab_runner_jobs,
         ].flatten,
-        global_config_extra    => $config_extra,
+        global_config_extra            => $config_extra,
+        alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
     }
 
     prometheus::web { 'ops':

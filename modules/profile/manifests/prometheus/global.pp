@@ -1,5 +1,6 @@
 class profile::prometheus::global (
-    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+    Array[Stdlib::Host] $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
+    Array               $alerting_relabel_configs_extra = lookup('profile::prometheus::global::alerting_relabel_configs_extra'),
 ){
 
     # Pull selected metrics from all DC-local Prometheus servers.
@@ -75,11 +76,12 @@ class profile::prometheus::global (
 
     prometheus::server { 'global':
         # 2.25 years. The extra .25 is to allow for year-over-year comparisons
-        storage_retention    => '19656h',
-        listen_address       => '127.0.0.1:9904',
-        scrape_configs_extra => $federation_jobs,
-        alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
-        alerts_deploy_path   => '/srv/alerts-global',
+        storage_retention              => '19656h',
+        listen_address                 => '127.0.0.1:9904',
+        scrape_configs_extra           => $federation_jobs,
+        alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
+        alerts_deploy_path             => '/srv/alerts-global',
+        alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
     }
 
     prometheus::web { 'global':
