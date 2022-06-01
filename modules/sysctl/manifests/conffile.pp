@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sysctl::conffile
 #
 # Represents a file with sysctl kernel parameters in /etc/sysctl.d.

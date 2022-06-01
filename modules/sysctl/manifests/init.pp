@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: sysctl
 #
 # This Puppet module provides 'sysctl::conffile' and 'sysctl::parameters'

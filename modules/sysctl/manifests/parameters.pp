@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sysctl::parameters
 #
 # This custom resource lets you specify sysctl parameters using a Puppet
