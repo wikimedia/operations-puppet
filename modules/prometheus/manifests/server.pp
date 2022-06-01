@@ -57,6 +57,10 @@
 # [*alertmanagers*]
 #   A list of host:port of alertmanagers to send alerts to.
 #
+# [*alertmanager_discovery_extra*]
+#   A list of additional Prometheus Service Discovery configurations used to
+#   locate alertmanager instances.
+#
 # [*min_block_duration*]
 #   The minimum duration of local TSDB blocks to consider for compaction
 #
@@ -82,6 +86,7 @@ define prometheus::server (
     String                     $min_block_duration             = '2h',
     String                     $max_block_duration             = '24h',
     Array                      $alertmanagers                  = [],
+    Array                      $alertmanager_discovery_extra   = [],
     String                     $alerts_deploy_path             = '/srv/alerts',
 ) {
     include prometheus
@@ -139,10 +144,18 @@ define prometheus::server (
     }
 
     if !empty($alertmanagers) {
-      $alertmanager_config = [
-        { 'targets' => $alertmanagers },
+      $alertmanager_discovery_static = [
+        {
+          'static_configs' => [
+            { 'targets' => $alertmanagers },
+          ],
+        },
       ]
+    } else {
+      $alertmanager_discovery_static = []
+    }
 
+    if !empty($alertmanager_discovery_static) or !empty($alertmanager_discovery_extra) {
       $alert_relabel_configs = [
         # Drop 'replica' label to get proper deduplication of alerts from HA pairs
         { 'regex' => 'replica', 'action' => 'labeldrop' },
@@ -152,9 +165,7 @@ define prometheus::server (
 
       $prometheus_config = $common_config + {
         'alerting' => {
-          'alertmanagers'         => [
-            { 'static_configs' => $alertmanager_config }
-          ],
+          'alertmanagers'         => $alertmanager_discovery_static + $alertmanager_discovery_extra,
           'alert_relabel_configs' => $alert_relabel_configs,
         }
       }

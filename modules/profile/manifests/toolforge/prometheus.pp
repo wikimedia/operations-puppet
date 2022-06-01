@@ -305,11 +305,50 @@ class profile::toolforge::prometheus (
 
     $jobs = $openstack_jobs + $manual_jobs + $kubernetes_pod_jobs
 
+    $alertmanager_discovery_extra = [
+        {
+            'openstack_sd_configs' => [
+                {
+                    'role'              => 'instance',
+                    'region'            => $region,
+                    'identity_endpoint' => "https://${keystone_api_fqdn}:25000/v3",
+                    'username'          => $observer_user,
+                    'password'          => $observer_password,
+                    'domain_name'       => 'default',
+                    'project_name'      => 'metricsinfra',
+                    'all_tenants'       => false,
+                    'refresh_interval'  => '5m',
+                    'port'              => 8643,
+                },
+            ],
+            'relabel_configs'      => [
+                {
+                    'source_labels' => ['__meta_openstack_instance_name'],
+                    'action'        => 'keep',
+                    'regex'         => 'metricsinfra-alertmanager-\d+',
+                },
+                {
+                    'source_labels' => ['__meta_openstack_instance_name'],
+                    'target_label'  => 'instance',
+                },
+                {
+                    'source_labels' => ['__meta_openstack_instance_status'],
+                    'action'        => 'keep',
+                    'regex'         => 'ACTIVE',
+                },
+            ],
+        },
+    ]
+
     prometheus::server { 'tools':
-        listen_address         => '127.0.0.1:9902',
-        external_url           => 'https://tools-prometheus.wmflabs.org/tools',
-        storage_retention_size => $storage_retention_size,
-        scrape_configs_extra   => $jobs,
+        listen_address                 => '127.0.0.1:9902',
+        external_url                   => 'https://tools-prometheus.wmflabs.org/tools',
+        storage_retention_size         => $storage_retention_size,
+        scrape_configs_extra           => $jobs,
+        alertmanager_discovery_extra   => $alertmanager_discovery_extra,
+        alerting_relabel_configs_extra => [
+            { 'target_label' => 'project', 'replacement' => $::labsproject, 'action' => 'replace' },
+        ],
     }
 
     prometheus::web { 'tools':
