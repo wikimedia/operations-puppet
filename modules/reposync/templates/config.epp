@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- | Stdlib::Unixpath $repo_path, Array[Stdlib::Host] $remotes | -%>
 # MANAGED BY PUPPET
 [core]

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to configure the primary reposync server
 # @param ensure ensureable parameter
 # @param manage_base set to false if the base directory is managed else where
