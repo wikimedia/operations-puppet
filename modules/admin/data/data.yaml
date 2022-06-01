@@ -1527,7 +1527,7 @@ users:
     uid: 16702
     email: effeietsanders@gmail.com
     krb: present
-    expiry_date: 2022-06-07
+    expiry_date: 2022-08-07
     expiry_contact: mgerlach@wikimedia.org
   esanders:
     ensure: present
