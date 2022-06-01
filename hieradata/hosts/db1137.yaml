@@ -1,5 +1,4 @@
 # db1137
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
-profile::monitoring::notifications_enabled: false
 mariadb::package: 'wmf-mariadb106'
