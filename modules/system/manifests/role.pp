@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: system::role
 #
 # Adds a banner message to the server MOTD (usually displayed on login)
