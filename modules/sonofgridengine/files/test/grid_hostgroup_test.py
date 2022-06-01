@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 from os import path
 import sys
 import tempfile

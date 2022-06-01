@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # The gridmaster parameter is used in the template to preseed the package
 # installation with the (annoyingly) semi-hardcoded FQDN to the grid
 # master server.

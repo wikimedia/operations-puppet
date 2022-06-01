@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sonofgridengine/exec_host.pp
 
 class sonofgridengine::exec_host(

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sonofgridengine/submit_host.pp
 
 class sonofgridengine::submit_host {

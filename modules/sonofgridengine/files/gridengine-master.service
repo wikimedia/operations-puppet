@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # managed by puppet!
 [Unit]
 Description=SGE Master daemon
