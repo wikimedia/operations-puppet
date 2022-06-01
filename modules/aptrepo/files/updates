@@ -168,15 +168,6 @@ Architectures: amd64 source
 VerifyRelease: A6A19B38D3D831EF
 ListShellHook: grep-dctrl -e -S '^(cecil|cli-common|core-setup|fsharp|gtk-sharp2|libgdiplus|mod-mono|mono|mono-basic|mono-llvm|mono-tools|monodevelop|msbuild|nuget|nunit|referenceassemblies-pcl|xamarin-gtk-theme|xsp)$' || [ $? -eq 1 ]
 
-Name: thirdparty/kubeadm-k8s-kubernetes.io-1-20
-Method: https://apt.kubernetes.io/
-Suite: kubernetes-xenial
-Components: main>thirdparty/kubeadm-k8s-1-20
-UDebComponents:
-Architectures: amd64
-VerifyRelease: FEEA9169307EA071
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FVersion --lt 1.21 -a -FVersion --ge 1.20 \) || [ $? -eq 1 ]
-
 Name: thirdparty/kubeadm-k8s-kubernetes.io-1-21
 Method: https://apt.kubernetes.io/
 Suite: kubernetes-xenial
@@ -189,7 +180,7 @@ ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FV
 Name: thirdparty/kubeadm-k8s-kubernetes.io
 Method: https://apt.kubernetes.io/
 Suite: kubernetes-xenial
-Components: main>thirdparty/kubeadm-k8s-1-20 main>thirdparty/kubeadm-k8s-1-21
+Components: main>thirdparty/kubeadm-k8s-1-21
 UDebComponents:
 Architectures: amd64
 VerifyRelease: FEEA9169307EA071
@@ -198,7 +189,7 @@ ListShellHook: grep-dctrl \( -P 'kubernetes-cni' -o -P 'cri-tools' \) || [ $? -e
 Name: thirdparty/kubeadm-k8s-docker.com
 Method: https://download.docker.com/linux/debian/
 Suite: buster
-Components: stable>thirdparty/kubeadm-k8s-1-20 stable>thirdparty/kubeadm-k8s-1-21
+Components: stable>thirdparty/kubeadm-k8s-1-21
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
@@ -207,7 +198,7 @@ ListShellHook: grep-dctrl \( -e -P '^docker-ce|docker-ce-cli|$' -a -FVersion --g
 Name: thirdparty/helm3
 Method: https://baltocdn.com/helm/stable/debian
 Suite: all
-Components: main>thirdparty/kubeadm-k8s-1-20 main>thirdparty/kubeadm-k8s-1-21
+Components: main>thirdparty/kubeadm-k8s-1-21
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 294AC4827C1A168A

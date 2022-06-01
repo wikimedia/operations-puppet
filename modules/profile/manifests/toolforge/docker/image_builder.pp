@@ -2,7 +2,7 @@ class profile::toolforge::docker::image_builder(
     String       $docker_username = lookup('docker::username'),
     String       $docker_password = lookup('docker::password'),
     Stdlib::Fqdn $docker_registry = lookup('docker::registry'),
-    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-20'}),
+    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-21'}),
 ) {
     # This should be building with the same docker we are running
     class { '::kubeadm::repo':

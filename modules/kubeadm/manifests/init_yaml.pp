@@ -7,7 +7,7 @@ class kubeadm::init_yaml (
     Optional[Stdlib::Unixpath]    $k8s_etcd_cert_priv,
     Optional[Stdlib::Unixpath]    $k8s_etcd_cert_ca,
     Optional[Array[Stdlib::Fqdn]] $etcd_hosts,
-    String                        $kubernetes_version = '1.20.11',
+    String                        $kubernetes_version = '1.21.8',
     String                        $node_token = undef,
     Optional[String]              $encryption_key = undef,
     Optional[Integer]             $etcd_heartbeat_interval = undef,

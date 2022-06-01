@@ -54,7 +54,6 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/k8s
- thirdparty/kubeadm-k8s-1-20
  thirdparty/kubeadm-k8s-1-21
  thirdparty/matomo
  thirdparty/mono-project-stretch
@@ -79,7 +78,6 @@ Update:
  mono-project-stretch
  thirdparty/docker-ci
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-20
  thirdparty/kubeadm-k8s-kubernetes.io-1-21
  thirdparty/kubeadm-k8s-kubernetes.io
 Description: Wikimedia packages for Debian stretch
@@ -143,7 +141,6 @@ Components: main
  thirdparty/grafana
  thirdparty/haproxy24
  thirdparty/hwraid
- thirdparty/kubeadm-k8s-1-20
  thirdparty/kubeadm-k8s-1-21
  thirdparty/matomo
  thirdparty/opensearch1
@@ -176,7 +173,6 @@ Update:
  thirdparty/gitlab-runner
  thirdparty/haproxy24
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-20
  thirdparty/kubeadm-k8s-kubernetes.io-1-21
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com

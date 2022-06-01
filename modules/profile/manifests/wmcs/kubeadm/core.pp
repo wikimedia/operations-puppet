@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Installs a container runtime and the core kubeadm tool
 class profile::wmcs::kubeadm::core (
-    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-20'}),
+    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-21'}),
     Optional[Stdlib::Fqdn] $label_custom_domain = lookup('profile::wmcs::kubeadm::label_custom_domain', {default_value => undef}),
     Boolean $mount_nfs = lookup('mount_nfs', {default_value => false}),
 ) {
