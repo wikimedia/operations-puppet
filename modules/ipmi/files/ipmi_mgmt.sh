@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ipmi/ipmi_mgmt.sh
-#####################################################################
-
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
 if [ -z $1 ] # if there is no host, assume they need instructions
