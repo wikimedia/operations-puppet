@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Tells the StrongSwan IKE daemon to start up or terminate all configured IPsec connections.
 # jgage@wikimedia.org 2015-03
