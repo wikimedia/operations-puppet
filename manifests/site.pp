@@ -1577,17 +1577,25 @@ node /^idp[12]001\.wikimedia\.org$/ {
     role(idp)
 }
 
-# IDP staging servers
-node /^idp-test[12]001\.wikimedia\.org$/ {
-    role(idp_test)
-}
-
 node 'idp-test1002.wikimedia.org' {
     role(idp_test)
 }
 
 node 'idp-test2002.wikimedia.org' {
     role(idp_test)
+}
+
+# IDP staging servers
+node /^idp-test[12]001\.wikimedia\.org$/ {
+    role(idp_test)
+}
+
+node 'idp1002.wikimedia.org' {
+    role(insetup)
+}
+
+node 'idp2002.wikimedia.org' {
+    role(insetup)
 }
 
 # TFTP/DHCP/webproxy but NOT APT repo (T224576)
