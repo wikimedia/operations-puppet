@@ -1591,11 +1591,11 @@ node /^idp-test[12]001\.wikimedia\.org$/ {
 }
 
 node 'idp1002.wikimedia.org' {
-    role(insetup)
+    role(idp)
 }
 
 node 'idp2002.wikimedia.org' {
-    role(insetup)
+    role(idp)
 }
 
 # TFTP/DHCP/webproxy but NOT APT repo (T224576)
