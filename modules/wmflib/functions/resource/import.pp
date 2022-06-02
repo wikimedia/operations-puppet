@@ -6,11 +6,13 @@
 # @param resource the resource type to search for
 # @param resource_title a regex to use when seraching for the title
 # @param parameters a hash of parameters to filter on
+# @param merge_content if true and resoure == 'File' merge the contents parameter
 function wmflib::resource::import (
     Wmflib::Resource::Type $resource,
     Optional[String[1]]    $resource_title = undef,
     Hash                   $parameters     = {},
-) {
+    Boolean                $merge_contents = false,
+) >> Hash[String, Hash] {
     $_resource = wmflib::resource::capitalize($resource)
     $_title = $resource_title ? {
         undef   => '',
@@ -35,9 +37,18 @@ function wmflib::resource::import (
         # TODO: when we export we prfix the title with the following
         # wmflib::resource::export||
         # feels like we could do something better here.
-        $memo + { $resource['title'].split('\|\|')[1] => $resource['parameters'] }
+        $clean_title = $resource['title'].split('\|\|')[1]
+        if $merge_contents and $clean_title in $memo and 'content' in $resource['parameters'] {
+            $content = "${memo[$clean_title]['content']}${resource['parameters']['content']}"
+            $parameters = $resource['parameters'] + { 'content' => $content }
+        } else {
+            $parameters = $resource['parameters']
+        }
+        $memo + { $clean_title => $parameters }
     }
     unless $unique_resources.empty {
         create_resources($resource.downcase, $unique_resources)
     }
+    # Useful to return this for testing if nothing else
+    $unique_resources
 }

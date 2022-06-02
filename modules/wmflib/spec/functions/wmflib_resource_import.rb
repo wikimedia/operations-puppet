@@ -2,20 +2,20 @@
 
 require_relative '../../../../rake_modules/spec_helper'
 
-describe 'wmflib::resource::reduce' do
+describe 'wmflib::resource::import' do
   let(:pre_condition) do
     "function puppetdb_query($pql) {
       [
         {
-          'title' => 'foo',
+          'title' => 'wmflib::resource||foo',
           'parameters' => { 'content' => 'foo' }
         },
         {
-          'title' => 'bar',
+          'title' => 'wmflib::resource||bar',
           'parameters' => { 'content' => 'bar' }
         },
         {
-          'title' => 'foo',
+          'title' => 'wmflib::resource||foo',
           'parameters' => { 'content' => 'bar' }
         }
       ]
@@ -23,11 +23,11 @@ describe 'wmflib::resource::reduce' do
     "
   end
   let(:result) {{'foo' => { 'content' => 'bar' }, 'bar' => { 'content' => 'bar' } }}
-  it { is_expected.to run.with_params('file').and_return(result) }
-  it { is_expected.to run.with_params('file').and_return(result) }
+  let(:result_merge) {{'foo' => { 'content' => 'foobar' }, 'bar' => { 'content' => 'bar' } }}
   it { is_expected.to run.with_params('file').and_return(result) }
   it { is_expected.to run.with_params('file', 'foo').and_return(result) }
   it { is_expected.to run.with_params('file', 'foo', {'foo' => 'foo'}).and_return(result) }
-  it { is_expected.to run.with_params('file', 'foo', {'foo' => 'foo'}, false).and_return(result) }
-  it { is_expected.to run.with_params('file', 'foo', {'foo' => 'foo'}, false, false).and_return(result) }
+  it { is_expected.to run.with_params('file', nil, {}, true).and_return(result_merge) }
+  it { is_expected.to run.with_params('file', 'foo', {}, true).and_return(result_merge) }
+  it { is_expected.to run.with_params('file', 'foo', {'foo' => 'foo'}, true).and_return(result_merge) }
 end

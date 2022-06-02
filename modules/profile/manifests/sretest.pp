@@ -21,4 +21,10 @@ class profile::sretest {
         tag      => 'foo::bar',
     })
     wmflib::resource::import('file', undef, { tag => 'foo::bar' })
+    wmflib::resource::export('file', '/var/tmp/testing/wmflib_export_merge_cotent_test.txt', {
+        'ensure'  => 'file',
+        'content' => "${facts['networking']['fqdn']}\n",
+        'tag'     => 'foo::bar::merge',
+    })
+    wmflib::resource::import('file', undef, { tag => 'foo::bar::merge' })
 }
