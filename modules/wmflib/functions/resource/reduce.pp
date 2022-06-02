@@ -17,10 +17,10 @@ function wmflib::resource::reduce(
 ) >> Hash[String, Hash] {
     $_resource = wmflib::resource::capitalize($resource)
     $_exported = $exported.bool2str('and exported = true', '')
-    $_title = $_resource ? {
+    $_title = $resource_title ? {
         undef   => '',
-        'Class' => "and title=\"${wmflib::resource::capitalize($resource_title)}\"",
-        default => "and title=\"${resource_title}\"",
+        'Class' => "and title= \"${wmflib::resource::capitalize($resource_title)}\"",
+        default => "and title= \"${resource_title}\"",
     }
     $_paramters = $parameters.empty ? {
         true    => '',
@@ -34,6 +34,8 @@ function wmflib::resource::reduce(
         ${_paramters}
     }
     | PQL
+    # Following is useful for debugging, we should add proper spec tests
+    # notify { $pql: }
     $unique_resources = puppetdb_query($pql).reduce({}) |$memo, $resource| {
         $memo + {$resource['title'] => $resource['parameters']}
     }
