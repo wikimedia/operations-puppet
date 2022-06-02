@@ -5,11 +5,10 @@
 #  happens when a server has failed to run puppet for 14 days
 # @param class the class to search for
 # @param optional list of sites if present filter to output based on the sites passed
-function wmflib::class_hosts (
-    String[1]                                    $class,
+function wmflib::class::hosts (
+    Wmflib::Resource::Type                       $class,
     Variant[Wmflib::Sites, Array[Wmflib::Sites]] $location = [],
 ) >> Array[Stdlib::Host] {
 
-    $_class = $class.split('::').capitalize.join('::')
-    wmflib::resource_hosts('class', $location, $_class)
+    wmflib::resource::hosts('class', $location, wmflib::resource::capitalize($class))
 }

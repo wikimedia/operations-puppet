@@ -16,7 +16,7 @@ class profile::scap::dsh(
 
     $scap_targets = {
         'scap_targets' => {
-            'hosts' => (wmflib::class_hosts('mediawiki::scap') + wmflib::resource_hosts('scap::target')).sort.unique,
+            'hosts' => (wmflib::class::hosts('mediawiki::scap') + wmflib::resource::hosts('scap::target')).sort.unique,
         },
     }
     class { '::scap::dsh':

@@ -17,7 +17,7 @@ class profile::openstack::codfw1dev::nova::compute::service(
 
     require ::profile::openstack::codfw1dev::nova::common
     $all_cloudvirts = unique(
-        wmflib::class_hosts('profile::openstack::codfw1dev::nova::compute::service') << $facts['networking']['fqdn']
+        wmflib::class::hosts('profile::openstack::codfw1dev::nova::compute::service') << $facts['networking']['fqdn']
     ).sort
     class {'::profile::openstack::base::nova::compute::service':
         version                            => $version,

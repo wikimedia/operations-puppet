@@ -82,7 +82,7 @@ class profile::sre::os_updates (
         ensure_service => stdlib::ensure($os_reports_timer_ensure, 'service')
     }
     # Allow miscweb hosts to pull reports for serving them via HTTP
-    $miscweb_rsync_clients = wmflib::role_hosts('miscweb')
+    $miscweb_rsync_clients = wmflib::role::hosts('miscweb')
     rsync::server::module { 'osreports':
         ensure         => $os_reports_timer_ensure,
         path           => '/srv/os-reports',

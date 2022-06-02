@@ -68,9 +68,9 @@ class profile::debmonitor::server (
     $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('apache', 'strong')
     # Ensure to add FQDN of the current host also the first time the role is applied
-    $hosts = (wmflib::role_hosts('debmonitor::server') << $facts['networking']['fqdn']).sort.unique
-    $proxy_hosts = wmflib::role_hosts('cluster::management')
-    $proxy_images = wmflib::role_hosts('builder')
+    $hosts = (wmflib::role::hosts('debmonitor::server') << $facts['networking']['fqdn']).sort.unique
+    $proxy_hosts = wmflib::role::hosts('cluster::management')
+    $proxy_images = wmflib::role::hosts('builder')
     $ldap_server_primary = $ldap_config['ro-server']
     $ldap_server_fallback = $ldap_config['ro-server-fallback']
 

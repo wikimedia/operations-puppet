@@ -5,8 +5,8 @@
 #  happens when a server has failed to run puppet for 14 days
 # @param role the role to search for
 # @param optional list of sites if present filter to output based on the sites passed
-function wmflib::role_hosts (
-    String[1]                                    $role,
+function wmflib::role::hosts (
+    Pattern[/\A\w+(::\w+)*\z/]                   $role,
     Variant[Wmflib::Sites, Array[Wmflib::Sites]] $location = [],
 ) >> Array[Stdlib::Host] {
 
@@ -14,5 +14,5 @@ function wmflib::role_hosts (
         true    => $role,
         default => "Role::${role}",
     }
-    wmflib::class_hosts($_role, $location)
+    wmflib::class::hosts($_role, $location)
 }

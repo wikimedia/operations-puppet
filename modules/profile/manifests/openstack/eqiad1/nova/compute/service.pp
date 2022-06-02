@@ -21,7 +21,7 @@ class profile::openstack::eqiad1::nova::compute::service(
 
     require ::profile::openstack::eqiad1::nova::common
     $all_cloudvirts = unique(
-        wmflib::class_hosts('profile::openstack::eqiad1::nova::compute::service') << $facts['networking']['fqdn']
+        wmflib::class::hosts('profile::openstack::eqiad1::nova::compute::service') << $facts['networking']['fqdn']
     ).sort
     class {'::profile::openstack::base::nova::compute::service':
         version                            => $version,

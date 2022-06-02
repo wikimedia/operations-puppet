@@ -50,7 +50,7 @@ class profile::netbox::scripts {
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    $ferm_nodes = wmflib::role_hosts('cluster::management').sort.join(' ')
+    $ferm_nodes = wmflib::role::hosts('cluster::management').sort.join(' ')
 
     ferm::service { 'netbox_scripts_https':
         proto  => 'tcp',

@@ -15,7 +15,7 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.eqsin.pdb':
         ensure  => file,
-        content => wmflib::role_hosts('cache::upload', 'eqsin').to_yaml,
+        content => wmflib::role::hosts('cache::upload', 'eqsin').to_yaml,
     }
     file {'/var/tmp/testing/cache.nodes.eqsin.hiera':
         ensure  => file,
@@ -23,7 +23,7 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.eq.pdb':
         ensure  => file,
-        content => wmflib::role_hosts('cache::upload', ['eqsin', 'eqiad']).to_yaml,
+        content => wmflib::role::hosts('cache::upload', ['eqsin', 'eqiad']).to_yaml,
     }
     file {'/var/tmp/testing/cache.nodes.eq.hiera':
         ensure  => file,
@@ -31,7 +31,7 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.pdb':
         ensure  => file,
-        content => wmflib::role_hosts('cache::upload').to_yaml,
+        content => wmflib::role::hosts('cache::upload').to_yaml,
     }
     file {'/var/tmp/testing/cache.nodes.hiera':
         ensure  => file,

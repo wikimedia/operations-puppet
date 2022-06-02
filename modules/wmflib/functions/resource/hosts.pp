@@ -6,13 +6,13 @@
 # @param resource the resource to search for
 # @param optional list of sites if present filter to output based on the sites passed
 # @param resource_title the resource title to search for
-function wmflib::resource_hosts (
-    String[1]                                    $resource,
+function wmflib::resource::hosts (
+    Wmflib::Resource::Type                       $resource,
     Variant[Wmflib::Sites, Array[Wmflib::Sites]] $location       = [],
     Optional[String[1]]                          $resource_title = undef,
 ) >> Array[Stdlib::Host] {
 
-    $_resource = $resource.split('::').capitalize.join('::')
+    $_resource = wmflib::resource::capitalize($resource)
     $_title = $resource_title ? {
         undef   => '',
         default => " and title = \"${resource_title}\"",

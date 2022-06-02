@@ -9,7 +9,7 @@ class profile::spicerack::reposync (
 ) {
     $_remotes = $remotes.empty ? {
         false   => $remotes,
-        default => wmflib::role_hosts('cluster::management') + $facts['networking']['fqdn'] + wmflib::role_hosts('netbox::frontend'),
+        default => wmflib::role::hosts('cluster::management') + $facts['networking']['fqdn'] + wmflib::role::hosts('netbox::frontend'),
     }.sort.unique
     class {'reposync':
         ensure  => $ensure,

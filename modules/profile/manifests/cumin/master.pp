@@ -15,7 +15,7 @@ class profile::cumin::master (
     $cumin_log_path = '/var/log/cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied
-    $cumin_masters = (wmflib::role_hosts('cluster::management]') << $facts['networking']['fqdn']).sort.unique
+    $cumin_masters = (wmflib::role::hosts('cluster::management') << $facts['networking']['fqdn']).sort.unique
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
     $owners = profile::contacts::get_owners().values.flatten.unique
