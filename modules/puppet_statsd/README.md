@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Puppet StatsD reporter
 
 This module configures a Puppet reporter that sends timing information on

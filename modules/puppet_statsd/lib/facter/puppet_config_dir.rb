@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Defines a custom Facter fact, $puppet_config_dir, which specifies the
 # location of Puppet's configuration directory (usually /etc/puppet).
 require 'puppet'

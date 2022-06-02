@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Puppet StatsD reporter
 # Sends timing measurements for Puppet runs to StatsD
 require 'puppet'
