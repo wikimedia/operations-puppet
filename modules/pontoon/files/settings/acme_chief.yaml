@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 acmechief_host: "%{alias('__master_for_role_acme_chief')}"
 
 # Authorize hosts to fetch acme certs based on the role they run

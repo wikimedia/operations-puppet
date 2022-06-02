@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 profile::base::remote_syslog_tls:
   eqiad: "%{alias('__hosts_for_role_syslog__centralserver')}"
 

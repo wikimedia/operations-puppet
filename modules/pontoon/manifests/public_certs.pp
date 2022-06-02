@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Acquire letsencrypt certs for services with public endpoints.
 # For simplicity reasons certbot's webroot authenticator and apache are used.
 # The tradeoff being only one host running this class (i.e. the frontend

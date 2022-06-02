@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 # This script helps the user to interact with their stack, either by aiding
 # local setup (e.g. git configuration) or remote hosts (e.g. git remote setup).
 

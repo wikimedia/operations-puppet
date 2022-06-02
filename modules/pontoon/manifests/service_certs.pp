@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Generate service certificates via Puppet CA and cergen
 #
 # The class takes a CA server (the puppet server itself in Pontoon) and

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 profile::alertmanager::irc::nickname: 'jinxer-wm-test'
 profile::alertmanager::irc::nickname_password: 'dummy'
 profile::alertmanager::irc::channel: 'wikimedia-o11y-test'

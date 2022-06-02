@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 profile::cache::base::performance_tweaks: false
 profile::cache::varnish::frontend::backends_in_etcd: false
 profile::trafficserver::backend::storage_elements:

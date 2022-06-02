@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Configure a TLS terminator and load balancer for public-facing services.
 
 # In this setting there are two classes of public services in production:

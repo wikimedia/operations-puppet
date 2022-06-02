@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 profile::swift::stats_reporter_host: "%{alias('__master_for_role_swift__proxy')}"
 profile::swift::proxy::memcached_servers: "%{alias('__hosts_for_role_swift__proxy')}"
 profile::swift::storagehosts: "%{alias('__hosts_for_role_swift__storage')}"

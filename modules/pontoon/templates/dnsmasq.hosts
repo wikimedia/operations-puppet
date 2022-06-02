@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 ## Pontoon SD records
 
 <% @services.keys.sort.each do |svc| -%>

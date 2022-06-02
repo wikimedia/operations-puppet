@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Load Balancer for Pontoon
 
 # The load balancer implementation has the following features:

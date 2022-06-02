@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Icinga generic
 profile::icinga::logs_keep_days: 1
 profile::icinga::active_host: "%{alias('__master_for_role_alerting_host')}"

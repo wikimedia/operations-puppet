@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Bootstrap a Pontoon Puppet server from a provisioned host, using public git repos.
 # At the end of this phase the host must be ready to:

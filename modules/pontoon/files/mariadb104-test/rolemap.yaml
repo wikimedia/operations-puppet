@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Map a role to a list of FQDNs that are running the role.
 puppetmaster::pontoon:
   - puppetmaster.mariadb104-test.eqiad1.wikimedia.cloud

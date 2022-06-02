@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Service Discovery for Pontoon
 
 # The module takes care of mapping service names to a single load balancer address.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Map each service to its 'names'. Names include the service name itself and any
 #          configured discovery names.
 # @param services_config The Wmflib::Service configuration to inspect

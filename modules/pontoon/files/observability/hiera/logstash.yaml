@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 profile::elasticsearch::dc_settings:
   cluster_name: pontoon-elk7-eqiad1
   unicast_hosts:

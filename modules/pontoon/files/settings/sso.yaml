@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 apereo_cas:
   production:
     login_url: 'https://idp.wmcloud.org/login'

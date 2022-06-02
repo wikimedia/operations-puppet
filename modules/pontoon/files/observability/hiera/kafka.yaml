@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # XXX should work out of the box with existing hieradata
 profile::kafka::broker::kafka_cluster_name: logging-eqiad
 profile::kafka::broker::max_heap_size: '1g'

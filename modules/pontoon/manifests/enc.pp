@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class pontoon::enc {
     ensure_packages(['python3-yaml'])
 

@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 # Pontoon SD upstream servers
 
 <% @nameservers.sort.each do |addr| -%>

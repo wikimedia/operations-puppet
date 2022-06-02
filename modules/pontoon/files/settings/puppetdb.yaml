@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # PuppetDB
 profile::puppetmaster::common::puppetdb_hosts: "%{alias('__hosts_for_role_puppetdb')}"
 profile::puppetmaster::common::storeconfigs: puppetdb

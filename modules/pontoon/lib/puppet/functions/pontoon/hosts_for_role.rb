@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Return hosts for a given role, reading from Pontoon's rolemap file.
 Puppet::Functions.create_function(:'pontoon::hosts_for_role') do
   dispatch :hosts_for_role do

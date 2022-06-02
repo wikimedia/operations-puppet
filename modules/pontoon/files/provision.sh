@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Provision a new host with Debian installed.
 # After this phase is complete the host must be ready to run puppet for the first time.

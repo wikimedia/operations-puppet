@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 profile::thanos::compact_host: "%{alias('__master_for_role_thanos__frontend')}"
 profile::thanos::frontends: "%{alias('__hosts_for_role_thanos__frontend')}"
 profile::thanos::backends: "%{alias('__hosts_for_role_thanos__backend')}"
