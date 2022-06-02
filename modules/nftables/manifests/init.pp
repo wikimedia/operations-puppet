@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class nftables (
     String         $ensure_package = 'present',
     Wmflib::Ensure $ensure_service = 'absent',

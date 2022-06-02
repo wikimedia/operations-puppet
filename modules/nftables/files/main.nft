@@ -1,4 +1,5 @@
 #!/usr/sbin/nft -f
+# SPDX-License-Identifier: Apache-2.0
 
 # this ruleset is meant to be loaded atomically, wiping the previous generation
 # and loading the new in one go. We need this 'flush ruleset' here to prevent duplicating stuff.
