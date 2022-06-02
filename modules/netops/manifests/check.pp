@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: netops::check
 #
 # Sets up various monitoring checks for a given networking device.

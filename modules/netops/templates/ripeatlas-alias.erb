@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- @utils.each do |u| -%>
 <% if @http_proxy -%>
 <%= "alias #{u}='sudo --set-home --user=atlas https_proxy=#{@http_proxy} /usr/bin/#{u}'" %>

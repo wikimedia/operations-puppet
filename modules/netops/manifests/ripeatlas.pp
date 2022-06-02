@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: netops::ripeatlas
 #
 # Sets up automated RIPE Atlas measurements checks. Tailored towards

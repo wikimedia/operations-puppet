@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class netops::ripeatlas::cli (
   String $http_proxy = undef,
 ) {

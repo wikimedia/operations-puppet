@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: netops::atlasexporter
 #
 # Sets up a Prometheus exporter for RIPE Atlas checks.
