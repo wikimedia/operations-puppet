@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: query_service::common
 # Note: setup environment for query service.
 # Dump data must be loaded manually.

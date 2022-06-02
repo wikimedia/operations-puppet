@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: query_service::gui
 #
 # Provisions proxy fronting the query service and gui

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === define: query_service::blazegraph
 # Note: This resource installs and start the blazegraph service
 #

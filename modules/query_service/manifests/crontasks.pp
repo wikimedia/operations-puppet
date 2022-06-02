@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: query_service::crontasks
 #
 # Installs all the major cron jobs for Query service

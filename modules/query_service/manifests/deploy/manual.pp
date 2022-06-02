@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # the query_service package is checked out initially, but not automatically upgraded
 class query_service::deploy::manual(
     String $deploy_user,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Monitor single instance of Blazegraph
 define  query_service::monitor::blazegraph_instance (
     Stdlib::Port $port,

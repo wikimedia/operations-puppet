@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # This script is reloading DCAT-AP data from Wikidata
 # NOTE: This should be run under user that has rights to
 # sudo systemctl reload nginx

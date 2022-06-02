@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # the query service package is managed by scap
 class query_service::deploy::scap(
     String $deploy_user,

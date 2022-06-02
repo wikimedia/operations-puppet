@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 set -e
 # This script is reloading categories into a new namespace
 # NOTE: This should be run under user that has rights to

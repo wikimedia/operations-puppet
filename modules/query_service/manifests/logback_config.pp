@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define query_service::logback_config (
     String $pattern,
     String $deploy_name,

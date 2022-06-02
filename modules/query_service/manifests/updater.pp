@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class query_service::updater
 #
 # Query Service updater service.

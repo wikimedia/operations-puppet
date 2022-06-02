@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # This script loads latest categories daily dump into current namespace
 . /usr/local/bin/cronUtils.sh $1
 

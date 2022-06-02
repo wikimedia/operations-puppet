@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class query_service::monitor::updater (
     String $username,
     String $updater_main_class,

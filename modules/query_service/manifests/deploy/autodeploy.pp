@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # the query_service package is cloned from git and kept up to date via a cron
 class query_service::deploy::autodeploy(
     String $deploy_user,
