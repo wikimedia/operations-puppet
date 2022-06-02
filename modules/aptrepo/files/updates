@@ -265,7 +265,7 @@ Suite: buster
 Architectures: amd64
 VerifyRelease: 718C1F180B5A84A3
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
-ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?_.*$' || [ $? -eq 1 ]
 
 Name: thirdparty/ceph-octopus-bullseye
 Method: https://mirror.croit.io/debian-octopus
@@ -275,7 +275,7 @@ Suite: bullseye
 Architectures: amd64
 VerifyRelease: 718C1F180B5A84A3
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
-ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?_.*$' || [ $? -eq 1 ]
 
 Name: bigtop15-buster
 Method: http://repo.bigtop.apache.org.s3.amazonaws.com/releases/1.5.0/debian/10/amd64
