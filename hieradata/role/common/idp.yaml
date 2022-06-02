@@ -198,8 +198,8 @@ profile::idp::ldap_attributes:
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::idp::server_name: https://idp.wikimedia.org
 profile::idp::idp_nodes:
-  - idp1001.wikimedia.org
-  - idp2001.wikimedia.org
+  - idp1002.wikimedia.org
+  - idp2002.wikimedia.org
 profile::idp::deploy_deb: true
 profile::idp::actuators:
   - sso
