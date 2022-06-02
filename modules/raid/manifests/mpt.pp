@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # MPT RAID controller
 class raid::mpt {
   include raid

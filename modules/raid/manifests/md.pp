@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # MD RAID controller
 class raid::md (
     Enum['present', 'absent'] $cron_ensure = 'present',

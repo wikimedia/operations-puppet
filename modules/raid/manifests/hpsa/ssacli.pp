@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # HP Raid controller
 class raid::hpsa::ssacli {
     assert_private()

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: raid
 #
 # Class to set up monitoring for software and hardware RAID

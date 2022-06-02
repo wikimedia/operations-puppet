@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# SPDX-License-Identifier: Apache-2.0
 """
 Get the status of a MegaRAID RAID
 
