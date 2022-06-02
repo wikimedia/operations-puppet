@@ -40,7 +40,7 @@ function wmflib::resource::reduce(
         # TODO: while testing we are using a title of export|$real_title to avoid duplicates
         # with the exported and relised resource.  Ultimatly we should move the exporting to there
         # own function so we cann keep the prefix synced
-        $memo + {$resource['title'].split('|')[1] => $resource['parameters']}
+        $memo + {$resource['title'].split('\|')[1] => $resource['parameters']}
     }
     if $realize and !$unique_resources.empty {
         create_resources($resource.downcase, $unique_resources)

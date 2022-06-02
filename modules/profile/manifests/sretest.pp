@@ -20,5 +20,5 @@ class profile::sretest {
         content => 'testing',
         tag     => 'foo::bar',
     }
-    wmflib::resource::reduce('file', undef, {'tag' => 'foo::bar'})
+    # wmflib::resource::reduce('file', undef, {'tag' => 'foo::bar'})
 }
