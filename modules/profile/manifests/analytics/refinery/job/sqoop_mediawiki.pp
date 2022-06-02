@@ -3,7 +3,7 @@
 # NOTE: This requires that role::analytics_cluster::mysql_password has
 # been included somewhere, so that /user/hdfs/mysql-analytics-research-client-pw.txt
 # exists in HDFS.  (We can't require it here, since it needs to only be included once
-# on a different node.)
+# on a different node.) 
 #
 class profile::analytics::refinery::job::sqoop_mediawiki (
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers', { 'default_value' => 'present' }),
@@ -43,18 +43,27 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     $yarn_queue                 = 'production'
 
     ############################################################################
-    # Wrapper running entire-tables sqoop from clouddb, followed by entire-tables
-    # sqoop from analytics-store
     # Template uses num_mappers_all_times
 
-    file { '/usr/local/bin/refinery-sqoop-mediawiki':
+    # sqoop tables needed by the mediawiki history data pipeline, from cloud replicas
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-history':
         ensure  => $ensure_timers,
-        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki.sh.erb'),
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-history.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
     }
 
+    # sqoop tables not needed by the mediawiki history data pipeline, from cloud replicas
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-not-history':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-not-history.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    # sqoop from analytics-store replicas, tables not available on cloud replicas for privacy reasons
     file { '/usr/local/bin/refinery-sqoop-mediawiki-production':
         ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production.sh.erb'),

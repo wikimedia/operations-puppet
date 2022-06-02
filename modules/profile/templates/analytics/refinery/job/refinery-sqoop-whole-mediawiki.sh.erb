@@ -2,13 +2,11 @@
 # NOTE: This file is managed by puppet
 #
 # This file is a wrapper running sqoop for whole mediawiki tables.
-# It first runs sqooping from clouddb, and if successful runs sqooping from
-# analytics-store (production replica).
+# It runs three sqoops in series:
+#   * first sqoops tables necessary for the mediawiki history dataset from clouddb
+#   * if successful, sqoops from the production replicas
+#   * and finally, sqoops the remaining tables we care about from clouddb
 #
-# Labs tables: archive, change_tag, change_tag_def, ipblocks,
-#              ipblocks_restrictions, logging, page, pagelinks, redirect,
-#              revision, user, user_groups
-# Prod tables: actor, comment
-#
+# See each script referenced below for the list of cloud replica and prod replica tables
 
-/usr/local/bin/refinery-sqoop-mediawiki && /usr/local/bin/refinery-sqoop-mediawiki-production
+/usr/local/bin/refinery-sqoop-mediawiki-history && /usr/local/bin/refinery-sqoop-mediawiki-production && /usr/local/bin/refinery-sqoop-mediawiki-not-history
