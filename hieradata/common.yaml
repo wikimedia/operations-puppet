@@ -2074,19 +2074,19 @@ infra_devices:
     site: eqiad
     role: l2sw
   cloudsw2-c8-eqiad:
-    ipv4: 10.65.1.197
+    ipv4: 10.64.146.250
+    ipv6: 2620:0:861:11b::250
     parents:
     - cloudsw1-c8-eqiad
-    vcp: false
     site: eqiad
-    role: l2sw
+    role: l3sw
   cloudsw2-d5-eqiad:
-    ipv4: 10.65.1.198
+    ipv4: 10.64.146.251
+    ipv6: 2620:0:861:11b::251
     parents:
     - cloudsw1-d5-eqiad
-    vcp: false
     site: eqiad
-    role: l2sw
+    role: l3sw
   ripe-atlas-eqiad:
     ipv4: '208.80.155.69'
     ipv6: '2620:0:861:202:208:80:155:69'
@@ -2113,17 +2113,35 @@ infra_devices:
     site: eqiad
     role: scs
   cloudsw1-c8-eqiad:
-    ipv4: 185.15.56.252
+    ipv4: 10.64.146.252
+    ipv6: 2620:0:861:11b::252
     parents:
     - cr1-eqiad
     - cr2-eqiad
     site: eqiad
     role: l3sw
   cloudsw1-d5-eqiad:
-    ipv4: 185.15.56.253
+    ipv4: 10.64.146.253
+    ipv6: 2620:0:861:11b::253
     parents:
     - cr1-eqiad
     - cr2-eqiad
+    site: eqiad
+    role: l3sw
+  cloudsw1-e4-eqiad:
+    ipv4: 10.64.146.254
+    ipv6: 2620:0:861:11b::254
+    parents:
+    - cloudsw1-c8-eqiad
+    - cloudsw1-d5-eqiad
+    site: eqiad
+    role: l3sw
+  cloudsw1-f4-eqiad:
+    ipv4: 10.64.146.255
+    ipv6: 2620:0:861:11b::255
+    parents:
+    - cloudsw1-c8-eqiad
+    - cloudsw1-d5-eqiad
     site: eqiad
     role: l3sw
   lsw1-e1-eqiad:
