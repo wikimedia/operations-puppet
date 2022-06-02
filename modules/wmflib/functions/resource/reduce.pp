@@ -24,7 +24,7 @@ function wmflib::resource::reduce(
     }
     $_paramters = $parameters.empty ? {
         true    => '',
-        default => 'and ' + $parameters.map |$name, $value| { "parameter.${name} = \"${value}\"" }.join(' and ')
+        default => $parameters.reduce('') |$memo, $value| { "${memo} and parameters.${value[0]} = \"${value[1]}\"" }
     }
     $pql = @("PQL")
     resources[parameters, title] {
@@ -32,11 +32,12 @@ function wmflib::resource::reduce(
         ${_title}
         ${_exported}
         ${_paramters}
+    }
     | PQL
     $unique_resources = puppetdb_query($pql).reduce({}) |$memo, $resource| {
         $memo + {$resource['title'] => $resource['parameters']}
     }
-    if $realize {
+    if $realize and !$unique_resources.empty {
         create_resources($resource.downcase, $unique_resources)
     }
     $unique_resources

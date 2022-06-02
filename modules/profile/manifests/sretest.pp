@@ -11,30 +11,14 @@ class profile::sretest {
 
     $cache_nodes = lookup('cache::nodes')  # lint:ignore:wmf_styleguide
     file {'/var/tmp/testing':
-        ensure => directory,
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
     }
-    file {'/var/tmp/testing/cache.nodes.eqsin.pdb':
-        ensure  => file,
-        content => wmflib::role::hosts('cache::upload', 'eqsin').to_yaml,
+    @@file { '/var/tmp/testing/wmflib_resource_reduce.txt':
+        ensure  => 'file',
+        content => 'testing',
+        tag     => 'foo::bar',
     }
-    file {'/var/tmp/testing/cache.nodes.eqsin.hiera':
-        ensure  => file,
-        content => $cache_nodes['upload']['eqsin'].to_yaml,
-    }
-    file {'/var/tmp/testing/cache.nodes.eq.pdb':
-        ensure  => file,
-        content => wmflib::role::hosts('cache::upload', ['eqsin', 'eqiad']).to_yaml,
-    }
-    file {'/var/tmp/testing/cache.nodes.eq.hiera':
-        ensure  => file,
-        content => ($cache_nodes['upload']['eqsin'] + $cache_nodes['upload']['eqiad']).to_yaml,
-    }
-    file {'/var/tmp/testing/cache.nodes.pdb':
-        ensure  => file,
-        content => wmflib::role::hosts('cache::upload').to_yaml,
-    }
-    file {'/var/tmp/testing/cache.nodes.hiera':
-        ensure  => file,
-        content => $cache_nodes['upload'].to_yaml,
-    }
+    wmflib::resource::reduce('file', undef, {'tag' => 'foo::bar'})
 }
