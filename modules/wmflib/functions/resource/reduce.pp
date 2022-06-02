@@ -19,8 +19,8 @@ function wmflib::resource::reduce(
     $_exported = $exported.bool2str('and exported = true', '')
     $_title = $resource_title ? {
         undef   => '',
-        'Class' => "and title= \"${wmflib::resource::capitalize($resource_title)}\"",
-        default => "and title= \"${resource_title}\"",
+        'Class' => "and title = \"${wmflib::resource::capitalize($resource_title)}\"",
+        default => "and title = \"${resource_title}\"",
     }
     $_paramters = $parameters.empty ? {
         true    => '',
@@ -37,7 +37,10 @@ function wmflib::resource::reduce(
     # Following is useful for debugging, we should add proper spec tests
     # notify { $pql: }
     $unique_resources = puppetdb_query($pql).reduce({}) |$memo, $resource| {
-        $memo + {$resource['title'] => $resource['parameters']}
+        # TODO: while testing we are using a title of export|$real_title to avoid duplicates
+        # with the exported and relised resource.  Ultimatly we should move the exporting to there
+        # own function so we cann keep the prefix synced
+        $memo + {$resource['title'].split('|')[1] => $resource['parameters']}
     }
     if $realize and !$unique_resources.empty {
         create_resources($resource.downcase, $unique_resources)
