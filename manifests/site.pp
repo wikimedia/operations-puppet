@@ -2592,7 +2592,7 @@ node /^netmon(1002|2001)\.wikimedia\.org$/ {
 
 # New netmon node T299106
 node /^netmon1003\.wikimedia\.org$/ {
-    role(insetup)
+    role(netmon)
 }
 
 # Network insights (netflow/pmacct, etc.)
