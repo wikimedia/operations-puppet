@@ -26,5 +26,5 @@ class profile::sretest {
         'content' => "${facts['networking']['fqdn']}\n",
         'tag'     => 'foo::bar::merge',
     })
-    wmflib::resource::import('file', undef, { tag => 'foo::bar::merge' })
+    wmflib::resource::import('file', undef, { tag => 'foo::bar::merge' }, true)
 }
