@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs the base configuration file for running poolcounter-enabled
 # applications.
 class poolcounter::client(
