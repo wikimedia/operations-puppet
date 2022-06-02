@@ -176,23 +176,22 @@ def download_image(upstream_image_path: Path, image_url: str, run: Callable, wor
         disk_path.rename(upstream_image_path)
 
 
-def upload_image(image_url: str, upstream_image_path: Path):
-    LOGGER.info("Loading the upstream image into glance")
-    upstream_image = glance.images.create(
-        name="upstream image from %s" % image_url,
-        visibility="private",
-        container_format="ovf",
-        disk_format="raw",
-        hw_scsi_model="virtio-scsi",
-        hw_disk_bus="scsi",
-    )
-    glance.images.upload(upstream_image.id, upstream_image_path.open("rb"))
+def upload_image(name: str, image_path: Path):
+    args = ["openstack", "image", "create", "--file", image_path,
+            "--private", "--container-format", "ovf", "--disk-format", "raw",
+            "--property", "hw_scsi_model=virtio-scsi",
+            "--property", "hw_disk_bus=scsi",
+            name]
+    rstring = subprocess.check_output(args)
 
-    while glance.images.get(upstream_image.id)["status"] != "active":
-        LOGGER.info("Waiting for upstream image status 'active'")
-        time.sleep(60)
+    print("rstring: %s" % rstring)
+    for line in rstring.decode('utf8').split('\n'):
+        if ' id ' in line:
+            newimageid = line.split('|')[2].strip()
 
-    return upstream_image
+    print("newimageid: %s" % newimageid)
+
+    return glance.images.get(newimageid)
 
 
 def create_puppetized_vm(upstream_image, network_id, flavor_id):
@@ -276,19 +275,7 @@ def sparsify_image(workdir: Path, snapshot_path: Path, run: Callable) -> None:
 
 
 def create_and_upload_image(new_image_name: str, sparse_snapshot_path: Path, project_owner: str):
-    final_image = glance.images.create(
-        name=new_image_name,
-        visibility="private",
-        container_format="ovf",
-        disk_format="raw",
-        hw_scsi_model="virtio-scsi",
-        hw_disk_bus="scsi",
-    )
-    glance.images.upload(final_image.id, open(sparse_snapshot_path, "rb"))
-
-    while glance.images.get(final_image.id)["status"] != "active":
-        LOGGER.info("Waiting for final image status 'active'")
-        time.sleep(10)
+    final_image = upload_image(new_image_name, sparse_snapshot_path)
 
     LOGGER.info("Setting image ownership and visibility")
     if project_owner:
@@ -336,7 +323,8 @@ def main(args: argparse.Namespace) -> None:
         with with_confirmation("Creating a VM from the image and downloading a snapshot.") as reply:
             if reply == AskReply.CONTINUE:
                 upstream_image = upload_image(
-                    image_url=args.image_url, upstream_image_path=upstream_image_path
+                    name="upstream image from %s" % args.image_url,
+                    image_path=upstream_image_path
                 )
                 instance = create_puppetized_vm(upstream_image, networkid, flavorid)
                 vm_snap = get_snapshot(instance_id=instance.id, snapshot_path=snapshot_path)
