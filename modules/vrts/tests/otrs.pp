@@ -1,3 +1,3 @@
 #
 
-include ::otrs
+include ::vrts
