@@ -22,7 +22,7 @@ class vrts::web {
     # explicitly show that we use the prefork mpm
     class { '::httpd::mpm':
         mpm    => 'prefork',
-        source => 'puppet:///modules/otrs/mpm_prefork.conf',
+        source => 'puppet:///modules/vrts/mpm_prefork.conf',
     }
 
     httpd::site { 'ticket.wikimedia.org':
