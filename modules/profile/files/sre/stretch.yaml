@@ -36,7 +36,7 @@ role::ci::master:
   target-q: 2020-2
 role::mw_rc_irc:
   target-q: 2020-2
-role::otrs:
+role::vrts:
   target-q: 2020-2
 role::ores::redis:
   target-q: 2020-2

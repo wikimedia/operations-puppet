@@ -42,7 +42,7 @@ role::ci::master:
   target-q: TBD
 role::mw_rc_irc:
   target-q: TBD
-role::otrs:
+role::vrts:
   target-q: TBD
 role::ores::redis:
   target-q: TBD
