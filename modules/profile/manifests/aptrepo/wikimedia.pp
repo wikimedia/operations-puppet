@@ -36,17 +36,55 @@
 class profile::aptrepo::wikimedia (
     Stdlib::Fqdn        $primary_server    = lookup('aptrepo_server'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('aptrepo_servers_failover'),
-    Stdlib::Unixpath    $basedir           = lookup('profile::aptrepo::wikimedia::basedir'),
+    Stdlib::Unixpath    $public_basedir    = lookup('profile::aptrepo::wikimedia::basedir'),
+    Stdlib::Unixpath    $private_basedir   = lookup('profile::aptrepo::private::basedir'),
     Stdlib::Unixpath    $homedir           = lookup('profile::aptrepo::wikimedia::homedir'),
     String              $gpg_user          = lookup('profile::aptrepo::wikimedia::gpg_user'),
     Optional[String]    $gpg_pubring       = lookup('profile::aptrepo::wikimedia::gpg_pubring', {'default_value' => undef}),
     Optional[String]    $gpg_secring       = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
+    Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
+
 ){
 
+    # Temporary, will be created by the aptrepo::repo define normally.
+    # For testings we create it manually. 
+    # TODO: Remove once aptrepo::repo is called for the private repo.
+    file { $private_basedir:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+
+    class { 'httpd':
+        remove_default_ports => true,
+    }
+
+    httpd::conf { 'listen on configured port':
+        ensure   => present,
+        priority => 0,
+        content  => "Listen ${private_repo_port}\n",
+    }
+
+    httpd::site{ 'private-apt-repo':
+        content => template('profile/aptrepo/private-apache-vhost.erb'),
+    }
+
+    ferm::service { 'aptrepos_public_http':
+        proto => 'tcp',
+        port  => '(http https)',
+    }
+
+    ferm::service { 'aptrepos_private_http':
+        proto  => 'tcp',
+        port   => "(${private_repo_port})",
+        srange => '$DOMAIN_NETWORKS',
+    }
 
     class { 'aptrepo::common':
         homedir     => $homedir,
-        basedir     => $basedir,
+        basedir     => $public_basedir,
         gpg_user    => $gpg_user,
         gpg_secring => $gpg_secring,
         gpg_pubring => $gpg_pubring,
@@ -54,7 +92,7 @@ class profile::aptrepo::wikimedia (
 
     # Public repo, servedby nginx
     aptrepo::repo { 'public_apt_repository':
-        basedir            => $basedir,
+        basedir            => $public_basedir,
         incomingdir        => 'incoming',
         distributions_file => 'puppet:///modules/aptrepo/distributions-wikimedia',
     }

@@ -8,3 +8,5 @@ profile::admin::groups:
   - datacenter-ops
 profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+
+profile::aptrepo::private::basedir: '/srv/private'
