@@ -127,7 +127,6 @@ Components: main
  thirdparty/amd-rocm431
  thirdparty/amd-rocm45
  thirdparty/bigtop15
- thirdparty/ceph-nautilus-buster
  thirdparty/ceph-octopus
  thirdparty/ci
  thirdparty/conda
@@ -169,7 +168,6 @@ Update:
  postgres
  matomo
  pyall
- thirdparty/ceph-nautilus-buster
  thirdparty/ceph-octopus
  thirdparty/conda
  thirdparty/gitlab

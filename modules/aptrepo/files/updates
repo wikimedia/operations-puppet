@@ -257,32 +257,23 @@ Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft)$' || [ $? -eq 1 ]
 
-Name: thirdparty/ceph-nautilus-buster
-Method: https://mirror.croit.io/debian-nautilus
-Components: main>thirdparty/ceph-nautilus-buster
+Name: thirdparty/ceph-octopus
+Method: https://mirror.croit.io/debian-octopus
+Components: main>thirdparty/ceph-octopus
 UDebComponents:
 Suite: buster
 Architectures: amd64
 VerifyRelease: 718C1F180B5A84A3
-ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
-
-Name: thirdparty/ceph-octopus
-Method: https://download.ceph.com/debian-octopus
-Components: main>thirdparty/ceph-octopus
-UDebComponents:
-Suite: buster
-Architectures: amd64
-VerifyRelease: E84AC2C0460F3994
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
 
 Name: thirdparty/ceph-octopus-bullseye
-Method: https://download.ceph.com/debian-octopus
+Method: https://mirror.croit.io/debian-octopus
 Components: main>thirdparty/ceph-octopus
 UDebComponents:
 Suite: bullseye
 Architectures: amd64
-VerifyRelease: E84AC2C0460F3994
+VerifyRelease: 718C1F180B5A84A3
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
 
