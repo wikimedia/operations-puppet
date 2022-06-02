@@ -171,8 +171,7 @@ def download_image(upstream_image_path: Path, image_url: str, run: Callable, wor
     if image_url.endswith("tar.xz"):
         # This is probably an archive containing 'disk.raw'
         LOGGER.info("Untarring and looking for disk.raw")
-        tarfile = upstream_image_path.with_suffix(".tar.xz")
-        run("tar", "xvf", tarfile, cwd=workdir)
+        run("tar", "xvf", upstream_image_path, cwd=workdir)
         disk_path = workdir / "disk.raw"
         disk_path.rename(upstream_image_path)
 
