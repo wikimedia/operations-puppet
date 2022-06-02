@@ -6,5 +6,5 @@ function wmflib::resource::export (
 ) {
     $title_prefix = 'wmflib::resource::export'
     $_title = "@@${title_prefix}||${resource_title}"
-    create_resources($resource.downcase, $_title, $parameters)
+    create_resources($resource.downcase, { $_title => $parameters })
 }

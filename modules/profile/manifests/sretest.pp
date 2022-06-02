@@ -10,9 +10,15 @@ class profile::sretest {
     }
 
     $cache_nodes = lookup('cache::nodes')  # lint:ignore:wmf_styleguide
-    file {'/var/tmp/testing':
+    file { '/var/tmp/testing':
         ensure  => directory,
         recurse => true,
         purge   => true,
     }
+    wmflib::resource::export('file', '/var/tmp/testing/wmflib_export_test.txt', {
+        'ensure' => 'file',
+        content  => 'foo',
+        tag      => 'foo::bar',
+    })
+    wmflib::resource::import('file', undef, { tag => 'foo::bar' })
 }

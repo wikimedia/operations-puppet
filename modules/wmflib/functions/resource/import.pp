@@ -10,7 +10,7 @@ function wmflib::resource::import (
     Wmflib::Resource::Type $resource,
     Optional[String[1]]    $resource_title = undef,
     Hash                   $parameters     = {},
-) >> Hash[String, Hash] {
+) {
     $_resource = wmflib::resource::capitalize($resource)
     $_title = $resource_title ? {
         undef   => '',
