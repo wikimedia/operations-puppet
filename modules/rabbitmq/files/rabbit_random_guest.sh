@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # A guest user with a default 'guest' password will
 # automatically be created for the RabbitMQ service.
 # It should be never used

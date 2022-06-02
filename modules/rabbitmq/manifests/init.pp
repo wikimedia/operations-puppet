@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://www.rabbitmq.com/
 #
 # User MAC's are not handled by Puppet

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Enables the specified RabbitMQ plugin
 define rabbitmq::plugin () {
     exec { "rabbitmq-enable-plugin-${title}":

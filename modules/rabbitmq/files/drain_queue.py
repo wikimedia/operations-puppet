@@ -1,4 +1,5 @@
 #!/usr/bin/python3 -Es
+# SPDX-License-Identifier: Apache-2.0
 # Drain an oslo.message rabbitmq queue
 #
 # The contents of this file are subject to the Mozilla Public License

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Rabbit does a poor job of cleaning up queues
 # that are not being consumed and this becomes costly
 # over time.

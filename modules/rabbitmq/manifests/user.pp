@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Setup rabbmitmq users where rabbit keeps an internal database
 # At the moment, this does not attempt to alter existing passwords
 # or permissions where the user already exists
