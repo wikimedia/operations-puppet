@@ -15,10 +15,4 @@ class profile::sretest {
         recurse => true,
         purge   => true,
     }
-    @@file { 'export|/var/tmp/testing/wmflib_resource_reduce.txt':
-        ensure  => 'file',
-        content => 'testing',
-        tag     => 'foo::bar',
-    }
-    wmflib::resource::reduce('file', undef, {'tag' => 'foo::bar'})
 }
