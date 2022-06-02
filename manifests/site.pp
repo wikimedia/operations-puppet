@@ -212,7 +212,7 @@ node /^aqs100(1[6-9]|2[0-1])\.eqiad\.wmnet/ {
 
 # New aqs nodes in codfw T305568
 node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet/ {
-    role(insetup)
+    role(aqs_next)
 }
 
 # New Archiva host on Buster

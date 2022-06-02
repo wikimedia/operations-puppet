@@ -46,6 +46,67 @@ profile::cassandra::instances:
       listen_address: 10.64.48.68
     "b":
       listen_address: 10.64.48.69
+  "aqs2001.codfw.wmnet":
+    a:
+      listen_address: 10.192.0.214
+    b:
+      listen_address: 10.192.0.215
+  "aqs2002.codfw.wmnet":
+    a:
+      listen_address: 10.192.0.216
+    b:
+      listen_address: 10.192.0.217
+  "aqs2003.codfw.wmnet":
+    a:
+      listen_address: 10.192.0.218
+    b:
+      listen_address: 10.192.0.219
+  "aqs2004.codfw.wmnet":
+    a:
+      listen_address: 10.192.0.220
+    b:
+      listen_address: 10.192.0.221
+  "aqs2005.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.174
+    b:
+      listen_address: 10.192.16.179
+  "aqs2006.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.183
+    b:
+      listen_address: 10.192.16.185
+  "aqs2007.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.186
+    b:
+      listen_address: 10.192.16.187
+  "aqs2008.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.188
+    b:
+      listen_address: 10.192.16.189
+  "aqs2009.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.192
+    b:
+      listen_address: 10.192.48.193
+  "aqs2010.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.194
+    b:
+      listen_address: 10.192.48.195
+  "aqs2011.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.196
+    b:
+      listen_address: 10.192.48.197
+  "aqs2012.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.198
+    b:
+      listen_address: 10.192.48.199
+
 
 profile::cassandra::settings:
   dc: "%{::site}"

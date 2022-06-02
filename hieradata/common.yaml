@@ -335,6 +335,7 @@ wikimedia_clusters:
     id: 54
     sites:
       eqiad: []
+      codfw: []
   restbase_test:
     description: "Restbase test"
     id: 55
