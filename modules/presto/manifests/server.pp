@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: presto::server
 #
 # Sets up a Presto server, either worker or coordinator or both, depending on settings.

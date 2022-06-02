@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Define: presto::catalog
 #
 # Renders a Presto catalog properties file.

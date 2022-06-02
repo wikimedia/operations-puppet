@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: presto::client
 #
 # Simple class that installs presto-cli package and sets up a config.properties
