@@ -3,7 +3,7 @@
 
 global:
   smtp_smarthost: 'localhost:25'
-  smtp_from: 'sre-observability@<%= scope.lookupvar('::domain') %>'
+  smtp_from: 'sre-observability@<%= @facts['networking']['domain'] %>'
   smtp_require_tls: false
 
   # Give alerts with no 'endsAt' field (e.g. librenms) a little more slack
@@ -199,7 +199,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
   email_configs:
-    - to: 'analytics-alerts@<%= scope.lookupvar('::domain') %>'
+    - to: 'analytics-alerts@<%= @facts['networking']['domain'] %>'
 
 - name: 'data-persistence-irc'
   webhook_configs:
@@ -209,32 +209,32 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
   email_configs:
-    - to: 'sre-data-persistence@<%= scope.lookupvar('::domain') %>'
+    - to: 'sre-data-persistence@<%= @facts['networking']['domain'] %>'
 
 - name: 'noc-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
-    - to: 'noc@<%= scope.lookupvar('::domain') %>'
+    - to: 'noc@<%= @facts['networking']['domain'] %>'
 
 - name: 'netops-mail'
   email_configs:
-    - to: 'ayounsi@<%= scope.lookupvar('::domain') %>'
-    - to: 'cmooney@<%= scope.lookupvar('::domain') %>'
+    - to: 'ayounsi@<%= @facts['networking']['domain'] %>'
+    - to: 'cmooney@<%= @facts['networking']['domain'] %>'
 
 - name: 'dcops-mail'
   email_configs:
-    - to: 'datacenter-ops@<%= scope.lookupvar('::domain') %>'
+    - to: 'datacenter-ops@<%= @facts['networking']['domain'] %>'
 
 - name: 'peering-mail'
   email_configs:
-    - to: 'peering@<%= scope.lookupvar('::domain') %>'
+    - to: 'peering@<%= @facts['networking']['domain'] %>'
 
 - name: 'perf-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
   email_configs:
-    - to: 'performance-team-alert@<%= scope.lookupvar('::domain') %>'
+    - to: 'performance-team-alert@<%= @facts['networking']['domain'] %>'
       send_resolved: true
 
 - name: 'rweb-mail'
@@ -256,7 +256,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-traffic'
   email_configs:
-    - to: 'sre-traffic@<%= scope.lookupvar('::domain') %>'
+    - to: 'sre-traffic@<%= @facts['networking']['domain'] %>'
 
 - name: 'search-platform-ircmail'
   webhook_configs:
@@ -268,7 +268,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= scope.lookupvar('::domain') %>'
+    - to: 'cloud-admin-feed@<%= @facts['networking']['domain'] %>'
 
 - name: 'wmcs-pagetaskircmail'
   victorops_configs:
@@ -279,7 +279,7 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= scope.lookupvar('::domain') %>'
+    - to: 'cloud-admin-feed@<%= @facts['networking']['domain'] %>'
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
@@ -379,13 +379,13 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= scope.lookupvar('::domain') %>'
+    - to: 'cloud-admin-feed@<%= @facts['networking']['domain'] %>'
 
 - name: 'fr-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
-    - to: 'fr-tech@<%= scope.lookupvar('::domain') %>'
+    - to: 'fr-tech@<%= @facts['networking']['domain'] %>'
 
 inhibit_rules:
   # When ICMP has failed, inhibit TCP/UDP/HTTP since we know they can't
