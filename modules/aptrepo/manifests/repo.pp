@@ -79,7 +79,7 @@ define aptrepo::repo (
         owner        => $user,
         group        => $group,
         mode         => '0444',
-        content      => $options.join("\n"),
+        content      => inline_template("<%= @options.join(\"\n\") %>\n"),
         validate_cmd => $deb822_validate_cmd,
     }
 
@@ -88,7 +88,7 @@ define aptrepo::repo (
         owner        => $user,
         group        => $group,
         mode         => '0444',
-        content      => $options.join("\n"),
+        content      => inline_template("<%= @options.join(\"\n\") %>\n"),
         validate_cmd => $deb822_validate_cmd,
     }
 
