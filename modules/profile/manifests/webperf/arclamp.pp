@@ -54,6 +54,26 @@ class profile::webperf::arclamp (
         content => template('profile/webperf/arclamp/httpd.conf.erb'),
     }
 
+    if $::fqdn == 'webperf1002.eqiad.wmnet' {
+        rsync::quickdatacopy { 'xenon_migrate':
+            ensure      => present,
+            auto_sync   => false,
+            source_host => 'webperf1002.eqiad.wmnet',
+            dest_host   => 'webperf1004.eqiad.wmnet',
+            module_path => '/srv/xenon',
+        }
+    }
+
+    if $::fqdn == 'webperf2002.codfw.wmnet' {
+        rsync::quickdatacopy { 'xenon_migrate':
+            ensure      => present,
+            auto_sync   => false,
+            source_host => 'webperf2002.codfw.wmnet',
+            dest_host   => 'webperf2004.codfw.wmnet',
+            module_path => '/srv/xenon',
+        }
+    }
+
     ferm::service { 'arclamp_http':
         proto => 'tcp',
         port  => '80',
