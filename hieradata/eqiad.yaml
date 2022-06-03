@@ -26,7 +26,7 @@ prometheus_nodes:
     - prometheus1006.eqiad.wmnet
 
 # webperf
-arclamp_host: webperf1002.eqiad.wmnet
+arclamp_host: webperf1004.eqiad.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "lets-encrypt"

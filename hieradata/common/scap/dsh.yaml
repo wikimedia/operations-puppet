@@ -108,8 +108,8 @@ scap::dsh::groups:
       - webperf2003.codfw.wmnet
   arclamp:
     hosts:
-      - webperf1002.eqiad.wmnet
-      - webperf2002.codfw.wmnet
+      - webperf1004.eqiad.wmnet
+      - webperf2004.codfw.wmnet
   maps:
     conftool:
       - {'cluster': 'maps', 'service': 'kartotherian'}
