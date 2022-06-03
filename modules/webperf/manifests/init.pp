@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: webperf
 #
 # This base class provides a user, group, and working directory for

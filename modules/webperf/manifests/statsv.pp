@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: webperf::statsv
 #
 # Sets up StatsV, a Web request -> Kafka -> StatsD bridge.

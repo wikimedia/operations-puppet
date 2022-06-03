@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: webperf::navtiming
 #
 # Captures NavigationTiming events from Kafka and send them to StatsD / Graphite.
