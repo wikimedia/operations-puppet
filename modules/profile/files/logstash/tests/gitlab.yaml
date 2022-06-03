@@ -1,5 +1,5 @@
 fields:
-  logsource: "gitlab1001"
+  logsource: "gitlab1004"
   facility: "local0"
   type: "syslog"
 codec: "json_lines"
@@ -12,7 +12,7 @@ testcases:
       {
         "program": "input-file-gitlab-gitaly-json",
         "severity": "NOTICE",
-        "host": "gitlab1001",
+        "host": "gitlab1004",
         "correlation_id": "01FSQ0W47M3C7ADEQCGMNTXEGB",
         "grpc.meta.auth_version": "v2",
         "grpc.meta.client_name": "gitlab-workhorse",
@@ -47,7 +47,7 @@ testcases:
           repository: "project-15"
           service: "upload-pack"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         log:
           level: "INFO"
           logger: "gitaly.SmartHTTPService"
@@ -76,7 +76,7 @@ testcases:
         {
           "program": "input-file-gitlab-gitaly-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "correlation_id": "01F7SM3KE561BK077XC9CKVE1Y",
           "error": "rpc error: code = NotFound desc = GetRepoPath: not a git repository: \"/var/opt/gitlab/git-data/repositories/wmf-gitlab-tools.git\"",
           "grpc.code": "NotFound",
@@ -110,7 +110,7 @@ testcases:
         error:
           message: "rpc error: code = NotFound desc = GetRepoPath: not a git repository: \"/var/opt/gitlab/git-data/repositories/wmf-gitlab-tools.git\""
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-gitaly"
@@ -153,7 +153,7 @@ testcases:
         {
           "program": "input-file-gitlab-gitaly-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "command.count": 1,
           "command.inblock": 0,
           "command.majflt": 0,
@@ -192,7 +192,7 @@ testcases:
       - message: "finished unary call with code OK"
         "@timestamp": "2021-06-10T18:58:58.414Z"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-gitaly"
@@ -232,7 +232,7 @@ testcases:
         {
           "program": "input-file-gitlab-rails-production-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "method": "GET",
           "path": "/UserName/wmf-gitlab-tools",
           "format": "html",
@@ -289,7 +289,7 @@ testcases:
     expected:
       - "@timestamp": "2021-06-10T05:20:17.905Z"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-rails-production"
@@ -333,7 +333,7 @@ testcases:
         {
           "program": "input-file-gitlab-rails-api-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "time": "2021-06-10T00:11:00.056Z",
           "severity": "INFO",
           "duration_s": 0.14005,
@@ -380,7 +380,7 @@ testcases:
     expected:
       - "@timestamp": "2021-06-10T00:11:00.056Z"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-rails-api"
@@ -421,7 +421,7 @@ testcases:
         {
           "program": "input-file-gitlab-rails-application-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "severity": "ERROR",
           "time": "2021-06-10T21:45:50.561Z",
           "correlation_id": "01F7VY6XY37EG0F7AP328RKJ1K",
@@ -432,7 +432,7 @@ testcases:
       - message: "Cannot obtain an exclusive lease. There must be another instance already in execution."
         "@timestamp": "2021-06-10T21:45:50.561Z"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-rails-application"
@@ -456,7 +456,7 @@ testcases:
         {
           "program": "input-file-gitlab-workhorse-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "content_type": "application/json; charset=utf-8",
           "correlation_id": "01F7VZ2F7BBHFXBC96RTDEE55W",
           "duration_ms": 52,
@@ -482,7 +482,7 @@ testcases:
       - message: "access"
         "@timestamp": "2021-06-10T22:00:52.000Z"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-workhorse"
@@ -518,7 +518,7 @@ testcases:
         {
           "program": "input-file-gitlab-sidekiq-json",
           "severity": "NOTICE",
-          "host": "gitlab1001",
+          "host": "gitlab1004",
           "severity": "INFO",
           "time": "2021-11-15T22:39:46.304Z",
           "message":"Enqueuing scheduled jobs",
@@ -534,7 +534,7 @@ testcases:
       - message: "Enqueuing scheduled jobs: done"
         "@timestamp": "2021-11-15T22:39:46.304Z"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         service:
           type: "gitlab"
           name: "gitlab-sidekiq"
@@ -558,7 +558,7 @@ testcases:
       - >
         {
           "timestamp":"2021-07-21T20:24:49+00:00",
-          "host":"gitlab1001",
+          "host":"gitlab1004",
           "program":"input-file-gitlab-nginx-access-cee",
           "severity":"NOTICE",
           "timestamp":"2021-07-21T20:24:48+00:00",
@@ -566,7 +566,7 @@ testcases:
           "user.name":"",
           "url.path":"/api/v4/jobs/request",
           "url.domain":"gitlab.wikimedia.org",
-          "host.name":"gitlab1001",
+          "host.name":"gitlab1004",
           "http.request.method":"POST",
           "http.request.headers.referer":"",
           "http.response.status_code":"204",
@@ -591,7 +591,7 @@ testcases:
           domain: "gitlab.wikimedia.org"
 #          path: "/"
         host:
-          name: "gitlab1001"
+          name: "gitlab1004"
         http:
           request:
             method: "POST"
