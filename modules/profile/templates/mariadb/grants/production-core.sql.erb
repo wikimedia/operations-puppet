@@ -10,8 +10,12 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE T
 <% if @section == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
     ON `centralauth`.* TO 'wikiadmin'@'10.%';
+<% end -%>
+<% if @shard == 'x2' %>
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
+    ON `mainstash`.* TO 'wikiadmin'@'10.%';
+<% end -%>
 
-<% end %>
 GRANT SELECT
     ON `heartbeat`.`heartbeat` TO 'wikiadmin'@'10.%';
 
@@ -33,8 +37,12 @@ GRANT SELECT, INSERT, UPDATE, DELETE
 <% if @section == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.64.%';
+<% end -%>
+<% if @shard == 'x2' %>
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `mainstash`.* TO '<%= @wikiuser_username %>'@'10.64.%';
+<% end -%>
 
-<% end %>
 GRANT SELECT
     ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.64.%';
 
@@ -50,7 +58,10 @@ GRANT SELECT, INSERT, UPDATE, DELETE
 <% if @section == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.192.%';
-
+<% end -%>
+<% if @shard == 'x2' %>
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `mainstash`.* TO '<%= @wikiuser_username %>'@'10.192.%';
 <% end -%>
 
 GRANT SELECT

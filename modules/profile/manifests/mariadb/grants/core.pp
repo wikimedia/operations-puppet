@@ -4,6 +4,7 @@ define profile::mariadb::grants::core(
     String                          $wikiuser_username = '',
     String                          $wikiuser_pass  = '',
 ){
+    $shard = $title
     file { "/etc/mysql/production-grants-core-${title}.sql":
         ensure  => present,
         owner   => 'root',
