@@ -70,7 +70,6 @@ profile::acme_chief::certificates:
         - 'gitlab-replica-new.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
-        - 'gitlab1001.wikimedia.org'
         - 'gitlab1003.wikimedia.org'
         - 'gitlab1004.wikimedia.org'
         - 'gitlab2002.wikimedia.org'
