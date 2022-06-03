@@ -47,14 +47,14 @@ class profile::vrts(
     }
     # lint:endignore
 
-    ferm::service { 'otrs_http':
+    ferm::service { 'vrts_http':
         proto  => 'tcp',
         port   => '80',
         srange => '$CACHES',
     }
 
     $smtp_ferm = join($::mail_smarthost, ' ')
-    ferm::service { 'otrs_smtp':
+    ferm::service { 'vrts_smtp':
         proto  => 'tcp',
         port   => '25',
         srange => "@resolve((${smtp_ferm}))",
