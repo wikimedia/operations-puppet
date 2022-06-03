@@ -153,9 +153,9 @@ class vrts(
         true    => present,
         default => absent,
     }
-    systemd::service { 'otrs-daemon':
+    systemd::service { 'vrts-daemon':
         ensure         => $daemon_ensure,
-        content        => systemd_template('otrs-daemon'),
+        content        => systemd_template('vrts-daemon'),
         restart        => true,
         service_params => {
             hasstatus  => true,
