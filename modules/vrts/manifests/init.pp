@@ -115,7 +115,7 @@ class vrts(
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0755',
-        source => 'puppet:///modules/vrts/otrs.TicketExport2Mbox.pl',
+        source => 'puppet:///modules/vrts/vrts.TicketExport2Mbox.pl',
     }
 
     # WMF skin customizations
