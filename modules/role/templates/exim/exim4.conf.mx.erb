@@ -34,7 +34,7 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 chunking_advertise_hosts =
 
 # MySQL lookups (OTRS)
-hide mysql_servers =  <%= @otrs_mysql_server %>/<%= @otrs_mysql_dbname %>/<%= @otrs_mysql_user %>/<%= @otrs_mysql_password %>
+hide mysql_servers =  <%= @vrts_mysql_server %>/<%= @vrts_mysql_dbname %>/<%= @vrts_mysql_user %>/<%= @vrts_mysql_password %>
 
 # LDAP lookups (Office)
 ldap_default_servers = ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @other_site %>.wikimedia.org

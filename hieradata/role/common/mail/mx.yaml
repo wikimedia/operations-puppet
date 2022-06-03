@@ -3,9 +3,9 @@ mtail::logs:
   - /var/log/exim4/mainlog
 # NOTE: this is what enables mtail to read the files in the exim4 log directory
 mtail::group: 'adm'
-profile::mail::mx::otrs_mysql_server: m2-master.eqiad.wmnet
-profile::mail::mx::otrs_mysql_user: exim
-profile::mail::mx::otrs_mysql_dbname: otrs
+profile::mail::mx::vrts_mysql_server: m2-master.eqiad.wmnet
+profile::mail::mx::vrts_mysql_user: exim
+profile::mail::mx::vrts_mysql_dbname: otrs
 profile::mail::mx::verp_domains:
   - wikimedia.org
 profile::mail::mx::verp_post_connect_server: meta.wikimedia.org
