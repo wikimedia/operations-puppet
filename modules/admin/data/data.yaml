@@ -6106,3 +6106,7 @@ ldap_only_users:
     email: ozhang-ctr@wikimedia.org
     expiry_date: 2022-10-01
     expiry_contact: abaso@wikimedia.org
+  lgaulia:
+    ensure: present
+    realname: Larissa Gaulia
+    email: lgaulia@wikimedia.org
