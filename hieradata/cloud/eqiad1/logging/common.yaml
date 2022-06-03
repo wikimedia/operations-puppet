@@ -34,6 +34,7 @@ profile::opensearch::dashboards::httpd_proxy::auth_realm: 'local'
 profile::opensearch::dashboards::httpd_proxy::vhost: 'beta-logs.wmcloud.org'
 profile::opensearch::dashboards::httpd_proxy::serveradmin: 'root@logging-logstash-01.logging.eqiad1.wikimedia.cloud'
 
+profile::opensearch::version: '2.0.0'
 profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
