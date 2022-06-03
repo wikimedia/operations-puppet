@@ -1487,7 +1487,7 @@ node 'gitlab2001.wikimedia.org' {
 
 # New gitlab nodes T301183$
 node 'gitlab2002.wikimedia.org' {
-    role(gitlab_dump)
+    role(insetup)
 }
 
 node /^gitlab2003\.wikimedia\.org$/ {
