@@ -37,8 +37,8 @@ class vrts::mail(
 
     class { '::exim4':
         variant => 'heavy',
-        config  => template('vrts/exim4.conf.otrs.erb'),
-        filter  => template('vrts/system_filter.conf.otrs.erb'),
+        config  => template('vrts/exim4.conf.vrts.erb'),
+        filter  => template('vrts/system_filter.conf.vrts.erb'),
         require => [
             Class['spamassassin'],
             Class['clamav'],
