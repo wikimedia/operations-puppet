@@ -5,7 +5,7 @@
 #
 # == Parameters:
 # - $default_instance_params: Parameter overrides for ::opensearch::instance
-# - $version: Version of opensearch to configure. Either 5 or 6. Default: 5.
+# - $version: Version of opensearch to configure. Either 1 or 2. Default: 1.
 # - $logstash_host: Host to send logs to
 # - $logstash_logback_port: Tcp port on localhost to send structured logs to.
 # - $logstash_transport: Transport mechanism for logs.
@@ -21,7 +21,7 @@
 class opensearch (
     Optional[Hash[String, Opensearch::InstanceParams]] $instances               = undef,
     Opensearch::InstanceParams                         $default_instance_params = {},
-    Enum['1']                                          $version                 = '1',
+    Enum['1', '2']                                     $version                 = '1',
     Stdlib::Absolutepath                               $base_data_dir           = '/srv/opensearch',
     Optional[String]                                   $logstash_host           = undef,
     Optional[Stdlib::Port]                             $logstash_logback_port   = 11514,
@@ -32,6 +32,7 @@ class opensearch (
     # Check arguments and set package
     case $version {
         '1': { $package_name = 'opensearch' }
+        '2': { $package_name = 'opensearch' }
         default: { fail("Unsupported opensearch version: ${version}") }
     }
 

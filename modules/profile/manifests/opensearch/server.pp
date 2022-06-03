@@ -22,7 +22,7 @@ class profile::opensearch::server(
     Stdlib::Port                             $logstash_logback_port = lookup('logstash_logback_port'),
     String                                   $rack                  = lookup('profile::opensearch::rack'),
     String                                   $row                   = lookup('profile::opensearch::row'),
-    Enum['1.0.0']                            $version               = lookup('profile::opensearch::version',            { 'default_value' => '1.0.0' }),
+    Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',            { 'default_value' => '1.0.0' }),
     Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',          { 'default_value' => undef }),
 ) {
 
