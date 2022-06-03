@@ -118,14 +118,6 @@ class vrts(
         source => 'puppet:///modules/vrts/otrs.TicketExport2Mbox.pl',
     }
 
-    file { '/opt/otrs/bin/cgi-bin/idle_agent_report':
-        ensure => 'file',
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0755',
-        source => 'puppet:///modules/vrts/idle_agent_report',
-    }
-
     # WMF skin customizations
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
         ensure => 'file',
