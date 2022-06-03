@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # tools for IPMI mgmt hosts
 class ipmi::mgmt {
 

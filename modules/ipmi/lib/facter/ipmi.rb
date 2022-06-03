@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 require 'facter'
 
 # Monkey batch Yes/No to Boolean
