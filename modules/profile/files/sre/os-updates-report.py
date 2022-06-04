@@ -19,6 +19,20 @@ from collections import defaultdict
 from pypuppetdb import connect
 from pypuppetdb import QueryBuilder
 from dominate import tags as tags
+from dominate.util import text
+
+
+# The version of dominate we have in production doesn't have <main> yet
+class main(tags.html_tag):
+    pass
+
+
+def add_header():
+    sre_mainpage = 'https://www.mediawiki.org/wiki/Wikimedia_Site_Reliability_Engineering'
+    with tags.header().add(tags.div(cls='wm-container')):
+        with tags.a(role='banner', href=sre_mainpage):
+            tags.em('Wikimedia')
+            text(' SRE')
 
 
 def connect_puppetdb(puppetdb_host):
@@ -177,74 +191,79 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
     file_name = os.path.join(target_dir, 'os-report-{}-{}.html'.format(datetime_stamp, distro))
 
     with dominate.document(title='OS deprecation report for {}'.format(distro)) as html_report:
+        with html_report.head:
+            tags.link(rel='stylesheet', href='base.css')
+        add_header()
+        with main(role='main').add(tags.div(cls='wm-container')).add(tags.article()):
+            tags.h1("Summary")
+            with tags.div().add(tags.ul()):
 
-        tags.h1("Summary")
-        with tags.div().add(tags.ul()):
+                eol = datetime.datetime.fromisoformat(eol_date)
+                today = datetime.datetime.now()
 
-            eol = datetime.datetime.fromisoformat(eol_date)
-            today = datetime.datetime.now()
+                if today > eol:
+                    lapsed = (today-eol).days
+                    tags.li("{} is behind designated EOL date by {} days".
+                            format(distro, lapsed), cls="important")
+                else:
+                    remainder = (eol-today).days
+                    tags.li("{} remaining days until {} reaches designated EOL date".
+                            format(remainder, distro))
 
-            if today > eol:
-                lapsed = (today-eol).days
-                tags.li("{} is behind designated EOL date by {} days".
-                        format(distro, lapsed), style="color:red")
+                tags.li("A total of {} hosts are running {}".format(deprecated_count, distro))
+                tags.li("A total of {} hosts are running a more recent OS".
+                        format(hosts_current_count))
+                tags.li("A total of {} hosts are being migrated and lagging behind plan".
+                        format(hosts_delayed_count))
+                tags.li("A total of {} hosts need further migration data".
+                        format(hosts_needdata_count))
+                tags.li("A total of {} hosts don't have a designated migration date".
+                        format(hosts_needplan_count))
+                tags.li("A total of {} hosts don't have a designated owner".
+                        format(hosts_needowner_count))
+
+            if owners_to_contact_delayed:
+                tags.h1("The following hosts are lagging behind the current migration plan",
+                        cls="important")
+                for owner in owners_to_contact_delayed:
+                    tags.h2(owner)
+                    with tags.div().add(tags.ul()):
+                        for service in owners_to_contact_delayed[owner]:
+                            tags.li("  {} ({} host(s))\n".format(service, role_count[service]))
             else:
-                remainder = (eol-today).days
-                tags.li("{} remaining days until {} reaches designated EOL date".
-                        format(remainder, distro))
+                tags.h1("No migration is delayed")
 
-            tags.li("A total of {} hosts are running {}".format(deprecated_count, distro))
-            tags.li("A total of {} hosts are running a more recent OS".format(hosts_current_count))
-            tags.li("A total of {} hosts are being migrated and lagging behind plan".
-                    format(hosts_delayed_count))
-            tags.li("A total of {} hosts need further migration data".format(hosts_needdata_count))
-            tags.li("A total of {} hosts don't have a designated migration date".
-                    format(hosts_needplan_count))
-            tags.li("A total of {} hosts don't have a designated owner".
-                    format(hosts_needowner_count))
+            if owners_to_contact_plan:
+                tags.h1("The following roles are missing a migration date", cls="important")
+                for owner in owners_to_contact_plan:
+                    tags.h2(owner)
+                    with tags.div().add(tags.ul()):
+                        for service in owners_to_contact_plan[owner]:
+                            tags.li("  {} ({} host(s))\n".format(service, role_count[service]))
 
-        if owners_to_contact_delayed:
-            tags.h1("The following hosts are lagging behind the current migration plan",
-                    style="color:red")
-            for owner in owners_to_contact_delayed:
-                tags.h2(owner)
-                with tags.div().add(tags.ul()):
-                    for service in owners_to_contact_delayed[owner]:
-                        tags.li("  {} ({} host(s))\n".format(service, role_count[service]))
-        else:
-            tags.h1("No migration is delayed")
+            else:
+                tags.h1("All roles are covered with a migration date")
 
-        if owners_to_contact_plan:
-            tags.h1("The following roles are missing a migration date", style="color:red")
-            for owner in owners_to_contact_plan:
-                tags.h2(owner)
-                with tags.div().add(tags.ul()):
-                    for service in owners_to_contact_plan[owner]:
-                        tags.li("  {} ({} host(s))\n".format(service, role_count[service]))
-
-        else:
-            tags.h1("All roles are covered with a migration date")
-
-        tags.h1("These hosts don't have owner information attached", style="color:red")
-        with tags.div(id='header').add(tags.ul()):
-            for i in need_owners:
-                tags.li(i)
-
-        if hosts_needdata:
-            tags.h1("The following hosts are missing in the migration data", style="color:red")
-            with tags.div().add(tags.ul()):
-                for i in hosts_needdata:
+            tags.h1("These hosts don't have owner information attached", cls="important")
+            with tags.div(id='header').add(tags.ul()):
+                for i in need_owners:
                     tags.li(i)
-        else:
-            tags.h1("All hosts are covered by existing migration data")
 
-        if status_log:
-            tags.h1("The following errors were reported (malformed data)", style="color:red")
-            with tags.div().add(tags.ul()):
-                for i in status_log:
-                    tags.li(i)
-        else:
-            tags.h1("No errors were reported in the data files")
+            if hosts_needdata:
+                tags.h1("The following hosts are missing in the migration data", cls="important")
+                with tags.div().add(tags.ul()):
+                    for i in hosts_needdata:
+                        tags.li(i)
+            else:
+                tags.h1("All hosts are covered by existing migration data")
+
+            if status_log:
+                tags.h1("The following errors were reported (malformed data)", cls="important")
+                with tags.div().add(tags.ul()):
+                    for i in status_log:
+                        tags.li(i)
+            else:
+                tags.h1("No errors were reported in the data files")
 
     with open(file_name, 'w') as report_html:
         report_html.write(html_report.render())
@@ -256,19 +275,21 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
 
 def prepare_overview(distros, target_dir):
     with dominate.document(title='OS deprecation reports') as overview_report:
+        with overview_report.head:
+            tags.link(rel='stylesheet', href='base.css')
+        add_header()
+        with main(role='main').add(tags.div(cls='wm-container')).add(tags.article()):
+            tags.h1("Overview of OS reports")
 
-        tags.h1("Overview of OS reports")
-
-        for distro in distros:
-            tags.a(distro, href="{}.html".format(distro))
+            for distro in distros:
+                tags.a(distro, href="{}.html".format(distro))
 
     overview_file = os.path.join(target_dir, "index.html")
     with open(overview_file, 'w') as overview_html:
         overview_html.write(overview_report.render())
 
 
-def main():
-
+def main_function():
     cfg = configparser.ConfigParser()
     cfg.read("/etc/wikimedia/os-updates/os-updates-tracking.cfg")
     sections = cfg.sections()
@@ -329,4 +350,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main_function()

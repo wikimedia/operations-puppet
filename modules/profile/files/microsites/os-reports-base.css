@@ -1,0 +1,23 @@
+/* SPDX-License-Identifier: MIT License */
+/*! Based on <https://design.wikimedia.org/style-guide/> */html{background-color:#eaecf0;font-family:sans-serif;font-family:-apple-system,'BlinkMacSystemFont','Segoe UI','Roboto','Lato','Helvetica','Arial',sans-serif;line-height:1.6;font-size:10px;color:#222}body{margin:0;font-size:1.6rem}h1{font-size:3.2rem;font-family:'Linux Libertine','Georgia','Times',serif;font-weight:400}h2{font-size:2.4rem;padding-bottom:2px;border-bottom:3px solid #eaecf0}blockquote{padding-left:1rem;border-left:3px solid #eaecf0}hr{margin:3.2rem 0;border:3px solid #eaecf0}p{line-height:1.5}a{color:#36c;text-decoration:none}a:hover{text-decoration:underline;text-underline-position:under}.wm-container{margin:0 auto;max-width:1200px;padding:0 1rem;box-sizing:border-box}@media (min-width:320px){.wm-container{padding:0 2rem}.wm-site-nav{margin:0 -2rem}}@media (min-width:720px){.wm-container{padding:0 3.2rem}}header .wm-container{display:flex;flex-flow:row wrap;justify-content:space-between}header a[role="banner"]{line-height:4.9rem;font-weight:bold;color:inherit}header a[role="banner"] em{font-weight:normal;font-style:normal}.wm-header-caption{line-height:4.9rem}@media (max-width:768px){.wm-header-caption{display:none}}main{background:#fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.25);padding:3.2rem 0 6rem 0}ul{margin:1rem;padding:0}ul ul{margin:0 0 0 1em}footer{padding:2.4rem 0;font-size:1.3rem}footer nav ul{margin:1em 0}footer nav ul li{list-style:none;display:inline-block;padding:0 .8rem 0 0}footer nav li a{font-weight:bold}@media (min-width:414px){footer nav li:after{content:"\2022";color:#72777d;padding:0 0 0 .8rem}footer nav li:last-child:after{content:""}}.wm-nav li{display:block;flex:0 1 345px;margin:0 1rem .1rem 0;box-sizing:border-box}.wm-nav a{display:block;padding:1rem 2.4rem;border-radius:2px;color:#202122}.wm-nav li ul{margin-top:1.2rem;margin-left:2.4rem;margin-bottom:1em;font-size:1.4rem;color:#54595d}.wm-nav li ul a{border-left:1px solid #eaecf0}.wm-nav a:hover{background-color:#f8f9fa}.wm-nav .wm-nav-item-active,.wm-nav .wm-nav-item-active:hover{background-color:#eaf3ff;color:#36c;border-radius:2px;font-weight:600;cursor:default}.wm-nav li ul .wm-nav-item-active,.wm-nav li ul .wm-nav-item-active:hover{background-color:#f8f9fa;color:#000;border-left-color:#000}@media (max-width:720px){main{padding-top:1rem}.wm-site-nav{box-shadow:0 2px 2px 0 rgba(0,0,0,0.25)}.wm-site-nav ul{margin:0}.wm-site-nav li{margin-right:0}}@media (min-width:720px){.wm-site-nav{float:left;width:25.6rem;position:relative;z-index:1}article{float:left;box-sizing:border-box;width:100%;margin-left:-25.6rem;padding-left:27.6rem}main h1:first-of-type{margin-top:0}main:after{content:" ";display:table;clear:both}}.wm-table{border-spacing:0;border-collapse:collapse}.wm-table th,.wm-table td{padding:2px 5px;vertical-align:top;border-top:1px solid #c8ccd1}.wm-table th{text-align:left}.wm-table tr:hover{background-color:#f8f9fa}.perf-footer-cols{display:flex;flex-flow:row wrap;justify-content:space-between}
+.header h1 {
+    position: relative;
+    top: 18px;
+    left: 10px;
+  }
+/* Some left and right padding inside the container */
+.container {
+    padding: 0 16px;
+}
+/* Clear floats */
+.container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.title {
+    color: grey;
+}
+.important {
+    color: #b32424;
+}
