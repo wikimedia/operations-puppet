@@ -166,6 +166,7 @@ while [ $i -lt $shards ]; do
 				--sharding-factor $shards \
 				--batch-size $(($shards * 250)) \
 				--snippet 2 \
+				--page-metadata \
 				"${entityTypes[@]}" \
 				$extraArgs \
 				$firstPageIdParam \
