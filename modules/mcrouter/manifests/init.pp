@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: mcrouter
 #
 # mcrouter is a fast routing proxy for memcached.
