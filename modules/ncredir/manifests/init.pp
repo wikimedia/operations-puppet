@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: ncredir
 # this class handles common stuff for every non-canonical redirect service instance
 # === Parameters
