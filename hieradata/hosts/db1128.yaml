@@ -1,4 +1,2 @@
 # db1128
-# s1 faulty memory T309291
 mariadb::shard: 's1'
-profile::monitoring::notifications_enabled: false
