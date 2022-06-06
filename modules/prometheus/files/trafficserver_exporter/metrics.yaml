@@ -50,6 +50,8 @@ trafficserver_active_transaction_count:
   values:
     - labels: {protocol: http, source: client}
       value: proxy.process.http.current_client_transactions
+    - labels: {protocol: http2, source: client}
+      value: proxy.process.http2.current_client_streams
     - labels: {protocol: http, source: server}
       value: proxy.process.http.current_server_transactions
 trafficserver_error_transaction_time_ms_total:
