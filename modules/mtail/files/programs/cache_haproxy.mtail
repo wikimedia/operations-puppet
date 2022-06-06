@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # client<->haproxy metrics
 # histogram haproxy_client_ttfb
 # histogram haproxy_client_healthcheck_ttfb

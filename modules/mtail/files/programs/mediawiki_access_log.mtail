@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Parser for the MediaWiki apache log format, specialized for MediaWiki. See https://wikitech.wikimedia.org/wiki/Apache_log_format
 # LogFormat "%{%Y-%m-%dT%H:%M:%S}t    %D	%a	%R/%>s	%B	%m	http://%{Host}i%U%q	-	%{Content-Type}o	%{Referer}i	%{X-Forwarded-For}i	%{User-Agent}i	%{Accept-Language}i	%{X-Analytics}i	%u	%{c}a" wmf
 

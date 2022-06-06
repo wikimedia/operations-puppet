@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter logstash_elasticsearch_index_failure_total
 counter logstash_elasticsearch_index_errors_total by error
 counter logstash_log_level_total by level

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter varnish_sli_all
 counter varnish_sli_good
 

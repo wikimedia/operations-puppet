@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter varnish_x_cache by x_cache, status
 
 # No need to explicitly filter out PURGE and backend requests, they have a

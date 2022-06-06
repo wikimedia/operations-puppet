@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter mailman_smtp_duration_seconds
 counter mailman_smtp_total
 counter mailman_subscribe_request_total

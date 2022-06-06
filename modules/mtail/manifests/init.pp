@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: mtail
 #
 # Setup mtail to scan $logs and report metrics based on programs in /etc/mtail.

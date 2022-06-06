@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter exim_messages_total by status
 counter exim_messages_bytes by status
 

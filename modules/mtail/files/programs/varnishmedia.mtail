@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter varnish_thumbnails by status
 
 /\thttp_method PURGE\t/ {

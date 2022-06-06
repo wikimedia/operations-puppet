@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: mtail::program
 #
 # Install an mtail "program" to extract metrics from log files.

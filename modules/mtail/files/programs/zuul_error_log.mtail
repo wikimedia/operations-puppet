@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter zuul_gerrit_reporting_errors_total
 counter zuul_mutexhandler_errors_total
 counter zuul_unexpected_errors_total

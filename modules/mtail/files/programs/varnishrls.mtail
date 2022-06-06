@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter varnish_resourceloader_inm
 counter varnish_resourceloader_resp by status, cache_control, x_cache
 

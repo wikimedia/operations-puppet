@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 counter ncredir_requests_total by scheme, vhost, method, status
 # log_format ncredir '$remote_addr [$time_local] $scheme '
 #                   '"$request" $status $body_bytes_sent '
