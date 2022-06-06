@@ -6,7 +6,7 @@
 "context_is_admin": "role:admin"
 "default": "rule:admin_or_projectadmin"
 "cluster_user": "user_id:%(trustee_user_id)s"
-"deny_cluster_user": "not user_id:%(trustee_user_id)s
+"deny_cluster_user": "not user_id:%(trustee_user_id)s"
 
 "bay:create": "rule:deny_cluster_user"
 "bay:delete": "rule:deny_cluster_user"
