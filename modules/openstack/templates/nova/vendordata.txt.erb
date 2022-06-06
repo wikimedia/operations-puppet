@@ -13,9 +13,10 @@ Content-Type: text/jinja2; charset="us-ascii"
 #cloud-config
 
 datasource:
-  Ec2:
-    timeout : 120
-    max_wait : 180
+  OpenStack:
+    timeout: 120
+    max_wait: 180
+    retries: 10
 
 hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
