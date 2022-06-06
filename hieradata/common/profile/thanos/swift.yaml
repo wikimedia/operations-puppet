@@ -40,6 +40,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_research'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'research:poc'
+  search_platform:
+    access:       '.admin'
+    account_name: 'AUTH_search'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'search:platform'
 
 # To be kept private
 #profile::thanos::swift::accounts_keys:
