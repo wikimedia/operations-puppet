@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Define logrotate::rule
 #
 # Provides a common template that can be used by different applications to

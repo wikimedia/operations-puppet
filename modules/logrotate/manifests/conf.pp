@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Define logrotate::conf
 #
 # Thin helper for the definition of logrotate rules.
