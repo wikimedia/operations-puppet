@@ -138,6 +138,13 @@ class profile::elasticsearch::cirrus(
         ensure => present,
     }
 
+    # Add elastic bin to root's PATH
+    file_line { 'elastic_bin_bashrc':
+      ensure => present,
+      path   => '/root/.bashrc',
+      line   => "PATH=\${PATH}:/usr/share/elasticsearch/bin  # Managed by puppet",
+    }
+
     # Wrapper script to run elasticsearch-madvise-random once per elasticsearch process, passing PID
     file { '/usr/local/bin/elasticsearch-disable-readahead.sh':
         ensure => file,
