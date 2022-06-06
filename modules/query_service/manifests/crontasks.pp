@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class: query_service::crontasks
 #
-# Installs all the major cron jobs for Query service
+# Installs all the major recurring jobs for Query service
 #
 # == Parameters:
 # - $package_dir:  Directory where the service is installed.
@@ -54,7 +54,7 @@ class query_service::crontasks(
 
     $reload_categories_log = "${log_dir}/reloadCategories.log"
 
-    # the reload-categories cron needs to reload nginx once the categories are up to date
+    # the reload-categories job needs to reload nginx once the categories are up to date
     sudo::user { "${username}-reload-nginx":
       ensure     => present,
       user       => $username,
