@@ -20,13 +20,12 @@ profile::prometheus::kubernetes::clusters:
     port: 9909
     class_name: role::ml_k8s::worker
     controller_class_name: role::ml_k8s::master
-# TODO(klausman): Un-comment as soon as cluster works correctly
-#  k8s-mlstaging:
-#    enabled: true
-#    master_host: 'ml-staging-ctrl.svc.codfw.wmnet'
-#    port: 9909
-#    class_name: role::ml_k8s::worker::staging
-#    controller_class_name: role::ml_k8s::master::staging
+  k8s-mlstaging:
+    enabled: true
+    master_host: 'ml-staging-ctrl.svc.codfw.wmnet'
+    port: 9909
+    class_name: role::ml_k8s::worker::staging
+    controller_class_name: role::ml_k8s::master::staging
 # In the private repo a stanza like the following is required
 # profile::prometheus::kubernetes::cluster_tokens:
 # k8s:
