@@ -10,6 +10,7 @@ class openstack::serverpackages::wallaby::bullseye(
       'python3-rados',
       'python3-rgw',
       'python3-rbd',
+      'python3-tenacity',
       'libcephfs2',
       'libradosstriper1',
     ]

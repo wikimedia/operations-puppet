@@ -16,6 +16,7 @@ import datetime
 import logging
 import sys
 import time
+from tenacity import Retrying, stop_after_attempt, wait_random
 
 import mwopenstackclients
 import novaclient.exceptions
@@ -193,8 +194,13 @@ class CinderBackup(object):
             raise e
         finally:
             if self.snapshot_id:
+                # Snapshots in admin project are intended to exist only during snapshot operation
+                # Once the status moves to 'available', they can be safely removed
                 logging.info("Cleaning up snapshot %s" % self.snapshot_id)
-                self.cinderclient.volume_snapshots.delete(self.snapshot_id, force=True)
+                Retrying(
+                    stop=stop_after_attempt(9),
+                    wait=wait_random(multiplier=1, min=5, max=10)
+                    ).call(self.cinderclient.volume_snapshots.delete(self.snapshot_id, force=True))
                 self.snapshot_id = None
 
 
