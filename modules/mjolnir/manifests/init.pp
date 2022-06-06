@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: mjolnir
 #
 # This class installs the MjoLniR (Machine Learned Ranking) data
