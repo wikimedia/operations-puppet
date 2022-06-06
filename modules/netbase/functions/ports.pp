@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary function to return a hash of service definitions
 # @param filter a list of ports used to ensure we only return services matching the ports
 function netbase::ports (

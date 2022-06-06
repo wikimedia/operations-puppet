@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary function to return a hash of service definitions
 # @param a list of services to return.  if not provided all services are returned
 function netbase::services (

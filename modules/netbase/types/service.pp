@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary This structure is used to represent service definitions across our infrastructre
 #   it has been designed to be mostly compatible with the values data present in /etc/services
 #   however also addes some additional flexibility namely a portend parameter so we can represent

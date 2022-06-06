@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 #### Managed by puppet ####
 <%#- reject definitions with a portend as they are for ranges which are not supported by etc/services -%>
 <%- @all_services.reject{ |k, v| v.has_key?('portend') }.each_pair do |service, param| -%>

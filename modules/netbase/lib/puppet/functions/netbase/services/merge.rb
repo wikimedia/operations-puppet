@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 require 'set'
 # create a simple object to mimic the puppet type Netbase::Service
 class Service

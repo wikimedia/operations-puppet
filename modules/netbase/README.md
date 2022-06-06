@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Service Definitions
 This module is used to manage the services definitions in /etc/services
 

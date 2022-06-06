@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to add a hash of service definitions to /etc/services
 # @param services a hash of Netbase::Service definitions
 # @param default_services a hash of Netbase::Service definitions
