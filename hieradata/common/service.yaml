@@ -486,7 +486,8 @@ service::catalog:
     port: 9200
     sites:
       - eqiad
-    state: monitoring_setup
+    state: production
+    page: false
 
   docker-registry:
     description: docker registry service
@@ -3885,6 +3886,7 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
+
   # Netbox is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
   netbox:
@@ -3912,7 +3914,8 @@ service::catalog:
       - eqiad
       - codfw
     port: 443
-    state: monitoring_setup
+    state: production
+    page: false
     discovery:
       - dnsdisc: netbox
         active_active: false

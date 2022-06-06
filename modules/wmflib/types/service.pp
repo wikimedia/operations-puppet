@@ -27,8 +27,6 @@
 #     - service_setup means we need the declaration to be present for setting up the
 #     service on real servers
 #     - lvs_setup means we need the declaration to be present for setting up lvs
-#     - monitoring_setup means we want to introduce monitoring, but we still don't
-#     want to page.
 #     - finally production means the setup is complete and live in production.
 # @param Optional[Array] discovery
 #     Array of discovery records related to the current service, if any
@@ -57,7 +55,7 @@ type Wmflib::Service = Struct[
     'monitoring'      => Optional[Wmflib::Service::Monitoring],
     'probes'          => Optional[Wmflib::Service::Probes],
     'page'            => Optional[Boolean],
-    'state'           => Enum['service_setup', 'lvs_setup', 'monitoring_setup', 'production'],
+    'state'           => Enum['service_setup', 'lvs_setup', 'production'],
     'discovery'       => Optional[Wmflib::Service::Discovery],
     'role'            => Optional[String],
     'public_endpoint' => Optional[String],

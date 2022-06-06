@@ -219,7 +219,7 @@ class profile::prometheus::ops (
     $probe_services = wmflib::service::fetch().filter |$name, $config| {
         ('probes' in $config and
           $::site in $config['sites'] and
-          $config['state'] in ['production', 'monitoring_setup'])
+          $config['state'] == 'production')
     }
 
     # Populate target files for probes jobs defined above
