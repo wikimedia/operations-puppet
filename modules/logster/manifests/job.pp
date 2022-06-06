@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define logster::job
 # Installs a logster cronjob.
 #

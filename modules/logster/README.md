@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Logster Puppet Module
 
 [Logster](https://github.com/wikimedia/operations-debs-logster) is a utility
