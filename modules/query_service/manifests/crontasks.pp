@@ -108,13 +108,25 @@ class query_service::crontasks(
     # Categories daily dump starts at 5:00. Currently it is done by 5:05, but just in case
     # it ever takes longer, start at 7:00.
     systemd::timer::job { 'load-catgories-daily':
-        ensure          => $ensure_daily_categories,
+        ensure          => absent,
         description     => 'Query service category dump (daily)',
         command         => "/usr/local/bin/loadCategoriesDaily.sh ${deploy_name}",
         user            => $username,
         logfile_basedir => $log_dir,
         logfile_name    => 'reloadCategories.log',
         interval        => {'start' => 'OnCalendar', 'interval' => "Mon *-*-* 07:${fqdn_rand(60)}:00"},
+    }
+
+    # Categories daily dump starts at 5:00. Currently it is done by 5:05, but just in case
+    # it ever takes longer, start at 7:00.
+    systemd::timer::job { 'load-categories-daily':
+        ensure          => $ensure_daily_categories,
+        description     => 'Query service category dump (daily)',
+        command         => "/usr/local/bin/loadCategoriesDaily.sh ${deploy_name}",
+        user            => $username,
+        logfile_basedir => $log_dir,
+        logfile_name    => 'reloadCategories.log',
+        interval        => {'start' => 'OnCalendar', 'interval' => "*-*-* 07:${fqdn_rand(60)}:00"},
     }
 
     systemd::timer::job{ 'load-dcatap-weekly':
