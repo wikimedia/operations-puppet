@@ -392,18 +392,10 @@ trafficserver_ssl_errors_total:
   documentation: Total SSL/TLS errors
   type: counter
   values:
-    - labels: {protocol: ssl, error: want_write}
-      value: proxy.process.ssl.ssl_error_want_write
-    - labels: {protocol: ssl, error: want_read}
-      value: proxy.process.ssl.ssl_error_want_write
-    - labels: {protocol: ssl, error: want_x509_lookup}
-      value: proxy.process.ssl.ssl_error_want_x509_lookup
     - labels: {protocol: ssl, error: error_syscall}
       value: proxy.process.ssl.ssl_error_syscall
     - labels: {protocol: ssl, error: error_read_eos}
       value: proxy.process.ssl.ssl_error_read_eos
-    - labels: {protocol: ssl, error: error_zero_return}
-      value: proxy.process.ssl.ssl_error_zero_return
     - labels: {protocol: ssl, error: error_ssl}
       value: proxy.process.ssl.ssl_error_ssl
 trafficserver_ssl_session_cache_count:
