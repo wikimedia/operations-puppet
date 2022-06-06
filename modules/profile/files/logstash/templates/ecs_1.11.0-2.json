@@ -1,6 +1,7 @@
 {
   "index_patterns": [
-    "ecs-1.11.0-2-*"
+    "ecs-1.11.0-2-*",
+    "ecs-*-1.11.0-2-*"
   ],
   "mappings": {
     "_meta": {
