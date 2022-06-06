@@ -1,4 +1,4 @@
 # pc1014
 mariadb::parsercache::shard: 'pc1'
-profile::monitoring::notifications_enabled: false
 mariadb::package: 'wmf-mariadb106'
+profile::mariadb::mysql_role: 'master'
