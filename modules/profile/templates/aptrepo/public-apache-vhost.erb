@@ -1,0 +1,55 @@
+<%#- #SPDX-License-Identifier: Apache-2.0 -%>
+
+<Macro PublicRepo>
+    ServerName <%= @aptrepo_vhost %>
+    ServerAdmin noc@wikimedia.org
+
+    DocumentRoot "/srv"
+
+    # Redirect to APT repository documentation.
+    RedirectMatch "^/$" "https://wikitech.wikimedia.org/wiki/APT_repository"
+
+    # Access to directories as recommended by Debian:
+    # https://wiki.debian.org/DebianRepository/SetupWithReprepro
+    <Directory "<%= @public_basedir %>" >
+        # We want the user to be able to browse the directory manually
+        Options Indexes FollowSymLinks Multiviews
+        Require all granted
+    </Directory>
+
+    # Denied access to internal reprepro directories.
+    <Directory "<%= @public_basedir %>/db/">
+        Require all denied
+    </Directory>
+
+    <Directory "<%= @public_basedir %>/conf/">
+        Require all denied
+    </Directory>
+
+    <Directory "<%= @public_basedir %>/incoming/">
+        Require all denied
+    </Directory>
+
+    # Private base dir is a subdirectory of /srv/ and should
+    # not be exposed here.
+    <Directory "<%= @private_basedir %>" >
+        Require all denied
+    </Directory>
+
+</Macro>
+
+<VirtualHost *:8081>
+  Use PublicRepo
+</VirtualHost>
+
+<VirtualHost *:8443>
+  SSLEngine on
+  SSLCertificateFile /etc/acmecerts/apt/live/ec-prime256v1.crt
+  SSLCertificateChainFile /etc/acmecerts/apt/live/ec-prime256v1.chain.crt
+  SSLCertificateKeyFile /etc/acmecerts/apt/live/ec-prime256v1.key
+  SSLCertificateFile /etc/acmecerts/apt/live/rsa-2048.crt
+  SSLCertificateChainFile /etc/acmecerts/apt/live/rsa-2048.chain.crt
+  SSLCertificateKeyFile /etc/acmecerts/apt/live/rsa-2048.key
+  <%= @ssl_settings.join("\n    ") %>
+  Use PublicRepo
+</VirtualHost>

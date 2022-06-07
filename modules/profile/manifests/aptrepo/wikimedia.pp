@@ -50,6 +50,8 @@ class profile::aptrepo::wikimedia (
         remove_default_ports => true,
     }
 
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+
     httpd::conf { 'listen on configured port':
         ensure   => present,
         priority => 0,
@@ -58,6 +60,10 @@ class profile::aptrepo::wikimedia (
 
     httpd::site{ 'private-apt-repo':
         content => template('profile/aptrepo/private-apache-vhost.erb'),
+    }
+
+    httpd::site{ 'public-apt-repo':
+        content => template('profile/aptrepo/public-apache-vhost.erb'),
     }
 
     ferm::service { 'aptrepos_public_http':
