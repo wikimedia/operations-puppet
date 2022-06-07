@@ -46,17 +46,6 @@ class profile::aptrepo::wikimedia (
     Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
 ){
 
-    # Temporary, will be created by the aptrepo::repo define normally.
-    # For testings we create it manually. 
-    # TODO: Remove once aptrepo::repo is called for the private repo.
-    file { $private_basedir:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-
     class { 'httpd':
         remove_default_ports => true,
     }
@@ -90,11 +79,18 @@ class profile::aptrepo::wikimedia (
         gpg_pubring => $gpg_pubring,
     }
 
-    # Public repo, servedby nginx
+    # Public repo, served by nginx
     aptrepo::repo { 'public_apt_repository':
         basedir            => $public_basedir,
         incomingdir        => 'incoming',
         distributions_file => 'puppet:///modules/aptrepo/distributions-wikimedia',
+    }
+
+    # Private repo, served by Apache
+    aptrepo::repo { 'private_apt_repository':
+        basedir            => $private_basedir,
+        incomingdir        => 'incoming',
+        distributions_file => 'puppet:///modules/aptrepo/distributions-private',
     }
 
     class { 'aptrepo::tftp': }
