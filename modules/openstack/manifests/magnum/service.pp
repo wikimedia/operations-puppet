@@ -13,6 +13,7 @@ class openstack::magnum::service(
     Stdlib::Port $api_bind_port,
     String $rabbit_user,
     String $rabbit_pass,
+    String $domain_admin_pass,
 ) {
     class { "openstack::magnum::service::${version}":
         db_user               => $db_user,
@@ -27,6 +28,7 @@ class openstack::magnum::service(
         rabbit_pass           => $rabbit_pass,
         openstack_controllers => $openstack_controllers,
         region                => $region,
+        domain_admin_pass     => $domain_admin_pass,
     }
 
     service { 'magnum-api':

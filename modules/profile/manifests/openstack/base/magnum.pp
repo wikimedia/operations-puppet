@@ -12,6 +12,7 @@ class profile::openstack::base::magnum(
     String $db_name = lookup('profile::openstack::base::magnum::db_name'),
     String $db_pass = lookup('profile::openstack::base::magnum::db_pass'),
     String $ldap_user_pass = lookup('profile::openstack::base::magnum::service_user_pass'),
+    String $domain_admin_pass = lookup('profile::openstack::base::magnum::domain_admin_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::magnum::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::magnum::api_bind_port'),
     String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
@@ -35,6 +36,7 @@ class profile::openstack::base::magnum(
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
         region                => $region,
+        domain_admin_pass     => $domain_admin_pass,
     }
 
     include ::network::constants

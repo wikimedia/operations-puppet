@@ -13,6 +13,7 @@ class openstack::magnum::service::wallaby(
     Stdlib::Port $api_bind_port,
     String $rabbit_user,
     String $rabbit_pass,
+    String $domain_admin_pass,
 ) {
     require "openstack::serverpackages::wallaby::${::lsbdistcodename}"
 

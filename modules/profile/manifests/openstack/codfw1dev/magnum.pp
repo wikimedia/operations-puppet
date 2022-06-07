@@ -12,6 +12,7 @@ class profile::openstack::codfw1dev::magnum(
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::magnum::service_user_pass'),
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
+    String $domain_admin_pass = lookup('profile::openstack::codfw1dev::magnum::domain_admin_pass'),
 ) {
     class {'::profile::openstack::base::magnum':
         version               => $version,
@@ -25,5 +26,6 @@ class profile::openstack::codfw1dev::magnum(
         ldap_user_pass        => $ldap_user_pass,
         rabbit_pass           => $rabbit_pass,
         region                => $region,
+        domain_admin_pass     => $domain_admin_pass,
     }
 }
