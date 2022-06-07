@@ -130,6 +130,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://netbox.wikimedia.org
       replacement: https://netbox.discovery.wmnet
     - type: map
+      target: http://netbox-exports.wikimedia.org
+      replacement: https://netbox-exports.discovery.wmnet
+    - type: map
       target: http://netbox-next.wikimedia.org
       replacement: https://netbox-dev2002.codfw.wmnet
     - type: map
