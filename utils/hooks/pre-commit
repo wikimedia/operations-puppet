@@ -1,6 +1,2 @@
 #!/bin/sh
-# SPDX-License-Identifier: Apache-2.0
-bundle exec rake syntax
-bundle exec rake static
-bundle exec rake typos
-bundle exec rake spdx:convert:new_files
+[ -z "$(git diff --cached  --diff-filter=A --name-only)" ] || bundle exec rake spdx:convert:new_files
