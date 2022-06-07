@@ -13,7 +13,7 @@ profile::netbox::db_primary: "%{facts.networking.fqdn}"
 profile::netbox::authentication_provider: 'cas'
 profile::netbox::ssl_provider: 'acme_chief'
 profile::netbox::acme_cetificate: netbox
-profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"
+profile::netbox::netbox_api: "https://%{lookup('profile::netbox::discovery_name')}/"
 profile::netbox::do_backup: false
 profile::netbox::http_proxy: ~
 profile::netbox::report_checks: []
