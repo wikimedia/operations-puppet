@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 #
 # request and sign a generic x509 TLS cert from the kubernetes API.

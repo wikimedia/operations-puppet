@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class kubeadm::calico_workaround (
 ) {
     require ::kubeadm::core   # because kubeadm package

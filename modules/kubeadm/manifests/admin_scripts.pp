@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class kubeadm::admin_scripts (
 ) {
     file { '/usr/local/sbin/wmcs-k8s-get-cert':

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # main kubeadm packages and setup
 class kubeadm::core (
 ) {

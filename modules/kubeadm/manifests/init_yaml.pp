@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class kubeadm::init_yaml (
     Stdlib::Fqdn                  $apiserver,
     String                        $pod_subnet,

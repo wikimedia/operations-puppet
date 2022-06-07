@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Run this script with your root/cluster admin account as appropriate.
 
 set -Eeuo pipefail

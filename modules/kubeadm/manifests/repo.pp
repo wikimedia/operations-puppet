@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class kubeadm::repo (
     String $component = 'thirdparty/kubeadm-k8s-1-20',
 ) {

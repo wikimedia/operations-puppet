@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class kubeadm::calico_yaml (
     String              $pod_subnet,
     String              $calico_version = 'v3.21.0',

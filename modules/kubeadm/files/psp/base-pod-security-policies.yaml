@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This is equivalent to the "root access" pod security policy only used in
 # admin pods and tasks (such as in kube-system)
 apiVersion: policy/v1beta1

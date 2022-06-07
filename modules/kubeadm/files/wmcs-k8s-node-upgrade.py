@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0
 
 # (C) 2020 by Arturo Borrero Gonzalez <aborrero@wikimedia.org>
 #

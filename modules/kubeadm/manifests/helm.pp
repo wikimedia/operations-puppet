@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs Helm 3 from the Kubeadm components
 class kubeadm::helm (
 ) {
