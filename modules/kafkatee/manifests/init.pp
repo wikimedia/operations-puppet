@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: kafkatee
 #
 # Installs and configures a kafkatee instance. This does not configure any

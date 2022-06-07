@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Kafkatee Puppet Module
 
 Can be used to set up and run multiple kafkatee instances consuming topics from a Kafka cluster

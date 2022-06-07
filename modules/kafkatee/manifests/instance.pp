@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: kafkatee::instance
 #
 # Installs and configures a kafkatee instance.
