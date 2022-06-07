@@ -5,6 +5,8 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 
 # Netbox
 profile::netbox::discovery_name: netbox.wikimedia.org
+profile::netbox::additional_sans:
+  - netbox-exports.wikimedia.org
 profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org
 profile::netbox::automation::frontends:
   - netbox1001.wikimedia.org

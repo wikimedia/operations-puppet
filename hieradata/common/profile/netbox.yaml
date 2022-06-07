@@ -1,6 +1,7 @@
 profile::netbox::active_server: "%{facts.networking.fqdn}"
 profile::netbox::service_hostname: "%{facts.networking.fqdn}"
 profile::netbox::discovery_name: "%{facts.networking.fqdn}"
+profile::netbox::additional_sans: []
 profile::netbox::slaves: []
 profile::netbox::scap_repo: 'netbox/deploy'
 # profile::netbox::rw_tokens: === private repo ===

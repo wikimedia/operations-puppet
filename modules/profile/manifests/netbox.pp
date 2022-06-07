@@ -12,6 +12,7 @@
 # @param active_server the active netbox server
 # @param service_hostname the fqdn of the service
 # @param discovery_name The fqdn name used internally
+# @param additional_sans A list of fqdn names to be added to the certificate SAN
 # @param slaves list of secondary netbox serveres
 # @param scap_repo The repo to use for scap deploys
 # @param rw_token api read write token key
@@ -56,6 +57,7 @@ class profile::netbox (
     Stdlib::Fqdn              $active_server           = lookup('profile::netbox::active_server'),
     Stdlib::Fqdn              $service_hostname        = lookup('profile::netbox::service_hostname'),
     Stdlib::Fqdn              $discovery_name          = lookup('profile::netbox::discovery_name'),
+    Array[Stdlib::Host]       $additional_sans         = lookup('profile::netbox::additional_sans'),
     Array[String]             $slaves                  = lookup('profile::netbox::slaves'),
     String                    $scap_repo               = lookup('profile::netbox::scap_repo'),
     String                    $rw_token                = lookup('profile::netbox::rw_token'),
@@ -173,7 +175,7 @@ class profile::netbox (
         }
         'cfssl': {
             $ssl_paths = profile::pki::get_cert('discovery', $service_hostname, {
-                'hosts'  => [$facts['networking']['fqdn'], $discovery_name].unique,
+                'hosts'  => [$facts['networking']['fqdn'], $discovery_name, $additional_sans].flatten.unique,
                 'notify' => Service['apache2'],
             })
         }
