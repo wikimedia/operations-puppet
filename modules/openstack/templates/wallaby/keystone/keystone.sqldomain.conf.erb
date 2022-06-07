@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Config fragment for sql-managed service-domain
+[identity]
+driver = sql
+
+[database]
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_pool_size = <%= @db_max_pool_size %>

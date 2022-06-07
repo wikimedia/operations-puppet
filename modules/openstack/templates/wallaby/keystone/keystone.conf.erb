@@ -83,6 +83,30 @@ max_active_keys = 50
 
 [identity]
 driver = ldap
+
+# The following allows the creation of additional domains which are configured
+#  with files in /etc/keystone/domains. Typically these are DB-backed
+#  domains that support transient (non-ldap) users.
+#
+# These config files must be named keystone.<domain-id>.conf and have contents
+#  like
+#
+#  [identity]
+#  driver = sql
+#
+#  [database]
+#  connection = mysql+pymysql://keystone:<redacted>@openstack.codfw1dev.wikimediacloud.org/keystone
+#  max_pool_size = 4
+#
+#
+# Such config files should be puppetized; there's a ready-made template 
+#  named 'keystone.sqldomain.conf.erb'
+#
+# Currently (June 2022) this is only used for a special 'magnum' domain.
+domain_specific_drivers_enabled = true
+domain_config_dir = /etc/keystone/domains
+
+
 [identity_mapping]
 [kvs]
 
