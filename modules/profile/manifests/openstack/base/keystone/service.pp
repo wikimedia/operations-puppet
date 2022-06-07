@@ -43,6 +43,7 @@ class profile::openstack::base::keystone::service(
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::base::keystone::enforce_new_policy_defaults'),
     Stdlib::Port $admin_bind_port = lookup('profile::openstack::base::admin_bind_port'),
     Stdlib::Port $public_bind_port = lookup('profile::openstack::base::public_bind_port'),
+    Array[String] $service_domains = lookup('profile::openstack::base::keystone::service_domains'),
     ) {
 
     $keystone_admin_uri = "${auth_protocol}://${keystone_fqdn}:${auth_port}/v3"
@@ -93,6 +94,7 @@ class profile::openstack::base::keystone::service(
         keystone_admin_uri          => $keystone_admin_uri,
         public_bind_port            => $public_bind_port,
         admin_bind_port             => $admin_bind_port,
+        service_domains             => $service_domains,
     }
     contain '::openstack::keystone::service'
 

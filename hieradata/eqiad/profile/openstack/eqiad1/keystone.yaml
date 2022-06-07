@@ -10,3 +10,4 @@ profile::openstack::eqiad1::keystone::wmcloud_domain_owner: 'cloudinfra'
 profile::openstack::eqiad1::keystone::bastion_project_id: 'bastion'
 profile::openstack::eqiad1::keystone::enforce_policy_scope: false
 profile::openstack::eqiad1::keystone::enforce_new_policy_defaults: false
+profile::openstack::eqiad1::keystone::service_domains: []

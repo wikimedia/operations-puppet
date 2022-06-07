@@ -32,6 +32,7 @@ class profile::openstack::codfw1dev::keystone::service(
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
     Stdlib::Port $admin_bind_port = lookup('profile::openstack::codfw1dev::keystone::admin_bind_port'),
     Stdlib::Port $public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
+    Array[String] $service_domains = lookup('profile::openstack::codfw1dev::keystone::service_domains'),
     ) {
 
     class {'::profile::openstack::base::keystone::service':
@@ -65,6 +66,7 @@ class profile::openstack::codfw1dev::keystone::service(
         keystone_fqdn               => $keystone_fqdn,
         public_bind_port            => $public_bind_port,
         admin_bind_port             => $admin_bind_port,
+        service_domains             => $service_domains,
     }
     contain '::profile::openstack::base::keystone::service'
 

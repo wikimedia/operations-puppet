@@ -32,6 +32,7 @@ class openstack::keystone::service::wallaby(
     String $bastion_project_id,
     Array[String] $prod_networks,
     Array[String] $labs_networks,
+    Array[String] $service_domains,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
     Stdlib::Port $public_bind_port,
@@ -123,5 +124,19 @@ class openstack::keystone::service::wallaby(
             group  => 'root',
             mode   => '0644',
             notify => Service[$wsgi_server],
+    }
+
+    # Custom sql-managed service domains:
+    $service_domains.each |String $domainid| {
+        file {"/etc/keystone/domains/keystone.${domainid}.conf":
+            ensure    => 'present',
+            owner     => 'keystone',
+            group     => 'keystone',
+            mode      => '0444',
+            show_diff => false,
+            content   => template('openstack/wallaby/keystone/keystone.sqldomain.conf.erb'),
+            notify    => Service[$wsgi_server],
+            require   => Package['keystone'];
+        }
     }
 }
