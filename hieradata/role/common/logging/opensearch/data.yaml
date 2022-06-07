@@ -29,8 +29,6 @@ profile::opensearch::common_settings:
   transport_tcp_port: 9300
   filter_cache_size: '10%'
   disktype: 'hdd'
-  # Enable compatibility mode to allow ES 7.10 clients
-  compatibility_mode: true
 
 profile::opensearch::monitoring::shard_size_warning: 150
 profile::opensearch::monitoring::shard_size_critical: 350

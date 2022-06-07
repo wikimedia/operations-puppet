@@ -53,8 +53,6 @@ profile::opensearch::common_settings:
   curator_uses_unicast_hosts: false
   http_port: 9200
   transport_tcp_port: 9300
-  # Enable compatibility mode to allow ES 7.10 clients
-  compatibility_mode: true
 
 # Logstash
 logstash::heap_memory: 1g
