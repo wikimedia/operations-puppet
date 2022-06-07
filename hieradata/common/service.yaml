@@ -1277,6 +1277,7 @@ service::catalog:
     port: 636
     probes:
       - type: tcp
+        host: ldap-ro.eqiad.wikimedia.org # SNI to send, all LDAP certs have this
     sites:
       - codfw
       - eqiad
