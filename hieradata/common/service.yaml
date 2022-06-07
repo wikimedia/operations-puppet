@@ -3889,7 +3889,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: monitoring_setup
+    state: service_setup
 
   # Netbox is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
