@@ -106,6 +106,14 @@ class apt(
         comment_old => true,
     }
 
+    if debian::codename::ge('bullseye') {
+        apt::repository { 'wikimedia-private':
+            uri        => 'http://apt.wikimedia.org:8080',
+            dist       => "${::lsbdistcodename}-wikimedia-private",
+            components => 'main nonfree',
+        }
+    }
+
     if debian::codename::ge('buster'){
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian/',

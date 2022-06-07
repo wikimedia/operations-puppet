@@ -1,18 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 Origin: Wikimedia
 Label: Wikimedia
-Suite: buster-wikimedia-private
-Codename: buster-wikimedia-private
-Version: 10
-Architectures: source amd64
-Components: main nonfree
-Description: Private Wikimedia packages for Debian buster
-SignWith: 9D392D3FFADF18FB
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: bullseye-wikimedia-private
 Codename: bullseye-wikimedia-private
 Version: 11
