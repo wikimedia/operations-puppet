@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 # Return the service probes configuration as expected by network probes jobs.
 
 function wmflib::service::probe::targets(
@@ -32,20 +34,10 @@ function wmflib::service::probe::targets(
     ]
   }
 
-  if $probe['type'] == 'tcp' or $probe['type'] == 'tcp-notls' {
-    # Auto-detect TLS from service configuration, and force-disable
-    # when tcp-notls is used.
-    $module = $service_config['encryption'] ? {
-      false   => "tcp_${af}",
-      default => $probe['type'] == 'tcp-notls' ? {
-        true    => "tcp_${af}",
-        default => "tcp_tls_${af}",
-      }
-    }
-
+  if $probe['type'] =~ /^tcp/ {
     $probes = [
       {
-        'labels'  => $common_labels + { 'module' => $module },
+        'labels'  => $common_labels + { 'module' => "tcp_${service_name}_${af}" },
         'targets' => [ "${service_name}:${port}@[${address}]:${port}" ],
       },
     ]

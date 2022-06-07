@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 # Return the blackbox HTTP module options for the given $service
 
 # TODO support options for more than one probe if/when needed
