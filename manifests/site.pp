@@ -2587,13 +2587,9 @@ node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
 node /^relforge100[3-4]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
 }
-# new eqiad restbase servers T294372
-node /^restbase103[1-3]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
 
 # restbase eqiad cluster
-node /^restbase10(1[6-9]|2[0-9]|30)\.eqiad\.wmnet$/ {
+node /^restbase10(1[6-9]|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(restbase::production)
 }
 
