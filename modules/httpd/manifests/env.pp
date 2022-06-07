@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: apache::env
 #
 # This resource provides an easy way to declare environment variables

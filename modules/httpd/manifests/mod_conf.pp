@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: httpd::mod_conf
 #
 # Custom resource for managing the configuration of Apache modules.

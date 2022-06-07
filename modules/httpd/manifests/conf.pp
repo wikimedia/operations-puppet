@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: httpd::conf
 #
 # Manages Apache configuration snippets. This is a very thin wrapper around

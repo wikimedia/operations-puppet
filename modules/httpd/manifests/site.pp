@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: httpd::site
 #
 # Manages Apache site configurations. This is a very thin wrapper around

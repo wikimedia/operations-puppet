@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 WHITE="$(/usr/bin/tput setaf 7; /usr/bin/tput bold)"
 RESET="$(/usr/bin/tput sgr0)"
 file="/tmp/apache_status.$(/bin/hostname).$(/bin/date +%s).txt"

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure httpd daemon
 # @param modules list of modules to install
 # @param legacy_compat Use Apache 2.2 compatible syntax.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """
 Utility to generate JSON LogFormat definitions from schemas in the logformat directory
 """

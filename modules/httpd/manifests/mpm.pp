@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: httpd::mpm
 #
 # This class allows you to select an Apache Multi-Processing Module
