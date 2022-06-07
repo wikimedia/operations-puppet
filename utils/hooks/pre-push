@@ -1,0 +1,6 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+bundle exec rake typos
+bundle exec rake syntax
+bundle exec rake static
+bundle exec rake tox:commit_message
