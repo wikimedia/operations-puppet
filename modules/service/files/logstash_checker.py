@@ -87,7 +87,7 @@ class CheckService(object):
     """Shell class for checking services."""
 
     def __init__(self, host, service_name, logstash_host, user='', password='',
-                 verbose=False, delay=120, fail_threshold=2.0,
+                 verbose=False, delay=120.0, fail_threshold=2.0,
                  absolute_threshold=1.0):
         """Initialize the checker."""
         self.host = host
@@ -295,7 +295,7 @@ def main():
     parser.add_argument('--logstash-host',
                         default='https://logstash.wikimedia.org:9200',
                         help='The logstash host.')
-    parser.add_argument('--delay', default=120, type=int,
+    parser.add_argument('--delay', default=120.0, type=float,
                         help='Length of the delay (in seconds) between a '
                              'deploy & the call to this check script')
     parser.add_argument('--fail-threshold', type=float, default=2.0,
