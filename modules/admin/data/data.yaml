@@ -6110,3 +6110,7 @@ ldap_only_users:
     ensure: present
     realname: Larissa Gaulia
     email: lgaulia@wikimedia.org
+  evza:
+    ensure: present
+    realname: Evelien Zandbergen
+    email: evelien.zandbergen@wikimedia.de
