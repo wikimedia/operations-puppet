@@ -36,6 +36,7 @@
 class profile::aptrepo::wikimedia (
     Stdlib::Fqdn        $primary_server    = lookup('aptrepo_server'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('aptrepo_servers_failover'),
+    String              $aptrepo_vhost     = lookup('aptrepo_hostname'),
     Stdlib::Unixpath    $public_basedir    = lookup('profile::aptrepo::wikimedia::basedir'),
     Stdlib::Unixpath    $private_basedir   = lookup('profile::aptrepo::private::basedir'),
     Stdlib::Unixpath    $homedir           = lookup('profile::aptrepo::wikimedia::homedir'),
@@ -43,7 +44,6 @@ class profile::aptrepo::wikimedia (
     Optional[String]    $gpg_pubring       = lookup('profile::aptrepo::wikimedia::gpg_pubring', {'default_value' => undef}),
     Optional[String]    $gpg_secring       = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
     Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
-
 ){
 
     # Temporary, will be created by the aptrepo::repo define normally.
@@ -96,7 +96,6 @@ class profile::aptrepo::wikimedia (
         incomingdir        => 'incoming',
         distributions_file => 'puppet:///modules/aptrepo/distributions-wikimedia',
     }
-
 
     class { 'aptrepo::tftp': }
     include ::profile::backup::host

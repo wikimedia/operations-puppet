@@ -1,8 +1,8 @@
 <%#- #SPDX-License-Identifier: Apache-2.0 -%>
 
-<VirtualHost *:<%= @repo_port %>>
+<VirtualHost *:<%= @private_repo_port %>>
     DocumentRoot "<%= @private_basedir %>"
-    ServerName <%= @aptrepo_hostname %>
+    ServerName <%= @aptrepo_vhost %>
 
     <Directory "<%= @private_basedir %>" >
         # We want the user to be able to browse the directory manually
