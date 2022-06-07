@@ -28,9 +28,9 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 #     I=[2620:0:861:3:208:80:154:76]:25 BDAT command used when
 #     CHUNKING not advertised
 #
-# Why exim began rejecting these mails is unclear, Google confirmed that they
-# do not believe a change was made on their side. But, until we understand the
-# root cause, keep chunking disabled, as it is enabled by default, T307873
+# The cause was determined to be a change in some of Google's servers which
+# exposed a bug in Exim. This bug was fixed in, 462e2cd30, so chunking can be
+# re-enabled when Exim is upgraded to 4.96, T307873.
 chunking_advertise_hosts =
 
 # MySQL lookups (OTRS)
