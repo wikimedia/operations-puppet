@@ -120,6 +120,9 @@ class profile::netbox (
     $puppetdb_api = "https://puppetdb-api.discovery.wmnet:${puppetdb_microservice_port}/"
 
     $extras_path = '/srv/deployment/netbox-extras/'
+    # TODO: Note this prevents overriding other verify options
+    # https://github.com/psf/requests/issues/3829
+    $systemd_environment = {'REQUESTS_CA_BUNDLE' => '/etc/ssl/certs/ca-certificates.crt'}
 
     # Used for LDAP auth
     include passwords::ldap::production
@@ -315,6 +318,7 @@ class profile::netbox (
             systemd::timer::job { "netbox_report_${repname}_run":
                 ensure          => $active_ensure,
                 description     => "Run report ${reportclass} in Netbox",
+                environment     => $systemd_environment,
                 command         => "/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py runreport ${reportclass}",
                 interval        => {
                     'start'    => 'OnCalendar',
@@ -335,6 +339,7 @@ class profile::netbox (
         systemd::timer::job { "netbox_ganeti_${profile['profile']}_sync":
             ensure                    => $active_ensure,
             description               => "Automatically access Ganeti API at ${profile['profile']} to synchronize to Netbox",
+            environment               => $systemd_environment,
             command                   => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox-extras/tools/ganeti-netbox-sync.py ${profile['profile']}",
             interval                  => {
                 'start'    => 'OnCalendar',
