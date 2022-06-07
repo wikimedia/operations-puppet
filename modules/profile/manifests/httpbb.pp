@@ -52,6 +52,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/thumbor',
             '/srv/deployment/httpbb-tests/docker-registry',
             '/srv/deployment/httpbb-tests/ores',
+            '/srv/deployment/httpbb-tests/query_service',
         ]:
             ensure => directory,
             purge  => true
