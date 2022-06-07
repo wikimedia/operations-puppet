@@ -1,6 +1,8 @@
 #!/bin/sh
 # SPDX-License-Identifier: Apache-2.0
-bundle exec rake typos
-bundle exec rake syntax
-bundle exec rake static
-bundle exec rake tox:commit_message
+exit_code=0
+bundle exec rake typos || exit_code=1
+bundle exec rake syntax || exit_code=1
+bundle exec rake static || exit_code=1
+bundle exec rake tox:commit_message || exit_code=1
+exit $exit_code
