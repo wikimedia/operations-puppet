@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define initramfs::script($boot_stage='', $content='') {
     include initramfs
 
