@@ -24,8 +24,6 @@ class query_service::common(
 ) {
     include ::query_service::packages
 
-    $autodeploy_log_dir = "/var/log/${deploy_name}-autodeploy"
-
     case $deploy_mode {
 
         'scap3': {
@@ -42,15 +40,6 @@ class query_service::common(
                 deploy_user => $deploy_user,
                 package_dir => $package_dir,
                 deploy_name => $deploy_name,
-            }
-        }
-
-        'autodeploy': {
-            class { '::query_service::deploy::autodeploy':
-                deploy_user        => $deploy_user,
-                package_dir        => $package_dir,
-                autodeploy_log_dir => $autodeploy_log_dir,
-                deploy_name        => $deploy_name,
             }
         }
 
