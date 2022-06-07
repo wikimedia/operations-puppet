@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: exim4
 #
 # This class installs & manages Exim4 for Debian, https://exim.org/

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: exim4::dkim
 #
 # This definition installs a DKIM key under the exim4 DKIM directory hierarchy
