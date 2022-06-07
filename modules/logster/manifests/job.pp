@@ -20,40 +20,36 @@ define logster::job(
     $logfile,
     $ensure          = 'present',
     $logster_options = undef,
-    $minute          = '*/5',
-    $hour            = undef,
-    $weekday         = undef,
-    $month           = undef,
-    $monthday        = undef,
+    $minute          = '0/5',
+    $hour            = '*',
+    $month           = '*',
+    $monthday        = '*',
 ) {
 
     if ($ensure == 'present') {
         require ::logster
     }
 
+    $interval = "*-${month}-${monthday} ${hour}:${minute}:00"
 
-    #if ($weekday) {
-    #    $interval = "${weekday} *-${month}-${monthday} ${hour}:${minute}:00"
-    #} else {
-    #    $interval = "*-${month}-${monthday} ${hour}:${minute}:00"
-    #}
+    $cmd_script = "/usr/local/sbin/logster-${title}-service.sh"
+    file { $cmd_script:
+        ensure  => $ensure,
+        content => "#!/bin/bash\n/usr/bin/logster ${logster_options} ${parser} ${logfile}\n",
+        mode    => '0555',
+    }
 
     systemd::timer::job { "logster-${title}":
-        ensure      => absent,
+        ensure      => $ensure,
         description => 'Generate metrics from logs',
-        command     => "/usr/bin/logster ${logster_options} ${parser} ${logfile}",
+        command     => $cmd_script,
         user        => 'root',
-        interval    => {'start' => 'OnCalendar', 'interval' => '00:00:00'},
+        interval    => {'start' => 'OnCalendar', 'interval' => $interval},
     }
 
   cron { "logster-${title}":
-        ensure   => $ensure,
-        command  => "/usr/bin/logster ${logster_options} ${parser} ${logfile} > /dev/null 2>&1",
-        user     => 'root',
-        minute   => $minute,
-        hour     => $hour,
-        weekday  => $weekday,
-        month    => $month,
-        monthday => $monthday,
+        ensure  => absent,
+        command => "/usr/bin/logster ${logster_options} ${parser} ${logfile} > /dev/null 2>&1",
+        user    => 'root',
         }
   }

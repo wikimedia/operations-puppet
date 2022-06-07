@@ -18,7 +18,7 @@ define varnishkafka::monitor::statsd(
     # Logster runs every minute using a cronjob.
     logster::job { "varnishkafka-${name}":
         ensure          => $ensure,
-        minute          => '*/1',
+        minute          => '0/1',
         parser          => 'JsonLogster',
         logfile         => $log_statistics_file,
         logster_options => "-o statsd --statsd-host=${statsd_host_port} --metric-prefix=${graphite_metric_prefix}",
