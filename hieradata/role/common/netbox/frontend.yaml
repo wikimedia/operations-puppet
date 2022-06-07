@@ -14,7 +14,7 @@ profile::netbox::automation::frontends:
   - netbox1002.eqiad.wmnet
   - netbox2002.codfw.wmnet
 profile::netbox::db_primary: netboxdb1002.eqiad.wmnet
-profile::netbox::active_server: netbox1002.wikimedia.org
+profile::netbox::active_server: netbox1002.eqiad.wmnet
 
 profile::netbox::swift_auth_url: "https://swift.svc.%{::site}.wmnet"
 profile::netbox::service_hostname: netbox.wikimedia.org
