@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 # @summary Grafana is a dashboarding webapp for Graphite.
 # @param secret_key the secret key
 # @param admin_password the admin password
@@ -135,6 +137,14 @@ class profile::grafana (
     httpd::site { $domain:
         content => template('profile/apache/sites/grafana.erb'),
         require => Class['::grafana'],
+    }
+
+    httpd::conf { 'metrics_acl':
+        content => template('profile/apache/metrics_acl.erb'),
+    }
+
+    httpd::mod_conf { 'remoteip':
+        ensure => present,
     }
 
     monitoring::service { 'grafana':
