@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: kerberos::systemd_timer
 #
 # This used to be its own define, which got abstracted

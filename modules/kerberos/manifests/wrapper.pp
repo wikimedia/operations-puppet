@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: kerberos::wrapper
 #
 # Deploy a simple kerberos wrapper to kinit before running
