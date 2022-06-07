@@ -364,6 +364,7 @@ class profile::netbox (
     systemd::timer::job { 'netbox_dump_run':
         ensure                    => present,
         description               => 'Dump CSVs from Netbox.',
+        environment               => $systemd_environment,
         command                   => '/srv/deployment/netbox-extras/tools/rotatedump',
         interval                  => {
             'start'    => 'OnCalendar',
