@@ -723,13 +723,6 @@ groups:
     description: obsolete group, was in the past used for access to Nodepool
     gid: 781
     members: []
-  ores-admin:
-    description: ORES admins
-    gid: 782
-    members: [halfak, kevinbazira, chrisalbon]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
-                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
-                 'ALL = NOPASSWD: /usr/bin/lsof *']
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
@@ -914,6 +907,15 @@ groups:
     description: Group of users that have access to ML Team's machines
     members: &ml-team-admins [chrisalbon, kevinbazira, aikochou]
     privileges: []
+    approval:
+      - Chris Albon
+  ores-admin:
+    description: ORES admins
+    gid: 782
+    members: [halfak, *ml-team-admins]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
+                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
+                 'ALL = NOPASSWD: /usr/bin/lsof *']
     approval:
       - Chris Albon
   deploy-ml-service:
