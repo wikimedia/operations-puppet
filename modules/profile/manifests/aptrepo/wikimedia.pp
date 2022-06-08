@@ -93,6 +93,18 @@ class profile::aptrepo::wikimedia (
         distributions_file => 'puppet:///modules/aptrepo/distributions-private',
     }
 
+    $private_reprepro_wrapper = @("SCRIPT" /$)
+    #!/bin/bash
+    REPREPRO_BASE_DIR=${private_basedir} /usr/bin/reprepro "$@"
+    |SCRIPT
+    file { '/usr/local/sbin/private_reprepro':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500',
+        content => $private_reprepro_wrapper,
+    }
+
     class { 'aptrepo::tftp': }
     include ::profile::backup::host
 
