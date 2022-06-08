@@ -368,7 +368,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev]
+              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5303,6 +5303,17 @@ users:
     uid: 21065
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  bscarone:
+    ensure: present
+    email: scarone.b@northeastern.edu
+    realname: Bruno Scarone
+    uid: 39391
+    gid: 500
+    expiry_date: 2022-09-01
+    expiry_contact: lzia@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J scarone.b@northeastern.edu
+    krb: present
 
 ldap_only_users:
   abartov:
