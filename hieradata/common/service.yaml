@@ -3871,9 +3871,10 @@ service::catalog:
     encryption: true
     ip: *k8s-ingress-wikikube_ips
     page: false
+    port: *k8s-ingress-wikikube_port
     probes:
       - type: http
-    port: *k8s-ingress-wikikube_port
+        path: /healthz
     sites:
       - eqiad
       - codfw
