@@ -1578,29 +1578,20 @@ node 'graphite2003.codfw.wmnet' {
     role(graphite::production)
 }
 
-node /^idp[12]001\.wikimedia\.org$/ {
+node /^idp[12]002\.wikimedia\.org$/ {
     role(idp)
 }
 
-node 'idp-test1002.wikimedia.org' {
+node /^idp-test[12]002\.wikimedia\.org$/ {
     role(idp_test)
 }
 
-node 'idp-test2002.wikimedia.org' {
-    role(idp_test)
+node 'idp1001.wikimedia.org' {
+    role(insetup)
 }
 
-# IDP staging servers
-node /^idp-test[12]001\.wikimedia\.org$/ {
-    role(idp_test)
-}
-
-node 'idp1002.wikimedia.org' {
-    role(idp)
-}
-
-node 'idp2002.wikimedia.org' {
-    role(idp)
+node 'idp2001.wikimedia.org' {
+    role(insetup)
 }
 
 # TFTP/DHCP/webproxy but NOT APT repo (T224576)
