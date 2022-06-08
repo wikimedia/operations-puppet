@@ -161,6 +161,9 @@ define airflow::instance(
             # allow access to the API.
             'auth_backend' => 'airflow.api.auth.backend.default',
         },
+        'scheduler' => {
+            'parsing_processes' => $::processors['count'],
+        },
         'smtp' => {
             # mail_smarthost is set globally in manifests/realm.pp
             'smtp_host' => $::mail_smarthost[0],
