@@ -368,7 +368,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone]
+              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5314,6 +5314,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J scarone.b@northeastern.edu
     krb: present
+  kstoller:
+    ensure: present
+    realname: Kirsten Stoller
+    email: kstoller@wikimedia.org
+    uid: 39416
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+
 
 ldap_only_users:
   abartov:
