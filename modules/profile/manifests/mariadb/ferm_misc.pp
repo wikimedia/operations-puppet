@@ -39,6 +39,6 @@ class profile::mariadb::ferm_misc {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((idp1001.wikimedia.org idp1002.wikimedia.org idp2001.wikimedia.org idp2002.wikimedia.org))',
+        srange  => '@resolve((idp1002.wikimedia.org idp2002.wikimedia.org))',
     }
 }
