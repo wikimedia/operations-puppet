@@ -28,6 +28,7 @@ define aptrepo::repo (
     Stdlib::Unixpath   $basedir,
     Stdlib::Filesource $distributions_file,
     String             $notify_address     = 'root@wikimedia.org',
+    String             $notify_subject     = "Reprepro changes in ${title}",
     Array[String]      $options            = [],
     Array[String]      $uploaders          = [],
     Optional[String]   $incomingdir        = undef,
@@ -125,7 +126,7 @@ define aptrepo::repo (
 
     $log_script = @("SCRIPT"/$)
     #!/bin/bash
-    echo -e "reprepro changes:\n\$@" | mail -s "Reprepro changes" ${notify_address}
+    echo -e "reprepro changes:\n\$@" | mail -s "${notify_subject}" ${notify_address}
     | SCRIPT
     file { "${basedir}/conf/log":
         ensure  => present,
