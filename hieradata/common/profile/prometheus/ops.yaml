@@ -1,4 +1,4 @@
-profile::prometheus::ops::blackbox_watchrat_http_check_urls:
+profile::prometheus::ops::blackbox_pingthing_http_check_urls:
 - https://de.wikipedia.org/wiki/Main_Page
 - https://donate.wikimedia.org/
 - https://dsb.wikipedia.org/wiki/Main_Page
@@ -23,6 +23,6 @@ profile::prometheus::ops::blackbox_watchrat_http_check_urls:
 - https://www.mediawiki.org/wiki/MediaWiki
 - https://www.wiktionary.org
 # NOTE: These URLs need outgoing proxy support as they are not in our infra T303803
-profile::prometheus::ops::blackbox_watchrat_proxied_urls:
+profile::prometheus::ops::blackbox_pingthing_proxied_urls:
 - https://store.wikimedia.org
 - https://wikimediafoundation.org/wiki/Home

@@ -580,7 +580,7 @@ profile::docker::reporter::generate_reports: false
 # Do not use kafka shipping for central syslogserver
 profile::syslog::centralserver::use_kafka_relay: false
 
-profile::prometheus::ops::blackbox_watchrat_http_check_urls: []
+profile::prometheus::ops::blackbox_pingthing_http_check_urls: []
 profile::puppetmaster::backend::config: {}
 profile::puppetmaster::backend::secure_private: false
 profile::puppetmaster::backend::prevent_cherrypicks: true

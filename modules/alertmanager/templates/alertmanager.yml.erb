@@ -34,15 +34,15 @@ route:
         source: 'icinga'
       receiver: 'irc-spam'
 
-    # Fundraising watchrat alerts are routed to irc #wm-operations and fr-tech@wm.o
+    # Fundraising pingthing alerts are routed to irc #wm-operations and fr-tech@wm.o
     - match:
         instance: 'https://donate.wikimedia.org/'
-        job: 'blackbox/watchrat'
+        job: 'blackbox/pingthing'
       receiver: 'fr-ircmail'
 
-    # Generic Watchrat alerts are routed to irc #wm-operations and noc@wm.o
+    # Generic pingthing alerts are routed to irc #wm-operations and noc@wm.o
     - match:
-        job: 'blackbox/watchrat'
+        job: 'blackbox/pingthing'
       receiver: 'noc-ircmail'
 
     # Team routes
