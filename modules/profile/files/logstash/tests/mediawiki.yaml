@@ -280,3 +280,89 @@ testcases:
           full: "https://www.wikidata.org/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013"
         ecs:
           version: "1.7.0"
+  - input:
+      - >
+        {
+          "timestamp": "2022-06-08T14:24:55.175Z",
+          "exception": {
+            "message": "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",
+            "trace": "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(...",
+            "file": "/srv/mediawiki/src/Profiler.php:276"
+          },
+          "type": "mediawiki",
+          "@timestamp": "2022-06-08T14:24:55.175Z",
+          "url": "/rpc/RunSingleJob.php",
+          "normalized_message": "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",
+          "reqId": "ede088f4-b120-4615-9523-25c820686a58",
+          "ip": "2620:0:861:107:10:64:48:78",
+          "timestamp": "2022-06-08T14:24:54.111855+00:00",
+          "facility": "daemon",
+          "logsource": "mw1439",
+          "caught_by": "php-wmerrors",
+          "level": "ERROR",
+          "servergroup": "jobrunner",
+          "message": "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",
+          "host": "mw1439",
+          "server": "jobrunner.discovery.wmnet",
+          "http_method": "POST",
+          "phpversion": "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf5",
+          "channel": "exception",
+          "program": "php7.2-fpm"
+        }
+    expected:
+      - message: "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        caught_by: "php-wmerrors"
+        channel: "exception"
+        exception:
+          file: "/srv/mediawiki/src/Profiler.php:276"
+          message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+          trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."
+        host: "mw1439"
+        logsource: "mw1439"
+        program: "php7.2-fpm"
+        facility: "daemon"
+        type: "mediawiki"
+        level: "ERROR"
+        url: "/rpc/RunSingleJob.php"
+        ip: "2620:0:861:107:10:64:48:78"
+        http_method: "POST"
+        server: "jobrunner.discovery.wmnet"
+        phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf5"
+        servergroup: "jobrunner"
+        normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        message_checksum: "6e68b5cd5ffeb7f52a7e2ac1d9594da7"
+        reqId: "ede088f4-b120-4615-9523-25c820686a58"
+      - message: "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        log:
+          level: "ERROR"
+          origin:
+            file:
+              line: "276"
+              name: "/srv/mediawiki/src/Profiler.php"
+          syslog:
+            facility:
+              code: 3
+              name: "daemon"
+            priority: 27
+            severity:
+              code: 3
+              name: "error"
+        host:
+          name: "mw1439"
+        labels:
+          channel: "exception"
+          caught_by: "php-wmerrors"
+          phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf5"
+          servergroup: "jobrunner"
+          normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        service:
+          type: "php7.2-fpm"
+        error:
+          message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+          stack_trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."
+        trace:
+          id: "ede088f4-b120-4615-9523-25c820686a58"
+        url:
+          full: "https://jobrunner.discovery.wmnet/rpc/RunSingleJob.php"
+        ecs:
+          version: "1.7.0"
