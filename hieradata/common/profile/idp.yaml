@@ -14,8 +14,8 @@ profile::idp::u2f_encryption_key: changeit
 profile::idp::u2f_signing_key: changeit
 profile::idp::idp_nodes:
   - "%{facts.networking.fqdn}"
-profile::idp::enable_mfa: true
-profile::idp::enable_u2f: true
+profile::idp::enable_mfa: false
+profile::idp::enable_u2f: false
 profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
