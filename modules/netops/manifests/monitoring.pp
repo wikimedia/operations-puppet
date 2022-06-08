@@ -144,8 +144,8 @@ class netops::monitoring(
         # eqiad cloud
         'cloudsw1-c8-eqiad.mgmt' => { ipv4 => '10.65.0.7', parents => ['msw1-eqiad']},
         'cloudsw1-d5-eqiad.mgmt' => { ipv4 => '10.65.0.6', parents => ['msw1-eqiad']},
-        'cloudsw2-c8-eqiad.mgmt' => { ipv4 => '10.65.1.197', parents => ['msw1-eqiad']},
-        'cloudsw2-d5-eqiad.mgmt' => { ipv4 => '10.65.1.198', parents => ['msw1-eqiad']},
+        'cloudsw2-c8-eqiad.mgmt' => { ipv4 => '10.65.1.197', parents => ['msw1-eqiad'], bgp => false},
+        'cloudsw2-d5-eqiad.mgmt' => { ipv4 => '10.65.1.198', parents => ['msw1-eqiad'], bgp => false},
         'cloudsw1-e4-eqiad.mgmt' => { ipv4 => '10.65.1.231', parents => ['msw2-eqiad']},
         'cloudsw1-f4-eqiad.mgmt' => { ipv4 => '10.65.1.235', parents => ['msw2-eqiad']},
         # eqiad prod
