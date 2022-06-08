@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # a timer (job) to import a list of wikis into a wikistats table
 define wikistats::job::import(
     String $weekday,

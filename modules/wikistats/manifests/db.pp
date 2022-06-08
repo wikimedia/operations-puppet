@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # the database server setup for the wikistats site
 class wikistats::db (
     Wmflib::Php_version $php_version,

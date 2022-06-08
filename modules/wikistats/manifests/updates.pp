@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # the update scripts fetching data (input) for wikistats
 # and writing it to local mariadb
 class wikistats::updates (

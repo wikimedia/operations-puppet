@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # a timer (job) to update a wikistats table
 define wikistats::job::update (
     String $project = $name,

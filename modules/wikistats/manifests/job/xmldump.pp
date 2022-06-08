@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # a timer (job) to dump wikistats tables as XML
 define wikistats::job::xmldump(
     String $table,

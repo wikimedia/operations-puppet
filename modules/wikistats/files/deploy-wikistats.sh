@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # deploy wikistats
 # puppet git pulls files into /srv/wikistats/ after a merge
 # then this script copies files into the right places

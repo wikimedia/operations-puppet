@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 wikistats - a mediawiki statistics site
 
 This sets up a site with statistics about
