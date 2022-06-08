@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # For each datacenter, fetches dbconfig JSON from etcd and places it under
 # e.g. /srv/dbconfig/eqiad.json.
 #

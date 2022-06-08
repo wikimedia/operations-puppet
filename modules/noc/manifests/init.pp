@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://noc.wikimedia.org/
 class noc {
 

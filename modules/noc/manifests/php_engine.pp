@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class noc::php_engine
 # Configures httpd to serve requests via PHP7 other FastCGI backend
 class noc::php_engine($catchall_ensure=present) {
