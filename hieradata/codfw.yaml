@@ -24,7 +24,7 @@ prometheus_nodes:
   - prometheus2006.codfw.wmnet
 
 # webperf
-arclamp_host: webperf2002.codfw.wmnet
+arclamp_host: webperf2004.codfw.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "lets-encrypt"
