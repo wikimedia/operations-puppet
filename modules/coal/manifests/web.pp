@@ -9,13 +9,7 @@
 class coal::web {
     include ::coal::common
 
-    ensure_packages(['python3-flask', 'python3-numpy', 'python3-requests'])
-
-    # The classes from this package were part of python3-workzeug prior to
-    # bullseye:
-    if debian::codename::ge('bullseye') {
-        ensure_packages(['python3-cachelib'])
-    }
+    ensure_packages(['python3-flask', 'python3-numpy', 'python3-requests', 'python3-cachelib'])
 
     file { '/var/cache/coal_web':
         ensure => directory,
