@@ -92,7 +92,7 @@ cache::alternate_domains:
   netbox.wikimedia.org:
     caching: 'normal'
   netbox-exports.wikimedia.org:
-    caching: 'normal'
+    caching: 'pass'
   netbox-next.wikimedia.org:
     caching: 'normal'
   noc.wikimedia.org:
