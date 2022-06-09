@@ -67,13 +67,8 @@ class scap::master(
         hosts_allow => $deployment_hosts
     }
 
-    rsync::server::module { 'scap-source':
-        path        => $scap_source_path,
-        read_only   => 'yes',
-        hosts_allow => $deployment_hosts
-    }
-
     rsync::server::module { 'scap-install-staging':
+        # This path should be the home of the user defined in class scap::user
         path        => '/var/lib/scap',
         read_only   => 'yes',
         hosts_allow => join($::network::constants::deployable_networks, ' ')

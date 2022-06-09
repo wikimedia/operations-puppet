@@ -17,6 +17,7 @@ class scap::user {
     id          => "${uid}:${gid}",
     description => 'used to install the scap deployment tool',
     # Changing the home here requires updating the location of the staging dir for scap installs at class scap::master
+    # and the symlink created at class scap (init.pp file)
     home_dir    => $home_dir,
     require     => File[$home_dir]
   }

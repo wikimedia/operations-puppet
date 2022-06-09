@@ -28,6 +28,19 @@ class scap (
         ensure => $version,
     }
 
+    # For the time being, exclude beta cluster hosts (deployment-prep)
+    if $::realm == 'production' {
+        file { '/usr/bin/scap':
+          ensure => 'link',
+          # The target pointed to here should be in the home of the user defined in class scap::user
+          target => '/var/lib/scap/scap/bin/scap',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0755',
+          force  => true,
+        }
+    }
+
     $deploy_k8s = !$k8s_deployments.empty
     $k8s_releases_dir = pick($k8s_deployments['releases_dir'], '/etc/mediawiki/releases')
     $k8s_clusters = $k8s_deployments['clusters']
