@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Define: external_proxy::instance
 #
 # Provision an nginx vhost that acts as a reverse proxy to the given URL.
