@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: cpufrequtils
 #
 # This class installs the cpufrequtils package and ensures a configured
