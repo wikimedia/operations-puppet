@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class docker_pusher
 #
 # Installs small push script used by CI
