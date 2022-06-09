@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: eventschemas::service
 #
 # Sets up an nginx site serving a JSON autoindex of files in
