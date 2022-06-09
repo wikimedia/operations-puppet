@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 """Script to download address ranges for various cloud providers and store them in a json file"""
 import csv
 import json

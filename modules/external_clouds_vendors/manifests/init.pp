@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summery class to sintall automatic updataing of the public_clous.json netmapper file
 # @param ensure ensurable
 # @param user user to use for downloading file
