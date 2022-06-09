@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Defined type httpbb::test_suite
 #
 # Resource for httpbb test suite YAML files, which are installed into the

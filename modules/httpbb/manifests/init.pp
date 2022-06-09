@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class httpbb
 #
 # Installs the httpbb tool for blackbox testing an HTTP server.
