@@ -184,14 +184,11 @@ define scap::target(
 
     if $::realm == 'labs' {
         $require_package = $manage_user ? {
-            true    => [
-                Package['scap'],
-                User[$deploy_user],
-            ],
-            default => Package['scap'],
+            true    => User[$deploy_user],
+            default => [],
         }
     } else {
-        $require_package = [ Package['scap'], User[$deploy_user] ]
+        $require_package = User[$deploy_user]
     }
 
     # Have scap actually deploy the source, restart the service if needed, etc

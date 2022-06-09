@@ -12,7 +12,6 @@
 class scap (
     Variant[Stdlib::Host,String] $deployment_server = 'deployment',
     Stdlib::Fqdn $wmflabs_master                    = 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud',
-    String $version                                 = 'present',
     Stdlib::Port::Unprivileged $php7_admin_port     = 9181,
     Stdlib::Fqdn $cloud_statsd_host                 = 'cloudmetrics1004.eqiad.wmnet',
     Stdlib::Fqdn $betacluster_udplog_host           = 'deployment-mwlog01.deployment-prep.eqiad1.wikimedia.cloud',
@@ -24,12 +23,12 @@ class scap (
     # Required python3 package is provided by base::standard_packages class
     ensure_packages(['rsync'])
 
-    package { 'scap':
-        ensure => $version,
-    }
-
     # For the time being, exclude beta cluster hosts (deployment-prep)
     if $::realm == 'production' {
+        package { 'scap':
+          ensure => 'absent',
+        }
+
         file { '/usr/bin/scap':
           ensure => 'link',
           # The target pointed to here should be in the home of the user defined in class scap::user
@@ -37,7 +36,6 @@ class scap (
           owner  => 'root',
           group  => 'root',
           mode   => '0755',
-          force  => true,
         }
     }
 
