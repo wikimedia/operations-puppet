@@ -46,5 +46,7 @@ class profile::phabricator::monitoring (
                 description   => 'https://phabricator.wikimedia.org certificate expiry',
                 check_command => 'check_https_expiry!phabricator.wikimedia.org!443';
         }
+
+        prometheus::blackbox::check::http { 'phabricator.wikimedia.org': }
     }
 }
