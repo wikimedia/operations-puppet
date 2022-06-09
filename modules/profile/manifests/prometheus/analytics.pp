@@ -47,7 +47,7 @@ class profile::prometheus::analytics (
         ],
       },
       {
-        'job_name'        => 'jmx_zookeper',
+        'job_name'        => 'jmx_zookeeper',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/jmx_zookeeper_*.yaml" ]}

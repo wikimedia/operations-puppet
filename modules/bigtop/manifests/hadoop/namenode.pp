@@ -114,7 +114,7 @@ class bigtop::hadoop::namenode(
         }
 
         # Supporting daemon to enable automatic-failover via health-check.
-        # Stores its state in zookeper.
+        # Stores its state in zookeeper.
         service { 'hadoop-hdfs-zkfc':
             ensure     => 'running',
             enable     => true,
