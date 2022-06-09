@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: docker_registry_ha::web
 #
 # This class sets up nginx to proxy and provide access control

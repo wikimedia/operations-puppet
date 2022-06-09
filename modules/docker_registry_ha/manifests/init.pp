@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class docker_registry_ha (
     Stdlib::Httpurl $swift_url,
     String $swift_user,
