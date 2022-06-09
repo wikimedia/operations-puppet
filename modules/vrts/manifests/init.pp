@@ -155,10 +155,10 @@ class vrts(
         },
     }
 
-    systemd::timer::job { 'otrs-cache-cleanup':
+    systemd::timer::job { 'vrts-cache-cleanup':
         ensure      => 'present',
         user        => 'otrs',
-        description => 'Cleanup OTRS cache',
+        description => 'Cleanup VRTS cache',
         command     => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
         interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
     }
