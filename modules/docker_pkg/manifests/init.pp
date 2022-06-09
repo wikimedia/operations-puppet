@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class docker_pkg
 #
 # Installs all tools needed to build docker images for the WMF.
