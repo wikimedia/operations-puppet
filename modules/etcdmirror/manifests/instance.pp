@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == define etcdmirror::instance
 #
 # Sets up a replication mirroring from a prefix on one etcd server to a prefix
