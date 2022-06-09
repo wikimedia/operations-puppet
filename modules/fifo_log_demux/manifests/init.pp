@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: fifo_log_demux
 #
 # Install and configure fifo-log-demux:

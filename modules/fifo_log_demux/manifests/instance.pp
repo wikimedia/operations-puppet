@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define fifo_log_demux::instance(
     Wmflib::Ensure $ensure = present,
     String $user = 'root',
