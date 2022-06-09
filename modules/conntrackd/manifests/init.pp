@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class conntrackd (
     String $conntrackd_cfg,
     String $systemd_cfg,
