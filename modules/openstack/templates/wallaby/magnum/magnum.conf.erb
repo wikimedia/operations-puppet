@@ -600,73 +600,15 @@ region_name = <%= @region %>
 
 
 [keystone_auth]
-
-#
-# From magnum.conf
-#
-
-# Authentication type to load (string value)
-# Deprecated group/name - [keystone_auth]/auth_plugin
 auth_type = password
-
-# Config Section from which to load plugin specific options (string
-# value)
-#auth_section = <None>
-
-# Authentication URL (string value)
-auth_url = http://localhost:5000
-
-# Scope for system operations (string value)
-#system_scope = <None>
-
-# Domain ID to scope to (string value)
-#domain_id = <None>
-
-# Domain name to scope to (string value)
-#domain_name = <None>
-
-# Project ID to scope to (string value)
-# Deprecated group/name - [keystone_auth]/tenant_id
-#project_id = <None>
-
-# Project name to scope to (string value)
-# Deprecated group/name - [keystone_auth]/tenant_name
+auth_url = <%= @keystone_internal_uri %>
+domain_id = default
 project_name = service
-
-# Domain ID containing project (string value)
-#project_domain_id = <None>
-
-# Domain name containing project (string value)
-project_domain_name = default
-
-# Trust ID (string value)
-#trust_id = <None>
-
-# Optional domain ID to use with v3 and v2 parameters. It will be used
-# for both the user and project domain in v3 and ignored in v2
-# authentication. (string value)
-#default_domain_id = <None>
-
-# Optional domain name to use with v3 API and v2 parameters. It will
-# be used for both the user and project domain in v3 and ignored in v2
-# authentication. (string value)
-#default_domain_name = <None>
-
-# User id (string value)
-#user_id = <None>
-
-# Username (string value)
-# Deprecated group/name - [keystone_auth]/user_name
+project_domain_id = default
+default_domain_id = default
 username = magnum
-
-# User's domain id (string value)
-#user_domain_id = <None>
-
-# User's domain name (string value)
-user_domain_name = default
-
-# User's password (string value)
-#password = <None>
+user_domain_id = default
+password = <%= @ldap_user_pass %>
 
 
 [keystone_authtoken]
