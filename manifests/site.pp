@@ -2974,7 +2974,7 @@ node 'webperf1003.eqiad.wmnet' {
 }
 
 node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
-    role(webperf::profiling_tools)
+    role(insetup)
 }
 
 node /^webperf[12]004\.(codfw|eqiad)\.wmnet/ {
