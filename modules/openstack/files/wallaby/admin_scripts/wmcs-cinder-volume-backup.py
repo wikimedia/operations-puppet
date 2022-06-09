@@ -16,7 +16,7 @@ import datetime
 import logging
 import sys
 import time
-from tenacity import Retrying, stop_after_attempt, wait_random
+from tenacity import Retrying, stop_after_attempt, wait_exponential
 
 import mwopenstackclients
 import novaclient.exceptions
@@ -199,7 +199,7 @@ class CinderBackup(object):
                 logging.info("Cleaning up snapshot %s" % self.snapshot_id)
                 Retrying(
                     stop=stop_after_attempt(9),
-                    wait=wait_random(multiplier=1, min=5, max=10)
+                    wait=wait_exponential(multiplier=1, min=5, max=10)
                     ).call(self.cinderclient.volume_snapshots.delete(self.snapshot_id, force=True))
                 self.snapshot_id = None
 
