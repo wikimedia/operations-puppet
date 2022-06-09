@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 access_log_path: /tmp/test.log
 address:
   socket_address:

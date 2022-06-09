@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary
 #   Configure envoy to be a TLS proxy to local services.
 #   It's thought as a simple shoe-in replacement for tlsproxy::localssl

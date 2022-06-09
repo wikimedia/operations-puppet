@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 # Copyright C 2019-, Wikimedia Foundation, Inc.
 # This script is licensed under the apache license
 """

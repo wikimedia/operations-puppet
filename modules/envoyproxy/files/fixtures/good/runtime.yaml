@@ -1,2 +1,3 @@
+# SPDX-License-Identifier: Apache-2.0
 health_check:
   min_interval: 10

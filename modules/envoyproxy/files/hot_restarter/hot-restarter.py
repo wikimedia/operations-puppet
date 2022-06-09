@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 # This file is taken verbatim from envoy's source.
 # See https://github.com/envoyproxy/envoy/blob/7b0ce0d32a9b584626e8c16b5ae07817eade322d//restarter/hot-restarter.py
 # for the original source.

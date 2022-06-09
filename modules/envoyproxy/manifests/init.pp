@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class envoyproxy(
     Wmflib::Ensure $ensure,
     Stdlib::Port $admin_port,

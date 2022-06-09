@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary internal resource to manage an envoy file on disk
 #
 # @api private
