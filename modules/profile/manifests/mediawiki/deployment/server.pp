@@ -160,8 +160,7 @@ class profile::mediawiki::deployment::server(
     } else {
         # Bootstrap new targets with a scap installation from active server
         exec { 'bootstrap-scap-targets':
-          command     => 'scap/bin/scap install-world --batch',
-          cwd         => '/var/lib/scap',
+          command     => '/var/lib/scap/scap/bin/scap install-world --batch',
           subscribe   => File['/etc/dsh/group/scap_targets'],
           refreshonly => true,
         }
