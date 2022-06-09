@@ -729,10 +729,10 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
-    # Special config for Apache on OTRS deployment
-    prometheus::class_config{ "apache_otrs_${::site}":
-        dest       => "${targets_path}/apache_otrs_${::site}.yaml",
-        class_name => 'profile::otrs',
+    # Special config for Apache on VRTS deployment
+    prometheus::class_config{ "apache_vrts_${::site}":
+        dest       => "${targets_path}/apache_vrts_${::site}.yaml",
+        class_name => 'profile::vrts',
         port       => 9117,
     }
 
