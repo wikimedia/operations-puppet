@@ -80,7 +80,7 @@ class vrts::mail(
         source => 'puppet:///modules/vrts/train_spamassassin',
     }
 
-    systemd::timer::job { 'vtrs_train_spamassassin':
+    systemd::timer::job { 'vrts_train_spamassassin':
         ensure      => present,
         user        => 'root',
         description => 'VRTS - train spamassassin filters',
