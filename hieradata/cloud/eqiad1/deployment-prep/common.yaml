@@ -152,17 +152,31 @@ scap::dsh::groups:
         hosts: []
     restbase-betacluster:
         hosts:
-          - deployment-restbase03.deployment-prep.eqiad.wmflabs
-          - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-restbase03.deployment-prep.eqiad.wmflabs
+            - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
     librenms:
         hosts:
-          - deployment-netbox.deployment-prep.eqiad.wmflabs
+            - deployment-netbox.deployment-prep.eqiad.wmflabs
     webperf:
         hosts:
-          - deployment-webperf21.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-webperf21.deployment-prep.eqiad1.wikimedia.cloud
     arclamp:
         hosts:
-          - deployment-webperf22.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-webperf22.deployment-prep.eqiad1.wikimedia.cloud
+    jobrunner:
+        hosts:
+            - deployment-jobrunner04.deployment-prep.eqiad1.wikimedia.cloud
+    appserver:
+        hosts:
+            - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
+    api_appserver:
+        hosts: []
+    testserver:
+        hosts: []
+    parsoid_php:
+        hosts:
+            - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
 
 
 # Etcd client global configuration
