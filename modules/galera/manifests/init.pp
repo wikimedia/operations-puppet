@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Set up a galera node with mariadb.
 #
 #  $cluster_nodes: list of fqdns of each node in this cluster
