@@ -65,3 +65,59 @@ testcases:
           pid: 157222
         ecs:
           version: "1.7.0"
+  - input:
+      - >
+        {
+        "timestamp": "2021-01-27T19:05:52.065752+00:00",
+        "lineno": 106,
+        "filename": "cli.py",
+        "message": "Finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)",
+        "type": "scap",
+        "funcName": "announce",
+        "script": "/usr/bin/scap",
+        "module": "cli",
+        "program": "scap",
+        "user": "jenkins-deploy",
+        "facility": "user",
+        "level": "INFO",
+        "levelname": "INFO",
+        "pathname": "/usr/lib/python2.7/dist-packages/scap/cli.py",
+        "channel": "scap.announce",
+        "logsource": "deployment-deploy03",
+        "host": "deployment-deploy03",
+        "process": 10857
+        }
+    expected:
+      - message: "Finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)"
+        channel: "scap"
+      - message: "Finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)"
+        normalized:
+          message: "finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)"
+        labels:
+          channel: "scap.announce"
+        log:
+          level: "INFO"
+          syslog:
+            severity:
+              name: "informational"
+              code: 6
+            facility:
+              name: "user"
+              code: 1
+            priority: 14
+          origin:
+            file:
+              name: "cli.py"
+              line: 106
+            function: "announce"
+          logger: "cli"
+        host:
+          name: "deployment-deploy03"
+        service:
+          type: "scap"
+        user:
+          name: "jenkins-deploy"
+        process:
+          pid: 10857
+        ecs:
+          version: "1.7.0"
