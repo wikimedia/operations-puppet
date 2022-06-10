@@ -10,6 +10,8 @@ profile::base::certificates::include_bundle_jks: true
 
 profile::kafka::broker::auth_acls_enabled: true
 
+profile::kafka::broker::log_retention_hours: 24
+
 profile::kafka::broker::monitoring_enabled: true
 profile::kafka::broker::monitoring::is_critical: false
 
