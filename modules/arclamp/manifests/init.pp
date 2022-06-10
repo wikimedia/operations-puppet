@@ -51,18 +51,9 @@ class arclamp(
 
     ensure_packages(['python3-redis', 'python3-yaml', 'python3-swiftclient'])
 
-    # Global setup
-    group { 'xenon':
-        ensure => $ensure,
-    }
-
-    user { 'xenon':
-        ensure     => $ensure,
-        gid        => 'xenon',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    systemd::sysuser { 'xenon':
+        ensure      => $ensure,
+        description => 'Arc Lamp user',
     }
 
     file { '/srv/xenon':
