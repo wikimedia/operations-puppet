@@ -1,3 +1,7 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 profile::opensearch::rack: ''
 profile::opensearch::logstash_transport: syslog
 profile::opensearch::instances: {}

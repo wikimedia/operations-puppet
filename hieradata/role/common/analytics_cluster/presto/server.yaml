@@ -1,3 +1,7 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
@@ -48,7 +52,6 @@ profile::presto::server::catalogs:
       hive.metastore.client.principal: 'presto/an-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.authentication.type: 'KERBEROS'
-      hive.hdfs.impersonation.enabled: true
       hive.hdfs.presto.principal: "presto/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true

@@ -1,2 +1,6 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 karapace::bootstrap_uri: kafka-test1006.eqiad.wmnet:9092
 profile::contacts::role_contacts: ['Data Engineering']

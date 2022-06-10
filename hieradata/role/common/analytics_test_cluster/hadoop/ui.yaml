@@ -1,3 +1,7 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
@@ -24,7 +28,6 @@ profile::hue::hive_thrift_version: 7
 
 profile::hue::database_name: 'hue_test'
 profile::hue::use_hue4_settings: true
-profile::hue::enable_cas: false
 
 profile::oozie::client::oozie_service: 'analytics-test-oozie'
 

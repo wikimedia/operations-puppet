@@ -1,3 +1,7 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 profile::admin::groups:
   - analytics-privatedata-users
   - analytics-admins
@@ -22,7 +26,6 @@ profile::hive::client::hive_service_name: 'analytics-hive'
 profile::oozie::client::oozie_service: 'analytics-oozie'
 
 profile::presto::cluster_name: analytics-presto
-profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 
 profile::statistics::explorer::misc_jobs::hosts_with_jobs:

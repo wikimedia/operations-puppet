@@ -1,3 +1,7 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
@@ -21,7 +25,6 @@ profile::hue::servername: 'hue.wikimedia.org'
 
 profile::hue::database_name: 'hue'
 profile::hue::use_hue4_settings: true
-profile::hue::enable_cas: true
 profile::hue::auth_backend: 'remote_user'
 profile::hue::hive_thrift_version: 5
 

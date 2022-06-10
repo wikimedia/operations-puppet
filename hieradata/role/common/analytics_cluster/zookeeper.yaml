@@ -1,3 +1,7 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+mgmt_contactgroups: 'admins,analytics'
+
 cluster: analytics
 
 profile::zookeeper::cluster_name: "analytics-%{::site}"
