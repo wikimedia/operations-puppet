@@ -290,6 +290,10 @@ profile::keyholder::server::agents:
     trusted_groups:
       - project-%{::labsproject}
 
+  scap:
+    trusted_groups:
+      - project-%{::labsproject}
+
 # deployment-prep scap::source declarations.  These are created
 # by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
