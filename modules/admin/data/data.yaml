@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi]
+              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -349,7 +349,7 @@ groups:
               goransm, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
+              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
@@ -865,7 +865,7 @@ groups:
   secteam-users:
     gid: 813
     description: members of wikimedia security
-    members: [reedy, dsharpe, sbassett]
+    members: [reedy, sbassett]
     approval:
       - John Bennett
   gerrit-deployers:
@@ -3701,12 +3701,11 @@ users:
     uid: 15861
     email: ssethi@wikimedia.org
   dsharpe:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dsharpe
     realname: David Lee Sharpe
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVizg41yHoKMzYqsBQjMbcQa5YKjrZyQIxuM4nrfKv5 dsharpe@Davids-MBP
+    ssh_keys: []
     uid: 20828
     email: dsharpe@wikimedia.org
     krb: present
