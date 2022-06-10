@@ -449,8 +449,8 @@ workers = 2
 
 [keystone_authtoken]
 auth_type = password
-www_authenticate_url = <%= @keystone_admin_uri %>
-auth_url = <%= @keystone_admin_uri %>
+www_authenticate_url = <%= @keystone_internal_uri %>
+auth_url = <%= @keystone_internal_uri %>
 password = <%= @ldap_user_pass %>
 project_domain_id = default
 project_name = service
