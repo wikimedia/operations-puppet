@@ -570,7 +570,8 @@ customviews:
       - localuser
       - globaluser
     view: >
-      select lu_wiki, lu_name, lu_attached_timestamp, lu_attached_method, lu_local_id, lu_global_id
+      select lu_wiki, lu_name, lu_attached_timestamp, lu_attached_method, lu_attachment_method,
+      lu_local_id, lu_global_id
     where: lu_global_id = gu_id AND gu_hidden_level=0
   logging:
     source: logging
