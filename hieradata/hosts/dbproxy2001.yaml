@@ -4,3 +4,4 @@ profile::mariadb::proxy::master::primary_addr: '10.192.0.151:3306'
 profile::mariadb::proxy::master::secondary_name: 'db2078:3321'
 profile::mariadb::proxy::master::secondary_addr: '10.192.48.85:3321'
 profile::mariadb::proxy::firewall: 'misc'
+profile::monitoring::notifications_enabled: false
