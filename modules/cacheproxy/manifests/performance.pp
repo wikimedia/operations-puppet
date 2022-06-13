@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class cacheproxy::performance
 #
 # This class contains production-specific performance hacks

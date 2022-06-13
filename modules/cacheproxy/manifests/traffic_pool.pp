@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class cacheproxy::traffic_pool
 #
 # Manages pooling/depooling of servers in conftool
