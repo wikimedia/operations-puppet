@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# SPDX-License-Identifier: BSD-2-Clause
 # -*- coding: utf-8-*-
 
 # NOTE: This file is managed by puppet.

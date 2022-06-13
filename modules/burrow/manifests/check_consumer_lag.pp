@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define burrow::check_consumer_lag
 #
 # Installs an nrpe check for Kafka consumer lag on a single consumer group

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: burrow
 #
 # Burrow is a consumer offset lag monitoring tool for Kafka
