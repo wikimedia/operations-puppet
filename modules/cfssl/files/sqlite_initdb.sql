@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 CREATE TABLE certificates (
   serial_number            blob NOT NULL,
   authority_key_identifier blob NOT NULL,
