@@ -855,12 +855,6 @@ groups:
     gid: 812
     description: People able to deploy to analytics misc nodes.
     members: [*analytics_admins_members]
-  secteam-users:
-    gid: 813
-    description: members of wikimedia security
-    members: [reedy, sbassett]
-    approval:
-      - John Bennett
   gerrit-deployers:
     gid: 814
     description: deploy gerrit
