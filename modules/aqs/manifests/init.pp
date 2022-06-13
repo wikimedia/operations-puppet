@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: aqs
 #
 # AQS is the Analytics Query Service, a service serving page view data
