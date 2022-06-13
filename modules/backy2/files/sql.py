@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: Apache-2.0
 # -*- encoding: utf-8 -*-
 from backy2.logging import logger
 from backy2.meta_backends import MetaBackend as _MetaBackend

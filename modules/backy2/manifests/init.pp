@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class backy2
 #
 # Install backy2 and configure for backing up ceph rbd volumes to local storage
