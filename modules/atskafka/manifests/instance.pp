@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: atskafka::instance
 #
 # This module configures atskafka, a system to stream ATS request logs to

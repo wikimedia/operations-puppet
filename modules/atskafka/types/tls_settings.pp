@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # ATSkafka::TLS_settings allows to configure atskafka to use TLS for
 # connections to the brokers for both client authentication and data
 # encryption.
