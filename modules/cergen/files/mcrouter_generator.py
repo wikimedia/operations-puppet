@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 #
 # Generates the cergen yaml file for the mcrouter CA, then runs it
 #

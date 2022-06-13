@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class cergen::mcrouter_ca(String $ca_secret) {
     require ::cergen
 
