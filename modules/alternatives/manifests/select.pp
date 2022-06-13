@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: alternatives::select
 #
 # Debian's alternatives system uses symlinks to refer generic commands
