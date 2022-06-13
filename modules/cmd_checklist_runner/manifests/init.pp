@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class cmd_checklist_runner (
 ) {
     $runner = 'cmd-checklist-runner'
