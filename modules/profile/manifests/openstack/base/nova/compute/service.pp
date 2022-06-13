@@ -146,4 +146,15 @@ class profile::openstack::base::nova::compute::service(
             value => '0',
         }
     }
+
+    # this is not done at the user definition time due to only being needed for cloudvirts
+    exec { 'Add nova user to libvirt group':
+        command => '/usr/sbin/usermod -G libvirt nova',
+        unless  => '/usr/bin/id nova | /usr/bin/grep -q -E \'\(libvirt\)\''
+    }
+
+    exec { 'Add nova user to libvirt-qemu group':
+        command => '/usr/sbin/usermod -G libvirt-qemu nova',
+        unless  => '/usr/bin/id nova | /usr/bin/grep -q -E \'\(libvirt-qemu\)\''
+    }
 }
