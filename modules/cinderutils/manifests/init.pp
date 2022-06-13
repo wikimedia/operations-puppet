@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class cinderutils {
     file { '/usr/local/sbin/wmcs-prepare-cinder-volume':
         ensure => present,

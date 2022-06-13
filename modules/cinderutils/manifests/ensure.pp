@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # resource: cinderutils::ensure
 #
 # This resource will hunt for an attached but unmounted cinder volume,

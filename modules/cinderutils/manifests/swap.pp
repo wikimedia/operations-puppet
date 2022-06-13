@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = define: cinderutils::swap
 # Detects an available volume and creates it as swap space
 #
