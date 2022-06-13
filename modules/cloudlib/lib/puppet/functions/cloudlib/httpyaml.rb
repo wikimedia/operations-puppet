@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 Puppet::Functions.create_function(:'cloudlib::httpyaml') do
   require 'net/http'
   require 'uri'
