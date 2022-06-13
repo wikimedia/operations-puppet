@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 #
 # Runs a shell command as an icinga check.
 # The retval of the command determines the status of the check.

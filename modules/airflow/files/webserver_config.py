@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # NOTE: This file is managed by puppet.
 
 """Default configuration for the Airflow webserver"""

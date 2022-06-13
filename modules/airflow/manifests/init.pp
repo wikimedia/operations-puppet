@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class airflow
 # Base class for declaring airflow::instances.
 # Installs the WMF airflow .deb package as a conda environment into /usr/lib/airflow.

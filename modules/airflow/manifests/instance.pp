@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define airflow::instance
 #
 # Sets up an instance of Apache Airflow.
