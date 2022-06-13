@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hive::metastore::mysql::jar
 # Installs libmysql-java and symlinks the .jar artifact
 # into /usr/lib/hive/lib.

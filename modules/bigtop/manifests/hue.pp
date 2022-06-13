@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hue
 #
 # Installs hue, sets up the hue.ini file

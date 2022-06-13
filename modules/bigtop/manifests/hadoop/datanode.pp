@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::datanode
 # Installs and starts up a Hadoop DataNode.
 #

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: bigtop::hadoop::yarn::capacity_scheduler
 #
 # This class renders the /etc/hadoop/conf/capacity-scheduler.xml file from a map

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::master
 # Wrapper class for Hadoop master node services:
 # - NameNode

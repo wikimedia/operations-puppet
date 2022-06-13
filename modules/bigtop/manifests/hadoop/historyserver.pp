@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::historyserver
 # Installs and starts up a Hadoop YARN HistoryServer.
 # This will ensure that the HDFS /user/history exists.

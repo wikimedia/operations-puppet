@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop
 #
 # Installs the main Hadoop/HDFS packages and config files.  This

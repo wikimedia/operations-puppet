@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define bigtop::hadoop::directory
 #
 # Creates or removes a directory in HDFS.

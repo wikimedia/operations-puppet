@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::namenode::standby
 # Hadoop Standby NameNode.  Include this class instead of
 # bigtop::hadoop::master on your HA standby NameNode(s).  This

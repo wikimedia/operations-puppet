@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define bigtop::alternative
 # Runs update-alternatives command to create and set CDH related alternatives.
 # This is usually used to name config directories after $cluster_name.

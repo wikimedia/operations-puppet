@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::mount
 # Mounts the HDFS filesystem at $mount_point using hadoop-hdfs-fuse.
 #

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hive::server
 # Configures hive-server2.  Requires that bigtop::hadoop is included so that
 # hadoop-client is available to create hive HDFS directories.

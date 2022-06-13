@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::users
 # Ensures that all users in the posix group $group
 # have HDFS user directories at /user/<username>

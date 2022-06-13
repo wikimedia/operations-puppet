@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::namenode
 # Installs and configureds Hadoop NameNode.
 # This will format the NameNode if it is not

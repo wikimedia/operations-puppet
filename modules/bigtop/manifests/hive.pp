@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hive
 #
 # Installs Hive packages (needed for Hive Client).

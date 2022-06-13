@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::oozie
 # Installs the oozie-client package
 # And sets OOZIE_URL in /etc/profile.d/oozie.sh.

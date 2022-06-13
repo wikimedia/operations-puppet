@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::nodemanager
 # Installs and configures a Hadoop NodeManager worker node.
 #

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::hadoop::worker
 # Wrapper class for Hadoop Worker node services:
 # - DataNode

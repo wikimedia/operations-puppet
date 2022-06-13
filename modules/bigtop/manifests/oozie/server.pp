@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class bigtop::oozie::server
 #
 # Installs and configureds oozie server.  You must have an oozie

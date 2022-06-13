@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define bigtop::hadoop::worker::paths
 #
 # Ensures directories needed for Hadoop Worker nodes

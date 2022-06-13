@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == define bigtop::mysql_jdbc
 #
 # Helper to deploy Mysql/Mariadb jars and custom symlinks
