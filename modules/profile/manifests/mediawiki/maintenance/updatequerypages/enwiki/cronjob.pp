@@ -12,6 +12,7 @@ class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob {
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_mostlinkedcategories_s1':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedcategories',
         interval => '*-17 01:00',
     }
