@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # If you do not set values for the NEED_ options, they will be attempted
 # autodetected; this should be sufficient for most people. Valid alternatives
 # for the NEED_ options are "yes" and "no".

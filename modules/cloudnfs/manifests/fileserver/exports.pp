@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up NFS exports on a labstore fileserver
 class cloudnfs::fileserver::exports(
     Array[String] $server_vols,

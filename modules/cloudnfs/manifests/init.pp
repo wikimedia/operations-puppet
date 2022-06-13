@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == class cloudnfs
 #
 # This class configures the server as an NFS kernel server (in the cloud realm)
