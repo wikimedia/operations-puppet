@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: coal::web
 #
 # The web API for data collected by coal::processor.

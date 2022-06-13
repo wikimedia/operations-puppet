@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: coal::processor
 #
 # Install and run the coal processor service, which collects median
