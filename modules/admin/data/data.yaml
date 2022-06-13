@@ -31,7 +31,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart]
+              jcarvalho, sthart, dstrine]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -2810,7 +2810,6 @@ users:
     realname: David Strine
     ssh_keys: []
     uid: 14098
-    email: dstrine@wikimedia.org
   foks:
     ensure: present
     gid: 500
@@ -5401,9 +5400,8 @@ ldap_only_users:
     ensure: absent
     realname: Delphine Menard
   dstrine:
-    ensure: present
+    ensure: absent
     realname: David Strine
-    email: dstrine@wikimedia.org
   dwalden:
     ensure: present
     realname: Dominic Walden
