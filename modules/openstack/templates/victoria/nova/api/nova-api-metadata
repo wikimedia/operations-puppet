@@ -18,6 +18,9 @@ DESC="OpenStack Nova Metadata API (nova-api-metadata)"
 PROJECT_NAME=nova
 NAME=${PROJECT_NAME}-api-metadata
 UWSGI_PORT=<%= @metadata_bind_port %>
+# If a request is stuck for more than 5 seconds, kill and restart the worker
+# see T309930
+HARAKIRI_TIMEOUT=5
 UWSGI_INI_PATH=/etc/nova/nova-api-metadata-uwsgi.ini
 UWSGI_INI_APP=/usr/bin/nova-api-wsgi
 #!/bin/sh
@@ -62,6 +65,10 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 		DAEMON_ARGS="--https-socket :${UWSGI_PORT},${CERT_FILE},${KEY_FILE}"
 	else
 		DAEMON_ARGS="--http-socket :${UWSGI_PORT}"
+	fi
+
+	if [ -n "${HARAKIRI_TIMEOUT}" ] ; then
+		DAEMON_ARGS="${DAEMON_ARGS} --harakiri ${HARAKIRI_TIMEOUT}"
 	fi
 
 	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
