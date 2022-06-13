@@ -6129,3 +6129,7 @@ ldap_only_users:
     ensure: present
     realname: Evelien Zandbergen
     email: evelien.zandbergen@wikimedia.de
+  xcollazo:
+    ensure: present
+    realname: Xabriel J. Collazo Mojica
+    email: xcollazo@wikimedia.org
