@@ -3707,8 +3707,7 @@ users:
     realname: David Lee Sharpe
     ssh_keys: []
     uid: 20828
-    email: dsharpe@wikimedia.org
-    krb: present
+    krb: absent
   juliaglen:
     ensure: absent
     gid: 500
