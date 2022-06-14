@@ -81,7 +81,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
-              daniel, eevans, kevinbazira, gmodena, hokwelum, tchin]
+              daniel, eevans, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -5322,7 +5322,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJm5/TPBrE72w+0hfHp5W/HPPdKhJL43UQ/+nVFsJJ81 xcollazo@wikimedia.org
-    krb: present      
+    krb: present
 
 ldap_only_users:
   abartov:
