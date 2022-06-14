@@ -368,7 +368,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar]
+              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5314,7 +5314,15 @@ users:
     uid: 39416
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
-
+  xcollazo:
+    ensure: present
+    realname: Xabriel J. Collazo Mojica
+    email: xcollazo@wikimedia.org
+    uid: 39446
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJm5/TPBrE72w+0hfHp5W/HPPdKhJL43UQ/+nVFsJJ81 xcollazo@wikimedia.org
+    krb: present      
 
 ldap_only_users:
   abartov:
@@ -6124,7 +6132,3 @@ ldap_only_users:
     ensure: present
     realname: Evelien Zandbergen
     email: evelien.zandbergen@wikimedia.de
-  xcollazo:
-    ensure: present
-    realname: Xabriel J. Collazo Mojica
-    email: xcollazo@wikimedia.org
