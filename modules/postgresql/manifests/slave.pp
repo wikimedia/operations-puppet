@@ -15,6 +15,8 @@
 # @param rep_app The replication label to use for this host
 # @param ssldir the ssl dir
 # @param log_min_duration_statement log statments that take longer then this (seconds)
+# @param prom_lag_critical critical level of replica lag for prometheus (bytes)
+# @param prom_lag_warning warning level of replica lag for prometheus (bytes)
 # @example
 #  class {'postgresql::slave':
 #       master_server => 'mserver',
@@ -33,6 +35,8 @@ class postgresql::slave(
     Optional[Numeric]          $pgversion       = undef,
     Optional[Stdlib::Unixpath] $ssldir          = undef,
     Optional[Integer[250]]     $log_min_duration_statement  = undef,
+    Integer                    $prom_lag_critical           = 16777216, # 16Mb
+    Integer                    $prom_lag_warning            = 1048576, # 1Mb
 ) {
 
     $_pgversion = $pgversion ? {
@@ -97,9 +101,9 @@ class postgresql::slave(
     }
 
     file { '/usr/bin/prometheus_postgresql_replication_lag':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/postgresql/prometheus/postgresql_replication_lag.sh',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('postgresql/prometheus/postgresql_replication_lag.sh.erb'),
     }
 }
