@@ -136,7 +136,7 @@ groups:
               aikochou, kevinbazira, tsepothoabala
     ]
     system_members: [mwbuilder, mwpresync]
-    privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap) NOPASSWD: ALL',
+    privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice',
