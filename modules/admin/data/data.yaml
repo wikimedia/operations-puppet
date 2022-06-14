@@ -3102,7 +3102,7 @@ users:
     ensure: present
     gid: 500
     name: samtar
-    realname: Sam Tarling
+    realname: Sammy Tarling
     ssh_keys: []  # no SSH keys, for Superset dashboards with private data
     uid: 12744
     email: starling-ctr@wikimedia.org
