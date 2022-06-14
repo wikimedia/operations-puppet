@@ -16,6 +16,8 @@ class scap (
     Stdlib::Fqdn $cloud_statsd_host                 = 'cloudmetrics1004.eqiad.wmnet',
     Stdlib::Fqdn $betacluster_udplog_host           = 'deployment-mwlog01.deployment-prep.eqiad1.wikimedia.cloud',
     Optional[Hash] $k8s_deployments                 = {},
+    # TODO: drop this parameters as its not used but also needs to be removed from any callers of this class
+    String $version                                 = 'present'
 ) {
     require git::lfs
     include scap::user
