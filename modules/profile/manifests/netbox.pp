@@ -362,7 +362,7 @@ class profile::netbox (
     }
     # Timer for dumping tables
     systemd::timer::job { 'netbox_dump_run':
-        ensure                    => present,
+        ensure                    => $active_ensure,
         description               => 'Dump CSVs from Netbox.',
         environment               => $systemd_environment,
         command                   => '/srv/deployment/netbox-extras/tools/rotatedump',
