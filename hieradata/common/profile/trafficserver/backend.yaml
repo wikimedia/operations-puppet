@@ -35,7 +35,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://cxserver.discovery.wmnet:4002
     - type: map
       target: http://datahub.wikimedia.org
-      replacement: https://k8s-ingress-wikikube-rw.discovery.wmnet:30443
+      replacement: https://datahub-frontend.discovery.wmnet:30443
     - type: map
       target: http://datasets.wikimedia.org
       replacement: https://analytics-web.discovery.wmnet:8443
