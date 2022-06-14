@@ -9,8 +9,11 @@ ca_cert=<%= @ganeti_ca_cert %>
 [netbox]
 api=<%= @netbox_api %>
 
-<%  @ganeti_sync_profiles.each do |profile| -%>
+<% @ganeti_sync_profiles.each do |profile| -%>
 [profile:<%= profile['profile'] %>]
-api=https://<%= profile['url'] %>:<%= profile['port'] %>/
+site=<%= profile['site'] %>
 cluster=<%= profile['url'] %>
+<% if profile.has_key?('port') -%>
+port=<%= profile['port'] %>
+<% end %>
 <% end %>

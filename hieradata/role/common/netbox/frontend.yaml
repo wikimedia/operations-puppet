@@ -83,25 +83,25 @@ profile::netbox::report_checks:
 profile::netbox::ganeti_sync_profiles:
     - profile: eqiad
       url: ganeti01.svc.eqiad.wmnet
-      port: 5080
+      site: eqiad
     - profile: codfw
       url: ganeti01.svc.codfw.wmnet
-      port: 5080
+      site: codfw
     - profile: ulsfo
       url: ganeti01.svc.ulsfo.wmnet
-      port: 5080
+      site: ulsfo
     - profile: esams
       url: ganeti01.svc.esams.wmnet
-      port: 5080
+      site: esams
     - profile: eqsin
       url: ganeti01.svc.eqsin.wmnet
-      port: 5080
+      site: eqsin
     - profile: drmrs01
       url: ganeti01.svc.drmrs.wmnet
-      port: 5080
+      site: drmrs
     - profile: drmrs02
       url: ganeti02.svc.drmrs.wmnet
-      port: 5080
+      site: drmrs
     - profile: codfw_test
       url: ganeti-test01.svc.codfw.wmnet
-      port: 5080
+      site: codfw
