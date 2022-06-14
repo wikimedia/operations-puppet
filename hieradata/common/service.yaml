@@ -1348,7 +1348,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   datahub-gms:
     description: DataHub Generalized Metadata Service
@@ -1363,7 +1363,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   ml-ctrl:
     description: Kubernetes master service for ML cluster. ml-ctrl.svc.%{::site}.wmnet
