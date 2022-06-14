@@ -7,20 +7,11 @@
   # Select how a project should be built. Fixed to docker executor for security reasons.
   executor = "docker"
 
-  <%- if @ensure_buildkitd == 'present' -%>
-  # Provide a default variable for BUILDKIT_HOST
-  environment = ["BUILDKIT_HOST=tcp://buildkitd.<%= @docker_network %>:1234"]
-  <%- end -%>
-
   [runners.docker]
     # The image to run jobs with.
     image = '<%= @docker_image %>'
     # Disable to run container in privileged mode, for security reasons.
     privileged = false
-
-    # Run executors on an explicit network shared with buildkitd to allow for
-    # resolution of the buildkitd container by name.
-    network_mode = '<%= @docker_network %>'
 
     # Allowed images - T291978
     allowed_images = [

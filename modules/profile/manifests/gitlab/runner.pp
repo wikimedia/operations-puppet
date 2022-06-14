@@ -7,7 +7,6 @@
 # @param docker_volume Use a separate volume for docker data (for use on WMCS)
 # @param docker_volume_min Minimum size (Gb) of attached volumes considered for the docker mount.
 # @param docker_volume_max Maximum size (Gb) of attached volumes considered for the docker mount.
-# @param docker_network Name of the Docker network to provision for the runner.
 # @param docker_settings Docker daemon settings
 # @param docker_version Version of Docker to install
 # @param gitlab_url URL of the GitLab instance on which to register
@@ -20,8 +19,6 @@
 # @param restrict_firewall Enable default REJECT rule for all egress Docker traffic to wmnet
 # @param allowed_services List of TCP services (host and port) which can be accessed from Docker
 # with restricted firewall enabled. Only used when restrict_firewall is True.
-# @param ensure_buildkitd Whether to provide buildkitd for image building.
-# @param buildkitd_image Ref to buildkitd container image.
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -30,8 +27,6 @@ class profile::gitlab::runner (
     Boolean                                     $docker_volume      = lookup('profile::gitlab::runner::docker_volume'),
     Integer                                     $docker_volume_min  = lookup('profile::gitlab::runner::docker_volume_min'),
     Integer                                     $docker_volume_max  = lookup('profile::gitlab::runner::docker_volume_max'),
-    String                                      $docker_network     = lookup('profile::gitlab::runner::docker_network'),
-    Stdlib::IP::Address                         $docker_subnet      = lookup('profile::gitlab::runner::docker_subnet'),
     Hash                                        $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
     String                                      $docker_version     = lookup('profile::gitlab::runner::docker_version'),
     String                                      $docker_gc_interval = lookup('profile::gitlab::runner::docker_gc_interval'),
@@ -48,8 +43,6 @@ class profile::gitlab::runner (
     String                                      $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
     Boolean                                     $restrict_firewall  = lookup('profile::gitlab::runner::restrict_firewall'),
     Hash[String, Gitlab_runner::AllowedService] $allowed_services   = lookup('profile::gitlab::runner::allowed_services'),
-    Wmflib::Ensure                              $ensure_buildkitd   = lookup('profile::gitlab::runner::ensure_buildkitd'),
-    String                                      $buildkitd_image    = lookup('profile::gitlab::runner::buildkitd_image'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -75,13 +68,7 @@ class profile::gitlab::runner (
         }
     }
 
-    docker::network { $docker_network:
-        ensure => $ensure,
-        subnet => $docker_subnet,
-    }
-
-    class { 'gitlab_runner::firewall':
-        subnet            => $docker_subnet,
+    class {'gitlab_runner::firewall':
         restrict_firewall => $restrict_firewall,
         allowed_services  => $allowed_services,
     }
@@ -131,14 +118,11 @@ class profile::gitlab::runner (
     class { 'gitlab_runner::config':
         concurrent              => $concurrent,
         docker_image            => $docker_image,
-        docker_network          => $docker_network,
-        ensure_buildkitd        => $ensure_buildkitd,
         gitlab_url              => $gitlab_url,
         runner_name             => $runner_name,
         exporter_listen_address => $exporter_listen_address,
         enable_exporter         => $enable_exporter,
         gitlab_runner_user      => $gitlab_runner_user,
-        require                 => Docker::Network[$docker_network],
     }
 
     if $ensure == 'present' {
@@ -172,12 +156,5 @@ class profile::gitlab::runner (
             onlyif  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
             before  =>  Package['gitlab-runner'],
         }
-    }
-
-    class { 'buildkitd':
-        ensure  => $ensure_buildkitd,
-        network => $docker_network,
-        image   => $buildkitd_image,
-        require => Docker::Network[$docker_network],
     }
 }

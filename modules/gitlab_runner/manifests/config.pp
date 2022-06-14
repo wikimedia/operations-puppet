@@ -2,8 +2,6 @@
 class gitlab_runner::config (
     Integer             $concurrent              = 3,
     String              $docker_image            = 'docker-registry.wikimedia.org/buster:latest',
-    String              $docker_network          = 'gitlab-runner',
-    Wmflib::Ensure      $ensure_buildkitd        = 'present',
     Stdlib::HTTPSUrl    $gitlab_url              = 'https://gitlab.wikimedia.org/',
     String              $runner_name             = 'GitLab Runner',
     Boolean             $enable_exporter         = false,
@@ -12,6 +10,7 @@ class gitlab_runner::config (
     Integer             $check_interval          = 3,
     Integer             $session_timeout         = 1800,
     String              $gitlab_runner_user      = 'gitlab-runner',
+
 ) {
 
     # Setup config template which is used while registering new runners

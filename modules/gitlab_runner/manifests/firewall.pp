@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 class gitlab_runner::firewall (
-    Stdlib::IP::Address                         $subnet,
     Wmflib::Ensure                              $ensure            = present,
     Boolean                                     $restrict_firewall = false,
     Hash[String, Gitlab_runner::AllowedService] $allowed_services  = [],
 ) {
 
     ferm::conf { 'docker-ferm':
-        ensure  => $ensure,
-        prio    => 20,
-        content => template('gitlab_runner/docker-ferm.erb'),
+        ensure => $ensure,
+        prio   => 20,
+        source => 'puppet:///modules/profile/ci/docker-ferm',
     }
 
     if $restrict_firewall {
