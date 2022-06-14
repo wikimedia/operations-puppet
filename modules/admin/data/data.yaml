@@ -5135,7 +5135,7 @@ users:
     email: sberghel@gmail.com
     krb: present
     expiry_date: 2022-09-13
-    expiry_contact: jbennett@wikimedia.org
+    expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFR6HVVjTuiJM6r8Zl12+41Pef80nk/zhchCW3mTzoMx skye@Neikos.local
   tmlt-tmager:
@@ -5146,7 +5146,7 @@ users:
     email: tom.magerlein@tmlt.io
     krb: present
     expiry_date: 2022-09-13
-    expiry_contact: jbennett@wikimedia.org
+    expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILpX/tkSGrfKB7+S4fkCOz5ivRxmR5TymsNzn90iZlP5 tom@tumult-tjm-dev
   damiendf:
@@ -5157,7 +5157,7 @@ users:
     email: damien+wikimedia@tmlt.io
     krb: present
     expiry_date: 2022-09-13
-    expiry_contact: jbennett@wikimedia.org
+    expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETNJbuSzSjngqw7YMt5kv6+iIfWqx43a0OQC1Loa8bZ damien@cyclone.local
   aminalhazwani:
