@@ -16,7 +16,7 @@
     # Allowed images - T291978
     allowed_images = [
       # Everything in Wikimedia registry:
-      "docker-registry.wikimedia.org/*",
+      "docker-registry.wikimedia.org/**/*",
 
       # Distributions:
       "centos/*:*",
@@ -32,9 +32,9 @@
       "rustlang/rust:nightly",
 
       # GitLab upstream - includes security analyzers and terraform images:
-      "registry.gitlab.com/gitlab-org/*",
+      "registry.gitlab.com/gitlab-org/**/*",
     ]
 
     allowed_services = [
-      "docker-registry.wikimedia.org/*",
+      "docker-registry.wikimedia.org/**/*",
     ]
