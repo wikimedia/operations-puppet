@@ -44,11 +44,11 @@ CMD="mysql --defaults-file=$DEFAULTS_FILE -nNE --connect-timeout=$TIMEOUT"
 #
 # Check galera node state
 #
-WSREP_READY=$($CMD -e "SHOW STATUS LIKE 'wsrep_ready';" 2>${ERR_LOG} | tail -1 2>>${ERR_LOG})
+WSREP_READY=$($CMD -e "SHOW STATUS LIKE 'wsrep_ready';" 2>>${ERR_LOG} | tail -1 2>>${ERR_LOG})
 
 if [[ $WSREP_READY == "ON" ]]
 then
-    READ_ONLY=$($CMD -e "SHOW GLOBAL VARIABLES LIKE 'read_only';" 2>${ERR_LOG} | tail -1 2>>${ERR_LOG})
+    READ_ONLY=$($CMD -e "SHOW GLOBAL VARIABLES LIKE 'read_only';" 2>>${ERR_LOG} | tail -1 2>>${ERR_LOG})
 
     if [[ "${READ_ONLY}" == "ON" ]];then
         # If read only, do not use.
