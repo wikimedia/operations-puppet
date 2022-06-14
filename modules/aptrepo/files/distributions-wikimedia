@@ -96,6 +96,7 @@ Version: 10
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/bird2
  component/calico-future
  component/cassandra311
  component/cassandradev
