@@ -205,28 +205,6 @@ class profile::netbox (
 
     $active_ensure = ($active_server == $facts['networking']['fqdn']).bool2str('present', 'absent')
 
-    monitoring::service { 'netbox-ssl':
-        ensure        => $active_ensure,
-        description   => 'netbox SSL',
-        check_command => "check_ssl_http_letsencrypt!${service_hostname}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
-    }
-
-    monitoring::service { 'netbox-https':
-        ensure        => $active_ensure,
-        description   => 'netbox HTTPS',
-        check_command => "check_https_url!netbox.wikimedia.org!https://${service_hostname}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
-    }
-
-    monitoring::service { 'netbox-https-expiry':
-        ensure        => $active_ensure,
-        description   => 'netbox HTTPS expiry',
-        check_command => 'check_https_expiry!netbox.wikimedia.org!443',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
-    }
-
-
     # Report Deployment
     #
     # FIXME service::uwsgi seems to create the directory /etc/netbox/, counter intuitively.
