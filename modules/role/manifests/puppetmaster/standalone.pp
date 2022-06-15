@@ -65,6 +65,7 @@ class role::puppetmaster::standalone(
     }
 
     include profile::openstack::base::puppetmaster::enc_client
+    include profile::openstack::base::puppetmaster::stale_certs_exporter
 
     $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
         true    => [$puppetdb_host],
