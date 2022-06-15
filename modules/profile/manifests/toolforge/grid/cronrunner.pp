@@ -77,6 +77,27 @@ class profile::toolforge::grid::cronrunner(
         show_diff => false,
     }
 
+    class { '::rsync::server':
+        ensure_service => $is_active.bool2str('running', 'stopped'),
+    }
+
+    rsync::server::module { 'crontabs':
+        ensure      => $is_active.bool2str('present', 'absent'),
+        comment     => 'Toolforge crontabs',
+        read_only   => 'yes',
+        path        => '/var/spool/cron/crontabs',
+        hosts_allow => wmflib::class::hosts('profile::toolforge::grid::cronrunner'),
+    }
+
+    systemd::timer::job { 'rsync-crontabs':
+        ensure      => $is_active.bool2str('absent', 'present'),
+        user        => 'root',
+        description => 'rsync crontabs from the active server',
+        # add a chmod since the `crontab` group has different GIDs on different servers
+        command     => "/bin/sh -c '/usr/bin/rsync -avp --delete rsync://${active_host}/crontabs /var/spool/cron/crontabs && chgrp -R crontab /var/spool/cron/crontabs'",
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '10m'},
+    }
+
     systemd::timer::job { 'disable-tool':
         ensure          => $is_active.bool2str('present', 'absent'),
         logging_enabled => false,
