@@ -4,6 +4,11 @@
 
 set -euo pipefail
 
+# Make sure ERR_LOG dir exists and is writable for this.
+ERR_LOG="/var/log/nodecheck/err.log"
+exec 2>>$ERR_LOG
+echo $(/usr/bin/date +%s) beginning health check >> ${ERR_LOG}
+
 function usage {
     cat << EOF
 Usage: $(basename -- "$0") <config_file>
@@ -23,17 +28,17 @@ if [ -e "/tmp/galera.disabled" ]; then
     echo -en "\r\n"
     echo -en "DB is manually disabled.\r\n"
     echo -en "\r\n"
+    echo $(/usr/bin/date +%s) returned 404 >> ${ERR_LOG}
     exit 1
 fi
 
 # By default, assume we are running as prometheus, which has enough perms.
 DEFAULTS_FILE=${1:-/var/lib/prometheus/.my.cnf}
 
-# Make sure ERR_LOG dir exists and is writable for this.
-ERR_LOG="/var/log/nodecheck/err.log"
 
 if [[ ! -f $DEFAULTS_FILE ]]; then
     usage
+    echo $(/usr/bin/date +%s) returned NOTHING >> ${ERR_LOG}
     exit 1
 fi
 TIMEOUT=10
@@ -59,6 +64,7 @@ then
         echo -en "\r\n"
         echo -en "Node is read-only.\r\n"
         echo -en "\r\n"
+        echo $(/usr/bin/date +%s) returned 503 >> ${ERR_LOG}
         exit 1
     fi
     # All is well! Use this node
@@ -69,6 +75,7 @@ then
     echo -en "\r\n"
     echo -en "Galera node is ready.\r\n"
     echo -en "\r\n"
+    echo $(/usr/bin/date +%s) returned 200 >> ${ERR_LOG}
     exit 0
 else
     # wsrep_ready is not ON, so the node is not going to work
@@ -79,5 +86,6 @@ else
     echo -en "\r\n"
     echo -en "DO NOT USE ME.\r\n"
     echo -en "\r\n"
+    echo $(/usr/bin/date +%s) returned 503 >> ${ERR_LOG}
     exit 1
 fi
