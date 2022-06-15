@@ -21,13 +21,15 @@ EOF
 # if a disabled file is present, return 404, for manual dropping from cluster
 if [ -e "/tmp/galera.disabled" ]; then
     # Shell return-code is 1
-    echo -en "HTTP/1.1 404 Not Found\r\n"
-    echo -en "Content-Type: text/plain\r\n"
-    echo -en "Connection: close\r\n"
-    echo -en "Content-Length: 24\r\n"
-    echo -en "\r\n"
-    echo -en "DB is manually disabled.\r\n"
-    echo -en "\r\n"
+    cat <<EOR
+HTTP/1.1 404 Not Found
+Content-Type: text/plain
+Connection: close
+Content-Length: 24
+
+DB is manually disabled.
+
+EOR
     echo $(/usr/bin/date +%s) returned 404 >> ${ERR_LOG}
     exit 1
 fi
@@ -57,35 +59,41 @@ then
 
     if [[ "${READ_ONLY}" == "ON" ]];then
         # If read only, do not use.
-        echo -en "HTTP/1.1 503 Service Unavailable\r\n"
-        echo -en "Content-Type: text/plain\r\n"
-        echo -en "Connection: close\r\n"
-        echo -en "Content-Length: 20\r\n"
-        echo -en "\r\n"
-        echo -en "Node is read-only.\r\n"
-        echo -en "\r\n"
+        cat <<EOR
+HTTP/1.1 503 Service Unavailable
+Content-Type: text/plain
+Connection: close
+Content-Length: 20
+
+Node is read-only.
+
+EOR
         echo $(/usr/bin/date +%s) returned 503 >> ${ERR_LOG}
         exit 1
     fi
     # All is well! Use this node
-    echo -en "HTTP/1.1 200 OK\r\n"
-    echo -en "Content-Type: text/plain\r\n"
-    echo -en "Connection: close\r\n"
-    echo -en "Content-Length: 23\r\n"
-    echo -en "\r\n"
-    echo -en "Galera node is ready.\r\n"
-    echo -en "\r\n"
+    cat <<EOR
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Connection: close
+Content-Length: 23
+
+Galera node is ready.
+
+EOR
     echo $(/usr/bin/date +%s) returned 200 >> ${ERR_LOG}
     exit 0
 else
     # wsrep_ready is not ON, so the node is not going to work
-    echo -en "HTTP/1.1 503 Service Unavailable\r\n"
-    echo -en "Content-Type: text/plain\r\n"
-    echo -en "Connection: close\r\n"
-    echo -en "Content-Length: 16\r\n"
-    echo -en "\r\n"
-    echo -en "DO NOT USE ME.\r\n"
-    echo -en "\r\n"
+    cat <<EOR
+HTTP/1.1 503 Service Unavailable
+Content-Type: text/plain
+Connection: close
+Content-Length: 16
+
+DO NOT USE ME.
+
+EOR
     echo $(/usr/bin/date +%s) returned 503 >> ${ERR_LOG}
     exit 1
 fi
