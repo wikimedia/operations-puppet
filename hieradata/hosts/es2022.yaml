@@ -2,4 +2,3 @@
 mariadb::shard: 'es4'
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
