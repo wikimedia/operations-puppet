@@ -26,10 +26,6 @@ class role::logging::mediawiki::udp2log(
 
     class { '::bsection': }
 
-    if $::hostname == 'mwlog1002' {
-        class {'profile::logster_alarm':}
-    }
-
     ferm::rule { 'udp2log_accept_all_wikimedia':
         rule => 'saddr ($DOMAIN_NETWORKS) proto udp ACCEPT;',
     }
