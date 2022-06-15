@@ -5,7 +5,6 @@
 
 <VirtualHost *:443>
     ServerName <%= @git_hostname %>
-    ServerAlias <%= @facts['networking']['fqdn'] %>
     ServerAdmin noc@wikimedia.org
 
     SSLEngine on

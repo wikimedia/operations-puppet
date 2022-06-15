@@ -15,6 +15,7 @@
 <VirtualHost *:443>
     ServerName <%= @service_hostname %>
     ServerAlias <%= @discovery_name %>
+    ServerAlias <%= @facts['networking']['fqdn'] %>
     ServerAdmin noc@wikimedia.org
 
     SSLEngine on
