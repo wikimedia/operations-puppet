@@ -253,8 +253,6 @@ ntp_peers:
     drmrs: []
     esams: []
 
-scap::version: present
-
 profile::base::systemd::cpu_accounting: 'no'
 profile::base::systemd::blockio_accounting: 'no'
 profile::base::systemd::memory_accounting: 'no'
