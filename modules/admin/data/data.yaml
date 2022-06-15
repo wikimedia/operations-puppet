@@ -368,7 +368,8 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo]
+              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
+              ricby]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5323,6 +5324,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJm5/TPBrE72w+0hfHp5W/HPPdKhJL43UQ/+nVFsJJ81 xcollazo@wikimedia.org
     krb: present
+  ricby:
+    ensure: present
+    realname: Ricardo Baeza-Yates
+    email: ricardo.baeza@upf.edu
+    uid: 39397
+    gid: 500
+    expiry_date: 2022-09-01
+    expiry_contact: lzia@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
