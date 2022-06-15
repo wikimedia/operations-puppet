@@ -196,6 +196,7 @@ class profile::toolforge::grid::exec_environ {
         'libdigest-crc-perl',
         'libdigest-hmac-perl',
         'libfile-nfslock-perl',
+        'libfile-slurp-perl',      # T305308
         'libgd-perl',              # T69199.
         'libhtml-format-perl',
         'libhtml-html5-entities-perl',
