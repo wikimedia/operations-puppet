@@ -149,7 +149,7 @@ class GridConfig:
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = cmd_run(self.modcmd, stderr_filter=is_normal_sge_warning, timeout=60)
+            result = cmd_run(self.modcmd, stderr_filter_out=is_normal_sge_warning, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -157,7 +157,7 @@ class GridConfig:
     def create(self, input_file, dryrun):
         if not dryrun:
             self.addcmd.append(input_file)
-            result = cmd_run(self.addcmd, stderr_filter=is_normal_sge_warning, timeout=60)
+            result = cmd_run(self.addcmd, stderr_filter_out=is_normal_sge_warning, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -177,7 +177,7 @@ class GridConfig:
         return self.create(incoming_config, dryrun)
 
     def rundel(self):
-        return cmd_run(self.delcmd, stderr_filter=is_normal_sge_warning, timeout=60)
+        return cmd_run(self.delcmd, stderr_filter_out=is_normal_sge_warning, timeout=60)
 
     def _get_config(self):
         result = cmd_run(self.getcmd, timeout=60)
@@ -274,7 +274,7 @@ class GridHostGroup(GridConfig):
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = cmd_run(self.modcmd, stderr_filter=is_normal_sge_warning, timeout=60)
+            result = cmd_run(self.modcmd, stderr_filter_out=is_normal_sge_warning, timeout=60)
             return not bool(result.returncode)
 
         return True
