@@ -39,9 +39,10 @@
 #  }
 #
 define redis::instance(
-    Wmflib::Ensure $ensure   = present,
-    Hash           $settings = {},
-    Hash           $map = {}
+    Wmflib::Ensure $ensure           = present,
+    Hash           $settings         = {},
+    Hash           $map              = {},
+    Boolean        $overwrite_config = true,
 ) {
 
     require redis
@@ -79,6 +80,7 @@ define redis::instance(
         group   => 'redis',
         mode    => '0440',
         notify  => Service["redis-instance-${instance_name}"],
+        replace => $overwrite_config,
     }
 
     # Set the maximum number of open files to maxclients + 32

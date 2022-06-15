@@ -69,7 +69,10 @@ class profile::toolforge::redis_sentinel (
     }
 
     redis::instance { '6379':
-        settings => {
+        # prevent puppet and sentinel fighting each other (T309014)
+        # TODO: figure out if we can have a more elegant solution
+        overwrite_config => false,
+        settings         => {
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
             dbfilename                  => "${::hostname}-6379.rdb",
             dir                         => '/srv/redis',
