@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary resource to configure http(s) checks for a specific service
 # @param fqdn name the domainname to check
+# @param target name the host part of 'instance' label to use
 # @param ip4 The IP address to connect to
 # @param ip6 The IP6 address to connect to
 # @param ip_families indicate support for ipv4 and/or ipv6
@@ -28,6 +29,7 @@
 # @param useragent the useragent to use
 define prometheus::blackbox::check::http (
     Stdlib::Fqdn                            $fqdn                    = $title,
+    Stdlib::Fqdn                            $target                  = $facts['networking']['hostname'],
     Stdlib::IP::Address::V4::Nosubnet       $ip4                     = $facts['networking']['ip'],
     Stdlib::IP::Address::V6::Nosubnet       $ip6                     = $facts['networking']['ip6'],
     Array[Enum['ip4', 'ip6']]               $ip_families             = ['ip4', 'ip6'],
@@ -114,7 +116,7 @@ define prometheus::blackbox::check::http (
                 'family'  => $family,
                 'module'  => "http_${safe_title}_${family}",
             },
-            'targets' => ["${title}:${port}@${proto}://[${address}]:${port}${path}"],
+            'targets' => ["${target}:${port}@${proto}://[${address}]:${port}${path}"],
         }
         $data
     }
@@ -141,6 +143,7 @@ define prometheus::blackbox::check::http (
     $module_file_params = {
         'ensure'  => 'file',
         'content' => $module_config.wmflib::to_yaml,
+        'notify'  => Exec['assemble blackbox.yml'],
         'tag'     => "prometheus::blackbox::check::http::${::site}::module",
     }
     $alert_file_params  = {
