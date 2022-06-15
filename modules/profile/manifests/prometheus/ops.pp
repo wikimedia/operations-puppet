@@ -2047,6 +2047,22 @@ class profile::prometheus::ops (
         port           => 8443
     }
 
+    # Jobs for Netbox django health metrics - T243928
+    $netbox_django_jobs = [
+        {
+            'job_name'     => 'netbox_django',
+            'scheme'          => 'https',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/netbox_django_*.yaml"] },
+            ],
+        }
+    ]
+    prometheus::class_config { "netbox_django_${::site}":
+        dest       => "${targets_path}/netbox_django_${::site}.yaml",
+        class_name => 'profile::netbox',  # This includes both prod and dev
+        port       => 443
+    }
+
     $wikidough_jobs = [
       {
         'job_name'        => 'wikidough',
@@ -2292,7 +2308,7 @@ class profile::prometheus::ops (
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
-            $cache_envoy_jobs, $mini_textfile_jobs, $gitlab_runner_jobs,
+            $cache_envoy_jobs, $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
