@@ -128,7 +128,7 @@ class phabricator::vcs (
 
     sudo::user { 'www-data':
         privileges => [
-            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/local/bin/git-http-backend",
+            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/local/bin/git-http-backend, /usr/bin/git",
         ],
         require    => File['/usr/local/bin/git-http-backend'],
     }
