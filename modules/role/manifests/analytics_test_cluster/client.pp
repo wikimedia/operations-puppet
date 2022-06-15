@@ -27,9 +27,6 @@ class role::analytics_test_cluster::client {
     # instance is not created there accidentally.
     if $::fqdn == 'an-test-client1001.eqiad.wmnet' {
         include ::profile::airflow
-
-        # the Spark3 installed with Airflow.
-        require ::profile::hadoop::spark3
     }
 
     include ::profile::presto::client

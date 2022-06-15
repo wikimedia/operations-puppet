@@ -27,10 +27,6 @@ class role::analytics_cluster::launcher {
     # launcher just runs the airflow-analytics instnace.
     include ::profile::airflow
 
-    # Install Spark 3 configuration to be used as a trial with
-    # the Spark3 installed with Airflow.
-    require ::profile::hadoop::spark3
-
     include ::profile::analytics::refinery::job::import_mediawiki_dumps
     include ::profile::analytics::refinery::job::import_wikidata_entities_dumps
     include ::profile::analytics::refinery::job::import_commons_mediainfo_dumps
