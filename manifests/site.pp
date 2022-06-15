@@ -2942,6 +2942,11 @@ node /^wdqs101[2-3]\.eqiad\.wmnet$/ {
     role(wdqs::public)
 }
 
+# new wdqs servers T307138
+node /^wdqs101[4-6]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 node /^wdqs200[12347]\.codfw\.wmnet$/ {
     role(wdqs::public)
 }
