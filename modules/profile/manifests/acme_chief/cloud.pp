@@ -68,11 +68,6 @@ class profile::acme_chief::cloud (
         ],
     }
 
-    cron { 'acme-chief-designate-tidyup':
-        ensure => absent,
-        user   => 'acme-chief',
-    }
-
     file { '/etc/acme-chief/designate-sync-config.yaml':
         ensure  => present,
         owner   => 'acme-chief',

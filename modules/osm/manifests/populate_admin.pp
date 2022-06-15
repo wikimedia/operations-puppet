@@ -35,11 +35,6 @@ define osm::populate_admin (
         interval    => {'start' => 'OnCalendar', 'interval' => "${weekday} *-*-* ${hour}:${minute}:00"}
     }
 
-    cron { "populate_admin-${title}":
-        ensure => 'absent',
-        user   => 'postgres',
-    }
-
     logrotate::rule { "populate_admin-${title}":
         ensure     => $ensure_timer,
         file_glob  => "${log_dir}/populate_admin.log",

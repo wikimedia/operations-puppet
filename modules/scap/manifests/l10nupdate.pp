@@ -61,11 +61,6 @@ class scap::l10nupdate(
         interval        => { 'start' => 'OnCalendar', 'interval' => 'Mon,Tue,Wed,Thu *-*-* 02:00:00'},
     }
 
-    cron { 'l10nupdate':
-        ensure => 'absent',
-        user   => 'l10nupdate',
-    }
-
     file { '/usr/local/bin/l10nupdate':
         owner  => 'root',
         group  => 'root',

@@ -21,9 +21,4 @@ class dumps::generation::server::statsender(
         user        => $user,
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-26 01:30'},
     }
-
-    cron { 'dumps-stats-sender':
-        ensure => 'absent',
-        user   => $user,
-    }
 }

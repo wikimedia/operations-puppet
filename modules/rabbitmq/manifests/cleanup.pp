@@ -49,9 +49,4 @@ class rabbitmq::cleanup(
         logfile_name    => 'notifications_error.log',
         interval        => {'start' => 'OnCalendar', 'interval' => '*:0/35:00'}
     }
-
-    cron { 'drain and log rabbit notifications.error queue':
-            ensure => 'absent',
-            user   => 'root',
-    }
 }

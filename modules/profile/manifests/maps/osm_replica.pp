@@ -59,9 +59,4 @@ class profile::maps::osm_replica(
         user        => 'root',
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:*:00'},
     }
-
-    cron { 'prometheus-pg-replication-lag':
-        ensure  => 'absent',
-    }
-
 }

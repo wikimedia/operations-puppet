@@ -24,8 +24,4 @@ class profile::openldap::restarts()
         command     => '/usr/local/sbin/restart_openldap',
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:0/${minutes}:00"},
     }
-
-    cron { 'restart_slapd':
-        ensure => 'absent',
-    }
 }
