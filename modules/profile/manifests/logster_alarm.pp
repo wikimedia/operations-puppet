@@ -60,12 +60,14 @@ class profile::logster_alarm {
     }
 
     logster::job{'csp':
+        ensure          => absent,
         parser          => '--output stdout AlarmCounterLogster',
         logfile         => '/srv/mw-log/csp-report-only.log',
         logster_options => "--parser-option='-a /etc/logster/csp.yaml -s /srv/security/logs/csp-report-only.log -n CSP -e security-admin-feed@lists.wikimedia.org,logsteralarms@wikimedia.org'",
     }
 
     logster::job{'badpass_priv':
+        ensure          => absent,
         parser          => '--output stdout AlarmCounterLogster',
         logfile         => '/srv/mw-log/badpass-priv.log',
         logster_options => "--parser-option='-a /etc/logster/badpass-priv.yaml -s /srv/security/logs/badpass-priv.log -n badpass-priv -e security-admin-feed@lists.wikimedia.org,logsteralarms@wikimedia.org -t 2'",
