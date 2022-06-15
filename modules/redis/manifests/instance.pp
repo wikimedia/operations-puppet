@@ -18,6 +18,10 @@
 #  we are defining at the same time, in the form of instance_name => settings.
 #  Only overrides to what is the default in settings needs to be defined.
 #
+# [*allow_config_writes*]
+#  If true, Redis is allowed to use the `CONFIG REWRITE` option. This is required
+#  when using Redis Sentinel.
+#
 # === Examples
 #
 #  # Configure a Redis instance on TCP port 6379:
@@ -39,10 +43,10 @@
 #  }
 #
 define redis::instance(
-    Wmflib::Ensure $ensure           = present,
-    Hash           $settings         = {},
-    Hash           $map              = {},
-    Boolean        $overwrite_config = true,
+    Wmflib::Ensure $ensure              = present,
+    Hash           $settings            = {},
+    Hash           $map                 = {},
+    Boolean        $allow_config_writes = false,
 ) {
 
     require redis
@@ -72,15 +76,18 @@ define redis::instance(
         dbfilename     => "${dbname}.rdb",
     }
 
-
+    # make the config file owned by root and read-only by default,
+    # only when allow_config_writes is true (such as when redis-sentinel is in
+    # use), make it owned by redis and allow writes by the owner
+    # otherwise puppet and redis will continue to revert each other: T309014
     file { "/etc/redis/${instance_name}.conf":
         ensure  => $ensure,
         content => template('redis/instance.conf.erb'),
-        owner   => 'root',
+        owner   => $allow_config_writes.bool2str('redis', 'root'),
         group   => 'redis',
-        mode    => '0440',
+        mode    => $allow_config_writes.bool2str('0644', '0440'),
         notify  => Service["redis-instance-${instance_name}"],
-        replace => $overwrite_config,
+        replace => !$allow_config_writes,
     }
 
     # Set the maximum number of open files to maxclients + 32
