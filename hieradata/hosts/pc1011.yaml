@@ -1,3 +1,2 @@
 # pc1011
 mariadb::parsercache::shard: 'pc1'
-profile::monitoring::notifications_enabled: false
