@@ -186,20 +186,6 @@ profile::aqs::druid_datasources:
 
 profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
 
-
-profile::aqs::seeds:
-  - aqs1010-a.eqiad.wmnet
-  - aqs1010-b.eqiad.wmnet
-  - aqs1011-a.eqiad.wmnet
-  - aqs1011-b.eqiad.wmnet
-  - aqs1012-a.eqiad.wmnet
-  - aqs1012-b.eqiad.wmnet
-  - aqs1013-a.eqiad.wmnet
-  - aqs1013-b.eqiad.wmnet
-  - aqs1014-a.eqiad.wmnet
-  - aqs1014-b.eqiad.wmnet
-  - aqs1015-a.eqiad.wmnet
-  - aqs1015-b.eqiad.wmnet
 profile::aqs::cassandra_default_consistency: localQuorum
 profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet
