@@ -78,7 +78,11 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
-        require => File['/usr/local/bin/refinery-sqoop-mediawiki', '/usr/local/bin/refinery-sqoop-mediawiki-production'],
+        require => File[
+            '/usr/local/bin/refinery-sqoop-mediawiki-history',
+            '/usr/local/bin/refinery-sqoop-mediawiki-not-history',
+            '/usr/local/bin/refinery-sqoop-mediawiki-production'
+            ],
     }
 
     # Used to store sqoop-generated jar that is rebuilt at each script run
