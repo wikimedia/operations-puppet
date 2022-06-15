@@ -206,7 +206,7 @@ node /aqs101[0-5]\.eqiad\.wmnet/ {
 }
 
 # New aqs nodes in eqiad T305570
-node /^aqs100(1[6-9]|2[0-1])\.eqiad\.wmnet/ {
+node /^aqs10(1[6-9]|2[0-1])\.eqiad\.wmnet/ {
     role(insetup)
 }
 
