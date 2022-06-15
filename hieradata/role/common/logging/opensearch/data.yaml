@@ -90,6 +90,7 @@ profile::opensearch::logstash::curator_actions:
         unit: weeks
         unit_count: 12
 
+  # TODO: T301760 "\d?" in partition can be removed after 2022.24 expires
   '04':
     description: 'ecs-test policy rev 1: delete older than 2 weeks'
     action: delete_indices
@@ -98,7 +99,7 @@ profile::opensearch::logstash::curator_actions:
     filters:
       - filtertype: pattern
         kind: regex
-        value: '^ecs-(1.7.0-\d\d?-test|test-1)-.*$'
+        value: '^ecs-(1.7.0-\d\d?-test\d?|test-1)-.*$'
       - filtertype: age
         source: name
         direction: older
