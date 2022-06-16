@@ -6,8 +6,8 @@
 # @param [Hash] sites  List of sitename: {hostname: <host_to_check>} indicating the hostname to use for each site.
 # @param [Optional[String]] contact_group The contact group to notify of the failure. Defaults to 'admins'
 type Wmflib::Service::Monitoring = Struct[{
-    'check_command' => String,
-    'sites'         => Hash[String, Struct[{'hostname' => Stdlib::Fqdn}]],
-    'contact_group' => Optional[String], # TODO: this should really be an array of strings.
-    'notes_url'     => Optional[String],
+    'check_command' => String[1],
+    'sites'         => Hash[String[1], Struct[{'hostname' => Stdlib::Fqdn}]],
+    'contact_group' => Optional[String[1]], # TODO: this should really be an array of strings.
+    'notes_url'     => Optional[String[1]],
 }]

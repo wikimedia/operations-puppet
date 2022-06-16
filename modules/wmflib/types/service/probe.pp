@@ -22,12 +22,12 @@
 
 type Wmflib::Service::Probe = Struct[{
     'type'                  => Enum['http', 'tcp', 'tcp-notls'],
-    'path'                  => Optional[String],
-    'host'                  => Optional[String],
-    'post_json'             => Optional[String],
-    'must_contain_regexp'   => Optional[String],
+    'path'                  => Optional[String[1]],
+    'host'                  => Optional[String[1]],
+    'post_json'             => Optional[String[1]],
+    'must_contain_regexp'   => Optional[String[1]],
     'valid_status_codes'    => Optional[Array[Stdlib::HttpStatus]],
     'expect_sso'            => Optional[Boolean],
     'expect_redirect'       => Optional[Boolean],
-    'timeout'               => Optional[String],
+    'timeout'               => Optional[String[1]],
 }]

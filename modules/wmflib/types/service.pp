@@ -46,9 +46,9 @@
 #
 type Wmflib::Service = Struct[
     {
-    'description'     => String,
-    'sites'           => Array[String],
-    'ip'              => Hash[String, Wmflib::Service::Ipblock],
+    'description'     => String[1],
+    'sites'           => Array[String[1]],
+    'ip'              => Hash[String[1], Wmflib::Service::Ipblock],
     'port'            => Stdlib::Port, # This used to be optional in lvs config
     'encryption'      => Boolean, # Whether we need TLS to connect
     'lvs'             => Optional[Wmflib::Service::Lvs],
@@ -57,9 +57,9 @@ type Wmflib::Service = Struct[
     'page'            => Optional[Boolean],
     'state'           => Enum['service_setup', 'lvs_setup', 'production'],
     'discovery'       => Optional[Wmflib::Service::Discovery],
-    'role'            => Optional[String],
-    'public_endpoint' => Optional[String],
-    'aliases'         => Optional[Array[String]],
-    'public_aliases'  => Optional[Array[String]],
+    'role'            => Optional[String[1]],
+    'public_endpoint' => Optional[String[1]],
+    'aliases'         => Optional[Array[String[1]]],
+    'public_aliases'  => Optional[Array[String[1]]],
     }
 ]
