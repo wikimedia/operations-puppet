@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 function php::fpm::versioned_port(
     Optional[Stdlib::Port::User] $port,
     Array[Wmflib::Php_version] $versions

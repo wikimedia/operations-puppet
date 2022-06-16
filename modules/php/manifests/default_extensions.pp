@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @api private
 # == Class php::default_extensions
 #

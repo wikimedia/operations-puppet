@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class php
 #
 # Basic installation of php - only cli modules.

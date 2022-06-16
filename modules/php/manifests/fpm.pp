@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: php::fpm
 #
 # Configures a running fpm daemon. You need to have the ::php class

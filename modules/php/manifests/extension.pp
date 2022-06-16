@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define php::extension(
     Wmflib::Ensure $ensure = 'present',
     Boolean $install_packages = true,
