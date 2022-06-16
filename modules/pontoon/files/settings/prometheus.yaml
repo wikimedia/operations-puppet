@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+prometheus::server::storage_retention: '168h'
+profile::lvs::realserver::use_conftool: false
+prometheus_nodes: "%{alias('__hosts_for_role_prometheus')}"
+prometheus_all_nodes: "%{alias('__hosts_for_role_prometheus')}"
+profile::prometheus::pushgateway_host: "%{alias('__master_for_role_prometheus')}"
