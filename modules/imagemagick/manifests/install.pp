@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class imagemagick::install
 #
 # Installs imagemagick and our custom policy
