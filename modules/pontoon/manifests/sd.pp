@@ -17,7 +17,9 @@ class pontoon::sd (
     Array[Stdlib::IP::Address] $nameservers,
     Hash[String, Wmflib::Service] $services_config,
 ) {
-    ensure_packages('dnsmasq')
+    package { 'dnsmasq':
+        ensure => installed,
+    }
 
     $services = pontoon::service_names($services_config)
 
@@ -41,7 +43,8 @@ class pontoon::sd (
     }
 
     service { 'dnsmasq':
-        ensure => running,
+        ensure  => running,
+        require => Package['dnsmasq'],
     }
 
     exec { 'dnsmasq-reload':

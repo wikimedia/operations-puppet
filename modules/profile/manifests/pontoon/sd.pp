@@ -29,5 +29,8 @@ class profile::pontoon::sd (
         lb_address      => ipresolve($lbs[0], 4),
         nameservers     => $sd_nameservers,
         services_config => $role_services,
+        # Make sure the local resolver used for SD
+        # is installed before /etc/resolv.conf is changed
+        before          => Class['resolvconf'],
     }
 }
