@@ -8,5 +8,6 @@ class role::gitlab_runner {
 
     include ::profile::base::production
     include ::profile::base::firewall
+    include ::profile::base::sysctl::enable_unpriv_userns
     include ::profile::gitlab::runner
 }
