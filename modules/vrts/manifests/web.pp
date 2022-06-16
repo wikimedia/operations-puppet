@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: vrts::web
 #
 # This class configures the apache part of the otrs WMF installation

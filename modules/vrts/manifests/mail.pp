@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: vrts::mail
 #
 # This class installs/configures the exim part of the WMF OTRS installation

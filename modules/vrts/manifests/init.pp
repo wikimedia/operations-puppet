@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: vrts
 #
 # This class installs all the prerequisite packages for VRTS
