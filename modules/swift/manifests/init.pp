@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 class swift (
     String $hash_path_suffix,
     Boolean $storage_policies = true,
@@ -116,5 +118,11 @@ class swift (
         source   => 'puppet:///modules/swift/swift.rsyslog.conf',
         priority => 40,
         require  => File['/var/log/swift'],
+    }
+
+    # Used to ban logs both from local disk and centrallog syslog hosts
+    rsyslog::conf { 'swift-pre-centrallog':
+        source   => 'puppet:///modules/swift/swift.rsyslog-pre-centrallog.conf',
+        priority => 20,
     }
 }
