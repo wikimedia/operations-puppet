@@ -6,6 +6,7 @@ class profile::apt(
     Boolean $manage_apt_source       = lookup('profile::apt::manage_apt_source'),
     Boolean $install_audit_installed = lookup('profile::apt::install_audit_installed'),
     String  $mirror                  = lookup('profile::apt::mirror'),
+    Boolean $use_private_repo        = lookup('profile::apt::use_private_repo')
 ) {
     class { 'apt':
         use_proxy               => $use_proxy,
@@ -14,6 +15,7 @@ class profile::apt(
         manage_apt_source       => $manage_apt_source,
         mirror                  => $mirror,
         install_audit_installed => $install_audit_installed,
+        use_private_repo        => $use_private_repo,
     }
     contain apt  # lint:ignore:wmf_styleguide
 }

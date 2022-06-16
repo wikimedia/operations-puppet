@@ -5,6 +5,7 @@ class apt(
     Boolean $manage_apt_source       = false,
     Boolean $install_audit_installed = false,
     String  $mirror                  = 'mirrors.wikimedia.org',
+    Boolean $use_private_repo        = false,
 ) {
     $components =  $facts['is_virtual'] ? {
         true    => 'main',
@@ -106,7 +107,7 @@ class apt(
         comment_old => true,
     }
 
-    if debian::codename::ge('bullseye') {
+    if debian::codename::ge('bullseye') and $use_private_repo {
         apt::repository { 'wikimedia-private':
             uri        => 'http://apt.wikimedia.org:8080',
             dist       => "${::lsbdistcodename}-wikimedia-private",
