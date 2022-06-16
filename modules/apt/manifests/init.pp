@@ -108,11 +108,16 @@ class apt(
     }
 
     if debian::codename::ge('bullseye') and $use_private_repo {
-        apt::repository { 'wikimedia-private':
-            uri        => 'http://apt.wikimedia.org:8080',
-            dist       => "${::lsbdistcodename}-wikimedia-private",
-            components => 'main nonfree',
-        }
+        $ensure_private_repo = present
+    } else {
+        $ensure_private_repo = absent
+    }
+
+    apt::repository { 'wikimedia-private':
+        ensure     => $ensure_private_repo,
+        uri        => 'http://apt.wikimedia.org:8080',
+        dist       => "${::lsbdistcodename}-wikimedia-private",
+        components => 'main nonfree',
     }
 
     if debian::codename::ge('buster'){
