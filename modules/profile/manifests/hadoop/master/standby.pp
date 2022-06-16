@@ -46,6 +46,7 @@ class profile::hadoop::master::standby(
         nrpe::monitor_service { 'hadoop-hdfs-namenode-fsimage-age':
             description   => 'Hadoop HDFS Namenode FSImage Age',
             nrpe_command  => '/usr/lib/nagios/plugins/check_file_age -w 5400 -c 7200 -f /srv/hadoop/name/current/VERSION',
+            sudo_user     => 'hdfs',
             contact_group => 'admins,analytics',
             require       => Class['bigtop::hadoop::namenode::standby'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
