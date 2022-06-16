@@ -6142,3 +6142,7 @@ ldap_only_users:
     ensure: present
     realname: Evelien Zandbergen
     email: evelien.zandbergen@wikimedia.de
+  cmyrick:
+    ensure: present
+    realname: Caroline Myrick
+    email: cmyrick@wikimedia.org
