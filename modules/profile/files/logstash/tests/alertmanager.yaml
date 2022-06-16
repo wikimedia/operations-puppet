@@ -25,6 +25,7 @@ testcases:
           "team": "sre",
           "externalURL": "http://alert2001:9093",
           "startsAt": "2021-08-26T19:18:49.052190569Z",
+          "source": "icinga",
           "status": "resolved",
           "runbook": "https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link"
         }
@@ -53,10 +54,17 @@ testcases:
           alertname: "Icinga/Elevated latency for icinga checks in codfw"
           summary: "cluster=alerting instance=alert2001 job=icinga site=codfw"
           instance: "alert1001"
+          source: "icinga"
         service:
           type: "alertmanager-webhook-logger"
         event:
           kind: "alert"
+      - '@timestamp': "2021-08-26T19:39:19.054Z"
+        message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2001 job=icinga site=codfw - )"
+        status: "resolved"
+        channel: "alert"
+        source: "icinga"
+        instance: "alert1001"
   - input:
       - >
         {
@@ -83,7 +91,6 @@ testcases:
           "startsAt": "2021-08-27T07:18:24Z",
           "status": "firing"
         }
-
 
     expected:
       - __target_index: "ecs-alerts-1-1.7.0-N-weekly"
@@ -115,3 +122,9 @@ testcases:
           type: "alertmanager-webhook-logger"
         event:
           kind: "alert"
+      - '@timestamp': "2021-08-27T15:19:00.883Z"
+        message: "[firing] Increased Speed Index for en.wiki on desktop (Increased Speed Index for en.wiki on desktop - All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.)"
+        status: "firing"
+        channel: "alert"
+        source: "unknown"
+        instance: "unknown"
