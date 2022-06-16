@@ -30,5 +30,6 @@ phabricator_phd_taskmasters: 4
 
 profile::tlsproxy::envoy::global_cert_name: "phabricator.discovery.wmnet"
 profile::tlsproxy::envoy::websockets: true
+profile::tlsproxy::envoy::listen_ipv6: true
 
 profile::phabricator::main::http_srange: '$DEPLOYMENT_HOSTS'
