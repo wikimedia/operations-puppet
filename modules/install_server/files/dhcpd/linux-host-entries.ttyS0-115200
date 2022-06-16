@@ -426,12 +426,6 @@ host gitlab1001 {
     fixed-address gitlab1001.wikimedia.org;
 }
 
-host gitlab-runner1001 {
-    hardware ethernet aa:00:00:15:17:8f;
-    fixed-address gitlab-runner1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
 host gitlab2001 {
     hardware ethernet aa:00:00:f2:e7:36;
     fixed-address gitlab2001.wikimedia.org;
