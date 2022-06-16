@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: spamassassin
 #
 # This class installs & manages SpamAssassin, http://spamassassin.apache.org/
