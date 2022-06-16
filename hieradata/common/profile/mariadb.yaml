@@ -57,4 +57,4 @@ profile::mariadb::section_params:
   mediabackupstemp:
     writeable_dc: 'both'
     replication_type: 'none'
-profile::mariadb::wikiuser_username: 'wikiuser2022'
+profile::mariadb::wikiuser_username: 'wikiuser202206'
