@@ -256,8 +256,8 @@ class profile::openstack::codfw1dev::haproxy(
 
     openstack::haproxy::site { 'nova_metadata':
         servers            => $openstack_controllers,
-        healthcheck_method => 'HEAD',
-        healthcheck_path   => '/',
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/healthcheck',
         port_backend       => $nova_metadata_listen_port,
         frontends          => [
             {
