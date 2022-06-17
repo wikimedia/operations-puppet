@@ -3,7 +3,6 @@ class role::wmcs::metricsinfra::prometheus {
         description => 'CloudVPS monitoring infrastructure Prometheus server'
     }
 
-    include ::profile::labs::lvm::srv
     include ::profile::wmcs::metricsinfra::prometheus
     include ::profile::wmcs::metricsinfra::prometheus_configurator
 }

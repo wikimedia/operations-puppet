@@ -638,3 +638,4 @@ profile::kubernetes::deployment_server::helm_user_group: deployment
 
 profile::wmcs::instance::metricsinfra_prometheus_nodes:
   - prometheus01.metricsinfra.eqiad1.wikimedia.cloud
+  - metricsinfra-prometheus-2.metricsinfra.eqiad1.wikimedia.cloud
