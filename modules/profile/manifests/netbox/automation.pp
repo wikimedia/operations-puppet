@@ -94,4 +94,10 @@ class profile::netbox::automation (
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
     }
 
+    prometheus::blackbox::check::http {
+        'netbox-exports.wikimedia.org':  # Public endpoint (used by CI)
+            path => '/dns.git/config';
+        $facts['networking']['hostname']:  # Internal endpoint (used by the dns script and cookbook)
+            path => '/dns.git/config';
+    }
 }
