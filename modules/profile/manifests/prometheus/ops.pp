@@ -2055,14 +2055,11 @@ class profile::prometheus::ops (
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/netbox_django_*.yaml"] },
             ],
-            'tls_config'        => {
-                'server_name'   => 'netbox.wikimedia.org',
-            },
         }
     ]
     prometheus::class_config { "netbox_django_${::site}":
         dest       => "${targets_path}/netbox_django_${::site}.yaml",
-        class_name => 'role::netbox::frontend',
+        class_name => 'profile::netbox',  # This includes both prod and dev
         port       => 443
     }
 
