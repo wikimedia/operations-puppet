@@ -182,7 +182,12 @@ class profile::openstack::eqiad1::haproxy(
         servers             => $openstack_controllers,
         port_backend        => $galera_listen_port,
         primary_host        => $galera_primary_host,
-        healthcheck_options => ['option httpchk'],
+        healthcheck_options => [
+            'option httpchk',
+            'http-check connect',
+            'http-check send meth GET uri /',
+            'http-check expect status 200',
+        ],
         type                => 'tcp',
         frontends           => [
             {
