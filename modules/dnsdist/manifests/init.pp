@@ -70,8 +70,6 @@ class dnsdist (
     Dnsdist::TLS_config                 $tls_config_dot,
     Boolean                             $enable_wikidough       = true,
     Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
-    Boolean                             $enable_qps_max         = false,
-    Integer[1]                          $qps_max                = 40,
     Boolean                             $enable_packetcache     = true,
     Integer[1]                          $packetcache_max        = 10000000,
     Integer[1]                          $ringbuffer_max         = 10,
