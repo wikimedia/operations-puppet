@@ -79,7 +79,13 @@ wmfkeystone_opts = [
                help='Starting gid number for posix groups'),
     cfg.StrOpt('instance_ip_range',
                default='172.16.0.0/21',
-               help='Range of instances to accept SSH from by default')]
+               help='Range of instances to accept SSH from by default'),
+    cfg.StrOpt('prometheus_metricsinfra_reserved_ips',
+               default='',
+               help='Comma-separated list of IP addresses to be added to default security groups.'),
+    cfg.StrOpt('prometheus_metricsinfra_default_ports',
+               default='',
+               help='Comma-separated list of ports to be added to default security groups.')]
 
 
 CONF = cfg.CONF
@@ -167,7 +173,15 @@ class KeystoneHooks(notifier.Driver):
                                    template='Nova Resource')
 
     @staticmethod
-    def _security_group_dict(group_id, protocol, from_port, to_port, cidr=None, group=None):
+    def _security_group_dict(
+        group_id,
+        protocol,
+        from_port,
+        to_port,
+        cidr=None,
+        group=None,
+        description=None
+    ):
         newrule = {'security_group_rule': {
                    'security_group_id': group_id,
                    'direction': 'ingress',
@@ -185,6 +199,9 @@ class KeystoneHooks(notifier.Driver):
 
         if group:
             newrule['security_group_rule']['remote_group_id'] = group
+
+        if description:
+            newrule['security_group_rule']['description'] = description
 
         return newrule
 
@@ -255,6 +272,33 @@ class KeystoneHooks(notifier.Driver):
                                                        group=groupid))
             except (exceptions.NeutronClientException):
                 LOG.warning("Project security rule for ICMP already exists.")
+
+            metricsinfra_ips = [
+                ip for ip in CONF.wmfhooks.prometheus_metricsinfra_reserved_ips.split(',')
+                if ip.strip() != ''
+            ]
+
+            for ip in metricsinfra_ips:
+                for port_str in CONF.wmfhooks.prometheus_metricsinfra_reserved_ips.split(','):
+                    port = int(port_str)
+
+                    try:
+                        client.create_security_group_rule(
+                            KeystoneHooks._security_group_dict(
+                                groupid,
+                                'tcp',
+                                port,
+                                port,
+                                cidr="{}/32".format(ip),
+                                description="Cloud VPS Prometheus monitoring",
+                            )
+                        )
+                    except exceptions.NeutronClientException:
+                        LOG.warning(
+                            "Project security rule for metricsinfra "
+                            "scraping (%s %s) already exists.",
+                            ip, port_str
+                        )
         else:
             LOG.warning("Failed to find default security group in new project.")
 

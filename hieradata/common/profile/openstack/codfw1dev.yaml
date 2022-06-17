@@ -65,3 +65,6 @@ profile::openstack::codfw1dev::rabbitmq_heartbeat_timeout: 120
 # This is empty here and will be overridden on a single cloudcontrol
 #  so we only backup once
 profile::openstack::codfw1dev::cinder_backup_volumes: {}
+
+profile::openstack::codfw1dev::prometheus_metricsinfra_reserved_ips: []
+profile::openstack::codfw1dev::prometheus_metricsinfra_default_ports: []
