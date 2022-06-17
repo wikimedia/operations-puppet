@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=health check for Galera node wsrep state
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/galera-nodecheck.py
+Restart=always
+StartLimitInterval=90
+StartLimitBurst=3
+User=prometheus

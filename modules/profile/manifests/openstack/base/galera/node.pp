@@ -117,6 +117,12 @@ class profile::openstack::base::galera::node(
         mode   => '0555',
         source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.sh',
     }
+    file { '/usr/local/sbin/nodecheck.py':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.py',
+    }
     file { '/lib/systemd/system/nodecheck@.service':
         owner  => 'root',
         group  => 'root',
@@ -135,5 +141,10 @@ class profile::openstack::base::galera::node(
         command     => 'systemctl daemon-reload; systemctl enable nodecheck.socket; systemctl restart nodecheck.socket',
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
         refreshonly => true,
+    }
+
+    systemd::service {'galera_nodecheck':
+        ensure  => 'present',
+        content => systemd_template('wmcs/galera/galera-nodecheck'),
     }
 }
