@@ -1,6 +1,5 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-#####################################################################
+# THIS FILE IS MANAGED BY PUPPET
+# SPDX-License-Identifier: Apache-2.0
 #
 #	Logrotate fragment for squid
 #
