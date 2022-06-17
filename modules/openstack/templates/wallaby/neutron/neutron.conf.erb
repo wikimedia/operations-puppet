@@ -48,7 +48,12 @@ max_l3_agents_per_router = 2
 # The default for this is 60.  Leaving it at 60 causes us to lose track
 #  of services at times (T205524) but cutting it all the way down to
 #  3 (which worked in m,n,o,p,q) causes things to timeout in Rocky.
-rpc_response_timeout = 30
+#
+# Update 2022-06-17 (AGB) I'm seeing lots of timeouts here
+#  that encourage me to adjust this limit. For now I'm commenting
+#  this setting out and letting it fall back on the default. Before
+#  this change it was set to 30.
+# rpc_response_timeout = 60
 
 #notify_nova_on_port_status_changes = True
 notify_nova_on_port_status_changes = True
