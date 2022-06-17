@@ -67,4 +67,4 @@ def healthcheck():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9991, debug=True)
+    app.run(host='0.0.0.0', port=9990, debug=True)

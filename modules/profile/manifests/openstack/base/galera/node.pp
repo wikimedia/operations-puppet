@@ -99,7 +99,7 @@ class profile::openstack::base::galera::node(
     }
 
     # nodechecker service -- should be able to run as prometheus user
-    # This is a simple shellscript running on a systemd socket that replies
+    # This is a flask app that replies
     # with a 200 or error so we get a real healthcheck for haproxy
     ferm::rule{'galera_nodecheck':
         ensure => 'present',
@@ -112,10 +112,7 @@ class profile::openstack::base::galera::node(
         mode   => '0755',
     }
     file { '/usr/local/sbin/nodecheck.sh':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.sh',
+        ensure => absent,
     }
     file { '/usr/local/sbin/galera-nodecheck.py':
         owner  => 'root',
@@ -124,23 +121,10 @@ class profile::openstack::base::galera::node(
         source => 'puppet:///modules/profile/openstack/base/galera/galera-nodecheck.py',
     }
     file { '/lib/systemd/system/nodecheck@.service':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.systemd.service',
+        ensure => absent,
     }
     file { '/lib/systemd/system/nodecheck.socket':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.systemd.socket',
-        notify => Exec['nodecheck-enable'],
-    }
-    # We aren't enabling the service. It's the socket we want.
-    exec { 'nodecheck-enable':
-        command     => 'systemctl daemon-reload; systemctl enable nodecheck.socket; systemctl restart nodecheck.socket',
-        path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
-        refreshonly => true,
+        ensure => absent,
     }
 
     systemd::service {'galera_nodecheck':
