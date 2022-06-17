@@ -134,5 +134,9 @@ if __name__ == "__main__":
     )
 
     yaml.safe_dump(
-        {"classes": ["role::%s" % role], "parameters": variables}, sys.stdout
+        {
+            "classes": ["role::%s" % role, "profile::pontoon::base"],
+            "parameters": variables,
+        },
+        sys.stdout,
     )

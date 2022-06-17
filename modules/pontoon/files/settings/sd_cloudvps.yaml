@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
+profile::pontoon::sd_enabled: true
+
 profile::resolving::nameservers:
   - 127.0.0.53
 
