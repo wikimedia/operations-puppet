@@ -20,6 +20,15 @@
       Require all granted
     </Directory>
 
+    <Location /metrics>
+      # Prometheus scraper uses the host FQDN as such we need to proxy
+      # the metrics endpoint here
+      # https://httpoxy.org/
+      RequestHeader unset Proxy early
+      ProxyPreserveHost On
+      ProxyPass http://127.0.0.1:8001/metrics disablereuse=on
+    </Location>
+
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
