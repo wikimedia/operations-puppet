@@ -117,11 +117,11 @@ class profile::openstack::base::galera::node(
         mode   => '0555',
         source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.sh',
     }
-    file { '/usr/local/sbin/nodecheck.py':
+    file { '/usr/local/sbin/galera-nodecheck.py':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.py',
+        source => 'puppet:///modules/profile/openstack/base/galera/galera-nodecheck.py',
     }
     file { '/lib/systemd/system/nodecheck@.service':
         owner  => 'root',
