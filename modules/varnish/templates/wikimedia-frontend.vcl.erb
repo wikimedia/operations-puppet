@@ -294,6 +294,11 @@ sub normalize_request {
 		set req.http.Host = regsub(req.url, "(?i)^https?://(.*@)?([^/:]+).*$", "\2");
 		set req.url = regsub(req.url, "(?i)^https?://[^/]+/?", "/");
 	}
+<% if @realm == 'labs' -%>
+	// Sort query parameters to improve cache efficiency (T138093).
+	// Don't sort URLs containing '[' to avoid re-ordering array parameters.
+	if (req.url !~ "\[" && req.url !~ "(?i)%5b") { set req.url = std.querysort(req.url); }
+<% end -%>
 
 	// Strip :port from req.http.host and normalize to lowercase
 	set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
