@@ -111,20 +111,11 @@ class profile::openstack::base::galera::node(
         group  => 'prometheus',
         mode   => '0755',
     }
-    file { '/usr/local/sbin/nodecheck.sh':
-        ensure => absent,
-    }
     file { '/usr/local/sbin/galera-nodecheck.py':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/profile/openstack/base/galera/galera-nodecheck.py',
-    }
-    file { '/lib/systemd/system/nodecheck@.service':
-        ensure => absent,
-    }
-    file { '/lib/systemd/system/nodecheck.socket':
-        ensure => absent,
     }
 
     systemd::service {'galera_nodecheck':
