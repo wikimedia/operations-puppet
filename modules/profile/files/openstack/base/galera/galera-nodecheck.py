@@ -15,7 +15,11 @@ import subprocess
 
 
 logging.basicConfig(filename='/var/log/nodecheck/nodecheck.log',
-                    encoding='utf-8', level=logging.DEBUG)
+                    encoding='utf-8', level=logging.WARNING)
+
+# no need to log every single healthcheck request
+werklog = logging.getLogger('werkzeug')
+werklog.disabled = True
 
 
 app = Flask(__name__)
@@ -46,7 +50,8 @@ def healthcheck():
                             stderr=subprocess.PIPE)
     stdout, stderr = proc.communicate()
     logging.debug("stdout=%s", stdout)
-    logging.debug("stderr=%s", stderr)
+    if stderr:
+        logging.warning("After wsrep check, stderr=%s", stderr)
 
     if stdout.rstrip().endswith('ON'.encode('utf8')):
         ro_args = mysql_args + ['-e', "SHOW GLOBAL VARIABLES LIKE 'read_only';"]
@@ -56,7 +61,8 @@ def healthcheck():
                                 stderr=subprocess.PIPE)
         stdout, stderr = proc.communicate()
         logging.debug("stdout=%s", stdout)
-        logging.debug("stderr=%s", stderr)
+        if stderr:
+            logging.warning("After RO check, stderr=%s", stderr)
 
         if stdout.rstrip().endswith('ON'.encode('utf8')):
             return "Galera node is set to read-only, do not use", 503
@@ -67,4 +73,4 @@ def healthcheck():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9990, debug=True)
+    app.run(host='0.0.0.0', port=9990, debug=False)
