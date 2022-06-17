@@ -159,14 +159,6 @@ class profile::mediawiki::deployment::server(
             group   => 'root',
             content => "Not the active deployment server, use ${main_deployment_server}",
         }
-    } else {
-        # Bootstrap new targets with a scap installation from active server
-        exec { 'bootstrap-scap-targets':
-          command     => '/usr/bin/scap install-world --batch',
-          subscribe   => File['/etc/dsh/group/scap_targets'],
-          user        => 'mwpresync',
-          refreshonly => true,
-        }
     }
 
     # Bacula backups (T125527)

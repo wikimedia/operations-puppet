@@ -69,7 +69,7 @@ define scap::target(
     Boolean          $manage_ssh_key            = $manage_user,
     Array[String]    $sudo_rules                = [],
 ) {
-    # Include scap3 package and ssh ferm rules.
+    # Include scap3 and ssh ferm rules.
     include scap
     include scap::ferm
 
