@@ -2029,6 +2029,9 @@ class profile::prometheus::ops (
     }
 
     # Jobs for Netbox script-based exported metrics
+    # 2m of scrape interval as they're high level data (number of devices, etc),
+    # which don't change at a high rate, but it's also not recommended to have
+    # an interval > 2m (see related CR)
     $netbox_jobs = [
         # device statistics
         {
@@ -2038,6 +2041,7 @@ class profile::prometheus::ops (
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/netbox_scripts_exporter_${::site}.yaml"] },
             ],
+            'scrape_interval'    => '2m',
         }
     ]
     prometheus::class_config { "netbox_scripts_exporter_${::site}":
