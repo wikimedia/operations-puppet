@@ -39,7 +39,7 @@ class pontoon::sd (
 
     file { '/etc/dnsmasq.d/pontoon-sd.conf':
         content => template('pontoon/dnsmasq.conf'),
-        notify  => Service['dnsmasq'],
+        notify  => Exec['dnsmasq-restart'],
     }
 
     service { 'dnsmasq':
@@ -48,7 +48,12 @@ class pontoon::sd (
     }
 
     exec { 'dnsmasq-reload':
-        command     => '/bin/systemctl reload dnsmasq',
+        command     => '/usr/sbin/dnsmasq --test && /bin/systemctl reload dnsmasq',
+        refreshonly => true,
+    }
+
+    exec { 'dnsmasq-restart':
+        command     => '/usr/sbin/dnsmasq --test && /bin/systemctl restart dnsmasq',
         refreshonly => true,
     }
 }
