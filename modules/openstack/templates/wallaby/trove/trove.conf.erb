@@ -10,7 +10,8 @@ bind_port = <%= @api_bind_port %>
 
 # Number of workers for the API service. The default will
 # be the number of CPUs available. (integer value)
-#trove_api_workers=None
+trove_api_workers = <%= @workers %>
+trove_conductor_workers = <%= @workers %>
 
 # Inject a public key into each DB instance for debug purposes
 nova_keypair='trove-debug'

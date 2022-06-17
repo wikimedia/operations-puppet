@@ -1,3 +1,5 @@
+profile::openstack::eqiad1::trove::workers: 8
+
 profile::openstack::eqiad1::trove::db_host: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::trove::db_name: 'trove_eqiad1'
 profile::openstack::eqiad1::trove::quay_user: 'wikimedia-cloud-services+troveguest'

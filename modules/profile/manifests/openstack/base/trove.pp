@@ -1,5 +1,6 @@
 class profile::openstack::base::trove(
     String              $version                 = lookup('profile::openstack::base::version'),
+    Integer             $workers                 = lookup('profile::openstack::base::trove::workers'),
     Array[Stdlib::Fqdn] $openstack_controllers   = lookup('profile::openstack::base::openstack_controllers'),
     String              $db_user                 = lookup('profile::openstack::base::trove::db_user'),
     String              $db_pass                 = lookup('profile::openstack::base::trove::db_pass'),
@@ -28,6 +29,7 @@ class profile::openstack::base::trove(
 
     class { '::openstack::trove::service':
         version                 => $version,
+        workers                 => $workers,
         openstack_controllers   => $openstack_controllers,
         db_user                 => $db_user,
         db_pass                 => $db_pass,

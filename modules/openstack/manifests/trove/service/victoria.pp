@@ -1,5 +1,6 @@
 class openstack::trove::service::victoria(
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Integer             $workers,
     String              $db_user,
     String              $db_pass,
     String              $db_name,

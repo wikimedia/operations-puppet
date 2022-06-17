@@ -1,5 +1,6 @@
 class openstack::trove::service(
     String              $version,
+    Integer             $workers,
     Array[Stdlib::Fqdn] $openstack_controllers,
     String              $db_user,
     String              $db_pass,
@@ -25,6 +26,7 @@ class openstack::trove::service(
 ) {
     class { "openstack::trove::service::${version}":
         openstack_controllers   => $openstack_controllers,
+        workers                 => $workers,
         db_user                 => $db_user,
         db_pass                 => $db_pass,
         db_name                 => $db_name,

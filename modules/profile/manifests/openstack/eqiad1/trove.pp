@@ -1,5 +1,6 @@
 class profile::openstack::eqiad1::trove(
     String              $version                 = lookup('profile::openstack::eqiad1::version'),
+    Integer             $workers                 = lookup('profile::openstack::eqiad1::trove::workers'),
     Array[Stdlib::Fqdn] $openstack_controllers   = lookup('profile::openstack::eqiad1::openstack_controllers'),
     String              $db_pass                 = lookup('profile::openstack::eqiad1::trove::db_pass'),
     String              $db_name                 = lookup('profile::openstack::eqiad1::trove::db_name'),
@@ -18,6 +19,7 @@ class profile::openstack::eqiad1::trove(
 
     class {'::profile::openstack::base::trove':
         version                 => $version,
+        workers                 => $workers,
         openstack_controllers   => $openstack_controllers,
         db_pass                 => $db_pass,
         db_name                 => $db_name,
