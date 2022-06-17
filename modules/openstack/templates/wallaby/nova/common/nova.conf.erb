@@ -66,8 +66,8 @@ connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%=
 
 [database]
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
-max_overflow = 25
-max_pool_size = 3
+max_overflow = 5
+max_pool_size = 5
 pool_timeout = 60
 connection_recycle_time = 1800
 <% end -%>
