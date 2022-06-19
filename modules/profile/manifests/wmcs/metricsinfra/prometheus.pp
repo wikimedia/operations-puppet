@@ -88,4 +88,11 @@ class profile::wmcs::metricsinfra::prometheus(
             ]
         },
     }
+
+    thanos::sidecar { 'metricsinfra':
+        prometheus_port     => 9900,
+        prometheus_instance => 'cloud',
+        http_port           => 19900,
+        grpc_port           => 29900,
+    }
 }

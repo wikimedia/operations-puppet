@@ -61,6 +61,9 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
         external_rules_files => [
             'alerts_default.yml',
         ],
+        external_labels => {
+            replica => $::facts['networking']['hostname'],
+        },
     }
 
     file { '/etc/prometheus-configurator/config.yaml':
