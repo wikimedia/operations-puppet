@@ -9,8 +9,6 @@ frontend http-public
     acl is_public_name hdr(host) -i prometheus.wmflabs.org
     acl is_public_name hdr(host) -i prometheus.wmcloud.org
 
-    acl is_prometheus path -i -m beg /cloud/
-
     acl is_prometheus_alertmanager path -i -m beg /.alertmanager/
 
     acl is_karma hdr(host) -i prometheus-alerts.wmcloud.org
@@ -26,21 +24,10 @@ frontend http-public
     http-request deny if is_public_name is_prometheus_alertmanager is_evil_alertmanager_path
     http-request deny if is_public_name is_prometheus_alertmanager !is_safe_alertmanager_method
 
-    use_backend prometheus if is_public_name is_prometheus
     use_backend prometheus_alertmanager if is_public_name is_prometheus_alertmanager
+    use_backend thanos_fe if is_public_name !is_prometheus_alertmanager
     use_backend karma if is_karma
     use_backend config_manager if is_config_manager
-
-backend prometheus
-    mode http
-    option httplog
-    option tcp-check
-    balance roundrobin
-    timeout server 1h
-    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
-<%- @prometheus_hosts.each do |server| -%>
-    server <%= server %> <%= server %>:80 check
-<%- end -%>
 
 backend prometheus_alertmanager
     mode http
@@ -80,4 +67,18 @@ backend config_manager
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
 <%- @config_manager_hosts.each do |server| -%>
     server <%= server %> <%= server %>:80 check
+<%- end -%>
+
+backend thanos_fe
+    mode http
+    option httplog
+    option tcp-check
+    balance roundrobin
+    timeout server 1h
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+    # Remove /cloud/ from the path sent to the backend servers, not needed
+    # since move to Thanos
+    reqrep ^([^\ :]*)\ /cloud/(.*) \1\ /\2
+<%- @thanos_fe_hosts.each do |server| -%>
+    server <%= server %> <%= server %>:10902 check
 <%- end -%>
