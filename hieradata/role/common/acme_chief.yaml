@@ -73,7 +73,6 @@ profile::acme_chief::certificates:
         - 'gitlab1001.wikimedia.org'
         - 'gitlab1003.wikimedia.org'
         - 'gitlab1004.wikimedia.org'
-        - 'gitlab2001.wikimedia.org'
         - 'gitlab2002.wikimedia.org'
         - 'gitlab2003.wikimedia.org'
     icinga:
