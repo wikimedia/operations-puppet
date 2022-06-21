@@ -118,6 +118,12 @@ profile::keyholder::server::agents:
     trusted_groups:
       - deployment
 
+  # Shared ssh key for Release Engineering's Train-related
+  # Gerrit patches (T310620)
+  trainbranchbot:
+    trusted_groups:
+      - deployment
+
 # scap::source declarations.  These are created
 # by the profile::mediawiki::deployment::server class.
 # Each source listed here will be cloned on the scap deploy server.
