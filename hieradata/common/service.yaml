@@ -3861,7 +3861,7 @@ service::catalog:
     port: 30443
     sites:
       - codfw
-    state: service_setup
+    state: lvs_setup
 
   # apt is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.

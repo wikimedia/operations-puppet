@@ -362,6 +362,8 @@ codfw:
   ml_staging:
     ml-staging-ctrl2001.codfw.wmnet: [kubemaster]
     ml-staging-ctrl2002.codfw.wmnet: [kubemaster]
+    ml-staging2001.codfw.wmnet: [kubesvc]
+    ml-staging2002.codfw.wmnet: [kubesvc]
   aqs:
     aqs2001.codfw.wmnet: [aqs]
     aqs2002.codfw.wmnet: [aqs]
