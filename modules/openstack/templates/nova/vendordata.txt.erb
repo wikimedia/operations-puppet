@@ -84,6 +84,14 @@ mounts:
 #  works.
 apt_preserve_sources_list: False
 apt:
+    conf: |
+      APT {
+          Get {
+              Assume-Yes 'true';
+              Fix-Broken 'true';
+              allow-downgrades 'true';
+          }
+      }
     preserve_sources_list: False
     sources:
         wikimedia.list:
