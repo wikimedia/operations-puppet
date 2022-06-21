@@ -10,15 +10,6 @@ class dumps::generation::server::exceptionchecker(
         source => 'puppet:///modules/dumps/generation/dumps_exception_checker.py',
     }
 
-    cron { 'dumps-exception-checker':
-        ensure      => 'absent',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "/usr/bin/python3 /usr/local/bin/dumps_exception_checker.py ${dumpsbasedir} 480 latest",
-        user        => $user,
-        minute      => '40',
-        hour        => '*/8',
-        require     => File['/usr/local/bin/dumps_exception_checker.py'],
-    }
     systemd::timer::job { 'dumps-exception-checker':
         ensure             => 'present',
         description        => 'Regular jobs to check for exceptions',
