@@ -15,13 +15,13 @@ class profile::sretest {
         recurse => true,
         purge   => true,
     }
-    wmflib::resource::export('file', '/var/tmp/testing/wmflib_export_test.txt', {
+    wmflib::resource::export('file', '/var/tmp/testing/wmflib_export_test.txt', 'sretest', {
         'ensure' => 'file',
         content  => 'foo',
         tag      => 'foo::bar',
     })
     wmflib::resource::import('file', undef, { tag => 'foo::bar' })
-    wmflib::resource::export('file', '/var/tmp/testing/wmflib_export_merge_cotent_test.txt', {
+    wmflib::resource::export('file', '/var/tmp/testing/wmflib_export_merge_cotent_test.txt', 'sretest', {
         'ensure'  => 'file',
         'content' => "${facts['networking']['fqdn']}\n",
         'tag'     => 'foo::bar::merge',
