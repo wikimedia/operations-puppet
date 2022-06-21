@@ -1571,14 +1571,6 @@ node /^idp-test[12]002\.wikimedia\.org$/ {
     role(idp_test)
 }
 
-node 'idp1001.wikimedia.org' {
-    role(insetup)
-}
-
-node 'idp2001.wikimedia.org' {
-    role(insetup)
-}
-
 # TFTP/DHCP/webproxy but NOT APT repo (T224576)
 node /^install[12]003\.wikimedia\.org$/ {
     role(installserver::light)
