@@ -38,8 +38,6 @@ class profile::toolforge::checker {
         'db_wikilabelsrw'                 => '/db/wikilabelsrw',
         'dns_private'                     => '/dns/private',
         'etcd_kubernetes'                 => '/etcd/k8s',
-        'grid_continuous_stretch'         => '/grid/continuous/stretch',
-        'grid_start_stretch'              => '/grid/start/stretch',
         'grid_continuous_buster'          => '/grid/continuous/buster',
         'grid_start_buster'               => '/grid/start/buster',
         'kubernetes_nodes_ready'          => '/k8s/nodes/ready',

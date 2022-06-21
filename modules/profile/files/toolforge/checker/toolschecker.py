@@ -236,11 +236,6 @@ def job_running(name):
         return False
 
 
-@check("/grid/continuous/stretch")
-def grid_continuous_stretch():
-    return job_running("test-long-running-stretch")
-
-
 @check("/grid/continuous/buster")
 def grid_continuous_buster():
     return job_running("test-long-running-buster")
@@ -289,12 +284,6 @@ def grid_check_start(release):
     except subprocess.CalledProcessError:
         return False
     return success
-
-
-@check("/grid/start/stretch")
-def grid_start_stretch():
-    """Verify that we can start a job on the Stretch grid."""
-    return grid_check_start("stretch")
 
 
 @check("/grid/start/buster")
