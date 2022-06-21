@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class aptly::client(
     $servername="${::labsproject}-packages.${::labsproject}.${::site}.wmflabs",
     $source=false,

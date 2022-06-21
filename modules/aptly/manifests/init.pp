@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: aptly
 # Sets up a simple aptly repo server serving over http
 #
