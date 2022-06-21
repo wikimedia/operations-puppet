@@ -30,19 +30,18 @@ class role::releases {
         description => 'Wikimedia Software Releases Server',
     }
 
-    include ::profile::base::production
-    include ::profile::base::firewall
-    include ::profile::backup::host
-    include ::profile::releases::common
-    include ::profile::releases::mediawiki
-    include ::profile::docker::ferm
-    include ::profile::kubernetes::deployment_server
-    include ::profile::releases::mediawiki::private
-    include ::profile::releases::mediawiki::security
-    include ::profile::releases::mwcli
-    include ::profile::releases::reprepro
-    include ::profile::releases::parsoid
-    include ::profile::releases::blubber
-    include ::profile::releases::wikibase
-    include ::profile::tlsproxy::envoy # TLS termination
+    include profile::base::production
+    include profile::base::firewall
+    include profile::backup::host
+    include profile::releases::common
+    include profile::releases::mediawiki
+    include profile::docker::ferm
+    include profile::kubernetes::deployment_server
+    include profile::releases::mediawiki::private
+    include profile::releases::mediawiki::security
+    include profile::releases::mwcli
+    include profile::releases::parsoid
+    include profile::releases::blubber
+    include profile::releases::wikibase
+    include profile::tlsproxy::envoy # TLS termination
 }
