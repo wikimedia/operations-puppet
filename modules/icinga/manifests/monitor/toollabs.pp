@@ -104,9 +104,9 @@ class icinga::monitor::toollabs {
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
-    monitoring::service { 'tools-checker-grid-continuious-stretch':
-        description    => 'toolschecker: expect a long running job on stretch',
-        check_command  => "${checker}!/grid/continuous/stretch!OK",
+    monitoring::service { 'tools-checker-grid-continuous-buster':
+        description    => 'toolschecker: expect a long running job on buster',
+        check_command  => "${checker}!/grid/continuous/buster!OK",
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
@@ -116,9 +116,9 @@ class icinga::monitor::toollabs {
 
     # The mechanism for this test is too flaky to page.  We need to revise
     # if persisting with SMS notification.
-    monitoring::service { 'tools-checker-grid-start-stretch':
-        description    => 'toolschecker: start a job and verify on stretch',
-        check_command  => "${checker}!/grid/start/stretch!OK",
+    monitoring::service { 'tools-checker-grid-start-buster':
+        description    => 'toolschecker: start a job and verify on buster',
+        check_command  => "${checker}!/grid/start/buster!OK",
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
