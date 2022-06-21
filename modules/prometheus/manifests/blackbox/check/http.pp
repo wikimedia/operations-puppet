@@ -1,33 +1,33 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary resource to configure http(s) checks for a specific service
-# @param server_name the server name to use (during TLS and Host:)
-# @param instance_label name the host part of 'instance' label to use
-# @param ip4 The IP address to connect to
-# @param ip6 The IP6 address to connect to
-# @param ip_families indicate support for ipv4 and/or ipv6
-# @param team the WMF team to alert
-# @param severity The severity of the alert
-# @param port the port to run a specific check on
-# @param force_tls if true force ssl otherwise use port number to decide
-# @param certificate_expiry_days alert when the certificate will expire sooner than days
-# @param timeout the probe timeout
-# @param use_client_auth use client authentication
-# @param client_auth_cert path to the client auth certificate to use
-# @param client_auth_key path to the client auth key to use
-# @param header_matches headers which should match
-# @param header_not_matches headers which should not match
-# @param body_regex_matches headers which should match
-# @param body_regex_not_matches headers which should not match
-# @param status_matches http status codes which should match
-# @param bearer_token the bearer token to use
-# @param path the path to check
-# @param body the body to send in requests
-# @param method the http method to use
-# @param follow_redirects if the check should honour redirects
-# @param site the site to perform the check from
-# @param auth_username username used for basic auth
-# @param auth_password password used for basic auth
-# @param useragent the useragent to use
+# @summary - resource to configure http(s) checks for a specific service
+# @param server_name - an FQDN, the server name to use (during TLS and Host:)
+# @param instance_label - short-form host name, used as an instance label
+# @param ip4 - IPv4 address to connect to
+# @param ip6 - IPv6 address to connect to
+# @param ip_families - indicate support for IPv4 and/or IPv6 - by default both IPv4 and IPv6 will be checked
+# @param team - name of the WMF team to alert, teams are defined as a 'receiver' in modules/alertmanager/templates/alertmanager.yml.erb
+# @param severity - severity of the alert (see type Prometheus::Alert::Severity for possible values)
+# @param port - port to run a specific check on
+# @param force_tls - if true force ssl otherwise use port number to decide
+# @param certificate_expiry_days - alert when the certificate will expire sooner than days
+# @param timeout - probe timeout
+# @param use_client_auth - use client authentication
+# @param client_auth_cert - path to the client auth certificate to use
+# @param client_auth_key - path to the client auth key to use
+# @param header_matches - list of regular expressions to match against the response headers. if any of those matches the probe will fail.
+# @param header_not_matches - list of regular expressions to match against the response headers. if any of those do NOT match the probe will fail.
+# @param body_regex_matches - list of regular expressions to match against the body's response. if any of those matches the probe will fail.
+# @param body_regex_not_matches - list of regular expressions to match against the body's response. if any of those do NOT match the probe will fail.
+# @param status_matches - list of regular expressions to match against the http status code. if any of those matches the probe will fail.
+# @param bearer_token - bearer token to use
+# @param path - path to check
+# @param body - body to send in requests
+# @param method - http method to use
+# @param follow_redirects - whether the check should honour redirects. without this a 301 would be considered a failure.
+# @param site - site to perform the check from
+# @param auth_username - username used for basic auth
+# @param auth_password - password used for basic auth
+# @param useragent - user agent to use
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
 define prometheus::blackbox::check::http (
     Stdlib::Fqdn                            $server_name             = $title,
