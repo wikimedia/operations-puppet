@@ -1,0 +1,9 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[default]
+port = 8080
+
+[ganeti]
+api = https://<%= @rapi_endpoint %>:5080
+user = <%= @rapi_ro_user %>
+password = <%= @ro_password %>
+
