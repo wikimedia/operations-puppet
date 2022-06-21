@@ -83,6 +83,15 @@ route:
             severity: 'warning'
           receiver: 'data-persistence-irc'
     - match:
+        team: 'serviceops-collab'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'serviceops-collab-critical'
+        - match:
+            severity: 'warning'
+          receiver: 'serviceops-collab-warning'
+    - match:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
@@ -305,6 +314,22 @@ receivers:
     # #data-engineering
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-gsfmtborh6beh6xj5lz6'
       send_resolved: false
+
+- name: 'serviceops-collab-warning'
+  webhook_configs:
+    # #serviceops mail & IRC
+    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
+  email_configs:
+    - to: 'sre-serviceops@<%= @facts['networking']['domain'] %>'
+
+- name: 'serviceops-collab-critical'
+  webhook_configs:
+    # #serviceops task & mail & IRC
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-ffms22arq2fzb25pcbwn'
+      send_resolved: false
+    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
+  email_configs:
+    - to: 'sre-serviceops@<%= @facts['networking']['domain'] %>'
 
 - name: 'dcops-task'
   webhook_configs:
