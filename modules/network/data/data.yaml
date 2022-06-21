@@ -248,6 +248,12 @@ network::subnets:
         private1-mlserve-kubesvc-codfw:
           ipv4: 10.194.0.0/20
           ipv6: 2620:0:860:301::/64
+        private1-mlstage-kubepods-codfw:
+          ipv4: 10.194.61.0/24
+          ipv6: 2620:0:860:302::/64
+        private1-mlstage-kubesvc-codfw:
+          ipv4: 10.194.62.0/23
+          ipv6: 2620:0:860:303::/64
     esams:
       public:
         public1-esams:

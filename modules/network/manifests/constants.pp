@@ -120,6 +120,13 @@ class network::constants {
             'description' => 'mlserve-kubepods',
             }),
         ])
+    $mlstage_kubepods_networks = flatten([
+        slice_network_constants('production', {
+            'site'        => 'codfw',
+            'sphere'      => 'private',
+            'description' => 'mlstage-kubepods',
+            }),
+        ])
 
     # Networks that Scap will be able to deploy to.
     # (Puppet does array concatenation
