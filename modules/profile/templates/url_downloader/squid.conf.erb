@@ -28,6 +28,9 @@ read_timeout 30 seconds
 request_timeout 30 seconds
 client_lifetime 5 minutes
 
+acl gopher proto gopher
+http_access deny gopher
+
 acl SSL_ports port 443	# https
 acl Safe_ports port 80 443		# http, https
 acl Safe_ports port 21		# ftp
