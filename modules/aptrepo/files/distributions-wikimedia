@@ -195,6 +195,8 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/calico317
+ component/cassandra311
+ component/cassandradev
  component/dnsdist
  component/elastic68
  component/istio195
