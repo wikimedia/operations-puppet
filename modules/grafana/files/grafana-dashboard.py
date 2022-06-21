@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 
 # export grafana dashboard JSON description for revision control
 # pretty printing and sorting the JSON representation should minimise

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: grafana
 #
 # Grafana is an open-source, feature-rich dashboard and graph editor

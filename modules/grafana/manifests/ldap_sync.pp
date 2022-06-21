@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class grafana::ldap_sync (
   Wmflib::Ensure $ensure,
 ) {

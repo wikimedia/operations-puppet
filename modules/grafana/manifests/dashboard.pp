@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: grafana::dashboard
 #
 # Provisions a Grafana dashboard definition. Grafana dashboards may

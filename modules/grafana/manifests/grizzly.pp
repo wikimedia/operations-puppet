@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # grizzly is a tool for managing grafana dashboards, datasources, etc. with jsonnet
 #
 
