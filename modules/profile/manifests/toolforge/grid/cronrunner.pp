@@ -10,8 +10,8 @@ class profile::toolforge::grid::cronrunner(
     $is_active = $active_host == $::facts['fqdn']
 
     service { 'cron':
-        ensure => running,
-        enable => true,
+        ensure => $is_active.bool2str('running', 'stopped'),
+        enable => $is_active,
     }
 
     # if this is not the active cron runner, block tool crons for easier migration between nodes,
