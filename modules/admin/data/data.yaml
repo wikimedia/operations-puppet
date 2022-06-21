@@ -31,7 +31,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart, dstrine, johnben]
+              jcarvalho, sthart, dstrine, johnben, ppena]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5720,9 +5720,8 @@ ldap_only_users:
     realname: Bill Pirkle
     email: bpirkle@wikimedia.org
   ppena:
-    ensure: present
+    ensure: absent
     realname: Pats Pena
-    email: ppena@wikimedia.org
   bmueller:
     ensure: present
     realname: Birgit Mueller
