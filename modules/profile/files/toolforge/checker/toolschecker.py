@@ -241,6 +241,11 @@ def grid_continuous_stretch():
     return job_running("test-long-running-stretch")
 
 
+@check("/grid/continuous/buster")
+def grid_continuous_buster():
+    return job_running("test-long-running-buster")
+
+
 def grid_check_start(release):
     """Launch a new job, return True if it starts in 10 seconds"""
     name = "start-{}-test".format(release)
@@ -290,6 +295,12 @@ def grid_check_start(release):
 def grid_start_stretch():
     """Verify that we can start a job on the Stretch grid."""
     return grid_check_start("stretch")
+
+
+@check("/grid/start/buster")
+def grid_start_buster():
+    """Verify that we can start a job on the Buster grid."""
+    return grid_check_start("buster")
 
 
 @check("/k8s/nodes/ready")
