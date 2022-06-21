@@ -14,8 +14,8 @@ Content-Type: text/jinja2; charset="us-ascii"
 
 datasource:
   OpenStack:
-    timeout: 120
-    max_wait: 180
+    timeout: 10
+    max_wait: 120
     retries: 10
 
 hostname: {{ds.meta_data.name}}
