@@ -138,11 +138,23 @@ class base::puppet(
     }
 
     file { '/etc/cron.d/puppet':
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         content => template('base/puppet.cron.erb'),
         require => File['/usr/local/sbin/puppet-run'],
+    }
+
+    $timer_interval = "*:${interval.fqdn_rand}/${interval}:00"
+
+    systemd::timer::job { 'puppet-agent-timer':
+        ensure        => present,
+        description   => "Run Puppet agent every ${interval} minutes",
+        user          => 'root',
+        ignore_errors => true,
+        command       => '/usr/local/sbin/puppet-run',
+        interval      => {'start' => 'OnCalendar', 'interval' => $timer_interval}
     }
 
     logrotate::rule { 'puppet':
