@@ -175,6 +175,11 @@ node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
 }
 
+# New an-presto nodes in eqiad T306835
+node /^an-presto10(0[6-9]|1[0-5])\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # Analytics Web Node.
 node 'an-web1001.eqiad.wmnet' {
     role(analytics_cluster::webserver)
