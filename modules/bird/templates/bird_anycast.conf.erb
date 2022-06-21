@@ -1,0 +1,112 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+include "/etc/bird/anycast-prefixes.conf";
+<% if @do_ipv6 -%>
+include "/etc/bird/anycast6-prefixes.conf";
+<% end -%>
+
+router id <%= @ipv4_src %>;
+
+protocol device {
+}
+
+protocol kernel {
+    ipv4 {
+        import none;
+    };
+}
+<% if @do_ipv6 -%>
+protocol kernel {
+    ipv6 {
+        import none;
+    };
+}
+<% end -%>
+
+protocol direct {
+    interface "*";
+}
+
+function match_route()
+{
+    return net ~ ACAST_PS_ADVERTISE;
+}
+<% if @do_ipv6 -%>
+function match_route6()
+{
+    return net ~ ACAST6_PS_ADVERTISE;
+}
+<% end -%>
+
+filter vips_filter {
+    if ( net.len = 32 && ( net ~ 10.3.0.0/24 || net ~ 198.35.27.0/24 || net ~ 185.71.138.0/24 ) && match_route() ) then {
+        accept;
+    }
+    else {
+        reject;
+    }
+}
+<% if @do_ipv6 -%>
+filter vips6_filter {
+    if ( net.len = 128 && ( net ~ 2001:67c:930::/48 ) && match_route6() ) then {
+        accept;
+    }
+    else {
+        reject;
+    }
+}
+<% end -%>
+
+<% if @bfd -%>
+protocol bfd {
+    interface "*" {
+        interval 300 ms;
+        multiplier 3;
+    };
+<% if @multihop -%>
+    multihop {
+        interval 300 ms;
+        multiplier 3;
+    };
+<% end -%>
+}
+<% end -%>
+
+<% @neighbors_v4.each do |neighbor_v4| -%>
+protocol bgp {
+<% if @multihop -%>
+    multihop 2;
+<% end -%>
+<% if @bfd -%>
+    bfd yes;
+<% end -%>
+    ipv4 {
+        import none;
+        export filter vips_filter;
+    };
+    local <%= @ipv4_src %> as 64605;
+    neighbor <%= neighbor_v4 %> external;
+}
+<% end -%>
+
+<% if @do_ipv6 -%>
+<% @neighbors_v6.each do |neighbor_v6| -%>
+protocol bgp {
+<% if @multihop -%>
+    multihop 2;
+<% end -%>
+<% if @bfd -%>
+    bfd yes;
+<% end -%>
+    ipv6 {
+        import none;
+        export filter vips6_filter;
+    };
+    local <%= @ipv6_src %> as 64605;
+<% if ! @multihop -%>
+    neighbor <%= neighbor_v6 %>%<%= @facts['networking']['primary'] %> external;
+<% else -%>
+    neighbor <%= neighbor_v6 %> external;
+<% end -%>
+}
+<% end -%>
+<% end -%>
