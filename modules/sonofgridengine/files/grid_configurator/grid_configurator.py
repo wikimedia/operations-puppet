@@ -376,7 +376,11 @@ class HostProcessor:
             # region is like 'whatever-r', remove trailing '-r', the domain doesn't have it
             domain = f"{self.project}.{region[:-2]}.wikimedia.cloud"
 
-            self.os_instances[region] = client.servers.list()
+            self.os_instances[region] = [
+                server
+                for server in client.servers.list()
+                if server.status == 'ACTIVE'
+            ]
             if len(self.os_instances[region]) == 0:
                 logging.error("empty instance list from openstack is likely an error")
                 sys.exit(1)
