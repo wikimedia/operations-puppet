@@ -8,6 +8,8 @@ cache deny QUERY
 # We explicitly do not cache our autoinstall files to avoid changes taking too long to propagate
 acl AUTOINSTALL urlpath_regex ^/autoinstall/
 cache deny AUTOINSTALL
+acl gopher proto gopher
+http_access deny gopher
 acl apache rep_header Server ^Apache
 cache_replacement_policy heap LFUDA
 cache_dir aufs /var/spool/squid 1000 16 256
