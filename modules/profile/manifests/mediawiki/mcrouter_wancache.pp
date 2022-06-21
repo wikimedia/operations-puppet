@@ -162,6 +162,26 @@ class profile::mediawiki::mcrouter_wancache(
                     false => profile::mcrouter_route($region, $gutter_ttl)
                 }
             }
+        },
+        # Stats: fast async increment, slow remote reads
+        $servers_by_datacenter.map |$region, $servers| {
+            {
+                'aliases' => [ "/${region}/mw-stats/" ],
+                'route' => {
+                    'type'               => 'OperationSelectorRoute',
+                    'operation_policies' => {
+                        'incr' => {
+                            'type'     => 'AllAsyncRoute',
+                            'children' => [ "PoolRoute|${region}" ]
+                        },
+                        'decr' => {
+                            'type'     => 'AllAsyncRoute',
+                            'children' => [ "PoolRoute|${region}" ]
+                        }
+                    },
+                    'default_policy'     => "PoolRoute|${region}"
+                }
+            }
         }
     )
 
