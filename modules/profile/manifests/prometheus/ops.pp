@@ -262,6 +262,27 @@ class profile::prometheus::ops (
       targets_file => "${targets_path}/smoke-icmp_core-routers.yaml",
     }
 
+    # Target L3 switches from within the same site. L2 switches have addresses on the
+    # management network only, therefore not interesting for production monitoring.
+    $access_switches = $infra_devices.filter |$device, $config| {
+      $config['role'] == 'l3sw' and $config['site'] == $::site
+    }
+
+    netops::prometheus::icmp { 'access-switches':
+      targets      => $access_switches,
+      targets_file => "${targets_path}/smoke-icmp_access-switches.yaml",
+    }
+
+    # Ping Fundraising firewalls from within the same site
+    $fr_firewalls = $infra_devices.filter |$device, $config| {
+      $config['role'] == 'pfw' and $config['site'] == $::site
+    }
+
+    netops::prometheus::icmp { 'fr-firewalls':
+      targets      => $fr_firewalls,
+      targets_file => "${targets_path}/smoke-icmp_fr-firewalls.yaml",
+    }
+
     # Checks for custom probes, defined in puppet
     wmflib::resource::import('file', undef, { tag => "prometheus::blackbox::check::http::${::site}::module" })
     wmflib::resource::import('file', undef, { tag => "prometheus::blackbox::check::http::${::site}::alert" })
