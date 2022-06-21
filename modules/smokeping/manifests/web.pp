@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class smokeping::web {
     file { '/usr/share/smokeping/www/smokeping.fcgi':
         source => "puppet:///modules/${module_name}/smokeping.fcgi",
