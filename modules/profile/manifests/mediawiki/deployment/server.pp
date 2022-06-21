@@ -132,24 +132,26 @@ class profile::mediawiki::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    $deploy_ensure = $deployment_server ? {
+    # $secondary_deploy_ensure will be set to 'present' if we're
+    # operating on an inactive/secondary deploy server.
+    $secondary_deploy_ensure = $deployment_server ? {
         $::fqdn => 'absent',
         default => 'present'
     }
 
     class { '::deployment::rsync':
         deployment_server => $deployment_server,
-        job_ensure        => $deploy_ensure,
+        job_ensure        => $secondary_deploy_ensure,
         deployment_hosts  => $deployment_hosts,
     }
 
     motd::script { 'inactive_warning':
-        ensure   => $deploy_ensure,
+        ensure   => $secondary_deploy_ensure,
         priority => 1,
         content  => template('role/deployment/inactive.motd.erb'),
     }
 
-    if $deploy_ensure == 'present' {
+    if $secondary_deploy_ensure == 'present' {
         # Lock the passive servers, leave untouched the active one.
         file { '/var/lock/scap-global-lock':
             ensure  => 'present',
