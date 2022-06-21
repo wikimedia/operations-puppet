@@ -2312,7 +2312,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
+            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $cache_envoy_jobs, $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs,
