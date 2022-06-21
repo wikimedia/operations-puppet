@@ -4,7 +4,6 @@ profile::admin::groups:
   - releasers-mediawiki
   - releasers-mwcli
   - releasers-mobile
-  - releasers-parsoid
   - releasers-wikibase
   - releasers-wikidiff2
   - contint-docker

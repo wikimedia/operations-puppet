@@ -195,10 +195,6 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
-  releasers-parsoid:
-    gid: 802
-    description: people who upload parsoid releases (T150672)
-    members: [ssastry, arlolra, cscott]
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)

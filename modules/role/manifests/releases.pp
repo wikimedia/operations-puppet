@@ -40,7 +40,6 @@ class role::releases {
     include profile::releases::mediawiki::private
     include profile::releases::mediawiki::security
     include profile::releases::mwcli
-    include profile::releases::parsoid
     include profile::releases::blubber
     include profile::releases::wikibase
     include profile::tlsproxy::envoy # TLS termination
