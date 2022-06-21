@@ -90,4 +90,8 @@ class profile::base(
     if $facts['is_virtual'] and debian::codename::le('buster') {
         class {'haveged': }
     }
+
+    if $facts['has_ipmi'] and debian::codename::ge('bullseye') {
+        class { 'prometheus::ipmi_exporter': }
+    }
 }

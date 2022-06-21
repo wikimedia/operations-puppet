@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+# Configuration file for ipmi_exporter
+
+# This is a config for scraping the local host, while using sudo. This allows
+# to not run the exporter as root and still getting the required access
+modules:
+        default:
+                # Available collectors are bmc, ipmi, chassis, dcmi, and sel
+                collectors:
+                - bmc
+                - ipmi
+                - dcmi
+                - chassis
+                - sel
+                collector_cmd:
+                  bmc: sudo
+                  ipmi: sudo
+                  dcmi: sudo
+                  chassis: sudo
+                  sel: sudo
+                custom_args:
+                  bmc: [bmc-info]
+                  ipmi: [ipmimonitoring]
+                  dcmi: [ipmi-dcmi]
+                  chassis: [ipmi-chassis]
+                  sel: [ipmi-sel]
+
