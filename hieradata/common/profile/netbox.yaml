@@ -16,6 +16,9 @@ profile::netbox::acme_cetificate: netbox
 profile::netbox::netbox_api: "https://%{lookup('profile::netbox::discovery_name')}/"
 profile::netbox::do_backup: false
 profile::netbox::http_proxy: ~
+profile::netbox::changelog_retention: 730
+profile::netbox::jobresult_retention: 90
+profile::netbox::prefer_ipv4: false
 profile::netbox::report_checks: []
 
 # Ganeti config

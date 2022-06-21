@@ -54,6 +54,9 @@ class netbox(
     String                        $scap_repo                   = 'netbox/deploy',
     Stdlib::Port                  $local_redis_port            = 6380,
     Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
+    Integer[0]                    $changelog_retention         = 90,
+    Integer[0]                    $jobresult_retention         = 90,
+    Boolean                       $prefer_ipv4                 = false,
     Optional[Stdlib::Fqdn]        $ldap_server                 = undef,
     Boolean                       $enable_ldap                 = false,
     Optional[Enum['ldap', 'cas']] $authentication_provider     = undef,

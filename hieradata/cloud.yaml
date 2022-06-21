@@ -134,6 +134,9 @@ profile::netbox::additional_sans: []
 profile::netbox::ssl_provider: acme_chief
 profile::netbox::slaves: []
 profile::netbox::authentication_provider: 'ldap'
+profile::netbox::changelog_retention: 1
+profile::netbox::jobresult_retention: 1
+profile::netbox::prefer_ipv4: false
 profile::netbox::cas_rename_attributes:
   cn: 'first_name'
   mail: 'email'

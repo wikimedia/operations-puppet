@@ -6,6 +6,8 @@ profile::netbox::discovery_name: netbox-next.discovery.wmnet
 profile::netbox::service_hostname: netbox-next.wikimedia.org
 profile::netbox::do_backup: false
 profile::netbox::ssl_provider: 'cfssl'
+profile::netbox::changelog_retention: 1
+profile::netbox::jobresult_retention: 1
 
 profile::netbox::cas_rename_attributes:
   cn: 'first_name'

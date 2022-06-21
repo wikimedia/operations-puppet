@@ -56,6 +56,10 @@ BASE_PATH = ''
 # Cache timeout in seconds. Defaults to zero (disabled).
 CACHE_TIMEOUT = 0
 
+# The number of days to retain logged changes (object creations, updates, and deletions).
+# Set this to 0 to retain changes in the database indefinitely.
+CHANGELOG_RETENTION = <%= @changelog_retention %>
+
 # API Cross-Origin Resource Sharing (CORS) settings. If CORS_ORIGIN_ALLOW_ALL is set to True, all origins will be
 # allowed. Otherwise, define a list of allowed origins using either CORS_ORIGIN_WHITELIST or
 # CORS_ORIGIN_REGEX_WHITELIST. For more information, see https://github.com/ottoyiu/django-cors-headers
@@ -85,6 +89,10 @@ EMAIL = {
     'TIMEOUT': 10,  # seconds
     'FROM_EMAIL': '',
 }
+
+# The number of days to retain job results (scripts and reports).
+# Set this to 0 to retain job results in the database indefinitely.
+JOBRESULT_RETENTION = <%= @jobresult_retention %>
 
 # Enable custom logging. Please see the Django documentation for detailed guidance on configuring custom logs:
 #   https://docs.djangoproject.com/en/1.11/topics/logging/
@@ -150,6 +158,10 @@ LOGIN_REQUIRED = True
 
 # Expose Prometheus monitoring metrics at the HTTP endpoint '/metrics'
 METRICS_ENABLED = True
+
+# When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default.
+# Set this to True to prefer IPv4 instead.
+PREFER_IPV4 = <%= @prefer_ipv4.to_s.capitalize %>
 
 # The file path where custom reports will be stored. A trailing slash is not needed. Note that the default value of
 # this setting is derived from the installed location.

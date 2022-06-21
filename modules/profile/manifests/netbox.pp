@@ -46,6 +46,12 @@
 # @param ldap_config the ldap config for cas
 # @param do_backups if we should perform backups
 # @param http_proxy proxy server to use for outbound connections
+# @param changelog_retention The number of days to retain logged changes (object creations, updates, and deletions).
+#        Set this to 0 to retain changes in the database indefinitely.
+# @param jobresult_retention The number of days to retain job results (scripts and reports).
+#        Set this to 0 to retain job results in the database indefinitely.
+# @param prefer_ipv4 When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default.
+#        Set this to True to prefer IPv4 instead.
 # @param cas_rename_attributes a mapping of attributes that should be renamed
 # @param cas_group_attribute_mapping a mapping of attributes to netbox groups
 # @param cas_group_mapping a mapping of ldap groups to local groups
@@ -71,8 +77,11 @@ class profile::netbox (
     Optional[String[1]]       $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
     Stdlib::HTTPSUrl          $netbox_api              = lookup('profile::netbox::netbox_api'),
     Boolean                   $do_backups              = lookup('profile::netbox::do_backup'),
-    Optional[Stdlib::HTTPUrl] $http_proxy           = lookup('profile::netbox::http_proxy'),
-    Array[Profile::Netbox::Report_check] $report_checks       = lookup('profile::netbox::report_checks'),
+    Optional[Stdlib::HTTPUrl] $http_proxy              = lookup('profile::netbox::http_proxy'),
+    Integer[0]                $changelog_retention     = lookup('profile::netbox::changelog_retention'),
+    Integer[0]                $jobresult_retention     = lookup('profile::netbox::jobresult_retention'),
+    Boolean                   $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
+    Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
 
     #ganeti config
     Optional[String]           $ganeti_user                 = lookup('profile::netbox::ganeti_user'),
@@ -153,6 +162,9 @@ class profile::netbox (
         local_redis_port            => $redis_port,
         local_redis_maxmem          => $redis_maxmem,
         http_proxy                  => $http_proxy,
+        changelog_retention         => $changelog_retention,
+        jobresult_retention         => $jobresult_retention,
+        prefer_ipv4                 => $prefer_ipv4,
         ca_certs                    => $ca_certs,
         cas_server_url              => $cas_server_url,
         cas_rename_attributes       => $cas_rename_attributes,
