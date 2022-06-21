@@ -548,11 +548,6 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
-  mailman-admins:
-    gid: 757
-    description: Admins for mailman2 (deprecated)
-    members: []
-    privileges: []
   mailman3-roots:
     gid: 827
     description: Root level access for mailman3 VMs (T276712)
