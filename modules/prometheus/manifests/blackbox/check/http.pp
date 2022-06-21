@@ -157,7 +157,7 @@ define prometheus::blackbox::check::http (
         'tag'     => "prometheus::blackbox::check::http::${::site}::target",
     }
 
-    wmflib::resource::export('file', $module_file, $module_file_params)
-    wmflib::resource::export('file', $alerts_file, $alert_file_params)
-    wmflib::resource::export('file', $target_file, $target_frag_params)
+    wmflib::resource::export('file', $module_file, $title, $module_file_params)
+    wmflib::resource::export('file', $alerts_file, $title, $alert_file_params)
+    wmflib::resource::export('file', $target_file, $title, $target_frag_params)
 }
