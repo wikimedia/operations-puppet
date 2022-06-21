@@ -89,9 +89,4 @@ class zookeeper::server(
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:10:00'},
         require     => Service['zookeeper'],
     }
-
-    cron { 'zookeeper-cleanup':
-        ensure => absent,
-        user   => 'zookeeper',
-    }
 }
