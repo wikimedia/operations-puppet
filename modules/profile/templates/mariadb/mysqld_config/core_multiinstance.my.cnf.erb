@@ -135,6 +135,9 @@ innodb_buffer_pool_dump_at_shutdown = 1
 # T268869
 innodb_adaptive_hash_index=OFF
 
+# In 10.6 the default is 90%, 75% worked fine for us.
+innodb_max_dirty_pages_pct = 75
+
 skip-slave-start
 slave_transaction_retries = 4294967295
 

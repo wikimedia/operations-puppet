@@ -68,6 +68,9 @@ innodb_checksum_algorithm = full_crc32
 # T268869
 innodb_adaptive_hash_index=OFF
 
+# In 10.6 the default is 90%, 75% worked fine for us.
+innodb_max_dirty_pages_pct = 75
+
 # don't dump and load innodb buffer at start and stop
 # these servers will have the buffer pool in a bad state due to dumps
 # so not sure if these will be useful, but we leave them here for now

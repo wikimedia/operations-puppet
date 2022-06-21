@@ -91,6 +91,9 @@ innodb_adaptive_hash_index=OFF
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
 
+# In 10.6 the default is 90%, 75% worked fine for us.
+innodb_max_dirty_pages_pct = 75
+
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on,index_condition_pushdown=on'
 
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>

@@ -148,6 +148,9 @@ innodb_adaptive_hash_index=OFF
 # T287244
 innodb_checksum_algorithm = full_crc32
 
+# In 10.6 the default is 90%, 75% worked fine for us.
+innodb_max_dirty_pages_pct = 75
+
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
 # At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
