@@ -32,4 +32,8 @@ profile::gitlab::runner::allowed_services:
     port: 443
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/buildkitd:0.10.3
+profile::gitlab::runner::clear_interval:
+  start: 'OnCalendar'
+  interval: '*-*-* 05:00:00'
+profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true

@@ -22,6 +22,8 @@
 # with restricted firewall enabled. Only used when restrict_firewall is True.
 # @param ensure_buildkitd Whether to provide buildkitd for image building.
 # @param buildkitd_image Ref to buildkitd container image.
+# @param clear_interval Interval for cleanup of docker cache/volumes from old jobs.
+# @param enable_clear_cache Enable automatic cleanup of cached/old docker volumes.
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -50,6 +52,8 @@ class profile::gitlab::runner (
     Hash[String, Gitlab_runner::AllowedService] $allowed_services   = lookup('profile::gitlab::runner::allowed_services'),
     Wmflib::Ensure                              $ensure_buildkitd   = lookup('profile::gitlab::runner::ensure_buildkitd'),
     String                                      $buildkitd_image    = lookup('profile::gitlab::runner::buildkitd_image'),
+    Systemd::Timer::Schedule                    $clear_interval     = lookup('profile::gitlab::runner::clear_interval'),
+    Boolean                                     $enable_clear_cache = lookup('profile::gitlab::runner::enable_clear_cache'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -179,5 +183,15 @@ class profile::gitlab::runner (
         network => $docker_network,
         image   => $buildkitd_image,
         require => Docker::Network[$docker_network],
+    }
+
+    $ensure_clear_cache = $enable_clear_cache.bool2str('present','absent')
+    systemd::timer::job { 'clear-docker-cache':
+        ensure      => $ensure_clear_cache,
+        user        => 'root',
+        description => 'Clear docker cache/volumes',
+        command     => '/usr/share/gitlab-runner/clear-docker-cache',
+        interval    => $clear_interval,
+        require     =>  Package['gitlab-runner'],
     }
 }
