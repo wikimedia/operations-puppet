@@ -26,7 +26,6 @@ class role::deployment_server {
     # MediaWiki release uploads to releases servers
     include profile::releases::mediawiki::private
     include profile::releases::mediawiki::security
-    include profile::releases::upload
 
     # tool to test webserver config changes
     include profile::httpbb
