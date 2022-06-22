@@ -9,11 +9,13 @@ import tarfile
 import tempfile
 
 from argparse import ArgumentParser, Namespace
+from datetime import datetime
 from pathlib import Path
 from subprocess import CalledProcessError, run
 
 import pypuppetdb
 import requests
+import yaml
 
 from puppet_compiler import prepare
 from puppet_compiler.config import ControllerConfig
@@ -119,6 +121,31 @@ def update_webroot(tar_file: Path, dst_file: Path) -> None:
     tar_file.rename(dst_file)
 
 
+def upload_facts(facts_dir: Path):
+    """Upload the latest fact set to puppetdb"""
+    # TODO: dont hardcode this uri
+    uri = 'http://localhost:8080/pdb/cmd/v1'
+    logging.debug('processing facts dir: %s', facts_dir)
+    for fact_file in facts_dir.iterdir():
+        facts = yaml.safe_load('\n'.join(fact_file.read_text().splitlines(True)[1:]))
+        data = {
+            "command": "replace facts",
+            "version": 5,
+            "payload": {
+                "certname": facts['name'],
+                "environment": "production",
+                "producer_timestamp": datetime.now().isoformat(),
+                "producer": facts['name'],
+                "values": facts['values'],
+            }
+        }
+        resp = requests.post(uri, json=data)
+        if resp.ok:
+            logging.info("%s: Upload facts Success", facts['name'])
+        else:
+            logging.error("%s: Upload facts Fail\n%s", facts['name'], resp.text)
+
+
 def process_dir(
     directory: Path, process_all: bool, config: ControllerConfig, webroot_dir: Path
 ) -> None:
@@ -155,6 +182,7 @@ def main():
     for sub_dir in args.upload_dir.iterdir():
         if sub_dir.is_dir():
             process_dir(sub_dir, args.all, config, args.webroot_dir)
+            upload_facts(config.puppet_var / 'yaml' / sub_dir.name)
     return 0
 
 
