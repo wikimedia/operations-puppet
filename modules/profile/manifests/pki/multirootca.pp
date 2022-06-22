@@ -211,7 +211,8 @@ class profile::pki::multirootca (
     include network::constants
     $srange = ($network::constants::services_kubepods_networks +
                 $network::constants::staging_kubepods_networks +
-                $network::constants::mlserve_kubepods_networks).join(' ')
+                $network::constants::mlserve_kubepods_networks +
+                $network::constants::mlstage_kubepods_networks).join(' ')
 
     $k8s_vhost_ensure = $enable_k8s_vhost.bool2str('present', 'absent')
     httpd::conf {'cfssl-issuer-k8s-pods-vhost-port':
