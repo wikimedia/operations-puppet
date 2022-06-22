@@ -61,7 +61,7 @@ profile::netbox::report_checks:
         run_interval: '*-*-* *:12/30:00' # every 30 minutes
     -   name: accounting
         class: 'accounting.Accounting'
-        alert: true
+        alert: false
         check_interval: 5
         run_interval: '*-*-* *:14/30:00' # every 30 minutes
     -   name: cables
