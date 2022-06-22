@@ -3974,7 +3974,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMnomWTASEzJqGKtpCqUA8g+Wcz4RmcpD5qRbuiXurptrXPQaoogl2U/RfnyInPZQAoc4QgM3JGLvjaNfIGIkCNPq8H3oWc4DeUE+OTfbH3/L8UvvB8CQ8KEOC92C9GBCDAfva5hY94CziKeFZvFEFLpxVRLWkdZcXVzQGZmVX09Rf+KANf/9/XH8WtlLvtfT7e0d5f4aTYNJ96VtLih5BneA+CYlRM/xXzDiH5Am31ffPduKAeFfMMdDYRJAVHayVGqAaGHo+T38mHNibtt9hZFVWr/nnbOnNo2EIE1JVtoUHR6p4Jzr+XR/d6rgJWmvn7gfdewzfCMHNSPPSTeiuOPnnvJeF1OeiASu7FeHOndeB3VKQyUGcAr+6luAs4Wg4CoAz+zzEOvUYPoK7DZKuvyUeXoVjBWb1UkW6OizYjqiTxjNM8HPQ6vCtkM0sV3dAPfGJqDCy9rtmgCwfdeKch54Cw4QdKBkoMa/C2ciJFqHemo3YvGrsghRgekfObo5euOUVSf1pVqr2igmNtaSiEMXs0/06fzdn88ojQgBSHW/XSIQ+Yi47ZLIGE5R7Ht+9LH9pIDlujR81bxvrGoLICeZbTg1lZPMhAcFuNa84lpiKKgPxONC7cxqtizclghZW/KtGA2gfszazg1uyGI7xFEhGhfWi3NwQ9zqOxrGg6Q== aarora@tsf-452-wpa-3-166.epfl.ch
-    expiry_date: 2022-06-26
+    expiry_date: 2022-12-13
     expiry_contact: lzia@wikimedia.org
     krb: present
   dpifke:
