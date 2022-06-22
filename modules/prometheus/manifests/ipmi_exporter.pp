@@ -16,13 +16,13 @@ class prometheus::ipmi_exporter (
     sudo::user { 'prometheus_ipmi_exporter':
         user       => 'prometheus',
         privileges => [
-            'prometheus ALL = NOPASSWD: /usr/sbin/ipmimonitoring',
-            'prometheus ALL = NOPASSWD: /usr/sbin/ipmi-sensors',
-            'prometheus ALL = NOPASSWD: /usr/sbin/ipmi-dcmi',
-            'prometheus ALL = NOPASSWD: /usr/sbin/ipmi-raw',
-            'prometheus ALL = NOPASSWD: /usr/sbin/bmc-info',
-            'prometheus ALL = NOPASSWD: /usr/sbin/ipmi-chassis',
-            'prometheus ALL = NOPASSWD: /usr/sbin/ipmi-sel',
+            'ALL = NOPASSWD: /usr/sbin/ipmimonitoring',
+            'ALL = NOPASSWD: /usr/sbin/ipmi-sensors',
+            'ALL = NOPASSWD: /usr/sbin/ipmi-dcmi',
+            'ALL = NOPASSWD: /usr/sbin/ipmi-raw',
+            'ALL = NOPASSWD: /usr/sbin/bmc-info',
+            'ALL = NOPASSWD: /usr/sbin/ipmi-chassis',
+            'ALL = NOPASSWD: /usr/sbin/ipmi-sel',
         ],
     }
 
@@ -32,11 +32,11 @@ class prometheus::ipmi_exporter (
     # freeipmi-tools
     # ipmi_sudo.yml file
     file { "${prometheus_home}/ipmi_sudo_wrapper.sh":
-        ensure  => present,
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        content => '#!/bin/sh\nsudo /usr/sbin/$(basename $0) "$@"\n',
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/prometheus/ipmi_exporter/ipmi_sudo_wrapper.sh',
     }
     # Instruct the exporter to use our wrapper for freeipmi utilities
     file { '/etc/default/prometheus-ipmi-exporter':
