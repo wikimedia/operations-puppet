@@ -37,3 +37,4 @@ profile::gitlab::runner::clear_interval:
   interval: '*-*-* 05:00:00'
 profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true
+profile::base::unprivileged_userns_clone: true

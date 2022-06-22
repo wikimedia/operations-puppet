@@ -6,8 +6,7 @@ class role::gitlab_runner {
         description => 'virtual machine running runners for gitlab',
     }
 
-    include ::profile::base::production
-    include ::profile::base::firewall
-    include ::profile::base::sysctl::enable_unpriv_userns
-    include ::profile::gitlab::runner
+    include profile::base::production
+    include profile::base::firewall
+    include profile::gitlab::runner
 }

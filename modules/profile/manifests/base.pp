@@ -7,15 +7,17 @@
 # @param cluster the cluster
 # @param enable_contacts use the contacts module
 # @param core_dump_pattern the core dump pattern
+# @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
 class profile::base(
-    Hash    $wikimedia_clusters      = lookup('wikimedia_clusters'),
-    String  $cluster                 = lookup('cluster'),
-    String  $remote_syslog_send_logs = lookup('profile::base::remote_syslog_send_logs'),
-    Boolean $overlayfs               = lookup('profile::base::overlayfs'),
-    Boolean $enable_contacts         = lookup('profile::base::enable_contacts'),
-    String  $core_dump_pattern       = lookup('profile::base::core_dump_pattern'),
-    Array   $remote_syslog           = lookup('profile::base::remote_syslog'),
-    Hash    $remote_syslog_tls       = lookup('profile::base::remote_syslog_tls'),
+    Hash    $wikimedia_clusters        = lookup('wikimedia_clusters'),
+    String  $cluster                   = lookup('cluster'),
+    String  $remote_syslog_send_logs   = lookup('profile::base::remote_syslog_send_logs'),
+    Boolean $overlayfs                 = lookup('profile::base::overlayfs'),
+    Boolean $enable_contacts           = lookup('profile::base::enable_contacts'),
+    String  $core_dump_pattern         = lookup('profile::base::core_dump_pattern'),
+    Boolean $unprivileged_userns_clone = lookup('profile::base::unprivileged_userns_clone'),
+    Array   $remote_syslog             = lookup('profile::base::remote_syslog'),
+    Hash    $remote_syslog_tls         = lookup('profile::base::remote_syslog_tls'),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -64,7 +66,9 @@ class profile::base(
     }
 
     # TODO: make base::sysctl a profile itself?
-    class { 'base::sysctl': }
+    class { 'base::sysctl':
+        unprivileged_userns_clone => $unprivileged_userns_clone,
+    }
     class { 'motd': }
     class { 'base::standard_packages': }
     Class['profile::apt'] -> Class['base::standard_packages']

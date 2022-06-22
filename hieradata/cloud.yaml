@@ -71,6 +71,7 @@ profile::puppet_compiler::puppetdb_proxy: false
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
 profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'
+profile::base::unprivileged_userns_clone: false
 http_proxy: ~
 puppet_ca_server: ''
 manage_puppet_ca_file: false

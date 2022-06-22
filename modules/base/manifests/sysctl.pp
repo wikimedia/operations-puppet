@@ -1,4 +1,8 @@
-class base::sysctl {
+# @summary base class to configure sysctl settings
+# @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
+class base::sysctl (
+    Boolean $unprivileged_userns_clone = false,
+) {
     # Systemctl hardening settings. We set them ourselves so we can purge /etc/sysctl.d.
     sysctl::parameters { 'ubuntu defaults':
         values   => {
@@ -98,7 +102,7 @@ class base::sysctl {
         # so we disable it. Apply this to kernels starting with 5.10 (where it was enabled in Debian)
         sysctl::parameters { 'disable_unprivileged_ns':
             values => {
-            'kernel.unprivileged_userns_clone' => '0',
+                'kernel.unprivileged_userns_clone' => $unprivileged_userns_clone.bool2str('1', '0'),
             },
         }
 
