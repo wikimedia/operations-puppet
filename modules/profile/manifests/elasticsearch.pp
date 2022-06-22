@@ -32,7 +32,8 @@ class profile::elasticsearch(
     Enum['5.5', '5.6', '6.5', '6.8', '7.4', '7.8', '7.9', '7.10'] $version = lookup('profile::elasticsearch::version', {'default_value' => '5.5'}),
     Enum['5', '6', '7'] $config_version = lookup('profile::elasticsearch::config_version', {'default_value' => '5'}),
     Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
-
+    Optional[String] $s3_username = lookup('profile::elasticsearch::s3_username', { 'default_value' => undef }),
+    Optional[String] $s3_password = lookup('profile::elasticsearch::s3_password', { 'default_value' => undef }),
 ) {
 
     require profile::java
@@ -124,5 +125,7 @@ class profile::elasticsearch(
         row                   => $row,
         java_home             => $java_home,
         java_vers             => $java_vers,
+        s3_username           => $s3_username,
+        s3_password           => $s3_password,
     }
 }

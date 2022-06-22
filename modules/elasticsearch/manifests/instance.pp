@@ -107,7 +107,7 @@ define elasticsearch::instance (
     # the following parameters are injected by the main elasticsearch class
     String $cluster_name,
     String $version,
-    Integer[8,17] $java_vers,
+    Integer[8, 17] $java_vers,
     Stdlib::Port $http_port,
     Stdlib::Port $transport_tcp_port,
     Stdlib::Absolutepath $base_data_dir,
@@ -118,6 +118,8 @@ define elasticsearch::instance (
     Enum['Gelf', 'syslog'] $logstash_transport               = 'Gelf',
     Optional[String] $row                                    = undef,
     Optional[String] $rack                                   = undef,
+    Optional[String] $s3_username                            = undef,
+    Optional[String] $s3_password                            = undef,
 
     # the following parameters have defaults that are sane both for single
     # and multi-instances
@@ -286,6 +288,20 @@ define elasticsearch::instance (
         owner  => 'root',
         group  => 'elasticsearch',
         mode   => '0640',
+    }
+
+    exec { "s3-credentials-user-${cluster_name}":
+        command     => "/usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.access_key ${s3_username}",
+        environment => ["ES_PATH_CONF=${config_dir}"],
+        require     => File["${config_dir}/elasticsearch.keystore"],
+        unless      => 'bin/elasticsearch-keystore list | grep s3.client.default.access_key',
+    }
+
+    exec { "s3-credentials-pass-${cluster_name}":
+        command     => "/usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.secret_key ${s3_password}",
+        environment => ["ES_PATH_CONF=${config_dir}"],
+        require     => File["${config_dir}/elasticsearch.keystore"],
+        unless      => 'bin/elasticsearch-keystore list | grep s3.client.default.secret_key',
     }
 
     file { $data_dir:

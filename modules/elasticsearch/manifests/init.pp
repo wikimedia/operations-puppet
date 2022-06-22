@@ -32,6 +32,8 @@ class elasticsearch (
     Optional[String] $rack                                           = undef,
     Optional[String] $row                                            = undef,
     Optional[String] $java_home                                      = undef,
+    Optional[String] $s3_username                                    = undef,
+    Optional[String] $s3_password                                    = undef,
 ) {
     # Check arguments and set package
     case $version {
@@ -155,6 +157,8 @@ class elasticsearch (
             rack                  => $rack,
             row                   => $row,
             java_vers             => $java_vers,
+            s3_username           => $s3_username,
+            s3_password           => $s3_password,
             *                     => $instance_params,
         }
     }

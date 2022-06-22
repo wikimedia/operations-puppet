@@ -162,3 +162,4 @@ profile::elasticsearch::instances:
         recover_after_nodes: 11
 
 profile::elasticsearch::dc_settings: {}
+profile::elasticsearch::s3_username: 'search:platform'
