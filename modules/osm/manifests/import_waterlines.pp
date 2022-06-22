@@ -36,8 +36,7 @@ class osm::import_waterlines (
     }
 
     logrotate::conf { 'import_waterline':
-        ensure  => present,
-        content => template('osm/waterlines.logrotate.erb'),
+        ensure  => absent,
     }
 
     systemd::timer::job { 'waterlines':
