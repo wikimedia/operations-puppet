@@ -17,8 +17,6 @@ import sys
 
 import mwopenstackclients
 
-SpecialProjects = ["admin", "wmflabsdotorg", "cloudinfra"]
-
 OK = 0
 WARNING = 1
 CRITICAL = 2
@@ -31,40 +29,37 @@ def check_flavors():
     ceph_flavors_without_read_iops = []
     ceph_flavors_without_write_iops = []
 
-    clients = mwopenstackclients.clients("/etc/novaobserver.yaml")
-    allprojects = clients.allprojects()
-    allprojectslist = [project.name for project in allprojects]
+    clients = mwopenstackclients.clients("/etc/novaadmin.yaml")
+    novaclient = clients.novaclient()
 
-    # these will always be weird; don't check them
-    for project in SpecialProjects:
-        allprojectslist.remove(project)
+    # quote from the novaclient documentation:
+    # "is_public: [...] None means give all flavors [...]"
+    # this unfortunately requires admin rights
+    flavors = novaclient.flavors.list(is_public=None)
 
-    for project in allprojectslist:
-        novaclient = clients.novaclient(project)
-        flavors = novaclient.flavors.list()
-        for flavor in flavors:
-            orphan_flavors.append(flavor.name)
-            keys = flavor.get_keys()
-            for key in keys:
-                if key.startswith("aggregate_instance_extra_specs"):
-                    orphan_flavors.remove(flavor.name)
-                    if "ceph" in key:
-                        # Make sure this is throttled properly
-                        ceph_flavors_without_bytes_sec.append(flavor.name)
-                        ceph_flavors_without_read_iops.append(flavor.name)
-                        ceph_flavors_without_write_iops.append(flavor.name)
-                        for throttlekey in keys:
-                            if throttlekey.startswith("quota:disk_total_bytes_sec"):
-                                if flavor.name in ceph_flavors_without_bytes_sec:
-                                    ceph_flavors_without_bytes_sec.remove(flavor.name)
-                            elif throttlekey.startswith("quota:disk_read_iops_sec"):
-                                if flavor.name in ceph_flavors_without_read_iops:
-                                    ceph_flavors_without_read_iops.remove(flavor.name)
-                            elif throttlekey.startswith("quota:disk_write_iops_sec"):
-                                if flavor.name in ceph_flavors_without_write_iops:
-                                    ceph_flavors_without_write_iops.remove(flavor.name)
+    for flavor in flavors:
+        orphan_flavors.append(flavor.name)
+        keys = flavor.get_keys()
+        for key in keys:
+            if key.startswith("aggregate_instance_extra_specs"):
+                orphan_flavors.remove(flavor.name)
+                if "ceph" in key:
+                    # Make sure this is throttled properly
+                    ceph_flavors_without_bytes_sec.append(flavor.name)
+                    ceph_flavors_without_read_iops.append(flavor.name)
+                    ceph_flavors_without_write_iops.append(flavor.name)
+                    for throttlekey in keys:
+                        if throttlekey.startswith("quota:disk_total_bytes_sec"):
+                            if flavor.name in ceph_flavors_without_bytes_sec:
+                                ceph_flavors_without_bytes_sec.remove(flavor.name)
+                        elif throttlekey.startswith("quota:disk_read_iops_sec"):
+                            if flavor.name in ceph_flavors_without_read_iops:
+                                ceph_flavors_without_read_iops.remove(flavor.name)
+                        elif throttlekey.startswith("quota:disk_write_iops_sec"):
+                            if flavor.name in ceph_flavors_without_write_iops:
+                                ceph_flavors_without_write_iops.remove(flavor.name)
 
-                    break
+                break
 
     errstring = ""
     if orphan_flavors:
