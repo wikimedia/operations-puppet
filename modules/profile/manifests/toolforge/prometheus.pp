@@ -267,14 +267,14 @@ class profile::toolforge::prometheus (
                     'api_server' => "https://${k8s_apiserver_fqdn}:${k8s_apiserver_port}",
                     'role'       => 'pod',
                     'tls_config' => $k8s_tls_config,
+                    'namespaces' => {
+                        'names' => [
+                            $job['namespace'],
+                        ],
+                    },
                 },
             ],
             'relabel_configs'       => [
-                {
-                    'action'        => 'keep',
-                    'regex'         => $job['namespace'],
-                    'source_labels' => ['__meta_kubernetes_namespace'],
-                },
                 {
                     'action'        => 'keep',
                     'regex'         => $job['pod_name'],
