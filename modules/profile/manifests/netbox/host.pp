@@ -12,7 +12,7 @@ class profile::netbox::host (
         warning("${facts['networking']['fqdn']}: no netbox location found")
     } else {
         $message = $location ? {
-            Netbox::Host::Location::Virtual => "Virtual Machine on cluster: ${location['cluster']}",
+            Netbox::Host::Location::Virtual => "Virtual Machine on Ganeti cluster: ${location['ganeti_cluster']}",
             default                         => "Bare Metal Rack: ${location['rack']}",
         }
         motd::message { 'netbox location':
