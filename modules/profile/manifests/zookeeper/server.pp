@@ -35,15 +35,7 @@ class profile::zookeeper::server (
     }
 
     class { 'zookeeper::server':
-        # If zookeeper runs in environments where JAVA_TOOL_OPTIONS is defined,
-        # (like all the analytics hosts after T128295)
-        # the zkCleanup.sh script will cause cronspam to root@ due to
-        # message like the following to stderr:
-        # 'Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8'
-        # There seems to be no elegant way to avoid the JVM spam,
-        # so until somebody finds a better way we redirect stdout to /dev/null
-        # and we filter out JAVA_TOOL_OPTIONS messages from stderr.
-        cleanup_script_args => '-n 10 2>&1 > /dev/null | grep -v JAVA_TOOL_OPTIONS',
+        cleanup_script_args => '-n 10',
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts}",
         java_home           => $java_home,
     }

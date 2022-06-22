@@ -20,7 +20,7 @@ class zookeeper::server(
     $jmx_port             = 9998,
     $java_opts            = undef,
     $cleanup_script       = '/usr/share/zookeeper/bin/zkCleanup.sh',
-    $cleanup_script_args  = '-n 10 > /dev/null',
+    $cleanup_script_args  = '-n 10',
     $cleanup_timer_deploy = true,
     $default_template     = 'zookeeper/zookeeper.default.erb',
     $log4j_template       = 'zookeeper/log4j.properties.erb',
