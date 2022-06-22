@@ -126,7 +126,7 @@ def upload_facts(facts_dir: Path):
     # TODO: dont hardcode this uri
     uri = 'http://localhost:8080/pdb/cmd/v1'
     logging.debug('processing facts dir: %s', facts_dir)
-    for fact_file in facts_dir.iterdir():
+    for fact_file in facts_dir.glob('**/*.yaml'):
         facts = yaml.safe_load('\n'.join(fact_file.read_text().splitlines(True)[1:]))
         data = {
             "command": "replace facts",
@@ -162,6 +162,7 @@ def process_dir(
                 allowd_idx += 1
             else:
                 update_webroot(tar_file, webroot_dir / f'{directory.name}_facts.tar.gz')
+                upload_facts(config.puppet_var / 'yaml' / directory.name)
                 continue
         logging.debug('delete tar file: %s', tar_file)
         tar_file.unlink()
@@ -182,7 +183,6 @@ def main():
     for sub_dir in args.upload_dir.iterdir():
         if sub_dir.is_dir():
             process_dir(sub_dir, args.all, config, args.webroot_dir)
-            upload_facts(config.puppet_var / 'yaml' / sub_dir.name)
     return 0
 
 
