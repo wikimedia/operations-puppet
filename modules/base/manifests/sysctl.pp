@@ -100,7 +100,7 @@ class base::sysctl (
         # This changed in Bullseye mostly to allow Chromium and Firefox to setup sandboxing via namespaces
         # But for a server deployment like ours, we have no use for it and it widens the attack surface,
         # so we disable it. Apply this to kernels starting with 5.10 (where it was enabled in Debian)
-        sysctl::parameters { 'disable_unprivileged_ns':
+        sysctl::parameters { 'unprivileged_userns_clone':
             values => {
                 'kernel.unprivileged_userns_clone' => $unprivileged_userns_clone.bool2str('1', '0'),
             },
