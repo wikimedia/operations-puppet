@@ -280,6 +280,7 @@ class ServiceRestarter(ToolCliBase):
             "accept": "application/json",
         }
         parsed = parse.urlparse(url)
+        status = None
         for _ in range(0, self.retries):
             try:
                 logger.debug("Fetching url %s", url)
@@ -331,6 +332,8 @@ class ServiceRestarter(ToolCliBase):
             # now wait before retrying
             time.sleep(self.wait)
         # We ran out of retries, raise an exception.
+        if status is None:
+            status = "Never successfully retrieved {}".format(url)
         raise PoolStatusError(str(status))
 
 
