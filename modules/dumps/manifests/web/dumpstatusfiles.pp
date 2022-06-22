@@ -19,7 +19,7 @@ class dumps::web::dumpstatusfiles(
         send_mail    => true,
         send_mail_to => 'ops-dumps@wikimedia.org',
         command      => "/bin/bash /usr/local/bin/unpack-dumpstatusfiles.sh --xmldumpsdir ${xmldumpsdir} --newer 5",
-        interval     => {'start' =>  'OnCalendar', 'interval' => '*-*-* 00:0/5:00',}
+        interval     => {'start' =>  'OnCalendar', 'interval' => '*-*-* *:0/5:00',}
     }
 
     cron { 'update-dump-statusfiles':
