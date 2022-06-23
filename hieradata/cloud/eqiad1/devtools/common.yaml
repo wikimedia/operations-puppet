@@ -277,4 +277,4 @@ profile::gitlab::restore_interval:
 
 # GitLab Runner
 profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
-profile::gitlab::runner::registration_token: private
+# profile::gitlab::runner::registration_token: private
