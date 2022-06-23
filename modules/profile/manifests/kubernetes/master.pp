@@ -120,8 +120,8 @@ class profile::kubernetes::master(
         query           => "instance_verb:apiserver_request_latencies_summary:avg5m{verb\\!~\"(CONNECT|WATCH|WATCHLIST)\",instance=\"${::ipaddress}:6443\"}",
         prometheus_url  => $prometheus_url,
         nan_ok          => true,
-        warning         => 50000,
-        critical        => 100000,
+        warning         => 100000,
+        critical        => 200000,
         dashboard_links => ['https://grafana.wikimedia.org/d/000000435/kubernetes-api?orgId=1&viewPanel=27'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
     }
