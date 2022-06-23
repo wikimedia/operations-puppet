@@ -6007,7 +6007,7 @@ ldap_only_users:
     ensure: present
     realname: Simone Cuomo
     email: simone@thisdot.co
-    expiry_date: 2022-06-30
+    expiry_date: 2023-06-30
     expiry_contact: abaso@wikimedia.org
   bgwiki:
     ensure: present
