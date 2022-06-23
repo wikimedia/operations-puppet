@@ -274,3 +274,7 @@ profile::gitlab::rsync_interval:
 profile::gitlab::restore_interval:
   start: 'OnCalendar'
   interval: '*-*-* 01:30:00'
+
+# GitLab Runner
+profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
+profile::gitlab::runner::registration_token: private
