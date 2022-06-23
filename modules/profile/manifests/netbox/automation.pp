@@ -97,7 +97,7 @@ class profile::netbox::automation (
     prometheus::blackbox::check::http {
         'netbox-exports.wikimedia.org':  # Public endpoint (used by CI)
             path => '/dns.git/config';
-        $facts['networking']['hostname']:  # Internal endpoint (used by the dns script and cookbook)
+        $facts['networking']['fqdn']:  # Internal endpoint (used by the dns script and cookbook)
             path => '/dns.git/config';
     }
 }
