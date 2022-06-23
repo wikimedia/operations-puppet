@@ -84,7 +84,7 @@ def main():
         'modify-mfa [--enable/--disable] <username>\nexample: modify-mfa --enable jbond')
     parser.add_option('--enable', action='store_true', help='enable mfa')
     parser.add_option('--disable', action='store_true', help='disable mfa')
-    parser.add_option('--method', default='mfa-u2f', choices=['mfa-u2f'],
+    parser.add_option('--method', default='mfa-u2f', choices=['mfa-u2f', 'mfa-webauthn'],
                       help='the MFA type, currently only mfa-u2f is supported')
     ldap_support_lib.addParserOptions(parser, "scriptuser")
 
