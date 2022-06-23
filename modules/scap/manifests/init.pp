@@ -32,7 +32,7 @@ class scap (
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
-            source => 'puppet:///modules/scap/files/bootstrap-scap-target.sh',
+            source => 'puppet:///modules/scap/bootstrap-scap-target.sh',
         }
 
         exec { 'bootstrap-scap-target':
