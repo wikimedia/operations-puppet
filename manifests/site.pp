@@ -1154,16 +1154,6 @@ node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-# being decom'd in T302517
-node /^elastic103[2-9]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
-# being decom'd in T302517
-node /^elastic104[0-7]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 node /^elastic104[8-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
