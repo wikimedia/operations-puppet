@@ -61,16 +61,4 @@ class profile::durum (
         ]
     }
 
-    monitoring::service { 'check_durum_ipv4':
-        description   => 'Wikidough durum Check (IPv4)',
-        check_command => "check_tcp_ssl!${ips['landing'][0]}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Durum'
-    }
-
-    monitoring::service { 'check_durum_ipv6':
-        description   => 'Wikidough durum Check (IPv6)',
-        check_command => "check_tcp_ssl!${ips['landing'][1]}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Durum'
-    }
-
 }
