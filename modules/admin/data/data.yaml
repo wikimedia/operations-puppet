@@ -16,7 +16,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
-              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
+              drossi, fsalutari, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
@@ -133,7 +133,7 @@ groups:
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
-              aikochou, kevinbazira, tsepothoabala, samtar
+              aikochou, kevinbazira, tsepothoabala, samtar, demon
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
@@ -181,7 +181,7 @@ groups:
     gid: 711
     description: people who upload mediawiki releases
     members: [catrope, hashar, reedy, thcipriani, brennen,
-              jforrester, mah]
+              jforrester, mah, demon]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
   releasers-mobile:
@@ -209,7 +209,7 @@ groups:
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
-    members: [dduvall, jhuneidi, thcipriani]
+    members: [dduvall, jhuneidi, thcipriani, demon]
   releasers-mwcli:
     gid: 822
     description: people who upload mw-cli releases (T250241)
@@ -247,7 +247,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, jhuneidi, dancy, jnuche]
+    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, jhuneidi, dancy, jnuche, demon]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -467,7 +467,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [twentyafterfour, thcipriani, brennen, jnuche, hashar]
+    members: [twentyafterfour, thcipriani, brennen, jnuche, hashar, demon]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -579,7 +579,7 @@ groups:
               kartik, halfak, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit,
-              kevinbazira, chrisalbon, jgiannelos]
+              kevinbazira, chrisalbon, jgiannelos, demon]
     privileges: []
   deploy-aqs:
     gid: 786
@@ -703,7 +703,7 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [twentyafterfour, thcipriani, brennen]
+    members: [twentyafterfour, thcipriani, brennen, demon]
     approval:
       - Tyler Cipriani
   notebook-roots:
@@ -815,14 +815,14 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche, demon]
     system_members: [jenkins-slave]
   deployment-docker:
     # See the comment above regarding both security and the use of the posix name instead than the gid.
     # Might be removed in the future if there is no more need. See T303450
     posix_name: docker
     description: Allow releng team to be in the docker group on deployment servers. No gid on purpose
-    members: [*ops_members, dancy, dduvall, hashar, jhuneidi, jnuche, thcipriani]
+    members: [*ops_members, dancy, dduvall, hashar, jhuneidi, jnuche, thcipriani, demon]
     system_members: [mwbuilder]
   builder-docker:
     # There is no gid on purpose, same as above
@@ -1747,13 +1747,13 @@ users:
     uid: 2316
     email: ssastry@wikimedia.org
   demon:
-    ensure: absent
+    ensure: present
     gid: 500
     name: demon
     realname: Chad Horohoe
-    ssh_keys: []
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7O/SWhXzJg8T5r+KG+K3N37eaDbwojgH3luusC9Fb5 chad@wikimedia.org]
     uid: 1145
-    email: chad@horohoe.email
+    email: chad@wikimedia.org
   qchris:
     ensure: present
     gid: 500
@@ -5860,7 +5860,7 @@ ldap_only_users:
   demon:
     ensure: present
     realname: Chad Horohoe
-    email: chad@horohoe.email
+    email: chad@wikimedia.org
   cdunn:
     ensure: present
     realname: Carol Dunn
