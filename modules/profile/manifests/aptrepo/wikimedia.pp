@@ -56,7 +56,7 @@ class profile::aptrepo::wikimedia (
     httpd::conf { 'listen on configured port':
         ensure   => present,
         priority => 0,
-        content  => "Listen ${private_repo_port}\n",
+        content  => "Listen ${private_repo_port}\nListen 8081\n Listen 8443\n",
     }
 
     httpd::site{ 'private-apt-repo':
