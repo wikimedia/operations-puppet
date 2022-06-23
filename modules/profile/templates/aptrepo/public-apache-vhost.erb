@@ -9,6 +9,12 @@
     # Redirect to APT repository documentation.
     RedirectMatch "^/$" "https://wikitech.wikimedia.org/wiki/APT_repository"
 
+    <Directory "/srv/">
+        # We want the user to be able to browse the directory manually
+        Options Indexes FollowSymLinks Multiviews
+        Require all granted
+    </Directory>
+
     # Access to directories as recommended by Debian:
     # https://wiki.debian.org/DebianRepository/SetupWithReprepro
     <Directory "<%= @public_basedir %>" >
