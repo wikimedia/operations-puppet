@@ -8,8 +8,8 @@ profile::gitlab::runner::ensure: present
 profile::gitlab::runner::access_level: ref_protected
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/buster:latest
-profile::gitlab::runner::docker_volume_min: 40
-profile::gitlab::runner::docker_volume_max: 40
+profile::gitlab::runner::docker_volume_min: 5
+profile::gitlab::runner::docker_volume_max: 8
 profile::gitlab::runner::docker_network: gitlab-runner
 profile::gitlab::runner::docker_subnet: '172.20.0.0/16'
 profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
