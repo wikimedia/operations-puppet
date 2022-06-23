@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == security::pam::config ==
 #
 # Allows adding a PAM configuration file to the system configuration.

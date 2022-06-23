@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == security::access::config ==
 #
 # Allows defining an access.conf stanza to limit logins into the server to

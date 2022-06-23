@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == security::access ==
 #
 # This class is included implicitly by security::access::config resources

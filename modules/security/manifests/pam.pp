@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == security::pam ==
 #
 # This class is pulled in implicitly by the security::pam::config
