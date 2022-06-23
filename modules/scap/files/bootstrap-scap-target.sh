@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 ######################################
 # This file is managed by puppet!
-#  puppet:///modules/scap/files/bootstrap-scap-target.sh
+#  puppet:///modules/scap/bootstrap-scap-target.sh
 
 # This script primes a host with a scap installation
 ######################################
