@@ -2,5 +2,5 @@
 type Netbox::Host::Location::Virtual = Struct[{
     # should at some point have a Wmflib::Site
     site           => String[5,5],
-    ganeti_cluster => Stdlib::Fqdn,
+    ganeti_cluster => String[1],
 }]
