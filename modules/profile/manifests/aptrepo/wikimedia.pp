@@ -47,6 +47,7 @@ class profile::aptrepo::wikimedia (
 ){
 
     class { 'httpd':
+        modules              => ['macro'],
         remove_default_ports => true,
     }
 
