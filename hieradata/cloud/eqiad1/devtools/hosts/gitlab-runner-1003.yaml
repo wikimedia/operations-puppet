@@ -1,0 +1,43 @@
+profile::gitlab::runner::docker_settings:
+  log-driver: none
+# profile::gitlab::runner::registration_token: private
+profile::gitlab::runner::docker_volume: true
+# puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
+# uses similar configuration as Trusted Runners:
+profile::gitlab::runner::ensure: present
+profile::gitlab::runner::access_level: ref_protected
+profile::gitlab::runner::concurrent: 1
+profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/buster:latest
+profile::gitlab::runner::docker_volume_min: 40
+profile::gitlab::runner::docker_volume_max: 40
+profile::gitlab::runner::docker_network: gitlab-runner
+profile::gitlab::runner::docker_subnet: '172.20.0.0/16'
+profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
+profile::gitlab::runner::docker_gc_interval: 5m
+profile::gitlab::runner::docker_gc_images_high_water_mark: 20gb
+profile::gitlab::runner::docker_gc_images_low_water_mark: 10gb
+profile::gitlab::runner::docker_gc_volumes_high_water_mark: 20gb
+profile::gitlab::runner::docker_gc_volumes_low_water_mark: 10gb
+profile::gitlab::runner::locked: true
+# profile::gitlab::runner::registration_token: private
+profile::gitlab::runner::run_untagged: false
+profile::gitlab::runner::tags: ['protected']
+profile::gitlab::runner::enable_exporter: true
+profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" -i '/(var/lib|run)/docker/*' --exclude-type=fuse.fuse_dfs --exclude-type=tracefs
+profile::gitlab::runner::user: 'gitlab-runner'
+profile::gitlab::runner::restrict_firewall: true
+profile::gitlab::runner::allowed_services:
+  gitlab-https:
+    host: 'gitlab.devtools.wmcloud.org'
+    port: 443
+  gitlab-replica-https: # for failover between instances without restarting ferm on runners
+    host: 'gitlab.devtools.wmcloud.org'
+    port: 443
+profile::gitlab::runner::ensure_buildkitd: present
+profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/buildkitd:0.10.3
+profile::gitlab::runner::clear_interval:
+  start: 'OnCalendar'
+  interval: '*-*-* 05:00:00'
+profile::gitlab::runner::enable_clear_cache: true
+profile::base::overlayfs: true
+profile::base::unprivileged_userns_clone: true

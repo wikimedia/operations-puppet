@@ -3,3 +3,4 @@ profile::gitlab::runner::docker_settings:
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::docker_volume: true
 # puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
+# uses similar config as WMCS runners from hieradata/cloud.yaml
