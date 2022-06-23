@@ -165,7 +165,7 @@ class profile::gitlab::runner (
                 --access-level="${access_level}"
                 |- CMD
             ,
-            unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
+            unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
             require => Apt::Package_from_component['gitlab-runner'],
         }
 
@@ -173,7 +173,7 @@ class profile::gitlab::runner (
         exec { 'gitlab-unregister-runner':
             user    => $gitlab_runner_user,
             command => "/usr/bin/gitlab-runner unregister --name '${runner_name}'",
-            onlyif  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
+            onlyif  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
             before  =>  Package['gitlab-runner'],
         }
     }
