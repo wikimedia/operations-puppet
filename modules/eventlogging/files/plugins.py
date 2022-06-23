@@ -80,7 +80,7 @@ eventlogging_schemas_disabled = (
     # TranslationRecommendation schemas
     'TranslationRecommendationUserAction',
     'TranslationRecommendationUIRequests',
-    'TranslationRecommendationAPIRequests'
+    'TranslationRecommendationAPIRequests',
 
     # Readers Web schemas
     'WikipediaPortal',
