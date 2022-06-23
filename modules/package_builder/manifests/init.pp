@@ -91,6 +91,7 @@ class package_builder(
         'pkg-kde-tools',
         'pkg-php-tools',
         'postgresql-server-dev-all',
+        'python3-pbr',
         'python3-pytest-runner',
         'python3-setuptools',
         'python3-setuptools-scm',
