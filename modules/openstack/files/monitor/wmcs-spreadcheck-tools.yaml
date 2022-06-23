@@ -14,8 +14,6 @@ classifier:
   sgeexec-: sgeexec
   sgegrid-master: sgemaster
   sgegrid-shadow: sgemaster
-  sgewebgrid-generic-: sgewebgrid-generic
-  sgewebgrid-lighttpd-: sgewebgrid-lighttpd
   sgewebgen-: sgewebgrid-generic
   sgeweblight-: sgewebgrid-lighttpd
   static-: static
