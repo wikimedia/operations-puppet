@@ -31,7 +31,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart, dstrine, johnben, ppena]
+              jcarvalho, sthart, dstrine, johnben, ppena, mshaver]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5650,9 +5650,8 @@ ldap_only_users:
     realname: Zachary McCune
     email: zmccune@wikimedia.org
   mshaver:
-    ensure: present
+    ensure: absent
     realname: Moska Shaver
-    email: mshaver@wikimedia.org
   ebjune:
     ensure: absent
     realname: Erika Bjune
