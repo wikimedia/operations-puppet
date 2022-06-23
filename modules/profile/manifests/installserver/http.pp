@@ -1,12 +1,19 @@
 # Installs a web server for the install server
 class profile::installserver::http {
 
-    include install_server::web_server
+    # prevent a /srv root autoindex; empty for now.
+    file { '/srv/index.html':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => '',
+    }
 
     class { '::sslcert::dhparam': }
 
     acme_chief::cert { 'apt':
-        puppet_rsc => Exec['nginx-reload'],
+        puppet_svc => 'apache2',
     }
 
     ferm::service { 'install_http':

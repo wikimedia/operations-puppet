@@ -44,11 +44,11 @@
 
 </Macro>
 
-<VirtualHost *:8081>
+<VirtualHost *:80>
   Use PublicRepo
 </VirtualHost>
 
-<VirtualHost *:8443>
+<VirtualHost *:443>
   SSLEngine on
   SSLCertificateFile /etc/acmecerts/apt/live/ec-prime256v1.crt
   SSLCertificateChainFile /etc/acmecerts/apt/live/ec-prime256v1.chain.crt

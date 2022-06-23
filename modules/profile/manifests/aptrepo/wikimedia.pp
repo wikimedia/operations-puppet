@@ -46,6 +46,14 @@ class profile::aptrepo::wikimedia (
     Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
 ){
 
+    # Remove nginx, to make room for Apache2.
+    package {[
+        'nginx-light',
+        'nginx-common',
+    ]:
+        ensure => absent
+    }
+
     class { 'httpd':
         modules              => ['headers', 'macro', 'ssl'],
         remove_default_ports => true,
@@ -56,7 +64,7 @@ class profile::aptrepo::wikimedia (
     httpd::conf { 'listen on configured port':
         ensure   => present,
         priority => 0,
-        content  => "Listen ${private_repo_port}\nListen 8081\n Listen 8443\n",
+        content  => "Listen ${private_repo_port}\nListen 80\n Listen 443\n",
     }
 
     httpd::site{ 'private-apt-repo':
