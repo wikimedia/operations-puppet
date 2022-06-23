@@ -1,38 +1,34 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: bird
+# @summary Installs Bird2 and its Prometheus metrics exporter
 #
-# Installs Bird and its prometheus metrics exporter
-#
-# === Parameters
-#
-# [*neighbors*]
+# @param neighbors
 #   List of BGP neighbors
 #
-# [*config_template*]
+# @param config_template
 #   Specifiy which Bird config to use.
 #   Only anycast exists for now, but it could be extended in the future.
 #
-# [*bfd*]
+# @param bfd
 #   Enables BFD with the BGP peer (300ms*3)
 #
-# [*bind_service*]
+# @param bind_service
 #   Allows to bind the bird service to another service (watchdog-like)
 #
-# [*ipv4_src*]
+# @param ipv4_src
 #   IPv4 address to use for BGP session, also used as router ID
 #
-# [*ipv6_src*]
+# @param ipv6_src
 #   IPv6 address to use for BGP session
 #
-# [*do_ipv6*]
+# @param do_ipv6
 #   Whether to enable IPv6 support. default: false.
 #
-# [*multihop*]
-#   If he neighbors are direct or not. default: true.
+# @param multihop
+#   If the neighbors are direct or not. default: true.
 
 class bird(
   Array[Stdlib::IP::Address] $neighbors,
-  String                     $config_template = 'bird/bird_anycast.conf.epp',
+  String                     $config_template = 'bird/bird_anycast.conf.erb',
   Boolean                    $bfd             = true,
   Optional[String]           $bind_service    = undef,
   Boolean                    $do_ipv6         = false,
@@ -41,49 +37,30 @@ class bird(
   Stdlib::IP::Address        $ipv6_src        = $facts['ipaddress6'],
   ){
 
-  ensure_packages(['bird', 'prometheus-bird-exporter'])
+  ensure_packages(['prometheus-bird-exporter'])
 
   $neighbors_v4 = $neighbors.filter |$neighbor| { $neighbor =~ Stdlib::IP::Address::V4::Nosubnet }
   $neighbors_v6 = $neighbors.filter |$neighbor| { $neighbor =~ Stdlib::IP::Address::V6::Nosubnet }
 
-  if $bind_service {
-    exec { 'bird-systemd-reload-enable':
-        command     => 'systemctl daemon-reload; systemctl enable bird.service',
-        path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
-        refreshonly => true,
-    }
-    file { '/lib/systemd/system/bird.service':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('bird/bird.service.erb'),
-        require => Package['bird'],
-        notify  => Exec['bird-systemd-reload-enable'],
-    }
-    systemd::service { 'bird6':
-      ensure         => $do_ipv6.bool2str('present', 'absent'),
-      restart        => true,
-      content        => template('bird/bird6.service.erb'),
-      require        => [
-          Package['bird'],
-      ],
-      service_params => {
-          restart => 'systemctl reload bird6.service',
-      },
-    }
+  # Install the backported bird2 package from bullseye if the host is buster.
+  if debian::codename::eq('buster') {
+      apt::package_from_component { 'bird2':
+          component => 'component/bird2',
+      }
   } else {
-    service { 'bird6':
-        enable  => true,
-        restart => 'systemctl reload bird6.service',
-        require => Package['bird'],
-    }
+    ensure_packages(['bird2'])
   }
 
-  service { 'bird':
-      enable  => true,
-      restart => 'service bird reload',
-      require => Package['bird'],
+  systemd::service { 'bird':
+      ensure         => present,
+      restart        => true,
+      content        => template('bird/bird.service.erb'),
+      require        => [
+          Package['bird2'],
+      ],
+      service_params => {
+          restart => 'systemctl reload bird.service',
+      },
   }
 
   file { '/etc/bird/bird.conf':
@@ -91,17 +68,8 @@ class bird(
       owner   => 'bird',
       group   => 'bird',
       mode    => '0640',
-      content => epp($config_template, {'neighbors' => $neighbors_v4}),
-      notify  => Service['bird'],
-  }
-
-  file { '/etc/bird/bird6.conf':
-      ensure  => stdlib::ensure($do_ipv6, 'file'),
-      owner   => 'bird',
-      group   => 'bird',
-      mode    => '0640',
-      content => epp($config_template, {'do_ipv6' => $do_ipv6, 'neighbors' => $neighbors_v6}),
-      notify  => Service['bird6'],
+      content => template($config_template),
+      notify  => Systemd::Service['bird'],
   }
 
   service { 'prometheus-bird-exporter':
