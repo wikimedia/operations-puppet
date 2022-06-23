@@ -1,6 +1,10 @@
 class profile::netmon::httpd (
-    Float $php_version = lookup(profile::netmon::httpd::php_version, {default_value => 7.3}),
 ){
+    $php_version = debian::codename() ? {
+        'buster'   => 'php7.3',
+        'bullseye' => 'php7.4',
+        default    => 'php7.3',
+    }
     # needed by librenms and netbox web servers
     class { '::sslcert::dhparam': }
 
@@ -9,7 +13,7 @@ class profile::netmon::httpd (
     }
 
     class { '::httpd':
-        modules    => ['headers','rewrite','proxy','proxy_http','ssl','fcgid', "php${php_version}"],
+        modules    => ['headers','rewrite','proxy','proxy_http','ssl','fcgid', $php_version],
         extra_pkgs => ['libapache2-mod-fcgid'],
     }
 
