@@ -31,7 +31,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart, dstrine, johnben, ppena, mshaver]
+              jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5489,9 +5489,8 @@ ldap_only_users:
     realname: Lauren Dickinson
     email: ldickinson@wikimedia.org
   ldoan:
-    ensure: present
+    ensure: absent
     realname: Linnea Doan
-    email: ldoan@wikimedia.org
   lmixter:
     ensure: present
     realname: Leighanna Mixter
@@ -5588,9 +5587,8 @@ ldap_only_users:
     realname: Tim Landscheidt
     email: tim@tim-landscheidt.de
   schang:
-    ensure: present
+    ensure: absent
     realname: Stella Chang
-    email: schang@wikimedia.org
   sgimeno:
     ensure: present
     realname: Sergio Gimeno
