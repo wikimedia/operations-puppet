@@ -1,5 +1,0 @@
-nagiosplugin==1.2.2
-pytz==2016.7
-mock==3.0.5
-pyOpenSSL==16.2.0
-
