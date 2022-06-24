@@ -3,15 +3,14 @@ require 'rake_modules/monkey_patch'
 
 SPDX_GLOB = "{modules,manifests,rake_module,utils}/{**/*,*}"
 SPDX_TAG = "SPDX-License-Identifier: Apache-2.0"
+IGNORE_EXT_PATTERN = /\A\.(?:json|pem|key|csr)\z/i
+IGNORE_FILE = ['README', 'CONTRIBUTOR']
 class UnknownExtensionError < StandardError
   attr_reader :filename
   def initialize(filename, msg = "Unknown Extension")
     @filename = filename
     super(msg)
   end
-end
-
-class NoCommentSupportError < StandardError
 end
 
 def extract_email(string)
@@ -41,6 +40,8 @@ def check_spdx_licence(file_list)
     next if filename.end_with?('.original.py')
     next if filename.start_with?('modules/admin/files/home')
     next unless File.text?(filename)
+    next if IGNORE_FILE.include?(filename)
+    next if File.extname(filename).match?(IGNORE_EXT_PATTERN)
     begin
       missing_licence << filename unless File.foreach(filename).grep(/SPDX-License-Identifier:/).any?
     rescue ArgumentError => error
@@ -53,7 +54,7 @@ end
 def comment_line(filename, line)
   # format a line as a comment using the file type specific comment
   # filetype is calculated based on the file extension
-  ext = filename.split('.')[-1].downcase.strip
+  ext = get_extention(filename)
   case ext
   when /\A(?:erb|epp)\z/
     "<%#- #{line} -%>\n"
@@ -69,9 +70,6 @@ def comment_line(filename, line)
     "# #{line}\n"
   when /\A(?:lua|sql)\z/
     "-- #{line}\n"
-  when /\A(?:CONTRIBUTORS|README|json|pem|key)\z/
-    # Theses files don't support comments so skip them
-    raise NoCommentSupportError
   else
     raise UnknownExtensionError, filename
   end
@@ -85,8 +83,6 @@ def add_spdx_tags(files)
       tag = comment_line(filename, SPDX_TAG)
     rescue UnknownExtensionError => error
       unknown_files << error.filename
-      next
-    rescue NoCommentSupportError
       next
     end
     puts "#{filename}: adding spdx licence"
