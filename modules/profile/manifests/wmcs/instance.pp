@@ -139,10 +139,6 @@ class profile::wmcs::instance(
         }
 
         profile::auto_restarts::service { 'diamond': }
-
-        diamond::collector { 'MinimalPuppetAgent':
-            ensure => 'absent',
-        }
     }
 
     class { 'prometheus::node_ssh_open_sessions': }
