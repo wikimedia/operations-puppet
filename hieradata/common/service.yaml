@@ -3527,7 +3527,7 @@ service::catalog:
     page: false
     discovery:
       - dnsdisc: netbox
-        active_active: false
+        active_active: true
 
   logs-api:
     description: API access to opensearch for logs
