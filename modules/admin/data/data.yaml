@@ -5059,7 +5059,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGk3CgXqD8AxkboJ22zxWQ1CYDhaRuSgiV2A32G+Z9SL aniket@ars
     krb: present
-    expiry_date: 2022-06-30
+    expiry_date: 2022-07-07
     expiry_contact: miriam@wikimedia.org
   tandic:
     ensure: present
