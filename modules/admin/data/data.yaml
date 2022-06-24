@@ -4103,7 +4103,7 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7ZsgXpcVy8P3a5jyg3+hlVbxpAHFw8wuXuB0IKSWD9 klogg@Jims-MacBook-Pro-2.local'
     uid: 24076
     gid: 500
-    expiry_date: 2022-06-30
+    expiry_date: 2022-09-30
     expiry_contact: bgerdemann@wikimedia.org
     krb: present
   wkandek:
