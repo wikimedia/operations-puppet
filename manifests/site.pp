@@ -2946,20 +2946,12 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 
-node 'webperf1003.eqiad.wmnet' {
+node /^webperf[12]003\.(codfw|eqiad)\.wmnet/ {
     role(webperf::processors_and_site)
-}
-
-node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
-    role(insetup)
 }
 
 node /^webperf[12]004\.(codfw|eqiad)\.wmnet/ {
     role(webperf::profiling_tools)
-}
-
-node 'webperf2003.codfw.wmnet' {
-    role(webperf::processors_and_site)
 }
 
 # https://www.mediawiki.org/wiki/Parsoid - new machines are called parse*
