@@ -21,13 +21,4 @@ class dumps::web::dumpstatusfiles(
         command      => "/bin/bash /usr/local/bin/unpack-dumpstatusfiles.sh --xmldumpsdir ${xmldumpsdir} --newer 5",
         interval     => {'start' =>  'OnCalendar', 'interval' => '*-*-* *:0/5:00',}
     }
-
-    cron { 'update-dump-statusfiles':
-        ensure      => absent,
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "/bin/bash /usr/local/bin/unpack-dumpstatusfiles.sh --xmldumpsdir ${xmldumpsdir} --newer 5",
-        user        => root,
-        minute      => '*/5',
-        require     => File['/usr/local/bin/unpack-dumpstatusfiles.sh'],
-    }
 }
