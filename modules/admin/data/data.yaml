@@ -4831,7 +4831,7 @@ users:
     ensure: present
     email: munaslam001@gmail.com
     realname: MunizaA
-    expiry_date: 2022-07-01
+    expiry_date: 2023-06-30
     expiry_contact: diego@wikimedia.org
     gid: 500
     uid: 32084
