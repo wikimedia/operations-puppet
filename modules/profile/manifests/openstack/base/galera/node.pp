@@ -111,6 +111,10 @@ class profile::openstack::base::galera::node(
         group  => 'prometheus',
         mode   => '0755',
     }
+    logrotate::conf { 'nodecheck':
+        ensure => present,
+        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck_logrotate.conf',
+    }
     file { '/usr/local/sbin/galera-nodecheck.py':
         owner  => 'root',
         group  => 'root',
