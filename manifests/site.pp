@@ -2775,6 +2775,11 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
     role(statistics::explorer)
 }
 
+# New stat nodes T299466 and T307399
+node /^stat10(0[9]|1[0])\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # NOTE: new snapshot hosts must also be manually added to
 # hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
 # hieradata/common/scap/dsh.yaml for mediawiki installation,
