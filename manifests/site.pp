@@ -1725,6 +1725,11 @@ node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
 
+# ceph storage nodes
+node /^cloudcephosd10(2[5-9]|3[0-4])\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # New systems placed into service by cloud team via T194186 and T249062
 node /^cloudelastic100[1-6]\.wikimedia\.org$/ {
     role(elasticsearch::cloudelastic)
