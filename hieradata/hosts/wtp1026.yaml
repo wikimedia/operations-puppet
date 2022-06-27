@@ -1,0 +1,13 @@
+profile::mediawiki::php::php_versions:
+  - "7.2"
+  - "7.4"
+
+profile::lvs::realserver::pools:
+  "parsoid-php":
+    services:
+      - php7.2-fpm
+      - php7.4-fpm
+      - envoyproxy
+      - mcrouter
+      - nutcracker
+      - apache2

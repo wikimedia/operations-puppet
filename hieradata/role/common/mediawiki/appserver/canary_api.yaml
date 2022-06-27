@@ -30,6 +30,7 @@ profile::lvs::realserver::pools:
   "api-https":
     services:
       - php7.2-fpm
+      - php7.4-fpm
       - apache2
       - mcrouter
       - nutcracker
@@ -55,6 +56,9 @@ profile::mediawiki::php::fpm_workers_multiplier: 2.0
 profile::mediawiki::php::slowlog_limit: 5
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
+profile::mediawiki::php::php_versions:
+  - "7.2"
+  - "7.4"
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
 
