@@ -9,7 +9,8 @@ profile::lvs::realserver::pools:
   "parsoid-php":
     services:
       - php7.2-fpm
-      - nginx
+      - php7.4-fpm
+      - envoyproxy
       - mcrouter
       - nutcracker
       - apache2
@@ -28,7 +29,7 @@ profile::tlsproxy::envoy::global_cert_name: "parsoid.svc.eqiad.wmnet"
 profile::tlsproxy::envoy::access_log: true
 profile::mediawiki::httpd::logrotate_retention: 12
 profile::services_proxy::envoy::listen_ipv6: true
-profile::tlsproxy::envoy::header_key_format: 'proper_case'
+profile::tlsproxy::envoy::header_key_format: "proper_case"
 
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
@@ -36,8 +37,7 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: true
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: true
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=/var/run/memcached/memcached.sock'
-profile::mediawiki::httpd::logrotate_retention: 12
+profile::prometheus::memcached_exporter::arguments: "--memcached.address=/var/run/memcached/memcached.sock"
 profile::mediawiki::vhost_feature_flags: {}
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
@@ -58,4 +58,7 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ["ServiceOps"]
+profile::mediawiki::php::php_versions:
+  - "7.2"
+  - "7.4"
