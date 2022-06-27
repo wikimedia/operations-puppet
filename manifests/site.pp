@@ -1127,8 +1127,8 @@ node /^druid100[4-8]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
-# new dse-k8s-workers T291579
-node /^dse-k8s-worker100[1-4]\.eqiad\.wmnet$/ {
+# new dse-k8s-workers T29157 and T3074009
+node /^dse-k8s-worker100[1-8]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
