@@ -1,11 +1,23 @@
+# @summary install and configure puppet agent
+# @param manage_ca_file if true manage the puppet ca file
+# @param ca_file_path the path to the ca file
+# @param ca_server the ca server
+# @param server the puppet server
+# @param certname the agent certname
+# @param dns_alt_names a list of dns alt names
+# @param environment the agent environment
+# @param interval the, in minutes, interval to perform puppet runs
+# @param serialization_format the serilasation format of catalogs
+# @param ca_source to source of the CA file
+# @param certificate_revocation The level of certificate revocation to perform
 class base::puppet(
     Boolean                         $manage_ca_file         = false,
     Stdlib::Unixpath                $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
-    String                          $ca_server              = '',
+    Optional[String[1]]             $ca_server              = undef,
     Stdlib::Host                    $server                 = 'puppet',
-    Optional[String]                $certname               = undef,
+    Optional[String[1]]             $certname               = undef,
     Array[Stdlib::Fqdn]             $dns_alt_names          = [],
-    Optional[String]                $environment            = undef,
+    Optional[String[1]]             $environment            = undef,
     Integer                         $interval               = 30,
     Enum['pson', 'json', 'msgpack'] $serialization_format   = 'json',
     Optional[Stdlib::Filesource]    $ca_source              = undef,
@@ -95,7 +107,7 @@ class base::puppet(
     }
 
     file { '/usr/local/sbin/disable-puppet':
-        ensure => present,
+        ensure => file,
         mode   => '0550',
         owner  => 'root',
         group  => 'root',
@@ -103,7 +115,7 @@ class base::puppet(
     }
 
     file { '/usr/local/sbin/enable-puppet':
-        ensure => present,
+        ensure => file,
         mode   => '0550',
         owner  => 'root',
         group  => 'root',
@@ -111,7 +123,7 @@ class base::puppet(
     }
 
     file { '/usr/local/sbin/run-puppet-agent':
-        ensure => present,
+        ensure => file,
         mode   => '0550',
         owner  => 'root',
         group  => 'root',

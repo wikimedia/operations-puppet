@@ -12,10 +12,18 @@ factpath = $vardir/lib/facter
 
 [agent]
 server = <%= @server %>
-<% if @certificate_revocation %>certificate_revocation = <%= @certificate_revocation %><% end %>
-<%- if @ca_server != '' -%>ca_server = <%= @ca_server %><%- end -%>
-<% if @certname %>certname = <%= @certname %><% end %>
-<% unless @dns_alt_names.empty? %>dns_alt_names = <%= @dns_alt_names.join(',') %><% end %>
+<%- unless @certificate_revocation.nil? -%>
+certificate_revocation = <%= @certificate_revocation %>
+<%- end -%>
+<%- unless @ca_server.nil? -%>
+ca_server = <%= @ca_server %>
+<%- end -%>
+<%- unless @certname.nil? -%>
+certname = <%= @certname %>
+<%- end -%>
+<%- unless @dns_alt_names.empty? -%>
+dns_alt_names = <%= @dns_alt_names.join(',') %>
+<%- end -%>
 daemonize = false
 http_connect_timeout = 60
 http_read_timeout = 960
@@ -25,7 +33,7 @@ pluginsync = true
 report = true
 stringify_facts = false
 preferred_serialization_format = <%= @serialization_format %>
-<%- unless @environment.nil? || @environment == '' -%>
+<%- unless @environment.nil? -%>
 environment = <%= @environment %>
 <%- end -%>
 <% if @manage_ca_file -%>
