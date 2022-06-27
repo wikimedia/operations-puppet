@@ -27,6 +27,11 @@ class puppet::agent(
         ensure => present,
     }
 
+    # TODO: the following is temporary to clean up old resources
+    file { '/etc/cron.d/puppet':
+        ensure => absent,
+    }
+
     if $manage_ca_file {
         unless $ca_source {
           fail('require ca_source when manage_ca: true')
@@ -62,17 +67,16 @@ class puppet::agent(
     }
 
     file { '/etc/puppetlabs/facter/facter.conf':
-        ensure  => 'file',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/base/puppet/facter.conf',
-        require => File['/etc/puppetlabs/facter/'],
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/puppet/facter.conf',
     }
 
     puppet::config { 'main':
         prio    => 10,
-        content => template('base/puppet.conf.d/10-main.conf.erb'),
+        content => template('puppet/main.conf.erb'),
     }
 
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d

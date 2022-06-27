@@ -53,23 +53,23 @@ class profile::puppet::agent(
             owner  => 'root',
             group  => 'root';
         '/usr/local/share/bash/puppet-common.sh':
-            source => 'puppet:///modules/base/puppet/puppet-common.sh';
+            source => 'puppet:///modules/profile/puppet/puppet-common.sh';
         '/usr/local/sbin/puppet-run':
-            content => template('base/puppet-run.erb');
+            content => template('profile/puppet/puppet-run.erb');
         '/usr/local/bin/puppet-enabled':
-            source => 'puppet:///modules/base/puppet/puppet-enabled';
+            source => 'puppet:///modules/profile/puppet/puppet-enabled';
         '/usr/local/sbin/disable-puppet':
             mode   => '0550',
-            source => 'puppet:///modules/base/puppet/disable-puppet';
+            source => 'puppet:///modules/profile/puppet/disable-puppet';
         '/usr/local/sbin/enable-puppet':
             mode   => '0550',
-            source => 'puppet:///modules/base/puppet/enable-puppet';
+            source => 'puppet:///modules/profile/puppet/enable-puppet';
         '/usr/local/sbin/run-puppet-agent':
             mode   => '0550',
-            source => 'puppet:///modules/base/puppet/run-puppet-agent';
+            source => 'puppet:///modules/profile/puppet/run-puppet-agent';
         '/usr/local/sbin/run-no-puppet':
             mode   => '0550',
-            source => 'puppet:///modules/base/puppet/run-no-puppet';
+            source => 'puppet:///modules/profile/puppet/run-no-puppet';
     }
     $timer_interval = "*:${interval.fqdn_rand}/${interval}:00"
 
@@ -93,13 +93,13 @@ class profile::puppet::agent(
     }
 
     rsyslog::conf { 'puppet-agent':
-        source   => 'puppet:///modules/base/rsyslog.d/puppet-agent.conf',
+        source   => 'puppet:///modules/profile/puppet/rsyslog.conf',
         priority => 10,
         require  => File['/etc/logrotate.d/puppet'],
     }
     motd::script { 'last-puppet-run':
         ensure   => present,
         priority => 97,
-        source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
+        source   => 'puppet:///modules/profile/puppet/97-last-puppet-run',
     }
 }
