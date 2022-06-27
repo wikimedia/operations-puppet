@@ -32,11 +32,12 @@ class prometheus::ipmi_exporter (
     # freeipmi-tools
     # ipmi_sudo.yml file
     file { "${prometheus_home}/ipmi_sudo_wrapper.sh":
-        ensure => present,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/ipmi_exporter/ipmi_sudo_wrapper.sh',
+        ensure  => present,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/prometheus/ipmi_exporter/ipmi_sudo_wrapper.sh',
+        require => Sudo::User['prometheus_ipmi_exporter'],
     }
     # Instruct the exporter to use our wrapper for freeipmi utilities
     file { '/etc/default/prometheus-ipmi-exporter':
@@ -63,12 +64,13 @@ class prometheus::ipmi_exporter (
     # NOTE: We can't use this file before we upgrade to 1.4.0, but add it anyway
     # to not reinvent it later on
     file { '/etc/prometheus/ipmi_sudo.yml':
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/ipmi_exporter/ipmi_sudo.yml',
-        notify => Service['prometheus-ipmi-exporter'],
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/prometheus/ipmi_exporter/ipmi_sudo.yml',
+        notify  => Service['prometheus-ipmi-exporter'],
+        require => Sudo::User['prometheus_ipmi_exporter'],
     }
 
     service { 'prometheus-ipmi-exporter':
