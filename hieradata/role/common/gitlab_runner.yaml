@@ -1,3 +1,5 @@
+profile::admin::groups:
+  - gitlab-roots
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::access_level: ref_protected
 profile::gitlab::runner::concurrent: 1
