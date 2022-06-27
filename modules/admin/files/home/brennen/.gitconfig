@@ -1,0 +1,48 @@
+[user]
+  name = Brennen Bearnes
+  email = bbearnes@wikimedia.org
+[url "ssh://brennen@gerrit.wikimedia.org:29418"]
+  pushInsteadOf = https://gerrit.wikimedia.org/r
+[status]
+  submoduleSummary = true
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
+  ui = auto
+[alias]
+  a = add
+  amend = commit -a --amend
+  br = branch
+  c = commit
+  changelog = log --date=short --pretty='format:%d %ad %s'
+  ci = commit
+  cm = commit -m
+  co = checkout
+  d = diff
+  df = diff
+  exec = "!exec "
+  go = checkout
+  l = log
+  lg = log -p
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  log-notes = !git fetch origin refs/notes/review:refs/notes/review && git log --notes=review
+  p = pull
+  pul = pull
+  root = rev-parse --show-toplevel
+  s = status
+  st = status
+  stat = status
+  sub = submodule
+  push-gerrit = !git push origin HEAD:refs/for/${1:-`git rev-parse --abbrev-ref HEAD`}
+  # TODO: add other team usernames:
+  push-gerrit-tyler = !git push origin HEAD:refs/for/${1:-`git rev-parse --abbrev-ref HEAD`}%r=thcipriani
+  push-gerrit-wip = !git push origin HEAD:refs/for/${1:-`git rev-parse --abbrev-ref HEAD`}%wip
+
+  # Open changed files in tabs in vim (courtesy Dan Duvall):
+  vim = "!vim -p $(git diff --name-only $@) #"
+
+  # Handle accidentally typing git twice:
+  git = !git
