@@ -53,23 +53,23 @@ class profile::puppet::agent(
             owner  => 'root',
             group  => 'root';
         '/usr/local/share/bash/puppet-common.sh':
-            source => 'puppet:///modules/profile/puppet/puppet-common.sh';
+            source => 'puppet:///modules/profile/puppet/bin/puppet-common.sh';
         '/usr/local/sbin/puppet-run':
             content => template('profile/puppet/puppet-run.erb');
         '/usr/local/bin/puppet-enabled':
-            source => 'puppet:///modules/profile/puppet/puppet-enabled';
+            source => 'puppet:///modules/profile/puppet/bin/puppet-enabled';
         '/usr/local/sbin/disable-puppet':
             mode   => '0550',
-            source => 'puppet:///modules/profile/puppet/disable-puppet';
+            source => 'puppet:///modules/profile/puppet/bin/disable-puppet';
         '/usr/local/sbin/enable-puppet':
             mode   => '0550',
-            source => 'puppet:///modules/profile/puppet/enable-puppet';
+            source => 'puppet:///modules/profile/puppet/bin/enable-puppet';
         '/usr/local/sbin/run-puppet-agent':
             mode   => '0550',
-            source => 'puppet:///modules/profile/puppet/run-puppet-agent';
+            source => 'puppet:///modules/profile/puppet/bin/run-puppet-agent';
         '/usr/local/sbin/run-no-puppet':
             mode   => '0550',
-            source => 'puppet:///modules/profile/puppet/run-no-puppet';
+            source => 'puppet:///modules/profile/puppet/bin/run-no-puppet';
     }
     $timer_interval = "*:${interval.fqdn_rand}/${interval}:00"
 
