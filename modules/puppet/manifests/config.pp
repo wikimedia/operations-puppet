@@ -1,10 +1,13 @@
-# Definition base::puppet::config
-# Populate a puppet config file and notify the compilation process
-define base::puppet::config(
-        $ensure='present',
-        $prio=10,
-        $content=undef,
-        $source=undef,
+# @summary Populate a puppet config file and notify the compilation process
+# @param ensure the ensure parameter
+# @param prio the config priority
+# @param content the config content
+# @param source the config source
+define puppet::config(
+    Wmflib::Ensure               $ensure  = 'present',
+    Integer[0,99]                $prio    = 10,
+    Optional[String[1]]          $content = undef,
+    Optional[Stdlib::Filesource] $source  = undef,
 ) {
     if $source == undef and $content == undef  {
         fail('you must provide either "source" or "content"')

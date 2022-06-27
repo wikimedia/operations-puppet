@@ -1,6 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
-describe 'base::puppet' do
+describe 'puppet::agent' do
   let(:pre_condition) {
     [
       'class passwords::puppet::database {}',

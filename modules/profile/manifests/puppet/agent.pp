@@ -1,4 +1,5 @@
- # @summary install and configure puppet agent
+# SPDX-License-Identifier: Apache-2.0
+# @summary install and configure puppet agent
 # @param puppetmaster the puppet server
 # @param ca_server the ca server
 # @param ca_source to source of the CA file
@@ -20,7 +21,7 @@ class profile::puppet::agent(
   Optional[Enum['chain', 'leaf']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
 ) {
 
-  class { 'base::puppet':
+  class { 'puppet::agent':
       ca_source              => $ca_source,
       manage_ca_file         => $manage_ca_file,
       server                 => $puppetmaster,

@@ -8,7 +8,7 @@ describe 'openstack::cinder::backup' do
       supported_openstacks.each do |openstack_version|
         context "On openstack #{openstack_version}" do
           let(:pre_condition) {
-            "class {'base::puppet': ca_source => 'puppet:///modules/profile/puppet/ca.production.pem'}"
+            "class {'puppet::agent': ca_source => 'puppet:///modules/profile/puppet/ca.production.pem'}"
             "class {'openstack::cinder::config::#{openstack_version}':
                 openstack_controllers => ['dummy-controller.local'],
                 db_user => 'dummy-db-user',

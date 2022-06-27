@@ -10,7 +10,7 @@
 # @param serialization_format the serilasation format of catalogs
 # @param ca_source to source of the CA file
 # @param certificate_revocation The level of certificate revocation to perform
-class base::puppet(
+class puppet::agent(
     Boolean                         $manage_ca_file         = false,
     Stdlib::Unixpath                $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
     Optional[String[1]]             $ca_server              = undef,
@@ -74,7 +74,7 @@ class base::puppet(
         require => File['/etc/puppetlabs/facter/'],
     }
 
-    base::puppet::config { 'main':
+    puppet::config { 'main':
         prio    => 10,
         content => template('base/puppet.conf.d/10-main.conf.erb'),
     }

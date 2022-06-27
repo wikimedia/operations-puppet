@@ -7,7 +7,7 @@ class puppetmaster::config(
     Puppetmaster::Server_type $server_type,
 ){
 
-    base::puppet::config { 'master':
+    puppet::config { 'master':
         prio    => 20,
         content => template('puppetmaster/master.conf.erb'),
     }

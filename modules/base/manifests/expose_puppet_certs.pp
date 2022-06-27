@@ -46,7 +46,9 @@ define base::expose_puppet_certs (
     String               $group           = 'root',
     Stdlib::Absolutepath $ssldir          = puppet_ssldir(),
 ) {
-    include base::puppet
+    # TODO: move this define to the puppet class
+    include puppet::agent # lint:ignore:wmf_styleguide
+
 
     $target_basedir = $title
     $puppet_cert_name = $facts['fqdn']

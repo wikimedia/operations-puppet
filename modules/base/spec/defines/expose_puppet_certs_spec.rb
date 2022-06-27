@@ -5,7 +5,7 @@ describe 'base::expose_puppet_certs', :type => :define do
     context "on #{os}" do
       let(:title) { '/my/ssl/dir' }
       let(:facts) { facts.merge(fqdn: 'host.example.net') }
-      let(:pre_condition) { "class {'base::puppet': ca_source => 'puppet:///modules/profile/puppet/ca.production.pem'}" }
+      let(:pre_condition) { "class {'puppet::agent': ca_source => 'puppet:///modules/profile/puppet/ca.production.pem'}" }
 
       describe 'directory structure is created' do
         it { should contain_file('/my/ssl/dir/ssl').with({ 'ensure' => 'directory', 'mode' => '0555' }) }

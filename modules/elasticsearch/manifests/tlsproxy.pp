@@ -5,7 +5,7 @@
 # == Parameters:
 # [*certificate_name*]
 #   name that will be checked in the SSL certificate. This should probably
-#   match the value configured in `base::puppet::dns_alt_names` if it is set,
+#   match the value configured in `profile::puppet::agent::dns_alt_names` if it is set,
 #   unless the service is accessed directly by FQDN.
 #
 # [*http_port*]
