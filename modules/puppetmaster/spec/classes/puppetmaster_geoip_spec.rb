@@ -6,7 +6,7 @@ describe 'puppetmaster::geoip' do
       let(:facts) { facts }
       let(:pre_condition) {
         '''
-        include profile::base::puppet
+        include profile::puppet::agent
         include httpd
         include puppetmaster
         include prometheus::node_exporter

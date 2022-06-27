@@ -56,11 +56,11 @@ profile::resolving::nameservers:
   - "%{lookup('labsdnsconfig.recursor')}"
   - "%{lookup('labsdnsconfig.recursor_secondary')}"
 
-profile::base::puppet::interval: 30
-profile::base::puppet::environment: production
-profile::base::puppet::serialization_format: pson
-profile::base::puppet::certificate_revocation: ~
-profile::base::puppet::dns_alt_names: []
+profile::puppet::agent::interval: 30
+profile::puppet::agent::environment: production
+profile::puppet::agent::serialization_format: pson
+profile::puppet::agent::certificate_revocation: ~
+profile::puppet::agent::dns_alt_names: []
 
 profile::puppet::client_bucket::ensure: absent
 profile::puppet::client_bucket::file_age: 14

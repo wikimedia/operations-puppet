@@ -37,7 +37,7 @@ class profile::base(
         mode   => '0755',
     }
 
-    contain profile::base::puppet
+    contain profile::puppet::agent
     contain profile::base::certificates
     include profile::apt
     include profile::systemd::timesyncd

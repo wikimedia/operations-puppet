@@ -1,0 +1,5 @@
+profile::puppet::agent::interval: 30
+profile::puppet::agent::dns_alt_names: []
+profile::puppet::agent::environment: production
+profile::puppet::agent::serialization_format: json
+profile::puppet::agent::certificate_revocation: ~

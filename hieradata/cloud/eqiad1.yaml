@@ -270,7 +270,7 @@ cumin_masters:
 
 # Url to use for reaching graphite
 graphite_url: 'https://graphite-labs.wikimedia.org'
-profile::base::puppet::dns_alt_names: []
+profile::puppet::agent::dns_alt_names: []
 
 bastion_hosts:
 - 172.16.3.145 # bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
@@ -283,7 +283,7 @@ cache_hosts:
 
 # use aliases to provide for backwards compatibility
 # perhaps this doesn't work with our current version of puppet
-# profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"
+# profile::puppet::agent::puppetmaster: "%{alias('puppetmaster')}"
 profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 

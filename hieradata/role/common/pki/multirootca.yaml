@@ -1,6 +1,6 @@
 cluster: pki
 profile::pki::multirootca::enable_k8s_vhost: true
-profile::base::puppet::dns_alt_names:
+profile::puppet::agent::dns_alt_names:
   - pki.discovery.wmnet
 # in this file all _cert parameteres are passed to the file function
 # and all _key paramtetes are passed to the secret function

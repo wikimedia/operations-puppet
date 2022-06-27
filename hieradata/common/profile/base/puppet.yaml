@@ -1,5 +1,0 @@
-profile::base::puppet::interval: 30
-profile::base::puppet::dns_alt_names: []
-profile::base::puppet::environment: production
-profile::base::puppet::serialization_format: json
-profile::base::puppet::certificate_revocation: ~

@@ -6,7 +6,7 @@ describe 'puppetmaster::r10k' do
       let(:facts) { facts }
       let(:pre_condition) do
         '''
-        include profile::base::puppet
+        include profile::puppet::agent
         include httpd
         include prometheus::node_exporter
         '''

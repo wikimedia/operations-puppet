@@ -51,8 +51,8 @@ class profile::monitoring(
 ) {
     ensure_packages('ruby-safe-yaml')
 
-    include profile::base::puppet
-    $puppet_interval = $profile::base::puppet::interval
+    include profile::puppet::agent
+    $puppet_interval = $profile::puppet::agent::interval
 
     if $raid_check and $hardware_monitoring == 'present'{
         # RAID checks
