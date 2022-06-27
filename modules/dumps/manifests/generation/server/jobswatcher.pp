@@ -12,11 +12,13 @@ class dumps::generation::server::jobswatcher(
     }
 
     systemd::timer::job { 'dump-jobs-watcher':
-        ensure      => 'present',
-        description => 'Watch for stalled XML dumps',
-        environment => {'MAILTO' => 'ops-dumps@wikimedia.org'},
-        command     => "/bin/bash /usr/local/bin/job_watcher.sh --dumpsbasedir ${dumpsbasedir} --locksbasedir ${locksbasedir}",
-        user        => $user,
-        interval    => {'start' => 'OnCalendar', 'interval' => '00/8:10'}
+        ensure                  => 'present',
+        description             => 'Watch for stalled XML dumps',
+        environment             => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        send_mail               => true,
+        send_mail_only_on_error => false,
+        command                 => "/bin/bash /usr/local/bin/job_watcher.sh --dumpsbasedir ${dumpsbasedir} --locksbasedir ${locksbasedir}",
+        user                    => $user,
+        interval                => {'start' => 'OnCalendar', 'interval' => '00/8:10'}
     }
 }
