@@ -44,7 +44,8 @@ class rsyslog::receiver (
     }
 
     # SSL configuration
-    ::base::expose_puppet_certs { '/etc/rsyslog-receiver':
+    # TODO: consider using profile::pki::get_cert
+    puppet::expose_agent_certs { '/etc/rsyslog-receiver':
         provide_private => true,
     }
 

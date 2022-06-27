@@ -57,7 +57,8 @@ class bacula::storage(
         require => Package[$package],
     }
 
-    base::expose_puppet_certs { '/etc/bacula/sd':
+    # TODO: consider using profile::pki::get_cert
+    puppet::expose_agent_certs { '/etc/bacula/sd':
         provide_private => true,
         provide_keypair => true,
         user            => 'bacula',

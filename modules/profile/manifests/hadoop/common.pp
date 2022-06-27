@@ -609,7 +609,8 @@ class profile::hadoop::common (
         $keystore_keypassword = $hadoop_secrets_config['ssl_keystore_keypassword']
         $keystore_path = "${bigtop::hadoop::config_directory}/ssl/server.p12"
 
-        base::expose_puppet_certs{$bigtop::hadoop::config_directory:
+        # TODO: consider using profile::pki::get_cert
+        puppet::expose_agent_certs{$bigtop::hadoop::config_directory:
             user         => 'root',
             group        => 'hadoop',
             provide_p12  => true,

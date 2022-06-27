@@ -46,10 +46,11 @@ class base::remote_syslog (
                 owner  => $owner,
                 group  => $group,
                 mode   => '0400',
-                before => Base::Expose_puppet_certs['/etc/rsyslog'],
+                before => Puppet::Expose_agent_certs['/etc/rsyslog'],
             }
 
-            ::base::expose_puppet_certs { '/etc/rsyslog':
+            # TODO: consider using profile::pki::get_cert
+            puppet::expose_agent_certs { '/etc/rsyslog':
                 provide_private => true,
                 user            => $owner,
                 group           => $group,

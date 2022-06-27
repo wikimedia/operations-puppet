@@ -1,65 +1,57 @@
-# == Define: base::expose_puppet_certs
+# @summary
 # Copies appropriate cert files from the puppet CA infrastructure
 # To be usable by the other applications
 # Note: Only copies public components, no private keys, unless specifically
 # asked.
 #
-# === Parameters
-#
-# [*title*]
+# @param title
 #   The directory in which the certificates will be exposed. A subdirectory
 #   named "ssl" will be created.
-#
-# [*ensure*]
+# @param ensure
 #   If 'present', certificates will be exposed, otherwise they will be removed.
 #   Defaults to present
-#
-# [*provide_private*]
+# @param provide_private
 #   Should the private keys also be exposed? Defaults to false
-#
-# [*provide_keypair*]
+# @param provide_keypair
 #   Should the single file containing concatenated the private key and the cert
 #   be exposed? The order is [key, cert] Defaults to false. Unrelated to
 #   provide_private parameter
-#
-# [*provide_p12*]
+# @param provide_p12
 #   Should the p12 file also be exposed, useful for java clients? Defaults to false
-#
-# [*provide_pem*]
+# @param p12_password
+#   password for p12 file
+# @param user
+#   File user permissions
+# @param group
+#   File group permissions
+# @param provide_pem
 #   Should the public pem file also be exposed? Defaults to true
-#
-# [*user/group*]
+# @param user/group
 #   User who will own the exposed SSL certificates. Default to root
-#
-# [*ssldir*]
+# @param ssldir
 #   The source directory containing the original SSL certificates. Avoid
 #   supplying this unless you know what you are doing
-#
-define base::expose_puppet_certs (
+define puppet::expose_agent_certs (
     Wmflib::Ensure       $ensure          = 'present',
     Boolean              $provide_private = false,
     Boolean              $provide_keypair = false,
     Boolean              $provide_pem     = true,
     Boolean              $provide_p12     = false,
-    String               $p12_password    = '',
-    String               $user            = 'root',
-    String               $group           = 'root',
+    Optional[String[1]]  $p12_password    = undef,
+    String[1]            $user            = 'root',
+    String[1]            $group           = 'root',
     Stdlib::Absolutepath $ssldir          = puppet_ssldir(),
 ) {
-    # TODO: move this define to the puppet class
-    include puppet::agent # lint:ignore:wmf_styleguide
+    include puppet::agent
 
 
     $target_basedir = $title
-    $puppet_cert_name = $facts['fqdn']
-
-    File {
-        owner  => $user,
-        group  => $group,
-    }
+    $puppet_cert_name = $facts['networking']['fqdn']
 
     file { "${target_basedir}/ssl":
         ensure => stdlib::ensure($ensure, 'directory'),
+        owner  => $user,
+        group  => $group,
         mode   => '0555',
     }
 
@@ -80,6 +72,8 @@ define base::expose_puppet_certs (
     file { "${target_basedir}/ssl/cert.pem":
         ensure => $pem_ensure,
         mode   => '0444',
+        owner  => $user,
+        group  => $group,
         source => "${ssldir}/certs/${puppet_cert_name}.pem",
     }
 
@@ -94,6 +88,8 @@ define base::expose_puppet_certs (
     file { "${target_basedir}/ssl/server.key":
         ensure => $private_key_ensure,
         mode   => '0400',
+        owner  => $user,
+        group  => $group,
         source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
     }
     # Provide a keypair of key and cert concatenated. The file resource is used
@@ -107,6 +103,8 @@ define base::expose_puppet_certs (
     }
     file { "${target_basedir}/ssl/server-keypair.pem":
         ensure => $keypair_ensure,
+        owner  => $user,
+        group  => $group,
         mode   => '0400',
     }
     if $provide_keypair {
@@ -127,7 +125,7 @@ define base::expose_puppet_certs (
         },
         default => 'absent',
     }
-    sslcert::x509_to_pkcs12 {"base::expose_puppet_cert: ${title}":
+    sslcert::x509_to_pkcs12 {"puppet::expose_agent_cert: ${title}":
         ensure      => $p12_key_ensure,
         owner       => $user,
         group       => $group,

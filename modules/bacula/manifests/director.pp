@@ -78,7 +78,8 @@ class bacula::director(
         rotate       => 4,
     }
 
-    base::expose_puppet_certs { '/etc/bacula/director':
+    # TODO: consider using profile::pki::get_cert
+    puppet::expose_agent_certs { '/etc/bacula/director':
         provide_private => true,
         user            => 'bacula',
         group           => 'bacula',

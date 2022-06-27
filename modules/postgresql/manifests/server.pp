@@ -106,11 +106,12 @@ class postgresql::server(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            require => Base::Expose_puppet_certs['/etc/postgresql'],
+            require => Puppet::Expose_agent_certs['/etc/postgresql'],
             before  => Service[$service_name],
         }
 
-        base::expose_puppet_certs { '/etc/postgresql':
+        # TODO: consider using profile::pki::get_cert
+        puppet::expose_agent_certs { '/etc/postgresql':
             ensure          => $ensure,
             provide_private => true,
             user            => 'postgres',

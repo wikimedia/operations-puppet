@@ -127,8 +127,9 @@ class mariadb::config(
 
     if ($ssl == 'on' or $ssl == 'puppet-cert') {
 
+        # TODO: consider using profile::pki::get_cert
         # This creates also /etc/mysql/ssl
-        base::expose_puppet_certs { '/etc/mysql':
+        puppet::expose_agent_certs { '/etc/mysql':
             ensure          => present,
             provide_private => true,
             user            => 'mysql',

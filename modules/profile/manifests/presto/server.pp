@@ -125,7 +125,8 @@ class profile::presto::server(
                 notify      => Service['presto-server'],
             }
         } else {
-            base::expose_puppet_certs{ '/etc/presto':
+            # TODO: consider using profile::pki::get_cert
+            puppet::expose_agent_certs{ '/etc/presto':
                 user         => 'root',
                 group        => 'presto',
                 provide_p12  => true,

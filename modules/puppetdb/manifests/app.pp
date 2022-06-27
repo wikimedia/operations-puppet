@@ -134,7 +134,8 @@ class puppetdb::app(
         settings => {'enabled' => false},
     }
 
-    base::expose_puppet_certs { '/etc/puppetdb':
+    # TODO: consider using profile::pki::get_cert
+    puppet::expose_agent_certs { '/etc/puppetdb':
         ensure          => present,
         provide_private => true,
         user            => 'puppetdb',
@@ -160,7 +161,7 @@ class puppetdb::app(
 
     puppetdb::config { 'jetty':
         settings => $jetty_settings,
-        require  => Base::Expose_puppet_certs['/etc/puppetdb'],
+        require  => Puppet::Expose_agent_certs['/etc/puppetdb'],
     }
 
     puppetdb::config { 'command-processing':

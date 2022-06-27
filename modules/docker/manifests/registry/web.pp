@@ -15,7 +15,8 @@ class docker::registry::web(
     }
 
     if $use_puppet_certs {
-        base::expose_puppet_certs { '/etc/nginx':
+        # TODO: consider using profile::pki::get_cert
+        puppet::expose_agent_certs { '/etc/nginx':
             ensure          => present,
             provide_private => true,
             require         => Class['nginx'],

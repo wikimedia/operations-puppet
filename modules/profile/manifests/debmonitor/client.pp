@@ -48,7 +48,8 @@ class profile::debmonitor::client (
     }
 
     if $ssl_ca == 'puppet' {
-        base::expose_puppet_certs { $base_path:
+        # TODO: consider using profile::pki::get_cert
+        puppet::expose_agent_certs { $base_path:
             user            => 'debmonitor',
             group           => 'debmonitor',
             provide_private => true,

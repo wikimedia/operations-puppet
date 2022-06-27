@@ -17,10 +17,6 @@ class openstack::puppet::master::encapi(
     # for new enough python3-keystonemiddleware versions
     debian::codename::require('bullseye', '>=')
 
-    base::expose_puppet_certs { '/etc/nginx':
-        ensure => absent,
-    }
-
     acme_chief::cert { $acme_certname:
         ensure     => $ensure,
         puppet_svc => 'nginx',

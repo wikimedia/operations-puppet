@@ -170,8 +170,9 @@ class nagios_common::commands(
         group         => $group,
     }
 
+    # TODO: consider using profile::pki::get_cert
     # required for check_https_client_auth_puppet
-    base::expose_puppet_certs {$config_dir:
+    puppet::expose_agent_certs {$config_dir:
         provide_private => true,
         user            => $owner,
         group           => $group,

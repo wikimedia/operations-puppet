@@ -45,7 +45,8 @@ class bacula::client(
         require => Package['bacula-fd'],
     }
 
-    base::expose_puppet_certs { '/etc/bacula':
+    # TODO: consider using profile::pki::get_cert
+    puppet::expose_agent_certs { '/etc/bacula':
         provide_private => true,
         provide_keypair => true,
         user            => 'bacula',

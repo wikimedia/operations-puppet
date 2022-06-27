@@ -40,7 +40,8 @@ class profile::kubernetes::node(
         token       => $kubelet_token,
     }
 
-    base::expose_puppet_certs { '/etc/kubernetes':
+    # TODO: consider using profile::pki::get_cert
+    puppet::expose_agent_certs { '/etc/kubernetes':
         provide_private => true,
         user            => 'root',
         group           => 'root',
