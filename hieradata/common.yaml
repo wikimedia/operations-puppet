@@ -612,6 +612,7 @@ wikimedia_clusters:
     id: 104
     sites:
       eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
