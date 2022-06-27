@@ -1,16 +1,11 @@
-[Unit]
-Description=Jenkins Continuous Integration Server
-After=network.target
-
 [Service]
-Type=simple
-User=jenkins
-Group=jenkins
 SyslogIdentifier=jenkins
 UMask=<%= @umask %>
 LimitNOFILE=<%= @max_open_files %>
+Restart=no
 
-Environment=JENKINS_HOME=/var/lib/jenkins
+# Empty statement to prevent multiple ExecStart from being defined.
+ExecStart=
 ExecStart=<%= @java_path -%> <%= @java_args -%> \
     -jar /usr/share/java/jenkins.war \
 <%- if @jenkins_access_log_arg -%>
@@ -20,9 +15,3 @@ ExecStart=<%= @java_path -%> <%= @java_args -%> \
     --pluginroot=/var/cache/jenkins/plugins \
     --httpPort=<%= @http_port -%> \
     --prefix=<%= @prefix %>
-
-# We send SIGTERM(15), java exit code is 143 = 128 + 15
-SuccessExitStatus=143
-
-[Install]
-WantedBy=multi-user.target

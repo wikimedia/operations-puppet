@@ -156,13 +156,17 @@ class jenkins(
     ], ' ')
 
     systemd::service { 'jenkins':
-        ensure         => 'present',
-        content        => systemd_template('jenkins'),
-        service_params => {
+        ensure            => 'present',
+        content           => init_template('jenkins', 'systemd_override'),
+        override          => true,
+        # Note Jenkins migrate.sh scrip skips whenever there is an override at:
+        # /etc/systemd/system/jenkins.service.d/override.conf
+        override_filename => 'override.conf',
+        service_params    => {
             enable => $service_enable,
             ensure => $service_ensure,
         },
-        require        => [
+        require           => [
             Systemd::Syslog['jenkins'],
             File['/etc/default/jenkins'],
         ],

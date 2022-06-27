@@ -1,5 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
+systemd_override_file = '/etc/systemd/system/jenkins.service.d/override.conf'
+
 describe 'jenkins' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
@@ -28,20 +30,15 @@ describe 'jenkins' do
       end
       describe 'systemd jenkins service' do
         it 'should set Umask' do
-          should contain_file('/lib/systemd/system/jenkins.service')
+            should contain_file(systemd_override_file)
             .with_content(/^UMask=0002$/)
         end
         it 'should set LimitNOFILE' do
-          should contain_file('/lib/systemd/system/jenkins.service')
+          should contain_file(systemd_override_file)
             .with_content(/^LimitNOFILE=8192$/)
         end
-        it 'should expose JENKINS_HOME in environment' do
-          # Required by Jenkins
-          should contain_file('/lib/systemd/system/jenkins.service')
-            .with_content(%r%^Environment=JENKINS_HOME=/var/lib/jenkins$%)
-        end
         it 'should pass prefix to jenkins' do
-          should contain_file('/lib/systemd/system/jenkins.service')
+          should contain_file(systemd_override_file)
             .with_content(%r% --prefix=/ci$%)
         end
         context 'when http port is given' do
@@ -50,7 +47,7 @@ describe 'jenkins' do
             :http_port => 8042,
           } }
           it 'should set http port' do
-            should contain_file('/lib/systemd/system/jenkins.service')
+          should contain_file(systemd_override_file)
               .with_content(/ --httpPort=8042 /)
           end
         end
@@ -60,12 +57,12 @@ describe 'jenkins' do
             :access_log => true,
           } }
           it 'should set Jenkins access logger' do
-            should contain_file('/lib/systemd/system/jenkins.service')
+            should contain_file(systemd_override_file)
               .with_content(/SimpleAccessLogger.+\\$/)
           end
         end
         it 'escapes build_dir dollar token for systemd' do
-          should contain_file('/lib/systemd/system/jenkins.service')
+          should contain_file(systemd_override_file)
             .with_content(%r%\$\${ITEM_ROOTDIR}/builds%)
         end
       end
