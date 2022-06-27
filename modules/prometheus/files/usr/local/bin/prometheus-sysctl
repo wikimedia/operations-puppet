@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Usage: prometheus-sysctl [outfile]
+#
+# Some sysctl values are still not exported in prometheus' node_exporter (e.g.
+# sys/vm). Once support is enabled this can be removed but until then we need
+# to export it ourselves.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+OUTFILE="${1:-/var/lib/prometheus/node.d/sysctl.prom}"
+
+cat <<EOF > "${OUTFILE}.$$"
+# HELP sysctl_vm_max_map_count Maximum number of memory map areas a process may have
+# TYPE sysctl_vm_max_map_count gauge
+sysctl_vm_max_map_count $(sysctl -n vm.max_map_count)
+EOF
+mv "${OUTFILE}.$$" "${OUTFILE}"
