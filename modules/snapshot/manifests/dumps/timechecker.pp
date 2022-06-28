@@ -35,14 +35,4 @@ class snapshot::dumps::timechecker(
         working_directory       => $repodir,
         interval                => {'start' => 'OnCalendar', 'interval' => '*-*-1,20 02:10:00'}
     }
-
-    cron { 'dumps-timechecker':
-        ensure      => absent,
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "cd ${repodir}; python3 show_runtimes.py -d ${dumpsbasedir} -W ${wikis_list}; python3 show_runtimes.py -d ${dumpsbasedir} -j meta-history-bz2 -s 40 -w ${dblist}",
-        user        => $xmldumpsuser,
-        minute      => '10',
-        hour        => '1',
-        monthday    => [1, 20],
-    }
 }
