@@ -2049,6 +2049,11 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Appservers (serving normal website traffic)
 
+# New mw servers T306121
+node /^mw14(5[7-9]|6[0-9]|7[0-9]|8[0-9]|9[0-8])\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # Row A
 
 # rack A1
