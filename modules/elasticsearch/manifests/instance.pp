@@ -296,6 +296,7 @@ define elasticsearch::instance (
             environment => ["ES_PATH_CONF=${config_dir}"],
             group       => 'elasticsearch',
             require     => File["${config_dir}/elasticsearch.keystore"],
+            path        => '/bin:/usr/bin',
             unless      => '/usr/share/elasticsearch/bin/elasticsearch-keystore list | grep s3.client.default.access_key',
         }
     }
@@ -306,6 +307,7 @@ define elasticsearch::instance (
             environment => ["ES_PATH_CONF=${config_dir}"],
             group       => 'elasticsearch',
             require     => File["${config_dir}/elasticsearch.keystore"],
+            path        => '/bin:/usr/bin',
             unless      => '/usr/share/elasticsearch/bin/elasticsearch-keystore list | grep s3.client.default.secret_key',
         }
     }
