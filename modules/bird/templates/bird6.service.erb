@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
-Description=BIRD Internet Routing Daemon (IPv4)
+Description=BIRD Internet Routing Daemon (IPv6)
 <%- if @bind_service -%>
 After=<%= @bind_service %>
 BindsTo=<%= @bind_service %>
@@ -9,9 +9,9 @@ BindsTo=<%= @bind_service %>
 [Service]
 EnvironmentFile=/etc/bird/envvars
 ExecStartPre=/usr/lib/bird/prepare-environment
-ExecStartPre=/usr/sbin/bird -p
-ExecReload=/usr/sbin/birdc configure
-ExecStart=/usr/sbin/bird -f -u $BIRD_RUN_USER -g $BIRD_RUN_GROUP $BIRD_ARGS
+ExecStartPre=/usr/sbin/bird6 -p
+ExecReload=/usr/sbin/birdc6 configure
+ExecStart=/usr/sbin/bird6 -f -u $BIRD_RUN_USER -g $BIRD_RUN_GROUP $BIRD_ARGS
 Restart=on-abort
 # The sleep here gives some time for routers and traffic to react to route
 # withdrawal after bird shuts down, before we allow other bound underlying
