@@ -107,7 +107,7 @@ class apt(
         comment_old => true,
     }
 
-    if debian::codename::ge('bullseye') and $use_private_repo {
+    if debian::codename::ge('bullseye') and $use_private_repo and !$facts['is_virtual']{
         $ensure_private_repo = present
     } else {
         $ensure_private_repo = absent
@@ -117,7 +117,7 @@ class apt(
         ensure     => $ensure_private_repo,
         uri        => 'http://apt.wikimedia.org:8080',
         dist       => "${::lsbdistcodename}-wikimedia-private",
-        components => 'main nonfree',
+        components => 'thirdparty/hwraid',
     }
 
     if debian::codename::ge('buster'){
