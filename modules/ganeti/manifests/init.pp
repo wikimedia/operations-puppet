@@ -8,16 +8,20 @@
 # Actions:
 #   Install ganeti and configure modules/LVM. Does NOT initialize a cluster
 #
-# Requires:
-#
-# Sample Usage
-#   include ganeti
 class ganeti(
     String $certname,
     Boolean $with_drbd=true,
     Boolean $ganeti3=false,
 ) {
-    include ::ganeti::kvm
+    ensure_packages('qemu-system-x86')
+
+    # Setup Kernel Same-page Merging to save memory via memory deduplication
+    sysfs::parameters { 'ksm':
+        values => {
+            'kernel/mm/ksm/run'             => '0',
+            'kernel/mm/ksm/sleep_millisecs' => '100',
+        },
+    }
 
     if $ganeti3 and debian::codename::eq('buster') {
         apt::repository { 'repository_ganeti3':
