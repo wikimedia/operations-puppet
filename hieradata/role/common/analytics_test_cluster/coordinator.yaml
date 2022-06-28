@@ -78,7 +78,7 @@ profile::presto::server::catalogs:
       hive.metastore.client.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.authentication.type: 'KERBEROS'
-      hive.hdfs.presto.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.hdfs.presto.principal: 'presto/%{::hostname}.eqiad.wmnet@WIKIMEDIA'
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true
 

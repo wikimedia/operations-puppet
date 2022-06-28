@@ -51,7 +51,6 @@ profile::presto::server::catalogs:
       hive.hdfs.presto.principal: "presto/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true
-      hive.parquet.fail-on-corrupted-statistics: false
       hive.parquet.use-column-names: true
 
       # Attempt to enforce some sort of partition predicate,
