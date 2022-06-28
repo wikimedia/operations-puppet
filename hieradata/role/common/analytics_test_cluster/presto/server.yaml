@@ -58,6 +58,14 @@ profile::presto::server::catalogs:
       # This way at least for hourly data a month filter will need to be applied.
       hive.max-partitions-per-scan: 840
 
+  analytics_test_iceberg:
+    properties:
+      connector.name: iceberg
+      iceberg.catalog.type: hive
+      hive.metastore.uri: thrift://analytics-test-hive.eqiad.wmnet:9083
+      iceberg.file-format: PARQUET
+      iceberg.compression-codec: SNAPPY
+
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
 profile::presto::server::generate_certificate: true
