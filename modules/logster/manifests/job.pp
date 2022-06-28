@@ -46,10 +46,4 @@ define logster::job(
         user        => 'root',
         interval    => {'start' => 'OnCalendar', 'interval' => $interval},
     }
-
-  cron { "logster-${title}":
-        ensure  => absent,
-        command => "/usr/bin/logster ${logster_options} ${parser} ${logfile} > /dev/null 2>&1",
-        user    => 'root',
-        }
-  }
+}
