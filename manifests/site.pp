@@ -361,6 +361,11 @@ node /^cloudgw200[12]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::cloudgw)
 }
 
+# New cloudgw node T306854
+node 'cloudgw2003-dev.codfw.wmnet' {
+    role(insetup)
+}
+
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
     role(wmcs::ceph::osd)
 }
@@ -1532,12 +1537,22 @@ node 'clouddb2001-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
+# New clouddb node T306854
+node 'clouddb2002-dev.codfw.wmnet' {
+    role(insetup)
+}
+
 node 'cloudcontrol2003-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
 }
 
 node 'cloudcontrol2004-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
+}
+
+# New cloudcontrol node T306854
+node 'cloudcontrol2005-dev.wikimedia.org' {
+    role(insetup)
 }
 
 node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
