@@ -24,6 +24,10 @@ profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -
 profile::gitlab::runner::user: 'gitlab-runner'
 profile::gitlab::runner::restrict_firewall: true
 profile::gitlab::runner::allowed_services:
+  dns:
+    host: 'recdns.anycast.wmnet'
+    port: 53
+    proto: udp
   gitlab-https:
     host: 'gitlab.wikimedia.org'
     port: 443

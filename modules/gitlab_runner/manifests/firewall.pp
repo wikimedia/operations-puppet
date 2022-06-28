@@ -25,10 +25,11 @@ class gitlab_runner::firewall (
 
         # explicitly allow traffic to certain services
         $allowed_services.each | String $name, Gitlab_runner::AllowedService $allowed_service | {
+            $proto = pick($allowed_service['proto'], 'tcp')
             ferm::rule { "docker-allow-${$name}":
                 ensure => $ensure,
                 prio   => 18,
-                rule   => "daddr (@resolve(${allowed_service['host']})) proto tcp dport ${allowed_service['port']} ACCEPT;",
+                rule   => "daddr (@resolve(${allowed_service['host']})) proto ${proto} dport ${allowed_service['port']} ACCEPT;",
                 desc   => "allow traffic to ${name} from docker",
                 chain  => 'DOCKER-ISOLATION',
             }
