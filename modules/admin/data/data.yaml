@@ -420,7 +420,7 @@ groups:
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts
-    members: []
+    members: [hokwelum]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Atieno Njira
