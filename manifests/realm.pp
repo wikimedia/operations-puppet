@@ -270,3 +270,9 @@ $mail_smarthost = lookup('mail_smarthost')
 $acmechief_host = lookup('acmechief_host')
 
 $ntp_peers = lookup('ntp_peers')
+
+# Resource defaults
+File {
+    owner => 'root',
+    group => 'root',
+}
