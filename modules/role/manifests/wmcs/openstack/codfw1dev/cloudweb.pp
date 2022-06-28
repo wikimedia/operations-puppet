@@ -22,6 +22,7 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     include ::profile::openstack::codfw1dev::horizon::dashboard_source_deploy
 
     # Striker:
+    include ::profile::docker::ferm
     include ::profile::wmcs::striker::web
     include ::profile::wmcs::striker::docker
 
