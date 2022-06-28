@@ -3,3 +3,7 @@ ExecReload=
 ExecReload=/usr/sbin/php-fpm<%= @php_version %> -t
 ExecReload=/bin/kill -USR2 $MAINPID
 CPUAccounting=yes
+<%- if @php_version == '7.4' -%>
+# Override ExecStartPost for php7.4
+ExecStartPost=
+<%- end -%>
