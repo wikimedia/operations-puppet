@@ -6,8 +6,12 @@ https://wikimedia.org:
   assert_status: 301
   assert_headers:
       Location: https://research.wikimedia.org/
+- path: /stopsurveillance
+  assert_status: 301
+  assert_headers:
+    Location: https://wikimediafoundation.org/advocacy/
 
-# Url shortner
+# Url shortener
 https://w.wiki:
 - path: /
   assert_status: 301
@@ -46,3 +50,16 @@ https://ombudsmen.wikimedia.org:
   assert_status: 301
   assert_headers:
     Location: https://ombuds.wikimedia.org/wiki/Main_Page
+
+https://policy.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikimediafoundation.org/advocacy/
+
+https://fixcopyright.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikimediafoundation.org/advocacy/
+

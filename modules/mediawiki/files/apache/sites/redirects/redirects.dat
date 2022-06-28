@@ -235,10 +235,12 @@ override	wikimedia.org/research	https://research.wikimedia.org
 # dev.wikimedia.org - T372, T265018
 funnel	dev.wikimedia.org	https://developer.wikimedia.org
 
-# T97341
-override	wikimedia.org/stopsurveillance	https://policy.wikimedia.org/stopsurveillance/
-# T239141
-funnel	fixcopyright.wikimedia.org	https://policy.wikimedia.org/policy-landing/copyright/
+# T310738, T132104
+funnel	policy.wikimedia.org	https://wikimediafoundation.org/advocacy/
+# T97341, T310738
+override	wikimedia.org/stopsurveillance	https://wikimediafoundation.org/advocacy/
+# T239141, T310738
+funnel	fixcopyright.wikimedia.org	https://wikimediafoundation.org/advocacy/
 
 # T300398
 funnel  unseen.wikimedia.org      https://wikimediafoundation.org/participate/unseen/
