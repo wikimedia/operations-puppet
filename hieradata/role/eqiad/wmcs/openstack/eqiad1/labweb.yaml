@@ -140,3 +140,6 @@ profile::tlsproxy::envoy::global_cert_name: "labweb.discovery.wmnet"
 profile::tlsproxy::envoy::tls_port: 7443
 profile::base::firewall::block_abuse_nets: true
 profile::contacts::role_contacts: ['WMCS']
+
+
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
