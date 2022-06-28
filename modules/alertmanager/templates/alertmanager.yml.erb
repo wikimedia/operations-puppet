@@ -320,7 +320,7 @@ receivers:
     # #serviceops mail & IRC
     - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
   email_configs:
-    - to: 'sre-serviceops@<%= @facts['networking']['domain'] %>'
+    - to: 'sre-service-ops-collab@<%= @facts['networking']['domain'] %>'
 
 - name: 'serviceops-collab-critical'
   webhook_configs:
@@ -329,7 +329,7 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
   email_configs:
-    - to: 'sre-serviceops@<%= @facts['networking']['domain'] %>'
+    - to: 'sre-service-ops-collab@<%= @facts['networking']['domain'] %>'
 
 - name: 'dcops-task'
   webhook_configs:
