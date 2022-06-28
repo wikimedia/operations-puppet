@@ -23,6 +23,7 @@ class profile::wmcs::striker::docker(
     Hash $secret_env         = lookup('profile::wmcs::striker::docker::secret_env', { 'default_value' => {} } ),
 ) {
     require ::profile::docker::engine
+    require ::profile::docker::ferm
     service::docker { 'striker':
         namespace   => 'wikimedia',
         image_name  => 'labs-striker',
