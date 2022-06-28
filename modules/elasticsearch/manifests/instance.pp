@@ -292,7 +292,7 @@ define elasticsearch::instance (
 
     if $s3_username != undef and $s3_username != '' {
         exec { "s3-credentials-user-${cluster_name}":
-            command     => "/usr/bin/echo ${s3_username} | /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.access_key",
+            command     => "echo ${s3_username} | /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.access_key",
             environment => ["ES_PATH_CONF=${config_dir}"],
             group       => 'elasticsearch',
             require     => File["${config_dir}/elasticsearch.keystore"],
@@ -303,7 +303,7 @@ define elasticsearch::instance (
 
     if $s3_password != undef and $s3_password != '' {
         exec { "s3-credentials-pass-${cluster_name}":
-            command     => "/usr/bin/echo ${s3_password} | /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.secret_key",
+            command     => "echo ${s3_password} | /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.secret_key",
             environment => ["ES_PATH_CONF=${config_dir}"],
             group       => 'elasticsearch',
             require     => File["${config_dir}/elasticsearch.keystore"],
