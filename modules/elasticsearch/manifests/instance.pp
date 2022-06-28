@@ -294,6 +294,7 @@ define elasticsearch::instance (
         exec { "s3-credentials-user-${cluster_name}":
             command     => "/usr/bin/echo ${s3_username} | /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.access_key",
             environment => ["ES_PATH_CONF=${config_dir}"],
+            group       => 'elasticsearch',
             require     => File["${config_dir}/elasticsearch.keystore"],
             unless      => '/usr/share/elasticsearch/bin/elasticsearch-keystore list | /usr/bin/grep s3.client.default.access_key',
         }
@@ -303,6 +304,7 @@ define elasticsearch::instance (
         exec { "s3-credentials-pass-${cluster_name}":
             command     => "/usr/bin/echo ${s3_password} | /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.secret_key",
             environment => ["ES_PATH_CONF=${config_dir}"],
+            group       => 'elasticsearch',
             require     => File["${config_dir}/elasticsearch.keystore"],
             unless      => '/usr/share/elasticsearch/bin/elasticsearch-keystore list | /usr/bin/grep s3.client.default.secret_key',
         }
