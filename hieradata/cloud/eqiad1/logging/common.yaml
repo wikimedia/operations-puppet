@@ -232,3 +232,35 @@ profile::opensearch::logstash::curator_actions:
         direction: older
         unit: days
         unit_count: 2
+
+profile::grafana::enable_loki: true
+profile::grafana::enable_cas: false
+profile::grafana::server_aliases: []
+profile::grafana::domain: 'localhost'
+profile::grafana::loki::config:
+  auth_enabled: false
+  server:
+    http_listen_port: 3100
+    grpc_listen_port: 9096
+
+  common:
+    path_prefix: '/var/lib/loki'
+    storage:
+      filesystem:
+        chunks_directory: '/var/lib/loki/chunks'
+        rules_directory: '/var/lib/loki/rules'
+    replication_factor: 1
+    ring:
+      instance_addr: '127.0.0.1'
+      kvstore:
+        store: 'inmemory'
+
+  schema_config:
+    configs:
+      - from: '2022-01-01'
+        store: 'boltdb-shipper'
+        object_store: 'filesystem'
+        schema: 'v11'
+        index:
+          prefix: 'index_'
+          period: '24h'

@@ -7,25 +7,27 @@
 # @param wpt_graphite_proxy_port If set  Configure a local Apache which will serve as
 #        a reverse proxy for WebPageTest's external Graphite instance.
 class profile::grafana (
-    Stdlib::Fqdn $domain             = lookup('profile::grafana::domain'),
-    Optional[Stdlib::Fqdn] $domainrw = lookup('profile::grafana::domainrw', {'default_value' => undef}),
-    String       $secret_key         = lookup('profile::grafana::secret_key'),
-    String       $admin_password     = lookup('profile::grafana::admin_password'),
-    Hash         $config             = lookup('profile::grafana::config'),
-    Hash         $ldap               = lookup('profile::grafana::ldap', {'default_value' => undef}),
-    Boolean      $enable_cas         = lookup('profile::grafana::enable_cas'),
-    Boolean      $execute_alerts     = lookup('profile::grafana::execute_alerts', {'default_value' => true}),
-    Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
-                                                            {'default_value' => undef}),
-    Optional[Stdlib::Port] $wpt_json_proxy_port = lookup('profile::grafana::wpt_json_proxy_port',
-                                                            {'default_value' => undef}),
-    Array[Stdlib::Fqdn] $server_aliases = lookup('profile::grafana::server_aliases'),
+    String                 $admin_password          = lookup('profile::grafana::admin_password'),
+    Hash                   $config                  = lookup('profile::grafana::config'),
+    Stdlib::Fqdn           $domain                  = lookup('profile::grafana::domain'),
+    Optional[Stdlib::Fqdn] $domainrw                = lookup('profile::grafana::domainrw',                { 'default_value' => undef }),
+    Boolean                $enable_cas              = lookup('profile::grafana::enable_cas'),
+    Boolean                $enable_loki             = lookup('profile::grafana::enable_loki',             { 'default_value' => false }),
+    Boolean                $execute_alerts          = lookup('profile::grafana::execute_alerts',          { 'default_value' => true }),
+    Hash                   $ldap                    = lookup('profile::grafana::ldap',                    { 'default_value' => undef }),
+    String                 $secret_key              = lookup('profile::grafana::secret_key'),
+    Array[Stdlib::Fqdn]    $server_aliases          = lookup('profile::grafana::server_aliases'),
+    Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
 ) {
 
     include profile::backup::host
     include passwords::ldap::production
     include profile::base::firewall
 
+    if ($enable_loki) {
+        include profile::grafana::loki
+    }
     # This isn't needed by grafana, but is handy for inspecting its database.
     ensure_packages(['sqlite3', 'grafana-plugins'])
 
@@ -167,20 +169,6 @@ class profile::grafana (
 
     backup::set { 'var-lib-grafana':
         require => Class['::grafana'],
-    }
-
-    # Grafana plugins are shipped via a Debian package, see also https://gerrit.wikimedia.org/r/c/618953
-    git::clone { 'operations/software/grafana/simple-json-datasource':
-        ensure    => absent,
-        branch    => '3.0',
-        directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
-        require   => Package['grafana'],
-    }
-
-    file { '/usr/share/grafana/public/app/plugins/datasource/datasource-plugin-genericdatasource':
-        ensure  => absent,
-        target  => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource/dist',
-        require => Git::Clone['operations/software/grafana/simple-json-datasource'],
     }
 
     profile::auto_restarts::service { 'apache2': }
