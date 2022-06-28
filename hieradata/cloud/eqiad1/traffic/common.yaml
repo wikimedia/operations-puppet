@@ -61,8 +61,6 @@ profile::monitoring::mgmt_parents:
   drmrs: mr1-drmrs
 profile::prometheus::cadvisor_exporter::port: 4194
 profile::trafficserver::tls::log_formats:
-  - name: wmf-tls
-    format: 'Date:%<cqtd> Time:%<cqtt> Client-IP:%<chi> HTTPVersion:%<cqhv> SSL:%<cqssl> SSLVersion:%<cqssv> SSLCipher:%<cqssc> SSLCurve:%<cqssu> ConnReuse:%<sstc> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh>'
   - name: wmf-analytics
     # Format string for atskafka. Note that the string is tab-separated (TSV)
     format: "dt:%<cqtd>T%<cqtt>Z	hostname:%{::fqdn}	time_firstbyte:%<{TS_MILESTONE_UA_BEGIN_WRITE-TS_MILESTONE_SM_START}msdms>	ip:%<{X-Client-IP}psh>	cache_status:%<{X-Cache-Status}psh>	http_status:%<pssc>	response_size:%<pscl>	http_method:%<cqhm>	uri_host:%<{Host}cqh>	uri_path:%<cquup>	content_type:%<{Content-Type}psh>	referer:%<{Referer}cqh>	user_agent:%<{User-Agent}cqh>	accept_language:%<{Accept-Language}cqh>	x_analytics:%<{X-Analytics}ssh>	range:%<{Range}cqh>	x_cache:%<{X-Cache}psh>	accept:%<{Accept}cqh>	backend:%<{Server}psh>	tls:%<{X-Analytics-TLS}pqh>"
@@ -70,7 +68,7 @@ profile::trafficserver::tls::logs:
   - filename: tls
     format: wmf-tls
     mode: ascii_pipe
-    ensure: present
+    ensure: absent
   - filename: analytics
     format: wmf-analytics
     mode: ascii_pipe
