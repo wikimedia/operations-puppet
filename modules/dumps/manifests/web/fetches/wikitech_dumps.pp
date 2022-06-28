@@ -26,9 +26,4 @@ class dumps::web::fetches::wikitech_dumps(
         command     => "/usr/local/sbin/wikitech-dumps.sh ${url} ${wikitechdir}",
         interval    => {'start' => 'OnCalendar', 'interval' => '03:20:00'},
     }
-
-    cron { 'dumps-fetches-wikitech':
-        ensure => 'absent',
-        user   => 'root',
-    }
 }
