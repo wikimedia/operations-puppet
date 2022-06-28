@@ -73,7 +73,8 @@ class php::fpm(
                 restart   => "/bin/systemctl reload ${service_name}.service",
                 subscribe => File[$main_config_file],
             }
-
+            # PHP-fpm should be installed before its configuration files
+            Package["php${version}-fpm"] -> File<| tag == "php::config::${version}::fpm" |>
             # Installing an extension should reload php-fpm
             Package<| tag == "php::package::${version}::fpm" |> ~> Service[$service_name]
             # Any config file should reload the service

@@ -242,9 +242,12 @@ class profile::mediawiki::php(
         install_packages => false,
     }
 
-    if $phpdbg {
-        $dbg_packages = $php_versions.map |$v| { "php${v}-phpdbg" }
-        ensure_packages($dbg_packages)
+    # Debug package
+    $php_versions.map |$v| {
+        package { "php${v}-phpdbg":
+            ensure  => $phpdbg.bool2str('installed', 'absent'),
+            require => Exec['apt_update_php']
+        }
     }
 
     ### FPM configuration
