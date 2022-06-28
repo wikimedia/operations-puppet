@@ -19,12 +19,16 @@ class ganeti::prometheus(
         }
 
         # Configuration files for Ganeti Prometheus exporter
-        file { '/etc/prometheus/ganeti.ini':
+        file { '/etc/ganeti/prometheus.ini':
             ensure  => present,
             owner   => 'prometheus',
             group   => 'prometheus',
             mode    => '0400',
             content => template('ganeti/prometheus-collector.erb')
+        }
+
+        file { '/etc/prometheus/ganeti.ini':
+            ensure => absent,
         }
 
         service {'prometheus-ganeti-exporter':
