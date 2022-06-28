@@ -17,3 +17,5 @@ profile::elasticsearch::dc_settings:
 
         # We should be able to run "OK" with 3 servers (half of the cluster).
         recover_after_nodes: 3
+
+profile::elasticsearch::s3_username: 'search:platform'

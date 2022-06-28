@@ -10,6 +10,8 @@ profile::elasticsearch::dc_settings:
     expected_nodes: 2
     minimum_master_nodes: 1
 
+profile::elasticsearch::s3_username: 'search:platform'
+
 has_lvs: false
 
 profile::elasticsearch::cirrus::storage_device: md1
