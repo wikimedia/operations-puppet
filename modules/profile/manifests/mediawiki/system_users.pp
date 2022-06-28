@@ -30,4 +30,15 @@ class profile::mediawiki::system_users(Wmflib::Ensure $ensure = lookup('profile:
         managehome => true,
         system     => true,
     }
+    git::userconfig { '.gitconfig for mwpresync user':
+        homedir  => '/srv/mwpresync',
+        settings => {
+            'user' => {
+                'name'  => 'MediaWiki PreSync',
+                'email' => "mwpresync@${::fqdn}",
+            },
+        },
+        require  => User['mwpresync']
+    }
+
 }
