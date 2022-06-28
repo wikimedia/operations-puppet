@@ -59,6 +59,12 @@ class profile::ganeti (
         ganeti3  => $ganeti3,
     }
 
+    class { 'ganeti::prometheus':
+        rapi_endpoint    => $rapi_certificate,
+        rapi_ro_user     => $rapi_ro_user,
+        rapi_ro_password => $rapi_ro_password,
+    }
+
     # Ganeti needs intracluster SSH root access
     # DSS+RSA keys in here, but note that DSS is deprecated
     ssh::userkey { 'root-ganeti':

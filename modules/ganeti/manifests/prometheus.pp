@@ -6,6 +6,8 @@
 
 class ganeti::prometheus(
     String $rapi_endpoint,
+    String $rapi_ro_user,
+    String $rapi_ro_password,
 ) {
     if debian::codename::ge('bullseye'){
         ensure_packages('prometheus-ganeti-exporter')
@@ -18,11 +20,11 @@ class ganeti::prometheus(
 
         # Configuration files for Ganeti Prometheus exporter
         file { '/etc/prometheus/ganeti.ini':
-            ensure => present,
-            owner  => 'prometheus',
-            group  => 'prometheus',
-            mode   => '0400',
-            source => template('ganeti/prometheus-collector.erb')
+            ensure  => present,
+            owner   => 'prometheus',
+            group   => 'prometheus',
+            mode    => '0400',
+            content => template('ganeti/prometheus-collector.erb')
         }
 
         service {'prometheus-ganeti-exporter':
