@@ -133,6 +133,7 @@ class profile::mediawiki::php(
         versions       => $php_versions,
         sapis          => $_sapis,
         config_by_sapi => $_config,
+        require        => Exec['apt_update_php'],
     }
 
     # Extensions that need no custom settings
