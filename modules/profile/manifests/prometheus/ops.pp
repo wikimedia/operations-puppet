@@ -445,6 +445,21 @@ class profile::prometheus::ops (
       },
     ]
 
+    prometheus::ganeti { 'ganeti':
+        dest     => "${targets_path}/ganeti_${::site}.yaml",
+        clusters => $ganeti_clusters,
+    }
+
+    $ganeti_jobs = [
+      {
+        'job_name'        => 'ganeti',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/ganeti_*.yaml" ]}
+        ],
+      },
+    ]
+
     # Pull varnish-related metrics generated via varnishmtail (default instance)
     prometheus::class_config{ "varnish-upload_mtail_${::site}":
         dest       => "${targets_path}/varnish-upload_mtail_${::site}.yaml",
@@ -2347,7 +2362,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $cache_envoy_jobs, $mini_textfile_jobs, $gitlab_runner_jobs,
-            $netbox_django_jobs, $ipmi_jobs,
+            $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
@@ -2443,11 +2458,6 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/ipmi_${::site}.yaml",
         class_name => 'prometheus::ipmi_exporter',
         port       => 9290,
-    }
-
-    prometheus::ganeti { 'ganeti':
-        dest     => "${targets_path}/ganeti_${::site}.yaml",
-        clusters => $ganeti_clusters,
     }
 
     if $::site in ['eqiad', 'codfw'] {
