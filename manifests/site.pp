@@ -960,6 +960,11 @@ node 'db2151.codfw.wmnet' {
     role(mariadb::misc)
 }
 
+# New db nodes /T306927
+node /^db21(5[3-9]|6[0-9]|7[0-4])\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # eqiad backup sources
 ## s2, s3 & x1, buster
 node 'db1102.eqiad.wmnet' {
