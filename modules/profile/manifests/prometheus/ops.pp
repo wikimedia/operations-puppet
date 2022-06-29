@@ -20,6 +20,7 @@ class profile::prometheus::ops (
     Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
     Wmflib::Infra::Devices $infra_devices                     = lookup('infra_devices'),
     Array                  $alerting_relabel_configs_extra    = lookup('profile::prometheus::ops::alerting_relabel_configs_extra'),
+    Array[Stdlib::Host] $ganeti_clusters                      =lookup('profile::prometheus::ganeti::clusters', { 'default_value' => []}),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -2442,6 +2443,11 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/ipmi_${::site}.yaml",
         class_name => 'prometheus::ipmi_exporter',
         port       => 9290,
+    }
+
+    prometheus::ganeti { 'ganeti':
+        dest     => "${targets_path}/ganeti_${::site}.yaml",
+        clusters => $ganeti_clusters,
     }
 
     if $::site in ['eqiad', 'codfw'] {

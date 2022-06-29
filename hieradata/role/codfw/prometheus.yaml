@@ -32,3 +32,7 @@ profile::prometheus::kubernetes::clusters:
 #   client_token: eqiaddummy
 # k8s-staging:
 #   client_token: eqiaddummystaging
+
+# List of Ganeti clusters that can be scraped.
+profile::prometheus::ganeti::clusters:
+  - ganeti-test01.svc.codfw.wmnet
