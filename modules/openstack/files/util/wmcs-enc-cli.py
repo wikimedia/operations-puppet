@@ -58,8 +58,7 @@ class EncConnection:
                 self.enc_url,
                 prefix,
             ),
-            # make sure it's pretty formatted
-            yaml.dump(yaml.safe_load(data)),
+            data=yaml.dump(yaml.safe_load(data)),
             raise_exc=False
         )
         if not response.ok:
@@ -80,8 +79,7 @@ class EncConnection:
                 self.enc_url,
                 prefix,
             ),
-            # make sure it's pretty formatted
-            yaml.dump(yaml.safe_load(data)),
+            data=yaml.dump(yaml.safe_load(data)),
             raise_exc=False
         )
         if not response.ok:
