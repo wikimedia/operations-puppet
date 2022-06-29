@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # NOTE: This file is managed by Puppet.
 
 # Explicitly configure the shell that will be used by the Jupyter Notebook Terminal app,

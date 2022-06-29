@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: jupyterhub::server
 # Sets up a JupyterHub server for WMF that spawns jupyterhub-singleuser processes
 # in conda environemnts with Systemd.
