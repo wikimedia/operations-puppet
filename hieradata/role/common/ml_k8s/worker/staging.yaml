@@ -42,6 +42,35 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference-staging: {}
 
+profile::calico::kubernetes::cni_config:
+  name: "k8s-pod-network"
+  cniVersion: "0.3.1"
+  plugins:
+  - type: "calico"
+    log_level: "info"
+    datastore_type: "kubernetes"
+    mtu: 1500
+    ipam:
+      type: "calico-ipam"
+      assign_ipv4: "true"
+      assign_ipv6: "true"
+    policy:
+      type: "k8s"
+    kubernetes:
+      kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
+  - name: "istio-cni"
+    type: "istio-cni"
+    log_level: "info"
+    kubernetes:
+      kubeconfig: "/etc/cni/net.d/istio-kubeconfig"
+      cni_bin_dir: "/opt/cni/bin"
+      exclude_namespaces:
+      - istio-system
+      - kube-system
+      - knative-serving
+      - cert-manager
+      - kserve
+
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
