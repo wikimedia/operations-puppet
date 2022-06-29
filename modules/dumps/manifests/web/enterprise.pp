@@ -36,15 +36,16 @@ class dumps::web::enterprise(
     if $is_primary_server {
         $download_command = "/usr/bin/python3 ${script_path} --creds ${creds_path} --settings ${settings_path} --retries 2"
         systemd::timer::job { 'download_enterprise_htmldumps':
-            ensure             => present,
-            description        => 'Twice monthly download of Wikimedia Enterprise HTML dumps',
-            user               => $user,
-            monitoring_enabled => false,
-            send_mail          => true,
-            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
-            command            => $download_command,
-            interval           => {'start' => 'OnCalendar', 'interval' => '*-*-1,20 8:30:0'},
-            require            => [ File[$script_path], File[$creds_path], File[$settings_path] ],
+            ensure                  => present,
+            description             => 'Twice monthly download of Wikimedia Enterprise HTML dumps',
+            user                    => $user,
+            monitoring_enabled      => false,
+            send_mail               => true,
+            send_mail_only_on_error => false,
+            environment             => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command                 => $download_command,
+            interval                => {'start' => 'OnCalendar', 'interval' => '*-*-1,20 8:30:0'},
+            require                 => [ File[$script_path], File[$creds_path], File[$settings_path] ],
         }
     }
 
