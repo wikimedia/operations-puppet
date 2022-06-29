@@ -1560,6 +1560,21 @@ node 'cloudcontrol2005-dev.wikimedia.org' {
     role(insetup)
 }
 
+# new cloudnet1005 and 1006 servers T304888
+node /cloudnet100[56]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
+# new cloudrabbit servers T304888
+node /cloudrabbit100[123]\.wikimedia\.org/ {
+    role(insetup)
+}
+
+# new cloudservices1005 node T304888
+node 'cloudservices1005.wikimedia.org' {
+    role(insetup)
+}
+
 node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
     role(wmcs::openstack::codfw1dev::services)
 }
