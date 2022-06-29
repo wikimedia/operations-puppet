@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class ores::base(
     Stdlib::Unixpath $config_path = '/srv/deployment/ores/deploy',
     Stdlib::Unixpath $venv_path = '/srv/deployment/ores/deploy/venv',

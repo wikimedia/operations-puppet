@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class ores::worker(
     $log_level = 'ERROR',
     $celery_version = 5,
