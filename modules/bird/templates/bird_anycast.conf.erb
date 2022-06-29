@@ -6,36 +6,35 @@ include "/etc/bird/anycast6-prefixes.conf";
 
 router id <%= @ipv4_src %>;
 
-protocol device {
-    interface "*";
-    ipv4 {
-        export all;
-    };
-}
-<% if @do_ipv6 -%>
-protocol device {
-    interface "*";
-    ipv6 {
-        export all;
-    };
-}
-<% end -%>
-
-protocol kernel {
-    ipv4 {
-        import none;
-    };
-}
-<% if @do_ipv6 -%>
-protocol kernel {
-    ipv6 {
-        import none;
-    };
-}
-<% end -%>
-
 protocol direct {
     interface "*";
+    ipv4 {
+        export all;
+    };
+}
+<% if @do_ipv6 -%>
+protocol direct {
+    interface "*";
+    ipv6 {
+        export all;
+    };
+}
+<% end -%>
+
+protocol kernel {
+    ipv4 {
+        import none;
+    };
+}
+<% if @do_ipv6 -%>
+protocol kernel {
+    ipv6 {
+        import none;
+    };
+}
+<% end -%>
+
+protocol device {
 }
 
 function match_route()
