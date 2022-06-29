@@ -620,7 +620,10 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
                  'ALL = NOPASSWD: /usr/local/sbin/run-puppet-agent *',
                  'ALL = NOPASSWD: /bin/journalctl *',
-                 'ALL = (syslog) NOPASSWD: ALL']
+                 'ALL = (syslog) NOPASSWD: ALL',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.provision',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.reimage',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.dns.netbox']
     approval:
       - Willy Pao
   perf-team:
