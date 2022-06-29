@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 Facter.add('ganeti_cluster') do
   confine :kernel => :linux
   confine do

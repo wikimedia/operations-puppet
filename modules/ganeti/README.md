@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Ganeti Puppet Module #
 
 A Puppet module for installing and managing Ganeti clusters.
