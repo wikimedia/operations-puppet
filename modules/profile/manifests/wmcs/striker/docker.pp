@@ -25,10 +25,11 @@ class profile::wmcs::striker::docker(
     require ::profile::docker::engine
     require ::profile::docker::ferm
     service::docker { 'striker':
-        namespace   => 'wikimedia',
-        image_name  => 'labs-striker',
-        version     => $version,
-        port        => $port,
-        environment => deep_merge($env, $secret_env),
+        namespace    => 'wikimedia',
+        image_name   => 'labs-striker',
+        version      => $version,
+        port         => $port,
+        environment  => deep_merge($env, $secret_env),
+        host_network => true,
     }
 }

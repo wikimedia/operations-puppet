@@ -61,7 +61,7 @@ profile::wmcs::striker::docker::env:
   DB_PORT: 3306
   LDAP_SERVER_URI: ldaps://ldap-rw.eqiad.wikimedia.org:636
   LDAP_BIND_USER:  uid=novaadmin,ou=people,dc=wikimedia,dc=org
-  CACHE_LOCATION: 127.0.0.1:11212 # FIXME: will this work?
+  CACHE_LOCATION: 127.0.0.1:11212
   REQUIRE_HTTPS: true
   USE_XFF_HEADER: true
   # CIDR not supported, but substring/prefix match is

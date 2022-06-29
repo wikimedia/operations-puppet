@@ -37,6 +37,14 @@
 #   management of that docker volume is left up to the user of the volume. So
 #   precreate it and prepopulate it please
 #
+# [*host_network*] Boolean. default false.
+#   Bind the container to the host's network rather than the default bridge
+#   nework. From a networking point of view, this provides the same level of
+#   iolation as if the container's main process was running directly on the
+#   host. Note: $port is ignored when running in host network mode. Ports
+#   opened within the container will be opened directly on the host without
+#   a NAT translation being involved.
+#
 define service::docker(
     Stdlib::Port::User $port,
     String $version,
@@ -47,6 +55,7 @@ define service::docker(
     Hash $environment = {},
     String $image_name = $title,
     Boolean $volume = false,
+    Boolean $host_network = false,
 ) {
     # Our docker registry is *not* configurable here.
     $registry = 'docker-registry.wikimedia.org'

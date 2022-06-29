@@ -16,7 +16,7 @@ Requires=docker.service
 [Service]
 ExecStartPre=-/usr/bin/docker stop %n
 ExecStartPre=-/usr/bin/docker rm %n
-ExecStart=/usr/bin/docker run <% if @version == "latest" %>--pull=always<% end %> --rm=true <%= envargs %> -p <%= @port %>:<%= @port %> -v <%= etc %>:/etc/<%= @title %> --name %n <%= @image_full_name %>:<%= @version %> <%= @override_cmd %>
+ExecStart=/usr/bin/docker run <% if @version == "latest" %>--pull=always<% end %> --rm=true <%= envargs %> <% if @host_network == true %>--network host<% else %>-p <%= @port %>:<%= @port %><% end %> -v <%= etc %>:/etc/<%= @title %> --name %n <%= @image_full_name %>:<%= @version %> <%= @override_cmd %>
 Restart=always
 RestartSec=10s
 NotifyAccess=all
