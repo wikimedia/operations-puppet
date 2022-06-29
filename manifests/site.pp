@@ -690,7 +690,7 @@ node 'db2123.codfw.wmnet' {
 
 # codfw replicas
 # See also db2089 and db2137 below
-node /^db2(075|111|113)\.codfw\.wmnet/ {
+node /^db2(111|113)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
