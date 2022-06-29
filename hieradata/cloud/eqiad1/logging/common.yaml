@@ -237,6 +237,11 @@ profile::grafana::enable_loki: true
 profile::grafana::enable_cas: false
 profile::grafana::server_aliases: []
 profile::grafana::domain: 'localhost'
+profile::grafana::config:
+  auth.ldap:
+    enabled: false
+  auth.proxy:
+    enabled: false
 profile::grafana::loki::config:
   auth_enabled: false
   server:
