@@ -242,6 +242,8 @@ profile::grafana::config:
     enabled: false
   auth.proxy:
     enabled: false
+profile::grafana::loki::allow_from:
+  - 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
 profile::grafana::loki::config:
   auth_enabled: false
   server:

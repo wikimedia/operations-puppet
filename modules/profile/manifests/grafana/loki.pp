@@ -4,11 +4,21 @@
 # Grafana Loki is a set of components that can be composed into a fully featured logging stack.
 # Params:
 #   $config: Hash of configuration options (https://grafana.com/docs/loki/latest/configuration)
-#   $version: $version: (optional) the package version to ensure
+#   $version: (optional) the package version to ensure
+#   $allow_from: (optional) array of hosts that need access to the loki api
 class profile::grafana::loki (
-  Hash             $config  = lookup('profile::grafana::loki::config',  { 'default_value' => {} }),
-  Optional[String] $version = lookup('profile::grafana::loki::version', { 'default_value' => 'present' }),
+  Hash                $config     = lookup('profile::grafana::loki::config',        { 'default_value' => {} }),
+  Optional[String]    $version    = lookup('profile::grafana::loki::version',       { 'default_value' => 'present' }),
+  Array[Stdlib::Fqdn] $allow_from = lookup('profile::grafana::loki::allow_from',    { 'default_value' => [] })
 ) {
+
+  unless empty($allow_from) {
+    ferm::service { "loki-${config['server']['http_listen_port']}":
+      proto  => 'tcp',
+      port   => $config['server']['http_listen_port'],
+      srange => "@resolve((${allow_from.join(' ')}))",
+    }
+  }
 
   class { '::grafana::loki':
     ensure  => 'present',
