@@ -1,4 +1,6 @@
 #! /usr/bin/expect --
+# SPDX-License-Identifier: LicenseRef-Terrapin-Open-Source-License
+# https://www.openhub.net/licenses/terrapin
 #
 # ssh-serial-console-wrapper  
 # SSH wrapper for running RANCID login scripts to access devices via an

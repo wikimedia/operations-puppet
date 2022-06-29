@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Really Awful Notorious CIsco config Differ
 class rancid (
     Stdlib::Fqdn $active_server,
