@@ -51,49 +51,69 @@ profile::presto::server::config_properties:
   http.authentication.krb5.config: '/etc/krb5.conf'
 
 profile::presto::server::catalogs:
+
   # Each catalog hash should contain a single properties has that will
-  # end up being passed to the presto::properties define.  This will render
+  # end up being passed to the presto::catalog define.  This will render
   # a properties file at /etc/presto/catalog/$name.properties.
   analytics_test_hive:
     properties:
       connector.name: hive-hadoop2
-      hive.security: read-only
-      # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
-      hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
+
       hive.metastore.uri: thrift://analytics-test-hive.eqiad.wmnet:9083
       hive.metastore.username: presto
-      hive.storage-format: PARQUET
-      hive.compression-codec: SNAPPY
-      # We do not (yet) colocate workers with Hadoop DataNodes.
-      # When we tested 0.246 the option parser rejected setting the option to its
-      # default, so we removed it but we left this comment for documentation purposes.
-      # hive.force-local-scheduling: false
-      # Allow presto-cli to impersonate the user running the process
-      hive.hdfs.impersonation.enabled: true
-      # TODO: do we want to disable non managed tables?
-      hive.non-managed-table-writes-enabled: true
-      hive.non-managed-table-creates-enabled: true
       hive.metastore.authentication.type: 'KERBEROS'
-      hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
-      hive.metastore.client.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.metastore.client.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+      hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
+
+      # Allow presto to impersonate the user running the process to HDFS.
+      hive.hdfs.impersonation.enabled: true
       hive.hdfs.authentication.type: 'KERBEROS'
-      hive.hdfs.presto.principal: 'presto/%{::hostname}.eqiad.wmnet@WIKIMEDIA'
+      hive.hdfs.presto.principal: 'presto/%{::fqdn}@WIKIMEDIA'
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true
 
+      # We do not (yet) colocate workers with Hadoop DataNodes.
+      # When we tested 0.246 the option parser rejected setting the option to its
+      # default, so we removed it but we left this comment for documentation purposes.
+      #hive.force-local-scheduling: false
+      # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
+      hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
+      hive.security: read-only
+      # TODO: do we want to disable non managed tables?
+      hive.non-managed-table-writes-enabled: true
+      hive.non-managed-table-creates-enabled: true
       # Attempt to enforce some sort of partition predicate,
       # by making the maximum partitions per scan the number of hours in 5 weeks.
       # This way at least for hourly data a month filter will need to be applied.
       hive.max-partitions-per-scan: 840
+      hive.storage-format: PARQUET
+      hive.compression-codec: SNAPPY
+
   analytics_test_iceberg:
     properties:
       connector.name: iceberg
+      # Discover iceberg tables in via Hive metastore.
       iceberg.catalog.type: hive
+
       hive.metastore.uri: thrift://analytics-test-hive.eqiad.wmnet:9083
+      hive.metastore.username: presto
+      hive.metastore.authentication.type: KERBEROS
+      hive.metastore.client.keytab: /etc/security/keytabs/presto/presto.keytab
+      hive.metastore.client.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+      hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
+
+      # Allow presto to impersonate the user running the process to HDFS.
+      hive.hdfs.impersonation.enabled: true
+      hive.hdfs.wire-encryption.enabled: true
+      hive.hdfs.authentication.type: 'KERBEROS'
+      hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.presto.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+
+      # Add Hadoop config files so Iceberg hive connector can work with HA Hadoop NameNodes.
+      hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
       iceberg.file-format: PARQUET
       iceberg.compression-codec: SNAPPY
-
 
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
