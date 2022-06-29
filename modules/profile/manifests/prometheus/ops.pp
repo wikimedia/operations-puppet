@@ -229,6 +229,16 @@ class profile::prometheus::ops (
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
+      {
+        'job_name'        => 'smoke/dns',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '15s',
+        'scrape_timeout'  => '3s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/smoke-dns_*.yaml" ] }
+        ],
+        'relabel_configs' => $probes_relabel_configs,
+      },
     ]
 
     $probe_services = wmflib::service::fetch().filter |$name, $config| {
@@ -282,6 +292,12 @@ class profile::prometheus::ops (
     netops::prometheus::icmp { 'fr-firewalls':
       targets      => $fr_firewalls,
       targets_file => "${targets_path}/smoke-icmp_fr-firewalls.yaml",
+    }
+
+    netops::prometheus::dns { 'wikipedia':
+      targets      => ['ns0.wikimedia.org', 'ns1.wikimedia.org', 'ns2.wikimedia.org'],
+      modules      => ['dns_wikipedia_a', 'dns_wikipedia_cname'],
+      targets_file => "${targets_path}/smoke-dns_wikipedia.yaml",
     }
 
     # Checks for custom probes, defined in puppet
