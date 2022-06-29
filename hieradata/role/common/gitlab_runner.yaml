@@ -28,6 +28,10 @@ profile::gitlab::runner::allowed_services:
     host: 'recdns.anycast.wmnet'
     port: 53
     proto: udp
+  docker-internal-dns:
+    host: '127.0.0.11'
+    port: 53
+    proto: udp
   gitlab-https:
     host: 'gitlab.wikimedia.org'
     port: 443
