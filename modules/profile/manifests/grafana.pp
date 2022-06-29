@@ -14,7 +14,7 @@ class profile::grafana (
     Boolean                $enable_cas              = lookup('profile::grafana::enable_cas'),
     Boolean                $enable_loki             = lookup('profile::grafana::enable_loki',             { 'default_value' => false }),
     Boolean                $execute_alerts          = lookup('profile::grafana::execute_alerts',          { 'default_value' => true }),
-    Hash                   $ldap                    = lookup('profile::grafana::ldap',                    { 'default_value' => undef }),
+    Hash                   $ldap                    = lookup('profile::grafana::ldap',                    { 'default_value' => {} }),
     String                 $secret_key              = lookup('profile::grafana::secret_key'),
     Array[Stdlib::Fqdn]    $server_aliases          = lookup('profile::grafana::server_aliases'),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
