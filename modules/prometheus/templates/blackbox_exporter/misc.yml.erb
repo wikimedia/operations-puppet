@@ -11,3 +11,21 @@ modules:
         - 'href="https://foundation\.(m\.)?wikimedia\.org/wiki/Terms_of_Use"'
       tls_config:
         insecure_skip_verify: false
+
+  dns_wikipedia_a:
+    prober: dns
+    dns:
+      query_name: 'wikipedia.org'
+      query_type: 'A'
+      validate_answer_rrs:
+        fail_if_not_matches_regexp:
+          - 'wikipedia.org.\t[0-9]+\tIN\tA\t.*'
+
+  dns_wikipedia_cname:
+    prober: dns
+    dns:
+      query_name: 'www.wikipedia.org'
+      query_type: 'A'
+      validate_answer_rrs:
+        fail_if_not_matches_regexp:
+          - 'www.wikipedia.org.\t[0-9]+\tIN\tCNAME\tdyna.wikimedia.org.'
