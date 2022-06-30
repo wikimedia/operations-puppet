@@ -302,6 +302,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://yarn.wikimedia.org
       replacement: https://an-tool1008.eqiad.wmnet
     - type: regex_map
+      target: 'http://(.*)/esitest-fa8a495983347898/'
+      replacement: http://127.0.0.1:4321/esitest-fa8a495983347898/
+    - type: regex_map
       target: 'http://(.*)/api/rest_v1'
       replacement: https://restbase.discovery.wmnet:7443/api/rest_v1
       params:
