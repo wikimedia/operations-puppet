@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Acme_chief::Certificate = Struct[{
     'CN'                 => Wmflib::Host::Wildcard,
     'SNI'                => Array[Wmflib::Host::Wildcard],

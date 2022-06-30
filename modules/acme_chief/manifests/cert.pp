@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # deploys the especified certificate on /etc/acmecerts using the following structure:
 #   /etc/acmecerts/$title:
 #       live -> random_dir_name

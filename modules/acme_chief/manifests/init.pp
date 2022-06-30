@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Handles basic requirements for acme-chief clients:
 #  - Deploy of LE intermediate certificates
 

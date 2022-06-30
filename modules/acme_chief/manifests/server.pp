@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class acme_chief::server (
     Hash[String, Hash[String, String]] $accounts = {},
     Hash[String, Acme_chief::Certificate] $certificates = {},
