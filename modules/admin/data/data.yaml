@@ -145,7 +145,9 @@ groups:
                  # tokens as environment vars. Sudo seemingly implements this by rewriting the
                  # command before checking sudoers -- but it disallows any arguments that don't
                  # exactly match what is below, so this is safe.
-                 'ALL = NOPASSWD: /bin/bash -c /usr/local/sbin/restart-php7.2-fpm']
+                 'ALL = NOPASSWD: /bin/bash -c /usr/local/sbin/restart-php7.2-fpm',
+                 'ALL = NOPASSWD: /usr/local/sbin/restart-php-fpm-all'
+                 ]
     approval:
       - Tyler Cipriani
   restricted:  # a subset of the deployment privileges

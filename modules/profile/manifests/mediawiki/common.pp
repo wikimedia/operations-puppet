@@ -29,7 +29,12 @@ class profile::mediawiki::common(
     class { '::mediawiki::packages': }
     # Install the users needed for MediaWiki
     if $php_restarts {
-        $extra_privileges = $php_versions.map |$v| {
+        # We need to add the ability to restart all php fpms or just one of them.
+        $restart_all = [
+            'ALL = (root) NOPASSWD: /usr/local/sbin/restart-php-fpm-all',
+            'ALL = (root) NOPASSWD: /usr/local/sbin/restart-php-fpm-all --force'
+        ]
+        $extra_privileges = $restart_all + $php_versions.map |$v| {
             $pn = php::fpm::programname($v)
             [
             "ALL = (root) NOPASSWD: /usr/local/sbin/check-and-restart-php ${pn} *",

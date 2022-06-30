@@ -1,0 +1,13 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+all_php_fpm_pools="<%= @all_php_fpm_pools %>"
+all_php_fpms="<%= @all_php_fpms %>"
+max_concurrency=<%= @max_concurrency %>
+if [[ "$1" == "--force" ]]; then
+    ARGS="--force"
+else
+    ARGS=""
+fi
+/usr/local/bin/safe-service-restart --pools ${all_php_fpm_pools} \
+    --services ${all_php_fpms} --retries 10 --wait 5 \
+    --max-concurrency ${max_concurrency} $ARGS

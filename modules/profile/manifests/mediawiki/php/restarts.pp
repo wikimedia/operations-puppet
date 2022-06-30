@@ -32,6 +32,10 @@ class profile::mediawiki::php::restarts(
                 source => 'puppet:///modules/profile/mediawiki/php/php-check-and-restart.sh',
             }
     }
+    if $has_lvs {
+        $nodes_by_pool = $pools.keys().map | $pool | { {$pool => wmflib::service::get_pool_nodes($pool)} }.reduce({}) |$m, $val| { $m.merge($val) }
+    }
+
     $php_versions = $profile::mediawiki::php::php_versions
     $php_versions.each |$php_version| {
         # Service name
@@ -42,7 +46,7 @@ class profile::mediawiki::php::restarts(
         # the cluster
         if $has_lvs {
             # All the nodes we have to orchestrate with
-            $all_nodes = $pools.keys().map | $pool | { wmflib::service::get_pool_nodes($pool) }.flatten().unique()
+            $all_nodes = $nodes_by_pool.values().flatten().unique()
         }
         else {
             # We need to add the php restart script here.
@@ -72,4 +76,36 @@ class profile::mediawiki::php::restarts(
             syslog_identifier => "${service}_check_restart"
         }
     }
+    # Add a script that restarts all php-fpm versions for scap.
+    # It needs to run as root and we'll need to grant the permissions to run it
+    # to users in the deployment group as well as to mwdeploy.
+    $all_php_fpms = $php_versions.map |$v| {
+        php::fpm::programname($v)
+    }.join(' ')
+    $cmdpath = '/usr/local/sbin/restart-php-fpm-all'
+    if $has_lvs {
+        # find the pools we're attached to using the default php version for simplicity
+        $prgname = php::fpm::programname($php_versions[0])
+        $all_php_fpm_pools = $pools.filter |$pool, $services| { $prgname in $services['services'] }.map |$el| { $el[0] }.join(' ')
+        # Safeguard: act on 10% of the nodes at max, or 1 otherwise.
+        $smallest_pool_size = min(*$nodes_by_pool.values.map |$p| { $p.length })
+        $max_concurrency = max(floor($smallest_pool_size * 0.1), 1)
+        file { $cmdpath:
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0500',
+            content => template('profile/mediawiki/restart-php-fpm-all.sh.erb'),
+        }
+    } else {
+        # No loadbalancer, just restart the services
+        file { $cmdpath:
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0500',
+            content => "#!/bin/bash\nfor svc in ${all_php_fpm_pools}; do systemctl restart \$svc; done"
+        }
+    }
+
 }
