@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: uwsgi
 #
 # uWSGI is a web application server, typically used in conjunction with

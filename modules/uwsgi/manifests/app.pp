@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: uwsgi:app
 #
 # Provisions a uWSGI application server instance.
