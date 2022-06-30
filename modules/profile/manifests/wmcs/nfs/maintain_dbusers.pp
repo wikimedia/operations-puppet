@@ -14,16 +14,16 @@ class profile::wmcs::nfs::maintain_dbusers (
     Stdlib::IP::Address::V4   $cluster_ip                 = lookup('profile::wmcs::nfs::primary::cluster_ip'),
     Hash[String,Stdlib::Port] $section_ports              = lookup('profile::mariadb::section_ports'),
     Hash[String,Integer]      $variances                  = lookup('profile::wmcs::nfs::primary::mysql_variances'),
-    String                    $paws_replica_cnf_user      = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_user'),
-    String                    $paws_replica_cnf_password  = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_htpassword'),
-    String                    $paws_replica_cnf_root_url  = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_root_url'),
-    String                    $tools_replica_cnf_user     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_user'),
-    String                    $tools_replica_cnf_password = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_htpassword'),
-    String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_root_url'),
+    String                    $paws_replica_cnf_user      = lookup('profile::wmcs::nfs::maintain_dbusers::paws_user'),
+    String                    $paws_replica_cnf_password  = lookup('profile::wmcs::nfs::maintain_dbusers::paws_htpassword'),
+    String                    $paws_replica_cnf_root_url  = lookup('profile::wmcs::nfs::maintain_dbusers::paws_root_url'),
+    String                    $tools_replica_cnf_user     = lookup('profile::wmcs::nfs::maintain_dbusers::tools_user'),
+    String                    $tools_replica_cnf_password = lookup('profile::wmcs::nfs::maintain_dbusers::tools_htpassword'),
+    String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::nfs::maintain_dbusers::tools_root_url'),
+    String                    $maintain_dbusers_primary   = lookup('profile::wmcs::nfs::maintain_dbusers::maintain_dbusers_primary'),
 ){
     package { [
         'python3-ldap3',
-        'python3-netifaces',
         'python3-systemd',
     ]:
         ensure => present,
@@ -55,7 +55,8 @@ class profile::wmcs::nfs::maintain_dbusers (
     }.flatten.unique
 
     $legacy_hosts = {
-        '172.16.7.153' => {
+        # floating IP on clouddb-services to clouddb1001 VM
+        '185.15.56.15' => {
             'grant-type' => 'legacy',
         },
     }
@@ -120,8 +121,13 @@ class profile::wmcs::nfs::maintain_dbusers (
         notify  => Systemd::Service['maintain-dbusers'],
     }
 
+    if ($facts['fqdn'] == $maintain_dbusers_primary) {
+        $enable_service = present
+    } else {
+        $enable_service = absent
+    }
     systemd::service { 'maintain-dbusers':
-        ensure  => present,
+        ensure  => $enable_service,
         content => systemd_template('wmcs/nfs/maintain-dbusers'),
         restart => true,
     }

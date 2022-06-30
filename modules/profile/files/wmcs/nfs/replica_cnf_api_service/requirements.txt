@@ -5,3 +5,7 @@ Jinja2==2.8
 MarkupSafe==2.0.1
 PyYAML==5.3.1
 Werkzeug==0.11
+PyMySQL==1.0.2
+ldap3==2.8.1
+netifaces==0.10.9
+requests==2.25.1

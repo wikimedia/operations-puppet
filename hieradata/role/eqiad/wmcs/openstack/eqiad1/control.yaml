@@ -53,3 +53,11 @@ profile::cloudceph::auth::deploy::selected_creds:
   - eqiad1-glance-images
   - eqiad1-cinder
   - admin
+
+profile::wmcs::nfs::maintain_dbusers::paws_user: tools-db-replica-cnf
+profile::wmcs::nfs::maintain_dbusers::paws_htpassword: test-password
+profile::wmcs::nfs::maintain_dbusers::paws_root_url: https://nfs-paws.wmcloud.org/v1
+profile::wmcs::nfs::maintain_dbusers::tools_user: tools-db-replica-cnf
+profile::wmcs::nfs::maintain_dbusers::tools_htpassword: test-password
+profile::wmcs::nfs::maintain_dbusers::tools_root_url: http://10.64.37.19/v1
+profile::wmcs::nfs::maintain_dbusers::maintain_dbusers_primary: cloudcontrol1005.wikimedia.org
