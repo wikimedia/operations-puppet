@@ -109,11 +109,11 @@ def write_replica_cnf():
                     "result": "skip",
                     "detail": {
                         "replica_path": replica_path,
-                        "message": (
-                            "Parent directory ({0}) does not exist yet, this might happen if "
-                            "maintain-kubeusers has not yet created it, skipping to retry in the "
-                            "next run"
-                        ).format(str(Path(replica_path).parent)),
+                        "reason": (
+                            "Skipping Account {0}: Parent directory ({1}) does not exist yet, "
+                            "this might happen if maintain-kubeusers has not yet created it, "
+                            "skipping to retry in the next run"
+                        ).format(account_id, str(Path(replica_path).parent)),
                     }
                 }
             ),
@@ -129,7 +129,10 @@ def write_replica_cnf():
                     "result": "skip",
                     "detail": {
                         "replica_path": replica_path,
-                        "message": "{0} Already exists".format(replica_path),
+                        "reason": "Skipping Account {0}: {1} Already exists".format(
+                            account_id,
+                            replica_path
+                        ),
                     },
                 }
             ),

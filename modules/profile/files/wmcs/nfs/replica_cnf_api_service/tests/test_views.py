@@ -135,7 +135,7 @@ class TestWriteReplicaCnf:
         )
         assert response.status_code == 404
 
-    def test_write_replica_cnf_for_tools_wrong_data_returns_500(self, client):
+    def test_write_replica_cnf_for_tools_non_existing_parent_dir_returns_skip(self, client):
         wrong_tool_path = current_app.config["WRONG_TOOL_PATH"]
         account_type = "tool"
 
@@ -152,9 +152,9 @@ class TestWriteReplicaCnf:
             "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
         response_data = json.loads(response.data)
-        assert response.status_code == 500
-        assert response_data["result"] == "error"
-        assert "No such file or directory" in response_data["detail"]["reason"]
+        assert response.status_code == 200
+        assert response_data["result"] == "skip"
+        assert response_data["detail"]["replica_path"] == wrong_tool_path
         assert not os.path.exists(wrong_tool_path)
 
     def test_write_replica_cnf_for_paws_success(self, client):
@@ -205,7 +205,7 @@ class TestWriteReplicaCnf:
         )
         assert response.status_code == 404
 
-    def test_write_replica_cnf_for_paws_wrong_data_returns_500(self, client):
+    def test_write_replica_cnf_for_paws_non_existing_parent_dir_returns_500(self, client):
         wrong_paw_path = current_app.config["WRONG_PAWS_PATH"]
         account_type = "paws"
 
@@ -275,7 +275,7 @@ class TestWriteReplicaCnf:
         )
         assert response.status_code == 404
 
-    def test_write_replica_cnf_for_users_wrong_data_returns_500(self, client):
+    def test_write_replica_cnf_for_users_non_existing_parent_dir_returns_500(self, client):
         wrong_other_path = current_app.config["WRONG_USER_PATH"]
         account_type = "user"
 
@@ -319,31 +319,6 @@ class TestWriteReplicaCnf:
         assert response_data["result"] == "ok"
         assert response_data["detail"]["replica_path"] == tool_path
         assert not os.path.exists(tool_path)
-
-    def test_write_replica_cnf_for_tool_returns_skip_when_home_dir_not_there(self, client):
-        account_id = "idontexist"
-        other_path = Path(
-            current_app.config["CORRECT_TOOL_PATH"]
-        ).parent.parent / account_id / "replica.my.cnf"
-        account_type = "tool"
-
-        data = {
-            "mysql_username": USERNAME,
-            "password": PASSWORD,
-            "account_id": account_id,
-            "account_type": account_type,
-            "uid": UID,
-            "dry_run": False,
-        }
-
-        response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
-        )
-        response_data = json.loads(response.data)
-
-        assert response.status_code == 200
-        assert response_data["result"] == "skip"
-        assert response_data["detail"]["replica_path"] == other_path
 
 
 class TestReadReplicaCnf:

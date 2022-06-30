@@ -281,6 +281,15 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
     SERVER_ERROR_REPLY = MockResponse(
         json_data={"result": "error", "detail": {"reason": "this is an error"}}, status_code=500
     )
+    SERVER_SKIP_REPLY = MockResponse(
+        json_data={
+            "result": "skip",
+            "detail": {
+                "replica_path": "path/skipped",
+                "reason": "this is a skip reply"
+            }
+        }, status_code=200
+    )
     SERVER_OK_REPLY = MockResponse(
         json_data={"result": "ok", "detail": {"replica_path": "/this/is/a/path"}}, status_code=200
     )
@@ -370,17 +379,17 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_SKIP_REPLY)
     @mock.patch("maintain-dbusers.logging.log")
-    def test_returns_happy_path(self, mocked_logging_log, mocked_requests_post):
-        expected_reply = self.SERVER_OK_REPLY.json_data["detail"]["replica_path"]
+    def test_should_log_error_and_raise_exception_when_server_returns_skip(
+        self, mocked_logging_log, mocked_requests_post
+    ):
         params = self.get_dummy_params(dry_run=False)
 
-        result = maintain_dbusers.write_replica_cnf(**params)
-
-        self.assertEqual(result, expected_reply)
+        with pytest.raises(Exception):
+            maintain_dbusers.write_replica_cnf(**params)
         self.assertTrue(mocked_requests_post.called)
-        self.assertFalse(mocked_logging_log.called)
+        self.assertTrue(mocked_logging_log.called)
 
 
 class ReadReplicaCnfTestCase(unittest.TestCase):

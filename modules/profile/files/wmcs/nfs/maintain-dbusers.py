@@ -134,6 +134,9 @@ def should_execute_for_user(username: str, only_users: List[str] = []) -> bool:
 def commit_to_db(db: pymysql.connections.Connection, dry_run: bool) -> None:
     """
     Conditionally calls the rollback or commit methods of a db client instance
+    NOTE: before using this as a safety measure, make sure your sql statement
+          is not of the type that causes implicit commit like DROP, GRANT, etc.
+          see https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html for more info
     """
     if dry_run:
         db.rollback()
@@ -141,7 +144,7 @@ def commit_to_db(db: pymysql.connections.Connection, dry_run: bool) -> None:
         db.commit()
 
 
-def with_replica_cnf_api_logs(loglevel):
+def with_replica_cnf_api_logs():
     """
     Handles logging for *_replica_cnf endpoints
     """
@@ -152,7 +155,10 @@ def with_replica_cnf_api_logs(loglevel):
             try:
                 return fn(*args, **kwargs)
             except APIError as error:
-                logging.log(str(error), level=loglevel)
+                logging.log(logging.ERROR, str(error))
+                raise
+            except SkipAccount as info:
+                logging.log(logging.INFO, str(info))
                 raise
 
         return inner
@@ -175,7 +181,7 @@ def mysql_hash(password: str) -> str:
     return "*" + sha1(sha1(password.encode("utf-8")).digest()).hexdigest()
 
 
-@with_replica_cnf_api_logs(loglevel=logging.ERROR)
+@with_replica_cnf_api_logs()
 def write_replica_cnf(
     account_id: str,
     account_type: str,
@@ -228,14 +234,14 @@ def write_replica_cnf(
     if response["result"] == "error":
         raise APIError(
             "Request to create replica.my.cnf file for account_type {0} and ".format(account_type)
-            + "account_id {0} failed. Reason: {1}".format(account_id, response["detail"]["message"])
+            + "account_id {0} failed. Reason: {1}".format(account_id, response["detail"]["reason"])
         )
 
     if response["result"] == "skip":
-        raise SkipAccount(response["detail"]["message"])
+        raise SkipAccount(response["detail"]["reason"])
 
 
-@with_replica_cnf_api_logs(loglevel=logging.ERROR)
+@with_replica_cnf_api_logs()
 def read_replica_cnf(
     account_id: str, account_type: str, dry_run: bool, config: Config
 ) -> Tuple[str]:
@@ -278,7 +284,7 @@ def read_replica_cnf(
     return user_info
 
 
-@with_replica_cnf_api_logs(loglevel=logging.ERROR)
+@with_replica_cnf_api_logs()
 def delete_replica_cnf(account_id: str, account_type: str, dry_run: bool, config: Config) -> str:
     """
     Delete a replica.my.cnf file on the api server
@@ -319,7 +325,7 @@ def delete_replica_cnf(account_id: str, account_type: str, dry_run: bool, config
     return replica_path
 
 
-@with_replica_cnf_api_logs(loglevel=logging.ERROR)
+@with_replica_cnf_api_logs()
 def fetch_paws_uids(config: Config) -> List[int]:
     api_url = config["replica_cnf"]["paws"]["root_url"] + "/paws-uids"
     auth = (
@@ -448,7 +454,7 @@ def find_paws_users(config: Config) -> List[Account]:
 
     for uid in user_ids:
         try:
-            user_info = get_global_wiki_user(uid=uid)
+            user_info = get_global_wiki_user(uid=str(uid))
             paws_users.append((user_info["query"]["globaluserinfo"]["name"], int(uid)))
         except Exception:  # pylint: disable=broad-except
             # If it doesn't respond with a nice happy reply, assume this is
@@ -692,13 +698,12 @@ def _populate_new_account(
 
     try:
         write_replica_cnf(**kwargs)
-    except SkipAccount as error:
+    except SkipAccount:
         # if a homedir for this account does not exist yet, just ignore
         # it home directory creation (for tools) is currently handled by
         # maintain-kubeusers, and we do not want to race. Tool accounts
         # that get passed over like this will be picked up on the next
         # round
-        logging.info("Skipping account %s: %s", account_id, str(error))
         return
 
     commit_to_db(db=acct_db, dry_run=dry_run)
@@ -845,6 +850,7 @@ def create_accounts(dry_run: bool, only_users: List[str], config: Config):
 
                         if should_execute_for_user(username=row["username"], only_users=only_users):
                             with labsdb.cursor() as labsdb_cur:
+                                drop_user_and_retry = False
                                 for statement in ACCOUNT_CREATION_SQL[grant_type]:
                                     create_acct_sql_str = statement.format(
                                         username=mysql_username,
@@ -852,7 +858,13 @@ def create_accounts(dry_run: bool, only_users: List[str], config: Config):
                                         password_hash=row["password_hash"].decode("utf-8"),
                                     )
                                     try:
-                                        labsdb_cur.execute(create_acct_sql_str)
+                                        # the norm is to pass dry_run to commit_to_db and let
+                                        # it decide whether to commit or rollback sql queries.
+                                        # For some sql statements that causes implicit commit
+                                        # such as this one, only way to stop them from commiting
+                                        # is not to execute them at all if dry_run is True.
+                                        if not dry_run:
+                                            labsdb_cur.execute(create_acct_sql_str)
                                     except pymysql.err.InternalError as err:
                                         # When on a "legacy" server, it is possible
                                         # there is an old account that will need cleanup
@@ -862,16 +874,40 @@ def create_accounts(dry_run: bool, only_users: List[str], config: Config):
                                             and grant_type == "legacy"
                                             and mysql_username_re.match(row["mysql_username"])
                                         ):
-                                            drop_user_sql_str = (
-                                                """
-                                                DROP USER '{mysql_username}'@'%';
-                                                """
-                                            ).format(mysql_username=row["mysql_username"])
-                                            labsdb_cur.execute(drop_user_sql_str)
-                                            labsdb_cur.execute(create_acct_sql_str)
+                                            drop_user_and_retry = True
+                                            break
                                         else:
                                             raise
-                                commit_to_db(db=labsdb, dry_run=dry_run)
+
+                                if drop_user_and_retry:
+                                    drop_user_sql_str = (
+                                        """
+                                        DROP USER '{mysql_username}'@'%';
+                                        """
+                                    ).format(mysql_username=row["mysql_username"])
+                                    # the norm is to pass dry_run to commit_to_db and let
+                                    # it decide whether to commit or rollback sql queries.
+                                    # For some sql statements that causes implicit commit
+                                    # such as this one, only way to stop them from commiting
+                                    # is not to execute them at all if dry_run is True.
+                                    if not dry_run:
+                                        labsdb_cur.execute(drop_user_sql_str)
+
+                                    for statement in ACCOUNT_CREATION_SQL[grant_type]:
+                                        create_acct_sql_str = statement.format(
+                                            username=mysql_username,
+                                            max_connections=max_connections,
+                                            password_hash=row["password_hash"].decode("utf-8"),
+                                        )
+                                        # the norm is to pass dry_run to commit_to_db and let
+                                        # it decide whether to commit or rollback sql queries.
+                                        # For some sql statements that causes implicit commit
+                                        # such as this one, only way to stop them from commiting
+                                        # is not to execute them at all if dry_run is True.
+                                        if not dry_run:
+                                            labsdb_cur.execute(create_acct_sql_str)
+
+                                    commit_to_db(db=labsdb, dry_run=dry_run)
 
                             with acct_db.cursor() as write_cur:
                                 update_acct_host_sql_str = (
@@ -931,7 +967,7 @@ def delete_account(account: str, dry_run: bool, config: Config, account_type: st
 
         # Intentionally shadow the account arg with what the rest of the script
         # thinks is right.
-        acc_info = get_global_wiki_user(uid=account)
+        acc_info = get_global_wiki_user(uid=str(account))
         uid = account
         account = acc_info["query"]["globaluserinfo"]["name"]
 
@@ -969,8 +1005,14 @@ def delete_account(account: str, dry_run: bool, config: Config, account_type: st
                                 DROP USER '{mysql_username}';
                                 """
                             ).format(mysql_username=row["mysql_username"])
-                            labsdb_cur.execute(drop_user_sql_str)
-                            commit_to_db(db=labsdb, dry_run=dry_run)
+                            # the norm is to pass dry_run to commit_to_db and let
+                            # it decide whether to commit or rollback sql queries.
+                            # For some sql statements that causes implicit commit
+                            # such as this one, only way to stop them from commiting
+                            # is not to execute them at all if dry_run is True.
+                            if not dry_run:
+                                labsdb_cur.execute(drop_user_sql_str)
+
                         with acct_db.cursor() as write_cur:
                             del_acct_host_sql_str = (
                                 """
