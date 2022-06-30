@@ -263,6 +263,10 @@ profile::grafana::loki::config:
       kvstore:
         store: 'inmemory'
 
+  table_manager:
+    retention_deletes_enabled: true
+    retention_period: '3d'
+
   schema_config:
     configs:
       - from: '2022-01-01'
