@@ -1,7 +1,4 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/scap/l10nupdate.logrotate
-#####################################################################
+# THIS FILE IS MANAGED BY PUPPET
 
 /var/log/l10nupdatelog/*.log {
 	su l10nupdate l10nupdate

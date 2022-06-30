@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-#####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/udp2log/udpmirror.py
-#####################################################################
-
 # Simple python script to send stdin to another host line by line
 
 

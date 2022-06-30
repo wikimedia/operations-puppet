@@ -1,7 +1,4 @@
-#####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/udp2log/demux.py
-#####################################################################
 
 # Simple python script for demultiplexing MediaWiki log files
 
