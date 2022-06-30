@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: certspotter
 #
 # Installs and sets up certspotter for the specified domains and runs it
