@@ -69,7 +69,7 @@ striker::uwsgi::config:
 profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::port: 8080
-profile::wmcs::striker::docker::version: 2022-05-09-172811-production
+profile::wmcs::striker::docker::version: 2022-06-29-004157-production
 profile::wmcs::striker::docker::env:
   LOGGING_HANDLERS: cee
   DB_ENGINE: striker.db
