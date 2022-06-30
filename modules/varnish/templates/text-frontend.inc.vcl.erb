@@ -505,6 +505,12 @@ sub cluster_fe_backend_response {
 		set beresp.ttl = 60 s;
 	}
 
+<%- if @vcl_config.fetch('do_esitest', false) -%>
+	if (bereq.url ~ "^/esitest-fa8a495983347898/includer") {
+		set beresp.do_esi = true;
+	}
+<%- end -%>
+
 	// set a 607s hit-for-pass object based on response conditions in vcl_backend_response:
 	//    Token=1 + Vary:Cookie:
 	//    All requests with real login session|token cookies share the

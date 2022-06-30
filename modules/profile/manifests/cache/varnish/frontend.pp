@@ -20,6 +20,7 @@
 # @param uds_group The group of the uds sockets
 # @param uds_mode The mode of the uds sockets
 # @param use_etcd_req_filters use confd dynamically generated rules
+# @param do_esitest temporary for testing ESI
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix           = lookup('conftool_prefix'),
@@ -45,6 +46,7 @@ class profile::cache::varnish::frontend (
     String                  $uds_group                 = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                  = lookup('profile::cache::varnish::frontend::uds_mode'),
     Boolean                 $use_etcd_req_filters      = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
+    Boolean                 $do_esitest                = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value' => false}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -125,6 +127,7 @@ class profile::cache::varnish::frontend (
         req_handling         => $req_handling,
         alternate_domains    => $alternate_domains,
         fe_mem_gb            => $fe_mem_gb,
+        do_esitest           => $do_esitest,
     }
 
     # VCL files common to all instances
