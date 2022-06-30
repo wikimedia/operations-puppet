@@ -22,7 +22,7 @@ class profile::mediawiki::php::monitoring(
         $versioned_admin_port = $admin_port + $idx
         $retval = {
             'version'    => $php_version,
-            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_port[$php_version], $versioned_fcgi_pool),
+            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_port[$php_version], $versioned_fcgi_pool, ($idx == 0)),
             'admin_port' => $versioned_admin_port
         }
     }

@@ -19,7 +19,8 @@ class profile::mediawiki::webserver(
             0 => $fcgi_pool,
             default => "${fcgi_pool}-${version}"
         }
-        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name)]
+        $default = ($idx == 0)
+        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name, $default)]
     }
 
     # Declare the proxies explicitly with retry=0

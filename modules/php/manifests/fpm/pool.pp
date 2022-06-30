@@ -42,7 +42,7 @@ define php::fpm::pool(
         fail('php::fpm::pools can only be configured if php::fpm is defined')
     }
 
-    $title_safe  = regsubst($title, '[\W_]', '-', 'G')
+    $title_safe  = regsubst($title, '[^\w\.]', '-', 'G')
     if $port == undef {
         $listen = "/run/php/fpm-${title_safe}.sock"
     } else {
