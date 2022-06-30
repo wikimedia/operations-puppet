@@ -28,7 +28,7 @@ class keyholder::monitoring(
     }
 
     nrpe::monitor_service { 'keyholder':
-        ensure       => $ensure,
+        ensure       => absent,
         description  => 'Keyholder SSH agent',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_keyholder',
         sudo_user    => 'root',
