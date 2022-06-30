@@ -23,7 +23,6 @@ class profile::toolforge::grid::node::web::generic(
     }
 
     $tomcat_package = debian::codename() ? {
-        'stretch' => 'tomcat8-user',
         'buster'  => 'tomcat9-user',
         default   => fail('unsupported debian version'),
     }

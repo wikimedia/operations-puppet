@@ -7,10 +7,7 @@ class profile::toolforge::bastion(
     include profile::toolforge::shell_environ
     include profile::toolforge::grid::exec_environ
     include profile::toolforge::k8s::client
-
-    if debian::codename::eq('buster') {
-        include profile::toolforge::jobs_framework_cli
-    }
+    include profile::toolforge::jobs_framework_cli
 
     file { '/etc/toollabs-cronhost':
         ensure  => file,
@@ -78,12 +75,9 @@ class profile::toolforge::bastion(
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
     }
 
-    if debian::codename::ge('buster') {
-        # stretch python can't handle f-string, don't deploy the testsuite there
-        class { 'cmd_checklist_runner': }
-        class { 'toolforge::automated_toolforge_tests':
-            envvars => {},
-            require => Class['cmd_checklist_runner'],
-        }
+    class { 'cmd_checklist_runner': }
+    class { 'toolforge::automated_toolforge_tests':
+        envvars => {},
+        require => Class['cmd_checklist_runner'],
     }
 }

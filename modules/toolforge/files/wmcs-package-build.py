@@ -71,7 +71,7 @@ def parse_args():
     help = """target distribution when building the package with sbuild.
            Defaults to "%(default)s"
            """
-    parser.add_argument("--build-dist", default="stretch", help=help)
+    parser.add_argument("--build-dist", default="buster", help=help)
     help = """package build host. Typically a VM in CloudVPS with
            role::wmcs::toolforge::package_builder.
            Defaults to "%(default)s"
@@ -85,7 +85,7 @@ def parse_args():
            uploaded to this distribution and then the repository will be
            published. Can be specified multiple times for multiple target
            distributions. If this argument is not provided, no aptly operations
-           will be done. Example: -a stretch-tools -a stretch-toolsbeta
+           will be done. Example: -a buster-tools -a buster-toolsbeta
            """
     parser.add_argument("-a", "--aptly-dist", action="append", help=help)
     help = """aptly server host. Typically a VM in CloudVPS with

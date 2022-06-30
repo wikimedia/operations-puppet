@@ -4,10 +4,6 @@
 # for interactive use in a shell.  Most actual libraries are in exec_environ.
 
 class profile::toolforge::shell_environ {
-    if debian::codename::eq('stretch') {
-        include profile::toolforge::genpp::python_dev_stretch
-    }
-
     package { [
         'apt-file',
         'cvs',  # Because I don't think webhooks or other uses exist anymore outside cli
@@ -32,18 +28,8 @@ class profile::toolforge::shell_environ {
         ensure => latest,
     }
 
-    # redis-tools won't install from stretch-backports due to a dependency
-    #  foul-up, so work around this for existing stretch hosts.
-    # This won't help for new stretch hosts! If you're trying to do that
-    #  my only advice is... don't?
-    if debian::codename::eq('stretch') {
-        package  { 'redis-tools':
-            ensure => 'present',
-        }
-    } else {
-        package  { 'redis-tools':
-            ensure => 'latest',
-        }
+    package  { 'redis-tools':
+        ensure => 'latest',
     }
 
     # pastebinit configuration for https://tools.wmflabs.org/paste/.

@@ -12,50 +12,11 @@ class profile::toolforge::grid::exec_environ {
     class {'redis::client::python': }
     class {'phabricator::arcanist': }  # T139738 and T287390
 
-    if debian::codename::eq('stretch') {
-        # we use default buster mono version in the buster grid
-        apt::repository { "mono-external-${::lsbdistcodename}":
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => "thirdparty/mono-project-${::lsbdistcodename}",
-        }
-    }
+    ensure_packages(['composer'])
 
-    if debian::codename::ge('buster') {
-        ensure_packages(['composer'])
-
-        file { '/srv/composer':
-            ensure => absent,
-            force  => true,
-        }
-
-        file { '/usr/local/bin/composer':
-            ensure => absent,
-        }
-    } else {
-        file { '/srv/composer':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-
-        git::clone { 'composer':
-            ensure             => 'latest',
-            directory          => '/srv/composer',
-            origin             => 'https://gerrit.wikimedia.org/r/integration/composer.git',
-            recurse_submodules => true,
-            require            => File['/srv/composer'],
-        }
-
-        # Create a symbolic link for the composer executable.
-        file { '/usr/local/bin/composer':
-            ensure  => 'link',
-            target  => '/srv/composer/vendor/bin/composer',
-            owner   => 'root',
-            group   => 'root',
-            require => Git::Clone['composer'],
-        }
+    file { '/srv/composer':
+        ensure => absent,
+        force  => true,
     }
 
     # Packages in all OSs

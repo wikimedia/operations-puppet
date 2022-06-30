@@ -13,5 +13,4 @@ class profile::toolforge::package_builder(
 
     sbuild::chroot { 'bullseye': }
     sbuild::chroot { 'buster': }
-    sbuild::chroot { 'stretch': }
 }
