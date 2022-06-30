@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 makedomain is a tool for creating subdomains of existing designate domains.
 
@@ -13,8 +13,6 @@ them.
 Note that this only works with the keystone v2.0 API.
 
 """
-from __future__ import print_function
-
 import argparse
 import os
 
