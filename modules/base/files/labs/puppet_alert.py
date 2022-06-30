@@ -90,7 +90,7 @@ def puppet_disabled() -> Tuple[bool, str]:
 
     """
     agent_disabled_lockfile = Path(get_puppet_config("agent_disabled_lockfile"))
-    if not agent_disabled_lockfile.is_file:
+    if not agent_disabled_lockfile.is_file():
         return False, ""
     message = json.loads(agent_disabled_lockfile.read_text())
     logger.info("puppet is disabled: %s", message["disabled_message"])
@@ -122,7 +122,7 @@ def get_puppet_yaml_file(config_item) -> Dict:
         ValueError: if the config_item does not resolve to a valid file
     """
     yaml_file = Path(get_puppet_config(config_item))
-    if not yaml_file.is_file:
+    if not yaml_file.is_file():
         raise ValueError("%s: item dose not resolve to a file")
 
     def unknown(loader, _, node):
