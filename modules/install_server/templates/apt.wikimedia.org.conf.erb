@@ -14,6 +14,15 @@ server {
       autoindex on;
       charset utf-8;
    }
+
+   location ~ ^/wikimedia/(conf|db) {
+      deny all;
+   }
+
+   # Private is a sub-folder of /srv and needs to be inaccessible.
+   location /private {
+      deny all;
+   }
 }
 
 server {
@@ -37,5 +46,31 @@ server {
       index index.html index.htm;
       autoindex on;
       charset utf-8;
+   }
+
+   location ~ ^/wikimedia/(conf|db) {
+      deny all;
+   }
+
+   # Private is a sub-folder of /srv and needs to be inaccessible.
+   location /private {
+      deny all;
+   }
+}
+
+server {
+   listen 8080 default_server;
+   listen [::]:8080 ipv6only=on default_server;
+   server_name apt.wikimedia.org;
+
+   root /srv/private;
+
+   location / {
+      autoindex on;
+      charset utf-8;
+   }
+
+   location  ~ ^/(conf|db)/ {
+      deny all;
    }
 }

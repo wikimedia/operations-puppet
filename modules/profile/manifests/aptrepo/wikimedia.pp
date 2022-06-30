@@ -46,26 +46,7 @@ class profile::aptrepo::wikimedia (
     Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
 ){
 
-    class { 'httpd':
-        modules              => ['headers', 'macro', 'ssl'],
-        remove_default_ports => true,
-    }
-
-    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
-
-    httpd::conf { 'listen on configured port':
-        ensure   => present,
-        priority => 0,
-        content  => "Listen ${private_repo_port}\n",
-    }
-
-    httpd::site{ 'private-apt-repo':
-        content => template('profile/aptrepo/private-apache-vhost.erb'),
-    }
-
-    httpd::site{ 'public-apt-repo':
-        content => template('profile/aptrepo/public-apache-vhost.erb'),
-    }
+    package { 'apache2': ensure => absent }
 
     ferm::service { 'aptrepos_public_http':
         proto => 'tcp',
