@@ -79,7 +79,10 @@ class profile::puppet::agent(
         user          => 'root',
         ignore_errors => true,
         command       => '/usr/local/sbin/puppet-run',
-        interval      => {'start' => 'OnCalendar', 'interval' => $timer_interval},
+        interval      => [
+            {'start' => 'OnCalendar', 'interval' => $timer_interval},
+            {'start' => 'OnStartupSec', 'interval' => '1min'},
+        ],
     }
 
     logrotate::rule { 'puppet':
