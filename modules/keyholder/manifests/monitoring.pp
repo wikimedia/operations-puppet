@@ -11,7 +11,7 @@ class keyholder::monitoring(
     }
 
     nrpe::plugin { 'check_keyholder':
-        ensure => $ensure,
+        ensure => absent,
         source => 'puppet:///modules/keyholder/check_keyholder',
     }
 
