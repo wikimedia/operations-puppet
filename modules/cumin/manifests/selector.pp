@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class cumin::selector
 #
 # A dummy class that assists with the selection of nodes.
