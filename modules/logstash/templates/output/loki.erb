@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+output {
+<% if @guard_condition %>if <%= @guard_condition %> {<% end %>
+    loki {
+        url => "<%= @url %>"
+<% if @plugin_id %>
+        id  => "<%= @plugin_id %>"
+<% end %>
+    }
+<% if @guard_condition %>}<% end %>
+}
