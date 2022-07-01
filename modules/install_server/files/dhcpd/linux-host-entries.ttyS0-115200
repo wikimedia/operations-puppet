@@ -211,12 +211,6 @@ host d-i-test {
     fixed-address d-i-test.eqiad.wmnet;
 }
 
-host doc1001 {
-    hardware ethernet aa:00:00:d2:27:b3;
-    fixed-address doc1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host doc1002 {
     hardware ethernet aa:00:00:e7:1f:1a;
     fixed-address doc1002.eqiad.wmnet;
