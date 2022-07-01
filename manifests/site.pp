@@ -665,6 +665,12 @@ node 'db2073.codfw.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
+# codfw future sanitarium master #T311493
+node 'db2155.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
+}
+
+
 # s5 (default, dewiki and others) core production dbs on eqiad
 # eqiad master
 node 'db1130.eqiad.wmnet' {
@@ -961,7 +967,7 @@ node 'db2151.codfw.wmnet' {
 }
 
 # New db nodes /T306927
-node /^db21(5[5-9]|6[0-9]|7[0-4])\.codfw\.wmnet/ {
+node /^db21(5[6-9]|6[0-9]|7[0-4])\.codfw\.wmnet/ {
     role(insetup)
 }
 
