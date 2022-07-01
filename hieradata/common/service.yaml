@@ -61,6 +61,8 @@ service::catalog:
         ProxyFetch:
           url:
             - https://en.wikipedia.org/w/api.php
+            - https://en.wikipedia.org/wiki/Special:BlankPage?force_php74=1
+          check_all: true
       scheduler: wrr
     probes:
       - type: http
@@ -103,6 +105,8 @@ service::catalog:
         ProxyFetch:
           url:
             - https://en.wikipedia.org/wiki/Special:BlankPage
+            - https://en.wikipedia.org/wiki/Special:BlankPage?force_php74=1
+          check_all: true
       scheduler: wrr
     probes:
       - type: http
@@ -777,7 +781,9 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/w/health-check.php
+            - https://localhost/w/health-check.php?force_php72=1
+            - https://localhost/w/health-check.php?force_php74=1
+          check_all: true
       scheduler: wrr
     probes:
       - type: http
@@ -1451,6 +1457,8 @@ service::catalog:
         ProxyFetch:
           url:
             - https://en.wikipedia.org/wiki/Special:BlankPage
+            - https://en.wikipedia.org/wiki/Special:BlankPage?force_php74=1
+          check_all: true
       scheduler: wrr
     probes:
       - type: http
