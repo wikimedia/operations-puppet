@@ -18,20 +18,6 @@ class profile::parsoid::testing (
     $parsoid_cli_password = $passwords::testreduce::mysql::mysql_client_pass
     $parsoid_test_db_host = 'localhost'
 
-    if debian::codename::le('stretch') {
-        package { [
-            'mysql-client',
-            ]: ensure => present,
-        }
-
-        file { '/etc/my.cnf':
-            content => template('role/mariadb/mysqld_config/parsoid_testing.my.cnf'),
-            owner   => 'root',
-            group   => 'parsoid-test-roots',
-            mode    => '0440',
-        }
-    }
-
     profile::auto_restarts::service { 'nginx': }
 
     nginx::site { 'nginx-parsoid-testing':

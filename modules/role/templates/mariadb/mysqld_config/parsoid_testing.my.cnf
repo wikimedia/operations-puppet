@@ -1,3 +1,0 @@
-[client]
-host = <%=@parsoid_test_db_host%>
-password = <%=@parsoid_cli_password%>
