@@ -12,9 +12,9 @@ class profile::doc (
     }
 
     $php = debian::codename() ? {
-        'stretch' => 'php7.0',
-        'buster'  => 'php7.3',
-        default   => fail("${module_name} not supported by ${debian::codename()}")
+        'buster'   => 'php7.3',
+        'bullseye' => 'php7.4',
+        default    => fail("${module_name} not supported by ${debian::codename()}")
     }
 
     ensure_packages(["${php}-fpm", "${php}-xml"])
