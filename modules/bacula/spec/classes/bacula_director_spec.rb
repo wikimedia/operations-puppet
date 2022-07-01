@@ -13,15 +13,9 @@ describe 'bacula::director', :type => :class do
           bconsolepassword: 'bconsolepass',
         }
       end
-
-      context "when not stretch buster", if: facts[:os]['distro']['codename'] != 'stretch' do
-        it { is_expected.to contain_package('bacula-director') }
-      end
-      context "when stretch", if: facts[:os]['distro']['codename'] == 'stretch' do
-        it { is_expected.not_to contain_package('bacula-director') }
-      end
-      it { should contain_package('bacula-director-testsql') }
-      it { should contain_service('bacula-director') }
+      it { is_expected.to contain_package('bacula-director') }
+      it { is_expected.to contain_package('bacula-director-testsql') }
+      it { is_expected.to contain_service('bacula-director') }
       it do
         should contain_file('/etc/bacula/conf.d').with({
           'ensure'  => 'directory',

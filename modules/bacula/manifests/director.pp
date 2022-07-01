@@ -28,16 +28,8 @@ class bacula::director(
                     $max_dir_concur_jobs,
                     $dir_port='9101',
                     $bconsolepassword=sha1($::uniqueid)) {
-    # bacula-director depends on bacula-director-sqlvariant for
-    # stretch and lower, but *NOT* on buster
-    if debian::codename::ge('buster') {
-        package { 'bacula-director':
-            ensure => installed,
-        }
-    }
-    package { "bacula-director-${sqlvariant}":
-        ensure => installed,
-    }
+
+    ensure_packages(['bacula-director', "bacula-director-${sqlvariant}"])
 
     service { 'bacula-director':
         ensure  => running,
