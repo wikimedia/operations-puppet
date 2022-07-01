@@ -34,8 +34,6 @@ profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::rsyslog::kubernetes::enable: true
 # Define in the private repo
 # profile::rsyslog::kubernetes::token
-# Use Kernel 4.19 - T262527
-profile::base::linux419::enable: true
 profile::kubernetes::node::kubelet_ipv6: true
 profile::contacts::role_contacts: ['ServiceOps']
 
