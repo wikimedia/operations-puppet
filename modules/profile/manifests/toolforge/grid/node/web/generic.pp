@@ -7,8 +7,8 @@ class profile::toolforge::grid::node::web::generic(
     $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ) {
     include profile::toolforge::grid::node::web
-    # TODO: once exec nodes from the eqiad.wmflabs generation are gone, return to using $facts['fqdn']
-    sonofgridengine::join { "queues-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
+
+    sonofgridengine::join { "queues-${facts['fqdn']}":
         sourcedir => "${collectors}/queues",
         list      => [ 'webgrid-generic' ],
     }

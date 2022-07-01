@@ -31,8 +31,7 @@ class profile::toolforge::grid::node::compute::general(
         config => 'profile/toolforge/grid/queue-task.erb',
     }
 
-    # TODO: once exec nodes from the eqiad.wmflabs generation are gone, return to using $facts['fqdn']
-    sonofgridengine::join { "hostgroups-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
+    sonofgridengine::join { "hostgroups-${facts['fqdn']}":
         sourcedir => "${collectors}/hostgroups",
         list      => [ $hostlist ],
     }
