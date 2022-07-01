@@ -383,10 +383,6 @@ node /^clouddumps100[12]\.wikimedia\.org/ {
     role(dumps::distribution::server)
 }
 
-node /^cloudstore100[89]\.wikimedia\.org/ {
-    role(spare::system)
-}
-
 # All gerrit servers (swap master status in hiera)
 node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
