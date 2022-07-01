@@ -12,7 +12,6 @@ class keyholder::monitoring(
 
     nrpe::plugin { 'check_keyholder':
         ensure => absent,
-        source => 'puppet:///modules/keyholder/check_keyholder',
     }
 
     file { '/usr/local/sbin/prometheus-keyholder-exporter':
