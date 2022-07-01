@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 # Prometheus black box metrics exporter. See also
 # https://github.com/prometheus/blackbox_exporter
 #
@@ -67,4 +69,14 @@ class prometheus::blackbox_exporter(
     }
 
     profile::auto_restarts::service { 'prometheus-blackbox-exporter': }
+
+    logrotate::conf { 'blackbox_exporter':
+        ensure => present,
+        source => 'puppet:///modules/prometheus/blackbox_exporter.logrotate.conf',
+    }
+
+    rsyslog::conf { 'blackbox_exporter':
+        source   => 'puppet:///modules/prometheus/blackbox_exporter.rsyslog.conf',
+        priority => 40,
+    }
 }
