@@ -18,15 +18,7 @@ class graphite(
     $whisper_lock_writes = false,
 ) {
 
-    $required_packages = $::lsbdistcodename ? {
-        buster   => [ 'graphite-carbon', 'python3-whisper' ],
-        bullseye => [ 'graphite-carbon', 'python3-whisper' ],
-        stretch  => [ 'graphite-carbon', 'python-whisper' ],
-    }
-
-    package { $required_packages:
-        ensure => installed,
-    }
+    ensure_packages(['graphite-carbon', 'python3-whisper'])
 
     # Remove once all graphite hosts run Bullseye
     if debian::codename::le('buster') {

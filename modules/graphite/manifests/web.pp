@@ -64,14 +64,7 @@ class graphite::web(
     include graphite
 
     ensure_packages('memcached')
-
-    $python_version = $::lsbdistcodename ? {
-        buster   => 'python3',
-        bullseye => 'python3',
-        stretch  => 'python',
-    }
-
-    ensure_packages("${python_version}-memcache")
+    ensure_packages('python3-memcache')
     ensure_packages('libapache2-mod-uwsgi')
     ensure_packages('graphite-web')
 
@@ -104,7 +97,7 @@ class graphite::web(
         subscribe => File['/etc/graphite/local_settings.py'],
         creates   => '/var/lib/graphite-web/graphite.db',
         require   => [
-            Package['graphite-web', "${python_version}-memcache"],
+            Package['graphite-web', 'python3-memcache'],
             File['/var/lib/graphite-web'],
         ],
     }
@@ -127,7 +120,7 @@ class graphite::web(
             # So, some messy stuff to only include our optional configuration settings iff
             # they are provided.
             uwsgi => merge({
-                'plugins'     => $python_version,
+                'plugins'     => 'python3',
                 'socket'      => '/run/uwsgi/graphite-web.sock',
                 'stats'       => '/run/uwsgi/graphite-web-stats.sock',
                 'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
