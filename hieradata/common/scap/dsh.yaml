@@ -144,7 +144,6 @@ scap::dsh::groups:
     hosts:
       - contint1001.wikimedia.org
       - contint2001.wikimedia.org
-      - doc1001.eqiad.wmnet
       - doc1002.eqiad.wmnet
       - doc2001.codfw.wmnet
   zuul:
