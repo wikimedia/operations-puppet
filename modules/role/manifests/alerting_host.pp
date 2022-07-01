@@ -31,6 +31,10 @@ class role::alerting_host {
     include profile::alertmanager::phab
     include profile::klaxon
 
+    # WMF services that require monitoring but do not have their
+    # own standalone alerting server.
+    include profile::wikifunctions::beta
+
     class { 'httpd::mpm':
         mpm => 'prefork'
     }
