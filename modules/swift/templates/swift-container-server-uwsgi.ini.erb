@@ -49,6 +49,9 @@ wsgi-manage-chunked-input = true
 
 logger = syslog:container-server
 name = swift-container-server
+# Turn off request logging. Swift logs requests already.
+disable-logging = true
+
 uid = swift
 gid = swift
 chdir = /var/lib/swift
