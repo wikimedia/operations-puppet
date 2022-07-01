@@ -31,7 +31,7 @@ profile::cassandra::single_instance::seeds:
   - '10.64.48.6'  # maps1010.eqiad.wmnet
 
 profile::maps::osm_master::engine: "imposm3"
-profile::maps::osm_master::planet_sync_hours: '*/12'
+profile::maps::osm_master::planet_sync_hours: '0/12'
 profile::maps::osm_master::disable_replication_cron: true
 profile::maps::osm_master::disable_tile_generation_cron: true
 profile::maps::osm_master::disable_admin_timer: true

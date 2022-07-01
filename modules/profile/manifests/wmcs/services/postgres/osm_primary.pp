@@ -36,8 +36,8 @@ class profile::wmcs::services::postgres::osm_primary (
         proxy_port             => 8080,
         period                 => 'day',
         num_threads            => 4,
-        hours                  => [1],
-        minute                 => '17',
+        hours                  => 1,
+        minute                 => 17,
         swift_key_id           => '',
         swift_password         => '',
         tegola_swift_container => ''

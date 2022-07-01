@@ -70,10 +70,10 @@ define osm::planet_sync (
     String $tegola_swift_container,
     Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure                  = present,
-    String $expire_dir                      = '/srv/osm_expire',
-    String $download_dir                    = '/srv/downloads',
+    Stdlib::Unixpath $expire_dir            = '/srv/osm_expire',
+    Stdlib::Unixpath $download_dir          = '/srv/downloads',
     String $period                          = 'minute',
-    Variant[String, Array[Integer]] $hours  = [],
+    Variant[String,Integer] $hours          = '*',
     Variant[String,Integer] $day            = '*',
     Variant[String,Integer] $minute         = '*/30',
     Boolean $flat_nodes                     = false,
@@ -81,6 +81,7 @@ define osm::planet_sync (
     Integer $memory_limit                   = floor($::memorysize_mb) / 12,
     Integer $num_threads                    = $::processorcount,
     Optional[String] $postreplicate_command = undef,
+    Optional[String] $postreplicate_user    = 'osmupdater',
     String $input_reader_format             = 'xml',
     Boolean $disable_replication_cron       = false,
     Boolean $disable_tile_generation_cron   = false,
@@ -107,9 +108,14 @@ define osm::planet_sync (
         'osm2pgsql' => '/var/log/osmosis'
     }
 
+    $osm_log_file = $engine ? {
+        'imposm3' => 'imposm.log',
+        'osm2pgsql' => 'osm2pgsql.log'
+    }
+
     $tile_generation_command = $engine ? {
-        'imposm3' => "${postreplicate_command} >> ${osm_log_dir}/imposm.log 2>&1",
-        'osm2pgsql' => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1"
+        'imposm3' => $postreplicate_command,
+        'osm2pgsql' => '/usr/local/bin/replicate-osm'
     }
 
     case $engine {
@@ -156,13 +162,31 @@ define osm::planet_sync (
         mode   => '0755',
     }
 
-    $ensure_cron = $disable_tile_generation_cron ? {
+    $ensure_timer = $disable_tile_generation_cron ? {
         true    => absent,
         default => $ensure,
     }
 
+    systemd::timer::job { "planet_sync_tile_generation-${name}":
+        ensure          => $ensure_timer,
+        description     => "Run plant sync tile generation for ${name}",
+        user            => $postreplicate_user,
+        command         => $tile_generation_command,
+        logfile_basedir => $osm_log_dir,
+        logfile_name    => $osm_log_file,
+        interval        => {'start' => 'OnCalendar', 'interval' => "*-*-${day} ${hours}:${minute}:00"},
+    }
+
+    systemd::timer::job { "expire_old_planet_syncs-${name}":
+        ensure      => $ensure,
+        description => "Expire old planet syncs for ${name}",
+        user        => 'osmupdater',
+        command     => "/usr/bin/find ${expire_dir} -mtime +30 -type f -delete",
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hours}:${minute}:00"}
+    }
+
     cron { "planet_sync_tile_generation-${name}":
-        ensure   => $ensure_cron,
+        ensure   => absent,
         command  => $tile_generation_command,
         user     => 'osmupdater',
         monthday => $day,
@@ -171,7 +195,7 @@ define osm::planet_sync (
     }
 
     cron { "expire_old_planet_syncs-${name}":
-        ensure  => $ensure,
+        ensure  => absent,
         command => "/usr/bin/find ${expire_dir} -mtime +30 -type f -exec rm {} \\;",
         user    => 'osmupdater',
         hour    => $hours,
