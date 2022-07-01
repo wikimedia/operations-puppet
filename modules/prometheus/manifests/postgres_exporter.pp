@@ -10,10 +10,6 @@ class prometheus::postgres_exporter(
         ensure => $ensure,
     }
 
-    if debian::codename::eq('stretch') {
-        $postgres_exporter_extra_args = '-extend.query-path /etc/postgres-prometheus-exporter-queries.yaml'
-    }
-
     file { '/etc/default/prometheus-postgres-exporter':
         ensure  => $ensure,
         owner   => 'root',
