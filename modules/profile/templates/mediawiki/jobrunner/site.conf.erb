@@ -27,12 +27,17 @@
     <Directory /srv/mediawiki>
        Require all granted
     </Directory>
+
     <%- unless @additional_fcgi_endpoints.empty? -%>
     # Pick the backend based on the PHP_ENGINE cookie.
     # Given we have a default value, we don't care about
     # malicious input.
     SetEnvIf Cookie "PHP_ENGINE=(7.\d)" backend=$1
     <%- end -%>
+    RewriteCond %{QUERY_STRING} force_php74
+    RewriteRule ^/w/health-check.php - [E=backend:7.4]
+    RewriteCond %{QUERY_STRING} force_php72
+    RewriteRule ^/w/health-check.php - [E=backend:7.2]
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob)\.php
     RewriteRule ^ - [R=404,L]

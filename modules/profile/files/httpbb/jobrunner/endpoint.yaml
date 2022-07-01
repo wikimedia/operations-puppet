@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file tests the behaviour of the jobrunner endpoint
+
+https://jobrunner.discovery.wmnet:
+  # Cannot reach the web endpoints here
+  - path: /w/index.php
+    assert_status: 404
+  # Health check is reachable, we can force the php version
+  - path: /w/health-check.php
+    assert_status: 200
+  - path: /w/health-check.php?force_php72=1
+    assert_headers_regex:
+      X-Powered-By: ^PHP/7\.2
+  - path: /w/health-check.php?force_php74=1
+    assert_headers_regex:
+      X-Powered-By: ^PHP/7\.4
+  # RunSingleJob only works on POST requests.
+  - path: /rpc/RunSingleJob.php
+    assert_status: 405
+  # Of course we're not submitting an actual job.
+  # So we get back a 500 error in this case instead than
+  # method not allowed
+  - path: /rpc/RunSingleJob.php
+    method: POST
+    assert_status: 500
+    assert_headers_regex:
+      X-Powered-By: ^PHP/7\.
