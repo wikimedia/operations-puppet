@@ -7,7 +7,6 @@ class profile::toolforge::bastion::resourcecontrol(
 ){
     class { 'systemd::slice::all_users':
         all_users_slice_config => file('profile/toolforge/bastion-user-resource-control.conf'),
-        pkg_ensure             => 'latest',
     }
 
     class { 'toolforge::bastion_proc_management':
