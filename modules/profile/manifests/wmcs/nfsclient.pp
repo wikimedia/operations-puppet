@@ -11,7 +11,6 @@ class profile::wmcs::nfsclient(
     Pattern[/^4(:?\.[0-2])?$/] $nfs_version = lookup('profile::wmcs::nfsclient::nfs_version', {'default_value' => '4'}),
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
-    Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
 ) {
     $project_hostpath = mount_nfs_volume($::labsproject, 'project')
     $home_hostpath = mount_nfs_volume($::labsproject, 'home')
