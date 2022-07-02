@@ -38,6 +38,7 @@ def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: P
     signed_certs = [
         cn.replace(".wmflabs", "1.wikimedia.cloud")
         for cn in get_signed_certificates(signed_certs_dir)
+        if (cn.endswith(".wmflabs") or cn.endswith(".wikimedia.cloud"))
     ]
 
     stalecerts = Gauge(
@@ -50,6 +51,9 @@ def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: P
 
     for cn in signed_certs:
         instance, project, *_ = cn.split(".")
+
+        if project == "svc":
+            continue
 
         if instance not in get_project_vms(project):
             stalecerts.labels(instance, project).set(1)
