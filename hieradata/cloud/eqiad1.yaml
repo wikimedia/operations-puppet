@@ -329,3 +329,7 @@ wikimedia_clusters:
       codfw: []
 
 labs_site: "eqiad1"
+
+profile::wmcs::instance::metricsinfra_prometheus_nodes:
+  - prometheus01.metricsinfra.eqiad1.wikimedia.cloud
+  - metricsinfra-prometheus-2.metricsinfra.eqiad1.wikimedia.cloud

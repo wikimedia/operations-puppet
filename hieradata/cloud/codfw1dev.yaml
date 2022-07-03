@@ -69,3 +69,5 @@ profile::mariadb::cloudinfra::cloudinfra_dbs:
 - cloudinfra-db-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 
 profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimediacloud.org'
+
+profile::wmcs::instance::metricsinfra_prometheus_nodes: []
