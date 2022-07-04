@@ -83,8 +83,7 @@ define prometheus::blackbox::check::http (
         'headers'                         => $headers,
         'no_follow_redirects'             => !$follow_redirects,
         'method'                          => $method,
-        # Needs at least Bullseye, https://phabricator.wikimedia.org/T309979
-        # 'ip_protocol_fallback'          => false,
+        'ip_protocol_fallback'            => false,
         'fail_if_ssl'                     => !$use_tls,
         'fail_if_not_ssl'                 => $use_tls,
         'tls_config'                      => $tls_config,
