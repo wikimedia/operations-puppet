@@ -1,4 +1,5 @@
 # /etc/sudoers
+# SPDX-License-Identifier: Apache-2.0
 #
 # This file is managed by Puppet
 
