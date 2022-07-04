@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: Apache-2.0
 # Print a Varnish ACL with all EC2 IP ranges as published by Amazon
 
 import requests

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# SPDX-License-Identifier: Apache-2.0
 # This script can be used to generate a a new CSR for the puppet master.
 # It should be run from one of the puppet frontend masters
 require 'openssl'

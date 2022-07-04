@@ -1,3 +1,4 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 DIR=$(dirname -- $0)
 exec "${DIR}"/pcc.py "$@"

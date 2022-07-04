@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 set -eo pipefail
 # Script to run CI checks on your local puppet code.
 # It uses the same docker image we use to run such tests in
