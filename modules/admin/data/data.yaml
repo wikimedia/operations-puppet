@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph]
+              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -354,7 +354,7 @@ groups:
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
-              kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, pginer,
+              kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel, swak,
@@ -4445,12 +4445,11 @@ users:
     ssh_keys: []
     krb: absent
   mattcleinman:
-    ensure: present
+    ensure: absent
     realname: Matt Cleinman
-    email: mcleinman@wikimedia.org
     uid: 23724
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   cbogen:
     ensure: present
     realname: Carly Bogen
