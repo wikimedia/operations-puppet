@@ -76,51 +76,39 @@ modules:
     prober: tcp
     tcp:
       preferred_ip_protocol: ip4
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
 
   tcp_tls_ip4:
     prober: tcp
     tcp:
       preferred_ip_protocol: ip4
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
       tls: true
 
   tcp_ip6:
     prober: tcp
     tcp:
       preferred_ip_protocol: ip6
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
 
   tcp_tls_ip6:
     prober: tcp
     tcp:
       preferred_ip_protocol: ip6
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
       tls: true
 
   icmp_ip4:
     prober: icmp
     icmp:
       preferred_ip_protocol: ip4
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
 
   icmp_ip6:
     prober: icmp
     icmp:
       preferred_ip_protocol: ip6
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
 
   irc_banner_ip6:
     prober: tcp
@@ -130,9 +118,7 @@ modules:
       - send: "USER prober prober prober :prober"
       - expect: "^:[^ ]+ 376 .*" # end of MOTD
       preferred_ip_protocol: ip6
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
 
   irc_banner_ip4:
     prober: tcp
@@ -142,6 +128,4 @@ modules:
       - send: "USER prober prober prober :prober"
       - expect: "^:[^ ]+ 376 .*" # end of MOTD
       preferred_ip_protocol: ip4
-<% if not ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
       ip_protocol_fallback: false
-<% end -%>
