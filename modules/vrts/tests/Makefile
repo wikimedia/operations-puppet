@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 MANIFESTS=$(wildcard *.pp)
 OBJS=$(MANIFESTS:.pp=.po)
 TESTS_DIR=$(dir $(CURDIR))
