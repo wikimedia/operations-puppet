@@ -30,6 +30,12 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_mlserve'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'mlserve:prod'
+  mlserve_ro:
+    access:       ''
+    account_name: 'AUTH_mlserve'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'mlserve:ro'
+    stats_enabled: 'no'
   tegola_prod:
     access:       '.admin'
     account_name: 'AUTH_tegola'
