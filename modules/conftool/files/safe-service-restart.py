@@ -214,16 +214,17 @@ class ServiceRestarter(ToolCliBase):
         return 0
 
     def _restart_services(self):
+        rc = 0
         for svc in self.services:
             cmd = ["systemctl", "restart", svc + ".service"]
             cmd_str = " ".join(map(shlex.quote, cmd))
             try:
                 subprocess.check_call(cmd)
                 logger.debug("Execution of command %s successful", cmd_str)
-                return 0
             except subprocess.CalledProcessError as e:
                 logger.error("Executing command %s failed: %s", cmd_str, e)
-                return e.returncode
+                rc = e.returncode
+        return rc
 
     def _get_objects(self, pooled_state="yes"):
         """Gets the objects corresponding to the services we're operating on"""
