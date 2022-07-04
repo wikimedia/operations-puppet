@@ -22,18 +22,19 @@ Expects env variables inline with our other nova tooling:
 
 import argparse
 import json
-from keystoneauth1.identity.v3 import Password as KeystonePassword
-from keystoneauth1 import session as keystone_session
 import logging
-import novaclient
-from novaclient import client as nova_client
 import os
 import socket
 import subprocess
 import sys
 import time
-import yaml
 from datetime import datetime
+
+import novaclient
+import yaml
+from keystoneauth1 import session as keystone_session
+from keystoneauth1.identity.v3 import Password as KeystonePassword
+from novaclient import client as nova_client
 
 
 class Timer:
@@ -101,8 +102,7 @@ def log_unhandled_exception(exc_type, exc_value, exc_traceback):
 
 
 def get_verify(prompt, invalid, valid):
-    """ validate user inputed for expected
-    """
+    """validate user inputed for expected"""
     while True:
         try:
             inp = input("{} {}:".format(prompt, valid))
@@ -115,7 +115,7 @@ def get_verify(prompt, invalid, valid):
 
 
 def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
-    """ Execute a remote command using SSH
+    """Execute a remote command using SSH
     :param node: str
     :param cmd: str
     :param debug: bool
@@ -159,7 +159,7 @@ def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
 
 
 def run_local(cmd):
-    """ Execute a remote command using SSH
+    """Execute a remote command using SSH
     :param cmd: list
     :return: str
     """
@@ -168,7 +168,7 @@ def run_local(cmd):
 
 
 def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
-    """ ensure dns resolution for the created VM
+    """ensure dns resolution for the created VM
     :param hostame: str
     :param expected_ip: str
     :param nameservers: list
@@ -212,7 +212,7 @@ def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
 
 
 def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
-    """ ensure reverse dns resolution for the created VM
+    """ensure reverse dns resolution for the created VM
     :param hostame: str
     :param nameservers: list
     :return: obj
@@ -254,7 +254,7 @@ def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
 
 
 def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
-    """ ensure the DNS entry was cleared
+    """ensure the DNS entry was cleared
     :param hostame: str
     :param nameservers: list
     :return: obj
@@ -281,7 +281,7 @@ def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
 
 
 def verify_dns_reverse_cleanup(ip, nameservers, timeout=2.0):
-    """ ensure the DNS entry was cleared
+    """ensure the DNS entry was cleared
     :param ip: str
     :param nameservers: list
     :return: obj
@@ -309,7 +309,7 @@ def verify_dns_reverse_cleanup(ip, nameservers, timeout=2.0):
 
 
 def verify_ssh(address, user, keyfile, bastion_ip, timeout):
-    """ ensure SSH works to an instance
+    """ensure SSH works to an instance
     :param address: str
     :param timeout: int
     :return: float
@@ -332,7 +332,7 @@ def verify_ssh(address, user, keyfile, bastion_ip, timeout):
 
 
 def verify_puppet(address, user, keyfile, bastion_ip, timeout):
-    """ Ensure Puppet has run on an instance
+    """Ensure Puppet has run on an instance
     :param address: str
     :param timeout: init
     :return: float, dict
@@ -372,7 +372,7 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
 
 
 def verify_create(nova_connection, name, image, flavor, timeout, network, on_host=None):
-    """ Create and ensure creation for an instance
+    """Create and ensure creation for an instance
     :param nova_connection: nova connection obj
     :param name: str
     :param image: image obj
@@ -413,7 +413,7 @@ def verify_create(nova_connection, name, image, flavor, timeout, network, on_hos
 
 
 def verify_deletion(nova_connection, server, timeout):
-    """ Delete and ensure deletion of an instance
+    """Delete and ensure deletion of an instance
     :param nova_connection: nova connection obj
     :param server: nova server obj
     :param timeout: int
@@ -438,7 +438,7 @@ def verify_deletion(nova_connection, server, timeout):
 
 
 def submit_stat(host, port, prepend, metric, value):
-    """ Metric handling for tracking over time
+    """Metric handling for tracking over time
     :param host: str
     :param port: int
     :param prepend: str
