@@ -7,11 +7,7 @@ function wmflib::service::probe::http_module_options(
   String $service_name,
   Wmflib::Service $service_config,
 ) >> Hash {
-  if debian::codename::ge('bullseye') {
-    $compat = { 'ip_protocol_fallback' => false }
-  } else {
-    $compat = {}
-  }
+  $common = { 'ip_protocol_fallback' => false }
 
   # Find out which SNI to send. Similar logic to
   # prometheus::service_catalog_targets for DNS names; in this case
@@ -44,12 +40,8 @@ function wmflib::service::probe::http_module_options(
   }
 
   if 'must_contain_regexp' in $probe {
-    $key = debian::codename::ge('bullseye').bool2str(
-      'fail_if_body_not_matches_regexp',
-      'fail_if_not_matches_regexp'
-    )
     $match = {
-      $key => [ $probe['must_contain_regexp'] ],
+      'fail_if_body_not_matches_regexp' => [ $probe['must_contain_regexp'] ],
     }
   } else {
     $match = {}
@@ -107,6 +99,6 @@ function wmflib::service::probe::http_module_options(
     $expect_redirect = {}
   }
 
-  return deep_merge($compat, $match, $post_json, $host_header,
+  return deep_merge($common, $match, $post_json, $host_header,
     $valid_status_codes, $expect_sso, $expect_redirect, $tls_options)
 }
