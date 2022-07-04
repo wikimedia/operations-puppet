@@ -83,11 +83,6 @@ class base::firewall (
         srange => '$CUMIN_MASTERS',
     }
 
-    # TODO: remove after a puppet cycle
-    file { '/usr/lib/nagios/plugins/check_conntrack':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'check_conntrack':
         source => 'puppet:///modules/base/firewall/check_conntrack.py',
     }
@@ -105,11 +100,6 @@ class base::firewall (
 
     nrpe::plugin { 'check_ferm':
         source => 'puppet:///modules/base/firewall/check_ferm',
-    }
-
-    # TODO: remove after a puppet cycle
-    file { '/usr/lib/nagios/plugins/check_ferm':
-        ensure => absent,
     }
 
     nrpe::monitor_service { 'ferm_active':
