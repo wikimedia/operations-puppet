@@ -1,4 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+> **_NOTE:_** This readme is still a work in progress. The purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
 #### This REST API service is used to manage toolforge replica.my.cnf.
 #### It decouples the functionality of reading and writing replica.my.cnf files away from this repository and into its server environment.
 

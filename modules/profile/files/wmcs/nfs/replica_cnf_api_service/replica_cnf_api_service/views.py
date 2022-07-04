@@ -3,33 +3,42 @@
 import configparser
 import io
 import os
+from pathlib import Path
 import subprocess
 from hashlib import sha1
 from types import ModuleType
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple, List
+import yaml
 
 from flask import Blueprint, Flask, current_app, request
 
 bp_v1: ModuleType = Blueprint("replica_cnf", __name__, url_prefix="/v1")
+DRY_RUN_USERNAME: str = "dry.run.username"
+DRY_RUN_PASSWORD: str = "dry.run.password"
 
 
 def create_app(test_config: Optional[Dict] = None) -> ModuleType:
     # create and configure the app
-    app: ModuleType = Flask(__name__, instance_relative_config=True)
+    app: ModuleType = Flask(__name__)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile("config.py", silent=True)
+        app.config.from_file("/etc/replica_cnf_config.yaml", load=yaml.safe_load, silent=True)
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
-    os.makedirs(app.instance_path, exist_ok=True)
-
     app.register_blueprint(bp_v1)
 
     return app
+
+
+def get_command_array(script: str) -> List[str]:
+    full_path = str(Path(current_app.config.get("SCRIPTS_PATH")) / script)
+    if current_app.config.get("USE_SUDO", False):
+        return ["sudo", full_path]
+    else:
+        return [full_path]
 
 
 def mysql_hash(password: str) -> str:
@@ -39,43 +48,35 @@ def mysql_hash(password: str) -> str:
     return "*" + sha1(sha1(password.encode("utf-8")).digest()).hexdigest()
 
 
-def get_replica_path(account_type: str, name: str) -> str:
+def get_relative_path(account_type: str, name: str) -> str:
     """
-    Return path to use for replica.my.cnf for a tool or user
+    Return relative path to use for replica.my.cnf for a tool or user
     """
     if account_type == "tool":
-        return os.path.join(current_app.config["TOOLS_REPLICA_CNF_PATH"], name, "replica.my.cnf")
+        return str(
+            Path(name[len(current_app.config.get("TOOLS_PROJECT_PREFIX")) + 1:]) / "replica.my.cnf"
+        )
     elif account_type == "paws":
-        return os.path.join(current_app.config["PAWS_REPLICA_CNF_PATH"], name, ".my.cnf")
-    else:
-        return os.path.join(current_app.config["OTHERS_REPLICA_CNF_PATH"], name, "replica.my.cnf")
+        return str(Path(name) / ".my.cnf")
+    elif account_type == "user":
+        return str(Path(name) / "replica.my.cnf")
 
 
-@bp_v1.route("/fetch-replica-path", methods=["POST"])
-def fetch_replica_path() -> Dict[str, Any]:
+def get_replica_path(account_type: str, relative_path: str) -> str:
+    if account_type == "tool":
+        base_dir = current_app.config.get("TOOL_REPLICA_CNF_PATH")
+    elif account_type == "paws":
+        base_dir = current_app.config.get("PAWS_REPLICA_CNF_PATH")
+    elif account_type == "user":
+        base_dir = current_app.config.get("USER_REPLICA_CNF_PATH")
 
-    request_data: Dict[str, Any] = request.json
-    account_id: str = request_data["account_id"]
-    account_type: str = request_data["account_type"]
-
-    try:
-
-        replica_path: str = get_replica_path(account_type, account_id)
-
-        response_data: Dict[str, Any] = {"result": "ok", "detail": {"replica_path": replica_path}}
-
-    except Exception as e:
-
-        response_data: Dict[str, Any] = {"result": "error", "detail": {"reason": str(e)}}
-
-    return response_data
+    return str(Path(base_dir) / relative_path)
 
 
 @bp_v1.route("/write-replica-cnf", methods=["POST"])
-def write_replica_cnf() -> Dict[str, Any]:
+def write_replica_cnf() -> Tuple[Dict[str, Any], int]:
     """
     Write a replica.my.cnf file.
-
     Will also set the 'immutable' attribute on the file, so users
     can not damage their own replica.my.cnf files accidentally.
     """
@@ -86,7 +87,27 @@ def write_replica_cnf() -> Dict[str, Any]:
     uid: int = request_data["uid"]
     mysql_username: str = request_data["mysql_username"]
     pwd: str = request_data["password"]
-    replica_path: str = get_replica_path(account_type, account_id)
+    dry_run: bool = request_data["dry_run"]
+
+    relative_path: str = get_relative_path(account_type, account_id)
+    replica_path: str = get_replica_path(account_type, relative_path)
+
+    if dry_run:  # do not attempt to write replica.my.cnf file to replica_path if dry_run is True
+        return {"result": "ok", "detail": {"replica_path": replica_path}}, 200
+
+    # ignore if path aready exists
+    if os.path.exists(replica_path):
+        current_app.logger.warning("Configuration file %s already exists", replica_path)
+        return (
+            {
+                "result": "ok",
+                "detail": {
+                    "replica_path": replica_path,
+                    "message": "{0} Already exists".format(replica_path),
+                },
+            },
+            200,
+        )
 
     replica_config = configparser.ConfigParser()
     replica_config["client"] = {"user": mysql_username, "password": pwd}
@@ -96,56 +117,122 @@ def write_replica_cnf() -> Dict[str, Any]:
     replica_buffer = io.StringIO()
     replica_config.write(replica_buffer)
 
-    c_file = os.open(replica_path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
-    try:
-        os.write(c_file, replica_buffer.getvalue().encode("utf-8"))
-        # uid == gid
-        os.fchown(c_file, uid, uid)
-        os.fchmod(c_file, 0o400)
+    res = subprocess.run(
+        get_command_array(script="write_replica_cnf.sh")
+        + [str(uid), relative_path, replica_buffer.getvalue().encode("utf-8"), account_type],
+        capture_output=True,
+        # subprocess.run without check=True is used here to avoid arguments
+        # including username and password from being unintentionally sent back to client on error
+        check=False,
+    )
 
-        # Prevent removal or modification of the credentials file by users
-        subprocess.check_output(["/usr/bin/chattr", "+i", replica_path])
-    except Exception as e:
-        os.remove(replica_path)
-        response_data: Dict[str, Any] = {"result": "error", "detail": {"reason": str(e)}}
-    finally:
-        os.close(c_file)
+    replica_path = res.stdout.decode("utf-8").strip() or replica_path
+    stderr = res.stderr.decode("utf-8")
 
-    response_data: Dict[str, Any] = {"result": "ok", "detail": {"replica_path": replica_path}}
-    return response_data
+    if res.returncode == 0:
+        current_app.logger.info("Created conf file at %s.", replica_path)
+        return {"result": "ok", "detail": {"replica_path": replica_path}}, 200
+    else:
+        if os.path.exists(replica_path):
+            subprocess.check_output(
+                get_command_array(script="delete_replica_cnf.sh") + [relative_path, account_type]
+            )
+
+        current_app.logger.error("Failed to create conf file at %s: %s", replica_path, stderr)
+        return {"result": "error", "detail": {"reason": stderr}}, 500
 
 
 @bp_v1.route("/read-replica-cnf", methods=["POST"])
-def read_replica_cnf() -> Dict[str, Any]:
+def read_replica_cnf() -> Tuple[Dict[str, Any], int]:
     """
-    Parse a given replica.my.cnf file
-
-    Return a tuple of mysql username, password_hash
+    Parse a given replica.my.cnf file.
+    Returns a tuple of mysql username, password_hash
     """
 
     request_data: Dict[str, Any] = request.json
     account_id: str = request_data["account_id"]
     account_type: str = request_data["account_type"]
-    replica_path: str = get_replica_path(account_type, account_id)
+    dry_run: bool = request_data["dry_run"]
+
+    relative_path: str = get_relative_path(account_type, account_id)
+
+    if dry_run:  # return dummy username and password if dry_run is True
+        detail: Dict[str, str] = {
+            "user": DRY_RUN_USERNAME,
+            "password": mysql_hash(DRY_RUN_PASSWORD),
+        }
+        return {"result": "ok", "detail": detail}, 200
 
     cp = configparser.ConfigParser()
-    cp.read(replica_path)
 
     try:
+        res = subprocess.run(
+            get_command_array(script="read_replica_cnf.sh") + [relative_path, account_type],
+            capture_output=True,
+            check=False,
+        )
 
-        detail: Dict[str, str] = {
-            # sometimes these values have quotes around them
-            "user": cp["client"]["user"].strip("'"),
-            "password": mysql_hash(cp["client"]["password"].strip("'")),
-        }
+        if res.returncode == 0:
+            cp.read_string(res.stdout.decode("utf-8"))
 
-        response_data: Dict[str, Any] = {"result": "ok", "detail": detail}
+            detail: Dict[str, str] = {
+                # sometimes these values have quotes around them
+                "user": cp["client"]["user"].strip("'"),
+                "password": mysql_hash(cp["client"]["password"].strip("'")),
+            }
 
-    except Exception as e:
+            return {"result": "ok", "detail": detail}, 200
+        else:
+            raise Exception(res.stderr.decode("utf-8"))
 
-        response_data: Dict[str, Any] = {"result": "error", "detail": {"reason": str(e)}}
+    except KeyError as err:  # the err variable is not descriptive enough for KeyError.
+        # catch KeyError and add more context to the error response.
+        return (
+            {
+                "result": "error",
+                "detail": {"reason": "key {0} doesn't exist in ConfigParser".format(str(err))},
+            },
+            500,
+        )
 
-    return response_data
+    except Exception as err:
+        return {"result": "error", "detail": {"reason": str(err)}}, 500
+
+
+@bp_v1.route("/delete-replica-cnf", methods=["POST"])
+def delete_replica_cnf() -> Tuple[Dict[str, Any], int]:
+
+    request_data: Dict[str, Any] = request.json
+    account_id: str = request_data["account_id"]
+    account_type: str = request_data["account_type"]
+    dry_run: bool = request_data["dry_run"]
+
+    relative_path: str = get_relative_path(account_type, account_id)
+    replica_path: str = get_replica_path(account_type, relative_path)
+
+    if dry_run:  # do not attempt to delete replica.my.cnf file in replica_path if dry_run is True
+        return {"result": "ok", "detail": {"replica_path": replica_path}}, 200
+
+    res = subprocess.run(
+        get_command_array(script="delete_replica_cnf.sh") + [relative_path, account_type],
+        capture_output=True,
+        check=False,
+    )
+
+    if res.returncode == 0:
+        return {"result": "ok", "detail": {"replica_path": res.stdout.decode("utf-8").strip()}}, 200
+    else:
+        return {"result": "error", "detail": {"reason": res.stderr.decode("utf-8")}}, 500
+
+
+@bp_v1.route("/paws-uids", methods=["GET"])
+def fetch_paws_uids() -> Tuple[Dict[str, Any], int]:
+    try:
+        path: str = get_replica_path("paws", "")
+        paws_ids = os.listdir(path)
+        return {"result": "ok", "detail": {"paws_uids": paws_ids}}, 200
+    except Exception as err:  # pylint: disable=broad-except
+        return {"result": "error", "detail": {"reason": str(err)}}, 500
 
 
 app: ModuleType = create_app()
