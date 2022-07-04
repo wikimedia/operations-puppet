@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe]
+              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -156,7 +156,7 @@ groups:
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, bmansurov, musikanimal, nahidunlimited,
-              daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph,
+              daimona, mepps, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
@@ -357,7 +357,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, swak,
+              katelevan, cmaslak, abban, mikeraish, saisuman, gehel, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
@@ -4765,14 +4765,12 @@ users:
     uid: 30902
     email: mraish@wikimedia.org
   mewoph:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Mew Ophaswongse
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGokQOi31ziMwiAy8AsY2SJ49n+WDC+tajTsZb7LzMWC mophaswongse@wikimedia.org
+    ssh_keys: []
     uid: 29526
-    email: mophaswongse@wikimedia.org
-    krb: present
+    krb: absent
   saisuman:
     ensure: present
     gid: 500
