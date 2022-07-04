@@ -7,19 +7,14 @@ describe 'bacula::storage', :type => :class do
       let(:facts) { facts }
       let(:params) { {
         :director => 'testdirector',
-        :sd_max_concur_jobs => '10',
-        :sqlvariant => 'testsql',
-        :sd_port => '9000',
+        :sd_max_concur_jobs => 10,
+        :sqlvariant => 'sqlite3',
+        :sd_port => 9000,
         :directorpassword => 'testdirectorpass',
       }
       }
 
-      context "when not stretch", if: facts[:os]['distro']['codename'] != 'stretch' do
-        it { is_expected.to contain_package('bacula-sd') }
-      end
-      context "when stretch", if: facts[:os]['distro']['codename'] == 'stretch' do
-        it { is_expected.to contain_package('bacula-sd-testsql') }
-      end
+      it { is_expected.to contain_package('bacula-sd') }
       it { should contain_service('bacula-sd') }
       it do
         should contain_file('/etc/bacula/sd-devices.d').with({

@@ -27,26 +27,17 @@
 #       }
 #
 class bacula::storage(
-                    $director,
-                    $sd_max_concur_jobs,
-                    $sqlvariant,
-                    $sd_port='9103',
-                    $directorpassword=sha1($::uniqueid)){
-
-    # before buster, bacula-sd depended on bacula-sd-sqlvariant.
-    # Now there is only one package that substitutes all variants
-    if debian::codename::ge('buster') {
-        $package = 'bacula-sd'
-    } else {
-        $package = "bacula-sd-${sqlvariant}"
-    }
-    package { $package:
-        ensure  => installed,
-    }
+    Stdlib::Host                      $director,
+    Integer[0]                        $sd_max_concur_jobs,
+    Enum['mysql', 'pgsql', 'sqlite3'] $sqlvariant,
+    Stdlib::Port                      $sd_port = 9103,
+    String                            $directorpassword=sha1($::uniqueid)
+){
+    ensure_packages(['bacula-sd', ])
 
     service { 'bacula-sd':
         ensure  => running,
-        require => Package[$package],
+        require => Package['bacula-sd'],
     }
 
     file { '/etc/bacula/sd':
@@ -54,7 +45,7 @@ class bacula::storage(
         mode    => '0550',
         owner   => 'bacula',
         group   => 'tape',
-        require => Package[$package],
+        require => Package['bacula-sd'],
     }
 
     # TODO: consider using profile::pki::get_cert
@@ -84,6 +75,6 @@ class bacula::storage(
         mode    => '0400',
         notify  => Service['bacula-sd'],
         content => template('bacula/bacula-sd.conf.erb'),
-        require => Package[$package],
+        require => Package['bacula-sd'],
     }
 }
