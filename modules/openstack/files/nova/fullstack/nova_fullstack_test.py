@@ -29,35 +29,49 @@ import subprocess
 import sys
 import time
 from datetime import datetime
+from types import TracebackType
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import novaclient
 import yaml
 from keystoneauth1 import session as keystone_session
 from keystoneauth1.identity.v3 import Password as KeystonePassword
 from novaclient import client as nova_client
+from novaclient.v2.client import Client as NovaClient
+from novaclient.v2.flavors import Flavor
+from novaclient.v2.images import Image
+from novaclient.v2.servers import Server
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Timer:
     def __init__(self):
-        self.start = self.now()
-        self.wait = 0
+        self.start = 0.0
+        self.wait = 0.0
+        self.end = 0.0
+        self.interval = 0.0
 
-    def __enter__(self):
-        self.__init__()
+    def __enter__(self) -> "Timer":
+        self.do_start()
         return self
 
-    def now(self):
+    def do_start(self) -> None:
+        self.start = self.now()
+        self.wait = 0.0
+
+    def now(self) -> float:
         return round(time.time(), 2)
 
-    def progress(self):
+    def progress(self) -> float:
         return round(self.now() - self.start, 2)
 
-    def close(self):
+    def close(self) -> None:
         self.wait = None
         self.end = self.now()
         self.interval = round(self.end - self.start, 2)
 
-    def __exit__(self, *args):
+    def __exit__(self, *args) -> None:
         self.close()
 
 
@@ -65,9 +79,10 @@ class ECSFormatter(logging.Formatter):
     """ECS 1.7.0 logging formatter"""
 
     def __init__(self):
+        super().__init__()
         self.hostname = ""
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         ecs_message = {
             "ecs.version": "1.7.0",
             "log.level": record.levelname.upper(),
@@ -76,7 +91,7 @@ class ECSFormatter(logging.Formatter):
             "log.origin.file.path": record.pathname,
             "log.origin.function": record.funcName,
             "labels": {"test_hostname": self.hostname},
-            "message": str(record.msg),
+            "message": record.getMessage(),
             "process.name": record.processName,
             "process.thread.id": record.process,
             "process.thread.name": record.threadName,
@@ -87,26 +102,33 @@ class ECSFormatter(logging.Formatter):
         if not ecs_message.get("error.stack") and record.exc_text:
             ecs_message["error.stack"] = record.exc_text
         # Prefix "@cee" cookie indicating rsyslog should parse the message as JSON
-        return "@cee: %s" % json.dumps(ecs_message)
+        return f"@cee: {json.dumps(ecs_message)}"
 
-    def set_hostname(self, hostname):
+    def set_hostname(self, hostname: str) -> None:
         self.hostname = hostname
 
 
-def log_unhandled_exception(exc_type, exc_value, exc_traceback):
+def log_unhandled_exception(
+    exc_type: Type[BaseException],
+    exc_value: BaseException,
+    exc_traceback: Optional[TracebackType],
+) -> None:
     """Forwards unhandled exceptions to log handler.  Override sys.excepthook to activate."""
-    logging.exception(
-        "Unhandled exception: %s" % exc_value,
+    LOGGER.exception(
+        "Unhandled exception: %s",
+        exc_value,
         exc_info=(exc_type, exc_value, exc_traceback),
     )
 
 
-def get_verify(prompt, invalid, valid):
-    """validate user inputed for expected"""
+def get_verify(prompt: str, invalid: str, valid: List[str]) -> None:
+    """validate user input for expected."""
     while True:
         try:
-            inp = input("{} {}:".format(prompt, valid))
+            inp = input(f"{prompt} {valid}:")
             if inp.lower() not in valid:
+                # TODO: this seems like not used anywhere, any reason not to just loop until valid
+                # instead?
                 raise ValueError(invalid)
         except ValueError:
             continue
@@ -114,12 +136,17 @@ def get_verify(prompt, invalid, valid):
             break
 
 
-def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
-    """Execute a remote command using SSH
-    :param node: str
-    :param cmd: str
-    :param debug: bool
-    :return: str
+def run_remote(
+    node: str,
+    username: str,
+    keyfile: str,
+    bastion_ip: str,
+    cmd: str,
+    debug: bool = False,
+) -> bytes:
+    """Execute a remote command using SSH.
+
+    Return the output of the command.
     """
 
     # Possible LogLevel values
@@ -137,55 +164,50 @@ def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
         "-o",
         "NumberOfPasswordPrompts=0",
         "-o",
-        "LogLevel={}".format("DEBUG" if debug else "ERROR"),
+        f"LogLevel={'DEBUG' if debug else 'ERROR'}",
         "-o",
-        'ProxyCommand="ssh -o StrictHostKeyChecking=no -i {} -W %h:%p {}@{}"'.format(
-            keyfile, username, bastion_ip
+        (
+            f'ProxyCommand="ssh -o StrictHostKeyChecking=no -i {keyfile} -W %h:%p '
+            f'{username}@{bastion_ip}"'
         ),
         "-i",
         keyfile,
-        "{}@{}".format(username, node),
+        f"{username}@{node}",
     ]
 
     fullcmd = ssh + cmd.split(" ")
-    logging.debug(" ".join(fullcmd))
+    LOGGER.debug(" ".join(fullcmd))
 
     # The nested nature of the proxycommand line is baffling to
     #  subprocess and/or ssh; joining a full shell commandline
     #  works and gives us something we can actually test by hand.
-    return subprocess.check_output(
-        " ".join(fullcmd), shell=True, stderr=subprocess.STDOUT
-    )
+    return subprocess.check_output(" ".join(fullcmd), shell=True, stderr=subprocess.STDOUT)
 
 
-def run_local(cmd):
-    """Execute a remote command using SSH
-    :param cmd: list
-    :return: str
-    """
-    logging.debug(" ".join(cmd))
+def run_local(cmd: List[str]) -> bytes:
+    """Execute a remote command using SSH."""
+    LOGGER.debug(" ".join(cmd))
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
-def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
-    """ensure dns resolution for the created VM
-    :param hostame: str
-    :param expected_ip: str
-    :param nameservers: list
-    :return: obj
+def verify_dns(
+    hostname: str, expected_ip: str, nameservers: List[str], timeout: float = 2.0
+) -> float:
+    """Ensure dns resolution for the created VM.
+
+    Return the time it took to run.
     """
-    with Timer() as ns:
-        logging.info("Resolving {} from {}".format(hostname, nameservers))
-        dig_query = []
-        dig_query.append("/usr/bin/dig")
+    with Timer() as ns_timer:
+        LOGGER.info("Resolving %s from %s", hostname, nameservers)
+        dig_query = ["/usr/bin/dig"]
         for server in nameservers:
-            dig_query.append("@{}".format(server))
+            dig_query.append(f"@{server}")
         dig_query.append(hostname)
         dig_options = ["+short", "+time=2", "+tries=1"]
 
         while True:
             out = run_local(dig_query + dig_options)
-            logging.debug(out)
+            LOGGER.debug(out)
 
             if out.decode("utf8").strip() == expected_ip.strip():
                 # Success
@@ -193,43 +215,41 @@ def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
 
             if out:
                 raise Exception(
-                    "DNS failure: got the wrong IP {} for hostname {}; expected {}".format(
-                        out.decode("utf8").strip(), hostname, expected_ip
-                    )
+                    f"DNS failure: got the wrong IP {out.decode('utf8').strip()} for hostname "
+                    f"{hostname}; expected {expected_ip}"
                 )
 
             # If we got here then dig returned an empty string which suggests NXDOMAIN.
             # wait and see if something shows up.
-            dnswait = ns.progress()
+            dnswait = ns_timer.progress()
             if dnswait >= timeout:
-                raise Exception(
-                    "Timed out waiting for A record for {}".format(hostname)
-                )
+                raise Exception(f"Timed out waiting for A record for {hostname}")
 
             time.sleep(1)
 
-    return ns.interval
+    return ns_timer.interval
 
 
-def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
-    """ensure reverse dns resolution for the created VM
-    :param hostame: str
-    :param nameservers: list
-    :return: obj
+def verify_dns_reverse(
+    hostname: str, ipaddr: str, nameservers: List[str], timeout: float = 2.0
+) -> float:
+    """Ensure reverse dns resolution for the created VM.
+
+    Return the time it took to run.
     """
-    with Timer() as ns:
-        logging.info("Resolving {} from {}".format(ip, nameservers))
+    with Timer() as ns_timer:
+        LOGGER.info("Resolving %s from %s", ipaddr, nameservers)
         dig_query = []
         dig_query.append("/usr/bin/dig")
         for server in nameservers:
-            dig_query.append("@{}".format(server))
+            dig_query.append(f"@{server}")
         dig_query.append("-x")
-        dig_query.append(ip)
+        dig_query.append(ipaddr)
         dig_options = ["+short", "+time=2", "+tries=1"]
 
         while True:
             out = run_local(dig_query + dig_options)
-            logging.debug(out)
+            LOGGER.debug(out)
 
             if out.decode("utf8").strip().strip(".") == hostname.strip():
                 # Success
@@ -237,154 +257,150 @@ def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
 
             if out:
                 raise Exception(
-                    "DNS -x failure: got the wrong hostname {} for ip {}; expected {}".format(
-                        out.decode("utf8").strip(), ip, hostname
-                    )
+                    f"DNS -x failure: got the wrong hostname {out.decode('utf8').strip()} for ip "
+                    f"{ipaddr}; expected {hostname}"
                 )
 
             # If we got here then dig returned an empty string which suggests NXDOMAIN.
             # wait and see if something shows up.
-            dnswait = ns.progress()
+            dnswait = ns_timer.progress()
             if dnswait >= timeout:
-                raise Exception("Timed out waiting for ptr record for {}".format(ip))
+                raise Exception(f"Timed out waiting for ptr record for {ipaddr}")
 
             time.sleep(1)
 
-    return ns.interval
+    return ns_timer.interval
 
 
-def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
-    """ensure the DNS entry was cleared
-    :param hostame: str
-    :param nameservers: list
-    :return: obj
+def verify_dns_cleanup(hostname: str, nameservers: List[str], timeout: float = 2.0) -> float:
+    """Ensure the DNS entry was cleared.
+
+    Return the time it took to run.
     """
-    with Timer() as ns:
-        logging.info(
-            "Resolving {} from {}, waiting for cleanup".format(hostname, nameservers)
-        )
+    with Timer() as ns_timer:
+        LOGGER.info("Resolving %s from %s, waiting for cleanup", hostname, nameservers)
         while True:
             time.sleep(10)
             dig_query = []
             dig_query.append("/usr/bin/dig")
             for server in nameservers:
-                dig_query.append("@{}".format(server))
+                dig_query.append(f"@{server}")
             dig_query.append(hostname)
             dig_options = ["+short", "+time=2", "+tries=1"]
             out = run_local(dig_query + dig_options)
             if not out:
                 break
-            dnscleanupwait = ns.progress()
+            dnscleanupwait = ns_timer.progress()
             if dnscleanupwait >= timeout:
-                raise Exception("Failed to clean up dns for {}".format(hostname))
-    return ns.interval
+                raise Exception(f"Failed to clean up dns for {hostname}")
+    return ns_timer.interval
 
 
-def verify_dns_reverse_cleanup(ip, nameservers, timeout=2.0):
-    """ensure the DNS entry was cleared
-    :param ip: str
-    :param nameservers: list
-    :return: obj
+def verify_dns_reverse_cleanup(ipaddr: str, nameservers: List[str], timeout: float = 2.0) -> float:
+    """Ensure the DNS entry was cleared
+
+    Return the time it took to run.
     """
     with Timer() as ns:
-        logging.info(
-            "Resolving {} from {}, waiting for cleanup".format(ip, nameservers)
-        )
+        LOGGER.info("Resolving %s from %s, waiting for cleanup", ipaddr, nameservers)
         while True:
             time.sleep(10)
             dig_query = []
             dig_query.append("/usr/bin/dig")
             for server in nameservers:
-                dig_query.append("@{}".format(server))
+                dig_query.append(f"@{server}")
             dig_query.append("-x")
-            dig_query.append(ip)
+            dig_query.append(ipaddr)
             dig_options = ["+short", "+time=2", "+tries=1"]
             out = run_local(dig_query + dig_options)
             if not out:
                 break
             dnscleanupwait = ns.progress()
             if dnscleanupwait >= timeout:
-                raise Exception("Failed to clean up dns ptr record for {}".format(ip))
+                raise Exception(f"Failed to clean up dns ptr record for {ipaddr}")
     return ns.interval
 
 
-def verify_ssh(address, user, keyfile, bastion_ip, timeout):
-    """ensure SSH works to an instance
-    :param address: str
-    :param timeout: int
-    :return: float
+def verify_ssh(address: str, user: str, keyfile: str, bastion_ip: str, timeout: int) -> float:
+    """Ensure SSH works to an instance.
+
+    Returns the time it took to run.
     """
-    with Timer() as vs:
-        logging.info("SSH to {}".format(address))
+    with Timer() as timer:
+        LOGGER.info("SSH to %s", address)
         while True:
             time.sleep(10)
             try:
                 run_remote(address, user, keyfile, bastion_ip, "/bin/true")
                 break
-            except subprocess.CalledProcessError as e:
-                logging.debug(e)
-                logging.debug("SSH wait for {}".format(vs.progress()))
+            except subprocess.CalledProcessError as error:
+                LOGGER.debug(error)
+                LOGGER.debug("SSH wait for %d", timer.progress())
 
-            sshwait = vs.progress()
+            sshwait = timer.progress()
             if sshwait >= timeout:
-                raise Exception("SSH for {} timed out".format(address))
-    return vs.interval
+                raise Exception(f"SSH for {address} timed out")
+    return timer.interval
 
 
-def verify_puppet(address, user, keyfile, bastion_ip, timeout):
-    """Ensure Puppet has run on an instance
-    :param address: str
-    :param timeout: init
-    :return: float, dict
+def verify_puppet(
+    address: str, user: str, keyfile: str, bastion_ip: str, timeout: int
+) -> Tuple[float, Dict[str, Any]]:
+    """Ensure Puppet has run on an instance.
+
+    Returns the elapsed time, and the puppet run summary.
     """
-    with Timer() as pv:
-        logging.info("Verify Puppet run on {}".format(address))
+    with Timer() as timer:
+        LOGGER.info("Verify Puppet run on %s", address)
         while True:
             out = "No command run yet"
             try:
                 cp = "sudo cat /var/lib/puppet/state/last_run_summary.yaml"
-                out = run_remote(address, user, keyfile, bastion_ip, cp)
+                out = run_remote(address, user, keyfile, bastion_ip, cp).decode("utf-8")
                 break
-            except subprocess.CalledProcessError as e:
-                logging.debug(e)
-                logging.debug(e.stdout)
-                out = e.stdout
-                logging.debug("Puppet wait {}".format(pv.progress()))
+            except subprocess.CalledProcessError as error:
+                LOGGER.debug(error)
+                LOGGER.debug(error.stdout)
+                out = error.stdout
+                LOGGER.debug("Puppet wait %d", timer.progress())
 
-            pwait = pv.progress()
+            pwait = timer.progress()
             if pwait > timeout:
                 raise Exception(
-                    "Timed out trying to verify puppet for {}, last check run output: {}".format(
-                        address, out
-                    )
+                    f"Timed out trying to verify puppet for {address}, last check run output: "
+                    f"{out}"
                 )
             time.sleep(10)
 
-    logging.debug(out)
+    LOGGER.debug(out)
     try:
-        yprun = yaml.safe_load(out)
+        last_run_summary = yaml.safe_load(out)
     except yaml.YAMLError:
-        logging.warning("Yaml conversion failed for Puppet results")
-        yprun = {}
+        LOGGER.warning("Yaml conversion failed for Puppet results")
+        last_run_summary = {}
 
-    logging.debug(yprun)
-    return pv.interval, yprun
+    LOGGER.debug(last_run_summary)
+    return (timer.interval, last_run_summary)
 
 
-def verify_create(nova_connection, name, image, flavor, timeout, network, on_host=None):
-    """Create and ensure creation for an instance
-    :param nova_connection: nova connection obj
-    :param name: str
-    :param image: image obj
-    :param flavor: flavor obj
-    :param timeout: int
-    :return: float, obj
+def verify_create(
+    nova_connection: NovaClient,
+    name: str,
+    image: Image,
+    flavor: Flavor,
+    timeout: int,
+    network: str,
+    on_host: Optional[str] = None,
+) -> Tuple[float, Server]:
+    """Create and ensure creation for an instance.
+
+    Returns the elapsed time in seconds and the new server.
     """
 
-    with Timer() as vc:
-        logging.info("Creating {}".format(name))
+    with Timer() as timer:
+        LOGGER.info("Creating %s", name)
         if on_host:
-            availability_zone = "server:{}".format(on_host)
+            availability_zone = f"server:{on_host}"
         else:
             availability_zone = None
 
@@ -393,7 +409,7 @@ def verify_create(nova_connection, name, image, flavor, timeout, network, on_hos
         else:
             nics = None
 
-        cserver = nova_connection.servers.create(
+        cserver: Server = nova_connection.servers.create(
             name=name,
             image=image.id,
             flavor=flavor.id,
@@ -401,55 +417,44 @@ def verify_create(nova_connection, name, image, flavor, timeout, network, on_hos
             availability_zone=availability_zone,
         )
         while True:
-            server = nova_connection.servers.get(cserver.id)
+            server: Server = nova_connection.servers.get(cserver.id)
             if server.status == "ACTIVE":
                 break
-            cwait = vc.progress()
-            logging.debug("creation at {}s".format(cwait))
+            cwait = timer.progress()
+            LOGGER.debug("creation at %ds", cwait)
             if cwait > timeout:
-                raise Exception("creation of {} timed out".format(cserver.id))
+                raise Exception(f"creation of {cserver.id} timed out")
             time.sleep(10)
-    return vc.interval, server
+    return timer.interval, server
 
 
-def verify_deletion(nova_connection, server, timeout):
-    """Delete and ensure deletion of an instance
-    :param nova_connection: nova connection obj
-    :param server: nova server obj
-    :param timeout: int
-    :return: float
-    """
+def verify_deletion(nova_connection: NovaClient, server: Server, timeout: float) -> float:
+    """Delete and ensure deletion of an instance."""
 
-    with Timer() as dw:
-        logging.info("Removing {}".format(server.human_id))
+    with Timer() as timer:
+        LOGGER.info("Removing %s", server.human_id)
         server.delete()
         while True:
             try:
                 nova_connection.servers.get(server.id)
             except novaclient.exceptions.NotFound:
-                logging.info("{} succesfully removed".format(server.human_id))
+                LOGGER.info("%s successfully removed", server.human_id)
                 break
 
-            dwait = dw.progress()
+            dwait = timer.progress()
             if dwait > timeout:
-                raise Exception("{} deletion timed out".format(server.human_id))
+                raise Exception("{server.human_id} deletion timed out")
             time.sleep(30)
-    return dw.interval
+    return timer.interval
 
 
-def submit_stat(host, port, prepend, metric, value):
-    """Metric handling for tracking over time
-    :param host: str
-    :param port: int
-    :param prepend: str
-    :param metric: str
-    :param value: int
-    """
-    fmetric = "{}.{}".format(prepend, metric)
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-    s.connect((host, port))
-    s.send("{}:{}|g".format(fmetric, value).encode("utf8"))
-    logging.info("{} => {} {}".format(fmetric, value, int(time.time())))
+def submit_stat(host: str, port: int, prepend: str, metric: str, value: Union[int, float]) -> None:
+    """Metric handling for tracking over time."""
+    metric_path = f"{prepend}.{metric}"
+    my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+    my_socket.connect((host, port))
+    my_socket.send(f"{metric_path}:{value}|g".encode("utf8"))
+    LOGGER.info("%s => %f %d", metric_path, value, int(time.time()))
 
 
 def main():
@@ -462,13 +467,9 @@ def main():
         "--project", default="admin-monitoring", help="Set project to test creation for"
     )
 
-    argparser.add_argument(
-        "--keyfile", default="", help="Path to SSH key file for verification"
-    )
+    argparser.add_argument("--keyfile", default="", help="Path to SSH key file for verification")
 
-    argparser.add_argument(
-        "--bastion-ip", default="", help="IP of bastion to use for ssh tests"
-    )
+    argparser.add_argument("--bastion-ip", default="", help="IP of bastion to use for ssh tests")
 
     argparser.add_argument(
         "--user",
@@ -486,13 +487,9 @@ def main():
         help="String to add to beginning of instance names",
     )
 
-    argparser.add_argument(
-        "--max-pool", default=1, type=int, help="Allow this many instances"
-    )
+    argparser.add_argument("--max-pool", default=1, type=int, help="Allow this many instances")
 
-    argparser.add_argument(
-        "--preserve-leaks", help="Never delete failed VMs", action="store_true"
-    )
+    argparser.add_argument("--preserve-leaks", help="Never delete failed VMs", action="store_true")
 
     argparser.add_argument(
         "--keystone-url",
@@ -530,8 +527,8 @@ def main():
 
     argparser.add_argument(
         "--deletion-timeout",
-        default=120,
-        type=int,
+        default=120.0,
+        type=float,
         help="Allow this long for delete to succeed.",
     )
 
@@ -539,13 +536,9 @@ def main():
 
     argparser.add_argument("--flavor", default="m1.small", help="Flavor to use")
 
-    argparser.add_argument(
-        "--skip-puppet", help="Turn off Puppet validation", action="store_true"
-    )
+    argparser.add_argument("--skip-puppet", help="Turn off Puppet validation", action="store_true")
 
-    argparser.add_argument(
-        "--skip-dns", help="Turn off DNS validation", action="store_true"
-    )
+    argparser.add_argument("--skip-dns", help="Turn off DNS validation", action="store_true")
 
     argparser.add_argument(
         "--dns-resolvers",
@@ -553,9 +546,7 @@ def main():
         default="208.80.154.143,208.80.154.24",
     )
 
-    argparser.add_argument(
-        "--skip-ssh", help="Turn off basic SSH validation", action="store_true"
-    )
+    argparser.add_argument("--skip-ssh", help="Turn off basic SSH validation", action="store_true")
 
     argparser.add_argument(
         "--pause-for-deletion",
@@ -563,9 +554,7 @@ def main():
         action="store_true",
     )
 
-    argparser.add_argument(
-        "--skip-deletion", help="Leave instance behind", action="store_true"
-    )
+    argparser.add_argument("--skip-deletion", help="Leave instance behind", action="store_true")
 
     argparser.add_argument(
         "--virthost",
@@ -580,9 +569,7 @@ def main():
         help="Specify a command over SSH prior to deletion",
     )
 
-    argparser.add_argument(
-        "--network", default="", help="Specify a Neutron network for VMs"
-    )
+    argparser.add_argument("--network", default="", help="Specify a Neutron network for VMs")
 
     argparser.add_argument(
         "--statsd",
@@ -597,33 +584,33 @@ def main():
 
     # Set up logging
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
-    logHandler = logging.StreamHandler()
-    logformatter = ECSFormatter()
-    logHandler.setFormatter(logformatter)
-    logger.addHandler(logHandler)
+    logger.setLevel(logging.DEBUG if args.debug else LOGGER.info)
+    log_handler = logging.StreamHandler()
+    log_formatter = ECSFormatter()
+    log_handler.setFormatter(log_formatter)
+    logger.addHandler(log_handler)
 
     if args.adhoc_command and args.skip_ssh:
         logging.error("cannot skip SSH with adhoc command specified")
         sys.exit(1)
 
     try:
-        with open(args.keyfile, "r") as f:
-            f.read()
+        with open(args.keyfile, "r", encoding="utf-8") as keyfile_fd:
+            keyfile_fd.read()
     except OSError:
-        logging.error("keyfile {} cannot be read".format(args.keyfile))
+        logging.error("keyfile %s cannot be read", args.keyfile)
         sys.exit(1)
 
-    pw = os.environ.get("OS_PASSWORD")
+    password = os.environ.get("OS_PASSWORD")
     region = os.environ.get("OS_REGION_NAME")
     user = os.environ.get("OS_USERNAME") or args.user
     project = os.environ.get("OS_PROJECT_ID") or args.project
-    if not all([user, pw, project]):
-        logging.error("Set username and password environment variables")
+    if not all([user, password, project]):
+        LOGGER.error("Set the username, password (only env var) and project.")
         sys.exit(1)
 
-    def stat(metric, value):
-        metric_prepend = "cloudvps.novafullstack.{}".format(socket.gethostname())
+    def stat(metric: str, value: Union[int, float]) -> None:
+        metric_prepend = f"cloudvps.novafullstack.{socket.gethostname()}"
         submit_stat(args.statsd, 8125, metric_prepend, metric, value)
 
     while True:
@@ -633,54 +620,53 @@ def main():
         auth = KeystonePassword(
             auth_url=args.keystone_url,
             username=user,
-            password=pw,
+            password=password,
             user_domain_name="Default",
             project_domain_name="Default",
             project_name=project,
         )
 
-        sess = keystone_session.Session(auth=auth)
+        session = keystone_session.Session(auth=auth)
         # We specify 2.19 because that's the earliest version that supports
         # updating VM description
-        nova_conn = nova_client.Client("2.19", session=sess, region_name=region)
+        nova_conn: NovaClient = nova_client.Client("2.19", session=session, region_name=region)
 
-        prepend = args.prepend
+        instance_prefix = args.prepend
         date = int(datetime.today().strftime("%Y%m%d%H%M%S"))
-        name = "{}-{}".format(prepend, date)
-        logformatter.set_hostname(name)
+        name = f"{instance_prefix}-{date}"
+        log_formatter.set_hostname(name)
 
-        exist = nova_conn.servers.list()
-        logging.debug(exist)
-        prependinstances = [
-            server for server in exist if server.human_id.startswith(prepend)
+        exist: List[Server] = nova_conn.servers.list()
+        LOGGER.debug(exist)
+        existing_instances = [
+            server for server in exist if server.human_id.startswith(instance_prefix)
         ]
-        pexist_count = len(prependinstances)
+        pexist_count = len(existing_instances)
 
         stat("instances.count", pexist_count)
         stat("instances.max", args.max_pool)
 
         # If we're pushing up against max_pool, delete the oldest server
         if not args.preserve_leaks and pexist_count >= args.max_pool - 1:
-            logging.warning(
-                "There are {} leaked instances with prepend {}; "
-                "cleaning up".format(pexist_count, prepend)
+            LOGGER.warning(
+                "There are %d leaked instances with prepend %s; cleaning up",
+                pexist_count,
+                instance_prefix,
             )
-            servers = sorted(prependinstances, key=lambda server: server.human_id)
+            servers = sorted(existing_instances, key=lambda server: server.human_id)
             servers[0].delete()
 
         if pexist_count >= args.max_pool:
             # If the cleanup in the last two cycles didn't get us anywhere,
             #  best to just bail out so we stop trampling on the API.
-            logging.error(
-                "max server(s) with prepend {} -- skipping creation".format(prepend)
-            )
+            logging.error("max server(s) with prepend %s -- skipping creation", instance_prefix)
             continue
 
-        cimage = nova_conn.glance.find_image(args.image)
-        cflavor = nova_conn.flavors.find(name=args.flavor)
+        cimage: Image = nova_conn.glance.find_image(args.image)
+        cflavor: Flavor = nova_conn.flavors.find(name=args.flavor)
 
         try:
-            vc, server = verify_create(
+            verify_creation_time, server = verify_create(
                 nova_conn,
                 name,
                 cimage,
@@ -689,34 +675,32 @@ def main():
                 args.network,
                 args.virthost,
             )
-            stat("verify.creation", vc)
+            stat("verify.creation", verify_creation_time)
             server.update(description="Running tests...")
 
             if "public" in server.addresses:
                 addr = server.addresses["public"][0]["addr"]
                 if not addr.startswith("10."):
-                    raise Exception("Bad address of {}".format(addr))
+                    raise Exception(f"Bad address of {addr}")
             else:
                 addr = server.addresses["lan-flat-cloudinstances2b"][0]["addr"]
                 if not addr.startswith("172."):
-                    raise Exception("Bad address of {}".format(addr))
+                    raise Exception(f"Bad address of {addr}")
 
             if not args.skip_dns:
-                host = "{}.{}.eqiad1.wikimedia.cloud".format(
-                    server.name, server.tenant_id
-                )
-                dnsd = args.dns_resolvers.split(",")
-                vdns = verify_dns(host, addr, dnsd, timeout=60)
-                stat("verify.dns", vdns)
-                vdns_reverse = verify_dns_reverse(host, addr, dnsd, timeout=30)
-                stat("verify.dns-reverse", vdns_reverse)
+                host = f"{server.name}.{server.tenant_id}.eqiad1.wikimedia.cloud"
+                nameservers = args.dns_resolvers.split(",")
+                verify_dns_time = verify_dns(host, addr, nameservers, timeout=60.0)
+                stat("verify.dns", verify_dns_time)
+                verify_dns_reverse_time = verify_dns_reverse(host, addr, nameservers, timeout=30.0)
+                stat("verify.dns-reverse", verify_dns_reverse_time)
 
             if not args.skip_ssh:
-                vs = verify_ssh(
+                verify_ssh_time = verify_ssh(
                     addr, user, args.keyfile, args.bastion_ip, args.ssh_timeout
                 )
 
-                stat("verify.ssh", vs)
+                stat("verify.ssh", verify_ssh_time)
                 if args.adhoc_command:
                     sshout = run_remote(
                         addr,
@@ -726,56 +710,56 @@ def main():
                         args.adhoc_command,
                         debug=args.debug,
                     )
-                    logging.debug(sshout)
+                    LOGGER.debug(sshout)
 
             if not args.skip_puppet:
-                ps, puppetrun = verify_puppet(
+                puppet_time, puppet_run_summary = verify_puppet(
                     addr, user, args.keyfile, args.bastion_ip, args.puppet_timeout
                 )
-                stat("verify.puppet", ps)
+                stat("verify.puppet", puppet_time)
 
                 categories = ["changes", "events", "resources", "time"]
 
-                for d in categories:
-                    for k, v in puppetrun[d].items():
-                        stat("puppet.{}.{}".format(d, k), v)
+                for category in categories:
+                    for key, value in puppet_run_summary[category].items():
+                        stat(f"puppet.{category}.{key}", value)
 
             if args.pause_for_deletion:
-                logging.info("Pausing for deletion")
+                LOGGER.info("Pausing for deletion")
                 get_verify("continue with deletion", "Not a valid response", ["y"])
 
             if not args.skip_deletion:
-                vd = verify_deletion(nova_conn, server, args.deletion_timeout)
+                verify_deletion_time = verify_deletion(nova_conn, server, args.deletion_timeout)
 
             if not args.pause_for_deletion:
-                stat("verify.deletion", vd)
+                stat("verify.deletion", verify_deletion_time)
                 loop_end = time.time()
                 stat("verify.fullstack", round(loop_end - loop_start, 2))
 
             if not args.skip_dns:
-                host = "{}.{}.eqiad1.wikimedia.cloud".format(
-                    server.name, server.tenant_id
+                host = f"{server.name}.{server.tenant_id}.eqiad1.wikimedia.cloud"
+                nameservers = args.dns_resolvers.split(",")
+                verify_dns_time = verify_dns_cleanup(host, nameservers, timeout=60.0)
+                stat("verify.dns-cleanup", verify_dns_time)
+                verify_dns_reverse_time = verify_dns_reverse_cleanup(
+                    ipaddr=addr, nameservers=nameservers, timeout=60.0
                 )
-                dnsd = args.dns_resolvers.split(",")
-                vdns = verify_dns_cleanup(host, dnsd, timeout=60.0)
-                stat("verify.dns-cleanup", vdns)
-                vdns_reverse = verify_dns_reverse_cleanup(addr, dnsd, timeout=60.0)
-                stat("verify.dns-cleanup-reverse", vdns_reverse)
+                stat("verify.dns-cleanup-reverse", verify_dns_reverse_time)
 
             if not args.interval:
                 return
 
             stat("verify.success", 1)
-        except Exception as e:
-            logging.exception("{} failed, leaking".format(name))
+        except Exception as error:
+            LOGGER.exception("%s failed, leaking", name)
             stat("verify.success", 0)
             try:
                 # Update VM with a hint about why it leaked. Of course
                 #  if things are truly broken this will also fail, so
                 #  swallow any failures
-                server.update(description=str(e))
+                server.update(description=str(error))
             except:  # noqa: E722
-                logging.warning("Failed to annotate VM with failure condition")
+                LOGGER.warning("Failed to annotate VM with failure condition")
 
         time.sleep(args.interval)
 
