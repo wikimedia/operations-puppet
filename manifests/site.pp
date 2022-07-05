@@ -1486,7 +1486,7 @@ node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
 
 # T285867
 node 'gitlab2001.wikimedia.org' {
-    role(gitlab)
+    role(insetup)
 }
 
 
