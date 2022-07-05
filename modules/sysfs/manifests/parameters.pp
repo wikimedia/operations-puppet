@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sysfs::parameters
 #
 # This custom resource lets you specify sysfs parameters using a Puppet

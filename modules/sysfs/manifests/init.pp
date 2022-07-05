@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: sysfs
 #
 # This Puppet module provides 'sysfs::conffile' and 'sysfs::parameters'
