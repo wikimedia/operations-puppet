@@ -19,8 +19,11 @@ class icinga::monitor::commons {
             check_command => 'check_https_expiry!commons.wikimedia.org!443';
     }
 
-    prometheus::blackbox::check::http { 'commons.wikimedia.org':
-        fqdn               => 'commons.wikimedia.org',
+    $vhost = 'commons.wikimedia.org'
+
+    prometheus::blackbox::check::http { $vhost:
+        ip4                => ipresolve($vhost, 4),
+        ip6                => ipresolve($vhost, 6),
         path               => '/wiki/Main_Page',
         body_regex_matches => ['Picture of the day'],
     }
