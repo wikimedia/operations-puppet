@@ -74,12 +74,13 @@ class bird(
   }
 
   file { '/etc/bird/bird.conf':
-      ensure  => present,
-      owner   => 'bird',
-      group   => 'bird',
-      mode    => '0640',
-      content => template($config_template),
-      notify  => Systemd::Service['bird'],
+      ensure       => present,
+      owner        => 'bird',
+      group        => 'bird',
+      mode         => '0640',
+      content      => template($config_template),
+      validate_cmd => '/usr/sbin/bird -p -c %',
+      notify       => Systemd::Service['bird'],
   }
 
   service { 'prometheus-bird-exporter':
