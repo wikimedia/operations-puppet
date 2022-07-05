@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: nutcracker
 #
 # nutcracker (AKA twemproxy) is a fast and lightweight proxy

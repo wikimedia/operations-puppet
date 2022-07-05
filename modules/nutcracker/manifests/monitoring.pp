@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: nutcracker::monitoring
 #
 # Provisions Icinga alerts for nutcracker.
