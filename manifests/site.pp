@@ -1479,13 +1479,8 @@ node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
     role(gitlab_runner)
 }
 
-# T285867
-node 'gitlab2001.wikimedia.org' {
-    role(insetup)
-}
 
-
-# New gitlab nodes T301183$
+# gitlab nodes codfw (T301183, T285867)
 node 'gitlab2002.wikimedia.org' {
     role(insetup)
 }
