@@ -768,6 +768,11 @@ node 'db2077.codfw.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
+# future codfw sanitarium master
+node 'db2159.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
+}
+
 # s8 (wikidata) core production dbs on eqiad
 # eqiad master
 node 'db1104.eqiad.wmnet' {

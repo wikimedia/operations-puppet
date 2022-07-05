@@ -1,2 +1,4 @@
 # db2159
+# future sanitarium master for s7
+mariadb::shard: 's7'
 profile::monitoring::notifications_enabled: false
