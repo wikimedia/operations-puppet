@@ -729,6 +729,11 @@ node 'db2076.codfw.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
+# future s6 sanitarium master
+node 'db2158.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
+}
+
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # eqiad master
 node 'db1181.eqiad.wmnet' {
