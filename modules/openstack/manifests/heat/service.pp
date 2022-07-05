@@ -15,6 +15,7 @@ class openstack::heat::service(
     String $rabbit_user,
     String $rabbit_pass,
     String[32] $auth_encryption_key,
+    String $domain_admin_pass,
 ) {
     class { "openstack::heat::service::${version}":
         db_user               => $db_user,
@@ -31,6 +32,7 @@ class openstack::heat::service(
         openstack_controllers => $openstack_controllers,
         auth_encryption_key   => $auth_encryption_key,
         region                => $region,
+        domain_admin_pass     => $domain_admin_pass,
     }
 
     service { 'heat-api':

@@ -15,6 +15,7 @@ class openstack::heat::service::wallaby(
     String $rabbit_user,
     String $rabbit_pass,
     String[32] $auth_encryption_key,
+    String $domain_admin_pass,
 ) {
     require "openstack::serverpackages::wallaby::${::lsbdistcodename}"
 

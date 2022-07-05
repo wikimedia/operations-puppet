@@ -59,12 +59,9 @@ region_name_for_services = <%= @region %>
 # value)
 #stack_user_domain_name = <None>
 
-# Keystone username, a user with roles sufficient to manage users and projects in the stack_user_domain. (string value)
-#stack_domain_admin = <None>
-
-# Keystone password for stack_domain_admin user. (string value)
-#stack_domain_admin_password = <None>
-
+stack_domain_admin = heatdomainadm
+stack_domain_admin_password = <%= @domain_admin_pass %>
+stack_user_domain_name = heat
 
 # Key used to encrypt authentication info in the database. Length of this key must be 32 characters. (string value)
 auth_encryption_key = <%= @auth_encryption_key %>

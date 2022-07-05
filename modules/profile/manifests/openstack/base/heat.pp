@@ -12,6 +12,7 @@ class profile::openstack::base::heat(
     String $db_name = lookup('profile::openstack::base::heat::db_name'),
     String $db_pass = lookup('profile::openstack::base::heat::db_pass'),
     String $ldap_user_pass = lookup('profile::openstack::base::heat::service_user_pass'),
+    String $domain_admin_pass = lookup('profile::openstack::codfw1dev::heat::domain_admin_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::heat::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),
     Stdlib::Port $cfn_api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),
@@ -39,6 +40,7 @@ class profile::openstack::base::heat(
         rabbit_pass           => $rabbit_pass,
         auth_encryption_key   => $auth_encryption_key,
         region                => $region,
+        domain_admin_pass     => $domain_admin_pass,
     }
 
     include ::network::constants

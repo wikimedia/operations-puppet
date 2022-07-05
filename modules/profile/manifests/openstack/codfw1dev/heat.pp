@@ -12,6 +12,7 @@ class profile::openstack::codfw1dev::heat(
     Stdlib::Port $cfn_api_bind_port = lookup('profile::openstack::codfw1dev::heat::cfn_api_bind_port'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::heat::service_user_pass'),
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
+    String $domain_admin_pass = lookup('profile::openstack::codfw1dev::heat::domain_admin_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
     String[32] $auth_encryption_key = lookup('profile::openstack::codfw1dev::heat::auth_encryption_key'),
 ) {
@@ -29,5 +30,6 @@ class profile::openstack::codfw1dev::heat(
         rabbit_pass           => $rabbit_pass,
         region                => $region,
         auth_encryption_key   => $auth_encryption_key,
+        domain_admin_pass     => $domain_admin_pass,
     }
 }
