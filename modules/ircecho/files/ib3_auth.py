@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 # -*- coding: utf-8 -*-
 #
 # This file is a cut down and slightly modified part of IRC Bot Behavior Bundle

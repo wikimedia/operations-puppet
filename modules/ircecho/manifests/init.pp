@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # IRC echo class
 # To use this class, you must define some parameters; here's an example
 # (leading hashes on channel names are added for you if missing):

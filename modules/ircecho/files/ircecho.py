@@ -1,4 +1,5 @@
 #!/usr/bin/python -u
+# SPDX-License-Identifier: PDDL-1.0
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 #
 # stdin -> IRC echo bot, with optional file input support.
