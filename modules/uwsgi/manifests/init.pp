@@ -12,6 +12,7 @@ class uwsgi (
     # 'uwsgi-plugins-all'. But I'm going to go out on a limb here and predict
     # that we won't use any except these two.  -- OL
     $plugins = debian::codename() ? {
+        'stretch'  => ['uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.3'],
         'buster'   => ['uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.5'],
         'bullseye' => ['uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.7'],
         default    => fail("${debian::codename()}: not supported"),
