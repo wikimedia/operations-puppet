@@ -58,7 +58,7 @@ define prometheus::blackbox::check::http (
 ) {
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
-    $module_file = "/etc/prometheus/blackbox.yml.d/${safe_title}.yml"
+    $module_title = $safe_title
     $alert_title = "alerts_${safe_title}.yml"
     $target_file = '/srv/prometheus/ops/targets/probes-custom_puppet.yaml'
     $basic_auth = ($auth_username and $auth_password) ? {
@@ -165,10 +165,8 @@ define prometheus::blackbox::check::http (
           },
         ],
     }
-    $module_file_params = {
-        'ensure'  => 'file',
+    $module_params = {
         'content' => $module_config.wmflib::to_yaml,
-        'notify'  => Exec['assemble blackbox.yml'],
         'tag'     => "prometheus::blackbox::check::http::${::site}::module",
     }
     $alert_rule_params  = {
@@ -182,7 +180,7 @@ define prometheus::blackbox::check::http (
         'tag'     => "prometheus::blackbox::check::http::${::site}::target",
     }
 
-    wmflib::resource::export('file', $module_file, $title, $module_file_params)
+    wmflib::resource::export('prometheus::blackbox::module', $module_title, $title, $module_params)
     wmflib::resource::export('prometheus::rule', $alert_title, $title, $alert_rule_params)
     wmflib::resource::export('file', $target_file, $title, $target_frag_params)
 }

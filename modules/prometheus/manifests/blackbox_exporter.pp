@@ -38,13 +38,8 @@ class prometheus::blackbox_exporter(
     }
 
     ['misc', 'common'].each |$frag| {
-        file { "/etc/prometheus/blackbox.yml.d/${frag}.yml":
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
+        prometheus::blackbox::module { $frag:
             content => template("prometheus/blackbox_exporter/${frag}.yml.erb"),
-            notify  => Exec['assemble blackbox.yml'],
         }
     }
 

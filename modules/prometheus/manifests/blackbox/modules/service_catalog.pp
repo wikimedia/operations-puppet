@@ -55,11 +55,7 @@ class prometheus::blackbox::modules::service_catalog (
     $memo + $service_modules
   }
 
-  file { '/etc/prometheus/blackbox.yml.d/service_catalog.yml':
+  prometheus::blackbox::module { 'service_catalog':
     content => to_yaml({'modules' => $modules}),
-    mode    => '0444',
-    owner   => 'root',
-    group   => 'root',
-    notify  => Exec['assemble blackbox.yml'],
   }
 }
