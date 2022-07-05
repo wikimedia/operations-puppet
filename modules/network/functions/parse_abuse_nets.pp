@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary this function parses a Hash of Network::Abuse_net objects and
 #          returns a list of networks appropriate for the context
 # @param abuse_nets a list of abuse networks with meta data indicating

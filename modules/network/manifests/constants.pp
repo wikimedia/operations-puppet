@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class network::constants {
     $module_path = get_module_path($module_name)
     $network_data = loadyaml("${module_path}/data/data.yaml")

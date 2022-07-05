@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Function: slice_network_constants(realm)
 #
 # Return a specific port of network::subnets as a

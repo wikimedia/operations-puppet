@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 require_relative '../../../../rake_modules/spec_helper'
 require 'puppetlabs_spec_helper/puppetlabs_spec/puppet_internals'
 require 'yaml'

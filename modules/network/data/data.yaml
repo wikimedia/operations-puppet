@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://netbox.wikimedia.org/ipam/aggregates/
 network::external: &external
 - 91.198.174.0/24
