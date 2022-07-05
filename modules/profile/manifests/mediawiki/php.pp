@@ -116,18 +116,6 @@ class profile::mediawiki::php(
             'cli' => $config_cli,
             'fpm' => merge($config_cli, $base_config_fpm, $fpm_config)
         }
-        # Add systemd override for php-fpm, that should prevent a reload
-        # if the fpm config files are broken.
-        # This should prevent us from shooting our own foot as happened before.
-        $php_versions.each |$php_version| {
-            $svcname = php::fpm::programname($php_version)
-            systemd::unit { "${svcname}.service":
-                ensure   => present,
-                content  => template('profile/mediawiki/php-fpm-systemd-override.conf.erb'),
-                override => true,
-                restart  => false,
-            }
-        }
     } else {
         $_sapis = ['cli']
         $_config = {
@@ -141,6 +129,71 @@ class profile::mediawiki::php(
         sapis          => $_sapis,
         config_by_sapi => $_config,
         require        => Exec['apt_update_php'],
+    }
+    ### FPM configuration
+    # You can check all configuration options at
+    # http://php.net/manual/en/install.fpm.configuration.php
+    if $enable_fpm {
+        class { 'php::fpm':
+            ensure => present,
+            config => {
+                'emergency_restart_interval'  => '60s',
+                'emergency_restart_threshold' => $facts['processors']['count'],
+                'process.priority'            => -19,
+            }
+        }
+
+        # This will add an fpm pool listening on port $port
+        # We want a minimum of 8 workers, and (we default to 1.5 * number of processors.
+        # That number will be raised. Also move to pm = static as pm = dynamic caused some
+        # edge-case spikes in p99 latency
+        $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
+        $versioned_port = php::fpm::versioned_port($port, $php_versions)
+
+        $php_versions.each |$idx, $php_version| {
+            $fpm_programname = php::fpm::programname($php_version)
+            # Add systemd override for php-fpm, that should prevent a reload
+            # if the fpm config files are broken.
+            # This should prevent us from shooting our own foot as happened before.
+            systemd::unit { "${fpm_programname}.service":
+                ensure   => present,
+                content  => template('profile/mediawiki/php-fpm-systemd-override.conf.erb'),
+                override => true,
+                restart  => false,
+            }
+            # PHP-fpm pools. We replace the default one to avoid puppet's management
+            # of the pools.d directory to cause moments where php-fpm is incorrectly
+            # configured.
+            # The pool for the default version will be named "www" and produce
+            # the socket "/run/php/fpm-www.sock" that is needed by apache.
+            $pool_name = $idx ? {
+                0 => $fcgi_pool,
+                default => "${fcgi_pool}-${php_version}"
+            }
+            php::fpm::pool { $pool_name:
+                filename => 'www',
+                port     => $versioned_port[$php_version],
+                version  => $php_version,
+                config   => {
+                    'pm'                        => 'static',
+                    'pm.max_children'           => $num_workers,
+                    'request_terminate_timeout' => $request_timeout,
+                    'request_slowlog_timeout'   => $slowlog_limit,
+                }
+            }
+
+            # Send logs locally to /var/log/php7.x-fpm/error.log
+            # Please note: this replaces the logrotate rule coming from the package,
+            # because we use syslog-based logging. This will also prevent an fpm reload
+            # for every logrotate run.
+            systemd::syslog { $fpm_programname:
+                base_dir     => '/var/log',
+                owner        => 'www-data',
+                group        => 'wikidev',
+                readable_by  => 'group',
+                log_filename => 'error.log'
+            }
+        }
     }
 
     # Extensions that need no custom settings
@@ -254,71 +307,6 @@ class profile::mediawiki::php(
         package { "php${v}-phpdbg":
             ensure  => $phpdbg.bool2str('installed', 'absent'),
             require => Exec['apt_update_php']
-        }
-    }
-
-    ### FPM configuration
-    # You can check all configuration options at
-    # http://php.net/manual/en/install.fpm.configuration.php
-    if $enable_fpm {
-        class { 'php::fpm':
-            ensure => present,
-            config => {
-                'emergency_restart_interval'  => '60s',
-                'emergency_restart_threshold' => $facts['processors']['count'],
-                'process.priority'            => -19,
-            }
-        }
-
-        # This will add an fpm pool listening on port $port
-        # We want a minimum of 8 workers, and (we default to 1.5 * number of processors.
-        # That number will be raised. Also move to pm = static as pm = dynamic caused some
-        # edge-case spikes in p99 latency
-        $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
-
-
-        # PHP-fpm pools.
-        # We define the pool for the first php version "www" for backwards compatibility.
-        # The pools for the other versions will be called "www-$version" instead.
-        $versioned_port = php::fpm::versioned_port($port, $php_versions)
-        $remaining_versions = $php_versions - $default_php_version
-        php::fpm::pool { $fcgi_pool:
-            port    => $versioned_port[$default_php_version],
-            version => $default_php_version,
-            config  => {
-                'pm'                        => 'static',
-                'pm.max_children'           => $num_workers,
-                'request_terminate_timeout' => $request_timeout,
-                'request_slowlog_timeout'   => $slowlog_limit,
-            }
-        }
-        # Version specific pools
-        $remaining_versions.each |$php_version| {
-            php::fpm::pool { "${fcgi_pool}-${php_version}":
-                port    => $versioned_port[$php_version],
-                version => $php_version,
-                config  => {
-                    'pm'                        => 'static',
-                    'pm.max_children'           => $num_workers,
-                    'request_terminate_timeout' => $request_timeout,
-                    'request_slowlog_timeout'   => $slowlog_limit,
-                }
-            }
-        }
-
-        # Send logs locally to /var/log/php7.x-fpm/error.log
-        # Please note: this replaces the logrotate rule coming from the package,
-        # because we use syslog-based logging. This will also prevent an fpm reload
-        # for every logrotate run.
-        $php_versions.each |$php_version| {
-            $fpm_programname = php::fpm::programname($php_version)
-            systemd::syslog { $fpm_programname:
-                base_dir     => '/var/log',
-                owner        => 'www-data',
-                group        => 'wikidev',
-                readable_by  => 'group',
-                log_filename => 'error.log'
-            }
         }
     }
 
