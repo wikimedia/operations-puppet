@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class osm::osm2pgsql (
     Boolean $use_proxy,
     String $proxy_host,

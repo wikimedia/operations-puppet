@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define osm::populate_admin (
     Wmflib::Ensure $ensure       = present,
     Boolean $disable_admin_timer = false,

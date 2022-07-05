@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class osm::imposm3 (
     String $proxy_host,
     Stdlib::Port $proxy_port,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class osm::prometheus
 # This installs a prometheus Textfile exporter
 #

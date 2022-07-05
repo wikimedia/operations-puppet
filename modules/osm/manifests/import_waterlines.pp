@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Definition: osm::import_waterlines
 #
 # Sets up waterlines

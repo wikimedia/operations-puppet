@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 areas:
   area_tags: [buildings, landuse, leisure, natural, aeroway, amenity]
   linear_tags: [highway, barrier]
