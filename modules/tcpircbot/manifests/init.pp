@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: tcpircbot
 #
 # Base class for tcpircbot, a daemon that reads messages from a TCP socket and

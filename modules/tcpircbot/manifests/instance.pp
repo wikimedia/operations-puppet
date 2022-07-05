@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: tcpircbot::instance
 #
 # Provisions a daemon that maintains a connection to IRC and listens on a
