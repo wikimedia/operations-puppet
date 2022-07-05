@@ -41,13 +41,6 @@ class profile::gitlab(
         }
     }
 
-    prometheus::blackbox::check::http { 'gitlab.wikimedia.org':
-                      team => 'serviceops-collab',
-                  severity => 'critical',
-                      path => '/explore',
-        body_regex_matches => 'DevOps',
-    }
-
     exec {'Reload nginx':
       command     => '/usr/bin/gitlab-ctl hup nginx',
       refreshonly => true,
