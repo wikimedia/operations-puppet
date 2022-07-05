@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: tilerator::regen
 #
 # Provides for periodically regenerating low-zoom map tiles

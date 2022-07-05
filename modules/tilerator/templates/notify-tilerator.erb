@@ -1,4 +1,5 @@
 #!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 
 /usr/bin/flock -xn <%= @osm_dir %>/replicate-osm.lck \
     /usr/bin/nodejs /srv/deployment/tilerator/deploy/node_modules/@wikimedia/tilerator/scripts/tileshell.js \

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: tilerator
 #
 # This class installs and configures tilerator
