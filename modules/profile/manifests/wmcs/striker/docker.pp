@@ -32,9 +32,4 @@ class profile::wmcs::striker::docker(
         environment  => deep_merge($env, $secret_env),
         host_network => true,
     }
-    ferm::service { 'striker_docker':
-        proto  => 'tcp',
-        port   => $port,
-        srange => '$CACHES',
-    }
 }
