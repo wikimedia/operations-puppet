@@ -119,8 +119,14 @@ define prometheus::blackbox::check::http (
         }
         $data
     }
+
+    # Deploy similar (but same alert name, so deduplication works) alerts to
+    # the ones found in alerts.git/team-sre/probes.yaml. See also that file for more
+    # information especially when making changes.
+    # The difference here is the customisation in terms of team/severity and which exporter module to "hook" into
     $alert_config = {
-        'groups' => [{
+        'groups' => [
+          {
             'name'  => 'ssl_expire',
             'rules' => [{
                 'alert'      => 'CertAlmostExpired',
@@ -137,7 +143,27 @@ define prometheus::blackbox::check::http (
                     'runbook'     => 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
                 },
             }],
-        }],
+          },
+          {
+            'name'  => 'puppet_probes',
+            'rules' => [{
+                'alert'      => 'ProbeDown',
+                'expr'       => "avg_over_time(probe_success{module=~'http_${safe_title}_.*'}[1m]) * 100 < 75",
+                'for'         => '2m',
+                'labels'      => {
+                    'team'     => $team,
+                    'severity' => $severity,
+                },
+                'annotations' => {
+                    'description' => '{{ $labels.instance }} failed when probed by {{ $labels.module }} from {{ $externalLabels.site }}. Availability is {{ $value }}%.',
+                    'summary'     => 'Service {{ $labels.instance }} has failed probes ({{ $labels.module }}) #page',
+                    'dashboard'   => 'https://grafana.wikimedia.org/d/O0nHhdhnz/network-probes-overview?var-job={{ $labels.job }}&var-module=All',
+                    'logs'        => 'https://logstash.wikimedia.org/app/dashboards#/view/f3e709c0-a5f8-11ec-bf8e-43f1807d5bc2?_g=(filters:!((query:(match_phrase:(service.name:{{ $labels.module }})))))',
+                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#ProbeDown',
+                },
+            }],
+          },
+        ],
     }
     $module_file_params = {
         'ensure'  => 'file',
