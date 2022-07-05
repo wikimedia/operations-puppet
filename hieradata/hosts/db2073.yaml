@@ -1,3 +1,0 @@
-# db2073
-mariadb::shard: 's4'
-profile::monitoring::notifications_enabled: false
