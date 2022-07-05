@@ -45,7 +45,7 @@ class profile::gitlab(
                       team => 'serviceops-collab',
                   severity => 'critical',
                       path => '/explore',
-        body_regex_matches => 'DevOps',
+        body_regex_matches => ['DevOps'],
     }
 
     exec {'Reload nginx':
