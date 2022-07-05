@@ -59,7 +59,7 @@ define prometheus::blackbox::check::http (
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
     $module_file = "/etc/prometheus/blackbox.yml.d/${safe_title}.yml"
-    $alerts_file = "/srv/prometheus/ops/rules/alerts_${safe_title}.yaml"
+    $alerts_file = "/srv/prometheus/ops/rules/alerts_${safe_title}.yml"
     $target_file = '/srv/prometheus/ops/targets/probes-custom_puppet.yaml'
     $basic_auth = ($auth_username and $auth_password) ? {
         true    => { 'username' => $auth_username, 'password' => $auth_password },
