@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::swiftrepl (
   $ensure,
   $destination_site,

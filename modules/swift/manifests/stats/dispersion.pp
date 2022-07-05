@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::stats::dispersion(
     String $swift_cluster,
     Wmflib::Ensure $ensure = present,

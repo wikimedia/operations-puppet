@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define swift::init_device($partition_nr='1') {
     if ($title !~ /^\/dev\/([hvsl]d[a-z]+|md[0-9]+|lv\-[a-z]+)$/) {
         fail("unable to init ${title} for swift")

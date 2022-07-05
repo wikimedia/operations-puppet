@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define swift::label_filesystem {
     $dev        = $title
     $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')

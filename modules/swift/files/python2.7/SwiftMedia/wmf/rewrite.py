@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Portions Copyright (c) 2010 OpenStack, LLC.
 # Everything else Copyright (c) 2011 Wikimedia Foundation, Inc.
 # all of it licensed under the Apache Software License, included by reference.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class swift::ring_manager
 #
 # @summary Installs the swift_ring_manager tool for automatic

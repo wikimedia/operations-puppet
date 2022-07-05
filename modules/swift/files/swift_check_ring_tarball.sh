@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # check_ring_tarball.sh - checks the contents of a ring tarball ($1)
 # specifically:
 # that every .builder file therein passes swift-ring-builder validate

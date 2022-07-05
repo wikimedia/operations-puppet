@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::container_sync (
     Hash[String, Hash] $accounts,
     Hash[String, Hash] $keys,

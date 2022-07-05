@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::stats::accounts(
     String $swift_cluster,
     Hash[String, Hash] $accounts,

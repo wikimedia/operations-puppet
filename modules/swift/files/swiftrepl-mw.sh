@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Launch swiftrepl on mediawiki-managed containers to ensure they are
 # synchonized across sites. During normal operation FileBackend takes care of
 # writing to both sites, however there might be occasional failures which will

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 
 # report swift container statistics, by default on stdout and optionally to
 # a statsd server via UDP.

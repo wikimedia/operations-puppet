@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::storage (
     $statsd_host                      = undef,
     $statsd_port                      = 8125,

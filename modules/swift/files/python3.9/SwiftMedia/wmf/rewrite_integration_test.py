@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 
 # quick integration test to assess basic functionality of the rewrite
 # middleware (e.g. to test a swift upgrade)

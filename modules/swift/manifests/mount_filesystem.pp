@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define swift::mount_filesystem (
     $mount_base = '/srv/swift-storage',
 ){

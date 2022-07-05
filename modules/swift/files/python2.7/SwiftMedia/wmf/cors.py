@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class CORS(object):
     """Poor man's Wildcard CORS support for Swift <= 1.7.4"""
 

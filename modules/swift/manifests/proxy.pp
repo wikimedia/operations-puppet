@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::proxy (
     $proxy_service_host,
     $shard_container_list,

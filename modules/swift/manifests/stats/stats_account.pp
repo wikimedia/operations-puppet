@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define swift::stats::stats_account (
     $accounts,
     $statsd_prefix,

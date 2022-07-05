@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::expirer (
     $ensure,
     $statsd_host               = undef,

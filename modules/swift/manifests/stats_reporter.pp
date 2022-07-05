@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class swift::stats_reporter (
     Wmflib::Ensure       $ensure,
     String               $swift_cluster,

@@ -1,4 +1,5 @@
 # Shorten loopback device name to workaround xfs label limitation
+# SPDX-License-Identifier: Apache-2.0
 KERNEL=="loop0", SYMLINK+="lda"
 KERNEL=="loop0p*", SYMLINK+="lda%n"
 KERNEL=="loop1", SYMLINK+="ldb"
