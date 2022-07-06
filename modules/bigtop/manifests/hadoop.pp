@@ -481,23 +481,15 @@ class bigtop::hadoop(
         require => Package['hadoop-client'],
     }
 
-    # From Buster onward, we want to have fixed uid/gids for Hadoop daemons.
+    # We use fixed uid/gids for Hadoop daemons.
     # We manage service system users in puppet classes, but declare
     # commented placeholders for them in the admin module's data.yaml file
     # to ensure that people don't accidentally add uid/gid conflicts.
-    if debian::codename::ge('buster') {
-        $hdfs_uid = 903
-        $yarn_uid = 904
-        $mapred_uid = 905
+    $hdfs_uid = 903
+    $yarn_uid = 904
+    $mapred_uid = 905
 
-        $hadoop_gid = 908
-    } else {
-        $hdfs_uid = undef
-        $yarn_uid = undef
-        $mapred_uid = undef
-
-        $hadoop_gid = undef
-    }
+    $hadoop_gid = 908
 
     # Main group gids should match uids.
     $hdfs_gid = $hdfs_uid
