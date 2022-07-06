@@ -157,6 +157,10 @@ profile::services_proxy::envoy::listeners:
     port: 6029
     service: linkrecommendation
     timeout: "10s"
+  - name: image-suggestion
+    port: 6030
+    service: image-suggestion
+    timeout: "10s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -280,3 +284,4 @@ profile::services_proxy::envoy::enabled_listeners:
   - cloudelastic-psi-eqiad
   - mwapi
   - linkrecommendation
+  - image-suggestion
