@@ -1566,11 +1566,6 @@ node 'cloudcontrol2005-dev.wikimedia.org' {
     role(insetup)
 }
 
-# new cloudnet1005 and 1006 servers T304888
-node /cloudnet100[56]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
 # new cloudrabbit servers T304888
 node /cloudrabbit100[123]\.wikimedia\.org/ {
     role(insetup)
@@ -1782,6 +1777,11 @@ node /^cloudelastic100[1-6]\.wikimedia\.org$/ {
 
 node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
+}
+
+# new cloudnet1005 and 1006 servers T304888
+node /cloudnet100[56]\.eqiad\.wmnet$/ {
+    role(insetup)
 }
 
 ## Multi-instance wikireplica dbs
