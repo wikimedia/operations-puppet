@@ -91,17 +91,13 @@ class install_server::dhcp_server (
       content => template('install_server/dhcpincludes.yaml.erb')
     }
 
-    # TODO: Fold this into modules/install/dhcpd once
-    # all jessie-based install servers are replaced.
-    if debian::codename::ge('buster') {
-        file_line { 'dhcpd_interfaces':
-          ensure  => present,
-          path    => '/etc/default/isc-dhcp-server',
-          line    => "INTERFACESv4=\"${facts['interface_primary']}\"  # Managed by puppet",
-          match   => "INTERFACESv4=\"\"",
-          require => Package['isc-dhcp-server'],
-          notify  => Service['isc-dhcp-server'],
-        }
+    file_line { 'dhcpd_interfaces':
+        ensure  => present,
+        path    => '/etc/default/isc-dhcp-server',
+        line    => "INTERFACESv4=\"${facts['interface_primary']}\"  # Managed by puppet",
+        match   => "INTERFACESv4=\"\"",
+        require => Package['isc-dhcp-server'],
+        notify  => Service['isc-dhcp-server'],
     }
 
     service { 'isc-dhcp-server':
