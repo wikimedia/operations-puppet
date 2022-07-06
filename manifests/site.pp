@@ -1470,12 +1470,7 @@ node /^ganeti600[1234]\.drmrs\.wmnet$/ {
     role(ganeti)
 }
 
-# T274459
-node 'gitlab1001.wikimedia.org' {
-    role(gitlab)
-}
-
-# New gitlab nodes T301177
+# gitlab servers - eqiad (T274459, T301177)
 node 'gitlab1003.wikimedia.org' {
     role(gitlab)
 }
@@ -1484,13 +1479,13 @@ node 'gitlab1004.wikimedia.org' {
     role(gitlab)
 }
 
-# T301177 - gitlab-runner physical machines
+# gitlab runners - eqiad (T301177)
 node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
     role(gitlab_runner)
 }
 
 
-# gitlab nodes codfw (T301183, T285867)
+# gitlab servers - codfw (T301183, T285867)
 node 'gitlab2002.wikimedia.org' {
     role(insetup)
 }
@@ -1499,7 +1494,7 @@ node /^gitlab2003\.wikimedia\.org$/ {
     role(insetup)
 }
 
-# T3011183 - gitlab-runner physical machines
+# gitlab runners - codfw (T3011183)
 node /^gitlab-runner200[234]\.codfw\.wmnet$/ {
     role(gitlab_runner)
 }
