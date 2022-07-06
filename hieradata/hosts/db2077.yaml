@@ -1,3 +1,2 @@
 # db2077
-# sanitarium master for s7
 mariadb::shard: 's7'
