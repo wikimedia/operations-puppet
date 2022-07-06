@@ -23,13 +23,6 @@ server {
 
     listen 80;
 
-    # Force https
-    if ($http_x_forwarded_proto != 'https') {
-        return 301 https://$host$request_uri;
-    }
-    # Tell browsers to use https for 24 hours even if they find an http link
-    add_header Strict-Transport-Security "max-age=86400";
-
     # Block requests with no UA string
     if ($http_user_agent = "") {
         return 403 "Requests must have a user agent";
