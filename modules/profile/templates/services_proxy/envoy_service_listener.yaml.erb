@@ -42,9 +42,12 @@ filter_chains:
           - match:
               prefix: "/"
             route:
-  <%- if @listener['http_host'] -%>
-              host_rewrite: <%= @listener['http_host'] %>
-  <%- end -%>
+              <%- if @listener['http_host'] -%>
+              host_rewrite_literal: <%= @listener['http_host'] %>
+              <%- end -%>
+              <%- if @listener['uses_ingress'] && !@listener['http_host'] -%>
+              auto_host_rewrite: true
+              <%- end -%>
               cluster: <%= @svc_name %>
               timeout: <%= @listener['timeout'] %>
               retry_policy:

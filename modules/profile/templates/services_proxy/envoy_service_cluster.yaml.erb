@@ -27,6 +27,9 @@ transport_socket:
   name: envoy.transport_sockets.tls
   typed_config:
     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    <%- if @listener['uses_ingress'] -%>
+    sni: <%= @address %>
+    <%- end -%>
     common_tls_context:
        tls_params:
          tls_minimum_protocol_version: TLSv1_2

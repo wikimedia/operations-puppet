@@ -52,7 +52,7 @@ describe 'profile::services_proxy::envoy' do
         }
         it {
           is_expected.to contain_envoyproxy__listener('commons')
-                           .with_content(/host_rewrite: commons.wikimedia.org/)
+                           .with_content(/host_rewrite_literal: commons.wikimedia.org/)
                            .with_content(/value: "https"/)
                            .with_content(/retry_on: "5xx"/)
                            .with_content(/num_retries: 1/)

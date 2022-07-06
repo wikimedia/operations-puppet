@@ -57,6 +57,7 @@ class profile::kubernetes::deployment_server::global_config(
                 'timeout'   => $listener['timeout'],
                 'retry_policy' => $listener['retry'],
                 'xfp' => $listener['xfp'],
+                'uses_ingress' => $listener['uses_ingress'],
                 'upstream' => {
                     'ips' => $ip_addresses,
                     'address' => $address,

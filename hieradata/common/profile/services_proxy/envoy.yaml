@@ -161,6 +161,7 @@ profile::services_proxy::envoy::listeners:
     port: 6030
     service: image-suggestion
     timeout: "10s"
+    uses_ingress: true
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
