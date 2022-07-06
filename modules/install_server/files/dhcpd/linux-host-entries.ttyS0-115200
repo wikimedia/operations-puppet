@@ -309,6 +309,36 @@ host dragonfly-supernode2001 {
     fixed-address dragonfly-supernode2001.codfw.wmnet;
 }
 
+host dse-k8s-ctrl1001 {
+    hardware ethernet aa:00:00:e9:84:01;
+    fixed-address dse-k8s-ctrl1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
+host dse-k8s-ctrl1002 {
+    hardware ethernet  aa:00:00:f5:78:ea;
+    fixed-address dse-k8s-ctrl1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
+host dse-k8s-etcd1001 {
+    hardware ethernet aa:00:00:2a:e6:8f;
+    fixed-address dse-k8s-etcd1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
+host dse-k8s-etcd1002 {
+    hardware ethernet aa:00:00:d2:aa:17;
+    fixed-address dse-k8s-etcd1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
+host dse-k8s-etcd1003 {
+    hardware ethernet  aa:00:00:95:2e:30;
+    fixed-address dse-k8s-etcd1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host durum1001 {
     hardware ethernet aa:00:00:06:72:7b;
     fixed-address durum1001.eqiad.wmnet;
