@@ -1,3 +1,2 @@
 # db2076
-# sanitarium master for s6
 mariadb::shard: 's6'
