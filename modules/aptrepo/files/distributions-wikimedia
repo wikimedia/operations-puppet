@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
+# Remember to run any needed commands when adding/removing entries, see:
+#   https://wikitech.wikimedia.org/wiki/Reprepro
 Origin: Wikimedia
 Label: Wikimedia
 Suite: stretch-wikimedia
