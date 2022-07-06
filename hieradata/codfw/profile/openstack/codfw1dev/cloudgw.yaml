@@ -55,10 +55,6 @@ profile::openstack::codfw1dev::cloudgw::dmz_cidr:
  - "208.80.153.252"
  # VMs --> nfs-maps.wikimedia.org
  - "208.80.155.119"
- # VMs --> cloudstore1009.wikimedia.org
- - "208.80.155.126"
- # VMs --> cloudstore1008.wikimedia.org
- - "208.80.155.125"
  # the following should match what's in homer/public.git cloud-in4 filter
  # there is no other access (NAT or not) to other 10.x.x.x services anyway
  # VMs --> nfs-tools-project.svc.eqiad.wmnet
