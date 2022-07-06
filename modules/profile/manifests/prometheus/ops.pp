@@ -301,12 +301,10 @@ class profile::prometheus::ops (
     }
 
     # Checks for custom probes, defined in puppet
-    wmflib::resource::import('prometheus::blackbox::module', undef, { tag => "prometheus::blackbox::check::http::${::site}::module" })
-    wmflib::resource::import('prometheus::rule', undef, { tag => "prometheus::blackbox::check::http::${::site}::alert" })
-    # TODO: the following will concatenate all content simlar to the puppetlabs::concat module
-    # We need to check if we need to inser addtional line breaks (\n)
-    # also if we want to do something similar for alert files?
-    wmflib::resource::import('file', undef, { tag => "prometheus::blackbox::check::http::${::site}::target" }, true)
+    prometheus::blackbox::import_checks { 'ops':
+      prometheus_instance => 'ops',
+      site                => $::site,
+    }
 
     # Export local textfile metrics.
     # Restricted to localhost (i.e. Prometheus hosts) and used to export

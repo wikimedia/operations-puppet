@@ -27,6 +27,7 @@
 # @param auth_username username used for basic auth
 # @param auth_password password used for basic auth
 # @param useragent the useragent to use
+# @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
 define prometheus::blackbox::check::http (
     Stdlib::Fqdn                            $fqdn                    = $title,
     Stdlib::Fqdn                            $target                  = $facts['networking']['hostname'],
@@ -55,12 +56,13 @@ define prometheus::blackbox::check::http (
     Optional[String[1]]                     $auth_username           = undef,
     Optional[String[1]]                     $auth_password           = undef,
     Optional[String[1]]                     $useragent               = undef,
+    String                                  $prometheus_instance     = 'ops',
 ) {
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
     $module_title = $safe_title
     $alert_title = "alerts_${safe_title}.yml"
-    $target_file = '/srv/prometheus/ops/targets/probes-custom_puppet.yaml'
+    $target_file = "/srv/prometheus/${prometheus_instance}/targets/probes-custom_puppet.yaml"
     $basic_auth = ($auth_username and $auth_password) ? {
         true    => { 'username' => $auth_username, 'password' => $auth_password },
         default => undef,
@@ -167,17 +169,17 @@ define prometheus::blackbox::check::http (
     }
     $module_params = {
         'content' => $module_config.wmflib::to_yaml,
-        'tag'     => "prometheus::blackbox::check::http::${::site}::module",
+        'tag'     => "prometheus::blackbox::check::http::${::site}::${prometheus_instance}::module",
     }
     $alert_rule_params  = {
-        'instance' => 'ops',
+        'instance' => $prometheus_instance,
         'content' => $alert_config.wmflib::to_yaml,
-        'tag'     => "prometheus::blackbox::check::http::${::site}::alert",
+        'tag'     => "prometheus::blackbox::check::http::${::site}::${prometheus_instance}::alert",
     }
     $target_frag_params = {
         'ensure'  => 'file',
         'content' => $target_config.wmflib::to_yaml,
-        'tag'     => "prometheus::blackbox::check::http::${::site}::target",
+        'tag'     => "prometheus::blackbox::check::http::${::site}::${prometheus_instance}::target",
     }
 
     wmflib::resource::export('prometheus::blackbox::module', $module_title, $title, $module_params)
