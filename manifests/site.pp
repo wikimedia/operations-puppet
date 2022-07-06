@@ -859,7 +859,7 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 }
 
 ## m1 shard
-# See also multiinstance misc hosts db1117 and db2078 below
+# See also multiinstance misc hosts db1117, db2160 and db2078 below
 
 # m1 master T309286
 node 'db1164.eqiad.wmnet' {
@@ -873,7 +873,7 @@ node 'db2132.codfw.wmnet' {
 }
 
 ## m2 shard
-# See also multiinstance misc hosts db1117 and db2078 below
+# See also multiinstance misc hosts db1117, db2160 and db2078 below
 
 # m2 eqiad master
 node 'db1159.eqiad.wmnet' {
@@ -886,7 +886,7 @@ node 'db2133.codfw.wmnet' {
 }
 
 ## m3 shard
-# See also multiinstance misc hosts db1117 and db2078 below
+# See also multiinstance misc hosts db1117, db2160 and db2078 below
 
 # m3 master
 node 'db1183.eqiad.wmnet' {
@@ -904,7 +904,7 @@ node 'db1108.eqiad.wmnet' {
 }
 
 ## m5 shard
-# See also multiinstance misc hosts db1117 and db2078 below
+# See also multiinstance misc hosts db1117, db2160 and db2078 below
 
 # m5 eqiad master T301654
 node 'db1107.eqiad.wmnet' {
@@ -921,6 +921,11 @@ node 'db1117.eqiad.wmnet' {
     role(mariadb::misc::multiinstance)
 }
 node 'db2078.codfw.wmnet' {
+    role(mariadb::misc::multiinstance)
+}
+
+# future misc multi-instance to replace db2078
+node 'db2160.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
 }
 
@@ -957,7 +962,7 @@ node 'db2151.codfw.wmnet' {
 }
 
 # New db nodes /T306927
-node /^db21(6[0-9]|7[0-4])\.codfw\.wmnet/ {
+node /^db21(6[1-9]|7[0-4])\.codfw\.wmnet/ {
     role(insetup)
 }
 
