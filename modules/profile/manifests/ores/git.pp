@@ -15,16 +15,14 @@ class profile::ores::git {
   # down binaries anymore on the target nodes, leaving only text files with SHAs.
   # Running `git lfs install --system` solved the issue, but it caused
   # /etc/gitconfig to be modified, and we prefer to use puppet.
-  if debian::codename::ge('buster') {
-      git::systemconfig { 'lfs-filters':
-          settings => {
-              'filter "lfs"' => {
-                  'clean'    => 'git-lfs clean -- %f',
-                  'smudge'   => 'git-lfs smudge -- %f',
-                  'process'  =>  'git-lfs filter-process',
-                  'required' => 'true',
-                }
-          }
-      }
-  }
+    git::systemconfig { 'lfs-filters':
+        settings => {
+            'filter "lfs"' => {
+                'clean'    => 'git-lfs clean -- %f',
+                'smudge'   => 'git-lfs smudge -- %f',
+                'process'  =>  'git-lfs filter-process',
+                'required' => 'true',
+            }
+        }
+    }
 }

@@ -16,11 +16,6 @@ class ores::base(
         'enchant',
     ])
 
-    # this package got renamed in buster
-    $hunspell_nl = debian::codename::lt('buster') ? {
-        true    => 'myspell-nl',
-        default => 'hunspell-nl',
-    }
     # Spellcheck packages for supported languages
     ensure_packages([
         'aspell-ar',
@@ -48,7 +43,7 @@ class ores::base(
         'myspell-pt-br',
         'myspell-ru',
         'myspell-hr',
-        $hunspell_nl,
+        'hunspell-nl',
         'hunspell-bs',
         'hunspell-ca',
         'hunspell-en-us',
@@ -58,13 +53,6 @@ class ores::base(
         'hunspell-it',
         'hunspell-sr',
         'hunspell-vi',
+        'hunspell-id',
     ])
-
-    # NOTE: aspell-id is imported in our apt up to Stretch:
-    # https://apt.wikimedia.org/wikimedia/pool/thirdparty/a/aspell-id/
-    if debian::codename::ge('buster') {
-        ensure_packages('hunspell-id')
-    } else {
-        ensure_packages('aspell-id')
-    }
 }
