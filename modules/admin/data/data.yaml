@@ -623,6 +623,7 @@ groups:
                  'ALL = (syslog) NOPASSWD: ALL',
                  'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.provision',
                  'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.reimage',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.network.configure-switch-interfaces',
                  'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.dns.netbox']
     approval:
       - Willy Pao
