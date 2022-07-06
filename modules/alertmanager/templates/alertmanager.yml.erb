@@ -156,6 +156,15 @@ route:
         - match:
             severity: 'warning'
           receiver: 'wmcs-ircmail'
+    - match:
+        team: 'abstract-wikipedia'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'abstract-wikipedia-critical'
+        - match:
+            severity: 'warning'
+          receiver: 'abstract-wikipedia-warning'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -411,6 +420,20 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
     - to: 'fr-tech@<%= @facts['networking']['domain'] %>'
+
+- name: 'abstract-wikipedia-warning'
+  webhook_configs:
+    # #abstract wikipedia team IRC
+    - url: 'http://<%= @active_host %>:19190/abstract-wikipedia-alerts'
+
+- name: 'abstract-wikipedia-critical'
+  webhook_configs:
+    # #abstract wikipedia team IRC & email
+    - url: 'http://<%= @active_host %>:19190/abstract-wikipedia-alerts'
+  email_configs:
+    - to: 'abstract@<%= @facts['networking']['domain'] %>'
+    send_resolved: true
+
 
 inhibit_rules:
   # When ICMP has failed, inhibit TCP/UDP/HTTP since we know they can't
