@@ -1,4 +1,3 @@
 # db2158
 # future sanitarium master for s6
 mariadb::shard: 's6'
-profile::monitoring::notifications_enabled: false
