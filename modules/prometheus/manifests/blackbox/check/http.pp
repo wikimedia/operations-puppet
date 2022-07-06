@@ -126,9 +126,9 @@ define prometheus::blackbox::check::http (
     # the ones found in alerts.git/team-sre/probes.yaml. See also that file for more
     # information especially when making changes.
     # The difference here is the customisation in terms of team/severity and which exporter module to "hook" into
-    $alert_config = {
-        'groups' => [
-          {
+
+    if $use_tls {
+        $tls_alert = {
             'name'  => 'ssl_expire',
             'rules' => [{
                 'alert'      => 'CertAlmostExpired',
@@ -145,7 +145,14 @@ define prometheus::blackbox::check::http (
                     'runbook'     => 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
                 },
             }],
-          },
+        }
+    } else {
+        $tls_alert = undef
+    }
+
+    $alert_config = {
+        'groups' => [
+          $tls_alert,
           {
             'name'  => 'puppet_probes',
             'rules' => [{
@@ -165,7 +172,7 @@ define prometheus::blackbox::check::http (
                 },
             }],
           },
-        ],
+        ].filter |$alert| { $alert != undef },
     }
     $module_params = {
         'content' => $module_config.wmflib::to_yaml,
