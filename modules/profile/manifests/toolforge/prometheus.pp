@@ -18,6 +18,12 @@ class profile::toolforge::prometheus (
 
     include ::profile::prometheus::blackbox_exporter
 
+    # Checks for custom probes, defined in puppet
+    prometheus::blackbox::import_checks { 'tools':
+        prometheus_instance => 'tools',
+        site                => $::site,
+    }
+
     $targets_path = '/srv/prometheus/tools/targets'
 
     class { '::httpd':
@@ -199,6 +205,51 @@ class profile::toolforge::prometheus (
         )
     }
 
+    # Relabel configuration to support for targets in the following forms to
+    # keep 'instance' label readable:
+    # - bare target (i.e. no @) -> copy unmodified to 'instance'
+    # - target in the form of foo@bar -> use foo as 'instance' and 'bar' as target
+
+    # This allows targets in the form of e.g.:
+    # - target: 'foo:443@https://foo.discovery.wmnet:443/path'
+    # will become:
+    # - instance: 'foo:443' (for usage as metric label)
+    # - target: 'https://foo.discovery.wmnet:443/path' (full url for blackbox to probe)
+
+    # Note that all regex here are implicitly anchored (^<regex>$)
+    $probes_relabel_configs = [
+        {
+            'source_labels' => ['__address__'],
+            'regex'         => '([^@]+)',
+            'target_label'  => 'instance',
+        },
+        {
+            'source_labels' => ['__address__'],
+            'regex'         => '([^@]+)',
+            'target_label'  => '__param_target',
+        },
+        {
+            'source_labels' => ['__address__'],
+            'regex'         => '(.+)@(.+)',
+            'target_label'  => 'instance',
+            'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
+        },
+        {
+            'source_labels' => ['__address__'],
+            'regex'         => '(.+)@(.+)',
+            'target_label'  => '__param_target',
+            'replacement'   => '${2}', # lint:ignore:single_quote_string_with_variables
+        },
+        {
+            'source_labels' => ['module'],
+            'target_label'  => '__param_module',
+        },
+        {
+            'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+        },
+    ]
+
     $manual_jobs = [
         # this is in manual and not $kubernetes_pod_jobs
         # as it scrapes nodes, not jobs
@@ -231,6 +282,19 @@ class profile::toolforge::prometheus (
                     # lint:endignore
                 },
             ]
+        },
+        {
+            'job_name'        => 'probes/custom',
+            'metrics_path'    => '/probe',
+            'scrape_interval' => '30s',
+            # blackbox-exporter will use the lower value between this and
+            # the module configured timeout. We want the latter, therefore
+            # set a high timeout here (but no longer than scrape_interval)
+            'scrape_timeout'  => '30s',
+            'file_sd_configs' => [
+              { 'files' => [ "${targets_path}/probes-custom_*.yaml" ] }
+            ],
+            'relabel_configs' => $probes_relabel_configs,
         },
     ]
 
