@@ -670,6 +670,9 @@ zookeeper_clusters:
       conf1004.eqiad.wmnet: '1104'
       conf1005.eqiad.wmnet: '1105'
       conf1006.eqiad.wmnet: '1106'
+      conf1007.eqiad.wmnet: '1107'
+      conf1008.eqiad.wmnet: '1108'
+      conf1009.eqiad.wmnet: '1109'
 
   main-codfw:
     hosts:
@@ -1544,6 +1547,12 @@ zookeeper_hosts_main:
 - 2620:0:861:102:10:64:16:29   # conf1005.eqiad.wmnet
 - 10.64.48.167                 # conf1006.eqiad.wmnet
 - 2620:0:861:107:10:64:48:167  # conf1006.eqiad.wmnet
+- 10.64.0.207                  # conf1007.eqiad.wmnet
+- 2620:0:861:101:10:64:0:207   # conf1007.eqiad.wmnet
+- 10.64.16.110                 # conf1008.eqiad.wmnet
+- 2620:0:861:102:10:64:16:110  # conf1008.eqiad.wmnet
+- 10.64.48.154                 # conf1009.eqiad.wmnet
+- 2620:0:861:107:10:64:48:154  # conf1009.eqiad.wmnet
 - 10.192.16.45                 # conf2004.codfw.wmnet
 - 2620:0:860:102:10:192:16:45  # conf2004.codfw.wmnet
 - 10.192.32.52                 # conf2005.codfw.wmnet

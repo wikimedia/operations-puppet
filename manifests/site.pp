@@ -394,7 +394,7 @@ node /^conf[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^conf100[789]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(configcluster)
 }
 
 # Test zookeeper in eqiad
