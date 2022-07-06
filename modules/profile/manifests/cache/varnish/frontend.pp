@@ -214,6 +214,9 @@ class profile::cache::varnish::frontend (
         service => 'varnish-frontend.service',
     }
 
+    # Monitor the mmap usage of varnish; Make sure it doesn't exceed the system limits
+    class { 'prometheus::node_sysctl': }
+
     monitoring::check_prometheus { 'varnishd-mmap-count':
         description     => 'Varnish number of memory map areas',
         query           => "scalar(varnishd_mmap_count{instance=\"${facts['networking']['hostname']}:9100\"})",
