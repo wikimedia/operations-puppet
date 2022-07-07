@@ -1,5 +1,12 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 ExecStart=
-ExecStart=/usr/bin/thanos compact --http-address <%= @http_address %> --data-dir <%= @data_dir %> --objstore.config-file <%= @objstore_config_file %> --retention.resolution-raw <%= @retention %> --retention.resolution-5m <%= @retention %> --retention.resolution-1h <%= @retention %> --compact.concurrency <%= @concurrency %> --wait
-
+ExecStart=/usr/bin/thanos compact \
+  --http-address <%= @http_address %> \
+  --data-dir <%= @data_dir %> \
+  --objstore.config-file <%= @objstore_config_file %> \
+  --retention.resolution-raw <%= @retention_raw %> \
+  --retention.resolution-5m <%= @retention_5m %> \
+  --retention.resolution-1h <%= @retention_1h %> \
+  --compact.concurrency <%= @concurrency %> \
+  --wait

@@ -10,7 +10,9 @@
 # [*objstore_account*] The account to use to access object storage
 # [*objstore_password*] The password to access object storage
 # [*http_port*] The port to use for HTTP
-# [*retention*] How long to retain samples (all resolutions)
+# [*retention_raw*] How long to retain raw samples
+# [*retention_5m*] How long to retain 5m resolution samples
+# [*retention_1h*] How long to retain 1h resolution samples
 # [*concurrency*] How many cores to use while compacting
 
 class thanos::compact (
@@ -18,7 +20,9 @@ class thanos::compact (
     Hash[String, String] $objstore_account,
     String $objstore_password,
     Wmflib::Ensure $ensure = present,
-    String $retention = '60w',
+    String $retention_raw = '60w',
+    String $retention_5m = '60w',
+    String $retention_1h = '60w',
     Stdlib::Port::Unprivileged $http_port = 12902,
     Integer $concurrency = max($::processorcount / 2, 1),
 ) {
