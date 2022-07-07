@@ -1562,7 +1562,7 @@ node 'cloudcontrol2005-dev.wikimedia.org' {
 }
 
 # new cloudrabbit servers T304888
-node /cloudrabbit100[123]\.wikimedia\.org/ {
+node /^cloudrabbit100[123]\.wikimedia\.org/ {
     role(insetup)
 }
 
@@ -1750,6 +1750,10 @@ node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
+node /^cloudcontrol100[67]\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # ceph monitor nodes
 node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
@@ -1775,7 +1779,7 @@ node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
 }
 
 # new cloudnet1005 and 1006 servers T304888
-node /cloudnet100[56]\.eqiad\.wmnet$/ {
+node /^cloudnet100[56]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
