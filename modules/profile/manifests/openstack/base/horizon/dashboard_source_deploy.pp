@@ -42,12 +42,6 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
 
     contain '::openstack::horizon::source_deploy'
 
-    ferm::service { 'horizon_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$DOMAIN_NETWORKS'
-    }
-
     # Horizon error logs to ELK.  The Apache log is called horizon_error
     #  but it contains anything that the Horizon python code logs.
     #
