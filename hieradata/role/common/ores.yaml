@@ -156,7 +156,7 @@ profile::prometheus::statsd_exporter::mappings:
     action: 'drop'
     match_type: 'regex'
 
-profile::ores::logstash_host: localhost
+profile::ores::logstash_host: 127.0.0.1
 service::configuration::logstash_host: localhost
 
 # envoy for TLS between ATS and backend servers
