@@ -7,6 +7,20 @@ profile::cache::haproxy::acls:
     criterion: res.hdr(X-Cache-Status)
     operator: -m str
     value: pass
+  - name: backend_saturation
+    criterion: be_conn
+    operator: gt
+    value: '250'
+  - name: concurrent_queries
+    criterion: sc0_trackers(misspassrate)
+    operator: gt
+    value: '10'
+
+profile::cache::haproxy::vars:
+  - direction: request
+    name: req.dummy_connection_drop
+    value: src,debug(would_drop,stderr)
+    acl: backend_saturation concurrent_queries
 
 profile::cache::haproxy::sticktables:
   - name: misspassrate
@@ -34,5 +48,8 @@ profile::cache::haproxy::stickycounters:
 
 lookup_options:
   profile::cache::haproxy::acls:
+    merge:
+      strategy: unique
+  profile::cache::haproxy::vars:
     merge:
       strategy: unique
