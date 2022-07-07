@@ -48,6 +48,9 @@ profile::swift::stats_reporter_host: 'thanos-fe1001.eqiad.wmnet'
 profile::thanos::store::max_time: '-15d'
 profile::thanos::swift::memcached_size_mb: 768
 
+# Retention custom settings -- see also T311690
+profile::thanos::retention::raw: '54w'
+
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
   - match: swift.*.*.tempauth.AUTH_.errors
