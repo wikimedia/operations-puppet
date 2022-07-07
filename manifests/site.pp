@@ -602,7 +602,7 @@ node 'db2105.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db2(074|109|127|149)\.codfw\.wmnet/ {
+node /^db2(109|127|149)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
