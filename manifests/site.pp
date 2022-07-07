@@ -1779,7 +1779,7 @@ node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
 }
 
 # new cloudnet1005 and 1006 servers T304888
-node /^cloudnet100[56]\.eqiad\.wmnet$/ {
+node /^cloudnet100[5-6]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
