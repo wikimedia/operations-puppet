@@ -22,7 +22,8 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman]
+              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
+              aniketars]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -364,7 +365,7 @@ groups:
               effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
+              tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               ricby]
@@ -5053,16 +5054,12 @@ users:
     email: mana@wikimedia.org
     ssh_keys: []
   aniketars:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 37173
     realname: Aniket Bharti
-    email: aniket.code.ars@gmail.com
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGk3CgXqD8AxkboJ22zxWQ1CYDhaRuSgiV2A32G+Z9SL aniket@ars
-    krb: present
-    expiry_date: 2022-07-07
-    expiry_contact: miriam@wikimedia.org
+    ssh_keys: []
+    krb: absent
   tandic:
     ensure: present
     gid: 500
