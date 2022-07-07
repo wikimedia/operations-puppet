@@ -81,6 +81,7 @@ class profile::vrts(
                       team => 'serviceops-collab',
                   severity => 'critical',
                       path => '/otrs',
+                      port => 1443,
         body_regex_matches => ['wikimedia'],
     }
 
