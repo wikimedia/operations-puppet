@@ -22,7 +22,7 @@ counter mediawiki_http_bad_format_lines_total
 /(?P<date>\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2})\t/ + # %{%Y-%m-%dT%H:%M:%S}t the response timestamp, in date format.
 /(?P<time_us>\d+)\t/ +   # %D - The time taken to serve the request, in microseconds.
 /\S+\t/ + # %a the client ip
-/(?P<handler>(\-|proxy:unix:\/run\/php\/fpm-www(-\d\.\d)*?.sock\|fcgi:\/\/localhost))\// + # %R/ the handler for the request
+/(?P<handler>(\-|proxy:unix:\/run\/php\/fpm-www(-\d\.\d)*?.sock\|fcgi:\/\/(localhost|www-\d\.\d)))\// + # %R/ the handler for the request
 /(?P<code>\d+)\t/ +      # %>s the http status code
 /(?P<resp_size>\d+)\t/ + # %B response size (bytes)
 /(?P<method>[A-Z]+)\t/ + # %m - The request method.

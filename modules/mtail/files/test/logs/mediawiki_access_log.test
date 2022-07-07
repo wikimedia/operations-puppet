@@ -10,4 +10,4 @@
 
 2019-07-02T02:02:02	1511	1.2.3.4	-/301	123	GET	http://wikipedia.org/wiki/James_McAvoy	-
 2019-07-02T02:02:02	1511	1.2.3.4	-/404	1296	GET	http://wuu.wikipedia.org/apple-touch-icon-152x152.png	-
-2019-07-02T02:02:02	110000	1.2.3.4	proxy:unix:/run/php/fpm-www-7.4.sock|fcgi://localhost/200	38886	GET	http://fr.wikipedia.org/wiki/Mirka	-
+2019-07-02T02:02:02	110000	1.2.3.4	proxy:unix:/run/php/fpm-www-7.4.sock|fcgi://www-7.4/200	38886	GET	http://fr.wikipedia.org/wiki/Mirka	-
