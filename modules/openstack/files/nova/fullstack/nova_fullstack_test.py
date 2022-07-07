@@ -345,7 +345,7 @@ def verify_ssh(
                 break
             except subprocess.CalledProcessError as error:
                 LOGGER.debug(error)
-                LOGGER.debug("SSH wait for %d", get_elapsed_time())
+                LOGGER.debug("SSH waited for %d (of %d)", get_elapsed_time(), timeout)
 
             if get_elapsed_time() >= timeout:
                 raise Exception(f"SSH for {address} timed out")
@@ -461,15 +461,32 @@ def verify_deletion(nova_cli: NovaClient, vm: Server, timeout: float) -> float:
     return get_elapsed_time()
 
 
-def submit_stat(
-    host: str, port: int, prepend: str, metric: str, value: Union[int, float]
-) -> None:
-    """Metric handling for tracking over time."""
-    metric_path = f"{prepend}.{metric}"
-    my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-    my_socket.connect((host, port))
-    my_socket.send(f"{metric_path}:{value}|g".encode("utf8"))
-    LOGGER.info("%s => %f %d", metric_path, value, int(time.time()))
+class StatHandler:
+    def __init__(self, statsd_host: str):
+        self.stats: Dict[str, Union[int, float]] = {}
+        self.statsd_host = statsd_host
+        self.metric_prefix = "cloudvps.novafullstack"
+
+    def add_stat(self, stat_name: str, stat_value: Union[int, float]) -> None:
+        # For prometheus
+        metric_name = f"{self.metric_prefix}.{stat_name}"
+        self.stats[metric_name] = stat_value
+
+        # for statsd
+        statsd_metric_name = f"{self.metric_prefix}.{socket.gethostname()}.{stat_name}"
+        my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+        my_socket.connect((self.statsd_host, 8125))
+        my_socket.send(f"{statsd_metric_name}:{stat_value}|g".encode("utf8"))
+        LOGGER.info("%s => %f %d", metric_name, stat_value, int(time.time()))
+
+    def flush_stats(self) -> None:
+        with PROMETHEUS_FILE.open("w", encoding="utf-8") as prom_fd:
+            for metric_name, stat_value in self.stats.items():
+                safe_metric_name = metric_name.replace(".", "_").replace("-", "_")
+                prom_fd.write(f"# TYPE {safe_metric_name} gauge\n")
+                prom_fd.write(f"{safe_metric_name} {stat_value}\n")
+
+        self.stats = {}
 
 
 def get_args() -> argparse.Namespace:
@@ -767,15 +784,9 @@ def main():
         fallback_project=args.project,
     )
 
-    def send_stats(metric: str, value: Union[int, float]) -> None:
-        metric_prefix = f"cloudvps.novafullstack.{socket.gethostname()}"
-        submit_stat(
-            host=args.statsd or f"statsd.{args.deployment.to_wmnet()}.wmnet",
-            port=8125,
-            prepend=metric_prefix,
-            metric=metric,
-            value=value,
-        )
+    stat_handler = StatHandler(
+        statsd_host=args.statsd or f"statsd.{args.deployment.to_wmnet()}.wmnet",
+    )
 
     while True:
         loop_start = round(time.time(), 2)
@@ -788,8 +799,8 @@ def main():
         leaked_vms = [
             server for server in all_vms if server.human_id.startswith(instance_prefix)
         ]
-        send_stats("instances.count", len(leaked_vms))
-        send_stats("instances.max", args.max_pool)
+        stat_handler.add_stat("instances.count", len(leaked_vms))
+        stat_handler.add_stat("instances.max", args.max_pool)
 
         if not args.preserve_leaks:
             cleanup_leaked_vms(
@@ -819,7 +830,7 @@ def main():
                 network=args.network,
                 on_host=args.virthost,
             )
-            send_stats("verify.creation", verify_creation_time)
+            stat_handler.add_stat("verify.creation", verify_creation_time)
             new_vm = new_vm.update(description="Running tests...")
             vm_fqdn = (
                 f"{new_vm.name}.{new_vm.tenant_id}.{args.deployment}.wikimedia.cloud"
@@ -834,7 +845,7 @@ def main():
                     nameservers=args.dns_resolvers,
                     timeout=60.0,
                 )
-                send_stats("verify.dns", verify_dns_time)
+                stat_handler.add_stat("verify.dns", verify_dns_time)
 
                 verify_dns_reverse_time = verify_dns_reverse(
                     hostname=vm_fqdn,
@@ -842,14 +853,14 @@ def main():
                     nameservers=args.dns_resolvers,
                     timeout=30.0,
                 )
-                send_stats("verify.dns-reverse", verify_dns_reverse_time)
+                stat_handler.add_stat("verify.dns-reverse", verify_dns_reverse_time)
 
             if not args.skip_ssh:
                 verify_ssh_time = verify_ssh(
                     vm_addr, auth.user, args.keyfile, args.bastion_ip, args.ssh_timeout
                 )
 
-                send_stats("verify.ssh", verify_ssh_time)
+                stat_handler.add_stat("verify.ssh", verify_ssh_time)
                 if args.adhoc_command:
                     command_stdout = run_remote(
                         node=vm_addr,
@@ -870,11 +881,11 @@ def main():
                     timeout=args.puppet_timeout,
                 )
 
-                send_stats("verify.puppet", puppet_time)
+                stat_handler.add_stat("verify.puppet", puppet_time)
                 puppet_stats = ["changes", "events", "resources", "time"]
                 for puppet_stat in puppet_stats:
                     for key, value in puppet_run_summary[puppet_stat].items():
-                        send_stats(f"puppet.{puppet_stat}.{key}", value)
+                        stat_handler.add_stat(f"puppet.{puppet_stat}.{key}", value)
 
             if args.pause_for_deletion:
                 LOGGER.info("Pausing for deletion")
@@ -888,28 +899,32 @@ def main():
                 )
 
             if not args.pause_for_deletion:
-                send_stats("verify.deletion", verify_deletion_time)
+                stat_handler.add_stat("verify.deletion", verify_deletion_time)
                 loop_end = time.time()
-                send_stats("verify.fullstack", round(loop_end - loop_start, 2))
+                stat_handler.add_stat(
+                    "verify.fullstack", round(loop_end - loop_start, 2)
+                )
 
             if not args.skip_dns:
                 verify_dns_time = verify_dns_cleanup(
                     hostname=vm_fqdn, nameservers=args.dns_resolvers, timeout=60.0
                 )
-                send_stats("verify.dns-cleanup", verify_dns_time)
+                stat_handler.add_stat("verify.dns-cleanup", verify_dns_time)
 
                 verify_dns_reverse_time = verify_dns_reverse_cleanup(
                     ipaddr=vm_addr, nameservers=args.dns_resolvers, timeout=60.0
                 )
-                send_stats("verify.dns-cleanup-reverse", verify_dns_reverse_time)
+                stat_handler.add_stat(
+                    "verify.dns-cleanup-reverse", verify_dns_reverse_time
+                )
 
             if not args.interval:
                 return
 
-            send_stats("verify.success", 1)
+            stat_handler.add_stat("verify.success", 1)
         except Exception as error:
             LOGGER.exception("%s failed, leaking", new_vm_name)
-            send_stats("verify.success", 0)
+            stat_handler.add_stat("verify.success", 0)
             try:
                 # Update VM with a hint about why it leaked. Of course
                 #  if things are truly broken this will also fail, so
@@ -917,6 +932,8 @@ def main():
                 new_vm.update(description=str(error))
             except:  # noqa: E722
                 LOGGER.warning("Failed to annotate VM with failure condition")
+        finally:
+            stat_handler.flush_stats()
 
         time.sleep(args.interval)
 

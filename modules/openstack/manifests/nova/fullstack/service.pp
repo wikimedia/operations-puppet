@@ -5,18 +5,18 @@
 #  seconds between fullstack test runs
 
 class openstack::nova::fullstack::service(
-    $active,
-    $password,
-    $region,
-    $puppetmaster,
-    $bastion_ip,
-    $interval = 300,
-    $max_pool = 11,
-    $creation_timeout = 900,
-    $ssh_timeout = 900,
-    $puppet_timeout = 900,
-    $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
-    $network = '',
+    Boolean $active,
+    String[1] $password,
+    String[1] $region,
+    String[1] $puppetmaster,
+    Stdlib::IP::Address $bastion_ip,
+    Integer[1] $interval = 300,
+    Integer[1] $max_pool = 11,
+    Integer[1] $creation_timeout = 900,
+    Integer[1] $ssh_timeout = 900,
+    Integer[1] $puppet_timeout = 900,
+    Stdlib::Unixpath $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
+    String $network = '',
     ) {
 
     group { 'osstackcanary':
@@ -40,6 +40,13 @@ class openstack::nova::fullstack::service(
         owner  => 'osstackcanary',
         group  => 'osstackcanary',
         source => 'puppet:///modules/openstack/nova/fullstack/nova_fullstack_test.py',
+    }
+
+    # Cleanup outfile only on acvive=false, since on active=true the file gets created by the nova-fullstack service.
+    if !$active {
+      file {'/var/lib/prometheus/node.d/novafullstack.prom':
+          ensure => absent
+      }
     }
 
     file { $keyfile:
