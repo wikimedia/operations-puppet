@@ -41,11 +41,18 @@ class profile::gitlab(
         }
     }
 
-    prometheus::blackbox::check::http { 'gitlab.wikimedia.org':
-                      team => 'serviceops-collab',
-                  severity => 'critical',
-                      path => '/explore',
-        body_regex_matches => ['DevOps'],
+    $severity = $active_host ? {
+        $facts['fqdn'] => 'critical',
+        default        => 'warning'
+    }
+
+    prometheus::blackbox::check::http { $service_name:
+        team               => 'serviceops-collab',
+        severity           => $severity,
+        path               => '/explore',
+        ip4                => $service_ip_v4,
+        ip6                => $service_ip_v6,
+        body_regex_matches => ['Discover projects, groups and snippets'],
     }
 
     exec {'Reload nginx':
