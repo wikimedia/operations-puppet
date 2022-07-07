@@ -6,12 +6,6 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::observerenv
     include profile::openstack::eqiad1::rabbitmq
 
-    # Don't include apache on Bullseye for now; keystone and mod_wsgi don't get along
-    # AGB 2022-01-28
-    if debian::codename::le('buster') {
-        include profile::openstack::eqiad1::keystone::apache
-    }
-
     include profile::openstack::eqiad1::keystone::service
     include profile::openstack::eqiad1::keystone::fernet_keys
     include profile::openstack::eqiad1::envscripts
