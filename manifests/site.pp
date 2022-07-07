@@ -966,6 +966,11 @@ node /^db21(6[2-9]|7[0-4])\.codfw\.wmnet/ {
     role(insetup)
 }
 
+# New db nodes T306849
+node /^db21(7[5-9]|8[0-2])\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # eqiad backup sources
 ## s2, s3 & x1, buster
 node 'db1102.eqiad.wmnet' {
