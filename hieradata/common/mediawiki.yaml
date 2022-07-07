@@ -48,9 +48,9 @@ mediawiki::sites:
               - "# Archives of Extension:CodeReview"
               - "    RewriteRule ^/wiki/Special:Code(Review)?/(MediaWiki|pywikipedia)/r?([0-9]+)$ %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org/$2/$3.html [R=301,L]"
               - "    RewriteRule ^/wiki/Special:Code(Review)? %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org? [R=301,L]"
-              - "    RewriteCond %{QUERY_STRING} title=Special:Code(Review)?/(MediaWiki|pywikipedia)/r?([0-9]+)"
+              - "    RewriteCond %%{}{QUERY_STRING} title=Special:Code(Review)?/(MediaWiki|pywikipedia)/r?([0-9]+)"
               - "    RewriteRule ^/w/index\\.php  %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org/%2/%3.html? [R=301,L]"
-              - "    RewriteCond %{QUERY_STRING} title=Special:Code(Review)?"
+              - "    RewriteCond %%{}{QUERY_STRING} title=Special:Code(Review)?"
               - "    RewriteRule ^/w/index\\.php %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org? [R=301,L]"
             late: []
       - name: test.wikidata.org
