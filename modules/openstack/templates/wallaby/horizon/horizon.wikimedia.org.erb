@@ -4,7 +4,7 @@
 # vim: filetype=apache
 
 # This config is behind misc-web which handles ssl for us.
-<VirtualHost *:8081>
+<VirtualHost *:80>
     ServerName <%= @webserver_hostname %>
 
     RewriteEngine on
