@@ -30,6 +30,7 @@ function cleanup {
 trap cleanup EXIT
 # Just to be sure, clean the file up before starting to append to it
 cleanup
+ADD_COMMENTS=1
 for version in $VERSIONS; do
     UNIT="php${version}-fpm.service"
     # If our service isn't running, nothing to do.
@@ -46,7 +47,8 @@ for version in $VERSIONS; do
 
     # Now write output.
     echo "$PARSED" | (read procs_act procs_idle req_total req_slow_total rps
-    cat <<EOF >>"$TMPOUTFILE"
+    if [ $ADD_COMMENTS -eq 1 ]; then
+        cat <<EOF >>"$TMPOUTFILE"
 # HELP phpfpm_statustext_processes Number of php-fpm worker processes in each state
 # TYPE phpfpm_statustext_processes gauge
 phpfpm_statustext_processes{service="${UNIT}",state="active"} ${procs_act}
@@ -60,7 +62,18 @@ phpfpm_statustext_requests_total{service="${UNIT}"} ${req_total}
 # TYPE phpfpm_statustext_slow_requests_total counter
 phpfpm_statustext_slow_requests_total{service="${UNIT}"} ${req_slow_total}
 EOF
+    else
+        cat <<EOF >>"$TMPOUTFILE"
+phpfpm_statustext_processes{service="${UNIT}",state="active"} ${procs_act}
+phpfpm_statustext_processes{service="${UNIT}",state="idle"} ${procs_idle}
+
+phpfpm_statustext_requests_total{service="${UNIT}"} ${req_total}
+
+phpfpm_statustext_slow_requests_total{service="${UNIT}"} ${req_slow_total}
+EOF
+    fi
     )
+    ADD_COMMENTS=0
 done
 
 if [ -f "$TMPOUTFILE" ]; then
