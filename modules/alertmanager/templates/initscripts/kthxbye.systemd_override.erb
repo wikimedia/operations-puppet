@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 ExecStart=
 ExecStart=/usr/bin/kthxbye -alertmanager.uri http://localhost:9093 -listen <%= @listen_host %>:<%= @listen_port %>

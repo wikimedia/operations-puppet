@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class alertmanager::phab (
     Stdlib::HTTPSUrl $url,
     String $username,

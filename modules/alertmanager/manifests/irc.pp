@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class alertmanager::irc (
     Stdlib::Host $listen_host = 'localhost',
     Stdlib::Port $listen_port = 19190,

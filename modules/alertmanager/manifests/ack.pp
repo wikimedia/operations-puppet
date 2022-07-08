@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Simple daemon that works as a sidecar for Prometheus Alertmanager and will
 # automatically extend expiring silences. The goal of this project is to provide a simple way of
 # acknowledging alerts, which is currently not possible with Alertmanager itself.

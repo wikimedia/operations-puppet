@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: MIT -%>
 {{ define "dashboard_url" }}https://<%= @vhost %>{{ end }}
 {{ define "__alertmanager" }}alerts dashboard{{ end }}
 {{ define "__alertmanagerURL" }}{{ template "dashboard_url" . }}/?q=%40state%3Dactive&q=alertname%3D{{ .GroupLabels.alertname | urlquery }}{{ end }}

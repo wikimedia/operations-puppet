@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class alertmanager (
     Stdlib::Host        $active_host,
     Array[Stdlib::Host] $partners,

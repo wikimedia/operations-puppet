@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @param config Configuration file to use, if the default is not suitable
 class alertmanager::karma (
     String $vhost,
