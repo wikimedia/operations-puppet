@@ -11,20 +11,18 @@ class lxc(
     Stdlib::Unixpath $container_root = '/srv/lxc',
 ) {
     ensure_packages(['bridge-utils', 'dnsmasq-base', 'redir', 'lxc'])
+    ensure_packages(['lxc-templates', 'ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'])
 
-    if debian::codename::ge('buster') {
-        ensure_packages(['lxc-templates', 'ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'])
+    exec { 'virsh net-start default':
+        command => '/usr/bin/virsh net-start default',
+        unless  => "/usr/bin/virsh -q net-list --all|/bin/grep -Eq '^\s*default\s+active'",
+        require => Package['ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'],
+    }
 
-        exec { 'virsh net-start default':
-            command => '/usr/bin/virsh net-start default',
-            unless  => "/usr/bin/virsh -q net-list --all|/bin/grep -Eq '^\s*default\s+active'",
-            require => Package['ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'],
-        }
-        exec { 'virsh net-autostart default':
-            command => '/usr/bin/virsh net-autostart default',
-            creates => '/etc/libvirt/qemu/networks/autostart/default.xml',
-            require => Package['ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'],
-        }
+    exec { 'virsh net-autostart default':
+        command => '/usr/bin/virsh net-autostart default',
+        creates => '/etc/libvirt/qemu/networks/autostart/default.xml',
+        require => Package['ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'],
     }
 
     file { '/etc/lxc/default.conf':
