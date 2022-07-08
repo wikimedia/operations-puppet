@@ -1,4 +1,3 @@
 # db2161
 # future s8 master
 mariadb::shard: 's8'
-profile::monitoring::notifications_enabled: false
