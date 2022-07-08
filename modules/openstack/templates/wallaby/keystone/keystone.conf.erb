@@ -108,6 +108,14 @@ domain_config_dir = /etc/keystone/domains
 
 
 [identity_mapping]
+# This is a WMF-specific generator that takes a username and returns the username.
+#
+# This mapping is invoked to hash a username and domain into a unique key for lookup.
+# Because we're consuming a pre-existing ldap (where typically userkey == username)
+# we need to disable this hash so that keystone just looks up the actual user-specified
+# username in ldap rather than the hash.
+generator = nohash
+
 [kvs]
 
 [ldap]
