@@ -132,17 +132,9 @@ class profile::gitlab::runner (
         default      => $facts['ipaddress'],  # export metrics on IPv4 everywhere else
     }
 
-    class { 'gitlab_runner::config':
-        concurrent              => $concurrent,
-        docker_image            => $docker_image,
-        docker_network          => $docker_network,
-        ensure_buildkitd        => $ensure_buildkitd,
-        gitlab_url              => $gitlab_url,
-        runner_name             => $runner_name,
-        exporter_listen_address => $exporter_listen_address,
-        enable_exporter         => $enable_exporter,
-        gitlab_runner_user      => $gitlab_runner_user,
-        require                 => Docker::Network[$docker_network],
+    $config_dir = $gitlab_runner_user ? {
+        'root'  => '/etc/gitlab-runner',
+        default => "/home/${gitlab_runner_user}/.gitlab-runner"
     }
 
     if $ensure == 'present' {
@@ -152,7 +144,7 @@ class profile::gitlab::runner (
             user    => $gitlab_runner_user,
             command => @("CMD"/L$)
                 /usr/bin/gitlab-runner register \
-                --template-config /etc/gitlab-runner/config-template.toml \
+                --config "${config_dir}/registration.toml" \
                 --non-interactive \
                 --name "${runner_name}" \
                 --url "${gitlab_url}" \
@@ -167,8 +159,40 @@ class profile::gitlab::runner (
             ,
             unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
             require => Apt::Package_from_component['gitlab-runner'],
+            notify  => Exec['gitlab-runner-save-auth-token'],
         }
 
+        # extract the auth token from the config created during registration
+        # (see gitlab_runner::config)
+        exec { 'gitlab-runner-save-auth-token':
+            user        => $gitlab_runner_user,
+            command     => @("CMD"/L$)
+                /usr/bin/awk \
+                -F '( *= *)' \
+                '\$1 ~ /\s*token\$/ { gsub(/"/, "", \$2); print \$2 }' \
+                ${config_dir}/registration.toml > ${config_dir}/auth-token
+            |- CMD
+            ,
+            refreshonly => true,
+        }
+
+
+        class { 'gitlab_runner::config':
+            directory               => $config_dir,
+            concurrent              => $concurrent,
+            docker_image            => $docker_image,
+            docker_network          => $docker_network,
+            ensure_buildkitd        => $ensure_buildkitd,
+            gitlab_url              => $gitlab_url,
+            runner_name             => $runner_name,
+            exporter_listen_address => $exporter_listen_address,
+            enable_exporter         => $enable_exporter,
+            gitlab_runner_user      => $gitlab_runner_user,
+            require                 => [
+                Docker::Network[$docker_network],
+                Exec['gitlab-runner-save-auth-token'],
+            ]
+        }
     } else {
         exec { 'gitlab-unregister-runner':
             user    => $gitlab_runner_user,
