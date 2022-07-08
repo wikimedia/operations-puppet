@@ -9,31 +9,25 @@ class ganeti::prometheus(
     String $rapi_ro_user,
     String $rapi_ro_password,
 ) {
-    if debian::codename::ge('bullseye'){
-        ensure_packages('prometheus-ganeti-exporter')
 
-        ferm::service {'ganeti-prometheus-exporter':
-            proto  => 'tcp',
-            port   => '8080',
-            srange => '$PRODUCTION_NETWORKS',
-        }
+    ensure_packages('prometheus-ganeti-exporter')
 
-        # Configuration files for Ganeti Prometheus exporter
-        file { '/etc/ganeti/prometheus.ini':
-            ensure  => present,
-            owner   => 'prometheus',
-            group   => 'prometheus',
-            mode    => '0400',
-            content => template('ganeti/prometheus-collector.erb')
-        }
+    ferm::service {'ganeti-prometheus-exporter':
+        proto  => 'tcp',
+        port   => '8080',
+        srange => '$PRODUCTION_NETWORKS',
+    }
 
-        file { '/etc/prometheus/ganeti.ini':
-            ensure => absent,
-        }
+    # Configuration files for Ganeti Prometheus exporter
+    file { '/etc/ganeti/prometheus.ini':
+        ensure  => present,
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        mode    => '0400',
+        content => template('ganeti/prometheus-collector.erb')
+    }
 
-        service {'prometheus-ganeti-exporter':
-            ensure => running,
-        }
-
+    service {'prometheus-ganeti-exporter':
+        ensure => running,
     }
 }
