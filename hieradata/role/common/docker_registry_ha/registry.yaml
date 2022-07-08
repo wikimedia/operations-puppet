@@ -1,5 +1,4 @@
 profile::docker_registry_ha::registry::image_builders:
-  - '10.192.0.99' #deneb.codfw.wmnet
   - '10.192.32.77' # build2001.codfw.wmnet
   - '208.80.154.17' # contint1001
   - '208.80.153.15' # contint2001
