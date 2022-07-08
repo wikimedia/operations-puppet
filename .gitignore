@@ -1,3 +1,8 @@
+# Instead of adding editor specific entries to this file, please use
+# core.excludesFile setting on your global git setting to ignore for
+# all oyur repositories, for details see:
+#   https://git-scm.com/docs/gitignore
+#
 # Puppet's repository shouldn't have any editor backup files
 *~
 
