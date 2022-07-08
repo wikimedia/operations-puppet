@@ -16,11 +16,6 @@ class profile::maps::apps(
     Boolean $tilerator_enable = lookup('profile::maps::apps::tilerator_enable'),
 ) {
 
-    $use_nodejs10 = $::lsbdistcodename ? {
-        'buster'  => false,
-        'stretch' => true,
-    }
-
     $osm_dir = $osm_engine ? {
         'osm2pgsql' => '/srv/osmosis',
         'imposm3' => '/srv/osm'
@@ -39,7 +34,6 @@ class profile::maps::apps(
         contact_groups    => $contact_groups,
         storage_id        => $tilerator_storage_id,
         num_workers       => $num_workers,
-        use_nodejs10      => $use_nodejs10,
         enable            => $tilerator_enable
     }
 
@@ -51,7 +45,6 @@ class profile::maps::apps(
         redis_pass        => $redis_pass,
         contact_groups    => $contact_groups,
         storage_id        => $tilerator_storage_id,
-        use_nodejs10      => $use_nodejs10,
         osm_dir           => $osm_dir
     }
 
@@ -63,7 +56,6 @@ class profile::maps::apps(
         storage_id             => $kartotherian_storage_id,
         tilerator_storage_id   => $tilerator_storage_id,
         wikidata_query_service => $wikidata_query_service,
-        use_nodejs10           => $use_nodejs10,
     }
 
     # those fonts are needed for the new maps style (brighmed)

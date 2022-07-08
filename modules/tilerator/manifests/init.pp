@@ -34,7 +34,6 @@ class tilerator(
     Integer[0] $num_workers,
     Boolean $enable,
     String  $contact_groups = 'admins',
-    Boolean $use_nodejs10   = false,
 ) {
 
     $cassandra_user = 'tilerator'
@@ -63,7 +62,7 @@ class tilerator(
             storage_id         => $storage_id,
         },
         contact_groups    => $contact_groups,
-        use_nodejs10      => $use_nodejs10,
+        use_nodejs10      => false,
         enable            => $enable,
     }
 

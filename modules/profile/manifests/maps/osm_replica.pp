@@ -16,7 +16,7 @@ class profile::maps::osm_replica(
 
     $pgversion = $::lsbdistcodename ? {
         'buster'  => 11,
-        'stretch' => 9.6,
+        'bullseye' => 13,
     }
 
 

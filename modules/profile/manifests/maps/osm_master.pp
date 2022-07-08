@@ -35,8 +35,8 @@ class profile::maps::osm_master (
     $db_name = 'gis'
 
     $pgversion = $::lsbdistcodename ? {
+        'bullseye'  => 13,
         'buster'  => 11,
-        'stretch' => 9.6,
     }
 
     # We need 1 connection per host that is fully pooled. If we want

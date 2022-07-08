@@ -36,7 +36,6 @@ class kartotherian(
     String  $num_workers    = 'ncpu',
     String  $cassandra_user = 'kartotherian',
     String  $pgsql_user     = 'kartotherian',
-    Boolean $use_nodejs10   = false,
 ) {
 
     ensure_packages(['libmapnik3.0'])
@@ -60,6 +59,6 @@ class kartotherian(
         has_spec          => true,
         healthcheck_url   => '',
         contact_groups    => $contact_groups,
-        use_nodejs10      => $use_nodejs10,
+        use_nodejs10      => false,
     }
 }

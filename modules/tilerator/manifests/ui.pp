@@ -79,7 +79,6 @@ class tilerator::ui(
     String  $storage_id              = 'v3',
     Boolean $delete_empty            = true,
     Stdlib::Unixpath  $expire_dir    = '/srv/osm_expire/',
-    Boolean $use_nodejs10            = false,
 ) {
     $statefile = "${statefile_dir}/expire.state"
     $cassandra_user = 'tileratorui'
@@ -105,7 +104,7 @@ class tilerator::ui(
             storage_id         => $storage_id,
         },
         contact_groups    => $contact_groups,
-        use_nodejs10      => $use_nodejs10,
+        use_nodejs10      => false,
     }
 
     # HACK: service::node should add this sudo rule, but doesn't, because it deduplicates by repo name,

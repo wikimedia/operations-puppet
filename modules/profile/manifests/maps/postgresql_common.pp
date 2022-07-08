@@ -21,7 +21,7 @@ class profile::maps::postgresql_common(
 
     $pgversion = $::lsbdistcodename ? {
         'buster'  => 11,
-        'stretch' => 9.6,
+        'bullseye' => 13,
     }
 
     # Tuning
