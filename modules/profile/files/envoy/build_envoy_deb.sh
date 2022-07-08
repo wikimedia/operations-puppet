@@ -30,9 +30,6 @@ function create_image {
 
 function add_repos {
     components="main"
-    if [ "$DISTRO" == "stretch" ]; then
-        components="${components} thirdparty/ci"
-    fi
     echo "deb http://apt.wikimedia.org/wikimedia ${DISTRO}-wikimedia ${components}" > ${CHROOT_DIR}/etc/apt/sources.list.d/wikimedia.list
     $CHROOTEXEC apt-get install wget gnupg -y
     $CHROOTEXEC wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | $CHROOTEXEC apt-key add -
@@ -58,11 +55,7 @@ trap cleanup_image EXIT
 
 create_image
 add_repos
-if [ "$DISTRO" == "stretch" ]; then
-    $CHROOTEXEC apt-get -y install docker-ce
-else
-    $CHROOTEXEC apt-get -y install docker.io
-fi
+$CHROOTEXEC apt-get -y install docker.io
 $CHROOTEXEC apt-get -y install git-buildpackage fakeroot debhelper bash-completion
 $CHROOTEXEC /bin/bash -c "export LC_ALL=C; cd $ENVOY_SRC && gbp buildpackage $EXTRA_CMD --git-builder='debuild -b -uc -us'"
 echo "Your build is successful, please cleanup /tmp/envoy-docker-build if not needed anymore."
