@@ -41,16 +41,10 @@ class postgresql::server(
 ) {
 
     case debian::codename() {
-        'stretch': {
-            $_pgtop = 'ptop'
-            $_pgversion_default = 9.6
-        }
         'buster': {
-            $_pgtop = 'pgtop'
             $_pgversion_default = 11
         }
         'bullseye': {
-            $_pgtop = 'pgtop'
             $_pgversion_default = 13
         }
         default: {
@@ -70,17 +64,9 @@ class postgresql::server(
         'libdbi-perl',
         'libdbd-pg-perl',
         'check-postgres',
-        $_pgtop,
+        'pgtop',
     ]:
         ensure => $ensure,
-    }
-
-    # The contrib package got dropped from Postgres in 10, it's only a virtual
-    # package and not needed starting with Buster
-    if debian::codename::lt('buster') {
-        package { "postgresql-contrib-${_pgversion}":
-            ensure => $ensure,
-        }
     }
 
     class { 'postgresql::dirs':

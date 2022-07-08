@@ -30,7 +30,7 @@ class postgresql::dirs(
 ) {
     $_pgversion = $pgversion ? {
         undef   => $facts['os']['distro']['codename'] ? {
-            'stretch' => 9.6,
+            'bullseye' => 13,
             default   => 11,
         },
         default => $pgversion,

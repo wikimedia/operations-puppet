@@ -68,7 +68,6 @@ class postgresql::master(
 
     $_pgversion = $pgversion ? {
         undef   => debian::codename() ? {
-            'stretch'  => 9.6,
             'buster'   => 11,
             'bullseye' => 13,
             default    => fail("${title} not supported by: ${debian::codename()})")
