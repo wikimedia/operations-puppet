@@ -2007,7 +2007,7 @@ mediabackup:
   storage_path: '/srv/objectstorage'
   storage_port: 9000
 
-# The hash of hostname -> data for infrasturcture (e.g. not running Puppet) devices.
+# The hash of hostname -> data for infrastructure (e.g. not running Puppet) devices.
 
 # See also Wmflib::Infra::Devices type and related for more information.
 # Sites are separated/grouped by newline for easier navigation.
@@ -2471,3 +2471,113 @@ infra_devices:
     - cr2-drmrs
     site: drmrs
     role: l3sw
+
+
+# A map of hostname -> metadata for Prometheus blackbox exporter to ping.
+# The list is ported from Smokeping and manually maintained as of Jul
+# 2022. Going forward the list must come from Netbox instead.
+
+# See also Wmflib::Infra::Devices type and related for more information.
+# Sites are separated/grouped by newline for easier navigation.
+blackbox_smoke_hosts:
+  frbast-eqiad.wikimedia.org:
+    realm: frack
+    site: eqiad
+    rack: C1
+  frpig1001.frack.eqiad.wmnet:
+    realm: frack
+    site: eqiad
+    rack: C1
+  alert1001.wikimedia.org:
+    realm: production
+    site: eqiad
+    rack: C6
+  dns1001.wikimedia.org:
+    realm: production
+    site: eqiad
+    rack: A1
+  dns1002.wikimedia.org:
+    realm: production
+    site: eqiad
+    rack: D1
+  gerrit1001.wikimedia.org:
+    realm: production
+    site: eqiad
+    rack: B8
+  authdns1001.wikimedia.org:
+    realm: production
+    site: eqiad
+    rack: B1
+
+  frbast-codfw.wikimedia.org:
+    realm: frack
+    site: codfw
+    rack: C8
+  frpig2001.frack.codfw.wmnet:
+    realm: frack
+    site: codfw
+    rack: C8
+  authdns2001.wikimedia.org:
+    realm: production
+    site: codfw
+    rack: A2
+  bast2002.wikimedia.org:
+    realm: production
+    site: codfw
+    rack: B5
+  dns2001.wikimedia.org:
+    realm: production
+    site: codfw
+    rack: C5
+  dns2002.wikimedia.org:
+    realm: production
+    site: codfw
+    rack: D5
+  alert2001.wikimedia.org:
+    realm: production
+    site: codfw
+    rack: C5
+  puppetmaster2002.codfw.wmnet:
+    realm: production
+    site: codfw
+    rack: D5
+
+  ganeti3001.esams.wmnet:
+    realm: production
+    site: esams
+    rack: OE14
+  ganeti3002.esams.wmnet:
+    realm: production
+    site: esams
+    rack: OE15
+  ganeti3003.esams.wmnet:
+    realm: production
+    site: esams
+    rack: OE16
+
+  ganeti4001.ulsfo.wmnet:
+    realm: production
+    site: ulsfo
+    rack: "103.02.22"
+  ganeti4002.ulsfo.wmnet:
+    realm: production
+    site: ulsfo
+    rack: "103.02.23"
+
+  ganeti5001.eqsin.wmnet:
+    realm: production
+    site: eqsin
+    rack: "603"
+  ganeti5002.eqsin.wmnet:
+    realm: production
+    site: eqsin
+    rack: "604"
+
+  dns6001.wikimedia.org:
+    realm: production
+    site: drmrs
+    rack: B12
+  ganeti6002.drmrs.wmnet:
+    realm: production
+    site: drmrs
+    rack: B13

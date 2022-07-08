@@ -20,7 +20,8 @@ class profile::prometheus::ops (
     Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
     Wmflib::Infra::Devices $infra_devices                     = lookup('infra_devices'),
     Array                  $alerting_relabel_configs_extra    = lookup('profile::prometheus::ops::alerting_relabel_configs_extra'),
-    Array[Stdlib::Host] $ganeti_clusters                      =lookup('profile::prometheus::ganeti::clusters', { 'default_value' => []}),
+    Array[Stdlib::Host] $ganeti_clusters                      = lookup('profile::prometheus::ganeti::clusters', { 'default_value' => []}),
+    Prometheus::Blackbox::SmokeHosts $blackbox_smoke_hosts    = lookup('blackbox_smoke_hosts'),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -298,6 +299,16 @@ class profile::prometheus::ops (
       targets      => ['ns0.wikimedia.org', 'ns1.wikimedia.org', 'ns2.wikimedia.org'],
       modules      => ['dns_wikipedia_a', 'dns_wikipedia_cname'],
       targets_file => "${targets_path}/smoke-dns_wikipedia.yaml",
+    }
+
+    # Add hosts from hiera to be pinged, from within their site
+    $site_smoke_hosts = $blackbox_smoke_hosts.filter |$host, $config| {
+      $config['site'] == $::site
+    }
+
+    netops::prometheus::hosts { 'hiera':
+      targets      => $site_smoke_hosts,
+      targets_file => "${targets_path}/smoke-icmp_hosts-hiera.yaml",
     }
 
     # Checks for custom probes, defined in puppet
