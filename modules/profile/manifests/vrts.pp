@@ -80,7 +80,7 @@ class profile::vrts(
     prometheus::blackbox::check::http { 'ticket.wikimedia.org':
         team               => 'serviceops-collab',
         severity           => 'warning',
-        path               => '/otrs/ticket.pl',
+        path               => '/otrs/index.pl',
         port               => 1443,
         force_tls          => true,
         body_regex_matches => ['wikimedia'],
