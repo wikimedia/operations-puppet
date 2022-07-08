@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Definition: interface::noflow
 #
 # Disable ethernet flow control at boot time via up-commands, and also at

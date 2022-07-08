@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 
 # Set up scalable network stuff (RPS/RSS/XPS) for a given interface.
 #

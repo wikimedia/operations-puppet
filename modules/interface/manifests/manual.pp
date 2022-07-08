@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define interface::manual($interface, $family='inet') {
     # Use augeas to create a new manually setup interface with allow-hotplug
     $augeas_cmd = [ "set allow-hotplug[./1 = '${interface}']/1 '${interface}'",

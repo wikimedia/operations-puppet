@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Definition: interface::route
 #
 # Adds a static route for a defined prefix

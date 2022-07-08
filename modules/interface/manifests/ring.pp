@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Definition: interface::ring
 #
 # Sets interface ring parameters (with ethtool)

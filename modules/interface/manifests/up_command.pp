@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define interface::up_command($interface, $command) {
     # Use augeas to add an 'up' command to the interface
     augeas { "${interface}_${title}":

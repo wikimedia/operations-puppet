@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Definition: interface::setting
 #
 # Change an interface setting via augeas in /etc/network/interfaces

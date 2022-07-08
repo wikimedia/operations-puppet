@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Simplified version of interface::ip, only used for adding secondary IPs to hosts
 #
 define interface::alias(

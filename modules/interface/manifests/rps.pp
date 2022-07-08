@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Automagically sets RPS/RSS/XPS for an interface
 #
 # @param interface The network interface to operate on

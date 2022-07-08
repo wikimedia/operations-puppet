@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Sets up a static IPv6 address on the host, based on its IPv4 address
 #
 # Example: for a host with an IPv4 address of 208.80.154.149, this will

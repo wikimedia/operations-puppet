@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: interface::rpstools
 #
 # Populate tools used to set RPS for an interface

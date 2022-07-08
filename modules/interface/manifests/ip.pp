@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
 define interface::ip($interface, $address, $prefixlen='32', $options=undef, $ensure='present') {
     $prefix = "${address}/${prefixlen}"

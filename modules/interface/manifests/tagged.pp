@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef, $legacy_vlan_naming=true) {
     ensure_packages('vlan')
 
