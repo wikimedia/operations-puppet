@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: nginx::status_site
 #
 # Provisions an Nginx site that serves local clients server stats,

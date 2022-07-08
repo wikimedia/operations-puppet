@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- vim: ts=2:sw=2:sts=2:expandtab
 --
 -- This module uses a single dictionary shared between Nginx workers to keep

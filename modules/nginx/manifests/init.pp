@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: nginx
 #
 # Nginx is a popular, high-performance HTTP server and reverse proxy.

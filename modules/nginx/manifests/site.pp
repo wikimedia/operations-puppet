@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: nginx::site
 #
 # Provisions an Nginx vhost. Like file resources, this resource type takes
