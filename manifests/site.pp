@@ -336,7 +336,7 @@ node 'bast6001.wikimedia.org' {
     role(bastionhost)
 }
 
-# Debian package/docker images building host in production (Bullseye)
+# Debian package/docker images building host in production
 node 'build2001.codfw.wmnet' {
     role(builder)
 }
@@ -1089,11 +1089,6 @@ node 'dbproxy1019.eqiad.wmnet' {
 
 node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
-}
-
-# Debian package/docker images building host in production (Buster)
-node 'deneb.codfw.wmnet' {
-    role(builder)
 }
 
 node /^dns[123456]00[12]\.wikimedia\.org$/ {

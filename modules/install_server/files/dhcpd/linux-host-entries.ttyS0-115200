@@ -200,11 +200,6 @@ host debmonitor2002 {
     fixed-address debmonitor2002.codfw.wmnet;
 }
 
-host deneb {
-    hardware ethernet aa:00:00:d1:45:fd;
-    fixed-address deneb.codfw.wmnet;
-}
-
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:9f:4d:f6;
