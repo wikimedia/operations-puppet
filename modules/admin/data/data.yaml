@@ -6138,3 +6138,9 @@ ldap_only_users:
     ensure: present
     realname: Tricia Burmeister
     email: tburmeister@wikimedia.org
+  dani:
+    ensure: present
+    realname: Daniel Souza
+    email: ddesouza-ctr@wikimedia.org
+    expiry_date: 2022-12-01
+    expiry_contact: bgerdemann@wikimedia.org
