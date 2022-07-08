@@ -23,17 +23,13 @@ class role::alerting_host {
     include profile::dns::auth::monitoring::global
     include profile::statograph
 
-    # Temporary until all hosts are on Buster
-    # https://phabricator.wikimedia.org/T247966
-    if debian::codename::ge('buster') {
-        include profile::alertmanager
-        include profile::alertmanager::irc
-        include profile::alertmanager::web
-        include profile::alertmanager::ack
-        include profile::alertmanager::api
-        include profile::alertmanager::phab
-        include profile::klaxon
-    }
+    include profile::alertmanager
+    include profile::alertmanager::irc
+    include profile::alertmanager::web
+    include profile::alertmanager::ack
+    include profile::alertmanager::api
+    include profile::alertmanager::phab
+    include profile::klaxon
 
     class { 'httpd::mpm':
         mpm => 'prefork'
