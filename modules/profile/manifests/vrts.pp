@@ -77,14 +77,14 @@ class profile::vrts(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/OTRS#ClamAV',
     }
 
-    prometheus::blackbox::check::http { 'ticket.wikimedia.org':
-        team               => 'serviceops-collab',
-        severity           => 'warning',
-        path               => '/otrs/ticket.pl',
-        port               => 1443,
-        force_tls          => true,
-        body_regex_matches => ['wikimedia'],
-    }
+    #prometheus::blackbox::check::http { 'ticket.wikimedia.org':
+    #    team               => 'serviceops-collab',
+    #    severity           => 'warning',
+    #    path               => '/otrs/ticket.pl',
+    #    port               => 1443,
+    #    force_tls          => true,
+    #    body_regex_matches => ['wikimedia'],
+    #}
 
     # can conflict with ferm module
     ensure_packages('libnet-dns-perl')
