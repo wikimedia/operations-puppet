@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: memcached
 #
 # Memcached is a general-purpose, in-memory key-value store.

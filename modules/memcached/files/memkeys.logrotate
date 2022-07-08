@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # logrotate(8) configuration file for the memkeys cron job, which
 # writes memcached key usage stats to a CSV file in /var/log/memkeys
 # once a day.
