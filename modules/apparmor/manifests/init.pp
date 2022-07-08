@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: apparmor
 #
 # Stub class for apparmor so that other classes can define profiles
