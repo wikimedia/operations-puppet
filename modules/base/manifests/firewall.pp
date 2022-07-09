@@ -1,5 +1,7 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
+# @param manage_nf_conntrack if false dont increase the nf_conntrack hashsize useful when using docker
+#  where you are unable to write to the sys file
 class base::firewall (
     Array[Stdlib::IP::Address] $monitoring_hosts        = [],
     Array[Stdlib::IP::Address] $cumin_masters           = [],
@@ -17,6 +19,7 @@ class base::firewall (
     Array[Stdlib::Host]        $prometheus_hosts        = [],
     Boolean                    $block_abuse_nets        = false,
     Boolean                    $default_reject          = false,
+    Boolean                    $manage_nf_conntrack     = true,
 ) {
     include network::constants
     include ferm
@@ -39,11 +42,13 @@ class base::firewall (
         },
     }
 
-    # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
-    # via a modprobe parameter, bump it manually for running systems
-    exec { 'bump nf_conntrack hash table size':
-        command => '/bin/echo 32768 > /sys/module/nf_conntrack/parameters/hashsize',
-        onlyif  => "/bin/grep --invert-match --quiet '^32768$' /sys/module/nf_conntrack/parameters/hashsize",
+    if $manage_nf_conntrack {
+        # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
+        # via a modprobe parameter, bump it manually for running systems
+        exec { 'bump nf_conntrack hash table size':
+            command => '/bin/echo 32768 > /sys/module/nf_conntrack/parameters/hashsize',
+            onlyif  => "/bin/grep --invert-match --quiet '^32768$' /sys/module/nf_conntrack/parameters/hashsize",
+        }
     }
 
     if $block_abuse_nets {
