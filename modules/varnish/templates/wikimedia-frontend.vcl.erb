@@ -25,6 +25,9 @@ import header;
 
 import directors;
 import netmapper;
+<% if @realm == 'labs' -%>
+import querysort;  // T138093
+<% end -%>
 
 // rate limiting
 import vsthrottle;
@@ -296,8 +299,7 @@ sub normalize_request {
 	}
 <% if @realm == 'labs' -%>
 	// Sort query parameters to improve cache efficiency (T138093).
-	// Don't sort URLs containing '[' to avoid re-ordering array parameters.
-	if (req.url !~ "\[" && req.url !~ "(?i)%5b") { set req.url = std.querysort(req.url); }
+	set req.url = querysort.querysort(req.url);
 <% end -%>
 
 	// Strip :port from req.http.host and normalize to lowercase

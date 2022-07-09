@@ -64,7 +64,10 @@ class profile::cache::varnish::frontend (
         'varnish-modules',
         'libvmod-netmapper',
         'libvmod-re2',
-    ]
+    ] + ( $::realm ? {
+        'labs'  => ['libvmod-querysort'],  # T138093
+        default => [],
+    } )
 
     # We need these two services disabled as we don't use them.
     systemd::mask { 'varnishncsa.service': }
