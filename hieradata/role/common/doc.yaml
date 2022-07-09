@@ -11,3 +11,5 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "doc.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
+
+profile::contacts::role_contacts: ['ServiceOps']
