@@ -46,13 +46,15 @@ class profile::gitlab(
         default        => 'warning'
     }
 
-    prometheus::blackbox::check::http { $service_name:
-        team               => 'serviceops-collab',
-        severity           => $severity,
-        path               => '/explore',
-        ip4                => $service_ip_v4,
-        ip6                => $service_ip_v6,
-        body_regex_matches => ['Discover projects, groups and snippets'],
+    if $active_host == $facts['fqdn'] {
+        prometheus::blackbox::check::http { $service_name:
+            team               => 'serviceops-collab',
+            severity           => $severity,
+            path               => '/explore',
+            ip4                => $service_ip_v4,
+            ip6                => $service_ip_v6,
+            body_regex_matches => ['Discover projects, groups and snippets'],
+        }
     }
 
     exec {'Reload nginx':
