@@ -18,6 +18,7 @@ class profile::environment (
     Hash[String, Stdlib::Filesource] $profile_scripts    = lookup('profile::environment::profile_scripts'),
     Hash[String[1], String[1]]       $variables          = lookup('profile::environment::variables'),
 ) {
+    ensure_packages(['vim', 'zsh'])
     if $ls_aliases {
         exec { 'uncomment root bash aliases':
             path    => '/bin:/usr/bin',
@@ -79,6 +80,7 @@ class profile::environment (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        require => Package['zsh'],
         content => template('profile/environment/zshenv.erb'),
     }
     file { '/etc/profile.d/systemd-environment.sh':
@@ -113,10 +115,11 @@ class profile::environment (
 
     # Global vim defaults
     file { '/etc/vim/vimrc.local':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/environment/vimrc.local',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/base/environment/vimrc.local',
+        require => Package['vim'],
     }
 
     # Global environment variables
