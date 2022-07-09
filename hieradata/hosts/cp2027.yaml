@@ -10,40 +10,35 @@ profile::cache::haproxy::acls:
   - name: backend_saturation
     criterion: be_conn
     operator: gt
-    value: '250'
+    value: '1000'
   - name: concurrent_queries
-    criterion: sc0_trackers(misspassrate)
+    criterion: sc0_trackers(httpreqrate)
     operator: gt
-    value: '10'
+    value: '20'
 
 profile::cache::haproxy::vars:
   - direction: request
     name: req.dummy_connection_drop
     value: src,debug(would_drop,stderr)
     acl: backend_saturation concurrent_queries
+  - direction: request
+    name: req.dummy_excess_concurrency
+    value: src,debug(excess_concurrency,stderr)
+    acl: concurrent_queries
+
 
 profile::cache::haproxy::sticktables:
-  - name: misspassrate
+  - name: httpreqrate
     type: ipv6
     size: 1m
     expire: 60s
     store:
       - http_req_rate(10s)
-  - name: newconnrate
-    type: ipv6
-    size: 1m
-    expire: 60s
-    store:
-      - conn_rate(10s)
 
 profile::cache::haproxy::stickycounters:
-  - context: tcp-request connection
+  - context: http-request
     key: src
-    table: newconnrate
-  - context: http-response
-    key: src
-    table: misspassrate
-    condition: if cache_miss or cache_pass
+    table: httpreqrate
 
 
 lookup_options:
