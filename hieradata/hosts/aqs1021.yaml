@@ -1,0 +1,4 @@
+# rack1 corresponds with either datacenter rows A or D
+# rack2 corresponds with either datacenter rows B or E
+# rack3 corresponds with either datacenter rows C or F
+profile::cassandra::rack: rack3

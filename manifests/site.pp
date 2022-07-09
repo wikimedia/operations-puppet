@@ -201,16 +201,10 @@ node /^apt[12]001\.wikimedia\.org/ {
 }
 
 # Analytics Query Service
-node /aqs101[0-5]\.eqiad\.wmnet/ {
+node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet/ {
     role(aqs_next)
 }
 
-# New aqs nodes in eqiad T305570
-node /^aqs10(1[6-9]|2[0-1])\.eqiad\.wmnet/ {
-    role(insetup::data_engineering)
-}
-
-# New aqs nodes in codfw T305568
 node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet/ {
     role(aqs_next)
 }

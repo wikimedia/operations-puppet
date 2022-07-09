@@ -50,6 +50,36 @@ profile::cassandra::instances:
       listen_address: 10.64.48.68
     "b":
       listen_address: 10.64.48.69
+  "aqs1016.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.199
+    b:
+      listen_address: 10.64.0.213
+  "aqs1017.eqiad.wmnet":
+    a:
+      listen_address: 10.64.16.74
+    b:
+      listen_address: 10.64.16.78
+  "aqs1018.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.22
+    b:
+      listen_address: 10.64.32.31
+  "aqs1019.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.119
+    b:
+      listen_address: 10.64.48.122
+  "aqs1020.eqiad.wmnet":
+    a:
+      listen_address: 10.64.131.14
+    b:
+      listen_address: 10.64.131.15
+  "aqs1021.eqiad.wmnet":
+    a:
+      listen_address: 10.64.135.14
+    b:
+      listen_address: 10.64.135.15
   "aqs2001.codfw.wmnet":
     a:
       listen_address: 10.192.0.214

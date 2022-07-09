@@ -297,6 +297,12 @@ eqiad:
     aqs1013.eqiad.wmnet: [aqs]
     aqs1014.eqiad.wmnet: [aqs]
     aqs1015.eqiad.wmnet: [aqs]
+    aqs1016.eqiad.wmnet: [aqs]
+    aqs1017.eqiad.wmnet: [aqs]
+    aqs1018.eqiad.wmnet: [aqs]
+    aqs1019.eqiad.wmnet: [aqs]
+    aqs1020.eqiad.wmnet: [aqs]
+    aqs1021.eqiad.wmnet: [aqs]
   eventschemas:
     schema1003.eqiad.wmnet: [eventschemas]
     schema1004.eqiad.wmnet: [eventschemas]
