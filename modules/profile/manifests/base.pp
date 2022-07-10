@@ -8,7 +8,7 @@
 # @param enable_contacts use the contacts module
 # @param core_dump_pattern the core dump pattern
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
-class profile::base(
+class profile::base (
     Hash    $wikimedia_clusters        = lookup('wikimedia_clusters'),
     String  $cluster                   = lookup('cluster'),
     String  $remote_syslog_send_logs   = lookup('profile::base::remote_syslog_send_logs'),
@@ -91,8 +91,8 @@ class profile::base(
 
     class { 'prometheus::node_debian_version': }
 
-    if $facts['is_virtual'] and debian::codename::le('buster') {
-        class {'haveged': }
+    if $facts['is_virtual'] and debian::codename::le('buster') and $facts['virtual'] != 'lxc' {
+        class { 'haveged': }
     }
 
     if $facts['has_ipmi'] and debian::codename::ge('bullseye') {
