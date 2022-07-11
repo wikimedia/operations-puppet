@@ -1,3 +1,3 @@
 # db2165
-# future s8 candidate master
+# s8 candidate master
 mariadb::shard: 's8'
