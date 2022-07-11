@@ -3,7 +3,7 @@
 
 global:
   smtp_smarthost: 'localhost:25'
-  smtp_from: 'sre-observability@<%= @facts['networking']['domain'] %>'
+  smtp_from: 'sre-observability@<%= @facts["networking"]["domain"] %>'
   smtp_require_tls: false
 
   # Give alerts with no 'endsAt' field (e.g. librenms) a little more slack
@@ -143,6 +143,10 @@ route:
         - receiver: 'search-platform-ircmail'
     - match:
         team: 'wmcs'
+      # Grouping by instance too so we create one task per alert+instance tuple
+      # as sometimes it's better for handling (ex. when there's a node down alert
+      # you might want one task for each node, so they can be checked individually)
+      group_by: ['alertname', 'cluster', 'scope', 'instance']
       routes:
         - match:
             severity: 'page'
@@ -217,7 +221,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
   email_configs:
-    - to: 'analytics-alerts@<%= @facts['networking']['domain'] %>'
+    - to: 'analytics-alerts@<%= @facts["networking"]["domain"] %>'
 
 - name: 'data-persistence-irc'
   webhook_configs:
@@ -227,32 +231,32 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
   email_configs:
-    - to: 'sre-data-persistence@<%= @facts['networking']['domain'] %>'
+    - to: 'sre-data-persistence@<%= @facts["networking"]["domain"] %>'
 
 - name: 'noc-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
-    - to: 'noc@<%= @facts['networking']['domain'] %>'
+    - to: 'noc@<%= @facts["networking"]["domain"] %>'
 
 - name: 'netops-mail'
   email_configs:
-    - to: 'ayounsi@<%= @facts['networking']['domain'] %>'
-    - to: 'cmooney@<%= @facts['networking']['domain'] %>'
+    - to: 'ayounsi@<%= @facts["networking"]["domain"] %>'
+    - to: 'cmooney@<%= @facts["networking"]["domain"] %>'
 
 - name: 'dcops-mail'
   email_configs:
-    - to: 'datacenter-ops@<%= @facts['networking']['domain'] %>'
+    - to: 'datacenter-ops@<%= @facts["networking"]["domain"] %>'
 
 - name: 'peering-mail'
   email_configs:
-    - to: 'peering@<%= @facts['networking']['domain'] %>'
+    - to: 'peering@<%= @facts["networking"]["domain"] %>'
 
 - name: 'perf-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
   email_configs:
-    - to: 'performance-team-alert@<%= @facts['networking']['domain'] %>'
+    - to: 'performance-team-alert@<%= @facts["networking"]["domain"] %>'
       send_resolved: true
 
 - name: 'rweb-mail'
@@ -274,7 +278,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-traffic'
   email_configs:
-    - to: 'sre-traffic@<%= @facts['networking']['domain'] %>'
+    - to: 'sre-traffic@<%= @facts["networking"]["domain"] %>'
 
 - name: 'search-platform-ircmail'
   webhook_configs:
@@ -286,7 +290,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= @facts['networking']['domain'] %>'
+    - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
 
 - name: 'wmcs-pagetaskircmail'
   victorops_configs:
@@ -297,7 +301,7 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= @facts['networking']['domain'] %>'
+    - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
@@ -329,7 +333,7 @@ receivers:
     # #serviceops mail & IRC
     - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
   email_configs:
-    - to: 'sre-service-ops-collab@<%= @facts['networking']['domain'] %>'
+    - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
 
 - name: 'serviceops-collab-critical'
   webhook_configs:
@@ -338,7 +342,7 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
   email_configs:
-    - to: 'sre-service-ops-collab@<%= @facts['networking']['domain'] %>'
+    - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
 
 - name: 'dcops-task'
   webhook_configs:
@@ -409,17 +413,18 @@ receivers:
 - name: 'wmcs-taskircmail'
   webhook_configs:
     # #wmcs tag, cloud-services-team is deprecated in favor of this one
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7sul7hj32btacinsnubq'
+    # title={{groupLabels.alertname}} {{groupLabels.instance}} {{commonAnnotations.description}}
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7sul7hj32btacinsnubq&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BgroupLabels.instance%7D%7D%20%7D%7DcommonAnnotations.description%7D%7D'
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= @facts['networking']['domain'] %>'
+    - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
 
 - name: 'fr-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
-    - to: 'fr-tech@<%= @facts['networking']['domain'] %>'
+    - to: 'fr-tech@<%= @facts["networking"]["domain"] %>'
 
 - name: 'abstract-wikipedia-warning'
   webhook_configs:
@@ -431,7 +436,7 @@ receivers:
     # #abstract wikipedia team IRC & email
     - url: 'http://<%= @active_host %>:19190/abstract-wikipedia-alerts'
   email_configs:
-    - to: 'abstract@<%= @facts['networking']['domain'] %>'
+    - to: 'abstract@<%= @facts["networking"]["domain"] %>'
       send_resolved: true
 
 
