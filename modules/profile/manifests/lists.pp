@@ -1,3 +1,12 @@
+# @example security_cfgs, an array of Apache config blocks from hiera:
+#   profile::lists::security_cfgs:
+#     - |
+#       # Reject posts to the foo route with
+#       # a 403
+#       RewriteEngine on
+#       RewriteCond %{REQUEST_METHOD} POST
+#       RewriteRule ^/bar/.*/foo$ - [F]
+# @param security_cfgs additional apache config blocks to include
 class profile::lists (
     Stdlib::Fqdn $lists_servername            = lookup('mailman::lists_servername'),
     Optional[String] $primary_host            = lookup('profile::lists::primary_host', {'default_value' => undef}),
@@ -18,7 +27,8 @@ class profile::lists (
     Optional[String] $memcached               = lookup('profile::lists::memcached', {'default_value' => undef}),
     Hash[String, String] $renamed_lists       = lookup('profile::lists::renamed_lists'),
     # Conditions to deny access to the lists web interface. Found in the private repository if needed.
-    Array[String] $web_deny_conditions        = lookup('profile::lists::web_deny_conditions', {'default_value' => []})
+    Array[String] $web_deny_conditions        = lookup('profile::lists::web_deny_conditions', {'default_value' => []}),
+    Array[String] $security_cfgs              = lookup('profile::lists::security_cfgs', {'default_value' => []})
 ){
     include network::constants
     include privateexim::listserve
@@ -64,6 +74,7 @@ class profile::lists (
       renamed_lists       => $renamed_lists,
       ssl_settings        => $ssl_settings,
       web_deny_conditions => $web_deny_conditions,
+      security_cfgs       => $security_cfgs,
     }
     httpd::site { $lists_servername:
         content => epp('profile/lists/apache.conf.epp', $apache_conf),

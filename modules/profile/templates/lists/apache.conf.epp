@@ -3,6 +3,7 @@
       Hash[String, String] $renamed_lists,
       Array[String]        $ssl_settings,
       Array[String]        $web_deny_conditions,
+      Array[String]        $security_cfgs,
 | -%>
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
@@ -34,6 +35,16 @@
     <%- } -%>
     <%= join($ssl_settings, "\n    ") %>
 
+    <%- if $security_cfgs != [] { -%>
+    # Security configs
+    #
+      <%- $security_cfgs.each |$cfg| { -%>
+        <%- split($cfg, "\n").each |$line| { -%>
+    <%= $line %>
+        <%- } -%>
+
+      <%- } -%>
+    <%- } -%>
     Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
     Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
     Alias /mailman3/static      /var/lib/mailman3/web/static
