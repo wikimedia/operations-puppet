@@ -432,7 +432,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/abstract-wikipedia-alerts'
   email_configs:
     - to: 'abstract@<%= @facts['networking']['domain'] %>'
-    send_resolved: true
+      send_resolved: true
 
 
 inhibit_rules:
