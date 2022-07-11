@@ -14,7 +14,6 @@ describe 'profile::toolforge::prometheus' do
           }
           let(:params) { { } }
           let(:node_params) {{ '_role' => 'toolforge::prometheus' }}
-          let(:pre_condition) do "function puppetdb_query($pql) { [] }" end
 
           it { is_expected.to compile.with_all_deps }
 

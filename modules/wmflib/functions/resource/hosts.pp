@@ -30,5 +30,5 @@ function wmflib::resource::hosts (
         type = "${_resource}" ${_title}${site_constraint}
     }
     | PQL
-    puppetdb_query($pql).map |$resource| { $resource['certname'] }.sort
+    wmflib::puppetdb_query($pql).map |$resource| { $resource['certname'] }.sort
 }

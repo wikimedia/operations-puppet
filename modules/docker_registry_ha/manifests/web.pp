@@ -91,7 +91,7 @@ class docker_registry_ha::web (
         resources { type = 'Class' and title = 'K8s::Kubelet' }
     }
     | PQL
-    $k8s_authenticated_nodes = Hash(puppetdb_query($pql).map |$res| { [$res['certname'], $res['value']] }.sort)
+    $k8s_authenticated_nodes = Hash(wmflib::puppetdb_query($pql).map |$res| { [$res['certname'], $res['value']] }.sort)
 
     # Create a directory for nginx cache if enabled
     if $nginx_cache {

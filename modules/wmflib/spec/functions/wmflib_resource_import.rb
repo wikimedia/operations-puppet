@@ -4,7 +4,7 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'wmflib::resource::import' do
   let(:pre_condition) do
-    "function puppetdb_query($pql) {
+    "function wmflib::puppetdb_query($pql) {
       [
         {
           'title' => 'wmflib::resource||foo',

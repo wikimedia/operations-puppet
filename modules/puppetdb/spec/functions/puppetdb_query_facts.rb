@@ -4,7 +4,7 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'puppetdb::query_facts' do
   describe 'one fact' do
     let(:pre_condition) do
-      "function puppetdb_query($pql) {
+      "function wmflib::puppetdb_query($pql) {
         [{
           'certname' => 'foo',
           'name'     => 'ipaddress',
@@ -16,7 +16,7 @@ describe 'puppetdb::query_facts' do
   end
   describe 'multiple fact' do
     let(:pre_condition) do
-      "function puppetdb_query($pql) {
+      "function wmflib::puppetdb_query($pql) {
         [
           {
             'certname' => 'foo',

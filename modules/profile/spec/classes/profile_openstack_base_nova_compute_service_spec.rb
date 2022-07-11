@@ -3,7 +3,6 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'profile::openstack::base::nova::compute::service' do
   let(:pre_condition) do
     [
-      'function puppetdb_query($query) { return {} }',
       'class { "::apt": }',
       'class{ \'openstack::nova::common\':
           version => \'victoria\',

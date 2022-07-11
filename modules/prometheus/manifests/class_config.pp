@@ -30,6 +30,7 @@ define prometheus::class_config(
     Hash $class_parameters = {},
     Boolean $hostnames_only = true,
 ) {
+    # TODO: convert to wmflib::puppetdb_query
     $query = template('prometheus/puppetdb_query_string.erb')
     $servers = keys(query_resources(false, $query, true))
     $site_clusters = get_clusters({'site' => $::site})

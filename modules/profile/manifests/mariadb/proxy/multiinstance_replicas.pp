@@ -33,10 +33,10 @@ class profile::mariadb::proxy::multiinstance_replicas(
             resources { type = 'Profile::Mariadb::Section' and title = '${section}' }
         }
         | PQL
-        $backend_servers = Hash(puppetdb_query($backend_pql).map |$value| {
+        $backend_servers = Hash(wmflib::puppetdb_query($backend_pql).map |$value| {
             [$value['certname'], { 'ipaddress' => $value['value'] }]
         })
-        $standby_servers = Hash(puppetdb_query($standby_pql).map |$value| {
+        $standby_servers = Hash(wmflib::puppetdb_query($standby_pql).map |$value| {
             [$value['certname'], { 'ipaddress' => $value['value'], 'standby' => true }]
         })
         $memo + { $section => deep_merge($backend_servers, $standby_servers) }

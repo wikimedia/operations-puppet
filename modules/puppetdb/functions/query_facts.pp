@@ -12,5 +12,5 @@ function puppetdb::query_facts(
     }
     $filter_str = $filter.map |$filter| { "\"${filter}\"" }.join(',')
     $pql = "facts[certname, name, value] { name in [${filter_str}] ${_subquery} }"
-    puppetdb::munge_facts(puppetdb_query($pql))
+    puppetdb::munge_facts(wmflib::puppetdb_query($pql))
 }

@@ -39,7 +39,7 @@ class profile::wmcs::nfs::maintain_dbusers (
         }
         |QUERY
         $memo + {
-            $section => puppetdb_query($pql).map |$resource| { $resource['certname'] }
+            $section => wmflib::puppetdb_query($pql).map |$resource| { $resource['certname'] }
         }
     }.filter | $section, $hosts | { !$hosts.empty }.map |$section, $hosts| {
         $hosts.map |$host| {
