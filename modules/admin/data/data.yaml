@@ -368,7 +368,7 @@ groups:
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
-              ricby]
+              ricby, dani]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5325,6 +5325,15 @@ users:
     expiry_date: 2022-09-01
     expiry_contact: lzia@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  dani:
+    ensure: present
+    realname: Daniel Souza
+    email: ddesouza-ctr@wikimedia.org
+    uid: 39452
+    gid: 500
+    expiry_date: 2022-12-01
+    expiry_contact: bgerdemann@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -6138,9 +6147,3 @@ ldap_only_users:
     ensure: present
     realname: Tricia Burmeister
     email: tburmeister@wikimedia.org
-  dani:
-    ensure: present
-    realname: Daniel Souza
-    email: ddesouza-ctr@wikimedia.org
-    expiry_date: 2022-12-01
-    expiry_contact: bgerdemann@wikimedia.org
