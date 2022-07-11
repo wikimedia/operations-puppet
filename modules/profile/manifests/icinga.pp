@@ -73,7 +73,14 @@ class profile::icinga(
     class { 'icinga::monitor::cloudgw': }
     class { 'icinga::monitor::legal': }
     class { 'icinga::monitor::certs': }
-    class { 'icinga::monitor::commons': }
+
+    # monitoring of content on commons (T124812)
+    prometheus::blackbox::check::http { 'commons.wikimedia.org':
+        fqdn               => 'commons.wikimedia.org',
+        path               => '/wiki/Main_Page',
+        body_regex_matches => ['Picture of the day'],
+        severity           => 'page',
+    }
 
     class { 'icinga::monitor::elasticsearch::cirrus_cluster_checks':
         shard_size_warning  => $shard_size_warning,
