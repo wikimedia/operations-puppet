@@ -1,30 +1,50 @@
-#!/bin/sh
+#!/bin/bash
 ######################################
 # This file is managed by puppet!
 #  puppet:///modules/dumps/fetches/kiwix-rsync-cron.sh
 ######################################
 
-sourcehost="download.kiwix.org"
-bwlimit="--bwlimit=40000"
+set -o errexit
+set -o nounset
 
-do_rsync (){
-    srcpath=$1
-    destpath=$2
+SOURCEHOST="download.kiwix.org"
+BWLIMIT="--bwlimit=40000"
 
-    running=`/usr/bin/pgrep -f -x "/usr/bin/rsync -rlptq $bwlimit ${sourcehost}::${srcpath} ${destroot}/${destpath}"`
-    if [ -z "$running" ]; then
+do_rsync(){
+    local srcpath=$1
+    local destpath=$2
+    local destroot=$3
+
+    local running=$(
+        /usr/bin/pgrep -f -x "/usr/bin/rsync -rlptq $BWLIMIT ${SOURCEHOST}::${srcpath} ${destroot}/${destpath}"
+    )
+    if [[ "$running" == "" ]]; then
         # filter out messages of the type
         #   file has vanished: "/zim/wikipedia/.wikipedia_tg_all_nopic_2016-05.zim.TQH5Zv" (in download.kiwix.org)
         #   rsync warning: some files vanished before they could be transferred (code 24) at main.c(1655) [generator=3.1.1]
-        /usr/bin/rsync -rlptq --delete "$bwlimit" "${sourcehost}::${srcpath}" "${destroot}/${destpath}" 2>&1 | grep -v 'vanished'
+        # cat makes the pipeline command never fail
+        /usr/bin/rsync \
+            -rlptq \
+            --delete \
+            "$BWLIMIT" \
+            "${SOURCEHOST}::${srcpath}" \
+            "${destroot}/${destpath}" \
+        2>&1 \
+        | grep -v 'vanished' \
+        | cat
+        # now we check the return code of rsync
+        local rsync_rc=${PIPESTATUS[0]}
+        if [[ "$rsync_rc" != "0" ]]; then
+            echo "Error while running rsync, check the logs..."
+            return $rsync_rc
+        fi
     fi
+    return 0
 }
 
-if [ -z "$1" ]; then
+if [[ "$1" == "" ]]; then
     echo "Usage: $0 dest_base_dir"
     exit 1
 fi
 
-destroot="$1"
-
-do_rsync "download.kiwix.org/zim/wikipedia/" "kiwix/zim/wikipedia/"
+do_rsync "download.kiwix.org/zim/wikipedia/" "kiwix/zim/wikipedia/" "$1"
