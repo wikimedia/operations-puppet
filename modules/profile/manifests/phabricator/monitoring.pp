@@ -5,7 +5,6 @@ class profile::phabricator::monitoring (
     Stdlib::Ensure::Service $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure', {'default_value' => 'running'}),
 ){
 
-    # All checks are paging because the "sms" contact group is added.
     # Only monitor PHD if it is actually set to be running in Hiera.
     if $phd_service_ensure == 'running' {
 
@@ -29,24 +28,8 @@ class profile::phabricator::monitoring (
     # https monitoring is on the virtual host 'phabricator'.
     # It should not be duplicated.
     if $::fqdn == $active_server {
-        monitoring::host { 'phabricator.wikimedia.org':
-            host_fqdn => 'phabricator.wikimedia.org',
+        prometheus::blackbox::check::http { 'phabricator.wikimedia.org':
+            severity => 'page',
         }
-
-        monitoring::service {
-            default:
-                contact_group => $phab_contact_groups,
-                critical      => true,
-                host          => 'phabricator.wikimedia.org',
-                notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator';
-            'phabricator-https':
-                description   => 'https://phabricator.wikimedia.org',
-                check_command => 'check_https_phabricator';
-            'phabricator-https-expiry':
-                description   => 'https://phabricator.wikimedia.org certificate expiry',
-                check_command => 'check_https_expiry!phabricator.wikimedia.org!443';
-        }
-
-        prometheus::blackbox::check::http { 'phabricator.wikimedia.org': }
     }
 }
