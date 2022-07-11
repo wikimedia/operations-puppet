@@ -80,9 +80,6 @@ class profile::opensearch::server(
             notrack => true,
             srange  => "@resolve((${opensearch_nodes_ferm}))",
         }
-
-        # Let deploy this check per node/ per cluster. see T231516
-        icinga::monitor::elasticsearch::old_jvm_gc_checks { $instance_params['cluster_name']: }
     }
 
     $major_version = split($version, '[.]')[0]
