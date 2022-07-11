@@ -581,12 +581,12 @@ node 'db2126.codfw.wmnet' {
 
 # s3 core production dbs on eqiad
 # eqiad master
-node 'db1123.eqiad.wmnet' {
+node 'db1157.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # eqiad replicas
-node /^db1(157|166|175|179)\.eqiad\.wmnet/ {
+node /^db1(123|166|175|179)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
