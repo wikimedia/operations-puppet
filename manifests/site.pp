@@ -920,12 +920,12 @@ node 'db2135.codfw.wmnet' {
 node 'db1117.eqiad.wmnet' {
     role(mariadb::misc::multiinstance)
 }
-node 'db2078.codfw.wmnet' {
+node 'db2160.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
 }
 
-# future misc multi-instance to replace db2078
-node 'db2160.codfw.wmnet' {
+# old misc multi-instance - to be decommissioned
+node 'db2078.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
 }
 
