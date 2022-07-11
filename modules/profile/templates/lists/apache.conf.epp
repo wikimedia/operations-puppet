@@ -1,10 +1,14 @@
-# vim: filetype=apache
-
+<%- | Stdlib::Fqdn         $lists_servername,
+      String               $acme_chief_cert,
+      Hash[String, String] $renamed_lists,
+      Array[String]        $ssl_settings,
+      Array[String]        $web_deny_conditions,
+| -%>
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= @lists_servername %>
+    ServerName <%= $lists_servername %>
     RewriteEngine on
-    RewriteRule ^/(?!hyperkitty/)(.*)$ https://<%= @lists_servername %>/$1 [R=301]
+    RewriteRule ^/(?!hyperkitty/)(.*)$ https://<%= $lists_servername %>/$1 [R=301]
     <IfModule mod_proxy_uwsgi.c>
         # Note: even though this looks like it's going to pass all traffic over
         # to mailman3-web, the above rewrite will send all non-hyperkitty paths
@@ -15,20 +19,20 @@
 
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= @lists_servername %>
+    ServerName <%= $lists_servername %>
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    <% if @acme_chief_cert %>
-    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
-    <% else %>
+    <%- if $acme_chief_cert { -%>
+    SSLCertificateFile /etc/acmecerts/<%= $acme_chief_cert %>/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= $acme_chief_cert %>/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= $acme_chief_cert %>/live/rsa-2048.key
+    <%- } else { -%>
     # certbot certs
-    SSLCertificateFile /etc/letsencrypt/live/<%= @lists_servername %>/fullchain.pem
-    SSLCertificateKeyFile /etc/letsencrypt/live/<%= @lists_servername %>/privkey.pem
-    <% end %>
-    <%= @ssl_settings.join("\n    ") %>
+    SSLCertificateFile /etc/letsencrypt/live/<%= $lists_servername %>/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/<%= $lists_servername %>/privkey.pem
+    <%- } -%>
+    <%= join($ssl_settings, "\n    ") %>
 
     Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
     Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
@@ -90,9 +94,9 @@
         <RequireAll>
             Require all granted
             Require not env bad_browser
-            <%- @web_deny_conditions.each do |cnd| -%>
-            Require not <%= cnd %>
-            <%- end %>
+            <%- $web_deny_conditions.each |$cnd| { -%>
+            Require not <%= $cnd %>
+            <%- } -%>
         </RequireAll>
     </Location>
 
@@ -106,8 +110,8 @@
     Alias /pipermail/ "/var/lib/mailman/archives/public/"
     Alias /images/    "/usr/share/images/"
 
-    RedirectMatch permanent ^/(index\.html?)?$ https://<%= @lists_servername %>/postorius/lists/
-    RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/postorius/lists/
+    RedirectMatch permanent ^/(index\.html?)?$ https://<%= $lists_servername %>/postorius/lists/
+    RedirectMatch temp ^/mailman/$        https://<%= $lists_servername %>/postorius/lists/
 
     # anti-subscription bot mitigation
     RewriteEngine on
@@ -125,8 +129,8 @@
 
     # If the Mailman3 list directory exists, redirect listinfo/admin pages to postorius
     RewriteMap lc int:tolower
-    RewriteCond /var/lib/mailman3/lists/${lc:$2}.<%= @lists_servername %> -d
-    RewriteRule ^/mailman/(listinfo|admin|admindb|options|subscribe)/([a-zA-Z0-9\._-]*?)($|/) https://<%= @lists_servername %>/postorius/lists/${lc:$2}.<%= @lists_servername %>/ [R=301]
+    RewriteCond /var/lib/mailman3/lists/${lc:$2}.<%= $lists_servername %> -d
+    RewriteRule ^/mailman/(listinfo|admin|admindb|options|subscribe)/([a-zA-Z0-9\._-]*?)($|/) https://<%= $lists_servername %>/postorius/lists/${lc:$2}.<%= $lists_servername %>/ [R=301]
 
     # Use the map to redirect pipermail URLs. Test that the key is present,
     # and if so, emit a 301 redirect.
@@ -135,15 +139,16 @@
     RewriteRule "^/pipermail/(.*)" "/hyperkitty/list/${pipermail:$1}" [R=302]
 
     # list renames
-    <% @renamed_lists.each do |oldname, newname| -%>
-    Redirect permanent /mailman/listinfo/<%= oldname %> https://<%= @lists_servername %>/mailman/listinfo/<%= newname %>
-    <% end %>
+    <%- $renamed_lists.each |$oldname, $newname| { -%>
+    Redirect permanent /mailman/listinfo/<%= $oldname %> https://<%= $lists_servername %>/mailman/listinfo/<%= $newname %>
+    <%- } -%>
 
-    Redirect permanent /pipermail/wikidata-l                  https://<%= @lists_servername %>/pipermail/wikidata/
+    Redirect permanent /pipermail/wikidata-l                  https://<%= $lists_servername %>/pipermail/wikidata/
 
-    ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
-    CustomLog /var/log/apache2/<%= @lists_servername %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= $lists_servername %>-error.log
+    CustomLog /var/log/apache2/<%= $lists_servername %>-access.log wmf
 
     # Make sure we serve with utf-8 charset (T261031)
     AddDefaultCharset utf-8
 </VirtualHost>
+# vim: filetype=apache

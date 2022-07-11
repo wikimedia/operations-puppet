@@ -58,8 +58,15 @@ class profile::lists (
             'proxy_uwsgi'
             ],
     }
+    $apache_conf = {
+      lists_servername    => $lists_servername,
+      acme_chief_cert     => $acme_chief_cert,
+      renamed_lists       => $renamed_lists,
+      ssl_settings        => $ssl_settings,
+      web_deny_conditions => $web_deny_conditions,
+    }
     httpd::site { $lists_servername:
-        content => template('profile/lists/apache.conf.erb'),
+        content => epp('profile/lists/apache.conf.epp', $apache_conf),
     }
 
     # Add files in /var/www (docroot)
