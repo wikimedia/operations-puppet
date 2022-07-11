@@ -140,7 +140,7 @@ def main():
                 '/queues/%2F/{}/get'.format(queue),
                 json.dumps({
                     'count': 1000,  # Limit response size
-                    'requeue': args.requeue,
+                    'ackmode': 'ack_requeue_true' if args.requeue else 'ack_requeue_false',
                     'encoding': 'auto'
                 })
             )
