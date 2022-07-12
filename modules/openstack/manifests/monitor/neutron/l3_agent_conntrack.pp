@@ -17,7 +17,7 @@ class openstack::monitor::neutron::l3_agent_conntrack (
         nrpe_command  => '/usr/local/lib/nagios/plugins/check_neutron_conntrack',
         sudo_user     => 'root',
         description   => 'Check nf_conntrack usage in neutron netns',
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team-email,admins',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 }

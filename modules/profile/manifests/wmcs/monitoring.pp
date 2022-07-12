@@ -71,7 +71,7 @@ class profile::wmcs::monitoring (
         },
         logging_enabled           => false,
         monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-team',
+        monitoring_contact_groups => 'wmcs-team-email',
         user                      => '_graphite',
     }
 }

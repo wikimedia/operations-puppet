@@ -5,15 +5,15 @@ class profile::openstack::base::keystone::fernet_keys(
     ) {
 
     systemd::timer::job { 'keystone_rotate_keys':
-        description               => 'Rotate keys for Keystone fernet tokens',
-        command                   => '/usr/bin/keystone-manage fernet_rotate --keystone-user keystone --keystone-group keystone',
-        interval                  => {
+        description        => 'Rotate keys for Keystone fernet tokens',
+        command            => '/usr/bin/keystone-manage fernet_rotate --keystone-user keystone --keystone-group keystone',
+        interval           => {
             'start'    => 'OnCalendar',
             'interval' => "*-*-* ${rotate_time}",
         },
-        logging_enabled           => true,
-        user                      => 'root',
-        monitoring_contact_groups => 'wmcs-team',
+        logging_enabled    => true,
+        user               => 'root',
+        monitoring_enabled => false,
     }
 
     file { '/etc/keystone/fernet-keys':
@@ -35,16 +35,15 @@ class profile::openstack::base::keystone::fernet_keys(
     $other_hosts = $keystone_hosts - $::fqdn
     $other_hosts.each |String $thishost| {
         systemd::timer::job { "keystone_sync_keys_to_${thishost}":
-            description               => "Sync keys for Keystone fernet tokens to ${thishost}",
-            command                   => "/usr/bin/rsync -a --delete rsync://${thishost}/keystonefernetkeys/ /etc/keystone/fernet-keys/",
-            interval                  => {
+            description        => "Sync keys for Keystone fernet tokens to ${thishost}",
+            command            => "/usr/bin/rsync -a --delete rsync://${thishost}/keystonefernetkeys/ /etc/keystone/fernet-keys/",
+            interval           => {
             'start'    => 'OnCalendar',
             'interval' => "*-*-* ${sync_time}",
             },
-            logging_enabled           => true,
-            monitoring_enabled        => false,
-            monitoring_contact_groups => 'wmcs-team',
-            user                      => 'keystone',
+            logging_enabled    => true,
+            monitoring_enabled => false,
+            user               => 'keystone',
         }
     }
 }

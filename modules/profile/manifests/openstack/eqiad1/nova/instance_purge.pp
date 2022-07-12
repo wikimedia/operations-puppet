@@ -16,18 +16,17 @@ class profile::openstack::eqiad1::nova::instance_purge(
     #  option in the list.
     $purge_projects.each |Hash $purge_rules| {
         systemd::timer::job { "purge_project_instances_${purge_rules['project']}":
-            ensure                    => $ensure,
-            description               => "Delete VMs older than ${purge_rules['days_to_delete']} days",
-            interval                  => {
+            ensure             => $ensure,
+            description        => "Delete VMs older than ${purge_rules['days_to_delete']} days",
+            interval           => {
                 'start'    => 'OnCalendar',
                 'interval' => '*-*-* 14:00:00', # Daily at 14:00 UTC
             },
-            command                   => "/usr/local/sbin/wmcs-instancepurge --project ${purge_rules['project']} --days-to-delete ${purge_rules['days_to_delete']} --days-to-nag ${purge_rules['days_to_nag']}",
-            logging_enabled           => false,
-            monitoring_enabled        => true,
-            monitoring_contact_groups => 'wmcs-team',
-            user                      => 'root',
-            require                   => File['/usr/local/sbin/wmcs-instancepurge'],
+            command            => "/usr/local/sbin/wmcs-instancepurge --project ${purge_rules['project']} --days-to-delete ${purge_rules['days_to_delete']} --days-to-nag ${purge_rules['days_to_nag']}",
+            logging_enabled    => false,
+            monitoring_enabled => false,
+            user               => 'root',
+            require            => File['/usr/local/sbin/wmcs-instancepurge'],
         }
     }
 }

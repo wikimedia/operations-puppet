@@ -79,7 +79,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     class { 'mariadb::monitor_process':
         process_count => length($instances),
         is_critical   => false,
-        contact_group => 'admins,wmcs-team',
+        contact_group => 'admins,wmcs-team-email',
     }
 
     class { 'mariadb::monitor_memory':

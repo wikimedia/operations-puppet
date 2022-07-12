@@ -3,31 +3,28 @@ profile::admin::groups:
 
 profile::base::enable_microcode: true
 
-contactgroups: wmcs-team
+contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
-
 
 # Reveal these to local-storage virts so we can transfer
 #  things into rbd by hand
-profile::ceph::client::rbd::client_name: 'eqiad1-compute'
-profile::ceph::client::rbd::cinder_client_name: 'eqiad1-cinder'
-profile::ceph::client::rbd::pool: 'eqiad1-compute'
+profile::ceph::client::rbd::client_name: "eqiad1-compute"
+profile::ceph::client::rbd::cinder_client_name: "eqiad1-cinder"
+profile::ceph::client::rbd::pool: "eqiad1-compute"
 profile::ceph::client::rbd::enable_v2_messenger: false
 # This key is shared across all the libvirt / nova hosts
-profile::ceph::client::rbd::libvirt_rbd_uuid: 'ab1c8650-2983-45be-a9ea-4cdc6185155d'
-profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3ffdf36364d'
+profile::ceph::client::rbd::libvirt_rbd_uuid: "ab1c8650-2983-45be-a9ea-4cdc6185155d"
+profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: "9dc683f1-f3d4-4c12-8b8f-f3ffdf36364d"
 profile::ceph::client::rbd::enable_nova_rbd: false
 
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
-- eqiad1-compute
+  - eqiad1-compute
 profile::monitoring::monitor_systemd: false
 cluster: wmcs
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
-    - '*'
-contactgroups: wmcs-team
-mgmt_contactgroups: wmcs-team-email
+    - "*"
 
 profile::openstack::eqiad1::nova::common::is_control_node: false
-profile::contacts::role_contacts: ['WMCS']
+profile::contacts::role_contacts: ["WMCS"]

@@ -23,7 +23,7 @@ class openstack::nova::fullstack::monitor {
         nrpe_command  => '/usr/local/bin/check_nova_fullstack_leaks.py',
         description   => 'Check for VMs leaked by the nova-fullstack test',
         require       => File['/usr/local/bin/check_nova_fullstack_leaks.py'],
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team-email,admins',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Check_for_VMs_leaked_by_the_nova-fullstack_test',
     }
 

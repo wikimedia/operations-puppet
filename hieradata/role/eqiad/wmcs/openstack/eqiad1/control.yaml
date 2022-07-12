@@ -9,7 +9,7 @@ prometheus_nodes:
     - prometheus1005.eqiad.wmnet
     - prometheus1006.eqiad.wmnet
 
-contactgroups: wmcs-team
+contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
 
 prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
@@ -36,8 +36,6 @@ profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3
 # server's alert setting
 profile::monitoring::monitor_systemd: false
 cluster: wmcs
-contactgroups: wmcs-team
-mgmt_contactgroups: wmcs-team-email
 raid::md::cron_ensure: absent
 
 profile::memcached::version: 'present'

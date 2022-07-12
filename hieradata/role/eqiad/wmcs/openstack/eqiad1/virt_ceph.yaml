@@ -1,7 +1,7 @@
 cluster: wmcs
 profile::admin::groups:
   - wmcs-roots
-contactgroups: wmcs-team
+contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
 
 profile::debdeploy::client::filter_services:
@@ -26,7 +26,7 @@ cluster: wmcs
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
-contactgroups: wmcs-team
+contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
 profile::openstack::eqiad1::nova::common::is_control_node: false
 profile::contacts::role_contacts: ['WMCS']

@@ -80,7 +80,7 @@ class profile::openstack::eqiad1::keystone::service(
         active         => true,
         auth_port      => $auth_port,
         public_port    => $public_port,
-        contact_groups => 'wmcs-team',
+        contact_groups => 'wmcs-team-email',
     }
     contain '::openstack::keystone::monitor::services'
 

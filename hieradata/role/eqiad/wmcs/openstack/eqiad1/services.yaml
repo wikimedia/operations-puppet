@@ -4,20 +4,18 @@ profile::admin::groups:
 # prometheus-pdns-exporter is scraped by cloudmetrics
 # prometheus-node-exporter by prod servers
 prometheus_nodes:
-    - cloudmetrics1003.eqiad.wmnet
-    - cloudmetrics1004.eqiad.wmnet
-    - prometheus1005.eqiad.wmnet
-    - prometheus1006.eqiad.wmnet
+  - cloudmetrics1003.eqiad.wmnet
+  - cloudmetrics1004.eqiad.wmnet
+  - prometheus1005.eqiad.wmnet
+  - prometheus1006.eqiad.wmnet
 
-contactgroups: wmcs-team
+contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
 
 profile::openstack::eqiad1::horizon::puppet_git_repo_name: instance-puppet
 profile::openstack::eqiad1::horizon::puppet_git_repo_user: instance-puppet-user
 cluster: wmcs
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
-contactgroups: wmcs-team
-mgmt_contactgroups: wmcs-team-email
+profile::prometheus::memcached_exporter::arguments: "--memcached.address=localhost:11000"
 # See T224828
 raid::md::cron_ensure: absent
-profile::contacts::role_contacts: ['WMCS']
+profile::contacts::role_contacts: ["WMCS"]

@@ -55,7 +55,7 @@ class icinga::monitor::certs {
         check_command => 'check_ssl_http_letsencrypt!codesearch.wmcloud.org',
         host          => 'codesearch.wmcloud.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email',
     }
 
     # PAWS cert is separate and the host is defined in icinga::monitor::toollabs

@@ -9,7 +9,6 @@ profile::resolving::domain_search:
   - eqsin.wmnet
   - drmrs.wmnet
 
-
 profile::grafana::domain: grafana-cloud.wikimedia.org
 profile::grafana::server_aliases:
   - grafana-labs.wikimedia.org
@@ -19,7 +18,7 @@ profile::wmcs::monitoring::statsd_standby: cloudmetrics1004.eqiad.wmnet
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
-contactgroups: wmcs-team
+contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
 graphite_host: cloudmetrics1003.eqiad.wmnet
@@ -40,7 +39,7 @@ profile::grafana::ldap:
     surname: sn
     username: cn
     member_of: memberOf
-    email:  mail
+    email: mail
   servers.group_mappings:
     ops:
       group_dn: cn=ops,ou=groups,dc=wikimedia,dc=org
@@ -68,15 +67,14 @@ profile::grafana::config:
   panels:
     disable_sanitize_html: true
 
-
 # envoy for TLS termination for grafana-labs/graphite-labs behind ATS
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
-  - server_names: ['*']
+  - server_names: ["*"]
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
-profile::tlsproxy::envoy::ssl_provider: 'cfssl'
-profile::tlsproxy::envoy::cfssl_label: 'discovery'
+profile::tlsproxy::envoy::ssl_provider: "cfssl"
+profile::tlsproxy::envoy::cfssl_label: "discovery"
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - grafana-labs.discovery.wmnet
@@ -89,4 +87,4 @@ profile::tlsproxy::envoy::sni_support: "no"
 profile::grafana::enable_cas: false
 
 profile::wmcs::prometheus::storage_retention_size: 500GB
-profile::contacts::role_contacts: ['WMCS']
+profile::contacts::role_contacts: ["WMCS"]

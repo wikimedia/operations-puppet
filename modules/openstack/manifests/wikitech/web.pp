@@ -51,17 +51,16 @@ class openstack::wikitech::web(
     }
 
     systemd::timer::job { 'wikitech_run_jobs':
-        ensure                    => present,
-        description               => 'Run Wikitech runJobs.php maintenance script',
-        command                   => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb}",
-        interval                  => {
+        ensure             => present,
+        description        => 'Run Wikitech runJobs.php maintenance script',
+        command            => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb}",
+        interval           => {
         'start'    => 'OnCalendar',
         'interval' => '*-*-* *:*:00', # Every minute
         },
-        logging_enabled           => false,
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-team',
-        user                      => $::mediawiki::users::web,
+        logging_enabled    => false,
+        monitoring_enabled => false,
+        user               => $::mediawiki::users::web,
     }
 
     file { '/etc/wikitech-logoutd.ini':

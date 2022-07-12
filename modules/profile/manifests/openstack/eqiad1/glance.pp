@@ -29,6 +29,6 @@ class profile::openstack::eqiad1::glance (
 
     class {'openstack::glance::monitor':
         active         => ($::fqdn == $primary_glance_image_store),
-        contact_groups => 'wmcs-team,admins',
+        contact_groups => 'wmcs-team-email,admins',
     }
 }

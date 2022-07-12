@@ -1,5 +1,5 @@
 class labstore::monitoring::exports(
-    String $contact_groups='wmcs-team,admins',
+    String $contact_groups='wmcs-team-email,admins',
     String $drbd_role='primary',
 ){
     # This really doesn't need to be running on the secondary.

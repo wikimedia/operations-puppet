@@ -41,19 +41,18 @@ class openstack::designate::dns_floating_ip_updater(
     }
 
     systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
-        ensure                    => $ensure,
-        description               => 'Designate Floating IP PTR records updater',
-        command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
-        interval                  => {
+        ensure              => $ensure,
+        description         => 'Designate Floating IP PTR records updater',
+        command             => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
+        interval            => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00/15:00', # Every 15 minutes
         },
-        max_runtime_seconds       => 890,  # kill if running after 14m50s
-        logging_enabled           => false,
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-team',
-        user                      => 'root',
-        require                   => [
+        max_runtime_seconds => 890,  # kill if running after 14m50s
+        logging_enabled     => false,
+        monitoring_enabled  => false,
+        user                => 'root',
+        require             => [
             File['/usr/local/sbin/wmcs-dns-floating-ip-updater'],
             File['/etc/wmcs-dns-floating-ip-updater.yaml'],
         ],

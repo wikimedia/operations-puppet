@@ -6,7 +6,7 @@ profile::lvs::realserver::pools:
     services:
       - cloudceph
 
-contactgroups: 'wmcs-team'
+contactgroups: 'wmcs-team-email'
 mgmt_contactgroups: 'wmcs-team-email'
 
 # prometheus-node-exporter by prod servers

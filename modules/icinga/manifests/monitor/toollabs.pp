@@ -6,7 +6,7 @@ class icinga::monitor::toollabs {
     # toolserver.org (redirect page to Toolforge)
     @monitoring::host { 'www.toolserver.org':
         host_fqdn     => 'www.toolserver.org',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email',
     }
 
     # monitoring of https://meta.wikimedia.org/wiki/PAWS
@@ -67,7 +67,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/cron!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email',
     }
 
     monitoring::service { 'tools-checker-toolsdb':
@@ -83,7 +83,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/db/wikilabelsrw!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email',
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
@@ -149,7 +149,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/nfs/dumps!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email',
     }
 
     monitoring::service { 'tools-checker-nfs-home':

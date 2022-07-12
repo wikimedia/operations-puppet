@@ -1,7 +1,7 @@
 cluster: wmcs
 
-contactgroups: 'wmcs-team,admins'
-mgmt_contactgroups: 'wmcs-team-email'
+contactgroups: "wmcs-team-email,admins"
+mgmt_contactgroups: "wmcs-team-email"
 profile::monitoring::monitor_systemd: false
 
 profile::admin::groups:
@@ -11,29 +11,29 @@ profile::admin::groups:
 profile::dumps::distribution::blocked_user_agent_regex: 'Mozilla\/5\.0 \(Linux; Android\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) Chrome\/34\.0\.1847\.131 Safari\/537\.36'
 # Hadoop client packges are installed and configured to talk
 # to the analytics-hadoop cluster.
-profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+profile::hadoop::common::hadoop_cluster_name: "analytics-hadoop"
 
 profile::analytics::cluster::hdfs_mount::monitorning_enabled: true
-profile::analytics::cluster::hdfs_mount::monitoring_user: 'dumpsgen'
+profile::analytics::cluster::hdfs_mount::monitoring_user: "dumpsgen"
 
 # In order to fetch data from the Analytics Hadoop Cluster,
 # a Kerberos keytab is needed to allow automated jobs to
 # authenticate.
 profile::kerberos::keytabs::keytabs_metadata:
-  - role: 'dumpsgen'
-    owner: 'dumpsgen'
-    group: 'dumpsgen'
-    filename: 'dumpsgen.keytab'
+  - role: "dumpsgen"
+    owner: "dumpsgen"
+    group: "dumpsgen"
+    filename: "dumpsgen.keytab"
 
 profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 # Needed by Analytics java-based tools
 profile::java::java_packages:
-  - version: '8'
-    variant: 'jdk'
+  - version: "8"
+    variant: "jdk"
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 # includes module for bandwidth limits
-profile::nginx::variant: 'full'
+profile::nginx::variant: "full"

@@ -1,6 +1,6 @@
 class labstore::monitoring::volumes (
     Array[String] $server_vols,
-    String $contact_groups='wmcs-team,admins',
+    String $contact_groups='wmcs-team-email,admins',
     String $drbd_role='primary',
 ){
     if $drbd_role == 'primary' {
