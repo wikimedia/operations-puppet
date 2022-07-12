@@ -18,10 +18,12 @@ class profile::toolforge::prometheus (
 
     include ::profile::prometheus::blackbox_exporter
 
-    # Checks for custom probes, defined in puppet
-    prometheus::blackbox::import_checks { 'tools':
-        prometheus_instance => 'tools',
-        site                => $::site,
+    if debian::codename::ge('bullseye') {
+        # Checks for custom probes, defined in puppet
+        prometheus::blackbox::import_checks { 'tools':
+            prometheus_instance => 'tools',
+            site                => $::site,
+        }
     }
 
     $targets_path = '/srv/prometheus/tools/targets'
