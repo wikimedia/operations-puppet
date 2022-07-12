@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure the idp
 # @param ldap_config a hash containing the ldap configeration
 class profile::idp(

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: role::idp
 # An identity provider using Apereo CAS
 class role::idp {

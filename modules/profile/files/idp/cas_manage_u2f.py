@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Script to manage Apereo CAS U2F registrations"""
 
 import re

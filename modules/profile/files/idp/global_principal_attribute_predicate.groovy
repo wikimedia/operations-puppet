@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import org.apereo.cas.authentication.*
 import java.util.function.*
 import org.apereo.cas.services.*
