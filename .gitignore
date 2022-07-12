@@ -65,3 +65,5 @@ hieradata/auto.yaml
 /bolt/modules/mailalias_core
 ## Clone of git@github.com:wikimedia/labs-private.git
 /private
+# created by beaker
+/log

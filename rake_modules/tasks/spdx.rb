@@ -54,7 +54,7 @@ end
 def comment_line(filename, line)
   # format a line as a comment using the file type specific comment
   # filetype is calculated based on the file extension
-  ext = File.extname(filename)[1, -1]
+  ext = File.extname(filename)[1..-1]
   case ext
   when /\A(?:erb|epp)\z/
     "<%#- #{line} -%>\n"
@@ -192,8 +192,17 @@ namespace :spdx do
     end
     desc "Convert a profile to SPDX"
     task :profile, [:profile] do |_t, args|
+      # check profile file
+      profile_file = File.join('modules/profile/manifests', "#{args[:profile].gsub('::', '/')}.pp")
+      unsigned_contibutors = check_path_contributors([profile_file])
+      if unsigned_contibutors.empty?
+        puts profile_file
+        add_spdx_tags(check_spdx_licence([profile_file]))
+      else
+        puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
+        puts unsigned_contibutors.join("\n").red
+      end
       [
-        "modules/profile/manifests",
         "modules/profile/files",
         "modules/profile/functions",
         "modules/profile/templates",
@@ -211,10 +220,19 @@ namespace :spdx do
         add_spdx_tags(missing_licence)
       end
     end
-    desc "Convert a profile to SPDX"
+    desc "Convert a role to SPDX"
     task :role, [:role] do |_t, args|
+      # check role file
+      role_file = File.join('modules/role/manifests', "#{args[:role].gsub('::', '/')}.pp")
+      unsigned_contibutors = check_path_contributors([role_file])
+      if unsigned_contibutors.empty?
+        puts role_file
+        add_spdx_tags(check_spdx_licence([role_file]))
+      else
+        puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
+        puts unsigned_contibutors.join("\n").red
+      end
       [
-        "modules/role/manifests",
         "modules/role/files",
         "modules/role/templates",
       ].each do |dir|
