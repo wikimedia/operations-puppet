@@ -1,2 +1,3 @@
+profile::debmonitor::client::ensure: 'present'
 profile::debmonitor::client::ssl_ca: 'cfssl'
 profile::debmonitor::client::ssl_ca_label: 'debmonitor'

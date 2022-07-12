@@ -10,13 +10,15 @@
 # Sample Usage:
 #       include ::profile::debmonitor::client
 # @param debmonitor_server the main debmonitor server
+# @param ensure ensureable parameter
 # @param ssl_ca use the puppet issued certs or request a cert from cfssl
 # @param ssl_ca_label if using cfssl this is the ca label to use for certificate requests
 class profile::debmonitor::client (
     Stdlib::Host            $debmonitor_server = lookup('debmonitor'),
+    Wmflib::Ensure          $ensure            = lookup('profile::debmonitor::client::ensure'),
     Enum['puppet', 'cfssl'] $ssl_ca            = lookup('profile::debmonitor::client::ssl_ca'),
     Optional[String]        $ssl_ca_label      = lookup('profile::debmonitor::client::ssl_ca_label'),
-){
+) {
 
     $base_path = '/etc/debmonitor'
 
@@ -24,7 +26,7 @@ class profile::debmonitor::client (
     if !defined(File[$base_path]) {
         # Create directory for the exposed Puppet certs.
         file { $base_path:
-            ensure => directory,
+            ensure => stdlib::ensure($ensure, 'directory'),
             owner  => 'debmonitor',
             group  => 'debmonitor',
             mode   => '0555',
@@ -33,12 +35,12 @@ class profile::debmonitor::client (
 
     # Create user and group to which expose the Puppet certs.
     group { 'debmonitor':
-        ensure => present,
+        ensure => $ensure,
         system => true,
     }
 
     user { 'debmonitor':
-        ensure     => present,
+        ensure     => $ensure,
         gid        => 'debmonitor',
         shell      => '/bin/bash',
         home       => '/nonexistent',
@@ -50,6 +52,7 @@ class profile::debmonitor::client (
     if $ssl_ca == 'puppet' {
         # TODO: consider using profile::pki::get_cert
         puppet::expose_agent_certs { $base_path:
+            ensure          => $ensure,
             user            => 'debmonitor',
             group           => 'debmonitor',
             provide_private => true,
@@ -64,6 +67,7 @@ class profile::debmonitor::client (
             fail('must specify \$ssl_label when using \$ssl_ca == \'cfssl\'')
         }
         $ssl_paths = profile::pki::get_cert($ssl_ca_label, $facts['networking']['fqdn'], {
+            ensure => $ensure,
             owner  => 'debmonitor',
             group  => 'debmonitor',
             outdir => "${base_path}/ssl",
@@ -75,7 +79,7 @@ class profile::debmonitor::client (
 
     # Create the Debmonitor client configuration file.
     file { '/etc/debmonitor.conf':
-        ensure  => present,
+        ensure  => stdlib::ensure($ensure, file),
         owner   => 'debmonitor',
         group   => 'debmonitor',
         mode    => '0440',
@@ -90,13 +94,13 @@ class profile::debmonitor::client (
     # If the certs and config file are not in place this will fail. The ssl and
     # file resources have an explicit Before statements and we also place the
     # installation here so the manifest order represent the catalogue order
-    ensure_packages(['debmonitor-client'])
+    ensure_packages('debmonitor-client', {'ensure' => $ensure})
 
-    $hour = Integer(seeded_rand(24, $::fqdn))
-    $minute = Integer(seeded_rand(60, $::fqdn))
+    $hour = Integer(seeded_rand(24, $facts['networking']['fqdn']))
+    $minute = Integer(seeded_rand(60, $facts['networking']['fqdn']))
 
     systemd::timer::job { 'debmonitor-client':
-        ensure        => 'present',
+        ensure        => $ensure,
         user          => 'debmonitor',
         description   => 'reconciliation job in case any debmonitor update fails',
         command       => '/usr/bin/debmonitor-client',
