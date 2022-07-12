@@ -54,7 +54,7 @@ end
 def comment_line(filename, line)
   # format a line as a comment using the file type specific comment
   # filetype is calculated based on the file extension
-  ext = get_extention(filename)
+  ext = File.extname(filename)[1, -1]
   case ext
   when /\A(?:erb|epp)\z/
     "<%#- #{line} -%>\n"
