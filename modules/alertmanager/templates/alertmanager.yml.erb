@@ -414,7 +414,7 @@ receivers:
   webhook_configs:
     # #wmcs tag, cloud-services-team is deprecated in favor of this one
     # title={{groupLabels.alertname}} {{groupLabels.instance}} {{commonAnnotations.description}}
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7sul7hj32btacinsnubq&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BgroupLabels.instance%7D%7D%20%7D%7DcommonAnnotations.description%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7sul7hj32btacinsnubq&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BgroupLabels.instance%7D%7D%20%7B%7BcommonAnnotations.description%7D%7D'
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
