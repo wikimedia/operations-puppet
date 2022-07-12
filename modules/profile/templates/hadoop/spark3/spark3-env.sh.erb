@@ -67,8 +67,19 @@
 # - SPARK_NICENESS      The scheduling priority for daemons. (Default: 0)
 # - SPARK_NO_DAEMONIZE  Run the proposed command in the foreground. It will not output a PID file.
 
-# Custom WMF options:
-# - CONDA_BASE_ENV_PREFIX If conda is active and we are running in YARN, this will be used as the default PYSPARK_PYTHON (default: /usr/lib/anaconda-wmf)
+
+
+<% # Skip configuration customizations for the currently running Spark 3 jobs
+   # launched by Airflow (production + test clusters).
+   # https://gitlab.wikimedia.org/repos/data-engineering/airflow-dags/-/blob/b8f66e9885bc18f1f152abb99e86a1eb376cc237/wmf_airflow_common/config/experimental_spark_3_dag_default_args.py
+   if @test_spark_3_install -%>
+# = WMF customizations below =
+
+
+if [ -z "${SPARK_HOME}" ]; then
+    echo "ERROR: SPARK_HOME must be set before loading ${0}"
+    exit 1
+fi
 
 # If /etc/hadoop/conf exists, use it as HADOOP_CONF_DIR
 if [ -z "${HADOOP_CONF_DIR}" -a -e "/etc/hadoop/conf" ]; then
@@ -78,83 +89,112 @@ fi
 # If hadoop command is executable, then use it to add Hadoop jars to Spark's runtime classpath.
 # See: https://spark.apache.org/docs/2.4.4/hadoop-provided.html
 #
-# TODO: Uncomment when we use a Spark3 that doesn't embed Hadoop
+# TODO: Remove /usr/lib/airflow conditional when we use finalize using Spark3 that doesn't embed Hadoop.
 #       For now we use the Airflow-installed version of Spark3 that
-#       embeds Hadoop 3.2.0
+#       embeds Hadoop 3.2.0.
+#       https://phabricator.wikimedia.org/T295072
 #
-#if [ -x "$(command -v hadoop)" ]; then
-#    SPARK_DIST_CLASSPATH=$(hadoop classpath)
-#fi
+if [ "${SPARK_HOME}" != /usr/lib/airflow* -a -x "$(command -v hadoop)" ]; then
+   SPARK_DIST_CLASSPATH=$(hadoop classpath)
+fi
+<% end -%>
 
 # If /usr/lib/hadoop/native exists, use Hadoop native libs from there
 if [ -z "${LD_LIBRARY_PATH}" -a -e /usr/lib/hadoop/lib/native ]; then
     export LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native
 fi
+<% if @test_spark_3_install -%>
 
-# TODO: Fix environment variables for pyspark (commented for now)
 
-#: ${CONDA_BASE_ENV_PREFIX:='/usr/lib/anaconda-wmf'}
 
-# Default PYSPARK_DRIVER_PYTHON to ipython if running pyspark CLI directly.
-#if [[ -z "${PYSPARK_DRIVER_PYTHON}" && "${0}" == *pyspark* ]]; then
-#    # If a conda environment is active, then use its ipython3.
-#    if [ -n "${CONDA_PREFIX}" -a -e "${CONDA_PREFIX}/bin/ipython3" ]; then
-#        export PYSPARK_DRIVER_PYTHON="$(realpath ${CONDA_PREFIX}/bin/ipython3)"
-#    # TODO: default to always using anaconda-wmf for pyspark, even if a conda env is not active.
-#    # Else if CONDA_BASE_ENV_PREFIX exists, then use its ipython3
-#    # elif [ -n "${CONDA_BASE_ENV_PREFIX}" -a -e "${CONDA_BASE_ENV_PREFIX}/bin/ipython3" ]; then
-#    #     export PYSPARK_DRIVER_PYTHON="$(realpath ${CONDA_BASE_ENV_PREFIX}/bin/ipython3)"
-#    # Else is ipython3 is somewhere in PATH, use it.
-#    elif [ -n "$(command -v ipython3)" ]; then
-#        export PYSPARK_DRIVER_PYTHON="$(realpath $(command -v ipython3))"
-#    fi
-#fi
+# == Determine useful default values for PYSPARK_DRIVER_PYTHON and PYSPARK_PYTHON ==
+#
+# PYSPARK_DRIVER_PYTHON:
+#
+# - User's python env.  If CONDA_PREFIX is set, or if SPARK_HOME is a directory
+#   site-packages/pyspark directory, assume we want to use ipython (or python)
+#   from the user's python env.
+#
+# - Else, use $PYTHON_PREFIX_GLOBAL/bin/ipython3
+#
+# NOTE: If we don't end up setting PYSPARK_DRIVER_PYTHON, then built in spark scripts will do
+# what they usually do to set it (use system python). I.e. it will default to the
+# value of PYSPARK_PYTHON, or the system 'python'.
+#
+# PYSPARK_PYTHON:
+#
+# This must be available on worker nodes.
+#
+# - If we are not running in YARN, then we can safely use the user's python env.
+#
+# - Else if we are running in YARN, we have no way of using a user's local python env.
+#   as the default value here.  It is possible to for users to use a custom python env,
+#   but the user will have ship their packed python env to workers, and handle setting
+#   PYSPARK_PYTHON to the correct value themselves,
+#
+#   So, we default PYSPARK_PYTHON to $PYTHON_PREFIX_GLOBAL/bin/python3
 
-# If running in yarn and a conda env is active and CONDA_BASE_ENV_PREFIX exists,
-# then default to using CONDA_BASE_ENV_PREFIX for PYSPARK_PYTHON.
-# Since CONDA_BASE_ENV_PREFIX should be installed on all remote YARN workers,
-# this should allow pyspark to work. If you need custom python depdendencies on
-# remote workers, you'll have to pack up a custom conda env and
-# set PYSPARK_PYTHON accordingly.
-# TODO: always use CONDA_BASE_ENV_PREFIX even if a conda env is not currently active.
-#if [ -z "${PYSPARK_PYTHON}" ]; then
+
+# This python env prefix is expected to exist on all potential spark nodes, both masters and workers.
+# This will be used for default PYSPARK_*_PYTHON unless a conda env is currently active.
+PYTHON_PREFIX_GLOBAL=$(realpath ${PYTHON_PREFIX_GLOBAL:-"/opt/conda-analytics"})
+
+# If a conda environment is active (CONDA_PREFIX is set),
+# then assume this is the user's python environment
+# If it isn't then check to see if $SPARK_HOME is currently in a pip installed pyspark site-packages
+# inside a python environment.  If it is, then assume that is the user's python environment.
+# NOTE: At this point SPARK_HOME should be set, either by the user or by the find-spark-home
+# script that comes with spark.
+PYTHON_PREFIX_USER=$(realpath "${CONDA_PREFIX:-$(dirname $(dirname $(dirname $(dirname $SPARK_HOME))))}")
+
+# Default PYSPARK_DRIVER_PYTHON to ipython3 if running pyspark CLI directly.
+if [[ -z "${PYSPARK_DRIVER_PYTHON}" && "${0}" == *pyspark* ]]; then
+
+    # If a user's python environment exists and has ipython3, use it
+    if [ -n "${PYTHON_PREFIX_USER}" -a -e "${PYTHON_PREFIX_USER}/bin/ipython3" ]; then
+        export PYSPARK_DRIVER_PYTHON="${PYTHON_PREFIX_USER}/bin/ipython3"
+
+    # in case the user's python environment exists without ipython3, but does have python3, use it.
+    elif [ -n "${PYTHON_PREFIX_USER}" -a -e "${PYTHON_PREFIX_USER}/bin/python3" ]; then
+        export PYSPARK_DRIVER_PYTHON="${PYTHON_PREFIX_USER}/bin/python3"
+
+    # Else use PYTHON_PREFIX_GLOBAL's ipython3.
+    else
+        export PYSPARK_DRIVER_PYTHON="${PYTHON_PREFIX_GLOBAL}/bin/ipython3"
+
+    fi
+fi
+
+if [ -z "${PYSPARK_PYTHON}" ]; then
     # Search the CLI opts to find the master option, if it is given.
     # PYSPARK_PYTHON needs to be set to something that will work on remote executors
     # if a conda environment is active.  This will only work if
     # the SparkSession master is being set via the CLI.
-#    spark_master=''
-#    for #((i = 1; i <= $#; i++ )); do
-#        arg="${!i}"
-#        if [[ "${arg}" == --master ]]; then
-#            master_index=$((i+1))
-#            spark_master="${!master_index}"
-#        elif [[ "${arg}" == --master=* ]]; then
-#            spark_master="$(echo ${arg} | cut -f2 -d=)"
-#        fi
-#    done
+    spark_master=''
+    for ((i = 1; i <= $#; i++ )); do
+       arg="${!i}"
+       if [[ "${arg}" == --master ]]; then
+           master_index=$((i+1))
+           spark_master="${!master_index}"
+       elif [[ "${arg}" == --master=* ]]; then
+           spark_master="$(echo ${arg} | cut -f2 -d=)"
+       fi
+    done
 
-    # TODO: remove the -n $CONDA_PREFIX check and always default to CONDA_BASE_ENV_PREFIX/bin/python3.
-#    if [[ "${spark_master}" == yarn* && -n "${CONDA_PREFIX}" && -e "${CONDA_BASE_ENV_PREFIX}/bin/python3" ]] ; then
-#        export PYSPARK_PYTHON="$(realpath ${CONDA_BASE_ENV_PREFIX}/bin/python3)"
-#    elif [ -z "${CONDA_PREFIX}" -a -n "$(command -v python3)" ]; then
-        # If using the system python3, set PYSPARK_PYTHON to default to the versioned python
-        # executable on the node where spark is being launched.
-        # E.g. on Stretch we want python3.5 and on Buster we want python3.7.
-        # This will cause the versions of python that is used on driver
-        # and on workers to be the same.
-        # https://phabricator.wikimedia.org/T229347#5439259
-        # TODO: Remove this once we always default to CONDA_BASE_ENV_PREFIX/bin/python3
-##        export PYSPARK_PYTHON="$(basename $(realpath $(command -v python3)))"
-        # If SPARK_HOME/pythonX.X exists, then insert it into the front of PYTHONPATH
-        # So any provided packages override system installed ones.
-#        python_version_path=${SPARK_HOME}/$(${PYSPARK_PYTHON} -c 'import sys; print("python{}.{}".format(sys.version_info.major, sys.version_info.minor))')
-#        if [ -d "${python_version_path}" ]; then
-#            export PYTHONPATH="${python_version_path}:${PYTHONPATH}"
-#        fi
-#    fi
-#fi
+    # If not YARN and user env's python exists, we can safely use the user env's python.
+    if [[ "${spark_master}" != yarn* && -n "${PYTHON_PREFIX_USER}" && -e "${PYTHON_PREFIX_USER}/bin/python3" ]]; then
+        export PYSPARK_PYTHON="${PYTHON_PREFIX_USER}/bin/python3"
+
+    # else use the PYTHON_PREFIX_GLOBAL's python.
+    # This MUST exist on all worker nodes.
+    else
+        export PYSPARK_PYTHON="${PYTHON_PREFIX_GLOBAL}/bin/python3"
+
+    fi
+fi
 
 # Note: If PYSPARK_DRIVER_PYTHON and PYSPARK_PYTHON are not set at this point,
-# the pyspark script will just use 'python'.
-#test -n "${PYSPARK_DRIVER_PYTHON}" && echo "PYSPARK_DRIVER_PYTHON=$PYSPARK_DRIVER_PYTHON"
-#test -n "${PYSPARK_PYTHON}" && echo "PYSPARK_PYTHON=$PYSPARK_PYTHON"
+# the pyspark script will just use system 'python'.
+test -n "${PYSPARK_DRIVER_PYTHON}" && echo "PYSPARK_DRIVER_PYTHON=${PYSPARK_DRIVER_PYTHON}"
+test -n "${PYSPARK_PYTHON}" && echo "PYSPARK_PYTHON=${PYSPARK_PYTHON}"
+<% end -%>

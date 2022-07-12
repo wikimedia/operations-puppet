@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 # == Class profile::hadoop::spark3
 # Ultimately this class will install the Spark3 debian package,
 # created from a conda environement.
@@ -10,12 +12,14 @@
 # will be done.
 #
 # [*install_yarn_shuffle_jar*]
+#   TODO: implement
 #   If true, any Spark 1 or 2 yarn shuffle jars in /usr/lib/hadoop-yarn/lib
 #   will be replaced with the Spark 3 one, causing YARN NodeManagers to run
 #   the Spark 3 shuffle service.
 #   Default: true
 #
 # [*install_assembly*]
+#   TODO: implement
 #   Deploy the spark3-assembly.zip to HDFS if not already present.
 #   Set this to true on a single Hadoop client node.
 #   Default: false
@@ -68,6 +72,11 @@
 #   parameter. It is used for scratch file storage space. If not specified, it will
 #   be omitted from the configuration file and the compiled-in default value of /tmp
 #   will be used.
+#
+# [*test_spark_3_install*]
+#   TODO: Remove me when done
+#   Set this to true to test the Spark3 installation on the test cluster.
+#   Default: false
 class profile::hadoop::spark3(
     # Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', {'default_value' => true}),
     # Boolean $install_assembly                  = lookup('profile::hadoop::spark3::install_assembly', {'default_value' => false}),
@@ -79,18 +88,29 @@ class profile::hadoop::spark3(
     Stdlib::Unixpath $executor_env_ld_lib_path = lookup('profile::hadoop::spark3::executor_env_ld_lib_path', {'default_value' => '/usr/lib/hadoop/lib/native'}),
     Boolean $encryption_enabled                = lookup('profile::hadoop::spark3::encryption_enabled', {'default_value' => true}),
     Optional[Stdlib::Unixpath] $local_dir      = lookup('profile::hadoop::spark3::local_dir', {'default_value' => undef }),
-    # TODO: Update default version when we install Spark3 package
-    String $default_version                    = lookup('profile::hadoop::spark::default_version', { 'default_value' => '3.1.2'}),
+    Boolean $test_spark_3_install              = lookup('profile::hadoop::spark3::test_spark_3_install', {'default_value' => false})
 ) {
     require ::profile::hadoop::common
 
-    # package { 'spark3': }
-
-    # Get spark_version from facter. Use the default provided via hiera if not set.
-    $spark_version = $::spark_version ? {
-        undef   => $default_version,
-        default => $::spark_version
+    # We use conda-analytics to distribute spark3,
+    # and also want to use it as the default analytics cluster python for spark.
+    if $test_spark_3_install {
+      require ::profile::analytics::conda_analytics
     }
+
+    # This variable will be rendered into spark-env.sh and used as the default
+    # values for PYSPARK_PYTHON and PYSPARK_DRIVER_PYTHON.
+    $python_prefix_global = $::conda_analytics::prefix
+
+    # TODO: get spark_version from conda_analytics env and use it to create and upload spark assembly.
+    # Get spark_version from facter. Use the default provided via hiera if not set.
+    # $spark_version = $::spark_version ? {
+    #     undef   => $default_version,
+    #     default => $::spark_version
+    # }
+    # For now, this is used in spark-defaults.conf to set the hardcoded value of spark.yarn.archives.
+    # It should match the Spark version encapsulated in the conda-analytics pkg.
+    $spark_version = '3.3.0'
 
     # Ensure that a symlink to hive-site.xml exists so that
     # spark3 will automatically get Hive support.
@@ -109,7 +129,6 @@ class profile::hadoop::spark3(
     # https://phabricator.wikimedia.org/T300299
     $sql_files_max_partition_bytes = $::profile::hadoop::common::dfs_block_size
 
-
     file { ['/etc/spark3', '/etc/spark3/conf']:
         ensure => 'directory',
         owner  => 'root',
@@ -118,14 +137,14 @@ class profile::hadoop::spark3(
     }
 
     file { '/etc/spark3/conf/spark-defaults.conf':
-        content => template('profile/hadoop/spark3-defaults.conf.erb'),
+        content => template('profile/hadoop/spark3/spark3-defaults.conf.erb'),
     }
 
     file { '/etc/spark3/conf/spark-env.sh':
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        source => 'puppet:///modules/profile/hadoop/spark3/spark-env.sh'
+        source => template('profile/hadoop/spark3/spark3-env.sh.erb')
     }
 
     file { '/etc/spark3/conf/log4j.properties':

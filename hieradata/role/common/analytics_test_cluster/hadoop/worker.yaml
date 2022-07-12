@@ -72,3 +72,5 @@ profile::hadoop::worker::check_mountpoints_disk_space: false
 profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true
+
+profile::hadoop::spark3::test_spark_3_install: true
