@@ -23,7 +23,7 @@ profile::etcd::tlsproxy::tls_upstream: true
 profile::zookeeper::cluster_name: "main-%{::site}"
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
-profile::zookeeper::zookeeper_version: '3.4.9-3'
+profile::zookeeper::zookeeper_version: 'installed'
 profile::zookeeper::firewall::srange: '(($KAFKA_BROKERS_ANALYTICS $KAFKA_BROKERS_JUMBO $KAFKA_BROKERS_MAIN $KAFKA_BROKERS_LOGGING $ZOOKEEPER_HOSTS_MAIN @resolve(kafkamon1002.eqiad.wmnet) @resolve(kafkamon2002.codfw.wmnet)))'
 profile::zookeeper::monitoring_enabled: true
 # Page if a zookeeper server in this cluster goes down.
