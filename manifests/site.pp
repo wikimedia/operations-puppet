@@ -797,6 +797,11 @@ node 'db2082.codfw.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
+# future codfw sanitarium master
+node 'db2164.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
+}
+
 # multi-instance hosts with multiple shards
 node /^db1(096|098|099|101|105|113|144|146|170)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
