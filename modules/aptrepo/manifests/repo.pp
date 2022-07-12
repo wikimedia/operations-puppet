@@ -4,26 +4,26 @@
 #
 # @param basedir
 #   The reprepro base directory.
-# @option user
-#   The user name to run reprepro under.
-# @option group
-#   The group name to run reprepro under.
-# @option notify_address
+# @param distributions_file
+#   the puppet location of the distributions file
+# @param notify_address
 #   Where to send upload notifications.
-# @option options
+# @param notify_subject
+#   The upload notifications subject.
+# @param options
 #   A list of options for reprepro (see conf/options file).
-# @option uploaders
+# @param uploaders
 #   A list of uploaders instructions (see "uploaders file")
-# @option incomingdir
+# @param incomingdir
 #   Path considered for incoming uploads.
-# @option incomingconf
+# @param incomingconf
 #   Name of a template with config options for incoming uploads. (conf/incoming)
-# @option incominguser
+# @param incominguser
 #   The user name that owns the incoming directory.
-# @incominggroup
+# @param incominggroup
 #   The group name that owns the incoming directory.
-
-
+# @param default_distro
+#   The default distro to use
 define aptrepo::repo (
     Stdlib::Unixpath   $basedir,
     Stdlib::Filesource $distributions_file,
@@ -37,10 +37,10 @@ define aptrepo::repo (
     String             $incominggroup      = 'wikidev',
     String             $default_distro     = 'buster',
 ) {
-
     $user = $aptrepo::common::user
     $group = $aptrepo::common::group
 
+    ensure_packages('python3-apt')
     $deb822_validate_cmd = '/usr/bin/python3 -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
 
     file { $basedir:
@@ -58,7 +58,7 @@ define aptrepo::repo (
     }
 
     file { "${basedir}/conf/updates":
-        ensure       => present,
+        ensure       => file,
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
@@ -67,7 +67,7 @@ define aptrepo::repo (
     }
 
     file { "${basedir}/conf/pulls":
-        ensure       => present,
+        ensure       => file,
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
@@ -94,7 +94,7 @@ define aptrepo::repo (
     }
 
     file { "${basedir}/conf/distributions":
-        ensure       => present,
+        ensure       => file,
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
@@ -106,7 +106,7 @@ define aptrepo::repo (
     # For apt1001/2001 this file already exist and have
     # content which is not managed by Puppet.
     file { "${basedir}/conf/deb-override":
-        ensure  => present,
+        ensure  => file,
         replace => 'no',
         mode    => '0644',
         owner   => 'root',
@@ -115,7 +115,7 @@ define aptrepo::repo (
 
     if $incomingdir != undef {
         file { "${basedir}/conf/incoming":
-            ensure       => present,
+            ensure       => file,
             owner        => 'root',
             group        => 'root',
             mode         => '0444',
@@ -129,7 +129,7 @@ define aptrepo::repo (
     echo -e "reprepro changes:\n\$@" | mail -s "${notify_subject}" ${notify_address}
     | SCRIPT
     file { "${basedir}/conf/log":
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',

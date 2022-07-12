@@ -6,14 +6,18 @@
 #   The reprepro user home directory.
 # @param basedir
 #   The reprepro base directory, for the public packages.
-# @option gpg_secring
+# @param user
+#   The user used for reprepro
+# @param group
+#   The group used for reprepro
+# @param gpg_secring
 #   The GPG secret keyring for reprepro to use. Will be passed to secret()
-# @option gpg_pubring
+# @param gpg_pubring
 #   The GPG public keyring for reprepro to use. Will be passed to secret()
-# @gpg_user
+# @param gpg_user
 #   The user owning the GPG keys for package signing, typically root.
-#
-
+# @param authorized_keys
+#   List of authorized keys, used for uploading
 class aptrepo::common (
     Stdlib::Unixpath $homedir         = '/var/lib/reprepro',
     Stdlib::Unixpath $basedir         = '/var/lib/reprepro',
@@ -24,8 +28,7 @@ class aptrepo::common (
     Optional[String] $gpg_user        = undef,
     Array[String]    $authorized_keys = [],
 ) {
-
-    $packages = ['reprepro','dpkg-dev','dctrl-tools','gnupg',]
+    $packages = ['reprepro','dpkg-dev','dctrl-tools','gnupg']
     ensure_packages($packages)
 
     # Basic reprepro configuration. By setting the PREPREPRO_BASE_DIR,
