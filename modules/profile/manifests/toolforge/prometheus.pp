@@ -126,29 +126,7 @@ class profile::toolforge::prometheus (
                 tls_config => $k8s_tls_config,
             },
         },
-        {
-            name            => 'toolsdb-node',
-            port            => 9100,
-            project         => 'clouddb-services',
-            instance_filter => 'clouddb100[12]',
-        },
-        {
-            name            => 'toolsdb-mariadb',
-            port            => 9104,
-            project         => 'clouddb-services',
-            instance_filter => 'clouddb100[12]',
-        },
-    ].filter |Hash $job| {
-        # TODO: clouddb-services should not be scraped at all by toolforge
-        # for now, limit this to the real toolforge only
-        if $job['project'] == 'clouddb-services' {
-            $result = $::labsproject == 'tools'
-        } else {
-            $result = true
-        }
-
-        $result
-    }.map |Hash $job| {
+    ].map |Hash $job| {
         if $job['instance_filter'] {
             $relabel_configs = [
                 {
