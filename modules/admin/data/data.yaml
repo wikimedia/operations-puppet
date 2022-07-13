@@ -5407,6 +5407,12 @@ ldap_only_users:
     ensure: present
     realname: Dan Shick
     email: dan.shick@wikimedia.de
+  ddw:
+    ensure: present
+    realname: Dani Dwaal
+    email: ddwaal-ctr@wikimedia.org
+    expiry_date: 2022-12-31
+    expiry_contact: abaso@wikimedia.org
   debt:
     ensure: present
     realname: Deborah Tankersley
