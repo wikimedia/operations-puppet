@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # acme-chief server
 # For clients you'll want some resources like this:
 #     acme_chief::cert { 'testing':
