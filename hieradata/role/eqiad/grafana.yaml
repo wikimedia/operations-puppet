@@ -1,0 +1,7 @@
+profile::grafana::loki::allow_from:
+  - 'logstash1023.eqiad.wmnet'
+  - 'logstash1024.eqiad.wmnet'
+  - 'logstash1025.eqiad.wmnet'
+  - 'logstash1030.eqiad.wmnet'
+  - 'logstash1031.eqiad.wmnet'
+  - 'logstash1032.eqiad.wmnet'

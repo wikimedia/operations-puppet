@@ -1,3 +1,9 @@
 profile::grafana::domain: "grafana-next.%{lookup('public_domain')}"
 profile::grafana::domainrw: "grafana-next-rw.%{lookup('public_domain')}"
 profile::grafana::execute_alerts: false
+profile::grafana::loki::allow_from:
+  - 'logstash2023.codfw.wmnet'
+  - 'logstash2024.codfw.wmnet'
+  - 'logstash2025.codfw.wmnet'
+  - 'logstash2030.codfw.wmnet'
+  - 'logstash2031.codfw.wmnet'

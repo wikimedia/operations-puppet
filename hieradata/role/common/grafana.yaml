@@ -88,3 +88,44 @@ profile::idp::client::httpd::sites:
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
 profile::grafana::standby_host: 'grafana2001.codfw.wmnet'
+profile::grafana::enable_loki: true
+profile::grafana::loki::config:
+  auth_enabled: false
+  analytics:
+    reporting_enabled: false
+
+  server:
+    http_listen_port: 3100
+    grpc_listen_port: 9096
+    # Increase to 20mb from incredibly low 4mb default value.
+    # Hitting this limit manifests as a 502 error on the frontend
+    # and a "grpc: received message larger than max (<bytes> vs. 4194304)"
+    # from the query scheduler
+    grpc_server_max_send_msg_size: 20500000
+    grpc_server_max_recv_msg_size: 20500000
+
+  common:
+    path_prefix: '/srv/loki'
+    storage:
+      filesystem:
+        chunks_directory: '/srv/loki/chunks'
+        rules_directory: '/srv/loki/rules'
+    replication_factor: 1
+    ring:
+      instance_addr: '127.0.0.1'
+      kvstore:
+        store: 'inmemory'
+
+  table_manager:
+    retention_deletes_enabled: true
+    retention_period: '30d'
+
+  schema_config:
+    configs:
+      - from: '2022-01-01'
+        store: 'boltdb-shipper'
+        object_store: 'filesystem'
+        schema: 'v11'
+        index:
+          prefix: 'index_'
+          period: '24h'
