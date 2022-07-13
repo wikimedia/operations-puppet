@@ -1,4 +1,4 @@
 # db2164
-# future sanitarium master for s8
+# sanitarium master for s8
 mariadb::shard: 's8'
 profile::monitoring::notifications_enabled: false
