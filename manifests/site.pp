@@ -1527,6 +1527,11 @@ node /^cloudservices100[34]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::services)
 }
 
+#new cloudweb hosts T305414
+node /^cloudweb100[34]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 node 'cloudweb2002-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::cloudweb)
 }
