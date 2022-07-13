@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Setup monitoring for anycast-healthchecker
 # Original file from https://github.com/unixsurfer/anycast_healthchecker/blob/master/contrib/nagios/check_anycast_healthchecker.py
 class profile::bird::anycast_healthchecker_monitoring{

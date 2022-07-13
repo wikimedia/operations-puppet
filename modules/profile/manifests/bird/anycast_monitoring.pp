@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Define monitoring for all Anycast VIPs
 # By their nature, those VIPs are advertized from several locations on the
 # network. In its current state, Icinga can only alert if that IP is nowhere
