@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure base config
 # @param remote_syslog Central syslog servers
 # @param remote_syslog_tls Central TLS enabled syslog servers
