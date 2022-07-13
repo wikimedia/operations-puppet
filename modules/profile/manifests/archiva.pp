@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::archiva
 #
 # Installs Apache Archiva and sets up a cron job to symlink .jar files to
