@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::aqs
 # Analytics Query Service Restbase Service configuration
 #
