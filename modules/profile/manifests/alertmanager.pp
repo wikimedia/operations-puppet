@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::alertmanager (
     Stdlib::Host        $active_host = lookup('profile::alertmanager::active_host'),
     Array[Stdlib::Host] $partners    = lookup('profile::alertmanager::partners'),
