@@ -22,10 +22,12 @@ class prometheus::blackbox_exporter(
     }
 
     file { '/etc/prometheus/blackbox.yml.d':
-        ensure => directory,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => directory,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        recurse => true,
+        purge   => true,
     }
 
     file { '/usr/local/bin/blackbox-exporter-assemble':
