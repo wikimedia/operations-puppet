@@ -18,6 +18,7 @@
 # @param header_not_matches headers which should not match
 # @param body_regex_matches headers which should match
 # @param body_regex_not_matches headers which should not match
+# @param status_matches http status codes which should match
 # @param bearer_token the bearer token to use
 # @param path the path to check
 # @param body the body to send in requests
@@ -47,6 +48,7 @@ define prometheus::blackbox::check::http (
     Array[Prometheus::Blackbox::HeaderSpec] $header_not_matches      = [],
     Array[String[1]]                        $body_regex_matches      = [],
     Array[String[1]]                        $body_regex_not_matches  = [],
+    Array[Stdlib::HttpStatus]               $status_matches          = [],
     Optional[String[1]]                     $bearer_token            = undef,
     Stdlib::Unixpath                        $path                    = '/',
     Hash                                    $body                    = {},
@@ -93,6 +95,7 @@ define prometheus::blackbox::check::http (
         'fail_if_body_not_matches_regexp' => $body_regex_matches,
         'fail_if_header_matches'          => $header_not_matches,
         'fail_if_header_not_matches'      => $header_matches,
+        'valid_status_codes'              => $status_matches,
         'basic_auth'                      => $basic_auth,
         'bearer_token'                    => $bearer_token,
         'body'                            => wmflib::encode_www_form($body),
