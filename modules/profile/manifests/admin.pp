@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary wrapper profile for the admin class
 class profile::admin (
     Array[String[1]] $groups          = lookup('profile::admin::groups'),
