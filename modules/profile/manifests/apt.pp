@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary wrapper profile for apt module
 class profile::apt(
     Boolean $purge_sources           = lookup('profile::apt::purge_sources'),
