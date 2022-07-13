@@ -45,11 +45,11 @@ server {
 
     # Special handling for /cdnjs, our reverse proxy for cdnjs.com
     location = /cdnjs {
-        return 302 "https://<%= @web_domain %>/cdnjs/";
+        return 302 "https://cdnjs.<%= @web_domain %>/";
     }
 
     location = /cdnjs/ {
-        return 302 "https://<%= @web_domain %>/cdnjs/";
+        return 302 "https://cdnjs.<%= @web_domain %>/";
     }
 
     location ^~ /cdnjs/ {
@@ -57,7 +57,7 @@ server {
         proxy_set_header        Cookie "";
 
         # And hide the referrer for privacy reasons
-        proxy_set_header        Referer "https://<%= @web_domain %>/cdnjs/";
+        proxy_set_header        Referer "https://cdnjs.<%= @web_domain %>/";
 
         # This will get a 403 without this T249558
         proxy_ssl_server_name   on;
@@ -83,7 +83,7 @@ server {
       proxy_set_header        Cookie "";
 
       # And hide the referrer for privacy reasons
-      proxy_set_header        Referer "https://<%= @web_domain %>/cdnjs/";
+      proxy_set_header        Referer "https://cdnjs.<%= @web_domain %>/";
 
       # Just in case T249558
       proxy_ssl_server_name   on;

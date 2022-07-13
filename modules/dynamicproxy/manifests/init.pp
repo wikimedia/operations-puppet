@@ -38,7 +38,6 @@ class dynamicproxy (
     $banned_description       = 'You have been banned from accessing this service.',
     $noproxy_description      = 'No proxy is configured for this host name.
     Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Proxy">our documentation on Wikitech</a> for more information on configuring a proxy.',
-    $web_domain               = undef,
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
     $blocked_referer_regex    = '',
     $https_upgrade            = false,

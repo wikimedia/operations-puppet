@@ -1,7 +1,7 @@
 class profile::toolforge::proxy (
     Array[String]       $proxies      = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
     String              $active_proxy = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
-    Stdlib::Fqdn        $web_domain   = lookup('profile::toolforge::web_domain',        {default_value => 'tools.wmflabs.org'}),
+    Stdlib::Fqdn        $web_domain   = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
     Array[Stdlib::Fqdn] $prometheus   = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
     String              $statsd       = lookup('statsd',                                {default_value => 'localhost:8125'}),
     Stdlib::Fqdn        $k8s_vip_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
@@ -41,7 +41,6 @@ class profile::toolforge::proxy (
             favicon     => '/.error/favicon.ico',
         },
         banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
-        web_domain           => $web_domain,
         https_upgrade        => true,
         use_acme_chief       => true,
     }
