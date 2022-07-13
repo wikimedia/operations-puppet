@@ -26,7 +26,10 @@ class profile::grafana::loki (
     version => $version
   }
 
-  file { '/var/lib/loki':
+  # `common.path_prefix` is used to define where the wal, boltdb shipper
+  # data, default ruler path, compactor path, and tokens if token
+  # persistence is enabled
+  file { pick($config['common']['path_prefix'], '/var/lib/loki'):
     ensure  => 'directory',
     owner   => 'loki',
     group   => 'loki',
