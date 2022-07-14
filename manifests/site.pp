@@ -1133,17 +1133,17 @@ node /^druid100[4-8]\.eqiad\.wmnet$/ {
 
 # new dse-k8s-crtl control plane servers T310171
 node /^dse-k8s-ctrl100[12]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(dse_k8s::master)
 }
 
 # new dse-k8s-etcd etcd cluster servers T310170
 node /^dse-k8s-etcd100[1-3]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(etcd::v3::dse_k8s_etcd)
 }
 
 # new dse-k8s-workers T29157 and T3074009
 node /^dse-k8s-worker100[1-8]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(dse_k8s::worker)
 }
 
 

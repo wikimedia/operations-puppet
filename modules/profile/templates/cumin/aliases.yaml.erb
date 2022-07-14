@@ -115,6 +115,10 @@ druid-public: P{O:druid::public::worker}
 druid: A:druid-analytics or A:druid-public
 druid-canary: P{an-druid1003.eqiad.wmnet}
 druid-test: P{O:druid::test_analytics::worker}
+dse-k8s-etcd: P{O:etcd::v3::dse_k8s_etcd}
+dse-k8s-master: P{O:dse_k8s_k8s::master}
+dse-k8s-worker: P{O:dse_k8s::worker}
+dse-k8s: A:dse-k8s-master or A:dse-k8s-worker
 dumps: P{O:dumps::generation::server:alldumps or O:dumps::generation::server::misccrons or O:dumps::generation::server::xmldumps or O:dumps::generation::server::xmlfallback or O:dumps::web::htmldumps}
 durum: P{O:durum}
 elastic: P{O:elasticsearch::cirrus}
