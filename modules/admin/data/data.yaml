@@ -5167,7 +5167,7 @@ users:
     krb: present
     realname: Shubhankar Patankar
     email: spatank@seas.upenn.edu
-    expiry_date: 2022-07-21
+    expiry_date: 2023-01-21
     expiry_contact: mgerlach@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlEIMQQGbuyTAod+ev+GLFEhBYnaXuXI+t7iWVVDoSn spatank@seas.upenn.edu
