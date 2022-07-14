@@ -52,8 +52,7 @@ wait_timeout                   = 3600
 transaction-isolation          = REPEATABLE-READ
 use_stat_tables                = preferably
 
-# do not sync binlog, allow group commit
-sync_binlog                    = 0
+sync_binlog                    = <%= @sync_binlog %>
 binlog_cache_size              = 1M
 max_binlog_size                = 1000M
 # statement-based replication and not row because performance and data
@@ -77,8 +76,7 @@ default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size           = 2G
-# reduce durability - this is a cache server
-innodb_flush_log_at_trx_commit = 0
+innodb_flush_log_at_trx_commit = <%= @flush_log_at_trx_commit %>
 innodb_flush_method            = O_DIRECT
 innodb_io_capacity             = 20000
 innodb_stats_sample_pages      = 16

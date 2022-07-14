@@ -3,7 +3,9 @@
 
 class profile::mariadb::parsercache (
     $shard = lookup('mariadb::parsercache::shard'),
-    $wikiuser_username = lookup('profile::mariadb::wikiuser_username')
+    $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
+    String $sync_binlog = lookup('profile::mariadb::config::sync_binlog', {'default_value' => '0'}),
+    String $flush_log_at_trx_commit = lookup('profile::mariadb::config::innodb_flush_log_at_trx_commit', {'default_value' => '0'})
 ) {
     $mw_primary = mediawiki::state('primary_dc')
 
@@ -34,12 +36,14 @@ class profile::mariadb::parsercache (
     }
 
     class { 'mariadb::config':
-        config  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
-        datadir => '/srv/sqldata-cache',
-        tmpdir  => '/srv/tmp',
-        ssl     => 'puppet-cert',
-        p_s     => 'on',
-        basedir => $profile::mariadb::packages_wmf::basedir,
+        config                  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
+        datadir                 => '/srv/sqldata-cache',
+        tmpdir                  => '/srv/tmp',
+        ssl                     => 'puppet-cert',
+        p_s                     => 'on',
+        basedir                 => $profile::mariadb::packages_wmf::basedir,
+        sync_binlog             => $sync_binlog,
+        flush_log_at_trx_commit => $flush_log_at_trx_commit,
     }
 
     class { 'mariadb::heartbeat':

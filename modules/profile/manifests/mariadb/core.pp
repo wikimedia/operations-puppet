@@ -1,6 +1,8 @@
 class profile::mariadb::core (
     Profile::Mariadb::Valid_section $shard = lookup('mariadb::shard'),
     String $binlog_format = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
+    String $sync_binlog = lookup('profile::mariadb::config::sync_binlog', {'default_value' => '1'}),
+    String $flush_log_at_trx_commit = lookup('profile::mariadb::config::innodb_flush_log_at_trx_commit', {'default_value' => '1'}),
     String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ){
     require profile::mariadb::mysql_role
@@ -31,13 +33,15 @@ class profile::mariadb::core (
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
-        config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
-        basedir          => $profile::mariadb::packages_wmf::basedir,
-        p_s              => 'on',
-        ssl              => 'puppet-cert',
-        binlog_format    => $binlog_format,
-        semi_sync        => $semi_sync,
-        replication_role => $mysql_role,
+        config                  => 'role/mariadb/mysqld_config/production.my.cnf.erb',
+        basedir                 => $profile::mariadb::packages_wmf::basedir,
+        p_s                     => 'on',
+        ssl                     => 'puppet-cert',
+        binlog_format           => $binlog_format,
+        semi_sync               => $semi_sync,
+        replication_role        => $mysql_role,
+        sync_binlog             => $sync_binlog,
+        flush_log_at_trx_commit => $flush_log_at_trx_commit,
     }
 
     profile::mariadb::section { $shard: }

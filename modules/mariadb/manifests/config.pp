@@ -35,6 +35,8 @@ class mariadb::config(
     $innodb_pool_size        = undef,
     $innodb_change_buffering = 'none',
     $event_scheduler         = 1,
+    $sync_binlog             = '1',
+    $flush_log_at_trx_commit = '1'
     ) {
 
     $server_id = inline_template(

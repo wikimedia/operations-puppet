@@ -70,7 +70,7 @@ event_scheduler                = 1
 # binary log an replication options
 log-bin
 log-slave-updates
-sync-binlog                    = 1
+sync-binlog                    = <%= @sync_binlog %>
 binlog_cache_size              = 10M
 max-binlog_size                = 1000M
 binlog-format                  = <%= @binlog_format %>
@@ -125,7 +125,7 @@ default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size           = 2G
-innodb_flush_log_at_trx_commit = 1
+innodb_flush_log_at_trx_commit = <%= @flush_log_at_trx_commit %>
 innodb_flush_method            = O_DIRECT
 innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
