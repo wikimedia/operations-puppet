@@ -185,6 +185,7 @@ class profile::analytics::refinery::job::refine(
         'TwoColConflictExit',
         'VirtualPageView',
         'VisualEditorTemplateDialogUse',
+        'WikibaseTermboxInteraction',
         'WMDEBannerEvents',
         'WMDEBannerInteractions',
         'WMDEBannerSizeIssue',

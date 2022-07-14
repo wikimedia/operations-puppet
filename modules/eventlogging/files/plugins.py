@@ -68,6 +68,7 @@ eventlogging_schemas_disabled = (
     'TwoColConflictExit',
     'VirtualPageView',
     'VisualEditorTemplateDialogUse',
+    'WikibaseTermboxInteraction',
     'WMDEBannerEvents',
     'WMDEBannerInteractions',
     'WMDEBannerSizeIssue',
