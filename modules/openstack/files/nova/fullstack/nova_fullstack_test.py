@@ -665,6 +665,7 @@ def verify_args(args: argparse.Namespace) -> None:
 def setup_logging(debug: bool, vm_name: str) -> None:
     LOGGER.setLevel(logging.DEBUG if debug else logging.INFO)
     log_handler = logging.StreamHandler()
+    log_handler.custom = True
     log_formatter = ECSFormatter()
     log_handler.setFormatter(log_formatter)
     LOGGER.addHandler(log_handler)
@@ -672,6 +673,12 @@ def setup_logging(debug: bool, vm_name: str) -> None:
     # Override sys.excepthook to pass unhandled exceptions to the logger
     sys.excepthook = log_unhandled_exception
     log_formatter.set_hostname(vm_name)
+
+
+def update_logging_setup(vm_name: str) -> None:
+    for handler in LOGGER.handlers:
+        if getattr(handler, 'custom', None):
+            handler.formatter.set_hostname(vm_name)
 
 
 def get_new_vm_name(instance_prefix: str) -> str:
@@ -770,7 +777,6 @@ def main():
 
     instance_prefix = args.prepend
     new_vm_name = get_new_vm_name(instance_prefix)
-
     setup_logging(debug=args.debug, vm_name=new_vm_name)
 
     # After setting up the logging, chicken and egg issue
@@ -936,6 +942,8 @@ def main():
             stat_handler.flush_stats()
 
         time.sleep(args.interval)
+        new_vm_name = get_new_vm_name(instance_prefix)
+        update_logging_setup(vm_name=new_vm_name)
 
 
 if __name__ == "__main__":
