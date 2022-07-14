@@ -344,6 +344,11 @@ class profile::toolforge::grid::exec_environ {
         require => Package['imagemagick', 'webp'],
     }
 
+    # ensure that /tmp is cleaned up every day
+    systemd::tmpfile { 'tmp_files_cleanup':
+        content => 'e /tmp - - - 1d',
+    }
+
     # Distro specific bits
     require "profile::toolforge::grid::exec_environ::${::lsbdistcodename}"
 }
