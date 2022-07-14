@@ -29,4 +29,5 @@ type Klaxon::Klaxon_config = Struct[{
     secret_key             => String[1],
     admin_contact_email    => String[1],
     team_ids_filter        => Optional[String[1]],
+    esc_policy_ids_filter  => Optional[String[1]],
 }]
