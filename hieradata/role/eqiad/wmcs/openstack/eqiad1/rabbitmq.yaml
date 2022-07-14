@@ -1,0 +1,13 @@
+profile::admin::groups:
+  - wmcs-roots
+
+prometheus_nodes:
+  - cloudmetrics1003.eqiad.wmnet
+  - cloudmetrics1004.eqiad.wmnet
+  - prometheus1005.eqiad.wmnet
+  - prometheus1006.eqiad.wmnet
+
+contactgroups: wmcs-team-email
+mgmt_contactgroups: wmcs-team-email
+
+profile::contacts::role_contacts: ['WMCS']

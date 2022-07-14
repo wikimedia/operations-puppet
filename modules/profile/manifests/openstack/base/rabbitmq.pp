@@ -1,6 +1,7 @@
 class profile::openstack::base::rabbitmq(
     String $region = lookup('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
@@ -65,7 +66,7 @@ class profile::openstack::base::rabbitmq(
     # We want this job to run on only one host; it doesn't matter which.
     class {'::rabbitmq::cleanup':
         password => $cleanup_password,
-        enabled  => $::fqdn == $openstack_controllers[0],
+        enabled  => $::fqdn == $rabbitmq_nodes[0],
     }
     contain '::rabbitmq::cleanup'
 
@@ -89,8 +90,7 @@ class profile::openstack::base::rabbitmq(
     ferm::service { 'rabbitmq-internals':
         proto  => 'tcp',
         port   => '(4369 5671 5672 25672)',
-        # TODO: change openstack_controllers to something else when we have dedicated rabbit nodes
-        srange => "(@resolve((${openstack_controllers.join(' ')})))",
+        srange => "(@resolve((${rabbitmq_nodes.join(' ')})))",
     }
 
     $hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]

@@ -1,5 +1,6 @@
 class profile::openstack::codfw1dev::rabbitmq(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     $monitor_user = lookup('profile::openstack::codfw1dev::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::codfw1dev::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::codfw1dev::rabbit_cleanup_pass'),
@@ -18,6 +19,7 @@ class profile::openstack::codfw1dev::rabbitmq(
 
     class {'::profile::openstack::base::rabbitmq':
         openstack_controllers   => $openstack_controllers,
+        rabbitmq_nodes          => $rabbitmq_nodes,
         monitor_user            => $monitor_user,
         monitor_password        => $monitor_password,
         cleanup_password        => $cleanup_password,

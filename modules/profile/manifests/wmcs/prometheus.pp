@@ -139,7 +139,7 @@ class profile::wmcs::prometheus(
 
     prometheus::class_config{ "rabbitmq_${::site}":
         dest       => "${targets_path}/rabbitmq_${::site}.yaml",
-        class_name => 'role::wmcs::openstack::eqiad1::control',
+        class_name => 'profile::openstack::eqiad1::rabbitmq',
         port       => 15692,
     }
 

@@ -45,11 +45,8 @@ profile::openstack::eqiad1::designate_hosts:
   - cloudservices1003.wikimedia.org
   - cloudservices1004.wikimedia.org
 
-
 profile::openstack::eqiad1::puppetmaster_hostname: 'puppetmaster.cloudinfra.wmflabs.org'
 profile::openstack::eqiad1::osm_host: 'wikitech.wikimedia.org'
-profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
-profile::openstack::eqiad1::rabbit_file_handles: 8192
 profile::openstack::eqiad1::ldap_hosts:
   - ldap-rw.eqiad.wikimedia.org
   - ldap-rw.codfw.wikimedia.org
@@ -58,6 +55,17 @@ profile::openstack::eqiad1::labweb_hosts:
   - labweb1002.wikimedia.org
 profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::all_regions: ['eqiad1-r']
+
+# These are, for now, the cloudcontrol nodes. However, we have dedicated Rabbit hardware
+# coming in the future.
+profile::openstack::eqiad1::rabbitmq_nodes:
+  - cloudcontrol1003.wikimedia.org
+  - cloudcontrol1004.wikimedia.org
+  - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org
+profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
+profile::openstack::eqiad1::rabbit_file_handles: 8192
 
 # T247517
 profile::openstack::eqiad1::purge_projects:
