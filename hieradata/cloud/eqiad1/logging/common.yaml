@@ -250,6 +250,12 @@ profile::grafana::loki::config:
   server:
     http_listen_port: 3100
     grpc_listen_port: 9096
+    # Increase to 20mb from incredibly low 4mb default value.
+    # Hitting this limit manifests as a 502 error on the frontend
+    # and a "grpc: received message larger than max (<bytes> vs. 4194304)"
+    # from the query scheduler
+    grpc_server_max_send_msg_size: 20500000
+    grpc_server_max_recv_msg_size: 20500000
 
   common:
     path_prefix: '/var/lib/loki'
