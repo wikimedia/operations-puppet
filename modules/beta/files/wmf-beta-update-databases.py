@@ -68,8 +68,8 @@ def run_updates(staging, cores):
         dbs = ignore_comments_and_emptylines(dblist)
         for db in dbs:
             f = tempfile.TemporaryFile("w+")
-            cmd = ("""echo '%(db)s'; /usr/local/bin/mwscript update.php
-            --wiki=%(db)s --quick --skip-config-validation"""
+            cmd = ("""echo '%(db)s'
+            /usr/local/bin/mwscript update.php --wiki=%(db)s --quick --skip-config-validation"""
                    % {'db': db})
             p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True, universal_newlines=True)
             procs.append((p, f, cmd))
