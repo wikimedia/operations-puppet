@@ -170,6 +170,21 @@ class dynamicproxy (
         mode        => '0444',
     }
 
+    mediawiki::errorpage { '/var/www/error/ratelimit.html':
+        favicon     => $error_config['favicon'],
+        pagetitle   => $error_config['title'],
+        logo_src    => $error_config['logo'],
+        logo_srcset => "${error_config['logo_2x']} 2x",
+        logo_width  => $error_config['logo_width'],
+        logo_height => $error_config['logo_height'],
+        logo_alt    => $error_config['logo_alt'],
+        logo_link   => $error_config['logo_link'],
+        content     => '<p>You are trying to access this service too fast.</p>',
+        owner       => 'www-data',
+        group       => 'www-data',
+        mode        => '0444',
+    }
+
     file { '/etc/security/limits.conf':
         ensure  => file,
         source  => 'puppet:///modules/dynamicproxy/limits.conf',
