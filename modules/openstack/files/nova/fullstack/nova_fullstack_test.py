@@ -75,7 +75,7 @@ def get_timer():
     start_time = time.perf_counter()
     elapsed_time = None
     yield lambda: elapsed_time or (time.perf_counter() - start_time)
-    elapsed_time = time.perf_counter()
+    elapsed_time = time.perf_counter() - start_time
 
 
 class ECSFormatter(logging.Formatter):
