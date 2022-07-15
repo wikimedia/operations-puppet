@@ -1528,7 +1528,7 @@ node /^cloudservices100[34]\.wikimedia\.org$/ {
 }
 
 #new cloudweb hosts T305414
-node /^cloudweb100[34]\.eqiad\.wmnet$/ {
+node /^cloudweb100[34]\.wikimedia\.org$/ {
     role(insetup)
 }
 
