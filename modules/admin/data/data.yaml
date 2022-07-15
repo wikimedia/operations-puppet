@@ -368,7 +368,7 @@ groups:
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
-              ricby, dani]
+              ricby, dani, bgwiki]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5334,6 +5334,14 @@ users:
     expiry_date: 2022-12-01
     expiry_contact: bgerdemann@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  bgwiki:
+    ensure: present
+    realname: Bethany Gerdemann
+    email: bgerdemann@wikimedia.org
+    uid: 21764
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdN538Dee8RiVDDLrQ1fG+SGWnVAuI+HxXDUsD1/PdNHCgniOAYPahKrThJtoKAyC6VoxUAm458JR7aLa0iagUGVBvbQAmNZ+ZxHG4IiHlxr9f47Ynh3gwKsl9nB1POq4CQHvUE35tIWmCCqHS0/pyPkHVE6jDbOJo4ycG7yjxY7u5FNjOareEDcRrDU3ZZHuSNUUueFg4I4CaPRSP6mCwGw44LfGWK3APMxUoSTzXCEZ8ZDDRDU9dR16ZnQJB5/VNox+68NK0WOdLKZRKty4r56VaWVPPW91vdhbiuK8zMPjrrzdenqtjrFiRcQKNOxdTPX4BC8eky1kl0pV88uGr
 
 ldap_only_users:
   abartov:
@@ -6023,10 +6031,6 @@ ldap_only_users:
     email: simone@thisdot.co
     expiry_date: 2023-06-30
     expiry_contact: abaso@wikimedia.org
-  bgwiki:
-    ensure: present
-    realname: Bethany Gerdemann
-    email: bgerdemann@wikimedia.org
   jjbk:
     ensure: present
     realname: Jess Klien
