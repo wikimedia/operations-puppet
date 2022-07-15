@@ -15,6 +15,11 @@ preflight() {
     exit 2
   fi
 
+  if ! which puppet; then
+    echo "'puppet' command not found, has the host been provisioned?"
+    exit 2
+  fi
+
   apt install -y --no-install-recommends git ca-certificates
 
   # Workaround dummy 'apache2.conf' in WMCS

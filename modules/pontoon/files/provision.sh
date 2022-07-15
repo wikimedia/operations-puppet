@@ -8,6 +8,9 @@ set -e
 set -u
 
 guard_file=/etc/.provision.done
+# APT might be in use by some other provisioning processes, thus
+# retry for up this many seconds
+apt_deadline_seconds=60
 
 preflight() {
   # Disable man-db rebuild on package installation
@@ -18,8 +21,22 @@ EOF
   # XXX hack, make enroll.py happy
   install -d /var/lib/puppet/ssl
 
-  apt install -y --no-install-recommends wget lsb-release locales
+  _try_apt install -y --no-install-recommends wget lsb-release locales
 }
+
+
+_try_apt() {
+  start_ts=$(date +%s)
+
+  while [ "$(date +%s)" -le "$(expr $start_ts + $apt_deadline_seconds)" ]; do
+    if apt "$@"; then
+      break
+    fi
+
+    sleep 5
+  done
+}
+
 
 install_wmf_repo() {
   if [ ! -e /etc/apt/trusted.gpg.d/wikimedia-archive-keyring.gpg ]; then
@@ -33,12 +50,12 @@ install_wmf_repo() {
 
   if [ ! -e /etc/apt/sources.list.d/wikimedia.list ]; then
     echo "deb http://apt.wikimedia.org/wikimedia $(lsb_release -s -c)-wikimedia main" > /etc/apt/sources.list.d/wikimedia.list
-    apt -q update
+    _try_apt -q update
   fi
 }
 
 provision_puppet() {
-  apt install -y --no-install-recommends puppet
+  _try_apt install -y --no-install-recommends puppet
 
   puppet config set --section main vardir /var/lib/puppet
   puppet config set --section main rundir /var/run/puppet
