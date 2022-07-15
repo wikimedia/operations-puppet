@@ -45,6 +45,12 @@ class profile::ci::docker(
         },
     )
 
+    # Upstream docker debian package does not enable the service and it thus
+    # does not start on reboot T313119
+    service { 'docker':
+        enable => true,
+    }
+
     file { '/usr/local/bin/docker-credential-environment':
         source => 'puppet:///modules/docker/docker-credential-environment.py',
         owner  => 'root',
