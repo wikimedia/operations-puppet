@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Parameters here are just a hotfix to the issue of not being able to select
 # by cluster/role/site easily, and also allows to add arbitrary tags to single
 # servers or classes of servers.

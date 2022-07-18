@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to configure nrpe checks to ensure hosts are not
 #          performing a change on every puppet run
 class profile::cumin::monitoring_agentrun (

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to manage cumin masters
 # @param puppetdb_host the host running puppetdb
 # @param datacenters list of datacenters

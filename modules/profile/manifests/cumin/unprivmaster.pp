@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::cumin::unprivmaster (
     Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
     Array[String] $datacenters          = lookup('datacenters'),

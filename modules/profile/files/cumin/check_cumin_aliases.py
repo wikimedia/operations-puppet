@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Check Cumin aliases configuration file for inconsistencies.
 
 Suitable to be used as a cron job, it will print no output if no inconsistency is found,
