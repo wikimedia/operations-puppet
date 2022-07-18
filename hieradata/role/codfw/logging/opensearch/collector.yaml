@@ -30,5 +30,7 @@ profile::opensearch::dc_settings:
     - logstash2035.codfw.wmnet
 
 profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-codfw'
+profile::logstash::collector::output_public_loki_host: 'grafana2001.codfw.wmnet'
+
 # TODO: Convert to read the servers from ldap::ro-server and ldap::ro-server-fallback once converted to a profile
 profile::opensearch::dashboards::httpd_proxy::ldap_authurl: ldaps://ldap-ro.codfw.wikimedia.org ldap-ro.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn

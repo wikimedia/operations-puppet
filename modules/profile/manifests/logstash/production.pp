@@ -4,8 +4,9 @@
 # Provisions a Logstash collector instance for the production environment
 #
 class profile::logstash::production (
-  String               $input_kafka_consumer_group_id        = lookup('profile::logstash::collector::input_kafka_consumer_group_id', { 'default_value' => 'logstash' }),
-  Array[Stdlib::Host]  $maintenance_hosts                    = lookup('maintenance_hosts', { 'default_value' => [] }),
+  String                 $input_kafka_consumer_group_id = lookup('profile::logstash::collector::input_kafka_consumer_group_id', { 'default_value' => 'logstash' }),
+  Array[Stdlib::Host]    $maintenance_hosts             = lookup('maintenance_hosts',                                           { 'default_value' => [] }),
+  Optional[Stdlib::Fqdn] $output_public_loki_host       = lookup('profile::logstash::collector::output_public_loki_host',       { 'default_value' => undef }),
 ) {
 
   include profile::logstash::common
@@ -279,6 +280,14 @@ class profile::logstash::production (
     priority        => 90,
     template        => '/etc/logstash/templates/dlq_1.0.0-1.json',
     require         => File['/etc/logstash/templates'],
+  }
+
+  # loki output
+  if ($output_public_loki_host) {
+    logstash::output::loki { 'loki_public':
+      host            => $output_public_loki_host,
+      guard_condition => '[@metadata][output] == "loki"',
+    }
   }
 
   # Generate a logstash output for each supported version.
