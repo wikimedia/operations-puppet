@@ -225,17 +225,6 @@ class profile::cache::varnish::frontend (
     # Monitor the mmap usage of varnish; Make sure it doesn't exceed the system limits
     class { 'prometheus::node_sysctl': }
 
-    monitoring::check_prometheus { 'varnishd-mmap-count':
-        description     => 'Varnish number of memory map areas',
-        query           => "scalar(varnishd_mmap_count{instance=\"${facts['networking']['hostname']}:9100\"})",
-        method          => 'gt',
-        warning         => $vm_max_map_count - 5000,
-        critical        => $vm_max_map_count - 1000,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
-        dashboard_links => ["https://grafana.wikimedia.org/d/wiU3SdEWk/cache-host-drilldown?orgId=1&viewPanel=76&var-site=${::site} prometheus/ops&var-instance=${facts['networking']['hostname']}"],
-    }
-
     # Monitor number of varnish file descriptors. Initially added to track
     # T243634 but generally useful.
     prometheus::node_file_count {'track vcache fds':

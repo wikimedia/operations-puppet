@@ -73,23 +73,6 @@ define varnish::instance(
     }
 
 
-    # Raise an icinga critical if the Varnish child process has been started
-    # more than once; that means it has died unexpectedly. If the metric has
-    # value 1, it means that everything is fine.
-    $_hostname = $facts['networking']['hostname']
-    $prometheus_labels = "instance=~\"${_hostname}:.*\",layer=\"frontend\""
-
-    monitoring::check_prometheus { 'varnish-frontend-check-child-start':
-        description     => 'Varnish frontend child restarted',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000330/varnish-machine-stats?orgId=1&viewPanel=66&var-server=${_hostname}&var-datasource=${::site} prometheus/ops"],
-        query           => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
-        method          => 'ge',
-        warning         => 2,
-        critical        => 2,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
-    }
-
     ([$vcl] + $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
             require                => File["/etc/varnish/${vcl_name}.inc.vcl"],

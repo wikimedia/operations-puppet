@@ -103,27 +103,4 @@ class profile::cache::purge(
         require => Service['purged'],
     }
 
-    monitoring::check_prometheus { 'purged-event-lag':
-        description     => 'Time elapsed since the last kafka event processed by purged',
-        # HACK: We take the minimum to work around scenarios where one EventGate datacenter is
-        # depooled and not actively sending messages.
-        query           => "min(purged_event_lag{instance=\"${::hostname}:${prometheus_port}\"}) / 1e6",
-        method          => 'gt',
-        warning         => 3000, # 3 seconds
-        critical        => 5000, # 5 seconds
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged#Alerts',
-        dashboard_links => ["https://grafana.wikimedia.org/d/RvscY1CZk/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
-    }
-
-    monitoring::check_prometheus { 'purged-backlog':
-        description     => 'Number of messages locally queued by purged for processing',
-        query           => "purged_backlog{instance=\"${::hostname}:${prometheus_port}\"}",
-        method          => 'gt',
-        warning         => 1000,
-        critical        => 10000,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged#Alerts',
-        dashboard_links => ["https://grafana.wikimedia.org/d/RvscY1CZk/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
-    }
 }
