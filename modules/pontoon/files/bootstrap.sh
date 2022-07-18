@@ -9,6 +9,8 @@
 set -e
 set -u
 
+FQDN=$(hostname --fqdn)
+
 preflight() {
   if [ -z "${SUDO_USER:-}" ]; then
     echo "Please bootstrap using sudo (or set SUDO_USER)"
@@ -17,6 +19,11 @@ preflight() {
 
   if ! which puppet; then
     echo "'puppet' command not found, has the host been provisioned?"
+    exit 2
+  fi
+
+  if [ -z "$FQDN" ]; then
+    echo "Unable to determine FQDN"
     exit 2
   fi
 
@@ -66,8 +73,8 @@ profile::resolving::nameservers:
 
 profile::base::manage_resolv_conf: false
 
-puppetmaster: $(hostname --fqdn)
-puppet_ca_server: $(hostname --fqdn)
+puppetmaster: $FQDN
+puppet_ca_server: $FQDN
 EOF
   systemctl mask puppet-master
 
@@ -133,12 +140,10 @@ init_user_repos() {
 }
 
 instructions() {
-  local fqdn=$(hostname --fqdn)
-
   cat <<EOF
 
 
-  The host ${fqdn} is ready to receive puppet changes.
+  The host ${FQDN} is ready to receive puppet changes.
 
   In order to create the new stack '${stack}' you will need to assign the
   'puppetmaster::pontoon' role to this host, commit the result and push the
@@ -148,13 +153,13 @@ instructions() {
   computer to get started:
 
 # remote setup
-git remote add ${git_remote_name} ssh://${fqdn}/~/puppet.git
+git remote add ${git_remote_name} ssh://${FQDN}/~/puppet.git
 
 # add the stack's rolemap and commit changes
 git checkout -b pontoon-$stack production
 
 mkdir modules/pontoon/files/${stack}
-printf "puppetmaster::pontoon:\n  - ${fqdn}\n" > modules/pontoon/files/${stack}/rolemap.yaml
+printf "puppetmaster::pontoon:\n  - ${FQDN}\n" > modules/pontoon/files/${stack}/rolemap.yaml
 
 git add modules/pontoon/files/${stack}
 git commit -m "pontoon: initialize new stack ${stack}"
@@ -163,10 +168,10 @@ git commit -m "pontoon: initialize new stack ${stack}"
 git push -f ${git_remote_name} HEAD:production
 
 # switch the server to ${stack}
-ssh ${fqdn} "echo ${stack} | sudo tee /etc/pontoon-stack"
+ssh ${FQDN} "echo ${stack} | sudo tee /etc/pontoon-stack"
 
 
-  You can refer to these instructions later at ${fqdn}:${readme}
+  You can refer to these instructions later at ${FQDN}:${readme}
 
   For more information make sure to check out Pontoon in Wikitech:
   https://wikitech.wikimedia.org/wiki/Puppet/Pontoon
