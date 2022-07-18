@@ -1747,12 +1747,8 @@ node /cloudmetrics100[1-2]\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
-node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
+node /^cloudcontrol100[3-7]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
-}
-
-node /^cloudcontrol100[67]\.wikimedia\.org$/ {
-    role(insetup)
 }
 
 # ceph monitor nodes

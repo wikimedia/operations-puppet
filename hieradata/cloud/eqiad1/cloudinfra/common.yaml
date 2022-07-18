@@ -9,6 +9,8 @@ profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1003.wikimedia.org
   - cloudcontrol1004.wikimedia.org
   - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::labweb_hosts:
   - labweb1001.wikimedia.org
   - labweb1002.wikimedia.org
