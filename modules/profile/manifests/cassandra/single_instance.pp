@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::cassandra::single_instance(
   Stdlib::Host        $graphite_host        = lookup('graphite_host'),
   String              $cluster_name         = lookup('profile::cassandra::single_instance::cluster'),
