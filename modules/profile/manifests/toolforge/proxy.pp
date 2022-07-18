@@ -1,11 +1,12 @@
 class profile::toolforge::proxy (
-    Array[String]       $proxies      = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
-    String              $active_proxy = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
-    Stdlib::Fqdn        $web_domain   = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
-    Array[Stdlib::Fqdn] $prometheus   = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
-    String              $statsd       = lookup('statsd',                                {default_value => 'localhost:8125'}),
-    Stdlib::Fqdn        $k8s_vip_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
-    Stdlib::Port        $k8s_vip_port = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
+    Array[String]       $proxies             = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
+    String              $active_proxy        = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
+    Stdlib::Fqdn        $web_domain          = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
+    Array[Stdlib::Fqdn] $prometheus          = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
+    String              $statsd              = lookup('statsd',                                {default_value => 'localhost:8125'}),
+    Stdlib::Fqdn        $k8s_vip_fqdn        = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port        $k8s_vip_port        = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
+    Integer             $rate_limit_requests = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
 ) {
     class { '::redis::client::python': }
 
@@ -43,6 +44,7 @@ class profile::toolforge::proxy (
         banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
         https_upgrade        => true,
         use_acme_chief       => true,
+        rate_limit_requests  => $rate_limit_requests,
     }
 
     $proxy_nodes = join($proxies, ' ')

@@ -43,6 +43,7 @@ class dynamicproxy (
     $https_upgrade            = false,
     Boolean $use_acme_chief   = false,
     Optional[Array[Stdlib::Fqdn]] $xff_fqdns = undef,
+    Integer $rate_limit_requests = 100,
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_name set but ssl_settings not set')
