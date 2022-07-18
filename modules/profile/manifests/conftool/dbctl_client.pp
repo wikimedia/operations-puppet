@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Set up a check for uncommitted diffs
 class profile::conftool::dbctl_client() {
     require ::profile::conftool::client

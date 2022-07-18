@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to install conftool requestctl plugin
 # @param conftool_prefix the conftool prefix
 class profile::conftool::requestctl_client(

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 """
 Tool to search requestctl ipblock data and determine of any blocks contain a specific ip address
 """

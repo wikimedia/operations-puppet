@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::conftool::state
 #
 # Provides the confd setup, and yaml files, used to access

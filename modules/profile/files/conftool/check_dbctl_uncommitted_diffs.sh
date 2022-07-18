@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Nagios/Icinga check command for dbctl, MediaWiki database config in etcd.
 # See also https://wikitech.wikimedia.org/wiki/Dbctl
 
