@@ -6,21 +6,21 @@
 # Switch it in hieradata/common.yaml, the default is just a fallback.
 #
 class profile::librenms (
-    Stdlib::Fqdn       $active_server   = lookup('netmon_server'),
-    Stdlib::Fqdn       $passive_server  = lookup('netmon_server_failover'),
-    Stdlib::Fqdn       $graphite_host   = lookup('graphite_host'),
-    String             $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
-    String             $sitename        = lookup('profile::librenms::sitename'),
-    Stdlib::Unixpath   $install_dir     = lookup('profile::librenms::install_dir'),
-    String             $laravel_app_key = lookup('profile::librenms::laravel_app_key'),
+    Stdlib::Fqdn        $active_server   = lookup('netmon_server'),
+    Array[Stdlib::Fqdn] $passive_servers = lookup('netmon_servers_failover'),
+    Stdlib::Fqdn        $graphite_host   = lookup('graphite_host'),
+    String              $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
+    String              $sitename        = lookup('profile::librenms::sitename'),
+    Stdlib::Unixpath    $install_dir     = lookup('profile::librenms::install_dir'),
+    String              $laravel_app_key = lookup('profile::librenms::laravel_app_key'),
 
-    String             $db_user         = lookup('profile::librenms::dbuser'),
-    String             $db_password     = lookup('profile::librenms::dbpassword'),
-    Stdlib::Fqdn       $db_host         = lookup('profile::librenms::dbhost'),
-    String             $db_name         = lookup('profile::librenms::dbname'),
+    String              $db_user         = lookup('profile::librenms::dbuser'),
+    String              $db_password     = lookup('profile::librenms::dbpassword'),
+    Stdlib::Fqdn        $db_host         = lookup('profile::librenms::dbhost'),
+    String              $db_name         = lookup('profile::librenms::dbname'),
 
-    Hash               $ldap_config     = lookup('ldap', Hash, hash, {}),
-    Enum['ldap','sso'] $auth_mechanism  = lookup('profile::librenms::auth_mechanism')
+    Hash                $ldap_config     = lookup('ldap', Hash, hash, {}),
+    Enum['ldap','sso']  $auth_mechanism  = lookup('profile::librenms::auth_mechanism')
 ){
 
     include network::constants
@@ -199,12 +199,22 @@ class profile::librenms (
 
     backup::set {'librenms': }
 
+    $passive_servers.each |Stdlib::Fqdn $passive_server| {
+        rsync::quickdatacopy { "srv-librenms-rrd-${passive_server}":
+            ensure              => present,
+            auto_sync           => false,
+            source_host         => $active_server,
+            dest_host           => $passive_server,
+            module_path         => '/srv/librenms/rrd',
+            server_uses_stunnel => true,
+        }
+    }
+
+    # TODO: clean up after T309074
     rsync::quickdatacopy { 'srv-librenms-rrd':
-        ensure              => present,
-        auto_sync           => false,
-        source_host         => $active_server,
-        dest_host           => $passive_server,
-        module_path         => '/srv/librenms/rrd',
-        server_uses_stunnel => true,
+        ensure      => absent,
+        source_host => 'netmon1002.wikimedia.org',
+        dest_host   => 'netmon2001.wikimedia.org',
+        module_path => '/srv/librenms/rrd',
     }
 }

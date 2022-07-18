@@ -1,7 +1,7 @@
 # http://oss.oetiker.ch/smokeping/
 class profile::smokeping (
-    Stdlib::Fqdn $active_server = lookup('netmon_server'),
-    Stdlib::Fqdn $passive_server = lookup('netmon_server_failover'),
+    Stdlib::Fqdn        $active_server   = lookup('netmon_server'),
+    Array[Stdlib::Fqdn] $passive_servers = lookup('netmon_servers_failover'),
 ){
 
     class{ '::smokeping':
