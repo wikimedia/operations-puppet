@@ -6,3 +6,4 @@ profile::puppetdb::database::log_line_prefix: '%t '
 profile::puppetdb::database::log_min_duration_statement: ~
 profile::puppetdb::database::log_autovacuum_min_duration: ~
 profile::puppetdb::database::ssldir: ~
+profile::puppetdb::database::use_replication_slots: false

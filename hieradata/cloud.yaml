@@ -164,6 +164,7 @@ profile::puppetdb::node_ttl: "7d"
 profile::puppetdb::node_purge_ttl: "14d"
 profile::puppetdb::report_ttl: "1d"
 
+profile::puppetdb::database::use_replication_slots: false
 profile::puppetdb::database::users:
   puppetdb@localhost:
     user: puppetdb

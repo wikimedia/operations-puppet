@@ -7,6 +7,7 @@
 # @param replication_lag_crit when the icinga alert should go critical
 # @param replication_lag_warn when the icinga alert should start warning
 # @param log_line_prefix Log line formatting prefix
+# @param use_replication_slots if true configure postgres to use replication slots
 # @param slaves A list of slave servers
 # @param ssldir The ssl directory
 # @param log_min_duration_statement Log transaction that take longer then this value in milliseconds
@@ -19,6 +20,7 @@ class profile::puppetdb::database(
     Integer                    $replication_lag_crit    = lookup('profile::puppetdb::database::replication_lag_crit'),
     Integer                    $replication_lag_warn    = lookup('profile::puppetdb::database::replication_lag_warn'),
     String                     $log_line_prefix         = lookup('profile::puppetdb::database::log_line_prefix'),
+    Boolean                    $use_replication_slots   = lookup('profile::puppetdb::database::use_replication_slots'),
     Array[Stdlib::Host]        $slaves                  = lookup('profile::puppetdb::slaves'),
     Optional[Stdlib::Unixpath] $ssldir                  = lookup('profile::puppetdb::database::ssldir'),
     Optional[Integer[250]] $log_min_duration_statement  = lookup('profile::puppetdb::database::log_min_duration_statement'),
@@ -46,6 +48,10 @@ class profile::puppetdb::database(
         },
     }
     if $on_master {
+        $replication_slots = $use_replication_slots ? {
+            true    => $slaves.map |$replica| { "puppet_${replica.regsubst('\.', '_', 'G')}"  },
+            default => [],
+        }
         class { 'postgresql::master':
             includes                    => ['tuning.conf'],
             root_dir                    => '/srv/postgres',
@@ -54,14 +60,20 @@ class profile::puppetdb::database(
             log_line_prefix             => $log_line_prefix,
             log_min_duration_statement  => $log_min_duration_statement,
             log_autovacuum_min_duration => $log_autovacuum_min_duration,
+            replication_slots           => $replication_slots,
         }
     } else {
+        $replication_slot_name = $use_replication_slots ? {
+            true    => "puppetdb_${facts['networking']['fqdn'].regsubst('\.', '_', 'G')}",
+            default => undef,
+        }
         class { 'postgresql::slave':
-            includes         => ['tuning.conf'],
-            master_server    => $master,
-            root_dir         => '/srv/postgres',
-            replication_pass => $replication_password,
-            use_ssl          => true,
+            includes              => ['tuning.conf'],
+            master_server         => $master,
+            root_dir              => '/srv/postgres',
+            replication_pass      => $replication_password,
+            use_ssl               => true,
+            replication_slot_name => $replication_slot_name,
         }
         class { 'postgresql::slave::monitoring':
             pg_master   => $master,

@@ -27,6 +27,8 @@
 #       The prefix to use for log messages
 # @param includes
 #       An array of files to be included by the main configuration
+# @param replication_slots
+#       a list of replication slots to configure
 # @param ssldir
 #       location of the ssl directory
 # @param sync_replicas
@@ -56,6 +58,7 @@ class postgresql::master(
     String                     $sync_mode                   = 'on',
     String                     $log_line_prefix             = '%t ',
     Array[String]              $includes                    = [],
+    Array[String[1]]           $replication_slots           = [],
     Optional[Stdlib::Unixpath] $ssldir                      = undef,
     Optional[Array[String]]    $sync_replicas               = undef,
     Optional[Integer[250]]     $log_min_duration_statement  = undef,
@@ -101,6 +104,16 @@ class postgresql::master(
             user    => 'postgres',
             unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
             require => Class['postgresql::server'],
+        }
+    }
+    $psql_cmd   = "/usr/bin/psql --tuples-only --no-align --command \"%s\""
+    $replication_slots.each |$slot| {
+        $create_sql = "SELECT pg_create_physical_replication_slot('${slot}')"
+        $unless_sql = "SELECT 1 FROM pg_replication_slots WHERE slot_name = '${slot}'"
+        exec { "create slot ${title}":
+            user    => 'postgres',
+            command => $psql_cmd.sprintf(create_sql),
+            unless  => "${psql_cmd.sprintf(create_sql)} | grep 1",
         }
     }
 }

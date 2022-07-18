@@ -17,6 +17,7 @@
 # @param log_min_duration_statement log statments that take longer then this (seconds)
 # @param prom_lag_critical critical level of replica lag for prometheus (bytes)
 # @param prom_lag_warning warning level of replica lag for prometheus (bytes)
+# @param replication_slot_name the name of the replication slot to use
 # @example
 #  class {'postgresql::slave':
 #       master_server => 'mserver',
@@ -26,17 +27,18 @@
 class postgresql::slave(
     Stdlib::Host               $master_server,
     String                     $replication_pass,
-    String                     $ensure          = 'present',
-    Integer                    $max_wal_senders = 5,
-    Stdlib::Unixpath           $root_dir        = '/var/lib/postgresql',
-    Boolean                    $use_ssl         = false,
-    Array[String]              $includes        = [],
-    Optional[String]           $rep_app         = undef,
-    Optional[Numeric]          $pgversion       = undef,
-    Optional[Stdlib::Unixpath] $ssldir          = undef,
-    Optional[Integer[250]]     $log_min_duration_statement  = undef,
+    String                     $ensure                      = 'present',
+    Integer                    $max_wal_senders             = 5,
+    Stdlib::Unixpath           $root_dir                    = '/var/lib/postgresql',
+    Boolean                    $use_ssl                     = false,
     Integer                    $prom_lag_critical           = 16777216, # 16Mb
     Integer                    $prom_lag_warning            = 1048576, # 1Mb
+    Array[String]              $includes                    = [],
+    Optional[String]           $rep_app                     = undef,
+    Optional[Numeric]          $pgversion                   = undef,
+    Optional[Stdlib::Unixpath] $ssldir                      = undef,
+    Optional[Integer[250]]     $log_min_duration_statement  = undef,
+    Optional[String[1]]        $replication_slot_name       = undef,
 ) {
 
     $_pgversion = $pgversion ? {
