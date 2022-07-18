@@ -21,7 +21,8 @@ EOF
   # XXX hack, make enroll.py happy
   install -d /var/lib/puppet/ssl
 
-  _try_apt install -y --no-install-recommends wget lsb-release locales
+  _try_apt install -y --no-install-recommends \
+      wget lsb-release locales augeas-tools jq
 }
 
 
@@ -69,6 +70,52 @@ setup_locale() {
   fi
 }
 
+setup_az() {
+  meta_file=$(mktemp)
+  meta_url="http://169.254.169.254/metadata/instance?api-version=2021-02-01"
+
+  trap "{ rm -f \"$meta_file\"; }" EXIT
+
+  if ! curl -H Metadata:true --noproxy "*" "$meta_url" > "$meta_file"; then
+    return
+  fi
+
+  environment=$(cat "$meta_file" | jq -r .compute.azEnvironment)
+  if [ "$environment" != "AzurePublicCloud" ]; then
+    return
+  fi
+
+  # The map(with_entries.. renames 'name' into 'key' so 'from_entries'
+  # works on older (< Bullseye) jq versions
+  domain=$(jq -r '.compute.tagsList | map(with_entries(if .key == "name" then .key = "key" else . end)) | from_entries | .domain' < "$meta_file")
+
+  # Set (and persist) the custom domain name
+  if [ ! -z "$domain" -a "$domain" != "null" ]; then
+    _resolv_set_domain "$domain"
+    _dhclient_override_domain "$domain"
+  fi
+}
+
+_dhclient_override_domain() {
+  local domain=$1
+  local config=/etc/dhcp/dhclient.conf
+
+  for opt in domain-name domain-search; do
+    # 'supersede' shows up as a list, thus append via [last()+1].
+    # Not idempotent, repeated options don't cause problems though.
+    augtool -e -l "$config" set "/files${config}/supersede[last()+1]/${opt}" "\\\"$domain\\\""
+  done
+}
+
+_resolv_set_domain() {
+  local domain=$1
+  local config="/etc/resolv.conf"
+
+  for opt in domain search/domain; do
+    augtool -e -l "$config" set "/files${config}/${opt}" "$domain"
+  done
+}
+
 if [ -e $guard_file ]; then
   echo "Already provisioned: $(ls -la $guard_file)"
   exit 0
@@ -78,5 +125,6 @@ preflight
 install_wmf_repo
 provision_puppet
 setup_locale
+setup_az
 
 touch $guard_file
