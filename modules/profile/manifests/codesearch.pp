@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::codesearch (
     Stdlib::Unixpath $base_dir = lookup('profile::codesearch::base_dir'),
     Hash[String, Integer] $ports = lookup('profile::codesearch::ports'),
