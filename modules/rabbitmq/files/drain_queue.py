@@ -19,6 +19,8 @@
 #
 # Modified by Bryan Davis <bd808@wikimedia.org>
 # Copyright (c) 2017 Wikimedia Foundation and contributors
+#
+# See https://www.rabbitmq.com/management.html#http-api for the api details
 
 import argparse
 import base64
@@ -93,7 +95,8 @@ def message_count(username, password, queue):
                     '/queues/%2F/{}'.format(queue))
     if not out:
         return None
-    return out['messages_ready']
+
+    return out.get('messages_ready', None)
 
 
 def main():
