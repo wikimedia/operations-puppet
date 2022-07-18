@@ -258,11 +258,19 @@ def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -
     mountpath.mkdir(parents=True, exist_ok=True)
     # it will guess the filesystem
     run("mount", "/dev/nbd0p1", mountpath)
-    puppet_cron_config = mountpath / "etc/cron.d/puppet"
-    if not puppet_cron_config.is_file():
-        raise Exception(f"Unable to find puppet cron config {puppet_cron_config}, aborting")
 
-    puppet_cron_config.unlink()
+    # Remove the systemd timer that runs Puppet on startup and on a timer
+    puppet_timer = mountpath / "lib/systemd/system/puppet-agent-timer.timer"
+    if not puppet_timer.is_file():
+        raise Exception(f"Unable to find puppet timer file {puppet_timer}, aborting")
+    puppet_timer.unlink()
+
+    # Also remove the legacy cron.d file in case it exists
+    puppet_cron_config = mountpath / "etc/cron.d/puppet"
+    if puppet_cron_config.is_file():
+        LOGGER.warning("Found legacy Puppet cron file %s", puppet_cron_config)
+        puppet_cron_config.unlink()
+
     run("umount", mountpath)
     run("qemu-nbd", "--disconnect", "/dev/nbd0")
 
