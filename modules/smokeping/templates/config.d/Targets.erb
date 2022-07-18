@@ -37,50 +37,6 @@ menu = msw2-eqiad
 title = msw2-eqiad.mgmt.eqiad.wmnet
 host = msw2-eqiad.mgmt.eqiad.wmnet
 
-# One server per row, with either public or private IP
-++ Hosts
-menu = Hosts
-title = Sampled Hosts
-
-+++ alert1001
-menu = alert1001
-title = alert1001.wikimedia.org [C6]
-host = alert1001.wikimedia.org
-
-+++ dns1001
-menu = dns1001
-title = dns1001.wikimedia.org [A1]
-host = dns1001.wikimedia.org
-
-+++ dns1002
-menu = dns1002
-title = dns1002.wikimedia.org [D1]
-host = dns1002.wikimedia.org
-
-+++ gerrit
-menu = gerrit1001
-title = gerrit1001.wikimedia.org [B8]
-host = gerrit1001.wikimedia.org
-
-+++ authdns1001
-menu = authdns1001
-title = authdns1001.wikimedia.org [B1]
-host = authdns1001.wikimedia.org
-
-++ frack
-menu = frack
-title = Fundraising Infrastructure
-
-+++ frbast-eqiad
-menu = frbast-eqiad
-title = frbast-eqiad.wikimedia.org
-host = frbast-eqiad.wikimedia.org
-
-+++ frpig1001
-menu = frpig1001
-title = frpig1001.frack.eqiad.wmnet
-host = frpig1001.frack.eqiad.wmnet
-
 + codfw
 
 menu = codfw
@@ -103,40 +59,6 @@ menu = msw1-codfw
 title = msw1-codfw.mgmt.codfw.wmnet
 host = msw1-codfw.mgmt.codfw.wmnet
 
-++ Hosts
-menu = Hosts
-title = Sampled Hosts
-
-+++ authdns2001
-menu = authdns2001
-title = authdns2001.wikimedia.org [A2]
-host = authdns2001.wikimedia.org
-
-+++ bast2002
-menu = bast2002
-title = bast2002.wikimedia.org [B5]
-host = bast2002.wikimedia.org
-
-+++ dns2001
-menu = dns2001
-title = dns2001.wikimedia.org [C5]
-host = dns2001.wikimedia.org
-
-+++ dns2002
-menu = dns2002
-title = dns2002.wikimedia.org [D5]
-host = dns2002.wikimedia.org
-
-+++ alert2001
-menu = alert2001
-title = alert2001.wikimedia.org [C5]
-host = alert2001.wikimedia.org
-
-+++ puppetmaster2002
-menu = puppetmaster2002
-title = puppetmaster2002.codfw.wmnet [D5]
-host = puppetmaster2002.codfw.wmnet
-
 ++ frack
 menu = frack
 title = Fundraising Infrastructure
@@ -145,17 +67,6 @@ title = Fundraising Infrastructure
 menu = fasw-c-codfw
 title = fasw-c-codfw.mgmt.codfw.wmnet
 host = fasw-c-codfw.mgmt.codfw.wmnet
-
-+++ frbast-codfw
-menu = frbast-codfw
-title = frbast-codfw.wikimedia.org
-host = frbast-codfw.wikimedia.org
-
-+++ frpig2001
-menu = frpig2001
-title = frpig2001.frack.codfw.wmnet
-host = frpig2001.frack.codfw.wmnet
-
 
 + esams
 
@@ -174,15 +85,6 @@ menu = asw2-esams
 title = asw2-esams.mgmt.esams.wmnet
 host = asw2-esams.mgmt.esams.wmnet
 
-++ Hosts
-menu = Hosts
-title = Sampled Hosts
-
-+++ bast3005
-menu = bast3005
-title = bast3005.wikimedia.org
-host = bast3005.wikimedia.org
-
 + ulsfo
 
 menu = ulsfo
@@ -199,15 +101,6 @@ title = Core Network Infrastructure
 menu = asw2-ulsfo
 title = asw2-ulsfo.mgmt.ulsfo.wmnet
 host = asw2-ulsfo.mgmt.ulsfo.wmnet
-
-++ Hosts
-menu = Hosts
-title = Sampled Hosts
-
-+++ bast4003
-menu = bast4003
-title = bast4003.wikimedia.org
-host = bast4003.wikimedia.org
 
 + eqsin
 
@@ -226,15 +119,6 @@ menu = asw1-eqsin
 title = asw1-eqsin.mgmt.eqsin.wmnet
 host = asw1-eqsin.mgmt.eqsin.wmnet
 
-++ Hosts
-menu = Hosts
-title = Sampled Hosts
-
-+++ bast5002
-menu = bast5002
-title = bast5002.wikimedia.org
-host = bast5002.wikimedia.org
-
 + drmrs
 
 menu = drmrs
@@ -242,20 +126,6 @@ title = Wikimedia Marseille network
 <% if @alerts -%>
 alerts = bigloss,someloss,startloss
 <% end -%>
-
-++ Hosts
-menu = Hosts
-title = Sampled Hosts
-
-+++ dns6001
-menu = dns6001
-title = dns6001.wikimedia.org
-host = dns6001.wikimedia.org
-
-+++ ganeti6002
-menu = ganeti6002
-title = ganeti6002.drmrs.wmnet
-host = ganeti6002.drmrs.wmnet
 
 +++ lvs6001-mgmt
 menu = lvs6001.mgmt.drmrs.wmnet
