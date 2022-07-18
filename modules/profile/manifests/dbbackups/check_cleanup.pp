@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Temporary profile to cleanup leftovers of the
 # dbbackups::check and wmfmariadbpy modules
 # SPDX-License-Identifier: Apache-2.0

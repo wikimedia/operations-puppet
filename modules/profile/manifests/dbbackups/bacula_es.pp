@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # If active, send the backups generated on /srv/backup to long term storage
 # This class is similar to P::dbbackups:bacula, but differs in that
 # it is specific for configuration of external store database (wiki content)

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Postprocess xtrabackup/mariabackup snapshots so they
 # are placed on the right place at the provisioning server
 class profile::dbbackups::snapshot {

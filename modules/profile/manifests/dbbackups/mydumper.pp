@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Create mydumper logical backups using the dump_shards.sh hosts
 # of all production core (s*, x*) and misc (m*) hosts.
 # Do that using a cron job on all backup hosts, all datacenters.

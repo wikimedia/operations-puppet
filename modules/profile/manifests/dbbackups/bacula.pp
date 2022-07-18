@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # If active, send the backups generated on /srv/backup to long term storage
 # Requires including ::profile::backup::host on the role that uses it
 class profile::dbbackups::bacula (

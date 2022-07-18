@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Web dashboard for database backup monitoring
 # This is currently an empty draft, parameters will be renamed on a later
 # iteration.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Create remote xtrabackup/mariabackup backups
 # By using transfer.py
 # This class will setup the configuration and software
