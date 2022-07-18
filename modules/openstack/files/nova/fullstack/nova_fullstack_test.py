@@ -24,7 +24,6 @@ import argparse
 import json
 import logging
 import os
-import socket
 import subprocess
 import sys
 import time
@@ -462,21 +461,14 @@ def verify_deletion(nova_cli: NovaClient, vm: Server, timeout: float) -> float:
 
 
 class StatHandler:
-    def __init__(self, statsd_host: str):
+    def __init__(self):
         self.stats: Dict[str, Union[int, float]] = {}
-        self.statsd_host = statsd_host
         self.metric_prefix = "cloudvps.novafullstack"
 
     def add_stat(self, stat_name: str, stat_value: Union[int, float]) -> None:
         # For prometheus
         metric_name = f"{self.metric_prefix}.{stat_name}"
         self.stats[metric_name] = stat_value
-
-        # for statsd
-        statsd_metric_name = f"{self.metric_prefix}.{socket.gethostname()}.{stat_name}"
-        my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-        my_socket.connect((self.statsd_host, 8125))
-        my_socket.send(f"{statsd_metric_name}:{stat_value}|g".encode("utf8"))
         LOGGER.info("%s => %f %d", metric_name, stat_value, int(time.time()))
 
     def flush_stats(self) -> None:
@@ -625,12 +617,6 @@ def get_args() -> argparse.Namespace:
     )
 
     argparser.add_argument(
-        "--statsd",
-        default=None,
-        help="Send statistics to statsd endpoint (default: statsd.<deployment>.wmnet)",
-    )
-
-    argparser.add_argument(
         "--deployment",
         default=Deployment.EQIAD1,
         choices=list(Deployment),
@@ -677,7 +663,7 @@ def setup_logging(debug: bool, vm_name: str) -> None:
 
 def update_logging_setup(vm_name: str) -> None:
     for handler in LOGGER.handlers:
-        if getattr(handler, 'custom', None):
+        if getattr(handler, "custom", None):
             handler.formatter.set_hostname(vm_name)
 
 
@@ -790,9 +776,7 @@ def main():
         fallback_project=args.project,
     )
 
-    stat_handler = StatHandler(
-        statsd_host=args.statsd or f"statsd.{args.deployment.to_wmnet()}.wmnet",
-    )
+    stat_handler = StatHandler()
 
     while True:
         loop_start = round(time.time(), 2)

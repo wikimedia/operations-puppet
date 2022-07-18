@@ -4,18 +4,17 @@ export OS_USERNAME="osstackcanary"
 export OS_PASSWORD="<%= @password %>"
 export OS_REGION_NAME="<%= @region %>"
 /usr/local/sbin/nova-fullstack \
-                                   --ssh-timeout <%= @ssh_timeout %> \
-                                   --puppet-timeout <%= @puppet_timeout %> \
-                                   --creation-timeout <%= @creation_timeout %> \
-                                   --interval <%= @interval %> \
-                                   --max-pool <%= @max_pool %>  \
-                                   --project admin-monitoring \
-                                   --prepend fullstackd \
-                                   --network <%= @network %> \
-                                   --image debian-11.0-bullseye \
-                                   --flavor g3.cores1.ram2.disk20 \
-                                   --keyfile <%= @keyfile %> \
-                                   --puppetmaster <%= @puppetmaster %> \
-                                   --bastion-ip <%= @bastion_ip %> \
-                                   --debug \
-                                   --statsd statsd.eqiad.wmnet
+    --ssh-timeout <%= @ssh_timeout %> \
+    --puppet-timeout <%= @puppet_timeout %> \
+    --creation-timeout <%= @creation_timeout %> \
+    --interval <%= @interval %> \
+    --max-pool <%= @max_pool %>  \
+    --project admin-monitoring \
+    --prepend fullstackd \
+    --network <%= @network %> \
+    --image debian-11.0-bullseye \
+    --flavor g3.cores1.ram2.disk20 \
+    --keyfile <%= @keyfile %> \
+    --puppetmaster <%= @puppetmaster %> \
+    --bastion-ip <%= @bastion_ip %> \
+    --debug
