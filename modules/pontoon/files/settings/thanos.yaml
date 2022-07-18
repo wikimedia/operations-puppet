@@ -24,3 +24,7 @@ swift_storage_drives:
   - '/dev/lda'
 
 profile::swift::storage::loopback_device_count: 1
+
+profile::thanos::retention::raw: '4w'
+profile::thanos::retention::5m: '4w'
+profile::thanos::retention::1h: '4w'
