@@ -7,6 +7,7 @@ profile::puppetdb::puppetboard_hosts:
 profile::puppetdb::rsyslog::elk: false
 profile::puppetdb::tmpfs_stockpile_queue: true
 profile::puppetdb::clean_stockpile: false
+profile::puppetdb::database::use_replication_slots: true
 profile::puppetdb::database::replication_lag_crit: 25165824 # 24MB
 profile::puppetdb::database::replication_lag_warn: 8388608 # 8MB
 profile::puppetdb::database::log_line_prefix: '%m [db:%d,sess:%c,pid:%p,vtid:%v,tid:%x] '
