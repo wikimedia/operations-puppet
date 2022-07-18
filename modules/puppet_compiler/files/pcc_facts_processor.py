@@ -62,7 +62,7 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
             managecode.prod_dir, environment
         )
         managecode._create_puppetconf(  # pylint: disable=protected-access
-            managecode.prod_dir, environment
+            environment
         )
         for fact_file in facts_dir.glob('**/*.yaml'):
             node = fact_file.with_suffix('').name
