@@ -2810,8 +2810,7 @@ users:
     gid: 500
     name: foks
     realname: Joe Sutherland
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDX368WOXX1gmidVWIIWDE/bawNJwPhglewYr78NGpDkpiwLs6L3WLZnVOm/9avx1g7Yxj/Hv4eJDZCJpgj9mi/PNsbU0tdw5a7KZQ+AlmnF7+PgAhyBW5GPo8uPhe73nrsiRizM/uqQLPKJkV2RvzFr3ic7uPDGfnltxbNbjhTw0YEeCTyS9dQQ+X6aQVpUBccgDNSQP6tQmZY7Sg8L17oEUqf93eZ052bhSOyt9DVL4LjPrioPc/KtmNaxvrxjzzt70Mz1z0I7jJa3uw3LDZe6Zo3vX6W+1TvNRISaEMv3YwqydsYu3BFJFRYJalO4Zf+8AhRtbs2tyv3V+gtuf7N jsutherland@wikimedia.org
+    ssh_keys: []
     uid: 14124
     email: jsutherland@wikimedia.org
     krb: present
