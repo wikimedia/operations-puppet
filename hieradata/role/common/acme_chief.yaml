@@ -201,7 +201,7 @@ profile::acme_chief::certificates:
         - 'openstack.eqiad1.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
-        - '^cloudcontrol100[345]\.wikimedia\.org$'
+        - '^cloudcontrol100[3-7]\.wikimedia\.org$'
     orchestrator:
         CN: 'orchestrator.wikimedia.org'
         SNI:
