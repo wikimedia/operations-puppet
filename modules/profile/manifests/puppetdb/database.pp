@@ -1,18 +1,27 @@
-# == Class profile::puppetdb::database
+# @summary Sets up a puppetdb postgresql database.
 #
-# Sets up a puppetdb postgresql database.
-#
+# @param master The primary db server
+# @param shared_buffers The amount of mem to use for shared buffers
+# @param replication_password password used for replication
+# @param users A hash of useres to create
+# @param replication_lag_crit when the icinga alert should go critical
+# @param replication_lag_warn when the icinga alert should start warning
+# @param log_line_prefix Log line formatting prefix
+# @param slaves A list of slave servers
+# @param ssldir The ssl directory
+# @param log_min_duration_statement Log transaction that take longer then this value in milliseconds
+# @param log_autovacuum_min_duration Log autovacum if it take longer then this time in milliseconds
 class profile::puppetdb::database(
-    Stdlib::Host               $master               = lookup('profile::puppetdb::master'),
-    String                     $shared_buffers       = lookup('profile::puppetdb::database::shared_buffers'),
-    String                     $replication_password = lookup('puppetdb::password::replication'),
-    Hash                       $users                = lookup('profile::puppetdb::database::users'),
-    Integer                    $replication_lag_crit = lookup('profile::puppetdb::database::replication_lag_crit'),
-    Integer                    $replication_lag_warn = lookup('profile::puppetdb::database::replication_lag_warn'),
-    String                     $log_line_prefix      = lookup('profile::puppetdb::database::log_line_prefix'),
-    Array[Stdlib::Host]        $slaves               = lookup('profile::puppetdb::slaves'),
-    Optional[Stdlib::Unixpath] $ssldir               = lookup('profile::puppetdb::database::ssldir'),
-    Optional[Integer[250]] $log_min_duration_statement = lookup('profile::puppetdb::database::log_min_duration_statement'),
+    Stdlib::Host               $master                  = lookup('profile::puppetdb::master'),
+    Stdlib::Datasize           $shared_buffers          = lookup('profile::puppetdb::database::shared_buffers'),
+    String                     $replication_password    = lookup('puppetdb::password::replication'),
+    Hash                       $users                   = lookup('profile::puppetdb::database::users'),
+    Integer                    $replication_lag_crit    = lookup('profile::puppetdb::database::replication_lag_crit'),
+    Integer                    $replication_lag_warn    = lookup('profile::puppetdb::database::replication_lag_warn'),
+    String                     $log_line_prefix         = lookup('profile::puppetdb::database::log_line_prefix'),
+    Array[Stdlib::Host]        $slaves                  = lookup('profile::puppetdb::slaves'),
+    Optional[Stdlib::Unixpath] $ssldir                  = lookup('profile::puppetdb::database::ssldir'),
+    Optional[Integer[250]] $log_min_duration_statement  = lookup('profile::puppetdb::database::log_min_duration_statement'),
     Optional[Integer]      $log_autovacuum_min_duration = lookup('profile::puppetdb::database::log_autovacuum_min_duration'),
 ) {
     $pgversion = debian::codename() ? {
@@ -65,16 +74,16 @@ class profile::puppetdb::database(
         }
     }
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
-        ensure  => 'present',
+        ensure  => 'file',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('puppetmaster/puppetdb/tuning.conf.erb'),
-        require => Package["postgresql-${pgversion}"]
+        require => Package["postgresql-${pgversion}"],
     }
     $users.each |$pg_name, $config| {
         postgresql::user { $pg_name:
-            * => $config + {'master' => $on_master, 'pgversion' => $pgversion}
+            * => $config + {'master' => $on_master, 'pgversion' => $pgversion},
         }
     }
     postgresql::db { 'puppetdb':
