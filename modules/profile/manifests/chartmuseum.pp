@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::chartmuseum
 #
 # This class sets up a ChartMuseum instance with swift storage back-end.
