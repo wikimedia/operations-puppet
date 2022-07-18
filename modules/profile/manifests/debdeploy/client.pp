@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::debdeploy::client (
     Wmflib::Ensure $ensure              = lookup('profile::debdeploy::client::ensure'),
     Array          $exclude_mounts      = lookup('profile::debdeploy::client::exclude_mounts'),
