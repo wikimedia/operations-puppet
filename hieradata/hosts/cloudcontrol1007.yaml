@@ -1,5 +1,5 @@
-profile::openstack::eqiad1::fernet_key_rotate_time: '08:00:00'
-profile::openstack::eqiad1::fernet_key_sync_time: '09:00:00'
+profile::openstack::eqiad1::fernet_key_rotate_time: '10:00:00'
+profile::openstack::eqiad1::fernet_key_sync_time: '11:00:00'
 
 profile::openstack::eqiad1::galera::server_id: 5
 
