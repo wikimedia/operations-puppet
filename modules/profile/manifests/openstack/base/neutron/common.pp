@@ -6,6 +6,7 @@ class profile::openstack::base::neutron::common(
     $db_pass = lookup('profile::openstack::base::neutron::db_pass'),
     $db_host = lookup('profile::openstack::base::neutron::db_host'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     $rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
@@ -23,6 +24,7 @@ class profile::openstack::base::neutron::common(
     class {'::openstack::neutron::common':
         version               => $version,
         openstack_controllers => $openstack_controllers,
+        rabbitmq_nodes        => $rabbitmq_nodes,
         keystone_admin_uri    => $keystone_admin_uri,
         keystone_api_fqdn     => $keystone_api_fqdn,
         keystone_public_uri   => $keystone_public_uri,

@@ -16,7 +16,7 @@ syslog_log_facility = LOG_LOCAL0
 default_log_levels = nova=WARN
 #debug = true
 
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
 # Schedule things that are for some reason not in the [scheduler] section
 ram_allocation_ratio=1.0

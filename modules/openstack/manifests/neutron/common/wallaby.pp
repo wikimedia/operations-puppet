@@ -1,5 +1,6 @@
 class openstack::neutron::common::wallaby(
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     Stdlib::Fqdn $keystone_api_fqdn,
     $db_pass,
     $db_user,

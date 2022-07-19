@@ -6,8 +6,9 @@ class openstack::nova::common(
     $db_host,
     $db_name,
     $db_name_api,
-    $openstack_controllers,
-    $keystone_api_fqdn,
+    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
+    Stdlib::Fqdn $keystone_api_fqdn,
     $scheduler_filters,
     $ldap_user_pass,
     $rabbit_user,
@@ -18,7 +19,7 @@ class openstack::nova::common(
     Stdlib::Port $metadata_listen_port,
     Stdlib::Port $osapi_compute_listen_port,
     Boolean $is_control_node,
-    ) {
+) {
 
     class { "openstack::nova::common::${version}::${::lsbdistcodename}": }
 
