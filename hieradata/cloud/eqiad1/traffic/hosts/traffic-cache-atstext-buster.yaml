@@ -94,43 +94,6 @@ profile::trafficserver::backend::outbound_tls_settings:
     enable_tlsv1_2: 1
     enable_tlsv1_3: 0
   verify_origin: true
-profile::trafficserver::tls::available_unified_certs:
-  lets-encrypt:
-    acme_chief: true
-    cert_files:
-    - acmecerts/unified/live/rsa-2048.chained.crt
-    - acmecerts/unified/live/ec-prime256v1.chained.crt
-    default: true
-    ocsp_stapling_files:
-    - acmecerts/unified/live/rsa-2048.ocsp
-    - acmecerts/unified/live/ec-prime256v1.ocsp
-    private_key_files:
-    - acmecerts/unified/live/rsa-2048.key
-    - acmecerts/unified/live/ec-prime256v1.key
-profile::trafficserver::tls::inbound_tls_settings:
-  common:
-    cipher_suite: -ALL:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA
-    cipher_suite_tlsv1_3: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
-    enable_tlsv1: 0
-    enable_tlsv1_1: 0
-    enable_tlsv1_2: 1
-    enable_tlsv1_3: 1
-    groups_list: X25519:prime256v1
-  dhparams_file: /etc/ssl/dhparam.pem
-  do_ocsp: 1
-  load_elevated: 1
-  max_record_size: 16383
-  prioritize_chacha: 1
-  session_cache: 2
-  session_cache_auto_clear: 1
-  session_cache_buckets: 32768
-  session_cache_size: 512000
-  session_cache_timeout: 86400
-  session_ticket_enable: 1
-  session_ticket_filename: secrets/tickets.key
-  ssl_handshake_timeout_in: 60
-profile::trafficserver::tls::parent_rules: []
-profile::trafficserver::tls::unified_acme_chief: true
 prometheus_nodes: []
 public_tls_unified_cert_vendor: lets-encrypt
 puppetmaster: traffic-puppetmaster-buster.traffic.eqiad.wmflabs
@@ -138,3 +101,242 @@ zookeeper_clusters:
   main-deployment-prep:
     hosts:
       deployment-zookeeper02.eqiad.wmflabs: '2'
+profile::cache::haproxy::vars:
+    - direction: request
+      name: 'txn.xwd_count'
+      value: 'req.hdr_cnt(X-Wikimedia-Debug)'
+    - direction: request
+      name: 'req.h2'
+      value: 'int(1)'
+      acl: 'h2'
+    - direction: request
+      name: 'req.h2'
+      value: 'int(0)'
+      acl: '!h2'
+    - direction: request
+      name: 'req.h2s'
+      value: 'str(h2)'
+      acl: 'h2'
+    - direction: request
+      name: 'req.h2s'
+      value: 'str(h1)'
+      acl: '!h2'
+    - direction: request
+      name: 'req.sess'
+      value: 'str(new)'
+      acl: '!ssl_session_reused'
+    - direction: request
+      name: 'req.sess'
+      value: 'str(reused)'
+      acl: 'ssl_session_reused'
+    - direction: request
+      name: 'req.ciph'
+      value: "ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^ECDHE-RSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')"
+    - direction: request
+      name: 'req.auth'
+      value: 'str(RSA)'
+      acl: 'ssl_auth_rsa'
+    - direction: request
+      name: 'req.auth'
+      value: 'str(ECDSA)'
+      acl: '!ssl_auth_rsa'
+
+profile::cache::haproxy::acls:
+    - name: missing_xwd
+      criterion: 'var(txn.xwd_count)'
+      operator: 'eq'
+      value: '0'
+    - name: h2
+      criterion: 'fc_http_major'
+      operator: 'eq'
+      value: '2'
+    - name: ssl_session_reused
+      criterion: 'ssl_fc_is_resumed'
+      operator: 'eq'
+      value: '1'
+    - name: ssl_auth_rsa
+      criterion: 'ssl_fc_cipher'
+      operator: '-m reg'
+      value: '^ECDHE-RSA'
+
+profile::cache::haproxy::add_headers:
+    - direction: request
+      name: 'X-Client-IP'
+      value: '%[src]'
+    - direction: request
+      name: 'X-Client-Port'
+      value: '%[src_port]'
+    - direction: request
+      name: 'X-Forwarded-Proto'
+      value: 'https'
+    - direction: request
+      name: 'X-Connection-Properties'
+      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN;'
+    - direction: request
+      name: 'X-Analytics-TLS'
+      value: 'vers=%[ssl_fc_protocol];keyx=unknown;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
+
+profile::cache::haproxy::del_headers:
+    - direction: response
+      name: 'X-Analytics'
+    - direction: response
+      name: 'Backend-Timing'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-ATS-Timestamp'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Envoy-Upstream-Service-Time'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-OpenStack-Request-ID'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Powered-By'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Request-Id'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Timestamp'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Trans-Id'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Varnish'
+      acl: missing_xwd
+
+profile::cache::haproxy::available_unified_certificates:
+  digicert-2021:
+    cert_paths:
+        - /etc/ssl/private/digicert-2021-ecdsa-unified.chained.crt.key
+        - /etc/ssl/private/digicert-2021-rsa-unified.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+    warning_threshold: 30
+    critical_threshold: 15
+  lets-encrypt:
+    cert_paths:
+        - /etc/acmecerts/unified/live/rsa-2048.chained.crt.key
+        - /etc/acmecerts/unified/live/ec-prime256v1.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+    warning_threshold: 21
+    critical_threshold: 15
+
+profile::cache::haproxy::do_ocsp: true
+profile::cache::haproxy::h2settings:
+  header_table_size: 4096
+  initial_window_size: 65535
+  max_concurrent_streams: 100
+profile::cache::haproxy::timeout:
+  client: 120
+  client_fin: 120
+  connect: 3
+  http_request: 3600
+  keep_alive: 120
+  server: 180
+  tunnel: 3600
+profile::cache::haproxy::tls13_ciphers: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+profile::cache::haproxy::tls_ciphers: -ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+profile::cache::haproxy::tls_port: 443
+profile::cache::haproxy::tls_cachesize: 512000
+profile::cache::haproxy::tls_session_lifetime: 86400
+profile::cache::haproxy::unified_acme_chief: true
+profile::cache::haproxy::unified_certs:
+    - digicert-2021-ecdsa-unified
+    - digicert-2021-rsa-unified
+profile::cache::haproxy::varnish_socket:
+    - prefix: unix
+      address: /run/varnish-frontend-0.socket
+    - prefix: unix
+      address: /run/varnish-frontend-1.socket
+    - prefix: unix
+      address: /run/varnish-frontend-2.socket
+    - prefix: unix
+      address: /run/varnish-frontend-3.socket
+    - prefix: unix
+      address: /run/varnish-frontend-4.socket
+    - prefix: unix
+      address: /run/varnish-frontend-5.socket
+    - prefix: unix
+      address: /run/varnish-frontend-6.socket
+    - prefix: unix
+      address: /run/varnish-frontend-7.socket
