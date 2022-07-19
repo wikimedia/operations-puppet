@@ -66,6 +66,12 @@ class profile::syslog::centralserver (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Logs',
     }
 
+    prometheus::blackbox::check::tcp { 'rsyslog-receiver':
+        port        => 6514,
+        force_tls   => true,
+        server_name => $facts['networking']['fqdn'],
+    }
+
     mtail::program { 'kernel':
         ensure => present,
         source => 'puppet:///modules/mtail/programs/kernel.mtail',
