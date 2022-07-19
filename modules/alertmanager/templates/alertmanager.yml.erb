@@ -331,7 +331,7 @@ receivers:
 - name: 'serviceops-collab-warning'
   webhook_configs:
     # #serviceops mail & IRC
-    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops-test'
   email_configs:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
 
@@ -340,7 +340,7 @@ receivers:
     # #serviceops-collab task & mail & IRC
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb'
       send_resolved: false
-    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops-test'
   email_configs:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
 
