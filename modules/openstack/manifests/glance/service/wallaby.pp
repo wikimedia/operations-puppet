@@ -42,6 +42,13 @@ class openstack::glance::service::wallaby(
             mode    => '0755',
             notify  => Service['glance-api'],
             require => Package['glance'];
+        '/etc/glance/glance-api-uwsgi.ini':
+            content => template('openstack/wallaby/glance/glance-api-uwsgi.ini.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            notify  => Service['glance-api'],
+            require => Package['glance'];
     }
 
     group { 'glance':
