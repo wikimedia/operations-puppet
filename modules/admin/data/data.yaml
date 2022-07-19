@@ -1758,7 +1758,8 @@ users:
     gid: 500
     name: demon
     realname: Chad Horohoe
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7O/SWhXzJg8T5r+KG+K3N37eaDbwojgH3luusC9Fb5 chad@wikimedia.org]
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINwzpoofmkNbsCJJZiKqeSmV33h6HcM9TX62pfr3NNIq
     uid: 1145
     email: chad@wikimedia.org
   qchris:
