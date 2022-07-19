@@ -16,7 +16,7 @@ bind-address = 0.0.0.0
 # OpenStack expects to have a lot of running worker nodes
 #  with open connections.  Since Galera is mostly used
 #  for OpenStack, allow lots of connections
-max_connections = 1000
+max_connections = 2000
 
 
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
