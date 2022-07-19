@@ -82,7 +82,7 @@ class profile::vrts(
         severity           => 'warning',
         path               => '/otrs/index.pl',
         port               => 1443,
-        ip_families        => ['ipv4'],
+        ip_families        => ['ip4'],
         force_tls          => true,
         body_regex_matches => ['wikimedia'],
     }
