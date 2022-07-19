@@ -23,6 +23,10 @@
         Require all granted
     </Directory>
 
+    <Directory /srv/org/wikimedia/annualreport/.git>
+        Require all denied
+    </Directory>
+
     # Old annual reports from 2007 through 2013 are PDF files on Foundation Wiki.
     RedirectMatch ^/(200[7-9]|201[0-3])/?$ https://foundation.wikimedia.org/wiki/Annual_Report
 

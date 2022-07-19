@@ -48,11 +48,17 @@ https://annual.wikimedia.org:
 - path: /2016/
   assert_status: 200
   assert_body_contains: Wikimedia Foundation 2016 Annual Report
+# check that git folders aren't available publicly
+- path: /.git/config
+  assert_status: 403
 
 https://bienvenida.wikimedia.org:
 - path: /
   assert_status: 200
   assert_body_contains: bienvenidos a Wikipedia
+# check that git folders aren't available publicly
+- path: /.git/config
+  assert_status: 403
 
 https://design.wikimedia.org:
 - path: /
@@ -64,6 +70,16 @@ https://design.wikimedia.org:
 - path: /strategy/
   assert_status: 200
   assert_body_contains: Wikimedia Design Strategy
+# check that git folders aren't available publicly
+- path: /.git/config
+  assert_status: 403
+- path: /style-guide/.git/config
+  assert_status: 403
+- path: /strategy/.git/config
+  assert_status: 403
+- path: /blog/.git/config
+  # 404, served on a subpath of the git root
+  assert_status: 404
 
 https://iegreview.wikimedia.org:
 - path: /

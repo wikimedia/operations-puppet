@@ -20,3 +20,8 @@ https://query.wikidata.org:
 - path: /custom-config.json
   assert_status: 200
   assert_body_contains: Wikidata Query Service
+# check that git folders aren't available publicly
+- path: /.git/config
+  assert_status: 403
+- path: /querybuilder/.git/config
+  assert_status: 403
