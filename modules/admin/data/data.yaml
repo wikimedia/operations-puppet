@@ -5100,6 +5100,7 @@ users:
     email: jnuche@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnCekTO59nMcPp2rFMzBW/epGzGldjTNLDwi3sGKQPJ jnuche@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIpomywG7B8X6UdevAuZ5+xXKS6TPlP1SIaGfnuLeXAv jnuche@wikimedia.org
   hokwelum:
     ensure: present
     uid: 35880
