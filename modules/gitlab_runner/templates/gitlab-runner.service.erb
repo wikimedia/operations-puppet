@@ -4,5 +4,5 @@
 User=
 User=<%= @gitlab_runner_user %>
 ExecStart=
-ExecStart=/usr/bin/gitlab-runner "run" "--working-directory" "/home/<%= @gitlab_runner_user %>" "--config" "<%= @directory%>/config.toml" "--service" "gitlab-runner" "--user" "<%= @gitlab_runner_user %>"
+ExecStart=/usr/bin/gitlab-runner "run" "--working-directory" "/home/<%= @gitlab_runner_user %>" "--config" "<%= @config_path%>/config.toml" "--service" "gitlab-runner" "--user" "<%= @gitlab_runner_user %>"
 <% end -%>

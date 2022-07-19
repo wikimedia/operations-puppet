@@ -1,9 +1,4 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-concurrent = <%= @concurrent %>
-<%- if @enable_exporter -%>
-listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>'
-<%- end -%>
-
 [[runners]]
   # The runner’s description. Informational only.
   name = '<%= @runner_name %>'
@@ -11,9 +6,6 @@ listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>
   url = '<%= @gitlab_url %>'
   # Select how a project should be built. Fixed to docker executor for security reasons.
   executor = "docker"
-
-  # Auth token injected by gitlab_runner::config
-  token = "${TOKEN}"
 
   <%- if @ensure_buildkitd == 'present' -%>
   # Provide a default variable for BUILDKIT_HOST
