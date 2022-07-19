@@ -1533,7 +1533,7 @@ node /^cloudservices100[34]\.wikimedia\.org$/ {
 
 #new cloudweb hosts T305414
 node /^cloudweb100[34]\.wikimedia\.org$/ {
-    role(insetup)
+    role(wmcs::openstack::eqiad1::labweb)
 }
 
 node 'cloudweb2002-dev.wikimedia.org' {
