@@ -7,7 +7,6 @@ class profile::openstack::base::nova::common(
     $db_name = lookup('profile::openstack::base::nova::db_name'),
     $db_name_api = lookup('profile::openstack::base::nova::db_name_api'),
     $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
-    $metadata_workers = lookup('profile::openstack::base::nova::metadata_workers'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
@@ -39,7 +38,6 @@ class profile::openstack::base::nova::common(
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
         compute_workers              => $compute_workers,
         metadata_listen_port         => $metadata_listen_port,
-        metadata_workers             => $metadata_workers,
         osapi_compute_listen_port    => $osapi_compute_listen_port,
         is_control_node              => $is_control_node,
     }

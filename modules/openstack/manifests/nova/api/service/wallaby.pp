@@ -1,6 +1,7 @@
 class openstack::nova::api::service::wallaby(
     Stdlib::Port $api_bind_port,
     Stdlib::Port $metadata_bind_port,
+    Integer $compute_workers,
 ) {
     # simple enough to don't require per-debian release split
     require "openstack::serverpackages::wallaby::${::lsbdistcodename}"
@@ -35,6 +36,22 @@ class openstack::nova::api::service::wallaby(
 
     file { '/etc/init.d/nova-api-metadata':
         content => template('openstack/wallaby/nova/api/nova-api-metadata'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        notify  => Service['nova-api-metadata'],
+        require => Package['nova-api'];
+    }
+    file { '/etc/init.d/nova-api-metadata-uwsgi.ini':
+        content => template('openstack/wallaby/nova/api/nova-api-metadata-uwsgi.ini.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        notify  => Service['nova-api-metadata'],
+        require => Package['nova-api'];
+    }
+    file { '/etc/init.d/nova-api-uwsgi.ini':
+        content => template('openstack/wallaby/nova/api/nova-api-uwsgi.ini.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0755',

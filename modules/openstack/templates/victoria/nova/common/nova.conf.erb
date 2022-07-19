@@ -4,7 +4,7 @@ my_ip = <%= @ipaddress %>
 osapi_compute_workers = <%= @compute_workers %>
 osapi_compute_listen_port = <%= @osapi_compute_listen_port %>
 metadata_listen_port = <%= @metadata_listen_port %>
-metadata_workers = <%= @metadata_workers %>
+metadata_workers = <%= @compute_workers %>
 state_path = /var/lib/nova
 rootwrap_config = /etc/nova/rootwrap.conf
 log_dir=/var/log/nova

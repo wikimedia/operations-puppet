@@ -6,11 +6,13 @@ class openstack::nova::api::service(
     Stdlib::Port $api_bind_port,
     Stdlib::Port $metadata_bind_port,
     String       $dhcp_domain,
+    Integer      $compute_workers,
     ) {
 
     class { "openstack::nova::api::service::${version}":
         api_bind_port      => $api_bind_port,
         metadata_bind_port => $metadata_bind_port,
+        compute_workers    => $compute_workers,
     }
 
     service { 'nova-api':

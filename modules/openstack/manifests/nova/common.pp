@@ -15,7 +15,6 @@ class openstack::nova::common(
     $rabbit_pass,
     $metadata_proxy_shared_secret,
     $compute_workers,
-    $metadata_workers,
     Stdlib::Port $metadata_listen_port,
     Stdlib::Port $osapi_compute_listen_port,
     Boolean $is_control_node,

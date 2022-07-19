@@ -5,6 +5,7 @@ class profile::openstack::base::nova::api::service(
     Stdlib::Port $metadata_bind_port = lookup('profile::openstack::base::nova::metadata_listen_port'),
     String       $dhcp_domain               = lookup('profile::openstack::base::nova::dhcp_domain',
                                                       {default_value => 'example.com'}),
+    Integer      $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
     ) {
 
     $prod_networks = join($::network::constants::production_networks, ' ')
@@ -16,6 +17,7 @@ class profile::openstack::base::nova::api::service(
         api_bind_port      => $api_bind_port,
         metadata_bind_port => $metadata_bind_port,
         dhcp_domain        => $dhcp_domain,
+        compute_workers    => $compute_workers,
     }
     contain '::openstack::nova::api::service'
 
