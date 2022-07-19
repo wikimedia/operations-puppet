@@ -14,11 +14,12 @@
         document.getElementById("check-doh-warning").style.visibility = "visible";
       }
       const description = doughService === "doh" ? "DoH (DNS-over-HTTPS)" : "DoT (DNS-over-TLS)";
+      const ipVer = check.ipv === "ipv4" ? "IPv4" : "IPv6";
 
       document.getElementById("check-heading").innerHTML = "&#9745;";
       document.getElementById("check-result").textContent = "Congratulations! You are using Wikidough.";
       document.getElementById("check-result").style.color = 'green';
-      document.getElementById("check-service").textContent = `Connected over ${description} in ${dcToLoc[check.site]}`;
+      document.getElementById("check-service").textContent = `Connected over ${description} in ${dcToLoc[check.site]} [${ipVer}]`;
     } else {
       document.getElementById("check-heading").innerHTML = "&#9746;";
       document.getElementById("check-result").textContent = "Sorry, you are not using Wikidough.";

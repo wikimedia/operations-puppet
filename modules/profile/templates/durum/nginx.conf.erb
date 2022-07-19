@@ -31,10 +31,15 @@ server {
 }
 
 # yesdoh: *.check.wikimedia-dns.org (DoH)
+<% @ips['success_doh'].each_with_index do |doh_ip, index| -%>
+<% ipv6 = index == 1 ? true : false %>
 server {
 
-  listen      <%= @ips['success_doh'][0] %>:443 ssl http2;
-  listen      [<%= @ips['success_doh'][1] %>]:443 ssl http2;
+<% if ipv6 -%>
+  listen      [<%= doh_ip %>]:443 ssl http2;
+<% else -%>
+  listen      <%= doh_ip %>:443 ssl http2;
+<% end -%>
   server_name *.<%= @domain %>;
 
   <%= @ssl_settings.join("\n  ") %>
@@ -44,10 +49,11 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": true, "service": "doh", "site": "<%= scope.lookupvar('::site') %>"}';
+    return 200   '{"wikidough": true, "service": "doh", "site": "<%= scope.lookupvar('::site') %>", "ipv": <%= ipv6 ? '"ipv6"': '"ipv4"' %>}';
   }
 
 }
+<% end -%>
 
 # no: *.check.wikimedia-dns.org
 server {
@@ -63,16 +69,21 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": false, "service": null, "site": null}';
+    return 200   '{"wikidough": false, "service": null, "site": null, "ipv": null}';
   }
 
 }
 
-# yesdot: *.check.wikimedia-dns.org (DoT)
+# yesdot: *.check.wikimedia-dns.org (DoH)
+<% @ips['success_dot'].each_with_index do |dot_ip, index| -%>
+<% ipv6 = index == 1 ? true : false %>
 server {
 
-  listen      <%= @ips['success_dot'][0] %>:443 ssl http2;
-  listen      [<%= @ips['success_dot'][1] %>]:443 ssl http2;
+<% if ipv6 -%>
+  listen      [<%= dot_ip %>]:443 ssl http2;
+<% else -%>
+  listen      <%= dot_ip %>:443 ssl http2;
+<% end -%>
   server_name *.<%= @domain %>;
 
   <%= @ssl_settings.join("\n  ") %>
@@ -82,7 +93,8 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": true, "service": "dot", "site": "<%= scope.lookupvar('::site') %>"}';
+    return 200   '{"wikidough": true, "service": "dot", "site": "<%= scope.lookupvar('::site') %>", "ipv": <%= ipv6 ? '"ipv6"': '"ipv4"' %>}';
   }
 
 }
+<% end -%>
