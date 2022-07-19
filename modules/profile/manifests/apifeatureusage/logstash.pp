@@ -115,7 +115,7 @@ class profile::apifeatureusage::logstash (
       guard_condition => '[type] == "api-feature-usage-sanitized"',
       priority        => 95,
       template        => '/etc/logstash/templates/apifeatureusage_6.0-1.json',
-      document_type   => 'api-feature-usage-sanitized',
+      document_type   => '_doc',
       require         => File['/etc/logstash/templates'],
     }
 
