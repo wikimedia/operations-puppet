@@ -77,6 +77,7 @@ class profile::icinga(
     # monitoring of content on commons (T124812)
     prometheus::blackbox::check::http { 'commons.wikimedia.org':
         fqdn               => 'commons.wikimedia.org',
+        target             => 'commons.wikimedia.org',
         # Not ideal but good enough, see task for more context https://phabricator.wikimedia.org/T312840
         ip4                => ipresolve("text-lb.${::site}.wikimedia.org", 4),
         ip6                => ipresolve("text-lb.${::site}.wikimedia.org", 6),
