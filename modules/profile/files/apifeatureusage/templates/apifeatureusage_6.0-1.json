@@ -15,7 +15,6 @@
   },
   "mappings" : {
     "api-feature-usage-sanitized" : {
-      "_all" : {"enabled" : false},
       "dynamic_templates" : [ {
         "string_fields" : {
           "match" : "*",
