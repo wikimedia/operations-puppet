@@ -42,16 +42,8 @@ class openstack::nova::api::service::wallaby(
         notify  => Service['nova-api-metadata'],
         require => Package['nova-api'];
     }
-    file { '/etc/init.d/nova-api-metadata-uwsgi.ini':
+    file { '/etc/nova/nova-api-metadata-uwsgi.ini':
         content => template('openstack/wallaby/nova/api/nova-api-metadata-uwsgi.ini.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        notify  => Service['nova-api-metadata'],
-        require => Package['nova-api'];
-    }
-    file { '/etc/init.d/nova-api-uwsgi.ini':
-        content => template('openstack/wallaby/nova/api/nova-api-uwsgi.ini.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -65,5 +57,13 @@ class openstack::nova::api::service::wallaby(
                       File['/etc/nova/policy.yaml'],
             ],
         require   => Package['nova-api'];
+    }
+    file { '/etc/nova/nova-api-uwsgi.ini':
+        content => template('openstack/wallaby/nova/api/nova-api-uwsgi.ini.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        notify  => Service['nova-api-metadata'],
+        require => Package['nova-api'];
     }
 }
