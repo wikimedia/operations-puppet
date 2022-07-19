@@ -64,7 +64,7 @@ define prometheus::blackbox::check::http (
     $safe_title = $title.regsubst('\W', '_', 'G')
     $module_title = $safe_title
     $alert_title = "alerts_${safe_title}.yml"
-    $target_file = "/srv/prometheus/${prometheus_instance}/targets/probes-custom_puppet.yaml"
+    $target_file = "/srv/prometheus/${prometheus_instance}/targets/probes-custom_puppet-http.yaml"
     $basic_auth = ($auth_username and $auth_password) ? {
         true    => { 'username' => $auth_username, 'password' => $auth_password },
         default => undef,

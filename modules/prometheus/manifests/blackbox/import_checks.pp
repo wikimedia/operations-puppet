@@ -4,6 +4,11 @@ define prometheus::blackbox::import_checks (
   String        $prometheus_instance,
   Wmflib::Sites $site,
 ) {
+  # Legacy path, remove this file definition eventually
+  file { "/srv/prometheus/${prometheus_instance}/targets/probes-custom_puppet.yaml":
+    ensure => absent,
+  }
+
   wmflib::resource::import(
     'prometheus::blackbox::module',
     undef,
