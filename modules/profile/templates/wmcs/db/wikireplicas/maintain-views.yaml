@@ -206,6 +206,7 @@ allowed_logtypes: &allowed_logtypes
   - online
   - pagelang
   - pagetranslation
+  - pagetriage-copyvio
   - pagetriage-curation
   - pagetriage-deletion
   - patrol
