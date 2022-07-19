@@ -3,8 +3,6 @@ profile::ssh::server::authorized_keys_file:
     - '/etc/ssh/userkeys/%u.d/cumin'
     - '/etc/ssh/userkeys/%u.d/ganeti'
 profile::ganeti::rapi_nodes:
-    - netbox1001.wikimedia.org
-    - netbox2001.wikimedia.org
     - netbox1002.eqiad.wmnet
     - netbox2002.codfw.wmnet
     - netbox-dev2002.codfw.wmnet

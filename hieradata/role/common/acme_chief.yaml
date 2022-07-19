@@ -171,23 +171,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^mx[12]001\.wikimedia\.org$'
-    netbox:
-        CN: 'netbox.wikimedia.org'
-        SNI:
-        - 'netbox.wikimedia.org'
-        - 'netbox1001.wikimedia.org'
-        - 'netbox2001.wikimedia.org'
-        - 'netbox-exports.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^netbox(1001|2001)\.wikimedia\.org$'
-    netbox-dev:
-        CN: 'netbox-next.wikimedia.org'
-        SNI:
-        - 'netbox-next.wikimedia.org'
-        challenge: dns-01
-        authorized_hosts:
-        - 'netbox-dev2002.codfw.wmnet'
     openstack-codfw1dev:
         CN: 'openstack.codfw1dev.wikimediacloud.org'
         SNI:

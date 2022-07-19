@@ -1028,11 +1028,6 @@ host ncredir6002 {
     fixed-address ncredir6002.drmrs.wmnet;
 }
 
-host netbox1001 {
-   hardware ethernet aa:00:00:84:f1:9d;
-   fixed-address netbox1001.wikimedia.org;
-}
-
 host netbox1002 {
    hardware ethernet aa:00:00:d0:83:15;
    fixed-address netbox1002.eqiad.wmnet;
@@ -1045,11 +1040,6 @@ host netboxdb1002 {
    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
-host netbox2001 {
-   hardware ethernet aa:00:00:30:be:b1;
-   fixed-address netbox2001.wikimedia.org;
-}
-
 host netbox2002 {
    hardware ethernet aa:00:00:d9:81:8a;
    fixed-address netbox2002.codfw.wmnet;
@@ -1060,16 +1050,6 @@ host netboxdb2002 {
    hardware ethernet aa:00:00:e3:40:aa;
    fixed-address netboxdb2002.codfw.wmnet;
    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
-host netboxdb1001 {
-   hardware ethernet aa:00:00:6e:fd:09;
-   fixed-address netboxdb1001.eqiad.wmnet;
-}
-
-host netboxdb2001 {
-   hardware ethernet aa:00:00:cd:7d:3c;
-   fixed-address netboxdb2001.codfw.wmnet;
 }
 
 host netbox-dev2002 {
