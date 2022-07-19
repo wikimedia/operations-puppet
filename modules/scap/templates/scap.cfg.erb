@@ -62,6 +62,10 @@ php_version: php7.2
 
 use_syslog: True
 
+# The Gerrit user to use when pushing commits to gerrit (used by scap
+# deploy-promote)
+gerrit_push_user: trainbranchbot
+
 # Settings for mediawiki container image building (T297673)
 build_mw_container_image: False
 release_repo_dir: /srv/mwbuilder/release
