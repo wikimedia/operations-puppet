@@ -33,6 +33,7 @@ profile::gerrit::scap_key_name: 'gerrit'
 profile::gerrit::servers:
  - gerrit1001.wikimedia.org
  - gerrit2001.wikimedia.org
+ - gerrit2002.wikimedia.org
 
 # Assume all production nodes are slaves
 profile::gerrit::git_dir: '/srv/gerrit/git'
