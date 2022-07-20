@@ -1,4 +1,9 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+concurrent = <%= @concurrent %>
+<%- if @enable_exporter -%>
+listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>'
+<%- end -%>
+
 [[runners]]
   # The runner’s description. Informational only.
   name = '<%= @runner_name %>'

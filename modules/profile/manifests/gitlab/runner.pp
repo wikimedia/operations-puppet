@@ -132,17 +132,9 @@ class profile::gitlab::runner (
         default      => $facts['ipaddress'],  # export metrics on IPv4 everywhere else
     }
 
-    class { 'gitlab_runner::config':
-        concurrent              => $concurrent,
-        docker_image            => $docker_image,
-        docker_network          => $docker_network,
-        ensure_buildkitd        => $ensure_buildkitd,
-        gitlab_url              => $gitlab_url,
-        runner_name             => $runner_name,
-        exporter_listen_address => $exporter_listen_address,
-        enable_exporter         => $enable_exporter,
-        gitlab_runner_user      => $gitlab_runner_user,
-        require                 => Docker::Network[$docker_network],
+    $config_dir = $gitlab_runner_user ? {
+        'root'  => '/etc/gitlab-runner',
+        default => "/home/${gitlab_runner_user}/.gitlab-runner"
     }
 
     if $ensure == 'present' {
@@ -152,7 +144,7 @@ class profile::gitlab::runner (
             user    => $gitlab_runner_user,
             command => @("CMD"/L$)
                 /usr/bin/gitlab-runner register \
-                --template-config /etc/gitlab-runner/config-template.toml \
+                --config "${config_dir}/registration.toml" \
                 --non-interactive \
                 --name "${runner_name}" \
                 --url "${gitlab_url}" \
@@ -169,6 +161,19 @@ class profile::gitlab::runner (
             require => Apt::Package_from_component['gitlab-runner'],
         }
 
+        class { 'gitlab_runner::config':
+            directory               => $config_dir,
+            concurrent              => $concurrent,
+            docker_image            => $docker_image,
+            docker_network          => $docker_network,
+            ensure_buildkitd        => $ensure_buildkitd,
+            gitlab_url              => $gitlab_url,
+            runner_name             => $runner_name,
+            exporter_listen_address => $exporter_listen_address,
+            enable_exporter         => $enable_exporter,
+            gitlab_runner_user      => $gitlab_runner_user,
+            require                 => Docker::Network[$docker_network],
+        }
     } else {
         exec { 'gitlab-unregister-runner':
             user    => $gitlab_runner_user,
