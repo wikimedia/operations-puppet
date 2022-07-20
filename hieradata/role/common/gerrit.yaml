@@ -11,6 +11,7 @@ profile::gerrit::config: 'gerrit.config.erb'
 profile::gerrit::is_replica: true
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
+    - 'gerrit-replica-new.wikimedia.org'
 
 # Settings for rsyncing app data for migration or reinstalls
 profile::gerrit::migration::src_host: 'gerrit1001.wikimedia.org'
@@ -60,6 +61,16 @@ profile::gerrit::replication:
             - '^(?:(?!apps\\/android\\/).)*$'
     replica_codfw:
         url: 'gerrit2@gerrit2001.wikimedia.org:/srv/gerrit/git/${name}.git'
+        mirror: true
+        replicateProjectDeletions: true
+        replicateHiddenProjects: true
+        defaultForceUpdate: true
+        threads: 4
+        replicationDelay: 5
+        rescheduleDelay: 5
+
+    replica_new_codfw:
+        url: 'gerrit2@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git'
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
