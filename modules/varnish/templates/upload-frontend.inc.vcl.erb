@@ -107,10 +107,10 @@ sub cluster_fe_recv {
 			^https?://		# http or https, anchored to start
 			([^/]*\.)*(		# any number of subdomain components, but only within the hostname portion
 				# First, WMF-owned domains.
-				<%= @wikimedia_domains_regex %>
-				# Then WMCS domains
-				|<%= @wmcs_domains_regex %>
-				# Then testing domains
+				(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata
+					|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs|toolforge|wmcloud)
+				\.org		# all WMF-owned .org domains
+				|w\.wiki	# WMF-owned URL shortener
 				|localhost(:\d*)?	# to ease the lives of devs
 				|wmftest.net(:\d*)?	# to ease the lives of MediaWiki-Vagrant devs
 				# Now the affiliates

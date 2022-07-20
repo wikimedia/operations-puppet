@@ -644,23 +644,3 @@ profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
 
 profile::kubernetes::deployment_server::helm_user_group: deployment
-
-profile::cache::base::wikimedia_domains:
-  - wikipedia.org
-  - wikimedia.org
-  - wikibooks.org
-  - wikinews.org
-  - wikiquote.org
-  - wikisource.org
-  - wikiversity.org
-  - wikivoyage.org
-  - wikidata.org
-  - wikimediafoundation.org
-  - wiktionary.org
-  - mediawiki.org
-  - wmfusercontent.org
-  - w.wiki
-profile::cache::base::wmcs_domains:
-  - wmflabs.org
-  - toolforge.org
-  - wmcloud.org

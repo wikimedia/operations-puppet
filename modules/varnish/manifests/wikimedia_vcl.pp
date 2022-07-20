@@ -8,26 +8,22 @@
 # @param is_separate_vcl
 # @param etcd_filters pull in dynamic rules from etc
 # @param wikimedia_nets wikimedia owned networks
-# @param wikimedia_trust wikimedia owned trusted
-# @param wikimedia_domains wikimedia production owned domains
-# @param wmcs_domains wikimedia cloud services owned domains
+# @param wikimedia_trust wikimedia owned truested
 # @param template_path path t the template
 # @param vcl name of vcl include
 define varnish::wikimedia_vcl(
-    Boolean             $varnish_testing        = false,
-    Hash                $vcl_config             = {},
-    Array               $backend_caches         = [],
-    Hash                $backend_options        = {},
-    Boolean             $dynamic_backend_caches = true,
-    Boolean             $generate_extra_vcl     = false,
-    Boolean             $is_separate_vcl        = false,
-    Boolean             $etcd_filters           = false,
-    Array               $wikimedia_nets         = [],
-    Array               $wikimedia_trust        = [],
-    Array[Stdlib::Fqdn] $wikimedia_domains      = [],
-    Array[Stdlib::Fqdn] $wmcs_domains           = [],
-    Optional[String]    $template_path          = undef,
-    Optional[String]    $vcl                    = undef,
+    Boolean          $varnish_testing        = false,
+    Hash             $vcl_config             = {},
+    Array            $backend_caches         = [],
+    Hash             $backend_options        = {},
+    Boolean          $dynamic_backend_caches = true,
+    Boolean          $generate_extra_vcl     = false,
+    Boolean          $is_separate_vcl        = false,
+    Boolean          $etcd_filters           = false,
+    Array            $wikimedia_nets         = [],
+    Array            $wikimedia_trust        = [],
+    Optional[String] $template_path          = undef,
+    Optional[String] $vcl                    = undef,
 ) {
     if !$generate_extra_vcl and $template_path == undef {
         fail('must provide template_path unless generate_extra_vcl true')
@@ -42,8 +38,6 @@ define varnish::wikimedia_vcl(
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
     $traffic_shutdown = lookup('cache::traffic_shutdown', {'default_value' => false})
-    $wikimedia_domains_regex = $wikimedia_domains.regexpescape.join('|')
-    $wmcs_domains_regex = $wmcs_domains.regexpescape.join('|')
 
     if $generate_extra_vcl {
         $extra_vcl_name = regsubst($title, '^([^ ]+) .*$', '\1')
