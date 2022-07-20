@@ -1,5 +1,5 @@
 # pc1014
-mariadb::parsercache::shard: 'pc2'
+mariadb::parsercache::shard: 'pc3'
 mariadb::package: 'wmf-mariadb106'
 profile::monitoring::notifications_enabled: false
 profile::mariadb::config::sync_binlog: '0'
