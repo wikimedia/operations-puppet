@@ -19,7 +19,7 @@ server {
 
   <%= @ssl_settings.join("\n  ") %>
 
-  add_header  Content-Security-Policy     "default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://*.check.wikimedia-dns.org; frame-src 'none'; frame-ancestors 'none';";
+  add_header  Content-Security-Policy     "default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://*.check.wikimedia-dns.org; frame-src 'none'; frame-ancestors 'none';";
   add_header  X-Content-Type-Options      "nosniff";
   add_header  Cache-Control               "no-store";
 
