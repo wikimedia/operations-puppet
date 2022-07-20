@@ -3,3 +3,4 @@
 profile::mariadb::core::multiinstance::instances:
   s6: 185G
   s7: 185G
+profile::monitoring::notifications_enabled: false
