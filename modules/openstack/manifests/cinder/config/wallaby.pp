@@ -1,5 +1,6 @@
 class openstack::cinder::config::wallaby(
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String[1]           $db_user,
     String[1]           $db_pass,
     String[1]           $db_name,

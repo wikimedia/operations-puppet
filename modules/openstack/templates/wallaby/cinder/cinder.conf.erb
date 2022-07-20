@@ -178,7 +178,7 @@ syslog_log_facility = LOG_LOCAL0
 #
 # For full details on the fields in the URL see the documentation of oslo_messaging.TransportURL at
 # https://docs.openstack.org/oslo.messaging/latest/reference/transport.html (string value)
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 #
 # From oslo.service.wsgi

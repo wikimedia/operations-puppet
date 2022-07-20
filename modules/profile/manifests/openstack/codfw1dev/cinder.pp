@@ -1,6 +1,7 @@
 class profile::openstack::codfw1dev::cinder(
     String $version = lookup('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::codfw1dev::cinder::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::cinder::db_host'),
@@ -15,6 +16,7 @@ class profile::openstack::codfw1dev::cinder(
     class {'::profile::openstack::base::cinder':
         version               => $version,
         openstack_controllers => $openstack_controllers,
+        rabbitmq_nodes        => $rabbitmq_nodes,
         keystone_fqdn         => $keystone_fqdn,
         db_pass               => $db_pass,
         db_host               => $db_host,

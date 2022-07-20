@@ -1,6 +1,7 @@
 class profile::openstack::base::cinder::backup (
     String[1]               $version                 = lookup('profile::openstack::base::version'),
     Array[Stdlib::Fqdn]     $openstack_controllers   = lookup('profile::openstack::base::openstack_controllers'),
+    Array[Stdlib::Fqdn]     $rabbitmq_nodes          = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn            $keystone_fqdn           = lookup('profile::openstack::base::keystone_api_fqdn'),
     Stdlib::Port            $auth_port               = lookup('profile::openstack::base::keystone::auth_port'),
     String[1]               $region                  = lookup('profile::openstack::base::region'),
@@ -30,6 +31,7 @@ class profile::openstack::base::cinder::backup (
     class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,
         keystone_admin_uri      => $keystone_admin_uri,
+        rabbitmq_nodes          => $rabbitmq_nodes,
         region                  => $region,
         db_user                 => $db_user,
         db_pass                 => $db_pass,
