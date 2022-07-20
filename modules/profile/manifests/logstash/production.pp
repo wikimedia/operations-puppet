@@ -276,7 +276,7 @@ class profile::logstash::production (
   logstash::output::opensearch { 'dlq-1.0.0-1':
     host            => '127.0.0.1',
     guard_condition => '[@metadata][output] == "dlq"',
-    index           => 'dlq-%{[@metadata][partition]-%{[@metadata][policy_revision]}-1.0.0-1-%{[@metadata][datestamp_format]}',
+    index           => 'dlq-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-1.0.0-1-%{[@metadata][datestamp_format]}',
     priority        => 90,
     template        => '/etc/logstash/templates/dlq_1.0.0-1.json',
     require         => File['/etc/logstash/templates'],
