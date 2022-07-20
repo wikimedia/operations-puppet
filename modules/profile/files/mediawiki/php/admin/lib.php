@@ -82,7 +82,10 @@ class PrometheusMetric {
 		$this->description = $description;
 		// Set labels empty
 		// We need to tag the prometheus metrics with the php version as well.
-		$this->labels = ['php_version="' . PHP_VERSION . '"'];
+		// Given we sometimes report too much info in PHP_VERSION, let's limit
+		// this to major.minor.patch
+		$php_ver = preg_filter("/^(\d\.\d+\.\d+).*/", "$1", PHP_VERSION);
+		$this->labels = ['php_version="' . $php_ver . '"'];
 		$this->type = $type;
 	}
 
