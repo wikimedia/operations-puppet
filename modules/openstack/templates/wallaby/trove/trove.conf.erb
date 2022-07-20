@@ -26,7 +26,7 @@ syslog_log_facility = LOG_LOCAL0
 # URL representing the messaging driver to use and its full configuration.
 # If not set, we fall back to the 'rpc_backend' option and driver specific
 # configuration.
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 # The default exchange under which topics are scoped. May be
 # overridden by an exchange name specified in the 'transport_url option.

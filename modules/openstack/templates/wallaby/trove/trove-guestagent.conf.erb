@@ -18,7 +18,7 @@ device_path = /dev/sdb
 # URL representing the messaging driver to use and its full configuration.
 # If not set, we fall back to the 'rpc_backend' option and driver specific
 # configuration.
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@trove_guest_rabbit_user}:#{@trove_guest_rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@trove_guest_rabbit_user}:#{@trove_guest_rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
 # The messaging driver to use. Options include rabbit, qpid and zmq.
 # Default is rabbit. (string value)

@@ -1,5 +1,6 @@
 class openstack::trove::service::wallaby(
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     Integer             $workers,
     String              $db_user,
     String              $db_pass,

@@ -2,6 +2,7 @@ class openstack::trove::service(
     String              $version,
     Integer             $workers,
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String              $db_user,
     String              $db_pass,
     String              $db_name,
@@ -26,6 +27,7 @@ class openstack::trove::service(
 ) {
     class { "openstack::trove::service::${version}":
         openstack_controllers   => $openstack_controllers,
+        rabbitmq_nodes          => $rabbitmq_nodes,
         workers                 => $workers,
         db_user                 => $db_user,
         db_pass                 => $db_pass,
