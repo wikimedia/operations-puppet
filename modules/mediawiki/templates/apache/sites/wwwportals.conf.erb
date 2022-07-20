@@ -37,7 +37,7 @@ end
     # Clean out query parameters on the root url.
     RewriteCond %{REQUEST_URI} ^/$
     RewriteCond %{QUERY_STRING} ^.
-    RewriteRule . https://www.wikipedia.<%= @domain_suffix %> [R=301,L]
+    RewriteRule . https://www.wikipedia.<%= @domain_suffix %>/? [R=301,L]
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
     RewriteRule . - [E=RW_PROTO:http]
