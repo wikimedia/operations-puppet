@@ -49,6 +49,8 @@ class profile::cache::varnish::frontend (
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust
+    $wikimedia_domains = $profile::cache::base::wikimedia_domains
+    $wmcs_domains = $profile::cache::base::wmcs_domains
 
     if $has_lvs {
         include profile::lvs::realserver
@@ -240,24 +242,26 @@ class profile::cache::varnish::frontend (
     }
 
     varnish::instance { "${cache_cluster}-frontend":
-        instance_name    => 'frontend',
-        vcl              => "${cache_cluster}-frontend",
-        separate_vcl     => $separate_vcl_frontend,
-        extra_vcl        => $fe_extra_vcl,
-        ports            => [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ],
-        admin_port       => 6082,
-        runtime_params   => join(prefix($runtime_params, '-p '), ' '),
-        storage          => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
-        jemalloc_conf    => $fe_jemalloc_conf,
-        backend_caches   => $backend_caches,
-        backend_options  => $fe_cache_be_opts,
-        backends_in_etcd => $etcd_backends,
-        vcl_config       => $vcl_config,
-        wikimedia_nets   => $wikimedia_nets,
-        wikimedia_trust  => $wikimedia_trust,
-        listen_uds       => $listen_uds,
-        uds_owner        => $uds_owner,
-        uds_group        => $uds_group,
-        uds_mode         => $uds_mode,
+        instance_name     => 'frontend',
+        vcl               => "${cache_cluster}-frontend",
+        separate_vcl      => $separate_vcl_frontend,
+        extra_vcl         => $fe_extra_vcl,
+        ports             => [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ],
+        admin_port        => 6082,
+        runtime_params    => join(prefix($runtime_params, '-p '), ' '),
+        storage           => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
+        jemalloc_conf     => $fe_jemalloc_conf,
+        backend_caches    => $backend_caches,
+        backend_options   => $fe_cache_be_opts,
+        backends_in_etcd  => $etcd_backends,
+        vcl_config        => $vcl_config,
+        wikimedia_nets    => $wikimedia_nets,
+        wikimedia_trust   => $wikimedia_trust,
+        wikimedia_domains => $wikimedia_domains,
+        wmcs_domains      => $wmcs_domains,
+        listen_uds        => $listen_uds,
+        uds_owner         => $uds_owner,
+        uds_group         => $uds_group,
+        uds_mode          => $uds_mode,
     }
 }

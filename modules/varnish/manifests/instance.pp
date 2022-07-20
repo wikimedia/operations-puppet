@@ -14,6 +14,8 @@
 # @param separate_vcl list of addtional VCLs
 # @param wikimedia_nets wikimedia owned networks
 # @param wikimedia_trust wikimedia owned truested
+# @param wikimedia_domains a list of wikimedia productions domains
+# @param wmcs_domains a list of wikimedia cloud services domains
 # @param listen_uds list of uds for varnish
 # @param uds_owner The owner of the uds sockets
 # @param uds_group The group of the uds sockets
@@ -24,22 +26,24 @@ define varnish::instance(
     Stdlib::Port            $admin_port,
     String                  $runtime_params,
     # TODO: change this to Optional[String]
-    String                  $instance_name='',
+    String                  $instance_name     = '',
     # TODO: I think we can make this mandatory?
-    String                  $vcl              = '',
-    String                  $storage          = '-s malloc,1G',
-    Optional[String]        $jemalloc_conf    = undef,
-    Array                   $backend_caches   = [],
-    Hash                    $backend_options  = {},
-    Boolean                 $backends_in_etcd = true,
-    Array                   $extra_vcl        = [],
-    Array                   $separate_vcl     = [],
-    Array                   $wikimedia_nets   = [],
-    Array                   $wikimedia_trust  = [],
-    Array[Stdlib::Unixpath] $listen_uds       = [],
-    String                  $uds_owner        = 'root',
-    String                  $uds_group        = 'root',
-    Stdlib::Filemode        $uds_mode         = '700',
+    String                  $vcl               = '',
+    String                  $storage           = '-s malloc,1G',
+    Optional[String]        $jemalloc_conf     = undef,
+    Array                   $backend_caches    = [],
+    Hash                    $backend_options   = {},
+    Boolean                 $backends_in_etcd  = true,
+    Array                   $extra_vcl         = [],
+    Array                   $separate_vcl      = [],
+    Array                   $wikimedia_nets    = [],
+    Array                   $wikimedia_trust   = [],
+    Array[Stdlib::Fqdn]     $wikimedia_domains = [],
+    Array[Stdlib::Fqdn]     $wmcs_domains      = [],
+    Array[Stdlib::Unixpath] $listen_uds        = [],
+    String                  $uds_owner         = 'root',
+    String                  $uds_group         = 'root',
+    Stdlib::Filemode        $uds_mode          = '700',
 ) {
 
     include varnish::common
@@ -98,6 +102,8 @@ define varnish::instance(
             is_separate_vcl        => $vcl_name in $separate_vcl,
             wikimedia_nets         => $wikimedia_nets,
             wikimedia_trust        => $wikimedia_trust,
+            wikimedia_domains      => $wikimedia_domains,
+            wmcs_domains           => $wmcs_domains,
         }
 
         # This version of wikimedia_${vcl_name}.vcl is exactly the same as the
@@ -117,6 +123,8 @@ define varnish::instance(
             is_separate_vcl        => $vcl_name in $separate_vcl,
             wikimedia_nets         => $wikimedia_nets,
             wikimedia_trust        => $wikimedia_trust,
+            wikimedia_domains      => $wikimedia_domains,
+            wmcs_domains           => $wmcs_domains,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
@@ -126,6 +134,8 @@ define varnish::instance(
             backend_caches         => $backend_caches,
             backend_options        => $backend_options,
             dynamic_backend_caches => $backends_in_etcd,
+            wikimedia_domains      => $wikimedia_domains,
+            wmcs_domains           => $wmcs_domains,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl_name}.inc.vcl":
@@ -136,6 +146,8 @@ define varnish::instance(
             backend_caches         => $backend_caches,
             backend_options        => $backend_options,
             dynamic_backend_caches => false,
+            wikimedia_domains      => $wikimedia_domains,
+            wmcs_domains           => $wmcs_domains,
         }
     }
 
