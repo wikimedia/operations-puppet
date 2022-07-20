@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary resource to configure http(s) checks for a specific service
-# @param fqdn name the domainname to check
-# @param target name the host part of 'instance' label to use
+# @param server_name the server name to use (during TLS and Host:)
+# @param instance_label name the host part of 'instance' label to use
 # @param ip4 The IP address to connect to
 # @param ip6 The IP6 address to connect to
 # @param ip_families indicate support for ipv4 and/or ipv6
@@ -30,8 +30,8 @@
 # @param useragent the useragent to use
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
 define prometheus::blackbox::check::http (
-    Stdlib::Fqdn                            $fqdn                    = $title,
-    Stdlib::Fqdn                            $target                  = $facts['networking']['hostname'],
+    Stdlib::Fqdn                            $server_name             = $title,
+    Stdlib::Fqdn                            $instance_label          = $facts['networking']['hostname'],
     Stdlib::IP::Address::V4::Nosubnet       $ip4                     = $facts['networking']['ip'],
     Stdlib::IP::Address::V6::Nosubnet       $ip6                     = $facts['networking']['ip6'],
     Array[Enum['ip4', 'ip6']]               $ip_families             = ['ip4', 'ip6'],
@@ -40,7 +40,7 @@ define prometheus::blackbox::check::http (
     Stdlib::Port                            $port                    = 443,
     Boolean                                 $force_tls               = false,
     Integer[1,120]                          $certificate_expiry_days = 10,
-    String                                  $timeout                 = '3s',
+    Pattern[/\d+\s/]                        $timeout                 = '3s',
     Boolean                                 $use_client_auth         = false,
     Stdlib::Unixpath                        $client_auth_cert        = $facts['puppet_config']['hostcert'],
     Stdlib::Unixpath                        $client_auth_key         = $facts['puppet_config']['hostprivkey'],
@@ -58,7 +58,7 @@ define prometheus::blackbox::check::http (
     Optional[String[1]]                     $auth_username           = undef,
     Optional[String[1]]                     $auth_password           = undef,
     Optional[String[1]]                     $useragent               = undef,
-    String                                  $prometheus_instance     = 'ops',
+    String[1]                               $prometheus_instance     = 'ops',
 ) {
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
@@ -71,8 +71,8 @@ define prometheus::blackbox::check::http (
     }
 
     $headers = $useragent ? {
-        undef   => { 'Host' => $fqdn },
-        default => { 'Host' => $fqdn, 'User-Agent' => $useragent},
+        undef   => { 'Host' => $server_name },
+        default => { 'Host' => $server_name, 'User-Agent' => $useragent},
     }
     $client_auth_config = $use_client_auth ? {
         false   => {},
@@ -80,7 +80,7 @@ define prometheus::blackbox::check::http (
     }
     $tls_config = $use_tls ? {
         false   => {},
-        default => {'server_name' => $fqdn} + $client_auth_config,
+        default => {'server_name' => $server_name} + $client_auth_config,
     }
 
     $http_module_params = {
@@ -120,7 +120,7 @@ define prometheus::blackbox::check::http (
                 'family'  => $family,
                 'module'  => "http_${safe_title}_${family}",
             },
-            'targets' => ["${target}:${port}@${proto}://[${address}]:${port}${path}"],
+            'targets' => ["${instance_label}:${port}@${proto}://[${address}]:${port}${path}"],
         }
         $data
     }
