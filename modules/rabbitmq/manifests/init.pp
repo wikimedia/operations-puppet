@@ -20,6 +20,7 @@ class rabbitmq(
     $running = true,
     $file_handles = '1024',
     $erlang_cookie = '',
+    Integer $heartbeat_timeout = 60,
     Optional[Stdlib::Unixpath] $tls_key_file = undef,
     Optional[Stdlib::Unixpath] $tls_cert_file = undef,
     Optional[Stdlib::Unixpath] $tls_ca_file = undef,
@@ -53,7 +54,15 @@ class rabbitmq(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('rabbitmq/rabbitmq.config.erb'),
+        content => epp(
+            'rabbitmq/rabbitmq.config.epp',
+            {
+                'heartbeat_timeout' => $heartbeat_timeout,
+                'tls_key_file'      => $tls_key_file,
+                'tls_cert_file'     => $tls_cert_file,
+                'tls_ca_file'       =>$tls_ca_file,
+            }
+        ),
         require => Package['rabbitmq-server'],
         notify  => Service['rabbitmq-server'],
     }

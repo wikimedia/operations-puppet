@@ -1,3 +1,9 @@
+<%- |
+    Integer $heartbeat_timeout = 60,
+    Optional[Stdlib::Unixpath] $tls_key_file = undef,
+    Optional[Stdlib::Unixpath] $tls_cert_file = undef,
+    Optional[Stdlib::Unixpath] $tls_ca_file = undef,
+| -%>
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 %% -*- mode: erlang -*-
 %% ----------------------------------------------------------------------------
@@ -56,12 +62,12 @@
    %% Configuring SSL.
    %% See http://www.rabbitmq.com/ssl.html for full documentation.
    %%
-   <%- if @tls_cert_file and @tls_key_file and @tls_ca_file %>
+   <%- if $tls_cert_file and $tls_key_file and $tls_ca_file { %>
    {ssl_listeners, [5671]},
-   {ssl_options, [{cacertfile, "<%= @tls_ca_file %>"},
-                  {certfile,   "<%= @tls_cert_file %>"},
-                  {keyfile,    "<%= @tls_key_file %>"}]}
-   <%- end -%>
+   {ssl_options, [{cacertfile, "<%= $tls_ca_file %>"},
+                  {certfile,   "<%= $tls_cert_file %>"},
+                  {keyfile,    "<%= $tls_key_file %>"}]},
+   <%- } -%>
 
    %% Choose the available SASL mechanism(s) to expose.
    %% The two default (built in) mechanisms are 'PLAIN' and
@@ -177,9 +183,6 @@
    %% =====================================================
    %%
 
-   %% Set the default AMQP heartbeat delay (in seconds).
-   %%
-   %% {heartbeat, 60},
 
    %% Set the max permissible size of an AMQP frame (in bytes).
    %%
@@ -372,8 +375,11 @@
    %% like MQTT or STOMP have their own setting to enable proxy protocol.
    %% See the plugins documentation for more information.
    %%
-   %% {proxy_protocol, false}
+   %% {proxy_protocol, false},
 
+   %% Set the default AMQP heartbeat delay (in seconds).
+   %% Keep this one the last so the trailing commas are not an issue
+   {heartbeat, <%= $heartbeat_timeout %>}
   ]},
 
  %% ----------------------------------------------------------------------------

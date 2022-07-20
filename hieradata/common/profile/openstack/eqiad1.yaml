@@ -66,6 +66,7 @@ profile::openstack::eqiad1::rabbitmq_nodes:
   - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
 profile::openstack::eqiad1::rabbit_file_handles: 8192
+profile::openstack::eqiad1::rabbitmq_heartbeat_timeout: 120
 
 # T247517
 profile::openstack::eqiad1::purge_projects:

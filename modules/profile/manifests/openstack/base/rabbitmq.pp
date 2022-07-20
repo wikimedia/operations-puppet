@@ -16,6 +16,7 @@ class profile::openstack::base::rabbitmq(
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
+    Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
 ){
     if $rabbit_cfssl_label {
         $cert_paths = profile::pki::get_cert(
@@ -42,11 +43,12 @@ class profile::openstack::base::rabbitmq(
     }
 
     class { '::rabbitmq':
-        file_handles  => $file_handles,
-        erlang_cookie => $rabbit_erlang_cookie,
-        tls_cert_file => $rabbitmq_tls_cert_file,
-        tls_key_file  => $rabbitmq_tls_key_file,
-        tls_ca_file   => $rabbitmq_tls_ca_file,
+        file_handles      => $file_handles,
+        erlang_cookie     => $rabbit_erlang_cookie,
+        tls_cert_file     => $rabbitmq_tls_cert_file,
+        tls_key_file      => $rabbitmq_tls_key_file,
+        tls_ca_file       => $rabbitmq_tls_ca_file,
+        heartbeat_timeout => $heartbeat_timeout,
     }
     contain '::rabbitmq'
 

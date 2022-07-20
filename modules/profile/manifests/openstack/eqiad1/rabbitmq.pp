@@ -15,6 +15,7 @@ class profile::openstack::eqiad1::rabbitmq(
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::codfw1dev::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     $rabbit_erlang_cookie = lookup('profile::openstack::eqiad1::rabbit_erlang_cookie'),
     Array[Stdlib::Fqdn] $cinder_backup_nodes = lookup('profile::openstack::eqiad1::cinder::backup::nodes'),
+    Integer $heartbeat_timeout = lookup('profile::openstack::eqiad1::rabbitmq_heartbeat_timeout'),
 ){
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -35,6 +36,7 @@ class profile::openstack::eqiad1::rabbitmq(
         rabbit_erlang_cookie    => $rabbit_erlang_cookie,
         rabbit_cfssl_label      => $rabbit_cfssl_label,
         cinder_backup_nodes     => $cinder_backup_nodes,
+        heartbeat_timeout       => $heartbeat_timeout,
     }
     contain '::profile::openstack::base::rabbitmq'
 }
