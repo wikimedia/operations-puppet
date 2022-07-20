@@ -26,7 +26,7 @@
     Stdlib::Port                            $port                    = 443,
     Boolean                                 $force_tls               = false,
     Integer[1,120]                          $certificate_expiry_days = 10,
-    Pattern[/\d+\s/]                        $timeout                 = '3s',
+    Pattern[/\d+[ms]/]                      $timeout                 = '3s',
     Boolean                                 $use_client_auth         = false,
     Stdlib::Unixpath                        $client_auth_cert        = $facts['puppet_config']['hostcert'],
     Stdlib::Unixpath                        $client_auth_key         = $facts['puppet_config']['hostprivkey'],
