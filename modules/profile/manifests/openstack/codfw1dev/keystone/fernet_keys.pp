@@ -6,6 +6,6 @@ class profile::openstack::codfw1dev::keystone::fernet_keys(
     class {'profile::openstack::base::keystone::fernet_keys':
         keystone_hosts => $openstack_controllers,
         rotate_time    => $rotate_time,
-        sync_time      => $rotate_time,
+        sync_time      => $sync_time,
     }
 }
