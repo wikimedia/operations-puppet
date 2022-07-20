@@ -43,4 +43,13 @@ class mw_rc_irc::ircserver {
         critical      => true,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Irc.wikimedia.org',
     }
+
+    prometheus::blackbox::check::tcp { 'mw_rc_irc':
+        port           => 6667,
+        query_response => [
+            { 'send'   => 'NICK prober' },
+            { 'send'   => 'USER prober prober prober :prober' },
+            { 'expect' => '^:[^ ]+ 376 .*' }, # end of MOTD
+        ],
+    }
 }
