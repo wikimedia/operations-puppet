@@ -49,6 +49,9 @@ profile::elasticsearch::instances:
           - elastic2058.codfw.wmnet
           - elastic2059.codfw.wmnet
           - elastic2060.codfw.wmnet
+          - elastic2061.codfw.wmnet
+          - elastic2062.codfw.wmnet
+          - elastic2063.codfw.wmnet
 
         expected_nodes: 36
 
@@ -90,12 +93,14 @@ profile::elasticsearch::instances:
           - elastic2037.codfw.wmnet
           - elastic2038.codfw.wmnet
           - elastic2056.codfw.wmnet
+          - elastic2061.codfw.wmnet
 
           # row B
           - elastic2028.codfw.wmnet
           - elastic2041.codfw.wmnet
           - elastic2042.codfw.wmnet
           - elastic2057.codfw.wmnet
+          - elastic2063.codfw.wmnet
 
           # row C
           - elastic2031.codfw.wmnet
@@ -136,6 +141,7 @@ profile::elasticsearch::instances:
           - elastic2039.codfw.wmnet
           - elastic2040.codfw.wmnet
           - elastic2055.codfw.wmnet
+          - elastic2062.codfw.wmnet
 
           # row B
           - elastic2029.codfw.wmnet
