@@ -61,6 +61,7 @@ profile::acme_chief::certificates:
         authorized_hosts:
         - 'gerrit1001.wikimedia.org'
         - 'gerrit2001.wikimedia.org'
+        - 'gerrit2002.wikimedia.org'
     gitlab:
         CN: 'gitlab.wikimedia.org'
         SNI:
