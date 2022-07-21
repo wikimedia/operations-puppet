@@ -16,6 +16,7 @@
 
 class prometheus::php_fpm_exporter (
     Stdlib::Port::User $port,
+    Wmflib::Ensure $ensure = 'present',
     Optional[String] $fcgi_endpoint = undef,
     Optional[Stdlib::Httpurl] $http_endpoint = undef,
 ) {
@@ -25,11 +26,11 @@ class prometheus::php_fpm_exporter (
     $sw_name = 'prometheus-php-fpm-exporter'
     $listen_address = "${::ipaddress}:${port}"
     package { $sw_name:
-        ensure => present,
+        ensure => $ensure,
     }
 
     file { '/etc/default/prometheus-php-fpm-exporter':
-        ensure  => present,
+        ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -40,12 +41,14 @@ class prometheus::php_fpm_exporter (
     # We need to run as www-data so we can access php-fpm if it's running via
     # a unix socket
     systemd::service { $sw_name:
-        ensure   => present,
+        ensure   => $ensure,
         content  => "[Service]\nUser=www-data",
         override => true,
         restart  => true,
         require  => Package[$sw_name],
     }
 
-    profile::auto_restarts::service { $sw_name: }
+    profile::auto_restarts::service { $sw_name:
+        ensure => $ensure,
+    }
 }
