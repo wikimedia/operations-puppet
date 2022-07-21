@@ -7,7 +7,7 @@
 #  alarmed that the public addresses are on private IPs.
 #
 # Cloud switches in Eqiad participate in this network also, and will
-# use the following 3 addresses which should not be assigned to end 
+# use the following 3 addresses which should not be assigned to end
 # hosts:
 #
 # 192.168.4.252
@@ -15,195 +15,195 @@
 # 192.168.4.254
 #
 profile::ceph::osd::hosts:
-  'cloudcephosd1001.eqiad.wmnet':
+  "cloudcephosd1001.eqiad.wmnet":
     public:
-      addr: '10.64.20.70'
-      iface: 'ens2f0np0'
+      addr: "10.64.20.70"
+      iface: "ens2f0np0"
     cluster:
-      addr: '192.168.4.1'
-      prefix: '24'
-      iface: 'ens2f1np1'
-  'cloudcephosd1002.eqiad.wmnet':
+      addr: "192.168.4.1"
+      prefix: "24"
+      iface: "ens2f1np1"
+  "cloudcephosd1002.eqiad.wmnet":
     public:
-      addr: '10.64.20.71'
-      iface: 'ens2f0np0'
+      addr: "10.64.20.71"
+      iface: "ens2f0np0"
     cluster:
-      addr: '192.168.4.2'
-      prefix: '24'
-      iface: 'ens2f1np1'
-  'cloudcephosd1003.eqiad.wmnet':
+      addr: "192.168.4.2"
+      prefix: "24"
+      iface: "ens2f1np1"
+  "cloudcephosd1003.eqiad.wmnet":
     public:
-      addr: '10.64.20.72'
-      iface: 'ens2f0np0'
+      addr: "10.64.20.72"
+      iface: "ens2f0np0"
     cluster:
-      addr: '192.168.4.3'
-      prefix: '24'
-      iface: 'ens2f1np1'
-  'cloudcephosd1004.eqiad.wmnet':
+      addr: "192.168.4.3"
+      prefix: "24"
+      iface: "ens2f1np1"
+  "cloudcephosd1004.eqiad.wmnet":
     public:
-      addr: '10.64.20.55'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.55"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.4'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1005.eqiad.wmnet':
+      addr: "192.168.4.4"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1005.eqiad.wmnet":
     public:
-      addr: '10.64.20.56'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.56"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.5'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1006.eqiad.wmnet':
+      addr: "192.168.4.5"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1006.eqiad.wmnet":
     public:
-      addr: '10.64.20.57'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.57"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.6'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1007.eqiad.wmnet':
+      addr: "192.168.4.6"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1007.eqiad.wmnet":
     public:
-      addr: '10.64.20.58'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.58"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.7'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1008.eqiad.wmnet':
+      addr: "192.168.4.7"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1008.eqiad.wmnet":
     public:
-      addr: '10.64.20.59'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.59"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.8'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1009.eqiad.wmnet':
+      addr: "192.168.4.8"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1009.eqiad.wmnet":
     public:
-      addr: '10.64.20.60'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.60"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.9'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1010.eqiad.wmnet':
+      addr: "192.168.4.9"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1010.eqiad.wmnet":
     public:
-      addr: '10.64.20.61'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.61"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.10'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1011.eqiad.wmnet':
+      addr: "192.168.4.10"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1011.eqiad.wmnet":
     public:
-      addr: '10.64.20.62'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.62"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.11'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1012.eqiad.wmnet':
+      addr: "192.168.4.11"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1012.eqiad.wmnet":
     public:
-      addr: '10.64.20.63'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.63"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.12'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1013.eqiad.wmnet':
+      addr: "192.168.4.12"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1013.eqiad.wmnet":
     public:
-      addr: '10.64.20.64'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.64"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.13'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1014.eqiad.wmnet':
+      addr: "192.168.4.13"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1014.eqiad.wmnet":
     public:
-      addr: '10.64.20.65'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.65"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.14'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1015.eqiad.wmnet':
+      addr: "192.168.4.14"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1015.eqiad.wmnet":
     public:
-      addr: '10.64.20.66'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.66"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.15'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1016.eqiad.wmnet':
+      addr: "192.168.4.15"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1016.eqiad.wmnet":
     public:
-      addr: '10.64.20.13'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.13"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.16'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1017.eqiad.wmnet':
+      addr: "192.168.4.16"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1017.eqiad.wmnet":
     public:
-      addr: '10.64.20.14'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.14"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.17'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1018.eqiad.wmnet':
+      addr: "192.168.4.17"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1018.eqiad.wmnet":
     public:
-      addr: '10.64.20.15'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.15"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.18'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1019.eqiad.wmnet':
+      addr: "192.168.4.18"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1019.eqiad.wmnet":
     public:
-      addr: '10.64.20.16'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.16"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.19'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1020.eqiad.wmnet':
+      addr: "192.168.4.19"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1020.eqiad.wmnet":
     public:
-      addr: '10.64.20.17'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.17"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.20'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1021.eqiad.wmnet':
+      addr: "192.168.4.20"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1021.eqiad.wmnet":
     public:
-      addr: '10.64.20.18'
-      iface: 'enp175s0f0np0'
+      addr: "10.64.20.18"
+      iface: "enp175s0f0np0"
     cluster:
-      addr: '192.168.4.21'
-      prefix: '24'
-      iface: 'enp175s0f1np1'
-  'cloudcephosd1022.eqiad.wmnet':
+      addr: "192.168.4.21"
+      prefix: "24"
+      iface: "enp175s0f1np1"
+  "cloudcephosd1022.eqiad.wmnet":
     public:
-      addr: '10.64.20.21'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.21"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.22'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1023.eqiad.wmnet':
+      addr: "192.168.4.22"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1023.eqiad.wmnet":
     public:
-      addr: '10.64.20.19'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.19"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.23'
-      prefix: '24'
-      iface: 'ens3f1np1'
-  'cloudcephosd1024.eqiad.wmnet':
+      addr: "192.168.4.23"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1024.eqiad.wmnet":
     public:
-      addr: '10.64.20.20'
-      iface: 'ens3f0np0'
+      addr: "10.64.20.20"
+      iface: "ens3f0np0"
     cluster:
-      addr: '192.168.4.24'
-      prefix: '24'
-      iface: 'ens3f1np1'
+      addr: "192.168.4.24"
+      prefix: "24"
+      iface: "ens3f1np1"

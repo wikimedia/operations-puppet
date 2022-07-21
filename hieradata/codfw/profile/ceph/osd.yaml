@@ -15,27 +15,27 @@
 # 192.168.4.254
 #
 profile::ceph::osd::hosts:
-  'cloudcephosd2001-dev.codfw.wmnet':
+  "cloudcephosd2001-dev.codfw.wmnet":
     public:
-      addr: '10.192.20.15'
-      iface: 'eno1'
+      addr: "10.192.20.15"
+      iface: "eno1"
     cluster:
-      addr: '192.168.4.1'
-      prefix: '24'
-      iface: 'eno2'
-  'cloudcephosd2002-dev.codfw.wmnet':
+      addr: "192.168.4.1"
+      prefix: "24"
+      iface: "eno2"
+  "cloudcephosd2002-dev.codfw.wmnet":
     public:
-      addr: '10.192.20.16'
-      iface: 'eno1'
+      addr: "10.192.20.16"
+      iface: "eno1"
     cluster:
-      addr: '192.168.4.2'
-      prefix: '24'
-      iface: 'eno2'
-  'cloudcephosd2003-dev.codfw.wmnet':
+      addr: "192.168.4.2"
+      prefix: "24"
+      iface: "eno2"
+  "cloudcephosd2003-dev.codfw.wmnet":
     public:
-      addr: '10.192.20.17'
-      iface: 'eno1'
+      addr: "10.192.20.17"
+      iface: "eno1"
     cluster:
-      addr: '192.168.4.3'
-      prefix: '24'
-      iface: 'eno2'
+      addr: "192.168.4.3"
+      prefix: "24"
+      iface: "eno2"
