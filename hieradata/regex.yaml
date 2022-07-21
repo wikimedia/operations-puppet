@@ -14,7 +14,7 @@ es_codfw_rack_a5:
   profile::elasticsearch::row:  A
 
 es_codfw_rack_a7:
-  __regex: !ruby/regexp /^elastic20(39|40|56)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(39|40|56|69)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A7
   profile::elasticsearch::row:  A
 
@@ -24,12 +24,12 @@ es_codfw_rack_a8:
   profile::elasticsearch::row:  A
 
 es_codfw_rack_b2:
-  __regex: !ruby/regexp /^elastic20(41|42|57|63)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(41|42|57|63|64)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B2
   profile::elasticsearch::row:  B
 
 es_codfw_rack_b4:
-  __regex: !ruby/regexp /^elastic2058\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(58|70)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B4
   profile::elasticsearch::row:  B
 
@@ -58,13 +58,18 @@ es_codfw_rack_c2:
   profile::elasticsearch::rack: C2
   profile::elasticsearch::row:  C
 
+es_codfw_rack_c4:
+  __regex: !ruby/regexp /^elastic20(65|66)\.codfw\.wmnet$/
+  profile::elasticsearch::rack: C4
+  profile::elasticsearch::row:  C
+
 es_codfw_rack_c5:
   __regex: !ruby/regexp /^elastic20(32|33)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C5
   profile::elasticsearch::row:  C
 
 es_codfw_rack_c7:
-  __regex: !ruby/regexp /^elastic20(48|49|59)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(48|49|59|71)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C7
   profile::elasticsearch::row:  C
 
@@ -78,13 +83,18 @@ es_codfw_rack_d2:
   profile::elasticsearch::rack: D2
   profile::elasticsearch::row:  D
 
+es_codfw_rack_d4:
+  __regex: !ruby/regexp /^elastic20(72)\.codfw\.wmnet$/
+  profile::elasticsearch::rack: D4
+  profile::elasticsearch::row:  D
+
 es_codfw_rack_d5:
   __regex: !ruby/regexp /^elastic20(35|36)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D5
   profile::elasticsearch::row:  D
 
 es_codfw_rack_d7:
-  __regex: !ruby/regexp /^elastic20(53|54|60)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(53|54|60|67|68)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D7
   profile::elasticsearch::row:  D
 

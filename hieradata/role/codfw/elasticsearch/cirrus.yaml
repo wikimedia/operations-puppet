@@ -52,6 +52,15 @@ profile::elasticsearch::instances:
           - elastic2061.codfw.wmnet
           - elastic2062.codfw.wmnet
           - elastic2063.codfw.wmnet
+          - elastic2064.codfw.wmnet
+          - elastic2065.codfw.wmnet
+          - elastic2066.codfw.wmnet
+          - elastic2067.codfw.wmnet
+          - elastic2068.codfw.wmnet
+          - elastic2069.codfw.wmnet
+          - elastic2070.codfw.wmnet
+          - elastic2071.codfw.wmnet
+          - elastic2072.codfw.wmnet
 
         expected_nodes: 36
 
@@ -101,6 +110,7 @@ profile::elasticsearch::instances:
           - elastic2042.codfw.wmnet
           - elastic2057.codfw.wmnet
           - elastic2063.codfw.wmnet
+          - elastic2070.codfw.wmnet
 
           # row C
           - elastic2031.codfw.wmnet
@@ -108,12 +118,14 @@ profile::elasticsearch::instances:
           - elastic2046.codfw.wmnet
           - elastic2047.codfw.wmnet
           - elastic2059.codfw.wmnet
+          - elastic2065.codfw.wmnet
 
           # row D
           - elastic2034.codfw.wmnet
           - elastic2050.codfw.wmnet
           - elastic2051.codfw.wmnet
           - elastic2052.codfw.wmnet
+          - elastic2067.codfw.wmnet
 
         expected_nodes: 18
 
@@ -142,6 +154,7 @@ profile::elasticsearch::instances:
           - elastic2040.codfw.wmnet
           - elastic2055.codfw.wmnet
           - elastic2062.codfw.wmnet
+          - elastic2069.codfw.wmnet
 
           # row B
           - elastic2029.codfw.wmnet
@@ -149,18 +162,23 @@ profile::elasticsearch::instances:
           - elastic2043.codfw.wmnet
           - elastic2044.codfw.wmnet
           - elastic2058.codfw.wmnet
+          - elastic2064.codfw.wmnet
 
           # row C
           - elastic2032.codfw.wmnet
           - elastic2033.codfw.wmnet
           - elastic2048.codfw.wmnet
           - elastic2049.codfw.wmnet
+          - elastic2066.codfw.wmnet
+          - elastic2071.codfw.wmnet
+          - elastic2072.codfw.wmnet
 
           # row D
           - elastic2036.codfw.wmnet
           - elastic2053.codfw.wmnet
           - elastic2054.codfw.wmnet
           - elastic2060.codfw.wmnet
+          - elastic2068.codfw.wmnet
 
         expected_nodes: 18
 
