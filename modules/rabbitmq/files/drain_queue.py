@@ -1,5 +1,5 @@
 #!/usr/bin/python3 -Es
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-License-Identifier: MPL-1.1
 # Drain an oslo.message rabbitmq queue
 #
 # The contents of this file are subject to the Mozilla Public License
