@@ -510,6 +510,10 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # MariaDB 10
+# new db servers T306928
+node /^db11(8[5-9]|9[0-5]).eqiad.wmnet$/ {
+    role(insetup)
+}
 
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
