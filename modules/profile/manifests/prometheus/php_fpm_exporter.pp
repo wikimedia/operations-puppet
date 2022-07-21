@@ -13,6 +13,7 @@ class profile::prometheus::php_fpm_exporter (
         $fcgi_endpoint = "tcp://127.0.0.1:${fcgi_port}"
     }
     class { 'prometheus::php_fpm_exporter':
+        ensure        => 'absent',
         port          => 9180,
         fcgi_endpoint => $fcgi_endpoint
     }
