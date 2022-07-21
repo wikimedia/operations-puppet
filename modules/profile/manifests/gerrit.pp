@@ -7,7 +7,7 @@ class profile::gerrit(
     Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
     Boolean                           $backups_enabled   = lookup('profile::gerrit::backups_enabled'),
     String                            $backup_set        = lookup('profile::gerrit::backup_set'),
-    Array[Stdlib::Fqdn]               $gerrit_servers    = lookup('profile::gerrit::servers'),
+    Array[Stdlib::Fqdn]               $ssh_allowed_hosts = lookup('profile::gerrit::ssh_allowed_hosts'),
     String                            $config            = lookup('profile::gerrit::config'),
     Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
     Boolean                           $is_replica        = lookup('profile::gerrit::is_replica'),
@@ -44,11 +44,11 @@ class profile::gerrit(
     }
 
     # ssh between gerrit servers for cluster support
-    $gerrit_servers_ferm=join($gerrit_servers, ' ')
+    $ssh_allowed_hosts_ferm=join($ssh_allowed_hosts, ' ')
     ferm::service { 'gerrit_ssh_cluster':
         port   => '22',
         proto  => 'tcp',
-        srange => "(@resolve((${gerrit_servers_ferm})) @resolve((${gerrit_servers_ferm}), AAAA))",
+        srange => "(@resolve((${ssh_allowed_hosts_ferm})) @resolve((${ssh_allowed_hosts_ferm}), AAAA))",
     }
 
     ferm::service { 'gerrit_http':

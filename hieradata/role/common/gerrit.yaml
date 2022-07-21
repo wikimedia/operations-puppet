@@ -32,7 +32,7 @@ profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::scap_key_name: 'gerrit'
 
 # List of gerrit servers used in firewall rules.
-profile::gerrit::servers:
+profile::gerrit::ssh_allowed_hosts:
  - gerrit1001.wikimedia.org
  - gerrit2002.wikimedia.org
 

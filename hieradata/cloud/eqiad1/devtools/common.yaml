@@ -129,7 +129,7 @@ mediawiki::sites: []
 profile::gerrit::config: 'gerrit.config.erb'
 profile::gerrit::host: 'gerrit.devtools.wmflabs.org'
 
-profile::gerrit::servers:
+profile::gerrit::ssh_allowed_hosts:
 - gerrit-prod-1001.devtools.eqiad.wmflabs
 
 profile::gerrit::is_replica: false
