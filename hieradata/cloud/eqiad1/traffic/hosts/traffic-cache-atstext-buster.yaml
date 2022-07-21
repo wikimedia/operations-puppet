@@ -70,6 +70,17 @@ profile::cache::varnish::frontend::fe_vcl_config:
 profile::cache::varnish::frontend::fe_extra_vcl:
 - normalize_path
 - geoip
+profile::cache::varnish::frontend::listen_uds:
+  - /run/varnish-frontend-0.socket
+  - /run/varnish-frontend-1.socket
+  - /run/varnish-frontend-2.socket
+  - /run/varnish-frontend-3.socket
+  - /run/varnish-frontend-4.socket
+  - /run/varnish-frontend-5.socket
+  - /run/varnish-frontend-6.socket
+  - /run/varnish-frontend-7.socket
+profile::cache::varnish::frontend::uds_owner: haproxy
+profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::separate_vcl:
 - misc
 profile::trafficserver::backend::default_lua_scripts:
