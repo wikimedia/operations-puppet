@@ -5,7 +5,7 @@ define prometheus::blackbox::import_checks (
   Wmflib::Sites $site,
 ) {
 
-  ['http', 'tcp'].each |String $module| {
+  ['http', 'tcp', 'icmp'].each |String $module| {
     wmflib::resource::import(
       'prometheus::blackbox::module',
       undef,
