@@ -4,6 +4,11 @@ profile::docker_registry_ha::registry::image_builders:
   - '208.80.153.15' # contint2001
   - '10.64.48.17' # releases1002.eqiad.wmnet
   - '10.192.16.180' # releases2002.codfw.wmnet
+profile::docker_registry_ha::registry::jwt_allowed_ips:
+  - '10.64.32.177' # gitlab-runner-1001
+  - '10.64.16.105' # gitlab-runner-1002
+  - '10.64.32.184' # gitlab-runner-1003
+  - '10.64.48.141' # gitlab-runner-1004
 #profile::docker_registry_ha::ci_restricted_user_password: defined in the private repo
 #profile::docker_registry_ha::kubernetes_user_password: defined in the private repo
 #profile::docker_registry_ha::ci_build_user_password: defined in the private repo
