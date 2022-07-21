@@ -1085,7 +1085,7 @@ class profile::prometheus::ops (
         port       => 9151,
     }
 
-    # php and php-fpm
+    # php
     $php_jobs =  [
         {
         'job_name'        => 'php',
@@ -1096,24 +1096,10 @@ class profile::prometheus::ops (
         },
     ]
 
-    $php_fpm_jobs = [
-        {
-        'job_name'        => 'php-fpm',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-            { 'files' => [ "${targets_path}/php-fpm_*.yaml" ]}
-        ],
-        },
-    ]
     prometheus::class_config{ "php_${::site}":
         dest       => "${targets_path}/php_${::site}.yaml",
         class_name => 'profile::mediawiki::php::monitoring',
         port       => 9181,
-    }
-    prometheus::class_config{ "php-fpm_${::site}":
-        dest       => "${targets_path}/php-fpm_${::site}.yaml",
-        class_name => 'profile::prometheus::php_fpm_exporter',
-        port       => 9180,
     }
 
     # envoy proxy
@@ -2379,7 +2365,7 @@ class profile::prometheus::ops (
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
-            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
+            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,

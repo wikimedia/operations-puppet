@@ -4,7 +4,6 @@ profile::admin::groups:
   - perf-roots
   - mediawiki-testers
 profile::mediawiki::php::enable_fpm: true
-#profile::php_fpm::fcgi_port: 8000
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
