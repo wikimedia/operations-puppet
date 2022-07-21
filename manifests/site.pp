@@ -924,11 +924,6 @@ node 'db2160.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
 }
 
-# old misc multi-instance - to be decommissioned
-node 'db2078.codfw.wmnet' {
-    role(mariadb::misc::multiinstance)
-}
-
 # sanitarium hosts
 node /^db1(154|155)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)

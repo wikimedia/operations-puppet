@@ -1,7 +1,0 @@
-# db2078
-profile::mariadb::misc::multiinstance::instances:
-  m1: 100G
-  m2: 100G
-  m3: 100G
-  m5: 100G
-profile::monitoring::notifications_enabled: false
