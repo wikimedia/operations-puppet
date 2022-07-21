@@ -1,0 +1,19 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=JSON Web Token authorizer for <%= @title %>
+
+[Service]
+ExecStart=/usr/bin/jwt-authorizer \
+  --listen=<%= @listen %> \
+  --socket-mode=<%= @mode %> \
+  --keys-url=<%= @keys_url %> \
+  --issuer=<%= @issuer %> \
+  <%- if @validation_template %>
+  --validation-template=<%= @validation_template_path %> \
+  <%- end %>
+  --request-prefix=<%= @request_prefix %>
+Restart=always
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
