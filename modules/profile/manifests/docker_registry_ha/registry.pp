@@ -33,6 +33,8 @@ class profile::docker_registry_ha::registry(
     Boolean $registry_read_only_mode = lookup('profile::docker_registry_ha::registry::read_only_mode', { 'default_value' => false }),
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
     Boolean $nginx_cache = lookup('profile::docker_registry_ha::registry::nginx_cache', { 'default_value' => true }),
+    # Hosts allowed to authenticate using JSON Web Tokens issued by our GitLab instance
+    Array[Stdlib::IP::Address] $jwt_allowed_ips = lookup('profile::docker_registry_ha::registry::jwt_allowed_ips', { 'default_value' => [] }),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.

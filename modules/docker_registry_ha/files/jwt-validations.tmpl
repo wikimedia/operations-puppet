@@ -1,0 +1,7 @@
+{{- /* SPDX-License-Identifier: Apache-2.0 */ -}}
+{{- $project_path := index .Claims "project_path" -}}
+{{- if not $project_path -}}
+there is no "project_path" claim present
+{{- else if not (or (eq .Request $project_path) (hasPrefix .Request ($project_path | printf "%s/"))) -}}
+requested resource is not equal to or beneath the project path {{ $project_path }}
+{{- end -}}

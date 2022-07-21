@@ -22,6 +22,9 @@ class docker_registry_ha::web (
     Boolean $use_puppet_certs=false,
     Optional[String] $ssl_certificate_name=undef,
     Array[Stdlib::Host] $http_allowed_hosts=[],
+    Array[Stdlib::IP::Address] $jwt_allowed_ips=[],
+    Stdlib::HTTPUrl $jwt_keys_url='https://gitlab.wikimedia.org/-/jwks',
+    Stdlib::Host $jwt_issuer='gitlab.wikimedia.org',
     Boolean $read_only_mode=false,
     String $homepage='/srv/homepage',
     Boolean $nginx_cache=true,
@@ -116,6 +119,44 @@ class docker_registry_ha::web (
         group   => 'root',
         source  => 'puppet:///modules/docker_registry_ha/registry-nginx-cache.conf',
         require => Package['nginx-common'],
+    }
+
+    # Create a separate cache and socket location for internal auth_request
+    # subrequests (see templates/registry.nginx.conf.erb)
+    $nginx_auth_cache_dir = '/var/cache/nginx-auth'
+    file { $nginx_auth_cache_dir:
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0700',
+    }
+
+    $nginx_auth_socket_dir = '/var/run/nginx-auth'
+    $nginx_auth_socket = "${nginx_auth_socket_dir}/basic.sock"
+    file { $nginx_auth_socket_dir:
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0700',
+    }
+
+    # If we're allowing any hosts to use JSON Web Token auth, provision the
+    # JWT authenticator service.
+    $jwt_authorizer_socket = "${nginx_auth_socket_dir}/jwt.sock"
+    if (!empty($jwt_allowed_ips)) {
+        $jwt_authorizer_ensure = 'present'
+    } else {
+        $jwt_authorizer_ensure = 'absent'
+    }
+
+    jwt_authorizer::service { 'docker-registry-ha-jwt':
+        ensure              => $jwt_authorizer_ensure,
+        listen              => "unix://${jwt_authorizer_socket}",
+        owner               => 'www-data',
+        group               => 'www-data',
+        keys_url            => $jwt_keys_url,
+        issuer              => $jwt_issuer,
+        validation_template => 'puppet:///modules/docker_registry_ha/jwt-validations.tmpl',
     }
 
     nginx::site { 'registry':
