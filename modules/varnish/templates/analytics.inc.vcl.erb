@@ -299,7 +299,7 @@ sub analytics_deliver {
     }
 
     // Add to X-Analytics the matching requestctl patterns, comma separated. T305582
-    if (req.http.X-Requestctl) {
+    if (req.http.X-Requestctl && req.http.X-Requestctl != "") {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";requestctl=" + req.http.X-Requestctl;
     }
 
