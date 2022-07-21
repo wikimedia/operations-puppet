@@ -808,11 +808,11 @@ node /^db2(085|086|087|088|089|137|138|167|168|169)\.codfw\.wmnet/ {
 ## x1 shard
 # eqiad
 # x1 eqiad master
-node 'db1120.eqiad.wmnet' {
+node 'db1103.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node 'db1103.eqiad.wmnet' {
+node 'db1120.eqiad.wmnet' {
     role(mariadb::core)
 }
 
