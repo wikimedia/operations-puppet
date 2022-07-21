@@ -2,18 +2,19 @@
 #
 # This profile configures Ceph object storage hosts with the osd daemon
 class profile::ceph::osd(
-    Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::ceph::openstack_controllers'),
-    Hash[String,Hash]    $mon_hosts         = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]    $osd_hosts         = lookup('profile::ceph::osd::hosts'),
-    Stdlib::IP::Address  $cluster_network   = lookup('profile::ceph::cluster_network'),
-    Stdlib::IP::Address  $public_network    = lookup('profile::ceph::public_network'),
-    Stdlib::Unixpath     $data_dir          = lookup('profile::ceph::data_dir'),
-    String               $fsid              = lookup('profile::ceph::fsid'),
-    Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
-    Array[String]        $os_disks = lookup('profile::ceph::osd::os_disks'),
-    String               $disks_io_scheduler = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
-    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
-    Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
+    Array[Stdlib::Fqdn]        $openstack_controllers           = lookup('profile::ceph::openstack_controllers'),
+    Hash[String[1],Hash]       $mon_hosts                       = lookup('profile::ceph::mon::hosts'),
+    Hash[String[1],Hash]       $osd_hosts                       = lookup('profile::ceph::osd::hosts'),
+    Stdlib::IP::Address        $cluster_network                 = lookup('profile::ceph::cluster_network'),
+    Stdlib::IP::Address        $public_network                  = lookup('profile::ceph::public_network'),
+    Stdlib::Unixpath           $data_dir                        = lookup('profile::ceph::data_dir'),
+    String[1]                  $fsid                            = lookup('profile::ceph::fsid'),
+    Array[String[1]]           $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
+    Array[String[1]]           $os_disks                        = lookup('profile::ceph::osd::os_disks'),
+    String[1]                  $disks_io_scheduler              = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
+    String[1]                  $ceph_repository_component       = lookup('profile::ceph::ceph_repository_component'),
+    Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
+    Array[Stdlib::IP::Address] $osd_cluster_networks            = lookup('profile::ceph::osd::cluster_networks')
 ) {
     require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
@@ -33,26 +34,26 @@ class profile::ceph::osd(
 
     # The cluster interface is used for OSD data replication and heartbeat network traffic
     interface::manual{ 'osd-cluster':
-        interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
+        interface => $osd_hosts[$facts['fqdn']]['cluster']['iface'],
     }
     interface::ip { 'osd-cluster-ip':
-        interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
-        address   => $osd_hosts["$::fqdn"]['cluster']['addr'],
-        prefixlen => $osd_hosts["$::fqdn"]['cluster']['prefix'],
+        interface => $osd_hosts[$facts['fqdn']]['cluster']['iface'],
+        address   => $osd_hosts[$facts['fqdn']]['cluster']['addr'],
+        prefixlen => $osd_hosts[$facts['fqdn']]['cluster']['prefix'],
         require   => Interface::Manual['osd-cluster'],
         before    => Class['ceph::common'],
     }
 
     # Tune the MTU on both the cluster and public network
     interface::setting { 'osd-cluster-mtu':
-        interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
+        interface => $osd_hosts[$facts['fqdn']]['cluster']['iface'],
         setting   => 'mtu',
         value     => '9000',
         before    => Class['ceph::common'],
         notify    => Exec['set-osd-cluster-mtu'],
     }
     interface::setting { 'osd-public-mtu':
-        interface => $osd_hosts["$::fqdn"]['public']['iface'],
+        interface => $osd_hosts[$facts['fqdn']]['public']['iface'],
         setting   => 'mtu',
         value     => '9000',
         before    => Class['ceph::common'],
@@ -73,8 +74,30 @@ class profile::ceph::osd(
         proto  => 'tcp',
         port   => '6800:7100',
         srange => "(${ferm_cluster_srange})",
-        drange => $osd_hosts["$::fqdn"]['cluster']['addr'],
+        drange => $osd_hosts[$facts['fqdn']]['cluster']['addr'],
         before => Class['ceph::common'],
+    }
+
+
+    # Set a static route with the gateway to the rest of the osds networks
+    # We are assuming /24 for each network, and .254 to be the GW
+    $osd_cluster_networks.each | Stdlib::IP::Address $cluster_network | {
+        $cur_ip_chunks = split($osd_hosts[$facts['fqdn']]['cluster']['addr'], '[.]')
+        $cur_network_chunks = $cur_ip_chunks[0, -2]
+        $cur_network_substring = join($cur_network_chunks, '.')
+        $new_ip_chunks = split($cluster_network, '[.]')
+        $new_network_chunks = $new_ip_chunks[0, -2]
+        $new_network_substring = join($new_network_chunks, '.')
+        # skip your own network
+        if $cur_network_substring != $new_network_substring {
+            # the gw to the other network is through the current network .254
+            $gw_address = "${cur_network_substring}.254"
+            interface::route { "route_to_${join($new_network_chunks, '_')}_0":
+                address   => $cluster_network,
+                nexthop   => $gw_address,
+                prefixlen => 24
+            }
+        }
     }
 
     include network::constants
@@ -95,7 +118,7 @@ class profile::ceph::osd(
         proto  => 'tcp',
         port   => '6800:7100',
         srange => "(${ferm_public_srange})",
-        drange => $osd_hosts["$::fqdn"]['public']['addr'],
+        drange => $osd_hosts[$facts['fqdn']]['public']['addr'],
         before => Class['ceph::common'],
     }
 

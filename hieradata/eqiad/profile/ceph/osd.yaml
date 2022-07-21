@@ -207,3 +207,9 @@ profile::ceph::osd::hosts:
       addr: "192.168.4.24"
       prefix: "24"
       iface: "ens3f1np1"
+
+profile::ceph::osd::cluster_networks:
+  - "192.168.1.0"
+  - "192.168.2.0"
+  - "192.168.3.0"
+  - "192.168.4.0"
