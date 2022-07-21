@@ -16,7 +16,7 @@
 # @param client_auth_key path to the client auth key to use
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
   define prometheus::blackbox::check::tcp (
-    Stdlib::Fqdn                            $server_name             = $title,
+    Stdlib::Fqdn                            $server_name             = $facts['networking']['hostname'],
     Stdlib::Fqdn                            $instance_label          = $facts['networking']['hostname'],
     Stdlib::IP::Address::V4::Nosubnet       $ip4                     = $facts['networking']['ip'],
     Stdlib::IP::Address::V6::Nosubnet       $ip6                     = $facts['networking']['ip6'],
