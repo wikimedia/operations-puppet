@@ -1,8 +1,10 @@
 # NOTE: This file is managed by Puppet.
 <%- unless @central_hosts_tls.empty? %>
 $DefaultNetstreamDriverCAFile /var/lib/puppet/ssl/certs/ca.pem
+<%- if @tls_client_auth -%>
 $DefaultNetstreamDriverCertFile /etc/rsyslog/ssl/cert.pem
 $DefaultNetstreamDriverKeyFile /etc/rsyslog/ssl/server.key
+<% end -%>
 <% end -%>
 
 # By default, rsyslog will truncate programname[pid] to 32 characters.  This

@@ -21,13 +21,21 @@
 # [*archive_directory*]
 #   Archive logs into this directory, it is an error to set this equal to
 #   $log_directory and vice versa.
-
+# [*tls_auth_mode*]
+#   Specifies the authentication mode for syslog clients. Default is
+#   x509/certvalid (verify certificate for all clients).
+# [*file_template_property*]
+#   Property to be used for determining the file name (e.g.
+#   /srv/syslog/<property>/syslog.log) of the log file. Can be
+#   either hostname ('host1001') or fromhost-ip (10.0.0.1). Default is hostname.
 class rsyslog::receiver (
-    $udp_port           = 514,
-    $tcp_port           = 6514,
-    $log_retention_days = 90,
-    $log_directory      = '/srv/syslog',
-    $archive_directory  = '/srv/syslog/archive',
+    $udp_port                                                   = 514,
+    $tcp_port                                                   = 6514,
+    $log_retention_days                                         = 90,
+    $log_directory                                              = '/srv/syslog',
+    $archive_directory                                          = '/srv/syslog/archive',
+    Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = 'x509/certvalid',
+    Enum['fromhost-ip', 'hostname'] $file_template_property     = 'hostname'
 ) {
     if debian::codename::eq('buster') {
         apt::package_from_component { 'rsyslog_receiver':

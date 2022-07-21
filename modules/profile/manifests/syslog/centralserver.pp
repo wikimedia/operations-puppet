@@ -11,11 +11,18 @@
 # [*use_kafka_relay*]
 #   enables the syslog -> kafka relay compatability layer, used by devices without native
 #   kafka output support
+# [*tls_auth_mode*]
+#   specify client authentication mode for syslog clients
+# [*file_template_property*]
+#   property to use for the destination log file name (either hostname or IP
+#   address)
 #
 class profile::syslog::centralserver (
-    Integer $log_retention_days      = lookup('profile::syslog::centralserver::log_retention_days'),
-    Integer $log_deletion_grace_days = lookup('profile::syslog::centralserver::log_deletion_grace_days', {'default_value' => 45}),
-    Boolean $use_kafka_relay         = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
+    Integer $log_retention_days                                 = lookup('profile::syslog::centralserver::log_retention_days'),
+    Integer $log_deletion_grace_days                            = lookup('profile::syslog::centralserver::log_deletion_grace_days', {'default_value' => 45}),
+    Boolean $use_kafka_relay                                    = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
+    Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = lookup('profile::syslog::centralserver::tls_auth_mode', {'default_value' => 'x509/certvalid'}),
+    Enum['fromhost-ip', 'hostname'] $file_template_property     = lookup('profile::syslog::centralserver::file_template_property', {'default_value' => 'hostname'}),
 ){
 
     ferm::service { 'rsyslog-receiver_udp':
@@ -33,7 +40,9 @@ class profile::syslog::centralserver (
     }
 
     class { 'rsyslog::receiver':
-        log_retention_days => $log_retention_days,
+        log_retention_days     => $log_retention_days,
+        tls_auth_mode          => $tls_auth_mode,
+        file_template_property => $file_template_property,
     }
 
     # Prune old /srv/syslog/host directories on disk (from decommed hosts, etc.) after grace period expires

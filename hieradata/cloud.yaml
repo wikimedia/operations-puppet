@@ -39,6 +39,7 @@ profile::admin::managehomehome: false
 
 profile::base::overlayfs: false
 profile::base::remote_syslog_send_logs: standard
+profile::base::remote_syslog_tls_client_auth: true
 profile::base::remote_syslog_tls: {}
 profile::base::remote_syslog: []
 
@@ -558,6 +559,7 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
   - localhost:9093
 
 profile::syslog::centralserver::log_retention_days: 90
+profile::syslog::centralserver::file_template_property: 'hostname'
 
 profile::openstack::base::radosgw::service_user: "swift"
 profile::openstack::base::radosgw::service_user_project: "swift"

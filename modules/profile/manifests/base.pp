@@ -2,6 +2,7 @@
 # @summary profile to configure base config
 # @param remote_syslog Central syslog servers
 # @param remote_syslog_tls Central TLS enabled syslog servers
+# @param remote_syslog_tls_client_auth TLS client authentication enabled for remote syslog
 # @param remote_syslog_send_logs config for send logs
 # @param overlayfs if to use overlays
 # @param wikimedia_clusters the wikimedia clusters
@@ -11,16 +12,17 @@
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
 # @param use_linux510_on_buster whether to setup kernel 5.10 on buster hosts
 class profile::base (
-    Hash    $wikimedia_clusters        = lookup('wikimedia_clusters'),
-    String  $cluster                   = lookup('cluster'),
-    String  $remote_syslog_send_logs   = lookup('profile::base::remote_syslog_send_logs'),
-    Boolean $overlayfs                 = lookup('profile::base::overlayfs'),
-    Boolean $enable_contacts           = lookup('profile::base::enable_contacts'),
-    String  $core_dump_pattern         = lookup('profile::base::core_dump_pattern'),
-    Boolean $unprivileged_userns_clone = lookup('profile::base::unprivileged_userns_clone'),
-    Array   $remote_syslog             = lookup('profile::base::remote_syslog'),
-    Hash    $remote_syslog_tls         = lookup('profile::base::remote_syslog_tls'),
-    Boolean $use_linux510_on_buster    = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
+    Hash    $wikimedia_clusters             = lookup('wikimedia_clusters'),
+    String  $cluster                        = lookup('cluster'),
+    String  $remote_syslog_send_logs        = lookup('profile::base::remote_syslog_send_logs'),
+    Boolean $overlayfs                      = lookup('profile::base::overlayfs'),
+    Boolean $enable_contacts                = lookup('profile::base::enable_contacts'),
+    String  $core_dump_pattern              = lookup('profile::base::core_dump_pattern'),
+    Boolean $unprivileged_userns_clone      = lookup('profile::base::unprivileged_userns_clone'),
+    Array   $remote_syslog                  = lookup('profile::base::remote_syslog'),
+    Hash    $remote_syslog_tls              = lookup('profile::base::remote_syslog_tls'),
+    Boolean $remote_syslog_tls_client_auth  = lookup('profile::base::remote_syslog_client_tls_auth'),
+    Boolean $use_linux510_on_buster         = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -69,6 +71,7 @@ class profile::base (
             central_hosts     => $remote_syslog,
             central_hosts_tls => $remote_syslog_tls_servers,
             send_logs         => $remote_syslog_send_logs,
+            tls_client_auth   => $remote_syslog_tls_client_auth,
         }
     }
 

@@ -21,6 +21,11 @@
 #   or 'authpriv').
 # [*queue_size*]
 #   Local queue size, unit is messages. Setting to 0 disables the local queue.
+# [*tls_client_auth*]
+#   Whether to authenticate to the syslog server using TLS. Note: this is only
+#   relevant for mutual authentication. Server verification (e.g. checks on
+#   certificate authority or the Subject Alt Names) is not affected. Defaults to
+#   true.
 #
 
 class base::remote_syslog (
@@ -29,6 +34,7 @@ class base::remote_syslog (
     Array[String]                   $central_hosts_tls = [],
     Enum['auth-logs', 'standard']   $send_logs = 'standard',
     Integer                         $queue_size = 10000,
+    Boolean                         $tls_client_auth = true,
 ) {
     $owner = 'root'
     $group = 'root'
