@@ -5369,6 +5369,10 @@ ldap_only_users:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
     email: aleksey.bekh-ivanov@wikimedia.de
+  alinebruenger:
+    ensure: present
+    realname: Aline Bruenger
+    email: aline.bruenger@wikimedia.de
   ammarpad:
     ensure: present
     realname: (known to legal)
