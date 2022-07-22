@@ -25,9 +25,7 @@ import header;
 
 import directors;
 import netmapper;
-<% if @realm == 'labs' -%>
 import querysort;  // T138093
-<% end -%>
 
 // rate limiting
 import vsthrottle;
@@ -297,10 +295,6 @@ sub normalize_request {
 		set req.http.Host = regsub(req.url, "(?i)^https?://(.*@)?([^/:]+).*$", "\2");
 		set req.url = regsub(req.url, "(?i)^https?://[^/]+/?", "/");
 	}
-<% if @realm == 'labs' -%>
-	// Sort query parameters to improve cache efficiency (T138093).
-	set req.url = querysort.querysort(req.url);
-<% end -%>
 
 	// Strip :port from req.http.host and normalize to lowercase
 	set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
@@ -367,6 +361,19 @@ sub normalize_request {
 	    return (synth(400, ""));
 	}
 <% end -%>
+}
+
+sub normalize_request_nonmisc {
+	// Sort query parameters to improve cache efficiency (T138093).
+<% if @realm == "production" -%>
+	// In production, query sorting can only be enabled via the X-Wikimedia-Debug header.
+	if (req.http.X-Wikimedia-Debug ~ "(^|; )querysort(;|$)") {
+<% else -%>
+	// In labs, query sorting is always enabled.
+	if (true) {
+<% end -%>
+		set req.url = querysort.querysort(req.url);
+	}
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
@@ -731,6 +738,9 @@ sub vcl_recv {
 
 		// Possibly switch to separate VCL
 		call cluster_fe_vcl_switch;
+
+		// This normalizes query parameters.
+		call normalize_request_nonmisc;
 	}
 
 	call wm_recv_early;
