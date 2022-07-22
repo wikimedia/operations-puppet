@@ -15,12 +15,12 @@ CAS_RENAME_ATTRIBUTES = {
 }
 CAS_GROUP_ATTRIBUTE_MAPPING = {
     <%- @cas_group_attribute_mapping.each_pair do |key, mapped| -%>
-    '<%= key %>': ("<%= mapped.join(", ") %>",),
+    '<%= key %>': ("<%= mapped.join('", "') %>",),
     <%- end -%>
 }
 CAS_GROUP_MAPPING = {
     <%- @cas_group_mapping.each_pair do |key, mapped| -%>
-    '<%= key %>': ("<%= mapped.join(", ") %>",),
+    '<%= key %>': ("<%= mapped.join('", "') %>",),
     <%- end -%>
 }
 CAS_GROUP_REQUIRED = (
