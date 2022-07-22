@@ -164,6 +164,7 @@ profile::idp::services:
     required_groups:
       - ops
       - wmf
+      - nda
   gitlab:
     id: 23
     service_id: 'https://gitlab(-new)?\.wikimedia\.org(/.*)?'
