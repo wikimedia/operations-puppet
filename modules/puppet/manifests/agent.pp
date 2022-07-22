@@ -9,7 +9,7 @@
 # @param serialization_format the serilasation format of catalogs
 # @param ca_source to source of the CA file
 # @param certificate_revocation The level of certificate revocation to perform
-class puppet::agent(
+class puppet::agent (
     Boolean                         $manage_ca_file         = false,
     Stdlib::Unixpath                $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
     Optional[String[1]]             $ca_server              = undef,
@@ -23,9 +23,9 @@ class puppet::agent(
 ) {
     # augparse is required to resolve the augeasversion in facter3
     # facter needs virt-what for proper "virtual"/"is_virtual" resolution
-    package { [ 'facter', 'puppet', 'augeas-tools', 'virt-what' ]:
-        ensure => present,
-    }
+    # TODO: use puppet-agent package name when everything is on puppet7
+    # puppet is a transition package
+    ensure_packages(['facter', 'puppet', 'augeas-tools', 'virt-what'])
 
     # TODO: the following is temporary to clean up old resources
     file { '/etc/cron.d/puppet':
@@ -36,7 +36,7 @@ class puppet::agent(
         unless $ca_source {
           fail('require ca_source when manage_ca: true')
         }
-        file{ $ca_file_path:
+        file { $ca_file_path:
             ensure => file,
             owner  => 'puppet',
             group  => 'puppet',
@@ -87,9 +87,8 @@ class puppet::agent(
     }
 
     ## do not use puppet agent, use a cron-based puppet-run instead
-    service {'puppet':
+    service { 'puppet':
         ensure => stopped,
         enable => false,
     }
-
 }

@@ -61,6 +61,7 @@ profile::puppet::agent::environment: production
 profile::puppet::agent::serialization_format: pson
 profile::puppet::agent::certificate_revocation: ~
 profile::puppet::agent::dns_alt_names: []
+profile::puppet::agent::enable_puppet7: false
 
 profile::puppet::client_bucket::ensure: absent
 profile::puppet::client_bucket::file_age: 14
