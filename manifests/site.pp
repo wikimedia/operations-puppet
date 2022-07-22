@@ -256,7 +256,7 @@ node /^backup100[4567]\.eqiad\.wmnet$/ {
 
 # new backup storage eqiad T294974
 node 'backup1008.eqiad.wmnet' {
-    role(insetup)
+    role(backup::databases)
 }
 
 # new backup storage eqiad T307048
@@ -284,7 +284,7 @@ node /^backup200[4567]\.codfw\.wmnet$/ {
 }
 # New backup node for codfw T294973
 node 'backup2008.codfw.wmnet' {
-    role(insetup)
+    role(backup::databases)
 }
 
 # New backup node for codfw T307049
