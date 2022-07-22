@@ -74,6 +74,7 @@ class package_builder(
         'dh-sysuser',
         'equivs',
         'fakeroot',
+        'gem2deb',
         'git-buildpackage',
         'gnome-pkg-tools',
         'gobject-introspection',
