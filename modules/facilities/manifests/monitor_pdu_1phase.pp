@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Placeholder define for single phase PDUs monitoring
 # Also used to generate Prometheus targets/configuration
 

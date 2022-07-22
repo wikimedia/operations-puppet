@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define facilities::monitor_pdu_3phase(
     Stdlib::IP::Address  $ip,
     String               $row,

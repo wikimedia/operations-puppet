@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # definition for monitoring PDUs via SNMP
 # T79062
 # TODO: Monitor infeed status

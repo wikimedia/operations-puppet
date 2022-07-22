@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # monitoring of non-server data center
 # hardware like power distribution units and cameras
 class facilities (
