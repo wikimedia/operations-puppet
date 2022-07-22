@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: librenms::syslog
 #
 # Sets up a separate rsyslog instance that receives messages in syslog (UDP

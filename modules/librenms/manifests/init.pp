@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: librenms
 #
 # This class installs & manages LibreNMS, a fork of Observium
