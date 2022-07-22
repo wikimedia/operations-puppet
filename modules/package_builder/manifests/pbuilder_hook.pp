@@ -138,6 +138,14 @@ define package_builder::pbuilder_hook(
       source => 'puppet:///modules/package_builder/hooks/A04opensearch1'
     }
 
+    file { "${basepath}/hooks/${distribution}/D04component":
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0555',
+      content => template('package_builder/D04component.erb'),
+    }
+
     # Disable rebuilding man-db (T276632)
     file { "${basepath}/hooks/${distribution}/D80no-man-db-rebuild":
       ensure => present,

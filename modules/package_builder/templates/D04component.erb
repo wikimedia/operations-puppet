@@ -1,0 +1,10 @@
+#!/bin/sh
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Add custom component
+if [ -n "${COMPONENT}" ]; then
+	cat > /etc/apt/sources.list.d/<%= @distribution %>-component.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia ${COMPONENT}
+    deb-src http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia ${COMPONENT}
+EOF
+	apt-get update
+fi
