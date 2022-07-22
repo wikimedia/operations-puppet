@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: iegreview
 #
 # This class provisions the IEG grant review application.
