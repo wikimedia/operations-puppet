@@ -176,7 +176,7 @@ define prometheus::blackbox::check::http (
                     'summary'     => "Service {{ \$labels.instance }} has failed probes ({{ \$labels.module }})${page_text}",
                     'dashboard'   => 'https://grafana.wikimedia.org/d/O0nHhdhnz/network-probes-overview?var-job={{ $labels.job }}&var-module=All',
                     'logs'        => 'https://logstash.wikimedia.org/app/dashboards#/view/f3e709c0-a5f8-11ec-bf8e-43f1807d5bc2?_g=(filters:!((query:(match_phrase:(service.name:{{ $labels.module }})))))',
-                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#ProbeDown',
+                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/Runbook#{{ $labels.instance }}',
                 },
             }],
           },
