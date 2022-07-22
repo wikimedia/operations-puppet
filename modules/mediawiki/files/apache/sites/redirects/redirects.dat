@@ -232,8 +232,9 @@ funnel	20.wikipedia.org	https://wikimediafoundation.org/wikipedia20
 # T84277, T259979
 override	wikimedia.org/research	https://research.wikimedia.org
 
-# dev.wikimedia.org - T372, T265018
+# dev.wikimedia.org - T372, T265018 ; developers.wikimedia.org - T313597
 funnel	dev.wikimedia.org	https://developer.wikimedia.org
+funnel	developers.wikimedia.org	https://developer.wikimedia.org
 
 # T310738, T132104
 funnel	policy.wikimedia.org	https://wikimediafoundation.org/advocacy/
