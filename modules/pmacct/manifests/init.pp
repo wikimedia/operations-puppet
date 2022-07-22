@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: pmacct
 #
 # Install and manage pmacct, http://www.pmacct.net/
