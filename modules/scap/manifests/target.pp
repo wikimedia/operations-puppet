@@ -114,16 +114,27 @@ define scap::target(
     }
 
     if $::realm == 'labs' {
+        $deployment_host = lookup('scap::deployment_server')
+        $deployment_ip = ipresolve($deployment_host, 4, $::nameservers[0])
+
         if !defined(Security::Access::Config["scap-allow-${deploy_user}"]) {
             # Allow $deploy_user login from scap deployment host.
             # adds an exception in /etc/security/access.conf
             # to work around labs-specific restrictions
-            $deployment_host = lookup('scap::deployment_server')
-            $deployment_ip = ipresolve($deployment_host, 4, $::nameservers[0])
             security::access::config { "scap-allow-${deploy_user}":
                 ensure   => $ensure,
                 content  => "+ : ${deploy_user} : ${deployment_ip}\n",
                 priority => 60,
+            }
+        }
+        if !defined(Security::Access::Config['scap-allow-scap']) {
+            # Allow scap login from scap deployment host.
+            # adds an exception in /etc/security/access.conf
+            # to work around labs-specific restrictions
+            security::access::config { 'scap-allow-scap':
+                ensure   => $ensure,
+                content  => "+ : scap : ${deployment_ip}\n",
+                priority => 65,
             }
         }
     }
