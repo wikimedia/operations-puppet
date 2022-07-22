@@ -204,6 +204,7 @@ Components: main
  component/jdk8
  component/kubernetes116
  component/memcached-tls
+ component/puppet7
  component/pdns-recursor
  component/prometheus-openstack-exporter
  component/rsyslog-k8s
