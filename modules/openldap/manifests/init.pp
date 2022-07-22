@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: openldap
 #
 # This class installs slapd and configures it with a single suffix hdb database

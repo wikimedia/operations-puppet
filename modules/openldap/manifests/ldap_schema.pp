@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define openldap::ldap_schema {
     file { "/etc/ldap/schema/${name}" :
         ensure => present,

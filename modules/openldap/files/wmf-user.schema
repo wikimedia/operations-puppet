@@ -1,4 +1,5 @@
 # Object class for WMF-specific user attributes
+# SPDX-License-Identifier: Apache-2.0
 # The registered IANA ID is 33298, we use the following hierarchy:
 # 1.3.6.1.4.1.33298.1.x   : LDAP in general
 # 1.3.6.1.4.1.33298.1.1.x : Custom LDAP attributes

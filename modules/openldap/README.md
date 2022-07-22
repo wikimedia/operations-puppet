@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # OpenLDAP Puppet Module #
 
 A Puppet module for installing and managing an OpenLDAP server
