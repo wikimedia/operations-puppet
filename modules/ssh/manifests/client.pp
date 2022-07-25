@@ -6,6 +6,7 @@
 # @param gss_api_authentication GSSAPIAuthentication value
 # @param gss_api_delegate_credentials GSSAPIDelegateCredentials value
 # @param send_env list of environment variables to send
+# @param known_hosts a hash of known hosts files likely returned from puppetdb
 class ssh::client (
     Boolean          $manage_ssh_keys              = true,
     Boolean          $manage_ssh_config            = true,
@@ -13,6 +14,7 @@ class ssh::client (
     Boolean          $gss_api_authentication       = true,
     Boolean          $gss_api_delegate_credentials = false,
     Array[String[1]] $send_env                     = ['LANG', 'LC_*'],
+    Hash             $known_hosts                  = {}
 ) {
     ensure_packages('openssh-client')
 
