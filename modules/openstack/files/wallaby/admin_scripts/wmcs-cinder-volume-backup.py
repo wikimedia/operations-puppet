@@ -16,7 +16,7 @@ import datetime
 import logging
 import sys
 import time
-from tenacity import Retrying, stop_after_attempt, wait_exponential
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 import mwopenstackclients
 import novaclient.exceptions
@@ -114,6 +114,13 @@ class CinderBackup(object):
                     to_delete[id] = self.cinderclient.backups.get(id)
         logging.info("Purged %d backups" % delete_count)
 
+    @retry(stop=stop_after_attempt(9),
+           wait=wait_fixed(5))
+    def cleanup_snapshot(self):
+        logging.info("Cleaning up snapshot %s" % self.snapshot_id)
+        self.cinderclient.volume_snapshots.delete(self.snapshot_id, force=True)
+        self.snapshot_id = None
+
     def backup_volume(self):
         logging.info("Backup up volume %s" % self.volume.id)
         new_backup_name = f"{self.volume.name}-{datetime.datetime.now().isoformat()}"
@@ -196,12 +203,7 @@ class CinderBackup(object):
             if self.snapshot_id:
                 # Snapshots in admin project are intended to exist only during snapshot operation
                 # Once the status moves to 'available', they can be safely removed
-                logging.info("Cleaning up snapshot %s" % self.snapshot_id)
-                Retrying(
-                    stop=stop_after_attempt(9),
-                    wait=wait_exponential(multiplier=1, min=5, max=10)
-                    ).call(self.cinderclient.volume_snapshots.delete(self.snapshot_id, force=True))
-                self.snapshot_id = None
+                self.cleanup_snapshot()
 
 
 if __name__ == "__main__":
