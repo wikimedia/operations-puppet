@@ -2,9 +2,9 @@
 <%-
 scope.function_query_resources([false, '@@Sshkey[~".*"]', false]).sort_by { |r| r['certname'] }.each do |resource|
   parameters = resource['parameters']
-  aliases = parameters['host_aliases'].join(',')
+  aliases = parameters.fetch('host_aliases', []).insert(0, resource['certname'])
   if parameters['ensure'] == 'present' -%>
-<%= resource['certname'] %>,<%= aliases %> <%= parameters['type'] %> <%= parameters['key'] %>
+<%= aliases.join(',') %> <%= parameters['type'] %> <%= parameters['key'] %>
 <%-
   end
 end -%>
