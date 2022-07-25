@@ -1,4 +1,16 @@
 # @param $rabbitmq_setup_nodes List of rabbit nodes allowed in firewalls etc but not serving traffic
+#
+# There are two similarly-named params here, '$rabbitmq_setup_nodes' and '$rabbitmq_nodes':
+#
+#  $rabbitmq_nodes is the list of nodes that rabbitmq clients should actually use; it will generally
+#   consist of wikimediacloud.org service names rather than physical hardware fqdns. These values
+#   will be baked into unpuppetized Trove VMs and so should be changed as little as possible; changes
+#   to active rabbit nodes should be made via dns changes to the service fqdns.
+#
+#  $rabbitmq_setup_nodes is a list of fqdns of hosts that are configured by this class but not yet
+#   in service. It exists to stage new rabbitmq nodes (with firewalls and such) before switching
+#   traffic over. It should consist of primary fqdns (.wikimedia.org or .wmnet)
+#
 class profile::openstack::base::rabbitmq(
     String $region = lookup('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
@@ -72,7 +84,7 @@ class profile::openstack::base::rabbitmq(
     # We want this job to run on only one host; it doesn't matter which.
     class {'::rabbitmq::cleanup':
         password => $cleanup_password,
-        enabled  => $::fqdn == $rabbitmq_nodes[0],
+        enabled  => $rabbitmq_nodes[0] == $rabbitmq_service_name,
     }
     contain '::rabbitmq::cleanup'
 
