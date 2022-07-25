@@ -125,10 +125,14 @@ case "$jvm" in
         ;;
 esac
 
+
+## The startup script is patched on Debian systems to place logs in
+## /var/log/cassandra; This block (if left uncommented) will override that
+## (see: https://issues.apache.org/jira/browse/CASSANDRA-17773)
 # Sets the path where logback and GC logs are written.
-if [ "x$CASSANDRA_LOG_DIR" = "x" ] ; then
-    CASSANDRA_LOG_DIR="$CASSANDRA_HOME/logs"
-fi
+# if [ "x$CASSANDRA_LOG_DIR" = "x" ] ; then
+#     CASSANDRA_LOG_DIR="$CASSANDRA_HOME/logs"
+# fi
 
 #GC log path has to be defined here because it needs to access CASSANDRA_HOME
 #JVM_OPTS="$JVM_OPTS -Xloggc:${CASSANDRA_LOG_DIR}/gc.log"
