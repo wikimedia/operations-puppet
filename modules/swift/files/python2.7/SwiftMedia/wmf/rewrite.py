@@ -39,7 +39,6 @@ class _WMFRewriteContext(WSGIContext):
 
         self.account = conf['account'].strip()
         self.thumborhost = conf['thumborhost'].strip()
-        self.inactivedc_thumborhost = conf['inactivedc_thumborhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
         self.shard_container_list = [
@@ -55,15 +54,6 @@ class _WMFRewriteContext(WSGIContext):
         thumbor_urlobj = list(urlparse.urlsplit(reqorig.url))
         thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
         return urlparse.urlunsplit(thumbor_urlobj)
-
-    def inactivedc_request(self, opener, url):
-        try:
-            opener.open(url)
-        except urllib2.HTTPError as error:
-            self.logger.warn("Inactive DC request HTTP error: %d %s %s" % (
-                error.code, error.reason, url))
-        except urllib2.URLError as error:
-            self.logger.warn("Inactive DC request URL error: %s %s" % (error.reason, url))
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -107,11 +97,6 @@ class _WMFRewriteContext(WSGIContext):
             msg = 'There was a problem while contacting the thumbnailing service: %s' % \
                   error.reason
             return swob.HTTPServiceUnavailable(msg)
-
-        # We successfully generated a thumbnail on the active DC, send the same request
-        # blindly to the inactive DC to populate Swift there, not waiting for the response
-        inactivedc_encodedurl = self.thumborify_url(reqorig, self.inactivedc_thumborhost)
-        eventlet.spawn(self.inactivedc_request, thumbor_opener, inactivedc_encodedurl)
 
         # get the Content-Type.
         uinfo = upcopy.info()
