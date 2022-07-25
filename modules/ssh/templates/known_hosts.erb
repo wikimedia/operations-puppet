@@ -1,10 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 # This file is managed by puppet
 <%-
-scope.function_query_resources([false, '@@Sshkey[~".*"]', false]).sort_by { |r| r['certname'] }.each do |resource|
-  parameters = resource['parameters']
-  aliases = parameters.fetch('host_aliases', []).insert(0, resource['certname'])
-  if parameters['ensure'] == 'present' -%>
+@known_hosts.each do |title, parameters|
+  aliases = parameters.fetch('host_aliases', []).insert(0, title)
+-%>
 <%= aliases.join(',') %> <%= parameters['type'] %> <%= parameters['key'] %>
-<%-
-  end
-end -%>
+<%- end -%>
