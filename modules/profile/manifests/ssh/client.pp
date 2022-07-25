@@ -14,21 +14,7 @@ class profile::ssh::client (
     Boolean          $gss_api_delegate_credentials = lookup('profile::ssh::client::gss_api_delegate_credentials'),
     Array[String[1]] $send_env                     = lookup('profile::ssh::client::send_env'),
 ) {
-    $pql = @("PQL")
-    resources[parameters, title] {
-        type = 'Sshkey' and exported = true
-    }
-    | PQL
-    $known_hosts = wmflib::puppetdb_query($pql).reduce({}) |$memo, $resource| {
-        $key = $resource['name'].lest || { $resource['title'] }
-        if $resource['parameters']['ensure'] == 'present' {
-            $memo + { $key => $resource['parameters'] }
-        } else {
-            $memo
-        }
-    }
     class { 'ssh::client':
-        known_hosts => $known_hosts,
-        *           => wmflib::dump_params(),
+        * => wmflib::dump_params(),
     }
 }
