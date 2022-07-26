@@ -389,7 +389,7 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
 }
 
 # Zookeeper and Etcd discovery service nodes
-node /^conf[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
+node /^conf200[456]\.codfw\.wmnet$/ {
     role(configcluster)
 }
 
