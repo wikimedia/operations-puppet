@@ -1,0 +1,36 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+-- Orchestator web
+-- Grants for 'orchestrator' access from 'dborch1001.wikimedia.org'
+GRANT USAGE ON *.* TO `orchestrator\_srv`@`208.80.155.103` IDENTIFIED BY PASSWORD '<%=@dborch_pass %>';
+GRANT ALL PRIVILEGES ON `orchestrator`.* TO `orchestrator\_srv`@`208.80.155.103`;
+
+-- prometheus mysql ops exporter job config generation
+-- Grants for 'prometheus-mysqld-exporter'@'10.128.0.34'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.128.0.34` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.128.0.34`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.132.0.33'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.132.0.33` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.132.0.33`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.192.16.75'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.192.16.75` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.192.16.75`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.192.32.67'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.192.32.67` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.192.32.67`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.20.0.104'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.20.0.104` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.20.0.104`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.64.0.82'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.64.0.82` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.64.0.82`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.64.16.62'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.64.16.62` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.64.16.62`;
+-- Grants for 'prometheus-mysqld-exporter'@'10.64.32.25'
+GRANT USAGE ON *.* TO `prometheus-mysqld-exporter`@`10.64.32.25` IDENTIFIED BY PASSWORD '<%=@mysql_exporter_generation_pass %>';
+GRANT SELECT ON `zarcillo`.* TO `prometheus-mysqld-exporter`@`10.64.32.25`;
+
+-- backupmon dashboard
+-- Grants for 'zarcillo' access from 'backupmon1001.eqiad.wmnet'
+GRANT USAGE ON *.* TO `backupmon-django`@`10.64.48.150` IDENTIFIED BY PASSWORD '<%=@backup_django_pass%>';
+GRANT SELECT ON `zarcillo`.* TO `backupmon-django`@`10.64.48.150`;
