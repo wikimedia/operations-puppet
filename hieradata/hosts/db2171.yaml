@@ -1,2 +1,6 @@
 # db2171
+# Buffer pool sizes/instance enabled
+profile::mariadb::core::multiinstance::instances:
+  s5: 185G
+  s6: 185G
 profile::monitoring::notifications_enabled: false
