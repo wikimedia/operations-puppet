@@ -1,5 +1,8 @@
 # Temporary solution until someone has input about what to do with base::firewall
+# @param conftool_prefix the prfix used for conftool
+# @param defs_from_etcd build ferm definitions from requestctl etcd data
 class profile::base::firewall (
+    String                     $conftool_prefix         = lookup('conftool_prefix'),
     Array[Stdlib::IP::Address] $monitoring_hosts        = lookup('monitoring_hosts',
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $cumin_masters           = lookup('cumin_masters',
@@ -31,6 +34,7 @@ class profile::base::firewall (
     Boolean                    $enable_logging   = lookup('profile::base::firewall::enable_logging'),
     Boolean                    $block_abuse_nets = lookup('profile::base::firewall::block_abuse_nets'),
     Boolean                    $default_reject   = lookup('profile::base::firewall::default_reject'),
+    Boolean                    $defs_from_etcd   = lookup('profile::base::firewall::defs_from_etcd'),
 ) {
     class { 'base::firewall':
         monitoring_hosts        => $monitoring_hosts,
@@ -49,6 +53,14 @@ class profile::base::firewall (
         prometheus_hosts        => $prometheus_nodes,
         block_abuse_nets        => $block_abuse_nets,
         default_reject          => $default_reject,
+    }
+    if defs_from_etcd {
+        confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
+            ensure     => 'present',
+            reload     => '/bin/systemctl restart ferm',
+            watch_keys => ['/request-ipblocks/abuse'],
+            content    => file('profile/firewall/defs_requestctl.tpl'),
+        }
     }
     if $enable_logging {
         include profile::base::firewall::log
