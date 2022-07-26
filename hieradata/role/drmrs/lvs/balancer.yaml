@@ -1,4 +1,4 @@
-profile::pybal::config_host: conf1006.eqiad.wmnet
+profile::pybal::config_host: conf1009.eqiad.wmnet
 profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - private1-b12-drmrs

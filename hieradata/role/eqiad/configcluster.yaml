@@ -6,7 +6,7 @@ profile::etcd::replication::origin:
     - conf2005.codfw.wmnet
     - conf2006.codfw.wmnet
 profile::etcd::replication::destination_path: /conftool
-profile::etcd::replication::dst_url: https://conf1005.eqiad.wmnet:2379
+profile::etcd::replication::dst_url: https://conf1008.eqiad.wmnet:2379
 # For nodes with active replication, see hieradata/hosts/conf*.yaml
 profile::etcd::replication::active: false
 profile::etcd::tlsproxy::read_only: false

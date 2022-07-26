@@ -2,9 +2,9 @@ profile::etcd::replication::origin:
   cluster_name: eqiad.wmnet
   path: /conftool
   servers:
-    - conf1004.eqiad.wmnet
-    - conf1005.eqiad.wmnet
-    - conf1006.eqiad.wmnet
+    - conf1007.eqiad.wmnet
+    - conf1008.eqiad.wmnet
+    - conf1009.eqiad.wmnet
 profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::dst_url: https://conf2005.codfw.wmnet:2379
 # For nodes with active replication, see hieradata/hosts/conf*.yaml
