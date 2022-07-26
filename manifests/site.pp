@@ -1200,7 +1200,19 @@ node /^elastic202[5-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic20[3-5][0-9]\.codfw\.wmnet/ {
+node 'elastic2049.codfw.wmnet' {
+    role(spare::system)
+}
+
+node /^elastic203[0-9]\.codfw\.wmnet/ {
+    role(elasticsearch::cirrus)
+}
+
+node /^elastic204[0-8]\.codfw\.wmnet/ {
+    role(elasticsearch::cirrus)
+}
+
+node /^elastic205[0-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 

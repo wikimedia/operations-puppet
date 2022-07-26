@@ -37,7 +37,6 @@ profile::elasticsearch::instances:
           - elastic2046.codfw.wmnet
           - elastic2047.codfw.wmnet
           - elastic2048.codfw.wmnet
-          - elastic2049.codfw.wmnet
           - elastic2050.codfw.wmnet
           - elastic2051.codfw.wmnet
           - elastic2052.codfw.wmnet
@@ -168,7 +167,6 @@ profile::elasticsearch::instances:
           - elastic2032.codfw.wmnet
           - elastic2033.codfw.wmnet
           - elastic2048.codfw.wmnet
-          - elastic2049.codfw.wmnet
           - elastic2066.codfw.wmnet
           - elastic2071.codfw.wmnet
           - elastic2072.codfw.wmnet
