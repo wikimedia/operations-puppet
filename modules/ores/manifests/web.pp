@@ -56,6 +56,7 @@ class ores::web(
             max-requests         => 100,
             stats-push           => "statsd:${statsd_host}:${statsd_port},ores.${::hostname}.uwsgi",
             skip-atexit-teardown => true,
+            buffer-size          => 8192, # This fixes T312550
         },
     }
 
