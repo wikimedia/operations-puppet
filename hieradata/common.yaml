@@ -667,9 +667,6 @@ labs_tld: "wikimedia.cloud"
 zookeeper_clusters:
   main-eqiad:
     hosts:
-      conf1004.eqiad.wmnet: '1104'
-      conf1005.eqiad.wmnet: '1105'
-      conf1006.eqiad.wmnet: '1106'
       conf1007.eqiad.wmnet: '1107'
       conf1008.eqiad.wmnet: '1108'
       conf1009.eqiad.wmnet: '1109'
@@ -1542,12 +1539,6 @@ kafka_brokers_logging:
 - 10.192.48.131                # logstash2003.codfw.wmnet
 - 2620:0:860:104:10:192:48:131 # logstash2003.codfw.wmnet
 zookeeper_hosts_main:
-- 10.64.0.23                   # conf1004.eqiad.wmnet
-- 2620:0:861:101:10:64:0:23    # conf1004.eqiad.wmnet
-- 10.64.16.29                  # conf1005.eqiad.wmnet
-- 2620:0:861:102:10:64:16:29   # conf1005.eqiad.wmnet
-- 10.64.48.167                 # conf1006.eqiad.wmnet
-- 2620:0:861:107:10:64:48:167  # conf1006.eqiad.wmnet
 - 10.64.0.207                  # conf1007.eqiad.wmnet
 - 2620:0:861:101:10:64:0:207   # conf1007.eqiad.wmnet
 - 10.64.16.110                 # conf1008.eqiad.wmnet
