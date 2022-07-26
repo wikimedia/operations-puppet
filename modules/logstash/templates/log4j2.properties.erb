@@ -36,6 +36,16 @@ appender.json_rolling.policies.time.modulate = true
 appender.json_rolling.layout.type = JSONLayout
 appender.json_rolling.layout.compact = true
 appender.json_rolling.layout.eventEol = true
+appender.json_rolling.strategy.type = DefaultRolloverStrategy
+appender.json_rolling.strategy.action.type = Delete
+appender.json_rolling.strategy.action.basepath = ${sys:ls.logs}
+appender.json_rolling.strategy.action.condition.type = IfFileName
+appender.json_rolling.strategy.action.condition.glob = logstash-${sys:ls.log.format}-*
+appender.json_rolling.strategy.action.ifAny.type = IfAny
+appender.json_rolling.strategy.action.ifAny.ifLastModified.type = IfLastModified
+appender.json_rolling.strategy.action.ifAny.ifLastModified.age = 30D
+appender.json_rolling.strategy.action.ifAny.ifAccumulatedFileSize.type = IfAccumulatedFileSize
+appender.json_rolling.strategy.action.ifAny.ifAccumulatedFileSize.exceeds = 10GB
 
 rootLogger.level = ${sys:ls.log.level}
 rootLogger.appenderRef.rolling.ref = ${sys:ls.log.format}_rolling
