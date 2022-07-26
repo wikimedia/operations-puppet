@@ -16,6 +16,7 @@ import datetime
 import logging
 import sys
 import time
+from tenacity import retry, stop_after_attempt, wait_random
 
 import mwopenstackclients
 import novaclient.exceptions
@@ -75,8 +76,27 @@ class CinderBackup(object):
 
         self.wait_for_resource_status(self.volume_id, self.cinderclient.volumes.get, ["available"])
 
-    # Delete backups older than 'days' days
+    @retry(reraise=True, stop=stop_after_attempt(9), wait=wait_random(min=5, max=15))
+    def delete_volume_snapshots(self, snapshot_id, force=True):
+        # Snapshots in admin project are intended to exist only during snapshot operation
+        # Once the status moves to 'available', they can be safely removed
+        logging.info("Deleting volume snapshot %s" % snapshot_id)
+        self.cinderclient.volume_snapshots.delete(snapshot_id, force=force)
+        self.snapshot_id = None
+        # Give delete time to process
+        time.sleep(10)
+
+    @retry(reraise=True, stop=stop_after_attempt(9), wait=wait_random(min=5, max=15))
+    def delete_backup(self, backup_id, force=False):
+        self.cinderclient.backups.delete(backup_id, force=force)
+        logging.info("Deleted backup %s" % backup_id)
+        self.backup_id = None
+        # Give delete time to process
+        time.sleep(10)
+
+    @retry(reraise=True, stop=stop_after_attempt(9), wait=wait_random(min=5, max=15))
     def purge_backups_older_than(self, days):
+        # Delete backups older than 'days' days
         existing_backups = self.cinderclient.backups.list(search_opts={"volume_id": self.volume_id})
         to_delete = {}
         for backup in existing_backups:
@@ -100,8 +120,7 @@ class CinderBackup(object):
             work_might_remain = False
             for id, backup in to_delete.copy().items():
                 if not backup.has_dependent_backups:
-                    self.cinderclient.backups.delete(id)
-                    logging.info("deleted backup %s" % id)
+                    self.delete_backup(id)
                     del to_delete[id]
                     delete_count += 1
                     work_might_remain = True
@@ -179,12 +198,7 @@ class CinderBackup(object):
                     self.volume_id, self.volume_name
                 )
             )
-            self.cinderclient.backups.delete(self.backup_id, force=True)
-
-            # Give that delete time to process; if we proceed immediately
-            #  then we race with the snapshot deletion
-            time.sleep(10)
-
+            self.delete_backup(self.backup_id, force=True)
             raise e
         except novaclient.exceptions.BadRequest as e:
             logging.warning(
@@ -193,9 +207,7 @@ class CinderBackup(object):
             raise e
         finally:
             if self.snapshot_id:
-                logging.info("Cleaning up snapshot %s" % self.snapshot_id)
-                self.cinderclient.volume_snapshots.delete(self.snapshot_id, force=True)
-                self.snapshot_id = None
+                self.delete_volume_snapshots(self.snapshot_id)
 
 
 if __name__ == "__main__":
