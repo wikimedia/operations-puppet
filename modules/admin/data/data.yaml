@@ -6173,3 +6173,7 @@ ldap_only_users:
     ensure: present
     realname: Clément Goubert
     email: cgoubert@wikimedia.org
+  pwangai:
+    ensure: present
+    realname: Peter Wangai
+    email: pwangai@wikimedia.org
