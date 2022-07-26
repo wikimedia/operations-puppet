@@ -1449,10 +1449,6 @@ node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
     role(wmcs::openstack::codfw1dev::services)
 }
 
-node /labweb100[12]\.wikimedia\.org/ {
-    role(spare::system)
-}
-
 # Primary graphite host
 node 'graphite1004.eqiad.wmnet' {
     role(graphite::production)
