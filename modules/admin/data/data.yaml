@@ -160,7 +160,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, bmansurov, musikanimal, nahidunlimited,
               daimona, mepps, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno]
+              komla, sgimeno, mfossati]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6101,10 +6101,6 @@ ldap_only_users:
     ensure: present
     realname: Alexander Vorwerk
     email: zabe@avorwerk.net
-  mfossati:
-    ensure: present
-    realname: Marco Fossati
-    email: mfossati@wikimedia.org
   slopes:
     ensure: present
     realname: Sérgio Lopes
