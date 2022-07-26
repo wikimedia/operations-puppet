@@ -159,6 +159,23 @@ local function use_local_dc()
         end
     end
 
+    -- OAuth
+    -- Due to T59500, initiate always uses index.php, and due to T74186,
+    -- authorize always uses /wiki/
+    if path == "/w/index.php" then
+        local title = get_query_param(query, "title=")
+        if title == "Special:OAuth/initiate" or
+            title == "Special:OAuth/token"
+        then
+            return false
+        end
+    end
+    if path == "/wiki/Special:OAuth/authorize" or
+        path == "/w/rest.php/oauth2/authorize"
+    then
+        return false
+    end
+
     return true
 end
 

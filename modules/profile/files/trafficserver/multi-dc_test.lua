@@ -368,6 +368,65 @@ describe("Multi-DC router", function ()
     assert.are.same("rw", result)
   end)
 
+  it("sends Special:OAuth/initiate", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "title=Special:OAuth/initiate&format=json&oauth_callback=oob",
+        uri = "/w/index.php",
+        header = {
+          Host = "en.wikipedia.org",
+        }
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("sends Special:OAuth/authorize", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/wiki/Special:OAuth/authorize",
+        header = {
+          Host = "en.wikipedia.org",
+        }
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("sends Special:OAuth/token", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "title=Special:OAuth/token&format=json",
+        uri = "/w/index.php",
+        header = {
+          Host = "en.wikipedia.org",
+        }
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("sends REST authorize", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/w/rest.php/oauth2/authorize",
+        header = {
+          Host = "en.wikipedia.org",
+        }
+      }
+    )
+    assert.are.same("rw", result)
+  end)
 
 end)
 
