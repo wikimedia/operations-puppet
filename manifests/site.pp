@@ -1453,8 +1453,7 @@ node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
-    role(wmcs::openstack::eqiad1::labweb)
-
+    role(spare::system)
 }
 
 # Primary graphite host
