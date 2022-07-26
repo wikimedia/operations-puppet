@@ -24,18 +24,30 @@ schemes:
 
 hosts:
   prod:
-    - ms-be2028
-    - ms-be2029
-    - ms-be2030
-    - ms-be2031
-    - ms-be2032
-    - ms-be2033
-    - ms-be2034
-    - ms-be2035
-    - ms-be2036
-    - ms-be2037
-    - ms-be2038
-    - ms-be2039
+    - ms-be2028:
+        - drain
+    - ms-be2029:
+        - drain
+    - ms-be2030:
+        - drain
+    - ms-be2031:
+        - drain
+    - ms-be2032:
+        - drain
+    - ms-be2033:
+        - drain
+    - ms-be2034:
+        - drain
+    - ms-be2035:
+        - drain
+    - ms-be2036:
+        - drain
+    - ms-be2037:
+        - drain
+    - ms-be2038:
+        - drain
+    - ms-be2039:
+        - drain
     - ms-be2040
     - ms-be2041
     - ms-be2042
@@ -63,3 +75,7 @@ hosts:
     - ms-be2063
     - ms-be2064
     - ms-be2065
+    - ms-be2066
+    - ms-be2067
+    - ms-be2068
+    - ms-be2069
