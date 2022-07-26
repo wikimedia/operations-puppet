@@ -42,6 +42,10 @@ server {
     error_page 429 @rate_limit;
     location @rate_limit {
         add_header Cache-Control no-cache always;
+        <%- if @oauth %>
+        add_header Access-Control-Allow-Origin $http_origin always;
+        add_header Access-Control-Allow-Credentials true always;
+        <%- end %>
         echo Rate limit exceeded;
         echo_flush;
     }
@@ -64,6 +68,8 @@ server {
       proxy_set_header 'X-redirect-url' https://$host$request_uri;
       proxy_set_header Host $http_host;
       add_header Cache-Control "no-store";
+      add_header Access-Control-Allow-Origin $http_origin always;
+      add_header Access-Control-Allow-Credentials true always;
     }
 
     location /_check_auth {
@@ -73,22 +79,33 @@ server {
       }
       proxy_pass http://127.0.0.1:9999/oauth/check_auth;
       proxy_set_header Host $http_host;
+      add_header Access-Control-Allow-Origin $http_origin always;
+      add_header Access-Control-Allow-Credentials true always;
     }
 
     location /_oauth_token_verify {
       error_page 403 = /error403;
       proxy_pass http://127.0.0.1:9999/oauth/oauth_verify$is_args$args;
       proxy_set_header Host $http_host;
+      proxy_cookie_path / "/; secure; HttpOnly; SameSite=none";
+      add_header Access-Control-Allow-Origin $http_origin always;
+      add_header Access-Control-Allow-Credentials true always;
     }
     location /_logout {
       proxy_pass http://127.0.0.1:9999/oauth/logout;
       proxy_set_header Host $http_host;
+      add_header Access-Control-Allow-Origin $http_origin always;
+      add_header Access-Control-Allow-Credentials true always;
     }
 <% end %>
 
     location / {
         if (-f /var/lib/nginx/wdqs/data-reload) {
           add_header Content-Type text/html always;
+          <%- if @oauth %>
+          add_header Access-Control-Allow-Origin $http_origin always;
+          add_header Access-Control-Allow-Credentials true always;
+          <%- end %>
           return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
         }
 <% if @oauth -%>
@@ -188,7 +205,12 @@ server {
         proxy_set_header X-BIGDATA-READ-ONLY "yes";
 
         add_header X-Served-By <%= @hostname %> always;
+        <%- if @oauth %>
+        add_header Access-Control-Allow-Origin $http_origin always;
+        add_header Access-Control-Allow-Credentials true always;
+        <%- else -%>
         add_header Access-Control-Allow-Origin * always;
+        <%- end %>
         add_header Cache-Control "public, max-age=300";
         add_header Vary Accept;
 
