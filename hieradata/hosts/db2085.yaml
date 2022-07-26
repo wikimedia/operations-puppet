@@ -1,6 +1,0 @@
-# db2085
-# Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s1: 185G
-  s8: 185G
-profile::monitoring::notifications_enabled: false
