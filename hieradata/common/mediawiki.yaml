@@ -157,9 +157,9 @@ mediawiki::sites:
             ]
           additional_rewrites:
             "early":
-              - "    RewriteCond %{QUERY_STRING} force_php74"
+              - "    RewriteCond %{}{QUERY_STRING} force_php74"
               - "    RewriteRule ^/wiki/Special:BlankPage - [E=backend:7.4]"
-              - "    RewriteCond %{QUERY_STRING} force_php72"
+              - "    RewriteCond %{}{QUERY_STRING} force_php72"
               - "    RewriteRule ^/wiki/Special:BlankPage - [E=backend:7.2]"
             "late":
               - "    # moved wikistats off NFS"
