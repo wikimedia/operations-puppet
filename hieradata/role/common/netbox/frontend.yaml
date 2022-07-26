@@ -24,14 +24,17 @@ profile::netbox::cas_rename_attributes:
   cn: 'first_name'
   mail: 'email'
 profile::netbox::cas_group_attribute_mapping:
-  is_active: ['wmf']
+  is_active: ['wmf','nda']
   is_staff: ['ops']
   is_superuser: ['ops']
 profile::netbox::cas_group_mapping:
+  'cn=nda,ou=groups,dc=wikimedia,dc=org': ['nda']
   'cn=wmf,ou=groups,dc=wikimedia,dc=org': ['wmf']
   'cn=ops,ou=groups,dc=wikimedia,dc=org': ['ops']
 profile::netbox::cas_group_required:
+  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
   - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
 
 profile::netbox::report_checks:
     -   name: puppetdb_physical
