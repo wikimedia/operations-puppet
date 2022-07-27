@@ -2369,11 +2369,6 @@ node /^mw230[13579]\.codfw\.wmnet$/ {
 # Row B
 
 # rack B3
-node /^mw225[4-8]\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
-# rack B3
 node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
@@ -2440,15 +2435,6 @@ node /^mw2(27[3-7]|36[79]|37[135])\.codfw\.wmnet$/ {
 
 # rack A6
 node /^mw230[2468]\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
-# rack A4
-node /^mw22(5[1-2])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::canary_api)
-}
-
-node /^mw2253\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
