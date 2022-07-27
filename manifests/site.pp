@@ -388,6 +388,9 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
 }
 
+node 'gerrit2002.wikimedia.org' {
+    role(gerrit::migration)
+}
 # Zookeeper and Etcd discovery service nodes
 node /^conf200[456]\.codfw\.wmnet$/ {
     role(configcluster)
@@ -412,7 +415,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
     role(ci::master)
 }
 # New contint and gerrit node T299575
-node /^(contint2002|gerrit2002)\.wikimedia\.org$/ {
+node /^(contint2002)\.wikimedia\.org$/ {
     role(insetup)
 
 }
