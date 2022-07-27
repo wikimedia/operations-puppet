@@ -220,7 +220,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph, sstefanova]
+    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -696,7 +696,7 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808, nskaggs, taavi, sstefanova]
+    members: [bd808, nskaggs, taavi, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
@@ -758,14 +758,14 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: [bd808, nskaggs, taavi, sstefanova]
+    members: [bd808, nskaggs, taavi, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
-    members: [bd808, nskaggs, sstefanova]
+    members: [bd808, nskaggs, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.wikireplicas.*',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
@@ -5362,6 +5362,16 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuL12ew55XLwqKgUOYIq6DI1CjTH/3Bjab4QIcG18wj sstefanova@wikimedia.org
+  raymond-ndibe:
+    ensure: present
+    realname: Raymond Ndibe
+    email: rolisaemeka-ctr@wikimedia.org
+    uid: 23725
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkIgD8ZSMXnIaUfkq1j4KKgZ3kphxffQWWktv6Ya75mLEIPYON7yl2W0iY4B/493NgoR3ghVRwLGR3YXFDXoLdpmeebyAmvHpaH+2T5lGVrCbXyc6fz5E7qArZGdMf0MhQ8eylkofK7NJI2azGWrqE+uxIaghIIy401zYCh516iieI5DSqvKs4bEWjokEQ1EXWmx4MASbXnvgwgXOFIpi8VPGABlMhdJWPr8NemCCUs6xgY+T+9jAcnvIflWv2HkYlOnaKgY8dhrim9m+BGVAdqK+3mN18zuvoaz3kjlzv8emL9JeUb32JgDrHfcONKtWwm4T9wrbNUZJ2nsC8JVsWJDXDKUej+KHfmoDjny4mHgx+oymHSY29ibstNHbWAan+S8V1yfQXEfFbjMm5HwPHJx7KYeJTblYtAd6fUmmDUieRdJxDBCszwUt0A4HIeomcVXbKBVfFSO91pLRrDiFlMTwauuKT1OOG1L4KLQz8gE30TlZyiOIxtrdR5gmQhRNGIppKlx/Rm3zUNPwyoRr2a5Nc4IgZaa+U8j4o6YxOeSRD3Kfx3MORhvwa6ruJ533IDX3BNKzrNAz0fiHLtHpysIkTQeY9BpxD8dujXfBNrvn8ZYeWsaHE5ejssOJyElIox63MkVKUSeChyta6WL2MLLwjTrOuz33NZ9T2XVb/bQ== raymond@ubuntu
+    expiry_date: 2023-06-30
+    expiry_contact: nskaggs@wikimedia.org
 
 ldap_only_users:
   abartov:
