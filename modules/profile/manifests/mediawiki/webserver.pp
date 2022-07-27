@@ -11,10 +11,17 @@ class profile::mediawiki::webserver(
     # Installation/site dependent sites
     Array[Mediawiki::SiteCollection] $sites = lookup('mediawiki::sites'),
     Boolean $install_fonts = lookup('profile::mediawiki::webserver::install_fonts', {'default_value' => false}),
+    Optional[Wmflib::Php_version] $default_php_version = lookup('profile::mediawiki::webserver::default_php_version', {'default_value' => undef}),
 ) {
     include ::profile::mediawiki::httpd
     $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
-    $fcgi_proxies = $php_versions.map |$idx, $version| {
+
+    # The ordering of $fcgi_proxies determines the fallback php version in mediawiki::web::vhost
+    $ordered_php_versions = $default_php_version ? {
+        undef => $php_versions,
+        default => [$default_php_version] + $php_versions.filter |$x| { $x != $default_php_version}
+    }
+    $fcgi_proxies = $ordered_php_versions.map |$idx, $version| {
         $fcgi_pool_name = $idx? {
             0 => $fcgi_pool,
             default => "${fcgi_pool}-${version}"
