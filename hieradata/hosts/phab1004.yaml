@@ -1,0 +1,2 @@
+profile::admin::groups:
+  - phabricator-roots
