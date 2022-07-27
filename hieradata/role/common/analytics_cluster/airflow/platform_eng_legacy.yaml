@@ -42,10 +42,7 @@ profile::airflow::instances:
         # This can be an ERB template that will be rendered in airflow::instance.
         # db_user and db_password params should be set in puppet private
         # in profile::airflow::instances_secrets.
-        #
-        # database is 'airflow_platform_eng_v2' as there was an existing airflow instance that needed to be replaced without breaking production
-        # context: https://phabricator.wikimedia.org/T312858
-        sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-coord1001.eqiad.wmnet/airflow_platform_eng_v2?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+        sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-coord1001.eqiad.wmnet/airflow_platform_eng?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
     connections:
       analytics-hive:
         conn_type: hive_metastore
@@ -53,5 +50,10 @@ profile::airflow::instances:
         port: 9083
         extra_dejson: {'authMechanism': 'GSSAPI'}
 
+# TODO: remove this override to automatically deploy and use
+# airflow-dags/platform_eng/dags from data-engineering/airflow-dags
+# repository once we are ready.
+# https://phabricator.wikimedia.org/T295380
+profile::airflow::use_wmf_defaults: false
 
 profile::contacts::role_contacts: ['Data Engineering']
