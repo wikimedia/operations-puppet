@@ -220,7 +220,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph]
+    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph, sstefanova]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -696,7 +696,7 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808, nskaggs, taavi]
+    members: [bd808, nskaggs, taavi, sstefanova]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
@@ -758,14 +758,14 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: [bd808, nskaggs, taavi]
+    members: [bd808, nskaggs, taavi, sstefanova]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
-    members: [bd808, nskaggs]
+    members: [bd808, nskaggs, sstefanova]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.wikireplicas.*',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
@@ -5354,6 +5354,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJP32mL1eV5dE6DMJTzUkDpPCXFY2wdJoCBr5+yOC+G
+  sstefanova:
+    ensure: present
+    realname: Slavina Stefanova
+    email: sstefanova@wikimedia.org
+    uid: 35710
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuL12ew55XLwqKgUOYIq6DI1CjTH/3Bjab4QIcG18wj sstefanova@wikimedia.org
 
 ldap_only_users:
   abartov:
