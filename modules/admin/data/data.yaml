@@ -103,7 +103,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [hashar, thcipriani, qchris, brennen, dancy, jnuche]
+    members: &gerrit_root_members [hashar, thcipriani, qchris, brennen, dancy, jnuche, demon]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
