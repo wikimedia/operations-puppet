@@ -119,7 +119,6 @@ class profile::icinga(
     class { 'profile::bird::anycast_monitoring': }
     class { 'profile::prometheus::alerts': }
     class { 'profile::maps::alerts': }
-    class { 'profile::cache::kafka::alerts': }
     class { 'profile::mediawiki::alerts': }
     class { 'profile::swift::alerts': }
 
