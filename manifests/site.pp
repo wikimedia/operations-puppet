@@ -757,7 +757,7 @@ node 'db2121.codfw.wmnet' {
 }
 
 # codfw replicas
-# See also db2086, db2168 and db2087 db2169 below
+# See also db2168 and db2087 db2169 below
 node /^db2(108|118|120|122|150)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -791,7 +791,7 @@ node 'db2079.codfw.wmnet' {
 }
 
 # codfw replicas
-# See also db2167 and db2086, db2168 below
+# See also db2167 db2168 below
 node /^db2(152|154|161|162|163|165|166)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -805,7 +805,7 @@ node 'db2164.codfw.wmnet' {
 node /^db1(096|098|099|101|105|113|144|146|170)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
-node /^db2(086|087|088|089|137|138|167|168|169|170|171)\.codfw\.wmnet/ {
+node /^db2(087|088|089|137|138|167|168|169|170|171)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
