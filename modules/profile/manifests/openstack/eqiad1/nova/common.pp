@@ -24,7 +24,7 @@ class profile::openstack::eqiad1::nova::common(
         db_host                      => $db_host,
         db_name                      => $db_name,
         db_name_api                  => $db_name_api,
-        db_name_cell                 => $db_name_api,
+        db_name_cell                 => $db_name_cell,
         openstack_controllers        => $openstack_controllers,
         rabbitmq_nodes               => $rabbitmq_nodes,
         keystone_api_fqdn            => $keystone_api_fqdn,
