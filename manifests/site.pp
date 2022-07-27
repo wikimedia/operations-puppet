@@ -858,12 +858,12 @@ node /^db11(52|53)\.eqiad\.wmnet$/ {
 
 # codfw
 # x2 codfw master
-node 'db2142.codfw.wmnet' {
+node 'db2144.codfw.wmnet' {
     role(mariadb::core)
 }
 
 # x2 codfw slaves
-node /^db21(43|44)\.codfw\.wmnet$/ {
+node /^db21(42|43)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 

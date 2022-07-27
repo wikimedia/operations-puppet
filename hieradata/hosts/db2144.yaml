@@ -1,5 +1,6 @@
 # db2144
 mariadb::shard: 'x2'
+profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: true
 profile::mariadb::config::sync_binlog: '0'
