@@ -1,7 +1,9 @@
+# @param $rabbitmq_setup_nodes List of rabbit nodes allowed in firewalls etc but not serving traffic
 class profile::openstack::base::rabbitmq(
     String $region = lookup('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
+    Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::base::rabbitmq_setup_nodes'),
     $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
@@ -92,7 +94,7 @@ class profile::openstack::base::rabbitmq(
     ferm::service { 'rabbitmq-internals':
         proto  => 'tcp',
         port   => '(4369 5671 5672 25672)',
-        srange => "(@resolve((${rabbitmq_nodes.join(' ')})))",
+        srange => "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))",
     }
 
     $hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]

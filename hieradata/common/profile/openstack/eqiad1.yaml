@@ -66,6 +66,10 @@ profile::openstack::eqiad1::rabbitmq_nodes:
   - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
+profile::openstack::eqiad1::rabbitmq_setup_nodes:
+  - cloudrabbit1001.wikimedia.org
+  - cloudrabbit1002.wikimedia.org
+  - cloudrabbit1003.wikimedia.org
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
 profile::openstack::eqiad1::rabbit_file_handles: 8192
 profile::openstack::eqiad1::rabbitmq_heartbeat_timeout: 120

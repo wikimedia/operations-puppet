@@ -1583,9 +1583,9 @@ node 'cloudcontrol2005-dev.wikimedia.org' {
     role(insetup)
 }
 
-# new cloudrabbit servers T304888
+# cloudrabbit servers T304888
 node /^cloudrabbit100[123]\.wikimedia\.org/ {
-    role(insetup)
+    role(wmcs::openstack::eqiad1::rabbitmq)
 }
 
 # new cloudservices1005 node T304888

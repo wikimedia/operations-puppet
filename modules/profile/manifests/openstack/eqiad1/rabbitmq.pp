@@ -1,6 +1,7 @@
 class profile::openstack::eqiad1::rabbitmq(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
+    Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::eqiad1::rabbitmq_setup_nodes'),
     $monitor_user = lookup('profile::openstack::eqiad1::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::eqiad1::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::eqiad1::rabbit_cleanup_pass'),
@@ -22,6 +23,7 @@ class profile::openstack::eqiad1::rabbitmq(
     class {'::profile::openstack::base::rabbitmq':
         openstack_controllers   => $openstack_controllers,
         rabbitmq_nodes          => $rabbitmq_nodes,
+        rabbitmq_setup_nodes    => $rabbitmq_setup_nodes,
         monitor_user            => $monitor_user,
         monitor_password        => $monitor_password,
         cleanup_password        => $cleanup_password,
