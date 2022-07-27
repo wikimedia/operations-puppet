@@ -158,7 +158,16 @@ class profile::gitlab::runner (
                 |- CMD
             ,
             unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
-            require => Apt::Package_from_component['gitlab-runner'],
+            require => [Apt::Package_from_component['gitlab-runner'], Exec['gitlab-clear-registration-toml']],
+            notify  => Exec['gitlab-runner-merge-configs'],
+        }
+
+        # registration.toml has to be cleared, otherwise old and new runner run simultaneously
+        exec { 'gitlab-clear-registration-toml':
+            user    => $gitlab_runner_user,
+            command => "/usr/bin/truncate -s 0 ${config_dir}/registration.toml",
+            unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
+            before  =>  Exec['gitlab-register-runner'],
         }
 
         class { 'gitlab_runner::config':
