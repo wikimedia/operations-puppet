@@ -97,6 +97,7 @@ scap::dsh::groups:
     hosts:
       - netmon1002.wikimedia.org
       - netmon2001.wikimedia.org
+      - netmon1003.wikimedia.org
   logstash:
     conftool:
       - {'cluster': 'logstash', 'service': 'kibana'}
