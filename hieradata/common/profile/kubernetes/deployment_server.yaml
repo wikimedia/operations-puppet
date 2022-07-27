@@ -211,12 +211,12 @@ profile::kubernetes::deployment_server::services:
         - name: revscoring-articletopic-deploy
           owner: root
           group: deploy-ml-service
-    article-outlink:
+    articletopic-outlink:
       usernames:
-        - name: article-outlink
+        - name: articletopic-outlink
           owner: root
           group: deploy-ml-service
-        - name: article-outlink-deploy
+        - name: articletopic-outlink-deploy
           owner: root
           group: deploy-ml-service
     kubeflow-kfserving:
