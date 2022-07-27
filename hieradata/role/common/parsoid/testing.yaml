@@ -1,6 +1,6 @@
 cluster: parsoid
 parsoid::testing::parsoid_port: 8142
-parsoid::testing::default_api_proxy_uri: 'http://api-rw.discovery.wmnet'
+parsoid::testing::default_api_proxy_uri: "http://api-rw.discovery.wmnet"
 
 profile::admin::groups:
   - parsoid-roots
@@ -40,12 +40,17 @@ profile::monitoring::monitor_systemd: false
 # T254025
 profile::mediawiki::php::monitoring::monitor_opcache: false
 
-profile::parsoid::vd_client::service_ensure: 'running'
-profile::parsoid::vd_server::service_ensure: 'running'
-profile::parsoid::rt_client::service_ensure: 'running'
-profile::parsoid::rt_server::service_ensure: 'running'
+# Install php 7.4 on scandium
+profile::mediawiki::php::php_versions:
+  - "7.2"
+  - "7.4"
+
+profile::parsoid::vd_client::service_ensure: "running"
+profile::parsoid::vd_server::service_ensure: "running"
+profile::parsoid::rt_client::service_ensure: "running"
+profile::parsoid::rt_server::service_ensure: "running"
 
 profile::parsoid::testreduce::install_node: false
-profile::nginx::variant: 'light'
+profile::nginx::variant: "light"
 
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ["ServiceOps"]
