@@ -192,12 +192,6 @@ class profile::prometheus::alerts (
         }
     }
 
-    monitoring::alerts::traffic_drop{'traffic_drop_eqiad': site => 'eqiad'}
-    monitoring::alerts::traffic_drop{'traffic_drop_codfw': site => 'codfw'}
-    monitoring::alerts::traffic_drop{'traffic_drop_esams': site => 'esams'}
-    monitoring::alerts::traffic_drop{'traffic_drop_ulsfo': site => 'ulsfo'}
-    monitoring::alerts::traffic_drop{'traffic_drop_eqsin': site => 'eqsin'}
-
     monitoring::check_prometheus { 'widespread-puppet-agent-fail':
         description     => 'Widespread puppet agent failures',
         dashboard_links => ['https://grafana.wikimedia.org/d/yOxVDGvWk/puppet'],
