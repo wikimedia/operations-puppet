@@ -23,33 +23,30 @@ class scap (
     # Required python3 package is provided by base::standard_packages class
     ensure_packages(['rsync'])
 
-    # For the time being, exclude beta cluster hosts (deployment-prep)
-    if $::realm == 'production' {
-        # This dir needs to match the home of the user defined in class scap::user
-        $scap_home = '/var/lib/scap'
+    # This dir needs to match the home of the user defined in class scap::user
+    $scap_home = '/var/lib/scap'
 
-        file { '/usr/local/bin/bootstrap-scap-target.sh':
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/scap/bootstrap-scap-target.sh',
-        }
+    file { '/usr/local/bin/bootstrap-scap-target.sh':
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/scap/bootstrap-scap-target.sh',
+    }
 
-        exec { 'bootstrap-scap-target':
-            command => "/usr/local/bin/bootstrap-scap-target.sh ${deployment_server} ${scap_home}",
-            user    => 'scap',
-            creates => "${scap_home}/scap/bin/scap",
-            require => File['/usr/local/bin/bootstrap-scap-target.sh']
-        }
+    exec { 'bootstrap-scap-target':
+        command => "/usr/local/bin/bootstrap-scap-target.sh ${deployment_server} ${scap_home}",
+        user    => 'scap',
+        creates => "${scap_home}/scap/bin/scap",
+        require => File['/usr/local/bin/bootstrap-scap-target.sh']
+    }
 
-        file { '/usr/bin/scap':
-            ensure  => 'link',
-            target  => "${scap_home}/scap/bin/scap",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            require => Exec['bootstrap-scap-target']
-        }
+    file { '/usr/bin/scap':
+        ensure  => 'link',
+        target  => "${scap_home}/scap/bin/scap",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Exec['bootstrap-scap-target']
     }
 
     $deploy_k8s = !$k8s_deployments.empty
