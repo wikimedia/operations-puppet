@@ -6,6 +6,7 @@ class profile::openstack::base::nova::common(
     $db_host = lookup('profile::openstack::base::nova::db_host'),
     $db_name = lookup('profile::openstack::base::nova::db_name'),
     $db_name_api = lookup('profile::openstack::base::nova::db_name_api'),
+    $db_name_cell = lookup('profile::openstack::base::nova::db_name_cell'),
     $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
@@ -53,6 +54,13 @@ class profile::openstack::base::nova::common(
     openstack::db::project_grants { 'nova':
         access_hosts => $openstack_controllers,
         db_name      => $db_name,
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+        project_name => 'nova',
+    }
+    openstack::db::project_grants { 'nova_cell':
+        access_hosts => $openstack_controllers,
+        db_name      => $db_name_cell,
         db_user      => $db_user,
         db_pass      => $db_pass,
         project_name => 'nova',

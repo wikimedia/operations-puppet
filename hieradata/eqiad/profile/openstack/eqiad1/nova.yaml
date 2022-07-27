@@ -2,6 +2,7 @@ profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::nova::db_host: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::nova::db_name: 'nova_eqiad1'
 profile::openstack::eqiad1::nova::db_name_api: 'nova_api_eqiad1'
+profile::openstack::eqiad1::nova::db_name_cell: 'nova_cell0_eqiad1'
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad1.wikimedia.cloud'
 profile::openstack::eqiad1::nova::metadata_listen_port: 18775
 profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: 'eth1'
