@@ -104,7 +104,9 @@ CONFIG proxy.config.http.insert_age_in_response INT 0
 
 <% if @parent_rules and @parent_rules != [] -%>
 # Parent proxy
+<% unless @is_ats9 -%>
 CONFIG proxy.config.http.parent_proxy_routing_enable INT 1
+<% end -%>
 CONFIG proxy.config.http.parent_proxy.self_detect INT 0
 CONFIG proxy.config.http.parent_proxy.retry_time INT 1
 CONFIG proxy.config.http.no_dns_just_forward_to_parent INT <%= @disable_dns_resolution %>
