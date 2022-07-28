@@ -4,6 +4,7 @@ class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::base::rabbitmq_setup_nodes'),
+    Stdlib::Fqdn $rabbitmq_service_name = lookup('profile::openstack::base::rabbitmq_service_name'),
     $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
@@ -32,6 +33,7 @@ class profile::openstack::base::rabbitmq(
                 require       => Package['rabbitmq-server'],
                 before        => File['/etc/rabbitmq/rabbitmq.config'],
                 notify        => Service['rabbitmq-server'],
+                hosts         => [$rabbitmq_service_name]
             }
         )
 

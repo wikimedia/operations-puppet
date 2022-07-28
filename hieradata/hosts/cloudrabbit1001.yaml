@@ -1,0 +1,1 @@
+profile::openstack::base::rabbitmq_service_name: 'rabbitmq01.eqiad1.wikimediacloud.org'
