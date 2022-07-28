@@ -150,20 +150,6 @@ class profile::mediawiki::php(
         $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
         $versioned_port = php::fpm::versioned_port($port, $php_versions)
 
-        # For compatibility reasons, we're adding a "legacy" pool only for the default
-        # version, that will produce the socket "/run/php/fpm-www.sock"
-        # that is needed by apache during the transition period.
-        php::fpm::pool { 'www':
-            filename => 'legacy',
-            port     => $versioned_port[$default_php_version],
-            version  => $default_php_version,
-            config   => {
-                'pm'                        => 'static',
-                'pm.max_children'           => $num_workers,
-                'request_terminate_timeout' => $request_timeout,
-                'request_slowlog_timeout'   => $slowlog_limit,
-            }
-        }
         $php_versions.each |$idx, $php_version| {
             $fpm_programname = php::fpm::programname($php_version)
             # Add systemd override for php-fpm, that should prevent a reload
@@ -178,7 +164,6 @@ class profile::mediawiki::php(
             # PHP-fpm pools. We replace the default one to avoid puppet's management
             # of the pools.d directory to cause moments where php-fpm is incorrectly
             # configured.
-
             $pool_name = "${fcgi_pool}-${php_version}"
             php::fpm::pool { $pool_name:
                 filename => 'www',
