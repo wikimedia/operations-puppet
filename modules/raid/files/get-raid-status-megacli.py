@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 """
 Get the status of a MegaRAID RAID
@@ -6,9 +6,6 @@ Get the status of a MegaRAID RAID
 Execute and parse megacli commands in order to print a summary of the RAID
 status. By default only components in non-optimal status are shown.
 """
-
-from __future__ import print_function
-
 import argparse
 import subprocess
 import sys
@@ -134,7 +131,7 @@ KEY_TO_CONTEXT = {
 }
 
 
-class RaidStatus():
+class RaidStatus:
     """Representation of a RAID status with all it's components"""
 
     def __init__(self, physical=False):
@@ -199,18 +196,15 @@ class RaidStatus():
             key     -- the key to be added to the new block
             value   -- the value to be added to the new block for the given key
         """
-
         self.current_context['values'][key] = value
-
         context_name = self.current_context['context']
         optimal_values = self.contexts[context_name]['optimal_values']
 
-        if key in optimal_values.keys() and value not in optimal_values[key]:
+        if key in optimal_values and value not in optimal_values[key]:
             self.current_context['optimal'] = False
             self.failed[context_name] += 1
-            sep = '====='
-            self.current_context['values'][key] = '{}> {} <{}'.format(
-                sep, self.current_context['values'][key], sep)
+            current = self.current_context["values"][key]
+            self.current_context['values'][key] = f'=====> {current} <====='
 
             # Mark as non optimal the whole parent chain
             while True:
@@ -259,7 +253,7 @@ class RaidStatus():
         if get_all:
             message = 'includes all components'
 
-        status.append('=== RaidStatus ({})'.format(message))
+        status.append(f'=== RaidStatus ({message})')
 
         for adapter in self.adapters:
             if not get_all and adapter['optimal']:
@@ -281,11 +275,10 @@ class RaidStatus():
             total = self.counters[context]
 
             if failed == 0:
-                items.append('{}: {} OK'.format(context, total))
+                items.append(f'{context}: {total} OK')
                 continue
 
-            if ('warning' in self.contexts[context] and
-                    self.contexts[context]):
+            if 'warning' in self.contexts[context] and self.contexts[context]:
                 suffix = 'WARN'
                 if exit_code < 1:
                     exit_code = 1  # Nagios WARNING
@@ -293,8 +286,7 @@ class RaidStatus():
                 suffix = 'CRIT'
                 exit_code = 2  # Nagios CRITICAL
 
-            items.append('{}: {}/{} {}'.format(
-                context, failed, total, suffix))
+            items.append(f'{context}: {failed}/{total} {suffix}')
 
         return ' | '.join(items), exit_code
 
@@ -313,7 +305,7 @@ class RaidStatus():
         status = []
         for key in self.contexts[block['context']]['print_keys']:
             try:
-                status.append('{}{}: {}'.format(prefix, key, block['values'][key]))
+                status.append(f'{prefix}{key}: {block["values"][key]}')
             except KeyError:
                 pass  # Explicitely ignore missing keys
 
@@ -322,8 +314,7 @@ class RaidStatus():
         for child in block['childs']:
             # Skip the child if not needed
             if not get_all and child['optimal']:
-                if (block['optimal'] or
-                        not self.contexts[block['context']]['include_childs']):
+                if block['optimal'] or not self.contexts[block['context']]['include_childs']:
                     continue
 
             status += self._get_block_status(
@@ -359,17 +350,15 @@ def parse_megacli_status(command, status):
         status  -- the RaidStatus to use to store the parsed results
     """
 
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
+    result = subprocess.run(command, stdout=subprocess.PIPE, universal_newlines=True)
 
-    for line in proc.stdout:
+    for line in result.stdout.splitlines():
         line = line.strip(' \t\r\n')
 
         if len(line) == 0:
             continue
 
         _process_line(line, status)
-
-    proc.wait()
 
 
 def get_megacli_status():
@@ -405,8 +394,7 @@ def _process_line(line, status):
 
     key, value = [el.strip(' \t\r\n') for el in line.split(':', 1)]
 
-    if (key in KEY_TO_CONTEXT.keys() and
-            KEY_TO_CONTEXT[key] in status.contexts.keys()):
+    if key in KEY_TO_CONTEXT.keys() and KEY_TO_CONTEXT[key] in status.contexts.keys():
         status.add_block(KEY_TO_CONTEXT[key], key, value)
     else:
         status.set_property(key, value)
@@ -437,8 +425,8 @@ if __name__ == '__main__':
         args = parse_args()
         exit_code = main(args)
     except Exception as e:
-        print("Failed to execute '{}': {} {}".format(
-            ' '.join(sys.argv), e.__class__.__name__, e.message))
+        options = ' '.join(sys.argv)
+        print(f"Failed to execute '{options}': {e.__class__.__name__} {e.message}")
         exit_code = 3  # Nagios UNKNOWN
 
     sys.exit(exit_code)
