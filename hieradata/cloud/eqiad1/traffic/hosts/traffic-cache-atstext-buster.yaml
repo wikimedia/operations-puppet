@@ -105,6 +105,8 @@ profile::trafficserver::backend::outbound_tls_settings:
     enable_tlsv1_2: 1
     enable_tlsv1_3: 0
   verify_origin: true
+  # ATS 9.1.2 uses verify_server_policy
+  verify_server_policy: ENFORCED
 prometheus_nodes: []
 public_tls_unified_cert_vendor: lets-encrypt
 puppetmaster: traffic-puppetmaster-buster.traffic.eqiad.wmflabs

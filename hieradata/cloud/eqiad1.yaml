@@ -118,6 +118,8 @@ profile::trafficserver::backend::outbound_tls_settings:
     enable_tlsv1_2: 1
     enable_tlsv1_3: 0
   verify_origin: true
+  # ATS 9.1.2 uses verify_server_policy
+  verify_server_policy: ENFORCED
 profile::trafficserver::tls::inbound_tls_settings:
   cert_path: /etc/acmecerts
   certificates:

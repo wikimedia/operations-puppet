@@ -77,9 +77,10 @@
 #           enable_tlsv1_2 => 1,
 #           enable_tlsv1_3 => 1,
 #       },
-#       verify_origin   => true,
-#       cacert_dirname  => '/etc/ssl/certs',
-#       cacert_filename => 'Puppet_Internal_CA.pem',
+#       verify_origin        => true, # ATS 8.x
+#       verify_server_policy => ENFORCED, # ATS 9.x
+#       cacert_dirname       => '/etc/ssl/certs',
+#       cacert_filename      => 'Puppet_Internal_CA.pem',
 #   }
 # check the type definitions for more detailed information
 #
