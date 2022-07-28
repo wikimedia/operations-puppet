@@ -2,6 +2,9 @@
 # https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
 # This file is managed by Puppet.
 
+<% if @is_ats9 -%>
+logging:
+<% end -%>
 formats:
 <% @log_formats.each do |log_format| -%>
     - name: <%= log_format['name'] %>
