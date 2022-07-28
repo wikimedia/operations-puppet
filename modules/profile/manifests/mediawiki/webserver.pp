@@ -17,17 +17,23 @@ class profile::mediawiki::webserver(
     $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
 
     # The ordering of $fcgi_proxies determines the fallback php version in mediawiki::web::vhost
+    # so we want to order php versions accordingly.
     $ordered_php_versions = $default_php_version ? {
         undef => $php_versions,
         default => [$default_php_version] + $php_versions.filter |$x| { $x != $default_php_version}
     }
-    $fcgi_proxies = $ordered_php_versions.map |$idx, $version| {
-        $fcgi_pool_name = $idx? {
-            0 => $fcgi_pool,
+
+    $fcgi_proxies = $ordered_php_versions.map |$version| {
+        # The default installation is the first in the list in $php_versions.
+        # That, for transition reasons, it uses a slightly different fcgi_proxy.
+        # It might be different from the version we want to route to by default, which is
+        # instead the first here.
+        $default_install = ($php_versions[0] == $version)
+        $fcgi_pool_name = $default_install? {
+            true => $fcgi_pool,
             default => "${fcgi_pool}-${version}"
         }
-        $default = ($idx == 0)
-        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name, $default)]
+        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name, $default_install)]
     }
 
     # Declare the proxies explicitly with retry=0
