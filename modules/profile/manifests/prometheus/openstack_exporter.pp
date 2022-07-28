@@ -24,6 +24,9 @@ class profile::prometheus::openstack_exporter (
     file { '/usr/local/sbin/prometheus-openstack-exporter-wrapper':
         ensure => stdlib::ensure($ensure, 'file'),
         source => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500',
     }
 
     systemd::service { 'prometheus-openstack-exporter':
