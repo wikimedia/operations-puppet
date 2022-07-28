@@ -24,12 +24,16 @@
 #   Maximum number of incoming connections (ATS defaults to 30000)
 #
 # [*max_connections_active_in*]
-#   Maximum number of active connections (ATS defaults to 10000)
+#   Maximum number of active connections (ATS defaults to 10000) ATS 8.x
 #
+# [*max_requests_in*]
+#   Maximum number of active connections (ATS defaults to 10000) ATS 9.x
+
 type Trafficserver::Network_settings = Struct[{
     'connections_throttle'       => Integer[0],
     'sock_option_flag_in'        => Integer[0, 0xF],
     'default_inactivity_timeout' => Integer[0],
     'max_connections_in'         => Integer[0],
     'max_connections_active_in'  => Integer[0],
+    'max_requests_in'            => Optional[Integer[0]],
 }]

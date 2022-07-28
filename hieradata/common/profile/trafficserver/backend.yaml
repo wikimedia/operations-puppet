@@ -447,6 +447,7 @@ profile::trafficserver::backend::network_settings:
   default_inactivity_timeout: 360
   max_connections_in: 270000
   max_connections_active_in: 90000
+  max_requests_in: 90000
 profile::trafficserver::backend::http_settings:
   accept_no_activity_timeout: 180
   connect_attempts_timeout: 9

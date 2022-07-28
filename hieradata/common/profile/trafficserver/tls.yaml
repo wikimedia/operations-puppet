@@ -6,6 +6,7 @@ profile::trafficserver::tls::network_settings:
   default_inactivity_timeout: 300
   max_connections_in: 270000
   max_connections_active_in: 90000
+  max_requests_in: 90000
 profile::trafficserver::tls::mapping_rules:
   - type: map
     target: wss://etherpad.wikimedia.org

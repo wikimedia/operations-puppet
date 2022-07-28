@@ -185,6 +185,9 @@
 #   * 1 Tracks IO Buffer Memory allocations and releases
 #   * 2 Tracks IO Buffer Memory and OpenSSL Memory allocations and releases
 #
+# [*is_ats9*]
+#   Whether the configuration for ATS9.x should be used instead of 8.x. (default: false)
+#
 # === Examples
 #
 #  trafficserver::instance { 'backend':
@@ -208,39 +211,40 @@
 #  }
 #
 define trafficserver::instance(
-    Trafficserver::Paths $paths,
-    String $conftool_service,
-    Boolean $default_instance = false,
-    Optional[Stdlib::Port] $http_port = undef,
-    Optional[Stdlib::Port] $https_port = undef,
-    Integer[0, 1] $disable_dns_resolution = 0,
-    Optional[Trafficserver::Network_settings] $network_settings = undef,
-    Optional[Trafficserver::HTTP_settings] $http_settings = undef,
-    Optional[Trafficserver::H2_settings] $h2_settings = undef,
-    Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
-    Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,
-    Boolean $enable_xdebug = false,
-    Boolean $enable_compress = false,
-    Boolean $collapsed_forwarding = false,
-    Boolean $origin_coalescing = true,
-    String $global_lua_script = '',
-    Integer $max_lua_states = 256,
-    Array[Trafficserver::Mapping_rule] $mapping_rules = [],
-    Boolean $enable_caching = true,
-    Optional[Integer[0,2]] $required_headers = undef,
-    Integer $guaranteed_max_lifetime = 31536000,
-    Optional[Array[Trafficserver::Caching_rule]] $caching_rules = undef,
-    Optional[Trafficserver::Negative_Caching] $negative_caching = undef,
-    Optional[Array[Trafficserver::Storage_element]] $storage = undef,
-    Optional[Integer] $ram_cache_size = -1,
-    Array[Trafficserver::Log_format] $log_formats = [],
-    Array[Trafficserver::Log_filter] $log_filters = [],
-    Array[Trafficserver::Log] $logs = [],
-    Optional[Array[Trafficserver::Parent_rule]] $parent_rules = undef,
-    String $error_page = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
-    Integer[0,1] $x_forwarded_for = 0,
-    Boolean $systemd_hardening = true,
-    Optional[Integer[0,2]] $res_track_memory = undef,
+    Trafficserver::Paths                            $paths,
+    String                                          $conftool_service,
+    Boolean                                         $default_instance        = false,
+    Optional[Stdlib::Port]                          $http_port               = undef,
+    Optional[Stdlib::Port]                          $https_port              = undef,
+    Integer[0, 1]                                   $disable_dns_resolution  = 0,
+    Optional[Trafficserver::Network_settings]       $network_settings        = undef,
+    Optional[Trafficserver::HTTP_settings]          $http_settings           = undef,
+    Optional[Trafficserver::H2_settings]            $h2_settings             = undef,
+    Optional[Trafficserver::Inbound_TLS_settings]   $inbound_tls_settings    = undef,
+    Optional[Trafficserver::Outbound_TLS_settings]  $outbound_tls_settings   = undef,
+    Boolean                                         $enable_xdebug           = false,
+    Boolean                                         $enable_compress         = false,
+    Boolean                                         $collapsed_forwarding    = false,
+    Boolean                                         $origin_coalescing       = true,
+    String                                          $global_lua_script       = '',
+    Integer                                         $max_lua_states          = 256,
+    Array[Trafficserver::Mapping_rule]              $mapping_rules           = [],
+    Boolean                                         $enable_caching          = true,
+    Optional[Integer[0,2]]                          $required_headers        = undef,
+    Integer                                         $guaranteed_max_lifetime = 31536000,
+    Optional[Array[Trafficserver::Caching_rule]]    $caching_rules           = undef,
+    Optional[Trafficserver::Negative_Caching]       $negative_caching        = undef,
+    Optional[Array[Trafficserver::Storage_element]] $storage                 = undef,
+    Optional[Integer]                               $ram_cache_size          = -1,
+    Array[Trafficserver::Log_format]                $log_formats             = [],
+    Array[Trafficserver::Log_filter]                $log_filters             = [],
+    Array[Trafficserver::Log]                       $logs                    = [],
+    Optional[Array[Trafficserver::Parent_rule]]     $parent_rules            = undef,
+    String                                          $error_page              = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
+    Integer[0,1]                                    $x_forwarded_for         = 0,
+    Boolean                                         $systemd_hardening       = true,
+    Optional[Integer[0,2]]                          $res_track_memory        = undef,
+    Boolean                                         $is_ats9                 = false,
 ) {
 
     require ::trafficserver

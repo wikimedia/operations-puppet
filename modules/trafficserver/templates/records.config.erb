@@ -26,7 +26,11 @@ CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connecti
 CONFIG proxy.config.net.sock_option_flag_in INT <%= @network_settings['sock_option_flag_in'] %>
 CONFIG proxy.config.net.default_inactivity_timeout INT <%= @network_settings['default_inactivity_timeout'] %>
 CONFIG proxy.config.net.max_connections_in INT <%= @network_settings['max_connections_in'] %>
+<% if @is_ats9 -%>
+CONFIG proxy.config.net.max_requests_in INT <%= @network_settings['max_requests_in'] %>
+<% else -%>
 CONFIG proxy.config.net.max_connections_active_in INT <%= @network_settings['max_connections_active_in'] %>
+<% end -%>
 <% end -%>
 <% if @h2_settings -%>
 # HTTP/2 settings
