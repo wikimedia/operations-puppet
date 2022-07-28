@@ -1,4 +1,0 @@
-profile::admin::groups:
-  - gerrit-root
-  - gerrit-admin
-contactgroups: 'admins,gerrit'
