@@ -413,7 +413,8 @@ def main(args):
     if args.compress:
         # NRPE doesn't handle NULL bytes, encoding them.
         # Given the specific domain there is no need of a full yEnc encoding
-        print(zlib.compress(message).replace('\x00', '###NULL###'))
+        sys.stdout.buffer.write(zlib.compress(message.encode()).replace(b'\x00', b'###NULL###'))
+        sys.stdout.buffer.write(b'\n')
     else:
         print(message)
 
