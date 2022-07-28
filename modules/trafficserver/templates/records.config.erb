@@ -15,6 +15,9 @@ CONFIG proxy.config.http.response_server_enabled INT 2
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
+<% if @is_ats9 -%>
+CONFIG proxy.config.plugin.dynamic_reload_mode INT 0
+<% end -%>
 CONFIG proxy.config.plugin.lua.max_states INT <%= @max_lua_states %>
 
 <% if @res_track_memory -%>
