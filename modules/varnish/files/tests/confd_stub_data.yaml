@@ -35,19 +35,18 @@ conftool:
           "header_value": "", "query_parameter": "", "query_parameter_value": ""}
     request-vcl:
       cache-upload:
-        global: |-
-          if (req.http.X-Public-Cloud ~ "test-cloud-provider" && vsthrottle.is_denied("requestctl:rate_limit_aws:" + req.http.X-Client-IP, 1000, 10s, 100s)) {
-            return (synth(429, "Too many requests. Please contact noc@wikimedia.org."));
-          }
+        global: '{ "vcl":
+            "if (req.http.X-Public-Cloud ~ \"test-cloud-provider\" && vsthrottle.is_denied(\"requestctl:rate_limit_aws:\" + req.http.X-Client-IP, 1000, 10s, 100s)) {\n
+                \treturn (synth(429, \"Too many requests. Please contact noc@wikimedia.org.\"));\n
+            }"}'
       cache-text:
-        global: |-
-          if (req.http.X-Public-Cloud ~ "test-cloud-provider" && req.url ~ "^(/wiki/|/w/index.php)" && !req.http.X-Wikimedia-Debug) {
-            return (synth(403, "Forbidden."));
-          }
-
-          if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ text_abuse_nets && (req.url ~ [?&]nocache=.* || req.method == "POST")) {
-            return (synth(403, "Forbidden."));
-          }
+        global: '{ "vcl":
+        "if (req.http.X-Public-Cloud ~ \"test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
+                \treturn (synth(403, \"Forbidden.\"));\n
+         }\n
+         if (std.ip(req.http.X-Client-IP, \"192.0.2.1\") ~ text_abuse_nets && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n
+                 \treturn (synth(403, \"Forbidden.\"));\n
+         }"}'
     request-actions:
       cache-upload:
         rate_limit_aws: |-

@@ -11,7 +11,7 @@ RUN set -e; \
     WIKIMEDIA_REPO="deb http://apt.wikimedia.org/wikimedia ${REPO}"; \
     WIKIMEDIA_REPO_FILE="${REPO_DIR}/wikimedia.list"; \
     SUDOERS_FILE="/etc/sudoers.d/varnish_test_nopasswd"; \
-    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip confd"; \
+    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip confd libvmod-querysort"; \
     apt-get update; \
     apt-get install -y ${BASE_PACKAGES}; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
@@ -25,7 +25,7 @@ RUN set -e; \
     apt-get purge -y wget; \
     apt-get -y clean; \
     apt-get -y autoremove; \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*;
 
 USER ${C_USER}
 
