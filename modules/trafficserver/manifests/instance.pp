@@ -248,7 +248,9 @@ define trafficserver::instance(
     Boolean                                         $is_ats9                 = false,
 ) {
 
-    require ::trafficserver
+    class { 'trafficserver':
+      install_ats9 => $is_ats9,
+    }
     $user = $trafficserver::user  # needed by udev_storage.rules.erb and records.config.erb
 
     if !defined('$http_port') and !defined('$https_port') {
