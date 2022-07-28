@@ -27,12 +27,7 @@ class profile::mediawiki::jobrunner(
     $local_only_port = 9006
     $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
     $fcgi_proxies = $php_versions.map |$idx, $version| {
-        $fcgi_pool_name = $idx? {
-            0 => $fcgi_pool,
-            default => "${fcgi_pool}-${version}"
-        }
-        $default = ($idx == 0)
-        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name, $default)]
+        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], "${fcgi_pool}-${version}")]
     }
     # We're sharing template functions with mediawiki::web::vhost, so keep the same nomenclature.
     $php_fpm_fcgi_endpoint = $fcgi_proxies[0]

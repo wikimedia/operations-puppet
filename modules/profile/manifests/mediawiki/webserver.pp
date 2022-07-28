@@ -24,16 +24,7 @@ class profile::mediawiki::webserver(
     }
 
     $fcgi_proxies = $ordered_php_versions.map |$version| {
-        # The default installation is the first in the list in $php_versions.
-        # That, for transition reasons, it uses a slightly different fcgi_proxy.
-        # It might be different from the version we want to route to by default, which is
-        # instead the first here.
-        $default_install = ($php_versions[0] == $version)
-        $fcgi_pool_name = $default_install? {
-            true => $fcgi_pool,
-            default => "${fcgi_pool}-${version}"
-        }
-        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name, $default_install)]
+        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], "${fcgi_pool}-${version}")]
     }
 
     # Declare the proxies explicitly with retry=0

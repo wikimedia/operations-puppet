@@ -1,4 +1,8 @@
 # Configure the proxies
+# Legacy proxy for transition
+<Proxy "unix:/run/php/fpm-www.sock|fcgi://localhost">
+       ProxySet retry=0
+</Proxy>
 <%- @fcgi_proxies.each do |fcgi_proxy| -%>
 # Proxy for php version <%= fcgi_proxy[0] %>
 <Proxy "<%= fcgi_proxy[1] %>">

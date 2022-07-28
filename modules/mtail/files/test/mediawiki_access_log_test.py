@@ -10,7 +10,7 @@ test_dir = os.path.join(os.path.dirname(__file__))
 class MediaWikiAccessLogTest(unittest.TestCase):
     def setUp(self):
         self._handler_codes = {
-            "php7": "proxy:unix:/run/php/fpm-www.sock|fcgi://localhost",
+            "php7": "proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2",
             "php74": "proxy:unix:/run/php/fpm-www-7.4.sock|fcgi://www-7.4",
             "static": "-",
         }

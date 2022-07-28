@@ -15,15 +15,10 @@ class profile::mediawiki::php::monitoring(
     $default_php_version = $php_versions[0]
     $admin_port = 9181
     $admin_data = $php_versions.map |$idx, $php_version| {
-        $versioned_fcgi_pool = $php_version ? {
-            $default_php_version => $fcgi_pool,
-            default              => "${fcgi_pool}-${php_version}"
-        }
-        $versioned_admin_port = $admin_port + $idx
         $retval = {
             'version'    => $php_version,
-            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_port[$php_version], $versioned_fcgi_pool, ($idx == 0)),
-            'admin_port' => $versioned_admin_port
+            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_port[$php_version], "${fcgi_pool}-${php_version}"),
+            'admin_port' => $admin_port + $idx
         }
     }
 

@@ -1,12 +1,12 @@
-2019-07-02T02:02:02	177200	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	190000	GET	http://de.wikipedia.org/w/load.php?debug=false&lang=de&modules=ext.CodeMirror%2CTemplateWizard%2Ccharinsert%2CeventLogging%2CnavigationTiming%2CwikimediaEvents	-
-2019-07-02T02:02:02	3255	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/304	0	GET	http://sr.wikipedia.org/w/load.php?lang=sr&modules=ext.3d.styles%7Cext.cite.styles%7Cext.tmh.thumbnail.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cjquery.tablesorter.styles%7Cmediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.interface%7Cmediawiki.toc.styles%7Cskins.vector.styles%7Cwikibase.client.init&only=styles&skin=vector	-
-2019-07-02T02:02:02	32124	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	1870661	GET	http://en.wikipedia.org/w/load.php?lang=en	-
+2019-07-02T02:02:02	177200	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/200	190000	GET	http://de.wikipedia.org/w/load.php?debug=false&lang=de&modules=ext.CodeMirror%2CTemplateWizard%2Ccharinsert%2CeventLogging%2CnavigationTiming%2CwikimediaEvents	-
+2019-07-02T02:02:02	3255	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/304	0	GET	http://sr.wikipedia.org/w/load.php?lang=sr&modules=ext.3d.styles%7Cext.cite.styles%7Cext.tmh.thumbnail.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cjquery.tablesorter.styles%7Cmediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.interface%7Cmediawiki.toc.styles%7Cskins.vector.styles%7Cwikibase.client.init&only=styles&skin=vector	-
+2019-07-02T02:02:02	32124	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/200	1870661	GET	http://en.wikipedia.org/w/load.php?lang=en	-
 # Various requests
-2019-07-02T02:02:02	110000	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	38886	GET	http://fr.wikipedia.org/wiki/Mirka	-
-2019-07-02T02:02:02	113	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/404	123	GET	http://fr.wikipedia.org/wiki/Mirk_a	-
-2019-07-02T02:02:02	38100	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	38886	GET	http://fr.wikipedia.org/wiki/Salleri	-
-2019-07-02T02:02:02	93000	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	38886	GET	http://fr.wikipedia.org/wiki/N%C3%A9pal	-
-2020-10-14T15:55:43	93276	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	2345	GET	http://ga.wiktionary.org/w/rest.php/v1/page/crann	-
+2019-07-02T02:02:02	110000	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/200	38886	GET	http://fr.wikipedia.org/wiki/Mirka	-
+2019-07-02T02:02:02	113	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/404	123	GET	http://fr.wikipedia.org/wiki/Mirk_a	-
+2019-07-02T02:02:02	38100	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/200	38886	GET	http://fr.wikipedia.org/wiki/Salleri	-
+2019-07-02T02:02:02	93000	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/200	38886	GET	http://fr.wikipedia.org/wiki/N%C3%A9pal	-
+2020-10-14T15:55:43	93276	1.2.3.4	proxy:unix:/run/php/fpm-www-7.2.sock|fcgi://www-7.2/200	2345	GET	http://ga.wiktionary.org/w/rest.php/v1/page/crann	-
 
 2019-07-02T02:02:02	1511	1.2.3.4	-/301	123	GET	http://wikipedia.org/wiki/James_McAvoy	-
 2019-07-02T02:02:02	1511	1.2.3.4	-/404	1296	GET	http://wuu.wikipedia.org/apple-touch-icon-152x152.png	-
