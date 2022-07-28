@@ -16,8 +16,8 @@
 #     A hash of configuration options for the local settings json file.
 #     https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-sources
 #
-# [*conf_files*]
-#    hash of hashes which define phabricator::conf_env resources
+# [*config_deploy_vars*]
+#     Variables used by scap3 during config deployment.
 #
 # [*mysql_admin_user*]
 #     Specify to use a different user for schema upgrades and database
@@ -61,7 +61,7 @@ class phabricator (
     Array                   $trusted_proxies    = [],
     Array                   $libraries          = [],
     Hash                    $settings           = {},
-    Hash                    $conf_files         = {},
+    Hash                    $config_deploy_vars = {},
     String                  $mysql_admin_user   = '',
     String                  $mysql_admin_pass   = '',
     String                  $serveradmin        = '',
@@ -147,17 +147,6 @@ class phabricator (
         require => File['/srv/git.wikimedia.org'],
     }
 
-    # Robots.txt disallowing to crawl the alias domain
-    if $serveraliases {
-        file {"${phabdir}/robots.txt":
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "User-agent: *\nDisallow: /\n",
-        }
-    }
-
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
@@ -169,6 +158,23 @@ class phabricator (
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
         ],
+    }
+
+    # Provide secrets and host-specific configuration that scap3 will use for
+    # its config deploy templates
+    file { '/etc/phabricator':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => $deploy_user,
+        mode   => '0750',
+    }
+
+    file { '/etc/phabricator/config.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => $deploy_user,
+        mode    => '0640',
+        content => $config_deploy_vars.to_yaml(),
     }
 
     file { $phabdir:
@@ -188,28 +194,6 @@ class phabricator (
         mode    => '0755',
         recurse => true,
         require => $base_requirements,
-    }
-
-    file { $confdir:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { "${confdir}/local":
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { "${confdir}/local/local.json":
-        content => to_json_pretty($phab_settings),
-        require => $base_requirements,
-        owner   => 'root',
-        group   => 'www-data',
-        mode    => '0644',
     }
 
     file { '/usr/local/sbin/phab_deploy_promote':
@@ -238,10 +222,6 @@ class phabricator (
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
-    }
-
-    if !empty($conf_files) {
-        create_resources(phabricator::conf_env, $conf_files)
     }
 
     #default location for phabricator tracked repositories

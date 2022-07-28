@@ -183,49 +183,6 @@ class profile::phabricator::main (
         $manifest_pass = $phab_manifest_pass
     }
 
-    # todo: create a separate mail_user and mail_pass?
-    $mail_user = $daemons_user
-    $mail_pass = $daemons_pass
-
-    $conf_files = {
-        'www' => {
-            'environment'       => 'www',
-            'owner'             => 'root',
-            'group'             => 'www-data',
-            'phab_settings'     => {
-                'mysql.user'        => $app_user,
-                'mysql.pass'        => $app_pass,
-            }
-        },
-        'phd' => {
-            'environment'       => 'phd',
-            'owner'             => 'root',
-            'group'             => 'phd',
-            'phab_settings'     => {
-                'mysql.user'        => $daemons_user,
-                'mysql.pass'        => $daemons_pass,
-            }
-        },
-        'vcs' => {
-            'environment'       => 'vcs',
-            'owner'             => 'root',
-            'group'             => 'phd',
-            'phab_settings'     => {
-                'mysql.user'        => $daemons_user,
-                'mysql.pass'        => $daemons_pass,
-            }
-        },
-        'mail' => {
-            'environment'       => 'mail',
-            'owner'             => 'root',
-            'group'             => 'mail',
-            'phab_settings'     => {
-                'mysql.user'        => $mail_user,
-                'mysql.pass'        => $mail_pass,
-            }
-        },
-    }
-
     if $phab_mysql_admin_user == undef {
         $mysql_admin_user = $passwords::mysql::phabricator::admin_user
     } else {
@@ -296,7 +253,40 @@ class profile::phabricator::main (
             'gitblit.hostname'               => 'git.wikimedia.org',
             'notification.servers'           => $notification_servers,
         },
-        conf_files         => $conf_files,
+        config_deploy_vars => {
+            'phabricator' => {
+                'mail'      => {
+                    'database_username' => $app_user,
+                    'database_password' => $app_pass,
+                },
+                'phd'       => {
+                    'database_username' => $daemons_user,
+                    'database_password' => $daemons_pass,
+                },
+                'vcs'       => {
+                    'database_username' => $daemons_user,
+                    'database_password' => $daemons_pass,
+                },
+                'redirects' => {
+                    'database_username' => $daemons_user,
+                    'database_password' => $daemons_pass,
+                    'database_host'     => $mysql_host,
+                    'field_index'       => '4rRUkCdImLQU',
+                },
+                'local'     => {
+                    'base_uri'                  => "https://${domain}",
+                    'alternate_file_domain'     => "https://${altdom}",
+                    'mail_default_address'      => "no-reply@${domain}",
+                    'mail_reply_handler_domain' => $domain,
+                    'phd_taskmasters'           => $phd_taskmasters,
+                    'ssh_host'                  => $phab_diffusion_ssh_host,
+                    'notification_servers'      => $notification_servers,
+                    'cluster_search'            => $cluster_search,
+                    'cluster_mailers'           => $mail_config,
+                    'database_host'             => $mysql_host,
+                },
+            },
+        },
         opcache_validate   => $opcache_validate,
         timezone           => $timezone,
         phd_service_ensure => $phd_service_ensure,
@@ -503,20 +493,6 @@ class profile::phabricator::main (
             proto  => 'tcp',
             port   => '22280',
         }
-    }
-
-    # redirect bugzilla URL patterns to phabricator
-    # handles translation of bug numbers to maniphest task ids
-    phabricator::redirector { "redirector.${domain}":
-        mysql_user  => $passwords::mysql::phabricator::manifest_user,
-        mysql_pass  => $passwords::mysql::phabricator::manifest_pass,
-        mysql_host  => $mysql_host,
-        rootdir     => '/srv/phab',
-        field_index => '4rRUkCdImLQU',
-        phab_host   => $domain,
-        alt_host    => $altdom,
-        rate_limits => $rate_limits,
-        require     => Package[$deploy_target],
     }
 
     # community metrics mail (T81784, T1003)

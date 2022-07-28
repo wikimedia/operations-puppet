@@ -87,10 +87,12 @@ define scap::target(
         }
         if !defined(User[$deploy_user]) {
             user { $deploy_user:
-                ensure => $ensure,
-                shell  => '/bin/bash',
-                home   => "/var/lib/${deploy_user}",
-                system => true,
+                ensure     => $ensure,
+                shell      => '/bin/bash',
+                home       => "/var/lib/${deploy_user}",
+                system     => true,
+                membership => 'minimum',
+                groups     => [$deploy_user],
             }
             file { "/var/lib/${deploy_user}":
                 ensure => stdlib::ensure($ensure, 'directory'),
