@@ -1,0 +1,21 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# https://docs.trafficserver.apache.org/en/9.1.x/admin-guide/files/ip_allow.yaml.en.html#std-configfile-ip_allow.yaml
+# This file is managed by Puppet.
+
+ip_allow:
+  # Allow anything from localhost
+  - apply: in
+    ip_addrs:
+      - 127.0.0.1
+      - ::1
+    action: allow
+    methods: ALL
+  # Deny PURGE and PUSH for all (this implies allow other methods for all)
+  - apply: in
+    ip_addrs:
+      - 0/0
+      - ::/0
+    action: deny
+    methods:
+      - PUSH
+      - PURGE

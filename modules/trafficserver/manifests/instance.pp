@@ -331,9 +331,6 @@ define trafficserver::instance(
         "${paths['sysconfdir']}/cache.config":
           content => template('trafficserver/cache.config.erb'),;
 
-        "${paths['sysconfdir']}/ip_allow.config":
-          content => template('trafficserver/ip_allow.config.erb'),;
-
         "${paths['sysconfdir']}/storage.config":
           content => template('trafficserver/storage.config.erb'),;
 
@@ -358,6 +355,26 @@ define trafficserver::instance(
         "${error_template_path}/default/default":
           content => $error_page,
           require => File[$error_template_path];
+    }
+
+    # ATS 9.x uses YAML files for configuration but we need backward
+    # compatibility with ATS 8.x for now.
+    if $is_ats9 {
+        file { "${paths['sysconfdir']}/ip_allow.yaml":
+            content => template('trafficserver/ip_allow.yaml.erb'),
+            owner   => $trafficserver::user,
+            mode    => '0400',
+            require => $config_requires,
+            notify  => Service[$service_name],
+        }
+    } else {
+        file { "${paths['sysconfdir']}/ip_allow.config":
+            content => template('trafficserver/ip_allow.config.erb'),
+            owner   => $trafficserver::user,
+            mode    => '0400',
+            require => $config_requires,
+            notify  => Service[$service_name],
+        }
     }
 
     if $enable_compress {
