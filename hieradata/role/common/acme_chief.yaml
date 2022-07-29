@@ -149,7 +149,7 @@ profile::acme_chief::certificates:
         - 'librenms.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^netmon(1002|2001|1003)\.wikimedia\.org$'
+        - '^netmon\d{4}\.wikimedia\.org$'
     lists:
         CN: 'lists.wikimedia.org'
         SNI:
@@ -200,7 +200,7 @@ profile::acme_chief::certificates:
         - 'smokeping.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^netmon(1002|2001|1003)\.wikimedia\.org$'
+        - '^netmon\d{4}\.wikimedia\.org$'
     unified:
         CN: '*.wikipedia.org'
         SNI:
