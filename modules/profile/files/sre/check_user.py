@@ -170,11 +170,16 @@ def main():
     except KeyError:
         # Seems that the gsuite data is no missing a value for the manager
         manager = 'No manager found.'
+    try:
+        title = user['organizations'][0]['title']
+    except KeyError:
+        # Seems that the gsuite data is now also missing a value for the title
+        title = 'No title found.'
     msg = f"""
     Gsuit User:
     \tPrimary Email:\t{user['primaryEmail']}
     \tAliases:\t{','.join(user.get('aliases', []))}
-    \ttitle:\t\t{user['organizations'][0]['title']}
+    \ttitle:\t\t{title}
     \tmanager:\t{manager}
     \tagreedToTerms:\t{user['agreedToTerms']}
     """
