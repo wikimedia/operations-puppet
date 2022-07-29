@@ -1,3 +1,4 @@
+profile::trafficserver::backend::is_ats9: true
 profile::cache::haproxy::varnish_socket:
     - prefix: ipv4
       address: "%{::ipaddress}"
