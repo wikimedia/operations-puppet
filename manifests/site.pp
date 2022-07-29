@@ -543,16 +543,11 @@ node 'db2103.codfw.wmnet' {
 
 # codfw replicas
 # See also db2167 and db2088 db2170 below
-node /^db2(112|116|130|145|146|153|174)\.codfw\.wmnet/ {
+node /^db2(072|112|116|130|145|146|153|174)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
 # codfw sanitarium master
-node 'db2072.codfw.wmnet' {
-    role(mariadb::sanitarium_master)
-}
-
-# future s1 codfw sanitarium master
 node 'db2173.codfw.wmnet' {
     role(mariadb::sanitarium_master)
 }
