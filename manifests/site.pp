@@ -963,11 +963,6 @@ node 'db2151.codfw.wmnet' {
     role(mariadb::misc)
 }
 
-# New db nodes /T306927
-node /^db21(7[3-4])\.codfw\.wmnet/ {
-    role(insetup)
-}
-
 # New db nodes T306849
 node /^db21(7[5-9]|8[0-2])\.codfw\.wmnet/ {
     role(insetup)
