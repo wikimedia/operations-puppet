@@ -314,6 +314,16 @@ define trafficserver::instance(
 
     # needed by plugin.config.erb
     $compress_config_path = "${paths['sysconfdir']}/compress.config"
+    $_logging = {
+        'formats' => $log_formats,
+        'filters' => $log_filters,
+        'logs'    => $logs,
+    }.filter |$value| { !$value[1].empty }
+
+    $logging = $is_ats9 ? {
+        true    => {'logging' => $_logging},
+        default => $_logging,
+    }
 
     ## Config files
     file {
@@ -347,7 +357,7 @@ define trafficserver::instance(
           content => template('trafficserver/parent.config.erb'),;
 
         "${paths['sysconfdir']}/logging.yaml":
-          content => template('trafficserver/logging.yaml.erb');
+          content => $logging.to_yaml,;
 
         "${error_template_path}/default/.body_factory_info":
           # This file just needs to be there or ATS will refuse loading any
