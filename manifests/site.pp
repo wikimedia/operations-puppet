@@ -1639,12 +1639,12 @@ node /^phab[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # Phabricator - new hardware (T280544)
 node 'phab2002.codfw.wmnet' {
-    role(insetup)
+    role(phabricator::migration)
 }
 
 # Phabricator - new hardware (T280540)
 node 'phab1004.eqiad.wmnet' {
-    role(insetup)
+    role(phabricator::migration)
 }
 
 # PKI server

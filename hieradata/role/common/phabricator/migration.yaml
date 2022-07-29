@@ -1,0 +1,10 @@
+profile::admin::groups:
+  - phabricator-roots
+
+profile::mail::default_mail_relay::enabled: false
+
+profile::phabricator::migration::src_host: 'phab1001.eqiad.wmnet'
+profile::phabricator::migration::dst_hosts:
+  - 'phab1004.eqiad.wmnet'
+  - 'phab2002.codfw.wmnet'
+
