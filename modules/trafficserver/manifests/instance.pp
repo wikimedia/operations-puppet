@@ -317,7 +317,7 @@ define trafficserver::instance(
     $_logging = {
         'formats' => $log_formats,
         'filters' => $log_filters,
-        'logs'    => $logs,
+        'logs'    => $logs.filter |$log| { $log['ensure'] == 'present' }.map |$log| { $log.delete('ensure') },
     }.filter |$value| { !$value[1].empty }
 
     $logging = $is_ats9 ? {
