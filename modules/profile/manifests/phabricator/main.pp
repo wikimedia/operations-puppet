@@ -255,6 +255,10 @@ class profile::phabricator::main (
         },
         config_deploy_vars => {
             'phabricator' => {
+                'www'       => {
+                    'database_username' => $app_user,
+                    'database_password' => $app_pass,
+                },
                 'mail'      => {
                     'database_username' => $app_user,
                     'database_password' => $app_pass,

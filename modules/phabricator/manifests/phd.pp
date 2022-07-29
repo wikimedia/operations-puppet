@@ -4,8 +4,9 @@
 #
 
 class phabricator::phd (
-    Hash $settings            = {},
-    Stdlib::Unixpath $basedir = '/',
+    String $phd_user              = 'phd',
+    Stdlib::Unixpath $phd_log_dir = '/var/log/phd',
+    Stdlib::Unixpath $basedir     = '/',
 ) {
     group { 'phd':
         ensure => present,
@@ -14,13 +15,13 @@ class phabricator::phd (
 
     # PHD user needs perms to drop root perms on start
     file { "${basedir}/phabricator/scripts/daemon/":
-        owner   => $settings['phd.user'],
+        owner   => $phd_user,
         recurse => true,
     }
 
     # Managing repo's as the PHD user
     file { "${basedir}/phabricator/scripts/repository/":
-        owner   => $settings['phd.user'],
+        owner   => $phd_user,
         recurse => true,
     }
 
@@ -30,13 +31,13 @@ class phabricator::phd (
         group  => 'phd',
     }
 
-    file { $settings['phd.log-directory']:
+    file { $phd_log_dir:
         ensure => 'directory',
         owner  => 'phd',
         group  => 'phd',
     }
 
-    user { $settings['phd.user']:
+    user { $phd_user:
         gid    => 'phd',
         shell  => '/bin/false',
         home   => '/var/run/phd',

@@ -5,9 +5,6 @@
 # Much of this logic is based on the Diffusion setup guide
 # https://secure.phabricator.com/book/phabricator/article/diffusion_hosting/
 #
-# [*settings*]
-#  Phab settings hash
-#
 # [listen_addresses]
 #  Array of IP's to listen for SSH
 #
@@ -15,19 +12,18 @@
 #  Port SSH should listen on
 
 class phabricator::vcs (
-    Stdlib::Unixpath $basedir = '/srv/phab',
-    Hash $settings            = {},
-    Array $listen_addresses   = [],
-    Integer $ssh_port         = 22,
-    String $proxy             = "http://url-downloader.${::site}.wikimedia.org:8080",
+    Stdlib::Unixpath $basedir               = '/srv/phab',
+    Stdlib::Unixpath $phd_log_dir           = '/var/log/phd',
+    String $phd_user                        = 'phd',
+    String $vcs_user                        = 'vcs',
+    Array $listen_addresses                 = [],
+    Integer $ssh_port                       = 22,
+    String $proxy                           = "http://url-downloader.${::site}.wikimedia.org:8080",
     Wmflib::Ensure $ssh_phab_service_ensure = absent,
 ) {
 
-    $phd_user = $settings['phd.user']
-    $vcs_user = $settings['diffusion.ssh-user']
     $ssh_hook_path = '/usr/libexec/phabricator-ssh-hook.sh'
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
-    $phd_log_dir = $settings['phd.log-directory'];
 
     user { $vcs_user:
         gid        => 'phd',

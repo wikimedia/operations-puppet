@@ -245,15 +245,18 @@ class phabricator (
     }
 
     class { '::phabricator::vcs':
-        basedir  => $phabdir,
-        settings => $phab_settings,
-        require  => $base_requirements,
+        basedir     => $phabdir,
+        phd_log_dir => $fixed_settings['phd.log-directory'],
+        phd_user    => $fixed_settings['phd.user'],
+        vcs_user    => $fixed_settings['diffusion.ssh-user'],
+        require     => $base_requirements,
     }
 
     class { '::phabricator::phd':
-        basedir  => $phabdir,
-        settings => $phab_settings,
-        require  => $base_requirements,
+        basedir     => $phabdir,
+        phd_user    => $fixed_settings['phd.user'],
+        phd_log_dir => $fixed_settings['phd.log-directory'],
+        require     => $base_requirements,
     }
 
     systemd::service { 'phd':
