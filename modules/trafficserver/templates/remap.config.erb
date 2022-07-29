@@ -3,5 +3,9 @@
 # This file is managed by Puppet.
 
 <% @mapping_rules.each do |rule| -%>
+<% if @is_ats9 -%>
+<%= rule['type'] %> <%= rule['target'] %> <%= rule['replacement'] %> <%= rule.fetch('params_ats9', []).join(' ') %>
+<% else -%>
 <%= rule['type'] %> <%= rule['target'] %> <%= rule['replacement'] %> <%= rule.fetch('params', []).join(' ') %>
+<% end -%>
 <% end -%>
