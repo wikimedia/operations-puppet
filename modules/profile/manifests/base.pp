@@ -38,11 +38,11 @@ class profile::base (
         mode   => '0755',
     }
 
+    include profile::adduser
     contain profile::puppet::agent
     contain profile::base::certificates
     include profile::apt
     include profile::systemd::timesyncd
-    class { 'adduser': }
 
     class { 'grub::defaults': }
 

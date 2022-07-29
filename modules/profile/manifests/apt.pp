@@ -19,4 +19,9 @@ class profile::apt(
         use_private_repo        => $use_private_repo,
     }
     contain apt  # lint:ignore:wmf_styleguide
+    # Ensure the correct apt configuration is in place so we install from
+    # WMF sources list instead of debian default see T158562
+    # We exclude gnupg as its used by apt::repository.  this is fine as long as we dont
+    # start relying on a gnupg we build our self.
+    Class['apt'] -> Package<| title != 'gnupg' |>
 }
