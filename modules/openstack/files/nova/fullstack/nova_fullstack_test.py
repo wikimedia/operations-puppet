@@ -101,9 +101,9 @@ class ECSFormatter(logging.Formatter):
             "timestamp": datetime.utcnow().isoformat(),
         }
         if record.exc_info:
-            ecs_message["error.stack"] = self.formatException(record.exc_info)
-        if not ecs_message.get("error.stack") and record.exc_text:
-            ecs_message["error.stack"] = record.exc_text
+            ecs_message["error.stack_trace"] = self.formatException(record.exc_info)
+        if not ecs_message.get("error.stack_trace") and record.exc_text:
+            ecs_message["error.stack_trace"] = record.exc_text
         # Prefix "@cee" cookie indicating rsyslog should parse the message as JSON
         return f"@cee: {json.dumps(ecs_message)}"
 
