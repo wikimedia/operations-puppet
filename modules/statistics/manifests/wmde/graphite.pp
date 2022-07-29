@@ -87,52 +87,56 @@ class statistics::wmde::graphite(
     }
 
     systemd::timer::job { 'wmde-analytics-minutely':
-        ensure      => present,
-        description => 'Minutely jobs for wmde analytics infrastructure',
-        user        => $user,
-        command     => "${scripts_dir}/cron/minutely.sh ${scripts_dir}",
-        require     => Git::Clone['wmde/scripts'],
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:*:0'},
+        ensure              => present,
+        description         => 'Minutely jobs for wmde analytics infrastructure',
+        user                => $user,
+        command             => "${scripts_dir}/cron/minutely.sh ${scripts_dir}",
+        require             => Git::Clone['wmde/scripts'],
+        interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* *:*:0'},
+        max_runtime_seconds => 55,  # kill if still running after 55s
     }
 
     # Note: some of the scripts run by this cron need access to secrets!
     # Docs can be seen at https://github.com/wikimedia/analytics-wmde-scripts/blob/master/README.md
     systemd::timer::job { 'wmde-analytics-daily-early':
-        ensure      => present,
-        description => 'Daily jobs for wmde analytics infrastructure',
-        user        => $user,
-        command     => "/usr/bin/time ${scripts_dir}/cron/daily.03.sh ${scripts_dir}",
-        require     => [
+        ensure              => present,
+        description         => 'Daily jobs for wmde analytics infrastructure',
+        user                => $user,
+        command             => "/usr/bin/time ${scripts_dir}/cron/daily.03.sh ${scripts_dir}",
+        require             => [
             Git::Clone['wmde/scripts'],
             File["${dir}/src/config"],
             Mariadb::Config::Client['research-wmde'],
         ],
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:0:0'},
+        interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:0:0'},
+        max_runtime_seconds => 72000,  # kill if still running after 20h
     }
 
     systemd::timer::job { 'wmde-analytics-daily-noon':
-        ensure      => present,
-        description => 'Daily jobs for wmde analytics infrastructure',
-        user        => $user,
-        command     => "/usr/bin/time ${scripts_dir}/cron/daily.12.sh ${scripts_dir}",
-        require     => [
+        ensure              => present,
+        description         => 'Daily jobs for wmde analytics infrastructure',
+        user                => $user,
+        command             => "/usr/bin/time ${scripts_dir}/cron/daily.12.sh ${scripts_dir}",
+        require             => [
             Git::Clone['wmde/scripts'],
             File["${dir}/src/config"],
             Mariadb::Config::Client['research-wmde'],
         ],
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 12:0:0'},
+        interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* 12:0:0'},
+        max_runtime_seconds => 72000,  # kill if still running after 20h
     }
 
     systemd::timer::job { 'wmde-analytics-weekly':
-        ensure      => present,
-        description => 'Weekly jobs for wmde analytics infrastructure',
-        user        => $user,
-        command     => "/usr/bin/time ${scripts_dir}/cron/weekly.sh ${scripts_dir}",
-        require     => [
+        ensure              => present,
+        description         => 'Weekly jobs for wmde analytics infrastructure',
+        user                => $user,
+        command             => "/usr/bin/time ${scripts_dir}/cron/weekly.sh ${scripts_dir}",
+        require             => [
             Git::Clone['wmde/scripts'],
             File["${dir}/src/config"],
         ],
-        interval    => {'start' => 'OnCalendar', 'interval' => 'Sunday 0:0:0'},
+        interval            => {'start' => 'OnCalendar', 'interval' => 'Sunday 0:0:0'},
+        max_runtime_seconds => 518400,  # kill if still running after 6d
     }
 
     # Disabled until T278665 is solved
