@@ -1497,7 +1497,7 @@ node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
 
 # gitlab servers - codfw (T301183, T285867)
 node 'gitlab2002.wikimedia.org' {
-    role(insetup)
+    role(gitlab)
 }
 
 node /^gitlab2003\.wikimedia\.org$/ {

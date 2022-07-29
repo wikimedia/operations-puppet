@@ -3,7 +3,7 @@ profile::admin::groups:
   - gitlab-roots
 
 profile::gitlab::active_host: 'gitlab1004.wikimedia.org'
-profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org']
+profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org', 'gitlab2002.wikimedia.org']
 
 profile::ssh::server::listen_addresses:
   - "%{facts.ipaddress}"
