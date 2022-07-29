@@ -2669,13 +2669,15 @@ node /^prometheus[3456]001\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
 # new puppetmaster servers T291963
 node /^puppetmaster100[45]\.eqiad\.wmnet$/ {
     role(insetup)
-
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend)
 }
 
+node 'puppetmaster1004.eqiad.wmnet' {
+    role(puppetmaster::backend)
+}
 node /^puppetmaster[12]00[23]\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
 }
