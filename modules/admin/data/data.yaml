@@ -368,7 +368,7 @@ groups:
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
-              ricby, dani, bgwiki, alinebruenger]
+              ricby, dani, bgwiki, alinebruenger, sgrabarczuk]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5379,6 +5379,13 @@ users:
     uid: 39897
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  sgrabarczuk:
+    ensure: present
+    realname: Szymon Grabarczuk
+    email: sgrabarczuk@wikimedia.org
+    uid: 31722
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -6009,10 +6016,6 @@ ldap_only_users:
     ensure: present
     realname: Haley Nordeen
     email: hnordeen@wikimedia.org
-  sgrabarczuk:
-    ensure: present
-    realname: Szymon Grabarczuk
-    email: sgrabarczuk@wikimedia.org
   trizek:
     ensure: present
     realname: Benoît Evellin
