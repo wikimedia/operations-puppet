@@ -41,7 +41,7 @@ DESIRED_STATE = [
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=wikifeeds'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=wikifeeds'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=api-ro'},
-    {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=api-ro'},
+    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=api-ro'},
     {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=appservers-rw'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=appservers-rw'},
     # Eventgate-main codfw is currently depooled for https://phabricator.wikimedia.org/T285710
@@ -99,7 +99,7 @@ DESIRED_STATE = [
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=search'},
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=zotero'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=zotero'},
-    {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=appservers-ro'},
+    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=appservers-ro'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=appservers-ro'},
     # TODO: is druid-public-broker needed?
     {'eqiad': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=druid-public-broker'},  # noqa
