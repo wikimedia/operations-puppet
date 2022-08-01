@@ -3,8 +3,6 @@ profile::openstack::codfw1dev::horizon::maintenance_mode: false
 profile::openstack::codfw1dev::horizon::puppet_git_repo_name: instance-puppet-dev
 profile::openstack::codfw1dev::horizon::puppet_git_repo_user: instance-puppet-user
 
-striker::apache::server_name: labtesttoolsadmin.wikimedia.org
-
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2002-dev.wikimedia.org
 
@@ -30,42 +28,6 @@ profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::apc_shm_size: 128M
 
 # Striker things
-striker::uwsgi::config:
-  debug:
-    DEBUG: false
-  ldap:
-    SERVER_URI: ldap://cloudservices2004-dev.wikimedia.org:389
-    BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
-    TLS: true
-  oauth:
-    CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
-  phabricator:
-    USER: StrikerBot
-  db:
-    ENGINE: django.db.backends.mysql
-    NAME: striker
-    USER: striker
-    HOST: cloudweb2002-dev.wikimedia.org
-    PORT: 3306
-  cache:
-    LOCATION: 127.0.0.1:11212
-  xff:
-    USE_XFF_HEADER: true
-    # CIDR not supported, but substring/prefix match is
-    # Should match IPs presented by the misc cache servers + 127.0.0.1
-    TRUSTED_PROXY_LIST: "127.0.0.1 10. 208.80.152. 208.80.153. 208.80.154. 208.80.155. 91.198.174. 198.35.26. 185.15.58."
-  https:
-    REQUIRE_HTTPS: true
-  logging:
-    HANDLERS: cee
-  static:
-    STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
-  openstack:
-    URL: https://openstack.codfw1dev.wikimediacloud.org:25000/v3
-  wikitech:
-    SERVER_URL: https://labtestwikitech.wikimedia.org
-    USER: Striker
-
 profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::port: 8080

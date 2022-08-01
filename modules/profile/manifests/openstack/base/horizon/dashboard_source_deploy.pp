@@ -20,6 +20,19 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
 
     $ldap_rw_host = $ldap_config['rw-server']
 
+    ensure_packages('libapache2-mod-wsgi-py3')
+    class { '::httpd':
+        modules => [
+          'alias',
+          'expires',
+          'headers',
+          'proxy_fcgi',  # Needed by ::openstack::wikitech::web
+          'rewrite',
+          'ssl',
+          'wsgi',
+        ],
+    }
+
     class { '::openstack::horizon::source_deploy':
         horizon_version      => $horizon_version,
         openstack_version    => $openstack_version,

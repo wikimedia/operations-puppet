@@ -24,7 +24,6 @@ class role::wmcs::openstack::eqiad1::labweb {
     include ::profile::openstack::eqiad1::horizon::dashboard_source_deploy
 
     # Striker:
-    include ::profile::wmcs::striker::web
     include ::profile::wmcs::striker::docker
 
     include ::profile::tlsproxy::envoy # TLS termination
