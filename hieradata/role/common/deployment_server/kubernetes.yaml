@@ -309,3 +309,9 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 # The deployment group for mediawiki is called "deployment".
 # See T303857
 deployment_group: "deployment"
+
+# T310395
+profile::mediawiki::deployment::server::enable_auto_deploy: true
+# See https://releases-jenkins.wikimedia.org/job/Automatic%20branch%20cut/configure for the schedule
+# of the branch cut job that auto deployment relies on.
+profile::mediawiki::deployment::server::auto_deploy_interval: Mon *-*-* 20:00:00 America/Los_Angeles

@@ -20,6 +20,8 @@ class profile::mediawiki::deployment::server(
                         'repository'      => Optional[String],
                         'scap_repository' => Optional[String]
     }]] $sources  = lookup('scap::sources'),
+    Boolean $enable_auto_deploy          = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
+    Optional[Systemd::Timer::Datetime] $auto_deploy_interval = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -132,6 +134,11 @@ class profile::mediawiki::deployment::server(
         require => File['/srv/deployment'],
     }
 
+    $primary_deploy_ensure = $deployment_server ? {
+        $::fqdn => 'present',
+        default => 'absent'
+    }
+
     # $secondary_deploy_ensure will be set to 'present' if we're
     # operating on an inactive/secondary deploy server.
     $secondary_deploy_ensure = $deployment_server ? {
@@ -158,6 +165,19 @@ class profile::mediawiki::deployment::server(
             owner   => 'root',
             group   => 'root',
             content => "Not the active deployment server, use ${main_deployment_server}",
+        }
+    }
+
+    if $enable_auto_deploy {
+        systemd::timer::job { 'train-presync':
+            ensure                  => $primary_deploy_ensure,
+            description             => 'Perform beginning-of-week train operations',
+            user                    => 'mwpresync',
+            command                 => '/usr/bin/scap stage-train --yes auto',
+            send_mail               => true,
+            send_mail_only_on_error => false,
+            environment             => {'MAILTO' => 'releng@lists.wikimedia.org'},
+            interval                => {'start' => 'OnCalendar', 'interval' => $auto_deploy_interval},
         }
     }
 
