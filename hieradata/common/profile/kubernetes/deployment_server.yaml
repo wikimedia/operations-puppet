@@ -211,6 +211,14 @@ profile::kubernetes::deployment_server::services:
         - name: revscoring-articletopic-deploy
           owner: root
           group: deploy-ml-service
+    revscoring-drafttopic:
+      usernames:
+        - name: revscoring-drafttopic
+          owner: root
+          group: deploy-ml-service
+        - name: revscoring-drafttopic-deploy
+          owner: root
+          group: deploy-ml-service
     articletopic-outlink:
       usernames:
         - name: articletopic-outlink
