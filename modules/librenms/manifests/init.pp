@@ -146,15 +146,13 @@ class librenms(
     # For Debian Bullseye: https://docs.librenms.org/Installation/Install-LibreNMS/#prepare-linux-server
     # For Debian Stretch from: https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
     if debian::codename::eq('bullseye') {
-        package { ['php-cli', 'php-curl', 'php-fpm', 'php-gd', 'php-gmp', 'php-json', 'php-mbstring', 'php-mysql', 'php-snmp', 'php-xml', 'php-zip', 'libapache2-mod-php']:
-            ensure => present,
-        }
+        ensure_packages(['php-fpm', 'php-gmp'])
     } elsif debian::codename::eq('buster') {
-        $php_packages = ['php-cli', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-mysql', 'php-snmp', 'php-xml', 'php-zip', 'php-ldap', 'libapache2-mod-php']
-        package { $php_packages:
-            ensure => present,
-        }
+        ensure_packages(['php-ldap'])
     }
+
+    ensure_packages(['php-cli', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-mysql', 'php-snmp', 'php-xml'])
+    ensure_packages(['php-zip', 'libapache2-mod-php'])
 
     ensure_packages([
             'php-pear',
