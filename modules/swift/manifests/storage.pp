@@ -102,6 +102,9 @@ class swift::storage (
             require => Package['swift'],
             # the 1 is to allow nagios to read the drives for check_disk
             mode    => '0751';
+        '/usr/bin/swift-grow-ssd-part':
+            mode   => '0555',
+            source => 'puppet:///modules/swift/grow_ssd_part.py',
     }
 
     service { [
