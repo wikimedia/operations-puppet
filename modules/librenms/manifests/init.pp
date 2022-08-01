@@ -149,21 +149,7 @@ class librenms(
         package { ['php7.4-cli', 'php7.4-curl', 'php7.4-fpm', 'php7.4-gd', 'php7.4-gmp', 'php7.4-json', 'php7.4-mbstring', 'php7.4-mysql', 'php7.4-snmp', 'php7.4-xml', 'php7.4-zip', 'libapache2-mod-php7.4']:
             ensure => present,
         }
-    } elsif debian::codename::eq('stretch') {
-        $php72_packages = [
-            'php7.2-cli', 'php7.2-curl', 'php7.2-gd', 'php7.2-json', 'php7.2-mbstring', 'php7.2-mysql',
-            'php7.2-snmp', 'php7.2-xml', 'php7.2-zip', 'php7.2-ldap', 'libapache2-mod-php7.2'
-        ]
-
-        apt::package_from_component { 'librenms_php72':
-            component => 'component/php72',
-            packages  => $php72_packages,
-        }
-
-        package { ['php-net-ipv6', 'php-net-ipv4']:
-            ensure => present,
-        }
-    } else {
+    } elsif debian::codename::eq('buster') {
         $php_packages = ['php-cli', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-mysql', 'php-snmp', 'php-xml', 'php-zip', 'php-ldap', 'libapache2-mod-php']
         package { $php_packages:
             ensure => present,
