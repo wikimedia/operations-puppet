@@ -1139,10 +1139,10 @@ aptrepo_server: apt1001.wikimedia.org
 aptrepo_servers_failover:
     - 'apt2001.wikimedia.org'
 
-netmon_server: netmon1002.wikimedia.org
+netmon_server: netmon1003.wikimedia.org
 netmon_servers_failover:
     - 'netmon2001.wikimedia.org'
-    - 'netmon1003.wikimedia.org'
+    - 'netmon1002.wikimedia.org'
 
 releases_server: releases1002.eqiad.wmnet
 releases_servers_failover:
