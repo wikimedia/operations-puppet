@@ -176,5 +176,5 @@ class profile::mediawiki::deployment::server(
         packages  => ['php-readline']
     }
     # benchmarking tools for sessionstorage testing (T230178)
-    ensure_packages(['siege', 'wrk', 'lua-cjson'], {'ensure' => 'absent'})
+    ensure_packages(['siege', 'wrk', 'lua-cjson'])
 }
