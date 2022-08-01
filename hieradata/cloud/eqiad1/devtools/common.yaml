@@ -16,7 +16,7 @@ phabricator::tools::dump: false
 
 docker::registry: 'localhost'
 
-profile::phabricator::main::manage_scap_user: false
+profile::phabricator::main::manage_scap_user: true
 
 profile::phabricator::main::http_srange: '($DEPLOYMENT_HOSTS $CACHES)'
 
@@ -54,9 +54,15 @@ phabricator_cluster_search:
 # Deployment server, scap
 
 deployment_hosts:
-- '172.16.0.238'
+- '172.16.6.54'  # deploy-1004.devtools.eqiad1.wikimedia.cloud
 deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
 scap::deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
+
+profile::keyholder::server::require_encrypted_keys: 'no'
+profile::keyholder::server::agents:
+  phabricator:
+    trusted_groups:
+      - project-%{::labsproject}
 
 has_lvs: false
 has_tls: false
