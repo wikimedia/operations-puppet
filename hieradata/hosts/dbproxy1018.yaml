@@ -8,6 +8,8 @@ profile::lvs::realserver::pools:
   wikireplicas-a-s1:
     services:
       - wikireplicas-a
+  wikireplicas-b-s1:
+    services:
       - wikireplicas-b
 
 # Example multi-instance wikireplicas depooling, inserting the entry for the

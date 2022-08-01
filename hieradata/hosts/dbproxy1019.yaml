@@ -5,9 +5,11 @@ profile::mariadb::proxy::firewall: 'internal'
 profile::mariadb::proxy::multiinstance_replicas::replica_type: 'web'
 # LVS DNS of this server is wikireplicas-b.wikimedia.org
 profile::lvs::realserver::pools:
-  wikireplicas-b-s1:
+  wikireplicas-a-s1:
     services:
       - wikireplicas-a
+  wikireplicas-b-s1:
+    services:
       - wikireplicas-b
 
 # Example multi-instance wikireplicas depooling, inserting the entry for the
