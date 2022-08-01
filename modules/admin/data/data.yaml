@@ -368,7 +368,7 @@ groups:
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
-              ricby, dani, bgwiki]
+              ricby, dani, bgwiki, alinebruenger]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5372,6 +5372,13 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkIgD8ZSMXnIaUfkq1j4KKgZ3kphxffQWWktv6Ya75mLEIPYON7yl2W0iY4B/493NgoR3ghVRwLGR3YXFDXoLdpmeebyAmvHpaH+2T5lGVrCbXyc6fz5E7qArZGdMf0MhQ8eylkofK7NJI2azGWrqE+uxIaghIIy401zYCh516iieI5DSqvKs4bEWjokEQ1EXWmx4MASbXnvgwgXOFIpi8VPGABlMhdJWPr8NemCCUs6xgY+T+9jAcnvIflWv2HkYlOnaKgY8dhrim9m+BGVAdqK+3mN18zuvoaz3kjlzv8emL9JeUb32JgDrHfcONKtWwm4T9wrbNUZJ2nsC8JVsWJDXDKUej+KHfmoDjny4mHgx+oymHSY29ibstNHbWAan+S8V1yfQXEfFbjMm5HwPHJx7KYeJTblYtAd6fUmmDUieRdJxDBCszwUt0A4HIeomcVXbKBVfFSO91pLRrDiFlMTwauuKT1OOG1L4KLQz8gE30TlZyiOIxtrdR5gmQhRNGIppKlx/Rm3zUNPwyoRr2a5Nc4IgZaa+U8j4o6YxOeSRD3Kfx3MORhvwa6ruJ533IDX3BNKzrNAz0fiHLtHpysIkTQeY9BpxD8dujXfBNrvn8ZYeWsaHE5ejssOJyElIox63MkVKUSeChyta6WL2MLLwjTrOuz33NZ9T2XVb/bQ== raymond@ubuntu
     expiry_date: 2023-06-30
     expiry_contact: nskaggs@wikimedia.org
+  alinebruenger:
+    ensure: present
+    realname: Aline Bruenger
+    email: aline.bruenger@wikimedia.de
+    uid: 39897
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -5388,10 +5395,6 @@ ldap_only_users:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
     email: aleksey.bekh-ivanov@wikimedia.de
-  alinebruenger:
-    ensure: present
-    realname: Aline Bruenger
-    email: aline.bruenger@wikimedia.de
   ammarpad:
     ensure: present
     realname: (known to legal)
