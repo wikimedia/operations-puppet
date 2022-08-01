@@ -20,9 +20,6 @@
 #
 # $sync_limit    - Amount of tim to allow followers to sync with ZooKeeper.  Default: 5
 #
-# $version       - Zookeeper package version number.  Set this if you need to
-#                  override the default package version.  Default: installed.
-#
 # == Usage
 #
 # class { 'zookeeper':
@@ -56,13 +53,8 @@ class zookeeper(
     $init_limit             = 10,
     $sync_limit             = 5,
     $conf_template          = 'zookeeper/zoo.cfg.erb',
-    $version                = 'installed',
 ) {
-    if !defined(Package['zookeeper']) {
-        package { 'zookeeper':
-            ensure => $version,
-        }
-    }
+    ensure_packages('zookeeper')
 
     file { '/etc/zookeeper/conf/zoo.cfg':
         content => template($conf_template),

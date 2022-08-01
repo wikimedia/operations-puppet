@@ -14,4 +14,3 @@ profile::etcd::replication::src_port: 4001
 # all the hostnames for the etcd machines in the SANs
 # Will need to be regenerated if we add servers to the cluster.
 profile::etcd::tlsproxy::cert_name: "etcd-v3.%{::domain}"
-profile::zookeeper::zookeeper_version: '3.4.13-2'

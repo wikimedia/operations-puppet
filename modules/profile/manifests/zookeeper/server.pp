@@ -6,7 +6,6 @@
 class profile::zookeeper::server (
     Hash $clusters                       = lookup('zookeeper_clusters'),
     String $cluster_name                 = lookup('profile::zookeeper::cluster_name'),
-    String $version                      = lookup('profile::zookeeper::zookeeper_version'),
     Integer $max_client_connections      = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
     Integer $sync_limit                  = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
     Boolean $monitoring_enabled          = lookup('profile::zookeeper::monitoring_enabled', {default_value => false}),
@@ -29,7 +28,6 @@ class profile::zookeeper::server (
 
     class { 'zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
-        version                => $version,
         sync_limit             => $sync_limit,
         max_client_connections => $max_client_connections,
     }

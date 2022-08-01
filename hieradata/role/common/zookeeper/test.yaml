@@ -1,7 +1,6 @@
 cluster: zookeeper_test
 
 profile::zookeeper::cluster_name: test-eqiad
-profile::zookeeper::zookeeper_version: 'installed'
 profile::zookeeper::firewall::srange: '$DOMAIN_NETWORKS'
 profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::monitoring_contact_group: 'admins,analytics'

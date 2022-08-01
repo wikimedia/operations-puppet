@@ -30,9 +30,7 @@ class zookeeper::server(
     Class['zookeeper'] -> Class['zookeeper::server']
 
     # Install zookeeper server package
-    package { 'zookeeperd':
-        ensure    => $::zookeeper::version,
-    }
+    ensure_packages('zookeeperd')
 
     file { '/etc/default/zookeeper':
         content => template($default_template),

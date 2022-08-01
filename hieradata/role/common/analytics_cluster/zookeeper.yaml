@@ -5,7 +5,6 @@ mgmt_contactgroups: 'admins,analytics'
 cluster: analytics
 
 profile::zookeeper::cluster_name: "analytics-%{::site}"
-profile::zookeeper::zookeeper_version: 'installed'
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
