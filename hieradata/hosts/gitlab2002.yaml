@@ -4,4 +4,4 @@ profile::gitlab::service_ip_v6: '2620:0:860:1:208:80:153:8'
 profile::gitlab::service_name: 'gitlab-replica-new.wikimedia.org'
 
 # Enable Restore-Backup Timer Job
-profile::gitlab::enable_restore: false
+profile::gitlab::enable_restore: true
