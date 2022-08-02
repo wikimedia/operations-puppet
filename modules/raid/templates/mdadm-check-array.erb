@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+#!/bin/bash
+## Mdadm periodic cron for WMF production hosts
+# Copyright (c) 2017 Wikimedia Foundation
+#
+# This file is managed by puppet.
+#
+# Puppet will setup a systemd timer to run on a random day of the week, at 05:57.
+# We only want to run the mdraid check once a month, so check that the current date
+# is within the randomly picked seven day interval.
+#
+# This script differs from the standard debian cron by picking a random work day instead of sunday.
+if [ -x /usr/share/mdadm/checkarray ] && [ $(date +\%d) -ge <%= @dom_start %> ] && [ $(date +\%d) -le <%= @dom_end %> ]; then /usr/share/mdadm/checkarray --cron --all --idle --quiet; fi

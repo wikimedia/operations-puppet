@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # MD RAID controller
 class raid::md (
-    Enum['present', 'absent'] $cron_ensure = 'present',
+    Enum['present', 'absent'] $timer_ensure = 'present',
 ) {
   include raid
 
@@ -11,18 +11,44 @@ class raid::md (
       ensure => present,
       values => { 'dev.raid.speed_limit_max' => '20000' },
   }
-  # Only run on a weekday of our choice, and vary it between servers
-  $dow = fqdn_rand(5, 'md_checkarray_dow') + 1
-  # Only run within a specific (February compatible) day of month range
+
+  # Only run on a work day of our choice, and vary it between servers.
+  # List the days the timers is allowed to run, and pick on at random.
+  $weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+  $dow = $weekdays[fqdn_rand($weekdays.size(), 'md_checkarray_dow')]
+
+  # Only run within a specific (February compatible) day of month range.
+  # These are used in the script called by the timer, as there are no
+  # way to make systemd timers (or crontab), run "the second Tuesday of each
+  # month".
   $dom_start = fqdn_rand(28 - 7, 'md_checkarray_dom') + 1
   $dom_end = $dom_start + 7
-  # Replace the default mdadm script from upstream with our own
+
+  # Remove the default script from the Debian package.
+  # Do not remove this section, as the file will be
+  # reintroduced when the Debian updates the package
+  # in the future.
   file { '/etc/cron.d/mdadm':
-      ensure  => $cron_ensure,
-      content => template('raid/mdadm-cron.erb'),
+      ensure => absent,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+  }
+
+  file { '/usr/local/sbin/mdadm_check_array.sh':
+      ensure  => $timer_ensure,
+      content => template('raid/mdadm-check-array.erb'),
       owner   => 'root',
       group   => 'root',
-      mode    => '0444',
+      mode    => '0755',
+  }
+
+  systemd::timer::job {'mdadm_check_array':
+      ensure      => $timer_ensure,
+      description => 'Check md raid array',
+      user        => 'root',
+      command     => '/usr/local/sbin/mdadm_check_array.sh',
+      interval    => {'start' => 'OnCalendar', 'interval' => "${dow} *-*-* 05:57:00"}
   }
 
   nrpe::monitor_service { 'raid_md':
