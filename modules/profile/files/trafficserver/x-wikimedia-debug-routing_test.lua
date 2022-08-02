@@ -72,5 +72,34 @@ describe("Busted unit testing framework", function()
 
       assert.stub(ts.http.set_resp).was.called_with(400, "x-wikimedia-debug-routing: no match found for the backend specified in X-Wikimedia-Debug")
     end)
+
+    it("test - X-Wikimedia-Debug with php7.4 selected and no cookie header", function()
+      _G.ts.client_request.header['Cookie'] = nil
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-experimental; php74"
+      do_remap()
+      assert.are.equals('PHP_ENGINE=7.4', ts.client_request.header['Cookie'])
+    end)
+
+    it("test - X-Wikimedia-Debug with php7.4 selected and an empty cookie", function()
+      _G.ts.client_request.header['Cookie'] = ""
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-experimental; php74"
+      do_remap()
+      assert.are.equals('PHP_ENGINE=7.4', ts.client_request.header['Cookie'])
+    end)
+
+    it("test - X-Wikimedia-Debug with php7.4 selected and cookie set", function()
+      _G.ts.client_request.header['Cookie'] = "banana=ripe;PHP_ENGINE=7.2;test=lol"
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-experimental; php74"
+      do_remap()
+      assert.are.equals('banana=ripe;PHP_ENGINE=7.4;test=lol', ts.client_request.header['Cookie'])
+    end)
+
+    it("test - X-Wikimedia-Debug with php7.4 selected and another cookie", function()
+      _G.ts.client_request.header['Cookie'] = "banana=ripe"
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-experimental; php74"
+      do_remap()
+      assert.are.equals('banana=ripe;PHP_ENGINE=7.4', ts.client_request.header['Cookie'])
+    end)
+
   end)
 end)

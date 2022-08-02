@@ -12,6 +12,24 @@
 -- https://phabricator.wikimedia.org/T265625
 jit.off(true, true)
 
+local function add_or_replace_cookie(name, value)
+    local cookie = ts.client_request.header.Cookie
+    local to_add = string.format("%s=%s", name, value)
+    local to_search = string.format("%s=[^;]+", name)
+    if cookie and cookie ~= "" then
+        -- Do check if there is a cookie of the same name
+        cookie, count = cookie:gsub(to_search, to_add)
+        -- If not, just add it.
+        if count == 0 then
+            cookie = cookie .. ";" .. to_add
+        end
+    else
+        cookie = to_add
+    end
+    ts.client_request.header.Cookie = cookie
+end
+
+
 function do_remap()
     local xwd = ts.client_request.header['X-Wikimedia-Debug']
     if not xwd then
@@ -29,7 +47,6 @@ function do_remap()
     }
 
     local backend = string.match(xwd, 'backend=([%a%d%.-]+)')
-
     -- For backward-compatibility, if the header does not contain a
     -- well-formed 'backend' attribute, then the entire header is used as
     -- the backend value
@@ -42,6 +59,10 @@ function do_remap()
         -- Special case: mwdebug on kubernetes listens on port 4444
         if backend == "k8s-experimental" then
             ts.client_request.set_url_port(4444)
+        end
+
+        if string.find(xwd, ' php74') then
+            add_or_replace_cookie('PHP_ENGINE', '7.4')
         end
         -- Skip the cache if XWD is valid
         ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
