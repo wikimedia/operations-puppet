@@ -1032,7 +1032,7 @@ profile::cassandra::settings:
   tls_cluster_name: "restbase"
   dc: "%{::site}"
   cluster_name: "restbase"
-  target_version: "3.x"
+  target_version: "dev"
   default_instance_params:
     max_heap_size: 12g
     # 1/4 heap size, no more than 100m/thread
