@@ -153,3 +153,16 @@ wmf_realm: labs
 pybal_interface: lo
 canary_dashboard_url: https://beta-logs.wmcloud.org
 delay_messageblobstore_purge: true
+
+# Do not restart php-fpm on mwmaint. On those servers, php-fpm serves noc.wikimedia.org
+# and they're not part of the appservers rotation.
+# More importantly, they do still revalidate opcache and they're excluded from restarts during a sync.
+[mwmaint1002.eqiad.wmnet]
+php_fpm_always_restart: False
+php_fpm_unsafe_restart_script: ""
+php_fpm_restart_script: ""
+
+[mwmaint2002.codfw.wmnet]
+php_fpm_always_restart: False
+php_fpm_unsafe_restart_script: ""
+php_fpm_restart_script: ""
