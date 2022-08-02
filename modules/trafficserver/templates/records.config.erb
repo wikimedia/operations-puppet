@@ -16,6 +16,7 @@ CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
 <% if @is_ats9 -%>
+CONFIG proxy.config.exec_thread.autoconfig.scale FLOAT 1.5
 CONFIG proxy.config.plugin.dynamic_reload_mode INT 0
 <% end -%>
 CONFIG proxy.config.plugin.lua.max_states INT <%= @max_lua_states %>
