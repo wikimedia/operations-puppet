@@ -1,4 +1,4 @@
 # db1162
+# candidate master for s2
 mariadb::shard: 's2'
 mariadb::binlog_format: 'STATEMENT'
-profile::mariadb::mysql_role: 'master'
