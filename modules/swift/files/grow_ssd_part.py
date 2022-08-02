@@ -26,6 +26,17 @@ class Partition:
     size: int
     type: str
     bootable: bool = False
+    mountpoint: str = None
+    label: str = None
+    num: int = -1
+    dev: str = None
+
+    def __post_init__(self):
+        mnt = subprocess.check_output(
+            ["/usr/bin/findmnt", "--noheadings", "--output", "target", self.node]
+        )
+        self.mountpoint = mnt.decode("utf8").strip()
+        self.label = "swift-{}".format(os.path.basename(self.mountpoint))
 
 
 def _devpart(device, partnum):
@@ -45,39 +56,33 @@ def _run(*args, **kwargs):
     return subprocess.check_output(*args, **kwargs)
 
 
-def part_umount(device, partnum):
-    node = _devpart(device, partnum)
-    mounted = subprocess.run(["/usr/bin/findmnt", node], capture_output=True)
+def part_umount(part):
+    mounted = subprocess.run(["/usr/bin/findmnt", part.node], capture_output=True)
     if mounted.returncode == 0:
-        _run(["/usr/bin/umount", node])
+        _run(["/usr/bin/umount", part.node])
 
 
-def part_delete(device, partnum):
-    _run(["/usr/sbin/sfdisk", "--delete", device, partnum])
-    _run(["/usr/sbin/partprobe", device])
+def part_delete(part):
+    _run(["/usr/sbin/sfdisk", "--delete", part.dev, part.num])
+    _run(["/usr/sbin/partprobe", part.dev])
 
 
-def part_grow(device, part, size_megabytes):
-    node = _devpart(device, part)
-
+def part_grow(part, amount):
     _run(
-        "echo ',+{}M' | sfdisk {} -N {}".format(size_megabytes, device, part),
+        "echo ',+{}' | sfdisk --no-reread {} -N {}".format(amount, part.dev, part.num),
         shell=True,
     )
-    _run(["/usr/sbin/partprobe", device])
+    _run(["/usr/sbin/partprobe", part.dev])
+    _run(["/usr/sbin/xfs_growfs", part.mountpoint])
 
-    _run(["/usr/sbin/xfs_growfs", node])
 
+def part_append(part):
+    _run("echo , | sfdisk --no-reread --append {}".format(part.dev), shell=True)
+    _run(["/usr/sbin/partprobe", part.dev])
 
-def part_append(device, part):
-    node = _devpart(device, part)
+    assert stat.S_ISBLK(os.stat(part.node).st_mode)
 
-    _run("echo , | sfdisk --append {}".format(device), shell=True)
-    _run(["/usr/sbin/partprobe", device])
-
-    assert stat.S_ISBLK(os.stat(node).st_mode)
-
-    _run(["/usr/sbin/mkfs.xfs", node])
+    _run(["/usr/sbin/mkfs.xfs", "-L", part.label, part.node])
 
 
 def ptable_backup(device, outfile):
@@ -86,7 +91,7 @@ def ptable_backup(device, outfile):
         f.write(ptable)
 
 
-def grow(device, p1, p2, size_megabytes):
+def grow(device, p1, p2, amount):
     ptable_json = subprocess.check_output(["/usr/sbin/sfdisk", "-J", device])
     ptable = json.loads(ptable_json)
     partitions = ptable["partitiontable"]["partitions"]
@@ -98,11 +103,14 @@ def grow(device, p1, p2, size_megabytes):
     part2 = None
 
     for p in partitions:
-        part = Partition(**p)
-        if part.node == node1:
-            part1 = part
-        if part.node == node2:
-            part2 = part
+        if p["node"] == node1:
+            part1 = Partition(**p)
+            part1.num = p1
+            part1.dev = device
+        if p["node"] == node2:
+            part2 = Partition(**p)
+            part2.num = p2
+            part2.dev = device
 
     # Might not be available/detected, be optimistic
     sectorsize = ptable["partitiontable"].get("sectorsize", 4096)
@@ -111,12 +119,12 @@ def grow(device, p1, p2, size_megabytes):
         0 <= part2.start - (part1.start + part1.size) < sectorsize
     ), "Partitions {} and {} are not contiguous on {}".format(p1, p2, device)
 
-    part_umount(device, p2)
-    part_delete(device, p2)
+    part_umount(part2)
+    part_delete(part2)
 
-    part_grow(device, p1, size_megabytes)
+    part_grow(part1, amount)
 
-    part_append(device, p2)
+    part_append(part2)
 
 
 def main():
@@ -124,7 +132,9 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--mb", type=str, help="How many megabytes to add to part1")
+    parser.add_argument(
+        "--amount", type=str, help="How many bytes to add to part1. Use G or M suffix."
+    )
     parser.add_argument("--dev", type=str, help="Device to act on")
     parser.add_argument(
         "--part1", type=str, default="3", help="Partition number to grow"
@@ -140,9 +150,12 @@ def main():
     )
     args = parser.parse_args()
 
+    if args.amount[-1] not in "MG":
+        parser.error("Use M or G suffix for --amount")
+
     DRY_RUN = not args.doit
 
-    grow(args.dev, args.part1, args.part2, args.mb)
+    grow(args.dev, args.part1, args.part2, args.amount)
 
 
 if __name__ == "__main__":
