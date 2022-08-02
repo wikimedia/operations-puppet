@@ -32,6 +32,8 @@ class profile::spicerack(
     Stdlib::HTTPUrl $netbox_api = lookup('netbox_api_url'),
     String $netbox_token_ro = lookup('profile::netbox::ro_token'),
     String $netbox_token_rw = lookup('profile::netbox::rw_token'),
+    Stdlib::Unixpath $peeringdb_temp_dir = lookup('profile::spicerack::peeringdb_temp_dir', {'default_value' => '/tmp/peeringdb-cache'}),
+    String $peeringdb_token_ro = lookup('profile::spicerack::peeringdb_ro_token'),
     String $http_proxy = lookup('http_proxy'),
 ) {
     # Ensure pre-requisite profiles are included
@@ -94,6 +96,12 @@ class profile::spicerack(
         'api_token_rw' => $netbox_token_rw,
     }
 
+    # PeeringDB backend configuration
+    $peeringdb_config_data = {
+        'api_token_ro' => $peeringdb_token_ro,
+        'cachedir'     => $peeringdb_temp_dir,
+    }
+
     # Kafka cluster brokers configuration
     $kafka_config_data = {
         'main'   => {
@@ -145,6 +153,7 @@ class profile::spicerack(
         'ganeti' => { 'config.yaml' => $ganeti_auth_data },
         'kafka' => { 'config.yaml' => $kafka_config_data },
         'netbox' => { 'config.yaml' => $netbox_config_data },
+        'peeringdb' => { 'config.yaml' => $peeringdb_config_data },
         'redis_cluster' => { 'sessions.yaml' => $redis_sessions_data },
         'service' => { 'service.yaml' => wmflib::service::fetch() },
     }.each | $dir, $file_data | {
