@@ -389,7 +389,7 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
 }
 
 node 'gerrit2002.wikimedia.org' {
-    role(gerrit::migration)
+    role(gerrit)
 }
 # Zookeeper and Etcd discovery service nodes
 node /^conf200[456]\.codfw\.wmnet$/ {
