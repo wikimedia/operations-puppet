@@ -25,6 +25,7 @@ class Partition:
     start: int
     size: int
     type: str
+    bootable: bool = False
 
 
 def _devpart(device, partnum):
@@ -103,10 +104,11 @@ def grow(device, p1, p2, size_megabytes):
         if part.node == node2:
             part2 = part
 
+    # Might not be available/detected, be optimistic
+    sectorsize = ptable["partitiontable"].get("sectorsize", 4096)
+
     assert (
-        0
-        < part2.start - (part1.start + part1.size)
-        < ptable["partitiontable"]["sectorsize"]
+        0 <= part2.start - (part1.start + part1.size) < sectorsize
     ), "Partitions {} and {} are not contiguous on {}".format(p1, p2, device)
 
     part_umount(device, p2)
