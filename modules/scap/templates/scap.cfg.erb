@@ -153,18 +153,3 @@ wmf_realm: labs
 pybal_interface: lo
 canary_dashboard_url: https://beta-logs.wmcloud.org
 delay_messageblobstore_purge: true
-
-# Restart php-fpm only when running from the deployment servers for now.
-# Further explanations at https://phabricator.wikimedia.org/T224857#5467370
-[deploy1002.eqiad.wmnet]
-# Restart php-fpm on every deployment
-php_fpm: php7.2-fpm
-php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
-php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php-fpm-all
-php_fpm_always_restart: True
-
-[deploy2002.codfw.wmnet]
-php_fpm: php7.2-fpm
-php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
-php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php-fpm-all
-php_fpm_always_restart: True
