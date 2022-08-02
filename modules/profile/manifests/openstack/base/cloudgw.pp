@@ -1,7 +1,8 @@
 class profile::openstack::base::cloudgw (
     Integer             $virt_vlan    = lookup('profile::openstack::base::cloudgw::virt_vlan',    {default_value => 2107}),
     Stdlib::IP::Address $virt_peer    = lookup('profile::openstack::base::cloudgw::virt_peer',    {default_value => '127.0.0.5'}),
-    Stdlib::IP::Address $virt_floating= lookup('profile::openstack::base::cloudgw::virt_floating',{default_value => '127.0.0.5/24'}),
+    Stdlib::IP::Address::V4::CIDR $virt_floating= lookup('profile::openstack::base::cloudgw::virt_floating',{default_value => '127.0.0.5/24'}),
+    Optional[Stdlib::IP::Address::V4::CIDR] $virt_floating_additional= lookup('profile::openstack::base::cloudgw::virt_floating_additional', {default_value => undef}),
     Stdlib::IP::Address $virt_cidr    = lookup('profile::openstack::base::cloudgw::virt_cidr',    {default_value => '127.0.0.6/24'}),
     Integer             $wan_vlan     = lookup('profile::openstack::base::cloudgw::wan_vlan',     {default_value => 2120}),
     Stdlib::IP::Address $wan_addr     = lookup('profile::openstack::base::cloudgw::wan_addr',     {default_value => '127.0.0.4'}),
@@ -98,12 +99,22 @@ class profile::openstack::base::cloudgw (
     }
 
 
-    $keepalived_routes = [
-        # route floating IPs to neutron
-        "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
-        # route internal VM network to neutron
-        "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
-    ]
+    if $virt_floating_additional != undef {
+        $keepalived_routes = [
+            # route floating IPs to neutron
+            "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+            "${virt_floating_additional} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+            # route internal VM network to neutron
+            "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+        ]
+    } else {
+        $keepalived_routes = [
+            # route floating IPs to neutron
+            "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+            # route internal VM network to neutron
+            "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+        ]
+    }
 
     class { 'keepalived':
         peers     => ['example.com'], # overriden by config template

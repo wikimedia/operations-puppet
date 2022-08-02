@@ -382,3 +382,5 @@ network::subnets:
       public:
         cloud-codfw1dev-floating:
           ipv4: 185.15.57.0/29
+        cloud-codfw1dev-floating-additional:
+          ipv4: 185.15.57.16/29

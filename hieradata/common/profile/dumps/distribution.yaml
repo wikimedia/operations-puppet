@@ -19,6 +19,7 @@ profile::dumps::distribution::nfs_clients:
   - 185.15.56.0/25
   - 172.16.128.0/24
   - 185.15.57.0/29
+  - 185.15.57.16/29
   - 208.80.153.190/32
   - stat1004.eqiad.wmnet
   - stat1005.eqiad.wmnet
