@@ -85,11 +85,27 @@ class dynamicproxy (
     }
 
     file {'/etc/cron.hourly/logrotate':
+        ensure => absent,
+        source => 'puppet:///modules/dynamicproxy/logrotate.cron',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file {'/usr/local/sbin/logrotate_dynamic_proxy.sh':
         ensure => file,
         source => 'puppet:///modules/dynamicproxy/logrotate.cron',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+    }
+
+    systemd::timer::job { 'dynamicproxy_logrotate':
+        ensure      => present,
+        description => 'Logrotation for Dynamic Proxy',
+        user        => 'root',
+        command     => '/usr/local/sbin/logrotate_dynamic_proxy.sh',
+        interval    => '*-*-* 00/1:00:00'
     }
 
     file { '/etc/nginx/nginx.conf':
