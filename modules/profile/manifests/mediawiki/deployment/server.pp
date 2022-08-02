@@ -175,6 +175,7 @@ class profile::mediawiki::deployment::server(
         component => 'component/php72',
         packages  => ['php-readline']
     }
-    # benchmarking tools for sessionstorage testing (T230178)
+
+    # benchmarking tools (sessionstorage testing, k8s ml infra benchmarking) (T230178)
     ensure_packages(['siege', 'wrk', 'lua-cjson'])
 }
