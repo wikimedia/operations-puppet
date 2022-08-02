@@ -54,6 +54,7 @@ class apt(
             owner   => 'root',
             group   => 'root',
             content => template($apt_template),
+            require => Apt::Repository['wikimedia'],
         }
     }
 
