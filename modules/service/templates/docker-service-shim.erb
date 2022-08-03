@@ -23,6 +23,7 @@ NotifyAccess=all
 # Let docker do its things on its own terms
 TimeoutStartSec=120
 TimeoutStopSec=15
+SyslogIdentifier=docker-<%= @title %>
 
 [Install]
 WantedBy=multi-user.target
