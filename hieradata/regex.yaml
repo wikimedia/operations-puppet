@@ -315,5 +315,5 @@ redis_sessions_eqiad:
   profile::redis::multidc::version_override: 2
 
 redis_sessions_codfw:
-  __regex: !ruby/regexp /^mc20(2[0246]|3[0246])\.codfw.wmnet/
+  __regex: !ruby/regexp /^mc20(2[0246]|3[02468])\.codfw.wmnet/
   profile::redis::multidc::version_override: 2
