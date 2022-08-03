@@ -5,6 +5,9 @@ counter trafficserver_backend_client_ttfb_bucket by le, backend
 counter trafficserver_backend_client_ttfb_sum by backend
 counter trafficserver_backend_client_ttfb_count by backend
 
+histogram trafficserver_backend_total_plugin_time by backend buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
+histogram trafficserver_backend_active_plugin_time by backend buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
+
 counter trafficserver_backend_client_cache_read_time_sum by backend
 counter trafficserver_backend_client_cache_write_time_sum by backend
 
@@ -18,10 +21,12 @@ counter trafficserver_backend_connections_total by backend
 
 # This block matches all log lines, regardless of the cache status. Hits,
 # misses, and passes are all included.
-/ClientTTFB:(?P<client_ttfb>[0-9]+).*CacheReadTime:(?P<cache_read_time>[0-9]+).*CacheWriteTime:(?P<cache_write_time>[0-9]+).*OriginServer:(?P<backend>\S+)/ {
+/ClientTTFB:(?P<client_ttfb>[0-9]+).*CacheReadTime:(?P<cache_read_time>[0-9]+).*CacheWriteTime:(?P<cache_write_time>[0-9]+).*TotalPluginTime:(?P<total_plugin_time>[0-9]+).*ActivePluginTime:(?P<active_plugin_time>[0-9]+).*OriginServer:(?P<backend>\S+)/ {
   trafficserver_backend_client_ttfb_sum[$backend] += $client_ttfb
   trafficserver_backend_client_cache_read_time_sum[$backend] += $cache_read_time
   trafficserver_backend_client_cache_write_time_sum[$backend] += $cache_write_time
+  trafficserver_backend_total_plugin_time[$backend] = float($total_plugin_time) * 0.001
+  trafficserver_backend_active_plugin_time[$backend] = float($active_plugin_time) * 0.001
 
   trafficserver_backend_client_ttfb_count[$backend]++
 
