@@ -841,6 +841,11 @@ host logstash2031 {
     fixed-address logstash2031.codfw.wmnet;
 }
 
+host logstash2032 {
+    hardware ethernet aa:00:00:8f:3c:29;
+    fixed-address logstash2032.codfw.wmnet;
+}
+
 host matomo1002 {
     hardware ethernet aa:00:00:21:0c:ea;
     fixed-address matomo1002.eqiad.wmnet;
