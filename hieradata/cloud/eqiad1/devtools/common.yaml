@@ -57,12 +57,17 @@ deployment_hosts:
 - '172.16.6.54'  # deploy-1004.devtools.eqiad1.wikimedia.cloud
 deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
 scap::deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
+scap::dsh::scap_masters:
+- deploy-1004.devtools.eqiad1.wikimedia.cloud
 
 profile::keyholder::server::require_encrypted_keys: 'no'
 profile::keyholder::server::agents:
   phabricator:
     trusted_groups:
       - project-%{::labsproject}
+  scap:
+    trusted_groups:
+    - project-%{::labsproject}
 
 has_lvs: false
 has_tls: false
