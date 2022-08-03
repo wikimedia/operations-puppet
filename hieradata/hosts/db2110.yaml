@@ -2,3 +2,4 @@
 mariadb::shard: 's4'
 profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false
