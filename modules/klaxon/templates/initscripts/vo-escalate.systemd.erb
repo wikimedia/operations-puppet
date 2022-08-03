@@ -1,0 +1,20 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by Puppet.
+[Unit]
+Description="Escalate VO unpaged incidents"
+After=network.target
+
+[Service]
+User=klaxon
+Group=klaxon
+
+PrivateTmp=true
+
+WorkingDirectory=<%= @install_dir %>
+EnvironmentFile=<%= @environ_file %>
+Environment=PYTHONPATH=<%= @install_dir %>
+ExecStart=/usr/bin/python3 klaxon/victorops.py escalate_unpaged --esc_policy_slug <%= @escalation_policy_slug %>
+SyslogIdentifier=vo-escalate
+
+[Install]
+WantedBy=multi-user.target

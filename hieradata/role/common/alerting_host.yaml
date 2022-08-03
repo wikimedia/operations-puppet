@@ -45,6 +45,8 @@ profile::alertmanager::web::vhost: 'alerts.%{facts.domain}'
 
 profile::klaxon::klaxon_config:
   admin_contact_email: root@wikimedia.org
+# SRE batphone escalation policy
+profile::klaxon::escalation_policy_slug: 'pol-V2neyZAfRV4fBh3U'
 
 profile::certspotter::alert_email: sre-traffic@wikimedia.org   # to be updated later once the SNR is fixed
 profile::certspotter::monitor_domains:

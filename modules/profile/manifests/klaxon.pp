@@ -1,11 +1,13 @@
 class profile::klaxon (
-    Klaxon::Klaxon_config $config   = lookup('profile::klaxon::klaxon_config', {'merge' => hash})
+    Klaxon::Klaxon_config $config   = lookup('profile::klaxon::klaxon_config', {'merge' => hash}),
+    String $escalation_policy_slug  = lookup('profile::klaxon::escalation_policy_slug'),
 ) {
     $port = 4667
 
     class {'klaxon':
-        port   => $port,
-        config => $config,
+        escalation_policy_slug => $escalation_policy_slug,
+        port                   => $port,
+        config                 => $config,
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
