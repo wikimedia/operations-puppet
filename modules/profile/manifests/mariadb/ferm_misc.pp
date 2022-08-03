@@ -6,7 +6,7 @@ class profile::mariadb::ferm_misc {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((netmon1002.wikimedia.org netmon2001.wikimedia.org))',
+        srange  => '@resolve((netmon1002.wikimedia.org netmon2001.wikimedia.org netmon1003.wikimedia.org))',
     }
     ferm::service { 'netbox-librenms-reports':
         proto   => 'tcp',
