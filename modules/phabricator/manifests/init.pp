@@ -246,11 +246,6 @@ class phabricator (
             owner  => 'phd',
             group  => 'www-data',
         }
-        file { "${deploy_root}/repos":
-            ensure  => 'link',
-            target  => $repo_root,
-            require => $base_requirements,
-        }
     }
 
     file { '/usr/local/bin/arc':
