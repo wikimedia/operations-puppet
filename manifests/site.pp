@@ -160,11 +160,15 @@ node 'an-airflow1002.eqiad.wmnet' {
     role(analytics_cluster::airflow::research)
 }
 
-# analytics-platform-eng instance of Apache Airflow
+# [Deprecated] analytics-platform-eng instance of Apache Airflow
 node 'an-airflow1003.eqiad.wmnet' {
     role(analytics_cluster::airflow::platform_eng)
 }
 
+# analytics-platform-eng instance of Apache Airflow to replace an-airflow1003
+node 'an-airflow1004.eqiad.wmnet' {
+    role(insetup)
+}
 # Analytics Zookepeer cluster
 node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(analytics_cluster::zookeeper)
