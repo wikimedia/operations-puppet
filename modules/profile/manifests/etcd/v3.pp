@@ -23,13 +23,19 @@
 #
 # [*max_latency*]
 #   Maximum RTT between current cluster nodes. Required
+#
 # [*adv_client_port*]
 #   Port to advertise to clients. If you're using an auth/TLS terminator
 #   (as we do in v2 for RBAC) you will need to advertise its port to the public
 #   rather than port 2379 (where etcd listens). Required
+#
 # [*do_backup*]
 #   Boolean. Whether to back up the data on etcd or not. Defaults to false on
 #   first deploy for backwards compatibility.
+#
+# [*use_pki_certs]
+#   Boolean. Whether to use the CFSSL based PKI to generate certificates,
+#   or to use the older Puppet CA based certificates. Defaults to false.
 #
 class profile::etcd::v3(
     # Configuration
@@ -41,6 +47,7 @@ class profile::etcd::v3(
     Integer $max_latency = lookup('profile::etcd::v3::max_latency'),
     Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
     Boolean $do_backup = lookup('profile::etcd::v3::do_backup', {'default_value' => false}),
+    Boolean $use_pki_certs = lookup('profile::etcd::v3::use_pki_certs', {'default_value' => false}),
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -58,6 +65,31 @@ class profile::etcd::v3(
         $certname = $::fqdn
     }
 
+    # TLS certs *for etcd use* in peer-to-peer communications.
+    # Tlsproxy will use other certificates.
+
+    # This option uses the puppet CA based certificates
+    if ! $use_pki_certs {
+        sslcert::certificate { $certname:
+            skip_private => false,
+            group        => 'etcd',
+            require      => Package['etcd-server'],
+            before       => Service['etcd'],
+        }
+
+        $trusted_ca  = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+        $ssl_path = {
+            'cert' => "/etc/ssl/localcerts/${certname}.crt",
+            'key'  => "/etc/ssl/private/${certname}.key",
+        }
+    }
+    # This option allows the CFSSL based PKI to be used with the discovery intermediate
+    # TODO: consider allowing the use of other intermediate CAs, other than 'discovery'
+    else {
+        $trusted_ca  = '/etc/ssl/certs/wmf-ca-certificates.crt'
+        $ssl_paths = profile::pki::get_cert('discovery', $certname, { hosts => $certname,} )
+    }
+
     # Service
     class { '::etcd::v3':
         cluster_name     => $cluster_name,
@@ -67,11 +99,11 @@ class profile::etcd::v3(
         use_client_certs => $use_client_certs,
         max_latency_ms   => $max_latency,
         adv_client_port  => $adv_client_port,
-        trusted_ca       => '/etc/ssl/certs/Puppet_Internal_CA.pem',
-        client_cert      => "/etc/ssl/localcerts/${certname}.crt",
-        client_key       => "/etc/ssl/private/${certname}.key",
-        peer_cert        => "/etc/ssl/localcerts/${certname}.crt",
-        peer_key         => "/etc/ssl/private/${certname}.key",
+        trusted_ca       => $trusted_ca,
+        client_cert      => $ssl_paths['cert'],
+        client_key       => $ssl_paths['key'],
+        peer_cert        => $ssl_paths['cert'],
+        peer_key         => $ssl_paths['key'],
     }
 
     # Monitoring
@@ -103,14 +135,4 @@ class profile::etcd::v3(
 
         backup::set { 'etcd': }
     }
-    # TLS certs *for etcd use* in peer-to-peer communications.
-    # Tlsproxy will use other certificates.
-
-    sslcert::certificate { $certname:
-        skip_private => false,
-        group        => 'etcd',
-        require      => Package['etcd-server'],
-        before       => Service['etcd'],
-    }
-
 }
