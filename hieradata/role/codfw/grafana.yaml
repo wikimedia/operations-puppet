@@ -7,3 +7,4 @@ profile::grafana::loki::allow_from:
   - 'logstash2025.codfw.wmnet'
   - 'logstash2030.codfw.wmnet'
   - 'logstash2031.codfw.wmnet'
+  - 'logstash2032.codfw.wmnet'

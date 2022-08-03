@@ -25,6 +25,7 @@ profile::opensearch::dc_settings:
     - logstash2029.codfw.wmnet
     - logstash2030.codfw.wmnet
     - logstash2031.codfw.wmnet
+    - logstash2032.codfw.wmnet
     - logstash2033.codfw.wmnet
     - logstash2034.codfw.wmnet
     - logstash2035.codfw.wmnet

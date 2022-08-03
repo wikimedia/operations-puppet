@@ -110,6 +110,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((logstash2025.codfw.wmnet)) @resolve((logstash2025.codfw.wmnet), AAAA))'
   - '(@resolve((logstash2030.codfw.wmnet)) @resolve((logstash2030.codfw.wmnet), AAAA))'
   - '(@resolve((logstash2031.codfw.wmnet)) @resolve((logstash2031.codfw.wmnet), AAAA))'
+  - '(@resolve((logstash2032.codfw.wmnet)) @resolve((logstash2032.codfw.wmnet), AAAA))'
   - '(@resolve((kafka-test1006.eqiad.wmnet)) @resolve((kafka-test1006.eqiad.wmnet), AAAA))'
   - '(@resolve((kafka-test1007.eqiad.wmnet)) @resolve((kafka-test1007.eqiad.wmnet), AAAA))'
   - '(@resolve((kafka-test1008.eqiad.wmnet)) @resolve((kafka-test1008.eqiad.wmnet), AAAA))'
