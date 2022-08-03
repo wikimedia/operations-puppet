@@ -188,8 +188,6 @@ scap::sources:
   phabricator/deployment: {}
   restbase/deploy:
     repository: mediawiki/services/restbase/deploy
-  striker/deploy:
-    repository: labs/striker/deploy
   horizon/deploy:
     repository: openstack/horizon/deploy
   tilerator/deploy:
