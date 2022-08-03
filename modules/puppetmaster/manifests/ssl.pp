@@ -27,13 +27,13 @@ class puppetmaster::ssl(
             "${ssldir}/ca",
             "${ssldir}/certificate_requests",
             "${ssldir}/certs",
-            "${ssldir}/private",
+            "${ssldir}/public_keys",
             "${ssldir}/crl",
         ]:
             ensure => directory;
         [
             "${ssldir}/private_keys",
-            "${ssldir}/public_keys",
+            "${ssldir}/private",
         ]:
             ensure => directory,
             mode   => '0750',;
