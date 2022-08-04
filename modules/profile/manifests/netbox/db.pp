@@ -14,6 +14,7 @@ class profile::netbox::db (
     String              $primary              = lookup('profile::netbox::db::primary'),
     String              $password             = lookup('profile::netbox::db::password'),
     String              $replication_password = lookup('profile::netbox::db::replication_password'),
+    String              $dump_interval        = lookup('profile::netbox::db::dump_interval'),
     Array[Stdlib::Host] $replicas             = lookup('profile::netbox::db::replicas'),
     Array[Stdlib::Host] $frontends            = lookup('profile::netbox::db::frontends'),
     Boolean             $ipv6_ok              = lookup('profile::netbox::db::ipv6_ok'),
@@ -165,9 +166,12 @@ class profile::netbox::db (
     }
 
     if $do_backups {
-      # Have backups because Netbox is used as a source of truth (T190184)
-      include ::profile::backup::host
-      backup::set { 'netbox-postgres': }
-      class { '::postgresql::backup': }
+        # Have backups because Netbox is used as a source of truth (T190184)
+        include ::profile::backup::host
+        backup::set { 'netbox-postgres': }
+    }
+    class { '::postgresql::backup':
+        do_backups    => $do_backups,
+        dump_interval => $dump_interval
     }
 }

@@ -1,9 +1,13 @@
-# @summary
-#   Provides a way to add backups for postgresql.
-#   Uses pg_dumpall to dump all databases and meta information.
-# @param path Full path to a directory to dump to. No ending slash. default: /srv/postgres-backup
+# @summary postgresql::backup
 #
+#   Provides a way to add backups for postgresql databases
+#   Uses pg_dumpall to dump all databases and meta information.
+#
+# @param dump_interval how often to perform dumps (in a systemd timer syntax). Default: once a day.
+# @param path Full path to a directory to dump to. No ending slash. default: /srv/postgres-backup
 # @param rotate_days Number of days after which old backups are deleted. default: 7
+# @param do_backups If we should perform backups (False will remove the systemd timer). Default: True
+
 #
 # @example
 #
@@ -14,8 +18,11 @@
 # modules/profile/manifests/backup/director.pp)
 #
 class postgresql::backup(
-    String $path = '/srv/postgres-backup',
-    Integer $rotate_days = 7,
+
+    String            $dump_interval = '*-*-* 01:23:00',
+    Stdlib::Unixpath  $path = '/srv/postgres-backup',
+    Integer           $rotate_days = 7,
+    Boolean           $do_backups = true,
 ) {
 
     file { $path:
@@ -25,6 +32,7 @@ class postgresql::backup(
         mode   => '0750',
     }
 
+    # Keep the file in case manual dump need to be done even if $do_backups is False
     file { '/usr/local/bin/dump_all.sh':
         ensure => 'file',
         owner  => 'root',
@@ -33,17 +41,16 @@ class postgresql::backup(
         source => 'puppet:///modules/postgresql/dump_all.sh',
     }
 
-    $dump_hour = fqdn_rand(23, 'pgdump')
-    $dump_minute = fqdn_rand(59, 'pgdump')
-
+    $active_ensure = $do_backups.bool2str('present', 'absent')
     systemd::timer::job { 'postgres-dump':
-        ensure      => 'present',
+        ensure      => $active_ensure,
         description => 'Regular jobs to dump all databases and meta information',
         user        => 'postgres',
         command     => "/usr/local/bin/dump_all.sh ${path}",
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => "*-*-* ${dump_hour}:${dump_minute}:00",
+            'interval' => $dump_interval,
+
         },
     }
 
@@ -51,7 +58,7 @@ class postgresql::backup(
     $clean_minute = fqdn_rand(59, 'pgclean')
 
     systemd::timer::job { 'rotate-postgres-dump':
-        ensure      => 'present',
+        ensure      => $active_ensure,
         description => 'Regular jobs to clean up old dumps',
         user        => 'postgres',
         command     => "/usr/bin/find ${path} -type f -name '*.sql.gz' -mtime +${rotate_days} -delete",

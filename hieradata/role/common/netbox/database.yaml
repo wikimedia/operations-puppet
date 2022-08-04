@@ -1,6 +1,7 @@
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 
 profile::netbox::db::do_backup: true
+profile::netbox::db::dump_interval: '*-*-* *:37:00'
 profile::netbox::db::primary: netboxdb1002.eqiad.wmnet
 profile::netbox::db::frontends:
   - netbox1002.eqiad.wmnet
