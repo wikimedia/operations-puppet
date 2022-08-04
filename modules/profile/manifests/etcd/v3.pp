@@ -78,7 +78,7 @@ class profile::etcd::v3(
         }
 
         $trusted_ca  = '/etc/ssl/certs/Puppet_Internal_CA.pem'
-        $ssl_path = {
+        $ssl_paths = {
             'cert' => "/etc/ssl/localcerts/${certname}.crt",
             'key'  => "/etc/ssl/private/${certname}.key",
         }
