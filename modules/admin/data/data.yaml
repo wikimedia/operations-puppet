@@ -5276,7 +5276,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUZw20NNlj/iDCDwsF1fVXTH0m8XgLG1NXjl7TS3Y/DYCsXm4rtMp8QIQQ2yvqjo6EeD2nXUjCPqa3glAsuICIg7vAex/XBZXVuWS8esZ+kdj697PyRDN4hKowezyGk1pS97TjtxDAf+xFpWc26t+8BJLVG7rCWEafN6T/95UDTZElPlp/QDZOK/Tl/EAFWhJqK2pvD4I0C4o4QuvXj3meahvnPO38hBlmfPD/m47Y+ZIZU5lnRrBKQfGHn16heJMBTveMyjjcEOGzFk507tRwKXHx0cx/GwftnmN9XEZnr+AvTx4ydIrmDmwa0wab5RLLoMHrWPyP2tBTaU54PwNUOp24fXXWiyfecbiFAZZ0Bo9n2paijZejn2G2KGC370fA7yVBST/tm4I2uq6h58LmAmYCoIxC3bnGKVt4a543ZWZnpIr+4yuKzIwTDHOr/pwAjCNhC4hW1tUkk57UG7TKy+vOglmgWdvUHBtC1/7/ZEoAF26YR69Coy5KeVnO1qRCi0PkdxR6NoUIkG/RYcHz9zYcM6hu45QISBeAU4CmQZp1+sniIKoVJHewl3IbdZv+gawfEpvzUWWVVa1HEBoRBIVaRHiwGuKsQhFJmG7K4Moywtrc+u+5bkAKabYHlVGVwTZcq97THA9OFeCAQ5dWxlBnZe8Cjrgbe5+J9QHk7Q== mhoutti@infra04-wg324.eduroam.wireless.umn.edu
     krb: present
-    expiry_date: 2022-08-11
+    expiry_date: 2023-02-11
     expiry_contact: ijohnson@wikimedia.org
   mazevedo:
     ensure: present
