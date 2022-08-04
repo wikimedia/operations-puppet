@@ -61,7 +61,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'gerrit1001.wikimedia.org'
-        - 'gerrit2001.wikimedia.org'
         - 'gerrit2002.wikimedia.org'
     gitlab:
         CN: 'gitlab.wikimedia.org'

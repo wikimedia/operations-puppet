@@ -16,7 +16,6 @@ profile::gerrit::replica_hosts:
 # Settings for rsyncing app data for migration or reinstalls
 profile::gerrit::migration::src_host: 'gerrit1001.wikimedia.org'
 profile::gerrit::migration::dst_hosts:
-  - 'gerrit2001.wikimedia.org'
   - 'gerrit2002.wikimedia.org'
 
 profile::gerrit::migration::data_dir: '/srv/gerrit'
@@ -35,7 +34,6 @@ profile::gerrit::scap_key_name: 'gerrit'
 # List of gerrit servers used in firewall rules.
 profile::gerrit::servers:
  - gerrit1001.wikimedia.org
- - gerrit2001.wikimedia.org
  - gerrit2002.wikimedia.org
 
 # Assume all production nodes are slaves
