@@ -60,16 +60,6 @@ profile::gerrit::replication:
             - '^(?:(?!apps\\/ios\\/).)*$'
             - '^(?:(?!apps\\/android\\/).)*$'
     replica_codfw:
-        url: 'gerrit2@gerrit2001.wikimedia.org:/srv/gerrit/git/${name}.git'
-        mirror: true
-        replicateProjectDeletions: true
-        replicateHiddenProjects: true
-        defaultForceUpdate: true
-        threads: 4
-        replicationDelay: 5
-        rescheduleDelay: 5
-
-    replica_new_codfw:
         url: 'gerrit2@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git'
         mirror: true
         replicateProjectDeletions: true
