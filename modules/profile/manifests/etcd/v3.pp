@@ -87,7 +87,7 @@ class profile::etcd::v3(
     # TODO: consider allowing the use of other intermediate CAs, other than 'discovery'
     else {
         $trusted_ca  = '/etc/ssl/certs/wmf-ca-certificates.crt'
-        $ssl_paths = profile::pki::get_cert('discovery', $certname, { hosts => $certname,} )
+        $ssl_paths = profile::pki::get_cert('discovery', $certname, { hosts => [$facts['networking']['fqdn']],} )
     }
 
     # Service

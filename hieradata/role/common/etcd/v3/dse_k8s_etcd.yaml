@@ -1,0 +1,19 @@
+cluster: dse_k8s_etcd
+
+profile::etcd::v3::cluster_name: "dse_k8s_etcd.%{::site}"
+profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::discovery: "dns:dse-k8s-etcd.%{::site}.wmnet"
+profile::etcd::v3::use_client_certs: false
+# The following parameter enables automatic certificate generation
+profile::etcd::v3::use_pki_certs: true
+profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
+profile::etcd::v3::max_latency: 10
+# We use the v3 api directly.
+profile::etcd::v3::adv_client_port: 2379
+
+profile::admin::groups:
+  - analytics-admins
+  - ml-team-admins
+profile::contacts::role_contacts:
+  - 'Data Engineering'
+  - 'Machine Learning'

@@ -613,7 +613,16 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-
+  dse_k8s:
+    description: "Kubernetes cluster for Data Science and Engineering (DSE) workloads"
+    id: 105
+    sites:
+      eqiad: []
+  dse_k8s_etcd:
+    description: "Etcd cluster for the DSE Kubernetes cluster"
+    id: 106
+    sites:
+      eqiad: []
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_ca_source: puppet:///modules/profile/puppet/ca.production.pem
