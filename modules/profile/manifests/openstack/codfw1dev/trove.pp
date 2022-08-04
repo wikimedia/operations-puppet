@@ -30,7 +30,7 @@ class profile::openstack::codfw1dev::trove(
         keystone_fqdn           => $keystone_fqdn,
         region                  => $region,
         rabbit_pass             => $rabbit_pass,
-        trove_guest_rabbit_pass => $rabbit_pass,
+        trove_guest_rabbit_pass => $trove_guest_rabbit_pass,
         trove_service_user_pass => $trove_service_user_pass,
         trove_quay_user         => $trove_quay_user,
         trove_quay_pass         => $trove_quay_pass,
