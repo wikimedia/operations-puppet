@@ -19,6 +19,7 @@ profile::discovery::path: "/srv/config-master/discovery"
 profile::puppetmaster::frontend::canary_hosts:
   - sretest1001.eqiad.wmnet
   - sretest1002.eqiad.wmnet
+  - idp-test2002.wikimedia.org
 profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::common::reports:
   - puppetdb
