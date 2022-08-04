@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: Apache-2.0
+fields:
+  program: "input-file-kubernetes"
+  host: "kubestage1008"
+  logsource: "kubestage1008"
+  facility: "local0"
+  severity: "NOTICE"
+codec: "json_lines"
+ignore:
+  - "[normalized][dropped]"
+testcases:
+  - input:
+      - >
+        {
+          "log": "{\"@timestamp\":\"2022-08-04T21:07:48.433Z\",\"log.level\":\"error\",\"message\":\"Toolinfo toolforge-authors already seen at https://toolsadmin.wikimedia.org/tools/toolinfo/v1/toolinfo.json\",\"ecs\":{\"version\":\"1.7.0\"},\"log\":{\"logger\":\"toolhub.apps.crawler.tasks\",\"origin\":{\"file\":{\"line\":97,\"name\":\"tasks.py\"},\"function\":\"process_url\"}},\"process\":{\"name\":\"MainProcess\",\"pid\":8,\"thread\":{\"id\":140110254331712,\"name\":\"MainThread\"}},\"service\":{\"type\":\"toolhub\"},\"trace\":{\"id\":\"none\"}}\n",
+          "stream": "stderr",
+          "time": "2022-08-04T21:07:48.434706969Z"
+        }
+  - expected:
+      - "@timestamp": "2022-08-04T21:07:48.433Z"
+        host:
+            name: "kubestage1008"
+        log:
+          level: "ERROR"
+          logger: "toolhub.apps.crawler.tasks"
+          origin:
+            file:
+              line: 97
+              name: "tasks.py"
+            function: "process_url"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 131
+            severity:
+              code: 3
+              name: "error"
+        message: "Toolinfo toolforge-authors already seen at https://toolsadmin.wikimedia.org/tools/toolinfo/v1/toolinfo.json"
+        normalized:
+            message: "toolinfo toolforge-authors already seen at https://toolsadmin.wikimedia.org/tools/toolinfo/v1/toolinfo.json"
+        process:
+            name: "MainProcess"
+            pid: 8
+            thread:
+                id: 140110254331712
+                name: "MainThread"
+        service:
+            type: "toolhub"
+        trace:
+            id: "none"
+        ecs:
+          version: "1.7.0"
