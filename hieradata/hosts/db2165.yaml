@@ -2,3 +2,4 @@
 # s8 candidate master
 mariadb::shard: 's8'
 mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false
