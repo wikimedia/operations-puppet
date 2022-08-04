@@ -104,7 +104,12 @@ memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(
 # We want this but need to figure out about service roles first
 #service_token_roles_required = True
 
+
 [oslo_messaging_rabbit]
+rabbit_retry_interval=1
+rabbit_retry_backoff=2
+rabbit_durable_queues=true
+rabbit_ha_queues=true
 ssl = False
 
 [oslo_concurrency]
