@@ -4839,7 +4839,7 @@ users:
     uid: 32084
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSPgGHinj/fzfnq8BCYVnegcJ0/Z//hMpGYrgBJnLJQ muniza@wlt
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZiBjvl5o40Ile7UjKq2OrMczkHMA4L6Md/6z+llKnY mnz@wlt
   lbowmaker:
     ensure: present
     email: lbowmaker@wikimedia.org
