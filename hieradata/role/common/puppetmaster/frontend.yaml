@@ -16,6 +16,9 @@ profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::conftool::state::ensure: present
 profile::conftool::state::query_interval: 30
 profile::discovery::path: "/srv/config-master/discovery"
+profile::puppetmaster::frontend::canary_hosts:
+  - sretest1001.eqiad.wmnet
+  - sretest1002.eqiad.wmnet
 profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::common::reports:
   - puppetdb
