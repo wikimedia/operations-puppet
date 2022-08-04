@@ -388,13 +388,10 @@ node /^clouddumps100[12]\.wikimedia\.org/ {
 }
 
 # All gerrit servers (swap master status in hiera)
-node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
+node 'gerrit1001.wikimedia.org', 'gerrit2002.wikimedia.org' {
     role(gerrit)
 }
 
-node 'gerrit2002.wikimedia.org' {
-    role(gerrit)
-}
 # Zookeeper and Etcd discovery service nodes
 node /^conf200[456]\.codfw\.wmnet$/ {
     role(configcluster)
