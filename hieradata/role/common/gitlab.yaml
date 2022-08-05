@@ -11,7 +11,7 @@ profile::ssh::server::listen_addresses:
 
 profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
-profile::gitlab::backup_keep_time: 259200
+profile::gitlab::backup_keep_time: 172800
 profile::gitlab::enable_backup_sync: true
 
 profile::gitlab::cas_label: 'Wikimedia Dev Account'
