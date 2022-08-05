@@ -1,7 +1,11 @@
 #!/bin/sh
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-# Add custom component
+# Add custom component we also need the wikimedia repositories
 if [ -n "${COMPONENT}" ]; then
+    if [ "${WIKIMEDIA}" != "yes" ]; then
+      printf "Also need to set WIKIMEDIA=yes when using COMPONENT"
+      exit
+    fi
 	cat > /etc/apt/sources.list.d/<%= @distribution %>-component.list <<-'EOF'
     deb http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia ${COMPONENT}
     deb-src http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia ${COMPONENT}
