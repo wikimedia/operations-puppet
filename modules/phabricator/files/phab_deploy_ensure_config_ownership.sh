@@ -18,9 +18,11 @@ chgrp mail "$SCAP_REV_PATH"/phabricator/conf/local/mail.json
 chgrp phd "$SCAP_REV_PATH"/phabricator/conf/local/phd.json
 chgrp phd "$SCAP_REV_PATH"/phabricator/conf/local/vcs.json
 chgrp www-data "$SCAP_REV_PATH"/phabricator/conf/local/www.json
+chgrp www-data "$SCAP_REV_PATH"/phabricator/conf/local/local.json
 
 chgrp www-data "$SCAP_REV_PATH"/phabricator/support/redirect_config.json
 
 chmod 0440 "$SCAP_REV_PATH"/phabricator/conf/local/*.json
+chmod a+r "$SCAP_REV_PATH/phabricator/conf/local/local.json"
 chmod 0440 "$SCAP_REV_PATH"/phabricator/support/*.json
 
