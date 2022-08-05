@@ -59,9 +59,7 @@ class profile::gitlab::runner (
         settings => $docker_settings,
     }
 
-    if debian::codename::ge('buster') {
-        ensure_packages('apparmor')
-    }
+    ensure_packages('apparmor')
 
     class { 'docker':
         package_name => 'docker.io',
