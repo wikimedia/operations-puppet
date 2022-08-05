@@ -8,7 +8,7 @@ if [ -n "${COMPONENT}" ]; then
       printf "Also need to set 'WIKIMEDIA=yes' when using COMPONENT\n"
       exit 1
     fi
-    printf "deb %s %s %s\n" "${REPO}" "<%= @distribution %>-wikimedia" "${COMPONENT}" > ${REPO}
-    printf "deb-src %s %s %s\n" "${REPO}" "<%= @distribution %>-wikimedia" "${COMPONENT}" >> ${REPO}
+    printf "deb %s %s %s\n" "${REPO}" "<%= @distribution %>-wikimedia" "${COMPONENT}" > ${SOURCE_FILE}
+    printf "deb-src %s %s %s\n" "${REPO}" "<%= @distribution %>-wikimedia" "${COMPONENT}" >> ${SOURCE_FILE}
 	apt-get update
 fi
