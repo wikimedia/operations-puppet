@@ -35,4 +35,12 @@ class profile::mirrors::tails {
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
     }
 
+    # serve via rsync
+    rsync::server::module { 'tails':
+        path      => $local_dir,
+        read_only => 'yes',
+        uid       => 'nobody',
+        gid       => 'nogroup',
+    }
+
 }
