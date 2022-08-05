@@ -1,4 +1,4 @@
-arofile::openstack::eqiad1::region: 'eqiad1-r'
+profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::version: 'wallaby'
 profile::openstack::eqiad1::horizon_version: 'wallaby'
 
