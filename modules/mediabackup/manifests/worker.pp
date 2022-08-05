@@ -69,7 +69,6 @@ class mediabackup::worker (
     # user and group so we don't run anything as a privileged user
     systemd::sysuser { 'mediabackup':
         home_dir => '/srv/mediabackup',
-        shell    => '/bin/sh',
     }
 
     # location of temporary storage to download and hash files before
