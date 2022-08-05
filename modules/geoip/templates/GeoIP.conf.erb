@@ -1,14 +1,9 @@
 # Managed by puppet
 
 LicenseKey <%= @license_key %>
-<%- if @legacy_format -%>
-UserId <%= @user_id %>
-ProductIds <%= @product_ids.join(' ') %>
-<%- else -%>
 AccountID <%= @user_id %>
 EditionIDs <%= @product_ids.join(' ') %>
 LockFile /var/lock/.geoipupdate.lock
-<%- end -%>
 
 <% if @proxy -%>
 Proxy <%= @proxy %>

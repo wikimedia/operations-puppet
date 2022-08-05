@@ -32,9 +32,6 @@ class geoip::data::maxmind(
   Stdlib::Host $ca_server          = $facts['networking']['fqdn'],
   Optional[Stdlib::Httpurl] $proxy = undef,
 ) {
-  # Version 3 on buster has different config keys to version 2
-  $legacy_format = debian::codename::lt('buster')
-
   ensure_packages(['geoipupdate'])
 
   ensure_resource('file', $data_directory, {'ensure' => 'directory'})
