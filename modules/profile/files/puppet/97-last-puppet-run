@@ -21,7 +21,7 @@ if [ -f "$PUPPET_LAST_RUN_PATH" ]; then
     else
         MSG="($DELTAMIN minutes ago). $(puppet-enabled || true)"
     fi
-    printf "The last Puppet run was at %s %b\\nLast puppet commit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
+    printf "The last Puppet run was at %s %b\\nLast Puppet commit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
 else
     printf "Puppet %bdoes not seem to have run in this machine%b. Unable to find '%s'.\\n" "$BOLD" "$NORM" "$PUPPET_LAST_RUN_PATH"
 fi
