@@ -73,8 +73,8 @@ class klaxon(
     systemd::timer { 'vo-escalate':
         timer_intervals => [
             { 'start'    => 'OnCalendar',
-              'interval' => '*:*:00,15', # every 15s
+              'interval' => '*:*:00/15', # every 15s
             }],
-        splay           => 5, # Timer runs on all (two) alerting hosts
+        splay           => 7, # Timer runs on all (two) alerting hosts
     }
 }
