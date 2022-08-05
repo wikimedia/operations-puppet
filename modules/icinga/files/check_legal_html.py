@@ -28,8 +28,8 @@ mobile_copyright = (r'Content\sis\savailable\sunder '
 mobile_terms = (r'<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">'
                 r'Terms\sof\sUse</a>')
 
-mobile_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy"\s'
-                  r'class="extiw"\stitle="wmf:Privacy\spolicy">Privacy policy</a>')
+mobile_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy">'
+                  r'Privacy\spolicy</a>')
 
 copyright = (r'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+'
              r'href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:'
