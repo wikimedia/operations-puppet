@@ -3,4 +3,3 @@
 mariadb::shard: 'test-s4'
 profile::mariadb::mysql_role: 'master'
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false

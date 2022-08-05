@@ -1,3 +1,2 @@
 # db2102
 mariadb::shard: 'test-s1'
-profile::monitoring::notifications_enabled: false

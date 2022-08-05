@@ -1,3 +1,0 @@
-# dborch1001
-# Orchestrator central node - VM ganeti
-profile::monitoring::notifications_enabled: false

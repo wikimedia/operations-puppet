@@ -2,4 +2,3 @@
 # Testing section
 mariadb::shard: 'test-s4'
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
