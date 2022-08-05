@@ -67,37 +67,26 @@ class mediabackup::worker (
     ])
 
     # user and group so we don't run anything as a privileged user
-    group { 'mediabackup':
-        ensure => present,
-        system => true,
-    }
-    user { 'mediabackup':
-        ensure     => present,
-        gid        => 'mediabackup',
-        shell      => '/bin/false',
-        home       => '/srv/mediabackup',
-        system     => true,
-        managehome => false,
-        require    => Group['mediabackup'],
+    systemd::sysuser { 'mediabackup':
+        home_dir => '/srv/mediabackup',
+        shell    => '/bin/sh',
     }
 
     # location of temporary storage to download and hash files before
     # sending it to its final location
     file { '/srv/mediabackup':
-        ensure  => directory,
-        mode    => '0750',
-        owner   => 'mediabackup',
-        group   => 'mediabackup',
-        require => [ User['mediabackup'], Group['mediabackup'] ],
+        ensure => directory,
+        mode   => '0750',
+        owner  => 'mediabackup',
+        group  => 'mediabackup',
     }
 
     # backup execution configuration dir (including secrets)
     file { '/etc/mediabackup':
-        ensure  => directory,
-        mode    => '0400',
-        owner   => 'mediabackup',
-        group   => 'mediabackup',
-        require => [ User['mediabackup'], Group['mediabackup'] ],
+        ensure => directory,
+        mode   => '0400',
+        owner  => 'mediabackup',
+        group  => 'mediabackup',
     }
 
     # access to a backup source db to read mediawiki image metadata
