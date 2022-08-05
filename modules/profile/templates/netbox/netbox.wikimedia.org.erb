@@ -23,6 +23,9 @@
     SSLCertificateKeyFile <%= @ssl_paths['key'] %>
     <%= @ssl_settings.join("\n    ") %>
 
+    # CSP headers - T296356
+    Header always set Content-Security-Policy "default-src 'self'; style-src 'unsafe-inline' 'self'; script-src 'unsafe-inline' 'self'; img-src 'self' data:;"
+
     # https://httpoxy.org/
     RequestHeader unset Proxy early
 
