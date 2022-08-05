@@ -3,8 +3,8 @@
 # Add custom component we also need the wikimedia repositories
 if [ -n "${COMPONENT}" ]; then
     if [ "${WIKIMEDIA}" != "yes" ]; then
-      printf "Also need to set WIKIMEDIA=yes when using COMPONENT"
-      exit
+      printf "Also need to set WIKIMEDIA=yes when using COMPONENT\n"
+      exit 1
     fi
 	cat > /etc/apt/sources.list.d/<%= @distribution %>-component.list <<-'EOF'
     deb http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia ${COMPONENT}
