@@ -25,16 +25,6 @@ class profile::proxysql {
     #    notrack => true,
     #}
 
-    # Starting with buster, creation of /run/proxysql is done by setting:
-    #   RuntimeDirectory=mysqld
-    #   RuntimeDirectoryPreserve=yes
-    # directly on the systemd unit
-    if debian::codename::lt('buster'){
-        systemd::tmpfile { 'proxysql':
-            content => 'd /run/proxysql 0775 proxysql proxysql -',
-        }
-    }
-
     # Let's add proxysql user to the mysql group so it can access mysql's
     # tls client certs
     exec { 'proxysql membership to mysql':
