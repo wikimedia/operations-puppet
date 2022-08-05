@@ -1,21 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: scap
-#
-# Common role for scap masters and targets
-#
-# == Parameters:
-#  [*deployment_server*]
+# @summary Common role for scap masters and targets
+# @param deployment_server
 #    Server that provides git repositories for scap3. Default 'deployment'.
 #
-#  [*wmflabs_master*]
+# @param wmflabs_master
 #    Master scap rsync host in the wmflabs domain.
 #    Default 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'.
+# @param is_master indicates if the server is a scap::master
 class scap (
     Variant[Stdlib::Host,String] $deployment_server = 'deployment',
     Stdlib::Fqdn $wmflabs_master                    = 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud',
     Stdlib::Port::Unprivileged $php7_admin_port     = 9181,
     Stdlib::Fqdn $cloud_statsd_host                 = 'cloudmetrics1004.eqiad.wmnet',
     Stdlib::Fqdn $betacluster_udplog_host           = 'deployment-mwlog01.deployment-prep.eqiad1.wikimedia.cloud',
+    Boolean      $is_master                         = false,
     Optional[Hash] $k8s_deployments                 = {},
     Boolean $enable_bootstrapping                   = true,
 ) {
@@ -25,7 +23,8 @@ class scap (
     # Required python3 package is provided by base::standard_packages class
     ensure_packages(['rsync'])
 
-    if $enable_bootstrapping {
+    # Deployment servers/masters are bootstrapped in profile::mediawiki::deployment::server
+    if $enable_bootstrapping and !$is_master {
         # This dir needs to match the home of the user defined in class scap::user
         $scap_home = '/var/lib/scap'
 

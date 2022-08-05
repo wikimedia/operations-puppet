@@ -125,6 +125,7 @@ profile::keyholder::server::agents:
     trusted_groups:
       - deployment
 
+profile::mediawiki::scap_client::is_master: true
 # scap::source declarations.  These are created
 # by the profile::mediawiki::deployment::server class.
 # Each source listed here will be cloned on the scap deploy server.

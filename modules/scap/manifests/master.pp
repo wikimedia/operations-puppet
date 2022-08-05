@@ -56,6 +56,33 @@ class scap::master(
         require => Git::Clone['operations/mediawiki-config'],
     }
 
+    ## Bootstrap Scap
+
+    # This dir needs to match the home of the user defined in class scap::user
+    $scap_home = '/var/lib/scap'
+
+    exec { 'bootstrap_scap_master':
+      command => "${scap_source_path}/bin/bootstrap_scap_master.sh scap ${scap_source_path}",
+      creates => "${scap_home}/scap/bin/scap",
+    }
+
+    file { '/usr/bin/scap':
+      ensure  => 'link',
+      target  => "${scap_home}/scap/bin/scap",
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      require => Exec['bootstrap_scap_master']
+    }
+
+    rsync::server::module { 'scap-install-staging':
+      path        => $scap_home,
+      read_only   => 'yes',
+      hosts_allow => join($::network::constants::deployable_networks, ' ')
+    }
+
+    ## End bootstrap Scap
+
     rsync::server::module { 'common':
         path        => $common_source_path,
         read_only   => 'yes',
@@ -66,13 +93,6 @@ class scap::master(
         path        => $patches_path,
         read_only   => 'yes',
         hosts_allow => $deployment_hosts
-    }
-
-    rsync::server::module { 'scap-install-staging':
-        # This path should be the home of the user defined in class scap::user
-        path        => '/var/lib/scap',
-        read_only   => 'yes',
-        hosts_allow => join($::network::constants::deployable_networks, ' ')
     }
 
     class { 'scap::l10nupdate':
