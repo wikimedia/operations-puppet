@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::region: 'eqiad1-r'
+arofile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::version: 'wallaby'
 profile::openstack::eqiad1::horizon_version: 'wallaby'
 
@@ -59,15 +59,15 @@ profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::all_regions: ['eqiad1-r']
 
 profile::openstack::eqiad1::rabbitmq_nodes:
-  - cloudcontrol1005.wikimedia.org
-  - cloudcontrol1006.wikimedia.org
-  - cloudcontrol1007.wikimedia.org
+  - cloudcontrol1003.wikimedia.org
+  - cloudcontrol1004.wikimedia.org
 profile::openstack::eqiad1::rabbitmq_setup_nodes:
   - rabbitmq01.eqiad1.wikimediacloud.org
   - rabbitmq02.eqiad1.wikimediacloud.org
   - rabbitmq03.eqiad1.wikimediacloud.org
-  - cloudcontrol1003.wikimedia.org
-  - cloudcontrol1004.wikimedia.org
+  - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
 profile::openstack::eqiad1::rabbit_file_handles: 8192
 profile::openstack::eqiad1::rabbitmq_heartbeat_timeout: 120
