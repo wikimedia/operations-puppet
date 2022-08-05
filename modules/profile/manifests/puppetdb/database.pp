@@ -27,7 +27,6 @@ class profile::puppetdb::database(
     $pgversion = debian::codename() ? {
         'bullseye' => 13,
         'buster'   => 11,
-        'stretch'  => 9.6,
     }
     $slave_range = join($slaves, ' ')
     if $master == $facts['networking']['fqdn'] {
