@@ -59,12 +59,12 @@ profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::all_regions: ['eqiad1-r']
 
 profile::openstack::eqiad1::rabbitmq_nodes:
-  - cloudcontrol1003.wikimedia.org
-  - cloudcontrol1004.wikimedia.org
-profile::openstack::eqiad1::rabbitmq_setup_nodes:
   - rabbitmq01.eqiad1.wikimediacloud.org
   - rabbitmq02.eqiad1.wikimediacloud.org
   - rabbitmq03.eqiad1.wikimediacloud.org
+profile::openstack::eqiad1::rabbitmq_setup_nodes:
+  - cloudcontrol1003.wikimedia.org
+  - cloudcontrol1004.wikimedia.org
   - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
