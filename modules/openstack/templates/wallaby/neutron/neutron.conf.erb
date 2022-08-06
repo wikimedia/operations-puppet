@@ -8,7 +8,7 @@ default_log_levels = neutron.wsgi=WARN
 
 # debug = true
 
-transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{scope.function_ipresolve([rabbit_host])}:5672" }.join(',') %>
 
 auth_strategy = keystone
 bind_port = <%= @bind_port %>
