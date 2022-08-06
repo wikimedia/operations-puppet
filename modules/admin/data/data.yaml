@@ -5662,6 +5662,10 @@ ldap_only_users:
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
+  siko:
+    ensure: present
+    realname: Simon Kock
+    email: simon.kock@wikimedia.de
   soworu-01:
     ensure: present
     realname: Segun Oworu
