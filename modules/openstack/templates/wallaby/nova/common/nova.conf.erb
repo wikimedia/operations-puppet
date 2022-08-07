@@ -23,6 +23,15 @@ syslog_log_facility = LOG_LOCAL0
 default_log_levels = nova=WARN
 #debug = true
 
+
+# ALERT ALERT ALERT
+#
+# The following setting (transport_url) is mirrored in the nova api database;
+#  changing it here is necessary but not sufficient. The setting must also
+#  be manually updated via sql. In the eqiad1 deployment the setting is
+#  in nova_api_eqiad1.cell_mappings in the 'NULL' cell.
+#
+# ALERT ALERT ALERT
 transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{scope.function_ipresolve([rabbit_host])}:5672" }.join(',') %>
 
 # Schedule things that are for some reason not in the [scheduler] section
@@ -72,6 +81,14 @@ vendordata_jsonfile_path = /etc/nova/vendor_data.json
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
 
 [database]
+# ALERT ALERT ALERT
+#
+# The following setting (connection) is mirrored in the nova api database;
+#  changing it here is necessary but not sufficient. The setting must also
+#  be manually updated via sql. In the eqiad1 deployment the setting is
+#  in nova_api_eqiad1.cell_mappings in the 'NULL' cell.
+#
+# ALERT ALERT ALERT
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_overflow = 5
 max_pool_size = 5
