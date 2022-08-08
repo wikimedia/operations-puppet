@@ -1,10 +1,10 @@
-profile::openstack::codfw1dev::pdns::legacy_tld: 'wmflabs'
-profile::openstack::codfw1dev::pdns::tld: 'wikimedia.cloud'
+profile::openstack::codfw1dev::pdns::legacy_tld: "wmflabs"
+profile::openstack::codfw1dev::pdns::tld: "wikimedia.cloud"
 profile::openstack::codfw1dev::pdns::private_reverse_zones:
-  - '16.172.in-addr.arpa'
+  - "16.172.in-addr.arpa"
 profile::openstack::codfw1dev::pdns::hosts:
-  - 'ns0.openstack.codfw1dev.wikimediacloud.org'
-  - 'ns1.openstack.codfw1dev.wikimediacloud.org'
+  - "ns0.openstack.codfw1dev.wikimediacloud.org"
+  - "ns1.openstack.codfw1dev.wikimediacloud.org"
 
 # make sure VMs with a floating IP can query the recursor (cloud-codfw1dev-floating)
 profile::openstack::codfw1dev::pdns::extra_allow_from:

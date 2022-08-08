@@ -1,4 +1,4 @@
 profile::openstack::codfw1dev::barbican::bind_port: 9312
-profile::openstack::codfw1dev::barbican::db_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::barbican::db_user: 'barbican'
-profile::openstack::codfw1dev::barbican::db_name: 'barbican'
+profile::openstack::codfw1dev::barbican::db_host: "openstack.codfw1dev.wikimediacloud.org"
+profile::openstack::codfw1dev::barbican::db_user: "barbican"
+profile::openstack::codfw1dev::barbican::db_name: "barbican"

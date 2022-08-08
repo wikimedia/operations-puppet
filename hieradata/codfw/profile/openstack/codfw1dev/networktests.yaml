@@ -29,4 +29,3 @@ profile::openstack::codfw1dev::networktests::envvars:
     DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-1.tools-codfw1dev.codfw1dev.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
-

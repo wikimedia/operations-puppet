@@ -1,8 +1,8 @@
 profile::ceph::auth::load_all::configuration:
   codfw1dev-compute:
     owner: nova
-    group: 'libvirt-qemu'
-    mode: '0440'
+    group: "libvirt-qemu"
+    mode: "0440"
     caps:
       mon: profile rbd
       osd: profile rbd-read-only pool=codfw1dev-glance-images, profile rbd pool=codfw1dev-compute
@@ -35,14 +35,14 @@ profile::ceph::auth::load_all::configuration:
   codfw1dev-cinder:
     owner: cinder
     group: cinder
-    mode: '0440'
+    mode: "0440"
     caps:
       mon: profile rbd
       osd: profile rbd pool=codfw1dev-cinder
   codfw1dev-glance-images:
     owner: glance
     group: glance
-    mode: '0440'
+    mode: "0440"
     caps:
       mon: profile rbd
       osd: profile rbd

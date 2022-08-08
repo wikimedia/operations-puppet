@@ -1,2 +1,2 @@
 profile::openstack::codfw1dev::placement::api_bind_port: 18778
-profile::openstack::codfw1dev::placement::db_host: 'openstack.codfw1dev.wikimediacloud.org'
+profile::openstack::codfw1dev::placement::db_host: "openstack.codfw1dev.wikimediacloud.org"

@@ -1,6 +1,6 @@
 profile::openstack::codfw1dev::trove::workers: 4
-profile::openstack::codfw1dev::trove::db_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::trove::db_name: 'trove_codfw1dev'
-profile::openstack::codfw1dev::trove::quay_user: 'wikimedia-cloud-services+troveguest'
-profile::openstack::codfw1dev::trove::dns_zone: 'svc.trove.codfw1dev.wikimedia.cloud.'
+profile::openstack::codfw1dev::trove::db_host: "openstack.codfw1dev.wikimediacloud.org"
+profile::openstack::codfw1dev::trove::db_name: "trove_codfw1dev"
+profile::openstack::codfw1dev::trove::quay_user: "wikimedia-cloud-services+troveguest"
+profile::openstack::codfw1dev::trove::dns_zone: "svc.trove.codfw1dev.wikimedia.cloud."
 profile::openstack::codfw1dev::trove::dns_zone_id: 5eb7f8ea-93cc-4dc1-8b75-888da888370d

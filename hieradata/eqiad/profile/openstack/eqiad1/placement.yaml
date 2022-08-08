@@ -1,2 +1,2 @@
 profile::openstack::eqiad1::placement::api_bind_port: 18778
-profile::openstack::eqiad1::placement::db_host: 'openstack.eqiad1.wikimediacloud.org'
+profile::openstack::eqiad1::placement::db_host: "openstack.eqiad1.wikimediacloud.org"

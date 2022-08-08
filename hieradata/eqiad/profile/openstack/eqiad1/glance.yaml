@@ -1,3 +1,3 @@
 profile::openstack::eqiad1::glance::api_bind_port: 19292
-profile::openstack::eqiad1::glance::db_host: 'openstack.eqiad1.wikimediacloud.org'
+profile::openstack::eqiad1::glance::db_host: "openstack.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::glance::ceph_pool: eqiad1-glance-images

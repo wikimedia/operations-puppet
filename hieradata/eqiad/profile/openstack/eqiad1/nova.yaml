@@ -1,24 +1,23 @@
-profile::openstack::eqiad1::region: 'eqiad1-r'
-profile::openstack::eqiad1::nova::db_host: 'openstack.eqiad1.wikimediacloud.org'
-profile::openstack::eqiad1::nova::db_name: 'nova_eqiad1'
-profile::openstack::eqiad1::nova::db_name_api: 'nova_api_eqiad1'
-profile::openstack::eqiad1::nova::db_name_cell: 'nova_cell0_eqiad1'
-profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad1.wikimedia.cloud'
+profile::openstack::eqiad1::region: "eqiad1-r"
+profile::openstack::eqiad1::nova::db_host: "openstack.eqiad1.wikimediacloud.org"
+profile::openstack::eqiad1::nova::db_name: "nova_eqiad1"
+profile::openstack::eqiad1::nova::db_name_api: "nova_api_eqiad1"
+profile::openstack::eqiad1::nova::db_name_cell: "nova_cell0_eqiad1"
+profile::openstack::eqiad1::nova::dhcp_domain: "eqiad1.wikimedia.cloud"
 profile::openstack::eqiad1::nova::metadata_listen_port: 18775
-profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: 'eth1'
-profile::openstack::eqiad1::nova::network_flat_interface_vlan: '1105'
-profile::openstack::eqiad1::nova::network_flat_interface: 'eth1.1105'
+profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: "eth1"
+profile::openstack::eqiad1::nova::network_flat_interface_vlan: "1105"
+profile::openstack::eqiad1::nova::network_flat_interface: "eth1.1105"
 profile::openstack::eqiad1::nova::osapi_compute_listen_port: 18774
 profile::openstack::eqiad1::nova::placement_api_port: 18778
-profile::openstack::eqiad1::nova::instance_network_id: '7425e328-560c-4f00-8e99-706f3fb90bb4'
+profile::openstack::eqiad1::nova::instance_network_id: "7425e328-560c-4f00-8e99-706f3fb90bb4"
 profile::openstack::eqiad1::nova::physical_interface_mappings:
-  cloudinstances2b: 'eth1.1105'
+  cloudinstances2b: "eth1.1105"
 
-profile::openstack::eqiad1::nova::libvirt_cpu_model: 'Haswell-noTSX-IBRS'
+profile::openstack::eqiad1::nova::libvirt_cpu_model: "Haswell-noTSX-IBRS"
 
 # bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
 profile::openstack::eqiad1::nova::fullstack_bastion_ip: 185.15.56.40
-
 # The behavior formerly managed by the scheduler_pool is now
 # handled by novas host aggregates.  Documentation can
 # be found at

@@ -1,82 +1,82 @@
 profile::openstack::eqiad1::cloudgw::dmz_cidr:
- # VMs --> wiki (text-lb.eqiad)
- - "208.80.154.224"
- # VMs --> wiki (upload-lb.eqiad)
- - "208.80.154.240"
- # VMs --> wiki (text-lb.codfw)
- - "208.80.153.224"
- # VMs --> wiki (upload-lb.codfw)
- - "208.80.153.240"
- # VMs --> wiki (text-lb.ulsfo)
- - "198.35.26.96"
- # VMs --> wiki (upload-lb.ulsfo)
- - "198.35.26.112"
- # VMs --> wiki (text-lb.eqsin)
- - "103.102.166.224"
- # VMs --> wiki (upload-lb.eqsin)
- - "103.102.166.240"
- # VMs --> wiki (text-lb.drmrs)
- - "185.15.58.224"
- # VMs --> wiki (upload-lb.drmrs)
- - "185.15.58.240"
- # VMs --> wiki (text-lb.esams)
- - "91.198.174.192"
- # VMs --> wiki (upload-lb.esams)
- - "91.198.174.208"
- # VMs --> ns-recursor1.openstack.eqiad1.wikimediacloud.org
- - "208.80.154.24"
- # VMs --> ns-recursor0.openstack.eqiad1.wikimediacloud.org
- - "208.80.154.143"
- # VMs --> ns-recursor1.openstack.codfw1dev.wikimediacloud.org
- - "208.80.153.118"
- # VMs --> ns-recursor0.openstack.codfw1dev.wikimediacloud.org
- - "208.80.153.78"
- # VMs --> gerrit-replica.wikimedia.org
- - "208.80.153.107"
- # VMs --> gerrit.wikimedia.org
- - "208.80.154.137"
- # VMs --> cloudcontrol1003.wikimedia.org
- - "208.80.154.23"
- # VMs --> cloudcontrol1004.wikimedia.org
- - "208.80.154.132"
- # VMs --> cloudcontrol1005.wikimedia.org
- - "208.80.154.85"
- # VMs --> cloudcontrol1006.wikimedia.org
- - "208.80.154.149"
- # VMs --> cloudcontrol1007.wikimedia.org
- - "208.80.155.104"
- # VMs --> cloudcontrol2001-dev.wikimedia.org
- - "208.80.153.59"
- # VMs --> cloudcontrol2003-dev.wikimedia.org
- - "208.80.153.75"
- # VMs --> cloudcontrol2004-dev.wikimedia.org
- - "208.80.153.116"
- # VMs --> contint2001.wikimedia.org
- - "208.80.153.15"
- # VMs --> ldap-ro.eqiad.wikimedia.org
- - "208.80.154.252"
- # VMs --> ldap-ro.codfw.wikimedia.org
- - "208.80.153.252"
- # VMs --> nfs-maps.wikimedia.org
- - "208.80.155.119"
- # the following should match what's in homer/public.git cloud-in4 filter
- # there is no other access (NAT or not) to other 10.x.x.x services anyway
- # VMs --> nfs-tools-project.svc.eqiad.wmnet
- - "10.64.37.18"
- # VMs --> cloudmetrics1003 / cloudmetrics1004
- - "10.64.4.6"
- - "10.64.37.6"
+  # VMs --> wiki (text-lb.eqiad)
+  - "208.80.154.224"
+  # VMs --> wiki (upload-lb.eqiad)
+  - "208.80.154.240"
+  # VMs --> wiki (text-lb.codfw)
+  - "208.80.153.224"
+  # VMs --> wiki (upload-lb.codfw)
+  - "208.80.153.240"
+  # VMs --> wiki (text-lb.ulsfo)
+  - "198.35.26.96"
+  # VMs --> wiki (upload-lb.ulsfo)
+  - "198.35.26.112"
+  # VMs --> wiki (text-lb.eqsin)
+  - "103.102.166.224"
+  # VMs --> wiki (upload-lb.eqsin)
+  - "103.102.166.240"
+  # VMs --> wiki (text-lb.drmrs)
+  - "185.15.58.224"
+  # VMs --> wiki (upload-lb.drmrs)
+  - "185.15.58.240"
+  # VMs --> wiki (text-lb.esams)
+  - "91.198.174.192"
+  # VMs --> wiki (upload-lb.esams)
+  - "91.198.174.208"
+  # VMs --> ns-recursor1.openstack.eqiad1.wikimediacloud.org
+  - "208.80.154.24"
+  # VMs --> ns-recursor0.openstack.eqiad1.wikimediacloud.org
+  - "208.80.154.143"
+  # VMs --> ns-recursor1.openstack.codfw1dev.wikimediacloud.org
+  - "208.80.153.118"
+  # VMs --> ns-recursor0.openstack.codfw1dev.wikimediacloud.org
+  - "208.80.153.78"
+  # VMs --> gerrit-replica.wikimedia.org
+  - "208.80.153.107"
+  # VMs --> gerrit.wikimedia.org
+  - "208.80.154.137"
+  # VMs --> cloudcontrol1003.wikimedia.org
+  - "208.80.154.23"
+  # VMs --> cloudcontrol1004.wikimedia.org
+  - "208.80.154.132"
+  # VMs --> cloudcontrol1005.wikimedia.org
+  - "208.80.154.85"
+  # VMs --> cloudcontrol1006.wikimedia.org
+  - "208.80.154.149"
+  # VMs --> cloudcontrol1007.wikimedia.org
+  - "208.80.155.104"
+  # VMs --> cloudcontrol2001-dev.wikimedia.org
+  - "208.80.153.59"
+  # VMs --> cloudcontrol2003-dev.wikimedia.org
+  - "208.80.153.75"
+  # VMs --> cloudcontrol2004-dev.wikimedia.org
+  - "208.80.153.116"
+  # VMs --> contint2001.wikimedia.org
+  - "208.80.153.15"
+  # VMs --> ldap-ro.eqiad.wikimedia.org
+  - "208.80.154.252"
+  # VMs --> ldap-ro.codfw.wikimedia.org
+  - "208.80.153.252"
+  # VMs --> nfs-maps.wikimedia.org
+  - "208.80.155.119"
+  # the following should match what's in homer/public.git cloud-in4 filter
+  # there is no other access (NAT or not) to other 10.x.x.x services anyway
+  # VMs --> nfs-tools-project.svc.eqiad.wmnet
+  - "10.64.37.18"
+  # VMs --> cloudmetrics1003 / cloudmetrics1004
+  - "10.64.4.6"
+  - "10.64.37.6"
 
 profile::openstack::eqiad1::cloudgw::routing_source_ip: 185.15.56.1
 profile::openstack::eqiad1::cloudgw::virt_subnet_cidr: 172.16.0.0/21
 
 profile::openstack::eqiad1::cloudgw::vrrp_vips:
- - 185.15.56.237/30 dev dataplane.1107
- - 185.15.56.244/29 dev dataplane.1120
+  - 185.15.56.237/30 dev dataplane.1107
+  - 185.15.56.244/29 dev dataplane.1120
 
 profile::openstack::eqiad1::cloudgw::conntrackd:
   cloudgw1001:
-    nic: 'enp101s0f0np0'
+    nic: "enp101s0f0np0"
     local_addr: cloudgw1001.eqiad.wmnet
     remote_addr: cloudgw1002.eqiad.wmnet
     filter_ipv4:
@@ -86,7 +86,7 @@ profile::openstack::eqiad1::cloudgw::conntrackd:
       - 185.15.56.237
       - 185.15.56.244
   cloudgw1002:
-    nic: 'enp101s0f0np0'
+    nic: "enp101s0f0np0"
     local_addr: cloudgw1002.eqiad.wmnet
     remote_addr: cloudgw1001.eqiad.wmnet
     filter_ipv4:

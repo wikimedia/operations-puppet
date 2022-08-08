@@ -1,8 +1,8 @@
 profile::openstack::eqiad1::trove::workers: 8
 
-profile::openstack::eqiad1::trove::db_host: 'openstack.eqiad1.wikimediacloud.org'
-profile::openstack::eqiad1::trove::db_name: 'trove_eqiad1'
-profile::openstack::eqiad1::trove::quay_user: 'wikimedia-cloud-services+troveguest'
+profile::openstack::eqiad1::trove::db_host: "openstack.eqiad1.wikimediacloud.org"
+profile::openstack::eqiad1::trove::db_name: "trove_eqiad1"
+profile::openstack::eqiad1::trove::quay_user: "wikimedia-cloud-services+troveguest"
 
-profile::openstack::eqiad1::trove::dns_zone: 'svc.trove.eqiad1.wikimedia.cloud.'
+profile::openstack::eqiad1::trove::dns_zone: "svc.trove.eqiad1.wikimedia.cloud."
 profile::openstack::eqiad1::trove::dns_zone_id: 83cdace8-221b-47b3-8041-9271889d2811

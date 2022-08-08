@@ -29,4 +29,3 @@ profile::openstack::eqiad1::networktests::envvars:
     DUMPS_NO_FLOATING_VM: tools-k8s-worker-79.tools.eqiad1.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
-

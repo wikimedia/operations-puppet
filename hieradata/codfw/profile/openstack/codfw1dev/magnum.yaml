@@ -1,5 +1,5 @@
 profile::openstack::codfw1dev::magnum::api_bind_port: 19511
-profile::openstack::codfw1dev::magnum::db_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::magnum::db_user: 'magnum'
-profile::openstack::codfw1dev::magnum::db_name: 'codfw1dev_magnum'
+profile::openstack::codfw1dev::magnum::db_host: "openstack.codfw1dev.wikimediacloud.org"
+profile::openstack::codfw1dev::magnum::db_user: "magnum"
+profile::openstack::codfw1dev::magnum::db_name: "codfw1dev_magnum"
 profile::openstack::codfw1dev::magnum::active: true

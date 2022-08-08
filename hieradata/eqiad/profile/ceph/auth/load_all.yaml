@@ -1,8 +1,8 @@
 profile::ceph::auth::load_all::configuration:
   eqiad1-compute:
     owner: nova
-    group: 'libvirt-qemu'
-    mode: '0440'
+    group: "libvirt-qemu"
+    mode: "0440"
     caps:
       mon: profile rbd
       osd: profile rbd-read-only pool=eqiad1-glance-images, profile rbd pool=eqiad1-compute
@@ -34,14 +34,14 @@ profile::ceph::auth::load_all::configuration:
   eqiad1-cinder:
     owner: cinder
     group: cinder
-    mode: '0440'
+    mode: "0440"
     caps:
       mon: profile rbd
       osd: profile rbd pool=eqiad1-cinder
   eqiad1-glance-images:
     owner: glance
     group: glance
-    mode: '0440'
+    mode: "0440"
     caps:
       mon: allow r
       osd: allow class-read object_prefix rbd_children, allow rwx pool=eqiad1-glance-images

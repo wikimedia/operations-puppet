@@ -18,11 +18,11 @@ profile::openstack::eqiad1::labweb_hosts:
   - cloudweb1004.wikimedia.org
 
 profile::mariadb::cloudinfra::puppetmasters:
-- cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
-- cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
+  - cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
+  - cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
 profile::mariadb::cloudinfra::cloudinfra_dbs:
-- cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
-- cloudinfra-db04.cloudinfra.eqiad1.wikimedia.cloud
+  - cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
+  - cloudinfra-db04.cloudinfra.eqiad1.wikimedia.cloud
 profile::mariadb::cloudinfra::enc_servers:
   - enc-1.cloudinfra.eqiad1.wikimedia.cloud
   - enc-2.cloudinfra.eqiad1.wikimedia.cloud
@@ -38,8 +38,11 @@ profile::openstack::eqiad1::puppetmaster::ca: cloud-puppetmaster-03.cloudinfra.e
 profile::openstack::eqiad1::puppetmaster::cert_secret_path: puppetmaster
 profile::openstack::eqiad1::puppetmaster::servers:
   cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs:
-    - {loadfactor: 10, worker: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs}
-    - {loadfactor: 20, worker: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud}
+    - { loadfactor: 10, worker: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs }
+    - {
+        loadfactor: 20,
+        worker: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud,
+      }
 profile::puppetmaster::frontend::allow_from: [.wmflabs]
 profile::openstack::eqiad1::puppetmaster::web_hostname: puppetmaster.cloudinfra.wmflabs.org
 

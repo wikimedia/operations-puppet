@@ -1,6 +1,6 @@
 profile::openstack::codfw1dev::heat::api_bind_port: 18004
 profile::openstack::codfw1dev::heat::cfn_api_bind_port: 18000
-profile::openstack::codfw1dev::heat::db_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::heat::db_user: 'heat'
-profile::openstack::codfw1dev::heat::db_name: 'codfw1dev_heat'
+profile::openstack::codfw1dev::heat::db_host: "openstack.codfw1dev.wikimediacloud.org"
+profile::openstack::codfw1dev::heat::db_user: "heat"
+profile::openstack::codfw1dev::heat::db_name: "codfw1dev_heat"
 profile::openstack::codfw1dev::heat::active: true

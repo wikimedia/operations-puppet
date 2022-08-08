@@ -1,4 +1,3 @@
-profile::openstack::codfw1dev::puppetmaster::encapi::db_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::puppetmaster::encapi::db_name: 'labspuppet'
-profile::openstack::codfw1dev::puppetmaster::encapi::db_user: 'labspuppet'
-
+profile::openstack::codfw1dev::puppetmaster::encapi::db_host: "openstack.codfw1dev.wikimediacloud.org"
+profile::openstack::codfw1dev::puppetmaster::encapi::db_name: "labspuppet"
+profile::openstack::codfw1dev::puppetmaster::encapi::db_user: "labspuppet"

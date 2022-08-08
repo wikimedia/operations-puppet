@@ -1,10 +1,10 @@
 profile::ceph::mon::hosts:
-  'cloudcephmon1001.eqiad.wmnet':
+  "cloudcephmon1001.eqiad.wmnet":
     public:
-      addr: '10.64.20.67'
-  'cloudcephmon1002.eqiad.wmnet':
+      addr: "10.64.20.67"
+  "cloudcephmon1002.eqiad.wmnet":
     public:
-      addr: '10.64.20.68'
-  'cloudcephmon1003.eqiad.wmnet':
+      addr: "10.64.20.68"
+  "cloudcephmon1003.eqiad.wmnet":
     public:
-      addr: '10.64.20.69'
+      addr: "10.64.20.69"

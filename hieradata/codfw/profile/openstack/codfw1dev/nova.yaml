@@ -1,30 +1,28 @@
 # Much of this is a placeholder config for now
-profile::openstack::codfw1dev::region: 'codfw1dev-r'
-profile::openstack::codfw1dev::nova::db_name: 'nova'
-profile::openstack::codfw1dev::nova::db_name_api: 'nova_api'
-profile::openstack::codfw1dev::nova::db_name_cell: 'nova_cell0'
-profile::openstack::codfw1dev::nova::db_user: 'nova'
-profile::openstack::codfw1dev::nova::dhcp_domain: 'codfw1dev.wikimedia.cloud'
-profile::openstack::codfw1dev::nova::dhcp_start: '172.16.128.10'
-profile::openstack::codfw1dev::nova::quota_floating_ips: '0'
+profile::openstack::codfw1dev::region: "codfw1dev-r"
+profile::openstack::codfw1dev::nova::db_name: "nova"
+profile::openstack::codfw1dev::nova::db_name_api: "nova_api"
+profile::openstack::codfw1dev::nova::db_name_cell: "nova_cell0"
+profile::openstack::codfw1dev::nova::db_user: "nova"
+profile::openstack::codfw1dev::nova::dhcp_domain: "codfw1dev.wikimedia.cloud"
+profile::openstack::codfw1dev::nova::dhcp_start: "172.16.128.10"
+profile::openstack::codfw1dev::nova::quota_floating_ips: "0"
 profile::openstack::codfw1dev::nova::metadata_listen_port: 18775
-profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: 'eth1'
-profile::openstack::codfw1dev::nova::network_flat_interface_vlan: '2105'
-profile::openstack::codfw1dev::nova::network_flat_interface: 'eth1.2105'
+profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: "eth1"
+profile::openstack::codfw1dev::nova::network_flat_interface_vlan: "2105"
+profile::openstack::codfw1dev::nova::network_flat_interface: "eth1.2105"
 profile::openstack::codfw1dev::nova::osapi_compute_listen_port: 18774
 profile::openstack::codfw1dev::nova::placement_api_port: 18778
-profile::openstack::codfw1dev::nova::flat_network_bridge: 'br2105'
-profile::openstack::codfw1dev::nova::fixed_range: '172.16.128.0/24'
-profile::openstack::codfw1dev::nova::zone: 'codfw'
-profile::openstack::codfw1dev::nova::db_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::nova::live_migration_uri: 'test'
+profile::openstack::codfw1dev::nova::flat_network_bridge: "br2105"
+profile::openstack::codfw1dev::nova::fixed_range: "172.16.128.0/24"
+profile::openstack::codfw1dev::nova::zone: "codfw"
+profile::openstack::codfw1dev::nova::db_host: "openstack.codfw1dev.wikimediacloud.org"
+profile::openstack::codfw1dev::nova::live_migration_uri: "test"
 profile::openstack::codfw1dev::nova::physical_interface_mappings:
-  cloudinstances2b: 'eth1.2105'
+  cloudinstances2b: "eth1.2105"
 
-profile::openstack::codfw1dev::nova::default_schedule_zone: 'nova'
-profile::openstack::codfw1dev::nova::libvirt_cpu_model: 'IvyBridge-IBRS'
-
-
+profile::openstack::codfw1dev::nova::default_schedule_zone: "nova"
+profile::openstack::codfw1dev::nova::libvirt_cpu_model: "IvyBridge-IBRS"
 # The behavior formerly managed by the scheduler_pool is now
 # handled by novas host aggregates.  Documentation can
 # be found at

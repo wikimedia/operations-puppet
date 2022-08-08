@@ -1,4 +1,4 @@
 profile::openstack::eqiad1::cinder::api_bind_port: 18776
-profile::openstack::eqiad1::cinder::db_host: 'openstack.eqiad1.wikimediacloud.org'
+profile::openstack::eqiad1::cinder::db_host: "openstack.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::cinder::ceph_pool: eqiad1-cinder
 profile::openstack::eqiad1::cinder::ceph_rbd_client_name: eqiad1-cinder
