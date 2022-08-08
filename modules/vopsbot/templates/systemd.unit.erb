@@ -1,0 +1,11 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=vopsbot, the irc bot to interact with splunk oncall
+
+[Service]
+User=vopsbot
+Environment="CONFIG=<%= @ircbot_config %>"
+Environment="USERS_FILE=<%= @user_config %>"
+Environment="VO_API_ID=<%= @vo_api_id %>"
+Environment="VO_API_KEY=<%= @vo_api_key %>"
+ExecStart=/usr/bin/vopsbot

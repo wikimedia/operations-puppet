@@ -64,3 +64,23 @@ profile::certspotter::monitor_domains:
   - 'wikimediafoundation.org'
   - 'wmfusercontent.org'
   - 'w.wiki'
+
+# vopsbot configuration
+profile::vopsbot::nickname: sirenbot
+# defined in private puppet
+# profile::vopsbot::password
+# profile::vopsbot::vo_api_id
+# profile::vopsbot::vo_api_key
+profile::vopsbot::irc_channels:
+  - \#wikimedia-sre
+  - \#wikimedia-sre-private
+# Also to populate in the private repository,
+# with a list of all users of victorops with
+# a correspondence between irc nickname as key,
+# and victorops info as values.
+#profile::vopsbot::vo_users:
+#  _joe_:
+#    vo_name: oblivian
+#    team: SRE
+#    vo_admin: false
+

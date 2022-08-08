@@ -30,6 +30,7 @@ class role::alerting_host {
     include profile::alertmanager::api
     include profile::alertmanager::phab
     include profile::klaxon
+    include profile::vopsbot
 
     # WMF services that require monitoring but do not have their
     # own standalone alerting server.
