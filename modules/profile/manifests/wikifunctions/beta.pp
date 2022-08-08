@@ -7,7 +7,8 @@ class profile::wikifunctions::beta () {
         ip_families        => ['ip4'],
         ip4                => ipresolve($vhost, 4),
         path               => '/w/api.php?action=wikilambda_health_check&format=json',
-        team               => 'abstract-wikimedia',
+        team               => 'abstract-wikipedia',
+        timeout            =>  '10s',
         severity           => 'warning',
         # This health check runs multiple tests against the orchestrator. It only returns
         # success: true if all tests are run and passed.
