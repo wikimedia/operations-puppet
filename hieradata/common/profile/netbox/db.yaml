@@ -3,6 +3,7 @@ profile::netbox::db::frontends: []
 profile::netbox::db::replicas: []
 profile::netbox::db::do_backup: false
 profile::netbox::db::ipv6_ok: true
+profile::netbox::db::dump_interval: '*-*-* *:37:00'
 
 # Private data
 # profile::netbox::db::password: FAKE
