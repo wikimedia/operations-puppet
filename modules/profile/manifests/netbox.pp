@@ -359,14 +359,15 @@ class profile::netbox (
 
     # Support directory for dumping tables
     file { '/srv/netbox-dumps/':
-        ensure => 'directory',
+        ensure => 'absent',
+        force  => true,
         owner  => 'netbox',
         group  => 'netbox',
         mode   => '0770',
     }
     # Timer for dumping tables
     systemd::timer::job { 'netbox_dump_run':
-        ensure          => $active_ensure,
+        ensure          => 'absent',
         description     => 'Dump CSVs from Netbox.',
         environment     => $systemd_environment,
         command         => '/srv/deployment/netbox-extras/tools/rotatedump',
