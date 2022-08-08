@@ -145,6 +145,10 @@ class profile::netbox::db (
                 srange => "(@resolve((${replicas_ferm})) @resolve((${replicas_ferm}), AAAA))",
             }
         }
+        # On the primary node, do a daily DB dump
+        class { '::postgresql::backup':
+            do_backups    => $do_backups,
+        }
     } else {
         $require_class = 'postgresql::slave'
         class { '::postgresql::slave':
@@ -163,15 +167,14 @@ class profile::netbox::db (
             pg_database => 'netbox',
             description => 'netbox Postgres',
         }
+        # On secondary nodes, do an hourly DB dump
+        class { '::postgresql::backup':
+            do_backups    => $do_backups,
+            dump_interval => $dump_interval
+        }
     }
-
     if $do_backups {
-        # Have backups because Netbox is used as a source of truth (T190184)
         include ::profile::backup::host
         backup::set { 'netbox-postgres': }
-    }
-    class { '::postgresql::backup':
-        do_backups    => $do_backups,
-        dump_interval => $dump_interval
     }
 }
