@@ -67,5 +67,3 @@ profile::airflow::instances:
 profile::airflow::database_host_default: an-test-coord1001.eqiad.wmnet
 
 profile::contacts::role_contacts: ['Data Engineering']
-
-profile::hadoop::spark3::test_spark_3_install: true
