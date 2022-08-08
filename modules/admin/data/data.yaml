@@ -980,18 +980,18 @@ groups:
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
-      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@platform-eng *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@platform-eng *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@platform-eng *',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@platform-eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform-eng',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@platform_eng *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@platform_eng *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@platform_eng *',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@platform_eng',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform_eng',
       'ALL = NOPASSWD: /bin/journalctl *'
     ]
     system_members: [analytics-platform-eng]
