@@ -141,10 +141,10 @@ class profile::hadoop::spark3(
     }
 
     file { '/etc/spark3/conf/spark-env.sh':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => template('profile/hadoop/spark3/spark3-env.sh.erb')
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('profile/hadoop/spark3/spark3-env.sh.erb')
     }
 
     file { '/etc/spark3/conf/log4j.properties':
