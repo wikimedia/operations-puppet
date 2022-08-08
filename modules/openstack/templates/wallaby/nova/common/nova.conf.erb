@@ -32,7 +32,7 @@ default_log_levels = nova=WARN
 #  in nova_api_eqiad1.cell_mappings in the 'NULL' cell.
 #
 # ALERT ALERT ALERT
-transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{scope.function_ipresolve([rabbit_host])}:5672" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
 # Schedule things that are for some reason not in the [scheduler] section
 ram_allocation_ratio=1.0
