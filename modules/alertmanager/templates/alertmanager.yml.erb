@@ -434,10 +434,10 @@ receivers:
 
 - name: 'abstract-wikipedia-critical'
   webhook_configs:
-    # #abstract wikipedia team IRC & email
+    # #abstract wikipedia team IRC & Slack
     - url: 'http://<%= @active_host %>:19190/abstract-wikipedia-alerts'
   email_configs:
-    - to: 'abstract@<%= @facts["networking"]["domain"] %>'
+    - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
 
 
