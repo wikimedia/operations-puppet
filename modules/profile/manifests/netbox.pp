@@ -17,7 +17,6 @@
 # @param scap_repo The repo to use for scap deploys
 # @param rw_token api read write token key
 # @param ro_token api read only token key
-# @param dump_interval how often to perform dumps
 # @param db_primary primary database name
 # @param db_password primary database name
 # @param secret_key django secret key
@@ -68,7 +67,6 @@ class profile::netbox (
     String                    $scap_repo               = lookup('profile::netbox::scap_repo'),
     String                    $rw_token                = lookup('profile::netbox::rw_token'),
     String                    $ro_token                = lookup('profile::netbox::ro_token'),
-    String                    $dump_interval           = lookup('profile::netbox::dump_interval'),
     Stdlib::Fqdn              $db_primary              = lookup('profile::netbox::db_primary'),
     String                    $db_password             = lookup('profile::netbox::db_password'),
     String                    $secret_key              = lookup('profile::netbox::secret_key'),
@@ -355,28 +353,6 @@ class profile::netbox (
             monitoring_enabled => true,
             user               => 'netbox',
         }
-    }
-
-    # Support directory for dumping tables
-    file { '/srv/netbox-dumps/':
-        ensure => 'absent',
-        force  => true,
-        owner  => 'netbox',
-        group  => 'netbox',
-        mode   => '0770',
-    }
-    # Timer for dumping tables
-    systemd::timer::job { 'netbox_dump_run':
-        ensure          => 'absent',
-        description     => 'Dump CSVs from Netbox.',
-        environment     => $systemd_environment,
-        command         => '/srv/deployment/netbox-extras/tools/rotatedump',
-        interval        => {
-            'start'    => 'OnCalendar',
-            'interval' => $dump_interval,
-        },
-        logging_enabled => false,
-        user            => 'netbox',
     }
 
     if $do_backups {
