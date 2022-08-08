@@ -9,7 +9,7 @@ describe 'ipresolve' do
   end
 
   it "should resolve ipv6 addresses" do
-    should run.with_params('bast1003.wikimedia.org', '6').and_return('2620::861:4:208:80:155:110')
+    should run.with_params('bast1003.wikimedia.org', '6').and_return('2620:0:861:4:208:80:155:110')
   end
 
   it "should be able to perform a reverse DNS lookup" do

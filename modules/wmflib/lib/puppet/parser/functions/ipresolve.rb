@@ -12,6 +12,15 @@
 #
 require 'resolv'
 
+# Monkey patch resolv to fix https://github.com/ruby/resolv/issues/24
+# https://github.com/ruby/resolv/pull/25
+
+class Resolv::IPv6
+  def to_s
+    format("%x:%x:%x:%x:%x:%x:%x:%x", *@address.unpack("nnnnnnnn")).sub(/(^|:)0(:0)+(:|$)/, '::')
+  end
+end
+
 class DNSCacheEntry
   # Data structure for storing a DNS cached result.
   def initialize(entry, ttl)
