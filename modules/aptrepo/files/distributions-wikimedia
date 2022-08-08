@@ -209,6 +209,7 @@ Components: main
  component/pdns-recursor
  component/prometheus-openstack-exporter
  component/rsyslog-k8s
+ thirdparty/bigtop15
  thirdparty/ceph-octopus
  thirdparty/conda
  thirdparty/confluent
