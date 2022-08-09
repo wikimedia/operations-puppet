@@ -17,8 +17,6 @@ class profile::openstack::eqiad1::cumin::target(
     $cluster = lookup('cluster'),
     $site = $::site,  # lint:ignore:wmf_styleguide
     Array[Stdlib::IP::Address] $cumin_masters = lookup('cumin_masters', {'default_value' => []}),
-    Boolean $permit_port_forwarding = lookup('profile::openstack::eqiad1::cumin::permit_port_forwarding',
-                                            {'default_value' => false}),
 ) {
     require ::network::constants
 
