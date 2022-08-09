@@ -79,8 +79,8 @@ class profile::etcd::v3(
 
         $trusted_ca  = '/etc/ssl/certs/Puppet_Internal_CA.pem'
         $ssl_paths = {
-            'cert' => "/etc/ssl/localcerts/${certname}.crt",
-            'key'  => "/etc/ssl/private/${certname}.key",
+            'chained' => "/etc/ssl/localcerts/${certname}.crt",
+            'key'     => "/etc/ssl/private/${certname}.key",
         }
     }
     # This option allows the CFSSL based PKI to be used with the discovery intermediate
@@ -104,9 +104,9 @@ class profile::etcd::v3(
         max_latency_ms   => $max_latency,
         adv_client_port  => $adv_client_port,
         trusted_ca       => $trusted_ca,
-        client_cert      => $ssl_paths['cert'],
+        client_cert      => $ssl_paths['chained'],
         client_key       => $ssl_paths['key'],
-        peer_cert        => $ssl_paths['cert'],
+        peer_cert        => $ssl_paths['chained'],
         peer_key         => $ssl_paths['key'],
     }
 
