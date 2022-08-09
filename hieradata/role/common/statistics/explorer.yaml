@@ -20,6 +20,7 @@ cluster: analytics
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::spark2::local_dir: /srv/spark-tmp
+profile::hadoop::spark3::local_dir: /srv/spark-tmp
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 
