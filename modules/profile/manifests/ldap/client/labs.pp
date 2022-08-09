@@ -2,8 +2,8 @@ class profile::ldap::client::labs(
     Enum['sudo','sudoldap'] $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
     String $client_stack = lookup('profile::ldap::client::labs::client_stack', String, 'first', 'classic'),
     $ldapincludes = lookup('profile::ldap::client::labs::ldapincludes', {'default_value' => ['openldap', 'utils']}),
-    $restricted_to = lookup('profile::ldap::client::labs::restricted_to', {default_value => false}),
-    $restricted_from = lookup('profile::ldap::client::labs::restricted_from', {default_value => false}),
+    Optional[Variant[String, Array[String]]] $restricted_to = lookup('profile::ldap::client::labs::restricted_to', {default_value => undef}),
+    Optional[Variant[String, Array[String]]] $restricted_from = lookup('profile::ldap::client::labs::restricted_from', {default_value => undef}),
 ){
 
     class { '::ldap::config::labs': }
@@ -49,16 +49,20 @@ class profile::ldap::client::labs(
         #       replaces the default group allowed to login
         #       (project members) with an explicitly specified one.
         #
-        if ( $restricted_from ) {
+        if $restricted_from != undef {
+            $restricted_from_formatted = [$restricted_from].flatten.map |String $group| { "(${group})" }.join(' ')
+
             security::access::config { 'labs-restrict-from':
-                content  => "-:${restricted_from}:ALL\n",
+                content  => "-:${restricted_from_formatted}:ALL\n",
                 priority => 98,
             }
         }
 
-        if ( $restricted_to ) {
+        if $restricted_to != undef {
+            $restricted_to_formatted = [$restricted_to].flatten.map |String $group| { "(${group})" }.join(' ')
+
             security::access::config { 'labs-restrict-to-group':
-                content  => "-:ALL EXCEPT (${restricted_to}) root:ALL\n",
+                content  => "-:ALL EXCEPT ${restricted_to_formatted} root:ALL\n",
                 priority => 99,
             }
         } else {
