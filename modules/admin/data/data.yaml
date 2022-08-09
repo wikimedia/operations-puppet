@@ -69,7 +69,7 @@ groups:
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members []
+    members: &sre_admins_members [cgoubert]
     approval:
       - Joanna Borun
   ops-adm-group:
@@ -5386,6 +5386,14 @@ users:
     uid: 31722
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  cgoubert:
+    ensure: present
+    realname: Clément Goubert
+    email: cgoubert@wikimedia.org
+    uid: 40392
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqscLAryPFqoIEfgy+6qpJrAtOwcFZ3P8AYOc3jZCeo claime@Clements-MacBook-Pro.local
 
 ldap_only_users:
   abartov:
@@ -6193,10 +6201,6 @@ ldap_only_users:
     ensure: present
     realname: Tricia Burmeister
     email: tburmeister@wikimedia.org
-  cgoubert:
-    ensure: present
-    realname: Clément Goubert
-    email: cgoubert@wikimedia.org
   pwangai:
     ensure: present
     realname: Peter Wangai
