@@ -208,8 +208,91 @@ profile::ceph::osd::hosts:
       prefix: "24"
       iface: "ens3f1np1"
 
+  # Rack E4
+  "cloudcephosd1025.eqiad.wmnet":
+    public:
+      addr: "10.64.148.2"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.5.1"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1026.eqiad.wmnet":
+    public:
+      addr: "10.64.148.3"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.5.2"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1027.eqiad.wmnet":
+    public:
+      addr: "10.64.148.4"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.5.3"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1028.eqiad.wmnet":
+    public:
+      addr: "10.64.148.5"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.5.4"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1029.eqiad.wmnet":
+    public:
+      addr: "10.64.148.6"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.5.5"
+      prefix: "24"
+      iface: "ens3f1np1"
+
+  # Rack F4
+  "cloudcephosd1030.eqiad.wmnet":
+    public:
+      addr: "10.64.149.2"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.6.1"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1031.eqiad.wmnet":
+    public:
+      addr: "10.64.149.3"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.6.2"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1032.eqiad.wmnet":
+    public:
+      addr: "10.64.149.4"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.6.3"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1033.eqiad.wmnet":
+    public:
+      addr: "10.64.149.5"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.6.4"
+      prefix: "24"
+      iface: "ens3f1np1"
+  "cloudcephosd1034.eqiad.wmnet":
+    public:
+      addr: "10.64.149.6"
+      iface: "ens3f0np0"
+    cluster:
+      addr: "192.168.6.5"
+      prefix: "24"
+      iface: "ens3f1np1"
+
 profile::ceph::osd::cluster_networks:
-  - "192.168.1.0"
-  - "192.168.2.0"
-  - "192.168.3.0"
   - "192.168.4.0"
+  - "192.168.5.0"
+  - "192.168.6.0"
