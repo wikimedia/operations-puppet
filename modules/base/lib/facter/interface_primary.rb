@@ -13,6 +13,7 @@
 #   networking structured fact.
 
 require 'facter'
+require 'json'
 
 Facter.add('interface_primary') do
   confine :kernel => :linux
@@ -91,8 +92,31 @@ Facter.add(:networking) do
     # We override the ip6 fact with the one we calculate above as ours is better
     # as it rejects slaac addresses. See comment under ipaddress6 fact for more detail
     networking['ip6'] = Facter.fact(:ipaddress6).value
+
     # remove k8s interfaces
     networking['interfaces'].reject! { |key, _| key.start_with?('cali', 'tap') || key == ('lo:LVS') }
+
+    # Add additional network device info
+    os_release = Facter.fact(:os).value['release']['major'].to_i
+    # Skip if OS is stretch as iproute2 version in it does not support JSON output
+    if os_release > 9
+      net_links = JSON.parse(Facter::Util::Resolution.exec("ip --json -d link show"))
+      net_links.each do |data|
+        next unless networking['interfaces'].key?(data['ifname']) && data.key?("linkinfo")
+        iface = networking['interfaces'][data['ifname']]
+        if data['linkinfo'].key?("info_kind")
+          iface['kind'] = data['linkinfo']['info_kind']
+          if data['linkinfo']['info_kind'] == "vlan"
+            iface['dot1q'] = data['linkinfo']['info_data']['id']
+            iface['parent_link'] = data['link']
+          end
+        end
+        if data['linkinfo']['info_slave_kind'] == "bridge"
+          iface['parent_bridge'] = data['master']
+        end
+      end
+    end
+
     networking
   end
 end
