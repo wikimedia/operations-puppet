@@ -12,7 +12,7 @@ class profile::mediawiki::maintenance::wikidata {
     # is run unless we're in the master dc
     # Logs are saved to /var/log/mediawiki/mediawiki_job_wikidata-updateQueryServiceLag/syslog.log and properly rotated.
     profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
-        command  => '/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet --prometheus prometheus.svc.codfw.wmnet',
+        command  => '/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet',
         interval => '*-*-* *:*:00'
     }
 }
