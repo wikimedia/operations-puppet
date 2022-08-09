@@ -2818,13 +2818,9 @@ node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
 }
 
 # T260083 brought wdqs101[1-3] into service with [2,3] public and [1] private
-node /^wdqs101[2-3]\.eqiad\.wmnet$/ {
+# new wdqs servers wdqs101[4-6] T307138
+node /^wdqs101[2-6]\.eqiad\.wmnet$/ {
     role(wdqs::public)
-}
-
-# new wdqs servers T307138
-node /^wdqs101[4-6]\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 node /^wdqs200[12347]\.codfw\.wmnet$/ {
