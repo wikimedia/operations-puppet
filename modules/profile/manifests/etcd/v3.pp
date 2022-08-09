@@ -88,8 +88,9 @@ class profile::etcd::v3(
     else {
         $trusted_ca  = '/etc/ssl/certs/wmf-ca-certificates.crt'
         $ssl_paths = profile::pki::get_cert('discovery', $certname, {
-            hosts => [$facts['networking']['fqdn']],
-            owner => 'etcd',
+            hosts  => [$facts['networking']['fqdn']],
+            owner  => 'etcd',
+            outdir => '/var/lib/etcd/ssl',
             } )
     }
 
