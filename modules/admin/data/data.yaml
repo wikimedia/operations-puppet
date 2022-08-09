@@ -23,7 +23,7 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars]
+              aniketars, effeietsanders]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -362,7 +362,7 @@ groups:
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
+              echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
@@ -1514,16 +1514,13 @@ users:
     email: ebernhardson@wikimedia.org
     krb: present
   effeietsanders:
-    ensure: present
+    ensure: absent
     gid: 500
     name: effeietsanders
     realname: Lodewijk Gelauff
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO3Jzytoma85Fpr+Sy/BuCIJZ16xWMYEPyY0jHPcDkdG]
+    ssh_keys: []
     uid: 16702
     email: effeietsanders@gmail.com
-    krb: present
-    expiry_date: 2022-08-07
-    expiry_contact: mgerlach@wikimedia.org
   esanders:
     ensure: present
     gid: 500
