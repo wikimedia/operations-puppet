@@ -60,6 +60,7 @@ class profile::base::firewall (
             reload     => '/bin/systemctl restart ferm',
             watch_keys => ['/request-ipblocks/abuse'],
             content    => file('profile/firewall/defs_requestctl.tpl'),
+            prefix     => $conftool_prefix,
         }
     }
     if $enable_logging {
