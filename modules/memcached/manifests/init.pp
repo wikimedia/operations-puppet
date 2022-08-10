@@ -157,6 +157,10 @@ class memcached(
         $override = false
     }
 
+    file { '/etc/memcached.conf':
+        content => '# Refer to memcached.service unit for configuration.',
+    }
+
     systemd::service { 'memcached':
         ensure   => present,
         override => $override,
