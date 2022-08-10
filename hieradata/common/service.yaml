@@ -3204,7 +3204,7 @@ service::catalog:
       codfw:
         default: 208.80.153.110
       eqiad:
-        default: 208.80.154.5
+        default: 208.80.154.141
     state: production
 
   # This service points to an Istio Ingress Gateway,
