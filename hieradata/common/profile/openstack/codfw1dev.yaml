@@ -31,11 +31,6 @@ profile::openstack::codfw1dev::openstack_controllers:
 #
 profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimediacloud.org'
 
-# Because we don't (yet) have a shared storage system to back this,
-#  we need to be aware of which glance server is the primary image store. Once
-#  images are moved to ceph we can remove this setting and the openstack_controllers
-#  will be true, identical peers.
-profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.wikimedia.org
 profile::openstack::codfw1dev::glance_backends:
   - rbd
 

@@ -11,7 +11,6 @@ class profile::openstack::base::glance(
     String $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Absolutepath $glance_data_dir = lookup('profile::openstack::base::glance::data_dir'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::glance::api_bind_port'),
-    Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::base::primary_glance_image_store'),
     Array[String] $glance_backends = lookup('profile::openstack::base::glance_backends'),
     String $ceph_pool = lookup('profile::openstack::base::glance::ceph_pool'),
     Boolean $active = lookup('profile::openstack::base::glance_active'),

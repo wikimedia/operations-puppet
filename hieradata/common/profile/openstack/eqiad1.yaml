@@ -32,11 +32,6 @@ profile::openstack::eqiad1::openstack_controllers:
 #
 profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.org'
 
-# Because we don't (yet) have a shared storage system to back this,
-#  we need to be aware of which glance server is the primary image store. Once
-#  images are moved to ceph we can remove this setting and the openstack_controllers
-#  will be true, identical peers.
-profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
 profile::openstack::eqiad1::glance_backends:
   - rbd
 
