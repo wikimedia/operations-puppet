@@ -83,11 +83,10 @@ class profile::etcd::v3(
             'key'     => "/etc/ssl/private/${certname}.key",
         }
     }
-    # This option allows the CFSSL based PKI to be used with the discovery intermediate
-    # TODO: consider allowing the use of other intermediate CAs, other than 'discovery'
+    # This option allows the CFSSL based PKI to be used with the etcd intermediate
     else {
         $trusted_ca  = '/etc/ssl/certs/wmf-ca-certificates.crt'
-        $ssl_paths = profile::pki::get_cert('discovery', $certname, {
+        $ssl_paths = profile::pki::get_cert('etcd', $certname, {
             hosts  => [$facts['networking']['fqdn']],
             owner  => 'etcd',
             outdir => '/var/lib/etcd/ssl',
