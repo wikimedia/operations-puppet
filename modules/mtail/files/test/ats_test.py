@@ -52,7 +52,8 @@ class ATSBackendTest(unittest.TestCase):
         self.assertIn('backend=swift.discovery.wmnet', s_dict)
         self.assertIn('backend=appservers-rw.discovery.wmnet', s_dict)
 
-        self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.045'], 2)
+        self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.01'], 1)
+        self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.001'], 1)
 
         s = self.store.get_samples('trafficserver_backend_active_plugin_time')
         s_dict = dict(s)
@@ -60,7 +61,8 @@ class ATSBackendTest(unittest.TestCase):
         self.assertIn('backend=swift.discovery.wmnet', s_dict)
         self.assertIn('backend=appservers-rw.discovery.wmnet', s_dict)
 
-        self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.045'], 2)
+        self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.001'], 1)
+        self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.01'], 1)
 
 
 class ATSBackendTimingTest(unittest.TestCase):
