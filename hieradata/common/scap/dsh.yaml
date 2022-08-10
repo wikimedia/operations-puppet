@@ -38,8 +38,6 @@ scap::dsh::groups:
       - cloudweb2002-dev.wikimedia.org
       - deploy1002.eqiad.wmnet
       - deploy2002.codfw.wmnet
-      - labweb1001.wikimedia.org
-      - labweb1002.wikimedia.org
       - cloudweb1003.wikimedia.org
       - cloudweb1004.wikimedia.org
       - mwmaint1002.eqiad.wmnet
