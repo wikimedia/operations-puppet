@@ -50,10 +50,10 @@ testcases:
           "facility": "local0",
           "level": "WARNING",
           "host": "cloudhost0000",
-          "message":"2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1003"
+          "message":"2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1005"
         }
     expected:
-      - message: "No compute service record found for host cloudcontrol1003"
+      - message: "No compute service record found for host cloudcontrol1005"
         labels:
           project: "admin-monitoring"
         event:
@@ -69,7 +69,7 @@ testcases:
               code: 16
             priority: 132
           logger: "nova.scheduler.host_manager"
-          original: "2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1003"
+          original: "2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1005"
         user:
           name: "osstackcanary"
         host:
@@ -113,8 +113,8 @@ testcases:
       - >
         {
           "facility": "local0",
-          "logsource": "cloudcontrol1004",
-          "host": "cloudcontrol1004",
+          "logsource": "cloudcontrol1006",
+          "host": "cloudcontrol1006",
           "timestamp": "2021-05-18T15:38:56.098701+00:00",
           "message": "2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines [req-7fa7fb54-60ce-4ee2-9708-4e4258f1dae9 osstackcanary admin-monitoring - default default] Database connection was found disconnected; reconnecting: oslo_db.exception.DBConnectionError: (MySQLdb._exceptions.OperationalError) (2006, 'MySQL server has gone away')\n[SQL: SELECT 1]\n(Background on this error at: http://sqlalche.me/e/e3q8)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines Traceback (most recent call last):\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 1244, in _execute_context\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     cursor, statement, parameters, context\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/default.py\", line 550, in do_execute\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     cursor.execute(statement, parameters)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/MySQLdb/cursors.py\", line 209, in execute\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     res = self._query(query)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/MySQLdb/cursors.py\", line 315, in _query\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     db.query(q)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/MySQLdb/connections.py\", line 226, in query\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     _mysql.connection.query(self, query)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines \n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines The above exception was the direct cause of the following exception:\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines \n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines Traceback (most recent call last):\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/oslo_db/sqlalchemy/engines.py\", line 73, in _connect_ping_listener\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     connection.scalar(select([1]))\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 920, in scalar\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     return self.execute(object_, *multiparams, **params).scalar()\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 988, in execute\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     return meth(self, multiparams, params)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/sql/elements.py\", line 287, in _execute_on_connection\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     return connection._execute_clauseelement(self, multiparams, params)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 1107, in _execute_clauseelement\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     distilled_params,\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 1248, in _execute_context\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     e, statement, parameters, cursor, context\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 1464, in _handle_dbapi_exception\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     util.raise_from_cause(newraise, exc_info)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/util/compat.py\", line 399, in raise_from_cause\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     reraise(type(exception), exception, tb=exc_tb, cause=cause)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/util/compat.py\", line 153, in reraise\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     raise value.with_traceback(tb)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/base.py\", line 1244, in _execute_context\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     cursor, statement, parameters, context\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/sqlalchemy/engine/default.py\", line 550, in do_execute\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     cursor.execute(statement, parameters)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/MySQLdb/cursors.py\", line 209, in execute\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     res = self._query(query)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/MySQLdb/cursors.py\", line 315, in _query\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     db.query(q)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines   File \"/usr/lib/python3/dist-packages/MySQLdb/connections.py\", line 226, in query\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines     _mysql.connection.query(self, query)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines oslo_db.exception.DBConnectionError: (MySQLdb._exceptions.OperationalError) (2006, 'MySQL server has gone away')\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines [SQL: SELECT 1]\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines (Background on this error at: http://sqlalche.me/e/e3q8)\n2021-05-18 15:38:56.091 12257 ERROR oslo_db.sqlalchemy.engines ",
           "program": "glance-wsgi-api",
@@ -139,7 +139,7 @@ testcases:
         labels:
           project: "admin-monitoring"
         host:
-          name: "cloudcontrol1004"
+          name: "cloudcontrol1006"
         service:
           type: "glance-wsgi-api"
         process:
@@ -152,14 +152,14 @@ testcases:
       - >
         {
           "facility": "daemon",
-          "logsource": "cloudcontrol1003",
-          "host": "cloudcontrol1003",
+          "logsource": "cloudcontrol1005",
+          "host": "cloudcontrol1005",
           "program": "nova-fullstack",
           "severity": "DEBUG",
           "timestamp": "2021-08-16T20:28:22.170025",
           "message": "SSH wait for 55.22",
           "log.level": "DEBUG",
-          "host.name": "cloudcontrol1003",
+          "host.name": "cloudcontrol1005",
           "ecs.version": "1.7.0"
         }
     expected:
@@ -175,7 +175,7 @@ testcases:
               code: 3
             priority: 31
         host:
-          name: "cloudcontrol1003"
+          name: "cloudcontrol1005"
         service:
           type: "nova-fullstack"
         ecs:
