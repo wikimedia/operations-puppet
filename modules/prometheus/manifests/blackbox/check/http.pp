@@ -59,6 +59,7 @@ define prometheus::blackbox::check::http (
     Optional[String[1]]                     $auth_password           = undef,
     Optional[String[1]]                     $useragent               = undef,
     String[1]                               $prometheus_instance     = 'ops',
+    Optional[String[1]]                     $proxy_url               = undef,
 ) {
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
@@ -98,6 +99,7 @@ define prometheus::blackbox::check::http (
         'valid_status_codes'              => $status_matches,
         'basic_auth'                      => $basic_auth,
         'bearer_token'                    => $bearer_token,
+        'proxy_url'                       => $proxy_url,
         'body'                            => wmflib::encode_www_form($body),
     }.filter |$key, $value| { $value =~ Boolean or ($value =~ NotUndef and !$value.empty) }
     $module_config = {
