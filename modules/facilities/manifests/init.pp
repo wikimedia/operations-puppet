@@ -462,29 +462,34 @@ class facilities (
         model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-d4-codfw':
-        ip   => '10.193.0.52',
-        row  => 'd',
-        site => 'codfw',
+        ip    => '10.193.0.52',
+        row   => 'd',
+        site  => 'codfw',
+        model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-d5-codfw':
-        ip   => '10.193.0.53',
-        row  => 'd',
-        site => 'codfw',
+        ip    => '10.193.0.53',
+        row   => 'd',
+        site  => 'codfw',
+        model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-d6-codfw':
-        ip   => '10.193.0.54',
-        row  => 'd',
-        site => 'codfw',
+        ip    => '10.193.0.54',
+        row   => 'd',
+        site  => 'codfw',
+        model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-d7-codfw':
-        ip   => '10.193.0.55',
-        row  => 'd',
-        site => 'codfw',
+        ip    => '10.193.0.55',
+        row   => 'd',
+        site  => 'codfw',
+        model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-d8-codfw':
-        ip   => '10.193.0.56',
-        row  => 'd',
-        site => 'codfw',
+        ip    => '10.193.0.56',
+        row   => 'd',
+        site  => 'codfw',
+        model => 'sentry4',
     }
 
 }
