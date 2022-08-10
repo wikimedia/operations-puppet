@@ -6,8 +6,8 @@
 # counter haproxy_sli_total
 # counter haproxy_sli_good
 
-histogram haproxy_client_ttfb by cache_status, http_status_family buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
-histogram haproxy_client_healthcheck_ttfb by cache_status, http_status_family buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
+histogram haproxy_client_ttfb by cache_status, http_status_family buckets -1, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
+histogram haproxy_client_healthcheck_ttfb by cache_status, http_status_family buckets -1, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
 counter haproxy_termination_states_total by termination_state
 counter haproxy_sli_total
 counter haproxy_sli_good
