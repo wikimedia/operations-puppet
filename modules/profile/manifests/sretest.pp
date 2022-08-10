@@ -27,10 +27,4 @@ class profile::sretest {
         'tag'     => 'foo::bar::merge',
     })
     wmflib::resource::import('file', undef, { tag => 'foo::bar::merge' }, true)
-    ferm::service { 'test behaviour of empty define':
-        proto  => 'tcp',
-        port   => '7331',
-        srange => '$TEXT_ABUSE_NETS',
-    }
-
 }
