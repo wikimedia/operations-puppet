@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::galera::node_count: 5
+profile::openstack::eqiad1::galera::node_count: 3
 profile::openstack::eqiad1::galera::test_username: "galera_monitor"
 profile::openstack::eqiad1::galera::listen_port: 23306
 profile::openstack::eqiad1::galera::backup_user: "galera_backup"
