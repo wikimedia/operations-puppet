@@ -21,8 +21,6 @@ profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
-  - cloudcontrol1003.wikimedia.org
-  - cloudcontrol1004.wikimedia.org
 
 # The public service name for the keystone API
 #
