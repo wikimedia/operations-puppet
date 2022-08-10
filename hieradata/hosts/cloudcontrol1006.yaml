@@ -5,5 +5,3 @@ profile::openstack::eqiad1::galera::server_id: 4
 
 profile::wmcs::backy2::backup_time: '*-*-* 1:00:00'
 profile::wmcs::backy2::backup_glance_images::enabled: false
-
-profile::openstack::base::rabbitmq_service_name: 'rabbitmqXX.eqiad1.wikimediacloud.org'

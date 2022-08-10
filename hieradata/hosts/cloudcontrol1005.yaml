@@ -81,5 +81,3 @@ profile::openstack::eqiad1::cinder_backup_volumes:
     FULL_FREQUENCY: 7
     FULL_FREQUENCY_OFFSET: 1
     PURGE_AFTER: 30
-
-profile::openstack::base::rabbitmq_service_name: 'rabbitmqXX.eqiad1.wikimediacloud.org'
