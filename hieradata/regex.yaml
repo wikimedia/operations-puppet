@@ -208,7 +208,7 @@ es_eqiad_rack_e2:
   profile::elasticsearch::rack: E2
   profile::elasticsearch::row:  E
 
-es_eqiad_rack_e2:
+es_eqiad_rack_e3:
   __regex: !ruby/regexp /^elastic10(93|94|95)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E3
   profile::elasticsearch::row:  E
@@ -223,7 +223,7 @@ es_eqiad_rack_f2:
   profile::elasticsearch::rack: F2
   profile::elasticsearch::row:  F
 
-es_eqiad_rack_f2:
+es_eqiad_rack_f3:
   __regex: !ruby/regexp /^elastic11(00|01|02)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F3
   profile::elasticsearch::row:  F
