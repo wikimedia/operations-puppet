@@ -55,6 +55,11 @@ class profile::base::firewall (
         default_reject          => $default_reject,
     }
     if $defs_from_etcd {
+        # unmanaged files under /etc/ferm/conf.d are purged
+        # so we define the file to stop it being deleted
+        file { '/etc/ferm/conf.d/00_defs_requestctl':
+            ensure => 'file',
+        }
         confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
             ensure     => 'present',
             reload     => '/bin/systemctl restart ferm',
