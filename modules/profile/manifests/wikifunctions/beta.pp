@@ -7,6 +7,7 @@ class profile::wikifunctions::beta () {
         ip_families        => ['ip4'],
         ip4                => ipresolve($vhost, 4),
         path               => '/w/api.php?action=wikilambda_health_check&format=json',
+        proxy_url          => "http://webproxy.${::site}.wmnet:8080",
         team               => 'abstract-wikipedia',
         timeout            =>  '10s',
         severity           => 'warning',
