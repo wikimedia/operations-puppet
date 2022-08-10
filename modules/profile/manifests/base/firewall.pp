@@ -54,14 +54,14 @@ class profile::base::firewall (
         block_abuse_nets        => $block_abuse_nets,
         default_reject          => $default_reject,
     }
-    
+    if $defs_from_etcd {
         confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
             ensure     => 'absent',
             reload     => '/bin/systemctl restart ferm',
             watch_keys => ['/request-ipblocks/abuse'],
             content    => file('profile/firewall/defs_requestctl.tpl'),
         }
-  
+    }
     if $enable_logging {
         include profile::base::firewall::log
     }
