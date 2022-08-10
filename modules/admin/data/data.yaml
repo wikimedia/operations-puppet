@@ -368,7 +368,7 @@ groups:
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
-              ricby, dani, bgwiki, alinebruenger, sgrabarczuk]
+              ricby, dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5391,6 +5391,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqscLAryPFqoIEfgy+6qpJrAtOwcFZ3P8AYOc3jZCeo claime@Clements-MacBook-Pro.local
+  vpoundstone:
+    ensure: present
+    realname: Virginia Poundstone
+    email: vpoundstone@wikimedia.org
+    uid: 40566
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
