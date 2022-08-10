@@ -16,6 +16,8 @@ class profile::ceph::osd(
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
     Array[Stdlib::IP::Address] $osd_cluster_networks            = lookup('profile::ceph::osd::cluster_networks')
 ) {
+    $cluster_iface = $osd_hosts[$facts['fqdn']]['cluster']['iface']
+
     require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::ceph::osd: Admin keyring not defined, things might not work as expected.': }
@@ -34,26 +36,33 @@ class profile::ceph::osd(
 
     # The cluster interface is used for OSD data replication and heartbeat network traffic
     interface::manual{ 'osd-cluster':
-        interface => $osd_hosts[$facts['fqdn']]['cluster']['iface'],
+        interface => $cluster_iface,
     }
     interface::ip { 'osd-cluster-ip':
-        interface => $osd_hosts[$facts['fqdn']]['cluster']['iface'],
+        interface => $cluster_iface,
         address   => $osd_hosts[$facts['fqdn']]['cluster']['addr'],
         prefixlen => $osd_hosts[$facts['fqdn']]['cluster']['prefix'],
         require   => Interface::Manual['osd-cluster'],
         before    => Class['ceph::common'],
     }
+    # did not find a nice way to use facts instead of the extra unless command
+    # as facter -p net_driver shows speed -1 for VMs even when the interface is up
+    exec { 'bring-cluster-interface-up':
+        command => "/usr/sbin/ip link set ${cluster_iface} up",
+        unless  => "/usr/sbin/ip link show ${cluster_iface} | grep -q UP",
+        require => Interface::Ip['osd-cluster-ip'],
+    }
 
     # Tune the MTU on both the cluster and public network
     interface::setting { 'osd-cluster-mtu':
-        interface => $osd_hosts[$facts['fqdn']]['cluster']['iface'],
+        interface => $cluster_iface,
         setting   => 'mtu',
         value     => '9000',
         before    => Class['ceph::common'],
         notify    => Exec['set-osd-cluster-mtu'],
     }
     interface::setting { 'osd-public-mtu':
-        interface => $osd_hosts[$facts['fqdn']]['public']['iface'],
+        interface => $cluster_iface,
         setting   => 'mtu',
         value     => '9000',
         before    => Class['ceph::common'],
@@ -61,11 +70,11 @@ class profile::ceph::osd(
     }
     # Make sure the interface is in sync with configuration changes
     exec { 'set-osd-cluster-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts[$facts['fqdn']]['cluster']['iface']}",
+        command     => "/usr/sbin/ip link set mtu 9000 ${cluster_iface}",
         refreshonly => true,
     }
     exec { 'set-osd-public-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts[$facts['fqdn']]['public']['iface']}",
+        command     => "/usr/sbin/ip link set mtu 9000 ${cluster_iface}",
         refreshonly => true,
     }
 
