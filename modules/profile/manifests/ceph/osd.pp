@@ -95,7 +95,8 @@ class profile::ceph::osd(
             interface::route { "route_to_${join($new_network_chunks, '_')}_0":
                 address   => $cluster_network,
                 nexthop   => $gw_address,
-                prefixlen => 24
+                prefixlen => 24,
+                require   => Interface::Ip['osd-cluster-ip'],
             }
         }
     }
