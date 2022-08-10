@@ -1,7 +1,7 @@
 cluster: dse_k8s_etcd
 
 profile::etcd::v3::cluster_name: "dse_k8s_etcd.%{::site}"
-profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::cluster_bootstrap: false
 profile::etcd::v3::discovery: "dns:dse-k8s-etcd.%{::site}.wmnet"
 profile::etcd::v3::use_client_certs: false
 # The following parameter enables automatic certificate generation
