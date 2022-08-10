@@ -15,7 +15,6 @@ profile::elasticsearch::instances:
           - elastic1074.eqiad.wmnet # Row B2
           - elastic1081.eqiad.wmnet # Row C4
 
-
         cluster_hosts:
           - elastic1048.eqiad.wmnet
           - elastic1049.eqiad.wmnet
@@ -53,6 +52,25 @@ profile::elasticsearch::instances:
           - elastic1081.eqiad.wmnet
           - elastic1082.eqiad.wmnet
           - elastic1083.eqiad.wmnet
+          - elastic1084.eqiad.wmnet
+          - elastic1085.eqiad.wmnet
+          - elastic1086.eqiad.wmnet
+          - elastic1087.eqiad.wmnet
+          - elastic1088.eqiad.wmnet
+          - elastic1089.eqiad.wmnet
+          - elastic1090.eqiad.wmnet
+          - elastic1091.eqiad.wmnet
+          - elastic1092.eqiad.wmnet
+          - elastic1093.eqiad.wmnet
+          - elastic1094.eqiad.wmnet
+          - elastic1095.eqiad.wmnet
+          - elastic1096.eqiad.wmnet
+          - elastic1097.eqiad.wmnet
+          - elastic1098.eqiad.wmnet
+          - elastic1099.eqiad.wmnet
+          - elastic1100.eqiad.wmnet
+          - elastic1101.eqiad.wmnet
+          - elastic1102.eqiad.wmnet
 
         # TODO at what point do we need to update this number?
         expected_nodes: 35
@@ -89,7 +107,6 @@ profile::elasticsearch::instances:
           - elastic1076.eqiad.wmnet # Row B4
           - elastic1057.eqiad.wmnet # Row C3
 
-
         # We want roughly half of hosts to be in omega and half to be in psi
         cluster_hosts:
           # row A
@@ -117,6 +134,17 @@ profile::elasticsearch::instances:
           - elastic1061.eqiad.wmnet
           - elastic1062.eqiad.wmnet
           - elastic1063.eqiad.wmnet
+
+          # row E
+          - elastic1089.eqiad.wmnet
+          - elastic1091.eqiad.wmnet
+          - elastic1093.eqiad.wmnet
+          - elastic1094.eqiad.wmnet
+
+          # row F
+          - elastic1096.eqiad.wmnet
+          - elastic1098.eqiad.wmnet
+          - elastic1100.eqiad.wmnet
 
         expected_nodes: 18
 
@@ -146,6 +174,7 @@ profile::elasticsearch::instances:
           - elastic1069.eqiad.wmnet
           - elastic1072.eqiad.wmnet
           - elastic1073.eqiad.wmnet
+          - elastic1084.eqiad.wmnet
 
           # row B
           - elastic1049.eqiad.wmnet
@@ -153,6 +182,8 @@ profile::elasticsearch::instances:
           - elastic1075.eqiad.wmnet
           - elastic1078.eqiad.wmnet
           - elastic1079.eqiad.wmnet
+          - elastic1085.eqiad.wmnet
+          - elastic1086.eqiad.wmnet
 
           # row C
           - elastic1051.eqiad.wmnet
@@ -160,12 +191,25 @@ profile::elasticsearch::instances:
           - elastic1059.eqiad.wmnet
           - elastic1081.eqiad.wmnet
           - elastic1083.eqiad.wmnet
+          - elastic1087.eqiad.wmnet
+          - elastic1088.eqiad.wmnet
 
           # row D
           - elastic1064.eqiad.wmnet
           - elastic1065.eqiad.wmnet
           - elastic1066.eqiad.wmnet
           - elastic1067.eqiad.wmnet
+
+          # row E
+          - elastic1090.eqiad.wmnet
+          - elastic1092.eqiad.wmnet
+          - elastic1095.eqiad.wmnet
+
+          # row F
+          - elastic1097.eqiad.wmnet
+          - elastic1099.eqiad.wmnet
+          - elastic1101.eqiad.wmnet
+          - elastic1102.eqiad.wmnet
 
         expected_nodes: 18
 
