@@ -27,7 +27,7 @@ class CacheHAProxyTest(unittest.TestCase):
         count_5xx = s_dict['cache_status=none,http_status_family=5']['count']
         self.assertEqual(count_5xx, 1)
 
-        self.assertEqual(s_dict['cache_status=int-front,http_status_family=4']['buckets']['0.045'],
+        self.assertEqual(s_dict['cache_status=int-front,http_status_family=4']['buckets']['0.001'],
                          2)
         self.assertEqual(s_dict['cache_status=hit,http_status_family=2']['buckets']['0.07'], 1)
         self.assertEqual(s_dict['cache_status=miss,http_status_family=2']['buckets']['0.15'], 1)
