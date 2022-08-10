@@ -56,7 +56,7 @@ class profile::base::firewall (
     }
     if $defs_from_etcd {
         confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-            ensure     => 'absent',
+            ensure     => 'present',
             reload     => '/bin/systemctl restart ferm',
             watch_keys => ['/request-ipblocks/abuse'],
             content    => file('profile/firewall/defs_requestctl.tpl'),
