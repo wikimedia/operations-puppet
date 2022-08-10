@@ -36,6 +36,8 @@ class profile::base::firewall (
     Boolean                    $default_reject   = lookup('profile::base::firewall::default_reject'),
     Boolean                    $defs_from_etcd   = lookup('profile::base::firewall::defs_from_etcd'),
 ) {
+    # we should use defs_from_etcd or block_abuse_nets
+    $_block_abuse_nets = !$defs_from_etcd and $block_abuse_nets
     class { 'base::firewall':
         monitoring_hosts        => $monitoring_hosts,
         cumin_masters           => $cumin_masters,
@@ -51,7 +53,7 @@ class profile::base::firewall (
         mysql_root_clients      => $mysql_root_clients,
         deployment_hosts        => $deployment_hosts,
         prometheus_hosts        => $prometheus_nodes,
-        block_abuse_nets        => $block_abuse_nets,
+        block_abuse_nets        => $_block_abuse_nets,
         default_reject          => $default_reject,
     }
     if $defs_from_etcd {
@@ -66,6 +68,11 @@ class profile::base::firewall (
             watch_keys => ['/request-ipblocks/abuse'],
             content    => file('profile/firewall/defs_requestctl.tpl'),
             prefix     => $conftool_prefix,
+        }
+        ferm::rule { 'drop-blocked-nets':
+            prio => '01',
+            rule => 'saddr $BLOCKED_NETS DROP;',
+            desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
         }
     }
     if $enable_logging {
