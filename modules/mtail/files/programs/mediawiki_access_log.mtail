@@ -8,11 +8,11 @@ counter mediawiki_http_response_size_bytes_total by handler, method, code
 
 # Metric: mediawiki_http_requests_duration
 # Histogram of the latencies of all requests
-histogram mediawiki_http_requests_duration by handler, method, code buckets 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 20, 30, 60
+histogram mediawiki_http_requests_duration by handler, method, code buckets -1, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 20, 30, 60
 
 # Metric: mediawiki_requests_by_endpoint_duration
 # Histogram of the latencies of differing endpoints
-histogram mediawiki_requests_by_endpoint_duration by handler, method, code, endpoint buckets 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 20, 30, 60
+histogram mediawiki_requests_by_endpoint_duration by handler, method, code, endpoint buckets -1, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 20, 30, 60
 
 # Metric: mediawiki_http_bad_format_lines
 # Counter for lines in the log not conforming to our regexp
