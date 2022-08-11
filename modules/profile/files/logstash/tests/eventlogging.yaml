@@ -19,7 +19,8 @@ testcases:
           "recvFrom": "host"
         }
     expected:
-      - error_code: "bar"
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        error_code: "bar"
         event: {}
         event_revision: "meh"
         event_schema: "baz"

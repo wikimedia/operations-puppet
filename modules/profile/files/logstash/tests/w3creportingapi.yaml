@@ -41,7 +41,8 @@ testcases:
           }
         }
     expected:
-      - '$schema': '/w3c/reportingapi/network_error/1.0.0'
+      - __target_index: "w3creportingapi-default-1-1.0.0-N-weekly"
+        '$schema': '/w3c/reportingapi/network_error/1.0.0'
         http:
           client_ip: "127.0.0.1"
           request_headers:

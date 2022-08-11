@@ -18,7 +18,8 @@ testcases:
           "type": "syslog"
         }
     expected:
-      - labels:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        labels:
           console: "re0"
         observer:
           ingress:

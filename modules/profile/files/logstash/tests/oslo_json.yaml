@@ -40,7 +40,8 @@ testcases:
           }
         }
     expected:
-      - message: "127.0.0.1 - - [25/May/2021 23:15:11] \"GET / HTTP/1.0\" 200 286 0.002796"
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        message: "127.0.0.1 - - [25/May/2021 23:15:11] \"GET / HTTP/1.0\" 200 286 0.002796"
         '@timestamp': "2021-05-25T23:15:11.673Z"
         labels:
           project: "unknown"
@@ -116,7 +117,8 @@ testcases:
           }
         }
     expected:
-      - message: "[Instance a2569f4c-29a6-4592-b4b2-c84fef586ba5] Rec'd message is younger than last seen. Updating."
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        message: "[Instance a2569f4c-29a6-4592-b4b2-c84fef586ba5] Rec'd message is younger than last seen. Updating."
         '@timestamp': "2021-05-23T16:21:42.584Z"
         labels:
           project: "unknown"
@@ -201,7 +203,8 @@ testcases:
           }
         }
     expected:
-      - message: "Sending event: dbaas.instance_delete.end, {'tenant_id': 'andrewtestproject', 'client_ip': '127.0.0.1', 'server_ip': 'openstack.codfw1dev.wikimediacloud.org:8779', 'server_type': 'taskmanager', 'request_id': 'req-778f8416-a806-447b-95e6-5fbc577a06f8'}"
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        message: "Sending event: dbaas.instance_delete.end, {'tenant_id': 'andrewtestproject', 'client_ip': '127.0.0.1', 'server_ip': 'openstack.codfw1dev.wikimediacloud.org:8779', 'server_type': 'taskmanager', 'request_id': 'req-778f8416-a806-447b-95e6-5fbc577a06f8'}"
         '@timestamp': "2021-05-23T16:22:39.460Z"
         labels:
           project: "unknown"

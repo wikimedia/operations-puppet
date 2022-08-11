@@ -17,7 +17,8 @@ testcases:
           "time": "2021-10-04T15:08:24.012628201Z"
         }
     expected:
-      - message: "Not Found: /favicon.ico"
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        message: "Not Found: /favicon.ico"
         normalized:
           message: "not found: /favicon.ico"
         "@timestamp": "2021-10-04T15:08:24.011Z"

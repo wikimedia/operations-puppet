@@ -30,7 +30,8 @@ testcases:
         }
 
     expected:
-      - '@timestamp': "2021-08-26T19:39:19.054Z"
+      - __target_index: "ecs-alerts-1-1.7.0-N-weekly"
+        '@timestamp': "2021-08-26T19:39:19.054Z"
         message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2001 job=icinga site=codfw - )"
         host:
           name: "alert2001"
@@ -85,7 +86,8 @@ testcases:
 
 
     expected:
-      - '@timestamp': "2021-08-27T15:19:00.883Z"
+      - __target_index: "ecs-alerts-1-1.7.0-N-weekly"
+        '@timestamp': "2021-08-27T15:19:00.883Z"
         message: "[firing] Increased Speed Index for en.wiki on desktop (Increased Speed Index for en.wiki on desktop - All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.)"
         host:
           name: "alert2001"

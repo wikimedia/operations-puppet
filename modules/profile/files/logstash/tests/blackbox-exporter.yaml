@@ -19,7 +19,8 @@ testcases:
           "message": "ts=2022-02-28T10:25:49.203643345Z caller=main.go:169 module=icmp_librenms_ip4 target=208.80.153.110 level=debug msg=\"Creating socket\""
         }
     expected:
-      - ecs:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        ecs:
           version: "1.7.0"
         service:
           type: "prometheus-blackbox-exporter"

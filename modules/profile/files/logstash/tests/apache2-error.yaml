@@ -16,7 +16,8 @@ testcases:
           "program":"apache2"
         }
     expected:
-      - timestamp: "2020-05-05T10:15:58.655772+00:00"
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        timestamp: "2020-05-05T10:15:58.655772+00:00"
         channel: "proxy_fcgi"
         clientip: "10.64.48.211"
         clientport: "41868"

@@ -61,7 +61,8 @@ testcases:
           "original": "{\"referrer\":\"....\"}"
         }
     expected:
-      - plugin_id: 'elasticsearch'
+      - __target_index: "dlq-default-1-1.0.0-N-daily"
+        plugin_id: 'elasticsearch'
         message: 'Could not index event to Elasticsearch. status: 400, action...'
         plugin_type: 'output/elasticsearch/logstash'
         type: 'dlq'

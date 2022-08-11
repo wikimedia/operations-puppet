@@ -17,7 +17,8 @@ testcases:
           "program": "ulogd"
         }
     expected:
-      - destination:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        destination:
           ip: "2620:0:860:101:10:192:0:27"
           port: "44734"
         ecs:
@@ -66,7 +67,8 @@ testcases:
           "program": "ulogd"
         }
     expected:
-      - destination:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        destination:
           ip: "10.64.16.67"
           port: "45868"
         ecs:

@@ -41,7 +41,8 @@ testcases:
           "host": "gerrit1001"
         }
     expected:
-      - '@timestamp': "2021-03-17T21:26:57.000Z"
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        '@timestamp': "2021-03-17T21:26:57.000Z"
         log:
           level: "NOTSET"
         client:

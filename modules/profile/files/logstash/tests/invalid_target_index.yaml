@@ -20,9 +20,12 @@ testcases:
           "_intentionally_invalid_target_index_value": "logstash-def-ault-1-1.0.0-N-2020.10"
         }
     expected:
-      - message: "Invalid target index format. Check Logstash configuration. Got: 'logstash-default-a-1.0.0-N-2020.10'"
+      - __target_index: "dlq-default-1-1.0.0-N-daily"
+        message: "Invalid target index format. Check Logstash configuration. Got: 'logstash-default-a-1.0.0-N-2020.10'"
         type: "dlq"
-      - message: "Invalid target index format. Check Logstash configuration. Got: 'logstash-default-1-1.0.0-N-2020_10'"
+      - __target_index: "dlq-default-1-1.0.0-N-daily"
+        message: "Invalid target index format. Check Logstash configuration. Got: 'logstash-default-1-1.0.0-N-2020_10'"
         type: "dlq"
-      - message: "Invalid target index format. Check Logstash configuration. Got: 'logstash-def-ault-1-1.0.0-N-2020.10'"
+      - __target_index: "dlq-default-1-1.0.0-N-daily"
+        message: "Invalid target index format. Check Logstash configuration. Got: 'logstash-def-ault-1-1.0.0-N-2020.10'"
         type: "dlq"

@@ -11,7 +11,8 @@ testcases:
           "dummy":"key"
         }
     expected:
-      - dummy: "key"
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        dummy: "key"
         level: "ERROR"
         normalized_message: "%{message}"
         tags: ["es", "throttle-exempt", "normalized_message_untrimmed"]

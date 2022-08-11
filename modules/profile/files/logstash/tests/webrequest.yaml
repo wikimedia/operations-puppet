@@ -39,7 +39,8 @@ testcases:
         }
 
     expected:
-      - host:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        host:
           name: "cp3058.esams.wmnet"
         labels:
           channel: "webrequest"
@@ -91,7 +92,8 @@ testcases:
         ecs:
           version: "1.7.0"
 
-      - host: "cp3058.esams.wmnet"
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        host: "cp3058.esams.wmnet"
         sequence: 55255890050
         dt: "2021-06-10T14:47:33Z"
         time_firstbyte: 59.975095

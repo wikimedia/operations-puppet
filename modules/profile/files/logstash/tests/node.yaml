@@ -70,7 +70,8 @@ testcases:
         "logsource": "restbase1027"
       }
     expected:
-      - message: "500: server_error"
+      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+        message: "500: server_error"
         log:
           level: "ERROR"
           syslog:
@@ -177,7 +178,8 @@ testcases:
         "logsource": "restbase1019"
       }
     expected:
-      - message: "MW API call error readinglists-too-old"
+      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+        message: "MW API call error readinglists-too-old"
         labels:
           level_path: "debug/api_error"
           api_path: "/bcl.wikipedia.org/v1/data/lists/changes/since/{date}"
@@ -244,7 +246,8 @@ testcases:
         "logsource": "restbase2015"
       }
     expected:
-      - message: "Heap memory limit temporarily exceeded"
+      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+        message: "Heap memory limit temporarily exceeded"
         labels:
           level_path: "warn/service-runner/heap"
         log:
@@ -299,7 +302,8 @@ testcases:
         "logsource": "restbase1021"
       }
     expected:
-      - message: "No content returned"
+      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+        message: "No content returned"
         labels:
           level_path: "error/request"
         log:
@@ -379,7 +383,8 @@ testcases:
         "logsource": "maps1007"
       }
     expected:
-      - message: "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
+      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+        message: "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
         labels:
           level_path: "warn"
           query_lang: "ar"
@@ -418,7 +423,8 @@ testcases:
             method: "GET"
         ecs:
           version: "1.7.0"
-      - message: "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        message: "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
         level: "WARNING"
         levelPath: "warn"
         pid: 27393
