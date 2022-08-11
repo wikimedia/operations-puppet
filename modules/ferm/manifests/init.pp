@@ -56,6 +56,10 @@ class ferm {
         notify  => Service['ferm'],
     }
 
+    file { '/etc/ferm' :
+        ensure => directory,
+        mode   => '2751',
+    }
     file { '/etc/ferm/functions.conf' :
         ensure  => present,
         owner   => 'root',
