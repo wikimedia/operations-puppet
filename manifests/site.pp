@@ -1419,7 +1419,7 @@ node 'clouddb2001-dev.codfw.wmnet' {
 
 # New clouddb node T306854
 node 'clouddb2002-dev.codfw.wmnet' {
-    role(insetup)
+    role(wmcs::openstack::codfw1dev::db)
 }
 
 node 'cloudcontrol2003-dev.wikimedia.org' {
