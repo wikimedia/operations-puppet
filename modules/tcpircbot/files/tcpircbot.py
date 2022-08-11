@@ -54,6 +54,7 @@ import irc
 import irc.bot as ircbot
 
 BUFSIZE = 425  # Read from socket in IRC-message-sized chunks.
+LOG_CHANNEL_LABEL = 'sal'
 
 
 class ECSFormatter(logging.Formatter):
@@ -122,6 +123,18 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
                 f = open(infile, 'r')
                 f.seek(0, 2)
                 files.append(f)
+
+    def on_pubmsg(self, connection, event):
+        """Log !log events we see.  Useful to get these events into centralized logging."""
+        if event.arguments and event.arguments[0].startswith('!log '):
+            msg = event.arguments[0]
+            if msg.startswith('!log help'):
+                return
+            logging.info({
+                'message': msg.replace('!log ', ''),
+                'labels.channel': LOG_CHANNEL_LABEL,
+                'user.name': event.source.nick
+            })
 
 
 if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
@@ -204,6 +217,11 @@ while 1:
                 logging.info(f'TCP {f.getpeername()}: "{data}"')
                 for channel in bot.target_channels:
                     bot.connection.privmsg(channel, data)
+                    logging.info({
+                        'message': data.replace('!log ', ''),
+                        'labels.channel': LOG_CHANNEL_LABEL,
+                        'user.name': config['irc']['nickname']
+                    })
             else:
                 f.close()
                 files.remove(f)
