@@ -439,9 +439,10 @@ class facilities (
         model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-c8-codfw':
-        ip   => '10.193.0.48',
-        row  => 'c',
-        site => 'codfw',
+        ip    => '10.193.0.48',
+        row   => 'c',
+        site  => 'codfw',
+        model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-d1-codfw':
         ip    => '10.193.0.49',
