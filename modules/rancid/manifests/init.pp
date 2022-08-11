@@ -92,6 +92,14 @@ class rancid (
         content => template('rancid/gitconfig.erb'),
     }
 
+    file { '/var/lib/rancid/.ssh':
+        ensure  => 'directory',
+        require => [ Package['openssh-client', 'rancid'], User['rancid'] ],
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => '0700',
+    }
+
     file_line { 'opengear_script':
       path => '/etc/rancid/rancid.types.base',
       line => 'opengear;script;ograncid',
