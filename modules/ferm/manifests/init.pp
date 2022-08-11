@@ -70,7 +70,7 @@ class ferm {
         ensure  => directory,
         owner   => 'root',
         group   => 'adm',
-        mode    => '0500',
+        mode    => '0551',
         recurse => true,
         purge   => true,
         require => Package['ferm'],
