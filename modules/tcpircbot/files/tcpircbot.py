@@ -48,14 +48,50 @@ import logging
 import select
 import socket
 import ssl
+from datetime import datetime
 import irc
 
 import irc.bot as ircbot
 
 BUFSIZE = 425  # Read from socket in IRC-message-sized chunks.
 
-logging.basicConfig(level=logging.INFO, stream=sys.stderr,
-                    format='%(asctime)-15s %(message)s')
+
+class ECSFormatter(logging.Formatter):
+    """ ECS Logging Formatter """
+    def format(self, record):
+        ecs_message = {
+            'ecs.version': '1.7.0',
+            'log.level': record.levelname.upper(),
+            'log.origin.file.line': record.lineno,
+            'log.origin.file.name': record.filename,
+            'log.origin.file.path': record.pathname,
+            'log.origin.function': record.funcName,
+            'message': str(record.msg),
+            'process.name': record.processName,
+            'process.thread.id': record.process,
+            'process.thread.name': record.threadName,
+            'timestamp': datetime.utcnow().isoformat(),
+        }
+        if isinstance(record.msg, dict):
+            ecs_message.update(record.msg)
+        if record.exc_info:
+            ecs_message['error.stack_trace'] = self.formatException(record.exc_info)
+        if not ecs_message.get('error.stack_trace') and record.exc_text:
+            ecs_message['error.stack_trace'] = record.exc_text
+            # Prefix "@cee" cookie indicating rsyslog should parse the message as JSON
+        return "@cee: %s" % json.dumps(ecs_message)
+
+
+def log_unhandled_exception(exc_type, exc_value, exc_traceback):
+    """Forwards unhandled exceptions to log handler.  Override sys.excepthook to activate."""
+    logging.exception(
+        "Unhandled exception: %s" % exc_value, exc_info=(exc_type, exc_value, exc_traceback))
+
+
+sys.excepthook = log_unhandled_exception
+ecs_handler = logging.StreamHandler()
+ecs_handler.setFormatter(ECSFormatter())
+logging.basicConfig(level=logging.INFO, handlers=[ecs_handler])
 
 files = []
 
@@ -70,12 +106,11 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
             self.connection.add_global_handler(event, self.log_event)
 
     def on_privnotice(self, connection, event):
-        logging.info('%s %s', event.source, event.arguments)
+        logging.info(f'{event.source} {event.arguments}')
 
     def log_event(self, connection, event):
         if connection.real_nickname in [event.source, event.target]:
-            logging.info('%(type)s [%(source)s -> %(target)s]'
-                         % vars(event))
+            logging.info(f'{event.type} [{event.source} -> {event.target}]')
 
     def on_welcome(self, connection, event):
         for channel in self.target_channels:
@@ -152,21 +187,21 @@ while 1:
                 conn.close()
                 continue
             conn.setblocking(0)
-            logging.info('Connection from %s', addr)
+            logging.info(f'Connection from {addr}')
             files.append(conn)
         elif f is bot.connection.socket:
             bot.connection.process_data()
         elif isinstance(f, io.IOBase):
             data = f.readline().rstrip()
             if data:
-                logging.info('infile: %s', data)
+                logging.info(f'infile: {data}')
                 for channel in bot.target_channels:
                     bot.connection.privmsg(channel, data)
         else:
             data = f.recv(BUFSIZE)
             data = codecs.decode(data, 'utf8', 'replace').strip()
             if data:
-                logging.info('TCP %s: "%s"', f.getpeername(), data)
+                logging.info(f'TCP {f.getpeername()}: "{data}"')
                 for channel in bot.target_channels:
                     bot.connection.privmsg(channel, data)
             else:
