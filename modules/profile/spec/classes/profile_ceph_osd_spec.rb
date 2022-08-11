@@ -28,7 +28,7 @@ describe "profile::ceph::osd" do
         "os_disks" => [],
         "disks_io_scheduler" => "dummy_io_scheduler",
         "cinder_backup_nodes" => ["cloudbackupxxxx.example.com"],
-        "osd_cluster_networks" => ["192.168.4.0"],
+        "cluster_networks" => [],
       }
       let(:facts) {
         facts.merge({
@@ -186,10 +186,10 @@ describe "profile::ceph::osd" do
         it { is_expected.to contain_apt__repository("repository_ceph").with_components("dummy/component-repo") }
       end
 
-      context "when multiple osd_cluster_networks specificed, adds the gateways for the ones not local" do
+      context "when multiple cluster_networks specificed, adds the gateways for the ones not local" do
         let(:params) {
           super().merge({
-            "osd_cluster_networks" => ["192.168.1.0", "192.168.2.0", "192.168.3.0", "192.168.4.0"],
+            "cluster_networks" => ["192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24", "192.168.4.0/24"],
           })
         }
         it { is_expected.to compile.with_all_deps }

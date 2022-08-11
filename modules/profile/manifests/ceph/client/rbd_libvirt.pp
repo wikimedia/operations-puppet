@@ -4,19 +4,19 @@
 # using the native kernel driver or librbd. This includes some extras for integration
 # with nova/libvirt/qemu
 class profile::ceph::client::rbd_libvirt(
-    Boolean             $enable_v2_messenger     = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
-    Hash[String,Hash]   $mon_hosts               = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]   $osd_hosts               = lookup('profile::ceph::osd::hosts'),
-    Stdlib::IP::Address $cluster_network         = lookup('profile::ceph::cluster_network'),
-    Stdlib::IP::Address $public_network          = lookup('profile::ceph::public_network'),
-    Stdlib::Unixpath    $data_dir                = lookup('profile::ceph::data_dir'),
-    String              $client_name             = lookup('profile::ceph::client::rbd::client_name'),
-    String              $cinder_client_name      = lookup('profile::ceph::client::rbd::cinder_client_name'),
-    String              $fsid                    = lookup('profile::ceph::fsid'),
-    String              $libvirt_rbd_uuid        = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
-    String              $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
-    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
-    Ceph::Auth::Conf    $ceph_auth_conf             = lookup('profile::ceph::auth::deploy::configuration'),
+    Boolean                    $enable_v2_messenger       = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
+    Hash[String,Hash]          $mon_hosts                 = lookup('profile::ceph::mon::hosts'),
+    Hash[String,Hash]          $osd_hosts                 = lookup('profile::ceph::osd::hosts'),
+    Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::ceph::cluster_networks'),
+    Array[Stdlib::IP::Address] $public_networks           = lookup('profile::ceph::public_networks'),
+    Stdlib::Unixpath           $data_dir                  = lookup('profile::ceph::data_dir'),
+    String                     $client_name               = lookup('profile::ceph::client::rbd::client_name'),
+    String                     $cinder_client_name        = lookup('profile::ceph::client::rbd::cinder_client_name'),
+    String                     $fsid                      = lookup('profile::ceph::fsid'),
+    String                     $libvirt_rbd_uuid          = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
+    String                     $libvirt_rbd_cinder_uuid   = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
+    String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
+    Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::ceph::auth::deploy::configuration'),
 ) {
 
     class { 'ceph::common':
@@ -25,12 +25,12 @@ class profile::ceph::client::rbd_libvirt(
     }
 
     class { 'ceph::config':
-        cluster_network     => $cluster_network,
+        cluster_networks    => $cluster_networks,
         enable_libvirt_rbd  => true,
         enable_v2_messenger => $enable_v2_messenger,
         fsid                => $fsid,
         mon_hosts           => $mon_hosts,
-        public_network      => $public_network,
+        public_networks     => $public_networks,
     }
 
     if ! $ceph_auth_conf[$client_name] {

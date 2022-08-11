@@ -9,17 +9,25 @@
 
 profile::ceph::client::rbd::enable_v2_messenger: true
 profile::ceph::mon::hosts:
-  'cloudcephmon2004-dev.codfw.wmnet':
+  "cloudcephmon2004-dev.codfw.wmnet":
     public:
-      addr: '10.192.20.19'
-  'cloudcephmon2005-dev.codfw.wmnet':
+      addr: "10.192.20.19"
+  "cloudcephmon2005-dev.codfw.wmnet":
     public:
-      addr: '10.192.20.12'
-  'cloudcephmon2006-dev.codfw.wmnet':
+      addr: "10.192.20.12"
+  "cloudcephmon2006-dev.codfw.wmnet":
     public:
-      addr: '10.192.20.20'
+      addr: "10.192.20.20"
 
-profile::ceph::cluster_network: 192.168.4.0/22
-profile::ceph::public_network: 10.192.20.0/24
+profile::ceph::cluster_networks:
+  - 192.168.4.0/24
+  - 192.168.5.0/24
+  - 192.168.6.0/24
+profile::ceph::public_networks:
+  - 10.192.20.0/24
+  - 10.64.148.0/24
+  - 10.64.149.0/24
+  - 10.64.150.0/24
+  - 10.64.151.0/24
 profile::ceph::data_dir: /var/lib/ceph
 profile::ceph::fsid: 489c4187-17bc-44dc-9aeb-1d044c9bba9e

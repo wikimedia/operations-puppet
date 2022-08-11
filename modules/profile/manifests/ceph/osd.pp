@@ -5,8 +5,8 @@ class profile::ceph::osd(
     Array[Stdlib::Fqdn]        $openstack_controllers           = lookup('profile::ceph::openstack_controllers'),
     Hash[String[1],Hash]       $mon_hosts                       = lookup('profile::ceph::mon::hosts'),
     Hash[String[1],Hash]       $osd_hosts                       = lookup('profile::ceph::osd::hosts'),
-    Stdlib::IP::Address        $cluster_network                 = lookup('profile::ceph::cluster_network'),
-    Stdlib::IP::Address        $public_network                  = lookup('profile::ceph::public_network'),
+    Array[Stdlib::IP::Address] $cluster_networks                = lookup('profile::ceph::cluster_networks'),
+    Array[Stdlib::IP::Address] $public_networks                 = lookup('profile::ceph::public_networks'),
     Stdlib::Unixpath           $data_dir                        = lookup('profile::ceph::data_dir'),
     String[1]                  $fsid                            = lookup('profile::ceph::fsid'),
     Array[String[1]]           $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
@@ -14,7 +14,6 @@ class profile::ceph::osd(
     String[1]                  $disks_io_scheduler              = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
     String[1]                  $ceph_repository_component       = lookup('profile::ceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
-    Array[Stdlib::IP::Address] $osd_cluster_networks            = lookup('profile::ceph::osd::cluster_networks')
 ) {
     $cluster_iface = $osd_hosts[$facts['fqdn']]['cluster']['iface']
 
@@ -92,7 +91,8 @@ class profile::ceph::osd(
 
     # Set a static route with the gateway to the rest of the osds networks
     # We are assuming /24 for each network, and .254 to be the GW
-    $osd_cluster_networks.each | Stdlib::IP::Address $cluster_network | {
+    $cluster_networks.each | Stdlib::IP::Address $cluster_network_with_nm | {
+        $cluster_network = split($cluster_network_with_nm, '[/]')[0]
         $cur_ip_chunks = split($osd_hosts[$facts['fqdn']]['cluster']['addr'], '[.]')
         $cur_network_chunks = $cur_ip_chunks[0, -2]
         $cur_network_substring = join($cur_network_chunks, '.')
@@ -140,13 +140,13 @@ class profile::ceph::osd(
     }
 
     class { 'ceph::config':
-        cluster_network     => $cluster_network,
+        cluster_networks    => $cluster_networks,
         enable_libvirt_rbd  => false,
         enable_v2_messenger => true,
         fsid                => $fsid,
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
-        public_network      => $public_network,
+        public_networks     => $public_networks,
     }
 
     # This adds latency stats between from this osd to the rest of the ceph fleet

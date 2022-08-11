@@ -2,16 +2,16 @@
 #
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
 class profile::ceph::mon(
-    Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::ceph::openstack_controllers'),
-    Hash[String,Hash]    $mon_hosts        = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]    $osd_hosts        = lookup('profile::ceph::osd::hosts'),
-    Stdlib::IP::Address  $cluster_network  = lookup('profile::ceph::cluster_network'),
-    Stdlib::IP::Address  $public_network   = lookup('profile::ceph::public_network'),
-    Stdlib::Unixpath     $data_dir         = lookup('profile::ceph::data_dir'),
-    String               $fsid             = lookup('profile::ceph::fsid'),
-    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
-    Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
-    Ceph::Auth::Conf     $ceph_auth_conf             = lookup('profile::ceph::auth::load_all::configuration'),
+    Array[Stdlib::Fqdn]        $openstack_controllers     = lookup('profile::ceph::openstack_controllers'),
+    Hash[String,Hash]          $mon_hosts                 = lookup('profile::ceph::mon::hosts'),
+    Hash[String,Hash]          $osd_hosts                 = lookup('profile::ceph::osd::hosts'),
+    Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::ceph::cluster_networks'),
+    Array[Stdlib::IP::Address] $public_networks           = lookup('profile::ceph::public_networks'),
+    Stdlib::Unixpath           $data_dir                  = lookup('profile::ceph::data_dir'),
+    String                     $fsid                      = lookup('profile::ceph::fsid'),
+    String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
+    Array[Stdlib::Fqdn]        $cinder_backup_nodes       = lookup('profile::ceph::cinder_backup_nodes'),
+    Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::ceph::auth::load_all::configuration'),
 ) {
     require 'profile::ceph::auth::load_all'
 
@@ -61,13 +61,13 @@ class profile::ceph::mon(
     }
 
     class { 'ceph::config':
-        cluster_network     => $cluster_network,
+        cluster_networks    => $cluster_networks,
         enable_libvirt_rbd  => false,
         enable_v2_messenger => true,
         fsid                => $fsid,
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
-        public_network      => $public_network,
+        public_networks     => $public_networks,
     }
 
     class { 'ceph::mon':

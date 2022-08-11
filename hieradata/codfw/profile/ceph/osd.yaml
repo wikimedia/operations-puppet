@@ -41,4 +41,4 @@ profile::ceph::osd::hosts:
       iface: "eno2"
 
 profile::ceph::osd::cluster_networks:
-  - "192.168.4.0"
+  - "192.168.4.0/24"

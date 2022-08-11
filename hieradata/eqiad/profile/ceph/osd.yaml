@@ -293,6 +293,6 @@ profile::ceph::osd::hosts:
       iface: "ens3f1np1"
 
 profile::ceph::osd::cluster_networks:
-  - "192.168.4.0"
-  - "192.168.5.0"
-  - "192.168.6.0"
+  - "192.168.4.0/24"
+  - "192.168.5.0/24"
+  - "192.168.6.0/24"

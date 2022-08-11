@@ -9,14 +9,14 @@ profile::admin::groups:
 
 profile::monitoring::notifications_enabled: true
 
-profile::contacts::role_contacts: ['WMCS']
+profile::contacts::role_contacts: ["WMCS"]
 profile::ceph::auth::deploy::enabled: true
 
 profile::ceph::auth::deploy::configuration:
   eqiad1-cinder:
     owner: cinder
     group: cinder
-    mode: '0440'
+    mode: "0440"
     caps:
       mon: profile rbd
       osd: profile rbd pool=eqiad1-cinder
@@ -29,9 +29,9 @@ profile::openstack::eqiad1::version: wallaby
 profile::openstack::eqiad1::cinder::db_host: openstack.eqiad1.wikimediacloud.org
 profile::openstack::eqiad1::keystone_api_fqdn: openstack.eqiad1.wikimediacloud.org
 profile::openstack::eqiad1::openstack_controllers:
-    - cloudcontrol1005.wikimedia.org
-    - cloudcontrol1006.wikimedia.org
-    - cloudcontrol1007.wikimedia.org
+  - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::rabbitmq_nodes:
   - rabbitmq01.eqiad1.wikimediacloud.org
   - rabbitmq02.eqiad1.wikimediacloud.org
@@ -55,16 +55,21 @@ profile::openstack::eqiad1::cinder::backup::lvm::lv_format: ext4
 
 profile::ceph::client::rbd::enable_v2_messenger: true
 profile::ceph::mon::hosts:
-  'cloudcephmon1001.eqiad.wmnet':
+  "cloudcephmon1001.eqiad.wmnet":
     public:
-      addr: '10.64.20.67'
-  'cloudcephmon1002.eqiad.wmnet':
+      addr: "10.64.20.67"
+  "cloudcephmon1002.eqiad.wmnet":
     public:
-      addr: '10.64.20.68'
-  'cloudcephmon1003.eqiad.wmnet':
+      addr: "10.64.20.68"
+  "cloudcephmon1003.eqiad.wmnet":
     public:
-      addr: '10.64.20.69'
+      addr: "10.64.20.69"
 
-profile::ceph::public_network: 10.64.0.0/16
+profile::ceph::public_networks:
+  - 10.192.20.0/24
+  - 10.64.148.0/24
+  - 10.64.149.0/24
+  - 10.64.150.0/24
+  - 10.64.151.0/24
 profile::ceph::data_dir: /var/lib/ceph
 profile::ceph::fsid: 5917e6d9-06a0-4928-827a-f489384975b1

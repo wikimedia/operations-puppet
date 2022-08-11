@@ -1,0 +1,71 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[Stdlib::IP::Address] $public_networks,
+      Array[Stdlib::IP::Address] $cluster_networks,
+      String                     $fsid,
+      Hash[String,Hash]          $mon_hosts,
+      Hash[String,Hash]          $osd_hosts = {},
+      Boolean                    $enable_libvirt_rbd,
+      Boolean                    $enable_v2_messenger,
+      Stdlib::Port               $radosgw_port = 0,
+      Optional[String]           $keystone_internal_uri = '',
+      Optional[String]           $radosgw_service_user = '',
+      Optional[String]           $radosgw_service_user_project = '',
+      Optional[String]           $radosgw_service_user_pass = '',
+| -%>
+[global]
+  auth cluster required = cephx
+  auth service required = cephx
+  auth client required = cephx
+
+  fsid = <%= $fsid %>
+
+  # we log to syslog instead
+  log file = none
+  public network = <%= $public_networks.join(' ') %>
+  cluster network = <%= $cluster_networks.join(' ') %>
+  log to syslog = true
+  err to syslog = true
+
+  mon initial members = <%= join($mon_hosts.keys().map |$k| {"${k.split('[.]')[0]}"}, ',') %>
+<% if $enable_v2_messenger {-%>
+  mon host = <%= $mon_hosts.values().map |$v| {"[v2:${v['public']['addr']}:3300/0,v1:${v['public']['addr']}:6789/0]"}.join(',') %>
+<% } -%>
+[mon]
+    mon cluster log to syslog = true
+<% $mon_hosts.each |$fqdn, $host_data| {%>
+[mon.<%= $fqdn.split('[.]')[0] %>]
+    host = <%= $fqdn.split('[.]')[0] %>
+    mon addr = <%= $host_data['public']['addr'] %>
+<% } -%>
+<% $osd_hosts.each |$fqdn, $host_data| {%>
+[osd.<%= $fqdn.split('[.]')[0] %>]
+    host = <%= $fqdn.split('[.]')[0] %>
+    public addr = <%= $host_data['public']['addr'] %>
+    cluster addr = <%= $host_data['cluster']['addr'] %>
+<% } -%>
+<% if $enable_libvirt_rbd {%>
+[client]
+    rbd cache = true
+    rbd cache writethrough until flush = true
+    admin socket = /var/run/ceph/guests/$cluster-$type.$id.$pid.$cctid.asok
+    log file = /var/log/ceph/qemu/qemu-guest-$pid.log
+    rbd concurrent management ops = 20
+<%} -%>
+
+<% if $radosgw_port != 0 {-%>
+[client.radosgw]
+    host = <%= $ipaddress %>
+    keyring = /etc/ceph/ceph.client.radosgw.keyring
+    rgw frontends = "civetweb port=<%= $radosgw_port %>"
+    rgw_keystone_verify_ssl = false
+    rgw_keystone_api_version = 3
+    rgw_keystone_url = <%= $keystone_internal_uri %>
+    rgw_keystone_accepted_roles = 'user, admin, projectadmin'
+    rgw_keystone_implicit_tenants = true
+    rgw_keystone_admin_domain = default
+    rgw_keystone_admin_project = <%= $radosgw_service_user_project %>
+    rgw_keystone_admin_user = <%= $radosgw_service_user %>
+    rgw_keystone_admin_password = <%= $radosgw_service_user_pass %>
+    rgw_s3_auth_use_keystone = true
+    rgw_swift_account_in_url = true
+<%} -%>
