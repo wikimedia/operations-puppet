@@ -77,13 +77,29 @@ class postgresql::slave(
         require => Package["postgresql-${_pgversion}"],
     }
     if $facts['postgres_replica_initialised'] {
-        file { "${data_dir}/recovery.conf":
-            ensure  => $ensure,
-            owner   => 'postgres',
-            group   => 'root',
-            mode    => '0644',
-            content => template('postgresql/recovery.conf.erb'),
-            before  => Service[$postgresql::server::service_name],
+        # postgresql 12+ no longer uses the recovery.conf file
+        # https://www.postgresql.org/docs/current/recovery-config.html
+        if $_pgversion >= 12 {
+            file { "${data_dir}/standby.signal":
+                ensure => file,
+                owner  => 'postgres',
+                mode   => '0600',
+                before => Service[$postgresql::server::service_name],
+            }
+            # postgress 12+ fails to start of this is present
+            file { "${data_dir}/recovery.conf":
+                ensure => 'absent',
+                before => Service[$postgresql::server::service_name],
+            }
+        } else {
+            file { "${data_dir}/recovery.conf":
+                ensure  => $ensure,
+                owner   => 'postgres',
+                group   => 'root',
+                mode    => '0644',
+                content => template('postgresql/recovery.conf.erb'),
+                before  => Service[$postgresql::server::service_name],
+            }
         }
     } else {
         notify {'Replication not initialised please run: resync_replica': }

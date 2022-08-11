@@ -4,3 +4,6 @@ wal_level = hot_standby
 # Without this a restart of the DB is required after next puppet run
 # following failover
 max_wal_senders = <%= @max_wal_senders %>
+<%- if @_pgversion >= 12 -%>
+primary_conninfo = 'host=<%= @master_server %> user=replication password=<%= @replication_pass %><%if @use_ssl %> sslmode=require<% end %><%if @rep_app %> application_name=<%= @rep_app %><%end %>'
+<%- end -%>
