@@ -210,7 +210,7 @@ filter {
   $w3creportingapi_versions.each |String $w3creportingapi_version, String $w3creportingapi_revision| {
     logstash::output::opensearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
       host            => '127.0.0.1',
-      guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
+      guard_condition => "[@metadata][output] == \"w3creportingapi\" and [@metadata][template_version] == \"${w3creportingapi_version}\"",
       index           => "w3creportingapi-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${w3creportingapi_version}-${w3creportingapi_revision}-%{+xxxx.ww}",
       priority        => 90,
       template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
