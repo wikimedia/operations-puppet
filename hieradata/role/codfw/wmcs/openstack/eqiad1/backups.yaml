@@ -67,6 +67,6 @@ profile::ceph::mon::hosts:
     public:
       addr: '10.64.20.69'
 
-profile::ceph::public_network: 10.64.20.0/24
+profile::ceph::public_network: 10.64.0.0/16
 profile::ceph::data_dir: /var/lib/ceph
 profile::ceph::fsid: 5917e6d9-06a0-4928-827a-f489384975b1

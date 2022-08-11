@@ -1,6 +1,6 @@
 profile::ceph::fsid: '5917e6d9-06a0-4928-827a-f489384975b1'
 profile::ceph::cluster_network: 192.168.4.0/22
-profile::ceph::public_network: 10.64.20.0/24
+profile::ceph::public_network: 10.64.0.0/16
 profile::ceph::ceph_repository_component: 'thirdparty/ceph-octopus'
 
 profile::ceph::openstack_controllers:
