@@ -62,7 +62,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-webrequest-sequence-stats-partitions':
         ensure      => $ensure_timers,
         description => 'Drop Webrequest sequence stats (detailed and hourly) from HDFS to prevent small-files number to grow.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='^webrequest_sequence_stats(_hourly)?$' --base-path='/user/hive/warehouse/wmf_raw.db' --path-format='webrequest_sequence_stats(_hourly)?/webrequest_source=[a-z]+/${hive_date_path_format}' --older-than='${webrequest_sequence_stats_retention_days}' --allowed-interval='3' --skip-trash --execute='b8517462b96564f7872772c07d6fac0b'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='^webrequest_sequence_stats(_hourly)?$' --older-than='${webrequest_sequence_stats_retention_days}' --allowed-interval='3' --skip-trash --execute='e10b61944570ec55829f632d81538256'",
         interval    => '*-*-* 00:30:00',
         environment => $systemd_env,
         user        => 'analytics',
