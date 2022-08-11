@@ -59,8 +59,8 @@ use Time::Seconds;
 use Getopt::Long;
 use Pod::Usage;
 
-# YYYY-MM-DD HH:MM:SS [requestid] host wiki version ......
-my $header_pat = qr{^([\d-]{10} [\d:]{8}) \[\S+\] (\S+)};
+# YYYY-MM-DD HH:MM:SS.MMMMMM [requestid] host wiki version ......
+my $header_pat = qr{^([\d-]{10} [\d:]{8})[.]\d{6} \[\S+\] (\S+)};
 
 # Silence rare but irritating UTF-8 warnings.  You may wish to disable this for
 # development purposes:
