@@ -1,3 +1,4 @@
+profile::base::firewall::defs_from_etcd: true
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
 profile::admin::groups:

@@ -1,2 +1,1 @@
 profile::ssh::server::enable_kerberos: true
-profile::base::firewall::defs_from_etcd: true
