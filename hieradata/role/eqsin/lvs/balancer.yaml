@@ -1,4 +1,4 @@
-profile::pybal::config_host: conf2005.codfw.wmnet
+profile::pybal::config_host: conf2006.codfw.wmnet
 profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - public1-eqsin
