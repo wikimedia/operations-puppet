@@ -98,6 +98,7 @@
     {"index" : "jupyterhub-conda-singleuser", "value" : "kafka ecs_170" },
     {"index" : "puppet-master", "value" : "kafka local ecs_170" },
     {"index" : "squid", "value" : "kafka local" },
-    {"index" : "docker-striker", "value" : "kafka" }
+    {"index" : "docker-striker", "value" : "kafka" },
+    {"index" : "tcpircbot-logmsgbot", "value" : "kafka" }
   ]
 }
