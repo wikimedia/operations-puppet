@@ -30,6 +30,10 @@ tables:
       job: templatelinks
       description: Wiki template inclusion link records.
       type: public
+    linktarget:
+       job: linktarget
+      description: Link records used in other tables.
+      type: public
     externallinks:
       job: externallinks
       description: Wiki external URL link records.
