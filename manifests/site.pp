@@ -1422,8 +1422,13 @@ node 'clouddb2002-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
-node /^cloudcontrol200[345]-dev\.wikimedia\.org/ {
+node /^cloudcontrol200[145]-dev\.wikimedia\.org/ {
     role(wmcs::openstack::codfw1dev::control)
+}
+
+# Prepare for decom, T315089
+node 'cloudcontrol2003-dev.wikimedia.org' {
+    role(spare::system)
 }
 
 # cloudrabbit servers T304888
@@ -1587,10 +1592,6 @@ node /kubestage100[34]\.eqiad\.wmnet/ {
 # codfw new kubernetes staging nodes T252185
 node /kubestage200[12]\.codfw\.wmnet/ {
     role(kubernetes::staging::worker)
-}
-
-node 'cloudcontrol2001-dev.wikimedia.org' {
-    role(wmcs::openstack::codfw1dev::control)
 }
 
 node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
