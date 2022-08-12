@@ -10,6 +10,7 @@ profile::cache::base::wikimedia_domains:
   - wikidata.org
   - wikimediafoundation.org
   - wikiworkshop.org
+  - wikifunctions.org
   - wiktionary.org
   - mediawiki.org
   - wmfusercontent.org

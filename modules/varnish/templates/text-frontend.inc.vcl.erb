@@ -354,6 +354,11 @@ sub cluster_fe_recv {
 		return (synth(302, "Foundation Wiki Moved"));
 	}
 
+	if (req.http.Host ~ "^((www|m)\.)?wikifunctions\.org$") {
+		set req.http.Location = "https://meta.wikimedia.org/wiki/Wikilambda";
+		return (synth(302, "Temporary Lambda Redirect"));
+	}
+
 	call mobile_redirect;
 
 	// shortener URLs can be validated and restricted here
@@ -608,5 +613,12 @@ sub cluster_fe_err_synth {
 		set resp.http.Retry-After = 1;
 	}
 
+	if (resp.reason == "Temporary Lambda Redirect") {
+		set resp.reason = "Found";
+		set resp.http.Location = req.http.Location;
+		set resp.http.Connection = "keep-alive";
+		set resp.http.Content-Length = "0"; // BZ #62245
+		set resp.http.Cache-control = "public, max-age=600, s-maxage=600";
+	}
 }
 # vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:

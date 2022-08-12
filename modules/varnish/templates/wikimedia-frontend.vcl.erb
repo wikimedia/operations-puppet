@@ -356,7 +356,7 @@ sub normalize_request {
 	        # All of the .org domains which all have leading wildcards:
 	        ([^.]+\.)? ( # any leading singular dns label, but not multiple
 	            # all of these have exactly *.domain.org + *.m.domain.org
-	            (m\.)?(wik(i(pedia|data|books|news|quote|source|versity|voyage)|tionary)|mediawiki)
+	            (m\.)?(wik(i(pedia|data|books|news|quote|source|versity|voyage|functions)|tionary)|mediawiki)
 	            # wikimedia is special: it's like above + *.planet
 	            | ((m|planet)\.)?wikimedia
 	            # these two have only the root wildcard (no m nor planet)
