@@ -18,4 +18,4 @@ profile::wmcs::backy2::backup_time: '*-*-* 9:00:00'
 
 profile::wmcs::backy2::backup_glance_images::enabled: true
 
-profile::openstack::base::rabbitmq_service_name: 'rabbitmq02.codfw1dev.wikimediacloud.org'
+profile::openstack::base::rabbitmq_service_name: 'rabbitmqXX.codfw1dev.wikimediacloud.org'
