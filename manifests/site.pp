@@ -1422,17 +1422,8 @@ node 'clouddb2002-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
-node 'cloudcontrol2003-dev.wikimedia.org' {
+node /^cloudcontrol200[345]-dev\.wikimedia\.org/ {
     role(wmcs::openstack::codfw1dev::control)
-}
-
-node 'cloudcontrol2004-dev.wikimedia.org' {
-    role(wmcs::openstack::codfw1dev::control)
-}
-
-# New cloudcontrol node T306854
-node 'cloudcontrol2005-dev.wikimedia.org' {
-    role(insetup)
 }
 
 # cloudrabbit servers T304888
