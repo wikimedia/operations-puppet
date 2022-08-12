@@ -10,8 +10,8 @@ testcases:
           "type": "syslog",
           "program": "trove-api",
           "severity": "INFO",
-          "host": "cloudcontrol2001-dev",
-          "logsource": "cloudcontrol2001-dev",
+          "host": "cloudcontrol2005-dev",
+          "logsource": "cloudcontrol2005-dev",
           "message": "127.0.0.1 - - [25/May/2021 23:15:11] \"GET / HTTP/1.0\" 200 286 0.002796",
           "asctime": "2021-05-25 23:15:11",
           "name": "eventlet.wsgi",
@@ -32,7 +32,7 @@ testcases:
           "process_name": "MainProcess",
           "process": 17278,
           "traceback": null,
-          "hostname": "cloudcontrol2001-dev",
+          "hostname": "cloudcontrol2005-dev",
           "error_summary": "test traceback",
           "context": {},
           "extra": {
@@ -64,7 +64,7 @@ testcases:
               code: 6
               name: "informational"
         host:
-          name: "cloudcontrol2001-dev"
+          name: "cloudcontrol2005-dev"
         process:
           name: "MainProcess"
           thread:
@@ -85,8 +85,8 @@ testcases:
           "type": "syslog",
           "program": "trove-conductor",
           "severity": "DEBUG",
-          "host": "cloudcontrol2001-dev",
-          "logsource": "cloudcontrol2001-dev",
+          "host": "cloudcontrol2005-dev",
+          "logsource": "cloudcontrol2005-dev",
           "message": "[Instance a2569f4c-29a6-4592-b4b2-c84fef586ba5] Rec'd message is younger than last seen. Updating.",
           "asctime": "2021-05-23 16:21:42",
           "name": "trove.conductor.manager",
@@ -107,7 +107,7 @@ testcases:
           "process_name": "MainProcess",
           "process": 17978,
           "traceback": null,
-          "hostname": "cloudcontrol2001-dev",
+          "hostname": "cloudcontrol2005-dev",
           "error_summary": "",
           "context": {},
           "extra": {
@@ -140,7 +140,7 @@ testcases:
               code: 7
               name: "debug"
         host:
-          name: "cloudcontrol2001-dev"
+          name: "cloudcontrol2005-dev"
         process:
           name: "MainProcess"
           thread:
@@ -161,8 +161,8 @@ testcases:
           "type": "syslog",
           "program": "trove-taskmanager",
           "severity": "DEBUG",
-          "host": "cloudcontrol2001-dev",
-          "logsource": "cloudcontrol2001-dev",
+          "host": "cloudcontrol2005-dev",
+          "logsource": "cloudcontrol2005-dev",
           "message": "Sending event: dbaas.instance_delete.end, {'tenant_id': 'andrewtestproject', 'client_ip': '127.0.0.1', 'server_ip': 'openstack.codfw1dev.wikimediacloud.org:8779', 'server_type': 'taskmanager', 'request_id': 'req-778f8416-a806-447b-95e6-5fbc577a06f8'}",
           "asctime": "2021-05-23 16:22:39",
           "name": "trove.common.notification",
@@ -192,7 +192,7 @@ testcases:
           "process_name": "MainProcess",
           "process": 17501,
           "traceback": null,
-          "hostname": "cloudcontrol2001-dev",
+          "hostname": "cloudcontrol2005-dev",
           "error_summary": "",
           "context": {},
           "extra": {
@@ -225,7 +225,7 @@ testcases:
               code: 7
               name: "debug"
         host:
-          name: "cloudcontrol2001-dev"
+          name: "cloudcontrol2005-dev"
         process:
           name: "MainProcess"
           thread:

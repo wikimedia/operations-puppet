@@ -8,14 +8,14 @@ ldap:
   rw-server: cloudservices2004-dev.wikimedia.org
   rw-server-fallback: cloudservices2005-dev.wikimedia.org
 
-profile::openstack::codfw1dev::fernet_key_rotate_time: '01:00:00'
-profile::openstack::codfw1dev::fernet_key_sync_time: '02:00:00'
+profile::openstack::codfw1dev::fernet_key_rotate_time: '00:00:00'
+profile::openstack::codfw1dev::fernet_key_sync_time: '01:00:00'
 
-profile::openstack::codfw1dev::galera::server_id: 4
+profile::openstack::codfw1dev::galera::server_id: 1
 profile::backup::enable: true
 
-profile::wmcs::backy2::backup_time: '*-*-* 2:00:00'
+profile::wmcs::backy2::backup_time: '*-*-* 1:00:00'
 
 profile::wmcs::backy2::backup_glance_images::enabled: true
 
-profile::openstack::base::rabbitmq_service_name: 'rabbitmqXX.codfw1dev.wikimediacloud.org'
+profile::openstack::base::rabbitmq_service_name: 'rabbitmq01.codfw1dev.wikimediacloud.org'

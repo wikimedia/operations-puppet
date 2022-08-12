@@ -18,9 +18,9 @@ profile::openstack::codfw1dev::horizon_version: 'wallaby'
 #  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
 #
 profile::openstack::codfw1dev::openstack_controllers:
-  - cloudcontrol2001-dev.wikimedia.org
   - cloudcontrol2003-dev.wikimedia.org
   - cloudcontrol2004-dev.wikimedia.org
+  - cloudcontrol2005-dev.wikimedia.org
 
 
 # The public service name for the keystone API
@@ -51,9 +51,9 @@ profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
 
 # In codfw1dev, the cloudcontrol nodes also host the RabbitMQ service.
 profile::openstack::codfw1dev::rabbitmq_nodes:
-  - cloudcontrol2001-dev.wikimedia.org
   - cloudcontrol2003-dev.wikimedia.org
   - cloudcontrol2004-dev.wikimedia.org
+  - cloudcontrol2005-dev.wikimedia.org
 profile::openstack::codfw1dev::rabbitmq_setup_nodes: []
 profile::openstack::codfw1dev::rabbit_monitor_user: 'monitoring'
 profile::openstack::codfw1dev::rabbit_file_handles: 8192
