@@ -38,8 +38,8 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
     file { '/var/lib/deploy-mwdebug':
         ensure => directory,
         owner  => 'mwbuilder',
-        group  => 'mwdeploy',
-        mode   => '0755'
+        group  => 'deployment',
+        mode   => '0775'
     }
 
     # Add a script that updates the mediawiki images.
