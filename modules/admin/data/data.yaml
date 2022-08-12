@@ -368,7 +368,8 @@ groups:
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
-              ricby, dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone]
+              ricby, dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
+              soworu-01]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5398,6 +5399,13 @@ users:
     uid: 40566
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  soworu-01:
+    ensure: present
+    realname: Segun Oworu
+    email: soworu@wikimedia.org
+    uid: 23130
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -5673,10 +5681,6 @@ ldap_only_users:
     ensure: present
     realname: Simon Kock
     email: simon.kock@wikimedia.de
-  soworu-01:
-    ensure: present
-    realname: Segun Oworu
-    email: soworu@wikimedia.org
   srodlund:
     ensure: absent
     realname: Sarah Rodlund
