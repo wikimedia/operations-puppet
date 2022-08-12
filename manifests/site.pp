@@ -1426,11 +1426,6 @@ node /^cloudcontrol200[145]-dev\.wikimedia\.org/ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-# Prepare for decom, T315089
-node 'cloudcontrol2003-dev.wikimedia.org' {
-    role(spare::system)
-}
-
 # cloudrabbit servers T304888
 node /^cloudrabbit100[123]\.wikimedia\.org/ {
     role(wmcs::openstack::eqiad1::rabbitmq)
