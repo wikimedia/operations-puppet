@@ -41,8 +41,8 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
   - "208.80.154.149"
   # VMs --> cloudcontrol1007.wikimedia.org
   - "208.80.155.104"
-  # VMs --> cloudcontrol2003-dev.wikimedia.org
-  - "208.80.153.75"
+  # VMs --> cloudcontrol2001-dev.wikimedia.org
+  - "208.80.153.59"
   # VMs --> cloudcontrol2004-dev.wikimedia.org
   - "208.80.153.116"
   # VMs --> cloudcontrol2005-dev.wikimedia.org
