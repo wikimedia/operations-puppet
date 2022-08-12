@@ -38,7 +38,7 @@ class swift::ring_manager (
     git::clone { 'swift_ring_manager':
         ensure    => $git_ensure,
         directory => $install_dir,
-        origin    => 'https://gitlab.wikimedia.org/mvernon/swift-ring',
+        origin    => 'https://gitlab.wikimedia.org/repos/data_persistence/swift-ring',
         branch    => 'main',
         }
 
