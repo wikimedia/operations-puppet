@@ -2415,6 +2415,11 @@ node /^netmon1003\.wikimedia\.org$/ {
     role(netmon)
 }
 
+# New netmon node T313867
+node /^netmon2002\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # Network insights (netflow/pmacct, etc.)
 node /^netflow[1-6]00[1-9]\.(eqiad|codfw|ulsfo|esams|eqsin|drmrs)\.wmnet$/ {
     role(netinsights)
