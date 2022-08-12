@@ -179,7 +179,7 @@ profile::acme_chief::certificates:
         - 'openstack.codfw1dev.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
-        - '^cloudcontrol200[134]-dev\.wikimedia\.org$'
+        - '^cloudcontrol200[1345]-dev\.wikimedia\.org$'
     openstack-eqiad1:
         CN: 'openstack.eqiad1.wikimediacloud.org'
         SNI:
