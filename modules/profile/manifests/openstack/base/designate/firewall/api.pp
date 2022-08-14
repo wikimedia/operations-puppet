@@ -6,7 +6,7 @@ class profile::openstack::base::designate::firewall::api(
     ferm::service { 'designate-tls-api':
         proto  => 'tcp',
         port   => '29001',
-        srange => "(@resolve((${labweb_hosts.join(' ')} ${openstack_controllers.join(' ')}))",
+        srange => "(@resolve((${labweb_hosts.join(' ')} ${openstack_controllers.join(' ')})))",
     }
 
     # Allow labs instances to hit the designate api.
