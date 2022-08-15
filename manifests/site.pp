@@ -384,7 +384,7 @@ node /^cloudcephmon200[4-6]-dev\.codfw\.wmnet$/ {
 
 # new dumps hosts T302981
 node /^clouddumps100[12]\.wikimedia\.org/ {
-    role(dumps::distribution::server)
+    role(insetup)
 }
 
 # All gerrit servers (swap master status in hiera)
