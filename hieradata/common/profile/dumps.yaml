@@ -11,6 +11,8 @@ profile::dumps::rsync_internal_clients:
     - dumpsdata1003.eqiad.wmnet
     - labstore1006.wikimedia.org
     - labstore1007.wikimedia.org
+    - clouddumps1001.wikimedia.org
+    - clouddumps1002.wikimedia.org
     - stat1006.eqiad.wmnet
     - stat1007.eqiad.wmnet
   ipv6: []
@@ -24,6 +26,8 @@ profile::dumps::single_backend: false
 profile::dumps::public:
     - labstore1006.wikimedia.org
     - labstore1007.wikimedia.org
+    - clouddumps1001.wikimedia.org
+    - clouddumps1002.wikimedia.org
 profile::dumps::internal:
     - dumpsdata1001.eqiad.wmnet
 # root of xml/sql dumps tree we want to rsync (public contents only)
