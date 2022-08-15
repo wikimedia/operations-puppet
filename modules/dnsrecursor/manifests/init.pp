@@ -65,7 +65,7 @@ class dnsrecursor (
     $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}"
 
     # Used by Wikidough, to ensure a more recent verson of the pdns-recursor package.
-    if debian::codename::ge('buster') and $install_from_component {
+    if $install_from_component {
         apt::package_from_component { 'pdns-recursor':
             component => 'component/pdns-recursor',
         }
