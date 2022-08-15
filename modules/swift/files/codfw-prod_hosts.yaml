@@ -26,6 +26,7 @@ hosts:
   prod:
     - ms-be2028:
         - drain
+        - sdg1: immediate
     - ms-be2029:
         - drain
     - ms-be2030:
