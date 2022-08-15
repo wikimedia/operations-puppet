@@ -179,14 +179,4 @@ class profile::mediawiki::deployment::server(
 
     # benchmarking tools (sessionstorage testing, k8s ml infra benchmarking) (T230178)
     ensure_packages(['siege', 'wrk', 'lua-cjson'])
-
-    # T315255
-    file { '/etc/scap/phabricator_token':
-        ensure    => present,
-        owner     => 'root',
-        group     => $deployment_group,
-        mode      => '0440',
-        content   => secret('scap/phabricator_token'),
-        show_diff => false,
-    }
 }

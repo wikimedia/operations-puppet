@@ -95,4 +95,16 @@ class scap::master(
             'ALL = (root) NOPASSWD: /usr/local/bin/scap-master-sync',
         ]
     }
+
+    wmflib::dir::mkdir_p('/etc/scap')
+
+    # T315255
+    file { '/etc/scap/phabricator_token':
+        ensure    => present,
+        owner     => 'root',
+        group     => $deployment_group,
+        mode      => '0440',
+        content   => secret('scap/phabricator_token'),
+        show_diff => false,
+    }
 }
