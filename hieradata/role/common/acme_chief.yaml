@@ -44,6 +44,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^labstore100[67]\.wikimedia\.org$'
+        - '^cloudstore100[12]\.wikimedia\.org$'
     durum:
         CN: 'check.wikimedia-dns.org'
         SNI:
