@@ -18,12 +18,15 @@ class profile::dumps::distribution::server {
         source => 'puppet:///modules/profile/dumps/distribution/smartmontools',
     }
 
-    mount { '/srv/dumps':
-        ensure  => mounted,
-        fstype  => ext4,
-        options => 'defaults,noatime',
-        atboot  => true,
-        device  => '/dev/data/dumps',
-        require => File['/srv/dumps'],
-    }
+    # This profile expects a large volume mounted at /srv/dumps. That isn't
+    #  puppetized, since it's likely set up by hand (thanks partman!) and
+    #  defined with a server-specific uuid.
+    #mount { '/srv/dumps':
+        #ensure  => mounted,
+        #fstype  => ext4,
+        #options => 'defaults,noatime',
+        #atboot  => true,
+        #device  => '/dev/data/dumps',
+        #require => File['/srv/dumps'],
+    #}
 }
