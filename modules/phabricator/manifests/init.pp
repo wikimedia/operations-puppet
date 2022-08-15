@@ -71,6 +71,7 @@ class phabricator (
     Integer                 $opcache_validate   = 0,
     Stdlib::Ensure::Service $phd_service_ensure = running,
     Boolean                 $manage_scap_user   = undef,
+    Boolean                 $enable_vcs         = undef,
 ) {
     $deploy_root = "/srv/deployment/${deploy_target}"
 
@@ -244,12 +245,15 @@ class phabricator (
         require => $base_requirements,
     }
 
-    class { '::phabricator::vcs':
-        basedir     => $phabdir,
-        phd_log_dir => $fixed_settings['phd.log-directory'],
-        phd_user    => $fixed_settings['phd.user'],
-        vcs_user    => $fixed_settings['diffusion.ssh-user'],
-        require     => $base_requirements,
+    if $enable_vcs {
+
+        class { '::phabricator::vcs':
+            basedir     => $phabdir,
+            phd_log_dir => $fixed_settings['phd.log-directory'],
+            phd_user    => $fixed_settings['phd.user'],
+            vcs_user    => $fixed_settings['diffusion.ssh-user'],
+            require     => $base_requirements,
+        }
     }
 
     class { '::phabricator::phd':

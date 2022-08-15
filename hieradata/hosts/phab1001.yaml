@@ -12,6 +12,7 @@ phabricator::vcs::listen_addresses:
   - "[2620:0:861:102:10:64:16:100]"
 
 # enable git-ssh.wikimedia.org, default absent on new hosts
+phabricator::vcs::enable: true
 phabricator::vcs::ssh_phab_service_ensure: present
 
 # TODO: don't repeat yourself here
@@ -28,3 +29,4 @@ phabricator_logmail: true
 profile::phabricator::main::phd_service_ensure: running
 
 profile::phabricator::main::dump_enabled: true
+

@@ -42,6 +42,8 @@ class profile::phabricator::main (
     Stdlib::Fqdn                $phab_diffusion_ssh_host=
                                                       lookup('phabricator_diffusion_ssh_host',
                                                       { 'default_value' => 'git-ssh.wikimedia.org' }),
+    Boolean                     $enable_vcs         = lookup('phabricator::vcs::enable',
+                                                      { 'default_value' => false }),
     Stdlib::IP::Address::V4     $vcs_ip_v4          = lookup('phabricator::vcs::address::v4',
                                                       { 'default_value' => undef }),
     Stdlib::IP::Address::V6     $vcs_ip_v6          = lookup('phabricator::vcs::address::v6',
@@ -230,6 +232,7 @@ class profile::phabricator::main (
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
         trusted_proxies    => $trusted_proxies,
+        enable_vcs         => $enable_vcs,
         mysql_admin_user   => $mysql_admin_user,
         mysql_admin_pass   => $mysql_admin_pass,
         libraries          => [ "${phab_root_dir}/libext/misc",
@@ -392,24 +395,26 @@ class profile::phabricator::main (
         require    => Class[phabricator],
     }
 
+    if $enable_vcs {
     # This exists to offer git services at git-ssh.wikimedia.org.
 
-    if $vcs_ip_v4 or $vcs_ip_v6 {
-        interface::alias { 'phabricator vcs':
-            ipv4 => $vcs_ip_v4,
-            ipv6 => $vcs_ip_v6,
+        if $vcs_ip_v4 or $vcs_ip_v6 {
+            interface::alias { 'phabricator vcs':
+                ipv4 => $vcs_ip_v4,
+                ipv6 => $vcs_ip_v6,
+            }
         }
-    }
 
-    # This was (once) done to let the git sshd listen on multiple IPs, incl. v4 and v6.
-    if empty($vcs_addresses) {
-        notify { 'Warning: profile::phabricator::main::vcs_addresses is empty': }
-    } else {
-        $drange = $vcs_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
-        ferm::service { 'ssh_public':
-            proto  => 'tcp',
-            port   => 22,
-            drange => "(${drange.join(' ')})",
+        # This was (once) done to let the git sshd listen on multiple IPs, incl. v4 and v6.
+        if empty($vcs_addresses) {
+            notify { 'Warning: profile::phabricator::main::vcs_addresses is empty': }
+        } else {
+            $drange = $vcs_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
+            ferm::service { 'ssh_public':
+                proto  => 'tcp',
+                port   => 22,
+                drange => "(${drange.join(' ')})",
+            }
         }
     }
 
