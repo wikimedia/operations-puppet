@@ -77,6 +77,16 @@ oci_run_args=(
   '--volume'
   "$PWD":/src
 )
+
+# Fix platform warning when running on M1/M2 macs
+if [ "$(uname -m)" == "arm64" ] && [ "${oci_runtime}" == "docker" ]
+then
+  oci_run_args+=(
+    '--platform'
+    'linux/amd64'
+  )
+fi
+
 if [ "${INTERACTIVE}" == "yes" ]
 then
   echo "starting $oci_runtime in interactive mode."
