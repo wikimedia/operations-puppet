@@ -113,12 +113,15 @@ class role::puppetmaster::standalone(
     }
 
     class { 'httpd':
-        modules => ['proxy',
-                    'proxy_http',
-                    'proxy_balancer',
-                    'passenger',
-                    'rewrite',
-                    'lbmethod_byrequests'],
+        remove_default_ports => true,
+        modules              => [
+            'proxy',
+            'proxy_http',
+            'proxy_balancer',
+            'passenger',
+            'rewrite',
+            'lbmethod_byrequests'
+        ],
     }
     ensure_packages('libapache2-mod-passenger')
 
