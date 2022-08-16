@@ -4,7 +4,7 @@ class ferm {
     # @resolve requires libnet-dns-perl
 
     file { '/etc/modprobe.d/nf_conntrack.conf':
-        ensure => present,
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -18,7 +18,7 @@ class ferm {
     # Add the nf_conntrack module via /etc/modules-load.d/ which loads
     #   them before systemd-sysctl.service is executed.
     file { '/etc/modules-load.d/conntrack.conf':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -34,7 +34,7 @@ class ferm {
         mode    => '0550',
         owner   => 'root',
         group   => 'root',
-        content => file('ferm/ferm_status.py')
+        content => file('ferm/ferm_status.py'),
     }
     service { 'ferm':
         ensure  => 'running',
@@ -43,11 +43,11 @@ class ferm {
         require => [
             Package['ferm'],
             File['/usr/local/sbin/ferm-status'],
-        ]
+        ],
     }
 
     file { '/etc/ferm/ferm.conf':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -61,7 +61,7 @@ class ferm {
         mode   => '2751',
     }
     file { '/etc/ferm/functions.conf' :
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -82,7 +82,7 @@ class ferm {
     }
 
     file { '/etc/default/ferm' :
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
