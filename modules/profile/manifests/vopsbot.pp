@@ -14,7 +14,7 @@ class profile::vopsbot(
         home_dir    => '/srv/vopsbot',
         managehome  => true,
         description => 'vopsbot runner',
-        before      => Class[Vopsbot],
+        before      => Class['Vopsbot'],
     }
 
     class { 'vopsbot':

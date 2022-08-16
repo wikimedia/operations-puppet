@@ -2,6 +2,6 @@
 # See https://gitlab.wikimedia.org/repos/sre/vopsbot/-/blob/main/user.go
 type Vopsbot::User = Struct[{
   'vo_name' => String,
-  'team'    => String,
-  'vo_admin' => Boolean,
+  'team'    => Optional[String],
+  'vo_admin' => Optional[Boolean],
 }]

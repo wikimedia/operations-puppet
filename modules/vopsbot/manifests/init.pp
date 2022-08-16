@@ -17,14 +17,6 @@ class vopsbot(
         ensure => present,
     }
 
-    # Create user
-    systemd::sysuser { 'vopsbot':
-        ensure      => present,
-        home_dir    => '/srv/vopsbot',
-        managehome  => true,
-        description => 'vopsbot runner',
-    }
-
     # configuration
     file { '/etc/vopsbot':
         ensure => directory,
@@ -79,10 +71,10 @@ class vopsbot(
     }
 
     systemd::service { 'vopsbot':
-        ensure               => $run_service.bool2str('running', 'stopped'),
+        ensure               => $run_service.bool2str('present', 'absent'),
         override             => false,
         monitoring_enabled   => true,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Vopsbot',
-        content              => template('modules/vopsbot/systemd.unit.erb'),
+        content              => template('vopsbot/systemd.unit.erb'),
     }
 }
