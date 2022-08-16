@@ -369,7 +369,7 @@ groups:
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               ricby, dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
-              soworu-01]
+              soworu-01, pwaigi1-]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5404,6 +5404,13 @@ users:
     realname: Segun Oworu
     email: soworu@wikimedia.org
     uid: 23130
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  pwaigi1-:
+    ensure: present
+    realname: Purity Waigi
+    email: pwaigi@wikimedia.org
+    uid: 40428
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
