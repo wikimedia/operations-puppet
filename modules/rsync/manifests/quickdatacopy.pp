@@ -31,6 +31,8 @@
 #            To create exact mirrors instead of having old files that are deleted
 #            on the source pile up on the destination(s).
 #
+# [*chown*] Optionally set the USER:GROUP mapping.
+#
 # [*server_uses_stunnel*] For TLS-wrapping rsync.  Must be set here, and must be set true on
 #                         rsync::server::wrap_with_stunnel in the server's hiera.
 #
@@ -48,6 +50,7 @@ define rsync::quickdatacopy(
   Optional[Boolean] $delete = false,
   Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
   Boolean $auto_ferm_ipv6 = true,
+  Optional[String] $chown = undef,
   Variant[
       Systemd::Timer::Schedule,
       Array[Systemd::Timer::Schedule, 1]] $auto_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
@@ -88,6 +91,10 @@ define rsync::quickdatacopy(
           true    => ' --delete ',
           default => ' '
       }
+      $_chown = $chown ? {
+          undef   => '',
+          default => "--chown=${chown}",
+      }
 
       if $dest_host == $::fqdn {
 
@@ -104,7 +111,7 @@ define rsync::quickdatacopy(
           }
           $quickdatacopy = @("SCRIPT")
           #!/bin/sh
-          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} ${_exclude}rsync://${source_host}/${title} ${module_path}/
+          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} ${_chown} ${_exclude}rsync://${source_host}/${title} ${module_path}/
           | SCRIPT
 
           file { "/usr/local/sbin/sync-${title}":

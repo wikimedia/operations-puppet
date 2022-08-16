@@ -1,3 +1,6 @@
+* 2022-08-16 0.1.2-wmf
+- Added simple username/groupname mapping (chown)
+
 * 2013-06-27 0.1.1-wmf
 - Added log_file option to server class
 
