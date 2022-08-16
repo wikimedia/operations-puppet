@@ -1215,6 +1215,16 @@ users:
   #   gid: 919
   #   home_dir: /var/lib/scap
   #   shell: /bin/false
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # phd:
+  #   ensure: present
+  #   system: true
+  #   uid: 920
+  #   gid: 920
+  #   home_dir: /var/run/phd
+  #   shell: /bin/false
+  #
   rush:
     ensure: absent
     gid: 500
