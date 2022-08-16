@@ -150,7 +150,7 @@ scap::sources:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-research
     origin: gitlab
-  airflow-dags/platform-eng:
+  airflow-dags/platform_eng:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-platform_eng
     origin: gitlab
