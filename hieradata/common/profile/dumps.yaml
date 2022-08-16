@@ -26,8 +26,8 @@ profile::dumps::single_backend: false
 profile::dumps::public:
     - labstore1006.wikimedia.org
     - labstore1007.wikimedia.org
-    - clouddumps1001.wikimedia.org
-    - clouddumps1002.wikimedia.org
+#    - clouddumps1001.wikimedia.org
+#    - clouddumps1002.wikimedia.org
 profile::dumps::internal:
     - dumpsdata1001.eqiad.wmnet
 # root of xml/sql dumps tree we want to rsync (public contents only)
