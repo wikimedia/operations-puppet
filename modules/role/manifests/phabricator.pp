@@ -17,10 +17,6 @@ class role::phabricator {
     include ::profile::tlsproxy::envoy # TLS termination
     include ::rsync::server # copy repo data between servers
 
-    if $::realm == 'production' {
-        include ::lvs::realserver
-    }
-
     # in cloud, use a local db server
     if $::realm == 'labs' {
         include ::profile::mariadb::generic_server

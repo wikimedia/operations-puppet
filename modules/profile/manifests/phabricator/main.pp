@@ -44,6 +44,8 @@ class profile::phabricator::main (
                                                       { 'default_value' => 'git-ssh.wikimedia.org' }),
     Boolean                     $enable_vcs         = lookup('phabricator::vcs::enable',
                                                       { 'default_value' => false }),
+    Boolean                     $use_lvs            = lookup('profile::phabricator::main::use_lvs',
+                                                      { 'default_value' => false }),
     Stdlib::IP::Address::V4     $vcs_ip_v4          = lookup('phabricator::vcs::address::v4',
                                                       { 'default_value' => undef }),
     Stdlib::IP::Address::V6     $vcs_ip_v6          = lookup('phabricator::vcs::address::v6',
@@ -397,6 +399,10 @@ class profile::phabricator::main (
 
     if $enable_vcs {
     # This exists to offer git services at git-ssh.wikimedia.org.
+
+        if $use_lvs {
+            class { '::lvs::realserver': }
+        }
 
         if $vcs_ip_v4 or $vcs_ip_v6 {
             interface::alias { 'phabricator vcs':

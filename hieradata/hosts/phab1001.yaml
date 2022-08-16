@@ -5,6 +5,7 @@ profile::ssh::server::listen_addresses: ["10.64.16.8"]
 # phabricator's git backend uses a separate sshd with separate IPs on both
 # the public and private networks.
 # This is used in modules/phabricator/templates/sshd_config.phabricator.err
+profile::phabricator::main::use_lvs: true
 phabricator::vcs::listen_addresses:
   - "208.80.154.250"
   - "10.64.16.100"
@@ -29,4 +30,3 @@ phabricator_logmail: true
 profile::phabricator::main::phd_service_ensure: running
 
 profile::phabricator::main::dump_enabled: true
-
