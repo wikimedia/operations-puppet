@@ -3,7 +3,7 @@
 class vopsbot(
     Hash[String, Vopsbot::User] $users,
     String $irc_server,
-    Wmflib::Port $server_port,
+    Stdlib::Port $server_port,
     String $nickname,
     Array[String] $irc_channels,
     String $password,
