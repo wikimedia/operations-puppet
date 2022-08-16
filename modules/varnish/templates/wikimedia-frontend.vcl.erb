@@ -367,11 +367,13 @@ sub normalize_request_nonmisc {
 	// Sort query parameters to improve cache efficiency (T138093).
 <% if @realm == "production" -%>
 	// In production, query sorting is enabled for all requests to testwiki,
-	// and on-demand elsewhere via the X-Wikimedia-Debug header.
+	// mediawikiwiki, and on-demand elsewhere via the X-Wikimedia-Debug header.
 	if (
 		req.http.X-Wikimedia-Debug ~ "(^|; )querysort(;|$)"
 		|| req.http.Host == "test.wikipedia.org"
 		|| req.http.Host == "test.m.wikipedia.org"
+		|| req.http.Host == "www.mediawiki.org"
+		|| req.http.Host == "m.mediawiki.org"
 	) {
 <% else -%>
 	// In labs, query sorting is always enabled.

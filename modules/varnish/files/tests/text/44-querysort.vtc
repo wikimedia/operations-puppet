@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 varnishtest "Query parameter normalization"
 
-server s1 -repeat 4 {
+server s1 -repeat 6 {
     rxreq
     txresp
 } -start
@@ -49,5 +49,15 @@ client c1 -connect "${tmpdir}/v1.sock" {
     txreq -url "/w/index.php?title=Varnish&action=history" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.url == "/w/index.php?action=history&title=Varnish"
+
+    # mediawikiwiki requests get querysorted
+    txreq -url "/w/index.php?title=Squid&action=history" -hdr "Host: www.mediawiki.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.url == "/w/index.php?action=history&title=Squid"
+
+    # mediawikiwiki mobile requests get querysorted
+    txreq -url "/w/index.php?title=Squid&action=history" -hdr "Host: m.mediawiki.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.url == "/w/index.php?action=history&title=Squid"
 
 } -run
