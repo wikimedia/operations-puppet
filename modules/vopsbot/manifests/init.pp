@@ -24,7 +24,7 @@ class vopsbot(
     }
     $ircbot_config = '/etc/vopsbot/ircbot-config.json'
     $user_config = '/etc/vopsbot/users.yaml'
-    $db_path = "/srv/opsbot/${database_name}.db"
+    $db_path = "/srv/vopsbot/${database_name}.db"
     $config = {
         'server' => $irc_server,
         'port' => $server_port,
