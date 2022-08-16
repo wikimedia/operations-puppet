@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-/var/log/librenms.log {
+/var/log/librenms/librenms.log {
     rotate 7
     daily
     compress

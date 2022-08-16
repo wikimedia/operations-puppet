@@ -62,6 +62,13 @@ class librenms(
         require => Group['librenms'],
     }
 
+    file { '/var/log/librenms/librenms.log':
+        ensure => present,
+        owner  => 'librenms',
+        group  => 'librenms',
+        mode   => '0660',
+    }
+
     file { "${install_dir}/config.php":
         ensure    => present,
         owner     => 'www-data',
