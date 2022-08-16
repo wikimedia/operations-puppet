@@ -7,6 +7,7 @@ class phabricator::phd (
     String $phd_user              = 'phd',
     Stdlib::Unixpath $phd_log_dir = '/var/log/phd',
     Stdlib::Unixpath $basedir     = '/',
+    Boolean $use_systemd_sysuser  = false,
 ) {
     group { 'phd':
         ensure => present,
@@ -37,11 +38,21 @@ class phabricator::phd (
         group  => 'phd',
     }
 
-    user { $phd_user:
+    # TODO: remove if/else and parameter after migration to new servers
+    if $use_systemd_sysuser {
+        systemd::sysuser { 'phd':
+            ensure      => present,
+            id          => '920:920',
+            description => 'Phabricator daemon user',
+            home_dir    => '/var/run/phd',
+        }
+    } else {
+        user { $phd_user:
         gid    => 'phd',
         shell  => '/bin/false',
         home   => '/var/run/phd',
         system => true,
+        }
     }
 
     logrotate::conf { 'phd':
