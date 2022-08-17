@@ -18,6 +18,7 @@ class profile::rancid (
             dest_host           => $passive_server,
             module_path         => '/var/lib/rancid',
             server_uses_stunnel => true,
+            chown               => 'rancid:rancid',
         }
     }
 
