@@ -670,6 +670,8 @@ testcases:
       - __target_index: "ecs-default-1-1.7.0-N-weekly"
         '@timestamp': "2021-07-15T05:24:22.000Z"
         message: 'SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:443'
+        host:
+          name: "gitlab1004"
         log:
           level: "CRIT"
           syslog:
@@ -719,6 +721,8 @@ testcases:
         service:
           type: "gitlab"
           name: "gitlab-redis"
+        host:
+          name: "gitlab1004"
         log:
           level: "NOTICE"
           syslog:
