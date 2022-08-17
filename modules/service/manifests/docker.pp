@@ -87,6 +87,16 @@ define service::docker(
         }
     }
 
+    file { "/etc/${title}/env":
+        ensure    => $ensure,
+        content   => ($environment.map |$k, $v| { "${k}=${v}" } + ['']).join("\n"),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0440',
+        notify    => Service[$title],
+        show_diff => false,
+    }
+
     # Make sure the image has been pulled before starting the service
     # docker pull does not support a --dry-run. Therefore the actual pull is
     # done via the `unless` command.

@@ -1,6 +1,4 @@
 <%-
-envargs = @environment.map{ |k, v| "-e #{k}=\"#{v}\"" }.join(' ')
-
 if @volume then
   etc = "#{@title}"
 else
@@ -19,7 +17,7 @@ ExecStartPre=-/usr/bin/docker rm %n
 <% if @version == "latest" -%>
 ExecStartPre=/usr/bin/docker pull <%= @image_full_name %>:<%= @version %>
 <% end -%>
-ExecStart=/usr/bin/docker run --rm=true <%= envargs %> <% if @host_network == true %>--network host<% else %>-p <%= @port %>:<%= @port %><% end %> -v <%= etc %>:/etc/<%= @title %> --name %n <%= @image_full_name %>:<%= @version %> <%= @override_cmd %>
+ExecStart=/usr/bin/docker run --rm=true --env-file /etc/<%= @title %>/env <% if @host_network == true %>--network host<% else %>-p <%= @port %>:<%= @port %><% end %> -v <%= etc %>:/etc/<%= @title %> --name %n <%= @image_full_name %>:<%= @version %> <%= @override_cmd %>
 Restart=always
 RestartSec=10s
 NotifyAccess=all
