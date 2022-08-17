@@ -1,0 +1,123 @@
+# SPDX-License-Identifier: Apache-2.0
+fields:
+  "rsyslog.timereported": "2020-01-01T00:01:01.123456"
+  "rsyslog.hostname": "alert1001"
+  "rsyslog.programname": "tcpircbot-logmsgbot"
+  "rsyslog.facility": 'daemon'
+  "rsyslog.severity": 'notice'
+  host: "alert1001"
+  logsource: "alert1001"
+  program: "tcpircbot-logmsgbot"
+  facility: 'daemon'
+  severity: 'notice'
+  normalized_message: "drop me"
+codec: "json_lines"
+ignore:
+  - "[normalized][dropped]"
+testcases:
+  - input:
+      - >
+        {
+          "ecs.version": "1.7.0",
+          "log.level": "INFO",
+          "log.origin.file.line": 113,
+          "log.origin.file.name": "tcpircbot.py",
+          "log.origin.file.path": "tcpircbot.py",
+          "log.origin.function": "log_event",
+          "message": "welcome [zirconium.libera.chat -> logmsgbot]",
+          "process.name": "MainProcess",
+          "process.thread.id": 30689,
+          "process.thread.name": "MainThread",
+          "timestamp": "2022-08-17T16:55:44.093993"
+        }
+  - expected:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        "@timestamp": "2022-08-17T16:55:44.093Z"
+        host:
+          name: "alert1001"
+        log:
+          level: "INFO"
+          origin:
+            file:
+              line: 113
+              name: "tcpircbot.py"
+              path: "tcpircbot.py"
+            function: "log_event"
+          syslog:
+            facility:
+              code: 3
+              name: "daemon"
+            priority: 30
+            severity:
+              code: 6
+              name: "informational"
+        message: "welcome [zirconium.libera.chat -> logmsgbot]"
+        normalized:
+          message: "welcome [zirconium.libera.chat -> logmsgbot]"
+        process:
+          name: "MainProcess"
+          thread:
+            id: 30689
+            name: "MainThread"
+        service:
+          type: "tcpircbot-logmsgbot"
+        ecs:
+          version: "1.7.0"
+  - input:
+      - >
+        {
+          "ecs.version": "1.7.0",
+          "log.level": "INFO",
+          "log.origin.file.line": 223,
+          "log.origin.file.name": "tcpircbot.py",
+          "log.origin.file.path": "tcpircbot.py",
+          "log.origin.function": "<module>",
+          "message": "user@deploy0000 Finished deploy [project/project@abcdef]: Revert Project from 0.0.1 to 0.0.0# T000000 (duration: 00m 08s)",
+          "process.name": "MainProcess",
+          "process.thread.id": 11288,
+          "process.thread.name": "MainThread",
+          "timestamp": "2022-08-23T17:39:55.442221",
+          "labels.channel": "sal",
+          "user.name": "logmsgbot"
+        }
+  - expected:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        "@timestamp": "2022-08-23T17:39:55.442Z"
+        host:
+          name: "alert1001"
+        labels:
+          channel: "sal"
+        log:
+          level: "INFO"
+          origin:
+            file:
+              line: 223
+              name: "tcpircbot.py"
+              path: "tcpircbot.py"
+            function: "<module>"
+          syslog:
+            facility:
+              code: 3
+              name: "daemon"
+            priority: 30
+            severity:
+              code: 6
+              name: "informational"
+        message: "user@deploy0000 Finished deploy [project/project@abcdef]: Revert Project from 0.0.1 to 0.0.0# T000000 (duration: 00m 08s)"
+        normalized:
+          message: "user@deploy0000 finished deploy [project/project@abcdef]: revert project from 0.0.1 to 0.0.0# t000000 (duration: 00m 08s)"
+        process:
+          name: "MainProcess"
+          thread:
+            id: 11288
+            name: "MainThread"
+        service:
+          type: "tcpircbot-logmsgbot"
+        user:
+          name: "logmsgbot"
+        ecs:
+          version: "1.7.0"
+      - "@timestamp": "2022-08-23T17:39:55.442Z"
+        message: "user@deploy0000 Finished deploy [project/project@abcdef]: Revert Project from 0.0.1 to 0.0.0# T000000 (duration: 00m 08s)"
+        channel: "sal"
+        user: "logmsgbot"
