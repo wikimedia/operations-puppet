@@ -207,6 +207,7 @@ class profile::librenms (
             dest_host           => $passive_server,
             module_path         => '/srv/librenms/rrd',
             server_uses_stunnel => true,
+            chown               => 'librenms:librenms',
         }
     }
 
