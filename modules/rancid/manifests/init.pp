@@ -100,6 +100,15 @@ class rancid (
         mode    => '0700',
     }
 
+    file { '/var/lib/rancid/.ssh/config':
+        ensure  => file,
+        require => [ Package['openssh-client', 'rancid'], User['rancid'] ],
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => '0644',
+        content => file('rancid/ssh_config'),
+    }
+
     file_line { 'opengear_script':
       path => '/etc/rancid/rancid.types.base',
       line => 'opengear;script;ograncid',
