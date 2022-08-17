@@ -70,6 +70,13 @@ profile::pki::multirootca::intermediates:
       - 'digital signature'
       - 'key encipherment'
       - 'server auth'
+  etcd:
+    ocsp_port: 10005
+    default_usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+      - 'client auth'
   WMF_test_intermediate_ca:
     ocsp_port: 20001
   deployment-prep_eqiad1_wikimedia_cloud:
