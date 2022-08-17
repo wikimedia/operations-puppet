@@ -1,0 +1,7 @@
+profile::contacts::role_contacts: ['Observability']
+
+profile::dispatch::db::primary: dispatch-be1001.eqiad.wmnet
+profile::dispatch::db::replicas: []
+profile::dispatch::db::frontends:
+  - alert1001.wikimedia.org
+  - alert2001.wikimedia.org

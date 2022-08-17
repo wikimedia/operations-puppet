@@ -1,0 +1,7 @@
+profile::dispatch::db::ipv6_ok: true
+profile::dispatch::db::do_backup: true
+profile::dispatch::db::dump_interval: '*-*-* *:37:00'
+
+# Private data
+# profile::dispatch::db::password: FAKE
+# profile::dispatch::db::replication_password: FAKE
