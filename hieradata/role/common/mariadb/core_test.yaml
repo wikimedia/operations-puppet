@@ -1,5 +1,5 @@
 mariadb::monitor_process::is_critical: false
 mariadb::monitor_disk::is_critical: false
-profile::base::notifications: disabled
+profile::monitoring::notifications_enabled: false
 
 profile::contacts::role_contacts: ['Data Persistence']
