@@ -317,7 +317,7 @@ def main():  # pylint: disable=too-many-locals
 
     jenkins = jenkinsapi.jenkins.Jenkins(
         baseurl=JENKINS_URL,
-        username=args.username,
+        username=args.username.encode('utf-8'),
         password=args.api_token,
         # sometimes jenkins is quite slow to reply
         timeout=30,
