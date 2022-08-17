@@ -1,0 +1,2 @@
+profile::dispatch::db_hostname: "%{alias('profile::dispatch::db::primary')}"
+profile::dispatch::db_password: "%{alias('profile::dispatch::db::password')}"

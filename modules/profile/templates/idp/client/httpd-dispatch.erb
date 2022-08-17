@@ -1,0 +1,62 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<VirtualHost *:443>
+    ServerName <%= @virtual_host %>
+    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+    SSLEngine On
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+    DocumentRoot <%= @document_root %>
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    <Location />
+        ProxyPass "http://localhost:<%= @dispatch_port %>/"
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+        <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+        <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+    </Location>
+
+    ProxyRequests Off
+
+    <Proxy http://localhost:<%= @dispatch_port %>>
+        ProxySet connectiontimeout=5 timeout=90 retry=0
+    </Proxy>
+
+    ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
+    LogLevel warn
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    DocumentRoot <%= @document_root %>
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
+
+    ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
+    LogLevel warn
+</VirtualHost>

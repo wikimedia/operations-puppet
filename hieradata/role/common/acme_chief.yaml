@@ -87,6 +87,7 @@ profile::acme_chief::certificates:
         - 'icinga-extmon.wikimedia.org'
         - 'ldap-icinga.wikimedia.org'
         - 'klaxon.wikimedia.org'
+        - 'dispatch.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^icinga[12]001\.wikimedia\.org$'
