@@ -1546,6 +1546,11 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
     role(kafka::monitoring_buster)
 }
 
+# New Kafka nodes T314160
+node /kafka-stretch200[12]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # Karapace VM in support of DataHub
 node /karapace1001\.eqiad\.wmnet/ {
     role(karapace)
