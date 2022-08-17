@@ -54,8 +54,11 @@ class haproxy(
             group  => 'haproxy',
         }
     }
-
-    file { '/etc/haproxy/conf.d':
+    # /etc/haproxy is created by installing the haproxy package.
+    # however manging ig in puppet means we can drop files into this directory
+    # and not have to worry about dependencies as file objects get an auto require
+    # for any managed parents directories
+    file { ['/etc/haproxy', '/etc/haproxy/conf.d']:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
