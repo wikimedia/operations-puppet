@@ -67,7 +67,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # Default mappings
         # PLEASE NOTE: use only the leaf queue names, not full path.
         # Example: root.production BAD, production GOOD
-        'yarn.scheduler.capacity.queue-mappings' => 'u:druid:production,u:analytics:production,u:analytics-search:production,u:analytics-product:production,g:analytics-privatedata-users:default',
+        'yarn.scheduler.capacity.queue-mappings' => 'u:druid:production,u:analytics:production,u:analytics-platform-eng:production,u:analytics-research:production,u:analytics-search:production,u:analytics-product:production,g:analytics-privatedata-users:default',
 
         # Limits
         # https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.4/bk_yarn-resource-management/content/setting_user_limits.html
@@ -122,8 +122,10 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.fifo.acl_administer_queue' => ' analytics-privatedata-users',
         'yarn.scheduler.capacity.root.default.acl_submit_applications' => ' analytics-privatedata-users',
         'yarn.scheduler.capacity.root.default.acl_administer_queue' => ' analytics-privatedata-users',
-        'yarn.scheduler.capacity.root.production.acl_submit_applications' => 'analytics,druid,analytics-search,analytics-product',
-        'yarn.scheduler.capacity.root.production.acl_administer_queue' => ' analytics-admins,analytics-search-users,analytics-product-users',
+        'yarn.scheduler.capacity.root.production.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product',
+        # '%user' below refers to the submitter of the application/job. Thus, the submitter can manage/kill their own jobs in production.
+        # Additionaly, any member from the group list can manage/kill any job in production
+        'yarn.scheduler.capacity.root.production.acl_administer_queue' => '%user analytics-admins,analytics-platform-eng-admins,analytics-research-admins,analytics-search-users,analytics-product-users',
         'yarn.scheduler.capacity.root.essential.acl_submit_applications' => 'analytics,druid',
         'yarn.scheduler.capacity.root.essential.acl_administer_queue' => ' analytics-admins',
 
