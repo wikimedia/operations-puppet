@@ -248,8 +248,12 @@ define trafficserver::instance(
     Boolean                                         $is_ats9                 = false,
 ) {
 
-    class { 'trafficserver':
-      install_ats9 => $is_ats9,
+    # trafficserver::instance can be defined multiple times we need to make sure
+    # we only initiate the trafficserver class once
+    if !defined(Class['trafficserver']) {
+        class { 'trafficserver':
+          install_ats9 => $is_ats9,
+        }
     }
     $user = $trafficserver::user  # needed by udev_storage.rules.erb and records.config.erb
 
