@@ -1521,6 +1521,11 @@ node /^kafka-logging200[123]\.codfw\.wmnet/ {
     role(kafka::logging)
 }
 
+# New kafka node T313959
+node /^kafka-logging200[45]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 node /kafka-main100[1-5]\.eqiad\.wmnet/ {
     role(kafka::main)
 }
