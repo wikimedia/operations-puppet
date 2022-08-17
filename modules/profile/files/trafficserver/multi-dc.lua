@@ -151,7 +151,7 @@ local function use_local_dc()
     if authorization ~= nil and string.find(authorization, "CentralAuthToken") == 1 then
         return false
     end
-    if path == "/w/api.php" then
+    if path == "/w/api.php" and query ~= nil then
         if get_query_param(query, "action=") == "centralauthtoken" or
            get_query_param(query, "centralauthtoken=") ~= nil
         then
@@ -162,7 +162,7 @@ local function use_local_dc()
     -- OAuth
     -- Due to T59500, initiate always uses index.php, and due to T74186,
     -- authorize always uses /wiki/
-    if path == "/w/index.php" then
+    if path == "/w/index.php" and query ~= nil then
         local title = get_query_param(query, "title=")
         if title == "Special:OAuth/initiate" or
             title == "Special:OAuth/token"
