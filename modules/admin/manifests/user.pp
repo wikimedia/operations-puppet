@@ -22,13 +22,14 @@
 #  An array of sudo privileges to setup
 #  Rarely should a user differ from an established group.
 # @param ssh_keys An array of strings containing the SSH public keys.
+# @param home_dir the home directory to use
 #
 define admin::user (
     Wmflib::Ensure                         $ensure     = present,
     Optional[Integer]                      $uid        = undef,
     Optional[Integer]                      $gid        = undef,
     Array[String]                          $groups     = [],
-    String                                 $comment    = '',
+    Optional[String]                       $comment    = undef,
     String                                 $shell      = '/bin/bash',
     Optional[Array[String]]                $privileges = undef,
     Array[String]                          $ssh_keys   = [],
@@ -36,6 +37,11 @@ define admin::user (
 ) {
 
     include admin
+    $shell_package = $shell.basename
+    $shell_require = $shell_package in $admin::addtional_shells ? {
+        true    => Package[$shell_package],
+        default => undef,
+    }
 
     # Add special hack for /nonexistent dir
     # By default managehome is controlled at the class level so we
@@ -62,6 +68,7 @@ define admin::user (
         home       => $_home_dir,
         allowdupe  => false,
         managehome => $managehome,
+        require    => $shell_require,
     }
 
     # This is all absented by the above /home/${user} cleanup

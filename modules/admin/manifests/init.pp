@@ -12,16 +12,18 @@
 #   ~/public_html
 # @param managelingering if true puppet will enable lingering for all kerberos enabled users.
 #   Default false.
+# @param additional_shells list of addtional shells to install
 
 class admin(
-    Array[String[1]] $groups          = [],
-    Array[String[1]] $groups_no_ssh   = [],
-    Array[String[1]] $always_groups   = ['absent', 'ops', 'wikidev', 'ops-adm-group', 'sre-admins'],
-    Boolean          $managehome      = false,
-    Boolean          $managelingering = false,
+    Array[String[1]] $groups            = [],
+    Array[String[1]] $groups_no_ssh     = [],
+    Array[String[1]] $always_groups     = ['absent', 'ops', 'wikidev', 'ops-adm-group', 'sre-admins'],
+    Boolean          $managehome        = false,
+    Boolean          $managelingering   = false,
+    Array[String]    $additional_shells = ['zsh'],
 )
 {
-
+    ensure_packages($additional_shells)
     $module_path = get_module_path($module_name)
     $base_data = loadyaml("${module_path}/data/data.yaml")
 
