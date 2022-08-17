@@ -159,3 +159,13 @@ profile::dumps::distribution::mirrors:
     addedby: 'hokwelum'
     addeddate: 'May 18, 2022'
     active: 'yes'
+  - url: 'https://wikipedia.mirror.pdapps.org/'
+    hostname: 'wikipedia.mirror.pdapps.org'
+    ipv4: ['wikipedia.mirror.pdapps.org']
+    ipv6: ['wikipedia.mirror.pdapps.org']
+    contactname: 'Andrey Voronin'
+    contactaddy: 'wp@pdapps.org'
+    institution: 'PDApps'
+    addedby: 'hokwelum'
+    addeddate: 'Aug 17, 2022'
+    active: 'yes'
