@@ -67,6 +67,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     admission_policy: exp
     exp_policy_rate: 0.1
     exp_policy_base: -20.3
+    querysort_rollout_percent: 50
 profile::cache::varnish::frontend::fe_extra_vcl:
 - normalize_path
 - geoip

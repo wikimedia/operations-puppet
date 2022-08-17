@@ -363,26 +363,6 @@ sub normalize_request {
 <% end -%>
 }
 
-sub normalize_request_nonmisc {
-	// Sort query parameters to improve cache efficiency (T138093).
-<% if @realm == "production" -%>
-	// In production, query sorting is enabled for all requests to testwiki,
-	// mediawikiwiki, and on-demand elsewhere via the X-Wikimedia-Debug header.
-	if (
-		req.http.X-Wikimedia-Debug ~ "(^|; )querysort(;|$)"
-		|| req.http.Host == "test.wikipedia.org"
-		|| req.http.Host == "test.m.wikipedia.org"
-		|| req.http.Host == "www.mediawiki.org"
-		|| req.http.Host == "m.mediawiki.org"
-	) {
-<% else -%>
-	// In labs, query sorting is always enabled.
-	if (true) {
-<% end -%>
-		set req.url = querysort.querysort(req.url);
-	}
-}
-
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
@@ -572,6 +552,24 @@ sub wm_recv_early {
 
 	if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
 		return (synth(200, "healthcheck"));
+	}
+}
+
+sub normalize_request_nonmisc {
+	// Sort query parameters to improve cache efficiency (T138093).
+	// In production, query sorting is enabled for all requests to testwiki,
+	// mediawikiwiki, on-demand via the X-Wikimedia-Debug header, and for a
+	// percentage of all other requests, controlled via
+	// 'querysort_rollout_percent' in hiera.
+	if (
+		req.http.X-Wikimedia-Debug ~ "(^|; )querysort(;|$)"
+		|| req.http.Host == "test.wikipedia.org"
+		|| req.http.Host == "test.m.wikipedia.org"
+		|| req.http.Host == "www.mediawiki.org"
+		|| req.http.Host == "m.mediawiki.org"
+		|| cache_local.key(querysort.querysort(req.url)) < <%= (4294967296.0 * @vcl_config.fetch("querysort_rollout_percent", 0) / 100).to_i %>
+	) {
+		set req.url = querysort.querysort(req.url);
 	}
 }
 
