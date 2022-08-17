@@ -20,13 +20,19 @@ class profile::mediawiki::jobrunner(
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
     Boolean $expose_endpoint = lookup('profile::mediawiki::jobrunner::expose_endpoint', {default_value => false}),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
-
+    Wmflib::Php_version $default_php_version = lookup('profile::mediawiki::jobrunner::default_php_version', {'default_value' => '7.2'})
 ) {
     # Parameters we don't need to override
     $port = 9005
     $local_only_port = 9006
     $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
-    $fcgi_proxies = $php_versions.map |$idx, $version| {
+    # The ordering of $fcgi_proxies determines the fallback php version in profile/mediawiki/jobrunner/site.conf.erb
+    # via the mediawiki/apache/php_backend_selection.erb template function
+    $ordered_php_versions = $default_php_version ? {
+        undef => $php_versions,
+        default => [$default_php_version] + $php_versions.filter |$x| { $x != $default_php_version}
+    }
+    $fcgi_proxies = $ordered_php_versions.map |$idx, $version| {
         $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], "${fcgi_pool}-${version}")]
     }
     # We're sharing template functions with mediawiki::web::vhost, so keep the same nomenclature.
