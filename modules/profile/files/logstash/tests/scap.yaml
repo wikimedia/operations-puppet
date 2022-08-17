@@ -1,3 +1,8 @@
+fields:
+  "rsyslog.timereported": "2020-01-01T00:01:01"
+  "rsyslog.severity": "INFO"
+  "rsyslog.facility": "user"
+  "rsyslog.programname": "scap"
 codec: "json_lines"
 ignore:
   - "@timestamp"
@@ -7,6 +12,7 @@ testcases:
   - input:
     - >
       {
+      "rsyslog.hostname": "mw1354",
       "timestamp": "2021-01-27T19:05:52.065752+00:00",
       "lineno": 741,
       "filename": "log.py",
@@ -69,6 +75,7 @@ testcases:
   - input:
       - >
         {
+        "rsyslog.hostname": "mw1354",
         "timestamp": "2021-01-27T19:05:52.065752+00:00",
         "lineno": 106,
         "filename": "cli.py",

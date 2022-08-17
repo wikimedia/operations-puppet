@@ -1,5 +1,13 @@
 fields:
   program: "icinga"
+  facility: "local1"
+  level: "INFO"
+  type: "syslog"
+  "rsyslog.timereported": "2020-01-01T00:01:01"
+  "rsyslog.hostname": "alert1001"
+  "rsyslog.programname": "icinga"
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "local1"
 codec: "json_lines"
 ignore:
   - "@timestamp"
@@ -10,17 +18,11 @@ testcases:
   - input:
       - >
         {
-          "message":"SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production).",
-          "level": "INFO",
-          "facility": "local1",
-          "type": "syslog"
+          "message":"SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
         }
       - >
         {
-          "message": "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%",
-          "level": "INFO",
-          "facility": "local1",
-          "type": "syslog"
+          "message": "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%"
         }
     expected:
       - __target_index: "ecs-alerts-2-1.7.0-N-yearly"

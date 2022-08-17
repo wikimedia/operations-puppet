@@ -1,6 +1,9 @@
 fields:
   logsource: "gitlab1004"
   facility: "local0"
+  "rsyslog.hostname": "gitlab1004"
+  "rsyslog.facility": "local0"
+  "rsyslog.severity": "NOTICE"
   type: "syslog"
 codec: "json_lines"
 ignore:
@@ -10,6 +13,8 @@ testcases:
   - input:
     - >
       {
+        "rsyslog.timereported": "2022-01-18T16:38:42.735",
+        "rsyslog.programname": "input-file-gitlab-gitaly-json",
         "program": "input-file-gitlab-gitaly-json",
         "severity": "NOTICE",
         "host": "gitlab1004",
@@ -75,6 +80,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-06-10T00:10:46.793",
+          "rsyslog.programname": "input-file-gitlab-gitaly-json",
           "program": "input-file-gitlab-gitaly-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -153,6 +160,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-06-10T18:58:58.414",
+          "rsyslog.programname": "input-file-gitlab-gitaly-json",
           "program": "input-file-gitlab-gitaly-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -233,6 +242,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-06-10T05:20:17.905",
+          "rsyslog.programname": "input-file-gitlab-rails-production-json",
           "program": "input-file-gitlab-rails-production-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -335,6 +346,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-06-10T00:11:00.056",
+          "rsyslog.programname": "input-file-gitlab-rails-api-json",
           "program": "input-file-gitlab-rails-api-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -424,6 +437,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-06-10T21:45:50.561",
+          "rsyslog.programname": "input-file-gitlab-rails-application-json",
           "program": "input-file-gitlab-rails-application-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -460,6 +475,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-06-10T22:00:52.000",
+          "rsyslog.programname": "input-file-gitlab-workhorse-json",
           "program": "input-file-gitlab-workhorse-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -523,6 +540,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-11-15T22:39:46.304",
+          "rsyslog.programname": "input-file-gitlab-sidekiq-json",
           "program": "input-file-gitlab-sidekiq-json",
           "severity": "NOTICE",
           "host": "gitlab1004",
@@ -565,6 +584,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-07-21T20:24:48.000",
+          "rsyslog.programname": "input-file-gitlab-nginx-access-cee",
           "timestamp":"2021-07-21T20:24:49+00:00",
           "host":"gitlab1004",
           "program":"input-file-gitlab-nginx-access-cee",
@@ -591,7 +612,15 @@ testcases:
       - __target_index: "ecs-default-1-1.7.0-N-weekly"
         '@timestamp': "2021-07-21T20:24:48.000Z"
         log:
-          level: "NOTSET"
+          level: "NOTICE"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 5
+              name: "notice"
+            priority: 133
         client:
           ip: "127.0.0.1"
         user:
@@ -630,6 +659,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-07-15T05:24:22.000",
+          "rsyslog.programname": "input-file-gitlab-nginx-error-plain",
           "message": "2021/07/15 05:24:22 [crit] 3607#0: *2433935 SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:443",
           "severity": "NOTICE",
           "program": "input-file-gitlab-nginx-error-plain"
@@ -674,6 +705,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-07-15T15:16:51.110",
+          "rsyslog.programname": "input-file-gitlab-redis-plain",
           "message": "2021-07-15_15:16:51.11042 20430:M 15 Jul 2021 15:16:51.110 * Background saving terminated with success",
           "severity": "NOTICE",
           "program": "input-file-gitlab-redis-plain"

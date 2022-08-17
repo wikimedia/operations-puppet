@@ -1,3 +1,6 @@
+fields:
+  "rsyslog.hostname": "cloudcontrol2005-dev"
+  "rsyslog.facility": "local0"
 codec: "json_lines"
 ignore:
   - "tags"
@@ -6,6 +9,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-05-25T23:15:11.673",
+          "rsyslog.programname": "trove-api",
+          "rsyslog.severity": "INFO",
           "facility": "local0",
           "type": "syslog",
           "program": "trove-api",
@@ -82,6 +88,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-05-23T16:21:42.584",
+          "rsyslog.programname": "trove-conductor",
+          "rsyslog.severity": "DEBUG",
           "facility": "local0",
           "type": "syslog",
           "program": "trove-conductor",
@@ -159,6 +168,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-05-23T16:22:39.460",
+          "rsyslog.programname": "trove-taskmanager",
+          "rsyslog.severity": "DEBUG",
           "facility": "local0",
           "type": "syslog",
           "program": "trove-taskmanager",

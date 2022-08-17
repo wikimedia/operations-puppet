@@ -7,6 +7,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-08-26T19:39:19.208",
+          "rsyslog.hostname": "alert2001",
+          "rsyslog.programname": "alertmanager-webhook-logger",
+          "rsyslog.severity": "WARNING",
+          "rsyslog.facility": "user",
           "timestamp": "2021-08-26T19:39:19.208Z",
           "host": "alert2001",
           "logsource": "alert2001",
@@ -68,6 +73,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-08-27T15:19:00.738126887",
+          "rsyslog.hostname": "alert2001",
+          "rsyslog.programname": "alertmanager-webhook-logger",
+          "rsyslog.severity": "WARNING",
+          "rsyslog.facility": "user",
           "timestamp": "2021-08-27T15:19:00.738126887Z",
           "timestamp": "2021-08-27T15:19:00.883Z",
           "metric": "speedindex",

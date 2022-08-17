@@ -1,4 +1,7 @@
 fields:
+  "rsyslog.programname": "webrequest"
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "user"
   logsource: "centrallog1001"
   facility: "user"
   level: "NOTICE"
@@ -14,6 +17,8 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-08-26T19:39:19.208",
+          "rsyslog.hostname": "cp3058",
           "hostname": "cp3058.esams.wmnet",
           "sequence": 55255890050,
           "dt": "2021-06-10T14:47:33Z",

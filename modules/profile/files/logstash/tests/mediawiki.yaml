@@ -8,6 +8,11 @@ testcases:
   - input:
       - >
         {
+        "rsyslog.timereported": "2020-06-08T04:23:54.618073",
+        "rsyslog.hostname": "mw1384",
+        "rsyslog.programname": "mediawiki",
+        "rsyslog.severity": "err",
+        "rsyslog.facility": "user",
         "timestamp": "2020-06-08T04:23:54+00:00",
         "logsource": "mw1384",
         "host": "mw1384",
@@ -63,6 +68,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-10-08T05:09:10",
+          "rsyslog.hostname": "wtp1037",
+          "rsyslog.programname": "mediawiki",
+          "rsyslog.severity": "err",
+          "rsyslog.facility": "user",
           "timestamp": "2021-10-08T05:09:10+00:00",
           "logsource": "parse1017",
           "host": "parse1017",
@@ -176,6 +186,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-10-14T09:08:00",
+          "rsyslog.hostname": "mw1432",
+          "rsyslog.programname": "mediawiki",
+          "rsyslog.severity": "err",
+          "rsyslog.facility": "user",
           "timestamp": "2021-10-14T09:08:00+00:00",
           "logsource": "mw1432",
           "host": "mw1432",
@@ -288,6 +303,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2022-06-08T14:24:55.175",
+          "rsyslog.hostname": "mw1439",
+          "rsyslog.programname": "mediawiki",
+          "rsyslog.severity": "err",
+          "rsyslog.facility": "daemon",
           "timestamp": "2022-06-08T14:24:55.175Z",
           "exception": {
             "message": "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",

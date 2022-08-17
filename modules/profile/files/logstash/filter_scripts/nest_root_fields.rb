@@ -1,6 +1,6 @@
 # nest_root_fields.rb
 # Logstash Ruby script to copy all root fields into sub-fields of an object
-# @version 1.0.0
+# @version 1.0.1
 #
 # Example Logstash Filter:
 # ruby {
@@ -37,7 +37,23 @@ def register(params)
   @target = params["target"]
   @overwrite = params["overwrite"]
   @exclude_common_fields = params["exclude_common_fields"]
-  @common_fields = %w[logsource type host timestamp program message facility level path severity]
+  @common_fields = %w[
+    logsource
+    type
+    host
+    timestamp
+    program
+    message
+    facility
+    level
+    path
+    severity
+    rsyslog.facility
+    rsyslog.hostname
+    rsyslog.programname
+    rsyslog.severity
+    rsyslog.timereported
+  ]
 end
 
 # get the event with an additional tag

@@ -11,6 +11,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-08-27T15:19:00.738126",
+          "rsyslog.hostname": "ml-serve1001",
+          "rsyslog.programname": "input-file-kubernetes",
+          "rsyslog.severity": "NOTICE",
+          "rsyslog.facility": "local0",
           "kubernetes": {
               "namespace_name": "knative-serving"
           },

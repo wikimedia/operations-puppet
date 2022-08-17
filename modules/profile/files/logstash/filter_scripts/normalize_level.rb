@@ -1,6 +1,6 @@
 # normalize_level.rb
 # Logstash Ruby script to populate `log.level` and `log.syslog` based on indicators in other fields
-# @version 1.0.3
+# @version 1.0.4
 
 def register(*)
   # RFC5424 severity to supported level field mapping
@@ -79,11 +79,17 @@ def register(*)
   }
 end
 
-def get_facility(field)
+def get_facility(event)
   # Returns normalized facility field
-  unless field.nil?
-    unless @facilities[field].nil?
-      return [field, @facilities[field]]
+
+  facility = [
+    event.get('[rsyslog][facility]'),
+    event.get('facility'),
+  ].find(-> { return 'local7' }) { |v| !v.nil? }
+
+  unless facility.nil?
+    unless @facilities[facility].nil?
+      return [facility, @facilities[facility]]
     end
   end
   ["local7", 23]
@@ -112,6 +118,7 @@ def get_level(event)
   level = [
     event.get('[log][level]'),
     event.get('level'),
+    event.get('[rsyslog][severity]'),
     event.get('severity'),
   ].find(-> { return 'NOTSET' }) { |v| !v.nil? }
 
@@ -135,7 +142,7 @@ def filter(event)
 
   level = get_level(event)
   severity_name, severity_code = get_severity(level)
-  facility_name, facility_code = get_facility(event.get('facility'))
+  facility_name, facility_code = get_facility(event)
 
   event.set('[log][level]', level)
 

@@ -1,3 +1,6 @@
+fields:
+  "rsyslog.timereported": "1970-01-01T00:01:01"
+  "rsyslog.hostname": "cloudhost0000"
 codec: "json_lines"
 ignore:
   - "@timestamp"
@@ -8,6 +11,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.programname": "nova",
+          "rsyslog.severity": "WARNING",
+          "rsyslog.facility": "local0",
           "program": "nova",
           "facility": "local0",
           "level": "WARNING",
@@ -47,6 +53,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.programname": "nova",
+          "rsyslog.severity": "WARNING",
+          "rsyslog.facility": "local0",
           "program": "nova",
           "facility": "local0",
           "level": "WARNING",
@@ -86,6 +95,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.programname": "nova",
+          "rsyslog.severity": "INFO",
+          "rsyslog.facility": "daemon",
           "program": "designate-api",
           "facility": "daemon",
           "level": "INFO",
@@ -115,6 +127,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.programname": "nova",
+          "rsyslog.severity": "ERROR",
+          "rsyslog.facility": "local0",
           "facility": "local0",
           "logsource": "cloudcontrol1006",
           "host": "cloudcontrol1006",
@@ -155,6 +170,9 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.programname": "nova-fullstack",
+          "rsyslog.severity": "DEBUG",
+          "rsyslog.facility": "daemon",
           "facility": "daemon",
           "logsource": "cloudcontrol1005",
           "host": "cloudcontrol1005",

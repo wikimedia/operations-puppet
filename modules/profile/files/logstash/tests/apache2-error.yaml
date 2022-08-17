@@ -7,6 +7,11 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2020-05-05T10:15:58.655772",
+          "rsyslog.hostname": "mw1369",
+          "rsyslog.programname": "apache2",
+          "rsyslog.severity": "err",
+          "rsyslog.facility": "local7",
           "timestamp":"2020-05-05T10:15:58.655772+00:00",
           "message":"[proxy_fcgi:error] [pid 231373:tid 140710242121472] [client 10.64.48.211:41868] AH01071: Got error 'Primary script unknown\\n'",
           "host":"mw1369",

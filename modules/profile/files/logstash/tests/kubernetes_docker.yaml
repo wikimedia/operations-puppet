@@ -4,6 +4,10 @@ fields:
   logsource: "kubestage1008"
   facility: "local0"
   severity: "NOTICE"
+  "rsyslog.hostname": "kubestage1008"
+  "rsyslog.programname": "input-file-kubernetes"
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "local0"
 codec: "json_lines"
 ignore:
   - "[normalized][dropped]"
@@ -12,9 +16,10 @@ testcases:
   - input:
       - >
         {
-          "log": "{\"@timestamp\":\"2021-10-04T15:08:24.011Z\",\"log.level\":\"warning\",\"message\":\"Not Found: /favicon.ico\",\"ecs\":{\"version\":\"1.7.0\"},\"http\":{\"response\":{\"status_code\":404}},\"log\":{\"logger\":\"django.request\",\"origin\":{\"file\":{\"line\":228,\"name\":\"log.py\"},\"function\":\"log_response\"}},\"process\":{\"name\":\"MainProcess\",\"pid\":1,\"thread\":{\"id\":140602175903488,\"name\":\"Thread-49780\"}},\"trace\":{\"id\":\"4e2aa2ef-eb87-4e0f-b1ac-5627d27e399e\"}}\n",
+          "log": "{\"@timestamp\":\"2021-10-04T15:08:24.011Z\",\"service.type\":\"foo\",\"log.level\":\"warning\",\"message\":\"Not Found: /favicon.ico\",\"ecs\":{\"version\":\"1.7.0\"},\"http\":{\"response\":{\"status_code\":404}},\"log\":{\"logger\":\"django.request\",\"origin\":{\"file\":{\"line\":228,\"name\":\"log.py\"},\"function\":\"log_response\"}},\"process\":{\"name\":\"MainProcess\",\"pid\":1,\"thread\":{\"id\":140602175903488,\"name\":\"Thread-49780\"}},\"trace\":{\"id\":\"4e2aa2ef-eb87-4e0f-b1ac-5627d27e399e\"}}\n",
           "stream": "stderr",
-          "time": "2021-10-04T15:08:24.012628201Z"
+          "time": "2021-10-04T15:08:24.012628201Z",
+          "rsyslog.timereported": "2021-10-04T15:08:24.011"
         }
     expected:
       - __target_index: "ecs-default-1-1.7.0-N-weekly"
@@ -24,6 +29,8 @@ testcases:
         "@timestamp": "2021-10-04T15:08:24.011Z"
         host:
           name: "kubestage1008"
+        service:
+          type: "foo"
         log:
           level: "WARNING"
           syslog:

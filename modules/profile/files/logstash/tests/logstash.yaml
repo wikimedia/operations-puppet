@@ -4,6 +4,10 @@ fields:
   logsource: "logstash1023"
   facility: "local0"
   severity: "NOTICE"
+  "rsyslog.hostname": "logstash1023"
+  "rsyslog.programname": "input-file-logstash-json"
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "local0"
 codec: "json_lines"
 ignore:
   - "[log][original]"  # json encoding is non-deterministic
@@ -12,6 +16,7 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-03-03T16:04:27.028",
           "level": "WARN",
           "loggerName": "logstash.outputs.elasticsearch",
           "timeMillis": 1614787467028,
@@ -51,6 +56,7 @@ testcases:
         }
       - >
         {
+          "rsyslog.timereported": "2021-03-11T01:08:13.460",
           "level": "WARN",
           "loggerName": "logstash.filters.json",
           "timeMillis": 1615424893460,
@@ -72,6 +78,7 @@ testcases:
         }
       - >
         {
+          "rsyslog.timereported": "2021-03-03T15:58:41.694",
           "level": "INFO",
           "loggerName": "logstash.outputs.elasticsearch",
           "timeMillis": 1614787121694,

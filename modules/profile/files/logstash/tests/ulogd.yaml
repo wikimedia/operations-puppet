@@ -1,5 +1,11 @@
 fields:
   type: "syslog"
+  severity: "info"
+  facility: "local7"
+  program: "ulogd"
+  "rsyslog.programname": "ulogd"
+  "rsyslog.severity": "info"
+  "rsyslog.facility": "local7"
 codec: "json_lines"
 ignore:
   - "@timestamp"
@@ -8,13 +14,12 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2020-05-05T10:34:50.874",
+          "rsyslog.hostname": "puppetmaster2001",
           "timestamp": "2020-05-05T10:34:50.874093+00:00",
           "message": "[fw-in-drop] IN=eno1 OUT= MAC=18:66:da:63:1d:37:64:87:88:f2:73:c6:86:dd SRC=2620:0:860:104:10:192:48:66 DST=2620:0:860:101:10:192:0:27 LEN=60 TC=0 HOPLIMIT=63 FLOWLBL=858078 PROTO=TCP SPT=8141 DPT=44734 SEQ=4059713878 ACK=0 WINDOW=0 RST URGP=0 MARK=0 ",
           "host": "puppetmaster2001",
-          "logsource": "puppetmaster2001",
-          "severity": "info",
-          "facility": "local7",
-          "program": "ulogd"
+          "logsource": "puppetmaster2001"
         }
     expected:
       - __target_index: "ecs-default-1-1.7.0-N-weekly"
@@ -58,13 +63,12 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2020-05-05T10:34:50.333",
+          "rsyslog.hostname": "mw1307",
           "timestamp": "2020-05-05T10:34:50.333969+00:00",
           "message": "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=10.2.2.30 DST=10.64.16.67 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST URGP=0 MARK=0",
           "host": "mw1307",
-          "logsource": "mw1307",
-          "severity": "info",
-          "facility": "local7",
-          "program": "ulogd"
+          "logsource": "mw1307"
         }
     expected:
       - __target_index: "ecs-default-1-1.7.0-N-weekly"

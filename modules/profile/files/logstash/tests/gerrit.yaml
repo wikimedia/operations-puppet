@@ -1,4 +1,8 @@
 fields:
+  "rsyslog.hostname": "gerrit1001"
+  "rsyslog.programname": "input-file-gerrit-json"
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "local0"
   program: "input-file-gerrit-json"
   host: "gerrit1001"
   logsource: "gerrit1001"
@@ -13,6 +17,7 @@ testcases:
   - input:
       - >
         {
+          "rsyslog.timereported": "2021-02-12T17:06:58.670",
           "timestamp":"2021-02-12T17:06:58.670+0000",
           "session":"12345678",
           "thread":"SSH git-upload-pack /mediawiki/extensions/IPInfo.git (user-name)",
