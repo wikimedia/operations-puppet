@@ -16,8 +16,6 @@ profile::elasticsearch::instances:
           - elastic1081.eqiad.wmnet # Row C4
 
         cluster_hosts:
-          - elastic1051.eqiad.wmnet
-          - elastic1052.eqiad.wmnet
           - elastic1053.eqiad.wmnet
           - elastic1054.eqiad.wmnet
           - elastic1055.eqiad.wmnet
@@ -180,8 +178,6 @@ profile::elasticsearch::instances:
           - elastic1086.eqiad.wmnet
 
           # row C
-          - elastic1051.eqiad.wmnet
-          - elastic1052.eqiad.wmnet
           - elastic1059.eqiad.wmnet
           - elastic1081.eqiad.wmnet
           - elastic1083.eqiad.wmnet
