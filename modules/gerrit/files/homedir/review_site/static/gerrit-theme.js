@@ -89,7 +89,7 @@ class GrTestResultTableModule extends Polymer.Element {
       <template is="dom-repeat" items="{{checker.checks}}" as="check">
         <tr class="check_row">
           <td class="check_cell check_result">
-            <span class$="check_result_chip check_result_chip_[[check.result]]">
+            <span class$="voteChip check_result_chip check_result_chip_[[check.result]]">
               [[check.result]]
             </span>
           </td>
