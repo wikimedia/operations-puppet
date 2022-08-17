@@ -46,7 +46,13 @@ class profile::cloudceph::client::rbd_backy(
         fail("missing '${cinder_client_name}' keydata in ceph auth configuration")
     }
 
+    $mon_host_ips = $mon_hosts.reduce({}) | $memo, $key, $value | {
+        $memo + {$key => $value['public']['addr'] }
+    }
+    $osd_public_host_ips = $osd_hosts.reduce({}) | $memo, $key, $value | {
+        $memo + {$key => $value['public']['addr'] }
+    }
     class { 'prometheus::node_pinger':
-        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
+        nodes_to_ping_regular_mtu => $mon_host_ips + $osd_public_host_ips,
     }
 }

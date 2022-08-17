@@ -60,7 +60,13 @@ class profile::cloudceph::client::rbd_libvirt(
         libvirt_uuid => $libvirt_rbd_cinder_uuid,
     }
 
+    $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['public']['addr'] }
+    }
+    $osd_public_host_ips = $osd_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['public']['addr'] }
+    }
     class { 'prometheus::node_pinger':
-        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
+        nodes_to_ping_regular_mtu => $mon_host_ips + $osd_public_host_ips,
     }
 }

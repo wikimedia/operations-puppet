@@ -126,10 +126,11 @@ class profile::cloudceph::osd(
     ]
 
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
-    $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
+    $osd_public_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
+    $osd_cluster_addrs = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
     $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
-    $ferm_public_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
+    $ferm_public_srange = join(concat($mon_addrs, $osd_public_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
     ferm::service { 'ceph_osd_range':
         proto  => 'tcp',
         port   => '6800:7100',
@@ -153,9 +154,19 @@ class profile::cloudceph::osd(
         public_networks     => $public_networks,
     }
 
+    $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['public']['addr'] }
+    }
+    $osd_public_host_ips = $osd_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['public']['addr'] }
+    }
+    $osd_cluster_host_ips = $osd_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['cluster']['addr'] }
+    }
     # This adds latency stats between from this osd to the rest of the ceph fleet
     class { 'prometheus::node_pinger':
-        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
+        nodes_to_ping_regular_mtu => $mon_host_ips,
+        nodes_to_ping_jumbo_mtu   => $osd_public_host_ips + $osd_cluster_host_ips,
     }
 
     # Get the $num_os_disks with less space, as those are **expected** to be the os drives

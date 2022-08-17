@@ -44,11 +44,11 @@ class profile::cloudceph::mon(
     }
 
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
-    $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
+    $osd_public_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
     $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
-    $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
+    $ferm_srange = join(concat($mon_addrs, $osd_public_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
     ferm::service { 'ceph_mgr_v2':
         proto  => 'tcp',
         port   => 6800,
@@ -103,9 +103,15 @@ class profile::cloudceph::mon(
         mgr_auth => $ceph_auth_conf["mgr.${::hostname}"],
     }
 
+    $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['public']['addr'] }
+    }
+    $osd_public_host_ips = $osd_hosts.reduce({}) | $memo, $value | {
+        $memo + {$value[0] => $value[1]['public']['addr'] }
+    }
     # This adds latency stats between from this mon to the rest of the ceph fleet
     class { 'prometheus::node_pinger':
-        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
+        nodes_to_ping_regular_mtu => $mon_host_ips + $osd_public_host_ips,
     }
 
     # Allow ceph user to collect device health metrics

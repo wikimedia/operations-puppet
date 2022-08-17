@@ -1,0 +1,89 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $nodes_to_ping_regular_mtu = {},
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $nodes_to_ping_jumbo_mtu = {},
+| -%>
+#!/bin/bash
+PING_TIMEOUT_S=5
+COUNT=1
+NODES_BIG_MTU=(
+<% $nodes_to_ping_jumbo_mtu.each |Stdlib::Fqdn $node, Stdlib::IP::Address::Nosubnet $ip| { -%>
+    "<%= $node %>@<%= $ip %>"
+<% } %>
+)
+NODES_SMALL_MTU=(
+<% $nodes_to_ping_regular_mtu.each |Stdlib::Fqdn $node, Stdlib::IP::Address::Nosubnet $ip| { -%>
+    "<%= $node %>@<%= $ip %>"
+<% } %>
+)
+
+set -eu
+
+help() {
+    cat <<EOH
+Usage: $0 [-xh]
+
+This script is used to export for prometheus the latencies of pinging the hardcodded nodes.
+Meant to be used by the file node exporter.
+
+Options:
+
+    -x Enable verbose mode.
+
+    -h Show this help.
+
+EOH
+}
+
+
+
+
+if [[ "${1:-}" == "-h" ]]; then
+    help
+    exit 0
+elif [[ "${1:-}" == "-x" ]]; then
+    set -x
+    shift
+fi
+
+for host_ip in "${NODES_BIG_MTU[@]}"; do
+    host="${host_ip%@*}"
+    ip="${host_ip#*@}"
+    host_rtt=$( \
+        ping \
+            -c "$COUNT" \
+            -W "$PING_TIMEOUT_S" \
+            -M "do" \
+            -s 8972 \
+            -q \
+            "$ip" \
+            2>/dev/null \
+        | grep min \
+        | awk '{print $4}' \
+        | grep -o '^[^/]*' \
+        || echo '-1'
+    )
+    cat <<EOD
+node_ping_latency{dst_host="$host",dst_ip="$ip",src_host="$HOSTNAME",size="jumbo"} $host_rtt
+EOD
+done
+
+for host_ip in "${NODES_SMALL_MTU[@]}"; do
+    host="${host_ip%@*}"
+    ip="${host_ip#*@}"
+    host_rtt=$( \
+        ping \
+            -c "$COUNT" \
+            -W "$PING_TIMEOUT_S" \
+            -q \
+            "$ip" \
+            2>/dev/null \
+        | grep min \
+        | awk '{print $4}' \
+        | grep -o '^[^/]*' \
+        || echo '-1'
+    )
+    cat <<EOD
+node_ping_latency{dst_host="$host",dst_ip="$ip",src_host="$HOSTNAME",size="small"} $host_rtt
+EOD
+done
