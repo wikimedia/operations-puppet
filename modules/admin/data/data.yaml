@@ -4776,7 +4776,8 @@ users:
     ensure: present
     gid: 500
     realname: Michael Raish
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOU1XSmIK51sFOSDgWLTcJDjtfqb5nYfTCnTGrdmjt9c mraish@wikimedia.org
     uid: 30902
     email: mraish@wikimedia.org
     krb: present
