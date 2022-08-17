@@ -1,6 +1,6 @@
 # db1151
 mariadb::shard: 'x2'
-mariadb::binlog_format: 'ROW'
+mariadb::binlog_format: 'STATEMENT'
 profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: true
 profile::mariadb::config::sync_binlog: '0'
