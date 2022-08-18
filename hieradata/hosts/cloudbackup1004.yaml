@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: Apache-2.0
+
+profile::wmcs::backy2::backup_time: '*-*-* 17:00:00'

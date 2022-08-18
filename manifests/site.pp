@@ -1673,9 +1673,9 @@ node /labstore100[45]\.eqiad\.wmnet/ {
 node /labstore100[67]\.wikimedia\.org/ {
     role(dumps::distribution::server)
 }
-# new cloudbackup1003 and 1004 servers T293934
+
 node /cloudbackup100[34]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(wmcs::openstack::eqiad1::backy)
 }
 
 # During upgrades and transitions, this will
