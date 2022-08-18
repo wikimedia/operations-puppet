@@ -609,7 +609,7 @@ node 'db1125.eqiad.wmnet' {
 
 # s4 (commons) core production dbs on codfw
 # See also db2137 and db2138 below
-node /^db2(106|110|119|136|147|172)\.codfw\.wmnet/ {
+node /^db2(106|110|119|136|147|172|179)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 # replacement codfw master T252985
