@@ -14,6 +14,7 @@ profile::ceph::client::rbd::enable_v2_messenger: false
 
 # This key is shared across all the libvirt / nova / backy hosts
 profile::ceph::client::rbd::libvirt_rbd_uuid: 'ab1c8650-2983-45be-a9ea-4cdc6185155d'
+profile::ceph::client::rbd::cinder_client_name: "eqiad1-cinder"
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3ffdf36364d'
 
 profile::ceph::auth::deploy::enabled: true
