@@ -7,7 +7,7 @@ class role::wmcs::openstack::eqiad1::backy {
     include profile::base::firewall
 
     # This installs ceph.conf and other ceph client things
-    include profile::ceph::client::rbd_libvirt
+    include profile::ceph::client::rbd_backy
 
     # We need openstack clients so we can enumerate VMs to back up
     include profile::openstack::eqiad1::clientpackages
