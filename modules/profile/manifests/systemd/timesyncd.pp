@@ -10,6 +10,14 @@ class profile::systemd::timesyncd (
         ensure      => $ensure,
         ntp_servers => $ntp_servers,
     }
+    # HDFS/fuse is known to cause issues with timesync and ProtectSystem= strict
+    # As such remove this from the list of accessible paths (T310643)
+    systemd::unit { 'systemd-timesyncd_override_protect_system':
+        ensure   => $ensure,
+        content  => "[Service]\nInaccessiblePaths=-/mnt\n",
+        restart  => true,
+        override => true,
+    }
 
     profile::auto_restarts::service { 'systemd-timesyncd':
         ensure => $ensure,
