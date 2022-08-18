@@ -19,4 +19,18 @@ class profile::pontoon::base (
             ip => ipresolve($pki_hosts[0]),
         }
     }
+
+    # Generate en_US.UTF-8. In production debian-installer handles this via:
+    # d-i debian-installer/locale  string  en_US
+    file_line { 'locale-en_US.UTF-8':
+        ensure => present,
+        path   => '/etc/locale.gen',
+        line   => 'en_US.UTF-8 UTF-8',
+        notify => Exec['base-locale-gen'],
+    }
+
+    exec { 'base-locale-gen':
+        command     => '/usr/sbin/locale-gen --purge',
+        refreshonly => true,
+    }
 }
