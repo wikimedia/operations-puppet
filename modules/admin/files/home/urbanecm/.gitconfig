@@ -20,3 +20,5 @@
 [gitreview]
 	remote = origin
 	username = urbanecm
+[url "https://gerrit.wikimedia.org/r/"]
+	insteadOf = ssh://gerrit.wikimedia.org:29418/
