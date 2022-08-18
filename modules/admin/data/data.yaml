@@ -53,7 +53,7 @@ groups:
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert]
+              brett, fnegri, cgoubert, eevans]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -82,7 +82,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
-              daniel, eevans, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
+              daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -93,7 +93,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott, arlolra, eevans, mobrovac]
+    members: [ssastry, cscott, arlolra, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
@@ -167,7 +167,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [eevans, mobrovac, ssastry]
+    members: [mobrovac, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -344,7 +344,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
-              piccardi, eevans, ladsgroup, musikanimal,
+              piccardi, ladsgroup, musikanimal,
               goransm, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
@@ -433,7 +433,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [eevans, mobrovac]
+    members: [mobrovac]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   phabricator-admin:
     gid: 746
@@ -478,7 +478,7 @@ groups:
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
-    members: [mobrovac, eevans]
+    members: [mobrovac]
   traceback-roots:
     gid: 751
     description: people who have full root on traceback hosts
@@ -487,7 +487,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [eevans, sbisson, catrope]
+    members: [sbisson, catrope]
     approval:
       - Subramanya Sastry
     # TODO: Revisit this when moving into production
@@ -849,7 +849,7 @@ groups:
   sessionstore-roots:
     gid: 811
     description: people who have full root on session storage cluster nodes
-    members: [eevans, mobrovac]
+    members: [mobrovac]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   analytics-deployers:
     gid: 812
@@ -937,7 +937,7 @@ groups:
   aqs-roots:
     gid: 829
     description: people who have full root on aqs nodes
-    members: [eevans]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Olja Dimitrjevic
