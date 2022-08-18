@@ -30,6 +30,8 @@ profile::contacts::role_contacts: ['WMCS']
 
 profile::ceph::auth::deploy::configuration:
   eqiad1-compute:
+    group: root
+    owner: root
     mode: "0440"
     caps:
       mon: profile rbd
