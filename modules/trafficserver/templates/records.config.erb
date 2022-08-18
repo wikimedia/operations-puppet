@@ -58,6 +58,7 @@ CONFIG proxy.config.http.transaction_no_activity_timeout_in INT <%= @http_settin
 CONFIG proxy.config.http.transaction_no_activity_timeout_out INT <%= @http_settings['transaction_no_activity_timeout_out'] %>
 CONFIG proxy.config.http.keep_alive_no_activity_timeout_in INT <%= @http_settings['keep_alive_no_activity_timeout_in'] %>
 CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT <%= @http_settings['keep_alive_no_activity_timeout_out'] %>
+CONFIG proxy.config.http.transaction_active_timeout_out INT <%= @http_settings['transaction_active_timeout_out'] %>
 CONFIG proxy.config.http.accept_no_activity_timeout INT <%= @http_settings['accept_no_activity_timeout'] %>
 CONFIG proxy.config.http.send_100_continue_response INT <%= @http_settings['send_100_continue_response'] %>
 CONFIG proxy.config.http.max_post_size INT <%= @http_settings['max_post_size'] %>

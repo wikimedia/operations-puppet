@@ -542,6 +542,7 @@ profile::trafficserver::backend::http_settings:
   post_connect_attempts_timeout: 11
   transaction_no_activity_timeout_in: 200
   transaction_no_activity_timeout_out: 180
+  transaction_active_timeout_out: 0
   send_100_continue_response: 0
   max_post_size: 0
   keep_alive_enabled_out: 1
