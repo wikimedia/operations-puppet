@@ -135,6 +135,7 @@ Components: main
  thirdparty/conda
  thirdparty/confluent
  thirdparty/docker-ci-buster
+ thirdparty/elasticsearch-curator5
  thirdparty/elastic710
  thirdparty/elastic74
  thirdparty/elastic78
@@ -231,6 +232,7 @@ Update:
  elastic65
  elastic68
  elastic710
+ elasticsearch-curator5
  hp-mcp-bullseye
  hwraid-stretch
  node14-bullseye
