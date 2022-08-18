@@ -154,7 +154,6 @@ class phabricator (
         manage_user => $manage_scap_user,
         require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => [
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_ensure_config_ownership',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
@@ -213,13 +212,6 @@ class phabricator (
 
     file { '/usr/local/sbin/phab_deploy_rollback':
         content => file('phabricator/phab_deploy_rollback.sh'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
-    }
-
-    file { '/usr/local/sbin/phab_deploy_ensure_config_ownership':
-        content => file('phabricator/phab_deploy_ensure_config_ownership.sh'),
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
