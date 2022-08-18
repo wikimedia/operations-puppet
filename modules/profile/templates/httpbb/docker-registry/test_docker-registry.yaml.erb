@@ -17,7 +17,7 @@ https://docker-registry.wikimedia.org:
     Docker-Distribution-Api-Version: registry/2.0
     Vary: Accept
     Cache-Control: public,s-maxage=600,max-age=600
-  assert_body_contains: mediawiki-httpd
+  assert_body_contains: repositories
 
 # Tests for the public namespace
 - path: /v2/nonexistent/manifests/latest
