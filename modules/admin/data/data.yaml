@@ -369,7 +369,7 @@ groups:
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               ricby, dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
-              soworu-01, pwaigi1-]
+              soworu-01, pwaigi1-, trokhymovych]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5424,6 +5424,17 @@ users:
     uid: 40428
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  trokhymovych:
+    ensure: present
+    realname: Mykola Trokhymovych
+    email: trokhymovych.mykola@gmail.com
+    uid: 29436
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB8/dfbAQjsOu3EzPIosLsY0Dxz0LOMtW2dKPndAqDnh trokhymovych.mykola@gmail.com
+    expiry_date: 2022-12-15
+    expiry_contact: diego@wikimedia.org
 
 ldap_only_users:
   abartov:
