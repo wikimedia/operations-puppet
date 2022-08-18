@@ -59,14 +59,6 @@ class profile::ceph::client::rbd_libvirt(
         libvirt_uuid => $libvirt_rbd_cinder_uuid,
     }
 
-    # TODO: cleanup old files
-    file { '/etc/ceph/libvirt-cinder-secret.xml':
-        ensure => absent,
-    }
-    file { '/etc/ceph/libvirt-secret.xml':
-        ensure => absent,
-    }
-
     class { 'prometheus::node_pinger':
         nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
     }
