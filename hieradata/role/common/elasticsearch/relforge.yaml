@@ -12,10 +12,10 @@ profile::monitoring::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A
 
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
-profile::elasticsearch::version: '6.8'
-profile::elasticsearch::config_version: '6'
+profile::elasticsearch::version: '7.10'
+profile::elasticsearch::config_version: '7'
 # Some Kibana settings only exist in certain versions
-profile::kibana::config_version: '6'
+profile::kibana::config_version: '7'
 
 profile::elasticsearch::instances:
     relforge-eqiad:
