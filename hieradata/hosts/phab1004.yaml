@@ -1,6 +1,0 @@
-phabricator::phd::use_systemd_sysuser: true
-phabricator_logmail: true
-profile::phabricator::main::phd_service_ensure: running
-profile::phabricator::main::dump_enabled: true
-phabricator::vcs::enable: true
-

@@ -20,6 +20,8 @@ profile::resolving::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 
+phabricator::phd::use_systemd_sysuser: true
+
 profile::phabricator::main::rate_limits:
 # Number of requests per minute for logged out users (per client IP)
 # logged in users are permitted 4x the request rate of logged-out users

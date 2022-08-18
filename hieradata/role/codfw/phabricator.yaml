@@ -1,3 +1,7 @@
+phabricator_logmail: false
+profile::phabricator::main::phd_service_ensure: stopped
+profile::phabricator::main::dump_enabled: false
+
 phabricator::mysql::master: "m3-master.codfw.wmnet"
 phabricator::mysql::master::port: '3306'
 phabricator::mysql::slave: "m3-slave.codfw.wmnet"
