@@ -24,8 +24,8 @@ describe "profile::ceph::osd" do
             },
           },
         },
+        "num_os_disks" => 2,
         "disk_models_without_write_cache" => ["matchingmodel"],
-        "os_disks" => [],
         "disks_io_scheduler" => "dummy_io_scheduler",
         "cinder_backup_nodes" => ["cloudbackupxxxx.example.com"],
         "cluster_networks" => [],
@@ -39,76 +39,28 @@ describe "profile::ceph::osd" do
       let(:node_params) { { "_role" => "ceph::osd" } }
       it { is_expected.to compile.with_all_deps }
 
-      context "when empty os_disks" do
-        let(:params) {
+      context "when less/equal disks than os disks it does nothing" do
+        let(:facts) {
           super().merge({
-            "os_disks" => [],
+            "fqdn" => "dummyhost1",
+            "num_os_disks" => 1,
+            "disks" => {
+              "sda" => {
+                "size_bytes" => 1,
+              },
+            },
+
           })
         }
-
-        context "when empty disks fact" do
-          let(:facts) {
-            super().merge({
-              "fqdn" => "dummyhost1",
-              "disks" => {},
-            })
-          }
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.not_to contain_exec(/Disable write cache on device/) }
-          it { is_expected.not_to contain_exec(/Set IO scheduler on device /) }
-        end
-
-        context "when non empty disks fact and no model" do
-          let(:facts) {
-            super().merge({
-              "fqdn" => "dummyhost1",
-              "disks" => {
-                "sda" => {},
-              },
-            })
-          }
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.not_to contain_exec("Disable write cache on device /dev/sda") }
-          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sda to dummy_io_scheduler") }
-        end
-
-        context "when non empty disks fact and non matching model" do
-          let(:facts) {
-            super().merge({
-              "fqdn" => "dummyhost1",
-              "disks" => {
-                "sda" => {
-                  "model" => "idontmatch",
-                },
-              },
-            })
-          }
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.not_to contain_exec("Disable write cache on device /dev/sda") }
-          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sda to dummy_io_scheduler") }
-        end
-
-        context "when non empty disks fact and matching model" do
-          let(:facts) {
-            super().merge({
-              "fqdn" => "dummyhost1",
-              "disks" => {
-                "sda" => {
-                  "model" => "matchingmodel",
-                },
-              },
-            })
-          }
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_exec("Disable write cache on device /dev/sda") }
-          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sda to dummy_io_scheduler") }
-        end
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_exec(/Disable write cache on device/) }
+        it { is_expected.not_to contain_exec(/Set IO scheduler on device /) }
       end
 
-      context "when non empty os_disks" do
+      context "when more disks than num_os_disks" do
         let(:params) {
           super().merge({
-            "os_disks" => ["sda"],
+            "num_os_disks" => 1,
           })
         }
 
@@ -124,26 +76,46 @@ describe "profile::ceph::osd" do
           it { is_expected.not_to contain_exec(/Set IO scheduler on device /) }
         end
 
-        context "when non empty disks fact and no model" do
+        context "when non empty disks fact and no model does not disable write caches" do
           let(:facts) {
             super().merge({
               "fqdn" => "dummyhost1",
               "disks" => {
-                "sda" => {},
+                "sda" => {
+                  "size_bytes" => 1,
+                },
+                "sdb" => {
+                  "size_bytes" => 2,
+                },
+                "sdc" => {
+                  "size_bytes" => 2,
+                },
               },
             })
           }
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_exec("Disable write cache on device /dev/sda") }
           it { is_expected.not_to contain_exec("Set IO scheduler on device /dev/sda to dummy_io_scheduler") }
+          it { is_expected.not_to contain_exec("Disable write cache on device /dev/sdb") }
+          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sdb to dummy_io_scheduler") }
+          it { is_expected.not_to contain_exec("Disable write cache on device /dev/sdc") }
+          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sdc to dummy_io_scheduler") }
         end
 
-        context "when non empty disks fact and non matching model" do
+        context "when non empty disks fact and non matching model does not disable write caches" do
           let(:facts) {
             super().merge({
               "fqdn" => "dummyhost1",
               "disks" => {
                 "sda" => {
+                  "size_bytes" => 1,
+                },
+                "sdb" => {
+                  "size_bytes" => 2,
+                  "model" => "idontmatch",
+                },
+                "sdc" => {
+                  "size_bytes" => 2,
                   "model" => "idontmatch",
                 },
               },
@@ -152,22 +124,37 @@ describe "profile::ceph::osd" do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_exec("Disable write cache on device /dev/sda") }
           it { is_expected.not_to contain_exec("Set IO scheduler on device /dev/sda to dummy_io_scheduler") }
+          it { is_expected.not_to contain_exec("Disable write cache on device /dev/sdb") }
+          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sdb to dummy_io_scheduler") }
+          it { is_expected.not_to contain_exec("Disable write cache on device /dev/sdc") }
+          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sdc to dummy_io_scheduler") }
         end
 
-        context "when non empty disks fact and matching model" do
+        context "when non empty disks fact and matching model disables caches" do
           let(:facts) {
             super().merge({
               "fqdn" => "dummyhost1",
               "disks" => {
                 "sda" => {
+                  "size_bytes" => 1,
+                },
+                "sdb" => {
+                  "size_bytes" => 2,
+                  "model" => "matchingmodel",
+                },
+                "sdc" => {
+                  "size_bytes" => 2,
                   "model" => "matchingmodel",
                 },
               },
             })
           }
-          it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_exec("Disable write cache on device /dev/sda") }
           it { is_expected.not_to contain_exec("Set IO scheduler on device /dev/sda to dummy_io_scheduler") }
+          it { is_expected.to contain_exec("Disable write cache on device /dev/sdb") }
+          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sdb to dummy_io_scheduler") }
+          it { is_expected.to contain_exec("Disable write cache on device /dev/sdc") }
+          it { is_expected.to contain_exec("Set IO scheduler on device /dev/sdc to dummy_io_scheduler") }
         end
       end
 

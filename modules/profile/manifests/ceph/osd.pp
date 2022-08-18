@@ -10,7 +10,7 @@ class profile::ceph::osd(
     Stdlib::Unixpath           $data_dir                        = lookup('profile::ceph::data_dir'),
     String[1]                  $fsid                            = lookup('profile::ceph::fsid'),
     Array[String[1]]           $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
-    Array[String[1]]           $os_disks                        = lookup('profile::ceph::osd::os_disks'),
+    Integer                    $num_os_disks                    = lookup('profile::ceph::osd::num_os_disks'),
     String[1]                  $disks_io_scheduler              = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
     String[1]                  $ceph_repository_component       = lookup('profile::ceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
@@ -155,24 +155,27 @@ class profile::ceph::osd(
         nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
     }
 
-    $facts['disks'].each |String $device, Hash $device_info| {
-        if ! ( $device in $os_disks) {
-            if ('model' in $device_info and $device_info['model'] in $disk_models_without_write_cache) {
-                exec { "Disable write cache on device /dev/${device}":
-                    # 0->disable, 1->enable
-                    command => "hdparm -W 0 /dev/${device}",
-                    user    => 'root',
-                    unless  => "hdparm -W /dev/${device} | grep write-caching | grep -q off",
-                    path    => ['/usr/sbin', '/usr/bin'],
-                }
-            }
-
-            exec { "Set IO scheduler on device /dev/${device} to ${disks_io_scheduler}":
-                command => "echo ${disks_io_scheduler} > /sys/block/${device}/queue/scheduler",
+    # Get the $num_os_disks with less space, as those are **expected** to be the os drives
+    $facts['disks'].map |String $device_name, Hash $device_info| {
+        [$device_info['size_bytes'], $device_name, $device_info]
+    }.sort[$num_os_disks, -1].each |Tuple[Integer,String,Hash] $device_tuple| {
+        $device_name=$device_tuple[1]
+        $device_info=$device_tuple[2]
+        if ('model' in $device_info and $device_info['model'] in $disk_models_without_write_cache) {
+            exec { "Disable write cache on device /dev/${device_name}":
+                # 0->disable, 1->enable
+                command => "hdparm -W 0 /dev/${device_name}",
                 user    => 'root',
-                unless  => "grep -q '\\[${disks_io_scheduler}\\]' /sys/block/${device}/queue/scheduler",
+                unless  => "hdparm -W /dev/${device_name} | grep write-caching | grep -q off",
                 path    => ['/usr/sbin', '/usr/bin'],
             }
+        }
+
+        exec { "Set IO scheduler on device /dev/${device_name} to ${disks_io_scheduler}":
+            command => "echo ${disks_io_scheduler} > /sys/block/${device_name}/queue/scheduler",
+            user    => 'root',
+            unless  => "grep -q '\\[${disks_io_scheduler}\\]' /sys/block/${device_name}/queue/scheduler",
+            path    => ['/usr/sbin', '/usr/bin'],
         }
     }
 }

@@ -473,7 +473,7 @@ profile::pki::client::certs: {}
 profile::ceph::osd::disk_models_without_write_cache:
   - DISK_MODEL_DEFAULT_PLACEHOLDER
 profile::ceph::osd::disks_io_scheduler: DISKS_IO_SCHEDULER_PLACEHOLDER
-profile::ceph::osd::os_disks: []
+profile::ceph::osd::num_os_disks: 2
 
 # MediaWiki apache configuration. Sites shared by all installations
 mediawiki::common_sites:

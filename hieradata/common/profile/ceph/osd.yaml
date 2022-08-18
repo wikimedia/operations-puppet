@@ -1,10 +1,8 @@
 profile::ceph::osd::disk_models_without_write_cache:
   # gotten by running: sudo cumin 'cloudcephosd*' 'hdparm -I /dev/sdd | grep Model'
-  - SSDSC2KG019T8R  # cloudcephosd[1001-1003].eqiad.wmnet
-  - MTFDDAK1T9TDN  # cloudcephosd[1004-1015].eqiad.wmnet
-  - MTFDDAK960TDN  # cloudcephosd[2001-2003]-dev.codfw.wmnet
-  - MTFDDAK1T9TDT  # cloudcephosd[1016-1020].eqiad.wmnet
-profile::ceph::osd::disks_io_scheduler: 'none'
-profile::ceph::osd::os_disks:
-  - sda
-  - sdb
+  - SSDSC2KG019T8R # cloudcephosd[1001-1003].eqiad.wmnet
+  - MTFDDAK1T9TDN # cloudcephosd[1004-1015].eqiad.wmnet
+  - MTFDDAK960TDN # cloudcephosd[2001-2003]-dev.codfw.wmnet
+  - MTFDDAK1T9TDT # cloudcephosd[1016-1020].eqiad.wmnet
+profile::ceph::osd::disks_io_scheduler: "none"
+profile::ceph::osd::num_os_disks: 2
