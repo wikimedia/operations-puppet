@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Really Awful Notorious CIsco config Differ
+# @summary class to mange rancid
+# @param active_server the FQDN of the active server
 class rancid (
     Stdlib::Fqdn $active_server,
 ){
@@ -21,92 +23,57 @@ class rancid (
         system     => true,
         home       => '/var/lib/rancid',
     }
-
-    ::keyholder::agent { 'rancid':
+    keyholder::agent { 'rancid':
         require        => Group['rancid'],
         trusted_groups => ['rancid'],
     }
 
-    file { '/etc/rancid/rancid.conf':
-        require => Package['rancid'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('rancid/rancid.conf.erb'),
+    file {
+        default:
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755';
+        '/etc/rancid':
+            ensure => directory;
+        '/etc/rancid/rancid.conf':
+            mode    => '0444',
+            content => template('rancid/rancid.conf.erb');
+        '/var/lib/rancid/bin/oglogin':
+            source  => 'puppet:///modules/rancid/bin/oglogin';
+        '/var/lib/rancid/bin/ograncid':
+            source  => 'puppet:///modules/rancid/bin/ograncid';
+        '/var/lib/rancid/bin/ssh-serial-console-wrapper':
+            source  => 'puppet:///modules/rancid/bin/ssh-serial-console-wrapper';
     }
-
-    file { '/var/lib/rancid/bin/oglogin':
-        require => Package['rancid'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/rancid/bin/oglogin',
-    }
-
-    file { '/var/lib/rancid/bin/ograncid':
-        require => Package['rancid'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/rancid/bin/ograncid',
-    }
-
-    file { '/var/lib/rancid/bin/ssh-serial-console-wrapper':
-        require => Package['rancid'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/rancid/bin/ssh-serial-console-wrapper',
-    }
-
-    file { '/var/lib/rancid/core':
-        require => [ Package['rancid'], User['rancid'] ],
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0774',
-        recurse => remote,
-        source  => 'puppet:///modules/rancid/core',
-    }
-
-    file { '/var/lib/rancid/core/configs':
-        ensure  => 'directory',
-        require => [ Package['rancid'], User['rancid'] ],
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0774',
-    }
-
-    file { '/var/lib/rancid/.cloginrc':
-        require => Package['rancid'],
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0440',
-        content => template('rancid/cloginrc.erb'),
-    }
-
-    file { '/var/lib/rancid/.gitconfig':
-        require => Package['rancid'],
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0440',
-        content => template('rancid/gitconfig.erb'),
-    }
-
-    file { '/var/lib/rancid/.ssh':
-        ensure  => 'directory',
-        require => [ Package['openssh-client', 'rancid'], User['rancid'] ],
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0700',
-    }
-
-    file { '/var/lib/rancid/.ssh/config':
-        ensure  => file,
-        require => [ Package['openssh-client', 'rancid'], User['rancid'] ],
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0644',
-        content => file('rancid/ssh_config'),
+    file {
+        default:
+            ensure => file,
+            owner  => 'rancid',
+            group  => 'rancid';
+        '/var/lib/rancid':
+            ensure => directory,
+            mode   => '0750';
+        '/var/lib/rancid/.cloginrc':
+            mode    => '0440',
+            content => template('rancid/cloginrc.erb');
+        '/var/lib/rancid/.gitconfig':
+            mode    => '0440',
+            content => template('rancid/gitconfig.erb');
+        '/var/lib/rancid/.ssh':
+            ensure => directory,
+            mode   => '0700';
+        '/var/lib/rancid/.ssh/config':
+            mode   => '0644',
+            source => 'puppet:///modules/rancid/ssh_config';
+        '/var/lib/rancid/core':
+            ensure  => directory,
+            recurse => remote,
+            mode    => '0774',
+            source  => 'puppet:///modules/rancid/core';
+        '/var/lib/rancid/core/configs':
+            ensure => directory,
+            mode   => '0774';
     }
 
     file_line { 'opengear_script':
@@ -119,11 +86,7 @@ class rancid (
       line => 'opengear;login;oglogin',
     }
 
-    if $active_server == $::fqdn {
-        $job_ensure = 'present'
-    } else {
-        $job_ensure = 'absent'
-    }
+    $job_ensure = ($active_server == $facts['networking']['fqdn']).bool2str('present', 'absent')
 
     systemd::timer::job { 'rancid-differ':
         ensure             => $job_ensure,
@@ -144,11 +107,5 @@ class rancid (
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 23:50:0'},
         monitoring_enabled => false,
         logging_enabled    => false,
-    }
-
-    file { '/var/log/rancid':
-        owner => 'rancid',
-        group => 'rancid',
-        mode  => '0750',
     }
 }
