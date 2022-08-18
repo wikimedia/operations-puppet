@@ -5,7 +5,7 @@ ldap:
   base-dn: dc=wikimedia,dc=org
   users_cn: ou=people
   groups_cn: ou=groups
-etcd::autogen_pwd_seed: 'seed'
+etcd::autogen_pwd_seed: "seed"
 profile::contacts::role_contacts: []
 
 # There are no prod-like Kubernetes clusters unless a project has
@@ -13,7 +13,7 @@ profile::contacts::role_contacts: []
 kubernetes_cluster_groups: {}
 
 profile::mail::default_mail_relay::enabled: true
-profile::mail::default_mail_relay::template: 'profile/mail/default_mail_relay/exim4.minimal.wmcs.erb'
+profile::mail::default_mail_relay::template: "profile/mail/default_mail_relay/exim4.minimal.wmcs.erb"
 
 profile::admin::managelingering: false
 profile::admin::purge_sudoers_d: false
@@ -39,7 +39,7 @@ profile::apt::purge_sources: false
 profile::apt::purge_preferences: false
 profile::apt::manage_apt_source: true
 profile::apt::install_audit_installed: false
-profile::apt::mirror: 'mirrors.wikimedia.org'
+profile::apt::mirror: "mirrors.wikimedia.org"
 profile::apt::use_private_repo: false
 
 profile::base::netbase::manage_etc_services: true
@@ -71,7 +71,7 @@ profile::puppet_compiler::puppetdb_port: ~
 profile::puppet_compiler::puppetdb_proxy: false
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
-profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'
+profile::base::core_dump_pattern: "/var/tmp/core/core.%h.%e.%p.%t"
 profile::base::unprivileged_userns_clone: false
 http_proxy: ~
 puppet_ca_server: ~
@@ -79,14 +79,14 @@ manage_puppet_ca_file: false
 
 profile::cumin::monitor_agentrun: false
 
-profile::base::labs::unattended_wmf: 'present'
-profile::base::labs::unattended_distro: 'present'
+profile::base::labs::unattended_wmf: "present"
+profile::base::labs::unattended_distro: "present"
 
 profile::ci::slave::labs::common::manage_srv: true
 profile::ci::package_builder::extra_packages: []
 
-profile::debmonitor::client::ensure: 'absent'
-profile::debmonitor::client::ssl_ca: 'puppet'
+profile::debmonitor::client::ensure: "absent"
+profile::debmonitor::client::ssl_ca: "puppet"
 profile::debmonitor::client::ssl_ca_label: ~
 
 profile::debmonitor::server::settings_module: debmonitor.settings.test
@@ -94,12 +94,12 @@ profile::debmonitor::server::ssl_certs: puppet
 profile::debmonitor::server::django_log_db_queries: true
 profile::debmonitor::server::django_require_login: false
 # Only scap3 is a valid deployment method anything else is noop
-profile::debmonitor::server::app_deployment: 'NONE'
+profile::debmonitor::server::app_deployment: "NONE"
 profile::debmonitor::server::enable_logback: false
 profile::debmonitor::server::enable_monitoring: false
 # Empty groups resolves to valid-user
 profile::debmonitor::server::required_groups: []
-profile::debmonitor::server::trusted_ca_source: '/etc/ssl/certs/Puppet_Internal_CA.pem'
+profile::debmonitor::server::trusted_ca_source: "/etc/ssl/certs/Puppet_Internal_CA.pem"
 
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::access_level: not_protected
@@ -110,9 +110,9 @@ profile::gitlab::runner::docker_volume: false
 profile::gitlab::runner::docker_volume_min: 40
 profile::gitlab::runner::docker_volume_max: 200
 profile::gitlab::runner::docker_network: gitlab-runner
-profile::gitlab::runner::docker_subnet: '172.20.0.0/16'
+profile::gitlab::runner::docker_subnet: "172.20.0.0/16"
 profile::gitlab::runner::docker_settings: {}
-profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
+profile::gitlab::runner::docker_version: "18.09.1+dfsg1-7.1+deb10u3"
 profile::gitlab::runner::docker_gc_interval: 5m
 profile::gitlab::runner::docker_gc_images_high_water_mark: 20gb
 profile::gitlab::runner::docker_gc_images_low_water_mark: 10gb
@@ -123,15 +123,15 @@ profile::gitlab::runner::locked: false
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::run_untagged: true
 profile::gitlab::runner::tags: []
-profile::gitlab::runner::user: 'root'
+profile::gitlab::runner::user: "root"
 # restricted firewall is not used in cloud
 profile::gitlab::runner::restrict_firewall: false
 profile::gitlab::runner::allowed_services: {}
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/buildkitd:0.10.3
 profile::gitlab::runner::clear_interval:
-  start: 'OnCalendar'
-  interval: '*-*-* 05:00:00'
+  start: "OnCalendar"
+  interval: "*-*-* 05:00:00"
 profile::gitlab::runner::enable_clear_cache: true
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
@@ -140,30 +140,30 @@ profile::netbox::discovery_name: "%{facts.networking.fqdn}"
 profile::netbox::additional_sans: []
 profile::netbox::ssl_provider: acme_chief
 profile::netbox::slaves: []
-profile::netbox::authentication_provider: 'ldap'
+profile::netbox::authentication_provider: "ldap"
 profile::netbox::changelog_retention: 1
 profile::netbox::jobresult_retention: 1
 profile::netbox::prefer_ipv4: false
 profile::netbox::cas_rename_attributes:
-  cn: 'first_name'
-  mail: 'email'
+  cn: "first_name"
+  mail: "email"
 profile::netbox::cas_group_attribute_mapping: {}
 profile::netbox::cas_group_mapping: {}
 profile::netbox::cas_group_required: []
 profile::netbox::cas_server_url: ~
 profile::netbox::cas_username_attribute: ~
 
-profile::nginx::ensure: 'present'
+profile::nginx::ensure: "present"
 profile::nginx::managed: true
-profile::nginx::variant: 'light'
-profile::nginx::tmpfs_size: '1g'
+profile::nginx::variant: "light"
+profile::nginx::tmpfs_size: "1g"
 
 profile::mail::mx::enable_ldap: false
 
 profile::puppetdb::gc_interval: 20
-profile::puppetdb::node_ttl: '7d'
-profile::puppetdb::node_purge_ttl: '14d'
-profile::puppetdb::report_ttl: '1d'
+profile::puppetdb::node_ttl: "7d"
+profile::puppetdb::node_purge_ttl: "14d"
+profile::puppetdb::report_ttl: "1d"
 
 profile::puppetdb::database::users:
   puppetdb@localhost:
@@ -177,42 +177,42 @@ profile::puppetdb::database::users:
     database: puppetdb
     cidr: "%{facts.networking.ip}/32"
     privileges:
-      table: 'SELECT'
+      table: "SELECT"
   prometheus@localhost:
-    user: 'prometheus'
-    database: 'postgres'
-    type: 'local'
-    method: 'peer'
-profile::puppetdb::database::shared_buffers: '768MB'
+    user: "prometheus"
+    database: "postgres"
+    type: "local"
+    method: "peer"
+profile::puppetdb::database::shared_buffers: "768MB"
 profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
-profile::puppetdb::database::log_line_prefix: '%t '
+profile::puppetdb::database::log_line_prefix: "%t "
 profile::puppetdb::database::log_min_duration_statement: ~
 profile::puppetdb::database::log_autovacuum_min_duration: ~
 profile::puppetdb::database::ssldir: ~
-profile::puppetdb::jvm_opts: '-Xmx256m'
+profile::puppetdb::jvm_opts: "-Xmx256m"
 profile::puppetdb::slaves: []
 profile::puppetdb::log_level: info
 profile::puppetdb::tmpfs_stockpile_queue: false
 profile::puppetdb::clean_stockpile: false
 profile::puppetdb::facts_blacklist: []
-profile::puppetdb::facts_blacklist_type: 'literal'
+profile::puppetdb::facts_blacklist_type: "literal"
 profile::envoy::ensure: present
-profile::tlsproxy::envoy::sni_support: 'no'
+profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::websockets: false
 profile::tlsproxy::envoy::upstream_response_timeout: 65.0
 profile::tlsproxy::envoy::floc_opt_out: false
-profile::tlsproxy::envoy::ssl_provider: 'sslcert'
+profile::tlsproxy::envoy::ssl_provider: "sslcert"
 profile::tlsproxy::envoy::cfssl_options: {}
 profile::tlsproxy::envoy::access_log: false
 profile::tlsproxy::envoy::retries: true
 profile::tlsproxy::envoy::use_remote_address: false
 profile::tlsproxy::envoy::services:
-  - server_names: ['*']
+  - server_names: ["*"]
     port: 80
 profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
-profile::tlsproxy::envoy::header_key_format: 'none'
+profile::tlsproxy::envoy::header_key_format: "none"
 profile::tlsproxy::envoy::listen_ipv6: false
 profile::tlsproxy::envoy::global_cert_name: ~
 profile::tlsproxy::envoy::idle_timeout: ~
@@ -230,14 +230,14 @@ profile::base::firewall::defs_from_etcd: false
 prometheus_nodes: []
 
 # We don't want prometheus scraping NFS on the clients, it locks up
-prometheus::node_exporter::ignored_fs_types: '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nfs.*|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$'
+prometheus::node_exporter::ignored_fs_types: "^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nfs.*|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$"
 profile::prometheus::icinga_exporter::label_teams_config: {}
 
 # We don't use these feature on VMs.
 profile::backup::enable: false
 profile::backup::ferm_directors: []
-profile::backup::pool: ''
-profile::backup::director: 'backup.example.com'
+profile::backup::pool: ""
+profile::backup::director: "backup.example.com"
 profile::backup::days: []
 
 puppetmaster::locale_servers: {}
@@ -247,22 +247,22 @@ profile::puppetmaster::frontend::config: {}
 profile::puppetmaster::frontend::web_hostname: puppet
 profile::puppetmaster::frontend::prevent_cherrypicks: true
 profile::puppetmaster::frontend::allow_from:
-  - '*.wikimedia.org'
-  - '*.eqiad.wmnet'
-  - '*.ulsfo.wmnet'
-  - '*.esams.wmnet'
-  - '*.codfw.wmnet'
-  - '*.eqsin.wmnet'
-  - '*.drmrs.wmnet'
-  - '*.wmflabs'
-  - '*.wikimedia.cloud'
+  - "*.wikimedia.org"
+  - "*.eqiad.wmnet"
+  - "*.ulsfo.wmnet"
+  - "*.esams.wmnet"
+  - "*.codfw.wmnet"
+  - "*.eqsin.wmnet"
+  - "*.drmrs.wmnet"
+  - "*.wmflabs"
+  - "*.wikimedia.cloud"
 profile::puppetmaster::frontend: chain
 puppetmaster::servers: {}
 profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::canary_hosts: []
 profile::puppetmaster::frontend::monitor_signed_certs: false
-profile::puppetmaster::frontend::signed_certs_warning: 2419200  # 4 weeks
-profile::puppetmaster::frontend::signed_certs_critical: 604800  # 1 weeks
+profile::puppetmaster::frontend::signed_certs_warning: 2419200 # 4 weeks
+profile::puppetmaster::frontend::signed_certs_critical: 604800 # 1 weeks
 profile::puppetmaster::frontend::mcrouter_ca_secret: ~
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
@@ -310,7 +310,7 @@ profile::idp::cors_allow_credentials: false
 profile::idp::cors_allowed_origins: []
 profile::idp::cors_allowed_headers: []
 profile::idp::cors_allowed_methods:
-  - 'GET'
+  - "GET"
 profile::idp::ldap_attributes:
   - cn
   - memberOf
@@ -322,10 +322,10 @@ profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
 graphite_host: localhost
-profile::prometheus::memcached_exporter::arguments: ''
+profile::prometheus::memcached_exporter::arguments: ""
 profile::prometheus::mcrouter_exporter::mcrouter_port: 11213
 profile::prometheus::mcrouter_exporter::listen_port: 9151
-profile::prometheus::pushgateway_host: 'invalid'
+profile::prometheus::pushgateway_host: "invalid"
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: false
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: false
@@ -346,7 +346,7 @@ profile::mediawiki::php::php_versions:
 profile::java::java_packages: []
 profile::java::extra_args: {}
 profile::java::hardened_tls: false
-profile::java::egd_source: '/dev/random'
+profile::java::egd_source: "/dev/random"
 profile::java::trust_puppet_ca: false
 profile::java::enable_dbg: false
 profile::thanos::httpd::query_port: 16902
@@ -361,13 +361,13 @@ profile::thanos::swift::cluster_label: ~
 profile::gerrit::ipv6: ~
 profile::gerrit::enable_monitoring: true
 
-profile::alertmanager::irc::host: 'example.net'
+profile::alertmanager::irc::host: "example.net"
 profile::alertmanager::irc::port: 6697
-profile::alertmanager::irc::nickname: 'jinxer-wm'
-profile::alertmanager::irc::realname: 'I jinx things at WMF'
-profile::alertmanager::irc::channel: 'wikimedia-observability-spam'
-profile::alertmanager::web::vhost: 'alerts.%{facts.domain}'
-profile::alertmanager::api::vhost_alias: 'alertmanager-*.%{facts.domain}'
+profile::alertmanager::irc::nickname: "jinxer-wm"
+profile::alertmanager::irc::realname: "I jinx things at WMF"
+profile::alertmanager::irc::channel: "wikimedia-observability-spam"
+profile::alertmanager::web::vhost: "alerts.%{facts.domain}"
+profile::alertmanager::api::vhost_alias: "alertmanager-*.%{facts.domain}"
 profile::alertmanager::api::ro: []
 profile::alertmanager::api::rw: []
 profile::restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
@@ -399,7 +399,7 @@ profile::swift::proxy::enable_swiftrepl: false
 
 profile::memcached::enable_16: false
 profile::memcached::threads: ~
-profile::memcached::version: 'present'
+profile::memcached::version: "present"
 profile::memcached::growth_factor: 1.05
 profile::memcached::min_slab_size: 48
 profile::memcached::max_seq_reqs: 200
@@ -410,7 +410,6 @@ profile::memcached::enable_tls: false
 profile::memcached::notls_port: ~
 profile::memcached::ssl_cert: ~
 profile::memcached::ssl_key: ~
-
 
 # Only added to make CI happy. cloud has no LVS
 profile::lvs::realserver::poolcounter_backends: ~
@@ -431,7 +430,7 @@ profile::query_service::username: blazegraph
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::monitoring_enabled: false
-profile::druid::turnilo::contact_group: 'analytics'
+profile::druid::turnilo::contact_group: "analytics"
 
 profile::logoutd::owner: root
 profile::logoutd::group: root
@@ -457,18 +456,18 @@ profile::pki::server::vhost: "%{facts.networking.fqdn}"
 profile::pki::root_ca::enable_backups: false
 
 profile::pki::client::root_ca_cn: WMF_TEST_CA
-profile::pki::client::root_ca_source:  'puppet:///modules/profile/pki/ROOT/WMF_TEST_CA.pem'
+profile::pki::client::root_ca_source: "puppet:///modules/profile/pki/ROOT/WMF_TEST_CA.pem"
 profile::pki::client::ensure: absent
 profile::pki::client::signer_host: pki-intermediate.pki.eqiad1.wikimedia.cloud
 profile::pki::client::signer_port: 443
-profile::pki::client::bundles_source: 'puppet:///modules/profile/pki/wmcs-intermediates'
+profile::pki::client::bundles_source: "puppet:///modules/profile/pki/wmcs-intermediates"
 profile::pki::client::enable_proxy: false
 profile::pki::client::listen_addr: 127.0.0.1
 profile::pki::client::listen_port: 8888
 profile::pki::client::mutual_tls_client_cert: "%{facts.puppet_config.hostcert}"
 profile::pki::client::mutual_tls_client_key: "%{facts.puppet_config.hostprivkey}"
-profile::pki::client::tls_remote_ca: '/etc/ssl/localcerts/pki_api_CA.pem'
-profile::pki::client::tls_remote_ca_source: 'puppet:///modules/profile/pki/cloud/pki_api_ca.pem'
+profile::pki::client::tls_remote_ca: "/etc/ssl/localcerts/pki_api_CA.pem"
+profile::pki::client::tls_remote_ca_source: "puppet:///modules/profile/pki/cloud/pki_api_ca.pem"
 profile::pki::client::certs: {}
 
 profile::ceph::osd::disk_models_without_write_cache:
@@ -493,9 +492,9 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
 
 profile::syslog::centralserver::log_retention_days: 90
 
-profile::openstack::base::radosgw::service_user: 'swift'
-profile::openstack::base::radosgw::service_user_project: 'swift'
-profile::openstack::base::radosgw::api_bind_port: '18080'
+profile::openstack::base::radosgw::service_user: "swift"
+profile::openstack::base::radosgw::service_user_project: "swift"
+profile::openstack::base::radosgw::api_bind_port: "18080"
 
 profile::openstack::base::cinder::backup::path: /dev/null
 profile::openstack::base::cinder::backup::user: nobody
@@ -503,16 +502,16 @@ profile::openstack::base::cinder::backup::user: nobody
 # To be overridden in Pontoon stacks
 public_domain: "%{::labsproject}.wmcloud.org"
 
-profile::trafficserver::backend::trusted_ca_path: '/etc/ssl/certs/ats_trusted_ca.pem'
+profile::trafficserver::backend::trusted_ca_path: "/etc/ssl/certs/ats_trusted_ca.pem"
 profile::trafficserver::backend::trusted_ca_source: "%{facts.puppet_config.localcacert}"
 
-profile::tcpircbot::irc::host: 'irc.libera.chat'
+profile::tcpircbot::irc::host: "irc.libera.chat"
 profile::tcpircbot::irc::port: 6697
 
 profile::debdeploy::client::ensure: absent
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
-    - '*'
+    - "*"
 
 # Will be overridden in toolforge
 docker::registry: ""
@@ -520,13 +519,13 @@ docker::registry: ""
 # profile::tlsproxy::instance defaults
 profile::tlsproxy::instance::bootstrap_protection: false
 profile::tlsproxy::instance::nginx_variant: full
-profile::tlsproxy::instance::nginx_client_max_body_size: '100m'
+profile::tlsproxy::instance::nginx_client_max_body_size: "100m"
 profile::tlsproxy::instance::nginx_tune_for_media: false
 profile::tlsproxy::instance::nginx_ssl_dyn_rec: false
 profile::tlsproxy::instance::ssl_compatibility_mode: compat
 
 # Profile::monitoring::host defaults
-profile::monitoring::hardware_monitoring: 'present'
+profile::monitoring::hardware_monitoring: "present"
 profile::monitoring::contact_group: "%{alias('contactgroups')}"
 profile::monitoring::mgmt_contact_group: "%{alias('mgmt_contactgroups')}"
 # the -A -i ... part is a gross hack to workaround Varnish partitions
@@ -547,12 +546,12 @@ profile::auto_restarts::with_debdeploy: false
 
 profile::environment::ls_aliases: false
 profile::environment::export_systemd_env: true
-profile::environment::custom_bashrc: 'base/environment/bash.bashrc.erb'
-profile::environment::custom_skel_bashrc: 'base/environment/skel/bashrc.erb'
-profile::environment::custom_skel_zshrc: 'base/environment/skel/zshrc.erb'
-profile::environment::editor: 'use_default'
+profile::environment::custom_bashrc: "base/environment/bash.bashrc.erb"
+profile::environment::custom_skel_bashrc: "base/environment/skel/bashrc.erb"
+profile::environment::custom_skel_zshrc: "base/environment/skel/zshrc.erb"
+profile::environment::editor: "use_default"
 profile::environment::profile_scripts:
-  field.sh: 'puppet:///modules/base/environment/field.sh'
+  field.sh: "puppet:///modules/base/environment/field.sh"
 profile::environment::variables: {}
 
 profile::systemd::timesyncd::ensure: present
@@ -560,17 +559,17 @@ profile::systemd::timesyncd::ntp_servers: []
 
 # puppetboard
 profile::puppetboard::ensure: present
-profile::puppetboard::puppetdb_host: 'localhost'
+profile::puppetboard::puppetdb_host: "localhost"
 profile::puppetboard::puppetdb_port: 8080
 profile::puppetboard::puppetdb_ssl_verify: true
 profile::puppetboard::puppetdb_cert: ~
 profile::puppetboard::puppetdb_key: ~
 profile::puppetboard::puppetdb_proto: ~
 profile::puppetboard::vhost: "%{facts.networking.fqdn}"
-profile::puppetboard:page_title: 'Puppetboard'
+profile::puppetboard:page_title: "Puppetboard"
 profile::puppetboard::localise_timestamp: false
 profile::puppetboard::enable_catalog: false
-profile::puppetboard::graph_type: 'pie'
+profile::puppetboard::graph_type: "pie"
 profile::puppetboard::graph_facts_override: []
 profile::puppetboard::secret_key: ~
 profile::puppetboard::inventory_facts_override: {}
@@ -600,22 +599,22 @@ profile::puppetmaster::backend::config: {}
 profile::puppetmaster::backend::secure_private: false
 profile::puppetmaster::backend::prevent_cherrypicks: true
 profile::puppetmaster::backend::allow_from:
-- '*.wikimedia.org'
-- '*.eqiad.wmnet'
-- '*.ulsfo.wmnet'
-- '*.esams.wmnet'
-- '*.codfw.wmnet'
-- '*.eqsin.wmnet'
-- '*.drmrs.wmnet'
+  - "*.wikimedia.org"
+  - "*.eqiad.wmnet"
+  - "*.ulsfo.wmnet"
+  - "*.esams.wmnet"
+  - "*.codfw.wmnet"
+  - "*.eqsin.wmnet"
+  - "*.drmrs.wmnet"
 profile::puppetmaster::backend::extra_auth_rules: ~
-profile::netbox::host::status: 'unknown'
+profile::netbox::host::status: "unknown"
 profile::netbox::host::location: ~
 profile::ssh::server::listen_port: 22
 profile::ssh::server::listen_addresses: []
 profile::ssh::server::permit_root: true
 profile::ssh::server::authorized_keys_file:
-  - '/etc/ssh/userkeys/%u'
-  - '/etc/ssh/userkeys/%u.d/cumin'
+  - "/etc/ssh/userkeys/%u"
+  - "/etc/ssh/userkeys/%u.d/cumin"
 profile::ssh::server::authorized_keys_command: /usr/sbin/ssh-key-ldap-lookup
 profile::ssh::server::disable_nist_kex: true
 profile::ssh::server::explicit_macs: true
@@ -626,14 +625,14 @@ profile::ssh::server::challenge_response_auth: true
 profile::ssh::server::max_sessions: ~
 profile::ssh::server::max_startups: ~
 profile::ssh::server::gateway_ports: false
-profile::ssh::server::accept_env: ['LANG', 'LC_*']
+profile::ssh::server::accept_env: ["LANG", "LC_*"]
 
 profile::ssh::client::manage_ssh_keys: true
 profile::ssh::client::manage_ssh_config: false
 profile::ssh::client::hash_known_hosts: true
 profile::ssh::client::gss_api_authentication: true
 profile::ssh::client::gss_api_delegate_credentials: false
-profile::ssh::client::send_env: ['LANG', 'LC_*']
+profile::ssh::client::send_env: ["LANG", "LC_*"]
 
 profile::cache::varnish::frontend::backends_in_etcd: true
 profile::cache::varnish::frontend::packages_component: main
@@ -641,7 +640,7 @@ profile::cache::varnish::frontend::transient_gb: 0
 profile::cache::varnish::frontend::listen_uds: []
 profile::cache::varnish::frontend::uds_owner: root
 profile::cache::varnish::frontend::uds_group: root
-profile::cache::varnish::frontend::uds_mode: '700'
+profile::cache::varnish::frontend::uds_mode: "700"
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
 profile::cache::varnish::frontend::text::esitest_ensure: absent
