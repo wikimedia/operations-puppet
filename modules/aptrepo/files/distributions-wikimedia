@@ -215,6 +215,7 @@ Components: main
  thirdparty/confluent
  thirdparty/elastic65
  thirdparty/elastic68
+ thirdparty/elastic710
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/hwraid
@@ -229,6 +230,7 @@ Update:
 # sorted list, leading whitespace matters!
  elastic65
  elastic68
+ elastic710
  hp-mcp-bullseye
  hwraid-stretch
  node14-bullseye
