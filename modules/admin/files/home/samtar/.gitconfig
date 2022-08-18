@@ -1,0 +1,33 @@
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+    unstage = reset HEAD
+    rbi = rebase -i --autosquash
+    cif = !git commit --fixup=$(git-log-vgrep-most-recent-commit 'fixup!')
+    lg = log -p HEAD..@{u}
+    push-for-review = push origin HEAD:refs/for/master
+    push-and-merge = push origin HEAD:refs/for/master%l=Code-Review+2
+[core]
+    editor = nano
+    fscache = true
+    symlinks = true
+    fsmonitor = true
+[gitreview]
+    remote = origin
+    username = samtar
+[init]
+    defaultBranch = main
+[push]
+    default = matching
+[status]
+    submoduleSummary = true
+[url "https://gerrit.wikimedia.org/r/p/"]
+    insteadOf = ssh://gerrit.wikimedia.org:29418/
+[user]
+    name = TheresNoTime
+    email = starling-ctr@wikimedia.org
