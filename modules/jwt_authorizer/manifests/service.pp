@@ -49,7 +49,7 @@ define jwt_authorizer::service(
     }
 
     systemd::service { $title:
-        ensure  => stdlib::ensure($ensure, 'service'),
+        ensure  => $ensure,
         content => template('jwt_authorizer/authorizer.service.erb'),
         restart => true,
     }
