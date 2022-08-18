@@ -4,5 +4,6 @@ profile::ceph::osd::disk_models_without_write_cache:
   - MTFDDAK1T9TDN # cloudcephosd[1004-1015].eqiad.wmnet
   - MTFDDAK960TDN # cloudcephosd[2001-2003]-dev.codfw.wmnet
   - MTFDDAK1T9TDT # cloudcephosd[1016-1020].eqiad.wmnet
+  - HFS1T9G32FEH-BA10A # cloudcephosd[1021-34].eqiad.wmnet
 profile::ceph::osd::disks_io_scheduler: "none"
 profile::ceph::osd::num_os_disks: 2
