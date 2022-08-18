@@ -18,54 +18,7 @@ proxy_cache_path <%= @nginx_cache_dir %>
                   inactive=7d
                   keys_zone=cache:10m
                   use_temp_path=off;
-
-# Define a separate cache for the auth backends to mitigate subrequests for
-# every authentication.
-proxy_cache_path <%= @nginx_auth_cache_dir %>
-                  levels=1:2
-                  max_size=100m
-                  inactive=1h
-                  keys_zone=auth:1m
-                  use_temp_path=off;
 <%- end -%>
-
-# Some hosts (e.g. GitLab trusted runners) can be allowed to authenticate to
-# the unrestricted space using a JSON Web Token. Others will have to use
-# shared credentials via basic auth.
-geo $auth_type_maybe {
-    default "basic";
-    <%- @jwt_allowed_ips.each do |host| %>
-    <%= host %> "jwt";
-    <%- end -%>
-}
-
-# Read operations are always allowed in the unrestricted space. Note that this
-# mapping is used over a simpler use of limit_expect because the latter does
-# not play nicely with auth_request.
-map $request_method $auth_type {
-    GET "none";
-    HEAD "none";
-    OPTIONS "none";
-    default $auth_type_maybe;
-}
-
-# To get auth_basic working in the context of an auth_request, the latter
-# has to be made to a totally separate request space, i.e. doing a
-# proxy_pass to another server/port. This is the simple server that only
-# performs basic auth. Its responses can be cached aggressively.
-server {
-    listen unix:<%= @nginx_auth_socket %>;
-
-    location / {
-      auth_basic "docker-registry (push)";
-      auth_basic_user_file <%= @regular_push_file %>;
-      try_files DUMMY @ok;
-    }
-
-    location @ok {
-      return 202;
-    }
-}
 
 server {
     listen 443 default_server ssl;
@@ -237,12 +190,7 @@ server {
       send_timeout                120;
     }
 
-    # Capture the original request path here so we can pass it to
-    # jwt-authorizer in /auth/jwt (the use of rewrite in /auth means we'd
-    # otherwise lose track of it)
-    location ~ ^/v2/(.*) {
-      set $auth_request_path $1;
-
+    location /v2 {
       # Don't pollute edge caches with docker images.
       # Note an approach for CC: max-age=60 or 600 would gives us a small amount
       # of caching and protects us in big stormy scenarios. However we have CI
@@ -255,16 +203,17 @@ server {
       # http://nginx.org/en/docs/http/ngx_http_headers_module.html
       add_header 'Vary' 'Accept' always;
 
-      <%- if @read_only_mode %>
+      # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
+      <%- if @read_only_mode %>
         # this docker registry is in read only mode
         # and it will not accept pushing new images.
         deny all;
-      }
       <%- else -%>
-      auth_request /auth;
-      auth_request_set $auth_status $upstream_status;
+        auth_basic "docker-registry (regular-push)";
+        auth_basic_user_file <%= @regular_push_file %>;
       <%- end -%>
+      }
 
       proxy_pass http://registry;
       proxy_redirect off;
@@ -298,56 +247,5 @@ server {
         include /etc/nginx/registry-nginx-cache.conf;
       }
       <%- end -%>
-    }
-
-    # Below are a number of internal locations used by auth_request to route
-    # to either basic auth or JSON Web Token auth based on the value of
-    # $auth_type (see the geo and map directives at the top). Note it would be
-    # much simpler if we could do something like `auth_request
-    # /auth/$auth_type` but unfortunately auth_request does not support
-    # variables.
-    location = /auth {
-      internal;
-      set $auth_proxy_method $request_method;
-      rewrite ^ /auth/$auth_type;
-    }
-
-    location = /auth/basic {
-      internal;
-
-      # Aggressively cache the responses from the basic auth server basing the
-      # key solely on the authorization header. This avoids constant
-      # subrequests.
-      proxy_cache auth;
-      proxy_cache_key "basic $http_authorization";
-      proxy_cache_valid 202 401 1h;
-
-      proxy_pass http://unix:<%= @nginx_auth_socket %>:/;
-      proxy_pass_request_body off;
-      proxy_set_header Content-Length "";
-      proxy_method HEAD;
-    }
-
-    location = /auth/jwt {
-      internal;
-
-      # Cache JWT authorization as well but be less aggressive about it, only
-      # caching successful auths for 1 minute. Note that if the jwt-authorizer
-      # is ever refactored to use more than the request path and authorization
-      # header to make decisions, the cache key will need to be changed
-      # accordingly.
-      proxy_cache auth;
-      proxy_cache_key "jwt $request_uri$http_authorization";
-      proxy_cache_valid 200 202 1m;
-
-      proxy_pass http://unix:<%= @jwt_authorizer_socket %>:/$auth_request_path;
-      proxy_pass_request_body off;
-      proxy_set_header Content-Length "";
-      proxy_method $auth_proxy_method;
-    }
-
-    location = /auth/none {
-      internal;
-      return 200;
     }
 }
