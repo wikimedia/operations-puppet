@@ -16,6 +16,7 @@ class profile::ceph::osd(
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
     $cluster_iface = $osd_hosts[$facts['fqdn']]['cluster']['iface']
+    $public_iface = $osd_hosts[$facts['fqdn']]['public']['iface']
 
     require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
@@ -63,7 +64,7 @@ class profile::ceph::osd(
         notify    => Exec['set-osd-cluster-mtu'],
     }
     interface::setting { 'osd-public-mtu':
-        interface => $cluster_iface,
+        interface => $public_iface,
         setting   => 'mtu',
         value     => '9000',
         before    => Class['ceph::common'],
@@ -75,7 +76,7 @@ class profile::ceph::osd(
         refreshonly => true,
     }
     exec { 'set-osd-public-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${cluster_iface}",
+        command     => "/usr/sbin/ip link set mtu 9000 ${public_iface}",
         refreshonly => true,
     }
 
