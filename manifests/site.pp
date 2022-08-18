@@ -841,7 +841,7 @@ node 'db2151.codfw.wmnet' {
 }
 
 # New db nodes T306849
-node /^db21(8[0-2])\.codfw\.wmnet/ {
+node /^db21(8[1-2])\.codfw\.wmnet/ {
     role(insetup)
 }
 
