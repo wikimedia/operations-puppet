@@ -34,6 +34,10 @@ profile::pki::multirootca::intermediates:
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
         auth_key: 'k8s_mlstaging'
+      k8s_dse:
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_dse'
   kafka:
     ocsp_port: 10003
     default_usages:
