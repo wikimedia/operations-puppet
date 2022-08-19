@@ -1,3 +1,4 @@
+profile::ssh::server::listen_addresses: ["10.192.32.147"]
 phabricator::tools::dump: false
 profile::phabricator::main::phd_service_ensure: stopped
 # enable git-ssh.wikimedia.org, default absent on new hosts
