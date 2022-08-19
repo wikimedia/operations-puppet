@@ -1,2 +1,30 @@
+#!/bin/bash
 export REPREPRO_BASE_DIR=/srv/wikimedia
-export GNUPGHOME=/root/.gnupg 
+export GNUPGHOME=/root/.gnupg
+export BUILD_HOST="build2001.codfw.wmnet"
+
+fetch_package() {
+    if [ $# -ne 2 ]; then
+        echo "usage: import_package <distro> <package_name>"
+        exit 1
+    fi
+    local PKGDIR="${HOME}/${1}/${2}"
+    mkdir -p "$PKGDIR"
+    pushd "$PKGDIR" > /dev/null || return 1
+    rsync -vaz "${BUILD_HOST}::pbuilder-result/${1}-amd64/*${2}*" .
+    popd > /dev/null || return 1
+}
+
+
+add_package() {
+    if [ $# -ne 2 ]; then
+        echo "usage: add_package <distro> <changes_file_path>"
+        exit 1
+    fi
+    # Let's figure out if we want to add --ignore=wrongdistribution
+    distro=$(perl -ne 'print $1 if /^Distribution: (.*)-wikimedia/' "$2")
+    if [ "$distro" != "$1" ]; then
+        opts="--ignore=wrongdistribution"
+    fi
+    sudo -i reprepro "$opts" include "${1}-wikimedia" "$2"
+}
