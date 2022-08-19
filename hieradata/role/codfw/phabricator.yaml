@@ -1,22 +1,3 @@
-phabricator::vcs::address::v4: "10.192.32.149"
-phabricator::vcs::address::v6: "2620:0:860:103:10:192:32:149"
-
-# TODO: deduplicate section below
-phabricator::vcs::listen_addresses:
-  - "10.192.32.149"
-  - "208.80.153.250"
-  - "[2620:0:860:103:10:192:32:149]"
-  - "[2620:0:860:ed1a::3:fa]"
-profile::phabricator::main::vcs_addresses:
-  - "10.192.32.149"
-  - "208.80.153.250"
-  - "[2620:0:860:103:10:192:32:149]"
-  - "[2620:0:860:ed1a::3:fa]"
-
-lvs::realserver::realserver_ips:
-  - "208.80.153.250"
-  - "2620:0:860:ed1a::3:fa"
-
 phabricator::mysql::master: "m3-master.codfw.wmnet"
 phabricator::mysql::master::port: 3306
 phabricator::mysql::slave: "m3-slave.codfw.wmnet"
