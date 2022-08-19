@@ -412,3 +412,6 @@ eqiad:
     datahubsearch1001.eqiad.wmnet: [opensearch]
     datahubsearch1002.eqiad.wmnet: [opensearch]
     datahubsearch1003.eqiad.wmnet: [opensearch]
+  dse-k8s:
+    dse-k8s-ctrl1001.eqiad.wmnet: [kubemaster]
+    dse-k8s-ctrl1002.eqiad.wmnet: [kubemaster]
