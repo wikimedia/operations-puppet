@@ -77,6 +77,7 @@ hosts:
     - ms-be2064
     - ms-be2065
     - ms-be2066
-    - ms-be2067
+    - ms-be2067:
+        - sdc1: failed
     - ms-be2068
     - ms-be2069
