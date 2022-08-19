@@ -77,7 +77,7 @@ class vopsbot(
         ensure => directory,
         owner  => $daemon_user,
         group  => $daemon_user,
-        mode   => '0750',
+        mode   => '0755',
     }
     # pre-generate the database
     # TODO: sync from active => passive instance.
