@@ -1,7 +1,7 @@
 varnishtest "cache_text frontend headers"
 
 server s1 {
-    loop 10 {
+    loop 11 {
         rxreq
         txresp
     }
@@ -73,6 +73,14 @@ client c1 {
     expect resp.http.Set-Cookie ~ "WMF-Last-Access="
     expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
     expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+
+    # We make exceptions for analytics cookies: We don't want any analytics
+    # cookies sent through the API
+    txreq -url "/" -hdr "Host: api.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
+    expect resp.http.Set-Cookie !~ "WMF-Last-Access="
+    expect resp.http.Set-Cookie !~ "GeoIP="
 
     txreq -url "/" -hdr "Host: test.wikidata.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp

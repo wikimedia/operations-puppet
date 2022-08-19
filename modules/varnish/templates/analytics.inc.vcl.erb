@@ -86,20 +86,22 @@ sub analytics_last_access_deliver_ {
     /*
      * WMF-Last-Access
      */
-    if(req.http.X-WMF-LastStamp) {
-        set resp.http.X-Analytics = resp.http.X-Analytics
-            + ";WMF-Last-Access="
-            + req.http.X-WMF-LastStamp;
+    if(req.http.Host != "api.wikimedia.org") {
+        if(req.http.X-WMF-LastStamp) {
+            set resp.http.X-Analytics = resp.http.X-Analytics
+                + ";WMF-Last-Access="
+                + req.http.X-WMF-LastStamp;
 
-        // re-set the cookie if it's not from today
-        if (req.http.X-NowDay != req.http.X-WMF-LastStamp) {
+            // re-set the cookie if it's not from today
+            if (req.http.X-NowDay != req.http.X-WMF-LastStamp) {
+                call set_last_access_cookie__;
+            }
+
+        }
+        else {
+            // sets the initial cookie if no valid one existed
             call set_last_access_cookie__;
         }
-
-    }
-    else {
-        // sets the initial cookie if no valid one existed
-        call set_last_access_cookie__;
     }
 
     /*
