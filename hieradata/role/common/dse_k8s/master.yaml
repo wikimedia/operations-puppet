@@ -1,0 +1,75 @@
+cluster: dse_k8s
+profile::kubernetes::master::cluster_group: dse-k8s
+profile::kubernetes::master::accessible_to: all
+profile::kubernetes::master::apiserver_count: 2
+profile::kubernetes::master::allow_privileged: true
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::client::packages_from_future: true
+profile::kubernetes::master::use_cergen: true
+profile::kubernetes::master::service_cert: "dse-k8s-ctrl.svc.%{::site}.wmnet"
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/dse-k8s-ctrl.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/dse-k8s-ctrl.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::authz_mode: 'RBAC'
+profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/dse-k8s-ctrl.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::service_node_port_range: '1-65535'
+profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/dse-k8s"
+# See "kube-apiserver --help" for a list of available admission plugins
+# and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
+profile::kubernetes::master::admission_plugins:
+  enable:
+    - PodSecurityPolicy
+  disable:
+    - StorageObjectInUseProtection
+    - PersistentVolumeClaimResize
+profile::lvs::realserver::pools:
+  dse-k8s-ctrl:
+    services:
+      - "kube-apiserver"
+profile::admin::groups:
+  - ml-team-admins
+# Define in the private repo
+# profile::kubernetes::master::controllermanager_token:
+# profile::kubernetes::master::infrastructure_users:
+
+# Configuration to add the Kubelet to Master nodes for limited use cases
+# (like running bird for Calico, see T285927)
+# The nodes are also tainted to force kubernetes to consider these nodes not
+# usable to schedule pods onto.
+profile::kubernetes::node::kubelet_node_taints:
+  - node-role.kubernetes.io/master:NoSchedule
+profile::kubernetes::node::packages_from_future: true
+profile::base::overlayfs: true
+profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
+profile::docker::engine::packagename: "docker.io"
+profile::docker::engine::declare_service: true
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
+profile::kubernetes::use_cni: true
+profile::docker::engine::settings:
+  bridge: none
+  iptables: false
+  ip-masq: false
+  log-opts:
+    max-size: 100m
+  live-restore: true
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+profile::calico::kubernetes::calico_version: '3'
+# Tokens for the calico kubernetes users in private repo at:
+#profile::calico::kubernetes::calico_cni::token
+#profile::calico::kubernetes::calicoctl::token
+profile::kubernetes::node::masquerade_all: false
+# Defined in the private repo
+#profile::kubernetes::node::kubelet_token:
+# Defined in the private repo
+#profile::kubernetes::node::kubeproxy_token:
+profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::rsyslog::kubernetes::kubernetes_url: https://dse-k8s-ctrl.svc.%{::site}.wmnet:6443
+profile::rsyslog::kubernetes::enable: true
+profile::kubernetes::master_fqdn: dse-k8s-ctrl.svc.%{::site}.wmnet
+# Define in the private repo
+# profile::rsyslog::kubernetes::token
+prometheus::node_exporter::collectors_extra:
+  - processes
+profile::contacts::role_contacts:
+  - 'Data Engineering'
+  - 'Machine Learning'

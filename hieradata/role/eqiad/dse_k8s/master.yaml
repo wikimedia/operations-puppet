@@ -1,0 +1,26 @@
+profile::kubernetes::master::service_cluster_ip_range: 10.67.32.0/20
+profile::kubernetes::master::etcd_urls:
+ - https://dse-k8s-etcd1001.eqiad.wmnet:2379
+ - https://dse-k8s-etcd1002.eqiad.wmnet:2379
+ - https://dse-k8s-etcd1003.eqiad.wmnet:2379
+
+# Needed to run a kubelet on the master node
+# See T285927
+profile::kubernetes::node::kubelet_cluster_dns: "10.67.32.3"
+profile::kubernetes::master_hosts:
+- dse-k8s-ctrl1001.eqiad.wmnet
+- dse-k8s-ctrl1002.eqiad.wmnet
+
+profile::calico::kubernetes::bgp_peers:
+- dse-k8s-worker1001.eqiad.wmnet
+- dse-k8s-worker1002.eqiad.wmnet
+- dse-k8s-worker1003.eqiad.wmnet
+- dse-k8s-worker1004.eqiad.wmnet
+- dse-k8s-worker1005.eqiad.wmnet
+- dse-k8s-worker1006.eqiad.wmnet
+- dse-k8s-worker1007.eqiad.wmnet
+- dse-k8s-worker1008.eqiad.wmnet
+- dse-k8s-ctrl1001.eqiad.wmnet
+- dse-k8s-ctrl1002.eqiad.wmnet
+- cr1-eqiad.wikimedia.org
+- cr2-eqiad.wikimedia.org

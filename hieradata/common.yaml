@@ -76,6 +76,10 @@ kubernetes_cluster_groups:
     "ml-staging-codfw":
       dc: codfw
       master: ml-staging-ctrl.svc.codfw.wmnet
+  "dse-k8s":
+    "dse-k8s-eqiad":
+      dc: eqiad
+      master: dse-k8s-ctrl.svc.eqiad.wmnet
 
 # Swift cluster metadata
 # The keys here are called "cluster_label" in puppet code

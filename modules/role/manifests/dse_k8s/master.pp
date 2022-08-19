@@ -4,20 +4,20 @@ class role::dse_k8s::master {
     include profile::base::firewall
 
     # Sets up kubernetes on the machine
-    #include profile::kubernetes::master
+    include profile::kubernetes::master
     # Strictly speaking kubectl isn't needed, but have it here for historical
     # reasons
-    #include profile::kubernetes::client
+    include profile::kubernetes::client
 
     # Sets up docker on the machine
-    #include ::profile::docker::engine
+    include ::profile::docker::engine
     # Setup kubernetes stuff
-    #include ::profile::kubernetes::node
+    include ::profile::kubernetes::node
     # Setup calico
-    #include ::profile::calico::kubernetes
+    include ::profile::calico::kubernetes
 
     # LVS configuration (VIP)
-    #include ::profile::lvs::realserver
+    # include ::profile::lvs::realserver
 
     system::role { 'kubernetes::master':
         description => 'DSE Kubernetes master server',
