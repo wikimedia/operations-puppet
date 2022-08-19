@@ -9,10 +9,6 @@ class phabricator::phd (
     Stdlib::Unixpath $basedir     = '/',
     Boolean $use_systemd_sysuser  = false,
 ) {
-    group { 'phd':
-        ensure => present,
-        system => true,
-    }
 
     # PHD user needs perms to drop root perms on start
     file { "${basedir}/phabricator/scripts/daemon/":
@@ -40,13 +36,20 @@ class phabricator::phd (
 
     # TODO: remove if/else and parameter after migration to new servers
     if $use_systemd_sysuser {
-        systemd::sysuser { 'phd':
+        systemd::sysuser { $phd_user:
             ensure      => present,
             id          => '920:920',
             description => 'Phabricator daemon user',
             home_dir    => '/var/run/phd',
         }
+
     } else {
+
+        group { 'phd':
+            ensure => present,
+            system => true,
+        }
+
         user { $phd_user:
         gid    => 'phd',
         shell  => '/bin/false',
