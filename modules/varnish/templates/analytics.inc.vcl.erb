@@ -1,3 +1,5 @@
+include "analytics-dp-helper.vcl";
+
 /*****************************************************************************
  * Varnish VCL for WMF-Last-Access Cookie
  * Please see what this cookie is trying to acomplish:
@@ -164,6 +166,11 @@ sub analytics_provenance_deliver_ {
     }
 }
 
+/*****************************************************************************
+ * User Agent hints data
+ * See https://phabricator.wikimedia.org/T295073 for more details.
+ ****************************************************************************/
+
 /**
  * If the request was made over a secure transport, then set the Accept-CH
  * response header such that the following high-entropy client hints [0][1]
@@ -204,6 +211,132 @@ sub analytics_client_hints_deliver_ {
     }
 }
 
+/*****************************************************************************
+ * Differential Privacy Cookie
+ * See https://meta.wikimedia.org/wiki/Differential_privacy for more details.
+ ****************************************************************************/
+
+/**
+ * Receive and deliver client-side filtering for differential privacy — basically,
+ * we hash the page ID, truncate it to just three characters, check to see if
+ * is in the list already, and append it to the list if not.
+ * After the 10th pageview is seen, we exclude all following pageviews.
+ * This process resets at midnight UTC.
+ * Ensure that DP data never leaves Varnish
+ */
+
+sub analytics_differential_privacy_recv_ {
+    unset req.http.X-Include-PV; // clear any sent by the user
+    // If the cookie has argument in the form "include_pv=0" (auto-exclude; no further processing needed)
+    if (req.http.Cookie ~ "(^|;\s*)include_pv=0(;|$)") {
+        // Set to exclude for use later in _deliver
+        set req.http.X-Include-PV = "0";
+    }
+
+    unset req.http.X-WMF-DP; // clear any sent by the user
+    // If the cookie has argument in the form "WMF-DP=21f,90a,...123," (between 1-10 hex hashes)
+    if (req.http.Cookie ~ "(^|;\s*)WMF-DP=([a-f0-9]{3},?){1,10}(;|$)") {
+        set req.http.X-WMF-DP = regsub(
+            req.http.Cookie,
+            "^(?:.*;\s*)?WMF-DP=([^;]+).*$",
+            "\1"
+        );
+    }
+    // Remove the WMF-DP cookie cause we don't want this leaving varnish
+    set req.http.Cookie = regsub(
+        req.http.Cookie,
+        "(^|;\s*)WMF-DP=[^;]*",
+        ""
+    );
+}
+
+/*****************************************************************************
+ * !!! private to analytics_last_access_deliver !!!!
+ * Always expire at midnight UTC by adding 12 hours and rounding to nearest day
+ ****************************************************************************/
+sub set_differential_privacy_cookie__ {
+  header.append(resp.http.Set-Cookie,
+        "WMF-DP="
+        + req.http.X-WMF-DP
+        + ";Path=/;HttpOnly;secure;Expires="
+        + std.time(std.time2integer(now + 12h, 0) / 86400 * 86400, now)
+  );
+}
+
+/*****************************************************************************
+ * Excludes all following pageview via include_pv=0 cookie
+ * Remove WMF-DP cookie
+ ****************************************************************************/
+sub override_differential_privacy_cookie__ {
+    // RFC 6265 requires that the server sets the expire date in the past
+    // to remove a cookie (https://www.rfc-editor.org/rfc/rfc6265.html#section-3.1)
+    header.append(resp.http.Set-Cookie,
+        "WMF-DP=;Path=/;HttpOnly;secure;Expires=Sun, 06 Nov 1994 08:49:37 GMT");
+
+    header.append(resp.http.Set-Cookie,
+        "include_pv=0;Path=/;HttpOnly;secure;Expires="
+        + std.time(std.time2integer(now + 12h, 0) / 86400 * 86400, now)
+    );
+}
+
+sub analytics_differential_privacy_deliver_ {
+    // If known exclude from _recv, pass along but no other action required
+    if (req.http.X-Include-PV == "0") {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";include_pv=0";
+    } else {
+        // Article pageview (x-analytics has namespace=0 and page ID) so we should process for DP
+        if (resp.http.X-Analytics ~ "(^|;\s*)ns=0(;|$)" && resp.http.X-Analytics ~ "(^|;\s*)page_id=(\d+).*(;|$)") {
+            unset req.http.X-Page-ID; // clear any sent by the user
+            set req.http.X-Page-ID = regsub(
+                resp.http.X-Analytics,
+                ".*page_id=(\d+).*",
+                "\1"
+            );
+
+        }
+
+        if (req.http.X-Page-ID) {  // pageview to article
+            // If list doesn't exist, create it as an empty string
+            if (!req.http.X-WMF-DP) {
+                set req.http.X-WMF-DP = "";
+            }
+
+            // Default to not including the page view
+            set req.http.X-Include-PV = "0";
+
+            // If X-WMF-DP cookie has between 0 and 35 chars
+            // Note: 35 chars because we're looking at 9 pages so far with 4 chars / page (3 char hex + comma)
+            // Example: '1b6,2b6,3b6,4b6,5b6,6b6,7b6,8b6,9b6'
+            if (req.http.X-WMF-DP ~ "^.{0,35}$") {
+
+                // call helper function to hash the page ID
+                call dp_hash_vcl;
+
+                // If the hash is already in the list, X-Include-PV already set to 0 and cookie doesn't change
+                // If the hash is not in the list, add it to the list, set X-Include-PV to 1, and update cookies
+                if (!std.strstr(req.http.X-WMF-DP, req.http.X-Hash)) {
+                    if (req.http.X-WMF-DP != "") { // avoid dangling commas
+                        set req.http.X-WMF-DP = req.http.X-WMF-DP + "," + req.http.X-Hash;
+                    } else {
+                        set req.http.X-WMF-DP = req.http.X-Hash;
+                    }
+                    set req.http.X-Include-PV = "1";
+                    // if this is 10th pageview, clear cookie and exclude this and all following pageviews
+                    if (req.http.X-WMF-DP ~ "^.{39,}$") {
+                        call override_differential_privacy_cookie__;
+                    } else {  // update WMF-DP cookie with new page ID
+                        call set_differential_privacy_cookie__;
+                    }
+                }
+            }
+
+            // Set X-Analytics to include X-Include-PV
+            set resp.http.X-Analytics = resp.http.X-Analytics
+                + ";include_pv="
+                + req.http.X-Include-PV;
+        }
+    }
+}
 
 /*****************************************************************************
  * Combined analytics recv and deliver hooks, to be included directly in
@@ -232,6 +365,8 @@ sub analytics_last_access_recv {
     if(req.http.Host !~ "\.wikimedia\.org$") {
         call analytics_last_access_global_recv_;
     }
+
+    call analytics_differential_privacy_recv_;
 }
 
 sub analytics_deliver_pre {
@@ -251,6 +386,7 @@ sub analytics_deliver_last_access {
 sub analytics_deliver_post {
     call analytics_provenance_deliver_;
     call analytics_client_hints_deliver_;
+    call analytics_differential_privacy_deliver_;
 
     # We check allowed values inbound in X-Analytics header
     #

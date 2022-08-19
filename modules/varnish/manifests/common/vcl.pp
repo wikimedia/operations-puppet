@@ -17,6 +17,13 @@ class varnish::common::vcl($vcl_config={}) {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
+    file { '/etc/varnish/analytics-dp-helper.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/analytics-dp-helper.vcl.erb'),
+    }
+
     file { '/etc/varnish/alternate-domains.inc.vcl':
         owner   => 'root',
         group   => 'root',
