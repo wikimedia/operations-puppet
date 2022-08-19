@@ -14,7 +14,7 @@ profile::cache::haproxy::acls:
   - name: concurrent_queries
     criterion: sc0_trackers(httpreqrate)
     operator: gt
-    value: '80'
+    value: '150'
 
 profile::cache::haproxy::vars:
   - direction: request
