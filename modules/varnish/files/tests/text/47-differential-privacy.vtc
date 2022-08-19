@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "differential privacy"
+
+server s1 -repeat 4 {
+    rxreq
+    # be sure that WMF-DP cookie doesn't reach the origin server
+    expect req.http.Cookie !~ "WMF-DP"
+    expect req.http.X-Orig-Cookie !~ "WMF-DP"
+    expect req.http.X-WMF-DP == <undef>
+    # CC: private to ensure that all the requests hit the origin server
+    txresp -hdr "X-Analytics: ns=0;page_id=125" -hdr "Cache-Control: private"
+} -start
+
+
+varnish v1 -arg "-a ${tmpdir}/v1.sock -p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    sub vcl_deliver {
+        set resp.http.url = req.url;
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+
+} -start
+
+client c1 -connect "${tmpdir}/v1.sock" {
+    # include_pv=0 cookie should be honored
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: include_pv=0"
+    rxresp
+    expect resp.http.X-Analytics ~ "include_pv=0"
+    expect resp.http.X-Analytics !~ "include_pv=1"
+} -run
+
+logexpect l1 -v v1 -g request -I RespHeader:Set-Cookie {
+    #  page_id=125 = 6b6
+    expect * * RespHeader "^Set-Cookie: WMF-DP=6b6;Path=/;HttpOnly;secure;Expires="
+    expect * * RespHeader "^Set-Cookie: WMF-DP=5b6,6b6;Path=/;HttpOnly;secure;Expires="
+} -start
+
+client c2 -connect "${tmpdir}/v1.sock" {
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.X-Analytics ~ "include_pv=1"
+    expect resp.http.X-Analytics !~ "include_pv=0"
+
+    # send a request with an existing WMF-DP cookie
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: enwikiSession=42;WMF-DP=5b6"
+    rxresp
+    expect resp.http.X-Analytics ~ "include_pv=1"
+    expect resp.http.X-Analytics !~ "include_pv=0"
+} -run
+
+logexpect l1 -wait
+
+logexpect l2 -v v1 -g request -I RespHeader:Set-Cookie {
+    expect * * RespHeader "^Set-Cookie: include_pv=0;Path=/;HttpOnly;secure;Expires="
+} -start
+
+client c3 -connect "${tmpdir}/v1.sock" {
+    # 10th pageview works as expected
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-DP=1b6,2b6,3b6,4b6,5b6,7b6,8b6,9b6,0b6"
+    rxresp
+    expect resp.http.X-Analytics ~ "include_pv=1"
+    expect resp.http.X-Analytics !~ "include_pv=0"
+} -run
+
+logexpect l2 -wait

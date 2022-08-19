@@ -23,7 +23,7 @@ TIMEOUT = 30
 CC_COMMAND = (
     "exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat "
     "-Werror=format-security -Wall -pthread -fpic -shared -Wl,-x "
-    "-o %o %s -lmaxminddb"
+    "-o %o %s -lmaxminddb -lsodium"
 )
 
 CWD = os.path.dirname(__file__)

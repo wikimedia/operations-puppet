@@ -62,6 +62,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # By setting 'attack_mode' to true, all requests are ratelimited per-IP to
     # levels that will allow a couple human users but block anything in excess.
     attack_mode: false
+    differential_privacy: false
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path']
 
 profile::cache::upload::upload_webp_hits_threshold: 100

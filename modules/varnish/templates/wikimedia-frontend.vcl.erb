@@ -835,6 +835,7 @@ sub vcl_backend_fetch {
     // Prevent sending the header on any inwards-facing requests to
     // applayer services.
     unset bereq.http.X-IS-ALT-DOMAIN;
+    unset bereq.http.X-WMF-DP;
 
     call cluster_fe_backend_fetch;
 }
