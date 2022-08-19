@@ -11,6 +11,15 @@ class profile::openstack::codfw1dev::db(
         ensure => 'present',
     }
 
+    # TODO: consider using profile::pki::get_cert
+    # This creates also /etc/mysql/ssl
+    puppet::expose_agent_certs { '/etc/mysql':
+        ensure          => present,
+        provide_private => true,
+        user            => 'mysql',
+        group           => 'mysql',
+    }
+
     file {'/etc/mysql/my.cnf':
         owner   => 'root',
         group   => 'root',
