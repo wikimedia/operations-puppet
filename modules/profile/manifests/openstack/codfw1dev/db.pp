@@ -1,10 +1,7 @@
 class profile::openstack::codfw1dev::db(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
-    Stdlib::Fqdn        $puppetmaster = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
-    Stdlib::Compat::Array $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
-    Array[String] $mysql_root_clients = lookup('mysql_root_clients', {default_value => []}),
-    Array[String] $maintenance_hosts = lookup('maintenance_hosts'),
+    Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
+    Array[Stdlib::IP::Address] $mysql_root_clients = lookup('mysql_root_clients', {default_value => []}),
+    Array[Stdlib::IP::Address] $maintenance_hosts = lookup('maintenance_hosts'),
 ) {
 
     package {'wmf-mariadb104':
@@ -33,16 +30,9 @@ class profile::openstack::codfw1dev::db(
         client_socket   => '/var/run/mysqld/mysqld.sock',
     }
 
-    ferm::rule { 'cloudcontrol_mysql':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${join($openstack_controllers,' ')})) @resolve((${join($openstack_controllers,' ')}), AAAA) @resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA) @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)) proto tcp dport (3306) ACCEPT;",
-    }
-
-    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
-    $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     ferm::rule { 'labweb_mysql':
         ensure => 'present',
-        rule   => "saddr (${labweb_ips} ${labweb_ip6s}) proto tcp dport (3306) ACCEPT;",
+        rule   => "saddr (@resolve((${labweb_hosts.join(' ')}))) proto tcp dport (3306) ACCEPT;",
     }
 
     # mysql monitoring and administration from root clients/tendril
