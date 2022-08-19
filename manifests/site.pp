@@ -679,7 +679,7 @@ node 'db1158.eqiad.wmnet' {
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # See also db2168 and db2169 below
-node /^db2(108|118|120|121|122|150)\.codfw\.wmnet/ {
+node /^db2(108|118|120|121|122|150|182)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
