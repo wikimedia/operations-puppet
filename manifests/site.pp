@@ -1591,6 +1591,11 @@ node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 
+# New kubernetes node T313870
+node /kubernetes202[34]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 node /kubestage100[34]\.eqiad\.wmnet/ {
     role(kubernetes::staging::worker)
 }
