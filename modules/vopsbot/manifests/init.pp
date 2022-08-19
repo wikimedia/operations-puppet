@@ -1,5 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary install and run vopsbot
+# @param users list of authorised users
+# @param irc_server the irc server to connect to
+# @param server_port the irc server port to connect to
+# @param nickname irc nick to use
+# @param irc_channels list of channels to join
+# @param password irc password to use
+# @param vo_api_id VictorOps ID
+# @param vo_api_key VictorOps API key
+# @param database_name name of the database to use
+# @param run_service indicate if we should run the service
+# @param daemon_user the user used to run the vopsbot daemon
 class vopsbot(
     Hash[String, Vopsbot::User] $users,
     String $irc_server,
@@ -11,20 +22,30 @@ class vopsbot(
     String $vo_api_key,
     String $database_name = 'ircbot',
     Boolean $run_service = false,
+    String $daemon_user = 'vopsbot',
 ) {
+    $data_path = '/srv/vopsbot'
     # Install the software
     package { 'vopsbot':
         ensure => present,
     }
 
+    # TODO: add this to the debian package
+    # https://gitlab.wikimedia.org/repos/sre/vopsbot/-/merge_requests/8
+    systemd::sysuser { $daemon_user:
+        ensure      => present,
+        home_dir    => $data_path,
+        description => 'vopsbot runner',
+    }
+
     # configuration
     file { '/etc/vopsbot':
         ensure => directory,
-        owner  => 'vopsbot',
+        owner  => $daemon_user,
     }
     $ircbot_config = '/etc/vopsbot/ircbot-config.json'
     $user_config = '/etc/vopsbot/users.yaml'
-    $db_path = "/srv/vopsbot/${database_name}.db"
+    $db_path = "${data_path}/${database_name}.db"
     $config = {
         'server' => $irc_server,
         'port' => $server_port,
@@ -37,35 +58,43 @@ class vopsbot(
     }
 
     file { $ircbot_config:
-        owner   => 'vopsbot',
-        group   => 'vopsbot',
+        ensure  => file,
+        owner   => $daemon_user,
+        group   => $daemon_user,
         mode    => '0440',
         content => to_json($config),
     }
 
     file { $user_config:
-        owner   => 'vopsbot',
-        group   => 'vopsbot',
+        ensure  => file,
+        owner   => $daemon_user,
+        group   => $daemon_user,
         mode    => '0440',
         content => to_yaml($users),
     }
 
+    file { $data_path:
+        ensure => directory,
+        owner  => $daemon_user,
+        group  => $daemon_user,
+        mode   => '0750',
+    }
     # pre-generate the database
     # TODO: sync from active => passive instance.
     # TODO2: maybe use mysql
-    $schema_file = '/srv/vopsbot/schema.sql'
+    $schema_file = "${data_path}/schema.sql"
     file { $schema_file:
-        ensure => present,
-        owner  => 'vopsbot',
-        group  => 'vopsbot',
+        ensure => file,
+        owner  => $daemon_user,
+        group  => $daemon_user,
         mode   => '0440',
         source => 'puppet:///modules/vopsbot/schema.sql',
     }
 
     sqlite::db { 'vopsbot':
         ensure     => 'present',
-        owner      => 'vopsbot',
-        group      => 'vopsbot',
+        owner      => $daemon_user,
+        group      => $daemon_user,
         db_path    => $db_path,
         sql_schema => $schema_file,
     }
@@ -76,5 +105,6 @@ class vopsbot(
         monitoring_enabled   => true,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Vopsbot',
         content              => template('vopsbot/systemd.unit.erb'),
+        require              => Systemd::Sysuser[$daemon_user],
     }
 }

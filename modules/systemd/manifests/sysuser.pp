@@ -14,7 +14,6 @@
 #  https://www.freedesktop.org/software/systemd/man/sysusers.d.html
 # @param allow_login allow the user to perform loggins
 # @param additional_groups list of addtional groups for the user
-# @param managehome Whether to manage the home directory when Puppet creates or removes the user
 # @param description description
 # @param home_dir home directory, must be pre-existing and does not
 #        get added by the define
@@ -25,7 +24,6 @@ define systemd::sysuser (
     Systemd::Sysuser::Usertype $usertype          = 'user',
     Systemd::Sysuser::Id       $id                = '-',
     Boolean                    $allow_login       = false,
-    Boolean                    $managehome        = false,
     Array[String]              $additional_groups = [],
     Optional[String[1]]        $description       = undef,
     Optional[Stdlib::Unixpath] $home_dir          = undef,
@@ -119,15 +117,17 @@ define systemd::sysuser (
         $password = $allow_login.bool2str('*', '!')
 
         user { $username:
-            ensure     => $ensure,
-            gid        => $gid,
-            home       => $home_dir,
-            shell      => $shell,
-            system     => true,
-            uid        => $uid,
-            password   => $password,
-            managehome => $managehome,
-            groups     => $additional_groups,
+            ensure   => $ensure,
+            gid      => $gid,
+            home     => $home_dir,
+            shell    => $shell,
+            system   => true,
+            uid      => $uid,
+            password => $password,
+            groups   => $additional_groups,
+            # Ensure sysuser creates the user
+            # we use the user resource to update things like the homedir and shell
+            require  => Exec['Refresh sysusers'],
         }
     }
 }
