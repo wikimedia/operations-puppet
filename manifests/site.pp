@@ -701,7 +701,7 @@ node 'db1167.eqiad.wmnet' {
 
 # s8 (wikidata) core production dbs on codfw
 # See also db2167 db2168 below
-node /^db2(152|154|161|162|163|165|166)\.codfw\.wmnet/ {
+node /^db2(152|154|161|162|163|165|166|181)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
