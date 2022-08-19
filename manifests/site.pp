@@ -734,12 +734,12 @@ node /^db2(096|115|131)\.codfw\.wmnet/ {
 # x2 shard
 # eqiad
 node /^db11(51|52|53)\.eqiad\.wmnet$/ {
-    role(mariadb::core)
+    role(mariadb::objectstash)
 }
 
 # codfw
 node /^db21(42|43|44)\.codfw\.wmnet$/ {
-    role(mariadb::core)
+    role(mariadb::objectstash)
 }
 
 ## m1 shard
