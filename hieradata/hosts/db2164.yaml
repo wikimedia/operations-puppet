@@ -1,3 +1,4 @@
 # db2164
 # sanitarium master for s8
+mariadb::binlog_format: 'ROW'
 mariadb::shard: 's8'

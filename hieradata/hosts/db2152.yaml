@@ -1,4 +1,3 @@
 # db2152
-# Future 10.4 sanitarium master
 mariadb::shard: 's8'
 mariadb::binlog_format: 'ROW'
