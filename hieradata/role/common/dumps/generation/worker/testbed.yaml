@@ -7,6 +7,9 @@ profile::admin::groups:
   - dumps-roots
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::apc_shm_size: 128M
+profile::mediawiki::php::php_versions:
+  - "7.2"
+  - "7.4"
 profile::debdeploy::client::filter_services:
   php7.2-fpm:
     - '*'
