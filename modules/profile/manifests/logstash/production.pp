@@ -272,16 +272,6 @@ class profile::logstash::production (
     require         => File['/etc/logstash/templates'],
   }
 
-  # dlq-* indexes output
-  logstash::output::opensearch { 'dlq-1.0.0-1':
-    host            => '127.0.0.1',
-    guard_condition => '[@metadata][output] == "dlq"',
-    index           => 'dlq-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-1.0.0-1-%{[@metadata][datestamp_format]}',
-    priority        => 90,
-    template        => '/etc/logstash/templates/dlq_1.0.0-1.json',
-    require         => File['/etc/logstash/templates'],
-  }
-
   # loki output
   if ($output_public_loki_host) {
     logstash::output::loki { 'loki_public':
@@ -314,6 +304,21 @@ class profile::logstash::production (
   #       Only combine weekyear (x) with week of weekyear (w) when managing weekly indexes.
   #
   # [0] https://en.wikipedia.org/wiki/ISO_week_date#First_week
+  $dlq_versions = {
+    # version => revision
+    '1.0.0' => '1'
+  }
+  $dlq_versions.each |String $dlq_version, String $dlq_revision| {
+    logstash::output::opensearch { "dlq-${dlq_version}-${dlq_revision}":
+      host            => '127.0.0.1',
+      guard_condition => "[@metadata][output] == \"dlq\" and [@metadata][template_version] == \"${dlq_version}\"",
+      index           => 'dlq-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-%{[@metadata][template_version]}-%{[@metadata][datestamp_format]}',
+      priority        => 90,
+      template        => "/etc/logstash/templates/dlq_${dlq_version}-${dlq_revision}.json",
+      require         => File['/etc/logstash/templates'],
+    }
+  }
+
   $ecs_versions = {
     # version => revision
     '1.7.0'  => '5',
