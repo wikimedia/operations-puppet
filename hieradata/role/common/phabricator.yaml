@@ -13,7 +13,6 @@ profile::contacts::role_contacts: ['ServiceOps-Collab']
 # needed firewall holes is the "phabricator_server" key in common.yaml
 # Switching backend for caching servers needs to be done in DNS.
 phabricator_servers:
-  - phab1001.eqiad.wmnet
   - phab1004.eqiad.wmnet
   - phab2002.codfw.wmnet
 
