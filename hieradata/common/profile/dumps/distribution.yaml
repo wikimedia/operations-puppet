@@ -14,7 +14,7 @@ profile::dumps::distribution::rsync_config:
   dumps_mntpoint: '/srv/dumps'
 
 profile::dumps::distribution::stat_dump_host: 'stat1007.eqiad.wmnet'
-profile::dumps::distribution::phab_dump_host: 'phab1001.eqiad.wmnet'
+profile::dumps::distribution::phab_dump_host: 'phab1004.eqiad.wmnet'
 
 profile::dumps::distribution::nfs_clients:
   - 10.68.0.0/16
