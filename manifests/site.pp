@@ -1472,17 +1472,17 @@ node /^alert[12]001\.wikimedia\.org$/ {
 }
 
 
-# Phabricator
+# Phabricator - old hardware - to be removed soon
 node /^phab[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(phabricator)
 }
 
-# Phabricator - new hardware (T280540, T279176)
+# Phabricator eqiad (T280540, T279176) (production)
 node 'phab1004.eqiad.wmnet' {
-    role(phabricator::migration)
+    role(phabricator)
 }
 
-# Phabricator - new hardware (T280544, T279177)
+# Phabricator codfw (T280544, T279177) (failover)
 node 'phab2002.codfw.wmnet' {
     role(phabricator)
 }
