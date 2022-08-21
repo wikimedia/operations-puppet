@@ -2,5 +2,3 @@ profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor0.opensta
 
 profile::openldap::master: cloudservices2005-dev.wikimedia.org
 profile::openldap::server_id: 3
-
-profile::openstack::codfw1dev::version: 'xena'
