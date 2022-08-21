@@ -1,21 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
-# this is the class for use by VM instances in Cloud VPS. Don't use for HW servers
-class openstack::clientpackages::vms::common(
+class openstack::clientpackages::xena::stretch(
 ) {
-    requires_realm('labs')
+    $py2packages = [
+        'python-novaclient',
+        'python-glanceclient',
+        'python-keystoneclient',
+        'python-openstackclient',
+        'python-designateclient',
+        'python-neutronclient',
+    ]
 
-    if debian::codename::le('buster') {
-        $py2packages = [
-            'python-novaclient',
-            'python-glanceclient',
-            'python-keystoneclient',
-            'python-openstackclient',
-            'python-designateclient',
-            'python-neutronclient',
-            'python-netaddr',
-        ]
-        ensure_packages($py2packages)
+    package{ $py2packages:
+        ensure => 'present',
     }
 
     $py3packages = [
@@ -27,14 +24,20 @@ class openstack::clientpackages::vms::common(
         'python3-designateclient',
         'python3-neutronclient',
         'python3-troveclient',
-        'python3-netaddr',
     ]
-    ensure_packages($py3packages)
+
+    package{ $py3packages:
+        ensure => 'present',
+    }
 
     $otherpackages = [
         'ebtables',
+        'python-netaddr',
     ]
-    ensure_packages($otherpackages)
+
+    package { $otherpackages:
+        ensure => 'present',
+    }
 
     # Wrapper python class to easily query openstack clients
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
