@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[DEFAULT]
+
+#
+# From oslo.log
+#
+
+# If set to true, the logging level will be set to DEBUG instead of the default
+# INFO level. (boolean value)
+# Note: This option can be changed without restarting.
+#debug = false
+
+# ================= Syslog Options ============================
+
+# Send logs to syslog (/dev/log) instead of to file specified
+# by `log_file`
+use_syslog = True
+
+# Facility to use. If unset defaults to LOG_USER.
+syslog_log_facility = LOG_LOCAL0
+
+#default_log_levels = amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,oslo.messaging=INFO,oslo_messaging=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,urllib3.connectionpool=WARN,websocket=WARN,requests.packages.urllib3.util.retry=WARN,urllib3.util.retry=WARN,keystonemiddleware=WARN,routes.middleware=WARN,stevedore=WARN,taskflow=WARN,keystoneauth=WARN,oslo.cache=INFO,oslo_policy=INFO,dogpile.core.dogpile=INFO
+
+[keystone_authtoken]
+auth_type = password
+www_authenticate_url = <%= @keystone_admin_uri %>
+auth_url = <%= @keystone_admin_uri %>
+password = <%= @ldap_user_pass %>
+project_domain_id = default
+project_name = admin
+region_name = <%= @region %>
+user_domain_id = default
+username = novaadmin
+memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
+
+
+[placement_database]
+
+connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+
