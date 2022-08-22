@@ -12,7 +12,7 @@ class profile::systemd::timesyncd (
     }
     # HDFS/fuse is known to cause issues with timesync and ProtectSystem= strict
     # As such remove this from the list of accessible paths (T310643)
-    systemd::unit { 'systemd-timesyncd_override_protect_system':
+    systemd::unit { 'systemd-timesyncd.service':
         ensure   => $ensure,
         content  => "[Service]\nInaccessiblePaths=-/mnt\n",
         restart  => true,
