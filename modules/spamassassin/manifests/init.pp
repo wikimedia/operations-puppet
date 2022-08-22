@@ -112,7 +112,7 @@ class spamassassin(
             content => template('spamassassin/sa-update-cron.erb'),
         }
 
-        file { '/usr/local/sbin/spamassassin_timer.sh':
+        file { '/usr/local/sbin/spamassassin_updates':
             ensure  => present,
             owner   => 'root',
             group   => 'root',
