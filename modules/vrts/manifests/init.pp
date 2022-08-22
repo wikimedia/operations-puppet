@@ -85,7 +85,6 @@ class vrts(
         'perl-doc',
         # T187984. Added in 6.0.x as prereqs and optionals
         'libdatetime-perl',
-        'libdatetime-timezone-perl',
         'libxml-libxml-perl',
         'libxml-libxslt-perl',
         'libencode-hanextra-perl',
@@ -94,6 +93,8 @@ class vrts(
 
     ]
     ensure_packages($packages)
+
+    package { 'libdatetime-timezone-perl': ensure => latest }
 
     user { 'otrs':
         home       => '/var/lib/otrs',
