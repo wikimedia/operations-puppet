@@ -29,6 +29,8 @@ methods = external,password,token,wmtotp
 #  one that checks source IPs.
 password = safelist
 
+password_restricted_domains = default
+
 <% @labs_networks.each do |subnet| -%>
 password_safelist = novaobserver:<%=subnet%>
 password_safelist = deployment-prep-dns-manager:<%=subnet%>
