@@ -38,7 +38,7 @@ define admin::user (
 
     include admin
     $shell_package = $shell.basename
-    $shell_require = $shell_package in $admin::addtional_shells ? {
+    $shell_require = $shell_package in $admin::additional_shells ? {
         true    => Package[$shell_package],
         default => undef,
     }
