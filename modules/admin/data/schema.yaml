@@ -26,6 +26,8 @@ definitions:
           type: array
           items:
             type: string
+        deprecated:
+          type: boolean
       required:
         - members
       additionalProperties: false
