@@ -750,6 +750,10 @@ node 'db1164.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
+# Future m1 master T315856
+node 'db1195.eqiad.wmnet' {
+    role(mariadb::misc)
+}
 
 # m1 codfw master
 node 'db2132.codfw.wmnet' {

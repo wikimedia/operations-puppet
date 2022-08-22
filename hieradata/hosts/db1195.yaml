@@ -1,2 +1,5 @@
 # db1195
+# Future m1 master
+mariadb::shard: 'm1'
+#profile::monitoring::is_critical: true
 profile::monitoring::notifications_enabled: false
