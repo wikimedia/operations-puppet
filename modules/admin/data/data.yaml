@@ -23,7 +23,7 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars, effeietsanders]
+              aniketars, effeietsanders, dpifke]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -129,8 +129,7 @@ groups:
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
               urbanecm, awight, jakob, andrew-wmde,
-              mstyles, dpifke,
-              phuedx, samwilson, dmaza, tchanders,
+              mstyles, phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
@@ -352,7 +351,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
-              itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
+              itamar, phedenskog, aaron, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
@@ -632,7 +631,7 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, phedenskog, aaron, dpifke]
+    members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
@@ -3988,14 +3987,12 @@ users:
     expiry_contact: lzia@wikimedia.org
     krb: present
   dpifke:
-    ensure: present
+    ensure: absent
     realname: Dave Pifke
-    email: dpifke@wikimedia.org
     uid: 22904
     gid: 500
-    krb: present
-    ssh_keys:
-     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJoAB1ApJcEDqA+EfSbjQFuikAEkZk9M+4i3em5o9TFDR5YopmNIRXpR3fxt7LIJCNwXABlNrnbNZw41ABN4XL07VqrFY8efERVbBbwlvdFxD7mgVn41qlypzNR4tRTzoVtJ32X7KEru8zstO/l7Sqxio3Y8bRcsbp/Yw7z1fRHdBMbFXcabW88xtfJZ4aGrtUlrkwWe25KUyBK7tAQyETSkUg+GOXDy1NAlIOYpcYbGoGvk8rhG64tYeGW/fVBf7sSYcP51LOsCQv5bdTLZ0y5kqqmIqKEiXV9kQsggqtqAyAHYwy5yd9wrTMhncrItLFPHE/Ui8h2sVuorMje7Smp0KSO0bIpOkU+6jbi7Zi83r1dHq0ZmWvKsQF2CKbSLTBGRcssREFxKCVXErmp92LYlvu6NjjeiaSW7ADKBsHeqPwOP4cwXHyydcXGRKtYoNUP3QPGcqk340FR+ajdPvP1ulHVOH/X65ix4RsQHyKlaHhz9/BNFwhdk1dNCGeaeRVjTcb6tNPIXyzJsXTKMGnXMKBXuhXHEJ2/r9GGHQQ7joBRYj/PUfyWhfs36kU+ypubp0FzJYhX6Z+LArD3SDrTCXsfT2oUDKL51TVJj6Rf/EbSOga/BNOfg5KBLxshbv611Er5yKgRoUgvE/VpJoXJvIpBP6QlzxXJ4OFrNxdjw== cardno:000611339167
+    krb: absent
+    ssh_keys: []
   clarakosi:
     ensure: absent
     realname: Clara Andrew-Wani
