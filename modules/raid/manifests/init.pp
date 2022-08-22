@@ -25,12 +25,12 @@ class raid (
         $check_raid = "/usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
     }
 
-    if 'raid' in $facts {
-        $facts['raid'].each |String $raid| {
+    if 'raid_mgmt_tools' in $facts {
+        $facts['raid_mgmt_tools'].each |String $raid| {
             include "raid::${raid}"
         }
     } else {
-      warning('no raid controller detected')
+        warning('no raid controller detected')
     }
 
     nrpe::plugin { 'check_raid':
