@@ -1,4 +1,4 @@
 # es1024
-# candidate master for es5
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'es5'
 mariadb::binlog_format: 'ROW'
