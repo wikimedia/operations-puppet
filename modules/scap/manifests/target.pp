@@ -70,7 +70,7 @@ define scap::target(
     Array[String]    $sudo_rules                = [],
 ) {
     # Include scap3 and ssh ferm rules.
-    require scap
+    include scap
     include scap::ferm
 
     if !$service_name and !empty($additional_services_names) {
