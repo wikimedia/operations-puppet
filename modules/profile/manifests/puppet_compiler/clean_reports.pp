@@ -1,5 +1,5 @@
 class profile::puppet_compiler::clean_reports {
-    $output_dir = '/srv/jenkins-workspace/puppet-compiler/output'
+    $output_dir = '/srv/jenkins/puppet-compiler/output'
     systemd::timer::job {'delete-old-output-files':
         ensure      => 'present',
         description => 'Clean up old PCC reports',

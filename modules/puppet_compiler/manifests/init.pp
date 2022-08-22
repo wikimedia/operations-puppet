@@ -8,7 +8,7 @@
 class puppet_compiler(
     Wmflib::Ensure   $ensure  = 'present',
     String           $version = '2.3.2',  # can and often is overridden in horizon
-    Stdlib::Unixpath $workdir = '/srv/jenkins-workspace/puppet-compiler',
+    Stdlib::Unixpath $workdir = '/srv/jenkins/puppet-compiler',
     Stdlib::Unixpath $libdir  = '/var/lib/catalog-differ',
     String           $user    = 'jenkins-deploy',
     Stdlib::Unixpath $homedir = '/srv/home/jenkins-deploy',
@@ -27,7 +27,7 @@ class puppet_compiler(
         content => file('puppet_compiler/puppet_master_pup-8187.rb.nocheck'),
     }
 
-    # We cant use wmflib::dir::mkdir_p because the following creates /srv and /srv/jenkins-workspace
+    # We cant use wmflib::dir::mkdir_p because the following creates /srv and /srv/jenkins
     # profile::ci::slave::labs::common
     file{
         default:

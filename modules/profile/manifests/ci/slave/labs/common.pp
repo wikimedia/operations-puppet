@@ -34,7 +34,7 @@ class profile::ci::slave::labs::common (
             group   => 'root',
             mode    => '0755',
             require => $require_srv;
-        ['/srv/jenkins', '/srv/jenkins-workspace']:
+        ['/srv/jenkins']:
             require => $require_srv;
         ['/srv/jenkins/cache', '/srv/jenkins/workspace', '/srv/home/jenkins-deploy']: ;
     }
