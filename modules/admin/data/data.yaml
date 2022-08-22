@@ -578,7 +578,7 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [bd808, eevans, mobrovac, thcipriani, dduvall,
+    members: [bd808, mobrovac, thcipriani, dduvall,
               kartik, halfak, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit,
