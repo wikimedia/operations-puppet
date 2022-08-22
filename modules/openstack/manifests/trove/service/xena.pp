@@ -70,20 +70,6 @@ class openstack::trove::service::xena(
             owner  => 'trove',
             group  => 'trove',
             mode   => '0644';
-        '/usr/lib/python3/dist-packages/trove/taskmanager/models.py':
-            source  => 'puppet:///modules/openstack/xena/trove/hacks/taskmanager/models.py',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            notify  => Service['trove-api'],
-            require => Package['trove-api'];
-        '/usr/lib/python3/dist-packages/trove/instance/models.py':
-            source  => 'puppet:///modules/openstack/xena/trove/hacks/instance/models.py',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            notify  => Service['trove-api'],
-            require => Package['trove-api'];
     }
 
     # Apply https://review.opendev.org/c/openstack/trove/+/791072
