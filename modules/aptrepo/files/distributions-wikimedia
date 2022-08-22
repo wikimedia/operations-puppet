@@ -202,7 +202,6 @@ Components: main
  component/cassandradev
  component/dnsdist
  component/elastic68
- component/elastic710
  component/istio195
  component/jdk8
  component/kubernetes116

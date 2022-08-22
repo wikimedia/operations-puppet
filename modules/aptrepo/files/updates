@@ -141,16 +141,6 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.9.1 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.9.1 \) -o \( -S 'logstash-oss' -a -F Version --eq 1:7.9.1-1 \) || [ $? -eq 1 ]
 
-Name: elastic710
-Method: https://artifacts.elastic.co/packages/oss-7.x/apt
-Components: main>thirdparty/elastic710
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.10.0 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.10.0 \) -o \( -S 'logstash-oss' -a -F Version --eq 7.10.0 \) || [ $? -eq 1 ]
-
 Name: grafana
 Method: https://packages.grafana.com/oss/deb
 Components: main>thirdparty/grafana
