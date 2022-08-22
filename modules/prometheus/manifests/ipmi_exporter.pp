@@ -32,7 +32,7 @@ class prometheus::ipmi_exporter (
     # freeipmi-tools
     # ipmi_sudo.yml file
     file { "${prometheus_home}/ipmi_sudo_wrapper.sh":
-        ensure  => present,
+        ensure  => file,
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -40,12 +40,13 @@ class prometheus::ipmi_exporter (
         require => Sudo::User['prometheus_ipmi_exporter'],
     }
     # Instruct the exporter to use our wrapper for freeipmi utilities
+    $listen_address = "${facts['networking']['ip']}:9290"
     file { '/etc/default/prometheus-ipmi-exporter':
-        ensure  => present,
+        ensure  => file,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"--web.listen-address=:9290 --freeipmi.path=${prometheus_home}\"",
+        content => "ARGS=\"--web.listen-address=${listen_address} --freeipmi.path=${prometheus_home}\"",
         notify  => Service['prometheus-ipmi-exporter'],
     }
     # Create symlinks for our wrapper for every tool
@@ -64,7 +65,7 @@ class prometheus::ipmi_exporter (
     # NOTE: We can't use this file before we upgrade to 1.4.0, but add it anyway
     # to not reinvent it later on
     file { '/etc/prometheus/ipmi_sudo.yml':
-        ensure  => present,
+        ensure  => file,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
