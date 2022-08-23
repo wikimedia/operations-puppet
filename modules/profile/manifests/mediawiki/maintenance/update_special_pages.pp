@@ -1,6 +1,6 @@
 class profile::mediawiki::maintenance::update_special_pages {
     profile::mediawiki::sharded_periodic_job { 'update_special_pages':
-        command  => 'updateSpecialPages.php',
+        script   => 'updateSpecialPages.php',
         interval => '*-1/3 05:00',
     }
 

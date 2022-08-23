@@ -5,7 +5,7 @@
 #
 # == Parameters
 #
-# [*command*] The command to execute
+# [*script*] The MW script to execute
 #
 # [*shards*] The shards to run against (e.g. ['s1'])
 #
@@ -15,7 +15,7 @@
 # [*ensure*] Either 'present' or 'absent'. Default: present
 #
 define profile::mediawiki::sharded_periodic_job(
-    String $command,
+    String $script,
     Variant[
         Systemd::Timer::Interval,
         Systemd::Timer::Datetime
@@ -27,11 +27,11 @@ define profile::mediawiki::sharded_periodic_job(
         # For back-compat, support "s1@11" style shards
         $real_shard = regsubst($shard, '@.*', '')
         # Inject the dblist as the second argument (after the PHP script)
-        $command = regsubst($command, '\.php', ".php ${real_shard}.dblist")
+        $script = regsubst($script, '\.php', ".php ${real_shard}.dblist")
 
         profile::mediawiki::periodic_job { "${title}_${shard}":
             ensure   => $ensure,
-            command  => "/usr/local/bin/mwscriptwikiset ${command}",
+            command  => "/usr/local/bin/mwscriptwikiset ${script}",
             interval => $interval,
         }
     }
