@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: Apache-2.0
+# TODO: replace with T315500
+fields:
+  host: "alert1001"
+  logsource: "alert1001"
+  program: "tcpircbot-logmsgbot"
+  facility: 'daemon'
+  severity: 'notice'
+  normalized_message: "drop me"
+codec: "json_lines"
+ignore:
+  - "[normalized][dropped]"
+testcases:
+  - input:
+    - >
+      {
+        "ecs.version": "1.7.0",
+        "log.level": "INFO",
+        "log.origin.file.line": 223,
+        "log.origin.file.name": "tcpircbot.py",
+        "log.origin.file.path": "tcpircbot.py",
+        "log.origin.function": "<module>",
+        "message": "user@deploy0000 Finished deploy [project/project@abcdef]: Revert Project from 0.0.1 to 0.0.0# T000000 (duration: 00m 08s)",
+        "process.name": "MainProcess",
+        "process.thread.id": 11288,
+        "process.thread.name": "MainThread",
+        "timestamp": "2022-08-23T17:39:55.442221",
+        "labels.channel": "sal",
+        "user.name": "logmsgbot"
+      }
+  - expected:
+    - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      "@timestamp": "2022-08-23T17:39:55.442Z"
+      labels:
+        channel: "sal"
+      log:
+        level: "INFO"
+        origin:
+          file:
+            line: 223
+            name: "tcpircbot.py"
+            path: "tcpircbot.py"
+          function: "<module>"
+        syslog:
+          facility:
+            code: 3
+            name: "daemon"
+          priority: 30
+          severity:
+            code: 6
+            name: "informational"
+      message: "user@deploy0000 Finished deploy [project/project@abcdef]: Revert Project from 0.0.1 to 0.0.0# T000000 (duration: 00m 08s)"
+      normalized:
+        message: "user@deploy0000 finished deploy [project/project@abcdef]: revert project from 0.0.1 to 0.0.0# t000000 (duration: 00m 08s)"
+      process:
+        name: "MainProcess"
+        thread:
+          id: 11288
+          name: "MainThread"
+      user:
+        name: "logmsgbot"
+      ecs:
+        version: "1.7.0"
+    - "@timestamp": "2022-08-23T17:39:55.442Z"
+      message: "user@deploy0000 Finished deploy [project/project@abcdef]: Revert Project from 0.0.1 to 0.0.0# T000000 (duration: 00m 08s)"
+      user: "logmsgbot"
+      channel: "sal"
