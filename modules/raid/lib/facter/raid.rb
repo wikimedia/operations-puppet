@@ -6,10 +6,11 @@ Facter.add('raid_mgmt_tools') do
   # Run sudo lspci -nn to add missing PCI IDs, the combination of vendor ID and device ID is printed in []
   pci_ids = {
     '9005028f' => 'ssacli',   # Smart Storage PQI 12G SAS/PCIe 3
-    '100010e2' => 'perccli',  # Perc 750
+    '100010e2' => 'perccli',  # Broadcom / LSI MegaRAID 12GSAS/PCIe Secure SAS39xx (sold as Perc H750)
     '103c3239' => 'hpssacli', # Hewlett-Packard Company Smart Array Gen9 Controllers
-    '1000005d' => 'megaraid', # LSI Logic / Symbios Logic MegaRAID SAS-3 3108
-    '100010e2' => 'megaraid', # Broadcom / LSI MegaRAID 12GSAS/PCIe Secure SAS39x
+    '1000005d' => 'megaraid', # LSI Logic / Symbios Logic MegaRAID SAS-3 3108, also shows up as
+                              # Broadcom / LSI MegaRAID SAS-3 3108 [Invader]
+    '10000016' => 'megaraid', # Broadcom / LSI MegaRAID Tri-Mode SAS3508
   }
   setcode do
     raids = []
