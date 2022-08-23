@@ -73,17 +73,6 @@ function do_global_read_request()
         return 0
     end
 
-    if ts.client_request.header['Host'] == 'tr.wikipedia.org' or
-       ts.client_request.header['Host'] == 'pt.wikipedia.org' or
-       ts.client_request.header['Host'] == 'ko.wikipedia.org' or
-       ts.client_request.header['Host'] == 'sr.wikipedia.org' or
-       ts.client_request.header['Host'] == 'bn.wikipedia.org' or
-       ts.client_request.header['Host'] == 'de.wikivoyage.org' or
-       ts.client_request.header['Host'] == 'vec.wikipedia.org' then
-       -- CDN cache revalidation for desktop improvements deployment T274784
-       ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1615214233)
-    end
-
     local cookie = ts.client_request.header['Cookie']
 
     if cookie then
