@@ -18,6 +18,7 @@ class raid::mpt {
   nrpe::monitor_service { 'raid_mpt':
     description    => 'MPT RAID',
     nrpe_command   => "${raid::check_raid} mpt",
+    sudo_user      => 'root',
     check_interval => $raid::check_interval,
     retry_interval => $raid::retry_interval,
     event_handler  => "raid_handler!mpt!${::site}",

@@ -20,9 +20,9 @@ class raid (
 ){
 
     if empty($write_cache_policy) {
-        $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+        $check_raid = '/usr/local/lib/nagios/plugins/check_raid'
     } else {
-        $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
+        $check_raid = "/usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
     }
 
     if 'raid' in $facts {
@@ -38,7 +38,6 @@ class raid (
     }
 
     sudo::user { 'nagios_raid':
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_raid'],
+        ensure => absent,
     }
 }
