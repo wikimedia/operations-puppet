@@ -1,31 +1,15 @@
-# Setup ferm rules for internal and external clients -
-# By default the resolve() function in ferm performs only an IPv4/A DNS
-# lookup. It fails if a host only has an IPv6 address. Ferm also provides
-# a AAAA lookup mode for IPv6 addresses, but this equally fails if only
-# an IPv4 address is present.
 class profile::dumps::distribution::ferm(
-    $internal_rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
+    Array[Stdlib::Fqdn] $internal_rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
     $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
 ) {
-    $internal_clients_ipv4 = $internal_rsync_clients['ipv4']
-    $internal_clients_ipv6 = $internal_rsync_clients['ipv6']
-
     $active_mirrors = $rsync_mirrors.filter |$item| { $item['active'] == 'yes' }
-    $ipv4_mirrors = $active_mirrors.reduce([]) |$mirrorlist, $item| { $mirrorlist + $item['ipv4'] }
-    $ipv6_mirrors = $active_mirrors.reduce([]) |$mirrorlist, $item| { $mirrorlist + $item['ipv6'] }
+    $mirror_hosts = $active_mirrors.map |$item| { $item['ipv4'] + $item['ipv6'] }
 
-    $rsync_clients_ipv4_ferm = join(flatten($internal_clients_ipv4 + $ipv4_mirrors), ' ')
-    $rsync_clients_ipv6_ferm = join(flatten($internal_clients_ipv6 + $ipv6_mirrors), ' ')
+    $rsync_clients = flatten($internal_rsync_clients + $mirror_hosts)
 
-    ferm::service {'dumps_rsyncd_ipv4':
+    ferm::service { 'dumps_rsyncd':
         port   => '873',
         proto  => 'tcp',
-        srange => "@resolve((${rsync_clients_ipv4_ferm}))",
-    }
-
-    ferm::service {'dumps_rsyncd_ipv6':
-        port   => '873',
-        proto  => 'tcp',
-        srange => "@resolve((${rsync_clients_ipv6_ferm}),AAAA)",
+        srange => "@resolve((${rsync_clients.join(' ')}))",
     }
 }
