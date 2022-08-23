@@ -24,7 +24,7 @@ profile::kubernetes::master::admission_plugins:
 profile::lvs::realserver::pools:
   dse-k8s-ctrl:
     services:
-      - "kube-apiserver"
+      - "kubemaster"
 profile::admin::groups:
   - ml-team-admins
 # Define in the private repo

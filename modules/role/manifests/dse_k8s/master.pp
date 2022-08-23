@@ -17,7 +17,7 @@ class role::dse_k8s::master {
     include ::profile::calico::kubernetes
 
     # LVS configuration (VIP)
-    # include ::profile::lvs::realserver
+    include ::profile::lvs::realserver
 
     system::role { 'kubernetes::master':
         description => 'DSE Kubernetes master server',
