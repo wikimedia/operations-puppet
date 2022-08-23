@@ -86,17 +86,6 @@ class profile::mediawiki::webserver(
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    # If a service check happens to run while we are performing a
-    # graceful restart of Apache, we want to try again before declaring
-    # defeat. See T103008.
-    monitoring::service { 'appserver http':
-        description    => 'Apache HTTP',
-        check_command  => 'check_http_wikipedia',
-        retries        => 2,
-        retry_interval => 2,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-    }
-
     if $has_tls == true {
         # Override niceness to run at -19 like php-fpm
         file { '/etc/systemd/system/envoyproxy.service.d/niceness-override.conf':
