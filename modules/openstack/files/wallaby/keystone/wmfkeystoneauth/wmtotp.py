@@ -72,7 +72,8 @@ class Wmtotp(base.AuthMethodHandler):
         # Before we do anything else, make sure that this user is allowed
         #  access from their source IP
         password_safelist.check_safelist(user_info.user_id,
-                                         flask.request.environ.get('REMOTE_ADDR'))
+                                         flask.request.environ.get('REMOTE_ADDR'),
+                                         user_info.domain_id)
 
         try:
             PROVIDERS.identity_api.authenticate(
