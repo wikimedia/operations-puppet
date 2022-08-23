@@ -171,12 +171,10 @@ class apt(
             ensure => directory,
         }
 
-        if debian::codename::ge('stretch') {
-            file {'/usr/local/share/apt/base_packages.txt':
-                ensure => file,
-                mode   => '0555',
-                source => "puppet:///modules/apt/base_packages.${facts['os']['distro']['codename']}",
-            }
+        file {'/usr/local/share/apt/base_packages.txt':
+            ensure => file,
+            mode   => '0555',
+            source => "puppet:///modules/apt/base_packages.${facts['os']['distro']['codename']}",
         }
     }
 }

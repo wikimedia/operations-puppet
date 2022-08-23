@@ -162,7 +162,5 @@ class base::standard_packages {
     # passed. This is now used by journald to ensure that the
     # various sockets connected to all the system's stdout/stderr
     # are not lost when journald is restarted.
-    if debian::codename::ge('stretch') {
-        profile::auto_restarts::service { 'systemd-journald': }
-    }
+    profile::auto_restarts::service { 'systemd-journald': }
 }
