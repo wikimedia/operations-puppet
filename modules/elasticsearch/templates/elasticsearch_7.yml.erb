@@ -191,7 +191,7 @@ indices.queries.cache.size: <%= @filter_cache_size %>
 ##
 thread_pool:
 <% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors -%>
-    bulk:
+    write:
 <% if @bulk_thread_pool_executors -%>
         size: <%= @bulk_thread_pool_executors %>
 <% end -%>
