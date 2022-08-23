@@ -646,7 +646,7 @@ node 'db2128.codfw.wmnet' {
 
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
 # See also db1096, db1098 and db1113 below
-node /^db1(131|168|173|180)\.eqiad\.wmnet/ {
+node /^db1(131|168|173|180|187)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
