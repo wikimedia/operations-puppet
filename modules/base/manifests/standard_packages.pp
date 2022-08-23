@@ -121,7 +121,7 @@ class base::standard_packages {
             $purged_packages = []
         }
         'buster': {
-            # An dist upgrade to buster leaves some old binary packages around, remove those
+            # A dist upgrade to buster leaves some old binary packages around, remove those
             $absent_packages = [
                 'libbind9-140', 'libdns162', 'libevent-2.0-5', 'libisc160', 'libisccc140', 'libisccfg140',
                 'liblwres141', 'libonig4', 'libdns-export162', 'libhunspell-1.4-0', 'libisc-export160',
@@ -134,6 +134,13 @@ class base::standard_packages {
             ]
             # mcelog is broken with the Linux kernel used in buster
             $purged_packages = ['mcelog']
+        }
+        'bullseye': {
+            # A dist upgrade to bullseye leaves some old binary packages around, remove those
+            $absent_packages = [
+                'libsnmp30'
+            ]
+            $purged_packages = []
         }
         default: {
             $absent_packages = []
