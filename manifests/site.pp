@@ -566,7 +566,7 @@ node 'db2126.codfw.wmnet' {
 }
 
 # s3 core production dbs on eqiad
-node /^db1(123|157|166|175|179)\.eqiad\.wmnet/ {
+node /^db1(123|157|166|175|179|189)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
