@@ -23,7 +23,7 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars, effeietsanders, dpifke]
+              aniketars, effeietsanders, dpifke, eyener]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -347,7 +347,7 @@ groups:
               goransm, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, eyener,
+              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
@@ -3886,15 +3886,13 @@ users:
     name: dedcode
     ssh_keys: []
   eyener:
-    ensure: present
+    ensure: absent
     realname: Erin Yener
-    email: eyener@wikimedia.org
     uid: 22127
     gid: 500
     name: eyener
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLrqCmWRtknGqk3RLECTbNP0QY/oIOImBi22qhDdqoz eyener@Erins-MacBook-Pro.local
-    krb: present
+    ssh_keys: []
+    krb: absent
   rzl:
     ensure: present
     realname: Reuven Lazarus
