@@ -1,3 +1,3 @@
 profile::openstack::eqiad1::pdns::recursor_service_name: ns-recursor1.openstack.eqiad1.wikimediacloud.org
 
-profile::openstack::eqiad1::version: 'wallaby'
+profile::openstack::eqiad1::version: 'xena'
