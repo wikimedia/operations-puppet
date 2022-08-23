@@ -561,3 +561,5 @@ profile::trafficserver::backend::h2_settings:
   accept_no_activity_timeout: 180
   no_activity_timeout_in: 180
   stream_error_rate_threshold: 1.0
+# T315911 - Disable origin coalescing
+profile::trafficserver::backend::origin_coalescing: false
