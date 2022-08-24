@@ -12,9 +12,6 @@ profile::resolving::nameservers:
   - 208.80.154.143
   - 208.80.154.24
 
-labs_tld: 'wikimedia.cloud'
-labs_site: 'eqiad1'
-
 mail_smarthost:
 - 'mx-out03.wmcloud.org'
 - 'mx-out04.wmcloud.org'

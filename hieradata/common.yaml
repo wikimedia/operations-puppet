@@ -670,14 +670,6 @@ dumps_dist_active_vps: labstore1007.wikimedia.org
 # Also serves stat* hosts over nfs
 dumps_dist_active_web: labstore1006.wikimedia.org
 
-# Cloud Services <
-#
-# Cumin
-labs_tld: "wikimedia.cloud"
-
-# /> Cloud Services
-#
-
 # List of all zookeeper clusters in production.
 zookeeper_clusters:
   main-eqiad:

@@ -19,8 +19,6 @@ ldap:
   ro-server: ldap-ro.codfw.wikimedia.org
   ro-server-fallback: ldap-ro.eqiad.wikimedia.org
 
-labs_site: "codfw1dev"
-
 profile::systemd::timesyncd::ntp_servers:
   - "ntp-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud"
 ntp_peers:
