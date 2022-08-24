@@ -1224,7 +1224,7 @@ service::catalog:
     port: 6443
     sites:
       - eqiad
-    state: service_setup
+    state: lvs_setup
 
   ml-ctrl:
     description: Kubernetes master service for ML cluster. ml-ctrl.svc.%{::site}.wmnet
