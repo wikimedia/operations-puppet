@@ -101,11 +101,11 @@ class spamassassin(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mail#SpamAssassin',
     }
 
-    # Remove the Debian provides cronjob, and replace with a custom systemd
-    # timer.
+    # If we need a proxy to reach the internet, we need a slightly modified
+    # crontab entry
     if $proxy {
         file { '/etc/cron.daily/spamassassin':
-            ensure  => absent,
+            ensure  => present,
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
@@ -121,7 +121,7 @@ class spamassassin(
         }
 
         systemd::timer::job { 'spamassassin_updates':
-            ensure      => present,
+            ensure      => absent,
             description => 'Spamassassin definitions update',
             user        => 'root',
             command     => '/usr/local/sbin/spamassassin_updates',
