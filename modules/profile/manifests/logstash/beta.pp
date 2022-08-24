@@ -186,7 +186,7 @@ filter {
     logstash::output::opensearch { "dlq-${dlq_version}-${dlq_revision}":
       host            => '127.0.0.1',
       guard_condition => "[@metadata][output] == \"dlq\" and [@metadata][template_version] == \"${dlq_version}\"",
-      index           => 'dlq-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-%{[@metadata][template_version]}-%{[@metadata][datestamp_format]}',
+      index           => "dlq-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${dlq_version}-${dlq_revision}-%{[@metadata][datestamp_format]}",
       priority        => 90,
       template        => "/etc/logstash/templates/dlq_${dlq_version}-${dlq_revision}.json",
       require         => File['/etc/logstash/templates'],
