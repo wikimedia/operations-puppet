@@ -1396,7 +1396,7 @@ node 'irc2001.wikimedia.org' {
 
 # cloudservices1003/1004 hosts openstack-designate
 # and the powerdns auth and recursive services for instances in eqiad1.
-node /^cloudservices100[34]\.wikimedia\.org$/ {
+node /^cloudservices100[345]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::services)
 }
 
@@ -1429,11 +1429,6 @@ node /^cloudcontrol200[145]-dev\.wikimedia\.org/ {
 # cloudrabbit servers T304888
 node /^cloudrabbit100[123]\.wikimedia\.org/ {
     role(wmcs::openstack::eqiad1::rabbitmq)
-}
-
-# new cloudservices1005 node T304888
-node 'cloudservices1005.wikimedia.org' {
-    role(insetup)
 }
 
 node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
