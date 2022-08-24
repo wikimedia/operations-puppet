@@ -14,7 +14,7 @@ class profile::puppet_compiler::clean_reports {
     | CLEANUP_CMD
     systemd::timer::job {'delete-old-output-large-reports':
         ensure      => 'present',
-        description => 'Clean up PCC reports older then 7 days and biger then 1G',
+        description => 'Clean up PCC reports older than 7 days and bigger than 1G',
         command     => $large_cleanup_cmd,
         user        => 'root',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
