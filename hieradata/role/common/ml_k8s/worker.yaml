@@ -2,8 +2,6 @@ cluster: ml_serve
 profile::kubernetes::node::packages_from_future: true
 profile::base::overlayfs: true
 profile::docker::engine::force_default_docker_storage: true
-profile::docker::storage::physical_volumes: ~
-profile::docker::storage::vg_to_remove: ~
 profile::docker::engine::declare_service: true
 profile::docker::engine::packagename: 'docker.io'
 # TODO: This option is not needed on Bullseye nodes,
