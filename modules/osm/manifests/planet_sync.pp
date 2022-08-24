@@ -186,19 +186,14 @@ define osm::planet_sync (
     }
 
     cron { "planet_sync_tile_generation-${name}":
-        ensure   => absent,
-        command  => $tile_generation_command,
-        user     => 'osmupdater',
-        monthday => $day,
-        hour     => $hours,
-        minute   => $minute,
+        ensure  => absent,
+        command => $tile_generation_command,
+        user    => 'osmupdater',
     }
 
     cron { "expire_old_planet_syncs-${name}":
         ensure  => absent,
         command => "/usr/bin/find ${expire_dir} -mtime +30 -type f -exec rm {} \\;",
         user    => 'osmupdater',
-        hour    => $hours,
-        minute  => $minute,
     }
 }
