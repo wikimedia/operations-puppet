@@ -14,8 +14,8 @@ profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
 profile::elasticsearch::version: '7.10'
 profile::elasticsearch::config_version: '7'
-# Some Kibana settings only exist in certain versions
-profile::kibana::config_version: '7'
+profile::elasticsearch::base_data_dir: /srv/elasticsearch
+profile::elasticsearch::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 
 profile::elasticsearch::instances:
     relforge-eqiad:
@@ -34,7 +34,7 @@ profile::elasticsearch::instances:
         tls_port: 9443
         transport_tcp_port: 9500
         certificate_name: 'relforge.svc.eqiad.wmnet'
-profile::elasticsearch::base_data_dir: /srv/elasticsearch
+
 profile::elasticsearch::common_settings:
     awareness_attributes: ''
     # We should be able to run "OK" with a single server.
@@ -75,6 +75,8 @@ profile::elasticsearch::common_settings:
 profile::elasticsearch::cirrus::enable_remote_search: false
 
 ## Kibana configuration
+# Some Kibana settings only exist in certain versions
+profile::kibana::config_version: '7'
 profile::kibana::enable_phatality: false
 
 profile::tlsproxy::instance::nginx_variant: 'light'

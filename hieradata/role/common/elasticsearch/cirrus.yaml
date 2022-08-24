@@ -30,6 +30,7 @@ profile::elasticsearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::elasticsearch::cirrus::expose_http: true
 profile::elasticsearch::cirrus::enable_http2: false
 profile::elasticsearch::base_data_dir: /srv/elasticsearch
+profile::elasticsearch::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 profile::elasticsearch::common_settings:
     awareness_attributes: 'row'
     # We need these plugins to be loaded in order to work properly. This will keep
