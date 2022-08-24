@@ -105,7 +105,7 @@ class dynamicproxy (
         description => 'Logrotation for Dynamic Proxy',
         user        => 'root',
         command     => '/usr/local/sbin/logrotate_dynamic_proxy.sh',
-        interval    => '*-*-* 00/1:00:00'
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00/1:00:00'}
     }
 
     file { '/etc/nginx/nginx.conf':
