@@ -4,11 +4,11 @@ class role::dse_k8s::worker {
     include profile::base::firewall
 
     # Sets up docker on the machine
-    #include profile::docker::storage
+    include profile::docker::engine
     # Setup kubernetes stuff
-    #include profile::kubernetes::node
+    include profile::kubernetes::node
     # Setup calico
-    #include profile::calico::kubernetes
+    include profile::calico::kubernetes
 
     # Setup LVS
     #include profile::lvs::realserver

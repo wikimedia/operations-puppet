@@ -1,0 +1,72 @@
+cluster: dse_k8s
+profile::kubernetes::node::packages_from_future: true
+profile::base::overlayfs: true
+profile::docker::engine::declare_service: true
+profile::docker::engine::packagename: 'docker.io'
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
+profile::kubernetes::use_cni: true
+profile::docker::engine::settings:
+  bridge: none
+  iptables: false
+  ip-masq: false
+  log-opts:
+    max-size: 100m
+  live-restore: true
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+profile::calico::kubernetes::calico_version: '3'
+# Tokens for the calico kubernetes users in private repo at:
+#profile::calico::kubernetes::calico_cni::token
+#profile::calico::kubernetes::calicoctl::token
+profile::kubernetes::node::masquerade_all: false
+# Defined in the private repo
+#profile::kubernetes::node::kubelet_token:
+# Defined in the private repo
+#profile::kubernetes::node::kubeproxy_token:
+profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::rsyslog::kubernetes::kubernetes_url: https://dse-k8s-ctrl.svc.%{::site}.wmnet:6443
+profile::rsyslog::kubernetes::enable: true
+profile::kubernetes::master_fqdn: dse-k8s-ctrl.svc.%{::site}.wmnet
+# Define in the private repo
+# profile::rsyslog::kubernetes::token
+prometheus::node_exporter::collectors_extra:
+  - processes
+# We don't need conftool safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
+  inference: {}
+
+profile::calico::kubernetes::cni_config:
+  name: "k8s-pod-network"
+  cniVersion: "0.3.1"
+  plugins:
+  - type: "calico"
+    log_level: "info"
+    datastore_type: "kubernetes"
+    mtu: 1500
+    ipam:
+      type: "calico-ipam"
+      assign_ipv4: "true"
+      assign_ipv6: "true"
+    policy:
+      type: "k8s"
+    kubernetes:
+      kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
+  - name: "istio-cni"
+    type: "istio-cni"
+    log_level: "info"
+    kubernetes:
+      kubeconfig: "/etc/cni/net.d/istio-kubeconfig"
+      cni_bin_dir: "/opt/cni/bin"
+      exclude_namespaces:
+      - istio-system
+      - kube-system
+      - knative-serving
+      - cert-manager
+      - kserve
+
+profile::admin::groups:
+  - ml-team-admins
+profile::contacts::role_contacts:
+  - 'Data Engineering'
+  - 'Machine Learning'
