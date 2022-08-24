@@ -6,6 +6,11 @@ profile::ssh::server::listen_addresses: ["10.64.16.8"]
 # the public and private networks.
 # This is used in modules/phabricator/templates/sshd_config.phabricator.err
 profile::phabricator::main::use_lvs: true
+
+lvs::realserver::realserver_ips:
+  - "208.80.154.250"
+  - "2620:0:861:ed1a::3:16"
+
 phabricator::vcs::listen_addresses:
   - "208.80.154.250"
   - "10.64.16.100"
