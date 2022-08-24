@@ -35,7 +35,6 @@ profile::openstack::eqiad1::glance_backends:
 
 # List of designate hosts (generally labservicesxxxx).
 profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1003.wikimedia.org
   - cloudservices1004.wikimedia.org
   - cloudservices1005.wikimedia.org
 

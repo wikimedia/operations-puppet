@@ -1394,10 +1394,14 @@ node 'irc2001.wikimedia.org' {
     role(mw_rc_irc)
 }
 
-# cloudservices1003/1004 hosts openstack-designate
+# cloudservices1004/1005 hosts openstack-designate
 # and the powerdns auth and recursive services for instances in eqiad1.
-node /^cloudservices100[345]\.wikimedia\.org$/ {
+node /^cloudservices100[45]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::services)
+}
+
+node 'cloudservices1003.wikimedia.org' {
+    role(spare::system)
 }
 
 #new cloudweb hosts T305414
