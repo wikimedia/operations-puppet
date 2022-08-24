@@ -45,6 +45,8 @@ class dynamicproxy (
     Optional[Array[Stdlib::Fqdn]] $xff_fqdns = undef,
     Integer $rate_limit_requests = 100,
 ) {
+    # TODO: use epp templates
+    #   -> that will surface some typing errors, ex. xff_fqdns = undef not being supported
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_name set but ssl_settings not set')
     }
