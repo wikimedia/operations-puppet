@@ -10,9 +10,7 @@ class role::ml_k8s::master {
 
     # Needed to schedule containers like bird, used by calico.
     # More info: T285927
-    # Sets up docker on the machine. We don't add the profile::docker::storage
-    # profile on purpose, to use profile::docker::engine's defaults
-    # (namely overlay2 if os >= buster).
+    # Sets up docker on the machine.
     include ::profile::docker::engine
     include ::profile::kubernetes::node
     include ::profile::calico::kubernetes

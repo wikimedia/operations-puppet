@@ -1,7 +1,6 @@
 cluster: ml_staging
 profile::kubernetes::node::packages_from_future: true
 profile::base::overlayfs: true
-profile::docker::engine::force_default_docker_storage: true
 profile::docker::engine::declare_service: true
 profile::docker::engine::packagename: 'docker.io'
 # TODO: This option is not needed on Bullseye nodes,

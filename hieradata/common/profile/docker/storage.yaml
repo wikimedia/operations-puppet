@@ -1,2 +1,0 @@
-profile::docker::storage::physical_volumes: ~
-profile::docker::storage::vg_to_remove: ~

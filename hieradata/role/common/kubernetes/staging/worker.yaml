@@ -2,7 +2,6 @@ cluster: kubernetes-staging
 profile::kubernetes::node::packages_from_future: true
 profile::calico::kubernetes::calico_version: '3'
 profile::base::overlayfs: true
-profile::docker::engine::force_default_docker_storage: true
 # FIXME: this parameter is not needed anymore, since the docker class
 #        doesn't use the version for Buster+.
 #        We need to change the related profile and then drop the version.
