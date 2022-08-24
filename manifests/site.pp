@@ -516,7 +516,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 
 # MariaDB 10
 # new db servers T306928
-node /^db11(85|91|92|93|94).eqiad.wmnet$/ {
+node /^db11(85|92|93|94).eqiad.wmnet$/ {
     role(insetup)
 }
 
