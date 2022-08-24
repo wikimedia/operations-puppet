@@ -136,6 +136,9 @@ class profile::mediawiki::common(
         values => { 'net.ipv4.tcp_tw_reuse' => 1 },
     }
 
+    # Go faster (T315398)
+    class { 'cpufrequtils': }
+
     monitoring::service { 'mediawiki-installation DSH group':
         description    => 'mediawiki-installation DSH group',
         check_command  => 'check_dsh_groups!mediawiki-installation',
