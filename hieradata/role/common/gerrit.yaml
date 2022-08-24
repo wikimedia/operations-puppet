@@ -73,6 +73,9 @@ profile::ssh::server::authorized_keys_file:
   - '/etc/ssh/userkeys/%u.d/cumin'
   - '/etc/ssh/userkeys/%u.d/gerrit-scap'
 
+# Remove once we have upgraded to Gerrit 3.6 / Mina 2.8.0 - T315942
+profile::ssh::server::disable_nist_kex: false
+
 profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
