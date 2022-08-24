@@ -8,7 +8,6 @@ class profile::base::labs(
 
     # profile base is shared with production
     include profile::base
-    include ::apt::noupgrade
     class {'::apt::unattendedupgrades':
         unattended_wmf    => $unattended_wmf,
         unattended_distro => $unattended_distro,
