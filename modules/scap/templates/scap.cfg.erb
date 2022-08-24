@@ -96,6 +96,7 @@ master_rsync: deployment.codfw.wmnet
 master_rsync: <%= @deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
+web_proxy: http://webproxy:8080
 # This will make 'scap pull' fail unless it is run as user mwdeploy
 php_fpm: php7.2-fpm
 php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
