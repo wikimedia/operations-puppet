@@ -523,7 +523,7 @@ node /^db11(85|86|88|90|91|92|93|94).eqiad.wmnet$/ {
 # s1 (enwiki) core production dbs on eqiad
 # See also db1099 and db1105 below
 # db1132 is a testing mariadb 10.6 host T303395
-node /^db1(118|119|128|132|134|135|163|169|184)\.eqiad\.wmnet/ {
+node /^db1(118|119|128|132|134|135|163|169|184|186)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
