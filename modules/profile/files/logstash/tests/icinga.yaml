@@ -23,7 +23,7 @@ testcases:
           "type": "syslog"
         }
     expected:
-      - __target_index: "ecs-alerts-1-1.7.0-N-weekly"
+      - __target_index: "ecs-alerts-2-1.7.0-N-yearly"
         labels:
           check_name: "Unmerged changes on repository puppet"
           check_status: "CRITICAL"
@@ -48,7 +48,7 @@ testcases:
           version: "1.7.0"
         event:
           kind: "alert"
-      - __target_index: "ecs-alerts-1-1.7.0-N-weekly"
+      - __target_index: "ecs-alerts-2-1.7.0-N-yearly"
         message: "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%"
         service:
           type: "icinga"

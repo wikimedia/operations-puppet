@@ -122,6 +122,22 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 106
 
   '06':
+    description: 'ecs-alerts-2: delete older than 2 years'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'ecs-alerts-2-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y'
+        unit: years
+        unit_count: 2
+
+  '07':
     description: 'w3creportingapi: delete older than 3 months'
     action: delete_indices
     options:
