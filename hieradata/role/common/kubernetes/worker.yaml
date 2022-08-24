@@ -1,8 +1,6 @@
 cluster: kubernetes
 profile::base::overlayfs: true
 profile::docker::engine::force_default_docker_storage: true
-profile::docker::storage::physical_volumes: ~
-profile::docker::storage::vg_to_remove: ~
 # FIXME: this parameter is not needed anymore, since the docker class
 #        doesn't use the version for Buster+.
 #        We need to change the related profile and then drop the version.

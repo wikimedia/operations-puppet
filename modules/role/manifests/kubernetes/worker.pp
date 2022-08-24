@@ -3,7 +3,6 @@ class role::kubernetes::worker {
     include profile::base::firewall
 
     # Sets up docker on the machine
-    include profile::docker::storage
     include profile::docker::engine
     # Setup dfdaemon and configure docker to use it
     include profile::dragonfly::dfdaemon
