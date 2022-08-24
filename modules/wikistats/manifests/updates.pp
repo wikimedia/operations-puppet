@@ -28,19 +28,19 @@ class wikistats::updates (
     # fetch new wiki data
     wikistats::job::update {
         'wp' : ensure => $ensure, hour => 0;  # Wikipedias
-        'lx' : ensure => $ensure, hour => 1;  # LXDE
-        'si' : ensure => $ensure, hour => 1;  # Wikisite
-        'wt' : ensure => $ensure, hour => 2;  # Wiktionaries
-        'ws' : ensure => $ensure, hour => 3;  # Wikisources
-        'wn' : ensure => $ensure, hour => 4;  # Wikinews
-        'wb' : ensure => $ensure, hour => 5;  # Wikibooks
-        'wq' : ensure => $ensure, hour => 6;  # Wikiquotes
+        'lx' : ensure => $ensure, hour => 7;  # LXDE
+        'si' : ensure => $ensure, hour => 7;  # Wikisite
+        'wt' : ensure => $ensure, hour => 1;  # Wiktionaries
+        'ws' : ensure => $ensure, hour => 2;  # Wikisources
+        'wn' : ensure => $ensure, hour => 3;  # Wikinews
+        'wb' : ensure => $ensure, hour => 4;  # Wikibooks
+        'wq' : ensure => $ensure, hour => 5;  # Wikiquotes
         'os' : ensure => $ensure, hour => 7;  # OpenSUSE
         'gt' : ensure => $ensure, hour => 8;  # Gentoo
         'sf' : ensure => $ensure, hour => 8;  # Sourceforge
         'an' : ensure => $ensure, hour => 9;  # Anarchopedias
         'wf' : ensure => $ensure, hour => 10; # Wikifur
-        'wy' : ensure => $ensure, hour => 10; # Wikivoyage
+        'wy' : ensure => $ensure, hour => 6; # Wikivoyage
         'wv' : ensure => $ensure, hour => 11; # Wikiversities
         'wi' : ensure => $ensure, hour => 11; # Wikia
         'sc' : ensure => $ensure, hour => 12; # Scoutwikis
