@@ -5382,7 +5382,8 @@ users:
     email: aline.bruenger@wikimedia.de
     uid: 39897
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHbQGL1igCVJX2DHnV2KZIfVstXXNAD9bTR2SAN6KzRc aline.bruenger@wikimedia.de
   sgrabarczuk:
     ensure: present
     realname: Szymon Grabarczuk
