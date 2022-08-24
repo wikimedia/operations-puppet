@@ -3,7 +3,6 @@ class role::ml_k8s::worker::staging {
     include ::profile::base::firewall
 
     # Sets up docker on the machine
-    include ::profile::docker::storage
     include ::profile::docker::engine
     # Setup kubernetes stuff
     include ::profile::kubernetes::node
