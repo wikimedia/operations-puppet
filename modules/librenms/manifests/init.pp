@@ -31,19 +31,11 @@ class librenms(
         deploy_user => 'deploy-librenms',
     }
 
-    group { 'librenms':
-        ensure => present,
-    }
-
-    user { 'librenms':
-        ensure     => present,
-        gid        => 'librenms',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
-        groups     => ['deploy-librenms'],
-        require    => Scap::Target['librenms/librenms'],
+    systemd::sysuser { 'librenms':
+        ensure            => present,
+        id                => '921:921',
+        description       => 'LibreNMS system user',
+        additional_groups => ['deploy-librenms'],
     }
 
     file { '/srv/librenms':
@@ -59,7 +51,6 @@ class librenms(
         group   => 'librenms',
         recurse => true,
         mode    => '0775',
-        require => Group['librenms'],
     }
 
     file { '/var/log/librenms/librenms.log':
@@ -76,7 +67,6 @@ class librenms(
         mode      => '0440',
         show_diff => false,
         content   => template('librenms/config.php.erb'),
-        require   => Group['librenms'],
     }
 
     file { "${install_dir}/.env":
@@ -86,7 +76,6 @@ class librenms(
         mode      => '0440',
         show_diff => false,
         content   => template('librenms/.env.erb'),
-        require   => Group['librenms'],
     }
 
     file { "${install_dir}/storage":
@@ -95,7 +84,6 @@ class librenms(
         group   => 'librenms',
         mode    => '0660',
         recurse => true,
-        require => Group['librenms'],
     }
     # librenms writes the session files as 0644 as such we
     # disable recurse and only manage the directory
@@ -105,23 +93,20 @@ class librenms(
         group   => 'librenms',
         mode    => '0660',
         recurse => false,
-        require => Group['librenms'],
     }
 
     file { $rrd_dir:
-        ensure  => directory,
-        mode    => '0775',
-        owner   => 'www-data',
-        group   => 'librenms',
-        require => Group['librenms'],
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'www-data',
+        group  => 'librenms',
     }
 
     # This is to allow various lock files to be created by the systemd jobs
     file { $install_dir:
-        mode    => 'g+w',
-        group   => 'librenms',
-        links   => follow,
-        require => Group['librenms'],
+        mode  => 'g+w',
+        group => 'librenms',
+        links => follow,
     }
 
     file { "${install_dir}/.ircbot.alert":
@@ -190,7 +175,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/discovery.php -h all",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 0/6:33:0'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-discovery-new':
         ensure             => $timer_ensure,
@@ -200,7 +184,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/discovery.php -h new",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-poller-all':
         ensure             => $timer_ensure,
@@ -210,7 +193,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/poller-wrapper.py 16",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-check-services':
         ensure             => $timer_ensure,
@@ -220,7 +202,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/check-services.php",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-alerts':
         ensure             => $timer_ensure,
@@ -230,7 +211,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/alerts.php",
         interval           => {'start' => 'OnCalendar', 'interval' => 'minutely'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-poll-billing':
         ensure             => $timer_ensure,
@@ -240,7 +220,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/poll-billing.php",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-billing-calculate':
         ensure             => $timer_ensure,
@@ -250,7 +229,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/billing-calculate.php",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:01:0'},
-        require            => User['librenms'],
     }
     systemd::timer::job { 'librenms-daily':
         ensure             => $timer_ensure,
@@ -260,7 +238,6 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/daily.sh",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 01:01:0'},
-        require            => User['librenms'],
     }
 
     # syslog script, in an install_dir-agnostic location
