@@ -216,7 +216,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # levels that will allow a couple human users but block anything in excess.
     attack_mode: false
     # Percentage of requests to which query-sorting is applied (0-100). (T314868)
-    querysort_rollout_percent: 5
+    querysort_rollout_percent: 15
 profile::cache::varnish::frontend::separate_vcl: ['misc']
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:16'
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'geoip']
