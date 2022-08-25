@@ -102,10 +102,10 @@ class spamassassin(
     }
 
     # If we need a proxy to reach the internet, we need a slightly modified
-    # crontab entry
+    # script updating spamassassin.
     if $proxy {
         file { '/etc/cron.daily/spamassassin':
-            ensure  => present,
+            ensure  => absent,
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
@@ -125,7 +125,7 @@ class spamassassin(
             description => 'Spamassassin definitions update',
             user        => 'root',
             command     => '/usr/local/sbin/spamassassin_updates',
-            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 09:00:00'}
+            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 09:17:00'}
         }
     }
 }

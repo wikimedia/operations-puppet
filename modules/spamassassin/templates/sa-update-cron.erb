@@ -59,14 +59,6 @@ reload() {
     fi
 }
 
-# Sleep for up to 3600 seconds if not running interactively
-if [ ! -t 0 ]; then
-    RANGE=3600
-    number=`od -vAn -N2 -tu4 < /dev/urandom`
-    number=`expr $number "%" $RANGE`
-    sleep $number
-fi
-
 # Update
 umask 022
 env -i LANG="$LANG" PATH="$PATH" http_proxy='<%= @proxy %>' start-stop-daemon \
