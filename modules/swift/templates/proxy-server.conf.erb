@@ -68,7 +68,7 @@ use = egg:swift#memcache
 memcache_servers = <%= @memcached_addresses.sort.join(",") %>
 memcache_serialization_support = 2
 # per worker!
-memcache_max_connections = 24
+memcache_max_connections = 12
 
 [filter:proxy-logging]
 use = egg:swift#proxy_logging
