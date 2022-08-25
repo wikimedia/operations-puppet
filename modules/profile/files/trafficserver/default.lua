@@ -51,13 +51,6 @@ function cache_status_to_string(status)
     return "int"
 end
 
-function disable_coalescing()
-    ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_MAX_OPEN_READ_RETRIES, -1)
-    ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_MAX_OPEN_WRITE_RETRIES, 1)
-    -- We should also set proxy.config.cache.enable_read_while_writer to 0 but
-    -- there seems to be no TS_LUA_CONFIG_ option for it.
-end
-
 function no_cache_lookup()
     ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
 end
@@ -73,17 +66,7 @@ function do_global_read_request()
         return 0
     end
 
-    local cookie = ts.client_request.header['Cookie']
-
-    if cookie then
-        -- Equivalent to req.http.Cookie ~ "([sS]ession|Token)=" in VCL
-        if string.match(cookie, '[sS]ession=') or string.find(cookie, 'Token=') then
-            disable_coalescing()
-        end
-    end
-
     if ts.client_request.header['Authorization'] then
-        disable_coalescing()
         no_cache_lookup()
     end
 
