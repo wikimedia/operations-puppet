@@ -121,11 +121,11 @@ class spamassassin(
         }
 
         systemd::timer::job { 'spamassassin_updates':
-            ensure      => absent,
+            ensure      => present,
             description => 'Spamassassin definitions update',
             user        => 'root',
             command     => '/usr/local/sbin/spamassassin_updates',
-            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 04:00:00'}
+            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 09:00:00'}
         }
     }
 }
