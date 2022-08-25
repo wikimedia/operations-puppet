@@ -59,3 +59,6 @@ profile::nginx::variant: 'full'
 profile::query_service::gui_url: https://webserver-misc-apps.discovery.wmnet
 
 profile::contacts::role_contacts: ['Search Platform']
+
+# Customize the URI schemes for commons
+profile::query_service::uri_scheme_options: ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']

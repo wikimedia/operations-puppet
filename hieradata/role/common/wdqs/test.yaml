@@ -41,3 +41,6 @@ profile::query_service::streaming_updater::kafka_topic: eqiad.rdf-streaming-upda
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://webserver-misc-apps.discovery.wmnet
 profile::contacts::role_contacts: ['Search Platform']
+
+# Use defaults for wikidata
+profile::query_service::uri_scheme_options: []

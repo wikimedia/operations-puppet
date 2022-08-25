@@ -28,6 +28,7 @@ class profile::query_service::wikidata(
     Optional[String] $jvmquake_options = lookup('profile::query_service::jvmquake_options', {'default_value' => undef}),
     Optional[Integer] $jvmquake_warn_threshold = lookup('profile::query_service::jvmquake_warn_threshold', {'default_value' => undef}),
     String $jvmquake_warn_file = lookup('profile::query_service::jvmquake_warn_file', {'default_value' => '/tmp/wdqs_blazegraph_jvmquake_warn_gc'}),
+    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options')
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::streaming_updater
@@ -51,7 +52,7 @@ class profile::query_service::wikidata(
         heap_size               => $heap_size,
         use_deployed_config     => $use_deployed_config,
         # force skolem for wikibase:isSomeValue (T244341)
-        extra_jvm_opts          => $extra_jvm_opts + ['-DwikibaseSomeValueMode=skolem'],
+        extra_jvm_opts          => $extra_jvm_opts + ['-DwikibaseSomeValueMode=skolem'] + $uri_scheme_options,
         contact_groups          => $contact_groups,
         monitoring_enabled      => $monitoring_enabled,
         sparql_query_stream     => $sparql_query_stream,

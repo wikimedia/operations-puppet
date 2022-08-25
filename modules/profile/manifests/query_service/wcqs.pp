@@ -23,6 +23,7 @@ class profile::query_service::wcqs(
     Optional[String] $jvmquake_options = lookup('profile::query_service::jvmquake_options', {'default_value' => undef}),
     Optional[Integer] $jvmquake_warn_threshold = lookup('profile::query_service::jvmquake_warn_threshold', {'default_value' => undef}),
     String $jvmquake_warn_file = lookup('profile::query_service::jvmquake_warn_file', {'default_value' => '/tmp/wcqs_blazegraph_jvmquake_warn_gc'}),
+    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options')
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::gui
@@ -35,7 +36,6 @@ class profile::query_service::wcqs(
     $prometheus_port = 9195
     $prometheus_agent_port = 9102
 
-    $uri_scheme_options = ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']
     $data_options = ['-DwikibaseSomeValueMode=skolem']
 
     $private_jvm_opts = [

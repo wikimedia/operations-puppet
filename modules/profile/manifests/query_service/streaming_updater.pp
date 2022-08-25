@@ -9,6 +9,7 @@ class profile::query_service::streaming_updater (
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     String $journal = lookup('profile::query_service::streaming_updater::journal'),
+    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options')
 ) {
     require ::profile::query_service::common
 
@@ -42,7 +43,7 @@ class profile::query_service::streaming_updater (
         username              => $username,
         logstash_logback_port => $logstash_logback_port,
         options               => ['-n', $blazegraph_main_ns, '--'] + $kafka_options,
-        extra_jvm_opts        => $default_jvm_options,
+        extra_jvm_opts        => $uri_scheme_options + $default_jvm_options,
         journal               => $journal,
     }
 

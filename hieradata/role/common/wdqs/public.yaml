@@ -60,3 +60,6 @@ profile::contacts::role_contacts: ['Search Platform']
 # kill blazegraph when we detect 300 seconds of GC time vs 1sec*5 of runtime
 # ref: https://github.com/Netflix-Skunkworks/jvmquake#knobs-and-options
 profile::query_service::jvmquake_options: "300,5,0"
+
+# Use defaults for wikidata
+profile::query_service::uri_scheme_options: []
