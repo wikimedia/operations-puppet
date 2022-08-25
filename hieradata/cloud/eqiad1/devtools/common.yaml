@@ -289,3 +289,13 @@ profile::gitlab::restore_interval:
 # GitLab Runner
 profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
 # profile::gitlab::runner::registration_token: private
+
+# VRTS
+profile::vrts::daemon: false
+profile::vrts::database_host: localhost
+profile::vrts::database_name: vrts
+profile::vrts::database_pass: StrongPass123!
+profile::vrts::database_user: vrts
+profile::vrts::exim_database_name: exim
+profile::vrts::exim_database_pass: StrongPass123!
+profile::vrts::exim_database_user: vrts

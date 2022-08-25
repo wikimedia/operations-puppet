@@ -1,0 +1,1 @@
+profile::tlsproxy::envoy::global_cert_name: ticket.discovery.wmnet
