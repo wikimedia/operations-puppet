@@ -514,12 +514,6 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
     role(analytics_cluster::datahub::opensearch)
 }
 
-# MariaDB 10
-# new db servers T306928
-node /^db11(94).eqiad.wmnet$/ {
-    role(insetup)
-}
-
 # s1 (enwiki) core production dbs on eqiad
 # See also db1099 and db1105 below
 # db1132 is a testing mariadb 10.6 host T303395
