@@ -1094,6 +1094,13 @@ groups:
   #   gid: 919
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in librenms::user
+  # The 'librenms' configuration requires rsync. More info in T314972.
+  # librenms:
+  #   gid: 921
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -1224,6 +1231,16 @@ users:
   #   home_dir: /var/run/phd
   #   shell: /bin/false
   #
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # The 'librenms' configuration requires rsync. More info in T314972.
+  # librenms:
+  #   ensure: present
+  #   system: true
+  #   uid: 921
+  #   gid: 921
+  #   home_dir: none
+  #   shell: /bin/false
   rush:
     ensure: absent
     gid: 500
