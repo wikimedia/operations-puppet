@@ -9,10 +9,10 @@
 # }
 # @param ensure ensurable parameter
 # @param username user username
-# @param usertype eiether 'user', 'group', 'modify' or 'range'
-# @param id This parameter is dependednt on the usertype value see:
+# @param usertype either 'user', 'group', 'modify' or 'range'
+# @param id This parameter is dependent on the usertype value see:
 #  https://www.freedesktop.org/software/systemd/man/sysusers.d.html
-# @param allow_login allow the user to perform loggins
+# @param allow_login allow the user to log in
 # @param additional_groups list of addtional groups for the user
 # @param description description
 # @param home_dir home directory, must be pre-existing and does not
