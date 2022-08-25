@@ -228,16 +228,10 @@ profile::elasticsearch::common_settings:
     bulk_thread_pool_executors: 5
     awareness_attributes: ''
     unicast_hosts:
-      - deployment-elastic05.deployment-prep.eqiad.wmflabs
-      - deployment-elastic06.deployment-prep.eqiad.wmflabs
-      - deployment-elastic07.deployment-prep.eqiad.wmflabs
       - deployment-elastic09.deployment-prep.eqiad1.wikimedia.cloud
       - deployment-elastic10.deployment-prep.eqiad1.wikimedia.cloud
       - deployment-elastic11.deployment-prep.eqiad1.wikimedia.cloud
     cluster_hosts:
-      - deployment-elastic05.deployment-prep.eqiad.wmflabs
-      - deployment-elastic06.deployment-prep.eqiad.wmflabs
-      - deployment-elastic07.deployment-prep.eqiad.wmflabs
       - deployment-elastic09.deployment-prep.eqiad1.wikimedia.cloud
       - deployment-elastic10.deployment-prep.eqiad1.wikimedia.cloud
       - deployment-elastic11.deployment-prep.eqiad1.wikimedia.cloud
@@ -248,7 +242,7 @@ profile::elasticsearch::common_settings:
     ltr_cache_size: '100mb'
 
 profile::logstash::apifeatureusage::targets:
-  - deployment-elastic05.deployment-prep.eqiad.wmflabs
+  - deployment-elastic09.deployment-prep.eqiad1.wikimedia.cloud
 nfs_mounts:
   project: false
   home: false
