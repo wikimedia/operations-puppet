@@ -1393,10 +1393,6 @@ node /^cloudservices100[45]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::services)
 }
 
-node 'cloudservices1003.wikimedia.org' {
-    role(spare::system)
-}
-
 #new cloudweb hosts T305414
 node /^cloudweb100[34]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::labweb)
