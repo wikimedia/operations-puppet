@@ -9,8 +9,6 @@ labsdnsconfig:
   recursor: "ns-recursor0.openstack.codfw1dev.wikimediacloud.org"
   recursor_secondary: "ns-recursor1.openstack.codfw1dev.wikimediacloud.org"
 
-sudo_flavor: "sudoldap"
-
 labsldapconfig:
   hostname: "cloudservices2004-dev.wikimedia.org"
   secondary_hostname: "cloudservices2004-dev.wikimedia.org"

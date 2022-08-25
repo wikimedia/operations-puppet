@@ -12,10 +12,6 @@
 #   User to which privileges should be assigned.
 #   Defaults to the resource title.
 #
-# [*sudo_flavor*]
-#   sudo flavor to require. Options are sudo or sudoldap.
-#   Defaults to 'sudo'.
-#
 # === Examples
 #
 #  sudo::user { 'nagios_check_raid':
@@ -29,11 +25,9 @@ define sudo::user(
     Array[String] $privileges            = [],
     $ensure                              = present,
     $user                                = $title,
-    # lint:ignore:wmf_styleguide
-    Enum['sudo','sudoldap'] $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
-    # lint:endignore
 ) {
-    if $sudo_flavor == 'sudo' or debian::codename::ge('buster') {
+    # TODO: remove once Stretch is gone from Cloud VPS
+    if $::realm != 'labs' or debian::codename::ge('buster') {
         require sudo
     } else {
         require sudo::sudoldap

@@ -170,7 +170,6 @@ bigtop::hadoop::datanode_mounts:
 # users in the current Labs Project.
 bigtop::hadoop::users::groups: project-%{::wmcs_project}
 
-sudo_flavor: "sudoldap"
 labsldapconfig:
   hostname: ldap-ro.eqiad.wikimedia.org
 
