@@ -516,7 +516,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 
 # MariaDB 10
 # new db servers T306928
-node /^db11(92|93|94).eqiad.wmnet$/ {
+node /^db11(93|94).eqiad.wmnet$/ {
     role(insetup)
 }
 
@@ -690,7 +690,7 @@ node 'db2159.codfw.wmnet' {
 
 # s8 (wikidata) core production dbs on eqiad
 # See also db1099 and db1101 below
-node /^db1(104|109|111|114|126|172|177)\.eqiad\.wmnet/ {
+node /^db1(104|109|111|114|126|172|177|192)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
