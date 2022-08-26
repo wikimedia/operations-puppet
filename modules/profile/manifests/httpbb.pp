@@ -42,7 +42,6 @@ class profile::httpbb (
     file {
         [
             '/srv/deployment/httpbb-tests/appserver',
-            '/srv/deployment/httpbb-tests/apple-search',
             '/srv/deployment/httpbb-tests/miscweb',
             '/srv/deployment/httpbb-tests/people',
             '/srv/deployment/httpbb-tests/releases',
@@ -81,6 +80,7 @@ class profile::httpbb (
         source => 'puppet:///modules/profile/httpbb/appserver/test_wwwportals.yaml'
     }
     httpbb::test_suite {'apple-search/test_search.yaml':
+        ensure => absent,
         source => 'puppet:///modules/profile/httpbb/apple-search/test_search.yaml'
     }
     httpbb::test_suite {'miscweb/test_miscweb.yaml':
