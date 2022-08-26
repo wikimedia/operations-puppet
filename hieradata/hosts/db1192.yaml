@@ -1,3 +1,2 @@
 # db1192
 mariadb::shard: 's8'
-profile::monitoring::notifications_enabled: false
