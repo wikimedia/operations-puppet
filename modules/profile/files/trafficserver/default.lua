@@ -216,3 +216,47 @@ function do_global_send_request()
     -- in the likely event that it becomes useful again in the future. See
     -- https://gerrit.wikimedia.org/r/#/c/operations/puppet/+/577551/
 end
+
+function restore_cookie()
+    -- Local hook for CACHE_LOOKUP_COMPLETE used to restore hidden cookies
+    -- in do_global_post_remap()
+    if ts.ctx['Cookie'] then
+        ts.client_request.header['Cookie'] = ts.ctx['Cookie']
+    end
+end
+
+function hide_cookie_store_response()
+    -- Local hook for READ_RESPONSE_HDR used to hid cookies again before
+    -- response is stored in cache
+    -- This hook will be executed AFTER do_global_read_response
+    if ts.ctx['Cookie'] then
+        -- ts.server_request is used for caching purposes
+        ts.server_request.header['Cookie'] = nil
+        ts.ctx['Cookie'] = nil
+    end
+end
+
+function do_global_post_remap()
+    -- We hide non session cookies after the remap in case that some remap plugin
+    -- needs the cookies to work. Skip cookied requests targeting the misc cluster
+    local cookie = ts.client_request.header['Cookie']
+    local varnish_cluster = ts.client_request.header['X-Varnish-Cluster'] or '-'
+
+    -- Do not propagate X-Varnish-Cluster to the applayer
+    ts.client_request.header['X-Varnish-Cluster'] = nil
+
+    if cookie then
+        if (string.match(cookie, '[sS]ession=') or string.find(cookie, 'Token=') or string.match(varnish_cluster, 'misc')) then
+            return 0
+        end
+        -- As we are using ts.ctx we cannot use a global hook for cache_lookup_complete
+        ts.hook(TS_LUA_HOOK_CACHE_LOOKUP_COMPLETE, restore_cookie)
+        -- We also need to remove the cookie before the response gets stored in the cache
+        -- or we won't be able to optimize hitrate at all if Vary:Cookie is present
+        ts.hook(TS_LUA_HOOK_READ_RESPONSE_HDR, hide_cookie_store_response)
+        ts.ctx['Cookie'] = cookie
+        ts.client_request.header['Cookie'] = nil
+    end
+
+    return 0
+end

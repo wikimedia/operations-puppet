@@ -19,8 +19,11 @@ _G.ts.server_response.get_maxage = function() return 42 end
 
 describe("Busted unit testing framework", function()
   before_each(function()
+      _G.ts.server_request.header = {}
       _G.ts.server_response.header = {}
+      _G.ts.client_request.header = {}
       _G.ts.client_response.header = {}
+      _G.ts.ctx = {}
       stub(ts.http, "set_server_resp_no_store")
   end)
 
@@ -167,6 +170,57 @@ describe("Busted unit testing framework", function()
       _G.ts.client_request.header['Accept-Encoding'] = 'gzip'
       do_global_read_request()
       assert.are.equals(nil, _G.ts.client_request.header['Accept-Encoding'])
+    end)
+
+    it("test - do_global_post_remap with Session cookie", function()
+      local session_cookie = 'nlwikiSession=banana; nlwikiUserID=999999; nlwikiUserName=thisisauser'
+      -- Session cookie isn't hidden for cache lookup
+      _G.ts.client_request.header['Cookie'] = session_cookie
+      do_global_post_remap()
+      assert.are_equals(_G.ts.client_request.header['Cookie'], session_cookie)
+      assert.stub(ts.hook).was_not_called()
+      -- X-Varnish-Cluster doesn't reach the applayer
+      assert.are_equals(_G.ts.client_request.header['X-Varnish-Cluster'], nil)
+    end)
+
+    it("test - do_global_post_remap Token cookie", function()
+      -- Token cookie isn't hidden for cache lookup
+      local token_cookie = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      _G.ts.client_request.header['Cookie'] = token_cookie
+      do_global_post_remap()
+      assert.are_equals(_G.ts.client_request.header['Cookie'], token_cookie)
+      assert.stub(ts.hook).was_not_called()
+      -- X-Varnish-Cluster doesn't reach the applayer
+      assert.are_equals(_G.ts.client_request.header['X-Varnish-Cluster'], nil)
+    end)
+
+    it("test - do_global_post_remap with Random cookie and X-Varnish-Cluster=misc", function()
+      -- Random cookie isn't hidden for cache lookup iff X-Varnish-Cluster is set to misc
+      local random_cookie = 'foo=bar'
+      _G.ts.client_request.header['Cookie'] = random_cookie
+      _G.ts.client_request.header['X-Varnish-Cluster'] = 'misc'
+      do_global_post_remap()
+      assert.are_equals(_G.ts.client_request.header['Cookie'], random_cookie)
+      assert.stub(ts.hook).was_not_called()
+      -- X-Varnish-Cluster doesn't reach the applayer
+      assert.are_equals(_G.ts.client_request.header['X-Varnish-Cluster'], nil)
+    end)
+
+    it("test - do_global_post_remap with non Session / Token cookie", function()
+      -- cookie is hidden for cache lookup
+      local cookie = 'WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      _G.ts.client_request.header['Cookie'] = cookie
+      _G.ts.server_request.header['Cookie'] = cookie
+      do_global_post_remap()
+      assert.are_equals(_G.ts.client_request.header['Cookie'], nil)
+      -- X-Varnish-Cluster doesn't reach the applayer
+      assert.are_equals(_G.ts.client_request.header['X-Varnish-Cluster'], nil)
+      restore_cookie()
+      -- Cookie is restored after cache lookup is completed
+      assert.are_equals(_G.ts.client_request.header['Cookie'], cookie)
+      hide_cookie_store_response()
+      -- Cookie is hidden again to store cache response if needed
+      assert.are_equals(_G.ts.server_request.header['Cookie'], nil)
     end)
   end)
 end)
