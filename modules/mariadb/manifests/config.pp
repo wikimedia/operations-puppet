@@ -71,19 +71,6 @@ class mariadb::config(
         source => 'puppet:///modules/mariadb/grcat.config',
     }
 
-    # if the socket location is different from the default, it is the role
-    # class' reponsability to handle it (otherwise this could have side
-    # efects, like changing / or /tmp permissions
-    # Starting with buster, creation of /run/mysqld is done by setting:
-    #   RuntimeDirectory=mysqld
-    #   RuntimeDirectoryPreserve=yes
-    # directly on the systemd unit
-    if $socket == '/run/mysqld/mysqld.sock' and debian::codename::lt('buster') {
-        systemd::tmpfile { 'mysqld':
-            content => 'd /run/mysqld 0775 root mysql -',
-        }
-    }
-
     # Include these manually. If we're testing on systems with tarballs
     # instead of debs, the user won't exist.
     group { 'mysql':
