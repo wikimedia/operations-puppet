@@ -1,9 +1,5 @@
 profile::maps::apps::redis_server: 'redis://maps1009.eqiad.wmnet'
 
-# The stock nginx doesn't have support for the header setting that
-# tlsproxy::localssl uses on stretch. Disable for testing purposes
-profile::maps::tlsproxy::ssl_ecdhe_curve: false
-
 profile::maps::apps::tilerator_enable: false
 
 profile::cassandra::single_instance::dc: 'eqiad'
