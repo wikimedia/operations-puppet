@@ -34,6 +34,10 @@ class codesearch(
         }
     }
 
+    systemd::sysuser { 'codesearch':
+        additional_groups => ['docker'],
+    }
+
     file { $hound_dir:
         ensure => directory,
         owner  => 'codesearch',
@@ -41,24 +45,10 @@ class codesearch(
         mode   => '0755',
     }
 
-    group { 'codesearch':
-        ensure => present,
-        name   => 'codesearch',
-        system => true,
-    }
-
-    user { 'codesearch':
-        ensure  => present,
-        system  => true,
-        groups  => 'docker',
-        require => Package['docker-ce'],
-    }
-
     git::clone {'labs/codesearch':
         ensure    => latest,
         directory => $clone_dir,
         branch    => 'master',
-        require   => User['codesearch'],
         owner     => 'codesearch',
         group     => 'codesearch',
     }
@@ -80,7 +70,6 @@ class codesearch(
         },
         require     => [
             Git::Clone['labs/codesearch'],
-            User['codesearch'],
         ],
     }
 
@@ -109,7 +98,6 @@ class codesearch(
         ensure  => present,
         content => to_json_pretty($ports),
         owner   => 'codesearch',
-        require => User['codesearch'],
     }
 
     $ports.each |String $name, Integer $port| {
