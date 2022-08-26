@@ -1095,6 +1095,13 @@ groups:
   #   system: true
   #   members: []
   # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in phabricator::phd
+  # User data is rsynced between servers and owned by the daemon user.
+  # phd:
+  #   gid: 920
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet in librenms::user
   # The 'librenms' configuration requires rsync. More info in T314972.
   # librenms:
