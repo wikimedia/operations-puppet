@@ -69,6 +69,7 @@ class profile::toolforge::k8s::haproxy (
         # monitor the 404 handler
         # creation on this tool has been blocked by the title blacklist
         "this-tool-does-not-exist.${web_domain}":
+            timeout            => '15s',
             body_regex_matches => ['The URL you have requested'],
             status_matches     => [404];
     }
