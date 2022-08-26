@@ -5575,6 +5575,10 @@ ldap_only_users:
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
+  jdfraine:
+    ensure: present
+    realname: Jonathan Fraine
+    email: jonathan.fraine@wikimedia.de
   jrabah:
     ensure: present
     realname: Jack Rabah
