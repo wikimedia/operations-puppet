@@ -38,6 +38,7 @@ class openstack::keystone::service::xena(
     Boolean $enforce_new_policy_defaults,
     Stdlib::Port $public_bind_port,
     Stdlib::Port $admin_bind_port,
+    Boolean $enable_app_credentials,
 ) {
     class { "openstack::keystone::service::xena::${::lsbdistcodename}":
         public_bind_port => $public_bind_port,
