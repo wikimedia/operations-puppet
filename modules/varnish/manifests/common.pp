@@ -18,10 +18,7 @@ class varnish::common(
 
     # Python version
     # TODO: use case for python_version fact
-    $python_version = debian::codename::eq('stretch') ? {
-        true    => '3.5',
-        default => '3.7',
-    }
+    $python_version = '3.7'
 
     file { '/usr/local/sbin/reload-vcl':
         source => 'puppet:///modules/varnish/reload-vcl.py',
