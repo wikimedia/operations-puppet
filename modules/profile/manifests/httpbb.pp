@@ -79,10 +79,6 @@ class profile::httpbb (
     httpbb::test_suite {'appserver/test_wwwportals.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_wwwportals.yaml'
     }
-    httpbb::test_suite {'apple-search/test_search.yaml':
-        ensure => absent,
-        source => 'puppet:///modules/profile/httpbb/apple-search/test_search.yaml'
-    }
     httpbb::test_suite {'miscweb/test_miscweb.yaml':
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
     }
