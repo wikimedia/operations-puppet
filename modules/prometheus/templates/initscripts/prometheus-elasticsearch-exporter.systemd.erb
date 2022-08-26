@@ -5,7 +5,7 @@ Documentation=https://prometheus.io/docs/introduction/overview/
 [Service]
 Restart=always
 User=prometheus
-<% if ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
+<% if ['buster'].include? @facts['os']['distro']['codename'] -%>
 ExecStart=/usr/bin/prometheus-elasticsearch-exporter -es.uri=<%= @es_uri %> -web.listen-address=:<%= @prometheus_port %>
 <% else -%>
 ExecStart=/usr/bin/prometheus-elasticsearch-exporter --es.uri=<%= @es_uri %> --web.listen-address=:<%= @prometheus_port %>
