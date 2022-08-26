@@ -26,20 +26,6 @@ define elasticsearch::tlsproxy (
     Boolean                           $enable_http2      = false,
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths       = {}
 ) {
-    # on stretch (Debian 9) we used a custom patched version of nginx, which added the
-    # ssl_ecdhe_curve directive.  Starting with buster we simply use the default nginx
-    # from Debian , so this directive is does not work/is not needed.
-
-    case $facts['os']['release']['major'] {
-        '9': {
-            $ssl_ecdhe_curve = true
-        }
-        /(10|11)/: {
-            $ssl_ecdhe_curve = false
-        }
-        default: { fail("Major OS release detected as (${facts['os']['release']['major']}) , should be one of: 9, 10, 11") }
-    }
-
     tlsproxy::localssl { $title:
         certs             => $certificate_names,
         server_name       => $server_name,
@@ -51,7 +37,7 @@ define elasticsearch::tlsproxy (
         tls_port          => $tls_port,
         only_get_requests => $read_only,
         enable_http2      => $enable_http2,
-        ssl_ecdhe_curve   => $ssl_ecdhe_curve,
+        ssl_ecdhe_curve   => false,
         cfssl_paths       => $cfssl_paths,
     }
 
