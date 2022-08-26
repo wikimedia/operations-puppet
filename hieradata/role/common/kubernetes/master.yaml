@@ -56,7 +56,6 @@ profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 # We use docker with overlayfs here
 profile::base::overlayfs: true
-profile::docker::engine::force_default_docker_storage: true
 profile::docker::engine::version: "20.10.5+dfsg1-1+deb11u1"
 profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::declare_service: true
