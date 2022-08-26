@@ -24,25 +24,13 @@ class routinator(
 
     ensure_packages('rsync')
 
-    if debian::codename::ge('bullseye') {
-        apt::package_from_component { 'routinator':
-            component => 'thirdparty/routinator',
-            packages  => ['routinator'],
-        }
-    } else {
-        ensure_packages('routinator')
+    apt::package_from_component { 'routinator':
+        component => 'thirdparty/routinator',
+        packages  => ['routinator'],
     }
 
-    group { 'routinator':
-        ensure  => present,
-        require => Package['routinator'],
-    }
-    user { 'routinator':
-        ensure     => present,
-        gid        => 'routinator',
-        home       => '/etc/routinator',
-        system     => true,
-        managehome => true,
+    systemd::sysuser { 'routinator':
+        home_dir    => '/etc/routinator',
     }
 
 # Using the same paths as the Debian packaging efforts:
