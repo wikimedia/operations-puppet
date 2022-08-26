@@ -1,3 +1,2 @@
 # db1185
 mariadb::shard: 's5'
-profile::monitoring::notifications_enabled: false
