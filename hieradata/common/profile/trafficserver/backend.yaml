@@ -241,9 +241,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://rt.wikimedia.org
       replacement: https://rt.discovery.wmnet
     - type: map
-      target: http://search.wikimedia.org
-      replacement: https://apple-search.discovery.wmnet:4013
-    - type: map
       target: http://schema.wikimedia.org
       replacement: https://schema.discovery.wmnet
     - type: map
