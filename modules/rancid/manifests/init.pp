@@ -6,25 +6,14 @@ class rancid (
     Stdlib::Fqdn $active_server,
 ){
 
-    package { 'rancid':
-        ensure => present,
+    ensure_packages('rancid')
+
+    systemd::sysuser { 'rancid':
+        home_dir => '/var/lib/rancid',
+        shell    => '/bin/sh',
     }
 
-    group { 'rancid':
-        ensure => present,
-        name   => 'rancid',
-        system => true,
-    }
-
-    user { 'rancid':
-        shell      => '/bin/sh',
-        gid        => 'rancid',
-        managehome => true,
-        system     => true,
-        home       => '/var/lib/rancid',
-    }
     keyholder::agent { 'rancid':
-        require        => Group['rancid'],
         trusted_groups => ['rancid'],
     }
 
