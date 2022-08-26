@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_text x-varnish-cluster"
+
+server s1 {
+    rxreq
+    txresp
+    expect req.http.X-Varnish-Cluster == "misc"
+    rxreq
+    txresp
+    expect req.http.X-Varnish-Cluster == <undef>
+    txresp
+    expect req.http.X-Varnish-Cluster == <undef>
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/" -hdr "Host: phabricator.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.status == 200
+
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.status == 200
+
+    # X-Varnish-Cluster set by the U-A gets sanitized
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192" -hdr "X-Varnish-Cluster: foo"
+    rxresp
+    expect resp.status == 200
+} -run

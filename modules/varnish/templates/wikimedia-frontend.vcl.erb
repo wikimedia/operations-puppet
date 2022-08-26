@@ -542,6 +542,7 @@ include "directors.frontend.vcl";
 
 sub wm_recv_early {
 	unset req.http.X-CDIS; // clear internal cache-disposition header
+	unset req.http.X-Varnish-Cluster; // internal cache cluster header
 
 	// To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
 	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:

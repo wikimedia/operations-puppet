@@ -86,6 +86,7 @@ sub cluster_fe_backend_fetch {
 	if (bereq.http.Host == "intake-logging.wikimedia.org") {
 		call nel_geoip_bereq;
 	}
+	set bereq.http.X-Varnish-Cluster = "misc";
 }
 sub cluster_fe_backend_response_early { }
 
