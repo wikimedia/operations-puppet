@@ -634,6 +634,16 @@ class profile::hadoop::common (
 
     }
 
+    # Starting with Bullseye the systemd unit for systemd-logind uses ProtectSystem=strict,
+    # which doesn't work with HDFS, so exclude /mnt from the list of inaccessible paths for
+    # the systemd-logind service
+    if debian::codename::ge('bullseye') {
+        systemd::unit { 'systemd-logind.service':
+            content  => "[Service]\nInaccessiblePaths=-/mnt\n",
+            restart  => false,
+            override => true,
+        }
+    }
 
     if $::realm == 'labs' {
         # Hadoop directories in labs should be created by puppet.
