@@ -1,15 +1,11 @@
 # == Profile docker::engine
 #
-# Installs docker, along with setting up the volume group needed for the
-# devicemapper storage driver to work.
-# to work
+# Installs docker
+
 class profile::docker::engine(
     # We want to get settings across the hierarchy, some per host, some fleet
     # wide. So use hash merge behavior to merge keys across the hierarchy
     Hash $settings = lookup('profile::docker::engine::settings', { 'default_value' => {}} ),
-    # Version to install; the default is not to pick one.
-    # NOTE: this must be set on OS < buster.
-    Optional[String] $version = lookup('profile::docker::engine::version', { 'default_value' => undef }),
     # Override the default docker engine package name.  See docker/init.pp for
     # default names on different Debian OS versions.
     Optional[String] $packagename = lookup('profile::docker::engine::packagename', { 'default_value' => undef }),
@@ -22,16 +18,6 @@ class profile::docker::engine(
         # See https://docs.docker.com/engine/install/linux-postinstall/#your-kernel-does-not-support-cgroup-swap-limit-capabilities
         # This seems not needed on Bullseye since Docker is provided.
         require ::profile::base::memory_cgroup
-    }
-
-    # On Buster and later we use Docker from Debian
-    if debian::codename::lt('buster') {
-        apt::repository { 'thirdparty-k8s':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/k8s',
-            before     => Class['docker'],
-        }
     }
 
     # Docker config
@@ -49,7 +35,6 @@ class profile::docker::engine(
     # Install docker, we should remove the "version" parameter when everything
     # is using Buster/Docker as packaged by Debian.
     class { 'docker':
-        version      => $version,
         package_name => $packagename,
     }
 

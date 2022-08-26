@@ -6,9 +6,6 @@
 #
 # === Parameters
 #
-# [*version*] The package version to install, on Buster and above this is ignored
-#             and we simply install the version provided by Debian
-#
 # [*package_name*] Docker is going through various transitions changing package
 # names multiple times already. Support that so we can choose which one we want.
 # Defaults to docker-engine on < Buster, docker.io >= Buster (but this is subject to change).
@@ -20,7 +17,6 @@
 # The good part: actually working apparmor for docker as opposed to previous distro versions.
 #
 class docker(
-    Optional[String] $version = undef,
     Optional[String] $package_name = undef,
 ){
     require ::docker::configuration
@@ -37,12 +33,5 @@ class docker(
         $_package_name = $package_name
     }
 
-
-    if debian::codename::lt('buster') {
-        package { $_package_name:
-            ensure => $version,
-        }
-    } else {
-        ensure_packages([$_package_name, 'apparmor'])
-    }
+    ensure_packages([$_package_name, 'apparmor'])
 }
