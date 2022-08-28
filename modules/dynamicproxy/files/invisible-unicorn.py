@@ -307,15 +307,14 @@ def all_mappings(project_name):
     enforce_policy('proxy:index', project_name)
 
     project = Project.query.filter_by(name=project_name).first()
-    if project is None:
-        return "No such project", 400
+    data = {'routes': []}
 
-    data = {'project': project.name, 'routes': []}
-    for route in project.routes:
-        data['routes'].append({
-            'domain': route.domain,
-            'backends': [backend.url for backend in route.backends]
-        })
+    if project:
+        for route in project.routes:
+            data['routes'].append({
+                'domain': route.domain,
+                'backends': [backend.url for backend in route.backends]
+            })
 
     return flask.jsonify(**data)
 
@@ -370,7 +369,7 @@ def delete_mapping(project_name, domain):
 
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
-        return "No such project", 400
+        return "No such domain", 400
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
@@ -392,7 +391,7 @@ def get_mapping(project_name, domain):
 
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
-        return "No such project", 400
+        return "No such domain", 400
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
@@ -407,7 +406,7 @@ def get_mapping(project_name, domain):
 def update_mapping(project_name, domain):
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
-        return "No such project", 400
+        return "No such domain", 400
 
     enforce_policy('proxy:update', project_name)
 
