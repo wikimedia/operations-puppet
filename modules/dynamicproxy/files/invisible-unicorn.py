@@ -65,6 +65,7 @@ enforcer.register_defaults([
     policy.RuleDefault('admin', 'role:admin'),
     policy.RuleDefault('admin_or_projectadmin', 'rule:admin or role:projectadmin'),
     policy.RuleDefault('proxy:zones:index', ''),
+    policy.RuleDefault('proxy:zones:use_deprecated', 'rule:admin'),
     policy.RuleDefault('proxy:index', ''),
     policy.RuleDefault('proxy:view', ''),
     policy.RuleDefault('proxy:create', 'rule:admin_or_projectadmin'),
@@ -170,6 +171,9 @@ class Dns:
         # For now, regardless if the project owns that zone, ensure that
         # the used parent zone is explicitely allowed by the admins
         if hostname_parent in self.zones:
+            if self.zones[hostname_parent].get("deprecated", False):
+                enforce_policy("proxy:zones:use_deprecated", project)
+
             for zone in self.designateclient(project).zones.list():
                 # we don't have multi-level wildcard certs
                 if zone["name"] == hostname:
@@ -299,7 +303,23 @@ def enforce_policy(rule, project_id):
 def list_zones(project_name):
     enforce_policy('proxy:zones:index', project_name)
 
-    return flask.jsonify([zone.rstrip('.') for zone in zones])
+    try:
+        enforce_policy('proxy:zones:use_deprecated', project_name)
+    except Forbidden:
+        use_deprecated = False
+    else:
+        use_deprecated = True
+
+    data = {
+        zone.rstrip("."): {
+            "deprecated": details.get("deprecated", False),
+            "default": details.get("default", False),
+        }
+        for zone, details in zones.items()
+        if use_deprecated or not details.get("deprecated", False)
+    }
+
+    return flask.jsonify(data)
 
 
 @app.route('/v1/<project_name>/mapping', methods=['GET'])
