@@ -558,20 +558,7 @@ sub wm_recv_early {
 
 sub normalize_request_nonmisc {
 	// Sort query parameters to improve cache efficiency (T138093).
-	// In production, query sorting is enabled for all requests to testwiki,
-	// mediawikiwiki, on-demand via the X-Wikimedia-Debug header, and for a
-	// percentage of all other requests, controlled via
-	// 'querysort_rollout_percent' in hiera.
-	if (
-		req.http.X-Wikimedia-Debug ~ "(^|; )querysort(;|$)"
-		|| req.http.Host == "test.wikipedia.org"
-		|| req.http.Host == "test.m.wikipedia.org"
-		|| req.http.Host == "www.mediawiki.org"
-		|| req.http.Host == "m.mediawiki.org"
-		|| cache_local.key(querysort.querysort(req.url)) < <%= (4294967296.0 * @vcl_config.fetch("querysort_rollout_percent", 0) / 100).to_i %>
-	) {
-		set req.url = querysort.querysort(req.url);
-	}
+	set req.url = querysort.querysort(req.url);
 }
 
 sub wm_recv_purge {
