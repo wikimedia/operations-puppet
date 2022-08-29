@@ -45,12 +45,12 @@ profile::restbase::cassandra_datacenters:
 profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud/w/rest.php
 profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps01.deployment-prep.eqiad1.wikimedia.cloud:8888
-profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
+profile::restbase::mathoid_uri: http://deployment-docker-mathoid02.deployment-prep.eqiad.wmflabs:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 profile::restbase::event_service_uri: http://deployment-eventgate-3.deployment-prep.eqiad.wmflabs:8292/v1/events
 profile::restbase::proton_uri: http://deployment-docker-proton01.deployment-prep.eqiad1.wikimedia.cloud:3030
-profile::restbase::citoid_uri: http://deployment-docker-citoid01.deployment-prep.eqiad.wmflabs:1970
-profile::restbase::cxserver_uri: http://deployment-docker-cxserver01.deployment-prep.eqiad.wmflabs:8080
+profile::restbase::citoid_uri: http://deployment-docker-citoid02.deployment-prep.eqiad.wmflabs:1970
+profile::restbase::cxserver_uri: http://deployment-docker-cxserver02.deployment-prep.eqiad.wmflabs:8080
 profile::restbase::recommendation_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:9632
 profile::restbase::wikifeeds_uri: http://deployment-wikifeeds01.deployment-prep.eqiad.wmflabs:8889
 
