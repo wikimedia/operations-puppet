@@ -1,5 +1,4 @@
 cluster: memcached
-profile::memcached::enable_16: true
 profile::memcached::version: "present"
 profile::memcached::threads: 16
 profile::memcached::growth_factor: 1.15
