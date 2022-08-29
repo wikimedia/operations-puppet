@@ -54,40 +54,44 @@ class profile::mediawiki::httpd(
     }
 
     file { '/etc/apache2/mods-available/expires.conf':
-        ensure => present,
-        source => 'puppet:///modules/mediawiki/apache/modules/expires.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
+        ensure  => present,
+        source  => 'puppet:///modules/mediawiki/apache/modules/expires.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['apache2'],
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/mods-available/autoindex.conf':
-        ensure => present,
-        source => 'puppet:///modules/mediawiki/apache/modules/autoindex.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
+        ensure  => present,
+        source  => 'puppet:///modules/mediawiki/apache/modules/autoindex.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['apache2'],
+        require => Package['apache2'],
     }
 
 
     file { '/etc/apache2/mods-available/setenvif.conf':
-        ensure => present,
-        source => 'puppet:///modules/mediawiki/apache/modules/setenvif.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
+        ensure  => present,
+        source  => 'puppet:///modules/mediawiki/apache/modules/setenvif.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['apache2'],
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/mods-available/mime.conf':
-        ensure => present,
-        source => 'puppet:///modules/mediawiki/apache/modules/mime.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
+        ensure  => present,
+        source  => 'puppet:///modules/mediawiki/apache/modules/mime.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['apache2'],
+        require => Package['apache2'],
     }
 
     # Add headers lost by mod_proxy_fastcgi
