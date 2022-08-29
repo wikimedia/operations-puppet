@@ -190,8 +190,8 @@ profile::etcd::tlsproxy::upstream_port: 2378
 profile::etcd::tlsproxy::tls_upstream: false
 # NOTE: these elasticsearch settings will need to be overloaded on a per-host
 # basis for the Logstash Elasticsearch cluster.
-profile::elasticsearch::version: '6.8'
-profile::elasticsearch::config_version: '6'
+profile::elasticsearch::version: '7.10'
+profile::elasticsearch::config_version: '7'
 profile::elasticsearch::cirrus::ferm_srange: ''
 profile::elasticsearch::cirrus::expose_http: false
 profile::elasticsearch::cirrus::storage_device: dm-0
