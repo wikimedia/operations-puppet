@@ -1,6 +1,6 @@
 function profile::trafficserver_caching_rules(Hash $req_handling, Hash $alternate_domains, Array[Trafficserver::Mapping_rule] $mapping_rules) >> Array[Trafficserver::Caching_rule] {
     $caching_rules = ($req_handling + $alternate_domains).map |$hostname, $entry| {
-        if $entry['caching'] == 'pass' {
+        if $entry['caching'] != 'normal' {
             # Build the list of remap rules for this hostname
             $remap_rule = $mapping_rules.filter |$idx, $rule| {
                 $rule['target'].match("https?:\\/\\/${hostname}") != undef
