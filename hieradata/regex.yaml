@@ -347,3 +347,17 @@ redis_sessions_eqiad:
 redis_sessions_codfw:
   __regex: !ruby/regexp /^mc20(2[026]|3[02468])\.codfw.wmnet/
   profile::redis::multidc::version_override: 2
+
+# parsoid servers running only php 7.4 T312638
+parsoid_php_74_only:
+  __regex: !ruby/regexp /^parse10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet/
+  profile::lvs::realserver::pools:
+    "parsoid-php":
+      services:
+        - php7.4-fpm
+        - envoyproxy
+        - mcrouter
+        - nutcracker
+        - apache2
+  profile::mediawiki::php::php_versions:
+    - "7.4"
