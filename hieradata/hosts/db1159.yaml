@@ -1,3 +1,4 @@
 # db1159
-mariadb::shard: 'm2'
+mariadb::shard: 'm3'
+mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: true
