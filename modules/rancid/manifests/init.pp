@@ -53,7 +53,8 @@ class rancid (
             group  => 'rancid';
         '/var/lib/rancid':
             ensure => directory,
-            mode   => '0750';
+            mode   => '0750',
+            group  => 'wikidev';
         '/var/lib/rancid/.cloginrc':
             mode    => '0440',
             content => template('rancid/cloginrc.erb');
