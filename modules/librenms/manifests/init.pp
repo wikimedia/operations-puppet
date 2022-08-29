@@ -50,12 +50,12 @@ class librenms(
         owner   => 'www-data',
         group   => 'librenms',
         recurse => true,
-        mode    => '0775',
+        mode    => '0755',
     }
 
     file { '/var/log/librenms/librenms.log':
         ensure => present,
-        owner  => 'librenms',
+        owner  => 'www-data',
         group  => 'librenms',
         mode   => '0660',
     }

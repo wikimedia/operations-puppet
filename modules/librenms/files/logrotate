@@ -5,8 +5,8 @@
     compress
     delaycompress
     missingok
-    create 0660 librenms root
-    su librenms librenms
+    create 0660 www-data librenms
+    su www-data librenms
 }
 /var/log/librenms/daily.log {
     rotate 7
