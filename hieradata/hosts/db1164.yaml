@@ -1,3 +1,4 @@
 # db1164
 mariadb::shard: 'm2'
-profile::monitoring::notifications_enabled: false
+profile::mariadb::mysql_role: 'master'
+profile::monitoring::is_critical: true
