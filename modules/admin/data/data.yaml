@@ -103,7 +103,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [hashar, thcipriani, qchris, brennen, dancy, jnuche, demon]
+    members: &gerrit_root_members [hashar, thcipriani, qchris, brennen, dancy, jnuche, demon, dduvall, jhuneidi]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -470,7 +470,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [twentyafterfour, thcipriani, brennen, jnuche, hashar, demon, dancy, dduvall]
+    members: [twentyafterfour, thcipriani, brennen, jnuche, hashar, demon, dancy, dduvall, jhuneidi]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -710,7 +710,7 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [twentyafterfour, thcipriani, brennen, demon]
+    members: [twentyafterfour, thcipriani, brennen, demon, jnuche, hashar, dduvall, dancy, jhuneidi]
     approval:
       - Tyler Cipriani
   notebook-roots:
