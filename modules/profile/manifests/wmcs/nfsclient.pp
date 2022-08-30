@@ -211,6 +211,20 @@ class profile::wmcs::nfsclient(
             }
         }
 
+        # Temporary hack: remove obsolete mounts
+        ['labstore1006.wikimedia.org', 'labstore1007.wikimedia.org'].each |String $server| {
+            labstore::nfs_mount { $server:
+                ensure      => absent,
+                mount_name  => 'dumps',
+                project     => $::labsproject,
+                options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+                mount_path  => "/mnt/nfs/dumps-${server}",
+                server      => $server,
+                nfs_version => $nfs_version,
+            }
+        }
+
+
         file { '/public/dumps':
             ensure => 'directory',
             owner  => 'root',

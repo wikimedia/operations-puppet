@@ -662,7 +662,7 @@ dumps_managed_subdirs: []
 dumps_misc_cronrunner: false
 
 # Dumps distribution servers actively serving NFS traffic
-dumps_dist_nfs_servers: [labstore1006.wikimedia.org, labstore1007.wikimedia.org, clouddumps1001.wikimedia.org, clouddumps1002.wikimedia.org]
+dumps_dist_nfs_servers: [clouddumps1001.wikimedia.org, clouddumps1002.wikimedia.org]
 
 # Dumps distribution server currently serving traffic over NFS to cloud vps instances
 dumps_dist_active_vps: clouddumps1001.wikimedia.org
