@@ -167,10 +167,11 @@ class profile::netbox::db (
             pg_database => 'netbox',
             description => 'netbox Postgres',
         }
-        # On secondary nodes, do an hourly DB dump
+        # On secondary nodes, do an hourly DB dump, keep 2 days of history
         class { '::postgresql::backup':
             do_backups    => $do_backups,
-            dump_interval => $dump_interval
+            dump_interval => $dump_interval,
+            rotate_days   => 2
         }
     }
     if $do_backups {
