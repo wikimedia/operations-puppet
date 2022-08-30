@@ -36,3 +36,4 @@ profile::prometheus::kubernetes::clusters:
 # List of Ganeti clusters that can be scraped.
 profile::prometheus::ganeti::clusters:
   - ganeti-test01.svc.codfw.wmnet
+  - ganeti01.svc.codfw.wmnet

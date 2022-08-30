@@ -26,3 +26,6 @@ profile::prometheus::kubernetes::clusters:
 #   client_token: eqiaddummy
 # k8s-staging:
 #   client_token: eqiaddummystaging
+
+profile::prometheus::ganeti::clusters:
+  - ganeti01.svc.eqiad.wmnet
