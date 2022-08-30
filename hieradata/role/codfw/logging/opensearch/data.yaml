@@ -32,3 +32,4 @@ profile::opensearch::dc_settings:
 
 # pick one host per cluster to run singleton jobs
 profile::opensearch::logstash::jobs_host: 'logstash2026.codfw.wmnet'
+profile::opensearch::version: '2.0.0'
