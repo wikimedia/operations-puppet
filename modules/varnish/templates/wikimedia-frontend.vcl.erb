@@ -557,7 +557,8 @@ sub wm_recv_early {
 }
 
 sub normalize_request_nonmisc {
-	// Sort query parameters to improve cache efficiency (T138093).
+	// Sort query parameters to improve cache efficiency.
+	// See <https://wikitech.wikimedia.org/wiki/Query_string_normalization>.
 	set req.url = querysort.querysort(req.url);
 }
 
