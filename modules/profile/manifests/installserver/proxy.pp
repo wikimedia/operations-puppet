@@ -10,7 +10,7 @@ class profile::installserver::proxy(
     Array[Stdlib::Port] $safe_ports      = lookup('profile::installserver::proxy::safe_ports'),
 ){
     include network::constants
-    $wiki_networks = $network::constants::aggregate_networks
+    $prod_networks = $network::constants::production_networks
 
     $syslog_facility = 'local0'
     $syslog_priority = 'info'

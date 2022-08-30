@@ -32,9 +32,11 @@ acl Safe_ports port <%= port %>
 <%- end -%>
 acl purge method PURGE
 acl CONNECT method CONNECT
-<%- @wiki_networks.each do |net| -%>
+<%- @prod_networks.each do |net| -%>
 acl wikimedia src <%= net %>
 <%- end -%>
+acl wikimedia src 127.0.0.0/8
+acl wikimedia src ::1/128
 http_access allow manager localhost
 http_access deny manager
 http_access allow purge localhost
