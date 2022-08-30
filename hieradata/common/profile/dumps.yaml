@@ -15,7 +15,7 @@ profile::dumps::rsync_internal_clients:
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
 
-profile::dumps::generation_worker_cron_php: /usr/bin/php7.2
+profile::dumps::generation_worker_cron_php: /usr/bin/php7.4
 profile::dumps::single_backend: false
 
 # the servers below maintain copies of either xml or misc dumps
