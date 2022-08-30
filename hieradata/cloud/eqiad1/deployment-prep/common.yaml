@@ -197,7 +197,7 @@ profile::elasticsearch::instances:
     beta-search:
       cluster_name: beta-search
       short_cluster_name: chi
-      heap_memory: 2G
+      heap_memory: 3G
       http_port: 9200
       tls_port: 9243
       transport_tcp_port: 9300
