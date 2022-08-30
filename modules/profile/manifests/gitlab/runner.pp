@@ -9,7 +9,6 @@
 # @param docker_volume_max Maximum size (Gb) of attached volumes considered for the docker mount.
 # @param docker_network Name of the Docker network to provision for the runner.
 # @param docker_settings Docker daemon settings
-# @param docker_version Version of Docker to install
 # @param gitlab_url URL of the GitLab instance on which to register
 # @param locked Whether the runner is locked and can/cannot be enabled for projects
 # @param registration_token Token used to register the runner with the GitLab instance.
@@ -35,7 +34,6 @@ class profile::gitlab::runner (
     String                                      $docker_network     = lookup('profile::gitlab::runner::docker_network'),
     Stdlib::IP::Address                         $docker_subnet      = lookup('profile::gitlab::runner::docker_subnet'),
     Hash                                        $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
-    String                                      $docker_version     = lookup('profile::gitlab::runner::docker_version'),
     String                                      $docker_gc_interval = lookup('profile::gitlab::runner::docker_gc_interval'),
     String                                      $docker_gc_images_high_water_mark  = lookup('profile::gitlab::runner::docker_gc_images_high_water_mark'),
     String                                      $docker_gc_images_low_water_mark   = lookup('profile::gitlab::runner::docker_gc_images_low_water_mark'),
@@ -63,7 +61,6 @@ class profile::gitlab::runner (
 
     class { 'docker':
         package_name => 'docker.io',
-        version      => $docker_version,
     }
 
     if $docker_volume {

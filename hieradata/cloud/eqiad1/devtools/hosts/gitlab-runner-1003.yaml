@@ -12,7 +12,6 @@ profile::gitlab::runner::docker_volume_min: 5
 profile::gitlab::runner::docker_volume_max: 8
 profile::gitlab::runner::docker_network: bridge # TODO: workaround for T311241 to unblock T304514
 profile::gitlab::runner::docker_subnet: '172.20.0.0/16'
-profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
 profile::gitlab::runner::docker_gc_interval: 5m
 profile::gitlab::runner::docker_gc_images_high_water_mark: 20gb
 profile::gitlab::runner::docker_gc_images_low_water_mark: 10gb
