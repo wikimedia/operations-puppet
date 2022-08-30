@@ -26,8 +26,10 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         mode    => '0444',
     }
 
-    service { 'carbon-c-relay':
-        ensure   => stopped,
+    systemd::mask { 'carbon-c-relay.service': }
+    systemd::service { 'carbon-c-relay':
+        ensure  => absent,
+        content => '',
     }
 
     systemd::service { 'carbon-frontend-relay':
