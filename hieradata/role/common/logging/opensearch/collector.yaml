@@ -31,6 +31,7 @@ profile::opensearch::dashboards::httpd_proxy::ldap_groups:
 
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
+profile::opensearch::version: '2.0.0'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}

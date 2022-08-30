@@ -8,6 +8,7 @@ profile::admin::groups:
 
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the collector role (logging/opensearch/collector.yaml)
+profile::opensearch::version: '2.0.0'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}
