@@ -122,7 +122,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://cloudweb2002-dev.wikimedia.org:7443
     - type: map
       target: http://logstash.wikimedia.org
-      replacement: https://kibana7.svc.eqiad.wmnet
+      replacement: https://kibana7.svc.codfw.wmnet
     - type: map
       target: http://maps.wikimedia.org
       replacement: https://kartotherian.discovery.wmnet
