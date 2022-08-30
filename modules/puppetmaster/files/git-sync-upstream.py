@@ -2,7 +2,7 @@
 # Fetch new git changes from upstream repos and rebase local changes on top.
 # Rebase step is done in a temporary git clone that shares objects with the
 # repo being rebased. This helps avoid consumers of the clone seeing partial
-# application of local changes do to non-atomic operations.
+# application of local changes due to non-atomic operations.
 import argparse
 import datetime
 import logging
