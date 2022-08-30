@@ -1,8 +1,5 @@
 profile::openstack::eqiad1::pdns::recursor_service_name: ns-recursor0.openstack.eqiad1.wikimediacloud.org
 
-profile::openstack::eqiad1::version: 'xena'
-
-
 # Temporary while in setup:
 profile::openstack::eqiad1::pdns::hosts:
   - "ns0.openstack.eqiad1.wikimediacloud.org"
