@@ -128,7 +128,7 @@ class profile::lists (
     }
     if $::realm == 'production' {
         $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
-            $x !~ /127.0.0.0|::1/
+            $x !~ /127.0.0.0|::1|185.15.56.0/
         }
     }
 
