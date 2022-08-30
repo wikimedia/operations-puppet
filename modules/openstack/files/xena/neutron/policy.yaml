@@ -1,10 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"admin_or_member": "is_admin:True or role:projectadmin or role:user"
-"admin_or_projectadmin": "is_admin:True or role:projectadmin"
+"context_is_admin": "role:admin"
+"admin_only": "rule:context_is_admin"
+"admin_or_member": "context_is_admin:True or role:projectadmin or role:user"
+"admin_or_projectadmin": "context_is_admin:True or role:projectadmin"
 "shared_firewalls": "field:firewalls:shared=True"
 "shared_firewall_policies": "field:firewall_policies:shared=True"
 "default": "rule:admin_only"
+
+# In this file, 'regular user' means 'anyone with api access'
+#  and is applied to read-only methods
+"regular_user": ""
 
 
 "get_subnet": "rule:regular_user"
@@ -65,11 +71,11 @@
 "create_network_profile": "rule:admin_only"
 "update_network_profile": "rule:admin_only"
 "delete_network_profile": "rule:admin_only"
-"get_network_profiles": ""
-"get_network_profile": ""
+"get_network_profiles": "rule:regular_user"
+"get_network_profile": "rule:regular_user"
 "update_policy_profiles": "rule:admin_only"
-"get_policy_profiles": ""
-"get_policy_profile": ""
+"get_policy_profiles": "rule:regular_user"
+"get_policy_profile": "rule:regular_user"
 "get_lsn": "rule:admin_only"
 "create_lsn": "rule:admin_only"
 "get_flavors": "rule:regular_user"
@@ -97,11 +103,11 @@
 "list_bgp_speaker_on_dragent": "rule:admin_only"
 "list_dragent_hosting_bgp_speaker": "rule:admin_only"
 "create_security_group": "rule:admin_or_projectadmin"
-"get_security_groups": ""
-"get_security_group": ""
+"get_security_groups": "rule:regular_user"
+"get_security_group": "rule:regular_user"
 "update_security_group": "rule:admin_or_projectadmin"
 "delete_security_group": "rule:admin_or_projectadmin"
 "create_security_group_rule": "rule:admin_or_projectadmin"
-"get_security_group_rules": ""
-"get_security_group_rule": ""
+"get_security_group_rules": "rule:regular_user"
+"get_security_group_rule": "rule:regular_user"
 "delete_security_group_rule": "rule:admin_or_projectadmin"
