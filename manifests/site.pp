@@ -1042,6 +1042,12 @@ node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
+# MariaDB 10
+# new db servers T306848
+node /^db1(196|197|198|199|200|201|202|203).eqiad.wmnet$/ {
+    role(insetup)
+}
+
 node /^elastic104[8-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
