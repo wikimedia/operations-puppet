@@ -353,11 +353,12 @@ class profile::mediawiki::php(
             },
         }
         file { '/etc/php/php7-fatal-error.php':
-            ensure => present,
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/profile/mediawiki/php/php7-fatal-error.php',
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///modules/profile/mediawiki/php/php7-fatal-error.php',
+            require => Php::Extension['wmerrors'],
         }
 
         $statsd_parts = split($statsd, ':')
@@ -370,6 +371,7 @@ class profile::mediawiki::php(
             owner   => 'root',
             group   => 'root',
             content => template('profile/mediawiki/error-params.php.erb'),
+            require => Php::Extension['wmerrors'],
         }
     }
 }
