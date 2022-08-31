@@ -29,7 +29,7 @@ def get_nodes_role(base_url, timeout):
 
 
 def count_eligible_masters(nodes_role):
-    return len(list(filter(lambda node: node['node.role'].startswith('m'), nodes_role)))
+    return len(list(filter(lambda node: 'm' in node['node.role'], nodes_role)))
 
 
 def alert(actual, warning, critical):
