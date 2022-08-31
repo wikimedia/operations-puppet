@@ -22,15 +22,24 @@ class profile::backup::director(
         max_dir_concur_jobs => '10',
     }
 
-    $file_storage_production = 'FileStorageProduction'
-    $file_storage_archive = 'FileStorageArchive'
+    # FIXME: When we do multisite, these should be handled better
+    $file_storage_production = 'FileStorageProductionEqiad'
+    $file_storage_archive = 'FileStorageArchiveEqiad'
 
     # Default pool for "normal" backups (not archivals or database-related)
     bacula::director::pool { $pool:
-        max_vols         => 70,
+        max_vols         => 95,
         storage          => "${onsite_sd}-${file_storage_production}",
         volume_retention => '90 days',
         label_fmt        => $pool,
+        max_vol_bytes    => '536870912000',
+    }
+    # old production pool, to be removed in 60 days
+    bacula::director::pool { 'OldProduction':
+        max_vols         => 58,
+        storage          => 'backup1001-FileStorageProduction',
+        volume_retention => '90 days',
+        label_fmt        => 'production',
         max_vol_bytes    => '536870912000',
         next_pool        => $offsite_pool,
     }
@@ -43,9 +52,18 @@ class profile::backup::director(
     }
 
     # Archive pool for long term archival.
-    bacula::director::pool { 'Archive':
+    bacula::director::pool { 'ArchiveEqiad':
         max_vols         => 5,
         storage          => "${onsite_sd}-${file_storage_archive}",
+        volume_retention => '5 years',
+        label_fmt        => 'archiveEqiad',
+        max_vol_bytes    => '536870912000',
+    }
+
+    # Old Archive pool for long term archival - to be removed when migrated to the above
+    bacula::director::pool { 'OldArchive':
+        max_vols         => 5,
+        storage          => 'backup1001-FileStorageArchive',
         volume_retention => '5 years',
         label_fmt        => 'archive',
         max_vol_bytes    => '536870912000',
@@ -86,10 +104,12 @@ class profile::backup::director(
         max_vol_bytes    => '536870912000',
     }
 
+
+    # TODO: config codfw pool when there is dual directors
     # Off site pool for off site backups
     bacula::director::pool { $offsite_pool:
         max_vols         => 70,
-        storage          => "${offsite_sd}-${file_storage_production}",
+        storage          => "${offsite_sd}-FileStorageProduction",
         volume_retention => '90 days',
         label_fmt        => $offsite_pool,
         max_vol_bytes    => '536870912000',
@@ -166,13 +186,13 @@ class profile::backup::director(
     # Jobdefaults ready for one time Archive-like backups
     # Use it like this on a profile:
     #     backup::set { '<set-of-files-and-dirs-name>':
-    #         jobdefaults => 'Weekly-Mon-Archive',
+    #         jobdefaults => 'Weekly-Mon-ArchiveEqiad',
     #     }
     # then execute 'run' on the backup director
     $one_time_backup_day = 'Mon'
-    backup::weeklyjobdefaults { "Weekly-${one_time_backup_day}-Archive":
+    backup::weeklyjobdefaults { "Weekly-${one_time_backup_day}-ArchiveEqiad":
         day  => $one_time_backup_day,
-        pool => 'Archive',
+        pool => 'ArchiveEqiad',
     }
     # jobdefaults ready for one time ro backups
     backup::weeklyjobdefaults { "Weekly-${one_time_backup_day}-EsRoEqiad":

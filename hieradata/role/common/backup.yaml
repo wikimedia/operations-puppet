@@ -1,7 +1,7 @@
 cluster: backup
 
 profile::backup::director::offsite_pool: offsite
-profile::backup::director::onsite_sd: backup1001
+profile::backup::director::onsite_sd: backup1009
 profile::backup::director::offsite_sd: backup2001
 profile::backup::director::dbhost: m1-master.eqiad.wmnet
 profile::backup::director::dbschema: bacula9

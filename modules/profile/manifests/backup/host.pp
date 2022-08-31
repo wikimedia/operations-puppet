@@ -22,8 +22,8 @@ class profile::backup::host(
         class { 'bacula::client':
             director         => $director,
             catalog          => 'production',
-            file_retention   => '60 days',
-            job_retention    => '60 days',
+            file_retention   => '90 days',
+            job_retention    => '90 days',
             directorpassword => fqdn_rand_string(32, '', $director_seed)
         }
 
