@@ -139,7 +139,7 @@ class profile::graphite::production {
     backup::set { 'srv-carbon-whisper-coal': }
     # Backup 'daily' metrics, only every week
     backup::set { 'srv-carbon-whisper-daily':
-        jobdefaults => 'Weekly-Mon-production',
+        jobdefaults => 'Weekly-Mon-productionEqiad',
     }
     backup::set { 'var-lib-graphite-web-graphite-db': }
 }

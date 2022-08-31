@@ -24,7 +24,7 @@ class profile::opensearch::dashboards (
       include profile::backup::host
 
       backup::set { 'opensearch-dashboards':
-        jobdefaults => 'Daily-production', # full backups every day
+        jobdefaults => 'Daily-productionEqiad', # full backups every day
       }
     }
 }

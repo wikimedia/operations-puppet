@@ -37,7 +37,7 @@ class profile::gitlab(
     if $active_host == $facts['fqdn'] {
         # Bacula backups, also see profile::backup::filesets (T274463)
         backup::set { 'gitlab':
-            jobdefaults => 'Daily-production',  # full backups every day
+            jobdefaults => 'Daily-productionEqiad',  # full backups every day
         }
     }
 
