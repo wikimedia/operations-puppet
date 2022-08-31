@@ -16,4 +16,6 @@ class role::wmcs::openstack::eqiad1::backy {
 
     include profile::ceph::auth::deploy
     include profile::wmcs::backy2
+
+    include profile::wmcs::backup_glance_images
 }

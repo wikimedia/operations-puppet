@@ -40,8 +40,5 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::galera::monitoring
     include profile::openstack::codfw1dev::galera::backup
 
-    include profile::wmcs::backup_glance_images
-
     include profile::ceph::auth::deploy
-
 }

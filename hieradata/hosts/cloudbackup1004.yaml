@@ -1,3 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 profile::wmcs::backy2::backup_time: '*-*-* 17:00:00'
+
+profile::wmcs::backy2::image_backup_time: '*-*-* 13:00:00'
+profile::wmcs::backy2::backup_glance_images::enabled: false

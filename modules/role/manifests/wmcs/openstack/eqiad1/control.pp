@@ -30,7 +30,6 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::galera::node
     include profile::openstack::eqiad1::galera::monitoring
     include profile::openstack::eqiad1::galera::backup
-    include profile::wmcs::backup_glance_images
     include profile::toolforge::mark_tool
     include profile::openstack::eqiad1::networktests
     include profile::ceph::auth::deploy

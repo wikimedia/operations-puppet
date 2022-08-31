@@ -3,11 +3,6 @@ profile::openstack::eqiad1::fernet_key_sync_time: '19:00:00'
 
 profile::openstack::eqiad1::galera::server_id: 3
 
-
-profile::wmcs::backy2::backup_time: '*-*-* 17:00:00'
-profile::wmcs::backy2::backup_glance_images::enabled: true
-
-
 # 'maps' is huge and sometimes doesn't finish; make sure
 # other smaller volumes get done first.
 profile::openstack::eqiad1::cinder_backup_volumes:

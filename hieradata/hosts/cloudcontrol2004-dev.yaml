@@ -15,10 +15,6 @@ profile::openstack::codfw1dev::fernet_key_sync_time: '16:00:00'
 profile::openstack::codfw1dev::galera::server_id: 2
 profile::backup::enable: true
 
-profile::wmcs::backy2::backup_time: '*-*-* 17:00:00'
-
-profile::wmcs::backy2::backup_glance_images::enabled: true
-
 profile::openstack::codfw1dev::cinder_backup_volumes:
   andrewtestproject:
     volumes:
