@@ -66,6 +66,7 @@ class mediawiki::packages::fonts (
         'fonts-sil-lateef',
         'fonts-ipafont-gothic',
         'fonts-ipafont-mincho',
+        'fontconfig-config',
     ], {'ensure' => $ensure })
 
     # Not released under a free license :(
