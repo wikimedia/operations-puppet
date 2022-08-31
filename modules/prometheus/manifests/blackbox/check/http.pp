@@ -14,11 +14,11 @@
 # @param use_client_auth - use client authentication
 # @param client_auth_cert - path to the client auth certificate to use
 # @param client_auth_key - path to the client auth key to use
-# @param header_matches - list of regular expressions to match against the response headers. if any of those matches the probe will fail.
-# @param header_not_matches - list of regular expressions to match against the response headers. if any of those do NOT match the probe will fail.
-# @param body_regex_matches - list of regular expressions to match against the body's response. if any of those matches the probe will fail.
-# @param body_regex_not_matches - list of regular expressions to match against the body's response. if any of those do NOT match the probe will fail.
-# @param status_matches - list of regular expressions to match against the http status code. if any of those matches the probe will fail.
+# @param header_matches - list of regular expressions to match against the response headers. if any of those does not match the probe will fail.
+# @param header_not_matches - list of regular expressions to match against the response headers. if any of those does match the probe will fail.
+# @param body_regex_matches - list of regular expressions to match against the body's response. if any of those does not match the probe will fail.
+# @param body_regex_not_matches - list of regular expressions to match against the body's response. if any of those does matche the probe will fail.
+# @param status_matches - list of regular expressions to match against the http status code. if any of those does not match the probe will fail.
 # @param bearer_token - bearer token to use
 # @param path - path to check
 # @param body - body to send in requests
