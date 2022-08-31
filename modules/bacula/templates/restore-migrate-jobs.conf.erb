@@ -14,7 +14,7 @@ Job {
   Name = "Migrate Job"
   Type = Migrate
   Level = Full
-  Pool = production
+  Pool = OldProduction
   FileSet = "root"
   Client = <%= @fqdn -%>-fd
   Messages = Standard
@@ -28,7 +28,7 @@ Job {
   Name = "Offsite Job"
   Type = Copy
   Level = Full
-  Pool = production
+  Pool = productionEqiad
   Schedule = Weekly-Tue
   FileSet = "root"
   Client = <%= @fqdn -%>-fd
