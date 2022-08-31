@@ -18,14 +18,6 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         ensure => present,
     }
 
-    # make sure the global carbon-c-relay doesn't run
-    file { '/etc/init/carbon-c-relay.override':
-        content => "manual\n",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
     systemd::mask { 'carbon-c-relay.service': }
     systemd::service { 'carbon-c-relay':
         ensure  => absent,

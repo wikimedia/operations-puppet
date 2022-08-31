@@ -181,16 +181,6 @@ class logstash (
         }
     }
 
-    file { '/etc/init/logstash.conf':
-        ensure  => absent,
-        require => Package['logstash'],
-    }
-
-    file { '/etc/init/logstash-web.conf':
-        ensure  => absent,
-        require => Package['logstash'],
-    }
-
     if ($enable_dlq) {
         file { '/usr/local/bin/cleanup-dlq':
             ensure  => 'present',

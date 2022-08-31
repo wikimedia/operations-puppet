@@ -55,8 +55,6 @@ class nutcracker(
             validate_cmd => '/usr/sbin/nutcracker --test-conf --conf-file %';
         '/etc/default/nutcracker':
             content => template('nutcracker/default.erb');
-        '/etc/init/nutcracker.override':
-            content => "limit nofile 64000 64000\n";
     }
     service { 'nutcracker':
         ensure  => stdlib::ensure($ensure, 'service'),
