@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /etc/phabricator/script-vars
+
 git=$(which git)
 logger=$(which logger)
 puppet=$(which puppet)
@@ -19,7 +21,7 @@ log "Running puppet..."
 $puppet agent --test
 
 log "Applying storage migrations"
-<%= @phabdir %>/phabricator/bin/storage upgrade --force -u <%= @storage_user %> -p <%= @storage_pass %>
+"$PHAB_DIR"/phabricator/bin/storage upgrade --force -u "$PHAB_STORAGE_USER" -p "$PHAB_STORAGE_PASS"
 
 log "Restarting PHD"
 $systemctl start phd
@@ -28,10 +30,10 @@ log "Reloading apache"
 $systemctl reload apache2
 
 log "Enabling puppet agent"
-$puppet agent --enable
+enable-puppet 'phabricator deployment'
 
 log "Verifying database status"
-<%= @phabdir %>/phabricator/bin/storage status &>/dev/null
+"$PHAB_DIR"/phabricator/bin/storage status &>/dev/null
 retcode=$?
 if [ "$retcode" != "0" ]; then
     error ">>>ERROR: Phabricator storage is in a bad state."

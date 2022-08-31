@@ -1,10 +1,11 @@
 #!/bin/sh
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
 #
 # Ensures that files under phabricator/conf/local/ and phabricator/support/
 # have the right group ownership and permissions. This script is intended to
 # run following the config_deploy stage of phabricator deployment via scap
 # deploy.
+
+. /etc/phabricator/script-vars
 
 if [ -z "$SCAP_REV_PATH" ]; then
   echo '$SCAP_REV_PATH is not defined.'

@@ -178,6 +178,14 @@ class phabricator (
         content => $config_deploy_vars.to_yaml(),
     }
 
+    file { '/etc/phabricator/script-vars':
+        ensure  => present,
+        content => template('phabricator/script-vars.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0600',
+    }
+
     file { $phabdir:
         ensure  => 'link',
         target  => $deploy_root,
@@ -198,7 +206,7 @@ class phabricator (
     }
 
     file { '/usr/local/sbin/phab_deploy_config_deploy':
-        content => template('phabricator/deployment/phab_deploy_config_deploy.erb'),
+        content => file('phabricator/phab_deploy_config_deploy.sh'),
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
@@ -212,7 +220,7 @@ class phabricator (
     }
 
     file { '/usr/local/sbin/phab_deploy_finalize':
-        content => template('phabricator/deployment/phab_deploy_finalize.erb'),
+        content => file('phabricator/phab_deploy_finalize.sh'),
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
