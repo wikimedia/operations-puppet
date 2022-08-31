@@ -37,7 +37,6 @@ define elasticsearch::tlsproxy (
         tls_port          => $tls_port,
         only_get_requests => $read_only,
         enable_http2      => $enable_http2,
-        ssl_ecdhe_curve   => false,
         cfssl_paths       => $cfssl_paths,
     }
 

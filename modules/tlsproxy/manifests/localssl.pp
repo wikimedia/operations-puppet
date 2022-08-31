@@ -76,9 +76,6 @@
 # [*only_get_requests*]
 #  Deny all non-GET requests to this endpoint. Defaults to false.
 #
-# [*ssl_ecdhe_curve*]
-#  Whether or not the nginx package has support for $ssl_ecdhe_curve. Defaults
-#  to true.
 # [*enable_http2*]
 #  Whether to enable http2 or not. Defaults to false. It's best to only enable
 #  this on public facing instances since in internal services (even if proxied
@@ -108,7 +105,6 @@ define tlsproxy::localssl(
     Integer                           $read_timeout       = 180,
     String                            $ocsp_proxy         = '',
     Boolean                           $only_get_requests  = false,
-    Boolean                           $ssl_ecdhe_curve    = true,
     Boolean                           $enable_http2       = false,
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {}
 ) {

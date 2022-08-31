@@ -5,14 +5,13 @@ class profile::maps::tlsproxy(
 ){
 
     tlsproxy::localssl { $servicename:
-        server_name     => $servicename,
-        certs           => [$servicename],
-        upstream_ports  => [6533],
-        default_server  => true,
-        do_ocsp         => false,
-        ocsp_proxy      => $ocsp_proxy,
-        ssl_ecdhe_curve => false,
-        enable_http2    => false,
+        server_name    => $servicename,
+        certs          => [$servicename],
+        upstream_ports => [6533],
+        default_server => true,
+        do_ocsp        => false,
+        ocsp_proxy     => $ocsp_proxy,
+        enable_http2   => false,
     }
 
     monitoring::service { 'maps-https':
