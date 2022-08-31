@@ -770,11 +770,6 @@ node 'db1159.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-# Old m3 master T316500
-node 'db1183.eqiad.wmnet' {
-    role(mariadb::misc::phabricator)
-}
-
 # m3 codfw master
 node 'db2134.codfw.wmnet' {
     role(mariadb::misc::phabricator)
@@ -790,6 +785,10 @@ node 'db1108.eqiad.wmnet' {
 
 # m5 eqiad master T301654
 node 'db1107.eqiad.wmnet' {
+    role(mariadb::misc)
+}
+# future m5 master T316742
+node 'db1183.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
