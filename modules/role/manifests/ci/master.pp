@@ -39,10 +39,5 @@ class role::ci::master {
 
     include ::profile::kubernetes::deployment_server
 
-    # TODO: T186790. Force the order of docker group ensuring to be before
-    # adding jenkins-slave to it. This is a flawed approach and should be better
-    # addressed. See T174465 for the long discussion
-    Class['Admin'] -> Class['::profile::ci::docker']
-
     include ::profile::statsite
 }
