@@ -3,6 +3,7 @@ class profile::prometheus::nutcracker_exporter {
 
     service { 'prometheus-nutcracker-exporter':
         ensure  => running,
+        require => Package['prometheus-nutcracker-exporter'],
     }
     profile::auto_restarts::service { 'prometheus-nutcracker-exporter': }
 }
