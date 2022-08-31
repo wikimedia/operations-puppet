@@ -154,6 +154,7 @@ class phabricator (
         manage_user => $manage_scap_user,
         require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => [
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
@@ -194,6 +195,13 @@ class phabricator (
         mode    => '0755',
         recurse => true,
         require => $base_requirements,
+    }
+
+    file { '/usr/local/sbin/phab_deploy_config_deploy':
+        content => template('phabricator/deployment/phab_deploy_config_deploy.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
     }
 
     file { '/usr/local/sbin/phab_deploy_promote':
