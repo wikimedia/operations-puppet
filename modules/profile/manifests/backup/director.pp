@@ -51,15 +51,34 @@ class profile::backup::director(
         max_vol_bytes    => '536870912000',
     }
 
-    # Databases-only pool
-    bacula::director::pool { 'Databases':
+    # TODO: This will probably be later a per-dc hiera key
+    $databases_sd_eqiad = 'backup1008'
+    $databases_sd_codfw = 'backup2008'
+    # Database dumps-only pool
+    bacula::director::pool { 'DatabasesEqiad':
+        max_vols         => 95,  # increase if size > 50 TB
+        storage          => "${databases_sd_eqiad}-FileStorageDumpsEqiad",
+        volume_retention => '90 days',
+        label_fmt        => 'databases-eqiad',
+        max_vol_bytes    => '536870912000',
+    }
+    bacula::director::pool { 'DatabasesCodfw':
+        max_vols         => 95,  # increase if size > 50 TB
+        storage          => "${databases_sd_codfw}-FileStorageDumpsCodfw",
+        volume_retention => '90 days',
+        label_fmt        => 'databases-codfw',
+        max_vol_bytes    => '536870912000',
+    }
+    # Old databases pool, kept as read-only (for recovery purposes only).
+    # Temporary, to be removed after 60 days pass.
+    bacula::director::pool { 'OldDatabasesEqiad':
         max_vols         => 95,
         storage          => "${onsite_sd}-FileStorageDatabases",
         volume_retention => '90 days',
         label_fmt        => 'databases',
         max_vol_bytes    => '536870912000',
     }
-    bacula::director::pool { 'DatabasesCodfw':
+    bacula::director::pool { 'OldDatabasesCodfw':
         max_vols         => 95,
         storage          => "${offsite_sd}-FileStorageDatabasesCodfw",
         volume_retention => '90 days',
@@ -167,9 +186,9 @@ class profile::backup::director(
 
     # Jobdefaults for metadata Database backups
     $metadata_db_backup_day = 'Wed'
-    backup::weeklyjobdefaults { "Weekly-${metadata_db_backup_day}-Databases":
+    backup::weeklyjobdefaults { "Weekly-${metadata_db_backup_day}-DatabasesEqiad":
         day  => $metadata_db_backup_day,
-        pool => 'Databases',  # pending pool rename
+        pool => 'DatabasesEqiad',
     }
     backup::weeklyjobdefaults { "Weekly-${metadata_db_backup_day}-DatabasesCodfw":
         day  => $metadata_db_backup_day,
