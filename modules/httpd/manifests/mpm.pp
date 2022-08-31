@@ -36,7 +36,7 @@ class httpd::mpm(
 
     # mod_php* is unsafe for threaded MPMs
     if $mpm != 'prefork' {
-        httpd::mod_conf { ['php5', 'php7.0', 'php7.2']:
+        httpd::mod_conf { ['php5', 'php7.0', 'php7.2','php7.4']:
             ensure => absent,
             before => Httpd::Mod_conf[$selected_mod],
         }
