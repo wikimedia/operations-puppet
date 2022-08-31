@@ -242,8 +242,7 @@ scap::k8s_deployments:
   file: /etc/helmfile-defaults/mediawiki-deployments.yaml
   releases_dir: /etc/helmfile-defaults/mediawiki/release
 
-# List of kubernetes deployments of MediaWiki, in the order in which they should be
-# rolled out.
+# List of kubernetes deployments of MediaWiki.
 profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
   - mwdebug:
       name: pinkunicorn
