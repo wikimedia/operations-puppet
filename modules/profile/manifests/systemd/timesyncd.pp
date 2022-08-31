@@ -18,7 +18,12 @@ class profile::systemd::timesyncd (
         restart  => true,
         override => true,
     }
-
+    systemd::unit { 'systemd-timedated.service':
+        ensure   => $ensure,
+        content  => "[Service]\nInaccessiblePaths=-/mnt\n",
+        restart  => true,
+        override => true,
+    }
     profile::auto_restarts::service { 'systemd-timesyncd':
         ensure => $ensure,
     }
