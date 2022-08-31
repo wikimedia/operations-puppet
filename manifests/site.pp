@@ -2773,7 +2773,7 @@ node 'cloudvirt1020.eqiad.wmnet' {
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
 node /^cloudvirt102[1-7]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt_ceph_and_backy)
+    role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
 # Cloudvirt1028 is special: it hosts VMs using local storage.
