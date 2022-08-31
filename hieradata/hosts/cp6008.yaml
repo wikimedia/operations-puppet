@@ -1,4 +1,3 @@
-profile::trafficserver::backend::is_ats9: true
 profile::trafficserver::backend::log_formats:
   - name: wmf
     # TTFetchHeaders is the amount of time between the first origin server
