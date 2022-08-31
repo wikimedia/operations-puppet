@@ -73,10 +73,15 @@ class mediawiki::packages::fonts (
         ensure => absent,
     }
 
+    $file_ensure = $ensure ? {
+        installed => 'present',
+        default   => $ensure,
+    }
     # On Ubuntu, fontconfig-config provided a config file which forced antialiasing. This is no
     # longer present in the versions in Debian, so provide it manually since otherwise some fonts
     # look distorted in smaller resolutions: T139543
     file { '/etc/fonts/conf.d/10-antialias.conf':
+        ensure => $file_ensure,
         source => 'puppet:///modules/mediawiki/fontconfig-antialias.conf',
         owner  => 'root',
         group  => 'root',
