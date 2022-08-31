@@ -14,8 +14,9 @@ class ipmi::monitor (
     # ensure service only on buster as other OS versions are conigured properly by the package
     if debian::codename::eq('buster') {
         service { 'ipmiseld':
-            ensure => running,
-            enable => true,
+            ensure  => running,
+            enable  => true,
+            require => Package['freeipmi-ipmiseld'],
         }
     }
 
