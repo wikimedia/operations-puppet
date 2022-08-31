@@ -36,7 +36,7 @@ class profile::backup::director(
     }
     # old production pool, to be removed in 60 days
     bacula::director::pool { 'OldProduction':
-        max_vols         => 58,
+        max_vols         => 70,
         storage          => 'backup1001-FileStorageProduction',
         volume_retention => '90 days',
         label_fmt        => 'production',
@@ -91,14 +91,14 @@ class profile::backup::director(
     # Temporary, to be removed after 60 days pass.
     bacula::director::pool { 'OldDatabasesEqiad':
         max_vols         => 95,
-        storage          => "${onsite_sd}-FileStorageDatabases",
+        storage          => 'backup1001-FileStorageDatabases',
         volume_retention => '90 days',
         label_fmt        => 'databases',
         max_vol_bytes    => '536870912000',
     }
     bacula::director::pool { 'OldDatabasesCodfw':
         max_vols         => 95,
-        storage          => "${offsite_sd}-FileStorageDatabasesCodfw",
+        storage          => 'backup2001-FileStorageDatabasesCodfw',
         volume_retention => '90 days',
         label_fmt        => 'databases-codfw',
         max_vol_bytes    => '536870912000',
