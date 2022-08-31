@@ -261,7 +261,7 @@ node 'backup1008.eqiad.wmnet' {
 
 # new backup storage eqiad T307048
 node 'backup1009.eqiad.wmnet' {
-    role(insetup)
+    role(backup::production)
 }
 
 # codfw storage daemon
@@ -289,7 +289,7 @@ node 'backup2008.codfw.wmnet' {
 
 # New backup node for codfw T307049
 node 'backup2009.codfw.wmnet' {
-    role(insetup)
+    role(backup::production)
 }
 
 node 'backupmon1001.eqiad.wmnet' {
