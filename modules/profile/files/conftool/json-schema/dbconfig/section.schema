@@ -7,7 +7,8 @@
         "min_replicas": {"type": "integer"},
         "readonly": {"type": "boolean"},
         "ro_reason": {"type": "string"},
-        "flavor": {"type": "string", "enum": ["regular", "external"]}
+        "flavor": {"type": "string", "enum": ["regular", "external"]},
+        "omit_replicas_in_mwconfig": {"type": "boolean"}
     },
     "required": ["master", "min_replicas", "readonly", "ro_reason"],
     "additionalProperties": false
