@@ -6,9 +6,8 @@ class profile::docker::engine(
     # We want to get settings across the hierarchy, some per host, some fleet
     # wide. So use hash merge behavior to merge keys across the hierarchy
     Hash $settings = lookup('profile::docker::engine::settings', { 'default_value' => {}} ),
-    # Override the default docker engine package name.  See docker/init.pp for
-    # default names on different Debian OS versions.
-    Optional[String] $packagename = lookup('profile::docker::engine::packagename', { 'default_value' => undef }),
+    # Override the default docker engine package name, defaults to the current name for the docker package.
+    Optional[String] $packagename = lookup('profile::docker::engine::packagename', { 'default_value' => 'docker.io' }),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
     Boolean $declare_service = lookup('profile::docker::engine::declare_service', { 'default_value' => true }),
