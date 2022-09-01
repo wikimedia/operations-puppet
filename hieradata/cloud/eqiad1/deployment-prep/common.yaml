@@ -126,7 +126,7 @@ role::logging::mediawiki::log_directory: /data/project/logs
 beta::syncsiteresources::user: www-data
 profile::url_downloader::url_downloader_port: 8080
 
-zotero::http_proxy: deployment-urldownloader02.deployment-prep.eqiad.wmflabs:8080
+zotero::http_proxy: deployment-urldownloader03.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 scap::deployment_server: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 
