@@ -1,5 +1,4 @@
 profile::docker::builder::prune_images: false
-profile::docker::engine::packagename: "docker.io"
 # Generate reports and rebuild images weekly on this host.
 profile::docker::reporter::generate_reports: true
 profile::docker::builder::rebuild_images: true

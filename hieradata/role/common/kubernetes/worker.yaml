@@ -1,6 +1,5 @@
 cluster: kubernetes
 profile::base::overlayfs: true
-profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::declare_service: true
 profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
