@@ -6,6 +6,9 @@ profile::vrts::database_user: otrs
 profile::vrts::exim_database_name: otrs
 profile::vrts::exim_database_user: exim
 profile::vrts::daemon: true
+profile::vrts::download_url: 'https://download.znuny.org'
+profile::vrts::https_proxy: 'webproxy.eqiad.wmnet:8080'
+profile::vrts::http_proxy: 'webproxy.eqiad.wmnet:8080'
 # Set up in the private repo
 #profile::vrts::database_pass:
 #profile::vrts::exim_database_pass:
@@ -16,3 +19,4 @@ profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
 profile::tlsproxy::envoy::tls_port: 1443
 
 profile::contacts::role_contacts: ['ServiceOps']
+

@@ -299,3 +299,6 @@ profile::vrts::database_user: vrts
 profile::vrts::exim_database_name: exim
 profile::vrts::exim_database_pass: StrongPass123!
 profile::vrts::exim_database_user: vrts
+profile::vrts::download_url: 'https://download.znuny.org'
+profile::vrts::http_proxy: ''
+profile::vrts::https_proxy: ''

@@ -50,6 +50,9 @@ class vrts(
     String $exim_database_user,
     String $exim_database_pass,
     Array $trusted_networks,
+    String $download_url,
+    String $http_proxy,
+    String $https_proxy,
 ) {
     # Implementation classes
     include ::vrts::web
@@ -102,6 +105,23 @@ class vrts(
         shell      => '/bin/bash',
         managehome => true,
         system     => true,
+    }
+
+    file { '/etc/vrts/install-script-vars':
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('vrts/install-script-vars.erb'),
+    }
+
+    # Install VRTS Script
+    file { '/usr/local/bin/install_vrts':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/vrts/install_vrts.sh',
     }
 
     file { '/opt/otrs/Kernel/Config.pm':

@@ -10,6 +10,9 @@ class profile::vrts(
     String $exim_database_name       = lookup('profile::vrts::exim_database_name'),
     String $exim_database_user       = lookup('profile::vrts::exim_database_user'),
     String $exim_database_pass       = lookup('profile::vrts::exim_database_pass'),
+    String $download_url             = lookup('profile::vrts::download_url'),
+    String $http_proxy               = lookup('profile::vrts::http_proxy'),
+    String $https_proxy              = lookup('profile::vrts::https_proxy')
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
@@ -28,6 +31,9 @@ class profile::vrts(
         exim_database_user => $exim_database_user,
         exim_database_pass => $exim_database_pass,
         trusted_networks   => $trusted_networks,
+        download_url       => $download_url,
+        http_proxy         => $http_proxy,
+        https_proxy        => $https_proxy,
     }
 
     class { '::httpd':
