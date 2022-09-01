@@ -13,7 +13,9 @@ CONFIG proxy.config.http.insert_squid_x_forwarded_for INT <%= @x_forwarded_for %
 CONFIG proxy.config.http.response_server_enabled INT 2
 
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
+<% unless @is_ats9 -%>
 CONFIG proxy.config.disable_configuration_modification INT 1
+<% end -%>
 
 <% if @is_ats9 -%>
 CONFIG proxy.config.exec_thread.autoconfig.scale FLOAT 1.5
