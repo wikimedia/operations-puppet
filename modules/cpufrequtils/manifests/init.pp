@@ -17,19 +17,21 @@
 #  }
 #
 class cpufrequtils( $governor = 'performance' ) {
-    ensure_packages('cpufrequtils')
+    unless $facts['is_virtual'] {
+        ensure_packages('cpufrequtils')
 
-    service { 'cpufrequtils':
-        enable => true,
-    }
+        service { 'cpufrequtils':
+            enable => true,
+        }
 
-    file { '/etc/default/cpufrequtils':
-        content => "GOVERNOR=${governor}\n",
-        notify  => Exec['set_cpufreq_governor'],
-    }
+        file { '/etc/default/cpufrequtils':
+            content => "GOVERNOR=${governor}\n",
+            notify  => Exec['set_cpufreq_governor'],
+        }
 
-    exec { 'set_cpufreq_governor':
-        command => '/etc/init.d/cpufrequtils restart',
-        unless  => "/usr/bin/cpufreq-info -p | /bin/grep -wq ${governor}",
+        exec { 'set_cpufreq_governor':
+            command => '/etc/init.d/cpufrequtils restart',
+            unless  => "/usr/bin/cpufreq-info -p | /bin/grep -wq ${governor}",
+        }
     }
 }
