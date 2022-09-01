@@ -1100,7 +1100,7 @@ node /^(elastic206[1-9]|elastic207[0-2])\.codfw\.wmnet$/ {
 
 # new codfw elastic servers T300943
 node /^(elastic207[3-9]|elastic208[0-6])\.codfw\.wmnet$/ {
-    role(insetup)
+    role(elasticsearch::cirrus)
 }
 
 # new eqiad row e-f elastic servers T299609
