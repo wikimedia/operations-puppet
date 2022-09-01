@@ -5326,7 +5326,7 @@ users:
     realname: Bruno Scarone
     uid: 39391
     gid: 500
-    expiry_date: 2022-09-01
+    expiry_date: 2022-10-31
     expiry_contact: lzia@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J scarone.b@northeastern.edu
