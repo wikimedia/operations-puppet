@@ -1,5 +1,4 @@
 # db1107
 mariadb::shard: 'm5'
-profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: true
