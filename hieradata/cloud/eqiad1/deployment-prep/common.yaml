@@ -417,7 +417,13 @@ profile::swift::storage::object_server_default_workers: 12
 profile::swift::storage::container_replicator_concurrency: 1
 profile::swift::storage::container_replicator_interval: 1200 # seconds
 
+swift_clusters:
+  deployment-prep:
+    cluster_name: 'deployment-prep'
+    ring_manager: 'deployment-ms-fe03.deployment-prep.eqiad.wmflabs'
+
 profile::swift::cluster: deployment-prep
+profile::swift::cluster_label: deployment-prep
 profile::swift::hash_path_suffix: abcdef
 profile::swift::proxyhosts:
   - deployment-ms-fe03
