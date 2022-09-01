@@ -2075,7 +2075,7 @@ users:
     gid: 500
     name: dbrant
     realname: Dmitry Brant
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC71znDociPvbPWbKW0Dx7GdPmQ6eKPzhNyJHIbHDo0Cx9MA4gVylu8Fz/VoUSgGn0/6cFfaYnx5RKUpfRtzgSSPUvFJ/Uo437uQN4498Jh+7yHMqY7xKz3h+4KEwSAGWg1lZfdxVnKFeiBu0Hj3/PmklpSswKVpRI1fVtc3sxueY0OJ9mMUFOJ0aSTWZ5+Ct8Mp/1jXL9yWm7kNp0jlEzGHCpfPsO8+DMqb+WzE0aSFb/P2pne/c0H73EaVhf/PhiDGodJ7Tlk+5/UgRjQqfMwpDULMs4sZIPcrHrLAd/YN0d2wCuLEu72WtTad8MKYFDfZmB7XxFBU8nM6+TAdAll dbrant@wikimedia.org]
+    ssh_keys: []
     uid: 4910
     email: dbrant@wikimedia.org
   mglaser:
