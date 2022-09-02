@@ -121,11 +121,14 @@ class spamassassin(
         }
 
         systemd::timer::job { 'spamassassin_updates':
-            ensure      => present,
-            description => 'Spamassassin definitions update',
-            user        => 'root',
-            command     => '/usr/local/sbin/spamassassin_updates',
-            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 09:17:00'}
+            ensure        => present,
+            description   => 'Spamassassin definitions update',
+            user          => 'root',
+            command       => '/usr/local/sbin/spamassassin_updates',
+            interval      => {'start' => 'OnCalendar', 'interval' => '*-*-* 09:17:00'},
+            send_mail     => true,
+            environment   => {'MAILTO' => 'sre-foundations@wikimedia.org'},
+            ignore_errors => true,
         }
     }
 }
