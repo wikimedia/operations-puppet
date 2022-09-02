@@ -5,18 +5,7 @@
 # webperf processes.
 #
 class webperf {
-    group { 'webperf':
-        ensure => present,
-    }
-
-    user { 'webperf':
-        ensure     => present,
-        gid        => 'webperf',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
-    }
+    systemd::sysuser { 'webperf': }
 
     file { '/srv/webperf':
         ensure => directory,
