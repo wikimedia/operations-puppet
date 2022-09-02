@@ -133,7 +133,7 @@ groups:
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
-              aikochou, kevinbazira, tsepothoabala, samtar, demon
+              aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
@@ -219,7 +219,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph, sstefanova, raymond-ndibe]
+    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph, sstefanova, raymond-ndibe, pfischer]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -374,7 +374,7 @@ groups:
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
-              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala]
+              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -530,7 +530,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, addshore]
+    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -554,7 +554,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, addshore]
+    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -673,7 +673,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, akhatun]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, akhatun, pfischer]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -874,7 +874,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx, tjones, mfossati]
+    members: [ebernhardson, dcausse, bearloga, chelsyx, tjones, mfossati, pfischer]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos *',
