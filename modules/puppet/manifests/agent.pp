@@ -27,6 +27,11 @@ class puppet::agent (
     # puppet is a transition package
     ensure_packages(['facter', 'puppet', 'augeas-tools', 'virt-what'])
 
+    # TODO: the following is temporary to clean up old resources
+    file { '/etc/cron.d/puppet':
+        ensure => absent,
+    }
+
     if $manage_ca_file {
         unless $ca_source {
           fail('require ca_source when manage_ca: true')
