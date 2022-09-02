@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 
 # THIS FILE IS MANAGED BY PUPPET
 # Simple python script to send stdin to another host line by line

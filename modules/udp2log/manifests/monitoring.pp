@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class udp2log::monitoring
 # Includes scripts
 # needed for udp2log monitoring.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define udp2log::instance::monitoring
 # Monitoring configs for a udp2log instance.
 # This is abstracted out of the udp2log::instance

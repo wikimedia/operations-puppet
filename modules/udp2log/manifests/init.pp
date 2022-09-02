@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class udp2log
 #
 # Includes packages and setup for udp2log::instances.
