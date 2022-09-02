@@ -15,12 +15,8 @@ class acme_chief::server (
     # For the gdnsd-sync script
     ensure_packages('python3-clustershell')
 
-    user { 'acme-chief':
-        ensure => present,
-        system => true,
-        home   => '/nonexistent',
-        shell  => '/bin/bash',
-        before => Package['acme-chief'],
+    systemd::sysuser { 'acme-chief':
+        shell    => '/bin/bash',
     }
 
     ssh::userkey { 'acme-chief':
@@ -274,6 +270,6 @@ class acme_chief::server (
             'interval' => '*-*-* *:00/30:00', # every 30 min
         },
         user        => 'acme-chief',
-        require     => [User['acme-chief'], File['/etc/acme-chief/cert-sync.conf']],
+        require     => [File['/etc/acme-chief/cert-sync.conf']],
     }
 }
