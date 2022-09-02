@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Installs the puppet compiler and all the other software we need.
 # @param ensure ensurable parameter
 # @param version the version of puppet compiler to install

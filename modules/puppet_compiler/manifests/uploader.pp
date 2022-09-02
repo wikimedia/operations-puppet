@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to install the puppet uploader
 # @param ensure ensurable parameter
 # @param port the port the service listens on

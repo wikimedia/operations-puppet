@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 printf "%0.s#" {1..80}
 printf '\n'
 printf "  This script is no longer used to upload facts\n"

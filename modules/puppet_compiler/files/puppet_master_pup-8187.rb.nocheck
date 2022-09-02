@@ -1,4 +1,5 @@
 # This file is distributed via puppet it applies a patch[1] to fix PUP-8187[2]
+# SPDX-License-Identifier: Apache-2.0
 # https://gerrit.wikimedia.org/r/#/c/operations/puppet/+/570889
 # [1]https://phabricator.wikimedia.org/P10344
 # [2]https://tickets.puppetlabs.com/browse/PUP-8187
