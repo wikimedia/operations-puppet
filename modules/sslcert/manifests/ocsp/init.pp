@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: sslcert::ocsp::init
 #
 # Base class for the OCSP stapler scripts.

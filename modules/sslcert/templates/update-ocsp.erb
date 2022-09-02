@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Options]
 <% if @proxy %>Proxy=<%= @proxy.gsub('http://', '') %><% end %>
 Certificates=<%= @certs.map{ |cert| "/etc/ssl/localcerts/#{cert}.crt" }.join(',') %>

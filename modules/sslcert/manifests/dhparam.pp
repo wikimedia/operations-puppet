@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sslcert::dhparam
 #
 # Creates a dhparam file available at a default, well-known path. This is

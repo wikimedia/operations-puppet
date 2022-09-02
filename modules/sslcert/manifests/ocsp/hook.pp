@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sslcert::ocsp::hook
 #
 # Provisions a hook for the update-ocsp-all updater, that is going to be run

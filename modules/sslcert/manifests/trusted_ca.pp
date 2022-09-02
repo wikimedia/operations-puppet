@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Deploy a .pem file containing the WMF's internal Root CA crts.
 #          Create a .p12 truststore if needed.
 # @param trusted_certs a list of certificate files to add to the tristed cert store

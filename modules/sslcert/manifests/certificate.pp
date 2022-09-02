@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sslcert::certificate
 #
 # Installs a X.509 certificate -and, optionally, its private key- to the

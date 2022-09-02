@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: sslcert
 #
 # Base class to manage X.509/TLS/SSL certificates.

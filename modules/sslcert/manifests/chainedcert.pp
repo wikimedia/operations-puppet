@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: sslcert::chainedcert
 #
 # Creates a X.509 certificate chain based on an existing certificate on the

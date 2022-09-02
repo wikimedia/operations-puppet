@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary create pkcs12 file from a x509 public/private key pair
 # @param ensure ensureable parameter
 # @param public_key the location of the public key

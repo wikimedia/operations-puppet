@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 /var/log/update-ocsp-all.log {
     rotate 7
     daily

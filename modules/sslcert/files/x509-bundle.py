@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 # -*- coding: utf-8 -*-
 
 # x509-bundle - creates bundles of X.509 certificates
