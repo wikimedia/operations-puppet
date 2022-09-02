@@ -7,7 +7,7 @@ class profile::phabricator::main (
                                                       { 'default_value' => 'phabricator.wikimedia.org' }),
     String                      $altdom             = lookup('phabricator_altdomain',
                                                       { 'default_value' => 'phab.wmfusercontent.org' }),
-    Stdlib::Fqdn                $mysql_host         = lookup('phabricator::mysql::master',
+    Stdlib::Fqdn                $mysql_master       = lookup('phabricator::mysql::master',
                                                       { 'default_value' => 'localhost' }),
     Integer                     $mysql_port         = lookup('phabricator::mysql::master::port',
                                                       { 'default_value' => 3306 }),
@@ -111,9 +111,11 @@ class profile::phabricator::main (
         } else {
             $aphlict_ensure = 'absent'
         }
+        $mysql_host = $mysql_master
     } else {
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
+        $mysql_host = $mysql_slave
     }
 
     # in prod we just open port 80 for deployment_hosts for testing, caching layer speaks TLS to envoy
