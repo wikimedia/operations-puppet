@@ -8,22 +8,11 @@ class testreduce(
 ){
 
     if $install_node {
-        if debian::codename::eq('stretch') {
-            fail('Should not be installing nodejs on Debian Stretch.')
-        }
         ensure_packages(['nodejs', 'npm'])
     }
 
-    group { 'testreduce':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'testreduce':
-        gid        => 'testreduce',
-        home       => '/srv/testreduce',
-        managehome => false,
-        system     => true,
+    systemd::sysuser { 'testreduce':
+        home_dir => '/srv/testreduce',
     }
 
     file { '/var/log/testreduce':
