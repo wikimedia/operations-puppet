@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class k8s::kubelet::cni
 #
 # Installs and configures a CNI config file, that can be composed by multiple

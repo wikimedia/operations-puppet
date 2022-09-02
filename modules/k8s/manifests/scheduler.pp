@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 #  Class that sets up and configures kube-scheduler
 class k8s::scheduler(
     Stdlib::Unixpath $kubeconfig,

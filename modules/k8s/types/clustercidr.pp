@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # K8s::ClusterCIDR defines the CIRD(s) used by pods.
 # Currently, only IPv4 is required as we don't have full dual stack support right now.
 #

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary
 #   This class sets up and configures kube-apiserver
 #

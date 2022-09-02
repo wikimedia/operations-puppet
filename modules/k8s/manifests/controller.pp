@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class that sets up and configures kube-controller-manager
 #
 # The kubeconfig given should granted rights to the core role system:kube-controller-manager

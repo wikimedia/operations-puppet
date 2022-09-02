@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 #  Class that sets up and configures kubelet
 class k8s::kubelet(
     String $kubeconfig,

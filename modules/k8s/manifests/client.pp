@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class that sets up and configures kubectl
 class k8s::client(
     Boolean $packages_from_future = false,

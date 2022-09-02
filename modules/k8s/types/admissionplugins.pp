@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # K8s::AdmissionPlugins defines which default admission plugins to disable and
 # which additional admission plugins to enable.
 #

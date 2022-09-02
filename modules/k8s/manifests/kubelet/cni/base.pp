@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class k8s::kubelet::cni::base
 #
 # Installs base/common configs for the Kubelets cni plugins.
