@@ -68,9 +68,9 @@ class ATSBackendTest(unittest.TestCase):
 
     def testSLI(self):
         s = self.store.get_samples('trafficserver_backend_sli_total')
-        self.assertIn(('', 4), s)
+        self.assertIn(('', 6), s)
         s = self.store.get_samples('trafficserver_backend_sli_good')
-        self.assertIn(('', 3), s)
+        self.assertIn(('', 5), s)
 
 
 class ATSBackendTimingTest(unittest.TestCase):

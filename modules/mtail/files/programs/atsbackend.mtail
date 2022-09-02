@@ -24,14 +24,27 @@ counter trafficserver_backend_sli_good
 
 # This block matches all log lines, regardless of the cache status. Hits,
 # misses, and passes are all included.
-/ClientTTFB:(?P<client_ttfb>[0-9]+).*CacheReadTime:(?P<cache_read_time>[0-9]+).*CacheWriteTime:(?P<cache_write_time>[0-9]+).*TotalPluginTime:(?P<total_plugin_time>[0-9]+).*ActivePluginTime:(?P<active_plugin_time>[0-9]+).*OriginServer:(?P<backend>\S+)/ {
+/ClientTTFB:(?P<client_ttfb>[0-9]+).*CacheReadTime:(?P<cache_read_time>-?[0-9-]+).*CacheWriteTime:(?P<cache_write_time>-?[0-9-]+).*TotalPluginTime:(?P<total_plugin_time>[0-9]+).*ActivePluginTime:(?P<active_plugin_time>[0-9]+).*OriginServer:(?P<backend>\S+)/ {
   trafficserver_backend_client_ttfb[$backend] = float($client_ttfb) * 0.001
-  trafficserver_backend_client_cache_read_time[$backend] = $cache_read_time
-  trafficserver_backend_client_cache_write_time[$backend] = $cache_write_time
+  # cache_(read|write_time) can be -1
+  # if cache lookup is skipped read = -1 and
+  # cache hits that doesn't require revalidation will report write = -1
+  $cache_read_time >= 0 {
+    trafficserver_backend_client_cache_read_time[$backend] = $cache_read_time
+  }
+  $cache_write_time >= 0 {
+    trafficserver_backend_client_cache_write_time[$backend] = $cache_write_time
+  }
   trafficserver_backend_total_plugin_time[$backend] = float($total_plugin_time) * 0.001
   trafficserver_backend_active_plugin_time[$backend] = float($active_plugin_time) * 0.001
 
-  process_time_ms = $total_plugin_time + $cache_read_time + $cache_write_time
+  process_time_ms = $total_plugin_time
+  $cache_read_time > 0 {
+    process_time_ms += $cache_read_time
+  }
+  $cache_write_time > 0 {
+    process_time_ms += $cache_write_time
+  }
   trafficserver_backend_sli_total++
 }
 
