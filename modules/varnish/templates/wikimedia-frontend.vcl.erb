@@ -878,10 +878,10 @@ sub wm_backend_response {
 	elsif (beresp.status == 404 && beresp.ttl > <%= @vcl_config.fetch("ttl_cap_404", "10m") %>) {
 		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap_404", "10m") %>;
 	}
-	// MW responds to bad titles with an uncacheable 400 and this magic
+	// MW responds to bad titles with an uncacheable 404 and this magic
 	// string in the X-Analytics header.  Convert these to be cacheable for
-	// 1 minute, as BadTitle can be expensive on the backend!
-	elsif (beresp.status == 400 && beresp.http.X-Analytics ~ "(^|;)special=Badtitle") {
+	// 1 minute, as BadTitle can be expensive on the backend!  T316932
+	elsif ((beresp.status == 404 || beresp.status == 400) && beresp.http.X-Analytics ~ "(^|;)special=Badtitle") {
 		set beresp.uncacheable = false;
 		set beresp.ttl = 60s;
 	}
