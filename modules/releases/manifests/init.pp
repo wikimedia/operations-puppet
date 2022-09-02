@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Release server module for Wikimedia
 
 class releases (

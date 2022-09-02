@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 all: pubring.gpg
 
 pubring.gpg: reprepro-keys/*.key
