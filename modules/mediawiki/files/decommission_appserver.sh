@@ -52,5 +52,5 @@ pushd /etc/logrotate.d
 rm -f php7_2-fpm_check_restart php7.2-fpm mediawiki_apache nginx nutcracker mcrouter
 popd
 
-# Remove any trace of tmpreaper to avoid daily cronspam
+# Remove any trace of tmpreaper to avoid daily log spam
 apt-get purge tmpreaper

@@ -1,6 +1,6 @@
 # = Class; graphite::wmcs::archiver
 #
-# Sets up a cron job that clears metrics from killed instances every
+# Sets up a systemd timer that clears metrics from killed instances every
 # hour
 class graphite::wmcs::archiver {
 
@@ -14,7 +14,7 @@ class graphite::wmcs::archiver {
         mode   => '0644',
     }
 
-    # prevent some cronspam if the delete cronjob is run before the script
+    # prevent some log spam if the delete job is run before the script
     file { '/srv/carbon/whisper/archived_metrics':
         ensure => directory,
         owner  => '_graphite',

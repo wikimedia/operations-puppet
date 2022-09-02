@@ -31,7 +31,7 @@ class statistics::wmde(
         require    => Group[$user],
     }
 
-    # Scripts & crons that generate data for graphite
+    # Scripts & systemd timers that generate data for graphite
     class { '::statistics::wmde::graphite':
         dir           => "${homedir}/graphite",
         user          => $user,

@@ -1,6 +1,6 @@
 # == class: dnsrecursor::labsaliaser
 #
-# Provision a script and cron job to setup private IP space answers for dns
+# Provision a script and systemd timer to setup private IP space answers for dns
 # lookups that resolve to public ips and add other misc records.
 class dnsrecursor::labsaliaser(
     $username,

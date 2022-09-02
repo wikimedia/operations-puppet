@@ -8,7 +8,7 @@
 #
 # $languages: translated strings for the UI in various languages
 #                    list all planet languages and translations for index.html.tmpl here.
-#                    configurations, directories and cronjobs are auto-created from this hash.
+#                    configurations, directories and systemd timers are auto-created from this hash.
 #
 class profile::planet (
     String $domain_name = lookup('profile::planet::domain_name'),

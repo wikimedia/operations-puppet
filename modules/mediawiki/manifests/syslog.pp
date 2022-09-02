@@ -22,7 +22,7 @@ class mediawiki::syslog(
 
 
     # Set up log rotation for /var/log/apache2.log. In addition to
-    # cron-triggered rotation, rsyslog will invoke logrotate whenever
+    # regular time-based rotation, rsyslog will invoke logrotate whenever
     # apache2.log exceeds 100MB.
 
     file { '/etc/logrotate.d/mediawiki_apache':

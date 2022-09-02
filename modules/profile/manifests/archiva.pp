@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Class: profile::archiva
 #
-# Installs Apache Archiva and sets up a cron job to symlink .jar files to
-# a git-fat store.
+# Installs Apache Archiva and sets up a systemd timer to symlink .jar files to a git-fat store.
 #
 class profile::archiva(
     $enable_backup  = lookup('profile::archiva::enable_backup', { 'default_value' => false }),
