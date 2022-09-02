@@ -23,7 +23,7 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars, effeietsanders, dpifke, eyener, ricby]
+              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -51,7 +51,7 @@ groups:
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
-              dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
+              dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -4581,13 +4581,11 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOYJYVpVGG6+wsJf7InHEwnnNxKsY1XgsI0rG2sLkjEy akhatun-ctr@wikimedia.org'
   mmandere:
-    ensure: present
+    ensure: absent
     realname: Marc Mandere
-    email: mmandere@wikimedia.org
     uid: 31459
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHt501SwczR+VL0ZP3HNFJtpF0XYBIQLjp9sV8195XXr mmandere@wikimedia.org'
+    ssh_keys: []
   derick:
     ensure: present
     realname: Alangi Derick
