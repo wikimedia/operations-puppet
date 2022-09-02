@@ -5473,6 +5473,13 @@ users:
     uid: 11703
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  pfischer:
+    ensure: present
+    realname: Peter Fischer
+    email: pfischer@wikimedia.org
+    uid: 41223
+    gid: 500
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+qwSlb7Cz54C93i61yk5rwx5hyqaofOdJw/TkRVVCZ pfischer@wikimedia.org]
 
 ldap_only_users:
   abartov:
