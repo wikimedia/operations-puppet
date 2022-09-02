@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: keyholder
 #
 # The keyholder class provides a means of allowing a group of trusted

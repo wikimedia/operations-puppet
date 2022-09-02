@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == keyholder::agent
 #
 # Resource for creating keyholder agents on a node

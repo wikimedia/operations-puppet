@@ -1,5 +1,6 @@
 #!/bin/bash
 # keyholder -- Manage shared SSH agent
+# SPDX-License-Identifier: Apache-2.0
 
 command=$1; shift
 

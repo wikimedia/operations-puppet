@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 # -*- coding: utf-8 -*-
 """
   ssh-agent-proxy -- filtering proxy for ssh-agent
