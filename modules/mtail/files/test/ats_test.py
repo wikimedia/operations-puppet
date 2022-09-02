@@ -66,6 +66,12 @@ class ATSBackendTest(unittest.TestCase):
         self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.001'], 1)
         self.assertEqual(s_dict['backend=swift.discovery.wmnet']['buckets']['0.01'], 1)
 
+    def testSLI(self):
+        s = self.store.get_samples('trafficserver_backend_sli_total')
+        self.assertIn(('', 4), s)
+        s = self.store.get_samples('trafficserver_backend_sli_good')
+        self.assertIn(('', 3), s)
+
 
 class ATSBackendTimingTest(unittest.TestCase):
     def setUp(self):
