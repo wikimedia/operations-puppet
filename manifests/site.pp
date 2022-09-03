@@ -1697,17 +1697,8 @@ node 'cloudbackup2002.codfw.wmnet' {
 
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
 # they are ganeti virtual machines. See T295584 for details.
-node /^cloudbackup1001-dev\.eqiad\.wmnet$/ {
+node /^cloudbackup100[12]-dev\.eqiad\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::backups)
-}
-
-# evidence suggests that we can only have a single backup node
-#  for cinder-backup. This host can probably be reclaimed
-#  for general ganetti use but I'm just marking it as
-#  empty for now (AGB)
-node /^cloudbackup1002-dev\.eqiad\.wmnet$/ {
-    role(spare::system)
-    # role(wmcs::openstack::codfw1dev::backups)
 }
 
 # LDAP servers with a replica of OIT's user directory (used by mail servers)
