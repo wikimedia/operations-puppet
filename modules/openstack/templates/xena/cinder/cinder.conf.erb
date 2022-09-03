@@ -23,6 +23,8 @@ backup_compression_algorithm = zstd
 
 backup_driver = cinder.backup.drivers.posix.PosixBackupDriver
 backup_workers = 2
+backup_use_same_host = true
+
 # this is for ceilometer, but we don't use it
 backup_enable_progress_timer = False
 # where to store backups
