@@ -44,9 +44,13 @@ class CinderBackup(object):
         while resource.status not in desiredstatuses:
             if resource.status == "error":
                 logging.error(
-                    "Waiting for state {} but state is {}".format(desiredstatuses, resource.status)
+                    "Waiting for state {} but state is {}".format(
+                        desiredstatuses, resource.status
+                    )
                 )
-                raise RuntimeError("Openstack resource {} in error state.".format(resource_id))
+                raise RuntimeError(
+                    "Openstack resource {} in error state.".format(resource_id)
+                )
 
             if resource.status != oldstatus:
                 oldstatus = resource.status
@@ -64,19 +68,25 @@ class CinderBackup(object):
                 #  here are a approximate. If someone determines that sub-second
                 #  timeout accuracy is important we can add an actual clock read
                 #  here.
-                logging.info("timeout exceeded waiting for status update on %s." % resource)
+                logging.info(
+                    "timeout exceeded waiting for status update on %s." % resource
+                )
                 raise TimeoutError()
 
             resource = refreshfunction(resource.id)
 
     def restore_backup(self, backup_id):
         self.backup_id = backup_id
-        logging.info("Restoring volume %s from backup %s" % (self.volume.id, self.backup_id))
+        logging.info(
+            "Restoring volume %s from backup %s" % (self.volume.id, self.backup_id)
+        )
 
         self.volume = self.cinderclient.volumes.get(self.volume_id)
         self.cinderclient.restores.restore(self.backup_id, self.volume_id)
 
-        self.wait_for_resource_status(self.volume_id, self.cinderclient.volumes.get, ["available"])
+        self.wait_for_resource_status(
+            self.volume_id, self.cinderclient.volumes.get, ["available"]
+        )
 
     @retry(reraise=True, stop=stop_after_attempt(9), wait=wait_random(min=5, max=15))
     def delete_volume_snapshots(self, snapshot_id, force=True):
@@ -99,10 +109,14 @@ class CinderBackup(object):
     @retry(reraise=True, stop=stop_after_attempt(9), wait=wait_random(min=5, max=15))
     def purge_backups_older_than(self, days):
         # Delete backups older than 'days' days
-        existing_backups = self.cinderclient.backups.list(search_opts={"volume_id": self.volume_id})
+        existing_backups = self.cinderclient.backups.list(
+            search_opts={"volume_id": self.volume_id}
+        )
         to_delete = {}
         for backup in existing_backups:
-            created_at = datetime.datetime.strptime(backup.created_at, "%Y-%m-%dT%H:%M:%S.%f")
+            created_at = datetime.datetime.strptime(
+                backup.created_at, "%Y-%m-%dT%H:%M:%S.%f"
+            )
             if created_at < (datetime.datetime.now() - datetime.timedelta(days=days)):
                 to_delete[backup.id] = backup
 
@@ -148,7 +162,7 @@ class CinderBackup(object):
             # search for a non-incremental backup. If we don't find one then
             # we might have lost the original so let's do a full backup now.
             for backup in existing_backups:
-                if not backup.is_incremental and backup.status == 'available':
+                if not backup.is_incremental and backup.status == "available":
                     incremental = True
                     logging.info("Full backup is available; doing incremental backup")
                     break
@@ -169,18 +183,20 @@ class CinderBackup(object):
                 )
                 self.snapshot_id = snapjob_rec.id
                 self.wait_for_resource_status(
-                    self.snapshot_id, self.cinderclient.volume_snapshots.get, ["available"]
+                    self.snapshot_id,
+                    self.cinderclient.volume_snapshots.get,
+                    ["available"],
                 )
                 logging.info("Just made snapshot %s" % self.snapshot_id)
 
                 # The volume.id hint here allows this to be incremental
                 #  even though the snapshot we used for the full backup is long gone
                 if incremental:
-                    logging.info("Preparing to make a backup of volume %s "
-                                 "using snapshot %s "
-                                 "named %s" % (self.volume.id,
-                                               self.snapshot_id,
-                                               new_backup_name))
+                    logging.info(
+                        "Preparing to make a backup of volume %s "
+                        "using snapshot %s "
+                        "named %s" % (self.volume.id, self.snapshot_id, new_backup_name)
+                    )
                 backupjob_rec = self.cinderclient.backups.create(
                     self.volume.id,
                     snapshot_id=self.snapshot_id,
@@ -191,11 +207,15 @@ class CinderBackup(object):
             else:
                 logging.info(
                     "volume {} ({}) is in state {} which this script can't handle."
-                    " Skipping.".format(self.volume_id, self.volume_name, self.volume.status)
+                    " Skipping.".format(
+                        self.volume_id, self.volume_name, self.volume.status
+                    )
                 )
                 return False
 
-            logging.info("Generating backup %s (%s)" % (new_backup_name, self.backup_id))
+            logging.info(
+                "Generating backup %s (%s)" % (new_backup_name, self.backup_id)
+            )
             self.wait_for_resource_status(
                 self.backup_id, self.cinderclient.backups.get, ["available"]
             )
@@ -210,7 +230,9 @@ class CinderBackup(object):
             raise e
         except novaclient.exceptions.BadRequest as e:
             logging.warning(
-                "Failed to backup volume {} ({}): {}".format(self.volume_id, self.volume_name, e)
+                "Failed to backup volume {} ({}): {}".format(
+                    self.volume_id, self.volume_name, e
+                )
             )
             raise e
         finally:
@@ -225,13 +247,17 @@ if __name__ == "__main__":
         "Default to incremental backup if a full backup is available.",
     )
     argparser.add_argument(
-        "--timeout", help="Max time allowed for backup to run, in seconds", type=int, default=43200
+        "--timeout",
+        help="Max time allowed for backup to run, in seconds",
+        type=int,
+        default=43200,
     )
     argparser.add_argument("volume_id", help="id of volume to back up")
 
     chooseone = argparser.add_mutually_exclusive_group()
     chooseone.add_argument(
-        "--restore", help="ID of backup to restore. This will overwrite the specified volume."
+        "--restore",
+        help="ID of backup to restore. This will overwrite the specified volume.",
     )
     chooseone.add_argument(
         "--purge-older-than",
@@ -254,7 +280,9 @@ if __name__ == "__main__":
     )
 
     osclients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
-    backup = CinderBackup(osclients, args.volume_id, full=args.full, timeout=args.timeout)
+    backup = CinderBackup(
+        osclients, args.volume_id, full=args.full, timeout=args.timeout
+    )
 
     if args.restore:
         backup.restore_backup(args.restore)
