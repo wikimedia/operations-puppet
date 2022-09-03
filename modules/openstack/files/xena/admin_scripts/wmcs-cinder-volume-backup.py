@@ -148,7 +148,7 @@ class CinderBackup(object):
             # search for a non-incremental backup. If we don't find one then
             # we might have lost the original so let's do a full backup now.
             for backup in existing_backups:
-                if not backup.is_incremental:
+                if not backup.is_incremental and backup.status == 'available':
                     incremental = True
                     logging.info("Full backup is available; doing incremental backup")
                     break
@@ -175,6 +175,12 @@ class CinderBackup(object):
 
                 # The volume.id hint here allows this to be incremental
                 #  even though the snapshot we used for the full backup is long gone
+                if incremental:
+                    logging.info("Preparing to make a backup of volume %s "
+                                 "using snapshot %s "
+                                 "named %s" % (self.volume.id,
+                                               self.snapshot_id,
+                                               new_backup_name))
                 backupjob_rec = self.cinderclient.backups.create(
                     self.volume.id,
                     snapshot_id=self.snapshot_id,
