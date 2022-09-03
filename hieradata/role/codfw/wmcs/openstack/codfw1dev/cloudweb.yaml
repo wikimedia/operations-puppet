@@ -26,7 +26,6 @@ profile::openstack::base::nutcracker::redis::shards:
 
 profile::mediawiki::php::enable_fpm: true
 profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::codfw1dev::wikitech::web::webserver_hostname_aliases: ''
 profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
 profile::mediawiki::apc_shm_size: 128M

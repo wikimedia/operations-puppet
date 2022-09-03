@@ -1,7 +1,6 @@
 # https://www.mediawiki.org/wiki/Extension:OpenStackManager
 class openstack::wikitech::web(
     String $webserver_hostname,
-    String $webserver_hostname_aliases,
     String $wikidb,
     String $wikitech_nova_ldap_proxyagent_pass,
     String $wikitech_nova_ldap_user_pass,

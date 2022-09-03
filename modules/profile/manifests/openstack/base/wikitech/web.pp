@@ -1,6 +1,5 @@
 class profile::openstack::base::wikitech::web(
     $osm_host = lookup('profile::openstack::base::wikitech::web::osm_host'),
-    $webserver_hostname_aliases = lookup('profile::openstack::base::wikitech::webserver_hostname_aliases'),
     $wikidb = lookup('profile::openstack::base::wikitech::db_name'),
     $wikitech_nova_ldap_proxyagent_pass = lookup('profile::openstack::base::ldap_proxyuser_pass'),
     $wikitech_nova_ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
@@ -80,7 +79,6 @@ class profile::openstack::base::wikitech::web(
 
     class { '::openstack::wikitech::web':
         webserver_hostname                 => $osm_host,
-        webserver_hostname_aliases         => $webserver_hostname_aliases,
         wikidb                             => $wikidb,
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,

@@ -76,7 +76,6 @@ profile::openstack::base::nutcracker::redis::shards:
 
 # Wikitech things:
 profile::openstack::eqiad1::wikitech::web::osm_host: 'wikitech.wikimedia.org'
-profile::openstack::eqiad1::wikitech::web::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
 profile::openstack::eqiad1::wikitech::web::db_name: 'labswiki'
 
 # Horizon things:
