@@ -24,7 +24,7 @@ class keepalived(
     String              $auth_pass,
     Array[Stdlib::IP::Address] $vips,
     Enum['BACKUP', 'MASTER']   $default_state = 'BACKUP',
-    String              $interface            = 'eth0',
+    String              $interface            = $::facts['networking']['primary'],
     Integer             $priority             = fqdn_rand(100),
     Integer             $virtual_router_id    = 51,
     String              $config               = '',
