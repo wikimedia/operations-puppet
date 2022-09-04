@@ -16,6 +16,14 @@ class prometheus::node_openstack_stale_puppet_certs (
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-openstack-stale-puppet-certs.py',
     }
 
+    file { '/usr/local/sbin/clean-stale-puppet-certs':
+        ensure => file,
+        mode   => '0500',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/prometheus/usr/local/bin/clean-stale-puppet-certs.py',
+    }
+
     systemd::timer::job { 'prometheus_openstack_stale_puppet_certs':
         ensure      => present,
         description => 'Regular job to collect information about stale Puppet certificates',
