@@ -425,9 +425,8 @@ class HostProcessor:
 
         # files may be:
         # execnode-hostname1.domain.tld
-        # hostkey-hostname1.domain.tld
         # submithost-hostname1.domain.tld
-        known_prefixes = {"execnode", "hostkey", "submithost"}
+        known_prefixes = {"execnode", "submithost"}
 
         for file in dir_list:
             fullpath = f"{basedir}/{file}"
