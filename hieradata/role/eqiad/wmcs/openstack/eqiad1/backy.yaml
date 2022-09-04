@@ -10,6 +10,7 @@ profile::debdeploy::client::filter_services:
 
 profile::ceph::client::rbd::client_name: 'eqiad1-compute'
 profile::ceph::client::rbd::pool: 'eqiad1-compute'
+profile::ceph::client::rbd::glance::pool: 'eqiad1-glance-images'
 profile::ceph::client::rbd::enable_v2_messenger: false
 
 # This key is shared across all the libvirt / nova / backy hosts

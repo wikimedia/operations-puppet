@@ -6,7 +6,7 @@
 class profile::wmcs::backup_glance_images(
     String               $cluster_name    = lookup('profile::wmcs::backy2::cluster_name'),
     Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
-    String               $ceph_image_pool = lookup('profile::ceph::client::rbd::pool'),
+    String               $ceph_image_pool = lookup('profile::ceph::client::rbd::glance::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::image_backup_time'),
     Boolean              $enabled         = lookup('profile::wmcs::backy2::backup_glance_images::enabled'),
 ) {
