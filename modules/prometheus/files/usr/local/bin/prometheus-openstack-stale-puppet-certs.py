@@ -47,7 +47,7 @@ def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: P
         "Signed Puppet certificate for a non-existent VM",
         namespace="puppetmaster",
         registry=registry,
-        labelnames=("cert_instance", "cert_project"),
+        labelnames=("cert_instance", "cert_project", "cert_name"),
     )
 
     for cn in signed_certs:
@@ -57,7 +57,7 @@ def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: P
             continue
 
         if instance not in get_project_vms(project):
-            stalecerts.labels(instance, project).set(1)
+            stalecerts.labels(instance, project, cn).set(1)
 
 
 def ssl_dir():
