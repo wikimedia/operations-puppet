@@ -1,2 +1,2 @@
 # Activate the consistency check in eqiad.
-profile::openldap::management::cron_active: true
+profile::openldap::management::timer_active: true

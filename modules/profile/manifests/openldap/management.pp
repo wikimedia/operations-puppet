@@ -6,11 +6,11 @@
 #
 # === Parameters
 #
-# [*cron_active*] Whether to activate the daily account consistency check or not.
+# [*timer_active*] Whether to activate the daily account consistency check or not.
 #
 class profile::openldap::management(
-    Hash    $ldap        = lookup('ldap', Hash, hash, {}),
-    Boolean $cron_active = lookup('profile::openldap::management::cron_active'),
+    Hash    $ldap         = lookup('ldap', Hash, hash, {}),
+    Boolean $timer_active = lookup('profile::openldap::management::timer_active'),
 ) {
     include profile::openldap::client
     include passwords::phabricator
@@ -48,7 +48,7 @@ class profile::openldap::management(
         system => true,
     }
 
-    $ensure = $cron_active ? {
+    $ensure = $timer_active ? {
         true => present,
         default => absent
     }

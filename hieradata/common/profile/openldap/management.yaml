@@ -1,1 +1,1 @@
-profile::openldap::management::cron_active: false
+profile::openldap::management::timer_active: false

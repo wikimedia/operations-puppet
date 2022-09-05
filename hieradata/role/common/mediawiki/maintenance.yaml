@@ -11,7 +11,7 @@ profile::resolving::domain_search:
 profile::mariadb::maintenance::ensure: present
 
 # by default, the account consistency check is turned off
-profile::openldap::management::cron_active: false
+profile::openldap::management::timer_active: false
 
 profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::apc_shm_size: 128M
