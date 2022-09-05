@@ -10,7 +10,15 @@ class profile::wmcs::metricsinfra::haproxy (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('profile/wmcs/metricsinfra/haproxy/prometheus.cfg.erb'),
+        content => epp(
+            'profile/wmcs/metricsinfra/haproxy/prometheus.cfg.epp',
+            {
+                prometheus_alertmanager_hosts => $prometheus_alertmanager_hosts,
+                alertmanager_active_host      => $alertmanager_active_host,
+                thanos_fe_hosts               => $thanos_fe_hosts,
+                config_manager_hosts          => $config_manager_hosts,
+            },
+        ),
         notify  => Service['haproxy'],
     }
 

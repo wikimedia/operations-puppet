@@ -1,3 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+    Array[Stdlib::Fqdn] $prometheus_alertmanager_hosts,
+    Stdlib::Fqdn        $alertmanager_active_host,
+    Array[Stdlib::Fqdn] $thanos_fe_hosts,
+    Array[Stdlib::Fqdn] $config_manager_hosts,
+| -%>
 # Note: This file is managed by puppet.
 
 frontend http-public
@@ -38,9 +45,9 @@ backend prometheus_alertmanager
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
     # Remove /.alertmanager/ from the path sent to the backend servers
     reqrep ^([^\ :]*)\ /.alertmanager/(.*) \1\ /\2
-<%- @prometheus_alertmanager_hosts.each do |server| -%>
-    server <%= server %> <%= server %>:9093 check
-<%- end -%>
+<%- $prometheus_alertmanager_hosts.each |$server| { -%>
+    server <%= $server %> <%= $server %>:9093 check
+<%- } -%>
 
 backend karma
     mode http
@@ -50,13 +57,13 @@ backend karma
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
     # TODO: sort out session issues between hosts, so this can use all of the hosts all the time
-<%- @prometheus_alertmanager_hosts.each do |server| -%>
-<%- if server == @alertmanager_active_host -%>
-    server <%= server %> <%= server %>:80 check
-<%- else -%>
-    server <%= server %> <%= server %>:80 check backup
-<%- end -%>
-<%- end -%>
+<%- $prometheus_alertmanager_hosts.each |$server| { -%>
+    <%- if $server == $alertmanager_active_host { -%>
+    server <%= $server %> <%= $server %>:80 check
+    <%- } else { -%>
+    server <%= $server %> <%= $server %>:80 check backup
+    <%- } -%>
+<%- } -%>
 
 backend config_manager
     mode http
@@ -65,9 +72,9 @@ backend config_manager
     balance roundrobin
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
-<%- @config_manager_hosts.each do |server| -%>
-    server <%= server %> <%= server %>:80 check
-<%- end -%>
+<%- $config_manager_hosts.each |$server| { -%>
+    server <%= $server %> <%= $server %>:80 check
+<%- } -%>
 
 backend thanos_fe
     mode http
@@ -79,6 +86,6 @@ backend thanos_fe
     # Remove /cloud/ from the path sent to the backend servers, not needed
     # since move to Thanos
     reqrep ^([^\ :]*)\ /cloud/(.*) \1\ /\2
-<%- @thanos_fe_hosts.each do |server| -%>
-    server <%= server %> <%= server %>:10902 check
-<%- end -%>
+<%- $thanos_fe_hosts.each |$server| { -%>
+    server <%= $server %> <%= $server %>:10902 check
+<%- } -%>
