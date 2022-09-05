@@ -45,6 +45,7 @@ hosts:
         - drain
     - ms-be2037:
         - drain
+        - sdg1: immediate
     - ms-be2038:
         - drain
     - ms-be2039:
@@ -77,7 +78,6 @@ hosts:
     - ms-be2064
     - ms-be2065
     - ms-be2066
-    - ms-be2067:
-        - sdc1: failed
+    - ms-be2067
     - ms-be2068
     - ms-be2069
