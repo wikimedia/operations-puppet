@@ -48,8 +48,8 @@ counter trafficserver_backend_sli_good
   trafficserver_backend_sli_total++
 }
 
-# Request processed in less than 50ms and not resulting on a 500 response
-/RespStatus:(?P<resp_status>[0-9][0-9][0-9]).*OriginStatus:(?P<origin_status>[0-9][0-9][0-9])/ && ($resp_status != 500 || ($resp_status == 500 && $origin_status == 500)) && process_time_ms < 50 {
+# Request processed in less than 150ms and not resulting on a 500 response
+/RespStatus:(?P<resp_status>[0-9][0-9][0-9]).*OriginStatus:(?P<origin_status>[0-9][0-9][0-9])/ && ($resp_status != 500 || ($resp_status == 500 && $origin_status == 500)) && process_time_ms < 150 {
   trafficserver_backend_sli_good++
 }
 

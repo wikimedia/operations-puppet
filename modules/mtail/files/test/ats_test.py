@@ -14,7 +14,7 @@ class ATSBackendTest(unittest.TestCase):
 
     def testRespStatus(self):
         s = self.store.get_samples('trafficserver_backend_requests_seconds_count')
-        self.assertIn(('status=200,method=GET,backend=swift.discovery.wmnet', 2), s)
+        self.assertIn(('status=200,method=GET,backend=swift.discovery.wmnet', 3), s)
 
         s = self.store.get_samples('trafficserver_backend_connections_total')
         self.assertIn(('backend=swift.discovery.wmnet', 1), s)
@@ -24,7 +24,7 @@ class ATSBackendTest(unittest.TestCase):
                       bucket_samples)
         self.assertIn(('le=0.07,method=GET,backend=swift.discovery.wmnet', 1),
                       bucket_samples)
-        self.assertIn(('le=0.25,method=GET,backend=swift.discovery.wmnet', 3),
+        self.assertIn(('le=0.25,method=GET,backend=swift.discovery.wmnet', 4),
                       bucket_samples)
 
         sum_samples = self.store.get_samples('trafficserver_backend_requests_seconds_sum')
@@ -34,7 +34,7 @@ class ATSBackendTest(unittest.TestCase):
     def testBackendClientMetrics(self):
         s = self.store.get_samples('trafficserver_backend_client_cache_read_time')
         cache_read_dict = dict(s)
-        self.assertEqual(cache_read_dict['backend=swift.discovery.wmnet']['sum'], 10)
+        self.assertEqual(cache_read_dict['backend=swift.discovery.wmnet']['sum'], 15)
         self.assertEqual(cache_read_dict['backend=swift.discovery.wmnet']['buckets']['1'], 1)
 
         s = self.store.get_samples('trafficserver_backend_client_cache_write_time')
@@ -45,7 +45,7 @@ class ATSBackendTest(unittest.TestCase):
 
         bucket_samples = self.store.get_samples('trafficserver_backend_client_ttfb')
         bucket_dict = dict(bucket_samples)
-        self.assertEqual(bucket_dict['backend=swift.discovery.wmnet']['buckets']['0.15'], 3)
+        self.assertEqual(bucket_dict['backend=swift.discovery.wmnet']['buckets']['0.15'], 4)
 
     def testPluginTimeMetrics(self):
         s = self.store.get_samples('trafficserver_backend_total_plugin_time')
@@ -68,9 +68,9 @@ class ATSBackendTest(unittest.TestCase):
 
     def testSLI(self):
         s = self.store.get_samples('trafficserver_backend_sli_total')
-        self.assertIn(('', 6), s)
+        self.assertIn(('', 7), s)
         s = self.store.get_samples('trafficserver_backend_sli_good')
-        self.assertIn(('', 5), s)
+        self.assertIn(('', 6), s)
 
 
 class ATSBackendTimingTest(unittest.TestCase):
