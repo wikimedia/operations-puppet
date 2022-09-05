@@ -59,8 +59,8 @@ profile::mediawiki::php::slowlog_limit: 5
 # Enable ICU 63 T264991
 profile::mediawiki::php::icu63: true
 profile::mediawiki::php::php_versions:
-  - "7.2"
   - "7.4"
+  - "7.2"
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
 
