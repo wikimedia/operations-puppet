@@ -1,22 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: cpufrequtils
-#
-# This class installs the cpufrequtils package and ensures a configured
-# CPU frequency governor is set.
-#
-# === Parameters
-#
-# [*governor*]
+# @summary
+#   This class installs the cpufrequtils package and ensures a configured
+#   CPU frequency governor is set.
+# @param governor
 #   Which governor to use. Defaults to 'performance'. Run 'cpufreq-info -g'
 #   to obtain a list of available governors.
-#
-# === Examples
+# @example
 #
 #  class { 'cpufrequtils':
 #    governor => 'powersave',
 #  }
 #
-class cpufrequtils( $governor = 'performance' ) {
+class cpufrequtils(
+    String $governor = 'performance'
+) {
     unless $facts['is_virtual'] {
         ensure_packages('cpufrequtils')
 
