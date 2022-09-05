@@ -28,7 +28,8 @@ apt: P{O:apt_repo}
 aqs: P{O:aqs_next}
 aqs-canary: P{aqs1010.eqiad.wmnet}
 archiva: P{O:archiva}
-backup: P{O:backup::offsite or O:backup or O:dbbackups::monitoring}
+backup: P{A:bacula or A:db-backups or A:mediabackups or O:dbbackups::monitoring}
+bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::production}
 bastion: P{O:bastionhost}
 bastion-canary: P{bast4003.wikimedia.org}
 centrallog: P{O:syslog::centralserver}
@@ -235,7 +236,9 @@ maps-canary: P{maps1009.eqiad.wmnet}
 mcrouter: P{P:mediawiki::mcrouter_wancache or P:mediawiki::mcrouter_exporter}
 mcrouter-codfw: A:mcrouter and A:codfw
 mcrouter-eqiad: A:mcrouter and A:eqiad
+mediabackups: A:mediabackup-worker or A:mediabackup-storage
 mediabackup-worker: P{O:mediabackup::worker}
+mediabackup-storage: P{O:mediabackup::storage}
 memcached: P{O:mediawiki::memcached}
 memcached-canary: P{mc1037.eqiad.wmnet}
 memcached-codfw: A:memcached and A:codfw
