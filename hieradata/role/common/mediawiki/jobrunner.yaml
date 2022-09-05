@@ -38,8 +38,8 @@ profile::mediawiki::php::fpm_config:
   opcache.memory_consumption: 1024
   max_execution_time: 1200
 profile::mediawiki::php::php_versions:
-  - "7.2"
   - "7.4"
+  - "7.2"
 
 # Configure php-fpm restarts
 profile::mediawiki::php::restarts::ensure: present

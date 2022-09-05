@@ -20,7 +20,7 @@ class profile::mediawiki::jobrunner(
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
     Boolean $expose_endpoint = lookup('profile::mediawiki::jobrunner::expose_endpoint', {default_value => false}),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
-    Wmflib::Php_version $default_php_version = lookup('profile::mediawiki::jobrunner::default_php_version', {'default_value' => '7.2'})
+    Optional[Wmflib::Php_version] $default_php_version = lookup('profile::mediawiki::jobrunner::default_php_version', {'default_value' => undef})
 ) {
     # Parameters we don't need to override
     $port = 9005
