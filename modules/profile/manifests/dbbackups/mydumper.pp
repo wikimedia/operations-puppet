@@ -96,10 +96,5 @@ class profile::dbbackups::mydumper {
         ignore_errors => true,
     }
 
-    cron { 'dumps-sections':
-        ensure => 'absent',
-        user   => 'dump',
-    }
-
     class { 'toil::systemd_scope_cleanup': }  # T265323
 }

@@ -36,7 +36,7 @@ profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3
 # server's alert setting
 profile::monitoring::monitor_systemd: false
 cluster: wmcs
-raid::md::cron_ensure: absent
+raid::md::timer_ensure: absent
 
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05

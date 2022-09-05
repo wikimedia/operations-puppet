@@ -82,14 +82,6 @@ class dynamicproxy (
         source => 'puppet:///modules/dynamicproxy/logrotate',
     }
 
-    file { '/etc/cron.daily/logrotate':
-        ensure => absent,
-    }
-
-    file {'/usr/local/sbin/logrotate_dynamic_proxy.sh':
-        ensure => absent,
-    }
-
     systemd::timer::job { 'dynamicproxy_logrotate':
         ensure      => present,
         description => 'Logrotation for Dynamic Proxy',

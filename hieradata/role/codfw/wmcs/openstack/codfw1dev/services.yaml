@@ -14,7 +14,7 @@ profile::admin::groups:
   - wmcs-roots
   - labtest-roots
 # See T224828
-raid::md::cron_ensure: absent
+raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ['WMCS']
 
 # prometheus-pdns-exporter is scraped by cloudmetrics

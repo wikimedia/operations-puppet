@@ -59,7 +59,8 @@ class smart (
         require     => File['/usr/local/sbin/smart-data-dump'],
     }
 
-    # Cleanup outfile only on ensure=absent, since on ensure=present the file gets created by cron.
+    # Cleanup outfile only on ensure=absent, since on ensure=present the file gets
+    # created by the systemd timer.
     if $ensure == absent {
       file { $outfile:
           ensure => $ensure,

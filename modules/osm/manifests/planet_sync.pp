@@ -184,16 +184,4 @@ define osm::planet_sync (
         command     => "/usr/bin/find ${expire_dir} -mtime +30 -type f -delete",
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hours}:${minute}:00"}
     }
-
-    cron { "planet_sync_tile_generation-${name}":
-        ensure  => absent,
-        command => $tile_generation_command,
-        user    => 'osmupdater',
-    }
-
-    cron { "expire_old_planet_syncs-${name}":
-        ensure  => absent,
-        command => "/usr/bin/find ${expire_dir} -mtime +30 -type f -exec rm {} \\;",
-        user    => 'osmupdater',
-    }
 }

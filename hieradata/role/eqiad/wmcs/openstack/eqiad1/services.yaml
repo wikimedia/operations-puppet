@@ -17,5 +17,5 @@ profile::openstack::eqiad1::horizon::puppet_git_repo_user: instance-puppet-user
 cluster: wmcs
 profile::prometheus::memcached_exporter::arguments: "--memcached.address=localhost:11000"
 # See T224828
-raid::md::cron_ensure: absent
+raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ["WMCS"]

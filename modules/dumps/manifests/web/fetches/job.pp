@@ -4,7 +4,7 @@
 # == Parameters
 #
 # [*ensure*]
-#   Ensure status of cron job. ensure => absent will not remove any existent data.
+#   Ensure status of systemd timer ensure => absent will not remove any existent data.
 #
 define dumps::web::fetches::job(
     $source,
