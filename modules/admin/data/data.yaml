@@ -903,11 +903,6 @@ groups:
     members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, echetty]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
-  peek-admins:
-    gid: 821
-    description: People who can run any command as the peek user on peek servers
-    members: [reedy, sbassett]
-    privileges: ['ALL = (peek) NOPASSWD: ALL']
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
