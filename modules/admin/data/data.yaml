@@ -229,9 +229,10 @@ groups:
     members: [milimetric, andyrussg]
   researchers:
     gid: 714
-    description: Access statistics hosts and also provides
+    description: This was used in the past to access statistics hosts and
                  access to research mysql credentials. Deprecated.
     members: []
+    deprecated: true
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -294,28 +295,33 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
-    description: access for stats.wikimedia.org (Deprecated)
+    description: access for stats.wikimedia.org (Deprecated since 2020-03)
     members: []
+    deprecated: true
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
                  sampled webrequest logs.  This group should not be used just to
-                 grant someone Hadoop access.  (Deprecated)
+                 grant someone Hadoop access.  (Deprecated in 2020-03)
     members: []
+    deprecated: true
   statistics-users:
     gid: 726
-    description: Access statistics number crunching hosts. NO PRIVS. (Deprecated)
+    description: Access statistics number crunching hosts. NO PRIVS. (Deprecated since 2020-03)
     members: []
+    deprecated: true
   statistics-admins:
     posix_name: stats
-    description: access files created by stats user cron jobs (Deprecated)
+    description: access files created by stats user cron jobs (Deprecated since 2020-03)
     members: []
     privileges: []
+    deprecated: true
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics cluster
-                 via stat100x. Deprecated.
+                 via stat100x. Deprecated since 2020-03
     members: []
+    deprecated: true
   analytics-privatedata-users:
     gid: 731
     description: This group is the main entry point to the Analytics cluster, since it gives
@@ -399,9 +405,10 @@ groups:
     members: [*analytics_admins_members]
   eventlogging-roots:
     gid: 739
-    description: Full root on EventLogging servers. (Deprecated)
+    description: Full root on EventLogging servers. (Deprecated since 2020-03)
     members: []
     privileges: []
+    deprecated: true
   snapshot-admins:
     gid: 743
     description: People who can sudo into the dumpsgen user on snapshot hosts.
@@ -639,9 +646,10 @@ groups:
     members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
-    description: Group of users for the Analytics Query Service (Deprecated)
+    description: Group of users for the Analytics Query Service (Deprecated since 2020-03)
     gid: 767
     members: []
+    deprecated: true
   pentesters:
     description: Group of users running penetration tests
     gid: 768
@@ -658,9 +666,10 @@ groups:
                  'ALL = NOPASSWD: /bin/journalctl *']
   piwik-roots:
     gid: 770
-    description: users who have root on analytics piwik servers (Deprecated)
+    description: users who have root on analytics piwik servers (Deprecated since 2020-03)
     members: []
     privileges: []
+    deprecated: true
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
@@ -714,14 +723,16 @@ groups:
     approval:
       - Tyler Cipriani
   notebook-roots:
-    description: root access on experimental notebook servers (Deprecated)
+    description: root access on experimental notebook servers (Deprecated since 2020-03)
     gid: 780
     members: []
     privileges: []
+    deprecated: true
   labnet-users:
     description: obsolete group, was in the past used for access to Nodepool
     gid: 781
     members: []
+    deprecated: true
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
@@ -730,8 +741,9 @@ groups:
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
-    description: admins for the eventbus clusters - unsed after T232122
+    description: admins for the eventbus clusters - unsed after T232122 (2019-09)
     members: []
+    deprecated: true
   fr-tech-admins:
     gid: 787
     description: fundraising tech admins
@@ -837,9 +849,10 @@ groups:
     description: Allow ops team to be in the docker group for builder. No gid on purpose
     members: *ops_members
   gpu-testers:
-    description: People with access to Analytics hosts with GPUs (deprecated).
+    description: People with access to Analytics hosts with GPUs (deprecated since 2020-12).
     gid: 810
     members: []
+    deprecated: true
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
     members: [*analytics_admins_members, *ops_members, *analytics_privatedata_users]
