@@ -5,6 +5,7 @@ import functools
 import sys
 
 from pathlib import Path
+from subprocess import run
 
 import mwopenstackclients
 
@@ -59,15 +60,16 @@ def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: P
             stalecerts.labels(instance, project).set(1)
 
 
+def ssl_dir():
+    """Get the puppet server ssl directory"""
+    command = "/usr/bin/puppet config --section master print ssldir".split()
+    result = run(command, capture_output=True, check=True)
+    ssldir = result.stdout.decode().strip()
+    return f"{ssldir}/ca/signed"
+
+
 def main():
     parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--signed-certs-dir",
-        help="Directory for signed Puppet certificates",
-        type=Path,
-        required=True,
-    )
 
     parser.add_argument("--outfile", metavar="FILE.prom", help="Output file (stdout)")
 

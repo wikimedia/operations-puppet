@@ -16,13 +16,11 @@ class prometheus::node_openstack_stale_puppet_certs (
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-openstack-stale-puppet-certs.py',
     }
 
-    $signed_certs_dir = "${::facts['puppet_config']['master']['ssldir']}/ca/signed"
-
     systemd::timer::job { 'prometheus_openstack_stale_puppet_certs':
         ensure      => present,
         description => 'Regular job to collect information about stale Puppet certificates',
         user        => 'root',
-        command     => "/usr/local/sbin/prometheus-openstack-stale-puppet-certs --outfile ${outfile} --signed-certs-dir ${signed_certs_dir}",
+        command     => "/usr/local/sbin/prometheus-openstack-stale-puppet-certs --outfile ${outfile}",
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '10m'},
     }
 }
