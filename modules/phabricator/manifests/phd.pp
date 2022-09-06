@@ -7,6 +7,7 @@ class phabricator::phd (
     String $phd_user              = 'phd',
     Stdlib::Unixpath $phd_log_dir = '/var/log/phd',
     Stdlib::Unixpath $phd_home    = '/var/run/phd',
+    Integer $phd_uid              = 920,
     Stdlib::Unixpath $basedir     = '/',
     Boolean $use_systemd_sysuser  = false,
 ) {
@@ -25,36 +26,36 @@ class phabricator::phd (
 
     file { $phd_home:
         ensure => directory,
-        owner  => 'phd',
-        group  => 'phd',
+        owner  => $phd_user,
+        group  => $phd_user,
     }
 
     file { $phd_log_dir:
         ensure => 'directory',
-        owner  => 'phd',
-        group  => 'phd',
+        owner  => $phd_user,
+        group  => $phd_user,
     }
 
     # TODO: remove if/else and parameter after migration to new servers
     if $use_systemd_sysuser {
         systemd::sysuser { $phd_user:
             ensure      => present,
-            id          => '920:920',
+            id          => "${phd_uid}:${phd_uid}",
             description => 'Phabricator daemon user',
-            home_dir    => '/var/run/phd',
+            home_dir    => $phd_home,
         }
 
     } else {
 
-        group { 'phd':
+        group { $phd_user:
             ensure => present,
             system => true,
         }
 
         user { $phd_user:
-        gid    => 'phd',
+        gid    => $phd_user,
         shell  => '/bin/false',
-        home   => '/var/run/phd',
+        home   => $phd_home,
         system => true,
         }
     }
