@@ -1,4 +1,4 @@
 # db1103
 # candidate master for x1
 mariadb::shard: 'x1'
-mariadb::binlog_format: 'STATEMENT'
+mariadb::binlog_format: 'ROW'

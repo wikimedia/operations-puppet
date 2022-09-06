@@ -1,4 +1,4 @@
 # db2096
 mariadb::shard: 'x1'
-mariadb::binlog_format: 'STATEMENT'
+mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false

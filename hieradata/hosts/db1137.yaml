@@ -1,4 +1,4 @@
 # db1137
 mariadb::shard: 'x1'
-mariadb::binlog_format: 'STATEMENT'
+mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb106'
