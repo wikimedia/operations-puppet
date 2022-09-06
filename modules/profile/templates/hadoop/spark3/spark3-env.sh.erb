@@ -132,7 +132,6 @@ fi
 # This python env prefix is expected to exist on all potential spark nodes, both masters and workers.
 # This will be used for default PYSPARK_*_PYTHON unless a conda env is currently active.
 PYTHON_PREFIX_GLOBAL=$(realpath ${PYTHON_PREFIX_GLOBAL:-"<%= @python_prefix_global %>"})
-   if  -%>
 
 # If a conda environment is active (CONDA_PREFIX is set),
 # then assume this is the user's python environment
