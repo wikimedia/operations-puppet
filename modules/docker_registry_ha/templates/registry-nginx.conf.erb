@@ -167,7 +167,7 @@ server {
       send_timeout                120;
     }
 
-    location /v2/restricted/ {
+    location ~ ^/v2/restricted/.* {
       # Send all but GET/HEAD requests to @restricted_write location block below
       # See <https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/>
       # which explains and recommends this
@@ -285,7 +285,7 @@ server {
       send_timeout                120;
 
       # But cache the _catalog endpoint for a few mins as it's pretty expensive
-      location = /v2/_catalog {
+      location ~ ^/v2/_catalog$ {
         add_header 'Cache-Control' 'public,s-maxage=600,max-age=600' always;
         add_header 'Vary' 'Accept' always;
         proxy_pass http://registry;
