@@ -55,8 +55,8 @@ scap::dsh::groups:
   parsoid-canaries:
     # Also update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     hosts:
-      - wtp1025.eqiad.wmnet
-      - wtp1026.eqiad.wmnet
+      - parse1001.eqiad.wmnet
+      - parse1002.eqiad.wmnet
       - parse2001.codfw.wmnet
       - parse2002.codfw.wmnet
   parsoid_php:
