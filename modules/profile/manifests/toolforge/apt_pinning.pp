@@ -36,11 +36,13 @@ class profile::toolforge::apt_pinning {
         }
     }
 
-    apt::pin { 'toolforge-linux-meta-pinning':
-        ensure => absent,
-    }
-    apt::pin { 'toolforge-linux-pinning':
-        ensure => absent,
+    apt::pin { [
+        'toolforge-linux-pinning',
+        'toolforge-linux-meta-pinning',
+    ]:
+        ensure   => absent,
+        pin      => 'not used',
+        priority => -1,
     }
 
     apt::pin { 'toolforge-libpam-pinning':
