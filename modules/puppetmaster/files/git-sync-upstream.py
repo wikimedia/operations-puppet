@@ -33,6 +33,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     :param repo_path: git clone to rebase
     :param latest_upstream_commit: latest upstream commit
     """
+    logger.info("Rebasing repository '%s' on top of commit '%s'", repo_path, latest_upstream_commit)
     datestring = datetime.datetime.now().strftime("%Y%m%d%H%M")
     branchname = "oot-branch-%s" % datestring
     tagname = "snapshot-%s" % datestring
