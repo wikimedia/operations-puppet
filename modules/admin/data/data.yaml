@@ -5300,7 +5300,7 @@ users:
     uid: 39104
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEFLtrYyCR39Na6/jOeIv0V7sANQpCKAwYjp+TDnVIfF bcornwall@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFRwFepdKx09yNGYrpt/qra4NJBF0AjjdE8RZ5cFeGwR cardno:18 551 449
   mhoutti:
     ensure: present
     realname: Mo Houtti
