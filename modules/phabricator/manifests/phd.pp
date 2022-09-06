@@ -6,6 +6,7 @@
 class phabricator::phd (
     String $phd_user              = 'phd',
     Stdlib::Unixpath $phd_log_dir = '/var/log/phd',
+    Stdlib::Unixpath $phd_home    = '/var/run/phd',
     Stdlib::Unixpath $basedir     = '/',
     Boolean $use_systemd_sysuser  = false,
 ) {
@@ -22,7 +23,7 @@ class phabricator::phd (
         recurse => true,
     }
 
-    file { '/var/run/phd':
+    file { $phd_home:
         ensure => directory,
         owner  => 'phd',
         group  => 'phd',
@@ -41,6 +42,7 @@ class phabricator::phd (
             id          => '920:920',
             description => 'Phabricator daemon user',
             home_dir    => '/var/run/phd',
+            require     => File[$phd_home],
         }
 
     } else {
