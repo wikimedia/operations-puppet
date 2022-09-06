@@ -12,7 +12,6 @@ def clean_certs(clean):
     output = subprocess.check_output(
         [
             "/usr/local/sbin/prometheus-openstack-stale-puppet-certs",
-            "--signed-certs-dir",
         ]
     )
     for line in output.decode("utf8").splitlines():
