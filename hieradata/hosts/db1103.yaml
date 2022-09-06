@@ -2,3 +2,4 @@
 # candidate master for x1
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false
