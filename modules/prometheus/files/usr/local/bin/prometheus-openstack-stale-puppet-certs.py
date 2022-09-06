@@ -79,7 +79,7 @@ def main():
         parser.error("Output file does not end with .prom")
 
     registry = CollectorRegistry()
-    collect_openstack_cert_data(registry, args.signed_certs_dir)
+    collect_openstack_cert_data(registry, Path(ssl_dir()))
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
