@@ -560,7 +560,7 @@ node 'db2126.codfw.wmnet' {
 }
 
 # s3 core production dbs on eqiad
-node /^db1(123|157|166|175|179|189)\.eqiad\.wmnet/ {
+node /^db1(123|157|166|175|179|189|198)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1039,7 +1039,7 @@ node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
 
 # MariaDB 10
 # new db servers T306848
-node /^db1(198|199|201|202|203).eqiad.wmnet$/ {
+node /^db1(199|201|202|203).eqiad.wmnet$/ {
     role(insetup)
 }
 
