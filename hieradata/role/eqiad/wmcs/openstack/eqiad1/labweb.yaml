@@ -7,7 +7,7 @@ profile::admin::groups:
 profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::port: 8080
-profile::wmcs::striker::docker::version: 2022-07-01-210101-production
+profile::wmcs::striker::docker::version: 2022-09-04-055313-production
 profile::wmcs::striker::docker::env:
   LOGGING_HANDLERS: cee
   DB_ENGINE: striker.db
