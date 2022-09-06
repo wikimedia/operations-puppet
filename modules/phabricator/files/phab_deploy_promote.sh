@@ -27,5 +27,5 @@ find "$SCAP_REVS_DIR" \
   -not -path "$SCAP_REV_PATH" \
   -not -path "$SCAP_CURRENT_REV_DIR" \
   -not -path "$SCAP_DONE_REV_DIR" \
-  -exec sudo chown -R "$PHAB_DEPLOY_USER" '{}' \;
+  -exec sudo chown -R "$PHAB_DEPLOY_USER" '{}' \; \
   -exec sudo chmod -R u+w '{}' \;
