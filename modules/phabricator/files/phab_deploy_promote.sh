@@ -20,12 +20,11 @@ disable-puppet 'phabricator deployment'
 # -type d: directories
 # -mindepth 1: avoid including the starting dir
 # -maxdepth 1: only top-level directories
-# -not -path: exclude this rev path, scap's "current" rev, and scap's "done" rev
+# -not -path: exclude this rev path and scap's "current" rev
 
 find "$SCAP_REVS_DIR" \
   -type d -maxdepth 1 -mindepth 1 \
   -not -path "$SCAP_REV_PATH" \
   -not -path "$SCAP_CURRENT_REV_DIR" \
-  -not -path "$SCAP_DONE_REV_DIR" \
   -exec sudo chown -R "$PHAB_DEPLOY_USER" '{}' \; \
   -exec sudo chmod -R u+w '{}' \;
