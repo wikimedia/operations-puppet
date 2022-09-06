@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-# Daily cronjob to restart php-fpm if the free opcache is below a certain level.
+# Daily systemd timer to restart php-fpm if the free opcache is below a certain level.
 # This script is also run by scap during runs as it is specified in
 # modules/scap/templates/scap.cfg.erb
 

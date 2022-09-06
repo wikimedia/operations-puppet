@@ -103,7 +103,7 @@ class profile::mediawiki::common(
     }
 
     # /var/log/mediawiki contains log files for the MediaWiki jobrunner
-    # and for various periodic jobs that are managed by cron.
+    # and for various periodic jobs that are managed by Puppet/systemd timers
     file { '/var/log/mediawiki':
         ensure => directory,
         owner  => $::mediawiki::users::web,

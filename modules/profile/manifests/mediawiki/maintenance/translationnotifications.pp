@@ -1,5 +1,5 @@
 class profile::mediawiki::maintenance::translationnotifications {
-    # Should there be crontab entry for each wiki,
+    # Should there be systemd timer entry for each wiki,
     # or just one which runs the scripts which iterates over
     # selected set of wikis?
 

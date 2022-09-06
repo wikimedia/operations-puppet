@@ -42,7 +42,7 @@ class profile::mediawiki::php::restarts(
         $service = php::fpm::programname($php_version)
 
 
-        # If the server is part of a load-balanced cluster, we need to coordinate the cronjobs across
+        # If the server is part of a load-balanced cluster, we need to coordinate the systemd timers across
         # the cluster
         if $has_lvs {
             # All the nodes we have to orchestrate with

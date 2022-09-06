@@ -1,13 +1,13 @@
 # = class: scap::l10nupdate
 #
-# Sets up files and cron required to do l10nupdate
+# Sets up files and a systemd timer required to do l10nupdate
 #
 # == Parameters:
 # [*deployment_group*]
 #   User group that will be allowed to read log files. (default: wikidev)
 #
 # [*run_l10nupdate*]
-#   Should l10nupdate be run automatically from cron? (default: false)
+#   Should l10nupdate be run automatically from a systemd timer? (default: false)
 #
 class scap::l10nupdate(
     String $deployment_group  = 'wikidev',
@@ -15,7 +15,7 @@ class scap::l10nupdate(
 ) {
     require ::mediawiki::users
 
-    $ensure_l10nupdate_cron = $run_l10nupdate ? {
+    $ensure_l10nupdate_timer = $run_l10nupdate ? {
         true    => 'present',
         default => 'absent',
     }
@@ -52,7 +52,7 @@ class scap::l10nupdate(
     }
 
     systemd::timer::job { 'l10nupdate':
-        ensure          => $ensure_l10nupdate_cron,
+        ensure          => $ensure_l10nupdate_timer,
         description     => 'l10nupdate',
         user            => 'l10nupdate',
         command         => '/usr/local/bin/l10nupdate-1 --verbose',

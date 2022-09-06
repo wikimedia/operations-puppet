@@ -30,9 +30,6 @@ class raid::md (
   # in the future.
   file { '/etc/cron.d/mdadm':
       ensure => absent,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
   }
 
   file { '/usr/local/sbin/mdadm_check_array.sh':
