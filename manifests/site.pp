@@ -517,7 +517,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 # s1 (enwiki) core production dbs on eqiad
 # See also db1099 and db1105 below
 # db1132 is a testing mariadb 10.6 host T303395
-node /^db1(107|118|119|128|132|134|135|163|169|184|186)\.eqiad\.wmnet/ {
+node /^db1(107|118|119|128|132|134|135|163|169|184|186|196)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1039,7 +1039,7 @@ node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
 
 # MariaDB 10
 # new db servers T306848
-node /^db1(196|197|198|199|200|201|202|203).eqiad.wmnet$/ {
+node /^db1(197|198|199|200|201|202|203).eqiad.wmnet$/ {
     role(insetup)
 }
 
