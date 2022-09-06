@@ -24,7 +24,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     DNS_AUTH_DOMAIN: bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
     DNS_AUTH_DOMAIN_A_RECORD: 185.15.57.2
     KEYSTONE_URL: https://openstack.codfw1dev.wikimediacloud.org:25000/v3
-    DUMPSFILE: /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html
+    DUMPSFILE: /mnt/nfs/dumps-clouddumps1001.wikimedia.org/index.html
     DUMPS_FLOATING_VM_FQDN: tools-codfw1dev-bastion-3.tools-codfw1dev.codfw1dev.wikimedia.cloud
     DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-1.tools-codfw1dev.codfw1dev.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org

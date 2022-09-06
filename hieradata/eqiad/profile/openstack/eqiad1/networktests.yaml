@@ -24,7 +24,7 @@ profile::openstack::eqiad1::networktests::envvars:
     DNS_AUTH_DOMAIN: toolforge.org
     DNS_AUTH_DOMAIN_A_RECORD: 185.15.56.11
     KEYSTONE_URL: https://openstack.eqiad1.wikimediacloud.org:25000/v3
-    DUMPSFILE: /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html
+    DUMPSFILE: /mnt/nfs/dumps-clouddumps1001.wikimedia.org/index.html
     DUMPS_FLOATING_VM_FQDN: tools-sgebastion-11.tools.eqiad1.wikimedia.cloud
     DUMPS_NO_FLOATING_VM: tools-k8s-worker-79.tools.eqiad1.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
