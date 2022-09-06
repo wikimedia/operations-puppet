@@ -171,7 +171,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse]
+    members: [ebernhardson, dcausse, pfischer]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
