@@ -1,0 +1,10 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE ROLE IF NOT EXISTS aqs_testing
+    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT CREATE ON KEYSPACE aqs_testing TO aqs_testing;
+GRANT ALTER  ON KEYSPACE aqs_testing TO aqs_testing;
+GRANT DROP   ON KEYSPACE aqs_testing TO aqs_testing;
+GRANT SELECT ON KEYSPACE aqs_testing TO aqs_testing;
+GRANT MODIFY ON KEYSPACE aqs_testing TO aqs_testing;

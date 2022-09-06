@@ -149,6 +149,7 @@ profile::cassandra::settings:
   users:
     - aqs
     - image_suggestions
+    - aqs_testing
 
 profile::cassandra::client_ips:
   # required for image-suggestions and other tools.
