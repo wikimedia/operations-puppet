@@ -9,22 +9,24 @@ profile::elasticsearch::instances:
         transport_tcp_port: 9300
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2025.codfw.wmnet
-          - elastic2031.codfw.wmnet
-          - elastic2042.codfw.wmnet
+          - elastic2025.codfw.wmnet # to be decommissioned row A
+          - elastic2031.codfw.wmnet # to be decommissioned row C
+          - elastic2042.codfw.wmnet # row B
+          - elastic2074.codfw.wmnet # row A
+          - elastic2081.codfw.wmnet # row C
 
         cluster_hosts:
-          - elastic2025.codfw.wmnet
-          - elastic2026.codfw.wmnet
-          - elastic2027.codfw.wmnet
-          - elastic2028.codfw.wmnet
-          - elastic2029.codfw.wmnet
-          - elastic2030.codfw.wmnet
-          - elastic2031.codfw.wmnet
-          - elastic2032.codfw.wmnet
-          - elastic2033.codfw.wmnet
-          - elastic2034.codfw.wmnet
-          - elastic2036.codfw.wmnet
+          - elastic2025.codfw.wmnet # to be decommissioned
+          - elastic2026.codfw.wmnet # to be decommissioned
+          - elastic2027.codfw.wmnet # to be decommissioned
+          - elastic2028.codfw.wmnet # to be decommissioned
+          - elastic2029.codfw.wmnet # to be decommissioned
+          - elastic2030.codfw.wmnet # to be decommissioned
+          - elastic2031.codfw.wmnet # to be decommissioned
+          - elastic2032.codfw.wmnet # to be decommissioned
+          - elastic2033.codfw.wmnet # to be decommissioned
+          - elastic2034.codfw.wmnet # to be decommissioned
+          - elastic2036.codfw.wmnet # to be decommissioned
           - elastic2037.codfw.wmnet
           - elastic2038.codfw.wmnet
           - elastic2039.codfw.wmnet
@@ -104,9 +106,11 @@ profile::elasticsearch::instances:
         heap_memory: '8G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2042.codfw.wmnet
-          - elastic2047.codfw.wmnet
-          - elastic2052.codfw.wmnet
+          - elastic2042.codfw.wmnet # row B
+          - elastic2047.codfw.wmnet # row C
+          - elastic2052.codfw.wmnet # row D
+          - elastic2073.codfw.wmnet # row A
+          - elastic2086.codfw.wmnet # row D
 
         cluster_hosts:
           # row A
@@ -164,7 +168,9 @@ profile::elasticsearch::instances:
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2027.codfw.wmnet # to be decommissioned
           - elastic2029.codfw.wmnet # to be decommissioned
-          - elastic2054.codfw.wmnet
+          - elastic2054.codfw.wmnet # row D
+          - elastic2076.codfw.wmnet # row A
+          - elastic2080.codfw.wmnet # row B
 
         cluster_hosts:
           # row A
@@ -211,8 +217,8 @@ profile::elasticsearch::instances:
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
 
-profile::elasticsearch::dc_settings: {}
-
+profile::elasticsearch::dc_settings:
+    minimum_master_nodes: 3
 # These temporarily live here for T316719
 # After we're ready to start eqiad we can just change
 # hieradata/role/common/elasticsearch/cirrus.yaml
