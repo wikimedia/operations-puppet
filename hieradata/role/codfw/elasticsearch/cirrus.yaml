@@ -12,8 +12,8 @@ profile::elasticsearch::instances:
           - elastic2025.codfw.wmnet # to be decommissioned row A
           - elastic2031.codfw.wmnet # to be decommissioned row C
           - elastic2042.codfw.wmnet # row B
-          - elastic2074.codfw.wmnet # row A
-          - elastic2081.codfw.wmnet # row C
+#          - elastic2074.codfw.wmnet # row A temporarily disabled, will continue in T313431
+#          - elastic2081.codfw.wmnet # row C temporarily disabled, will continue in T313431
 
         cluster_hosts:
           - elastic2025.codfw.wmnet # to be decommissioned
@@ -109,8 +109,8 @@ profile::elasticsearch::instances:
           - elastic2042.codfw.wmnet # row B
           - elastic2047.codfw.wmnet # row C
           - elastic2052.codfw.wmnet # row D
-          - elastic2073.codfw.wmnet # row A
-          - elastic2086.codfw.wmnet # row D
+#          - elastic2073.codfw.wmnet # row A temporarily disabled, will continue in T313431
+#          - elastic2086.codfw.wmnet # row D temporarily disabled, will continue in T313431
 
         cluster_hosts:
           # row A
@@ -166,8 +166,8 @@ profile::elasticsearch::instances:
         heap_memory: '8G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2027.codfw.wmnet # to be decommissioned
-          - elastic2029.codfw.wmnet # to be decommissioned
+#          - elastic2027.codfw.wmnet # to be decommissioned, removed as master-eligible in T313431
+#          - elastic2029.codfw.wmnet # to be decommissioned, removed as master-eligible in T313431
           - elastic2054.codfw.wmnet # row D
           - elastic2076.codfw.wmnet # row A
           - elastic2080.codfw.wmnet # row B
@@ -218,7 +218,7 @@ profile::elasticsearch::instances:
         recover_after_nodes: 11
 
 profile::elasticsearch::dc_settings:
-    minimum_master_nodes: 3
+    minimum_master_nodes: 2
 # These temporarily live here for T316719
 # After we're ready to start eqiad we can just change
 # hieradata/role/common/elasticsearch/cirrus.yaml
