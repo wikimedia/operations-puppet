@@ -1,2 +1,3 @@
 # db1153
 mariadb::shard: 'x2'
+profile::monitoring::notifications_enabled: false
