@@ -140,6 +140,8 @@ class icinga(
     file { '/var/log/icinga/icinga.log':
         ensure => 'present',
         mode   => '0644',
+        owner  => $icinga_user,
+        group  => 'adm',
     }
 
     # If hosts appear to be missing from the web ui, it might be
