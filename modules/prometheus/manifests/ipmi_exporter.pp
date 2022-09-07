@@ -59,6 +59,8 @@ class prometheus::ipmi_exporter (
         "${prometheus_home}/ipmi-sel",
         ]:
         ensure => link,
+        owner  => 'prometheus',
+        group  => 'prometheus',
         target => "${prometheus_home}/ipmi_sudo_wrapper.sh",
     }
 
