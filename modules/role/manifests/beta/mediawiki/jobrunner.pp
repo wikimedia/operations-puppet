@@ -7,6 +7,9 @@ class role::beta::mediawiki::jobrunner {
     # Parent role (we don't use inheritance by choice)
     include ::role::mediawiki::common
 
+    # Install locally needed packages T317128
+    include ::profile::beta::mediawiki_packages
+
     include ::profile::prometheus::apache_exporter
     include ::profile::mediawiki::jobrunner
     include ::profile::mediawiki::videoscaler
