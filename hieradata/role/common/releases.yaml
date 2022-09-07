@@ -26,10 +26,6 @@ kubernetes_cluster_groups:
     staging:
       dc: eqiad
       master: kubestagemaster.svc.eqiad.wmnet
-profile::kubernetes::deployment_server::user_defaults:
-  owner: jenkins-slave
-  group: wikidev
-  mode: "0640"
 profile::kubernetes::deployment_server::services:
   main:
     mwdebug:
