@@ -28,6 +28,7 @@ class profile::ci::slave {
     file { '/var/lib/jenkins-slave':
         ensure => 'directory',
         owner  => 'jenkins-slave',
+        group  => 'jenkins-slave',
     }
 
     # .gitconfig file required for rare git write operations
