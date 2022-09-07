@@ -684,7 +684,7 @@ node 'db2159.codfw.wmnet' {
 
 # s8 (wikidata) core production dbs on eqiad
 # See also db1099 and db1101 below
-node /^db1(104|109|111|114|126|172|177|192|193)\.eqiad\.wmnet/ {
+node /^db1(104|109|111|114|126|172|177|192|193|203)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1034,12 +1034,6 @@ node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
 }
 
 node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
-# MariaDB 10
-# new db servers T306848
-node /^db1(203).eqiad.wmnet$/ {
     role(insetup)
 }
 
