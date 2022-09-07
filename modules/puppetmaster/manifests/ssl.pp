@@ -30,12 +30,14 @@ class puppetmaster::ssl(
             "${ssldir}/public_keys",
             "${ssldir}/crl",
         ]:
-            ensure => directory;
+            ensure => directory,
+            group  => 'puppet';
         [
             "${ssldir}/private_keys",
             "${ssldir}/private",
         ]:
             ensure => directory,
+            group  => 'puppet',
             mode   => '0750',;
     }
 
