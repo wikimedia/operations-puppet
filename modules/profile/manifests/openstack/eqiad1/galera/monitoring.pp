@@ -20,8 +20,8 @@ class profile::openstack::eqiad1::galera::monitoring(
         contact_group => 'wmcs-team',
     }
     # We should know if galera fails over
-    nrpe::monitor_service { 'galera_haproxy_failover':
-        description   => 'Galera haproxy failover',
+    nrpe::monitor_service { 'haproxy_failover':
+        description   => 'haproxy service failover',
         nrpe_command  => '/usr/local/lib/nagios/plugins/check_haproxy --check=failover',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/HAProxy',
         contact_group => 'wmcs-team-email,wmcs-bots',
