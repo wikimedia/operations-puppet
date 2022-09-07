@@ -22,6 +22,8 @@ class openstack::cinder::config::xena(
 
     file { '/etc/cinder/':
         ensure => directory,
+        owner  => 'cinder',
+        group  => 'cinder',
     }
 
     file { '/etc/cinder/cinder.conf':
