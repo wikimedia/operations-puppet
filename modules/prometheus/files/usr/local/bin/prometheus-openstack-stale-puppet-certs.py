@@ -37,7 +37,7 @@ def get_signed_certificates(signed_certs_dir: Path):
 
 def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: Path):
     signed_certs = [
-        cn.replace(".wmflabs", "1.wikimedia.cloud")
+        cn
         for cn in get_signed_certificates(signed_certs_dir)
         if (cn.endswith(".wmflabs") or cn.endswith(".wikimedia.cloud"))
     ]
