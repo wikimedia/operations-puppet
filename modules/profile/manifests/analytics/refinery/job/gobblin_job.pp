@@ -14,6 +14,7 @@ define profile::analytics::refinery::job::gobblin_job (
     $sysconfig_properties_file,
     $jobconfig_properties_file  = undef,
     $user                       = 'analytics',
+    $group                      = 'analytics',
     $gobblin_jar_file           = undef,
     $gobblin_script             = undef,
     $log_directory              = '/var/log/refinery/gobblin',
@@ -49,6 +50,7 @@ define profile::analytics::refinery::job::gobblin_job (
     if !defined(File[$log_directory]) {
         file { $log_directory:
             ensure => 'directory',
+            group  => $group,
         }
     }
 
