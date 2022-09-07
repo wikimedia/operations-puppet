@@ -140,6 +140,16 @@ class docker_registry_ha::web (
         mode   => '0700',
     }
 
+    # Add a systemctl override that will allow us to clean up the nginx auth socket
+    # when we stop nginx.
+    # See https://trac.nginx.org/nginx/ticket/753
+    systemd::unit { 'nginx':
+        ensure   => present,
+        content  => "[Service]\nExecStopPost=/usr/bin/rm -f ${nginx_auth_socket}",
+        restart  => true,
+        override => true,
+    }
+
     # If we're allowing any hosts to use JSON Web Token auth, provision the
     # JWT authenticator service.
     $jwt_authorizer_socket = "${nginx_auth_socket_dir}/jwt.sock"
