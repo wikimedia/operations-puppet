@@ -35,6 +35,8 @@ class query_service::deploy::scap(
         # This is to have file resource on $package_dir in any case
         file { $package_dir:
             ensure  => present,
+            owner   => $deploy_user,
+            group   => $deploy_user,
             require => Scap::Target['wdqs/wdqs'],
         }
     }
