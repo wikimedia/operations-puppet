@@ -7,7 +7,10 @@ class prometheus {
     }
 
     file { '/srv/prometheus':
-        ensure => directory,
+        ensure  => directory,
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        recurse => true,
     }
 
     logrotate::conf { 'prometheus':
