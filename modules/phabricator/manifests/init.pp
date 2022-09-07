@@ -193,9 +193,10 @@ class phabricator (
     }
 
     file { "${phabdir}/phabricator/scripts/":
+        owner   => $deploy_user,
+        group   => $deploy_user,
         mode    => '0754',
         recurse => true,
-        before  => File["${phabdir}/phabricator/scripts/mail/"],
         require => $base_requirements,
     }
 
