@@ -104,6 +104,22 @@ server {
       root <%= @homepage %>;
     }
 
+    # Basic redirect - we let the registry handle it.
+    # Note that this is mostly so httpbb tests will pass.
+    # We might decide to remove this in the future.
+    location = /v2 {
+      proxy_pass http://registry;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+      proxy_set_header Proxy-Connection "Keep-Alive";
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header Host $host;
+    }
+
     # Let me prefix by saying that the Docker v2 registry protocol apparently
     # is much better than the v1 protocol. I have not read enough about both
     # to make a comparative analysis, but I can tell that the auth design for
