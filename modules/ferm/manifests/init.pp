@@ -59,6 +59,7 @@ class ferm {
     file { '/etc/ferm' :
         ensure => directory,
         mode   => '2751',
+        group  => 'adm',
     }
     file { '/etc/ferm/functions.conf' :
         ensure  => file,
