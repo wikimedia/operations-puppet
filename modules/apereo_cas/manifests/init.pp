@@ -101,7 +101,7 @@ class apereo_cas (
     String                            $ldap_search_filter            = 'cn={user}',
     String                            $ldap_bind_dn                  = 'cn=user,dc=example,dc=org',
     String                            $ldap_bind_pass                = 'changeme',
-    Apereo_cas::LogLevel              $log_level                     = 'WARN',
+    Wmflib::Syslog::Level::Log4j      $log_level                     = 'WARN',
     String                            $daemon_user                   = 'cas',
     Hash[String, Hash]                $services                      = {},
     Optional[String[1]]               $java_opts                     = undef,

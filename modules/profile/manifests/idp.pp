@@ -4,7 +4,7 @@
 class profile::idp(
     Array[Stdlib::Host]               $prometheus_nodes          = lookup('prometheus_nodes'),
     Hash                              $ldap_config               = lookup('ldap', Hash, hash, {}),
-    Apereo_cas::LogLevel              $log_level                 = lookup('profile::idp::log_level'),
+    Wmflib::Syslog::Level::Log4j      $log_level                 = lookup('profile::idp::log_level'),
     Enum['ldaps', 'ldap']             $ldap_schema               = lookup('profile::idp::ldap_schema'),
     Boolean                           $enable_ldap               = lookup('profile::idp::enable_ldap'),
     Boolean                           $ldap_start_tls            = lookup('profile::idp::ldap_start_tls'),

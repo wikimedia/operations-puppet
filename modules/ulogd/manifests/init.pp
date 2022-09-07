@@ -1,74 +1,63 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class ulogd
+# @summary Set up and configure ulogd2
 #
-# Set up and configure ulogd2
-#
-# == Parameters:
-#[*logfile*]
+# @param logfile
 #    Where to send the daemon [i.e. not the NFLOG] logs
 #    options are syslog, stdout, stderr or a file path
-#
-#[*log_level*]
+# @param log_level
 #  The logging level for ulogd logs
-#
-#[*logemu_logfile*]
+# @param logemu_logfile
 #  file to use for LOGEM output
-#
-#[*oprint_logfile*]
+# @param logemu_nfct_logfile
+#  file to use for LOGEM nfct output
+# @param oprint_logfile
 #  file to use for OPRIN output
-#
-#[*gprint_logfile*]
+# @param gprint_logfile
 #  file to use for GPRIN output
-#
-#[*xml_directory*]
+# @param xml_directory
 #  file to use for xml files
-#
-#[*json_logfile*]
+# @param json_logfile
 #  file to use for json output
-#
-#[*pcap_file*]
-#  to use for cwlibpcap output
-#
-#[*config_file*]
+# @param json_nfct_logfile
+#  file to use for json nfct output
+# @param pcap_file
+#  file to use for libpcap output
+# @param nacct_file
+#  file to use for nacct output
+# @param config_file
 #  location of the main config file
-#
-#[*syslog_facility*]
+# @param syslog_facility
 #  facility to use with syslog extension
-#
-#[*syslog_level*]
+# @param syslog_level
 #  log level to use with syslog extension
-#
-#[*sync*]
+# @param sync
 # If true sync all disk writes to disk immediately 
-#
-#[*nflog*]
+# @param nflog
 #  outputters to use for NFLOG
-#
-#[*nfct*]
+# @param nfct
 #  outputters to use for NFCT
-#
-#[*acct*]
+# @param acct
 #  outputters to use for NACCT
 #
 class ulogd (
-  Ulogd::Logfile       $logfile             = 'syslog',
-  Ulogd::Loglevel      $log_level           = 'info',
-  Stdlib::Unixpath     $logemu_logfile      = '/var/log/ulog/syslogemu.log',
-  Stdlib::Unixpath     $logemu_nfct_logfile = '/var/log/ulog/syslogemu_nfct.log',
-  Stdlib::Unixpath     $oprint_logfile      = '/var/log/ulog/oprint.log',
-  Stdlib::Unixpath     $gprint_logfile      = '/var/log/ulog/gprint.log',
-  Stdlib::Unixpath     $xml_directory       = '/var/log/ulog/',
-  Stdlib::Unixpath     $json_logfile        = '/var/log/ulog/ulogd.json',
-  Stdlib::Unixpath     $json_nfct_logfile   = '/var/log/ulog/ulogd_nfct.json',
-  Stdlib::Unixpath     $pcap_file           = '/var/log/ulog/ulogd.pcap',
-  Stdlib::Unixpath     $nacct_file          = '/var/log/ulog/nacct.log',
-  Stdlib::Unixpath     $config_file         = '/etc/ulogd.conf',
-  Ulogd::Facility      $syslog_facility     = 'local7',
-  Ulogd::Loglevel      $syslog_level        = 'info',
-  Boolean              $sync                = true,
-  Array[Ulogd::Output] $nflog               = ['SYSLOG'],
-  Array[Ulogd::Output] $nfct                = [],
-  Array[Ulogd::Output] $acct                = [],
+  Ulogd::Logfile              $logfile             = 'syslog',
+  Wmflib::Syslog::Level::Unix $log_level           = 'info',
+  Stdlib::Unixpath            $logemu_logfile      = '/var/log/ulog/syslogemu.log',
+  Stdlib::Unixpath            $logemu_nfct_logfile = '/var/log/ulog/syslogemu_nfct.log',
+  Stdlib::Unixpath            $oprint_logfile      = '/var/log/ulog/oprint.log',
+  Stdlib::Unixpath            $gprint_logfile      = '/var/log/ulog/gprint.log',
+  Stdlib::Unixpath            $xml_directory       = '/var/log/ulog/',
+  Stdlib::Unixpath            $json_logfile        = '/var/log/ulog/ulogd.json',
+  Stdlib::Unixpath            $json_nfct_logfile   = '/var/log/ulog/ulogd_nfct.json',
+  Stdlib::Unixpath            $pcap_file           = '/var/log/ulog/ulogd.pcap',
+  Stdlib::Unixpath            $nacct_file          = '/var/log/ulog/nacct.log',
+  Stdlib::Unixpath            $config_file         = '/etc/ulogd.conf',
+  Ulogd::Facility             $syslog_facility     = 'local7',
+  Wmflib::Syslog::Level::Unix $syslog_level        = 'info',
+  Boolean                     $sync                = true,
+  Array[Ulogd::Output]        $nflog               = ['SYSLOG'],
+  Array[Ulogd::Output]        $nfct                = [],
+  Array[Ulogd::Output]        $acct                = [],
 ) {
   # An array of supported extensions that require additional packages
   # dbi, mysql, pgsql and sqlite are options for the future
