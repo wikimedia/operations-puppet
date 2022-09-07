@@ -662,7 +662,7 @@ node 'db2158.codfw.wmnet' {
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # See also db1098, db1101, db1170 below
-node /^db1(069|127|136|174|178|181|191|194)\.eqiad\.wmnet/ {
+node /^db1(069|127|136|174|178|181|191|194|202)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1039,7 +1039,7 @@ node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
 
 # MariaDB 10
 # new db servers T306848
-node /^db1(202|203).eqiad.wmnet$/ {
+node /^db1(203).eqiad.wmnet$/ {
     role(insetup)
 }
 
