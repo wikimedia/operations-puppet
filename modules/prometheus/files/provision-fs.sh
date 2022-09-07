@@ -53,6 +53,7 @@ provision analytics 10g
 provision ext 10g
 provision global 900g
 provision k8s 500g
+provision k8s-dse 50g
 provision k8s-mlserve 50g
 provision k8s-staging 50g
 provision ops 1.7t
