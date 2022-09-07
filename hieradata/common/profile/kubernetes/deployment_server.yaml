@@ -247,6 +247,13 @@ profile::kubernetes::deployment_server::services:
         owner: 'root'
         group: 'root'
         mode: '640'
+  dse-k8s:
+    cfssl-issuer:
+      usernames: []
+      private_files:
+        owner: 'root'
+        group: 'root'
+        mode: '640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
