@@ -170,6 +170,23 @@ profile::opensearch::logstash::curator_actions:
         unit: days
         unit_count: 31
 
+  '21':
+    description: 'logstash-webrequest-1: after 1 day set number of replicas to 1'
+    action: replicas
+    options:
+      count: 1
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-webrequest-1-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 1
+
   # For any indices prefixed by "logstash-", and have "index.routing.allocation.require.disktype":"ssd" set,
   # and are older than 30 days, set "index.routing.allocation.require.disktype":"hdd".
   '40':
