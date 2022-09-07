@@ -128,19 +128,6 @@ class profile::kubernetes::node(
         srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
     }
 
-    # Alert us if kubelet operational latencies exceed a certain threshold. TODO: reevaluate
-    # thresholds
-    monitoring::check_prometheus { 'kubelet_operational_latencies':
-        description     => 'kubelet operational latencies',
-        query           => "instance_operation_type:kubelet_runtime_operations_latency_microseconds:avg5m{instance=\"${::fqdn}\"}",
-        prometheus_url  => $prometheus_url,
-        nan_ok          => true,
-        warning         => 400000,
-        critical        => 850000,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000472/kubernetes-kubelets?orgId=1'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
-    }
-
     # kube-proxy on startup sets the following. However sysctl values may be
     # changed after that. Enforce them in puppet as well to avoid nasty
     # surprises. Furthermore, since we don't want our kubernetes nodes, which

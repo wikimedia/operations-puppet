@@ -101,40 +101,4 @@ class profile::kubernetes::master(
         port   => '6443',
         srange => $accessible_range,
     }
-
-    # Alert us if API requests exceed a certain threshold. TODO: reevaluate
-    # after we 've ran a few services
-    monitoring::check_prometheus { 'apiserver_request_count':
-        description     => 'k8s requests count to the API',
-        query           => "scalar(sum(rate(apiserver_request_count{instance=\"${::ipaddress}:6443\"}[5m])))",
-        prometheus_url  => $prometheus_url,
-        warning         => 50,
-        critical        => 100,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000435/kubernetes-api?orgId=1&viewPanel=1'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
-    }
-    # Alert us if API requests latencies exceed a certain threshold. TODO: reevaluate
-    # thresholds
-    monitoring::check_prometheus { 'apiserver_request_latencies':
-        description     => 'k8s API server requests latencies',
-        query           => "instance_verb:apiserver_request_latencies_summary:avg5m{verb\\!~\"(CONNECT|WATCH|WATCHLIST)\",instance=\"${::ipaddress}:6443\"}",
-        prometheus_url  => $prometheus_url,
-        nan_ok          => true,
-        warning         => 200000,
-        critical        => 300000,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000435/kubernetes-api?orgId=1&viewPanel=27'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
-    }
-    # Alert us if etcd requests latencies exceed a certain threshold. TODO: reevaluate
-    # thresholds
-    monitoring::check_prometheus { 'etcd_request_latencies':
-        description     => 'etcd request latencies',
-        query           => "instance_operation:etcd_request_latencies_summary:avg5m{instance=\"${::ipaddress}:6443\"}",
-        prometheus_url  => $prometheus_url,
-        nan_ok          => true,
-        warning         => 30000,
-        critical        => 50000,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000435/kubernetes-api?orgId=1&viewPanel=28'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Etcd/Main_cluster',
-    }
 }
