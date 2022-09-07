@@ -23,6 +23,7 @@ Facter.add('raid_mgmt_tools') do
     if File.exists?('/proc/mdstat') && File.open('/proc/mdstat').grep(/md\d+\s+:\s+active/)
       raids.push('mdadm')
     end
+    raids.sort.uniq
   end
 end
 
