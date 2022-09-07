@@ -101,13 +101,6 @@ class profile::mediawiki::jobrunner(
         content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
     }
 
-    ::monitoring::service { 'jobrunner_http':
-        description   => 'PHP7 jobrunner',
-        check_command => 'check_http_jobrunner',
-        retries       => 2,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
-    }
-
     # TODO: restrict this to monitoring and localhost only.
     ::ferm::service { 'mediawiki-jobrunner':
         proto   => 'tcp',

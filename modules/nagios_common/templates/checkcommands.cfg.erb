@@ -253,31 +253,6 @@ define command {
     command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 1
     }
 
-# 'check_http_wikipedia_main' command definition, querying the main page
-define command {
-    command_name    check_http_wikipedia_main
-    command_line    $USER1$/check_http -H en.wikipedia.org -I $HOSTADDRESS$ -u /wiki/Main_Page
-    }
-
-# 'check_http_wikipedia_main_php7' command definition, querying the main page via php7
-define command {
-    command_name    check_http_wikipedia_main_php7
-    command_line    $USER1$/check_http -H en.wikipedia.org -I $HOSTADDRESS$ -u /wiki/Main_Page -k 'Cookie: PHP_ENGINE=php7' -d 'X-Powered-By: PHP/7.'
-    }
-
-# 'check_http_jobrunner' command definition, querying the health-check endpoint
-define command {
-    command_name    check_http_jobrunner
-    command_line    $USER1$/check_http -I $HOSTADDRESS$ -p 9005 -u /w/health-check.php
-    }
-
-# 'check_http_jobrunner' command definition, querying the health-check endpoint via php7
-define command {
-    command_name    check_http_jobrunner_php7
-    command_line    $USER1$/check_http -I $HOSTADDRESS$ -p 9005 -u /w/health-check.php -k 'Cookie: PHP_ENGINE=php7' -d 'X-Powered-By: PHP/7.'
-    }
-
-
 # 'check_http_upload' command definition, querying a different URL
 define command {
     command_name    check_http_upload

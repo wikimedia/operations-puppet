@@ -4,7 +4,6 @@ class profile::mediawiki::php::monitoring(
     String $auth_salt = lookup('profile::mediawiki::php::monitoring::salt'),
     Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
-    Boolean $monitor_page = lookup('profile::mediawiki::php::monitoring::monitor_page', {default_value => true}),
     Array[String] $deployment_nodes = lookup('deployment_hosts', {default_value => []}),
     Boolean $monitor_opcache = lookup('profile::mediawiki::php::monitoring::monitor_opcache', {default_value => true}),
 ) {
@@ -100,31 +99,7 @@ class profile::mediawiki::php::monitoring(
     class { '::prometheus::node_phpfpm_statustext':
         php_versions => $php_versions,
     }
-    # TODO: extend all this beyond the default php version that is assumed here.
-    # It will be done once we've moved to serving actual traffic with more than one version of
-    # php.
-    if $monitor_page {
-        # Check that a simple page can be rendered via php-fpm.
-        # If a service check happens to run while we are performing a
-        # graceful restart of Apache, we want to try again before declaring
-        # defeat.
-        monitoring::service { 'appserver_http_php7':
-            description    => 'PHP7 rendering',
-            check_command  => 'check_http_wikipedia_main_php7',
-            retry_interval => 2,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_rendering',
-        }
-    }
-    else {
-        # Check that the basic health check url can be rendered via php-fpm.
-        monitoring::service { 'appserver_health_php7':
-            description    => 'PHP7 rendering',
-            check_command  => 'check_http_jobrunner_php7',
-            retries        => 2,
-            retry_interval => 2,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_rendering',
-        }
-    }
+
     # Monitor opcache status
     nrpe::plugin { 'nrpe_check_opcache':
         source => 'puppet:///modules/profile/mediawiki/php/nrpe_check_opcache.py',
