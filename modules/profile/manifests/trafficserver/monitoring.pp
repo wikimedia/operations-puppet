@@ -59,6 +59,10 @@ define profile::trafficserver::monitoring(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
+    # For monitoring where we're at versus maximums defined in configs
+    class { 'prometheus::node_ats_config': }
+
+
     monitoring::service { "traffic_manager_${instance_name}_check_http":
         description   => "Ensure traffic_manager binds on ${port} and responds to HTTP requests",
         check_command => "${traffic_manager_http_check}!localhost!${port}!/_stats",
