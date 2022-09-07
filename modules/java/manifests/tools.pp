@@ -8,8 +8,6 @@ class java::tools {
     # NOTE jmap is used, thus requiring a jdk to be installed
     file { '/usr/local/bin/jheapdump':
         ensure => file,
-        owner  => 'root',
-        group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/java/jheapdump',
     }

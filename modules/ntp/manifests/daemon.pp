@@ -12,8 +12,6 @@ define ntp::daemon(
 
     file { 'ntp.conf':
         mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
         path    => '/etc/ntp.conf',
         content => template('ntp/ntp-conf.erb'),
     }

@@ -57,8 +57,6 @@ class confd(
 
     file { '/etc/confd':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
         mode   => '0550',
     }
 
@@ -66,8 +64,6 @@ class confd(
         ensure  => directory,
         recurse => true,
         purge   => true,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0550',
         before  => Service['confd'],
     }
@@ -76,16 +72,12 @@ class confd(
         ensure  => directory,
         recurse => true,
         purge   => true,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0550',
         before  => Service['confd'],
     }
 
     file { '/usr/local/bin/confd-lint-wrap':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/confd/confd-lint-wrap.py',
     }
