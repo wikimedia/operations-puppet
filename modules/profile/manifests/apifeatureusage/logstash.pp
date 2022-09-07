@@ -6,13 +6,16 @@
 class profile::apifeatureusage::logstash (
   Array[Stdlib::Host]        $targets                              = lookup('profile::apifeatureusage::logstash::targets'),
   Hash                       $curator_actions                      = lookup('profile::apifeatureusage::logstash::curator_actions'),
-  Hash[String, String]       $input_kafka_ssl_truststore_passwords = lookup('profile::apifeatureusage::logstash::input_kafka_ssl_truststore_passwords'),
   Optional[String]           $input_kafka_consumer_group_id        = lookup('profile::apifeatureusage::logstash::input_kafka_consumer_group_id', { default_value => undef }),
   Optional[Stdlib::Fqdn]     $jobs_host                            = lookup('profile::apifeatureusage::logstash::jobs_host',                     { default_value => undef }),
   Stdlib::Port               $jmx_exporter_port                    = lookup('profile::apifeatureusage::logstash::jmx_exporter_port',             { default_value => 7800  }),
   Optional[Stdlib::Unixpath] $java_home                            = lookup('profile::apifeatureusage::logstash::java_home',                     { default_value => undef }),
 ) {
   require ::profile::java
+  include profile::base::certificates
+  $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+  $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+  $manage_truststore = false
 
   class { 'elasticsearch::curator': }
 
@@ -76,7 +79,9 @@ class profile::apifeatureusage::logstash (
     tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -89,7 +94,9 @@ class profile::apifeatureusage::logstash (
     tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
