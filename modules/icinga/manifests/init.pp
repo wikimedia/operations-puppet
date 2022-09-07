@@ -193,12 +193,16 @@ class icinga(
         content => 'e /var/icinga-tmpfs/ - - - 1d',
     }
 
-    # Fix the ownerships of some files. This is ugly but will do for now
-    file { ['/var/cache/icinga',
-            '/var/lib/icinga',
-        ]:
+    file { '/var/lib/icinga':
         ensure => directory,
         owner  => $icinga_user,
+        group  => $icinga_group,
+    }
+
+    file { '/var/cache/icinga':
+        ensure => directory,
+        owner  => $icinga_user,
+        group  => 'www-data',
     }
 
     # Script to purge resources for non-existent hosts
