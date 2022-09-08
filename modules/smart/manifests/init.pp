@@ -17,7 +17,7 @@ class smart (
     # smartd doesn't support enumerating devices on cciss/hpsa controllers and
     # fails to start. Since alerting is done via metrics from smart-data-dump,
     # mask smartd when needed. See also T246997.
-    if debian::codename::ge('buster') and 'hpsa' in $facts['raid'] {
+    if debian::codename::ge('buster') and 'hpsa' in $facts['raid_mgmt_tools'] {
         systemd::mask { 'smartd.service': }
     } else {
         profile::auto_restarts::service { 'smartd': }
