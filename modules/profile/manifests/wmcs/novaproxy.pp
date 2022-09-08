@@ -122,5 +122,7 @@ class profile::wmcs::novaproxy(
             content => template('profile/wmcs/novaproxy-wmflabs.org.conf')
         }
     }
+
+    class { 'prometheus::nginx_exporter': }
 }
 

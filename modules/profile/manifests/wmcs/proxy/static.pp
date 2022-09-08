@@ -28,4 +28,6 @@ class profile::wmcs::proxy::static(
             puppet_rsc => Exec['nginx-reload'],
         }
     }
+
+    class { 'prometheus::nginx_exporter': }
 }
