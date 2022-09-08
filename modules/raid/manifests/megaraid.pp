@@ -9,10 +9,6 @@ class raid::megaraid {
     source => 'puppet:///modules/raid/get-raid-status-megacli.py';
   }
 
-  sudo::user { 'nagios_megaraid':
-    ensure => absent,
-  }
-
   nrpe::check { 'get_raid_status_megacli':
     command   => '/usr/local/lib/nagios/plugins/get-raid-status-megacli -c',
     sudo_user => 'root',

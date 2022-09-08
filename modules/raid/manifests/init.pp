@@ -36,8 +36,4 @@ class raid (
     nrpe::plugin { 'check_raid':
         source => 'puppet:///modules/raid/check-raid.py';
     }
-
-    sudo::user { 'nagios_raid':
-        ensure => absent,
-    }
 }

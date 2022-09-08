@@ -9,10 +9,6 @@ class raid::perccli {
         source => 'puppet:///modules/raid/get-raid-status-perccli.py';
     }
 
-    sudo::user { 'nagios_perc_raid':
-        ensure => absent,
-    }
-
     nrpe::check { 'get_raid_status_perccli':
         command   => '/usr/local/lib/nagios/plugins/get-raid-status-perccli',
         sudo_user => 'root',
