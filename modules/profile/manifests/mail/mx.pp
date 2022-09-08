@@ -6,6 +6,7 @@
 # @param sender_discards
 #   Sender address patterns to silently discard, these patterns should conform to the Exim syntax:
 #   http://www.exim.org/exim-html-current/doc/html/spec_html/ch-domain_host_address_and_local_part_lists.html
+# @param plain_auth_logins hash of email addresses and crypt(3) passwords which are allowed PLAIN auth
 class profile::mail::mx (
     Stdlib::Host          $gmail_smtp_server        = lookup('profile::mail::mx::gmail_smtp_server'),
     Stdlib::Host          $vrts_mysql_server        = lookup('profile::mail::mx::vrts_mysql_server'),
@@ -19,7 +20,11 @@ class profile::mail::mx (
     String[1]             $alias_file_mail_rcpt     = lookup('profile::mail::mx::alias_file_mail_rcpt'),
     String[1]             $alias_file_mail_subject  = lookup('profile::mail::mx::alias_file_mail_subject'),
     Boolean               $enable_ldap              = lookup('profile::mail::mx::enable_ldap'),
-    Array[String[1]]      $sender_discards          = lookup('profile::mail::mx::sender_discards', {'default_value' => []})
+    Array[String[1]]      $sender_discards          = lookup('profile::mail::mx::sender_discards', {'default_value' => []}),
+    Hash[
+        Stdlib::Email,
+        String[1]
+    ]                     $plain_auth_logins        = lookup('profile::mail::mx::plain_auth_logins', {'default_value' => {}})
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -204,6 +209,18 @@ class profile::mail::mx (
         send_mail           => false,
         interval            => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
         max_runtime_seconds => 1800,
+    }
+
+    if $plain_auth_logins != {} {
+        file { "${exim4::config_dir}/plain_auth_logins":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'Debian-exim',
+            mode    => '0440',
+            content => Sensitive($plain_auth_logins.reduce('') |$memo, $v| {
+                "${memo}${v[0]}:\t${v[1]}\n"
+            }),
+        }
     }
 
     ensure_packages(['swaks'])

@@ -112,6 +112,25 @@ tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
 dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
 
+<%- if @plain_auth_logins != {} -%>
+###############################
+#       Authenticators        #
+###############################
+begin authenticators
+
+plain:
+	driver = plaintext
+	public_name = PLAIN
+	server_prompts = :
+	# Only advertise plain auth when tls encrypted
+	server_advertise_condition = ${if def:tls_in_cipher }
+	server_condition = \
+		${lookup{$auth2}lsearch{/etc/exim4/plain_auth_logins} \
+		{${if crypteq{$auth3}{$value}}} {false}}
+	# Set $authenticated_id
+	server_set_id = $auth2
+
+<%- end -%>
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
@@ -157,6 +176,12 @@ acl_check_rcpt:
 		hosts = +relay_from_hosts
 		control = submission/sender_retain
 
+	<%- if @plain_auth_logins != {} -%>
+	# Allow relaying from authenticated clients
+	accept authenticated = *
+		control = submission/domain=
+
+	<%- end -%>
 	# Require recipient domain to be local, or a domain we relay for
 	require message = Relay not permitted
 		domains = +local_domains : +relay_domains
@@ -212,6 +237,15 @@ acl_check_data:
 		set acl_m0 = $spam_score ($spam_bar)
 		set acl_m1 = $spam_report
 
+	<%- if @plain_auth_logins != {} -%>
+	# Reject authenticated users whose From header does not match their login
+	# username
+	deny
+		authenticated = *
+		message = Unable to accept message: RFC5322.From does not match the auth user
+		condition = ${if ! eqi {$authenticated_id} {${address:$header_from:}}}
+
+	<%- end -%>
 	# Reject spam at high scores (> 12)
 	deny message = This message scored $spam_score spam points.
 		spam = nonexistent/defer_ok
