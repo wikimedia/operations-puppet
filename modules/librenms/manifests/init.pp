@@ -104,7 +104,7 @@ class librenms(
     # This is to allow various lock files to be created by the systemd jobs
     file { $install_dir:
         mode  => 'g+w',
-        owner => 'deploy-librenm',
+        owner => 'deploy-librenms',
         group => 'librenms',
         links => follow,
     }
