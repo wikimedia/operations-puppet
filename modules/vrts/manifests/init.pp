@@ -107,6 +107,12 @@ class vrts(
         system     => true,
     }
 
+    wmflib::dir::mkdir_p('/etc/vrts', {
+        owner => 'root',
+        group => 'root',
+        mode  => '0755',
+    })
+
     file { '/etc/vrts/install-script-vars':
         ensure  => 'file',
         owner   => 'root',
