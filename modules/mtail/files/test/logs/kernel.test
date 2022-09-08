@@ -11,4 +11,4 @@ Dec  6 06:25:38 mw1227 kernel: [6197534.841973] CPU4: Core temperature above thr
 Dec  6 09:16:28 mw1239 kernel: [6206875.534261] EDAC MC0: 1 CE memory scrubbing error on CPU_SrcID#0_Ha#0_Chan#1_DIMM#0 (channel:1 slot:0 page:0x70148 offset:0x0 grain:32 syndrome:0x0 -  area:DRAM err_code:0008:00c1 socket:0 ha:0 channel_mask:2 rank:0)
 Dec  6 06:25:52 labcontrol1002 kernel: [1881525.490960] init: nova-spiceproxy main process ended, respawning
 Jan  6 19:50:08 maps1001 kernel: [26460820.509741] nodejs[19268]: segfault at ffffffffffffffe8 ip 00007f61dacb36a8 sp 00007f61f13dc5a0 error 5 in libmapnik.so.3.0.12[7f61dab6a000+8a9000]
-Sep 17 07:50:58 wtp1045 kernel: [13371175.005361] traps: php-fpm7.2[26765] general protection ip:5622f89d31a8 sp:7ffdec746f20 error:0 in php-fpm7.2[5622f8825000+28d000]
+Sep 17 07:50:58 parse1025 kernel: [13371175.005361] traps: php-fpm7.4[26765] general protection ip:5622f89d31a8 sp:7ffdec746f20 error:0 in php-fpm7.4[5622f8825000+28d000]

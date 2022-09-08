@@ -1,5 +1,5 @@
 # tests for parsoid appservers
-# hosts: parse*, wtp*
+# hosts: parse*
 http://en.wikipedia.org:
 - path: /w/rest.php/en.wikipedia.org/v3/page/html/Hospet
   assert_status: 302

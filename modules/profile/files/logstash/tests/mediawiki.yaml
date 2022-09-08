@@ -64,8 +64,8 @@ testcases:
       - >
         {
           "timestamp": "2021-10-08T05:09:10+00:00",
-          "logsource": "wtp1037",
-          "host": "wtp1037",
+          "logsource": "parse1017",
+          "host": "parse1017",
           "program": "mediawiki",
           "severity": "err",
           "facility": "user",
@@ -81,7 +81,7 @@ testcases:
           "http_method": "GET",
           "server": "zh.wikipedia.org",
           "referrer": null,
-          "phpversion": "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2",
+          "phpversion": "7.4.30-3+0~20220627.69+debian10~1.gbpf2b381+wmf1+buster3.1",
           "servergroup": "parsoid",
           "normalized_message": "[{reqId}] {exception_url}   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string",
           "shard": "s2",
@@ -110,8 +110,8 @@ testcases:
           message: "Invariant failed: Bad UTF-8 at start of string"
           trace: "from /srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php(224)\n#0 ..."
         exception_url: "/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636"
-        host: "wtp1037"
-        logsource: "wtp1037"
+        host: "parse1017"
+        logsource: "parse1017"
         program: "mediawiki"
         severity: "err"
         facility: "user"
@@ -123,7 +123,7 @@ testcases:
         http_method: "GET"
         server: "zh.wikipedia.org"
         referrer: null
-        phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2"
+        phpversion: "7.4.30-3+0~20220627.69+debian10~1.gbpf2b381+wmf1+buster3.1"
         servergroup: "parsoid"
         normalized_message: "[{reqId}] {exception_url}   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
         shard: "s2"
@@ -148,13 +148,13 @@ testcases:
               code: 3
               name: "error"
         host:
-          name: "wtp1037"
+          name: "parse1017"
         labels:
           channel: "exception"
           wiki: "zhwiki"
           shard: "s2"
           caught_by: "mwe_handler"
-          phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2"
+          phpversion: "7.4.30-3+0~20220627.69+debian10~1.gbpf2b381+wmf1+buster3.1"
           servergroup: "parsoid"
           normalized_message: "[{reqId}] {exception_url}   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
         service:

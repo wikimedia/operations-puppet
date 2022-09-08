@@ -2833,11 +2833,6 @@ node /^webperf[12]004\.(codfw|eqiad)\.wmnet/ {
     role(webperf::profiling_tools)
 }
 
-# https://www.mediawiki.org/wiki/Parsoid - new machines are called parse*
-node /^wtp10(2[5-9]|[34][0-9])\.eqiad\.wmnet$/ {
-    role(parsoid)
-}
-
 node 'xhgui1001.eqiad.wmnet', 'xhgui2001.codfw.wmnet' {
     role(webperf::xhgui)
 }
