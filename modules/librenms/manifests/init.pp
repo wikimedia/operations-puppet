@@ -88,11 +88,10 @@ class librenms(
     # librenms writes the session files as 0644 as such we
     # disable recurse and only manage the directory
     file { "${install_dir}/storage/framework/sessions/":
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'librenms',
-        mode    => '0660',
-        recurse => true,
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'librenms',
+        mode   => '0660',
     }
 
     file { $rrd_dir:
@@ -105,6 +104,7 @@ class librenms(
     # This is to allow various lock files to be created by the systemd jobs
     file { $install_dir:
         mode  => 'g+w',
+        owner => 'deploy-librenm',
         group => 'librenms',
         links => follow,
     }
