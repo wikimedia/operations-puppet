@@ -1,3 +1,4 @@
 # es2025
 mariadb::shard: 'es5'
 mariadb::binlog_format: 'ROW'
+profile::monitoring::notifications_enabled: false
