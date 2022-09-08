@@ -20,7 +20,7 @@ class raid::perccli {
 
     nrpe::monitor_service { 'raid_perc_raid':
         description    => 'Dell PowerEdge RAID Controller',
-        nrpe_command   => "${raid::check_raid} perccli",
+        nrpe_command   => '/usr/local/lib/nagios/plugins/get-raid-status-perccli',
         sudo_user      => 'root',
         check_interval => $raid::check_interval,
         retry_interval => $raid::retry_interval,
