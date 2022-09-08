@@ -12,6 +12,7 @@ class profile::wmcs::novaproxy(
     Boolean               $api_readonly                = lookup('profile::wmcs::novaproxy::api_readonly',   {default_value => false}),
     Stdlib::IP::Address::V4::Nosubnet  $proxy_dns_ipv4 = lookup('profile::wmcs::novaproxy::proxy_dns_ipv4', {default_value => '198.51.100.1'}),
     Hash[String, Dynamicproxy::Zone] $supported_zones  = lookup('profile::wmcs::novaproxy::supported_zones'),
+    Integer               $rate_limit_requests         = lookup('profile::wmcs::novaproxy::rate_limit_requests', {default_value => 100}),
     Enum['http', 'https'] $keystone_api_protocol       = lookup('profile::openstack::base::keystone::auth_protocol'),
     Stdlib::Port          $keystone_api_port           = lookup('profile::openstack::base::keystone::public_port'),
     # I don't want to add per-deployment profiles, so this is duplicated instead of using profile::openstack::$DEPLOYMENT::keystone_api_fqdn
@@ -97,6 +98,7 @@ class profile::wmcs::novaproxy(
         blocked_referer_regex    => $block_ref_re,
         https_upgrade            => $do_https,
         use_acme_chief           => $use_acme_chief,
+        rate_limit_requests      => $rate_limit_requests,
     }
 
     class { '::dynamicproxy::api':
