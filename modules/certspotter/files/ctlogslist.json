@@ -72,13 +72,6 @@
           "description": "Sectigo Sabre"
         },
         {
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1/TMabLkDpCjiupacAlP7xNi0I1JYP8bQFAHDG1xhtolSY1l4QgNRzRrvSe8liE+NPWHdjGxfx3JhTsN9x8/6Q==",
-          "mmd": 86400,
-          "url": "https://ct.googleapis.com/aviator/",
-          "log_id": "aPaY+B9kgr46jO65KB1M/HFRXWeT1ETRCmesu09P+8Q=",
-          "description": "Google Aviator"
-        },
-        {
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEi/8tkhjLRp0SXrlZdTzNkTd6HqmcmXiDJz3fAdWLgOhjmv4mohvRhwXul9bgW0ODgRwC9UGAgH/vpGHPvIS1qA==",
           "mmd": 86400,
           "url": "https://ct.cloudflare.com/logs/nimbus2023/",
