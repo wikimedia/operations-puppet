@@ -92,7 +92,7 @@ class librenms(
         owner   => 'www-data',
         group   => 'librenms',
         mode    => '0660',
-        recurse => false,
+        recurse => true,
     }
 
     file { $rrd_dir:
