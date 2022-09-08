@@ -244,12 +244,12 @@ scap::k8s_deployments:
 
 # List of kubernetes deployments of MediaWiki.
 profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
-  - mwdebug:
-      name: pinkunicorn
-      canary: ~
-      mw_flavour: "publish"
-      web_flavour: "webserver"
-      debug: true
+  - namespace: mwdebug
+    release: pinkunicorn
+    canary: ~
+    mw_flavour: "publish"
+    web_flavour: "webserver"
+    debug: true
 
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev

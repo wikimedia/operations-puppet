@@ -1,5 +1,5 @@
 class profile::kubernetes::deployment_server::mediawiki::release (
-    Array[Hash[String, Profile::Mediawiki_deployment]] $mw_releases = lookup('profile::kubernetes::deployment_server::mediawiki::release::mw_releases'),
+    Array[Profile::Mediawiki_deployment] $mw_releases = lookup('profile::kubernetes::deployment_server::mediawiki::release::mw_releases'),
     Stdlib::Unixpath $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
     $kubernetes_release_dir = "${general_dir}/mediawiki/release"
