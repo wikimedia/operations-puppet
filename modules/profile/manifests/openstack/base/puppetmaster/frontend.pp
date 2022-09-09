@@ -77,10 +77,4 @@ class profile::openstack::base::puppetmaster::frontend(
                         proto tcp dport 22 ACCEPT;",
     }
 
-    file {'/etc/labspuppet':
-        ensure  => absent,
-        recurse => true,
-        purge   => true,
-        force   => true,
-    }
 }

@@ -24,8 +24,6 @@ class openstack::placement::service::victoria(
             show_diff => false,
             notify    => Service['placement-api'],
             require   => Package['placement-api'];
-        '/etc/placement/policy.json':
-            ensure  => 'absent';
         '/etc/placement/policy.yaml':
             source  => 'puppet:///modules/openstack/victoria/placement/policy.yaml',
             owner   => 'placement',

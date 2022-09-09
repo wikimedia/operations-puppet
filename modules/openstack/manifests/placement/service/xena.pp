@@ -26,8 +26,6 @@ class openstack::placement::service::xena(
             show_diff => false,
             notify    => Service['placement-api'],
             require   => Package['placement-api'];
-        '/etc/placement/policy.json':
-            ensure  => 'absent';
         '/etc/placement/policy.yaml':
             source  => 'puppet:///modules/openstack/xena/placement/policy.yaml',
             owner   => 'placement',

@@ -18,8 +18,6 @@ class openstack::cinder::service::victoria(
     }
 
     file {
-        '/etc/cinder/policy.json':
-            ensure  => 'absent';
         '/etc/cinder/policy.yaml':
             source  => 'puppet:///modules/openstack/victoria/cinder/policy.yaml',
             owner   => 'cinder',

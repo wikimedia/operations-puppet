@@ -18,8 +18,6 @@ class openstack::cinder::service::wallaby(
     }
 
     file {
-        '/etc/cinder/policy.json':
-            ensure  => 'absent';
         '/etc/cinder/policy.yaml':
             source  => 'puppet:///modules/openstack/wallaby/cinder/policy.yaml',
             owner   => 'cinder',

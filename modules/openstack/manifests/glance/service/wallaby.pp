@@ -26,8 +26,6 @@ class openstack::glance::service::wallaby(
             show_diff => false,
             notify    => Service['glance-api'],
             require   => Package['glance'];
-        '/etc/glance/policy.json':
-            ensure  => 'absent';
         '/etc/glance/policy.yaml':
             source  => 'puppet:///modules/openstack/wallaby/glance/policy.yaml',
             owner   => 'root',

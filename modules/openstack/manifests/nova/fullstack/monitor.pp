@@ -1,10 +1,5 @@
 class openstack::nova::fullstack::monitor {
 
-    # Remove once puppet runs a couple times
-    nrpe::monitor_service { 'nova-fullstack':
-        ensure => absent,
-    }
-
     # Make sure every flavor is assigned to an aggregate, to avoid
     # things like T259542
     nrpe::plugin { 'check_flavor_properties':

@@ -122,8 +122,4 @@ class openstack::keystone::service(
             require => $require,
     }
 
-    file {'/var/lib/keystone/keystone.db':
-        ensure  => 'absent',
-        require => Package['keystone'],
-    }
 }

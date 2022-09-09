@@ -37,6 +37,7 @@ class openstack::neutron::common(
         bind_port             => $bind_port,
     }
 
+    # Installed by neutron-common
     $invalid_files = [
         '/etc/neutron/plugins/ml2/ml2_conf_sriov.ini',
         '/etc/neutron/plugins/ml2/openvswitch_agent.ini',

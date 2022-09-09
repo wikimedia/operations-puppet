@@ -140,8 +140,6 @@ class openstack::designate::service(
             notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-api'],
             mode    => '0440';
-        '/etc/designate/policy.json':
-            ensure  => 'absent';
         '/etc/designate/policy.yaml':
             source  => "puppet:///modules/openstack/${version}/designate/policy.yaml",
             owner   => 'designate',
@@ -160,31 +158,10 @@ class openstack::designate::service(
 
     # Designate logrotate configurations were messed up for a long time
     # late Liberty versions fix this but this logrotate setup here should
-    # ensure consistent state (T186142).  Absented things here can be removed
-    # at a later date esp post Liberty.
+    # ensure consistent state (T186142).
     logrotate::conf { 'designate-common':
         ensure => 'present',
         source => 'puppet:///modules/openstack/designate/designate-common.logrotate',
-    }
-
-    file {'/etc/logrotate.d/designate-api':
-        ensure => 'absent',
-    }
-
-    file {'/etc/logrotate.d/designate-central':
-        ensure => 'absent',
-    }
-
-    file {'/etc/logrotate.d/designate-sink':
-        ensure => 'absent',
-    }
-
-    file {'/etc/logrotate.d/designate-mdns':
-        ensure => 'absent',
-    }
-
-    file {'/etc/logrotate.d/designate-pool-manager':
-        ensure => 'absent',
     }
 
     file { '/var/lib/designate/.ssh/':

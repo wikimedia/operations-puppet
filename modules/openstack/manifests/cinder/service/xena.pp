@@ -20,8 +20,6 @@ class openstack::cinder::service::xena(
     }
 
     file {
-        '/etc/cinder/policy.json':
-            ensure  => 'absent';
         '/etc/cinder/policy.yaml':
             source  => 'puppet:///modules/openstack/xena/cinder/policy.yaml',
             owner   => 'cinder',

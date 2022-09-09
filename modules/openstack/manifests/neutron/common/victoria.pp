@@ -27,10 +27,6 @@ class openstack::neutron::common::victoria(
             require   => Package['neutron-common'];
     }
 
-    file { '/etc/neutron/policy.json':
-        ensure => absent,
-    }
-
     file { '/etc/neutron/policy.yaml':
             owner   => 'root',
             group   => 'root',

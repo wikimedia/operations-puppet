@@ -76,8 +76,6 @@ class openstack::keystone::service::xena(
             source  => 'puppet:///modules/openstack/xena/keystone/keystone-paste.ini',
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
-        '/etc/keystone/policy.json':
-            ensure  => 'absent';
         '/etc/keystone/policy.yaml':
             ensure  => 'present',
             mode    => '0644',

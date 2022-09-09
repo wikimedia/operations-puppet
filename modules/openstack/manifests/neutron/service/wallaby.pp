@@ -42,8 +42,6 @@ class openstack::neutron::service::wallaby(
             mode    => '0755',
             notify  => Service['neutron-api'],
             require => Package['neutron-server', 'neutron-api'];
-        '/etc/init.d/neutron-server':
-            ensure => absent;
         '/etc/neutron/neutron-api-uwsgi.ini':
             ensure  => 'present',
             owner   => 'root',

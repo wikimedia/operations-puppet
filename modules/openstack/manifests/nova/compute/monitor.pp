@@ -15,10 +15,6 @@ class openstack::nova::compute::monitor(
         $ensure = 'absent'
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_ssl_certfile':
-        ensure => absent,
-    }
-
     # Having multiple nova-compute parent process running long term has been known to happen
     # when puppet staggers a restart and nova gets very confused with dualing processes
     # pulling from rabbimq and potentially executing conflicting instructions.  A transient

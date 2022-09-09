@@ -169,10 +169,6 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-flavorreport.py",
     }
 
-    file { '/usr/local/sbin/wmcs-novastats-alltrusty':
-        ensure => 'absent',
-    }
-
     file { '/usr/local/sbin/wmcs-wikitech-grep':
         ensure => 'present',
         owner  => 'root',

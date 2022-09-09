@@ -74,8 +74,6 @@ class openstack::keystone::service::wallaby(
             source  => 'puppet:///modules/openstack/wallaby/keystone/keystone-paste.ini',
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
-        '/etc/keystone/policy.json':
-            ensure  => 'absent';
         '/etc/keystone/policy.yaml':
             ensure  => 'present',
             mode    => '0644',

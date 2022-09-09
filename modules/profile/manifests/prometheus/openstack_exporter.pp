@@ -40,8 +40,4 @@ class profile::prometheus::openstack_exporter (
         ],
     }
 
-    # TODO: delete after a few puppet runs
-    file { '/var/cache/prometheus-openstack-exporter':
-        ensure => absent,
-    }
 }

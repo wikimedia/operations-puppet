@@ -22,10 +22,6 @@ class profile::openstack::base::envscripts(
         yaml_mode              => '0440',
     }
 
-    file { '/usr/local/bin/novaenv.sh':
-        ensure => absent,
-    }
-
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,

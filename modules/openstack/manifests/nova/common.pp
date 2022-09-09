@@ -22,20 +22,6 @@ class openstack::nova::common(
 
     class { "openstack::nova::common::${version}::${::lsbdistcodename}": }
 
-    # For some reason the Mitaka nova-common package installs
-    #  a logrotate rule for nova/*.log and also a nova/nova-manage.log.
-    #  This is redundant and makes log-rotate unhappy.
-    # Not to mention, nova-manage.log is very low traffic and doesn't
-    #  really need to be rotated anyway.
-    file { '/etc/logrotate.d/nova-manage':
-        ensure  => 'absent',
-        require => Package['nova-common'],
-    }
-
-    file { '/etc/nova/policy.json':
-        ensure => absent,
-    }
-
     file { '/etc/nova/policy.yaml':
         source  => "puppet:///modules/openstack/${version}/nova/common/policy.yaml",
         mode    => '0644',

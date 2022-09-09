@@ -50,8 +50,4 @@ class profile::openstack::base::pdns::auth::service(
         srange => "(@resolve((${join($hosts,' ')})) @resolve((${join($hosts,' ')}), AAAA))",
     }
 
-    # used by the old prometheus exporter, no longer needed
-    sudo::user { 'prometheus_sudo_for_pdns':
-        ensure => absent,
-    }
 }

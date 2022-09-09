@@ -96,7 +96,4 @@ class profile::openstack::eqiad1::keystone::service(
         rule   => "saddr @resolve((${join($designate_hosts,' ')})) proto tcp dport (25357) ACCEPT;",
     }
 
-    file { '/etc/cron.hourly/keystone':
-        ensure => absent,
-    }
 }

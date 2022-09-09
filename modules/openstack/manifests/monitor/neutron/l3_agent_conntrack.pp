@@ -1,13 +1,5 @@
 class openstack::monitor::neutron::l3_agent_conntrack (
 ) {
-    file { '/usr/local/sbin/nrpe-neutron-conntrack':
-        ensure => absent,
-    }
-
-    sudo::user { 'nagios_neutron_l3_agent_conntrack':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'check_neutron_conntrack':
         source => 'puppet:///modules/openstack/monitor/neutron/nrpe-neutron-conntrack.py',
     }
