@@ -25,13 +25,13 @@ class profile::toolforge::proxy (
     }
 
     class { '::dynamicproxy':
-        ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
-        luahandler           => 'urlproxy',
-        ssl_certificate_name => $ssl_cert_name,
-        k8s_vip_fqdn         => $k8s_vip_fqdn,
-        k8s_vip_fqdn_port    => $k8s_vip_port,
-        redis_replication    => $redis_replication,
-        error_config         => {
+        acme_certname       => $ssl_cert_name,
+        ssl_settings        => ssl_ciphersuite('nginx', 'compat'),
+        luahandler          => 'urlproxy',
+        k8s_vip_fqdn        => $k8s_vip_fqdn,
+        k8s_vip_fqdn_port   => $k8s_vip_port,
+        redis_replication   => $redis_replication,
+        error_config        => {
             title       => 'Wikimedia Toolforge Error',
             logo        => '/.error/toolforge-logo.png',
             logo_2x     => '/.error/toolforge-logo-2x.png',
@@ -41,10 +41,8 @@ class profile::toolforge::proxy (
             logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge',
             favicon     => '/.error/favicon.ico',
         },
-        banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
-        https_upgrade        => true,
-        use_acme_chief       => true,
-        rate_limit_requests  => $rate_limit_requests,
+        banned_description  => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
+        rate_limit_requests => $rate_limit_requests,
     }
 
     $proxy_nodes = join($proxies, ' ')

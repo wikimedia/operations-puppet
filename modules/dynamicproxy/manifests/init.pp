@@ -17,8 +17,8 @@ class dynamicproxy (
     Optional[Stdlib::Port] $k8s_vip_fqdn_port = undef,
     $luahandler,
     $redis_maxmemory          = '512MB',
-    $ssl_settings             = undef,
-    $ssl_certificate_name     = false,
+    Optional[Array[String]] $ssl_settings  = undef,
+    Optional[String]        $acme_certname = undef,
     $notfound_servers         = [],
     $redis_replication        = undef,
     $error_enabled            = false,
@@ -40,14 +40,12 @@ class dynamicproxy (
     Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Proxy">our documentation on Wikitech</a> for more information on configuring a proxy.',
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
     $blocked_referer_regex    = '',
-    $https_upgrade            = false,
-    Boolean $use_acme_chief   = false,
     Optional[Array[Stdlib::Fqdn]] $xff_fqdns = undef,
     Integer $rate_limit_requests = 100,
 ) {
     # TODO: use epp templates
     #   -> that will surface some typing errors, ex. xff_fqdns = undef not being supported
-    if $ssl_certificate_name != false and $ssl_settings == undef {
+    if $acme_certname and $ssl_settings == undef {
         fail('ssl_certificate_name set but ssl_settings not set')
     }
 
