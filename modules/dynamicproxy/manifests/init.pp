@@ -70,6 +70,9 @@ class dynamicproxy (
         },
     }
 
+    # Monitoring!
+    prometheus::redis_exporter { '6379': }
+
     class { '::nginx':
         variant => 'extras',
     }

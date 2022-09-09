@@ -105,6 +105,11 @@ class profile::toolforge::prometheus (
             instance_filter => "${instance_prefix}-proxy-\\d+",
         },
         {
+            name            => 'frontproxy-redis',
+            port            => 9121,
+            instance_filter => "${instance_prefix}-proxy-\\d+",
+        },
+        {
             name            => 'haproxy',
             port            => 9901,
             instance_filter => "${instance_prefix_k8s}-k8s-haproxy-\\d+",
