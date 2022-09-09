@@ -80,6 +80,22 @@ puppet_compiler::uploader::realms:
       C0gyRPFAn46QOzOJQgzMneMSVp7IN05i4IYW/1kiQOT7Ks22UEJyZhXYpTkTnuQ6
       2jK3v7JNqnd3yHHg/iCdroUCAwEAAQ==
       -----END PUBLIC KEY-----
+  metricsinfra:
+    metricsinfra-puppetmaster-1: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAxm0F0EDDkfCgF/52BXM5
+      DVghETZHDYTGvX9JCs7yxSN6GUU5m1MQ/Xk8Ke78EjYV+eT3ZS7QHc9OUK1rYISR
+      UgmeUV6y1Tzp7wPZmBQbwQWjL27P1hhzwMNXFLGY6S0Uq+0G0pxI8w+WMkVefwu4
+      x7XNI41HUwAPm+dyEtMbUjtrKxqJPp/+w8gUYHtjbBLkyh/h3bmikeTp+GjvrYCA
+      7pHQ+T4oqgFVeq1JmvVM/FklvS0RNnVQdCwWZDKEQmjrT2CFHeTF5qQBM5ZiQPO0
+      Ld1HyS/1nAAmfDUFqFX1vtIWPm3VmvA9h5G1+mFR9/dUMYI/EXYkbB+gnjF7m1yw
+      CF1yLGHVgNR8lNfhp9FqxAS8RUbduUuUUrWhJ/kuD7gRtrUcMNxdiAVsp5bwUNAx
+      nfeJAhzQrf7O+HP/VXiDjf0gz+saaAa/nvc4GCXv3ofr12TQjltE2PKuSvD6mu/L
+      aqoxXBffYhIz6kn4HFXrUHbUVje+XWJMMSDOrBL2Pp5cwTMG3zXm+/HdVOsp5W1P
+      TIOeqNhJsIh4GuLvvf4NZiYzoY5ve227OOXqHdlcrC8yyV6c55X+isiC7yw51TIP
+      e0eERGAXz5IKBviS1BIVLqQ4cLLGDcG/7di4xFY+6fiyD2fpTN+sKrgBndXPcGM1
+      EI8bx7hOPfiqmjwGNQuPrAcCAwEAAQ==
+      -----END PUBLIC KEY-----
   project-proxy:
     project-proxy-puppetmaster-01: |
       -----BEGIN PUBLIC KEY-----
