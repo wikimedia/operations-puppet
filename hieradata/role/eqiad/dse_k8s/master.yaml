@@ -7,8 +7,6 @@ profile::kubernetes::master::etcd_urls:
 # Needed to run a kubelet on the master node
 # See T285927
 profile::kubernetes::node::kubelet_cluster_dns: "10.67.32.3"
-profile::kubernetes::node::kubelet_node_labels:
-  - node-role.kubernetes.io/master=""
 profile::kubernetes::master_hosts:
 - dse-k8s-ctrl1001.eqiad.wmnet
 - dse-k8s-ctrl1002.eqiad.wmnet
