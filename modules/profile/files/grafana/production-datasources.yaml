@@ -192,6 +192,17 @@ datasources:
    withCredentials: false
    version: 1
 
+ - name: eqiad prometheus/k8s-dse
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/k8s-dse
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
  - name: eqsin prometheus/ops
    type: prometheus
    access: proxy

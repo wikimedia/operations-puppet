@@ -12,7 +12,7 @@ profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/dse-k8s-ctrl.svc.%{
 profile::kubernetes::master::authz_mode: 'RBAC'
 profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/dse-k8s-ctrl.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::service_node_port_range: '1-65535'
-profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/dse-k8s"
+profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-dse"
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:

@@ -34,9 +34,10 @@ profile::lvs::realserver::pools:
       - prometheus@analytics
       - prometheus@global
       - prometheus@k8s
-      - prometheus@k8s-staging
+      - prometheus@k8s-dse
       - prometheus@k8s-mlserve
       - prometheus@k8s-mlstaging
+      - prometheus@k8s-staging
       - prometheus@ops
       - prometheus@services
       - apache2
