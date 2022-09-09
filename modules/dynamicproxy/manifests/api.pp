@@ -6,6 +6,11 @@ class dynamicproxy::api (
     String[1]                         $token_validator_username,
     String[1]                         $token_validator_password,
     String[1]                         $token_validator_project,
+    Stdlib::Host                      $mariadb_host,
+    String[1]                         $mariadb_db,
+    String[1]                         $mariadb_username,
+    String[1]                         $mariadb_password,
+    Stdlib::Host                      $redis_primary_host,
     Stdlib::IP::Address::V4::Nosubnet $proxy_dns_ipv4,
     Hash[String, Dynamicproxy::Zone]  $supported_zones,
     Optional[String]                  $acme_certname = undef,
@@ -31,12 +36,12 @@ class dynamicproxy::api (
 
     ensure_packages([
         'python3-flask',
-        'python3-redis',
         'python3-flask-sqlalchemy',
         'python3-flask-keystone',  # this one is built and maintained by us
+        'python3-pymysql',
+        'python3-redis',
         'python3-oslo.context',
         'python3-oslo.policy',
-        'sqlite3'
     ])
 
     uwsgi::app { 'invisible-unicorn':
@@ -77,6 +82,13 @@ class dynamicproxy::api (
         notify    => Uwsgi::App['invisible-unicorn'],
     }
 
+    file { '/etc/dynamicproxy-api/schema.sql':
+        source => 'puppet:///modules/dynamicproxy/api/schema.sql',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     cinderutils::ensure { 'db_backups':
         min_gb      => 1,
         max_gb      => 20,
@@ -85,6 +97,7 @@ class dynamicproxy::api (
     }
 
     file { '/srv/backup/README':
+        ensure => file,
         source => 'puppet:///modules/dynamicproxy/api/BackupReadme',
         owner  => 'root',
         group  => 'root',
@@ -92,6 +105,7 @@ class dynamicproxy::api (
     }
 
     file { '/usr/local/sbin/proxydb-bak.sh':
+        ensure => file,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
@@ -101,21 +115,11 @@ class dynamicproxy::api (
     systemd::timer::job { 'proxydb-backup':
         ensure             => present,
         user               => 'root',
-        description        => 'run proxydb-bak.sh',
-        command            => '/usr/local/sbin/proxydb-bak.sh',
+        description        => 'create a backup of the proxy configuration database',
+        command            => "/usr/local/sbin/proxydb-bak.sh ${mariadb_db}",
         interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
         monitoring_enabled => false,
         logging_enabled    => false,
-    }
-
-    # Create initial db file if it doesn't exist, but don't clobber if it does.
-    file { '/etc/dynamicproxy-api/data.db':
-        ensure  => file,
-        source  => 'puppet:///modules/dynamicproxy/api/initial-data.db',
-        replace => false,
-        require => File['/etc/dynamicproxy-api'],
-        owner   => 'www-data',
-        group   => 'www-data',
     }
 
     nginx::site { 'invisible-unicorn':

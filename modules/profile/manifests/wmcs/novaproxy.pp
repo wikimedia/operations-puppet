@@ -20,6 +20,10 @@ class profile::wmcs::novaproxy(
     String                $token_validator_username    = lookup('profile::wmcs::novaproxy::token_validator_username'),
     String                $token_validator_project     = lookup('profile::wmcs::novaproxy::token_validator_project'),
     String                $token_validator_password    = lookup('profile::wmcs::novaproxy::token_validator_password'),
+    Stdlib::Host          $mariadb_host                = lookup('profile::wmcs::novaproxy::mariadb_host'),
+    String[1]             $mariadb_db                  = lookup('profile::wmcs::novaproxy::mariadb_db'),
+    String[1]             $mariadb_username            = lookup('profile::wmcs::novaproxy::mariadb_username'),
+    String[1]             $mariadb_password            = lookup('profile::wmcs::novaproxy::mariadb_password'),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -66,6 +70,16 @@ class profile::wmcs::novaproxy(
         $ssl_settings = undef
     }
 
+    include profile::mariadb::packages_client
+    mariadb::config::client { 'webproxy':
+        path => '/etc/my.cnf',
+        host => $mariadb_host,
+        port => 3306,
+        user => $mariadb_username,
+        pass => $mariadb_password,
+        db   => $mariadb_db,
+    }
+
     class { '::dynamicproxy':
         acme_certname            => $acme_certname,
         ssl_settings             => $ssl_settings,
@@ -84,8 +98,7 @@ class profile::wmcs::novaproxy(
         ssl_settings             => $ssl_settings,
         proxy_dns_ipv4           => $proxy_dns_ipv4,
         supported_zones          => $supported_zones,
-        # Read only if specified in hiera or not an active proxy
-        read_only                => $api_readonly or $::hostname != $active_proxy,
+        read_only                => $api_readonly,
         keystone_api_url         => "${keystone_api_protocol}://${keystone_api_fqdn}:${keystone_api_port}",
         dns_updater_username     => $dns_updater_username,
         dns_updater_password     => $dns_updater_password,
@@ -93,6 +106,11 @@ class profile::wmcs::novaproxy(
         token_validator_username => $token_validator_username,
         token_validator_password => $token_validator_password,
         token_validator_project  => $token_validator_project,
+        mariadb_host             => $mariadb_host,
+        mariadb_db               => $mariadb_db,
+        mariadb_username         => $mariadb_username,
+        mariadb_password         => $mariadb_password,
+        redis_primary_host       => $active_proxy,
     }
 
     nginx::site { 'wmflabs.org':

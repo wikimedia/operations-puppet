@@ -50,6 +50,7 @@ opts = [
     cfg.StrOpt('zones_json_file'),
     cfg.StrOpt('proxy_dns_ipv4'),
     cfg.StrOpt('sqlalchemy_uri', secret=True),
+    cfg.StrOpt('redis_uri'),
 ]
 
 key = FlaskKeystone()
@@ -93,9 +94,6 @@ class Project(db.Model):
     # this is actually what openstack calls "project id"
     name = db.Column(db.String(256), unique=True)
 
-    def __init__(self, name):
-        self.name = name
-
 
 class Route(db.Model):
     """Represents a route that has one matching rule & multiple backends
@@ -106,9 +104,6 @@ class Route(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     project = db.relationship('Project',
                               backref=db.backref('routes', lazy='dynamic'))
-
-    def __init__(self, domain):
-        self.domain = domain
 
 
 class Backend(db.Model):
@@ -121,26 +116,23 @@ class Backend(db.Model):
     route = db.relationship('Route',
                             backref=db.backref('backends', lazy='dynamic'))
 
-    def __init__(self, url):
-        self.url = url
-
 
 class RedisStore:
     """Represents a redis instance that has routing info that the proxy reads"""
     def __init__(self, redis_conn):
         self.redis = redis_conn
 
-    def delete_route(self, route):
+    def delete_route(self, route: Route):
         self.redis.delete('frontend:' + route.domain)
 
     # Create this route if it does not already exist.
-    def refresh_route(self, route):
+    def refresh_route(self, route: Route):
         key = 'frontend:' + route.domain
         if not (self.redis.exists(key)):
             print("Adding new key: %s " % key)
             self.update_route(route)
 
-    def update_route(self, route, old_domain=None):
+    def update_route(self, route: Route, old_domain=None):
         key = 'frontend:' + route.domain
         backends = [backend.url for backend in route.backends]
 
@@ -235,7 +227,7 @@ class Dns:
 with open(cfg.CONF.dynamicproxy.zones_json_file, "r") as f:
     zones = json.load(f)
 
-redis_store = RedisStore(redis.Redis())
+redis_store = RedisStore(redis.Redis.from_url(cfg.CONF.dynamicproxy.redis_uri))
 dns = Dns(
     zones,
     cfg.CONF.dynamicproxy.proxy_dns_ipv4,
@@ -352,7 +344,7 @@ def create_mapping(project_name):
 
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
-        project = Project(project_name)
+        project = Project(name=project_name)
         db.session.add(project)
 
     route = Route.query.filter_by(domain=domain).first()
@@ -362,8 +354,7 @@ def create_mapping(project_name):
             return flask.jsonify({"error": f"Can't use domain {domain}"}), 403
 
         dns.add_records_for(project_name, domain)
-        route = Route(domain)
-        route.project = project
+        route = Route(domain=domain, project=project)
         db.session.add(route)
     elif route.project_id != project.id:
         return "Can't edit backend of another project", 403
@@ -372,8 +363,7 @@ def create_mapping(project_name):
 
     for backend_url in backend_urls:
         # FIXME: Add validation for making sure these are valid
-        backend = Backend(backend_url)
-        backend.route = route
+        backend = Backend(url=backend_url, route=route)
         db.session.add(backend)
 
     db.session.commit()
@@ -451,7 +441,7 @@ def update_mapping(project_name, domain):
     # Not the most effecient, but I'm sitting in an airplane and this is the simplest from here
     route.backends.delete()
     for backend_url in backend_urls:
-        route.backends.append(Backend(backend_url))
+        route.backends.append(Backend(url=backend_url))
     db.session.add(route)
     db.session.commit()
 
