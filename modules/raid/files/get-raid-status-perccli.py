@@ -12,9 +12,7 @@ import json
 import os
 import subprocess
 import sys
-
-
-from typing import Tuple
+from typing import List, Tuple
 
 # Nagios exit codes for easier reference
 NAGIOS_OK = 0
@@ -34,7 +32,7 @@ def run_perccli_command(args) -> dict:
     return json.loads(perc_data.stdout)
 
 
-def list_controllers() -> list[int]:
+def list_controllers() -> List[int]:
     """IDs of the installed controllers"""
     command_args = 'show J'
     data = run_perccli_command(command_args)
@@ -106,6 +104,17 @@ def lookup_by_key(key, data) -> list:
     return devices
 
 
+def virtual_devices_configured() -> bool:
+    """Check if any virtual drives have been configured"""
+
+    # /call = All controllers
+    # /vall = All virtual drives
+    command_args = '/call/vall show all J'
+    data = run_perccli_command(command_args)
+    vds = [ctl['Response Data'] for ctl in data['Controllers'] if 'Response Data' in ctl]
+    return True if vds else False
+
+
 def general_state(data) -> Tuple[int, str]:
     """Get overall state from the RAID controller"""
     status_list = lookup_by_key('Status', data)
@@ -128,6 +137,11 @@ def physical_device_status(data) -> Tuple[int, str]:
 
 def virtual_device_status(data) -> Tuple[int, str]:
     """Check if a virtual device has the state: Optimal"""
+
+    # If no virtual devices are configured, they are also OK
+    if not virtual_devices_configured():
+        return 0, 'virtual_disk: 0 OK'
+
     devices = lookup_by_key('VD LIST', data)
     errors = [device for device in devices if device['State'] != 'Optl']
     status = 'OK' if not errors else errors[0]['State']
