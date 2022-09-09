@@ -26,7 +26,7 @@ max_connections_in="$(
 )"
 
 max_requests_in="$(
-    traffic_ctl config get proxy.config.net.max_requests_in \
+    traffic_ctl config get $max_requests_name \
         | awk '{print $2}'
 )"
 
