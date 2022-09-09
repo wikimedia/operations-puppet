@@ -52,11 +52,21 @@ class gitlab::backup (
         interval    => $config_backup_interval,
     }
 
-    # make sure only root can access backup folders
+    # make sure git user can access backup folders
+    # create folder for backups
+    file { $backup_dir_data:
+        ensure => directory,
+        owner  => 'git',
+        group  => 'root',
+        mode   => '0600',
+    }
+
+    # make sure only root can access latest backup folders
     # create folder for latest backup
-    wmflib::dir::mkdir_p(["${backup_dir_data}/latest", "${backup_dir_config}/latest"], {
-        owner => 'root',
-        group => 'root',
-        mode  => '0600',
-    })
+    file { ["${backup_dir_data}/latest", "${backup_dir_config}/latest"]:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0600',
+    }
 }
