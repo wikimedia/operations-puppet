@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define ntp::daemon(
     Array[Stdlib::Host] $servers      = [],
     Array[Stdlib::Host] $pools        = [],
