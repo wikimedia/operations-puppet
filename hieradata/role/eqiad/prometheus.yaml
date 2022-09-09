@@ -22,7 +22,7 @@ profile::prometheus::kubernetes::clusters:
     controller_class_name: role::ml_k8s::master
   k8s-dse:
     enabled: true
-    master-host: 'dse-k8s-ctrl.svc.eqiad.wmnet'
+    master_host: 'dse-k8s-ctrl.svc.eqiad.wmnet'
     port: 9910
     class_name: role::dse_k8s::worker
     controller_class_name: role::dse_k8s::master
