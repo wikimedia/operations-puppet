@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::druid::common
 # Installs the druid common package and common configuration settings.
 #

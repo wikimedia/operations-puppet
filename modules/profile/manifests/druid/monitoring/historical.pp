@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::druid::monitoring::historical
 #
 # Sets up Prometheus based monitoring (only jvm) for the druid historical.

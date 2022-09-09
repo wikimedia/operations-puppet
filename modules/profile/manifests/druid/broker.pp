@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::druid::broker
 #
 # NOTE that most Druid service profiles default ferm_srange

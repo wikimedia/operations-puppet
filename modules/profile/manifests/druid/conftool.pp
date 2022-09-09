@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::druid::conftool
 #
 # Add conftool configurations and util scripts

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::druid::monitoring::broker
 #
 # Sets up Prometheus based monitoring (only jvm) for the druid broker.

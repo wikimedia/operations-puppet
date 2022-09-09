@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::druid::turnilo::proxy
 #
 # Sets up an apache http proxy with WMF ldap authentication.
