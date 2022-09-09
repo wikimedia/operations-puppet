@@ -1,6 +1,6 @@
 # This role is to be used for the `cloudinfra` VPS project instances.
 # It currently hosts the labspuppet database used for Cloud VPS Puppet
-# ENC API, and may hold others in future.
+# ENC API and the web proxy service, and may hold others in future.
 class role::mariadb::cloudinfra (
     Boolean $master = false,
 ) {

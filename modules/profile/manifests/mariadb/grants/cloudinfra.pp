@@ -1,8 +1,10 @@
 class profile::mariadb::grants::cloudinfra (
-    Array[Stdlib::Fqdn] $cloudinfra_dbs  = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
-    Array[Stdlib::Fqdn] $enc_servers     = lookup('profile::mariadb::cloudinfra::enc_servers'),
-    String              $labspuppet_pass = lookup('profile::mariadb::grants::cloudinfra::labspuppet_pass'),
-    String              $repl_pass       = lookup('profile::mariadb::grants::cloudinfra::repl_pass'),
+    Array[Stdlib::Fqdn]        $cloudinfra_dbs  = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
+    Array[Stdlib::Fqdn]        $enc_servers     = lookup('profile::mariadb::cloudinfra::enc_servers'),
+    Array[Stdlib::IP::Address] $proxies         = lookup('cache_hosts'),
+    String                     $labspuppet_pass = lookup('profile::mariadb::grants::cloudinfra::labspuppet_pass'),
+    String                     $webproxy_pass   = lookup('profile::mariadb::grants::cloudinfra::webproxy_pass'),
+    String                     $repl_pass       = lookup('profile::mariadb::grants::cloudinfra::repl_pass'),
 ) {
     $repl_ips = $cloudinfra_dbs.map |Stdlib::Fqdn $fqdn| {
         ipresolve($fqdn, 4)

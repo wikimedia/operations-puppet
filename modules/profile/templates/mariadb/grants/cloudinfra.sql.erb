@@ -21,3 +21,11 @@ GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
     IDENTIFIED BY '<%= @labspuppet_pass %>';
 
 <%- end -%>
+
+-- webproxy user, for the cloud vps web proxy servers in the project-proxy project
+<%- @proxies.each do |ip| -%>
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `webproxy`.* TO 'webproxy'@'<%= ip %>'
+    IDENTIFIED BY '<%= @webproxy_pass %>';
+
+<%- end -%>

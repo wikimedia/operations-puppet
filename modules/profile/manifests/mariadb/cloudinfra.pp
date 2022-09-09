@@ -1,7 +1,8 @@
 class profile::mariadb::cloudinfra (
-    Boolean             $master         = lookup('profile::mariadb::cloudinfra::master'),
-    Array[Stdlib::Fqdn] $enc_servers    = lookup('profile::mariadb::cloudinfra::enc_servers'),
-    Array[Stdlib::Fqdn] $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
+    Boolean                    $master         = lookup('profile::mariadb::cloudinfra::master'),
+    Array[Stdlib::Fqdn]        $enc_servers    = lookup('profile::mariadb::cloudinfra::enc_servers'),
+    Array[Stdlib::IP::Address] $proxies        = lookup('cache_hosts'),
+    Array[Stdlib::Fqdn]        $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
 ) {
     if debian::codename::ge('bullseye') {
         # for bullseye and newer (cloudinfra-db03+), use a Cinder volume for MariaDB storage
@@ -18,6 +19,13 @@ class profile::mariadb::cloudinfra (
         port    => 3306,
         notrack => true,
         srange  => "(@resolve((${enc_servers.join(' ')})))",
+    }
+
+    ferm::service { 'proxies':
+        proto   => 'tcp',
+        port    => 3306,
+        notrack => true,
+        srange  => $proxies,
     }
 
     ferm::service { 'mariadb_replication':
