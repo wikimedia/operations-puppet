@@ -13,28 +13,28 @@ frontend http-public
     option httplog
     option forwardfor
 
-    acl is_public_name hdr(host) -i prometheus.wmflabs.org
-    acl is_public_name hdr(host) -i prometheus.wmcloud.org
+    acl is_prometheus_host hdr(host) -i prometheus.wmflabs.org
+    acl is_prometheus_host hdr(host) -i prometheus.wmcloud.org
 
-    acl is_prometheus_alertmanager path -i -m beg /.alertmanager/
+    acl is_prometheus_alertmanager_path path -i -m beg /.alertmanager/
 
-    acl is_karma hdr(host) -i prometheus-alerts.wmcloud.org
+    acl is_karma_host hdr(host) -i prometheus-alerts.wmcloud.org
 
-    acl is_config_manager hdr(host) -i config-manager.svc.metricsinfra.eqiad1.wikimedia.cloud
+    acl is_config_manager_host hdr(host) -i config-manager.svc.metricsinfra.eqiad1.wikimedia.cloud
 
     # Block alertmanager's dangerous endpoints
-    acl is_evil_alertmanager_path path -i -m beg /.alertmanager/debug
-    acl is_evil_alertmanager_path path -i -m beg /.alertmanager/-/quit
-    acl is_evil_alertmanager_path path -i -m beg /.alertmanager/-/reload
+    acl is_unsafe_alertmanager_path path -i -m beg /.alertmanager/debug
+    acl is_unsafe_alertmanager_path path -i -m beg /.alertmanager/-/quit
+    acl is_unsafe_alertmanager_path path -i -m beg /.alertmanager/-/reload
     acl is_safe_alertmanager_method method GET HEAD OPTIONS
 
-    http-request deny if is_public_name is_prometheus_alertmanager is_evil_alertmanager_path
-    http-request deny if is_public_name is_prometheus_alertmanager !is_safe_alertmanager_method
+    http-request deny if is_prometheus_host is_prometheus_alertmanager_path is_unsafe_alertmanager_path
+    http-request deny if is_prometheus_host is_prometheus_alertmanager_path !is_safe_alertmanager_method
 
-    use_backend prometheus_alertmanager if is_public_name is_prometheus_alertmanager
-    use_backend thanos_fe if is_public_name !is_prometheus_alertmanager
-    use_backend karma if is_karma
-    use_backend config_manager if is_config_manager
+    use_backend prometheus_alertmanager if is_prometheus_host is_prometheus_alertmanager_path
+    use_backend thanos_fe if is_prometheus_host !is_prometheus_alertmanager_path
+    use_backend karma if is_karma_host
+    use_backend config_manager if is_config_manager_host
 
 backend prometheus_alertmanager
     mode http
