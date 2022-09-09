@@ -1,6 +1,5 @@
 class profile::mariadb::cloudinfra (
-    Boolean $master = lookup('profile::mariadb::cloudinfra::master'),
-    Array[Stdlib::Fqdn] $puppetmasters  = lookup('profile::mariadb::cloudinfra::puppetmasters'),
+    Boolean             $master         = lookup('profile::mariadb::cloudinfra::master'),
     Array[Stdlib::Fqdn] $enc_servers    = lookup('profile::mariadb::cloudinfra::enc_servers'),
     Array[Stdlib::Fqdn] $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
 ) {
@@ -18,7 +17,7 @@ class profile::mariadb::cloudinfra (
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => "(@resolve((${puppetmasters.join(' ')} ${enc_servers.join(' ')})))",
+        srange  => "(@resolve((${enc_servers.join(' ')})))",
     }
 
     ferm::service { 'mariadb_replication':

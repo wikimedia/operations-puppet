@@ -14,7 +14,7 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT SELECT
     ON heartbeat.heartbeat TO 'prometheus'@'localhost';
 
--- labspuppetbackend user, for the enc api hosts (currently on the cloud-wide puppetmasters)
+-- labspuppetbackend user, for the enc api hosts
 <%- @labspuppet_client_ips.each do |ip| -%>
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
     ON `labspuppet`.* TO 'labspuppet'@'<%= ip %>'

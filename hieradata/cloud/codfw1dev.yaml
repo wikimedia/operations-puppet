@@ -59,8 +59,6 @@ profile::openstack::base::keystone::public_port: 25000
 
 profile::puppetmaster::common::hiera_config: wmcs-codfw1dev
 
-profile::mariadb::cloudinfra::puppetmasters:
-  - puppetmaster-02.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::mariadb::cloudinfra::enc_servers:
   - enc-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::mariadb::cloudinfra::cloudinfra_dbs:
