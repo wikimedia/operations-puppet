@@ -72,7 +72,7 @@ class GrafanaAPI(object):
             timeout=timeout,
             tries=tries,
             backoff=backoff,
-            retry_methods=RETRY_METHODS
+            retry_methods=RETRY_METHODS,
         )
         self.session.auth = auth
 
@@ -123,6 +123,7 @@ class GrafanaSyncer(object):
         }
         r = self.api.post("admin/users", json=create_user)
         r.raise_for_status()
+        LOG.info(f"Created user {login} name {name} email {email}")
         return r.json()
 
     def _update_user(self, login, name, email):
@@ -157,6 +158,7 @@ class GrafanaSyncer(object):
         if self.commit:
             r = self.api.delete(f"admin/users/{uid}")
             r.raise_for_status()
+            LOG.info(f"Deleted user {uid}")
             return r.json()
 
     def sync_ldap_users(self, users, role):
@@ -258,6 +260,8 @@ def main():
 
     if opts.debug:
         logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     if opts.ldaps_skip_check:
         ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
@@ -273,10 +277,11 @@ def main():
     grafana_password = grafana_cfg.get("security", "admin_password")
     grafana_port = grafana_cfg.getint("server", "http_port", fallback=3000)
     grafana_api = GrafanaAPI(
-        f"http://localhost:{grafana_port}", ("admin", grafana_password),
+        f"http://localhost:{grafana_port}",
+        ("admin", grafana_password),
         timeout=opts.timeout,
         tries=opts.retry,
-        backoff=opts.retry_backoff_factor
+        backoff=opts.retry_backoff_factor,
     )
 
     syncer = GrafanaSyncer(grafana_api, ldap_api, commit=opts.commit, orgid=GRAFANA_ORG)
