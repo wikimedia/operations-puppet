@@ -30,6 +30,8 @@ class statistics::dataset_mount (
 
         file { "/mnt/nfs/dumps-${server}":
             ensure => 'directory',
+            owner  => 'dumpsgen',
+            group  => 'dumpsgen',
         }
 
         mount { "/mnt/nfs/dumps-${server}":
