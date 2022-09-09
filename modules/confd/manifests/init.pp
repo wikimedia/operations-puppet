@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class confd
 #
 # Installs confd and (optionally) starts it via a base::service_unit define.

@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
 set -u
 
 . /usr/lib/nagios/plugins/utils.sh

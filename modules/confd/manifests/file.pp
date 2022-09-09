@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define confd::file
 #
 # Defines a service template to be monitored by confd,

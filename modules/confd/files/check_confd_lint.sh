@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Check for existence of confd template linting err state
 # files and report last modtime which should equate to
 # last error.  Files _do not exist_ without errant state

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 #
 # Confd attempts to replace each file atomically and
 # can abort for safety reasons if a specified check script
