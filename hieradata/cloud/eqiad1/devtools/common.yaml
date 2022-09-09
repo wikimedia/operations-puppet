@@ -62,6 +62,9 @@ scap::dsh::scap_masters:
 
 profile::keyholder::server::require_encrypted_keys: 'no'
 profile::keyholder::server::agents:
+  gerrit:
+    trusted_groups:
+      - project-%{::labsproject}
   phabricator:
     trusted_groups:
       - project-%{::labsproject}
