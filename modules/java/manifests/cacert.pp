@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary a define to add a certificate to the system java truststore
 # or to a custom one.
 # @param path the location of the CA pem file to add to the truststore

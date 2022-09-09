@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 Facter.add(:java_version) do
   setcode do
     version = nil

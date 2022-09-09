@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == define java::package
 #
 # This define is used as helper for the 'java' class, it shouldn't

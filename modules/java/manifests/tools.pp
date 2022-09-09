@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: java::tools
 #
 # This class aims at providing convenience tools to be used on systems where

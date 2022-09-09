@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class java
 #
 # This class allows to deploy one or more versions of openjdk, choosing
