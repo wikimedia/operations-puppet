@@ -1,3 +1,4 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 dsh -cM -g bits -o -lroot "varnishadm -T :6082 -S /etc/varnish/secret ban.url $1; echo done"
 

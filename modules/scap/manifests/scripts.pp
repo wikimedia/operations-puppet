@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = class: scap::scripts
 #
 # Sets up commonly used scripts useful on scap masters

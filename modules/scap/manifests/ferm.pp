@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class scap::ferm
 # Allows ssh access from $DEPLOYMENT_HOSTS
 #

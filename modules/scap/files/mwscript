@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Shell wrapper for the home version of multiversion/MWScript.php.
 # This script belongs in /usr/local/bin/ and should be in PATH.
 . /etc/profile.d/mediawiki.sh

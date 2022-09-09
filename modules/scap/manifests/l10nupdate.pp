@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = class: scap::l10nupdate
 #
 # Sets up files and a systemd timer required to do l10nupdate

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class scap::conftool
 #
 # Adds conftool scripts and credentials for the deploy-service user, used by

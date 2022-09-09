@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class scap::dsh
 #
 # Sets up dsh config files alone, without actually

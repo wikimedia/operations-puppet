@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'scap::target' do

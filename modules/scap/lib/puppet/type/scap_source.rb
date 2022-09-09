@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == resource scap_source
 #
 # Sets up scap3 deployment source on a deploy server.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == define scap::dsh::group
 #
 # Manages a scap dsh group.

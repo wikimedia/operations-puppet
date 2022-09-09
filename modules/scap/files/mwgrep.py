@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: Apache-2.0
 # -*- coding: utf-8 -*-
 """
   usage: mwgrep [-h] [--max-results N] [--timeout N] [--user | --module]

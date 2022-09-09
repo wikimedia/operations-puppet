@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: scap::user
 #
 # Sets up a scap account used by the scap deployment tool to update itself on target hosts via rsync

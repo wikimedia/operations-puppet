@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Merge new translations from HEAD into the l10n cache files for deployed
 # MediaWiki versions and sync the updated caches to the MediaWiki servers.
 #

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = class: scap::master
 #
 # Sets up a scap master (currently deploy1002 and deploy2002)

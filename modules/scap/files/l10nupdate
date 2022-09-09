@@ -1,3 +1,4 @@
 #! /bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # This script belongs in /usr/local/bin/.
 sudo -u l10nupdate /usr/local/bin/l10nupdate-1 "$@"

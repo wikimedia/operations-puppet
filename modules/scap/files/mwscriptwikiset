@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Shell wrapper for the local version of multiversion/MWScript.php.
 # This script belongs in /usr/local/bin/ and should be in PATH.
 # Unlike mwscript, the takes a dblist filename as the second argument

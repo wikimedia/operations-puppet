@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: scap::target
 #
 # Sets up a scap3 target for a deployment repository.

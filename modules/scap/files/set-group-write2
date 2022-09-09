@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 BINDIR=/usr/local/bin
 . /etc/profile.d/mediawiki.sh
 

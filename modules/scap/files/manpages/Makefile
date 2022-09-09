@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Makefile heavily based on the git project /Documentation/Makefile
 
 # AsciiDoc toolchain manager

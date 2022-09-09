@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Run a maintenance script against multiple wikis.
 #
 # This script belongs in /usr/local/bin/ and should be in PATH.
