@@ -339,6 +339,19 @@ def main():  # pylint: disable=too-many-locals
         print(error)
         return 1
 
+    if not nodes:
+        print(
+            yellow(
+                "No nodes given on the command line, and no Hosts: footer in the commit message. "
+                "PCC will compile your change for one of every type of node listed in site.pp. "
+                "This is a good way to test a change with a potentially wide impact, but if you're "
+                "doing it by accident, it consumes quite a lot of resources."
+            )
+        )
+        confirm = input(yellow('Continue? (y/n) '))
+        if not confirm.lower().startswith('y'):
+            return 1
+
     job = jenkins.get_job("operations-puppet-catalog-compiler")
     build_params = {
         "GERRIT_CHANGE_NUMBER": str(change["number"]),
