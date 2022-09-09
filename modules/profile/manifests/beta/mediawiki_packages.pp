@@ -18,7 +18,6 @@ class profile::beta::mediawiki_packages {
         'fluid-soundfont-gs',
         'fluid-soundfont-gm',
         'fonts-noto',
-        'fonts-noto-cjk',
         'python3-pygments',
         'perl',
         'ploticus',
