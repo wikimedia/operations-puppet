@@ -42,7 +42,6 @@ class phabricator::phd (
             id          => '920:920',
             description => 'Phabricator daemon user',
             home_dir    => '/var/run/phd',
-            require     => File[$phd_home],
         }
 
     } else {
