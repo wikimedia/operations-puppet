@@ -95,7 +95,7 @@ def main():
         write_msg(alert, msg)
     else:
         msg = (f"OK: {args.service} was restarted after {args.file} "
-               f"was changed (time delta of {diff * -1:.2f}s).")
+               f"was changed (within 3600 seconds).")
         write_msg(StatusCode.OK, msg)
 
 
