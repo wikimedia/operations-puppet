@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::memcached::instance
 #
 # Installs and configures a memcached instance.

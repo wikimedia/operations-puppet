@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::memcached::memkeys
 #
 # This class installs and configures memkeys, a tool to inspect memcache keys

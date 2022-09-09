@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::memcached::performance
 #
 # Installs and configures performance settings for the Memcached's host.
