@@ -22,4 +22,11 @@ class prometheus {
         source   => 'puppet:///modules/prometheus/prometheus.rsyslog.conf',
         priority => 40,
     }
+
+    # Provision LVM volumes (manually) https://phabricator.wikimedia.org/T163692
+    file { '/usr/local/sbin/prometheus-provision-fs':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/prometheus/provision-fs.sh',
+    }
 }
