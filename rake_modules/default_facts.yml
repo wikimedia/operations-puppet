@@ -37,8 +37,8 @@ raid:
   - hpsa
   - md
   - megaraid
-  - mpt
   - ssacli
+  - perccli
 kernel_details:
   sysctl_settings:
     net.ipv4.tcp_min_snd_mss: true
