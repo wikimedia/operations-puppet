@@ -40,16 +40,8 @@ class turnilo(
         service_name => 'turnilo',
     }
 
-    group { 'turnilo':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'turnilo':
-        gid     => 'turnilo',
-        shell   => '/bin/bash',
-        system  => true,
-        require => Group['turnilo'],
+    systemd::sysuser { 'turnilo':
+        shell    => '/bin/bash',
     }
 
     file { '/etc/firejail/turnilo.profile':
