@@ -397,8 +397,8 @@ eqiad:
     druid1007.eqiad.wmnet: [druid-public-broker]
     druid1008.eqiad.wmnet: [druid-public-broker]
   labweb:
-      cloudweb1003.wikimedia.org: [labweb, labweb-ssl]
-      cloudweb1004.wikimedia.org: [labweb, labweb-ssl]
+      cloudweb1003.wikimedia.org: [labweb-ssl]
+      cloudweb1004.wikimedia.org: [labweb-ssl]
   ores:
     ores1001.eqiad.wmnet: [ores]
     ores1002.eqiad.wmnet: [ores]
