@@ -1203,7 +1203,7 @@ service::catalog:
     port: 80
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
 
   labweb-ssl:
     description: "lvs for labweb services: horizon, striker, wikitech - HTTPS"
