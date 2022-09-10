@@ -42,12 +42,11 @@ profile::wmcs::striker::docker::env:
 #    - '10.2.2.40' # labweb.svc.eqiad.wmnet
 
 profile::lvs::realserver::pools:
-  labweb:
+  labweb-ssl:
     services:
       - apache2
       - php7.4-fpm
       - nutcracker
-      - nginx
 
 # Currently unused:
 profile::openstack::base::nutcracker::memcached::size: 6000
