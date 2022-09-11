@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: Apache-2.0
+<VirtualHost *:80>
+  ServerName terraform.wmcloud.org
+  ServerAlias <%= @facts['fqdn'] %>
+
+  ServerSignature Off
+
+  Alias /files /srv/terraform-registry/files
+  <Directory /srv/terraform-registry/files>
+    Options Indexes
+    AllowOverride None
+    Require all granted
+  </Directory>
+
+  # Do not proxy /files
+  ProxyPass /files !
+  ProxyPassReverse /files !
+  # or /icons used by the file listing
+  ProxyPass /icons !
+  ProxyPassReverse /icons !
+
+  ProxyPass / unix:/run/uwsgi/tf-registry.sock|uwsgi://tf-registry/
+  ProxyPassReverse / unix:/run/uwsgi/tf-registry.sock|uwsgi://tf-registry/
+</VirtualHost>
