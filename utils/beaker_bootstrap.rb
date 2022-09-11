@@ -10,7 +10,7 @@ HOSTNAME = ARGV[0]
 
 def write_hiera
   # Write out a custome hiera file with the beaker overrides taking precedence
-  hiera_config = YAML.load_file(File.join(__dir__, '../modules/puppetmaster/files/production.hiera.yaml'))
+  hiera_config = YAML.load_file(File.join(__dir__, '../modules/puppetmaster/files/hiera/production.yaml'))
   hiera_config['hierarchy'].insert(0, {'name' => 'beaker overrides', 'path' => 'beaker.yaml'})
   File.open('/etc/puppet/hiera.yaml', 'w') { |f| YAML.dump(hiera_config, f) }
 end

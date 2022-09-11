@@ -42,4 +42,3 @@ profile::openstack::eqiad1::puppetmaster::servers:
 profile::openstack::eqiad1::puppetmaster::web_hostname: puppetmaster.cloudinfra.wmflabs.org
 
 puppetmaster::enable_geoip: false
-puppetmaster::hiera_config: labs

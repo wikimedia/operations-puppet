@@ -5,7 +5,7 @@
 # @param verify_client Whether apache mod_ssl will verify the client (SSLVerifyClient option)
 # @param server_type frontend, backend or standalone
 # @param config Hash containing all config settings for the [master] section of puppet.conf (ini-style)
-# @param hiera_config Specifies which file to use for hiera.yaml.  Defaults to $::realm
+# @param hiera_config Specifies which file to use for hiera.yaml.
 # @param is_git_master If True, the git private repository here will be considered a master
 # @param secure_private If true, some magic is done to have local repositories and sync between puppetmasters.
 #        Otherwise, /etc/puppet/private will be labs/private.git.
@@ -33,7 +33,7 @@ class puppetmaster(
     Puppetmaster::Server_type                $server_type        = 'standalone',
     Hash                                     $config             = {},
     Boolean                                  $is_git_master       = false,
-    String[1]                                $hiera_config        = $::realm,
+    String[1]                                $hiera_config        = 'production',
     Boolean                                  $secure_private      = true,
     Boolean                                  $prevent_cherrypicks = true,
     String[1]                                $git_user            = 'gitpuppet',
@@ -158,15 +158,13 @@ class puppetmaster(
         content => template('puppetmaster/auth-master.conf.erb'),
     }
 
-    $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
-
     file { '/etc/puppet/hiera.yaml':
         # We dont want global hiera when using r10k
         ensure => stdlib::ensure(!$use_r10k, 'file'),
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => $hiera_source,
+        source => "puppet:///modules/puppetmaster/hiera/${hiera_config}.yaml",
         notify => Service['apache2'],
     }
 

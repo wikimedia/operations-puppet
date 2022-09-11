@@ -130,6 +130,7 @@ class profile::puppetmaster::frontend(
         bind_address        => '*',
         server_type         => 'frontend',
         is_git_master       => true,
+        hiera_config        => $profile::puppetmaster::common::hiera_config,
         config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,

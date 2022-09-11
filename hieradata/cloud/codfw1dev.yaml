@@ -57,6 +57,8 @@ bastion_hosts:
 profile::openstack::base::keystone::auth_protocol: https
 profile::openstack::base::keystone::public_port: 25000
 
+profile::puppetmaster::common::hiera_config: wmcs-codfw1dev
+
 profile::mariadb::cloudinfra::puppetmasters:
   - puppetmaster-02.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::mariadb::cloudinfra::enc_servers:

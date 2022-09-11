@@ -25,4 +25,4 @@ if [ "$1" == "lint" ]
   "$PWD""/linter"
 fi
 
-puppet apply --show_diff --hiera_config=../modules/puppetmaster/files/production.hiera.yaml --modulepath=../modules:../vendor_modules $@ ../manifests/site.pp 2>&1 | grep  -v 'exported resources'
+puppet apply --show_diff --hiera_config=../modules/puppetmaster/files/hiera/production.yaml --modulepath=../modules:../vendor_modules $@ ../manifests/site.pp 2>&1 | grep  -v 'exported resources'

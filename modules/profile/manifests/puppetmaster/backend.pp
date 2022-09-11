@@ -36,6 +36,7 @@ class profile::puppetmaster::backend(
 
     class { 'puppetmaster':
         server_type         => 'backend',
+        hiera_config        => $profile::puppetmaster::common::hiera_config,
         config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
