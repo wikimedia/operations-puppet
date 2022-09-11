@@ -34,11 +34,6 @@
 #   Valid settings: chain|leaf|none
 # [*canary_hosts*]
 #  An array of hosts which should be directed to use canary servers
-# [*locale_server*]
-#  Puppet 5.10 now supports providing localised strings.  Once a server
-#  has had a catalogue compiled by a puppet 5.10 master it will expect
-#  to receive better data for any localised files.  this parameter ensures
-#  requests are sent to a puppet master with locals support
 define puppetmaster::web_frontend(
     Puppetmaster::Backends                  $workers,
     Stdlib::Host                            $master,
@@ -49,7 +44,6 @@ define puppetmaster::web_frontend(
     Optional[Array[String]]                 $alt_names               = undef,
     Optional[Enum['chain', 'leaf', 'none']] $ssl_ca_revocation_check = undef,
     Optional[Array[Stdlib::Host]]           $canary_hosts            = [],
-    Optional[Stdlib::Host]                  $locale_server           = undef,
 ){
     $server_name = $title
     $ssl_settings = ssl_ciphersuite('apache', 'strong')

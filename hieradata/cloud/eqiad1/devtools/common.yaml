@@ -197,7 +197,6 @@ puppetmaster::enable_geoip: false
 puppetmaster::servers:
   puppetmaster-1001.devtools.eqiad.wmflabs:
     - { worker: puppetmaster-1001.devtools.eqiad.wmflabs, loadfactor: 10 }
-puppetmaster::locale_servers: {}
 role::puppetmaster::standalone::autosign: true
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false

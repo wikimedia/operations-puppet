@@ -7,4 +7,3 @@ puppetmaster::servers:
     - { worker: puppetmaster2001.codfw.wmnet, loadfactor: 10 }
     - { worker: puppetmaster2003.codfw.wmnet, loadfactor: 20 }
     - { worker: puppetmaster2004.codfw.wmnet, loadfactor: 20 }
-puppetmaster::locale_servers: {}

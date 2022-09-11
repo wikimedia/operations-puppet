@@ -239,7 +239,6 @@ profile::backup::pool: ""
 profile::backup::director: "backup.example.com"
 profile::backup::days: []
 
-puppetmaster::locale_servers: {}
 profile::puppetmaster::frontend::secure_private: true
 profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
 profile::puppetmaster::frontend::config: {}

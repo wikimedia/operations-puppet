@@ -14,7 +14,6 @@
 # @param signed_certs_critical Critical alert if agent certs are due to expire within this time
 # @param canary_hosts list of hosts used for caanary testing
 # @param servers list of puppetmaster backend servers with wieghts
-# @param locale_servers list of local_servers
 # @param ssl_ca_revocation_check the type of SSL revocation check to perform
 # @param http_proxy the HTTP proxy if one is required
 # @param mcrouter_ca_secret The secret for mcrouter CA
@@ -28,7 +27,6 @@ class profile::puppetmaster::frontend(
     # Class scope
     # TODO: we should probably configure theses in P:puppetmaster::common
     Hash[String, Puppetmaster::Backends] $servers        = lookup('puppetmaster::servers'),
-    Hash[Stdlib::Host, Stdlib::Host]     $locale_servers = lookup('puppetmaster::locale_servers'),
     # Locals
     Hash                          $config                  = lookup('profile::puppetmaster::frontend::config'),
     Boolean                       $secure_private          = lookup('profile::puppetmaster::frontend::secure_private'),
@@ -145,12 +143,10 @@ class profile::puppetmaster::frontend(
     }
 
     $workers = $servers[$facts['networking']['fqdn']]
-    $locale_server = $locale_servers[$facts['networking']['fqdn']]
     # Main site to respond to
     puppetmaster::web_frontend { $web_hostname:
         master                  => $ca_server,
         workers                 => $workers,
-        locale_server           => $locale_server,
         bind_address            => $puppetmaster::bind_address,
         priority                => 40,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
@@ -163,7 +159,6 @@ class profile::puppetmaster::frontend(
     puppetmaster::web_frontend { $facts['networking']['fqdn']:
         master                  => $ca_server,
         workers                 => $workers,
-        locale_server           => $locale_server,
         bind_address            => $puppetmaster::bind_address,
         priority                => 50,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
