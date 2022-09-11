@@ -9,7 +9,7 @@
 # @param ssl_verify_depth ssl verify depth
 # @param netbox_hiera_enable add the netbox-hiera repo
 # @param reports list of puppet reports
-#
+# @param enable_merge_cli whether to use the puppet-merge tool to manage git updates
 class profile::puppetmaster::common (
                                 $base_config,
     Enum['puppetdb', 'none']    $storeconfigs        = lookup('profile::puppetmaster::common::storeconfigs'),
@@ -18,6 +18,7 @@ class profile::puppetmaster::common (
     Integer[1,2]                $ssl_verify_depth    = lookup('profile::puppetmaster::common::ssl_verify_depth'),
     Boolean                     $netbox_hiera_enable = lookup('profile::puppetmaster::common::netbox_hiera_enable'),
     Array[Puppetmaster::Report] $reports             = lookup('profile::puppetmaster::common::reports'),
+    Boolean                     $enable_merge_cli    = lookup('profile::puppetmaster::common::enable_merge_cli'),
 ) {
     $env_config = {
         'environmentpath'  => '$confdir/environments',

@@ -2,5 +2,6 @@ profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::storeconfigs: none
 profile::puppetmaster::common::ssl_verify_depth: 1
 profile::puppetmaster::common::netbox_hiera_enable: true
+profile::puppetmaster::common::enable_merge_cli: true
 profile::puppetmaster::common::reports:
   - puppetdb

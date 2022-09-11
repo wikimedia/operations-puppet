@@ -41,6 +41,7 @@ class profile::puppetmaster::backend(
         prevent_cherrypicks => $prevent_cherrypicks,
         extra_auth_rules    => $extra_auth_rules,
         netbox_hiera_enable => $profile::puppetmaster::common::netbox_hiera_enable,
+        enable_merge_cli    => $profile::puppetmaster::common::enable_merge_cli,
         ca_server           => $ca_server,
         servers             => $servers,
     }

@@ -18,6 +18,7 @@
 # @param ca_server FQDN of the CA server
 # @param ssl_verify_depth Depth to verify client certificates
 # @param netbox_hiera_enable add the netbox-hiera repo
+# @param enable_merge_cli whether to use the puppet-merge tool to manage git updates
 # @param use_r10k Weather to use r10k
 # @param upload_facts weather to upload facts to pcc
 #   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Updating_nodes
@@ -42,11 +43,12 @@ class puppetmaster(
     Integer[1,2]                             $ssl_verify_depth    = 1,
     Boolean                                  $use_r10k            = false,
     Boolean                                  $netbox_hiera_enable = false,
+    Boolean                                  $enable_merge_cli    = false,
     Boolean                                  $upload_facts        = false,
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
     Hash[String, Puppetmaster::Backends]     $servers             = {},
     Optional[Stdlib::HTTPUrl]                $http_proxy          = undef,
-    Optional[String]                         $extra_auth_rules    = undef
+    Optional[String]                         $extra_auth_rules    = undef,
 ){
 
     $workers = $servers[$facts['fqdn']]
@@ -130,11 +132,15 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::scripts' :
-        servers      => $servers,
         has_puppetdb => $has_puppetdb,
-        ca_server    => $ca_server,
         upload_facts => $upload_facts,
         http_proxy   => $http_proxy,
+    }
+
+    class { 'puppetmaster::merge_cli':
+        ensure    => $enable_merge_cli.bool2str('present', 'absent'),
+        servers   => $servers,
+        ca_server => $ca_server,
     }
 
     if $enable_geoip {
