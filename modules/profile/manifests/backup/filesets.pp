@@ -148,7 +148,7 @@ class profile::backup::filesets(
         includes => [ '/srv/repos' ],
     }
     bacula::director::fileset { 'openldap':
-        includes => [ '/var/run/openldap-backup' ],
+        includes => [ '/var/run/openldap-backup', '/var/lib/ldap/slapd-audit.log' ],
     }
     bacula::director::fileset { 'contint':
         includes => [ '/srv', '/var/lib/zuul', '/var/lib/jenkins' ],
