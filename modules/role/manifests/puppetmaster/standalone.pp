@@ -48,7 +48,7 @@ class role::puppetmaster::standalone(
     Variant[Boolean, ENUM['puppetdb']] $storeconfigs        = false,
     Boolean                            $enable_geoip        = false,
     Boolean                            $command_broadcast   = false,
-    String[1]                          $hiera_config        = $::realm,
+    String[1]                          $hiera_config        = lookup('profile::puppetmaster::common::hiera_config'),
     Boolean                            $use_r10k            = false,
     Boolean                            $upload_facts        = false,
     Array[Puppetmaster::Report]        $reports             = ['puppetdb'],
