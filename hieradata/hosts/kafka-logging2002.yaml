@@ -1,0 +1,2 @@
+# More info in https://phabricator.wikimedia.org/T300130
+profile::kafka::broker::ssl_generate_certificates: true
