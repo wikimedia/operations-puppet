@@ -63,6 +63,26 @@ hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('netw
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_connection +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn<% if @log_selector_extra %> <%= @log_selector_extra %><% end %>
 message_logs = false
 
+# Change the default Received header, this is a copy of the default header with
+# one exeception, for authenticated clients we record their authenticated_id
+# rather than their IP address. This is done to prevent Gmail from checking
+# whether the authenticated client IP is in our SPF record.
+received_header_text = Received: \
+	${if def:authenticated_id {from $authenticated_id\n\t}{\
+		${if def:sender_rcvhost {from $sender_rcvhost\n\t}{\
+			${if def:sender_ident {from ${quote_local_part:$sender_ident} }}\
+			${if def:sender_helo_name {(helo=$sender_helo_name)\n\t}}\
+		}}\
+	}}\
+	by $primary_hostname \
+	${if def:received_protocol {with $received_protocol }}\
+	${if def:tls_in_ver { ($tls_in_ver)}}\
+	${if def:tls_in_cipher_std { tls $tls_in_cipher_std\n\t}}\
+	(Exim $version_number)\n\t\
+	${if def:sender_address {(envelope-from <$sender_address>)\n\t}}\
+	id $message_exim_id\
+	${if def:received_for {\n\tfor $received_for}}
+
 # Policy control
 acl_smtp_connect = acl_check_connect
 acl_smtp_rcpt = acl_check_rcpt
