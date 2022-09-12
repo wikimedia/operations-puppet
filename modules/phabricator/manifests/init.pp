@@ -148,17 +148,31 @@ class phabricator (
         require => File['/srv/git.wikimedia.org'],
     }
 
+    $sudo_env_keep = [
+        'SCAP_REVS_DIR',
+        'SCAP_FINAL_PATH',
+        'SCAP_REV_PATH',
+        'SCAP_CURRENT_REV_DIR',
+        'SCAP_DONE_REV_DIR',
+    ].join(',')
+
+    $sudo_user_defaults = "Defaults:${deploy_user} env_keep+=${sudo_env_keep}"
+
+    $sudo_commands = [
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
+        ]
+
+    $sudo_rules = [$sudo_user_defaults] + $sudo_commands
+
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
         manage_user => $manage_scap_user,
         require     => File['/usr/local/sbin/phab_deploy_finalize'],
-        sudo_rules  => [
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
-        ],
+        sudo_rules  => $sudo_rules,
     }
 
     # Provide secrets and host-specific configuration that scap3 will use for
