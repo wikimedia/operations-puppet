@@ -203,6 +203,7 @@ $private_tables = [
     'growthexperiments_link_submissions',
     'growthexperiments_mentor_mentee',
     'growthexperiments_mentee_data',
+    'growthexperiments_user_impact',
     'hidden',
     'image_old',
     'ipinfo_ip_changes',
