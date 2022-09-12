@@ -19,6 +19,7 @@ describe 'systemd::service' do
             .with_ensure('present')
             .with_content('test')
             .with_override(false)
+            .without_override_filename
             .with_restart(false)
         end
       end
@@ -30,6 +31,7 @@ describe 'systemd::service' do
             :ensure   => 'absent',
             :restart  => true,
             :override => true,
+            :override_filename => 'myoverride.conf',
             :service_params => {'path' => '/bar'}
           }
         }
@@ -44,6 +46,7 @@ describe 'systemd::service' do
             .with_ensure('absent')
             .with_content('test')
             .with_override(true)
+            .with_override_filename('myoverride.conf')
             .with_restart(true)
         end
       end

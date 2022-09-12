@@ -17,6 +17,10 @@
 # [*override*]
 #   If the are creating an override to system-provided units or not.
 #   Defaults to false
+# [*override_filename*]
+#   When creating an override, filename to use instead of the one forged by
+#   systemd::unit.
+#   Default to undef.
 # [*monitoring_enabled*]
 #   Periodically check the last execution of the unit and alarm if it ended
 #   up in a failed state.
@@ -39,6 +43,7 @@ define systemd::service(
     Systemd::Unit_type        $unit_type                = 'service',
     Boolean                   $restart                  = false,
     Boolean                   $override                 = false,
+    Optional[String[1]]       $override_filename        = undef,
     Boolean                   $monitoring_enabled       = false,
     String                    $monitoring_contact_group = 'admins',
     Optional[Stdlib::HTTPUrl] $monitoring_notes_url     = undef,
@@ -70,10 +75,11 @@ define systemd::service(
     ensure_resource('service', $label, $params)
 
     systemd::unit { $label:
-        ensure   => $ensure,
-        content  => $content,
-        override => $override,
-        restart  => $restart
+        ensure            => $ensure,
+        content           => $content,
+        override          => $override,
+        override_filename => $override_filename,
+        restart           => $restart
     }
     if $monitoring_enabled {
         unless $monitoring_notes_url {

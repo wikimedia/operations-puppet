@@ -74,6 +74,24 @@ describe 'systemd::unit' do
                            .with_refreshonly(true)
         end
       end
+
+      context 'when using override filename' do
+        let(:params) { super().merge(override: true, override_filename: 'myoverride.conf') }
+        let(:title) { 'withcustomoverridefilename.service' }
+
+        it { is_expected.to compile }
+        it 'should be able to change the override filename' do
+          is_expected.to contain_file('/etc/systemd/system/withcustomoverridefilename.service.d/myoverride.conf')
+        end
+      end
+      context 'when given an override filename without .conf' do
+        let(:params) { super().merge(override: true, override_filename: 'overridefile') }
+        let(:title) { 'extensionless.service' }
+        it { is_expected.to compile }
+        it 'appends .conf to the override filename' do
+          is_expected.to contain_file('/etc/systemd/system/extensionless.service.d/overridefile.conf')
+        end
+      end
     end
   end
 end

@@ -18,6 +18,10 @@
 # [*override*]
 #   If the are creating an override to system-provided units or not.
 #   Defaults to false
+# [*override_filename*]
+#   When creating an override, filename to use for the override. The given
+#   filename would have the `.conf` extension added if missing.
+#   Defaults to undef (use `puppet-override.conf`)
 #
 # === Examples ===
 #
@@ -42,6 +46,7 @@ define systemd::unit(
     Wmflib::Ensure $ensure=present,
     Boolean $restart=false,
     Boolean $override=false,
+    Optional[String[1]] $override_filename=undef,
 ){
     require ::systemd
 
@@ -60,7 +65,12 @@ define systemd::unit(
             group  => 'root',
             mode   => '0555',
         }
-        $path = "${override_dir}/puppet-override.conf"
+
+        $path = $override_filename ? {
+            undef     => "${override_dir}/puppet-override.conf",
+            /\.conf$/ => "${override_dir}/${override_filename}",
+            default   => "${override_dir}/${override_filename}.conf",
+        }
     } else {
         $path = "${::systemd::base_dir}/${unit_name}"
     }
