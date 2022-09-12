@@ -1109,14 +1109,14 @@ class profile::prometheus::ops (
         'metrics_path'      => '/stats/prometheus',
         'scheme'            => 'http',
         'file_sd_configs'   => [
-            { 'files' => [ "${targets_path}/envoy_*.yaml" ]}
+            { 'files' => ["${targets_path}/envoy_*.yaml"] }
         ],
         # Envoy produces a ton of metrics, but for now we're just interested in
-        # upstream and downstream requests latencies and counts, so just keep those
-        # and nothing else.
+        # upstream and downstream requests latencies and counts, as well as connection
+        # stats. So just keep those and nothing else.
         'metric_relabel_configs' => [
           { 'source_labels' => ['__name__'],
-            'regex'         =>'^envoy_(http_down|cluster_up)stream_rq.*$',
+            'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
             'action'        => 'keep'
           },
         ]
