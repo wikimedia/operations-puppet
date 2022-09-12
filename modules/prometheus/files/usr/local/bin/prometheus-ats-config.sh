@@ -33,9 +33,9 @@ max_requests_in="$(
 cat <<EOF > "${OUTFILE}.$$"
 # HELP ats_proxy_config_net_max_connections_in Total number of client requests that Traffic Server can handle simultaneously
 # TYPE ats_proxy_config_net_max_connections_in gauge
-ats_proxy_config_net_max_connections_in "$max_connections_in"
+ats_proxy_config_net_max_connections_in $max_connections_in
 # HELP $max_requests_name Total number of concurrent requests or active client connections that the Traffic Server can handle simultaneously
 # TYPE $max_requests_name gauge
-$max_requests_name "$max_requests_in"
+$max_requests_name $max_requests_in
 EOF
 mv "${OUTFILE}.$$" "${OUTFILE}"
