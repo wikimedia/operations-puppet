@@ -29,31 +29,21 @@
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
 #
-# [*hiera_config*]
-#  Allows to select from a range of hiera.yaml files in modules/puppetmaster/files.
-#  Typically the $::realm default works, but in e.g. codfw1dev this should
-#  be specified to pick up the right config.
-#
 # [*enable_geoip*]
 #  Enable/disable provisioning ::puppetmaster::geoip for serving clients who
 #  use the ::geoip::data::puppet class in their manifests.
 #  Default: false
 #
 class role::puppetmaster::standalone(
-    Boolean                            $autosign            = false,
-    Boolean                            $prevent_cherrypicks = false,
-    Integer[1,30]                      $git_sync_minutes    = 10,
-    Optional[String]                   $extra_auth_rules    = undef,
-    Stdlib::Host                       $server_name         = $facts['fqdn'],
-    Variant[Boolean, ENUM['puppetdb']] $storeconfigs        = false,
-    Boolean                            $enable_geoip        = false,
-    Boolean                            $command_broadcast   = false,
-    String[1]                          $hiera_config        = lookup('profile::puppetmaster::common::hiera_config'),
-    Boolean                            $use_r10k            = false,
-    Boolean                            $upload_facts        = false,
-    Array[Puppetmaster::Report]        $reports             = ['puppetdb'],
-    Hash[String, Puppetmaster::R10k::Source]             $r10k_sources  = {},
-    Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
+    Boolean                                  $autosign            = false,
+    Boolean                                  $prevent_cherrypicks = false,
+    Integer[1,30]                            $git_sync_minutes    = 10,
+    Optional[String]                         $extra_auth_rules    = undef,
+    Stdlib::Host                             $server_name         = $facts['fqdn'],
+    Boolean                                  $enable_geoip        = false,
+    Boolean                                  $use_r10k            = false,
+    Boolean                                  $upload_facts        = false,
+    Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
 ) {
     system::role { 'puppetmaster::standalone':
         description => 'Cloud VPS project puppetmaster',
@@ -62,19 +52,6 @@ class role::puppetmaster::standalone(
     include profile::openstack::base::puppetmaster::enc_client
     include profile::openstack::base::puppetmaster::stale_certs_exporter
 
-    $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
-        true    => [$puppetdb_host],
-        default => $puppetdb_host,
-    }
-
-    $env_config = $use_r10k ? {
-        true    =>  {},
-        default => {
-            'environmentpath'  => '$confdir/environments',
-            'default_manifest' => '$confdir/manifests',
-        },
-    }
-
     $base_config = {
         'node_terminus'     => 'exec',
         'external_nodes'    => '/usr/local/bin/puppet-enc',
@@ -82,29 +59,14 @@ class role::puppetmaster::standalone(
         'autosign'          => $autosign,
     }
 
-    $puppetdb_config = {
-        storeconfigs         => true,
-        thin_storeconfigs    => true,
-        storeconfigs_backend => 'puppetdb',
-        reports              => $reports.join(','),
+    class {'profile::puppetmaster::common':
+        base_config        => $base_config,
+        disable_env_config => $use_r10k,
     }
 
-    if $storeconfigs == 'puppetdb' {
-        if debian::codename::le('stretch') {
-            apt::repository { 'wikimedia-puppetdb4':
-                uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => "${::lsbdistcodename}-wikimedia",
-                components => 'component/puppetdb4',
-                before     => Class['puppetmaster::puppetdb::client'],
-            }
-        }
-        class { 'puppetmaster::puppetdb::client':
-            hosts             => $puppetdb_hosts,
-            command_broadcast => $command_broadcast,
-        }
-        $config = merge($base_config, $puppetdb_config, $env_config)
-    } else {
-        $config = merge($base_config, $env_config)
+    $config = $profile::puppetmaster::common::storeconfigs == 'puppetdb' ? {
+        true    => $profile::puppetmaster::common::config + { 'thin_storeconfigs' => true },
+        default => $profile::puppetmaster::common::config
     }
 
     class { 'httpd':
@@ -115,7 +77,7 @@ class role::puppetmaster::standalone(
             'proxy_balancer',
             'passenger',
             'rewrite',
-            'lbmethod_byrequests'
+            'lbmethod_byrequests',
         ],
     }
     ensure_packages('libapache2-mod-passenger')
@@ -127,17 +89,10 @@ class role::puppetmaster::standalone(
         extra_auth_rules    => $extra_auth_rules,
         config              => $config,
         enable_geoip        => $enable_geoip,
-        hiera_config        => $hiera_config,
+        hiera_config        => $profile::puppetmaster::common::hiera_config,
         use_r10k            => $use_r10k,
         r10k_sources        => $r10k_sources,
         upload_facts        => $upload_facts,
-    }
-
-    # Don't attempt to use puppet-master service, we're using passenger.
-    service { 'puppet-master':
-        ensure  => stopped,
-        enable  => false,
-        require => Package['puppet'],
     }
 
     # Update git checkout

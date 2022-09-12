@@ -20,11 +20,15 @@ class profile::puppetmaster::common (
     Boolean                     $netbox_hiera_enable = lookup('profile::puppetmaster::common::netbox_hiera_enable'),
     Array[Puppetmaster::Report] $reports             = lookup('profile::puppetmaster::common::reports'),
     Boolean                     $enable_merge_cli    = lookup('profile::puppetmaster::common::enable_merge_cli'),
+    Boolean                     $disable_env_config  = lookup('profile::puppetmaster::common::disable_env_config'),
     String[1]                   $hiera_config        = lookup('profile::puppetmaster::common::hiera_config'),
 ) {
-    $env_config = {
-        'environmentpath'  => '$confdir/environments',
-        'default_manifest' => '$confdir/manifests',
+    $env_config = $disable_env_config ? {
+        true    => {},
+        default => {
+            'environmentpath'  => '$confdir/environments',
+            'default_manifest' => '$confdir/manifests',
+        }
     }
 
     $activerecord_config =   {

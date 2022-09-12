@@ -253,11 +253,13 @@ profile::puppetmaster::frontend::monitor_signed_certs: false
 profile::puppetmaster::frontend::signed_certs_warning: 2419200 # 4 weeks
 profile::puppetmaster::frontend::signed_certs_critical: 604800 # 1 weeks
 profile::puppetmaster::frontend::mcrouter_ca_secret: ~
+profile::puppetmaster::common::storeconfigs: 'none'
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::ssl_verify_depth: 1
 profile::puppetmaster::common::netbox_hiera_enable: true
 profile::puppetmaster::common::enable_merge_cli: false
+profile::puppetmaster::common::disable_env_config: false
 profile::puppetmaster::common::reports:
   - puppetdb
 
