@@ -39,6 +39,12 @@ profile::gitlab::runner::allowed_services:
   gitlab-replica-https: # for failover between instances without restarting ferm on runners
     host: 'gitlab-replica.wikimedia.org'
     port: 443
+  docker-registry-wikimedia-https:
+    host: 'docker-registry.wikimedia.org'
+    port: 443
+  docker-registry-wikimedia-internal-https:
+    host: 'docker-registry.discovery.wmnet'
+    port: 443
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/buildkitd:0.10.3
 profile::gitlab::runner::clear_interval:
