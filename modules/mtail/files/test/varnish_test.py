@@ -94,7 +94,7 @@ class VarnishProcessingSecondsTest(unittest.TestCase):
         s = dict(self.store.get_samples('varnish_processing_seconds'))
         expected_process = {
            '+Inf': 0,
-           '0.0001': 4,
+           '0.0001': 5,
            '0.0005': 6,
            '0.001': 0,
            '0.005': 0,
@@ -118,7 +118,7 @@ class VarnishErrorsTest(unittest.TestCase):
         s = dict(self.store.get_samples('varnish_errors'))
         expected = {
             'type=Error': 1,
-            'type=FetchError': 1,
+            'type=FetchError': 2,
         }
         self.assertEqual(expected, s)
 
@@ -131,10 +131,10 @@ class VarnishSLITest(unittest.TestCase):
 
     def testSLI(self):
         sli_all = self.store.get_samples('varnish_sli_all')
-        self.assertIn(('', 11), sli_all)
+        self.assertIn(('', 12), sli_all)
 
-        # Two lines are not good: one has a fetcherror (Resource temporarily
-        # unavailable), another has "trestart 0.099903", which makes the
+        # Two lines are not good: one has a fetcherror (Timeout reusing
+        # backend), another has "trestart 0.099903", which makes the
         # timestamps sum go above threshold (0.100001 > 0.1).
         sli_good = self.store.get_samples('varnish_sli_good')
-        self.assertIn(('', 8), sli_good)
+        self.assertIn(('', 9), sli_good)

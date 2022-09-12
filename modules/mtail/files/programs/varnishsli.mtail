@@ -39,8 +39,10 @@ hidden gauge internal_time
     internal_time += $1
 }
 
-# Neither error nor fetcherror should be set, and the total time has to be
-# within the chosen threshold (0.1s).
-/^error -\tfetcherror -\t/ && internal_time < 0.1 {
-    varnish_sli_good++
+# Error shouldn't be set and FetchError can be set if the error message points out to a communication issue,
+# and the total time has to be within the chosen threshold (0.1s).
+/^error -\tfetcherror (?P<fetcherror>-|[ \.a-zA-Z\(\)0-9:]+)\t/ && internal_time < 0.1 {
+    $fetcherror =~ /-|req\.body read error/ {
+        varnish_sli_good++
+    }
 }
