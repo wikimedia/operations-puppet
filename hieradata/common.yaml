@@ -1073,6 +1073,14 @@ hadoop_clusters:
       an-worker1116.eqiad.wmnet:  /eqiad/D/7
       analytics1069.eqiad.wmnet:  /eqiad/D/8
 
+      an-worker1142.eqiad.wmnet:  /eqiad/E/1
+      an-worker1143.eqiad.wmnet:  /eqiad/E/2
+      an-worker1144.eqiad.wmnet:  /eqiad/F/1
+      an-worker1145.eqiad.wmnet:  /eqiad/F/2
+      an-worker1146.eqiad.wmnet:  /eqiad/F/3
+      an-worker1147.eqiad.wmnet:  /eqiad/E/1
+      an-worker1148.eqiad.wmnet:  /eqiad/F/1
+
     core_site_extra_properties:
       # User used in the Yarn UI to check job logs/statuses/etc..
       hadoop.http.staticuser.user: 'yarn'
