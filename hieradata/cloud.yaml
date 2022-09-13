@@ -618,6 +618,9 @@ profile::ssh::client::gss_api_authentication: true
 profile::ssh::client::gss_api_delegate_credentials: false
 profile::ssh::client::send_env: ["LANG", "LC_*"]
 
+profile::spicerack::ganeti_rapi_timeout: 30
+profile::spicerack::peeringdb_temp_dir: /tmp/peeringdb-cache
+
 profile::cache::varnish::frontend::backends_in_etcd: true
 profile::cache::varnish::frontend::packages_component: main
 profile::cache::varnish::frontend::transient_gb: 0

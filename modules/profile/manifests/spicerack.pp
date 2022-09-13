@@ -1,40 +1,32 @@
-# == Class profile::spicerack
+# @summary Installs the spicerack library and cookbook entry point and their configuration.
 #
-# Installs the spicerack library and cookbook entry point and their configuration.
-#
-# === Parameters
-#
-# [*tcpircbot_host*]
-#   Hostname for the IRC bot.
-#
-# [*tcpircbot_port*]
-#   Port to use with the IRC bot.
-#
-# [*redis_shards*]
-#   A hash of Redis shards, with the top level key `sessions`, containing a hash
+# @param tcpircbot_host Hostname for the IRC bot.
+# @param tcpircbot_port Port to use with the IRC bot.
+# @param http_proxy a http_proxy to use for connections
+# @param netbox_api the url for the netbox api
+# @param redis_shards A hash of Redis shards, with the top level key `sessions`, containing a hash
 #   keyed by data center, and then by shard name, each shard having a host and port
 #   key.
-#
-# [*ganeti_user*]
-#   A Ganeti RAPI user name for Spicerack to use.
-#
-# [*ganeti_password*]
-#   The password for the above user.
-#
-
+# @param netbox_token_ro The readonly token for netbox
+# @param netbox_token_rw The read/write token for netbox
+# @param ganeti_user A Ganeti RAPI user name for Spicerack to use.
+# @param ganeti_password The password for the above user.
+# @param ganeti_timeout timeout parameter when talking to ganeti
+# @param peeringdb_temp_dir a temp directory to use for peeringdb cache
+# @param peeringdb_token_ro The perringdb readonly  token
 class profile::spicerack(
-    String $tcpircbot_host = lookup('tcpircbot_host'),
-    Stdlib::Port $tcpircbot_port = lookup('tcpircbot_port'),
-    Hash $redis_shards = lookup('redis::shards'),
-    String $ganeti_user = lookup('profile::ganeti::rapi::ro_user'),
-    String $ganeti_password = lookup('profile::ganeti::rapi::ro_password'),
-    Integer $ganeti_timeout = lookup('profile::spicerack::ganeti_rapi_timeout', {'default_value' => 30}),
-    Stdlib::HTTPUrl $netbox_api = lookup('netbox_api_url'),
-    String $netbox_token_ro = lookup('profile::netbox::ro_token'),
-    String $netbox_token_rw = lookup('profile::netbox::rw_token'),
-    Stdlib::Unixpath $peeringdb_temp_dir = lookup('profile::spicerack::peeringdb_temp_dir', {'default_value' => '/tmp/peeringdb-cache'}),
-    String $peeringdb_token_ro = lookup('profile::spicerack::peeringdb_ro_token'),
-    String $http_proxy = lookup('http_proxy'),
+    String           $tcpircbot_host     = lookup('tcpircbot_host'),
+    Stdlib::Port     $tcpircbot_port     = lookup('tcpircbot_port'),
+    String           $http_proxy         = lookup('http_proxy'),
+    Stdlib::HTTPUrl  $netbox_api         = lookup('netbox_api_url'),
+    Hash             $redis_shards       = lookup('redis::shards'),
+    String           $netbox_token_ro    = lookup('profile::netbox::ro_token'),
+    String           $netbox_token_rw    = lookup('profile::netbox::rw_token'),
+    String           $ganeti_user        = lookup('profile::ganeti::rapi::ro_user'),
+    String           $ganeti_password    = lookup('profile::ganeti::rapi::ro_password'),
+    Integer          $ganeti_timeout     = lookup('profile::spicerack::ganeti_rapi_timeout'),
+    Stdlib::Unixpath $peeringdb_temp_dir = lookup('profile::spicerack::peeringdb_temp_dir'),
+    String           $peeringdb_token_ro = lookup('profile::spicerack::peeringdb_ro_token'),
 ) {
     # Ensure pre-requisite profiles are included
     require profile::conftool::client
@@ -42,7 +34,7 @@ class profile::spicerack(
     require profile::ipmi::mgmt
     require profile::access_new_install
 
-    include service::deploy::common
+    class { 'service::deploy::common': }
     include passwords::redis
 
     # Packages required by spicerack cookbooks
@@ -67,7 +59,7 @@ class profile::spicerack(
     }
 
     file { '/etc/spicerack/config.yaml':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
@@ -114,7 +106,7 @@ class profile::spicerack(
         'logging' => {
             'eqiad' => kafka_config('logging', 'eqiad'),
             'codfw' => kafka_config('logging', 'codfw'),
-        }
+        },
     }
 
     # Elasticsearch cluster configuration
@@ -138,12 +130,12 @@ class profile::spicerack(
           'cloudelastic-chi-https' => 'https://cloudelastic.wikimedia.org:9243',
           'cloudelastic-omega-https' => 'https://cloudelastic.wikimedia.org:9443',
           'cloudelastic-psi-https' => 'https://cloudelastic.wikimedia.org:9643',
-        }
+        },
       },
       'logging' => {
           'logging-eqiad' => 'http://logstash1010.eqiad.wmnet:9200',
           'logging-codfw' => 'http://logstash2001.codfw.wmnet:9200',
-      }
+      },
     }
 
     # Install all configuration files
@@ -165,7 +157,7 @@ class profile::spicerack(
         }
         $file_data.each | $filename, $content | {
             file { "/etc/spicerack/${dir}/${filename}":
-                ensure  => present,
+                ensure  => file,
                 owner   => 'root',
                 group   => 'ops',
                 mode    => '0440',
@@ -183,7 +175,7 @@ class profile::spicerack(
         mode   => '0550',
     }
     file { '/etc/spicerack/cookbooks/sre.network.cf.yaml':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
@@ -198,10 +190,10 @@ class profile::spicerack(
     }
 
     file { '/etc/spicerack/cookbooks/sre.switchdc.services.yaml':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
-        content => template('profile/spicerack/sre.switchdc.services.yaml.erb')
+        content => template('profile/spicerack/sre.switchdc.services.yaml.erb'),
     }
 }
