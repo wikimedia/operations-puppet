@@ -25,32 +25,6 @@ schemes:
 
 hosts:
   prod:
-    - ms-be2028:
-        - drain
-        - sdg1: immediate
-    - ms-be2029:
-        - drain
-    - ms-be2030:
-        - drain
-    - ms-be2031:
-        - drain
-    - ms-be2032:
-        - drain
-    - ms-be2033:
-        - drain
-    - ms-be2034:
-        - drain
-    - ms-be2035:
-        - drain
-    - ms-be2036:
-        - drain
-    - ms-be2037:
-        - drain
-        - sdg1: immediate
-    - ms-be2038:
-        - drain
-    - ms-be2039:
-        - drain
     - ms-be2040
     - ms-be2041
     - ms-be2042
