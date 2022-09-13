@@ -159,7 +159,7 @@ class phabricator (
     $sudo_scap_defaults = "Defaults:${deploy_user} env_keep+=\"${sudo_env_keep}\""
 
     file { '/etc/sudoers.d/scap_sudo_defaults':
-        ensure  => file,
+        ensure  => absent,
         mode    => '0440',
         owner   => 'root',
         group   => 'root',
