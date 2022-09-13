@@ -12,6 +12,7 @@ class role::gerrit {
     include ::passwords::gerrit
     # lint:endignore
     include ::profile::gerrit
+    include ::profile::gerrit::proxy
     include ::profile::gerrit::migration
     include ::profile::prometheus::apache_exporter
     include ::profile::java

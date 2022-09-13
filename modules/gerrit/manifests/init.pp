@@ -34,15 +34,5 @@ class gerrit(
         java_home         => $java_home,
     }
 
-    class { 'gerrit::proxy':
-        host              => $host,
-        ipv4              => $ipv4,
-        ipv6              => $ipv6,
-        replica_hosts     => $replica_hosts,
-        replica           => $replica,
-        use_acmechief     => $use_acmechief,
-        enable_monitoring => $enable_monitoring,
-    }
-
     class { 'gerrit::jobs': }
 }

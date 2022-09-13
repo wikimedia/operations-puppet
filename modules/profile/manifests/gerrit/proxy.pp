@@ -1,17 +1,16 @@
 # sets up a TLS proxy for Gerrit
-class gerrit::proxy(
-    Stdlib::IP::Address::V4 $ipv4,
-    Stdlib::Fqdn $host                           = $::gerrit::host,
-    Boolean $replica                             = false,
-    Boolean $maint_mode                          = false,
-    Boolean $use_acmechief                       = false,
-    Optional[Array[Stdlib::Fqdn]] $replica_hosts = $::gerrit::replica_hosts,
-    Boolean $enable_monitoring                   = true,
-    Optional[Stdlib::IP::Address::V6] $ipv6      = undef,
+class profile::gerrit::proxy(
+    Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
+    Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
+    Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
+    Boolean                           $is_replica        = lookup('profile::gerrit::is_replica'),
+    Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
+    Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
+    Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
+    Boolean                           $maint_mode        = lookup('profile::gerrit::maint_mode', {'default_value' => false}),
 ) {
 
-    require gerrit::jetty
-    if $replica {
+    if $is_replica {
         $tls_host = $replica_hosts[0]
     } else {
         $tls_host = $host
@@ -27,24 +26,21 @@ class gerrit::proxy(
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
-    # lint:ignore:wmf_styleguide
-    # TODO: this whole class should be a profile
     class { 'httpd':
         remove_default_ports => true,
         modules              => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
 
     }
-    # lint:endignore
 
     httpd::site { $tls_host:
-        content => template('gerrit/apache.erb'),
+        content => template('profile/gerrit/apache.erb'),
     }
 
     # Let apache only listen on the service IP
     httpd::conf{ 'gerrit_listen_service_ip':
         ensure   => present,
         priority => 0,
-        content  => template('gerrit/apache.ports.conf.erb')
+        content  => template('profile/gerrit/apache.ports.conf.erb')
     }
 
     $robots = ['User-Agent: *', 'Disallow: /g', 'Disallow: /r/plugins/gitiles', 'Crawl-delay: 1']
