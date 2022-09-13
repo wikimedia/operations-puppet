@@ -99,16 +99,8 @@ class profile::wikidough (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
-    file { '/usr/lib/nagios/plugins/service_restart_check':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'service_restart_check':
         source => 'puppet:///modules/profile/wikidough/servicerestartcheck.py',
-    }
-
-    sudo::user { 'nagios_service_restart_check':
-        ensure => absent,
     }
 
     $service_to_check = {
