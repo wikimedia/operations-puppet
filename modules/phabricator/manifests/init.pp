@@ -154,16 +154,17 @@ class phabricator (
         'SCAP_REV_PATH',
         'SCAP_CURRENT_REV_DIR',
         'SCAP_DONE_REV_DIR',
-    ].join(',')
+    ].join(' ')
 
-    $sudo_scap_defaults = "Defaults:${deploy_user} env_keep+=\"${sudo_env_keep}\""
+    $sudo_scap_defaults = "Defaults:${deploy_user} env_keep+=\"${sudo_env_keep}\"\n"
 
     file { '/etc/sudoers.d/scap_sudo_defaults':
-        ensure  => absent,
-        mode    => '0440',
-        owner   => 'root',
-        group   => 'root',
-        content => $sudo_scap_defaults,
+        ensure       => file,
+        mode         => '0440',
+        owner        => 'root',
+        group        => 'root',
+        content      => $sudo_scap_defaults,
+        validate_cmd => '/usr/sbin/visudo -cqf %',
     }
 
     $sudo_rules = [
