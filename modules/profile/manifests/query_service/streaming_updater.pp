@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::query_service::streaming_updater (
     String $username = lookup('profile::query_service::username'),
     String $kafka_cluster = lookup('profile::query_service::streaming_updater::kafka_cluster'),

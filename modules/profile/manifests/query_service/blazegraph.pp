@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define profile::query_service::blazegraph (
     String $username,
     Stdlib::Unixpath $package_dir,

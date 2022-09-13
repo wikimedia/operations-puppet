@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::query_service::categories
 #
 # This class defines a meta-class that pulls in all the query_service profiles

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Monitor exteral blazegraph settings for the wikidata.org dataset
 class profile::query_service::monitor::wikidata {
     nrpe::monitor_service { 'Query_Service_Internal_HTTP_endpoint':

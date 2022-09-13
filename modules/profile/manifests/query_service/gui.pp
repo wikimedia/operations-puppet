@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::query_service::gui (
     String $username = lookup('profile::query_service::username'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),

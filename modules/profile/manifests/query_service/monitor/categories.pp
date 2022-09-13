@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Monitor external blazegraph (categories) settings
 class profile::query_service::monitor::categories {
     ensure_packages('python3-requests')

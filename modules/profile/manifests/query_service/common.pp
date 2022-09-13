@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::query_service::common(
     String $username = lookup('profile::query_service::username'),
     Query_service::DeployMode $deploy_mode = lookup('profile::query_service::deploy_mode'),
