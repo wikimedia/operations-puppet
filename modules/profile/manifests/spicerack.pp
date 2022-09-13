@@ -14,6 +14,7 @@
 # @param ganeti_timeout timeout parameter when talking to ganeti
 # @param peeringdb_temp_dir a temp directory to use for peeringdb cache
 # @param peeringdb_token_ro The perringdb readonly  token
+# @param firmware_store_dir The location to store firmware images
 class profile::spicerack(
     String           $tcpircbot_host     = lookup('tcpircbot_host'),
     Stdlib::Port     $tcpircbot_port     = lookup('tcpircbot_port'),
@@ -27,6 +28,7 @@ class profile::spicerack(
     Integer          $ganeti_timeout     = lookup('profile::spicerack::ganeti_rapi_timeout'),
     Stdlib::Unixpath $peeringdb_temp_dir = lookup('profile::spicerack::peeringdb_temp_dir'),
     String           $peeringdb_token_ro = lookup('profile::spicerack::peeringdb_ro_token'),
+    Stdlib::Unixpath $firmware_store_dir = lookup('profile::spicerack::firmware_store_dir'),
 ) {
     # Ensure pre-requisite profiles are included
     require profile::conftool::client
@@ -174,6 +176,16 @@ class profile::spicerack(
         group  => 'ops',
         mode   => '0550',
     }
+
+    wmflib::dir::mkdir_p($firmware_store_dir)
+    file { '/etc/spicerack/cookbooks/sre.hardware.upgrade-firmware.yaml':
+        ensure  => file,
+        content => {
+            'firmware_store' => $firmware_store_dir,
+        }.to_yaml,
+    }
+
+
     file { '/etc/spicerack/cookbooks/sre.network.cf.yaml':
         ensure  => file,
         owner   => 'root',

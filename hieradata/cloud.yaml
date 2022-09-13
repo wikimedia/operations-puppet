@@ -620,6 +620,7 @@ profile::ssh::client::send_env: ["LANG", "LC_*"]
 
 profile::spicerack::ganeti_rapi_timeout: 30
 profile::spicerack::peeringdb_temp_dir: /tmp/peeringdb-cache
+profile::spicerack::firmware_store_dir: /srv/firmware
 
 profile::cache::varnish::frontend::backends_in_etcd: true
 profile::cache::varnish::frontend::packages_component: main

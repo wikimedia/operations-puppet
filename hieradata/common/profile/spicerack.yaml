@@ -1,2 +1,3 @@
 profile::spicerack::ganeti_rapi_timeout: 30
 profile::spicerack::peeringdb_temp_dir: /tmp/peeringdb-cache
+profile::spicerack::firmware_store_dir: /srv/firmware
