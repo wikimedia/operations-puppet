@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::docker::firewall
 #
 # This is a simple profile class to allow setting up the proper ferm rules for

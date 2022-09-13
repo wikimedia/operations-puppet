@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary This profile installs docker-report, and runs the report with the required frequency.
 # @param proxy the http procy to use if any
 # @param generate_reports if we should generate reports

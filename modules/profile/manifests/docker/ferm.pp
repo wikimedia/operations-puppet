@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # ferm firewall rules for docker
 class profile::docker::ferm {
 

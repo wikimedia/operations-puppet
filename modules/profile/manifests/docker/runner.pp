@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class profile::docker::runner
 #
 # Allows to run multiple applications via docker containers.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Purge images on a weekly basis and dangling images daily
 # to avoid filling up the disk
 class profile::docker::prune(

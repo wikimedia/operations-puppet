@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary create systemtd timer to generate docker reports
 # @param ensure ensurable parameter
 # @param frequency either daily or weekly to indicate how often the timer should run

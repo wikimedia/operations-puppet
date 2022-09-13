@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::docker::builder
 #
 # This class sets up a docker builder server, where our base images can be built
