@@ -27,6 +27,7 @@ import argparse
 import collections
 import datetime
 import fileinput
+import hashlib
 import logging
 import operator
 import re
@@ -59,6 +60,35 @@ class ToolViews(object):
         "VALUES (%s, %s, %s) "
         "ON DUPLICATE KEY UPDATE hits=hits + VALUES(hits)"
     )
+
+    INSERT_IP_SQL = (
+        "INSERT IGNORE INTO daily_ip_views (tool, request_day, ip_hash) "
+        "VALUES (%s, %s, %s) "
+    )
+
+    SELECT_PREVIOUS_DATES = (
+        "SELECT DISTINCT(request_day) FROM daily_ip_views "
+        "WHERE request_day < CURDATE()"
+    )
+
+    SELECT_TOOLS_BY_DATE = (
+        "SELECT DISTINCT(tool) from daily_ip_views WHERE request_day = %s"
+    )
+
+    SELECT_COUNT_DISTINCT_IPS = (
+        "SELECT COUNT(DISTINCT(ip_hash)) "
+        "FROM daily_ip_views "
+        "WHERE request_day = %s "
+        "AND tool = %s"
+    )
+
+    UPDATE_DAILY_UNIQUE_VIEWS = (
+        "UPDATE daily_raw_views set uniqueiphits=%s "
+        "WHERE request_day = %s "
+        "AND TOOL = %s"
+    )
+
+    DELETE_DAILY_IPS = "DELETE FROM daily_ip_views WHERE request_day = %s "
 
     def __init__(self, config, dry_run):
         self.config = config
@@ -142,7 +172,8 @@ class ToolViews(object):
 
     def run(self, files):
         # Count rows per tool per day
-        stats = collections.defaultdict(lambda: collections.defaultdict(int))
+        stats = collections.defaultdict(lambda: collections.defaultdict(list))
+        salt = self.config["ip_hash_salt"].encode()
         for r in ToolViews.parse_log(fileinput.input(files=files), self.RE_LINE):
             if 200 <= r["status"] < 300:
                 # Status codes of 200 to 299 are 'success' codes.
@@ -161,14 +192,26 @@ class ToolViews(object):
                         logger.info('Unknown tool "%s"', tool)
                     # fourohfour is the default route handler
                     tool = "fourohfour"
-                stats[tool][r["datetime"]] += 1
+                stats[tool][r["datetime"]].append(r["ipaddr"])
 
         rows = []
+        urows = []
         for tool, days in stats.items():
             if self.dry_run:
-                print("{}: {}".format(tool, sum(days.values())))
+                count = 0
+                for day in days:
+                    count += len(days[day])
+                print("{}: {}".format(tool, count))
             for day, hits in days.items():
-                rows.append((tool, day, hits))
+                rows.append((tool, day, len(hits)))
+                # The set() magic here ensures only one entry per ip
+                for ip in set(hits):
+                    # Out of an excess of caution, hash ip address before storing.
+                    # We only care about uniqueness, not the IP itself. Best practice
+                    #  is 100,000 iterations but we need this to finish before the
+                    #  next log rotation!
+                    hashed_ip = hashlib.pbkdf2_hmac("sha256", ip.encode(), salt, 100)
+                    urows.append((tool, day, hashed_ip))
 
         if not self.dry_run:
             dbh = pymysql.connect(
@@ -191,6 +234,42 @@ class ToolViews(object):
                         except pymysql.MySQLError:
                             logger.exeception("Failed to insert rows")
                             dbh.rollback()
+                    for chunk in ToolViews.split_list(urows, 500):
+                        try:
+                            cursor.executemany(self.INSERT_IP_SQL, chunk)
+                            dbh.commit()
+                        except pymysql.MySQLError:
+                            logger.exeception("Failed to insert rows")
+                            dbh.rollback()
+
+                    # Now count up unique hits for previous days and then clean up old records
+                    #  in daily_ip_views.
+
+                    # Most runs this will return 0 records; once per day
+                    #  it should return one record.
+                    cursor.execute(self.SELECT_PREVIOUS_DATES)
+                    olddays = cursor.fetchall()
+                    for oldday in olddays:
+                        print("oldday: %s" % oldday)
+                        cursor.execute(
+                            self.SELECT_TOOLS_BY_DATE, (oldday["request_day"],)
+                        )
+                        tools = cursor.fetchall()
+                        for tool in tools:
+                            cursor.execute(
+                                self.SELECT_COUNT_DISTINCT_IPS,
+                                (oldday["request_day"], tool["tool"]),
+                            )
+                            uniquehits = cursor.fetchone()["COUNT(DISTINCT(ip_hash))"]
+                            cursor.execute(
+                                self.UPDATE_DAILY_UNIQUE_VIEWS,
+                                (uniquehits, oldday["request_day"], tool["tool"]),
+                            )
+                            dbh.commit()
+
+                        cursor.execute(self.DELETE_DAILY_IPS, (oldday["request_day"],))
+                        dbh.commit()
+
             finally:
                 dbh.close()
 

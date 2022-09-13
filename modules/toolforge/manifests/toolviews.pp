@@ -6,6 +6,7 @@ class toolforge::toolviews (
     String $mysql_db,
     String $mysql_user,
     String $mysql_password,
+    String $hash_salt,
 ) {
     ensure_packages([
         'python3-ldap3',
