@@ -17,18 +17,18 @@
 {namespace etc.its.templates}
 
 /**
- * The .PatchSetMerged template determines the comment left on the
- * Phabricator task when a related Change gets merged
+ * The .PatchSetRestored template determines the comment left on the
+ * Phabricator task when a related Change gets restored
  */
-{template .PatchSetMerged kind="text"}
+{template .PatchSetRestored kind="text"}
   {@param changeNumber: string}
   {@param project: string}
   {@param branch: string}
-  {@param submitterName: string}
+  {@param restorerName: string}
   {@param subject: string}
 
-  Change {$changeNumber} **merged** by {$submitterName}:{\n}
+  Change {$changeNumber} **restored** by {$restorerName}:{\n}
   %%%[{$project}@{$branch}] {$subject}%%%{\n}
 
-  https://<%= @host %>/r/{$changeNumber}
+  https://gerrit.wikimedia.org/r/{$changeNumber}
 {/template}

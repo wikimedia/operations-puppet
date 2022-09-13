@@ -17,21 +17,18 @@
 {namespace etc.its.templates}
 
 /**
- * The .PatchSetCreated template determines the comment left on the
- * Phabricator task if a related patch set got created.
+ * The .PatchSetMerged template determines the comment left on the
+ * Phabricator task when a related Change gets merged
  */
-{template .PatchSetCreated kind="text"}
+{template .PatchSetMerged kind="text"}
   {@param changeNumber: string}
   {@param project: string}
   {@param branch: string}
-  {@param authorName: string}
-  {@param authorUsername: string}
-  {@param uploaderName: string}
-  {@param uploaderUsername: string}
+  {@param submitterName: string}
   {@param subject: string}
 
-  Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; author: {$authorName ? $authorName : $authorUsername}):{\n}
+  Change {$changeNumber} **merged** by {$submitterName}:{\n}
   %%%[{$project}@{$branch}] {$subject}%%%{\n}
 
-  https://<%= @host %>/r/{$changeNumber}
+  https://gerrit.wikimedia.org/r/{$changeNumber}
 {/template}

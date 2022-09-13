@@ -170,32 +170,15 @@ class gerrit(
             content => template('gerrit/lfs.config.erb');
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetAbandoned.soy':
-        content => template('gerrit/its/PatchSetAbandoned.soy.erb'),
+    file { '/var/lib/gerrit2/review_site/etc/its/templates':
+        ensure  => directory,
+        source  => 'puppet:///modules/gerrit/its/',
+        recurse => true,
+        purge   => true,
         owner   => $scap_user,
         group   => $scap_user,
         mode    => '0444',
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetRestored.soy':
-        content => template('gerrit/its/PatchSetRestored.soy.erb'),
-        owner   => $scap_user,
-        group   => $scap_user,
-        mode    => '0444',
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreated.soy':
-        content => template('gerrit/its/PatchSetCreated.soy.erb'),
-        owner   => $scap_user,
-        group   => $scap_user,
-        mode    => '0444',
-    }
-
-    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetMerged.soy':
-        content => template('gerrit/its/PatchSetMerged.soy.erb'),
-        owner   => $scap_user,
-        group   => $scap_user,
-        mode    => '0444',
+        require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
