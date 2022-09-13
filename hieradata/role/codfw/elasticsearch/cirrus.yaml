@@ -219,9 +219,3 @@ profile::elasticsearch::instances:
 
 profile::elasticsearch::dc_settings:
     minimum_master_nodes: 2
-# These temporarily live here for T316719
-# After we're ready to start eqiad we can just change
-# hieradata/role/common/elasticsearch/cirrus.yaml
-# and delete this
-profile::elasticsearch::version: '7.10'
-profile::elasticsearch::config_version: '7'
