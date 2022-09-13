@@ -327,6 +327,18 @@ class _WMFRewriteContext(WSGIContext):
                 obj = match.group('path')  # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
                 shard = ''
 
+        # phonos renderings
+        if match is None:
+            # /phonos/0/h/0hp7eif2wwbuhif94n42bzm95o71z9i.mp3
+            match = re.match(r'^/(?P<repo>phonos)/(?P<path>.+)$', req.path)
+            if match:
+                proj = 'global'
+                lang = 'data'
+                repo = match.group('repo')  # phonos
+                zone = 'render'
+                obj = match.group('path')  # 0/h/0hp7eif2wwbuhif94n42bzm95o71z9i.mp3
+                shard = ''
+
         if match is None:
             match = re.match(r'^/monitoring/(?P<what>.+)$', req.path)
             if match:
