@@ -156,16 +156,22 @@ class phabricator (
         'SCAP_DONE_REV_DIR',
     ].join(',')
 
-    $sudo_user_defaults = "Defaults:${deploy_user} env_keep+=${sudo_env_keep}"
+    $sudo_scap_defaults = "Defaults:${deploy_user} env_keep+=${sudo_env_keep}"
 
-    $sudo_commands = [
+    file { '/etc/sudoers.d/scap_sudo_defaults':
+        ensure => file,
+        mode   => '0440',
+        owner  => 'root',
+        group  => 'root',
+        source => $sudo_scap_defaults,
+    }
+
+    $sudo_rules = [
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
         ]
-
-    $sudo_rules = [$sudo_user_defaults] + $sudo_commands
 
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
