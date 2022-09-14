@@ -30,6 +30,8 @@ class dumps::web::xmldumps(
     }
     include dumps::web::nginx_logrot
 
+    profile::auto_restarts::service { 'nginx': }
+
     file { "${xmldumpsdir}/favicon.ico":
         source => 'puppet:///modules/dumps/web/xmldumps/favicon.ico',
         owner  => 'root',
