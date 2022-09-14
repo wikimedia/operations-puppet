@@ -3,7 +3,7 @@
 # Sets up a uwsgi based web server for Wikilabels running python3
 #
 class wikilabels::web (
-    $branch = 'deploy',
+    $branch = 'master',
 ) {
 
     $venv_path = '/srv/wikilabels/venv'
