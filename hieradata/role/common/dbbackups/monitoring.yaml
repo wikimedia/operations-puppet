@@ -100,7 +100,7 @@ profile::dbbackups::check::backups:
     dump:
     - eqiad
 profile::dbbackups::check::freshness:
-  dump: 691200
+  dump: 777600
   snapshot: 259200
 # db_host is handed on each dc separatelly
 profile::dbbackups::check::db_user: backupcheck
