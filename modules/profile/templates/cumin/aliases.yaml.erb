@@ -28,7 +28,7 @@ apt: P{O:apt_repo}
 aqs: P{O:aqs_next}
 aqs-canary: P{aqs1010.eqiad.wmnet}
 archiva: P{O:archiva}
-backup: P{A:bacula or A:db-backups or A:mediabackups or O:dbbackups::monitoring}
+backup: A:bacula or A:db-backups or A:mediabackups or P{O:dbbackups::monitoring}
 bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::production}
 bastion: P{O:bastionhost}
 bastion-canary: P{bast4003.wikimedia.org}
