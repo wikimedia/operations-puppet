@@ -77,4 +77,6 @@ class archiva::proxy(
     nginx::site { 'archiva':
         content => template('archiva/proxy.nginx.erb'),
     }
+
+    profile::auto_restarts::service { 'nginx': }
 }
