@@ -803,6 +803,7 @@ sub vcl_purge {
 
 sub vcl_hit {
 	set req.http.X-CDIS = "hit";
+	call cluster_fe_hit;
 	// default vcl_hit invokes here!
 }
 

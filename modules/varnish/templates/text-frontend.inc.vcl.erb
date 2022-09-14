@@ -465,6 +465,11 @@ sub cluster_fe_ratelimit {
 	<%- end -%>
 }
 
+sub cluster_fe_hit {
+	call cluster_fe_ratelimit_hit;
+}
+sub cluster_fe_ratelimit_hit {}
+
 sub cluster_fe_miss {
 	call cluster_fe_ratelimit;
 }
