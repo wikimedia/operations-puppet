@@ -1,8 +1,6 @@
 # sets up periodic jobs for Gerrit
 class gerrit::jobs {
 
-    require gerrit::jetty
-
     systemd::timer::job { 'clear_gerrit_logs':
         ensure      => 'present',
         user        => 'root',
