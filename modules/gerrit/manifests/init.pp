@@ -1,9 +1,14 @@
 # Manifest to setup a Gerrit instance
+#
+# @param daemon_user Unix user running the Gerrit daemon
+# @param scap_user Unix user for deployment
 class gerrit(
     Stdlib::Fqdn                      $host,
     Stdlib::IP::Address::V4           $ipv4,
     Stdlib::Unixpath                  $java_home,
     Hash                              $ldap_config,
+    String                            $daemon_user,
+    String                            $scap_user,
 
     String                            $config            = 'gerrit.config.erb',
     Boolean                           $enable_monitoring = true,
@@ -11,6 +16,7 @@ class gerrit(
     Integer                           $git_open_files    = 20000,
     Stdlib::HTTPSUrl                  $gitiles_url       = "https://${::gerrit::host}/g",
     Stdlib::Datasize                  $heap_limit        = '32g',
+    Boolean                           $manage_scap_user  = false,
     Array[Stdlib::Fqdn]               $replica_hosts     = [],
     Boolean                           $replica           = false,
     Hash[String, Hash]                $replication       = {},
@@ -19,7 +25,6 @@ class gerrit(
     Stdlib::HTTPSUrl                  $url               = "https://${::gerrit::host}/r",
 
     Optional[Stdlib::IP::Address::V6] $ipv6              = undef,
-    Optional[String]                  $scap_user         = undef,
     Optional[String]                  $scap_key_name     = undef,
 ) {
 
@@ -71,15 +76,22 @@ class gerrit(
         'python3-pip'
     ])
 
+    ssh::userkey { 'gerrit2-scap':
+        ensure  => present,
+        user    => $scap_user,
+        skey    => 'gerrit-scap',
+        content => secret('keyholder/gerrit.pub'),
+    }
+
     scap::target { 'gerrit/gerrit':
         deploy_user => $scap_user,
-        manage_user => false,
+        manage_user => $manage_scap_user,
         key_name    => $scap_key_name,
     }
 
     scap::target { 'gervert/deploy':
         deploy_user => $scap_user,
-        manage_user => false,
+        manage_user => $manage_scap_user,
         key_name    => $scap_key_name,
     }
 
@@ -91,8 +103,8 @@ class gerrit(
         '/srv/gerrit/plugins/lfs',
     ]:
         ensure => directory,
-        owner  => $scap_user,
-        group  => $scap_user,
+        owner  => $daemon_user,
+        group  => $daemon_user,
         mode   => '0775',
     }
 
@@ -100,8 +112,8 @@ class gerrit(
         ensure  => directory,
         recurse => 'remote',
         mode    => '0755',
-        owner   => $scap_user,
-        group   => $scap_user,
+        owner   => $daemon_user,
+        group   => $daemon_user,
         source  => 'puppet:///modules/gerrit/homedir',
     }
     # We no more use custom log4j config
@@ -109,53 +121,56 @@ class gerrit(
         ensure => absent,
     }
 
+    # Gerrit init installs a few bin helper
     file { '/var/lib/gerrit2/review_site/bin':
         ensure => directory,
-        owner  => $scap_user,
-        group  => $scap_user,
+        owner  => $daemon_user,
+        group  => $daemon_user,
         mode   => '0775',
     }
-
-    file { '/var/lib/gerrit2/review_site/tmp':
-        ensure => directory,
-        owner  => $scap_user,
-        group  => $scap_user,
-        mode   => '0700',
-    }
-
+    # Make sure we use our targetted version rather than the one copied on init
     file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
       require => Scap::Target['gerrit/gerrit'],
     }
 
+    file { '/var/lib/gerrit2/review_site/tmp':
+        ensure => directory,
+        owner  => $daemon_user,
+        group  => $daemon_user,
+        mode   => '0700',
+    }
+
     file { '/var/lib/gerrit2/.ssh/id_rsa':
-        owner     => $scap_user,
-        group     => $scap_user,
+        owner     => $daemon_user,
+        group     => $daemon_user,
         mode      => '0400',
         content   => secret('gerrit/id_rsa'),
         show_diff => false,
     }
 
-    ssh::userkey { 'gerrit2-scap':
-        ensure  => present,
-        user    => $scap_user,
-        skey    => 'gerrit-scap',
-        content => secret('keyholder/gerrit.pub'),
-    }
-
+    # Created by gerrit init. If we ever use it, it should be a symlink to
+    # /srv/deployment/gerrit/gerrit/lib and be owned by root.
     file { '/var/lib/gerrit2/review_site/lib':
         ensure => directory,
-        owner  => $scap_user,
-        group  => $scap_user,
+        owner  => $daemon_user,
+        group  => $daemon_user,
         mode   => '0555',
     }
 
     # The various configuration files
+    #
+    # Those are fully managed by Puppet but the Gerrit daemon might try to
+    # amend them on boot (notably gerrit.config). Any change happening this
+    # way should be reflected back to Puppet.
+    #
+    # TODO maybe mark them root owned to prevent Gerrit to write to them, but
+    # it might then refuse to start.
     file {
         default:
-            owner => $scap_user,
-            group => $scap_user,
+            owner => $daemon_user,
+            group => $daemon_user,
             mode  => '0444';
         '/var/lib/gerrit2/review_site/etc/gerrit.config':
             content => template("gerrit/${config}");
@@ -165,23 +180,44 @@ class gerrit(
             content => template('gerrit/lfs.config.erb');
     }
 
+    # For the replication plugin.
+    #
+    # TODO maybe mark it root owned to prevent Gerrit to write to it, but
+    # it might then refuse to start.
+    file { '/var/lib/gerrit2/review_site/etc/replication.config':
+        ensure  => stdlib::ensure(!$replica, 'file'),
+        content => template('gerrit/replication.config.erb'),
+        owner   => $daemon_user,
+        group   => $daemon_user,
+        mode    => '0444',
+    }
+
+    # Templates used for Phabricator notifications
+    #
+    # Those are static files and should ultimately be migrated to the Gerrit
+    # deploy repository, the directory would then become a symlink to
+    # /srv/deployment/gerrit/gerrit/etc/its/templates and owned by root.
     file { '/var/lib/gerrit2/review_site/etc/its/templates':
         ensure  => directory,
         source  => 'puppet:///modules/gerrit/its/',
         recurse => true,
         purge   => true,
-        owner   => $scap_user,
-        group   => $scap_user,
+        owner   => root,
+        group   => root,
         mode    => '0444',
     }
 
+    # Fully managed by Puppet
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
         content => template('gerrit/secure.config.erb'),
-        owner   => $scap_user,
-        group   => $scap_user,
+        owner   => $daemon_user,
+        group   => $daemon_user,
         mode    => '0440',
     }
 
+    # Used by the motd plugin which lets one send a message when ones sends a
+    # a review. We never used it and might consider dropping the plugin and
+    # ths this file as well.
     file { '/var/lib/gerrit2/review_site/etc/motd.config':
         ensure => 'link',
         target => '/srv/deployment/gerrit/gerrit/etc/motd.config',
@@ -191,33 +227,25 @@ class gerrit(
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
             ensure    => present,
             content   => secret("gerrit/${ssh_host_key}"),
-            owner     => $scap_user,
-            group     => $scap_user,
+            owner     => $daemon_user,
+            group     => $daemon_user,
             mode      => '0440',
             show_diff => false,
         }
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/replication.config':
-        ensure  => stdlib::ensure(!$replica, 'file'),
-        content => template('gerrit/replication.config.erb'),
-        owner   => $scap_user,
-        group   => $scap_user,
-        mode    => '0444',
-    }
-
     file { '/var/log/gerrit':
         ensure => directory,
-        owner  => $scap_user,
-        group  => $scap_user,
+        owner  => $daemon_user,
+        group  => $daemon_user,
         mode   => '0755',
     }
 
     file { '/var/lib/gerrit2/review_site/logs':
         ensure  => 'link',
         target  => '/var/log/gerrit',
-        owner   => $scap_user,
-        group   => $scap_user,
+        owner   => $daemon_user,
+        group   => $daemon_user,
         require => Scap::Target['gerrit/gerrit'],
     }
 
@@ -232,11 +260,7 @@ class gerrit(
         content => systemd_template('gerrit'),
     }
 
-    file { '/etc/gerrit':
-        ensure => link,
-        target => '/var/lib/gerrit2/review_site/etc',
-    }
-
+    # EnvironmentFile sourced by the systemd service
     file { '/etc/default/gerrit':
         content => template('gerrit/gerrit.default.erb'),
         owner   => 'root',
@@ -244,9 +268,16 @@ class gerrit(
         mode    => '0444',
     }
 
+    # Legacy default, probably no more used (2022-09-14)
     file { '/etc/default/gerritcodereview':
         ensure => 'link',
         target => '/etc/default/gerrit',
+    }
+
+    # Convenience link to $GERRIT_SITE/etc
+    file { '/etc/gerrit':
+        ensure => link,
+        target => '/var/lib/gerrit2/review_site/etc',
     }
 
     if $enable_monitoring {

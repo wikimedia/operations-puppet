@@ -28,7 +28,9 @@ profile::gerrit::backup_set: 'gerrit-repo-data'
 profile::gerrit::use_acmechief: true
 
 ## Deployment
+profile::gerrit::daemon_user: 'gerrit2'
 profile::gerrit::scap_user: 'gerrit2'
+profile::gerrit::manage_scap_user: false
 profile::gerrit::scap_key_name: 'gerrit'
 
 # List of gerrit servers used in firewall rules.

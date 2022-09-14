@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: Apache-2.0
+require_relative '../../../../rake_modules/spec_helper'
+describe 'profile::gerrit' do
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
+    context "on #{os}" do
+      let(:facts) { facts }
+      let(:params) {
+        {
+          ldap_config: {},
+          ipv4: '198.51.100.1',
+          ipv6: '2001:DB8::CAFE',
+          host: 'gerrit.example.org',
+          backups_enabled: true,
+          backup_set: 'gerrit-backup',
+          ssh_allowed_hosts: ['gerrit.example.org'],
+          config: 'gerrit.config.erb',
+          use_acmechief: true,
+          is_replica: false,
+          replica_hosts: ['gerrit-replica.example.org'],
+          daemon_user: 'gerrit2',
+          scap_user: 'gerrit2',
+          manage_scap_user: false,
+          scap_key_name: 'gerrit',
+          enable_monitoring: true,
+          replication: {},
+          ssh_host_key: 'ssh_host_key',
+          git_dir: '/srv/gerrit/git',
+          java_home: '/usr/lib/jvm/java-11-openjdk-amd64',
+        }
+      }
+      let(:pre_condition) {
+          """
+          service {'apache2': }
+          package {'wmf-certificates': }
+          """
+      }
+
+      it { is_expected.to compile.with_all_deps }
+    end
+  end
+end

@@ -155,7 +155,9 @@ profile::gerrit::java_version: 8
 
 ## Deployment
 scap::wmflabs_master: deploy-1004.devtools.eqiad1.wikimedia.cloud
+profile::gerrit::daemon_user: 'gerrit2'
 profile::gerrit::scap_user: 'gerrit2'
+profile::gerrit::manage_scap_user: false
 profile::gerrit::scap_key_name: 'gerrit'
 profile::ssh::server::authorized_keys_file:
   - '/etc/ssh/userkeys/%u'

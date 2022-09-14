@@ -15,6 +15,7 @@ describe 'gerrit' do
             'ro-server': 'ldapro.example.org',
             'base-dn':   'dc=example,dc=org',
           },
+          daemon_user:   'gerrit2',
           scap_user:     'gerrit-deployer',
           scap_key_name: 'gerrit-ssh-key',
         }
