@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'sync'
 gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '5.5.10'
 gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
-gem 'puppet-strings', '~> 1.0.0'
+gem 'puppet-strings', '~> 2.9.0'
 gem 'rspec-puppet', '~> 2.9.0'
 gem 'rspec-puppet-facts', '~> 2.0', require: false
 gem 'puppetlabs_spec_helper', '< 4.0.0'
