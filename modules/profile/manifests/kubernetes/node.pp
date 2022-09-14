@@ -98,7 +98,7 @@ class profile::kubernetes::node(
         username    => $kubeproxy_username,
         token       => $kubeproxy_token,
     }
-    class { '::k8s::proxy':
+    class { 'k8s::proxy':
         masquerade_all       => $masquerade_all,
         metrics_bind_address => $kubeproxy_metrics_bind_address,
         kubeconfig           => $kubeproxy_config,
