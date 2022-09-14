@@ -73,11 +73,12 @@ end
 namespace :global do
   desc "Build documentation"
   task :doc do
-    Rake::Task['strings:generate'].invoke(
-      '**/*.pp **/*.rb',  # patterns
-      'false', # debug
-      'false', # backtrace
-      'rdoc',  # markup format
+    Rake::Task['strings:generate'].execute({
+        patterns: '**/*.pp **/*.rb',
+        debug: false,
+        backtrace: false,
+        markup: 'rdoc',
+        }
     )
   end
 
