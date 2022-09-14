@@ -59,6 +59,8 @@ class profile::doc (
         source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf'
     }
 
+    profile::auto_restarts::service { "${php}-fpm": }
+
     ferm::service { 'doc-http':
         proto  => 'tcp',
         port   => '80',
