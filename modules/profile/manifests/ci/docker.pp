@@ -25,14 +25,12 @@ class profile::ci::docker(
 
     # TODO: Drop the entire version-specific pinning once buster is gone
     $docker_version = $::lsbdistcodename ? {
-        'stretch' => '5:19.03.5~3-0~debian-stretch',
         'buster'  => '5:20.10.12~3-0~debian-buster',
         # Docker version is ignored starting with Bullseye
         default   => 'present',
     }
 
     $docker_package = $::lsbdistcodename ? {
-        'stretch'  => 'docker-ce',
         'buster'   => 'docker-ce',
         'bullseye' => 'docker.io',
     }
