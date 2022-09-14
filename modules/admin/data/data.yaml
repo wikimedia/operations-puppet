@@ -5144,6 +5144,7 @@ users:
     gid: 500
     realname: Hannah Okwelum
     email: hokwelum@wikimedia.org
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBVyQpwHszMYsZmG1ydOvIigJhTwAI9CHhSrmShhLwsS hannah@Hannahs-MacBook-Pro.local
   mhay:
