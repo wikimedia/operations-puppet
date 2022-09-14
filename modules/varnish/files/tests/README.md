@@ -12,7 +12,7 @@ export JENKINS_API_TOKEN=<YOUR_JENKINS_API_TOKEN>
 ```
 * Run the docker script by passing your targeted cp host and a change ID.
 ```
-./docker_run.sh HOSTNAME CHANGE_ID
+./docker_run.sh HOST CHANGE_ID
 ```
 The above command will build a test image. If it does not already exist, then it starts a container in which the varnish tests will be run. When done running the tests successfully, a copy the test results is dumped into your local `tmp` folder for your review. Also printed on your screen is summary of the test results.
 
