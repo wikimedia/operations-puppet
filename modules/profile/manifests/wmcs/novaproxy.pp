@@ -123,6 +123,12 @@ class profile::wmcs::novaproxy(
         }
     }
 
+    # Disable the nchan module, we don't use pub/sub on nginx
+    file { '/etc/nginx/modules-enabled/50-mod-nchan.conf':
+        ensure => 'absent',
+        notify => Service['nginx'],
+    }
+
     class { 'prometheus::nginx_exporter': }
 }
 
