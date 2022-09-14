@@ -11,6 +11,7 @@ class profile::phabricator::monitoring (
         $phab_contact_groups = 'admins,phabricator'
 
         nrpe::monitor_service { 'check_phab_taskmaster':
+            ensure        => absent,
             description   => 'PHD should be supervising processes',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 3:150 -u phd',
             contact_group => $phab_contact_groups,
