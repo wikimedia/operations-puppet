@@ -74,7 +74,7 @@ end
 
 # Helper class for on_supported_os
 class WMFConfig
-  def self.test_on(min = 9, max = 11)
+  def self.test_on(min = 10, max = 11)
     {
       supported_os: [
         'operatingsystem' => 'Debian',
