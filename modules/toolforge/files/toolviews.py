@@ -30,14 +30,40 @@ import fileinput
 import hashlib
 import logging
 import operator
+from pathlib import Path
 import re
+import time
 
 import ldap3
 import pymysql
 import yaml
+from typing import Dict, Union
 
 
 logger = logging.getLogger("toolviews")
+
+PROMETHEUS_FILE = Path("/var/lib/prometheus/node.d/toolviews.prom")
+
+
+class StatHandler:
+    def __init__(self):
+        self.stats: Dict[str, Union[int, float]] = {}
+        self.metric_prefix = "cloudvps.toolviews"
+
+    def add_stat(self, stat_name: str, stat_value: Union[int, float]) -> None:
+        # For prometheus
+        metric_name = f"{self.metric_prefix}.{stat_name}"
+        self.stats[metric_name] = stat_value
+        logger.info("%s => %f %d", metric_name, stat_value, int(time.time()))
+
+    def flush_stats(self) -> None:
+        with PROMETHEUS_FILE.open("w", encoding="utf-8") as prom_fd:
+            for metric_name, stat_value in self.stats.items():
+                safe_metric_name = metric_name.replace(".", "_").replace("-", "_")
+                prom_fd.write(f"# TYPE {safe_metric_name} counter\n")
+                prom_fd.write(f"{safe_metric_name} {stat_value}\n")
+
+        self.stats = {}
 
 
 class ToolViews(object):
@@ -73,6 +99,10 @@ class ToolViews(object):
 
     SELECT_TOOLS_BY_DATE = (
         "SELECT DISTINCT(tool) from daily_ip_views WHERE request_day = %s"
+    )
+
+    SELECT_DAILY_PAGEVIEWS = (
+        "SELECT hits " "FROM daily_raw_views " "WHERE request_day = %s " "AND tool = %s"
     )
 
     SELECT_COUNT_DISTINCT_IPS = (
@@ -196,6 +226,8 @@ class ToolViews(object):
 
         rows = []
         urows = []
+        stat_handler = StatHandler()
+
         for tool, days in stats.items():
             if self.dry_run:
                 count = 0
@@ -250,20 +282,34 @@ class ToolViews(object):
                     cursor.execute(self.SELECT_PREVIOUS_DATES)
                     olddays = cursor.fetchall()
                     for oldday in olddays:
-                        print("oldday: %s" % oldday)
                         cursor.execute(
                             self.SELECT_TOOLS_BY_DATE, (oldday["request_day"],)
                         )
                         tools = cursor.fetchall()
                         for tool in tools:
+                            toolname = tool["tool"]
+                            # Collect the daily total views for prometheus
+                            cursor.execute(
+                                self.SELECT_DAILY_PAGEVIEWS,
+                                (oldday["request_day"], toolname),
+                            )
+                            dailyhits = cursor.fetchone()
+                            if dailyhits:
+                                stat_handler.add_stat(
+                                    f"{toolname}.daily_views", dailyhits["hits"]
+                                )
+
                             cursor.execute(
                                 self.SELECT_COUNT_DISTINCT_IPS,
-                                (oldday["request_day"], tool["tool"]),
+                                (oldday["request_day"], toolname),
                             )
                             uniquehits = cursor.fetchone()["COUNT(DISTINCT(ip_hash))"]
+                            stat_handler.add_stat(
+                                f"{toolname}.daily_unique_views", uniquehits
+                            )
                             cursor.execute(
                                 self.UPDATE_DAILY_UNIQUE_VIEWS,
-                                (uniquehits, oldday["request_day"], tool["tool"]),
+                                (uniquehits, oldday["request_day"], toolname),
                             )
                             dbh.commit()
 
@@ -272,6 +318,7 @@ class ToolViews(object):
 
             finally:
                 dbh.close()
+                stat_handler.flush_stats()
 
 
 def main():
