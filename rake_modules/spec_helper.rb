@@ -3,6 +3,7 @@ RSpec.configure do |c|
   c.mock_with :rspec
 end
 
+require_relative 'monkey_patch_early'
 require 'rspec-puppet'
 require 'puppetlabs_spec_helper/puppet_spec_helper'
 require 'rspec-puppet-facts'
