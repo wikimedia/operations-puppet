@@ -6293,3 +6293,7 @@ ldap_only_users:
     ensure: present
     realname: Peter Wangai
     email: pwangai@wikimedia.org
+  haak:
+    ensure: present
+    realname: Hasan Akgün
+    email: hasan.akguen@wikimedia.de
