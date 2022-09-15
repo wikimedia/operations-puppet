@@ -173,7 +173,6 @@ class gerrit(
         owner   => $scap_user,
         group   => $scap_user,
         mode    => '0444',
-        require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
@@ -207,19 +206,19 @@ class gerrit(
         mode    => '0444',
     }
 
-    file { '/var/lib/gerrit2/review_site/logs':
-        ensure  => 'link',
-        target  => '/var/log/gerrit',
-        owner   => $scap_user,
-        group   => $scap_user,
-        require => [Scap::Target['gerrit/gerrit'], File['/var/log/gerrit']],
-    }
-
     file { '/var/log/gerrit':
         ensure => directory,
         owner  => $scap_user,
         group  => $scap_user,
         mode   => '0755',
+    }
+
+    file { '/var/lib/gerrit2/review_site/logs':
+        ensure  => 'link',
+        target  => '/var/log/gerrit',
+        owner   => $scap_user,
+        group   => $scap_user,
+        require => Scap::Target['gerrit/gerrit'],
     }
 
     file { '/var/lib/gerrit2/review_site/plugins':
@@ -249,9 +248,8 @@ class gerrit(
     }
 
     file { '/etc/default/gerritcodereview':
-        ensure  => 'link',
-        target  => '/etc/default/gerrit',
-        require => File['/etc/default/gerrit'],
+        ensure => 'link',
+        target => '/etc/default/gerrit',
     }
 
     if $enable_monitoring {
