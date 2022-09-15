@@ -948,6 +948,11 @@ node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
+# Dispatch hosts
+node 'dispatch-be1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 node /^dns[123456]00[12]\.wikimedia\.org$/ {
     role(dnsbox)
 }
