@@ -11,6 +11,10 @@ ExecStartPre=-/usr/bin/docker rm -f buildkitd
 ExecStart=/usr/bin/docker run --name buildkitd \
     --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
     --network=<%= @network %> \
+    <%- if @enable_webproxy -%>
+    --env http_proxy=<%= @http_proxy %> \
+    --env https_proxy=<%= @https_proxy %> \
+    <%- end -%>
     <%= @image %> \
     --addr tcp://<%= @address %>:<%= @port %>
 ExecStop=/usr/bin/docker stop buildkitd

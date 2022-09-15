@@ -53,3 +53,4 @@ profile::gitlab::runner::clear_interval:
 profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true
 profile::base::unprivileged_userns_clone: true
+profile::gitlab::runner::enable_webproxy: true

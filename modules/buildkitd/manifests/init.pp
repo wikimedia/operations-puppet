@@ -6,6 +6,9 @@
 # @param address Bind to a specific address within the Docker network
 # @param port Port to listen on
 # @param image Ref to the buildkitd image to run
+# @param enable_webproxy Use proxy to access external resources
+# @param http_proxy webproxy address to use for http
+# @param https_proxy webproxy address to use for https
 #
 class buildkitd(
     Wmflib::Ensure      $ensure,
@@ -13,6 +16,9 @@ class buildkitd(
     Stdlib::IP::Address $address = '0.0.0.0',
     Stdlib::Port        $port = 1234,
     String              $image = 'docker-registry.wikimedia.org/buildkitd:latest',
+    Boolean             $enable_webproxy = false,
+    String              $http_proxy = 'http://webproxy:8080',
+    String              $https_proxy = 'http://webproxy:8080',
 ){
     group { 'buildkitd':
         ensure => $ensure,

@@ -132,6 +132,7 @@ profile::gitlab::runner::clear_interval:
   start: "OnCalendar"
   interval: "*-*-* 05:00:00"
 profile::gitlab::runner::enable_clear_cache: true
+profile::gitlab::runner::enable_webproxy: false
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 

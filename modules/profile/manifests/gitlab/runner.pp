@@ -23,6 +23,7 @@
 # @param buildkitd_image Ref to buildkitd container image.
 # @param clear_interval Interval for cleanup of docker cache/volumes from old jobs.
 # @param enable_clear_cache Enable automatic cleanup of cached/old docker volumes.
+# @param enable_webproxy Enable usage of webproxy for buildkit to access external resources
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -52,6 +53,7 @@ class profile::gitlab::runner (
     String                                      $buildkitd_image    = lookup('profile::gitlab::runner::buildkitd_image'),
     Systemd::Timer::Schedule                    $clear_interval     = lookup('profile::gitlab::runner::clear_interval'),
     Boolean                                     $enable_clear_cache = lookup('profile::gitlab::runner::enable_clear_cache'),
+    Boolean                                     $enable_webproxy    = lookup('profile::gitlab::runner::enable_webproxy'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -188,10 +190,11 @@ class profile::gitlab::runner (
     }
 
     class { 'buildkitd':
-        ensure  => $ensure_buildkitd,
-        network => $docker_network,
-        image   => $buildkitd_image,
-        require => Docker::Network[$docker_network],
+        ensure          => $ensure_buildkitd,
+        network         => $docker_network,
+        image           => $buildkitd_image,
+        enable_webproxy => $enable_webproxy,
+        require         => Docker::Network[$docker_network],
     }
 
     $ensure_clear_cache = $enable_clear_cache.bool2str('present','absent')
