@@ -76,7 +76,6 @@ class dynamicproxy (
         variant => 'extras',
     }
 
-    # For logrotate to work on both timing and size, it must run hourly
     logrotate::conf { 'nginx':
         ensure => present,
         source => 'puppet:///modules/dynamicproxy/logrotate',
