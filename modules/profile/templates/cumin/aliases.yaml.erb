@@ -221,7 +221,9 @@ ldap-rw: P{O:openldap::rw}
 ldap-main: A:ldap-rw
 ldap-all: A:ldap-corp or A:ldap-replicas or A:ldap-rw
 lists: P{O:lists}
-logstash: P{O:logging::opensearch::data or O:logging::opensearch::collector}
+logstash: A:logstash-data or A:logstash-collector
+logstash-data: P{O:logging::opensearch::data}
+logstash-collector: P{O:logging::opensearch::collector}
 logstash-canary: P{logstash1023.eqiad.wmnet}
 lvs: P{O:lvs::balancer}
 lvs-canary: P{lvs4007.ulsfo.wmnet}
