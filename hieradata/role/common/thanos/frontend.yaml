@@ -41,6 +41,7 @@ profile::tlsproxy::envoy::services:
      cert_name: 'thanos-query.discovery.wmnet'
 profile::tlsproxy::envoy::global_cert_name: 'thanos-fe-combined.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
+profile::tlsproxy::envoy::listen_ipv6: true
 
 profile::swift::stats_reporter_host: 'thanos-fe1001.eqiad.wmnet'
 
