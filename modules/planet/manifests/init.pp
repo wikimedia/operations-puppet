@@ -57,6 +57,8 @@ class planet (
         domain_name => $domain_name,
     }
 
+    profile::auto_restarts::service { 'apache2': }
+
     # creates one RSS/Atom feed config per language
     planet::config { $languages_keys:
         domain_name => $domain_name,
@@ -74,4 +76,3 @@ class planet (
     # creates RSS dir and plugin per language
     planet::rawdogplugin { $languages_keys: }
 }
-
