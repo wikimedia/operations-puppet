@@ -1,6 +1,3 @@
-profile::openstack::eqiad1::fernet_key_rotate_time: '18:00:00'
-profile::openstack::eqiad1::fernet_key_sync_time: '19:00:00'
-
 profile::openstack::eqiad1::galera::server_id: 3
 
 # 'maps' is huge and sometimes doesn't finish; make sure

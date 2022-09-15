@@ -8,9 +8,6 @@ ldap:
   rw-server: cloudservices2004-dev.wikimedia.org
   rw-server-fallback: cloudservices2005-dev.wikimedia.org
 
-profile::openstack::codfw1dev::fernet_key_rotate_time: '00:00:00'
-profile::openstack::codfw1dev::fernet_key_sync_time: '01:00:00'
-
 profile::openstack::codfw1dev::galera::server_id: 1
 profile::backup::enable: true
 
