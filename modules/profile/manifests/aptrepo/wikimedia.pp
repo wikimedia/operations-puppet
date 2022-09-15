@@ -45,9 +45,6 @@ class profile::aptrepo::wikimedia (
     Optional[String]    $gpg_secring       = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
     Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
 ){
-
-    package { 'apache2': ensure => absent }
-
     ferm::service { 'aptrepos_public_http':
         proto => 'tcp',
         port  => '(http https)',
