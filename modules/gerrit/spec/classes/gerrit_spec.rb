@@ -26,6 +26,10 @@ describe 'gerrit' do
         '''
       end
       it { is_expected.to compile.with_all_deps }
+      it "ensures gerrit service is running" do
+          is_expected.to contain_service('gerrit')
+          .with_ensure('running')
+      end
     end
   end
 end

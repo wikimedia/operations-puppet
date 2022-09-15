@@ -228,11 +228,8 @@ class gerrit(
     }
 
     systemd::service { 'gerrit':
-        ensure         => present,
-        content        => systemd_template('gerrit'),
-        service_params => {
-            ensure   => 'running',
-        },
+        ensure  => present,
+        content => systemd_template('gerrit'),
     }
 
     file { '/etc/gerrit':
