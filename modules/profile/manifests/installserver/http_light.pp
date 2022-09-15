@@ -10,6 +10,8 @@ class profile::installserver::http_light {
         content => template('install_server/install.wikimedia.org.conf.erb'),
     }
 
+    profile::auto_restarts::service { 'nginx': }
+
     # prevent a /srv root autoindex; empty for now.
     file { '/srv/index.html':
         ensure  => present,
