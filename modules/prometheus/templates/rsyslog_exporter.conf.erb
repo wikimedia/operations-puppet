@@ -17,6 +17,6 @@ ruleset(name="process_stats") {
     # forceSingleInstance has been fixed in rsyslog 8.38
     # https://github.com/rsyslog/rsyslog/commit/a978072b864324a3a6678660983779b3d2410a1b
     forceSingleInstance="on"
-    binary="/usr/bin/prometheus-rsyslog-exporter -web.listen-address <%= @listen_address %>:<%= @listen_port %>"
+    binary="/usr/bin/prometheus-rsyslog-exporter -silent -web.listen-address <%= @listen_address %>:<%= @listen_port %>"
   )
 }
