@@ -1,4 +1,3 @@
-# SPDX-License-Identifier: Apache-2.0
 class profile::query_service::common(
     String $username = lookup('profile::query_service::username'),
     Query_service::DeployMode $deploy_mode = lookup('profile::query_service::deploy_mode'),
@@ -28,8 +27,8 @@ class profile::query_service::common(
         # input to logstash, meaning there is no intermediate buffer and when logstash
         # restarts we can lose logs.
         rsyslog::conf { 'query_service_logging_relay':
-            content  => template('profile/query_service/logging_relay.conf.erb'),
-            priority => 50,
+          content  => template('profile/query_service/logging_relay.conf.erb'),
+          priority => 50,
         }
     } else {
         # Let's migrate to the new logging pipeline. See T232184.
@@ -37,50 +36,50 @@ class profile::query_service::common(
     }
 
     class { '::query_service::common':
-        deploy_mode         => $deploy_mode,
-        username            => $username,
-        deploy_name         => $deploy_name,
-        deploy_user         => $deploy_user,
-        package_dir         => $package_dir,
-        data_dir            => $data_dir,
-        log_dir             => $log_dir,
-        endpoint            => $endpoint,
-        categories_endpoint => $categories_endpoint,
+      deploy_mode         => $deploy_mode,
+      username            => $username,
+      deploy_name         => $deploy_name,
+      deploy_user         => $deploy_user,
+      package_dir         => $package_dir,
+      data_dir            => $data_dir,
+      log_dir             => $log_dir,
+      endpoint            => $endpoint,
+      categories_endpoint => $categories_endpoint,
     }
 
     class { 'query_service::crontasks':
-        package_dir      => $package_dir,
-        data_dir         => $data_dir,
-        log_dir          => $log_dir,
-        deploy_name      => $deploy_name,
-        username         => $username,
-        load_categories  => $load_categories,
-        run_tests        => $run_tests,
-        reload_wcqs_data => $reload_wcqs_data,
+      package_dir      => $package_dir,
+      data_dir         => $data_dir,
+      log_dir          => $log_dir,
+      deploy_name      => $deploy_name,
+      username         => $username,
+      load_categories  => $load_categories,
+      run_tests        => $run_tests,
+      reload_wcqs_data => $reload_wcqs_data,
     }
 
     ensure_packages(['python3-dateutil', 'python3-prometheus-client'])
     file { '/usr/local/bin/prometheus-blazegraph-exporter':
-        ensure => present,
-        source => 'puppet:///modules/query_service/monitor/prometheus-blazegraph-exporter.py',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+      ensure => present,
+      source => 'puppet:///modules/query_service/monitor/prometheus-blazegraph-exporter.py',
+      mode   => '0555',
+      owner  => 'root',
+      group  => 'root',
     }
 
     # Firewall
     ferm::service {
         'query_service_http':
-            proto => 'tcp',
-            port  => '80';
+          proto => 'tcp',
+          port  => '80';
         'query_service_https':
-            proto => 'tcp',
-            port  => '443';
+          proto => 'tcp',
+          port  => '443';
         # temporary port to transfer data file between wdqs nodes via netcat
         'query_service_file_transfer':
-            proto  => 'tcp',
-            port   => '9876',
-            srange => inline_template("@resolve((<%= @nodes.join(' ') %>))");
+          proto  => 'tcp',
+          port   => '9876',
+          srange => inline_template("@resolve((<%= @nodes.join(' ') %>))");
     }
 
     # spread IRQ for NIC
@@ -90,8 +89,8 @@ class profile::query_service::common(
     if $mount_dumps {
         class { 'dumpsuser': }
         class { 'query_service::mount_dumps':
-            servers       => $dumps_servers,
-            active_server => $dumps_active_server,
+          servers       => $dumps_servers,
+          active_server => $dumps_active_server,
         }
     }
 }
