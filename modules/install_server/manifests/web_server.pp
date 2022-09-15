@@ -26,6 +26,8 @@ class install_server::web_server {
         content => template('install_server/apt.wikimedia.org.conf.erb'),
     }
 
+    profile::auto_restarts::service { 'nginx': }
+
     # prevent a /srv root autoindex; empty for now.
     file { '/srv/index.html':
         ensure  => present,
