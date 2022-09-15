@@ -67,6 +67,8 @@ class profile::releases::common(
         content => template('releases/apache.conf.erb'),
     }
 
+    profile::auto_restarts::service { 'apache2': }
+
     monitoring::service { 'https_releases':
         description   => "HTTPS ${sitename}",
         check_command => "check_https_url!${sitename}!/",
