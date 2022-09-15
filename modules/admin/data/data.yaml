@@ -374,7 +374,8 @@ groups:
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
-              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor]
+              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
+              hokwelum]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
