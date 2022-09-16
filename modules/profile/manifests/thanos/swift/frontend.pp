@@ -119,6 +119,11 @@ class profile::thanos::swift::frontend (
         $facts['networking']['fqdn'] => 'present',
         default => 'absent',
     }
+
+    class { 'rsync::server':
+        ensure_service => stdlib::ensure($ring_manager_ensure, 'service'),
+    }
+
     class { 'swift::ring_manager':
         ensure        => $ring_manager_ensure,
         swift_cluster => $swift_cluster_name,
