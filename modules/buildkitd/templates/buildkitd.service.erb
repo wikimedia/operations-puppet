@@ -17,7 +17,8 @@ ExecStart=/usr/bin/docker run --name buildkitd \
     --env https_proxy=<%= @https_proxy %> \
     <%- end -%>
     <%= @image %> \
-    --addr tcp://<%= @address %>:<%= @port %>
+    --addr tcp://<%= @address %>:<%= @port %> \
+    --config /etc/buildkit/buildkitd.toml
 ExecStop=/usr/bin/docker stop buildkitd
 Restart=on-failure
 
