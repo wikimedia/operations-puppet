@@ -155,6 +155,9 @@ class profile::swift::proxy (
         $facts['networking']['fqdn'] => 'present',
         default => 'absent',
     }
+    class { 'rsync::server':
+        ensure_service => stdlib::ensure($ring_manager_ensure, 'service'),
+    }
 
     class { 'swift::ring_manager':
         ensure        => $ring_manager_ensure,
