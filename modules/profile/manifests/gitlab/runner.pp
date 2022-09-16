@@ -21,6 +21,7 @@
 # with restricted firewall enabled. Only used when restrict_firewall is True.
 # @param ensure_buildkitd Whether to provide buildkitd for image building.
 # @param buildkitd_image Ref to buildkitd container image.
+# @param buildkitd_nameservers Nameservers that buildkitd will use for its executors.
 # @param clear_interval Interval for cleanup of docker cache/volumes from old jobs.
 # @param enable_clear_cache Enable automatic cleanup of cached/old docker volumes.
 # @param enable_webproxy Enable usage of webproxy for buildkit to access external resources
@@ -51,6 +52,7 @@ class profile::gitlab::runner (
     Hash[String, Gitlab_runner::AllowedService] $allowed_services   = lookup('profile::gitlab::runner::allowed_services'),
     Wmflib::Ensure                              $ensure_buildkitd   = lookup('profile::gitlab::runner::ensure_buildkitd'),
     String                                      $buildkitd_image    = lookup('profile::gitlab::runner::buildkitd_image'),
+    Array[Stdlib::IP::Address]                  $buildkitd_nameservers = lookup('profile::gitlab::runner::buildkitd_nameservers'),
     Systemd::Timer::Schedule                    $clear_interval     = lookup('profile::gitlab::runner::clear_interval'),
     Boolean                                     $enable_clear_cache = lookup('profile::gitlab::runner::enable_clear_cache'),
     Boolean                                     $enable_webproxy    = lookup('profile::gitlab::runner::enable_webproxy'),
@@ -194,6 +196,7 @@ class profile::gitlab::runner (
         network         => $docker_network,
         image           => $buildkitd_image,
         enable_webproxy => $enable_webproxy,
+        nameservers     => $buildkitd_nameservers,
         require         => Docker::Network[$docker_network],
     }
 

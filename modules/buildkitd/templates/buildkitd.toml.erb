@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[dns]
+# See https://github.com/moby/buildkit/blob/v0.10/cmd/buildkitd/config/config.go#L114
+<%- if @nameservers.any? -%>
+nameservers = <%= @nameservers.to_json %>
+<%- end -%>

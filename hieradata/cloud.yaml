@@ -128,6 +128,7 @@ profile::gitlab::runner::restrict_firewall: false
 profile::gitlab::runner::allowed_services: {}
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/buildkitd:0.10.3
+profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
 profile::gitlab::runner::clear_interval:
   start: "OnCalendar"
   interval: "*-*-* 05:00:00"

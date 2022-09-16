@@ -10,7 +10,8 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm -f buildkitd
 ExecStart=/usr/bin/docker run --name buildkitd \
     --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
-    --network=<%= @network %> \
+    --volume /etc/buildkitd.toml:/etc/buildkit/buildkitd.toml \
+    --network <%= @network %> \
     <%- if @enable_webproxy -%>
     --env http_proxy=<%= @http_proxy %> \
     --env https_proxy=<%= @https_proxy %> \
