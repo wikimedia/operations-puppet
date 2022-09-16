@@ -60,8 +60,8 @@ class routinator(
     }
 
     systemd::service { 'routinator':
-        content        => template('routinator/routinator.service.erb'),
-        require        => [ File['/etc/routinator/tals'], File['/var/lib/routinator/repository'] ],
+        override       => true,
+        content        => template('routinator/routinator.systemd_override.erb'),
         restart        => true,
         service_params => {
             ensure     => 'running', # lint:ignore:ensure_first_param

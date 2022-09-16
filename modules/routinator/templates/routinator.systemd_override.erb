@@ -1,0 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Service]
+RestartSec=0
+Group=routinator
+SyslogIdentifier=routinator
+<% if @proxy %>
+Environment=RSYNC_PROXY=<%= @proxy %>
+<% end %>
+ExecStart=
+ExecStart=/usr/bin/routinator --syslog --tal-dir=/etc/routinator/tals --repository-dir=/var/lib/routinator/repository --rrdp-proxy http://<%= @proxy %> server --rtr [::]:<%= @rtr_port %> --http [::]:9556 --refresh 600
