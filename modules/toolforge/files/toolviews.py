@@ -37,7 +37,7 @@ import time
 import ldap3
 import pymysql
 import yaml
-from typing import Dict, Tuple
+from typing import Dict
 
 
 logger = logging.getLogger("toolviews")
@@ -47,25 +47,26 @@ PROMETHEUS_FILE = Path("/var/lib/prometheus/node.d/toolviews.prom")
 
 class StatHandler:
     def __init__(self):
-        self.stats: Dict[str, Tuple] = {}
+        self.stats: Dict[str, list] = {}
         self.metric_prefix = "cloudvps.toolviews"
 
     def add_stat(self, stat_name: str, tool_name: str, stat_value: int) -> None:
         # For prometheus
         metric_name = f"{self.metric_prefix}.{stat_name}"
-        self.stats[metric_name] = (tool_name, stat_value)
-        logger.info("%s => %f %s %d", metric_name, tool_name, stat_value, int(time.time()))
+        if metric_name not in self.stats:
+            self.stats[metric_name] = []
+        self.stats[metric_name].append((tool_name, stat_value))
+        logger.info(
+            "%s => %f %s %d", metric_name, tool_name, stat_value, int(time.time())
+        )
 
     def flush_stats(self) -> None:
         with PROMETHEUS_FILE.open("w", encoding="utf-8") as prom_fd:
-            for metric_name, stat_value in self.stats.items():
+            for metric_name, stats in self.stats.items():
                 safe_metric_name = metric_name.replace(".", "_").replace("-", "_")
-                prom_fd.write(
-                    f'# TYPE {safe_metric_name}{{tool="{stat_value[0]}"}} counter\n'
-                )
-                prom_fd.write(
-                    f'{safe_metric_name}{{tool="{stat_value[0]}"}} {stat_value[1]}\n'
-                )
+                prom_fd.write(f"# TYPE {safe_metric_name} counter\n")
+                for stat in stats:
+                    prom_fd.write(f'{safe_metric_name}{{tool="{stat[0]}"}} {stat[1]}\n')
 
         self.stats = {}
 
