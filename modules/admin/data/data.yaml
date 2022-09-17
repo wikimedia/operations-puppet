@@ -375,7 +375,7 @@ groups:
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
-              hokwelum]
+              hokwelum, cmyrick]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5487,6 +5487,15 @@ users:
     uid: 29130
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  cmyrick:
+    ensure: present
+    realname: Caroline Myrick
+    email: cmyrick@wikimedia.org
+    uid: 39451
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAp9HZgEjlrH3YaXTgk/QChP8Gq2ilAwTewK47qG8z19 cmyrick@wmf3148
 
 ldap_only_users:
   abartov:
@@ -6282,10 +6291,6 @@ ldap_only_users:
     ensure: present
     realname: Evelien Zandbergen
     email: evelien.zandbergen@wikimedia.de
-  cmyrick:
-    ensure: present
-    realname: Caroline Myrick
-    email: cmyrick@wikimedia.org
   tburmeister:
     ensure: present
     realname: Tricia Burmeister
