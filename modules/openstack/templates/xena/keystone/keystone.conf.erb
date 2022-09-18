@@ -81,9 +81,7 @@ admin_workers = <%= @admin_workers %>
 [eventlet_server_ssl]
 [federation]
 [fernet_tokens]
-# fixme: return this to <%= @max_active_keys %> once we're done juggling hosts for T252121
-#max_active_keys = <%= @max_active_keys %>
-max_active_keys = 50
+max_active_keys = <%= @max_active_keys %>
 
 [identity]
 driver = sql
