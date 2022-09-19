@@ -12,10 +12,15 @@ listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>
   # Select how a project should be built. Fixed to docker executor for security reasons.
   executor = "docker"
 
-  <%- if @ensure_buildkitd == 'present' -%>
-  # Provide a default variable for BUILDKIT_HOST
-  environment = ["BUILDKIT_HOST=tcp://buildkitd.<%= @docker_network %>:1234"]
-  <%- end -%>
+  environment = [
+    <%- if @ensure_buildkitd == 'present' -%>
+    # Provide a default variable for BUILDKIT_HOST
+    "BUILDKIT_HOST=tcp://buildkitd.<%= @docker_network %>:1234",
+    <%- end -%>
+    <%- @environment.each do |name, value| -%>
+    <%= "#{name}=#{value}".to_json %>,
+    <%- end -%>
+  ]
 
   [runners.docker]
     # The image to run jobs with.

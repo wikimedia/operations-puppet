@@ -134,6 +134,9 @@ profile::gitlab::runner::clear_interval:
   interval: "*-*-* 05:00:00"
 profile::gitlab::runner::enable_clear_cache: true
 profile::gitlab::runner::enable_webproxy: false
+profile::gitlab::runner::http_proxy: ~
+profile::gitlab::runner::https_proxy: ~
+profile::gitlab::runner::no_proxy: ~
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 

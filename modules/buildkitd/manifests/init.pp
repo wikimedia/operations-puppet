@@ -7,21 +7,16 @@
 # @param port Port to listen on
 # @param image Ref to the buildkitd image to run
 # @param nameservers DNS nameservers to configure for OCI worker containers.
-# @param enable_webproxy Use proxy to access external resources
-# @param http_proxy webproxy address to use for http
-# @param https_proxy webproxy address to use for https
+# @param environment Environment variables to set for the buildkitd container.
 #
 class buildkitd(
-    Wmflib::Ensure      $ensure,
-    String              $network,
-    Stdlib::IP::Address $address = '0.0.0.0',
-    Stdlib::Port        $port = 1234,
-    String              $image = 'docker-registry.wikimedia.org/buildkitd:latest',
-    Array[Stdlib::Host] $nameservers = [],
-    Boolean             $enable_webproxy = false,
-    String              $http_proxy = 'http://webproxy:8080',
-    String              $https_proxy = 'http://webproxy:8080',
-    String              $no_proxy = '127.0.0.1,::1,localhost,.wmnet,.wikimedia.org,.wikipedia.org,.wikibooks.org,.wikiquote.org,.wiktionary.org,.wikisource.org,.wikispecies.org,.wikiversity.org,.wikidata.org,.mediawiki.org,.wikinews.org,.wikivoyage.org',
+    Wmflib::Ensure           $ensure,
+    String                   $network,
+    Stdlib::IP::Address      $address = '0.0.0.0',
+    Stdlib::Port             $port = 1234,
+    String                   $image = 'docker-registry.wikimedia.org/buildkitd:latest',
+    Array[Stdlib::Host]      $nameservers = [],
+    Hash                     $environment = {},
 ){
     group { 'buildkitd':
         ensure => $ensure,
@@ -42,6 +37,14 @@ class buildkitd(
     file { '/etc/buildkitd.toml':
         ensure  => stdlib::ensure($ensure, 'file'),
         content => template('buildkitd/buildkitd.toml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+
+    file { '/etc/default/buildkitd':
+        ensure  => stdlib::ensure($ensure, 'file'),
+        content => template('buildkitd/buildkitd.env.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',

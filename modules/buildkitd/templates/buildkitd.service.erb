@@ -12,12 +12,7 @@ ExecStart=/usr/bin/docker run --name buildkitd \
     --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
     --volume /etc/buildkitd.toml:/etc/buildkit/buildkitd.toml \
     --network <%= @network %> \
-    <%- if @enable_webproxy -%>
-    --env http_proxy=<%= @http_proxy %> \
-    --env https_proxy=<%= @https_proxy %> \
-    --env no_proxy=<%= @no_proxy %> \
-    <%- end -%>
-    <%= @image %> \
+    --env-file /etc/default/buildkitd \
     --addr tcp://<%= @address %>:<%= @port %> \
     --config /etc/buildkit/buildkitd.toml
 ExecStop=/usr/bin/docker stop buildkitd

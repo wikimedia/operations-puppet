@@ -1,18 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
 class gitlab_runner::config (
-    Stdlib::Absolutepath $directory               = '/etc/gitlab-runner',
-    Integer              $concurrent              = 3,
-    String               $docker_image            = 'docker-registry.wikimedia.org/buster:latest',
-    String               $docker_network          = 'gitlab-runner',
-    Wmflib::Ensure       $ensure_buildkitd        = 'present',
-    Stdlib::HTTPSUrl     $gitlab_url              = 'https://gitlab.wikimedia.org/',
-    String               $runner_name             = 'GitLab Runner',
-    Boolean              $enable_exporter         = false,
-    Stdlib::IP::Address  $exporter_listen_address = '127.0.0.1',
-    Integer              $exporter_listen_port    = 9252,
-    Integer              $check_interval          = 3,
-    Integer              $session_timeout         = 1800,
-    String               $gitlab_runner_user      = 'gitlab-runner',
+    Stdlib::Absolutepath     $directory               = '/etc/gitlab-runner',
+    Integer                  $concurrent              = 3,
+    String                   $docker_image            = 'docker-registry.wikimedia.org/buster:latest',
+    String                   $docker_network          = 'gitlab-runner',
+    Wmflib::Ensure           $ensure_buildkitd        = 'present',
+    Hash                     $environment             = {},
+    Stdlib::HTTPSUrl         $gitlab_url              = 'https://gitlab.wikimedia.org/',
+    String                   $runner_name             = 'GitLab Runner',
+    Boolean                  $enable_exporter         = false,
+    Stdlib::IP::Address      $exporter_listen_address = '127.0.0.1',
+    Integer                  $exporter_listen_port    = 9252,
+    Integer                  $check_interval          = 3,
+    Integer                  $session_timeout         = 1800,
+    String                   $gitlab_runner_user      = 'gitlab-runner',
 ) {
     ensure_packages('python3-toml')
 

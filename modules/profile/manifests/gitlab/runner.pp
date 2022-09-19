@@ -26,6 +26,9 @@
 # @param clear_interval Interval for cleanup of docker cache/volumes from old jobs.
 # @param enable_clear_cache Enable automatic cleanup of cached/old docker volumes.
 # @param enable_webproxy Enable usage of webproxy for buildkit to access external resources
+# @param http_proxy Proxy URL to use for http
+# @param https_proxy Proxy URL to use for https
+# @param no_proxy Domains and addresses that shouldn't go through the proxies
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -57,6 +60,9 @@ class profile::gitlab::runner (
     Systemd::Timer::Schedule                    $clear_interval     = lookup('profile::gitlab::runner::clear_interval'),
     Boolean                                     $enable_clear_cache = lookup('profile::gitlab::runner::enable_clear_cache'),
     Boolean                                     $enable_webproxy    = lookup('profile::gitlab::runner::enable_webproxy'),
+    String                                      $http_proxy         = lookup('profile::gitlab::runner::http_proxy'),
+    String                                      $https_proxy        = lookup('profile::gitlab::runner::https_proxy'),
+    String                                      $no_proxy           = lookup('profile::gitlab::runner::no_proxy'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -137,6 +143,21 @@ class profile::gitlab::runner (
         default => "/home/${gitlab_runner_user}/.gitlab-runner"
     }
 
+    # Define common proxy environment variables for both buildkitd and jobs
+    # that are executed by the runner
+    # See https://wikitech.wikimedia.org/wiki/HTTP_proxy
+    $proxy_variables = $enable_webproxy ? {
+        true    => {
+            http_proxy  => $http_proxy,
+            https_proxy => $https_proxy,
+            no_proxy    => $no_proxy,
+            # HTTP_PROXY  => $http_proxy,
+            # HTTPS_PROXY => $https_proxy,
+            # NO_PROXY    => $no_proxy,
+        },
+        default =>  {},
+    }
+
     if $ensure == 'present' {
         $tag_list = join($tags, ',')
 
@@ -176,6 +197,7 @@ class profile::gitlab::runner (
             docker_image            => $docker_image,
             docker_network          => $docker_network,
             ensure_buildkitd        => $ensure_buildkitd,
+            environment             => $proxy_variables,
             gitlab_url              => $gitlab_url,
             runner_name             => $runner_name,
             exporter_listen_address => $exporter_listen_address,
@@ -193,12 +215,12 @@ class profile::gitlab::runner (
     }
 
     class { 'buildkitd':
-        ensure          => $ensure_buildkitd,
-        network         => $docker_network,
-        image           => $buildkitd_image,
-        enable_webproxy => $enable_webproxy,
-        nameservers     => $buildkitd_nameservers,
-        require         => Docker::Network[$docker_network],
+        ensure      => $ensure_buildkitd,
+        network     => $docker_network,
+        image       => $buildkitd_image,
+        nameservers => $buildkitd_nameservers,
+        environment => $proxy_variables,
+        require     => Docker::Network[$docker_network],
     }
 
     $ensure_clear_cache = $enable_clear_cache.bool2str('present','absent')
