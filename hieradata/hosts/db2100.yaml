@@ -1,4 +1,6 @@
 # db2100
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
+  s7: 192G
   s8: 192G
+profile::monitoring::notifications_enabled: false
