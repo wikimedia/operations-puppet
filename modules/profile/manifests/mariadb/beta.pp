@@ -7,15 +7,6 @@ class profile::mariadb::beta {
     include passwords::misc::scripts
     include mariadb::stock_heartbeat
 
-    # This is essentially the same volume created by role::labs::lvm::srv but
-    # ensures it will be created before mariadb is installed and leaves some
-    # LVM extents free for a possible second volume for the tmpdir.
-    # (see T117446)
-    labs_lvm::volume { 'second-local-disk':
-        mountat => '/srv',
-        size    => '80%FREE',
-    }
-
     class { 'mariadb::config':
         basedir => $profile::mariadb::packages_wmf::basedir,
         config  => 'role/mariadb/mysqld_config/beta.my.cnf.erb',
@@ -38,4 +29,3 @@ class profile::mariadb::beta {
         content => template('mariadb/root.my.cnf.erb'),
     }
 }
-
