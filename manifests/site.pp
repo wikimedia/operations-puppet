@@ -871,7 +871,7 @@ node 'db2098.codfw.wmnet' {
 node 'db2099.codfw.wmnet' {
     role(mariadb::backup_source)
 }
-## s8, buster
+## s7 & s8, buster
 node 'db2100.codfw.wmnet' {
     role(mariadb::backup_source)
 }
