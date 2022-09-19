@@ -21,7 +21,6 @@ class openstack::nova::compute::service::xena::bullseye() {
         'websockify',
         'dnsmasq-base',
         'qemu-utils',
-        'libguestfs-tools',
         'nova-compute',
         'nova-compute-kvm',
     ]
