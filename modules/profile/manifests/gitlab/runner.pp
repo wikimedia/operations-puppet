@@ -52,7 +52,7 @@ class profile::gitlab::runner (
     Hash[String, Gitlab_runner::AllowedService] $allowed_services   = lookup('profile::gitlab::runner::allowed_services'),
     Wmflib::Ensure                              $ensure_buildkitd   = lookup('profile::gitlab::runner::ensure_buildkitd'),
     String                                      $buildkitd_image    = lookup('profile::gitlab::runner::buildkitd_image'),
-    Array[Stdlib::IP::Address]                  $buildkitd_nameservers = lookup('profile::gitlab::runner::buildkitd_nameservers'),
+    Array[Stdlib::Host]                         $buildkitd_nameservers = lookup('profile::gitlab::runner::buildkitd_nameservers'),
     Systemd::Timer::Schedule                    $clear_interval     = lookup('profile::gitlab::runner::clear_interval'),
     Boolean                                     $enable_clear_cache = lookup('profile::gitlab::runner::enable_clear_cache'),
     Boolean                                     $enable_webproxy    = lookup('profile::gitlab::runner::enable_webproxy'),

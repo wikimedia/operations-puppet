@@ -12,15 +12,15 @@
 # @param https_proxy webproxy address to use for https
 #
 class buildkitd(
-    Wmflib::Ensure             $ensure,
-    String                     $network,
-    Stdlib::IP::Address        $address = '0.0.0.0',
-    Stdlib::Port               $port = 1234,
-    String                     $image = 'docker-registry.wikimedia.org/buildkitd:latest',
-    Array[Stdlib::IP::Address] $nameservers = [],
-    Boolean                    $enable_webproxy = false,
-    String                     $http_proxy = 'http://webproxy:8080',
-    String                     $https_proxy = 'http://webproxy:8080',
+    Wmflib::Ensure      $ensure,
+    String              $network,
+    Stdlib::IP::Address $address = '0.0.0.0',
+    Stdlib::Port        $port = 1234,
+    String              $image = 'docker-registry.wikimedia.org/buildkitd:latest',
+    Array[Stdlib::Host] $nameservers = [],
+    Boolean             $enable_webproxy = false,
+    String              $http_proxy = 'http://webproxy:8080',
+    String              $https_proxy = 'http://webproxy:8080',
 ){
     group { 'buildkitd':
         ensure => $ensure,
