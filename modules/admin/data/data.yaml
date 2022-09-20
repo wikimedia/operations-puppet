@@ -5409,6 +5409,7 @@ users:
     email: aline.bruenger@wikimedia.de
     uid: 39897
     gid: 500
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHbQGL1igCVJX2DHnV2KZIfVstXXNAD9bTR2SAN6KzRc aline.bruenger@wikimedia.de
   sgrabarczuk:
