@@ -5465,6 +5465,7 @@ users:
     email: simon.kock@wikimedia.de
     uid: 40604
     gid: 500
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLpdkL1vgV1PzQQUPHrY6LpkhqTuZ4nhK+dm9pAg0Eg siko@C399
   wubwubwub:
