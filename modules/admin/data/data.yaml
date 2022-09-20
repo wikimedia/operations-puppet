@@ -375,7 +375,7 @@ groups:
               essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
-              hokwelum, cmyrick]
+              hokwelum, cmyrick, jbond]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -3725,6 +3725,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSadkjU94IaCUrtnwvECGaGkDyICObEn35NvNpilUaD jbond@work-laptop
     uid: 20774
     email: jbond@wikimedia.org
+    krb: present
   srishakatux:
     ensure: present
     gid: 500
