@@ -74,7 +74,6 @@
 #   will be used.
 #
 # [*test_spark_3_install*]
-#   TODO: Remove me when done
 #   Set this to true to test the Spark3 installation on the test cluster.
 #   Default: false
 class profile::hadoop::spark3(
@@ -94,17 +93,18 @@ class profile::hadoop::spark3(
 
     if $test_spark_3_install {
 
-      # We use conda-analytics to distribute spark3,
-      # and also want to use it as the default analytics cluster python for spark.
-      require ::profile::analytics::conda_analytics
+        # We use conda-analytics to distribute spark3,
+        # and also want to use it as the default analytics cluster python for spark.
+        require ::profile::analytics::conda_analytics
 
-      # $python_prefix_global variable will be rendered into spark-env.sh and used as the default
-      # values for PYSPARK_PYTHON and PYSPARK_DRIVER_PYTHON.
-      $python_prefix_global = $::conda_analytics::prefix
+        # $python_prefix_global variable will be rendered into spark-env.sh and used as the default
+        # values for PYSPARK_PYTHON and PYSPARK_DRIVER_PYTHON.
+        $python_prefix_global = $::conda_analytics::prefix
+
     } else {
-      # Without the conda-analytics environment, in experimental Spark3 mode.
-      # TODO remove me after deployment of Spark3.
-      $python_prefix_global = '/usr/lib/airflow'
+        # Without the conda-analytics environment, in experimental Spark3 mode.
+        # TODO remove me after deployment of Spark3.
+        $python_prefix_global = '/usr/lib/airflow'
     }
 
     # TODO: get spark_version from conda_analytics env and use it to create and upload spark assembly.

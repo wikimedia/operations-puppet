@@ -87,19 +87,27 @@ fi
 if [ -z "${SPARK_HOME}" ]; then
     echo "ERROR: SPARK_HOME must be set before loading ${0}"
     exit 1
+else
+    echo "SPARK_HOME: ${SPARK_HOME}"
 fi
 
-# If hadoop command is executable, then use it to add Hadoop jars to Spark's runtime classpath.
-# See: https://spark.apache.org/docs/2.4.4/hadoop-provided.html
+# Select Hadoop library
 #
-# TODO: Remove /usr/lib/airflow conditional when we use finalize using Spark3 that doesn't embed Hadoop.
-#       For now we use the Airflow-installed version of Spark3 that
-#       embeds Hadoop 3.2.0.
-#       https://phabricator.wikimedia.org/T295072
-#
-if [ "${SPARK_HOME}" != /usr/lib/airflow* -a -x "$(command -v hadoop)" ]; then
-   SPARK_DIST_CLASSPATH=$(hadoop classpath)
+# if [ "${SPARK_HOME}" != /usr/lib/airflow* -a -x "$(command -v hadoop)" ]; then
+#    SPARK_DIST_CLASSPATH=$(hadoop classpath)
+# fi
+HADOOP_VERSION="$(ls $SPARK_HOME/jars/ \
+  | grep hadoop-client \
+  |  sed 's/^hadoop-client-\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/')"
+if [ -z "${HADOOP_VERSION}" ]; then
+    echo "ERROR: unknown HADOOP_VERSION"
+    exit 1
 fi
+# 2022-09 We are using Hadoop 3 client lib to connect to an Hadoop 2.10 cluster.
+# Hadoop 2.10 version is a backport of version 3 api. That means we can use
+# a client lib at version 3 to access it.
+# This echo is just to remember the explicit version we are using.
+echo "Using Hadoop client lib jars at ${HADOOP_VERSION}, provided by Spark."
 
 # == Determine useful default values for PYSPARK_DRIVER_PYTHON and PYSPARK_PYTHON ==
 #
@@ -142,7 +150,7 @@ PYTHON_PREFIX_GLOBAL=$(realpath ${PYTHON_PREFIX_GLOBAL:-"<%= @python_prefix_glob
 PYTHON_PREFIX_USER=$(realpath "${CONDA_PREFIX:-$(dirname $(dirname $(dirname $(dirname $SPARK_HOME))))}")
 
 # Default PYSPARK_DRIVER_PYTHON to ipython3 if running pyspark CLI directly.
-if [[ -z "${PYSPARK_DRIVER_PYTHON}" && "${0}" == *pyspark* ]]; then
+if [[ -z "${PYSPARK_DRIVER_PYTHON}" && "${0}" == *pyspark ]]; then
 
     # If a user's python environment exists and has ipython3, use it
     if [ -n "${PYTHON_PREFIX_USER}" -a -e "${PYTHON_PREFIX_USER}/bin/ipython3" ]; then
@@ -191,4 +199,5 @@ fi
 # the pyspark script will just use system 'python'.
 test -n "${PYSPARK_DRIVER_PYTHON}" && echo "PYSPARK_DRIVER_PYTHON=${PYSPARK_DRIVER_PYTHON}"
 test -n "${PYSPARK_PYTHON}" && echo "PYSPARK_PYTHON=${PYSPARK_PYTHON}"
+
 <% end -%>

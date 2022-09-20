@@ -75,3 +75,5 @@ profile::airflow::instances:
 profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true
+
+profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false

@@ -1,6 +1,4 @@
-# Notify the Data Engineering team about services on these hosts
-contactgroups: 'admins,analytics'
-mgmt_contactgroups: 'admins,analytics'
+# Notify the Data Engineering team about services on these hosts contactgroups: 'admins,analytics' mgmt_contactgroups: 'admins,analytics'
 
 profile::admin::groups:
   - analytics-privatedata-users
@@ -21,6 +19,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::spark2::local_dir: /srv/spark-tmp
 profile::hadoop::spark3::local_dir: /srv/spark-tmp
+profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 

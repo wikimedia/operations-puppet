@@ -8,7 +8,8 @@
 # WMF Analytics data lake.
 #
 class conda_analytics(
-    $ensure = 'present'
+    $ensure = 'present',
+    $remove_conda_env_pkgs_dir = true
 ) {
     package { 'conda-analytics':
         ensure => stdlib::ensure($ensure, 'package')
@@ -17,4 +18,12 @@ class conda_analytics(
     # This is where the conda-analytics .deb package will install the conda-analytics conda environment.
     # Set this variable here for users of this class to have a reference to this.
     $prefix = '/opt/conda-analytics'
+
+    if $remove_conda_env_pkgs_dir {
+        debconf::set { 'conda-analytics/remove-pkgs':
+          type   => 'boolean',
+          value  => true,
+          before => Package['conda-analytics']
+        }
+    }
 }

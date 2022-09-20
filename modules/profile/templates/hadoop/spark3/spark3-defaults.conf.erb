@@ -49,15 +49,8 @@ spark.sql.files.maxPartitionBytes                   <%= @sql_files_max_partition
 <% end -%>
 
 
-<% # Skip configuration customizations for the currently running Spark 3 jobs
-   # launched by Airflow (production + test clusters).
-   # https://gitlab.wikimedia.org/repos/data-engineering/airflow-dags/-/blob/b8f66e9885bc18f1f152abb99e86a1eb376cc237/wmf_airflow_common/config/experimental_spark_3_dag_default_args.py
-   if @test_spark_3_install -%>
-# TODO: we are in the process of installing and puppetizing spark3.
-# we need to automate generation and upload of this assembly file whenever
-# we upgrade spark3 versions.  For now, hardcode this path until we have timme to do that.
-# See: https://phabricator.wikimedia.org/T310578
-spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.zip
+<% if @test_spark_3_install -%>
+spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.jar
 <% end -%>
 
 # JVMs should use system proxy settings.
