@@ -28,6 +28,9 @@ class gerrit(
     Optional[String]                  $scap_key_name     = undef,
 ) {
 
+    $home_dir = "/var/lib/${daemon_user}"
+    $gerrit_site = "${home_dir}/review_site"
+
     class { 'gerrit::jobs': }
 
     group { 'gerrit2':
@@ -39,9 +42,18 @@ class gerrit(
         ensure     => 'present',
         gid        => 'gerrit2',
         shell      => '/bin/bash',
-        home       => '/var/lib/gerrit2',
+        home       => $home_dir,
         system     => true,
         managehome => true,
+    }
+
+    file { $home_dir:
+        ensure  => directory,
+        recurse => 'remote',
+        mode    => '0755',
+        owner   => $daemon_user,
+        group   => $daemon_user,
+        source  => 'puppet:///modules/gerrit/homedir',
     }
 
     # Private config
@@ -108,41 +120,33 @@ class gerrit(
         mode   => '0775',
     }
 
-    file { '/var/lib/gerrit2':
-        ensure  => directory,
-        recurse => 'remote',
-        mode    => '0755',
-        owner   => $daemon_user,
-        group   => $daemon_user,
-        source  => 'puppet:///modules/gerrit/homedir',
-    }
     # We no more use custom log4j config
-    file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
+    file { "${gerrit_site}/etc/log4j.xml":
         ensure => absent,
     }
 
     # Gerrit init installs a few bin helper
-    file { '/var/lib/gerrit2/review_site/bin':
+    file { "${gerrit_site}/bin":
         ensure => directory,
         owner  => $daemon_user,
         group  => $daemon_user,
         mode   => '0775',
     }
     # Make sure we use our targetted version rather than the one copied on init
-    file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
+    file { "${gerrit_site}/bin/gerrit.war":
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
       require => Scap::Target['gerrit/gerrit'],
     }
 
-    file { '/var/lib/gerrit2/review_site/tmp':
+    file { "${gerrit_site}/tmp":
         ensure => directory,
         owner  => $daemon_user,
         group  => $daemon_user,
         mode   => '0700',
     }
 
-    file { '/var/lib/gerrit2/.ssh/id_rsa':
+    file { "${home_dir}/.ssh/id_rsa":
         owner     => $daemon_user,
         group     => $daemon_user,
         mode      => '0400',
@@ -152,7 +156,7 @@ class gerrit(
 
     # Created by gerrit init. If we ever use it, it should be a symlink to
     # /srv/deployment/gerrit/gerrit/lib and be owned by root.
-    file { '/var/lib/gerrit2/review_site/lib':
+    file { "${gerrit_site}/lib":
         ensure => directory,
         owner  => $daemon_user,
         group  => $daemon_user,
@@ -172,11 +176,11 @@ class gerrit(
             owner => $daemon_user,
             group => $daemon_user,
             mode  => '0444';
-        '/var/lib/gerrit2/review_site/etc/gerrit.config':
+        "${gerrit_site}/etc/gerrit.config":
             content => template("gerrit/${config}");
-        '/var/lib/gerrit2/review_site/etc/gitiles.config':
+        "${gerrit_site}/etc/gitiles.config":
             content => template('gerrit/gitiles.config.erb');
-        '/var/lib/gerrit2/review_site/etc/lfs.config':
+        "${gerrit_site}/etc/lfs.config":
             content => template('gerrit/lfs.config.erb');
     }
 
@@ -184,7 +188,7 @@ class gerrit(
     #
     # TODO maybe mark it root owned to prevent Gerrit to write to it, but
     # it might then refuse to start.
-    file { '/var/lib/gerrit2/review_site/etc/replication.config':
+    file { "${gerrit_site}/etc/replication.config":
         ensure  => stdlib::ensure(!$replica, 'file'),
         content => template('gerrit/replication.config.erb'),
         owner   => $daemon_user,
@@ -197,7 +201,7 @@ class gerrit(
     # Those are static files and should ultimately be migrated to the Gerrit
     # deploy repository, the directory would then become a symlink to
     # /srv/deployment/gerrit/gerrit/etc/its/templates and owned by root.
-    file { '/var/lib/gerrit2/review_site/etc/its/templates':
+    file { "${gerrit_site}/etc/its/templates":
         ensure  => directory,
         source  => 'puppet:///modules/gerrit/its/',
         recurse => true,
@@ -208,7 +212,7 @@ class gerrit(
     }
 
     # Fully managed by Puppet
-    file { '/var/lib/gerrit2/review_site/etc/secure.config':
+    file { "${gerrit_site}/etc/secure.config":
         content => template('gerrit/secure.config.erb'),
         owner   => $daemon_user,
         group   => $daemon_user,
@@ -218,13 +222,13 @@ class gerrit(
     # Used by the motd plugin which lets one send a message when ones sends a
     # a review. We never used it and might consider dropping the plugin and
     # ths this file as well.
-    file { '/var/lib/gerrit2/review_site/etc/motd.config':
+    file { "${gerrit_site}/etc/motd.config":
         ensure => 'link',
         target => '/srv/deployment/gerrit/gerrit/etc/motd.config',
     }
 
     if $ssh_host_key != undef {
-        file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
+        file { "${gerrit_site}/etc/ssh_host_key":
             ensure    => present,
             content   => secret("gerrit/${ssh_host_key}"),
             owner     => $daemon_user,
@@ -241,7 +245,7 @@ class gerrit(
         mode   => '0755',
     }
 
-    file { '/var/lib/gerrit2/review_site/logs':
+    file { "${gerrit_site}/logs":
         ensure  => 'link',
         target  => '/var/log/gerrit',
         owner   => $daemon_user,
@@ -249,7 +253,7 @@ class gerrit(
         require => Scap::Target['gerrit/gerrit'],
     }
 
-    file { '/var/lib/gerrit2/review_site/plugins':
+    file { "${gerrit_site}/plugins":
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/plugins',
       require => Scap::Target['gerrit/gerrit'],
@@ -277,14 +281,14 @@ class gerrit(
     # Convenience link to $GERRIT_SITE/etc
     file { '/etc/gerrit':
         ensure => link,
-        target => '/var/lib/gerrit2/review_site/etc',
+        target => "${gerrit_site}/etc",
     }
 
     if $enable_monitoring {
         nrpe::monitor_service { 'gerrit':
             ensure       => 'present',
             description  => 'gerrit process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar ${gerrit_site}/bin/gerrit.war daemon -d ${gerrit_site}'",
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Gerrit',
         }
     }
