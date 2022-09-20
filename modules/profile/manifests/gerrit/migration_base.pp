@@ -1,8 +1,9 @@
 # set up user, group and data dir needed for rsyncing
 # data on a new Gerrit host before it has the main role class
 class profile::gerrit::migration_base (
-    Stdlib::Unixpath $data_dir = lookup(profile::gerrit::migration::data_dir),
-    String $user_name = lookup(profile::gerrit::migration::user_name),
+    Stdlib::Unixpath $data_dir = lookup('profile::gerrit::migration::data_dir'),
+    String $user_name          = lookup('profile::gerrit::migration::user_name'),
+    String $daemon_user        = lookup('profile::gerrit::daemon_user'),
 ){
 
     group { $user_name:
@@ -20,8 +21,8 @@ class profile::gerrit::migration_base (
 
     file { $data_dir:
         ensure => directory,
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
+        owner  => $daemon_user,
+        group  => $daemon_user,
         mode   => '0664',
     }
 }

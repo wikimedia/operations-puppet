@@ -106,6 +106,7 @@ class profile::gerrit(
     }
 
     class { 'gerrit::replication_key':
+        user    => $daemon_user,
         require => Class['gerrit'],
     }
     $sshkey = 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ=='

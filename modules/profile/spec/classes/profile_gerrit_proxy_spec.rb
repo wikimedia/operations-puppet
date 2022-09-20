@@ -9,6 +9,7 @@ describe 'profile::gerrit::proxy' do
           'ipv4' => '198.51.100.1',
           'ipv6' => '2001:DB8::CAFE',
           'host' => 'gerrit.example.org',
+          'daemon_user' => 'gerrit2',
           'is_replica' => false,
           'use_acmechief' => true,
           'enable_monitoring' => true,

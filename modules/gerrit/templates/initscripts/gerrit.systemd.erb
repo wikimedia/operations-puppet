@@ -3,8 +3,8 @@ Description=Gerrit code review tool
 After=network.target
 
 [Service]
-User=gerrit2
-Group=gerrit2
+User=<%= @daemon_user %>
+Group=<%= @daemon_user %>
 Type=simple
 EnvironmentFile=/etc/default/gerrit
 ExecStart=<%= @java_home %>/bin/java <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %> -jar <%= @gerrit_site %>/bin/gerrit.war daemon -d <%= @gerrit_site %><% if @replica %> --replica --enable-httpd<% end %>

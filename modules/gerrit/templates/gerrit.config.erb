@@ -111,7 +111,7 @@
     #
     # `gerrit init` makes a few update, list them there to avoid unwanted
     # modifications:
-    user = gerrit2
+    user = <%= @daemon_user %>
     javaHome = <%= @java_home %>
     javaOptions = "-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance"
     javaOptions = "-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance"

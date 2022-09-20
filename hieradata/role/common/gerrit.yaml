@@ -60,7 +60,7 @@ profile::gerrit::replication:
             - '^(?:(?!apps\\/ios\\/).)*$'
             - '^(?:(?!apps\\/android\\/).)*$'
     replica_codfw:
-        url: 'gerrit2@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git'
+        url: "%{lookup('profile::gerrit::daemon_user')}@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git"
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true

@@ -33,14 +33,14 @@ class gerrit(
 
     class { 'gerrit::jobs': }
 
-    group { 'gerrit2':
+    group { $daemon_user:
         ensure => present,
     }
 
     # TODO convert to systemd::sysuser
-    user { 'gerrit2':
+    user { $daemon_user:
         ensure     => 'present',
-        gid        => 'gerrit2',
+        gid        => $daemon_user,
         shell      => '/bin/bash',
         home       => $home_dir,
         system     => true,
@@ -88,7 +88,7 @@ class gerrit(
         'python3-pip'
     ])
 
-    ssh::userkey { 'gerrit2-scap':
+    ssh::userkey { "${daemon_user}-scap":
         ensure  => present,
         user    => $scap_user,
         skey    => 'gerrit-scap',

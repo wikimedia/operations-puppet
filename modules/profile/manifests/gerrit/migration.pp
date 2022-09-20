@@ -1,10 +1,13 @@
 # Allow rsyncing gerrit data to another server for
 # migration and reinstalls.
 class profile::gerrit::migration (
-    Stdlib::Fqdn        $src_host  = lookup('profile::gerrit::migration::src_host'),
-    Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::gerrit::migration::dst_hosts'),
-    Stdlib::Unixpath    $data_dir  = lookup('profile::gerrit::migration::data_dir'),
+    Stdlib::Fqdn        $src_host    = lookup('profile::gerrit::migration::src_host'),
+    Array[Stdlib::Fqdn] $dst_hosts   = lookup('profile::gerrit::migration::dst_hosts'),
+    Stdlib::Unixpath    $data_dir    = lookup('profile::gerrit::migration::data_dir'),
+    String              $daemon_user = lookup('profile::gerrit::daemon_user'),
 ) {
+
+    $gerrit_site = "/var/lib/${daemon_user}/review_site"
 
     if $facts['fqdn'] in $dst_hosts {
 
@@ -23,7 +26,7 @@ class profile::gerrit::migration (
         }
 
         rsync::server::module { 'gerrit-var-lib':
-            path        => '/var/lib/gerrit2/review_site',
+            path        => $gerrit_site,
             read_only   => 'no',
             hosts_allow => $src_host,
         }
