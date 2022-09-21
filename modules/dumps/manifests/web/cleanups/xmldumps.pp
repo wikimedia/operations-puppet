@@ -57,7 +57,7 @@ class dumps::web::cleanups::xmldumps(
     # and so broken prefetch files mean pulling all historical revision content
     # directly from the database.
 
-    $keep_generator = ['hugewikis.dblist:3:1', 'bigwikis.dblist:3:1', 'default:3:2']
+    $keep_generator = ['hugewikis.dblist:3:1', 'bigwikis.dblist:3:1', 'default:3:1']
     $keep_replicas = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
 
     if ($isreplica == true) {
