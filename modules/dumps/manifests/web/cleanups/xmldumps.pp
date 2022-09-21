@@ -137,7 +137,7 @@ class dumps::web::cleanups::xmldumps(
         send_mail          => true,
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         command            => $job_command,
-        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 1:25:0'},
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 9:25:0'},
         require            => File['/usr/local/bin/cleanup_old_xmldumps.py'],
     }
 }
