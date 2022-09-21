@@ -50,7 +50,7 @@ def get_log_level(args_level: int) -> int:
 def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
     """Update puppetdb with node facts"""
     tmpdir = tempfile.mkdtemp(prefix=__name__)
-    environment = 'production' if facts_dir.name == 'production' else 'labs'
+    environment = 'production' if facts_dir.name == 'production' else 'wmcs-eqiad1'
     managecode = setup_environment(tmpdir, config)
     srcdir = managecode.prod_dir / "src"
     # skip the following hosts as they are quite noisy
