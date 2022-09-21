@@ -2005,7 +2005,8 @@ users:
     gid: 500
     name: legoktm
     realname: Kunal Mehta
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDM+oASqOwpkwJ/1ldKdQrmmQvVRxYCu6qutDkNWwBubLC6dw1HCNC/f68OYMdQcJdCRRB2nYc/J6q0p8bzQvZwA9U8z6Y/OO7by2d4VM711sLMFkZsjl7Knsq1Rzdkdy3qwaMtzeDivTpVVk0Pxa0LFDdisoOLMhJlZMqDHlvrK4ega2LyiybRPljpEE42DUNzMhrS5XYjJjCTsusd4cmv9S0Ft1E+jgkdG656TiL44bTpG49kOPEkAUcjLyc+9OXpXZ8VO0gzch4FUoCqsp9RCD6BOJg3Q9CXp/Y1B3sA8mt0hPeSPpWHG9lq7lu8zfHJbUgVNlP+iVdMBYgBQFGypLOiYLMHf2xV8QIXnij4lTXgwI8CUklP+0VIwsQatjl2bzERJZEC1ahLvpzRZ5knER2gAuimXkK5qXknt1ZNjdk5/dI9/dZ3vLl7nssyi9ytwJisRPJZsve/rdjkugmQgoS3NK/EK1bKRXczjJLgYpwMLjxWhJHJydv6pjxpkAu6l2ra3m5vKrbjpr53e5nUWte+KxCytG9LPte4B/S99NOd7kyeNYQ7oZaqli35znNCVJgnMKoEg6f/mH6pT5r9D38bUoNoxdlL2YB1Z2fKzTiVc5vzQ+lGVG9OtmjSMcKtrLoEwEatgELhrz9J+Rnli8lifvXQKpCPZEsfwf7GBw== legoktm@yk
     uid: 2552
     email: legoktm@debian.org
   howief:
