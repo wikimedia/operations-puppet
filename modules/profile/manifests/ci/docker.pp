@@ -5,41 +5,34 @@
 class profile::ci::docker(
     $jenkins_agent_username = lookup('jenkins_agent_username'),
     $settings = lookup('profile::ci::docker::settings'),
+    $docker_version = lookup('profile::ci::docker::docker_version'),
 ) {
     include profile::docker::prune
 
     # Let us elevate permissions to the user running a containerized process
     ensure_packages('acl')
 
-    if debian::codename::lt('bullseye') {
-        apt::repository { 'thirdparty-ci':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/ci',
-        }
+    apt::repository { 'thirdparty-ci':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'thirdparty/ci',
     }
 
     class { 'docker::configuration':
         settings => $settings,
     }
 
-    # TODO: Drop the entire version-specific pinning once buster is gone
-    $docker_version = $::lsbdistcodename ? {
-        'buster'  => '5:20.10.12~3-0~debian-buster',
-        # Docker version is ignored starting with Bullseye
-        default   => 'present',
-    }
-
-    $docker_package = $::lsbdistcodename ? {
-        'buster'   => 'docker-ce',
-        'bullseye' => 'docker.io',
-    }
+    # Upstream package versions are always suffixed with "-codename"
+    $full_docker_version = "${docker_version}-${::lsbdistcodename}"
 
     ensure_packages(
-        $docker_package,
+        'docker-ce',
         {
-            'ensure'  => $docker_version,
-            'require' => Class['docker::configuration'],
+            'ensure'  => $full_docker_version,
+            'require' => [
+                Class['docker::configuration'],
+                Apt::Repository['thirdparty-ci'],
+            ],
         },
     )
 
@@ -62,7 +55,7 @@ class profile::ci::docker(
             unless  => "/usr/bin/id -Gn '${jenkins_agent_username}' | /bin/grep -qw 'docker'",
             command => "/usr/sbin/usermod -aG docker '${jenkins_agent_username}'",
             require => [
-                Package[ $docker_package ],
+                Package['docker-ce'],
             ],
         }
     }
