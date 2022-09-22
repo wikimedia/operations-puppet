@@ -173,6 +173,7 @@ Update:
  matomo
  pyall
  thirdparty/ceph-octopus
+ thirdparty/docker-ci-buster
  thirdparty/conda
  thirdparty/gitlab
  thirdparty/gitlab-runner
@@ -212,6 +213,7 @@ Components: main
  component/rsyslog-k8s
  thirdparty/bigtop15
  thirdparty/ceph-octopus
+ thirdparty/ci
  thirdparty/conda
  thirdparty/confluent
  thirdparty/elastic65
@@ -240,6 +242,7 @@ Update:
  node16-bullseye
  routinator
  thirdparty/ceph-octopus-bullseye
+ thirdparty/docker-ci-bullseye
  thirdparty/conda
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
