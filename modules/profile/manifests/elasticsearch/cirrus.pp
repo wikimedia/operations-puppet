@@ -183,4 +183,9 @@ class profile::elasticsearch::cirrus(
         }
         $prometheus_port + 2
     }
+    motd::script { 'cluster_memberships':
+      ensure   => present,
+      priority => 96,
+      source   => 'puppet:///modules/elasticsearch/elastic.motd',
+    }
 }
