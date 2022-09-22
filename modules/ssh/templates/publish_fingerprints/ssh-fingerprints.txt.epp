@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Hash[String[1], Hash] $ssh_fingerprints | -%>
+<%- $ssh_fingerprints.keys.sort.each |$host| { -%>
+  <%- $config = $ssh_fingerprints[$host] -%>
+<%= $host %>:
+  <%- $config['ssh'].keys.sort.each |$algo| { -%>
+    <%- $key_config = $config['ssh'][$algo] -%>
+  <%= $algo %>:
+    <%- $key_config['fingerprints'].each |$hash, $fingerprint| { -%>
+      <%= $hash %>: <%= $fingerprint.split(/\s/)[-1] %>
+    <%- } -%>
+  <%- } -%>
+<%- } -%>

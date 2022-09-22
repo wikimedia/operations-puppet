@@ -1,3 +1,0 @@
-<%- @ssh_fingerprints.sort.each do |host, config| -%>
-<%= host %>,<%= config['networking']['ip'] %>,<%= config['networking']['ip6'] %> <%= config['ssh'][@type]['type'] %> <%= config['ssh'][@type]['key'] %>
-<%- end -%>

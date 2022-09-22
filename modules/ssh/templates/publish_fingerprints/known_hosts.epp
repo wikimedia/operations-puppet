@@ -1,0 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Hash[String[1], Hash]          $ssh_fingerprints,
+      Array[Enum['rsa', 'ecdsa', 'ed25519'],1] $types,
+| -%>
+<%- $ssh_fingerprints.keys.sort.each |$host| { -%>
+  <%- $config = $ssh_fingerprints[$host] -%>
+  <%- $types.each |$type| { -%>
+<%= $host %>,<%= $config['networking']['ip'] %>,<%= $config['networking']['ip6'] %> <%= $config['ssh'][$type]['type'] %> <%= $config['ssh'][$type]['key'] %>
+  <%- } -%>
+<%- } -%>

@@ -1,9 +1,0 @@
-<%- @ssh_fingerprints.sort.each do |host, config| -%>
-<%= host %>:
-  <%- config['ssh'].sort.each do |algo, key_config| -%>
-  <%= algo %>:
-    <%- key_config['fingerprints'].each_pair do |hash, fingerprint| -%>
-      <%= hash %>: <%= fingerprint.split[-1] %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
