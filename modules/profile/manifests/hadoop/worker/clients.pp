@@ -16,6 +16,10 @@ class profile::hadoop::worker::clients {
     # Spark 2 is manually packaged by us, it is not part of CDH.
     include ::profile::hadoop::spark2
 
+    # Spark 3 is provided in our custom conda-analytics package
+    # via pyspark installed in the conda environment in /opt/conda-analytics.
+    include ::profile::hadoop::spark3
+
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
     class { '::bigtop::sqoop': }

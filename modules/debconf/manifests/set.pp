@@ -28,7 +28,7 @@ define debconf::set(
     $type = 'string',
     $owner = 'set'
 ) {
-    exec { "debconf-set-selections set ${type} ${title}":
+    exec { "debconf-set-selections ${owner} ${type} ${title}":
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
         command => "echo ${owner} ${title} ${type} \"${value}\" | debconf-set-selections",
         unless  => "test \"$(echo get ${title} | debconf-communicate)\" = \"0 ${value}\"",

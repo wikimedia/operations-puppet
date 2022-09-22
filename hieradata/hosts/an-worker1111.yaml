@@ -1,0 +1,3 @@
+# Temporarily test spark3 install on workers only on an-worker1111.
+
+profile::hadoop::spark3::test_spark_3_install: true
