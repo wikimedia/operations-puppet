@@ -65,6 +65,12 @@ describe 'ssh::publish_fingerprints' do
               /x
           )
         end
+        it do
+          is_expected.to contain_file('/tmp/known_hosts')
+            .with_content(/foo,192.0.2.1,2001:db8::1\sssh-ecdsa\secdsa-key/)
+            .with_content(/foo,192.0.2.1,2001:db8::1\sssh-ed25519\sed25519-key/)
+            .with_content(/foo,192.0.2.1,2001:db8::1\sssh-rsa\srsa-key/)
+        end
         ['ecdsa', 'ed25519', 'rsa'].each do |key|
           it do
             is_expected.to contain_file("/tmp/known_hosts.#{key}")

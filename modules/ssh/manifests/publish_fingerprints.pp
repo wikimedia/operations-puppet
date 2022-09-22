@@ -16,6 +16,18 @@ class ssh::publish_fingerprints (
                       {'ssh_fingerprints' => $ssh_fingerprints}),
     }
 
+    $params = {
+        'ssh_fingerprints' => $ssh_fingerprints,
+        'types'            => $exported_types,
+    }
+    file{ "${document_root}/known_hosts":
+        ensure  => file,
+        backup  => false,  # Theses files change often don't back them up
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => epp('ssh/publish_fingerprints/known_hosts', $params),
+    }
 
     $exported_types.each |String $type| {
         $params = {
