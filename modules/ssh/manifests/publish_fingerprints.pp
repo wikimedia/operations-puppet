@@ -3,7 +3,7 @@
 class ssh::publish_fingerprints (
     Stdlib::Unixpath $document_root,
 ) {
-    $exported_types = ['ecdsa', 'ed25519', 'rsa']
+    $exported_types = ['ecdsa', 'ed25519']
     $ssh_fingerprints = puppetdb::query_facts(['ssh', 'networking'])
 
     file{"${document_root}/ssh-fingerprints.txt":
@@ -43,4 +43,8 @@ class ssh::publish_fingerprints (
             content => epp('ssh/publish_fingerprints/known_hosts', $params),
         }
     }
+    file{"${document_root}/known_hosts.rsa":
+        ensure => absent,
+    }
+
 }
