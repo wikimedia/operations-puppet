@@ -88,7 +88,7 @@ profile::base::labs::unattended_distro: "present"
 profile::ci::slave::labs::common::manage_srv: true
 profile::ci::package_builder::extra_packages: []
 
-profile::ci::docker::docker_version: '5:20.10.12~3-0~debian'
+profile::ci::docker::docker_version: '5:20.10.18~3-0~debian'
 
 profile::debmonitor::client::ensure: "absent"
 profile::debmonitor::client::ssl_ca: "puppet"
