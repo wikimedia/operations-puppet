@@ -1,6 +1,4 @@
-# lvs/configuration.pp
-
-class lvs::configuration {
+class profile::lvs::configuration {
 
     $lvs_class_hosts = {
         'high-traffic1' => $::realm ? {

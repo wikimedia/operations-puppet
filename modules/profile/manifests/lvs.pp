@@ -7,9 +7,9 @@ class profile::lvs(
     Hash[String, Hash] $vlan_data = lookup('lvs::interfaces::vlan_data'),
     Hash[String, Hash] $interface_tweaks = lookup('profile::lvs::interface_tweaks'),
 ){
-    require ::lvs::configuration
+    require profile::lvs::configuration
 
-    $services = wmflib::service::get_services_for_lvs($::lvs::configuration::lvs_class, $::site)
+    $services = wmflib::service::get_services_for_lvs($profile::lvs::configuration::lvs_class, $::site)
 
     ## Kernel setup
 

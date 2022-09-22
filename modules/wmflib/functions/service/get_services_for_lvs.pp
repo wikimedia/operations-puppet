@@ -5,7 +5,8 @@
 # - configured in the datacenter we're in.
 #
 function wmflib::service::get_services_for_lvs(String $class, String $site) >> Hash[String, Wmflib::Service] {
+  include profile::lvs::configuration
   wmflib::service::fetch(true).filter |$name, $srv| {
-        $srv['state'] != 'service_setup' and $::lvs::configuration::lvs_class in [$srv['lvs']['class'], 'secondary'] and $site in $srv['sites']
+        $srv['state'] != 'service_setup' and $profile::lvs::configuration::lvs_class in [$srv['lvs']['class'], 'secondary'] and $site in $srv['sites']
   }
 }

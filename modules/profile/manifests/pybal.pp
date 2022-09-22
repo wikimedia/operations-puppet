@@ -12,8 +12,8 @@ class profile::pybal(
     Optional[Integer] $override_bgp_med = lookup('profile::pybal::override_bgp_med', {'default_value' => undef}),
 ) {
     # Includes all the common configs.
-    include ::lvs::configuration
-    $services = wmflib::service::get_services_for_lvs($::lvs::configuration::lvs_class, $::site)
+    include profile::lvs::configuration
+    $services = wmflib::service::get_services_for_lvs($profile::lvs::configuration::lvs_class, $::site)
 
     $ipv4_address = ipresolve($::fqdn, 4)
 
@@ -57,7 +57,7 @@ class profile::pybal(
     class { '::pybal::configuration':
         global_options  => $global_options,
         services        => $services,
-        lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+        lvs_class_hosts => $profile::lvs::configuration::lvs_class_hosts,
         site            => $::site,
         conftool_prefix => $conftool_prefix,
         config          => $config_source,

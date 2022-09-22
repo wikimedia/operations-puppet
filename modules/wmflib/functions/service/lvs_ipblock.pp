@@ -1,4 +1,4 @@
-# Given an ip block, return it in the format used by lvs::configuration
+# Given an ip block, return it in the format used by profile::lvs::configuration
 function wmflib::service::lvs_ipblock(Hash[String,Wmflib::Service::Ipblock] $block) >> Hash {
     $block.map |$site, $ipblock| {
         if length($ipblock) == 1 {

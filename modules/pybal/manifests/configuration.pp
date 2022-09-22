@@ -3,7 +3,7 @@
 #
 # Parameters:
 # $services - hash of services that are present on this load-balancer
-# lvs_class_hosts - comes from lvs::configuration.
+# lvs_class_hosts - comes from profile::lvs::configuration.
 # config - wether to fetch the config from etcd or http
 # global_options - pybal global options
 # config_host - the fqdn:port for the host to get config from

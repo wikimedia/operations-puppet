@@ -20,7 +20,7 @@ class profile::lvs::realserver(
 ) {
     $present_pools = $pools.keys()
     $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $present_pools}
-    require ::lvs::configuration
+    include profile::lvs::configuration
     $ips = wmflib::service::get_ips_for_services($services, $::site)
 
     class { '::lvs::realserver':
@@ -35,7 +35,7 @@ class profile::lvs::realserver(
         # - the service port
         # - the lvs servers that are serving that pool
         $local_services = $services.map |$pool_name, $svc| {
-            $lvs_servers = $::lvs::configuration::lvs_class_hosts[$svc['lvs']['class']]
+            $lvs_servers = $::profile::lvs::configuration::lvs_class_hosts[$svc['lvs']['class']]
             $addition = {'servers' => $lvs_servers, 'port' => $svc['port']}
             $retval = {$pool_name => $svc['lvs']['conftool'].merge($addition)}
         }.reduce({}) |$m, $val| {$m.merge($val)}
