@@ -73,9 +73,6 @@
 #   be omitted from the configuration file and the compiled-in default value of /tmp
 #   will be used.
 #
-# [*test_spark_3_install*]
-#   Set this to true to test the Spark3 installation on the test cluster.
-#   Default: false
 class profile::hadoop::spark3(
     # Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', {'default_value' => true}),
     # Boolean $install_assembly                  = lookup('profile::hadoop::spark3::install_assembly', {'default_value' => false}),
@@ -86,26 +83,17 @@ class profile::hadoop::spark3(
     Integer $port_max_retries                  = lookup('profile::hadoop::spark3::port_max_retries', {'default_value' => 100}),
     Stdlib::Unixpath $executor_env_ld_lib_path = lookup('profile::hadoop::spark3::executor_env_ld_lib_path', {'default_value' => '/usr/lib/hadoop/lib/native'}),
     Boolean $encryption_enabled                = lookup('profile::hadoop::spark3::encryption_enabled', {'default_value' => true}),
-    Optional[Stdlib::Unixpath] $local_dir      = lookup('profile::hadoop::spark3::local_dir', {'default_value' => undef }),
-    Boolean $test_spark_3_install              = lookup('profile::hadoop::spark3::test_spark_3_install', {'default_value' => false})
+    Optional[Stdlib::Unixpath] $local_dir      = lookup('profile::hadoop::spark3::local_dir', {'default_value' => undef })
 ) {
     require ::profile::hadoop::common
 
-    if $test_spark_3_install {
+    # We use conda-analytics to distribute spark3,
+    # and also want to use it as the default analytics cluster python for spark.
+    require ::profile::analytics::conda_analytics
 
-        # We use conda-analytics to distribute spark3,
-        # and also want to use it as the default analytics cluster python for spark.
-        require ::profile::analytics::conda_analytics
-
-        # $python_prefix_global variable will be rendered into spark-env.sh and used as the default
-        # values for PYSPARK_PYTHON and PYSPARK_DRIVER_PYTHON.
-        $python_prefix_global = $::conda_analytics::prefix
-
-    } else {
-        # Without the conda-analytics environment, in experimental Spark3 mode.
-        # TODO remove me after deployment of Spark3.
-        $python_prefix_global = '/usr/lib/airflow'
-    }
+    # $python_prefix_global variable will be rendered into spark-env.sh and used as the default
+    # values for PYSPARK_PYTHON and PYSPARK_DRIVER_PYTHON.
+    $python_prefix_global = $::conda_analytics::prefix
 
     # TODO: get spark_version from conda_analytics env and use it to create and upload spark assembly.
     # Get spark_version from facter. Use the default provided via hiera if not set.

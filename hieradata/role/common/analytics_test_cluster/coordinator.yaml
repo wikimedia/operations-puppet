@@ -203,5 +203,3 @@ profile::hadoop::common::config_override:
 # Versioned gobblin-wmf shaded to use for gobblin ingestion jobs.
 # Bump the version in the jar path here after deploying new versions of gobblin-wmf-core shaded jar.
 profile::analytics::refinery::job::test::gobblin::gobblin_jar_file: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-core-1.0.1-jar-with-dependencies.jar
-
-profile::hadoop::spark3::test_spark_3_install: true

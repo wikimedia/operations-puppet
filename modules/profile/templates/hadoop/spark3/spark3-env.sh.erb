@@ -79,11 +79,6 @@ if [ -z "${LD_LIBRARY_PATH}" -a -e /usr/lib/hadoop/lib/native ]; then
     export LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native
 fi
 
-<% # Skip configuration customizations for the currently running Spark 3 jobs
-   # launched by Airflow (production + test clusters).
-   # https://gitlab.wikimedia.org/repos/data-engineering/airflow-dags/-/blob/b8f66e9885bc18f1f152abb99e86a1eb376cc237/wmf_airflow_common/config/experimental_spark_3_dag_default_args.py
-   if @test_spark_3_install -%>
-
 if [ -z "${SPARK_HOME}" ]; then
     echo "ERROR: SPARK_HOME must be set before loading ${0}"
     exit 1
@@ -199,5 +194,3 @@ fi
 # the pyspark script will just use system 'python'.
 test -n "${PYSPARK_DRIVER_PYTHON}" && echo "PYSPARK_DRIVER_PYTHON=${PYSPARK_DRIVER_PYTHON}"
 test -n "${PYSPARK_PYTHON}" && echo "PYSPARK_PYTHON=${PYSPARK_PYTHON}"
-
-<% end -%>

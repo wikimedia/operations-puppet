@@ -48,10 +48,7 @@ spark.driver.blockManager.port                      <%= @driver_blockmanager_por
 spark.sql.files.maxPartitionBytes                   <%= @sql_files_max_partition_bytes %>
 <% end -%>
 
-
-<% if @test_spark_3_install -%>
 spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.jar
-<% end -%>
 
 # JVMs should use system proxy settings.
 # The system proxy settings are configured via the env vars http_proxy, https_proxy, and no_proxy.
