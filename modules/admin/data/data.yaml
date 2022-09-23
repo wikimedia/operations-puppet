@@ -1493,7 +1493,8 @@ users:
     gid: 500
     name: bd808
     realname: Bryan Davis
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICnQNBJLHRk+QKHb3AyB09057H2XMG48A2P/vKBSJFxt bd808+wmfprod@wmf-bd808-mbp02.local
     uid: 3518
     email: bdavis@wikimedia.org
     krb: present
