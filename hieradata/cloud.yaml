@@ -404,6 +404,7 @@ profile::memcached::ssl_cert: ~
 profile::memcached::ssl_key: ~
 
 # Only added to make CI happy. cloud has no LVS
+profile::lvs::configuration::class_hosts: {}
 profile::lvs::realserver::poolcounter_backends: ~
 profile::lvs::realserver::use_conftool: false
 
