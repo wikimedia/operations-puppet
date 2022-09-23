@@ -3,7 +3,7 @@ counter varnish_errors by type
 
 const MSG /[ \.:a-zA-Z\(\)0-9]+\t/
 
-/^error / + MSG {
+/\terror / + MSG {
     varnish_errors["Error"]++
 }
 

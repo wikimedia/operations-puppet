@@ -4,45 +4,46 @@ counter varnish_sli_good
 
 hidden gauge internal_time
 
-/^/ {
+# Track SLI just for client sided requests
+/^side c/ {
     varnish_sli_all++
 
     # Initialize hidden variable
     internal_time = 0.0
-}
 
-/\ttstart ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\ttstart ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-/\ttprocess ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\ttprocess ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-/\ttrestart ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\ttrestart ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-/\ttpipe ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\ttpipe ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-/\ttbereq ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\ttbereq ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-/\ttretry ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\ttretry ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-/\tterror ([0-9\.]+)\t/ {
-    internal_time += $1
-}
+    /\tterror ([0-9\.]+)\t/ {
+        internal_time += $1
+    }
 
-# Error shouldn't be set and FetchError can be set if the error message points out to a communication issue,
-# and the total time has to be within the chosen threshold (0.1s).
-/^error -\tfetcherror (?P<fetcherror>-|[ \.a-zA-Z\(\)0-9:]+)\t/ && internal_time < 0.1 {
-    $fetcherror =~ /-|req\.body read error/ {
-        varnish_sli_good++
+    # Error shouldn't be set and FetchError can be set if the error message points out to a communication issue,
+    # and the total time has to be within the chosen threshold (0.1s).
+    /\terror -\tfetcherror (?P<fetcherror>-|[ \.a-zA-Z\(\)0-9:]+)\t/ && internal_time < 0.1 {
+        $fetcherror =~ /-|req\.body read error/ {
+            varnish_sli_good++
+        }
     }
 }

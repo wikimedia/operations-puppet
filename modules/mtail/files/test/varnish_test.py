@@ -118,7 +118,7 @@ class VarnishErrorsTest(unittest.TestCase):
         s = dict(self.store.get_samples('varnish_errors'))
         expected = {
             'type=Error': 1,
-            'type=FetchError': 2,
+            'type=FetchError': 3,
         }
         self.assertEqual(expected, s)
 
