@@ -293,7 +293,7 @@ profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
 # profile::gitlab::runner::registration_token: private
 
 # VRTS
-profile::vrts::daemon: false
+profile::vrts::daemon: true
 profile::vrts::database_host: localhost
 profile::vrts::database_name: vrts
 profile::vrts::database_pass: StrongPass123!
