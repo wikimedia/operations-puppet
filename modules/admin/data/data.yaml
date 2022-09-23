@@ -6308,3 +6308,7 @@ ldap_only_users:
     ensure: present
     realname: Hasan Akgün
     email: hasan.akguen@wikimedia.de
+  tanuja:
+    ensure: present
+    realname: Tanuja Doriya
+    email: tanuja.doriya@wikimedia.de
