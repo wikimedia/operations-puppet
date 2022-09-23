@@ -12,6 +12,16 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.8';
+    
+-- phadmin@phab1004
+
+GRANT USAGE
+    ON *.* TO 'phadmin'@'10.64.16.101'
+    IDENTIFIED BY '<%= @phab_admin_pass %>';
+
+GRANT ALL PRIVILEGES
+    ON `phabricator%`.* TO 'phadmin'@'10.64.16.101';
+
 
 -- phadmin@dbproxy1020
 GRANT USAGE
@@ -36,6 +46,22 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.8';
+    
+-- phuser@phab1004
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phuser'@'10.64.16.101'
+    IDENTIFIED BY '<%= @phab_app_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.101';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phuser'@'10.64.16.101';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.101';
+
 
 -- phuser@dbproxy1020
 
@@ -63,6 +89,21 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.8';
+
+-- phabricatorphd@phab1004
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phabricatorphd'@'10.64.16.101'
+    IDENTIFIED BY '<%= @phab_phd_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.101';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phabricatorphd'@'10.64.16.101';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.101';
 
 -- phabricatorphd@dbproxy1020
 
@@ -134,6 +175,16 @@ GRANT USAGE
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.8';
+
+-- phmanifest@phab1004
+
+GRANT USAGE
+    ON *.* TO 'phmanifest'@'10.64.16.101'
+    IDENTIFIED BY '<%= @phab_manifest_pass %>';
+
+GRANT SELECT
+    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.101';
+
 
 -- phmanifest@dbproxy1020
 
