@@ -52,11 +52,6 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - twl-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
-  utrs:
-    volumes:
-      - utrs-nfs
-    FULL_FREQUENCY: 7
-    PURGE_AFTER: 30
   wikidumpparse:
     volumes:
       - wikidumpparse-nfs
