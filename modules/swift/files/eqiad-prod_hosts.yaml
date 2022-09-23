@@ -25,28 +25,6 @@ schemes:
 
 hosts:
   prod:
-    - ms-be1028:
-        - drain
-    - ms-be1029:
-        - drain
-    - ms-be1030:
-        - drain
-    - ms-be1031:
-        - drain
-    - ms-be1032:
-        - drain
-    - ms-be1033:
-        - drain
-    - ms-be1035:
-        - drain
-    - ms-be1036:
-        - drain
-    - ms-be1037:
-        - drain
-    - ms-be1038:
-        - drain
-    - ms-be1039:
-        - drain
     - ms-be1040
     - ms-be1041
     - ms-be1042
