@@ -15,6 +15,7 @@ class role::wmcs::toolforge::grid::bastion {
     include profile::toolforge::grid::submit_host
     include profile::toolforge::grid::sysctl
 
+    include profile::block_local_crontabs
     include profile::toolforge::automated_tests
     include profile::wmcs::dologmsg
 }
