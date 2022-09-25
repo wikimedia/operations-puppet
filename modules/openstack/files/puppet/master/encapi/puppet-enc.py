@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # ^ above line exists purely to make Jenkins test this using Python 3
+import json
 import re
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Tuple
 
 import pymysql
 import yaml
@@ -87,7 +88,19 @@ def dump_with_requested_format(data):
     return abort(400, f"unsupported Accept header: {accept}")
 
 
-class Forbidden(HTTPException):
+class EncException(HTTPException):
+    def get_headers(self, environ, scope: Optional[dict]) -> List[Tuple[str, str]]:
+        return [("Content-Type", "application/json; charset=utf-8")]
+
+    def get_body(self, environ, scope) -> str:
+        error_msg = f"{self.code} {self.name}"
+        if self.description:
+            error_msg += f" {self.description}"
+
+        return json.dumps({"error": error_msg})
+
+
+class Forbidden(EncException):
     code = 403
     description = "Forbidden."
 
