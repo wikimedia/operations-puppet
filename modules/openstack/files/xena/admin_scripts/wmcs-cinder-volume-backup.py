@@ -148,6 +148,7 @@ class CinderBackup(object):
                     to_delete[id] = self.cinderclient.backups.get(id)
         logging.info("Purged %d backups" % delete_count)
 
+    @retry(reraise=True, stop=stop_after_attempt(3), wait=wait_random(min=30, max=60))
     def backup_volume(self):
         logging.info("Backup up volume %s" % self.volume.id)
         new_backup_name = f"{self.volume.name}-{datetime.datetime.now().isoformat()}"
