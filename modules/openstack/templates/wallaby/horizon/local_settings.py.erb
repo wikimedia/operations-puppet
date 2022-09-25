@@ -517,19 +517,6 @@ HORIZON_IMAGES_UPLOAD_MODE = 'off'
 
 DESIGNATE = { 'records_use_fips': True }
 
-PROXY_ZONE_DICT =  {
-<% @proxy_zone_dict.each do |zonename, settings| -%>
-    "<%= zonename %>": {
-<% settings.each do |key,value| -%>
-        "<%= key %>": "<%= value %>",
-<% end -%>
-        "password": "<%= @proxy_zone_passwords[zonename] %>",
-    },
-<% end -%>
-}
-
-WMFLABSDOTORG_ADMIN_USERNAME = '<%= @wmflabsdotorg_admin %>'
-WMFLABSDOTORG_ADMIN_PASSWORD = '<%= @wmflabsdotorg_pass %>'
 INSTANCE_TLD = '<%= @dhcp_domain %>'
 
 # Disable instance consoles for Horizon users
