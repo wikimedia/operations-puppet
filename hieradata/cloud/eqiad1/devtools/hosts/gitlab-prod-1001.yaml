@@ -2,5 +2,4 @@
 # Needs to be set explicitly otherwise it listens on 0.0.0.0
 # and gitlab ssh daemon is unable to bind to second ip.
 # No ipv6 because of WMCS.
-profile::ssh::server::listen_addresses:
-  - "%{facts.ipaddress}"
+profile::ssh::server::listen_addresses: ["172.16.2.73"]
