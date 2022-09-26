@@ -196,10 +196,6 @@ class profile::wmcs::paws::prometheus (
                     'source_labels' => ['__meta_kubernetes_pod_name'],
                 },
                 {
-                    'action' => 'labelmap',
-                    'regex'  => '__meta_kubernetes_pod_label_(.+)',
-                },
-                {
                     'target_label' => '__address__',
                     'replacement'  => "${k8s_apiserver_fqdn}:${k8s_apiserver_port}",
                 },
