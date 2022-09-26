@@ -100,9 +100,7 @@ def generate_new_pw() -> str:
     Generate a new random password
     """
     sysrandom = random.SystemRandom()  # Uses /dev/urandom
-    return "".join(
-        [sysrandom.choice(PASSWORD_CHARS) for _ in range(PASSWORD_LENGTH)]
-    )
+    return "".join([sysrandom.choice(PASSWORD_CHARS) for _ in range(PASSWORD_LENGTH)])
 
 
 def mysql_hash(password: str) -> str:
@@ -179,9 +177,7 @@ def find_tools(config: Config) -> List[Account]:
             attrs = resp["attributes"]
             users.append((attrs["cn"][0], int(attrs["uidNumber"][0])))
 
-        cookie = conn.result["controls"]["1.2.840.113556.1.4.319"]["value"][
-            "cookie"
-        ]
+        cookie = conn.result["controls"]["1.2.840.113556.1.4.319"]["value"]["cookie"]
         while cookie:
             conn.search(
                 "ou=people,ou=servicegroups,dc=wikimedia,dc=org",
@@ -192,9 +188,7 @@ def find_tools(config: Config) -> List[Account]:
                 paged_size=1000,
                 paged_cookie=cookie,
             )
-            cookie = conn.result["controls"]["1.2.840.113556.1.4.319"]["value"][
-                "cookie"
-            ]
+            cookie = conn.result["controls"]["1.2.840.113556.1.4.319"]["value"]["cookie"]
             for resp in conn.response:
                 attrs = resp["attributes"]
                 users.append((attrs["cn"][0], int(attrs["uidNumber"][0])))
@@ -292,10 +286,7 @@ def get_ldap_conn(config):
     Return value can be used as a context manager
     """
     servers = ldap3.ServerPool(
-        [
-            ldap3.Server(host, connect_timeout=1)
-            for host in config["ldap"]["hosts"]
-        ],
+        [ldap3.Server(host, connect_timeout=1) for host in config["ldap"]["hosts"]],
         ldap3.POOLING_STRATEGY_ROUND_ROBIN,
         active=True,
         exhaust=True,
@@ -348,9 +339,7 @@ def get_replica_path(account_type: str, name: str) -> str:
             ".my.cnf",
         )
     else:
-        return os.path.join(
-            "/srv/tools/shared/tools/home/", name, "replica.my.cnf"
-        )
+        return os.path.join("/srv/tools/shared/tools/home/", name, "replica.my.cnf")
 
 
 def harvest_cnf_files(config, account_type="tool"):
@@ -481,13 +470,9 @@ def populate_new_accounts(config, account_type="tool"):
                     account_type,
                 )
                 cur_accounts = set([r["username"] for r in cur])
-                new_accounts = [
-                    t for t in all_accounts if t[0] not in cur_accounts
-                ]
+                new_accounts = [t for t in all_accounts if t[0] not in cur_accounts]
                 all_account_names = [y[0] for y in all_accounts]
-                deleted_accts = [
-                    x for x in cur_accounts if x not in all_account_names
-                ]
+                deleted_accts = [x for x in cur_accounts if x not in all_account_names]
             else:
                 cur.execute(
                     """
@@ -496,11 +481,7 @@ def populate_new_accounts(config, account_type="tool"):
                     account_type,
                 )
                 cur_accounts = set([r["mysql_username"] for r in cur])
-                new_accounts = [
-                    t
-                    for t in all_accounts
-                    if "p{}".format(t[1]) not in cur_accounts
-                ]
+                new_accounts = [t for t in all_accounts if "p{}".format(t[1]) not in cur_accounts]
                 deleted_accts = []  # Need to check the logic for this on PAWS
 
             logging.debug(
@@ -519,9 +500,7 @@ def populate_new_accounts(config, account_type="tool"):
                 # that get passed over like this will be picked up on the next
                 # round
                 if account_type == "paws":
-                    replica_path = get_replica_path(
-                        account_type, str(new_account_id)
-                    )
+                    replica_path = get_replica_path(account_type, str(new_account_id))
                 else:
                     replica_path = get_replica_path(account_type, new_account)
 
@@ -534,9 +513,7 @@ def populate_new_accounts(config, account_type="tool"):
                     continue
                 pwd = generate_new_pw()
                 prefix = {"tool": "s", "paws": "p", "user": "u"}
-                mysql_username = "{0}{1:d}".format(
-                    prefix[account_type], new_account_id
-                )
+                mysql_username = "{0}{1:d}".format(prefix[account_type], new_account_id)
                 cur.execute(
                     """
                 INSERT INTO account (mysql_username, type, username, password_hash)
@@ -561,24 +538,16 @@ def populate_new_accounts(config, account_type="tool"):
                 # Do this *before* the commit to the db has succeeded
                 if account_type == "paws":
                     # PAWS users share an LDAP account on disk
-                    write_replica_cnf(
-                        replica_path, PAWS_RUNTIME_UID, mysql_username, pwd
-                    )
+                    write_replica_cnf(replica_path, PAWS_RUNTIME_UID, mysql_username, pwd)
                 else:
-                    write_replica_cnf(
-                        replica_path, new_account_id, mysql_username, pwd
-                    )
+                    write_replica_cnf(replica_path, new_account_id, mysql_username, pwd)
                 acct_db.commit()
-                logging.info(
-                    "Wrote replica.my.cnf for %s %s", account_type, new_account
-                )
+                logging.info("Wrote replica.my.cnf for %s %s", account_type, new_account)
 
             for del_account in deleted_accts:
                 if account_type != "paws":  # TODO: consider PAWS
                     delete_account(config, del_account, account_type)
-                    logging.info(
-                        "Deleted account %s %s", account_type, del_account
-                    )
+                    logging.info("Deleted account %s %s", account_type, del_account)
 
     finally:
         acct_db.close()
@@ -628,22 +597,15 @@ def create_accounts(config):
                                 "max_connections", DEFAULT_MAX_CONNECTIONS
                             )
 
-                        if (
-                            paws_account_re.match(username)
-                            and grant_type == "legacy"
-                        ):
+                        if paws_account_re.match(username) and grant_type == "legacy":
                             # Skip toolsdb account creation for PAWS
                             continue
 
                         with labsdb.cursor() as labsdb_cur:
-                            create_acct_string = ACCOUNT_CREATION_SQL[
-                                grant_type
-                            ].format(
+                            create_acct_string = ACCOUNT_CREATION_SQL[grant_type].format(
                                 username=username,
                                 max_connections=max_connections,
-                                password_hash=row["password_hash"].decode(
-                                    "utf-8"
-                                ),
+                                password_hash=row["password_hash"].decode("utf-8"),
                             )
                             try:
                                 labsdb_cur.execute(create_acct_string)
@@ -685,17 +647,13 @@ def create_accounts(config):
                             )
 
             except pymysql.err.OperationalError as exc:
-                logging.warning(
-                    "Could not connect to %s due to %s.  Skipping.", host, exc
-                )
+                logging.warning("Could not connect to %s due to %s.  Skipping.", host, exc)
                 continue
             finally:
                 try:
                     labsdb.close()
                 except pymysql.err.Error as err:
-                    logging.warning(
-                        "Could not close connection to %s: %s", host, err
-                    )
+                    logging.warning("Could not close connection to %s: %s", host, err)
     finally:
         acct_db.close()
 
@@ -751,9 +709,7 @@ def delete_account(config, account, account_type="tool"):
                 for row in cur:
                     try:
                         with labsdb.cursor() as labsdb_cur:
-                            labsdb_cur.execute(
-                                "DROP USER %s" % row["mysql_username"]
-                            )
+                            labsdb_cur.execute("DROP USER %s" % row["mysql_username"])
                             labsdb.commit()
                         with acct_db.cursor() as write_cur:
                             write_cur.execute(
@@ -780,15 +736,11 @@ def delete_account(config, account, account_type="tool"):
             else get_replica_path(account_type, uid)
         )
         try:
-            subprocess.check_output(
-                ["/usr/bin/chattr", "-i", replica_file_path]
-            )
+            subprocess.check_output(["/usr/bin/chattr", "-i", replica_file_path])
             os.remove(replica_file_path)
             logging.info("Deleted %s", replica_file_path)
         except subprocess.CalledProcessError:
-            logging.info(
-                "Could not delete %s, file probably missing", replica_file_path
-            )
+            logging.info("Could not delete %s, file probably missing", replica_file_path)
 
         # Now we get rid of the account itself
         with acct_db.cursor() as write_cur:
@@ -816,12 +768,7 @@ def is_active_nfs(config):
         ifaddress = netifaces.ifaddresses(iface)
         if netifaces.AF_INET not in ifaddress:
             continue
-        if any(
-            [
-                ip["addr"] == config["nfs-cluster-ip"]
-                for ip in ifaddress[netifaces.AF_INET]
-            ]
-        ):
+        if any([ip["addr"] == config["nfs-cluster-ip"] for ip in ifaddress[netifaces.AF_INET]]):
             return True
     return False
 
@@ -835,9 +782,7 @@ def main():
         help="Path to YAML config file, default - /etc/dbusers.yaml",
     )
 
-    argparser.add_argument(
-        "--debug", help="Turn on debug logging", action="store_true"
-    )
+    argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
     argparser.add_argument(
         "--account-type",
