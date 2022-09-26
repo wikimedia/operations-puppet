@@ -4,3 +4,4 @@ profile::gitlab::runner::docker_settings:
 profile::gitlab::runner::docker_volume: true
 profile::gitlab::runner::ensure_buildkitd: present
 puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
+profile::base::unprivileged_userns_clone: true
