@@ -1,0 +1,6 @@
+# this provides the listen_address for sshd_config, used for admin logins.
+# Needs to be set explicitly otherwise it listens on 0.0.0.0
+# and gitlab ssh daemon is unable to bind to second ip.
+# No ipv6 because of WMCS.
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
