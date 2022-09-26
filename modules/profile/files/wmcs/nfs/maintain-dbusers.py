@@ -454,6 +454,58 @@ def harvest_replica_accts(config):
             ldb.close()
 
 
+def _populate_new_account(account_type, new_account, new_account_id, acct_db, cur, config):
+    # if a homedir for this account does not exist yet, just ignore
+    # it home directory creation (for tools) is currently handled by
+    # maintain-kubeusers, and we do not want to race. Tool accounts
+    # that get passed over like this will be picked up on the next
+    # round
+    if account_type == "paws":
+        replica_path = get_replica_path(account_type, str(new_account_id))
+    else:
+        replica_path = get_replica_path(account_type, new_account)
+
+    if not os.path.exists(os.path.dirname(replica_path)):
+        logging.debug(
+            "Skipping %s account %s, since no home directory exists yet",
+            account_type,
+            new_account,
+        )
+        return
+    pwd = generate_new_pw()
+    prefix = {"tool": "s", "paws": "p", "user": "u"}
+    mysql_username = "{0}{1:d}".format(prefix[account_type], new_account_id)
+    cur.execute(
+        """
+                INSERT INTO account (mysql_username, type, username, password_hash)
+                VALUES (%s, %s, %s, %s)
+                """,
+        (
+            mysql_username,
+            account_type,
+            new_account,
+            mysql_hash(pwd),
+        ),
+    )
+    acct_id = cur.lastrowid
+    for hostname in config["labsdbs"]["hosts"]:
+        cur.execute(
+            """
+                    INSERT INTO account_host (account_id, hostname, status)
+                    VALUES (%s, %s, %s)
+                    """,
+            (acct_id, hostname, "absent"),
+        )
+    # Do this *before* the commit to the db has succeeded
+    if account_type == "paws":
+        # PAWS users share an LDAP account on disk
+        write_replica_cnf(replica_path, PAWS_RUNTIME_UID, mysql_username, pwd)
+    else:
+        write_replica_cnf(replica_path, new_account_id, mysql_username, pwd)
+    acct_db.commit()
+    logging.info("Wrote replica.my.cnf for %s %s", account_type, new_account)
+
+
 def populate_new_accounts(config, account_type="tool"):
     """
     Populate new tools/users into meta db
@@ -494,55 +546,17 @@ def populate_new_accounts(config, account_type="tool"):
                 ", ".join([t[0] for t in deleted_accts]),
             )
             for new_account, new_account_id in new_accounts:
-                # if a homedir for this account does not exist yet, just ignore
-                # it home directory creation (for tools) is currently handled by
-                # maintain-kubeusers, and we do not want to race. Tool accounts
-                # that get passed over like this will be picked up on the next
-                # round
-                if account_type == "paws":
-                    replica_path = get_replica_path(account_type, str(new_account_id))
-                else:
-                    replica_path = get_replica_path(account_type, new_account)
-
-                if not os.path.exists(os.path.dirname(replica_path)):
-                    logging.debug(
-                        "Skipping %s account %s, since no home directory exists yet",
-                        account_type,
-                        new_account,
+                try:
+                    _populate_new_account(
+                        account_type=account_type,
+                        new_account=new_account,
+                        new_account_id=new_account_id,
+                        acct_db=acct_db,
+                        cur=cur,
+                        config=config,
                     )
-                    continue
-                pwd = generate_new_pw()
-                prefix = {"tool": "s", "paws": "p", "user": "u"}
-                mysql_username = "{0}{1:d}".format(prefix[account_type], new_account_id)
-                cur.execute(
-                    """
-                INSERT INTO account (mysql_username, type, username, password_hash)
-                VALUES (%s, %s, %s, %s)
-                """,
-                    (
-                        mysql_username,
-                        account_type,
-                        new_account,
-                        mysql_hash(pwd),
-                    ),
-                )
-                acct_id = cur.lastrowid
-                for hostname in config["labsdbs"]["hosts"]:
-                    cur.execute(
-                        """
-                    INSERT INTO account_host (account_id, hostname, status)
-                    VALUES (%s, %s, %s)
-                    """,
-                        (acct_id, hostname, "absent"),
-                    )
-                # Do this *before* the commit to the db has succeeded
-                if account_type == "paws":
-                    # PAWS users share an LDAP account on disk
-                    write_replica_cnf(replica_path, PAWS_RUNTIME_UID, mysql_username, pwd)
-                else:
-                    write_replica_cnf(replica_path, new_account_id, mysql_username, pwd)
-                acct_db.commit()
-                logging.info("Wrote replica.my.cnf for %s %s", account_type, new_account)
+                except Exception as e:
+                    logging.error("problem populating new account: %s", str(e))
 
             for del_account in deleted_accts:
                 if account_type != "paws":  # TODO: consider PAWS
