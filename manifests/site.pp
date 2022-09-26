@@ -532,6 +532,11 @@ node 'db2173.codfw.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
+# codfw new db node T313979
+node /^db218[34]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # s2 (large wikis) core production dbs on eqiad
 # See also db1105, db1146, db1170 below
 node /^db1(122|129|162|182|188|197)\.eqiad\.wmnet/ {
