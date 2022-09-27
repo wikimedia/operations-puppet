@@ -1843,6 +1843,11 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
     role(mediawiki::memcached::gutter)
 }
 
+# new mc-wf nodes T313963
+node /^mc-wf100[12]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # New mc-wf nodes T313966
 node /^mc-wf200[1-2]\.codfw\.wmnet/ {
     role(memcached)
