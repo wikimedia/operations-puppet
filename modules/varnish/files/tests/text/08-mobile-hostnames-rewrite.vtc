@@ -123,7 +123,7 @@ client c1 {
 
     txreq -url "/?title=foo&bar=baz" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://en.m.wikipedia.org/?title=foo&bar=baz"
+    expect resp.http.location == "https://en.m.wikipedia.org/?bar=baz&title=foo"
     expect resp.status == 302
 
     txreq -url "/?bar=baz&title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
@@ -133,22 +133,22 @@ client c1 {
 
     txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
     expect resp.status == 302
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: simple.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.http.location == "https://simple.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.http.location == "https://simple.m.wikipedia.org/w/index.php?action=info&title=MyPage"
     expect resp.status == 302
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
     expect resp.status == 302
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
     expect resp.status == 302
 
     txreq -url "/wiki/Sonido" -hdr "User-Agent: firefox" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"

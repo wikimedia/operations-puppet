@@ -44,6 +44,6 @@ client c1 {
     # Trigger text-specific behavior
     txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
     expect resp.status == 302
 } -run
