@@ -1734,6 +1734,11 @@ node /^logstash20(2[345]|3[012])\.codfw\.wmnet$/ {
     role(logging::opensearch::collector)
 }
 
+# New logstash nodes T313848 (codfw)
+node /^logstash203[67]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # Logging data nodes (eqiad)
 node /^logstash10(1[012]|2[6789]|3[345])\.eqiad\.wmnet$/ {
     role(logging::opensearch::data)
