@@ -38,7 +38,7 @@ class profile::mail::mx (
     $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
     }
-    $otrs_aliases_file = '/etc/exim4/otrs_emails'
+    $vrts_aliases_file = '/etc/exim4/otrs_emails'
 
     class { 'spamassassin':
         required_score   => '4.0',
@@ -49,7 +49,7 @@ class profile::mail::mx (
     }
 
     include passwords::exim
-    $otrs_mysql_password = $passwords::exim::otrs_mysql_password
+    $vrts_mysql_password = $passwords::exim::vrts_mysql_password
     $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
 
     # enable dkim_verbose logs, needed for mtail metric collection
@@ -190,7 +190,15 @@ class profile::mail::mx (
         owner   => 'root',
         group   => 'Debian-exim',
         mode    => '0444',
-        content => template('profile/mail/mx/otrs.conf.erb')
+        content => epp('profile/mail/mx/otrs.conf.epp', {
+            gmail_smtp_server      => $gmail_smtp_server,
+            vrts_aliases_file      => $vrts_aliases_file,
+            vrts_mysql_dbname      => $vrts_mysql_dbname,
+            vrts_mysql_password    => $vrts_mysql_password,
+            vrts_mysql_server      => $vrts_mysql_server,
+            vrts_mysql_user        => $vrts_mysql_user,
+            wikimedia_domains_path => $wikimedia_domains_path
+        })
     }
     file {'/usr/local/bin/otrs_aliases':
         ensure => file,

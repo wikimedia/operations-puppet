@@ -33,9 +33,6 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 # re-enabled when Exim is upgraded to 4.96, T307873.
 chunking_advertise_hosts =
 
-# MySQL lookups (OTRS)
-hide mysql_servers =  <%= @vrts_mysql_server %>/<%= @vrts_mysql_dbname %>/<%= @vrts_mysql_user %>/<%= @vrts_mysql_password %>
-
 # LDAP lookups (Office)
 ldap_default_servers = ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @other_site %>.wikimedia.org
 LDAPPASSWORD=<%= @smtp_ldap_password %>
@@ -382,6 +379,9 @@ ldap_alias:
 			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(initials=${quote_ldap:$local_part}@$domain)(x121Address=1))} \
 			{$value}fail}
 
+# MySQL lookups (OTRS)
+hide mysql_servers =  <%= @vrts_mysql_server %>/<%= @vrts_mysql_dbname %>/<%= @vrts_mysql_user %>/<%= @vrts_mysql_password %>
+
 # Query the OTRS MySQL server(s) for the existence of the queue address
 # $local_part@$domain, and manually route to the OTRS server if
 # successful.
@@ -399,8 +399,8 @@ otrs:
 otrs:
 	driver = manualroute
 	domains = +local_domains
-	require_files = <%= @otrs_aliases_file %>
-	condition = ${lookup{$local_part@$domain}lsearch*{<%= @otrs_aliases_file %>}}
+	require_files = <%= @vrts_aliases_file %>
+	condition = ${lookup{$local_part@$domain}lsearch*{<%= @vrts_aliases_file %>}}
 	route_list = *  otrs1001.eqiad.wmnet  byname
 	transport = remote_smtp
 

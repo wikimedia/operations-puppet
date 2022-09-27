@@ -1,0 +1,18 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Host $gmail_smtp_server,
+      Stdlib::Host $vrts_mysql_dbname,
+      Stdlib::Host $vrts_mysql_server,
+      Stdlib::Host $vrts_mysql_user,
+      String $vrts_aliases_file,
+      String $vrts_mysql_password,
+      String $wikimedia_domains_path
+| -%>
+[DEFAULT]
+valid_domains = <%= $wikimedia_domains_path %>
+smtp_server = <%= $gmail_smtp_server %>
+aliases_file = <%= $vrts_aliases_file %>
+[DB]
+host = <%= $vrts_mysql_server %>
+name = <%= $vrts_mysql_dbname %>
+user = <%= $vrts_mysql_user %>
+pass = <%= $vrts_mysql_password %>
