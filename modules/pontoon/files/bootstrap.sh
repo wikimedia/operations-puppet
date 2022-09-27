@@ -60,7 +60,7 @@ EOF
 
   sed -e "s@/etc/puppet/hieradata@$git/puppet/hieradata@" \
     -e "s@/etc/puppet/private@$git/private@" \
-    $git/puppet/modules/puppetmaster/files/pontoon.hiera.yaml > $init/hiera.yaml
+    $git/puppet/modules/puppetmaster/files/hiera/pontoon.yaml > $init/hiera.yaml
 
 
   install -d $git/puppet/hieradata/pontoon
