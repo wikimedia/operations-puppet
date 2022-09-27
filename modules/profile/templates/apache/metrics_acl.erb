@@ -15,5 +15,5 @@
 # plus local TLS termination. Thus use XFF as the remote IP to make the
 # ACL above work as expected.
 <IfModule mod_remoteip.c>
-RemoteIPHeader X-Forwarded-For
+RemoteIPHeader X-Client-IP
 </IfModule>
