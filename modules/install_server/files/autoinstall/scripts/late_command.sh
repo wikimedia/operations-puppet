@@ -32,14 +32,16 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
-case `hostname` in \
-	cp[1236][0-9][0-9][0-9]|cp501[3456]|cp403[3456])
-		# new cache nodes (mid-2018) use a single NVMe drive (Samsung
-		# pm1725[ab]) for storage, which needs its LBA format changed
-		# to 4K block size before manually partitioning.
-		in-target /usr/sbin/nvme format /dev/nvme0n1 -l 2
-		echo ';' | /usr/sbin/sfdisk /dev/nvme0n1
-		;; \
+# Format any edge cache node NVMe drives as 4K block size for direct use as a
+# single partition for ats-be cache (we currently have a mix of nodes with 0,
+# 1, or 2 such drives).
+case $(hostname) in
+    cp[123456][0-9][0-9][0-9])
+        for nvmedev in /dev/nvme?n1; do
+            in-target /usr/sbin/nvme format "$nvmedev" -l 2
+            echo ';' | /usr/sbin/sfdisk "$nvmedev"
+        done
+    ;;
 esac
 
 # Temporarily pre-provision swift user at a fixed UID on new installs.
