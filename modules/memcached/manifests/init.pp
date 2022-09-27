@@ -161,6 +161,19 @@ class memcached(
         content => '# Refer to memcached.service unit for configuration.',
     }
 
+    # Make sure memcached.service is not automatically started on package install and
+    # before the override is in place.
+
+    systemd::mask{ 'memcached.service':
+        unless => "/usr/bin/dpkg -s memcached | /bin/grep -q '^Status: install ok installed$'",
+    }
+
+    systemd::unmask{ 'memcached.service': }
+
+    # Ensure systemctl mask happens before the package is installed, and that
+    # package installation triggers service unmask
+    Systemd::Mask['memcached.service'] -> Package['memcached'] ~> Systemd::Unmask['memcached.service']
+
     systemd::service { 'memcached':
         ensure   => present,
         override => $override,
