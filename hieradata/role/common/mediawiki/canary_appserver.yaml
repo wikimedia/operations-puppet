@@ -32,7 +32,6 @@ profile::mediawiki::httpd::logrotate_retention: 12
 profile::lvs::realserver::pools:
   appservers-https:
     services:
-      - php7.2-fpm
       - php7.4-fpm
       - apache2
       - mcrouter
@@ -60,7 +59,7 @@ profile::mediawiki::php::slowlog_limit: 5
 profile::mediawiki::php::icu63: true
 profile::mediawiki::php::php_versions:
   - "7.4"
-  - "7.2"
+
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
 
