@@ -159,7 +159,7 @@ git remote add ${git_remote_name} ssh://${FQDN}/~/puppet.git
 git checkout -b pontoon-$stack production
 
 mkdir modules/pontoon/files/${stack}
-printf "puppetmaster::pontoon:\n  - ${FQDN}\n" > modules/pontoon/files/${stack}/rolemap.yaml
+printf "# SPDX-License-Identifier: Apache-2.0\n\npuppetmaster::pontoon:\n  - ${FQDN}\n" > modules/pontoon/files/${stack}/rolemap.yaml
 
 git add modules/pontoon/files/${stack}
 git commit -m "pontoon: initialize new stack ${stack}"
