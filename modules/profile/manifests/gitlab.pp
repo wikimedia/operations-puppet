@@ -201,5 +201,6 @@ class profile::gitlab(
         partial_backup_interval => $partial_backup_interval,
         config_backup_interval  => $config_backup_interval,
         restore_interval        => $restore_interval,
+        email_enable            => $active_host == $facts['fqdn'], # enable emails on active GitLab server
     }
 }
