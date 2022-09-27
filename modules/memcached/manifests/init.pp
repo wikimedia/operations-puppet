@@ -165,6 +165,7 @@ class memcached(
         ensure   => present,
         override => $override,
         content  => systemd_template('memcached'),
+        restart  => true,
     }
 
     # Prefer a direct check if memcached is not running on localhost.
