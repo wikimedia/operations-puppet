@@ -230,6 +230,12 @@ class profile::prometheus::k8s (
                         'role'              => 'pod',
                     },
                 ],
+                'metric_relabel_configs' => [
+                    {   'source_labels' => ['__name__'],
+                        'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
+                        'action'        => 'keep'
+                    },
+                ],
                 'relabel_configs' => [
                     {
                         'action'        => 'keep',
