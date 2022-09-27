@@ -104,21 +104,6 @@
       stderr: ""
       stdout: "0"
 
-- name: jsub using implicit path, buster bastion --> stretch grid (fails)
-  tests:
-    # cleanup
-    - cmd: $SUDO rm -fv path.err path.out
-    # schedule job
-    - cmd: $SUDO jsub -release stretch -N path echo WORKS_STRETCH | grep "has been submitted"
-      retcode: 0
-      stderr: ""
-    # verify: wait for the grid to schedule & run the job (fails)
-    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! $SUDO grep "No such file or directory" path.err
-           ; do sleep 0.5 ; done'
-      retcode: 0
-      stderr: ""
-
 - name: jsub using explicit path (/bin), buster bastion --> buster grid
   tests:
     # cleanup
@@ -130,26 +115,6 @@
     # verify: wait for the grid to schedule & run the job
     - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
            while ! $SUDO grep ^WORKS_BUSTER$ path.out
-           ; do sleep 0.5 ; done'
-      retcode: 0
-      stderr: ""
-    # we should have no error messages
-    - cmd: $SUDO cat path.err | wc -l
-      retcode: 0
-      stderr: ""
-      stdout: "0"
-
-- name: jsub using explicit path (/bin), buster bastion --> stretch grid
-  tests:
-    # cleanup
-    - cmd: $SUDO rm -fv path.err path.out
-    # schedule job
-    - cmd: $SUDO jsub -release stretch -N path /bin/echo WORKS_STRETCH | grep "has been submitted"
-      retcode: 0
-      stderr: ""
-    # verify: wait for the grid to schedule & run the job
-    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! $SUDO grep ^WORKS_STRETCH$ path.out
            ; do sleep 0.5 ; done'
       retcode: 0
       stderr: ""
@@ -179,21 +144,6 @@
       stderr: ""
       stdout: "0"
 
-- name: jsub using explicit path (/usr/bin), buster bastion --> stretch grid (fails)
-  tests:
-    # cleanup
-    - cmd: $SUDO rm -fv path.err path.out
-    # schedule job
-    - cmd: $SUDO jsub -release stretch -N path /usr/bin/echo WORKS_STRETCH | grep "has been submitted"
-      retcode: 0
-      stderr: ""
-    # verify: wait for the grid to schedule & run the job
-    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! $SUDO grep "No such file or directory" path.err
-           ; do sleep 0.5 ; done'
-      retcode: 0
-      stderr: ""
-
 - name: setup python webservice environment for the weblight grid
   tests:
     # cleanup previous executions
@@ -215,21 +165,6 @@
       retcode: 0
       stderr: ""
     - cmd: chmod ug+x $WEBLIGHTCODE_FULLPATH
-      retcode: 0
-      stderr: ""
-
-- name: stretch python weblight grid reading /etc/debian_version (ws type lighttpd)
-  tests:
-    # cleanup previous executions
-    - cmd: $SUDO webservice stop --backend gridengine
-    # run the webapp (default is web light grid)
-    - cmd: $SUDO webservice --backend gridengine --release stretch start | grep "Starting webservice"
-      retcode: 0
-      stderr: ""
-    # verify: wait for the grid to schedule & run the webservice.
-    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! curl -s https://${TOOLNAME}.${TOOLFORGE_DOMAIN}/${WEBLIGHTCODE_URL_COMPONENT} | grep ^9.
-           ; do sleep 0.5 ; done'
       retcode: 0
       stderr: ""
 
@@ -342,7 +277,7 @@
       retcode: 0
       stderr: ""
 
-- name: verify default grid exec node release (stretch) if no release requested with jsub
+- name: verify default grid exec node release (buster) if no release requested with jsub
   tests:
     # another cleanup
     - cmd: $SUDO rm -fv ${JOB_NAME}.err ${JOB_NAME}.out
@@ -352,7 +287,7 @@
       stderr: ""
     # verify: wait for the grid to schedule & run the job
     - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! $SUDO grep ^9. ${JOB_NAME}.out
+           while ! $SUDO grep ^10. ${JOB_NAME}.out
            ; do sleep 0.5 ; done'
       retcode: 0
       stderr: ""
@@ -382,26 +317,6 @@
       stderr: ""
       stdout: "0"
 
-- name: run a basic jsub job in the STRETCH grid reading /etc/debian_version of the exec node
-  tests:
-    # another cleanup
-    - cmd: $SUDO rm -fv ${JOB_NAME}.err ${JOB_NAME}.out
-    # run the job
-    - cmd: $SUDO jsub -release stretch ${JOB_SCRIPT} | grep ${JOB_NAME} | grep "has been submitted"
-      retcode: 0
-      stderr: ""
-    # verify: wait for the grid to schedule & run the job
-    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! $SUDO grep ^9. ${JOB_NAME}.out
-           ; do sleep 0.5 ; done'
-      retcode: 0
-      stderr: ""
-    # we should have no error messages
-    - cmd: $SUDO cat ${JOB_NAME}.err | wc -l
-      retcode: 0
-      stderr: ""
-      stdout: "0"
-
 - name: setup environment for a cron job, default stretch grid
   tests:
     # start fresh
@@ -422,14 +337,14 @@
       retcode: 0
       stderr: ""
 
-- name: basic cron job, default stretch grid
+- name: basic cron job, default buster grid
   tests:
     - cmd: $SUDO crontab ${CRON_FILE}
       retcode: 0
       stdout: ""
     # verify: wait at least 1 minute for the cron to trigger, then for the grid to schedule & run the job
     - cmd: timeout 120 bash -c -- '
-           while ! $SUDO grep ^9. ${JOB_NAME}.out
+           while ! $SUDO grep ^10. ${JOB_NAME}.out
            ; do sleep 0.5 ; done'
       retcode: 0
     # we should have no error messages
