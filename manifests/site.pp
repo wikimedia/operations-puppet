@@ -345,6 +345,10 @@ node 'centrallog1001.eqiad.wmnet', 'centrallog2002.codfw.wmnet' {
     role(syslog::centralserver)
 }
 
+node 'centrallog1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 node 'centrallog2001.codfw.wmnet' {
     role(spare::system)
 }
