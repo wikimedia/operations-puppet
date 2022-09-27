@@ -27,8 +27,6 @@ profile::dumps::distribution::nfs_clients:
   - stat1007.eqiad.wmnet
   - stat1008.eqiad.wmnet
   - an-launcher1002.eqiad.wmnet
-  - wcqs2001.codfw.wmnet
-  - wdqs1009.eqiad.wmnet
 
 profile::dumps::distribution::mirrors:
   - url: 'http://wikipedia.c3sl.ufpr.br'

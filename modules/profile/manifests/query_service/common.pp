@@ -11,10 +11,7 @@ class profile::query_service::common(
     Array[String] $nodes = lookup('profile::query_service::nodes'),
     Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
     Optional[String] $forward_rsyslog_host = lookup('profile::query_service::forward_rsyslog_host', { 'default_value' => undef }),
-    Boolean $reload_wcqs_data = lookup('profile::query_service::reload_wcqs_data', { 'default_value' => false }),
-    Array[String] $dumps_servers = lookup('dumps_dist_nfs_servers'),
-    String $dumps_active_server = lookup('dumps_dist_active_web'),
-    Boolean $mount_dumps = lookup('profile::query_service::mount_dumps', { 'default_value' => false }),
+    Boolean $reload_wcqs_data = lookup('profile::query_service::reload_wcqs_data', { 'default_value' => false })
 ) {
     $deploy_user = 'deploy-service'
 
@@ -84,13 +81,4 @@ class profile::query_service::common(
 
     # spread IRQ for NIC
     interface::rps { $facts['interface_primary']: }
-
-    # Dumps used to reload the database
-    if $mount_dumps {
-        class { 'dumpsuser': }
-        class { 'query_service::mount_dumps':
-            servers       => $dumps_servers,
-            active_server => $dumps_active_server,
-        }
-    }
 }
