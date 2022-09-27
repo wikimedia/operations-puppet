@@ -1,0 +1,3 @@
+profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::discovery: pontoon-conf42.appservers.eqiad1.wikimedia.cloud
+profile::etcd::v3::use_pki_certs: false
