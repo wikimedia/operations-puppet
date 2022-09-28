@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 puppetmaster::pontoon:
-  - puppet-01.appservers.eqiad1.wikimedia.cloud
+  - pontoon-puppet01.appservers.eqiad1.wikimedia.cloud
 mediawiki::memcached:
-  - mc1337.appservers.eqiad1.wikimedia.cloud
+  - pontoon-mc1337.appservers.eqiad1.wikimedia.cloud
