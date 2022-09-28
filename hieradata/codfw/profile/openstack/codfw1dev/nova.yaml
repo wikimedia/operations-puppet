@@ -20,6 +20,8 @@ profile::openstack::codfw1dev::nova::db_host: "openstack.codfw1dev.wikimediaclou
 profile::openstack::codfw1dev::nova::live_migration_uri: "test"
 profile::openstack::codfw1dev::nova::physical_interface_mappings:
   cloudinstances2b: "eth1.2105"
+profile::openstack::codfw1dev::nova::instance_network_id: "05a5494a-184f-4d5c-9e98-77ae61c56daa"
+profile::openstack::codfw1dev::nova::fullstack_bastion_ip: 185.15.57.2
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: "nova"
 profile::openstack::codfw1dev::nova::libvirt_cpu_model: "IvyBridge-IBRS"
