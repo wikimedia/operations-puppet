@@ -185,9 +185,6 @@
       retcode: 0
       stderr: ""
 
-# because the python venv, we can only schedule a flask webapp in this fashion:
-#  * from a buster bastion into the buster grid
-#  * from a stretch bastion into the stretch grid
 - name: setup python webservice environment for the <%= @facts['os']['distro']['codename'] -%> webgen grid
   tests:
     - cmd: $SUDO rm -frv ${WEBGENCODE_ROOT} uwsgi.ini
@@ -214,7 +211,8 @@
     # create python venv
     - cmd: $SUDO bash -c -- 'python3 -m venv ${WEBGENCODE_VENV} ; source ${WEBGENCODE_VENV}/bin/activate ; pip install flask'
       retcode: 0
-      stderr: ""
+      # account for a weird pip wheel failure
+      stderr: "Failed building wheel for MarkupSafe"
     # create web app
     - cmd: |
            cat << EOF > ${WEBGENCODE_FULLPATH}
