@@ -3,3 +3,5 @@ puppetmaster::pontoon:
   - pontoon-puppet01.appservers.eqiad1.wikimedia.cloud
 mediawiki::memcached:
   - pontoon-mc1337.appservers.eqiad1.wikimedia.cloud
+configcluster:
+  - pontoon-conf42.appservers.eqiad1.wikimedia.cloud

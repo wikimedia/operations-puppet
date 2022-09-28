@@ -1,0 +1,7 @@
+profile::etcd::v3::cluster_name: sops-appservers
+profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::discovery: "%{::hostname}=https://%{::fqdn}:2380"
+profile::etcd::v3::use_client_certs: false
+profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
+profile::etcd::v3::max_latency: 100
+profile::etcd::v3::adv_client_port: 2379
