@@ -25,6 +25,9 @@ profile::openstack::base::nutcracker::redis::shards:
 # Wikitech things:
 
 profile::mediawiki::php::enable_fpm: true
+profile::mediawiki::php::php_versions:
+  - "7.4"
+  - "7.2"
 profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 

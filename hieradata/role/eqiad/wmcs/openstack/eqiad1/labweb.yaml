@@ -46,6 +46,7 @@ profile::lvs::realserver::pools:
     services:
       - apache2
       - php7.2-fpm
+      - php7.4-fpm
       - nutcracker
       - nginx
 
@@ -85,6 +86,9 @@ profile::openstack::eqiad1::horizon::puppet_git_repo_user: instance-puppet-user
 
 
 profile::mediawiki::php::enable_fpm: true
+profile::mediawiki::php::php_versions:
+  - "7.4"
+  - "7.2"
 # Leaving this because of wikitech
 profile::monitoring::is_critical: true
 profile::mediawiki::apc_shm_size: 128M
