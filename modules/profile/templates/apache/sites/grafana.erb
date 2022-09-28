@@ -14,6 +14,8 @@
   RewriteCond %{REQUEST_URI} ^/api/snapshots
   RewriteRule .* - [F,L]
 
+  Include /etc/apache2/prometheus_metrics_acl
+
 <% if @enable_cas %>
   # User has clicked 'login' on a dashboard.
   # Redirect to the same dashboard on the 'rw' vhost.

@@ -140,7 +140,11 @@ class profile::grafana (
     }
 
     httpd::conf { 'metrics_acl':
-        content => template('profile/apache/metrics_acl.erb'),
+        ensure => absent,
+    }
+
+    file { '/etc/apache2/prometheus_metrics_acl':
+        content => template('profile/apache/prometheus_metrics_acl.erb'),
     }
 
     httpd::mod_conf { 'remoteip':
