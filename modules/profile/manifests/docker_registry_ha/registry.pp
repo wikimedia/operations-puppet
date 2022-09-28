@@ -96,6 +96,7 @@ class profile::docker_registry_ha::registry(
         read_only_mode              => $registry_read_only_mode,
         nginx_cache                 => $nginx_cache,
         deployment_hosts            => $deployment_hosts,
+        jwt_allowed_ips             => $jwt_allowed_ips,
     }
 
     # T209709

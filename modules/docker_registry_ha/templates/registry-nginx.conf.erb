@@ -35,7 +35,7 @@ proxy_cache_path <%= @nginx_auth_cache_dir %>
 # the latter is only available with nginx-full
 map $remote_addr $auth_type_maybe {
     default "basic";
-    <%- @jwt_allowed_ips.each do |host| %>
+    <%- @jwt_allowed_ips.each do |host| -%>
     <%= host %> "jwt";
     <%- end -%>
 }
