@@ -1451,6 +1451,11 @@ node 'graphite2003.codfw.wmnet' {
     role(graphite::production)
 }
 
+# New graphite host T313853
+node 'graphite1005.eqiad.wmnet' {
+    role(insetup)
+}
+
 # New graphite host T313851
 node 'graphite2004.codfw.wmnet' {
     role(insetup)
