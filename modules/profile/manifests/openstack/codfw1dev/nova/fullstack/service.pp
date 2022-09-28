@@ -17,6 +17,7 @@ class profile::openstack::codfw1dev::nova::fullstack::service(
         network               => $network,
         puppetmaster          => $puppetmaster,
         bastion_ip            => $bastion_ip,
+        deployment            => 'codfw1dev',
     }
 
     # We only want this running in one place; just pick the first

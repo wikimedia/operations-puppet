@@ -17,6 +17,7 @@ class openstack::nova::fullstack::service(
     Integer[1] $puppet_timeout = 900,
     Stdlib::Unixpath $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
     String $network = '',
+    String $deployment = '',
     ) {
 
     group { 'osstackcanary':

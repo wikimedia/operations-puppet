@@ -15,6 +15,7 @@ class profile::openstack::eqiad1::nova::fullstack::service(
         network               => $network,
         puppetmaster          => $puppetmaster,
         bastion_ip            => $bastion_ip,
+        deployment            => 'eqiad1',
     }
 
     # We only want this running in one place; just pick the first
