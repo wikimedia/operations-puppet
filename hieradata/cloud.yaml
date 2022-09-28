@@ -159,8 +159,6 @@ profile::nginx::managed: true
 profile::nginx::variant: "light"
 profile::nginx::tmpfs_size: "1g"
 
-profile::mail::mx::enable_ldap: false
-
 profile::puppetdb::gc_interval: 20
 profile::puppetdb::node_ttl: "7d"
 profile::puppetdb::node_purge_ttl: "14d"

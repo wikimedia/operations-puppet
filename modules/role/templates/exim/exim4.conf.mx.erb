@@ -345,54 +345,6 @@ phabricator:
 	route_list = * phabricator.discovery.wmnet byname
 	transport = remote_smtp
 
-<%- if @enable_ldap -%>
-# LDAP accounts
-ldap_account:
-	driver = manualroute
-	domains = wikimedia.org
-	condition = ${lookup ldap \
-			{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
-			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(mail=${quote_ldap:$local_part}@$domain)(x121Address=1))} \
-			{true}fail}
-	local_part_suffix = +*
-	local_part_suffix_optional
-	transport = remote_smtp
-	route_list = *  aspmx.l.google.com
-
-ldap_group:
-	driver = manualroute
-	domains = wikimedia.org
-	condition = ${lookup ldap \
-			{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
-			ldap:///ou=groups,dc=corp,dc=wikimedia,dc=org?businessCategory?sub?(businessCategory=${quote_ldap:$local_part}@$domain)} \
-			{true}fail}
-	local_part_suffix = +*
-	local_part_suffix_optional
-	transport = remote_smtp
-	route_list = *  aspmx.l.google.com
-
-ldap_alias:
-	driver = redirect
-	domains = wikimedia.org
-	data = ${lookup ldap \
-			{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
-			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(initials=${quote_ldap:$local_part}@$domain)(x121Address=1))} \
-			{$value}fail}
-
-# MySQL lookups (OTRS)
-hide mysql_servers =  <%= @vrts_mysql_server %>/<%= @vrts_mysql_dbname %>/<%= @vrts_mysql_user %>/<%= @vrts_mysql_password %>
-
-# Query the OTRS MySQL server(s) for the existence of the queue address
-# $local_part@$domain, and manually route to the OTRS server if
-# successful.
-OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}' AND valid_id=1;
-otrs:
-	driver = manualroute
-	domains = +local_domains
-	condition = ${lookup mysql{OTRSQUERY}{true}fail}
-	route_list = *  otrs1001.eqiad.wmnet  byname
-	transport = remote_smtp
-<%- else -%>
 # Query the flat file of email addresses for the existence of the queue address
 # $local_part@$domain, and manually route to the OTRS server if
 # successful.  The flat file is generated using a systemd timer once per hour
@@ -412,7 +364,6 @@ gsuite_account:
 	local_part_suffix_optional
 	transport = remote_smtp
 	route_list = *  aspmx.l.google.com
-<%- end -%>
 
 # Redirect postmaster@$domain if it hasn't been accepted before
 postmaster:
