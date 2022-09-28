@@ -9,7 +9,7 @@ class profile::toolforge::shell_environ {
         'cvs',  # Because I don't think webhooks or other uses exist anymore outside cli
         'dh-make-perl',
         'elinks',
-        'emacs',
+        'emacs-nox',
         'fakeroot', # for dpkg
         'flex',                        # T114003.
         'ipython',                     # T58995
@@ -21,6 +21,7 @@ class profile::toolforge::shell_environ {
         'neovim',                      # T219501
         'pastebinit',
         'pep8',                        # T59863
+        'redis-tools',
         'rlwrap',                      # T87368
         'tig',
         'valgrind',                    # T87117.
@@ -28,8 +29,9 @@ class profile::toolforge::shell_environ {
         ensure => latest,
     }
 
-    package  { 'redis-tools':
-        ensure => 'latest',
+    # remove the graphical emacs version if it was installed
+    package { 'emacs-gtk':
+        ensure => absent,
     }
 
     # pastebinit configuration for https://tools.wmflabs.org/paste/.
