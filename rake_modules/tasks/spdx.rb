@@ -193,23 +193,19 @@ namespace :spdx do
     desc "Convert a profile to SPDX"
     task :profile, [:profile] do |_t, args|
       # check profile file
-      profile_file = File.join('modules/profile/manifests', "#{args[:profile].gsub('::', '/')}.pp")
-      unsigned_contibutors = check_path_contributors([profile_file])
-      if unsigned_contibutors.empty?
-        puts profile_file
-        add_spdx_tags(check_spdx_licence([profile_file]))
-      else
-        puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
-        puts unsigned_contibutors.join("\n").red
-      end
+      _profile_subpath = args[:profile].gsub('::', '/')
+      profile_file = File.join('modules/profile/manifests', "#{_profile_subpath}.pp")
       [
+        profile_file,
+        "modules/profile/manifests",
         "modules/profile/files",
         "modules/profile/functions",
         "modules/profile/templates",
         "modules/profile/types"
-      ].each do |dir|
-        path = "#{dir}/#{args[:profile]}"
-        next unless File.directory?(path)
+      ].each do |path|
+        # We already fixed up the path for the profile.pp file
+        path = "#{path}/#{_profile_subpath}" unless path == profile_file
+        next unless File.directory?(path) || path == profile_file
         unsigned_contibutors = check_path_contributors(path)
         unless unsigned_contibutors.empty?
           puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
@@ -223,21 +219,16 @@ namespace :spdx do
     desc "Convert a role to SPDX"
     task :role, [:role] do |_t, args|
       # check role file
-      role_file = File.join('modules/role/manifests', "#{args[:role].gsub('::', '/')}.pp")
-      unsigned_contibutors = check_path_contributors([role_file])
-      if unsigned_contibutors.empty?
-        puts role_file
-        add_spdx_tags(check_spdx_licence([role_file]))
-      else
-        puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
-        puts unsigned_contibutors.join("\n").red
-      end
+      _role_subpath = args[:role].gsub('::', '/')
+      role_file = File.join('modules/role/manifests', "#{_role_subpath}.pp")
       [
+        role_file,
+        "modules/role/manifests",
         "modules/role/files",
         "modules/role/templates",
-      ].each do |dir|
-        path = "#{dir}/#{args[:role]}"
-        next unless File.directory?(path)
+      ].each do |path|
+        path = "#{path}/#{args[:role]}" unless path == role_file
+        next unless File.directory?(path) || path == role_file
         unsigned_contibutors = check_path_contributors(path)
         unless unsigned_contibutors.empty?
           puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
