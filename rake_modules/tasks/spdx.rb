@@ -183,9 +183,9 @@ namespace :spdx do
     task :module, [:module] do |_t, args|
       path = "modules/#{args[:module]}"
       abort("#{args[:module]}: does not exist".red) unless File.directory?(path)
-      unsigned_contibutors = check_path_contributors(path)
-      unless unsigned_contibutors.empty?
-        abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contibutors.join("\n")}".red)
+      unsigned_contributors = check_path_contributors(path)
+      unless unsigned_contributors.empty?
+        abort("The following contributors have not agreeded to the SPDX licence:\n#{unsigned_contributors.join("\n")}".red)
       end
       missing_licence = check_spdx_licence(git_files(path))
       add_spdx_tags(missing_licence)
@@ -206,10 +206,10 @@ namespace :spdx do
         # We already fixed up the path for the profile.pp file
         path = "#{path}/#{_profile_subpath}" unless path == profile_file
         next unless File.directory?(path) || path == profile_file
-        unsigned_contibutors = check_path_contributors(path)
-        unless unsigned_contibutors.empty?
+        unsigned_contributors = check_path_contributors(path)
+        unless unsigned_contributors.empty?
           puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
-          puts unsigned_contibutors.join("\n").red
+          puts unsigned_contributors.join("\n").red
           next
         end
         missing_licence = check_spdx_licence(git_files(path))
@@ -229,10 +229,10 @@ namespace :spdx do
       ].each do |path|
         path = "#{path}/#{args[:role]}" unless path == role_file
         next unless File.directory?(path) || path == role_file
-        unsigned_contibutors = check_path_contributors(path)
-        unless unsigned_contibutors.empty?
+        unsigned_contributors = check_path_contributors(path)
+        unless unsigned_contributors.empty?
           puts "skipping #{path}, the following contributors have not agreeded to the SPDX licence:".red
-          puts unsigned_contibutors.join("\n").red
+          puts unsigned_contributors.join("\n").red
           next
         end
         missing_licence = check_spdx_licence(git_files(path))
