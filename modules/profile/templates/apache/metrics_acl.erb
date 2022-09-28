@@ -3,13 +3,13 @@
 # Forbid public access to /metrics.
 # See also https://phabricator.wikimedia.org/T309703 for more context.
 
-<Location /metrics>
+<LocationMatch "^/metrics">
   <RequireAny>
   <%- scope.lookupvar('network::constants::domain_networks').each do |net| -%>
     Require ip <%= net %>
   <%- end -%>
   </RequireAny>
-</Location>
+</LocationMatch>
 
 # Publicly-exposed services are likely still reverse-proxied by the CDN,
 # plus local TLS termination. Thus use XFF as the remote IP to make the
