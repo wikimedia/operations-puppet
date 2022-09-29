@@ -5,18 +5,13 @@ class profile::mirrors::serve {
         puppet_svc => 'apache2',
     }
 
-    # Remove former nginx server, before installing apache
-    package {[
-      'nginx-light',
-      'nginx-common',
-    ]:
-      ensure => absent,
-    }
-    Package['nginx-light'] ~> Package['apache2']
+    ensure_packages('apache2')
 
     class { '::httpd':
         modules => ['ssl', 'macro', 'headers'],
     }
+
+    base::service_auto_restart { 'apache2': }
 
     httpd::site { 'mirrors':
         content => epp(
