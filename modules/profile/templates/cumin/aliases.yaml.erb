@@ -81,13 +81,14 @@ cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 cumin: P{O:cluster::management}
 cuminunpriv: P{O:cluster::unprivmanagement}
 datahubsearch: P{O:analytics_cluster::datahub::opensearch}
-db-all: A:db-core or A:db-inventory or A:db-wikireplica or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-backup-source or A:db-store or A:db-core-test
+db-all: A:db-core or A:db-inventory or A:db-wikireplica or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-backup-source or A:db-store or A:db-core-test or A:db-objectstash
 db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-backup-source or A:db-store
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance or O:mariadb::sanitarium_master}
 db-core-test: P{O:mariadb::core_test}
 db-inventory: P{O:mariadb::misc::db_inventory}
 db-wikireplica: P{O:wmcs::db::wikireplicas::web_multiinstance or O:wmcs::db::wikireplicas::analytics_multiinstance or O:wmcs::db::wikireplicas::dedicated::analytics_multiinstance}
 db-misc: P{O:mariadb::misc or O:mariadb::misc::multiinstance or O:mariadb::misc::phabricator or O:mariadb::misc::analytics::backup}
+db-objectstash: P{O:mariadb::objectstash}
 db-parsercache: P{O:mariadb::parsercache}
 db-sanitarium-master: P{O:mariadb::sanitarium_master}
 db-sanitarium: P{O:mariadb::sanitarium_multiinstance}
