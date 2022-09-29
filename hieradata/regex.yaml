@@ -327,7 +327,7 @@ mediawiki_test_environment:
   profile::mediawiki::php::phpdbg: true
   profile::mediawiki::php::php_versions:
     - "7.4"
-    - "7.2"
+
 
 hadoop_gpu_workers_buster:
   __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
