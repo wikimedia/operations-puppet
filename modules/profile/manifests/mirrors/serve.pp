@@ -41,4 +41,15 @@ class profile::mirrors::serve {
         proto => 'tcp',
         port  => '873',
     }
+
+    prometheus::blackbox::check::http { 'mirrors.wikimedia.org':
+        team               => 'infrastructure-foundations',
+        severity           => 'critical',
+        path               => '/',
+        ip_families        => ['ip4','ip6'],
+        force_tls          => true,
+        status_matches     => [200],
+        body_regex_matches => ['Welcome to mirrors'],
+    }
+
 }
