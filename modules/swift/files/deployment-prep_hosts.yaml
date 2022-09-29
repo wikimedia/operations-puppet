@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0
+---
+# yamllint disable rule:line-length
+schemes:
+  prod:
+    objects: [lv-a1]
+    accounts: [lv-a1]
+    containers: [lv-a1]
+    object-1: [lv-a1]
+    weight:
+      objects: 1000
+      accounts: 1000
+      containers: 1000
+      object-1: 1000
+
+hosts:
+  prod:
+    - deployment-ms-be05
+    - deployment-ms-be06
