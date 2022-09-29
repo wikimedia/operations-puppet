@@ -13,7 +13,6 @@ class profile::lvs::configuration (
     }
     # Ensure we have at least one classification
     if $_host_class_hosts.size == 0 {
-        notify { 'unable to find lvs class': }
         $lvs_class = 'unlcassified'
         $primary = false
         $secondary = false
@@ -30,9 +29,9 @@ class profile::lvs::configuration (
         }
         # At this point we know that $_host_class_hosts has size 1 if the host is primary
         $lvs_class = $secondary.bool2str('secondary', $_host_class_hosts.keys[0])
+        motd::message { "LVS Class: ${lvs_class}": }
     }
     # We create a motd which also allows us to use rspec to test
-    motd::message { "LVS Class: ${lvs_class}": }
 
     # Create backwards compatible data structure
     # We create an empty hash of defaults as not all sites have a all keys specifcally low-traffic
