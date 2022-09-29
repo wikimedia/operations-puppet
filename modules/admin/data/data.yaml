@@ -5157,7 +5157,7 @@ users:
     realname: Michael Hay
     email: michael@tmlt.io
     krb: present
-    expiry_date: 2022-09-20
+    expiry_date: 2023-06-30
     expiry_contact: htriedman@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDn47QmSyOAeYM5foeXneTjTX/LW5KCDdYYx3e4Ca2AP mhay@Blizzard.local
@@ -5168,7 +5168,7 @@ users:
     realname: Skye Berghel
     email: sberghel@gmail.com
     krb: present
-    expiry_date: 2022-09-20
+    expiry_date: 2023-06-30
     expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFR6HVVjTuiJM6r8Zl12+41Pef80nk/zhchCW3mTzoMx skye@Neikos.local
@@ -5179,7 +5179,7 @@ users:
     realname: Tom Magerlein
     email: tom.magerlein@tmlt.io
     krb: present
-    expiry_date: 2022-09-20
+    expiry_date: 2023-06-30
     expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILpX/tkSGrfKB7+S4fkCOz5ivRxmR5TymsNzn90iZlP5 tom@tumult-tjm-dev
@@ -5190,7 +5190,7 @@ users:
     realname: Damien Desfontaines
     email: damien+wikimedia@tmlt.io
     krb: present
-    expiry_date: 2022-09-20
+    expiry_date: 2023-06-30
     expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETNJbuSzSjngqw7YMt5kv6+iIfWqx43a0OQC1Loa8bZ damien@cyclone.local
