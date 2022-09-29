@@ -217,5 +217,4 @@ profile::elasticsearch::instances:
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
 
-profile::elasticsearch::dc_settings:
-    minimum_master_nodes: 3
+profile::elasticsearch::dc_settings: {}

@@ -52,8 +52,8 @@ profile::elasticsearch::common_settings:
     # More than 30G isn't very useful
     heap_memory: '30G'
 
-    # Don't run if more than 1 master missing
-    minimum_master_nodes: 2
+    # Don't run if more than 2 master missing
+    minimum_master_nodes: 3
 
     # wait that long for all nodes to restart. If not all nodes are present after
     # `recover_after_time`, recover anyway, as long as at least
