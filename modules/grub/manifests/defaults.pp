@@ -12,7 +12,7 @@
 #
 
 class grub::defaults {
-    include ::grub
+    include grub
 
     augeas { 'grub2':
         incl    => '/etc/default/grub',

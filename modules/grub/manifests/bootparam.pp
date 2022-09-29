@@ -45,7 +45,7 @@ define grub::bootparam(
   $value=undef,
   $glob=true,
 ) {
-    include ::grub
+    include grub
 
     # Logical sanity contraints:
     if $mode == 'keyvalue' {
