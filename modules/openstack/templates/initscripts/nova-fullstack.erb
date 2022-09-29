@@ -18,4 +18,5 @@ export OS_REGION_NAME="<%= @region %>"
     --puppetmaster <%= @puppetmaster %> \
     --bastion-ip <%= @bastion_ip %> \
     --deployment <%= @deployment %> \
+    --dns-resolvers <%= @resolvers.join(',') %> \
     --debug

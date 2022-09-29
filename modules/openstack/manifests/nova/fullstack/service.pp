@@ -18,6 +18,7 @@ class openstack::nova::fullstack::service(
     Stdlib::Unixpath $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
     String $network = '',
     String $deployment = '',
+    Array[String] $resolvers = [],
     ) {
 
     group { 'osstackcanary':
