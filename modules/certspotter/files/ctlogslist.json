@@ -14,17 +14,6 @@
           }
         },
         {
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfQ0DsdWYitzwFTvG3F4Nbj8Nv5XIVYzQpkyWsU4nuSYlmcwrAp6m092fsdXEw6w1BAeHlzaqrSgNfyvZaJ9y0Q==",
-          "mmd": 86400,
-          "url": "https://yeti2023.ct.digicert.com/log/",
-          "log_id": "Nc8ZG7+xbFe/D61MbULLu7YnICZR6j/hKu+oA8M71kw=",
-          "description": "DigiCert Yeti 2023",
-          "temporal_interval": {
-            "end_exclusive": "2024-01-01T00:00:00+00:00",
-            "start_inclusive": "2023-01-01T00:00:00+00:00"
-          }
-        },
-        {
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESLJHTlAycmJKDQxIv60pZG8g33lSYxYpCi5gteI6HLevWbFVCdtZx+m9b+0LrwWWl/87mkNN6xE0M4rnrIPA/w==",
           "mmd": 86400,
           "url": "https://ct.cloudflare.com/logs/nimbus2022/",
