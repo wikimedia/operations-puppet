@@ -1,232 +1,232 @@
 es_codfw_rack_a2:
   __regex: !ruby/regexp /^elastic20(37|38|55|73|74)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A2
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_a4:
   __regex: !ruby/regexp /^elastic206(1|2)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A4
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_a5:
   __regex: !ruby/regexp /^elastic2025\.codfw\.wmnet$/
   profile::elasticsearch::rack: A5
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_a7:
   __regex: !ruby/regexp /^elastic20(39|40|56|69|75|76)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A7
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_a8:
   __regex: !ruby/regexp /^elastic20(26|27)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A8
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_b2:
   __regex: !ruby/regexp /^elastic20(41|42|57|63|64|77|78)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B2
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_b4:
   __regex: !ruby/regexp /^elastic20(58|70)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B4
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_b5:
   __regex: !ruby/regexp /^elastic2028\.codfw\.wmnet$/
   profile::elasticsearch::rack: B5
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_b7:
   __regex: !ruby/regexp /^elastic20(43|44|79|80)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B7
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_b8:
   __regex: !ruby/regexp /^elastic20(29|30)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B8
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_c1:
   __regex: !ruby/regexp /^elastic2031\.codfw\.wmnet$/
   profile::elasticsearch::rack: C1
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_c2:
   __regex: !ruby/regexp /^elastic20(45|46|47)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C2
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_c4:
   __regex: !ruby/regexp /^elastic20(65|66|81|82)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C4
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_c5:
   __regex: !ruby/regexp /^elastic20(32|33)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C5
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_c7:
   __regex: !ruby/regexp /^elastic20(48|59|71|83)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C7
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_d1:
   __regex: !ruby/regexp /^elastic2034\.codfw\.wmnet$/
   profile::elasticsearch::rack: D1
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_codfw_rack_d2:
   __regex: !ruby/regexp /^elastic20(50|51|52)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D2
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_codfw_rack_d4:
   __regex: !ruby/regexp /^elastic20(72|84|85)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D4
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_codfw_rack_d5:
   __regex: !ruby/regexp /^elastic20(35|36)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D5
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_codfw_rack_d7:
   __regex: !ruby/regexp /^elastic20(53|54|60|67|68|86)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D7
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_a2:
   __regex: !ruby/regexp /^relforge1003\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A2
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^elastic1054\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A3
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a4:
   __regex: !ruby/regexp /^elastic10(68|69|84)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A4
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a5:
   __regex: !ruby/regexp /^elastic1053\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A5
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a6:
   __regex: !ruby/regexp /^elastic1048\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A6
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a7:
   __regex: !ruby/regexp /^elastic10(70|71|72|73)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A7
-  profile::elasticsearch::row: A
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_b1:
   __regex: !ruby/regexp /^elastic1055\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B1
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b2:
   __regex: !ruby/regexp /^(relforge1004|elastic1074|elastic1075)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B2
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b4:
   __regex: !ruby/regexp /^elastic10(49|50|76|77|78|79)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B4
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b5:
   __regex: !ruby/regexp /^elastic1056\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B5
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b7:
   __regex: !ruby/regexp /^elastic10(85|86)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B7
-  profile::elasticsearch::row: B
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_c3:
   __regex: !ruby/regexp /^elastic10(57|58)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C3
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c4:
   __regex: !ruby/regexp /^elastic10(80|81)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C4
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c7:
   __regex: !ruby/regexp /^elastic10(51|52|82|83|87|88)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C7
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c8:
   __regex: !ruby/regexp /^elastic1059\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C8
-  profile::elasticsearch::row: C
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_d1:
   __regex: !ruby/regexp /^elastic10(60|61)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D1
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_d3:
   __regex: !ruby/regexp /^elastic10(62|63)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D3
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_d4:
   __regex: !ruby/regexp /^elastic1064\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D4
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_d5:
   __regex: !ruby/regexp /^elastic1065\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D5
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_d6:
   __regex: !ruby/regexp /^elastic10(66|67)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D6
-  profile::elasticsearch::row: D
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_e1:
   __regex: !ruby/regexp /^elastic10(89|90)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E1
-  profile::elasticsearch::row: E
+  profile::elasticsearch::row:  E
 
 es_eqiad_rack_e2:
   __regex: !ruby/regexp /^elastic10(91|92)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E2
-  profile::elasticsearch::row: E
+  profile::elasticsearch::row:  E
 
 es_eqiad_rack_e3:
   __regex: !ruby/regexp /^elastic10(93|94|95)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E3
-  profile::elasticsearch::row: E
+  profile::elasticsearch::row:  E
 
 es_eqiad_rack_f1:
   __regex: !ruby/regexp /^elastic10(96|97)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F1
-  profile::elasticsearch::row: F
+  profile::elasticsearch::row:  F
 
 es_eqiad_rack_f2:
   __regex: !ruby/regexp /^elastic10(98|99)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F2
-  profile::elasticsearch::row: F
+  profile::elasticsearch::row:  F
 
 es_eqiad_rack_f3:
   __regex: !ruby/regexp /^elastic11(00|01|02)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F3
-  profile::elasticsearch::row: F
+  profile::elasticsearch::row:  F
 
 # T204361
 es_eqiad_500G_disk:
@@ -272,30 +272,30 @@ swift_servers_per_port:
 swift_24_drives:
   __regex: !ruby/regexp /^ms-be(205[7-9]|20[6-9][0-9]|10[6-9][0-9])\.(codfw|eqiad)\.wmnet$/
   swift_storage_drives:
-    - "/dev/sdc"
-    - "/dev/sdd"
-    - "/dev/sde"
-    - "/dev/sdf"
-    - "/dev/sdg"
-    - "/dev/sdh"
-    - "/dev/sdi"
-    - "/dev/sdj"
-    - "/dev/sdk"
-    - "/dev/sdl"
-    - "/dev/sdm"
-    - "/dev/sdn"
-    - "/dev/sdo"
-    - "/dev/sdp"
-    - "/dev/sdq"
-    - "/dev/sdr"
-    - "/dev/sds"
-    - "/dev/sdt"
-    - "/dev/sdu"
-    - "/dev/sdv"
-    - "/dev/sdw"
-    - "/dev/sdx"
-    - "/dev/sdy"
-    - "/dev/sdz"
+    - '/dev/sdc'
+    - '/dev/sdd'
+    - '/dev/sde'
+    - '/dev/sdf'
+    - '/dev/sdg'
+    - '/dev/sdh'
+    - '/dev/sdi'
+    - '/dev/sdj'
+    - '/dev/sdk'
+    - '/dev/sdl'
+    - '/dev/sdm'
+    - '/dev/sdn'
+    - '/dev/sdo'
+    - '/dev/sdp'
+    - '/dev/sdq'
+    - '/dev/sdr'
+    - '/dev/sds'
+    - '/dev/sdt'
+    - '/dev/sdu'
+    - '/dev/sdv'
+    - '/dev/sdw'
+    - '/dev/sdx'
+    - '/dev/sdy'
+    - '/dev/sdz'
 
 labtest:
   __regex: !ruby/regexp /^labtest/
@@ -313,7 +313,7 @@ labtest:
 # compatible are ignored and do not send any alert.
 db_like_raid_policy:
   __regex: !ruby/regexp /^(db|dbstore|es|pc|clouddb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
-  profile::monitoring::raid_write_cache_policy: "WriteBack"
+  profile::monitoring::raid_write_cache_policy: 'WriteBack'
 
 mediawiki_test_environment:
   __regex: !ruby/regexp /^mwdebug(1[0-9]+\.eqiad|2[0-9]+\.codfw)\.wmnet$/
@@ -326,18 +326,18 @@ mediawiki_test_environment:
   profile::mediawiki::php::enable_request_profiling: true
   profile::mediawiki::php::phpdbg: true
   profile::mediawiki::php::php_versions:
-    - "7.4"
     - "7.2"
+    - "7.4"
 
 hadoop_gpu_workers_buster:
   __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
   profile::hadoop::common::min_datanode_mounts: 20
-  profile::amd_gpu::rocm_version: "42"
+  profile::amd_gpu::rocm_version: '42'
   profile::base::linux510::enable: true
 
 stat_gpu_hosts:
   __regex: !ruby/regexp /^stat100[58]\.eqiad\.wmnet$/
-  profile::amd_gpu::rocm_version: "42"
+  profile::amd_gpu::rocm_version: '42'
 
 # memcached hosts hosting redis_sessions shards
 redis_sessions_eqiad:
