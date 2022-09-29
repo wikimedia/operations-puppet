@@ -5,3 +5,4 @@ profile::etcd::v3::use_client_certs: false
 profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
 profile::etcd::v3::max_latency: 100
 profile::etcd::v3::adv_client_port: 2379
+profile::etcd::tlsproxy::cert_name: "%{fqdn}"

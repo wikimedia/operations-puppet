@@ -51,11 +51,11 @@ class profile::etcd::tlsproxy(
         true    => $facts['networking']['fqdn'],
         default => '127.0.0.1',
     }
-    sslcert::certificate { $cert_name:
-        skip_private => false,
-        use_cergen   => true,
-        before       => Service['nginx'],
-    }
+#    sslcert::certificate { $cert_name:
+#        skip_private => false,
+#        use_cergen   => false,
+#        before       => Service['nginx'],
+#    }
 
     monitoring::service { 'etcd-tlsproxy-ssl':
         description   => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
