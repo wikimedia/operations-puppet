@@ -51,6 +51,7 @@ cloudgw: P{O:wmcs::openstack::eqiad1::cloudgw}
 cloudmetrics: P{O:wmcs::monitoring}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
 cloudnet-eqiad1: P{O:wmcs::openstack::eqiad1::net}
+cloudrabbit: P{O:wmcs::openstack::eqiad1::rabbitmq}
 cloudservices: P{O:wmcs::openstack::eqiad1::services}
 cloudservices-eqiad1: P{O:wmcs::openstack::eqiad1::services}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt or O:wmcs::openstack::eqiad1::virt_ceph or O:wmcs::openstack::eqiad1::virt_ceph_and_backy}
@@ -62,7 +63,7 @@ cloudservices-codfw1dev: P{O:wmcs::openstack::codfw1dev::services}
 cloudvirt-codfw1dev: P{O:wmcs::openstack::codfw1dev::virt_ceph}
 clouddb-codfw1dev: P{O:wmcs::openstack::codfw1dev::db}
 cloudgw-codfw1dev: P{O:wmcs::openstack::codfw1dev::cloudgw}
-cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev or A:cloudgw-codfw1dev or A:cloudceph-codfw or P{O:wmcs::openstack::codfw1dev::cloudweb}
+cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev or A:cloudgw-codfw1dev or A:cloudceph-codfw or P{O:wmcs::openstack::codfw1dev::cloudweb} or P{O:wmcs::openstack::codfw1dev::backups}
 conf: P{O:configcluster}
 conf-canary: P{conf2004.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
