@@ -34,6 +34,7 @@ class profile::mediawiki::php(
     Integer $slowlog_limit = lookup('profile::mediawiki::php::slowlog_limit', {'default_value' => 15}),
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions'),
+    Array[Wmflib::Php_version] $absented_php_versions = lookup('profile::mediawiki::php::absented_php_versions', {'default_value' => []}),
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
@@ -48,6 +49,10 @@ class profile::mediawiki::php(
             components => 'component/php72',
             notify     => Exec['apt_update_php'],
             before     => Package['php7.2-common', 'php7.2-opcache']
+        }
+    } elsif ('7.2' in $absented_php_versions) {
+        apt::repository { 'wikimedia-php72':
+            ensure => absent,
         }
     }
     # Use component/php74 if php 7.4 is installed.
@@ -69,7 +74,13 @@ class profile::mediawiki::php(
             require => Exec['apt_update_php'],
             before  => Package['php7.4-common', 'php7.4-opcache']
         }
+    } elsif ('7.4' in $absented_php_versions) {
+        apt::repository { 'wikimedia-php74':
+            ensure => absent,
+        }
     }
+    # remove all php versions we want to absent, completely.
+    profile::mediawiki::php::absented_version{ $absented_php_versions: }
 
     # First installs can trip without this
     exec {'apt_update_php':
