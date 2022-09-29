@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 class role::netmon {
 
     system::role { 'netmon':
@@ -17,5 +19,5 @@ class role::netmon {
     include ::profile::librenms
     include ::profile::rancid
     include ::profile::smokeping
-
+    include profile::netmon::prober
 }
