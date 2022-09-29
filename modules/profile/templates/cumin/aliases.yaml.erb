@@ -56,6 +56,7 @@ cloudservices: P{O:wmcs::openstack::eqiad1::services}
 cloudservices-eqiad1: P{O:wmcs::openstack::eqiad1::services}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt or O:wmcs::openstack::eqiad1::virt_ceph or O:wmcs::openstack::eqiad1::virt_ceph_and_backy}
 cloudvirt-eqiad1: P{O:wmcs::openstack::eqiad1::virt or O:wmcs::openstack::eqiad1::virt_ceph or O:wmcs::openstack::eqiad1::virt_ceph_and_backy}
+cloudweb: P{O:wmcs::openstack::eqiad1::labweb}
 cloud-eqiad1: A:cloudcontrol-eqiad1 or A:cloudnet-eqiad1 or A:cloudservices-eqiad1 or A:cloudvirt-eqiad1 or A:cloudceph-eqiad1
 cloudcontrol-codfw1dev: P{O:wmcs::openstack::codfw1dev::control}
 cloudnet-codfw1dev: P{O:wmcs::openstack::codfw1dev::net}
@@ -215,7 +216,6 @@ wikikube-staging-worker-<%= dc %>: A:wikikube-staging-worker and A:<%= dc %>
 <% end -%>
 cloudmetrics: P{O:wmcs::monitoring}
 wmcs-nfs: P{O:wmcs::nfs::primary or O:dumps::distribution::server or O:wmcs::nfs::primary_backup::tools or O:wmcs::nfs::primary_backup::misc}
-labweb: P{O:wmcs::openstack::eqiad1::labweb}
 ldap-corp: P{O:openldap::corp}
 ldap-replicas: P{O:openldap::replica}
 ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
