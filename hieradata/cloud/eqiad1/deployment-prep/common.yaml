@@ -219,7 +219,6 @@ profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::common_settings:
     auto_create_index: '+apifeatureusage-*,-*'
     expected_nodes: 6
-    minimum_master_nodes: 2
     recover_after_nodes: 3
     bulk_thread_pool_executors: 5
     awareness_attributes: ''

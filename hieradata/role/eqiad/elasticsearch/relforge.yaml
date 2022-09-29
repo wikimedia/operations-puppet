@@ -8,7 +8,6 @@ profile::elasticsearch::dc_settings:
       - relforge1004.eqiad.wmnet
 
     expected_nodes: 2
-    minimum_master_nodes: 1
 
 profile::elasticsearch::s3_username: 'search:platform'
 

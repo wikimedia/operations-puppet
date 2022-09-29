@@ -108,7 +108,6 @@ transport.tcp.port: <%= @transport_tcp_port %>
 # operational within the cluster. Its recommended to set it to a higher value
 # than 1 when running more than 2 nodes in the cluster.
 #
-discovery.zen.minimum_master_nodes: <%= @minimum_master_nodes %>
 discovery.zen.ping.unicast.hosts: [<%= @unicast_hosts.collect{ |x| "\"#{x}\"" }.join(', ') %>]
 #
 # For more information, consult the discovery and cluster formation module documentation.
