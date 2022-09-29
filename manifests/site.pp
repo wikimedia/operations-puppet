@@ -1549,6 +1549,11 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
     role(kafka::monitoring_buster)
 }
 
+# New Kafka nodes T314156
+node /kafka-stretch100[12]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # New Kafka nodes T314160
 node /kafka-stretch200[12]\.codfw\.wmnet/ {
     role(insetup)
