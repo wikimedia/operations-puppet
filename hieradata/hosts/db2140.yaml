@@ -1,5 +1,4 @@
 # db2140
 mariadb::shard: 's4'
-# Uncomment when this machine replaces db2090 T252985
 #profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
