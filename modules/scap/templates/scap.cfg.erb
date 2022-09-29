@@ -59,7 +59,7 @@ dsh_app_canaries: mediawiki-appserver-canaries
 
 logstash_host: logstash1023.eqiad.wmnet:9200
 canary_service: mwdeploy
-php_version: php7.2
+php_version: php7.4
 
 use_syslog: True
 
@@ -98,7 +98,10 @@ statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 web_proxy: http://webproxy:8080
 # This will make 'scap pull' fail unless it is run as user mwdeploy
-php_fpm: php7.2-fpm
+# Note: The value php_fpm is passed to php_fpm_restart_script as its
+# first parameter.  As of this writing /usr/local/sbin/restart-php-fpm-all does not
+# use the value.
+php_fpm: php7.4-fpm
 php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
 php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php-fpm-all
 php_fpm_always_restart: True
@@ -130,7 +133,7 @@ mediawiki_canary_swagger_url: https://en.wikipedia.beta.wmflabs.org
 canary_dashboard_url: https://beta-logs.wmcloud.org
 wmf_realm: labs
 delay_messageblobstore_purge: true
-php_fpm: php7.2-fpm
+php_fpm: php7.4-fpm
 php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
 php_fpm_always_restart: True
 mw_web_clusters: appserver,api_appserver,testserver,parsoid_php
