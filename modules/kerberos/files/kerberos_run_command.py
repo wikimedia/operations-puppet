@@ -48,7 +48,7 @@ def main():
         print("Could not detect realm name, aborting...")
         sys.exit(1)
 
-    if(len(sys.argv) < 3):
+    if len(sys.argv) < 3:
         print("Expected format: kerberos-run-command user command")
         sys.exit(1)
 

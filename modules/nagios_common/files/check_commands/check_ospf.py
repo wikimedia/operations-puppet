@@ -82,7 +82,7 @@ def main():
 
     print(' ; '.join(output_messages))
 
-    return(return_code)
+    return return_code
 
 
 if __name__ == '__main__':

@@ -232,7 +232,7 @@ class Downloader():
         #   },
         #   ...
         # ]
-        namespaces = [entry['identifier'] for entry in json_contents if'identifier' in entry]
+        namespaces = [entry['identifier'] for entry in json_contents if 'identifier' in entry]
         if not namespaces:
             LOG.error("empty list of namespaces retrieved got: %s", response.content)
         return namespaces
