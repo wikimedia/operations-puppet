@@ -6,19 +6,8 @@ class openstack::monitor::networktests (
 ) {
     $usr = 'srv-networktests'
 
-    group { $usr:
-        ensure => 'present',
-        name   => $usr,
-    }
-
-    user { $usr:
-        ensure     => 'present',
-        gid        => $usr,
-        shell      => '/bin/false',
-        home       => "/var/lib/${usr}",
-        managehome => true,
-        system     => true,
-        require    => Group[$usr],
+    systemd::sysuser { $usr:
+        home => "/var/lib/${usr}",
     }
 
     $basedir = '/etc/networktests'
