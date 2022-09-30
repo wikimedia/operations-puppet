@@ -9,7 +9,7 @@ server {
 
     # SSL settings
     ssl on;
-    ssl_certificate /etc/ssl/localcerts/<%= @cert_name %>.chained.crt;
+    ssl_certificate /etc/ssl/localcerts/<%= @cert_name %>.crt;
     ssl_certificate_key /etc/ssl/private/<%= @cert_name %>.key;
 
     # keepalive timeout for long-polling watch

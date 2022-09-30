@@ -75,6 +75,7 @@ class profile::etcd::v3(
             group        => 'etcd',
             require      => Package['etcd-server'],
             before       => Service['etcd'],
+            chain        => false,
         }
 
         $trusted_ca  = '/etc/ssl/certs/Puppet_Internal_CA.pem'
