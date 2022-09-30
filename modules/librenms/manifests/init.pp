@@ -139,7 +139,7 @@ class librenms(
     # For Debian Stretch from: https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
     if debian::codename::eq('bullseye') {
         ensure_packages(['php-fpm', 'php-gmp'])
-        base::service_auto_restart { 'php7.4-fpm': }
+        profile::auto_restarts::service { 'php7.4-fpm': }
     } elsif debian::codename::eq('buster') {
         ensure_packages(['php-ldap'])
     }

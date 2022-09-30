@@ -11,7 +11,7 @@ class profile::mirrors::serve {
         modules => ['ssl', 'macro', 'headers'],
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     httpd::site { 'mirrors':
         content => epp(

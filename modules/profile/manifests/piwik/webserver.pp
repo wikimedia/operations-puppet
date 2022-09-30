@@ -33,7 +33,7 @@ class profile::piwik::webserver {
         source => 'puppet:///modules/profile/piwik/mpm_prefork.conf',
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     require profile::analytics::httpd::utils
     include profile::idp::client::httpd
