@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::ldap::client::labs(
     Enum['sudo','sudoldap'] $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
     String $client_stack = lookup('profile::ldap::client::labs::client_stack', String, 'first', 'classic'),

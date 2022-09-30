@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::openldap::client
 #
 # This profile installs the OpenLDAP client side tools on a host in production

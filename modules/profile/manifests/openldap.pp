@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # openldap server
 class profile::openldap (
     $hostname = lookup('profile::openldap::hostname'),
