@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
 class profile::tlsproxy::instance(
     Boolean $bootstrap_protection                           = lookup('profile::tlsproxy::instance::bootstrap_protection'),

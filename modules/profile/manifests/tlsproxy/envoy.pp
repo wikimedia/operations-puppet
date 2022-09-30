@@ -1,5 +1,9 @@
-# @summary Sets up TLS termination using the envoy proxy.
-# @example
+# SPDX-License-Identifier: Apache-2.0
+# == Class profile::tlsproxy::envoy
+#
+# Sets up TLS termination using the envoy proxy.
+#
+# === Examples
 # Example hiera setups for common use-cases.
 #
 # Set up a global TLS proxy to apache listening on TCP port 444.
