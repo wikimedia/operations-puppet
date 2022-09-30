@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+
+--- /lib/bridge-utils/bridge-utils.sh	2021-02-24 11:26:28.000000000 +0000
++++ ./bridge-utils.sh	2022-09-30 08:48:22.641871007 +0000
+@@ -64,10 +64,7 @@
+   # port is a vlan and the device exists?
+   if [ "$port" != "$dev" ] && [ -e "/sys/class/net/$dev" ]
+   then
+-    if [ -f /proc/sys/net/ipv6/conf/$dev/disable_ipv6 ]
+-    then
+-      echo 1 > /proc/sys/net/ipv6/conf/$dev/disable_ipv6
+-    fi
++    # locally patched, see debian bug https://bugs.debian.org/989162
+     ip link set "$dev" up
+     ip link add link "$dev" name "$port" type vlan id "${port#*.}"
+   fi

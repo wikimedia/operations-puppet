@@ -11,6 +11,8 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     require ::profile::openstack::codfw1dev::clientpackages
     require ::profile::openstack::codfw1dev::neutron::common
 
+    class { 'bridge_utils::workaround_debian_bug_989162': }
+
     class {'::profile::openstack::base::neutron::l3_agent':
         version                              => $version,
         report_interval                      => $report_interval,
