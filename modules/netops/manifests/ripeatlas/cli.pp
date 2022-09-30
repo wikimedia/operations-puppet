@@ -10,12 +10,9 @@ class netops::ripeatlas::cli (
 
     $home = '/var/lib/atlas'
 
-    user { 'atlas':
-        ensure     => present,
-        system     => true,
-        home       => $home,
-        shell      => '/bin/bash',
-        managehome => true,
+    systemd::sysuser { 'atlas':
+        shell => '/bin/bash',
+        home  => $home,
     }
 
     file { ["${home}/.config", "${home}/.config/ripe-atlas-tools"]:
