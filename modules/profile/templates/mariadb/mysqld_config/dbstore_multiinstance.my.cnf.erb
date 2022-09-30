@@ -39,6 +39,10 @@ event_scheduler    = 1
 table_open_cache       = 50000
 table_definition_cache = 50000
 
+# binary log and replication options
+## Note: no binary log enabled!
+binlog-format                  = <%= @binlog_format %>
+
 # InnoDB file-per-table + TokuDB love those file descriptors
 open-files-limit = 200000
 
