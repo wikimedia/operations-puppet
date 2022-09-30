@@ -72,11 +72,7 @@ class bgpalerter (
     }
     # TODO: install bgpalerter
     if $manage_user {
-        user { $user:
-            system => true,
-            shell  => '/usr/sbin/nologin',
-            home   => '/nonexistent',
-        }
+        systemd::sysuser { 'bgpalerter': }
     }
     file { $base_dir:
         ensure => directory,
