@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::docker_registry_ha::registry
 #
 # This provisions a highly available docker registry,
