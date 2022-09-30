@@ -469,6 +469,10 @@ node /^cp40(2[789]|3[0256])\.ulsfo.wmnet$/ {
     role(cache::text_haproxy)
 }
 
+node 'cp4045.ulsfo.wmnet' {
+    role(spare::system)
+}
+
 #
 # eqsin caches
 #
