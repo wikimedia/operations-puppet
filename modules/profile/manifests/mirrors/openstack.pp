@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Contact in the remote end: "zigo" Thomas Goirand <zigo@debian.org>
 class profile::mirrors::openstack {
     include profile::mirrors

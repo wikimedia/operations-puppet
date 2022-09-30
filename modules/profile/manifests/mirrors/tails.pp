@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: mirrors::tails
 #
 # This class sets up a Tails mirror

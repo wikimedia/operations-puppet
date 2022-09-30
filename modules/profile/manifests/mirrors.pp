@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::mirrors {
     include profile::mirrors::serve
     include profile::mirrors::debian

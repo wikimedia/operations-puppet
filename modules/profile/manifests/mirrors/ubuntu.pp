@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: mirrors::ubuntu
 #
 # This class sets up an Ubuntu mirror

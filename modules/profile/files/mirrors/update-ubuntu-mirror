@@ -1,4 +1,5 @@
 #!/bin/dash
+# SPDX-License-Identifier: Apache-2.0
 
 fatal() {
   echo "$1" 1>&2

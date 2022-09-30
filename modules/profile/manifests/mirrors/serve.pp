@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::mirrors::serve {
 
     class { '::sslcert::dhparam': }

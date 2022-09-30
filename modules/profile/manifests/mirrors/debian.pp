@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: mirrors::debian
 #
 # This class sets up a Debian mirror
