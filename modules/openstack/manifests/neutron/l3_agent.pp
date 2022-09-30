@@ -24,7 +24,6 @@ class openstack::neutron::l3_agent(
     sysctl::parameters { 'openstack':
         values   => {
             # Turn off IP filter, only on dataplane
-            "net.ipv4.conf.${nic_dataplane}.rp_filter"               => 0,
             "net.ipv4.conf.${nic_dataplane}/${virt_vlan}.rp_filter"  => 0,
             "net.ipv4.conf.${nic_dataplane}/${wan_vlan}.rp_filter"   => 0,
             # Enable IP forwarding, only on dataplane subinterfaces
@@ -33,7 +32,6 @@ class openstack::neutron::l3_agent(
             "net.ipv6.conf.${nic_dataplane}/${virt_vlan}.forwarding" => 1,
             "net.ipv6.conf.${nic_dataplane}/${wan_vlan}.forwarding"  => 1,
             # Disable RA, only on dataplane
-            "net.ipv6.conf.${nic_dataplane}.accept_ra"               => 0,
             "net.ipv6.conf.${nic_dataplane}/${virt_vlan}.accept_ra"  => 0,
             "net.ipv6.conf.${nic_dataplane}/${wan_vlan}.accept_ra"   => 0,
 
