@@ -1237,6 +1237,7 @@ host puppetdb2002 {
 host puppetdb-test2001 {
     hardware ethernet aa:00:00:51:68:4b;
     fixed-address puppetdb-test2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 # ganeti VMs used for pybal testing/development
