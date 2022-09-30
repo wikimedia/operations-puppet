@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth {
     include ::profile::dns::auth::acmechief_target
     include ::profile::dns::auth::monitoring

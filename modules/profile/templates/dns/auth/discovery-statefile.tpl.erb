@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <% @svc_data['ip'].keys.sort.each do |dc| -%>
 <%= @svc_data['ip'][dc].values.pop %> => {{ $data := json (getv "<%= @keyspace %>/<%= @svc_name %>/<%= dc %>") }}{{ if $data.pooled }}UP{{ else }}DOWN{{ end }}/{{ $data.ttl }}
 <% end -%>

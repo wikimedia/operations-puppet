@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth::dotls(
     Hash[String, Hash[String, Any]] $authdns_addrs = lookup('authdns_addrs'),
     String $cert_name = lookup('profile::dns::auth::dotls', {default_value => 'dotls-for-authdns'}),

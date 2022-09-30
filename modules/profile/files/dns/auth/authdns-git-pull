@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# SPDX-License-Identifier: Apache-2.0
 # Simple script that substitutes "git pull" but making sure that:
 # - the working tree has no untracked files
 # - the working tree has no unstaged changes

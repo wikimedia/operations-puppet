@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::dns::auth::update::scripts
 # Scripts used by the authdns-update system
 #

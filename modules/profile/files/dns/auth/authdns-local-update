@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 #
 # Shell script that pulls zone templates from the origin or master DNS server,
 # regenerate zones & configuration and reload the DNS server.

@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <% @discovery_services.select{|data|  !data['active_active'] }.map{|data| data['dnsdisc']}.sort.each do |svc| -%>
 disc-<%= svc %> => {
     datacenters => [ geo, fail ],

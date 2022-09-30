@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth::update (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),

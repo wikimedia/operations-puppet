@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This is for the alerting host to monitor the shared public addrs
 class profile::dns::auth::monitoring::global (
     Hash[String, Hash[String, Any]] $authdns_addrs = lookup('authdns_addrs'),

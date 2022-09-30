@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 
 if   /usr/bin/kdig +short +tls-ca @ns0.wikimedia.org wikipedia.org A >/dev/null \
   && /usr/bin/kdig +short +tls-ca @ns1.wikimedia.org wikipedia.org A >/dev/null \

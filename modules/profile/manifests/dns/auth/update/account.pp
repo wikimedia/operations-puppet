@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::dns::auth::update::account
 # Sets up user, group, sudo SSH keys & git-shell commands for authdns-update
 class profile::dns::auth::update::account {

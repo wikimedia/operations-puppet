@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # DNS Service Discovery Config
 class profile::dns::auth::discovery(
     String $conftool_prefix = lookup('conftool_prefix'),

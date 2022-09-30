@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth::config(
     Hash[String, Hash[String, Any]] $authdns_addrs = lookup('authdns_addrs'),
 ) {

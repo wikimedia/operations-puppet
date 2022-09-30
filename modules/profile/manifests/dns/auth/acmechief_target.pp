@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth::acmechief_target(
     Array[Stdlib::Host] $acmechief_hosts = lookup('profile::dns::auth::acmechief_target::acmechief_hosts'),
 ){

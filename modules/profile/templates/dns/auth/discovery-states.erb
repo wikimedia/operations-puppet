@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <% @discovery_services.map{ |data| data['dnsdisc']}.sort.each do |svc| -%>
 discovery-state-<%= svc %> => {
     plugin => extfile,

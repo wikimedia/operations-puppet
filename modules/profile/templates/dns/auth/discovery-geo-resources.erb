@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <% @discovery_services.sort_by{|svc| svc['dnsdisc']}.each do |svc| -%>
 <% if svc['active_active'] -%>
 disc-<%= svc['dnsdisc'] %> => {
