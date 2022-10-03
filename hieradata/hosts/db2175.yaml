@@ -1,2 +1,3 @@
 # db2175
 mariadb::shard: 's2'
+mariadb::package: 'wmf-mariadb106'
