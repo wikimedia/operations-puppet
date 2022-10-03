@@ -44,13 +44,6 @@ innodb_flush_method            = O_DIRECT
 innodb_flush_log_at_trx_commit = 1
 innodb_buffer_pool_size        = <%= @innodb_pool_size %>
 
-# Needed by Superset to avoid errors like the following while
-# executing alter table statements (for db upgrades):
-# "Index column size too large. The maximum column size is 767 bytes."
-# Note: in order to use the features below, you need to set
-# the target table with ROW_FORMAT=DYNAMIC
-innodb_large_prefix            = 1
-
 query_cache_type        = 1
 query_cache_size        = 16M
 

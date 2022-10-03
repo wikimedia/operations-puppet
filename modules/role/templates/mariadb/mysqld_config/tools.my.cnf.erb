@@ -73,9 +73,7 @@ innodb_stats_method            = nulls_unequal
 # max_user_connections set for T216170
 max_user_connections = 20
 
-# Enable innodb_large_prefix #T179614
 innodb_strict_mode             = 1
-innodb_large_prefix = 1
 
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
