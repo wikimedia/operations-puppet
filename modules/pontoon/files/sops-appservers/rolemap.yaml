@@ -5,3 +5,5 @@ mediawiki::memcached:
   - pontoon-mc1337.appservers.eqiad1.wikimedia.cloud
 configcluster:
   - pontoon-conf42.appservers.eqiad1.wikimedia.cloud
+mediawiki::appserver:
+  - pontoon-mw1337.appservers.eqiad1.wikimedia.cloud
