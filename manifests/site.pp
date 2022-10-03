@@ -970,6 +970,9 @@ node /^dns[123456]00[12]\.wikimedia\.org$/ {
     role(dnsbox)
 }
 
+node 'dns4003.wikimedia.org' {
+    role(spare::system)
+}
 
 # backends for https://doc.wikimedia.org (T211974) on buster (T247653)
 node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
