@@ -382,7 +382,11 @@ node /^cloudcephmon200[4-6]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
-# new dumps hosts T302981
+# The following nodes pull data periodically
+# from the Analytics Hadoop cluster. Every new
+# host needs a kerberos keytab generated,
+# according to the details outlined in the
+# role's hiera configuration.
 node /^clouddumps100[12]\.wikimedia\.org/ {
     role(dumps::distribution::server)
 }
@@ -1682,13 +1686,9 @@ node /labstore100[45]\.eqiad\.wmnet/ {
     # include ::profile::base::firewall
 }
 
-# The following nodes pull data periodically
-# from the Analytics Hadoop cluster. Every new
-# host needs a kerberos keytab generated,
-# according to the details outlined in the
-# role's hiera configuration.
+# T319217
 node /labstore100[67]\.wikimedia\.org/ {
-    role(dumps::distribution::server)
+    role(spare::system)
 }
 
 node /cloudbackup100[34]\.eqiad\.wmnet/ {
