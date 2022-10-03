@@ -1,0 +1,9 @@
+profile::openstack::eqiad1::neutron::nic_rename_mac: "5c:6f:69:cd:6a:e0"
+
+# the next 2 keys can move out of the host override once we migrate to the newer servers
+profile::openstack::eqiad1::neutron::base_interface: "nic0"
+profile::openstack::eqiad1::neutron::l3_agent_bridges:
+  br-external:
+    addif: "nic0.1107"
+  br-internal:
+    addif: "nic0.1105"

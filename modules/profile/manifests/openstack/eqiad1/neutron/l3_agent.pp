@@ -6,7 +6,14 @@ class profile::openstack::eqiad1::neutron::l3_agent(
     $network_flat_interface_vlan = lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan'),
     $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::eqiad1::neutron::base_interface'),
+    Optional[Stdlib::MAC] $nic_rename_mac = lookup('profile::openstack::eqiad1::neutron::nic_rename_mac', {default_value => undef}),
     ) {
+
+    if $nic_rename_mac {
+        interface::rename { $base_interface:
+            mac => $nic_rename_mac,
+        }
+    }
 
     require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
