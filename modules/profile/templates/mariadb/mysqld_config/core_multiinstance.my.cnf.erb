@@ -79,19 +79,6 @@ table-definition-cache         = 40000
 open-files-limit               = 200000
 event_scheduler                = 1
 
-<% if @semi_sync != 'off' -%>
-# Semi-sync replication
-# TODO: use plugin_load_add once T133780 is fixed
-# In case MySQL doesn't start due to this plugin failing, comment the next
-# 'plugin_load' line and all the 'rpl_semi_sync_*' lines.
-<% end -%>
-<% if @semi_sync == 'both' -%>
-plugin_load                        = rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so
-<% elsif @semi_sync == 'master' -%>
-plugin_load                        = rpl_semi_sync_master=semisync_master.so
-<% elsif @semi_sync == 'slave' -%>
-plugin_load                        = rpl_semi_sync_slave=semisync_slave.so
-<% end -%>
 <% if @semi_sync == 'master' or @semi_sync == 'both' -%>
 rpl_semi_sync_master_enabled       = 1
 rpl_semi_sync_master_timeout       = 100

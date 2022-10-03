@@ -67,19 +67,12 @@ table-open-cache               = 50000
 table-definition-cache         = 40000
 open-files-limit               = 200000
 
-<% if @semi_sync != 'off' -%>
-# Semi-sync replication
-# In case MySQL doesn't start due to this plugin failing, comment the next
-# 'plugin-load-add' line and all the 'rpl_semi_sync_*' lines.
-<% end -%>
 <% if @semi_sync == 'master' or @semi_sync == 'both' -%>
-plugin-load-add                    = rpl_semi_sync_master=semisync_master.so
 rpl_semi_sync_master_enabled       = 1
 rpl_semi_sync_master_timeout       = 100
 rpl_semi_sync_master_wait_no_slave = 0
 <% end -%>
 <% if @semi_sync == 'slave' or @semi_sync == 'both' -%>
-plugin-load-add                    = rpl_semi_sync_slave=semisync_slave.so
 rpl_semi_sync_slave_enabled        = 1
 <% end -%>
 
