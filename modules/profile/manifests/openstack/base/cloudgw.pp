@@ -17,38 +17,9 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::base::cloudgw::virt_subnet_cidr', {default_value => '127.0.0.8/32'}),
     Array[Stdlib::IP::Address::V4::Nosubnet] $dmz_cidr = lookup('profile::openstack::base::cloudgw::dmz_cidr',    {default_value => ['0.0.0.0']}),
 ) {
-    if debian::codename::eq('buster') {
-        # need nft >= 0.9.6 and kernel >= 5.6 to use some of the concatenated rules
-        apt::pin { 'nft-from-buster-bpo':
-            package  => 'nftables libnftables1 libnftnl11 linux-image-amd64',
-            pin      => 'release n=buster-backports',
-            priority => 1001,
-            before   => Class['::nftables'],
-            notify   => Exec['cloudgw-apt-get-update'],
-        }
-
-        exec { 'cloudgw-apt-get-update':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-        }
-
-        Exec['cloudgw-apt-get-update'] -> Package <| |>
-
-        # force installation of the latest kernel (pinned above)
-        Package { 'linux-image-amd64':
-            ensure => 'latest',
-        }
-
-        # force installation of the latest nft (pinned above)
-        class { '::nftables':
-            ensure_package => 'latest',
-            ensure_service => 'present',
-        }
-    } else {
-        class { '::nftables':
-            ensure_package => 'present',
-            ensure_service => 'present',
-        }
+    class { '::nftables':
+        ensure_package => 'present',
+        ensure_service => 'present',
     }
 
     $nic_virt = "${nic_dataplane}.${virt_vlan}"
