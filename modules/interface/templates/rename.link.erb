@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# this file is managed by puppet, see:
+# modules/interface/manifests/rename.pp
+
+[Match]
+MACAddress=<%= @mac %>
+
+[Link]
+Name=<%= @new_name %>
