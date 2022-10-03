@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
+datacenters:
+  - eqiad
 deployment_server: pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
 deployment_hosts: 
   - 172.16.0.202  # pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
@@ -51,9 +53,11 @@ redis::shards:
         port: 6379
 scap::dsh::groups:
   mediawiki-appserver-canaries:
-    hosts: "%{alias('__hosts_for_mediawiki__appserver')}"
+    hosts:
+      - pontoon-mw1337.appservers.eqiad1.wikimedia.cloud
   mediawiki-installation:
-    hosts: "%{alias('__hosts_for_deployment_server')}"
+    hosts:
+      - pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
 scap::sources:
   gerrit/gerrit:
     repository: operations/software/gerrit
