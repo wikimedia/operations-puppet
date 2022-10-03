@@ -308,6 +308,13 @@ sub normalize_request {
 		// Unparseable / empty Host header
 		return (synth(400, ""));
 	}
+	// Enforce RFC 9112 request-target definition:
+	// at this point after absolute-form requests being transformed to
+	// origin-form ones, we should only have a request-target matching
+	// either origin-form or asterisk-form. See T318676 for more details
+	if(req.url !~ "^(/|\*$)") {
+		return (synth(400, ""));
+	}
 
 	if (req.http.Accept-Language) {
 		set req.http.Accept-Language = std.tolower(req.http.Accept-Language);
