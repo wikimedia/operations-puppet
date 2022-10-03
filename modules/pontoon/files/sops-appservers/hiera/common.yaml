@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
-deployment_server: "%{alias('__master_for_deployment_server')}"
+deployment_server: pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
 deployment_hosts: 
   - 172.16.0.202  # pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
-scap::deployment_server: "%{alias('__master_for_deployment_server')}"
-scap::dsh::scap_masters: "%{alias('__hosts_for_deployment_server')}"
+scap::deployment_server: pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
+scap::dsh::scap_masters:
+  - pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
 profile::mediawiki::apc_shm_size: 128M
 profile::mediawiki::apc_shm_size: 128M
-profile::mediawiki::deployment::server::rsync_host: "%{alias('__master_for_deployment_server')}"
+profile::mediawiki::deployment::server::rsync_host: pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
 profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::php::php_versions: 
   - '7.4'
@@ -60,4 +61,3 @@ scap::sources:
     repository: operations/software/gerrit/tools/gervert/deploy
   phabricator/deployment:
     repository: phabricator/deployment
-memcached_servers: "%{alias('__hosts_for_memcached')}"
