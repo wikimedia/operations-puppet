@@ -1,11 +1,65 @@
 # SPDX-License-Identifier: Apache-2.0
 
-deployment_server: 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'
+deployment_server: 'pontoon-deploy01.appservers.eqiad1.wikimedia.cloud'
 deployment_hosts: 
-  - 172.16.4.233
-scap::deployment_server: 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'
+  - 172.16.0.202  # pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
+scap::deployment_server: 'pontoon-deploy01.appservers.eqiad1.wikimedia.cloud'
 scap::dsh::scap_masters: 
-  - 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'
+  - 'pontoon-deploy01.appservers.eqiad1.wikimedia.cloud'
 profile::mediawiki::apc_shm_size: 128M
+profile::mediawiki::apc_shm_size: 128M
+profile::mediawiki::deployment::server::rsync_host: pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
+profile::mediawiki::php::enable_fpm: true
+profile::mediawiki::php::php_versions: 
+  - '7.4'
 http_proxy: ''
 has_lvs: false
+has_tls: false
+mcrouter::has_ssl: false
+mcrouter::port: 11213
+mcrouter::shards:
+  wancache:
+    eqiad:
+      shard01:
+        host: pontoon-mc1337.appservers.eqiad1.wikimedia.cloud
+        port: 11211
+profile::kubernetes::deployment_server::git_group: wikidev
+profile::kubernetes::deployment_server::git_owner: trebuchet
+profile::rsyslog::kafka_shipper::kafka_brokers: []
+profile::services_proxy::ensure: absent
+profile::services_proxy::services:
+  dummy:
+    hostname: dummy.example.net
+    localport: 9999
+    port: 9999
+    scheme: https
+    timeout: 600
+redis::shards:
+  sessions:
+    eqiad:
+      shard01:
+        host: 172.16.5.76
+        port: 6379
+      shard02:
+        host: 172.16.5.17
+        port: 6379
+      shard03:
+        host: 172.16.5.12
+        port: 6379
+      shard04:
+        host: 172.16.5.2
+        port: 6379
+scap::dsh::groups:
+  mediawiki-appserver-canaries:
+    hosts:
+    - pontoon-mw1337.appservers.eqiad1.wikimedia.cloud
+  mediawiki-installation:
+    hosts:
+    - pontoon-deploy01.appservers.eqiad1.wikimedia.cloud
+scap::sources:
+  gerrit/gerrit:
+    repository: operations/software/gerrit
+  gervert/deploy:
+    repository: operations/software/gerrit/tools/gervert/deploy
+  phabricator/deployment:
+    repository: phabricator/deployment
