@@ -1,0 +1,13 @@
+profile::lvs::realserver::pools:
+  appservers-https:
+    services:
+      - php7.4-fpm
+      - apache2
+      - mcrouter
+      - nutcracker
+      - envoyproxy
+profile::mediawiki::php::php_versions:
+  - "7.4"
+profile::mediawiki::php::absented_php_versions:
+  - "7.2"
+profile::tlsproxy::envoy::global_cert_name: "%{fqdn}"

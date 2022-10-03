@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+
+deployment_server: 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'
+deployment_hosts: 
+  - 172.16.4.233
+scap::deployment_server: 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'
+scap::dsh::scap_masters: 
+  - 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'
+profile::mediawiki::apc_shm_size: 128M
+http_proxy: ''
+has_lvs: false
