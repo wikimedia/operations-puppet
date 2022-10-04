@@ -48,7 +48,7 @@ hierarchy:
     path: "common"
   - name: "netbox common hierarchy"
     path: "hosts/%{::hostname}"
-    datadir: "/etc/puppet/netbox/hieradata"
+    datadir: "/etc/puppet/netbox"
   - name: "private common"
     lookup_key: 'wmflib::expand_path'
     datadir: "/etc/puppet/private/hieradata"
