@@ -19,3 +19,5 @@ profile::debdeploy::client::filter_services:
     - '*'
   mdadm:
     - '*'
+  ssh-agent-proxy:
+    - '*'
