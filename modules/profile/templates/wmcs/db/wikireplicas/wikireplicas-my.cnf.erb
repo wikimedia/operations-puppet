@@ -77,7 +77,6 @@ innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.80).round 
 innodb_log_file_size           = 2GB
 innodb_flush_log_at_trx_commit = 0
 innodb_io_capacity             = 5000
-innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 innodb_strict_mode             = 1
 # Default on 10.1 is 1, on 10.4 is 4.
