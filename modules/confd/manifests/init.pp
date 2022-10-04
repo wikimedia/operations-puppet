@@ -37,7 +37,7 @@ class confd(
     Optional[String] $prefix        = undef,
 ) {
 
-    package { 'confd':
+    package { ['confd', 'python3-toml']:
         ensure => $ensure,
     }
 
@@ -85,6 +85,23 @@ class confd(
 
     nrpe::plugin { 'check_confd_lint':
         source => 'puppet:///modules/confd/check_confd_lint.sh';
+    }
+
+    file { '/usr/local/bin/confd-prometheus-metrics':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/confd/confd_prometheus_metrics.py',
+    }
+
+    systemd::timer::job { 'confd_prometheus_metrics':
+        ensure      => present,
+        description => 'Export confd Prometheus metrics',
+        command     => '/usr/local/bin/confd-prometheus-metrics',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => 'minutely',
+        },
+        user        => 'root',
     }
 
     # Any change to a service configuration or to a template should reload confd.
