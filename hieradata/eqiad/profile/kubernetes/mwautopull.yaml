@@ -1,1 +1,0 @@
-profile::kubernetes::mwautopull::ensure: absent
