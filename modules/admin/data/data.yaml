@@ -32,7 +32,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan]
+              jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6254,11 +6254,8 @@ ldap_only_users:
     realname: Nat Hillard
     email: nhillard@wikimedia.org
   maryyang:
-    ensure: present
+    ensure: absent
     realname: Mary Yang
-    email: myang-ctr@wikimedia.org
-    expiry_date: 2022-09-30
-    expiry_contact: abaso@wikimedia.org
   aassaf:
     ensure: present
     realname: A. Assaf
@@ -6280,11 +6277,8 @@ ldap_only_users:
     realname: Deepak Mantena
     email: dmantena@wikimedia.org
   ozhang:
-    ensure: present
+    ensure: absent
     realname: Olivia Zhang
-    email: ozhang-ctr@wikimedia.org
-    expiry_date: 2022-10-01
-    expiry_contact: abaso@wikimedia.org
   lgaulia:
     ensure: present
     realname: Larissa Gaulia
