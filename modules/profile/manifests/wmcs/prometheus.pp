@@ -92,6 +92,16 @@ class profile::wmcs::prometheus(
         },
     ]
 
+    $hostname_to_instance_config = {
+        'source_labels' => ['hostname', 'instance'],
+        'separator'     => ';',
+        # This matches either the hostname if it's there, or the instance if it's not.
+        # It uses the separator as marker
+        'regex'         => '^([^;:]+);.*|^;(.*)',
+        'target_label'  => 'instance',
+        'replacement'   => '$1',
+    }
+
     $openstack_jobs = [
         {
             'job_name'        => 'openstack',
@@ -99,20 +109,27 @@ class profile::wmcs::prometheus(
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/openstack_*.yaml" ] }
             ],
+            'metric_relabel_configs' => [
+                $hostname_to_instance_config,
+            ],
             'scrape_interval' => '15m',
             'scrape_timeout'  => '120s',
         },
     ]
 
     $ceph_jobs = [
-      {
-        'job_name'        => "ceph_${::site}",
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/ceph_${::site}.yaml" ]}
-        ],
-      },
+        {
+            'job_name'        => "ceph_${::site}",
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/ceph_${::site}.yaml" ]}
+            ],
+            'metric_relabel_configs' => [
+                $hostname_to_instance_config,
+            ],
+        },
     ]
+
 
     file { "${targets_path}/blackbox_http_keystone.yaml":
         content => to_yaml([{
