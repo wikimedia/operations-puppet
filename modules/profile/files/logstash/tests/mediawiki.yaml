@@ -51,9 +51,9 @@ testcases:
         "logsource": "mw1384"
         "memcached-key": "enwiki:pcache:idhash:41768916-0!canonical"
         "memcached-server": "127.0.0.1:11213"
-        "message": "Memcached error for key \"enwiki:pcache:idhash:41768916-0!canonical\" on server \"127.0.0.1:11213\": A TIMEOUT OCCURRED"
+        "message": 'Memcached error for key "enwiki:pcache:idhash:41768916-0!canonical" on server "127.0.0.1:11213": A TIMEOUT OCCURRED'
         "mwversion": "1.35.0-wmf.35"
-        "normalized_message": "Memcached error for key \"{memcached-key}\" on server \"{memcached-server}\": A TIMEOUT OCCURRED"
+        "normalized_message": 'Memcached error for key "{memcached-key}" on server "{memcached-server}": A TIMEOUT OCCURRED'
         "phpversion": "7.2.26-1+0~20191218.33+debian9~1.gbpb5a340+wmf1"
         "program": "mediawiki"
         "referrer": "http://www.usatoday.com/search/results?q=WSQBCGCPWS"
@@ -330,9 +330,9 @@ testcases:
           "host": "mw1439",
           "server": "jobrunner.discovery.wmnet",
           "http_method": "POST",
-          "phpversion": "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf5",
+          "phpversion": "7.4.30",
           "channel": "exception",
-          "program": "php7.2-fpm"
+          "program": "php7.4-fpm"
         }
     expected:
       - "__target_index": "logstash-deploy-1-1.0.0-N-daily"
@@ -345,7 +345,7 @@ testcases:
           trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."
         host: "mw1439"
         logsource: "mw1439"
-        program: "php7.2-fpm"
+        program: "php7.4-fpm"
         facility: "daemon"
         type: "mediawiki"
         level: "ERROR"
@@ -353,7 +353,7 @@ testcases:
         ip: "2620:0:861:107:10:64:48:78"
         http_method: "POST"
         server: "jobrunner.discovery.wmnet"
-        phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf5"
+        phpversion: "7.4.30"
         servergroup: "jobrunner"
         normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
         message_checksum: "6e68b5cd5ffeb7f52a7e2ac1d9594da7"
@@ -379,11 +379,11 @@ testcases:
         labels:
           channel: "exception"
           caught_by: "php-wmerrors"
-          phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf5"
+          phpversion: "7.4.30"
           servergroup: "jobrunner"
           normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
         service:
-          type: "php7.2-fpm"
+          type: "php7.4-fpm"
         error:
           message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
           stack_trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."

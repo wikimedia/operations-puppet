@@ -7,6 +7,7 @@
     {"index" : "grafana-server",               "value" : "kafka local" },
     {"index" : "php7.0-fpm",                   "value" : "kafka local" },
     {"index" : "php7.2-fpm",                   "value" : "kafka local" },
+    {"index" : "php7.4-fpm",                   "value" : "kafka local" },
     {"index" : "prometheus@analytics",         "value" : "kafka local ecs_170" },
     {"index" : "prometheus@ops",               "value" : "kafka local ecs_170" },
     {"index" : "prometheus@k8s",               "value" : "kafka local ecs_170" },
