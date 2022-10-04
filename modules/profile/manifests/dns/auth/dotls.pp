@@ -43,11 +43,12 @@ class profile::dns::auth::dotls(
         group  => 'root',
     }
     file { $sysd_glue:
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/profile/dns/auth/dot-needs-auth.conf',
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/profile/dns/auth/dot-needs-auth.conf',
+        require => Service['gdnsd'],
     }
     exec { 'systemd reload for dot-needs-auth glue':
         refreshonly => true,
