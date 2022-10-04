@@ -325,8 +325,6 @@ mediawiki_test_environment:
   profile::mediawiki::php::restarts::opcache_limit: 100
   profile::mediawiki::php::enable_request_profiling: true
   profile::mediawiki::php::phpdbg: true
-  profile::mediawiki::php::php_versions:
-    - "7.4"
   profile::mediawiki::php::absented_php_versions:
     - "7.2"
 

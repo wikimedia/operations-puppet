@@ -40,12 +40,6 @@ profile::monitoring::monitor_systemd: false
 # T254025
 profile::mediawiki::php::monitoring::monitor_opcache: false
 
-# Install php 7.4 on scandium and use it as default
-profile::mediawiki::php::php_versions:
-  - "7.2"
-  - "7.4"
-profile::mediawiki::webserver::default_php_version: "7.4"
-
 profile::parsoid::vd_client::service_ensure: "running"
 profile::parsoid::vd_server::service_ensure: "running"
 profile::parsoid::rt_client::service_ensure: "running"

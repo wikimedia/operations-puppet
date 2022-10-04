@@ -8,14 +8,12 @@ profile::lvs::realserver::use_safe_restart: true
 profile::lvs::realserver::pools:
   jobrunner:
     services:
-      - php7.2-fpm
       - apache2
       - mcrouter
       - nutcracker
       - envoyproxy
   videoscaler:
     services:
-      - php7.2-fpm
       - apache2
       - mcrouter
       - nutcracker
@@ -37,9 +35,6 @@ profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
   max_execution_time: 1200
-profile::mediawiki::php::php_versions:
-  - "7.4"
-  - "7.2"
 
 # Configure php-fpm restarts
 profile::mediawiki::php::restarts::ensure: present

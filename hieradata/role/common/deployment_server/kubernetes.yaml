@@ -290,9 +290,6 @@ profile::kubernetes::deployment_server::general:
 profile::mediawiki::php::icu63: true
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
-profile::mediawiki::php::php_versions:
-  - "7.4"
-  - "7.2"
 
 profile::contacts::role_contacts: ["ServiceOps"]
 

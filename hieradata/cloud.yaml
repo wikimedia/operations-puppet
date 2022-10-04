@@ -332,9 +332,9 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad: {}
   proxies:
     eqiad: {}
-profile::mediawiki::php::php_versions:
-  - "7.2"
 profile::mediawiki::scap_client::is_master: false
+profile::mediawiki::php::php_versions:
+ - "7.4"
 profile::java::java_packages: []
 profile::java::extra_args: {}
 profile::java::hardened_tls: false

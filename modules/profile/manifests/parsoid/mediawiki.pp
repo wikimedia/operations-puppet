@@ -5,5 +5,5 @@
 class profile::parsoid::mediawiki {
 
     profile::auto_restarts::service { 'apache2': }
-    profile::auto_restarts::service { 'php7.2-fpm': }
+    profile::auto_restarts::service { 'php7.4-fpm': }
 }

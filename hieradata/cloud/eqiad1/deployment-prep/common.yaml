@@ -682,8 +682,5 @@ mediawiki::sites:
               "zh-sg",
               "zh-tw",
             ]
-profile::mediawiki::php::php_versions:
-  - "7.4"
-  - "7.2"
 profile::mediawiki::webserver::default_php_version: "7.4"
 profile::mediawiki::jobrunner::default_php_version: "7.4"

@@ -33,7 +33,7 @@ do
 done
 
 # Now let's check for nutcracker, mcrouter and php-fpm
-for service in nutcracker mcrouter php7.2-fpm;
+for service in nutcracker mcrouter php7.4-fpm;
 do
   is_installed "${service}" && stop_and_mask "${service}"
 done
@@ -49,7 +49,7 @@ done
 
 # Remove our own logrotate rules so they don't spam us
 pushd /etc/logrotate.d
-rm -f php7_2-fpm_check_restart php7.2-fpm mediawiki_apache nginx nutcracker mcrouter
+rm -f php7_2-fpm_check_restart php7.4-fpm mediawiki_apache nginx nutcracker mcrouter
 popd
 
 # Remove any trace of tmpreaper to avoid daily log spam

@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::mediawiki::php' do
-  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
     context "on #{os}" do
       let(:facts){ facts }
       let(:pre_condition) { "include apt"}
