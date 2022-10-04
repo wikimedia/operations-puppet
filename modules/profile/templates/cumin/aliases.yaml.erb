@@ -19,9 +19,9 @@ all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
 an-conf: P{O:analytics_cluster::zookeeper}
 analytics-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web or A:presto-analytics or A:analytics-launcher
-analytics-airflow: P{O:search::airflow or O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng}
+analytics-airflow: P{O:search::airflow or O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy}
 analytics-launcher: P{O:analytics_cluster::launcher}
-analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::ui::superset or O:analytics_cluster::ui::staging or O:analytics_cluster::hadoop::yarn}
+analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::ui::superset or O:analytics_cluster::ui::superset::staging or O:analytics_cluster::ui::staging or O:analytics_cluster::hadoop::yarn}
 analytics-web: P{O:analytics_cluster::webserver}
 apifeatureusage: P{O:apifeatureusage::logstash}
 apt: P{O:apt_repo}
@@ -197,6 +197,7 @@ kafka-mirror-maker-jumbo-eqiad: A:kafka-jumbo-eqiad and A:kafka-mirror-maker
 kafka-mirror-maker-main-codfw: A:kafka-main-codfw and A:kafka-mirror-maker
 kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
 kafka-mirror-maker-test-eqiad: A:kafka-test-eqiad and A:kafka-mirror-maker
+karapace: P{O:karapace}
 kerberos: P{O:kerberos::kdc}
 kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
 wikikube-etcd: P{O:etcd::v3::kubernetes}
@@ -240,6 +241,7 @@ maps: P{O:maps::master or O:maps::replica}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
 maps-canary: P{maps1009.eqiad.wmnet}
+matomo: P{O:piwik}
 mcrouter: P{P:mediawiki::mcrouter_wancache or P:mediawiki::mcrouter_exporter}
 mcrouter-codfw: A:mcrouter and A:codfw
 mcrouter-eqiad: A:mcrouter and A:eqiad
@@ -312,7 +314,6 @@ parsoid-eqiad: A:parsoid and A:eqiad
 parsoid-testing: P{O:parsoid::testing} or P{O:parsoid::testreduce}
 planet: P{O:planet}
 ping: P{O:ping_offload}
-piwik: P{O:piwik}
 pki: P{O:pki::root} or P{O:pki::multirootca}
 poolcounter: P{O:poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
