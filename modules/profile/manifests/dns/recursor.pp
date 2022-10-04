@@ -45,7 +45,6 @@ class profile::dns::recursor (
         log_common_errors => 'no',
         threads           => $facts['physicalcorecount'],
         bind_service      => $bind_service,
-        before            => Service['anycast-healthchecker'],
     }
 
     ferm::service { 'udp_dns_recursor':
