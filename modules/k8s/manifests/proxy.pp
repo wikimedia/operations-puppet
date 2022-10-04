@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Class that sets up and configures kube-proxy
-class k8s::proxy(
+class k8s::proxy (
     String $kubeconfig,
     Boolean $masquerade_all,
     String $proxy_mode = 'iptables',
@@ -11,7 +11,7 @@ class k8s::proxy(
     Optional[K8s::ClusterCIDR] $cluster_cidr = undef,
 ) {
     if $packages_from_future {
-        if debian::codename::le('buster'){
+        if debian::codename::le('buster') {
             apt::package_from_component { 'proxy-kubernetes-future':
                 component => 'component/kubernetes-future',
                 packages  => ['kubernetes-node'],
@@ -42,6 +42,5 @@ class k8s::proxy(
             File[$kubeconfig],
             File['/etc/default/kube-proxy'],
         ],
-
     }
 }

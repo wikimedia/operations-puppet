@@ -1,8 +1,7 @@
-
-class profile::kubernetes::kubeconfig::admin(
+class profile::kubernetes::kubeconfig::admin (
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
-    Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', {default_value => {}}),
-){
+    Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', { default_value => {} }),
+) {
     $kubernetes_cluster_groups.map |$cluster_group, $clusters| {
         $_tokens = $tokens[$cluster_group]
         $clusters.each |$cluster, $cluster_data| {
@@ -12,7 +11,7 @@ class profile::kubernetes::kubeconfig::admin(
                 token       => $_tokens['client-infrastructure']['token'],
                 group       => 'root',
                 owner       => 'root',
-                mode        => '0400'
+                mode        => '0400',
             }
         }
     }

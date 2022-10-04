@@ -11,16 +11,15 @@
 #
 # Note: This has the drawback that the kube-controller-manager will no longer talk to the local
 #       apiserver, but to the LVS service instead (to be able to verify TLS cert).
-class k8s::controller(
+class k8s::controller (
     String $service_account_private_key_file,
     Stdlib::Unixpath $kubeconfig,
     Boolean $logtostderr=true,
     Integer $v_log_level=0,
     Boolean $packages_from_future = false,
-){
-
+) {
     if $packages_from_future {
-        if debian::codename::le('buster'){
+        if debian::codename::le('buster') {
             apt::package_from_component { 'controller-kubernetes-future':
                 component => 'component/kubernetes-future',
                 packages  => ['kubernetes-master'],

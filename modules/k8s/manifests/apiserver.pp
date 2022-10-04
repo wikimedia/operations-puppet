@@ -12,7 +12,7 @@
 # @param admission_configuration
 #   Array of admission plugin configurations (as YAML)
 #   https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/#apiserver-k8s-io-v1alpha1-AdmissionPluginConfiguration
-class k8s::apiserver(
+class k8s::apiserver (
     String $etcd_servers,
     Stdlib::Unixpath $ssl_cert_path,
     Stdlib::Unixpath $ssl_key_path,
@@ -44,7 +44,7 @@ class k8s::apiserver(
     }
 
     if $packages_from_future {
-        if debian::codename::le('buster'){
+        if debian::codename::le('buster') {
             apt::package_from_component { 'apiserver-kubernetes-future':
                 component => 'component/kubernetes-future',
                 packages  => ['kubernetes-master'],
@@ -97,7 +97,6 @@ class k8s::apiserver(
         mode    => '0400',
         notify  => Service['kube-apiserver'],
     }
-
 
     service { 'kube-apiserver':
         ensure => running,

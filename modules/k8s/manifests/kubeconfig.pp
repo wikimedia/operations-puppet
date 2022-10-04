@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-define k8s::kubeconfig(
+define k8s::kubeconfig (
     String $master_host,
     String $username,
     String $token,

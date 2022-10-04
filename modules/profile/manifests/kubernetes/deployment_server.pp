@@ -6,16 +6,15 @@
 # @param packages_from_future packages to install from component/kubernetes-future
 # @param include_admin if true include profile::kubernetes::kubeconfig::admin
 # @param helm_user_group the group used for the helm cache directory
-class profile::kubernetes::deployment_server(
+class profile::kubernetes::deployment_server (
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
-    Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', {default_value => {}}),
-    Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', {default_value => {}}),
-    Boolean $packages_from_future                                      = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
-    Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', {default_value => false}),
+    Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { default_value => {} }),
+    Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', { default_value => {} }),
+    Boolean $packages_from_future                                      = lookup('profile::kubernetes::deployment_server::packages_from_future', { default_value => false }),
+    Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', { default_value => false }),
     String $helm_user_group                                            = lookup('profile::kubernetes::helm_user_group')
-){
-
+) {
     class { 'helm':
         helm_user_group => $helm_user_group,
     }
@@ -51,7 +50,7 @@ class profile::kubernetes::deployment_server(
                     $kubeconfig_path = "/etc/kubernetes/${kubeconfig_name}-${cluster}.config"
                     # TODO: separate username data from the services structure?
                     if ($token and !defined(K8s::Kubeconfig[$kubeconfig_path])) {
-                        k8s::kubeconfig{ $kubeconfig_path:
+                        k8s::kubeconfig { $kubeconfig_path:
                             master_host => $cluster_data['master'],
                             username    => $usr['name'],
                             token       => $token['token'],
@@ -71,7 +70,6 @@ class profile::kubernetes::deployment_server(
         class { 'profile::kubernetes::kubeconfig::admin': }
     }
 
-
     $kube_env_services_base = $include_admin ? {
         true  => ['admin'],
         false => []
@@ -82,7 +80,7 @@ class profile::kubernetes::deployment_server(
     # If not, the service will break down the assumptions kube_env does and should not be included.
     $kube_env_services = $kube_env_services_base + $services.map |$_, $srvs| {
         # Filter out services that don't have a username
-        keys($srvs).filter |$svc_name| { $svc_name in $srvs[$svc_name]['usernames'].map |$u| {$u['name']}}
+        keys($srvs).filter |$svc_name| { $svc_name in $srvs[$svc_name]['usernames'].map |$u| { $u['name'] } }
     }.flatten().unique()
     $kube_env_environments = $kubernetes_cluster_groups.map |$_, $clusters| {
         keys($clusters)

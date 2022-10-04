@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #  Class that sets up and configures kubelet
-class k8s::kubelet(
+class k8s::kubelet (
     String $kubeconfig,
     String $pod_infra_container_image,
     String $listen_address,
@@ -22,7 +22,7 @@ class k8s::kubelet(
     Optional[Array[String]] $extra_params = undef,
 ) {
     if $packages_from_future {
-        if debian::codename::le('buster'){
+        if debian::codename::le('buster') {
             apt::package_from_component { 'kubelet-kubernetes-future':
                 component => 'component/kubernetes-future',
                 packages  => ['kubernetes-node'],
@@ -40,7 +40,7 @@ class k8s::kubelet(
         # Old kubernetes nodes can't create containers when apparmor is installed (due to missing profiles)
         # Bug: T273563
         # TODO: Remove this after all clusters have been upgraded to kubernetes >=1.16
-        package {'apparmor': ensure => purged}
+        package { 'apparmor': ensure => purged }
     }
 
     # socat is needed on k8s nodes for kubectl proxying to work
@@ -58,7 +58,7 @@ class k8s::kubelet(
     file { [
         '/var/run/kubernetes',
         '/var/lib/kubelet',
-    ] :
+    ]:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
@@ -84,5 +84,4 @@ class k8s::kubelet(
             File['/etc/default/kubelet'],
         ],
     }
-
 }

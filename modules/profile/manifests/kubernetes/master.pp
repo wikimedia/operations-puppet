@@ -1,29 +1,29 @@
-class profile::kubernetes::master(
+class profile::kubernetes::master (
     String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
     Array[String] $etcd_urls=lookup('profile::kubernetes::master::etcd_urls'),
     # List of hosts this is accessible to.
     # SPECIAL VALUE: use 'all' to have this port be open to the world
     String $accessible_to=lookup('profile::kubernetes::master::accessible_to'),
     String $service_cluster_ip_range=lookup('profile::kubernetes::master::service_cluster_ip_range'),
-    Optional[String] $service_node_port_range=lookup('profile::kubernetes::master::service_node_port_range', {'default_value' => undef}),
+    Optional[String] $service_node_port_range=lookup('profile::kubernetes::master::service_node_port_range', { 'default_value' => undef }),
     Integer $apiserver_count=lookup('profile::kubernetes::master::apiserver_count'),
-    Optional[Stdlib::Fqdn] $service_cert=lookup('profile::kubernetes::master::service_cert', {'default_value' => undef}),
+    Optional[Stdlib::Fqdn] $service_cert=lookup('profile::kubernetes::master::service_cert', { 'default_value' => undef }),
     Boolean $use_cergen=lookup('profile::kubernetes::master::use_cergen', { default_value => false }),
     Stdlib::Unixpath $ssl_cert_path=lookup('profile::kubernetes::master::ssl_cert_path'),
     Stdlib::Unixpath $ssl_key_path=lookup('profile::kubernetes::master::ssl_key_path'),
     String $authz_mode=lookup('profile::kubernetes::master::authz_mode'),
-    Optional[Stdlib::Unixpath] $service_account_private_key_file=lookup('profile::kubernetes::master::service_account_private_key_file', {'default_value' => undef}),
-    Stdlib::Httpurl $prometheus_url=lookup('profile::kubernetes::master::prometheus_url', {'default_value' => "http://prometheus.svc.${::site}.wmnet/k8s"}),
-    Optional[String] $runtime_config=lookup('profile::kubernetes::master::runtime_config', {'default_value' => undef}),
-    Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
-    Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
+    Optional[Stdlib::Unixpath] $service_account_private_key_file=lookup('profile::kubernetes::master::service_account_private_key_file', { 'default_value' => undef }),
+    Stdlib::Httpurl $prometheus_url=lookup('profile::kubernetes::master::prometheus_url', { 'default_value' => "http://prometheus.svc.${::site}.wmnet/k8s" }),
+    Optional[String] $runtime_config=lookup('profile::kubernetes::master::runtime_config', { 'default_value' => undef }),
+    Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', { default_value => false }),
+    Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', { default_value => false }),
     String $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token'),
     String $scheduler_token = lookup('profile::kubernetes::master::scheduler_token'),
     Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
-    Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
-    Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
+    Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', { default_value => undef }),
+    Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', { default_value => undef })
 
-){
+) {
     if $service_cert {
         sslcert::certificate { $service_cert:
             ensure       => present,
@@ -43,7 +43,7 @@ class profile::kubernetes::master(
         }
     }
 
-    class { '::k8s::apiserver':
+    class { 'k8s::apiserver':
         etcd_servers             => $etcd_servers,
         ssl_cert_path            => $ssl_cert_path,
         ssl_key_path             => $ssl_key_path,
@@ -68,7 +68,7 @@ class profile::kubernetes::master(
         owner       => 'kube',
         group       => 'kube',
     }
-    class { '::k8s::scheduler':
+    class { 'k8s::scheduler':
         packages_from_future => $packages_from_future,
         kubeconfig           => $scheduler_kubeconfig,
     }
@@ -82,12 +82,11 @@ class profile::kubernetes::master(
         owner       => 'kube',
         group       => 'kube',
     }
-    class { '::k8s::controller':
+    class { 'k8s::controller':
         service_account_private_key_file => $service_account_private_key_file,
         kubeconfig                       => $controllermanager_kubeconfig,
         packages_from_future             => $packages_from_future,
     }
-
 
     if $accessible_to == 'all' {
         $accessible_range = undef

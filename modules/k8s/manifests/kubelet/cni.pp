@@ -4,7 +4,7 @@
 # Installs and configures a CNI config file, that can be composed by multiple
 # plugins. The related Kubeconfigs for users need to be deployed separately.
 #
-define k8s::kubelet::cni(
+define k8s::kubelet::cni (
     Hash $config,
     Integer $priority,
 ) {

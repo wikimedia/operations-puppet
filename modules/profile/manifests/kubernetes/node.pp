@@ -1,26 +1,26 @@
-class profile::kubernetes::node(
+class profile::kubernetes::node (
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
     String $infra_pod = lookup('profile::kubernetes::infra_pod'),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
-    Boolean $masquerade_all = lookup('profile::kubernetes::node::masquerade_all', {default_value => true}),
-    Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', {default_value => '/etc/kubernetes/kubelet_config'}),
-    Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', {default_value => '/etc/kubernetes/kubeproxy_config'}),
-    Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', {default_value => "http://prometheus.svc.${::site}.wmnet/k8s"}),
-    String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', {default_value => 'kube'}),
-    Optional[Stdlib::IP::Address] $kubelet_cluster_dns = lookup('profile::kubernetes::node::kubelet_cluster_dns', {default_value => undef}),
-    String $kubelet_username = lookup('profile::kubernetes::node::kubelet_username', {default_value => 'kubelet'}),
+    Boolean $masquerade_all = lookup('profile::kubernetes::node::masquerade_all', { default_value => true }),
+    Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', { default_value => '/etc/kubernetes/kubelet_config' }),
+    Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', { default_value => '/etc/kubernetes/kubeproxy_config' }),
+    Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', { default_value => "http://prometheus.svc.${::site }.wmnet/k8s" }),
+    String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', { default_value => 'kube' }),
+    Optional[Stdlib::IP::Address] $kubelet_cluster_dns = lookup('profile::kubernetes::node::kubelet_cluster_dns', { default_value => undef }),
+    String $kubelet_username = lookup('profile::kubernetes::node::kubelet_username', { default_value => 'kubelet' }),
     String $kubelet_token = lookup('profile::kubernetes::node::kubelet_token'),
-    Optional[Array[String]] $kubelet_extra_params = lookup('profile::kubernetes::node::kubelet_extra_params', {default_value => undef}),
-    Optional[Array[String]] $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', {default_value => []}),
-    Optional[Array[String]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', {default_value => []}),
-    String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', {default_value => 'system:kube-proxy'}),
+    Optional[Array[String]] $kubelet_extra_params = lookup('profile::kubernetes::node::kubelet_extra_params', { default_value => undef }),
+    Optional[Array[String]] $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
+    Optional[Array[String]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
+    String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', { default_value => 'system:kube-proxy' }),
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
-    Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', {default_value => false}),
-    Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
-    Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', {default_value => false}),
-    Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', {default_value => undef}),
-    Optional[K8s::ClusterCIDR] $cluster_cidr = lookup('profile::kubernetes::cluster_cidr', {default_value => undef}),
+    Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', { default_value => false }),
+    Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', { default_value => undef }),
+    Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', { default_value => false }),
+    Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
+    Optional[K8s::ClusterCIDR] $cluster_cidr = lookup('profile::kubernetes::cluster_cidr', { default_value => undef }),
 ) {
     require ::profile::rsyslog::kubernetes
 
@@ -76,7 +76,7 @@ class profile::kubernetes::node(
     }
 
     $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")
-    class { '::k8s::kubelet':
+    class { 'k8s::kubelet':
         listen_address                  => '0.0.0.0',
         cni                             => $use_cni,
         cluster_domain                  => $kubelet_cluster_domain,
