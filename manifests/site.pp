@@ -966,12 +966,8 @@ node 'dispatch-be1001.eqiad.wmnet' {
     role(insetup)
 }
 
-node /^dns[123456]00[12]\.wikimedia\.org$/ {
+node /^dns[123456]00[123]\.wikimedia\.org$/ {
     role(dnsbox)
-}
-
-node 'dns4003.wikimedia.org' {
-    role(spare::system)
 }
 
 # backends for https://doc.wikimedia.org (T211974) on buster (T247653)

@@ -1214,6 +1214,7 @@ authdns_servers:
   'dns3001.wikimedia.org': 91.198.174.61
   'dns3002.wikimedia.org': 91.198.174.62
   'dns4002.wikimedia.org': 198.35.26.8
+  'dns4003.wikimedia.org': 198.35.26.7
   'dns5001.wikimedia.org': 103.102.166.8
   'dns5002.wikimedia.org': 103.102.166.9
   'dns6001.wikimedia.org': 185.15.58.5
@@ -1259,6 +1260,7 @@ ntp_peers:
     - 'dns3002.wikimedia.org'
     ulsfo:
     - 'dns4002.wikimedia.org'
+    - 'dns4003.wikimedia.org'
     eqsin:
     - 'dns5001.wikimedia.org'
     - 'dns5002.wikimedia.org'
