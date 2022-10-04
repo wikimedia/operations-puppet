@@ -6,6 +6,11 @@ frontend <%= @title %>_frontend
 <%- end -%>
     default_backend <%= @title %>_backend
     http-request set-header X-Forwarded-Proto https if { ssl_fc }
+    acl is-blocked-ip src -f /etc/haproxy/ipblocklist.txt
+    http-request deny if is-blocked-ip
+    acl is-blockedagent hdr_sub(user-agent) -i -f /etc/haproxy/agentblocklist.txt
+    http-request deny if is-blockedagent
+
 
 backend <%= @title %>_backend
     balance leastconn
