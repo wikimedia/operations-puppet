@@ -23,7 +23,7 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere]
+              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -372,7 +372,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, jmads, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
+              essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond]
@@ -4140,16 +4140,12 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC70NjTsRUjZxH7bWPpRdaV8z9jD3RGnP25YbA4/DdN3 tklausmann@wikimedia.org-prod'
     krb: present
   jmads:
-    ensure: present
+    ensure: absent
     realname: Jim Maddock
-    email: jmaddock-ctr@wikimedia.org
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7ZsgXpcVy8P3a5jyg3+hlVbxpAHFw8wuXuB0IKSWD9 klogg@Jims-MacBook-Pro-2.local'
+    ssh_keys: []
     uid: 24076
     gid: 500
-    expiry_date: 2022-09-30
-    expiry_contact: bgerdemann@wikimedia.org
-    krb: present
+    krb: absent
   wkandek:
     ensure: absent
     realname: Wolfgang Kandek
