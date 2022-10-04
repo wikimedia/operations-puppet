@@ -1,9 +1,1 @@
 profile::wmcs::nfs::primary_backup::tools::backup_interval: 'Thu *-*-* 20:00:00'
-
-
-# As of 2022-09-25 the actual passive drbd server (labstore1005) is offline
-#  https://phabricator.wikimedia.org/T317643
-# This setting will run backups from the primary instead. It may
-#  cause some performance issues during backup runs but that seems
-#  better than having on backups at all.
-profile::wmcs::nfs::primary::passive_server: 'labstore1004.eqiad.wmnet'
