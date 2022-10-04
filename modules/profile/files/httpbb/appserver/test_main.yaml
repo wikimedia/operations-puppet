@@ -45,18 +45,6 @@ https://en.wikipedia.org:
 # https://phabricator.wikimedia.org/T106732
 - path: /w/resources/Resources.php
   assert_status: 404
-# Test php-version based routing on the blank page
-# Default may go to php 7.2 or 7.4 until the transition is complete.
-- path: /wiki/Special:BlankPage
-  assert_status: 200
-  assert_headers_regex:
-    X-Powered-By: PHP/7\.[24]
-- path: /wiki/Special:BlankPage?force_php72=1
-  assert_headers_regex:
-    X-Powered-By: PHP/7\.2
-- path: /wiki/Special:BlankPage?force_php74=1
-  assert_headers_regex:
-    X-Powered-By: PHP/7\.4
 
 
 https://www.mediawiki.org:
