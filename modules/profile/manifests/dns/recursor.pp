@@ -47,10 +47,6 @@ class profile::dns::recursor (
         bind_service      => $bind_service,
     }
 
-    # Ensure pdns-recursor is up and running before trying to start
-    # anycast-healthchecker, as there's a hard dependency
-    Service['pdns-recursor'] -> Service['anycast-healthchecker']
-
     ferm::service { 'udp_dns_recursor':
         proto   => 'udp',
         notrack => true,
