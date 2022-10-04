@@ -190,7 +190,7 @@ define elasticsearch::instance (
             # the above GC flags are no longer valid as of Java 11, which is the default
             # Java for Debian 10 and 11.
             11 => [
-                "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
+                "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20M",
                 '-Xlog:gc+age=trace',
                 '-Xlog:safepoint',
             ],
