@@ -199,6 +199,7 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/calico317
+ component/calico323
  component/cassandra311
  component/cassandradev
  component/dnsdist
@@ -206,6 +207,7 @@ Components: main
  component/istio195
  component/jdk8
  component/kubernetes116
+ component/kubernetes123
  component/memcached-tls
  component/puppet7
  component/pdns-recursor
