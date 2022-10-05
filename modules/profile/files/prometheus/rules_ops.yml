@@ -305,6 +305,17 @@ groups:
     expr: sum by(cluster, state, layer) (rate(trafficserver_transaction_misses_total[5m]))
   - record: cluster_state_layer:trafficserver_transaction_errors_total:rate5m
     expr: sum by(cluster, state, layer) (rate(trafficserver_transaction_errors_total[5m]))
+  - record: trafficserver_connections_used_percent
+    expr: >
+      label_replace(sum by (instance) (trafficserver_active_connections_count), "instance", "$1:0", "instance", "(.*):.*")
+      /
+      on (instance) group_left label_replace(ats_proxy_config_net_max_connections_in, "instance", "$1:0", "instance", "(.*):.*") * 100
+  - record: trafficserver_requests_used_percent
+    expr: >
+      label_replace(sum by (instance) (trafficserver_active_transaction_count), "instance", "$1:0", "instance", "(.*):.*")
+      /
+      on (instance) group_left label_replace(ats_proxy_config_net_max_requests_in, "instance", "$1:0", "instance", "(.*):.*") * 100
+
 
   # Availability
   - record: job:varnish_requests:avail2m
