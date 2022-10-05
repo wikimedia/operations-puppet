@@ -12,14 +12,6 @@ set -o nounset
 set -o pipefail
 
 OUTFILE="${1:-/var/lib/prometheus/node.d/ats_config.prom}"
-# This config option differs between ATS 8 and 9
-ats_version="$(traffic_ctl --version | awk -F" - " '{print $3}')"
-if [[ ${ats_version:0:1} == "8" ]]; then
-    max_requests_name="proxy.config.net.max_connections_active_in"
-else
-    max_requests_name="proxy.config.net.max_requests_in"
-fi
-max_requests_prom_name="ats_${max_requests_name//./_}"
 
 max_connections_in="$(
     traffic_ctl config get proxy.config.net.max_connections_in \
@@ -27,7 +19,7 @@ max_connections_in="$(
 )"
 
 max_requests_in="$(
-    traffic_ctl config get $max_requests_name \
+    traffic_ctl config get proxy.config.net.max_requests_in \
         | awk '{print $2}'
 )"
 
@@ -35,8 +27,8 @@ cat <<EOF > "${OUTFILE}.$$"
 # HELP ats_proxy_config_net_max_connections_in Total number of client requests that Traffic Server can handle simultaneously
 # TYPE ats_proxy_config_net_max_connections_in gauge
 ats_proxy_config_net_max_connections_in $max_connections_in
-# HELP $max_requests_prom_name Total number of concurrent requests or active client connections that the Traffic Server can handle simultaneously
-# TYPE $max_requests_prom_name gauge
-$max_requests_prom_name $max_requests_in
+# HELP ats_proxy_config_net_max_requests_in Total number of concurrent requests or active client connections that the Traffic Server can handle simultaneously
+# TYPE ats_proxy_config_net_max_requests_in gauge
+ats_proxy_config_net_max_requests_in $max_requests_in
 EOF
 mv "${OUTFILE}.$$" "${OUTFILE}"
