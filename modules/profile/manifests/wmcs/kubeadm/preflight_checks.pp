@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::kubeadm::preflight_checks (
     Boolean $swap = lookup('swap_partition', {default_value => true}),
 ) {

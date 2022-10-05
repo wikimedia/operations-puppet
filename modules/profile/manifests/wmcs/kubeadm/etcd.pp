@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::kubeadm::etcd (
     Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::kubeadm::etcd_nodes',   {default_value => ['localhost']}),
     Array[Stdlib::Fqdn] $checker_hosts  = lookup('profile::wmcs::kubeadm::checker_hosts',{default_value => ['tools-checker-03.tools.eqiad.wmflabs']}),

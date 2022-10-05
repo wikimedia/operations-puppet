@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::kubeadm::worker (
     Boolean $docker_vol = lookup('profile::wmcs::kubeadm::docker_vol', {default_value => true}),
 ) {

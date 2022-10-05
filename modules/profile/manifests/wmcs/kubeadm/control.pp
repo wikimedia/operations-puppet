@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Note: To bootstrap a cluster $kubernetes_version must match the version of packages
 # in the $component
 class profile::wmcs::kubeadm::control (
