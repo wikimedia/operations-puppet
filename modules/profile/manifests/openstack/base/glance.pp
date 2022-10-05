@@ -40,10 +40,9 @@ class profile::openstack::base::glance(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'glance_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (29292) ACCEPT;",
+    ferm::service { 'glance_api_all':
+        proto => 'tcp',
+        port  => '29292',
     }
 
     openstack::db::project_grants { 'glance':
