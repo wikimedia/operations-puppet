@@ -5654,6 +5654,10 @@ ldap_only_users:
     ensure: present
     realname: Jorge Vargas
     email: jvargas@wikimedia.org
+  kindrobot:
+    ensure: present
+    realname: Stef Dunlap
+    email: sdunlap@wikimedia.org
   krli:
     ensure: present
     realname: Kris Litson
