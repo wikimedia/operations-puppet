@@ -20,3 +20,4 @@ listen <%= @title %>
     timeout  server 90m
     acl is-blocked-ip src -f /etc/haproxy/ipblocklist.txt
     tcp-request connection reject if is-blocked-ip
+    # log /dev/log local0 debug
