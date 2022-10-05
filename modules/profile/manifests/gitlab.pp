@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # TODO: add profile and parameter description.
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),

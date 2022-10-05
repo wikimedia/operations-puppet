@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::gitlab_test::gitlab
 #
 # Allow git to login.

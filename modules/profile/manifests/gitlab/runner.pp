@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure host to be a docker based GitLab runner
 # @param ensure Ensure of the resources that support it
 # @param access_level Whether the runner is protected or not. Whenever a runner is protected, it
