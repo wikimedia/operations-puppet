@@ -57,10 +57,10 @@ class profile::openstack::base::cinder(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'cinder_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (28776) ACCEPT;",
+
+    ferm::service { 'cinder_api_all':
+        proto => 'tcp',
+        port  => '28776',
     }
 
     openstack::db::project_grants { 'cinder':
