@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Set up metricsinfra-specific configuration for the karma Dashboard
 class profile::wmcs::metricsinfra::alertmanager::karma (
     String              $vhost                         = lookup('profile::wmcs::metricsinfra::alertmanager::karma::vhost', {'default_value' => 'prometheus-alerts.wmcloud.org'}),

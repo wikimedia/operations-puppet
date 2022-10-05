@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::prometheus_manager (
     String $db_hostname       = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_hostname', {default_value => 'wu5emp5wblz.svc.trove.eqiad1.wikimedia.cloud'}),
     String $db_database       = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_database', {default_value => 'prometheusconfig'}),

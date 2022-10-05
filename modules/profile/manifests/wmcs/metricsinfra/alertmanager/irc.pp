@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::alertmanager::irc (
     Stdlib::Host        $active_host  = lookup('profile::wmcs::metricsinfra::alertmanager_active_host'),
     Stdlib::Host        $irc_host     = lookup('profile::wmcs::metricsinfra::alertmanager::irc::host', {default_value => 'irc.libera.chat'}),

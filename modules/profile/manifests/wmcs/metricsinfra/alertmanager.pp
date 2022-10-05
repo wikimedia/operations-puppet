@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::alertmanager (
     Array[Stdlib::Fqdn] $alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
     Stdlib::Fqdn        $active_host        = lookup('profile::wmcs::metricsinfra::alertmanager_active_host'),

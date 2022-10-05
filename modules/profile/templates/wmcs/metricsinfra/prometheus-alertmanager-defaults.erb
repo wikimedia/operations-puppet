@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 # Set the command-line arguments to pass to the server.
 ARGS="--config.file=<%= @base_path %>/alertmanager.yml --cluster.advertise-address=<%= @listen_address %>:9094 <%- @peers.each do |peer| -%>--cluster.peer <%= peer %> <%- end -%> --web.listen-address=:9093"
 

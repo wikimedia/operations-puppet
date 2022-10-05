@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::prometheus(
     Array[Hash]  $projects          = lookup('profile::wmcs::metricsinfra::monitored_projects'),
     Stdlib::Fqdn $ext_fqdn          = lookup('profile::wmcs::metricsinfra::prometheus::ext_fqdn'),
