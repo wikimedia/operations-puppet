@@ -121,10 +121,9 @@ class profile::openstack::base::keystone::service(
         srange => "(${nova_hosts_ranges.join(' ')})",
     }
 
-    ferm::rule{'keystone_public':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (5000 25000) ACCEPT;",
+    ferm::service {'keystone_public':
+        proto => 'tcp',
+        port  => '25000',
     }
 
     openstack::db::project_grants { 'keystone':
