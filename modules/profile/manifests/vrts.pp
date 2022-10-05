@@ -12,10 +12,15 @@ class profile::vrts(
     String $exim_database_pass       = lookup('profile::vrts::exim_database_pass'),
     String $download_url             = lookup('profile::vrts::download_url'),
     String $http_proxy               = lookup('profile::vrts::http_proxy'),
-    String $https_proxy              = lookup('profile::vrts::https_proxy')
+    String $https_proxy              = lookup('profile::vrts::https_proxy'),
+    Boolean $local_database          = lookup('profile::vrts::local_database', {default_value => false}),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
+
+    if $local_database {
+        include ::profile::mariadb::generic_server
+    }
 
     $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/

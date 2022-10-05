@@ -296,6 +296,7 @@ profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
 
 # VRTS
 profile::vrts::daemon: true
+profile::vrts::local_database: true
 profile::vrts::database_host: localhost
 profile::vrts::database_name: vrts
 profile::vrts::database_pass: StrongPass123!
