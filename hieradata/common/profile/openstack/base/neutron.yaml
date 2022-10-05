@@ -8,3 +8,4 @@ profile::openstack::base::neutron::report_interval: '30'
 profile::openstack::base::neutron::agent_down_time: '64'
 profile::openstack::base::neutron::log_agent_heartbeats: 'True'
 profile::openstack::base::neutron::bind_port: 9696
+profile::openstack::base::neutron::legacy_vlan_naming: true
