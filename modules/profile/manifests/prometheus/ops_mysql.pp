@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Uses addendum to prometheus::ops to add the mysql specific configuration
 class profile::prometheus::ops_mysql (
     $targets_path = lookup('prometheus::server::target_path', String, 'first', '/srv/prometheus/ops/targets'),

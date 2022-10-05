@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: profile::prometheus::elasticsearch_exporter
 #
 # Configures a prometheus elasticsearch exporter and sets up appropriate

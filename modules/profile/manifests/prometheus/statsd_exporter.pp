@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::statsd_exporter (
     Array[Hash] $mappings      = lookup('profile::prometheus::statsd_exporter::mappings'),
     Boolean     $enable_relay  = lookup('profile::prometheus::statsd_exporter::enable_relay', { 'default_value' => true }),

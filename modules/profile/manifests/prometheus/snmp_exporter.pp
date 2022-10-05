@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::snmp_exporter (
   # As of Jan 2022 all SNMP polling happens from codfw/eqiad netmon
   # hosts, therefore allow all Prometheus hosts to talk to snmp_exporter

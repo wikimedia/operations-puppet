@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::ores::web(
     Stdlib::Host $redis_host = lookup('profile::ores::web::redis_host'),
     Stdlib::Port $redis_queue_port = lookup('profile::ores::web::redis_queue_port', {'default_value' => 6379}),

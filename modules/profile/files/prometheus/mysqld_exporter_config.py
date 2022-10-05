@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 
 """
 This script generates the prometheus-mysqld-exporter targets from the

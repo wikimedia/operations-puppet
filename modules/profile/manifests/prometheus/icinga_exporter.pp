@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::icinga_exporter (
     Stdlib::Host               $active_host = lookup('profile::icinga::active_host'),
     Array[Stdlib::Host]        $partners    = lookup('profile::icinga::partners'),

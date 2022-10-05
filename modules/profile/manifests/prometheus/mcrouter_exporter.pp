@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::mcrouter_exporter (
     Stdlib::Port        $mcrouter_port    = lookup('profile::prometheus::mcrouter_exporter::mcrouter_port'),
     Stdlib::Port        $listen_port      = lookup('profile::prometheus::mcrouter_exporter::listen_port'),

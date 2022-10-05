@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::prometheus::node_directorysize
 #
 # Periodically export directory sizes for configured directories via node-exporter textfile collector.

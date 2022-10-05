@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::global (
     Array[Stdlib::Host] $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
     Array               $alerting_relabel_configs_extra = lookup('profile::prometheus::global::alerting_relabel_configs_extra'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # profile to provision prometheus blackbox / active checks exporter. See
 # https://github.com/prometheus/blackbox_exporter and the module's documentation.
 

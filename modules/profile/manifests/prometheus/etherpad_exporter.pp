@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::etherpad_exporter {
 
     ensure_packages('prometheus-etherpad-exporter')

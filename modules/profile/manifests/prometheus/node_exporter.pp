@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::prometheus::node_exporter
 #
 # Profile to provision prometheus machine metrics exporter. See also

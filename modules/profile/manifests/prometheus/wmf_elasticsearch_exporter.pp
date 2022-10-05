@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define: profile::prometheus::wmf_elasticsearch_exporter
 #
 # This adds some WMF specific metrics that are not available in the standard exporter.

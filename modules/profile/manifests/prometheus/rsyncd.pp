@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Used for migrations / hardware refresh, but not continuously
 class profile::prometheus::rsyncd (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),

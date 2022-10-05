@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::openstack_exporter (
     Stdlib::Port   $listen_port = lookup('profile::prometheus::openstack_exporter::listen_port', {default_value => 12345}),
     String[1]      $cloud       = lookup('profile::prometheus::openstack_exporter::cloud', {default_value => 'eqiad1'}),

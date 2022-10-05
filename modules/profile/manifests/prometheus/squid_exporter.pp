@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs prometheus-squid-exporter and open matching ACLs
 
 class profile::prometheus::squid_exporter (

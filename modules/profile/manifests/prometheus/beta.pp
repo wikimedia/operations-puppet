@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::beta (
     String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '730h'}),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::openldap_exporter (
     String $monitor_pass = lookup('profile::prometheus::openldap_exporter::monitor_pass')
 ){

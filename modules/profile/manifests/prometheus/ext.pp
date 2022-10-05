@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Uses the prometheus module and generates the specific configuration
 # needed for WMF production
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # this is a simple thin wrapper to load env variables required by the Openstack
 # API before running the prometheus exporter as non-root user.

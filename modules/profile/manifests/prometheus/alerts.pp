@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::prometheus::alerts
 #
 # Install icinga alerts based on Prometheus metrics.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::pushgateway (
     Optional[Stdlib::Fqdn] $pushgateway_host = lookup('profile::prometheus::pushgateway_host'),
 ) {

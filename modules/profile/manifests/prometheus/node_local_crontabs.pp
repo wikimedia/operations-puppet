@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: prometheus::node_local_crontabs
 #
 # Periodically export local crontab information via node-exporter

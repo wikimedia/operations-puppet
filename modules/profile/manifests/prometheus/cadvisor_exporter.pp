@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::cadvisor_exporter (
     Stdlib::Port $port = lookup('profile::prometheus::cadvisor_exporter::port'),
 ){

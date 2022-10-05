@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::ores::worker (
     Integer $celery_version = lookup('profile::ores::worker::celery_version', {'default_value' => 5 }),
 ) {
