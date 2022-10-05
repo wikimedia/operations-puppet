@@ -7,7 +7,15 @@ class profile::openstack::base::neutron::l3_agent(
     $legacy_vlan_naming = lookup('profile::openstack::base::neutron::legacy_vlan_naming'),
     ) {
 
-    interface::tagged { "${base_interface}.${$network_flat_interface_vlan_external}":
+    if $legacy_vlan_naming {
+        $wan_nic  = "${base_interface}.${network_flat_interface_vlan_external}"
+        $virt_nic = "${base_interface}.${network_flat_interface_vlan}"
+    } else {
+        $wan_nic  = "vlan${network_flat_interface_vlan_external}"
+        $virt_nic = "vlan${network_flat_interface_vlan}"
+    }
+
+    interface::tagged { $wan_nic:
         base_interface     => $base_interface,
         vlan_id            => $network_flat_interface_vlan_external,
         method             => 'manual',
@@ -16,7 +24,7 @@ class profile::openstack::base::neutron::l3_agent(
         legacy_vlan_naming => $legacy_vlan_naming,
     }
 
-    interface::tagged { "${base_interface}.${$network_flat_interface_vlan}":
+    interface::tagged { $virt_nic:
         base_interface     => $base_interface,
         vlan_id            => $network_flat_interface_vlan,
         method             => 'manual',
@@ -28,9 +36,8 @@ class profile::openstack::base::neutron::l3_agent(
     class {'::openstack::neutron::l3_agent':
         version         => $version,
         report_interval => $report_interval,
-        nic_dataplane   => $base_interface,
-        wan_vlan        => $network_flat_interface_vlan_external,
-        virt_vlan       => $network_flat_interface_vlan,
+        wan_nic         => $wan_nic,
+        virt_nic        => $virt_nic,
     }
     contain '::openstack::neutron::l3_agent'
 
