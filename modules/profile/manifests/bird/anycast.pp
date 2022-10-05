@@ -39,7 +39,7 @@ class profile::bird::anycast(
       proto  => 'tcp',
       port   => '179',
       srange => "(${neighbors_for_ferm})",
-      before => Class['::bird'],
+      before => Service['bird'],
   }
 
   # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
@@ -48,39 +48,22 @@ class profile::bird::anycast(
         proto  => 'udp',
         port   => '3784',
         srange => "(${neighbors_for_ferm})",
-        before => Class['::bird'],
+        before => Service['bird'],
     }
     ferm::service { 'bird-bfd-echo':
         proto  => 'udp',
         port   => '3785',
         srange => "(${neighbors_for_ferm})",
-        before => Class['::bird'],
+        before => Service['bird'],
     }
     if $_multihop {
       ferm::service { 'bird-bfd-multi-ctl':  # Multihop BFD
           proto  => 'udp',
           port   => '4784',
           srange => "(${neighbors_for_ferm})",
-          before => Class['::bird'],
+          before => Service['bird'],
       }
     }
-  }
-
-  class { '::bird::anycast_healthchecker':
-      bind_service => $bind_anycast_service,
-      do_ipv6      => $do_ipv6,
-      logging      => $anycasthc_logging,
-  }
-
-  require ::profile::bird::anycast_healthchecker_monitoring
-
-  class { '::bird':
-      neighbors    => $_neighbors_list,
-      bind_service => 'anycast-healthchecker.service',
-      bfd          => $bfd,
-      do_ipv6      => $do_ipv6,
-      multihop     => $_multihop,
-      require      => Class['::bird::anycast_healthchecker'],
   }
 
   $advertise_vips.each |$vip_fqdn, $vip_params| {
@@ -89,7 +72,7 @@ class profile::bird::anycast(
       address   => $vip_params['address'],
       interface => 'lo',
       options   => 'label lo:anycast',
-      before    => Class['::bird']
+      before    => Service['bird'],
     }
     bird::anycast_healthchecker_check { "hc-vip-${vip_fqdn}":
       ensure         => $vip_params['ensure'],
@@ -107,11 +90,27 @@ class profile::bird::anycast(
         prefixlen => '128',
         interface => 'lo',
         options   => 'label lo:anycast',
-        before    => Class['::bird']
+        before    => Service['bird'],
       }
     }
   }
   profile::contact { $title:
       contacts => ['ayounsi']
+  }
+
+  class { 'bird::anycast_healthchecker':
+      bind_service => $bind_anycast_service,
+      do_ipv6      => $do_ipv6,
+      logging      => $anycasthc_logging,
+  }
+
+  include profile::bird::anycast_healthchecker_monitoring
+
+  class { 'bird':
+      neighbors    => $_neighbors_list,
+      bind_service => 'anycast-healthchecker.service',
+      bfd          => $bfd,
+      do_ipv6      => $do_ipv6,
+      multihop     => $_multihop,
   }
 }
