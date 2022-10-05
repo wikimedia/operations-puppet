@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::opensearch::dashboards
 class profile::opensearch::dashboards (
   Enum['1']         $config_version     = lookup('profile::opensearch::dashboards::config_version',     { 'default_value' => '1' }),

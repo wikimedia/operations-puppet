@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::opensearch::monitoring::base_checks(
     Integer $shard_size_warning  = lookup('profile::opensearch::monitoring::shard_size_warning',  { 'default_value' => 110 }),
     Integer $shard_size_critical = lookup('profile::opensearch::monitoring::shard_size_critical', { 'default_value' => 140 }),
