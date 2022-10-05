@@ -1,2 +1,4 @@
 profile::homer::private_git_peer: cumin1001.eqiad.wmnet
 profile::homer::diff_timer_interval: '*-*-* 20:35:00'  # Avoid the first 10 minutes of the hour, to not overlap with rancid
+profile::httpbb::hourly_tests:
+  appserver: [mw2271.codfw.wmnet]  # Run appserver tests against the lowest-numbered canary appserver in codfw.
