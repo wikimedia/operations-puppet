@@ -1,11 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: profile::bird::anycast
 #
-# Install and configure Bird
-# Configure Ferm
-# Configure anycast_healthchecker
-#
-
+# @summary Install and configure Bird
+#   Configure Ferm
+#   Configure anycast_healthchecker
+# @param bfd if true enable bfd
+# @param neighbors_list list of bgp neighbours
+# @param bind_anycast_service The service name of the anycast service e.g. gdnsd
+# @param advertise_vips A hash of advertised virtual IPs
+# @param do_ipv6 if true configure ipv6
+# @param multihop if true configure multihop
+# @param anycasthc_logging logging configuration
 class profile::bird::anycast(
   Boolean                                        $bfd                  = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list       = lookup('profile::bird::neighbors_list', {default_value => undef}),
@@ -95,7 +99,7 @@ class profile::bird::anycast(
     }
   }
   profile::contact { $title:
-      contacts => ['ayounsi']
+      contacts => ['ayounsi'],
   }
 
   class { 'bird::anycast_healthchecker':
