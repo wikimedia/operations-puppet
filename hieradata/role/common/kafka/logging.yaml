@@ -37,10 +37,6 @@ profile::kafka::broker::max_heap_size: '2g'
 profile::kafka::broker::num_partitions: 6
 profile::kafka::broker::log_retention_hours: 120
 
-# Settings to allow Kafka brokers to use Puppet and PKI TLS certificates,
-# to prepare the cluster for the PKI migration.
-# See https://phabricator.wikimedia.org/T300130
-profile::kafka::broker:use_pki_migration_settings: true
 profile::base::certificates::include_bundle_jks: true
 
 # Kafka doesn't support Java 11 for versions
