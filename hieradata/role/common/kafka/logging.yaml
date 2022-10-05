@@ -6,11 +6,13 @@ profile::admin::groups:
 
 profile::kafka::broker::kafka_cluster_name: logging
 
-# Enable SSL/TLS for Kafka.  This requires
-# that keystore and truststore files, and
-# profile::kafka::broker::ssl_password, are committed in
+# Enable SSL/TLS for Kafka with a certificate issued by the Kafka PKI
+# intermediate CA.
+# profile::kafka::broker::ssl_password is needed, committed in
 # the expected location in ops/puppet/private.
 profile::kafka::broker::ssl_enabled: true
+# More info in https://phabricator.wikimedia.org/T300130
+profile::kafka::broker::ssl_generate_certificates: true
 
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277
@@ -25,7 +27,6 @@ profile::kafka::broker::monitoring::is_critical: true
 profile::kafka::broker::num_replica_fetchers: 4
 profile::kafka::broker::num_recovery_threads_per_data_dir: 4
 profile::kafka::broker::num_io_threads: 4
-
 
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
