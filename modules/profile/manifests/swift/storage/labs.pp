@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Create LV needed by swift and instruct udev to symlink it to its expected
 # location to simulate a disk partition.
 class profile::swift::storage::labs {

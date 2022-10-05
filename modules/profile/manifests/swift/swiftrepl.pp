@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::swift::swiftrepl(
     $ensure = lookup('profile::swift::swiftrepl::ensure', { 'default_value' => 'present' }),
 ){

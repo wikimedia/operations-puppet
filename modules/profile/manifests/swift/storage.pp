@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::swift::storage (
     Array[String] $aux_partitions                       = lookup('swift_aux_partitions'),
     Array[String] $all_drives                           = lookup('swift_storage_drives'),

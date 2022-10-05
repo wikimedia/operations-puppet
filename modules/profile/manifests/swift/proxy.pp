@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::swift::proxy (
     Hash $accounts                             = lookup('profile::swift::accounts'),
     Hash $accounts_keys                        = lookup('profile::swift::accounts_keys'),

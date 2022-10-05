@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::swift::proxy_tls (
     String $ocsp_proxy = lookup('http_proxy', {'default_value' => ''}),
 ){

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::swift::performance {
 
     $iface_primary = $facts['interface_primary']

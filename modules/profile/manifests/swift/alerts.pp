@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::swift::alerts {
     ['eqiad', 'codfw'].each |String $site| {
         monitoring::check_prometheus { "swift-${site}-container-availability":
