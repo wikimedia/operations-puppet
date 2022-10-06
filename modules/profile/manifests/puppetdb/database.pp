@@ -49,7 +49,7 @@ class profile::puppetdb::database(
     }
     if $on_master {
         $replication_slots = $use_replication_slots ? {
-            true    => $slaves.map |$replica| { "puppet_${replica.regsubst('\.', '_', 'G')}"  },
+            true    => $slaves.map |$replica| { "puppetdb_${replica.regsubst('\.', '_', 'G')}"  },
             default => [],
         }
         class { 'postgresql::master':
