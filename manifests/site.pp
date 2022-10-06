@@ -1657,11 +1657,6 @@ node /^cloudelastic100[1-6]\.wikimedia\.org$/ {
     role(elasticsearch::cloudelastic)
 }
 
-# to be decom, see T319682 and T319683
-node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^cloudnet100[5-6]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
 }
