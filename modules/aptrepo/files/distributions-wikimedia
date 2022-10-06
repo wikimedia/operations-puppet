@@ -110,6 +110,8 @@ Components: main
  component/iptables185
  component/jdk8
  component/kubernetes-future
+ component/kubernetes116
+ component/kubernetes123
  component/libmysql-java
  component/mailman3
  component/memcached16
