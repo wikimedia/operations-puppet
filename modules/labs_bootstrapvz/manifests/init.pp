@@ -1,11 +1,6 @@
 class labs_bootstrapvz() {
 
-    $python_package = debian::codename::lt('buster') ? {
-        true    => 'bootstrap-vz',
-        default => 'python-bootstrap-vz',
-    }
-
-    ensure_packages(['nbd-client', 'zerofree', 'kpartx', $python_package])
+    ensure_packages(['nbd-client', 'zerofree', 'kpartx', 'python-bootstrap-vz'])
 
     $bootstrap_filepath = '/etc/bootstrap-vz/'
 
@@ -18,8 +13,6 @@ class labs_bootstrapvz() {
     file {
         default:
             mode    => '0444';
-        "${bootstrap_filepath}/manifests/labs-stretch.manifest.yaml":
-            source  => 'puppet:///modules/labs_bootstrapvz/labs-stretch.manifest.yaml';
         "${bootstrap_filepath}/manifests/cloud-buster.manifest.yaml":
             source  => 'puppet:///modules/labs_bootstrapvz/cloud-buster.manifest.yaml';
     }
@@ -38,14 +31,6 @@ class labs_bootstrapvz() {
     }
 
     ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/access.conf":
-    }
-
-    if debian::codename::lt('buster') {
-        exec { "cp /etc/nslcd.conf ${bootstrap_filepath}/nslcd.conf":
-        }
-
-        ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nslcd.conf":
-        }
     }
 
     exec { "cp /etc/ldap/ldap.conf ${bootstrap_filepath}/nss_ldap.conf":
