@@ -1,5 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# this file is managed by puppet, see
+# modules/openstack/templates/neutron/bridge.erb
+# and:
+# modules/openstack/manifests/neutron/bridge.pp
+
 auto <%= @name %>
 iface <%= @name -%> inet manual
-    up ifconfig <%= @name -%> up
+    # ensure the bridge port is up
+    # otherwise we may create an empty bridge, see T319524
+    pre-up ifup <%= @addif %>
     bridge_ports <%= @addif %>
-    down ifconfig <%= @name -%> down
