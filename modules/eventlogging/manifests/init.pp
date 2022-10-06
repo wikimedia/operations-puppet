@@ -6,5 +6,5 @@
 # pull it.
 #
 class eventlogging {
-    include ::eventlogging::dependencies
+    include eventlogging::dependencies
 }
