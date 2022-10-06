@@ -112,8 +112,8 @@ class postgresql::master(
         $unless_sql = "SELECT 1 FROM pg_replication_slots WHERE slot_name = '${slot}'"
         exec { "create slot ${title}":
             user    => 'postgres',
-            command => $psql_cmd.sprintf(create_sql),
-            unless  => "${psql_cmd.sprintf(create_sql)} | grep 1",
+            command => $psql_cmd.sprintf($create_sql),
+            unless  => "${psql_cmd.sprintf($create_sql)} | grep 1",
         }
     }
 }
