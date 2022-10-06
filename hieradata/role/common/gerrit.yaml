@@ -51,6 +51,7 @@ profile::gerrit::replication:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
         createMissingRepositories: false
+        threads: 2
         maxRetries: 50
         rescheduleDelay: 15
         replicatePermissions: false
