@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# https://docs.trafficserver.apache.org/admin-guide/files/volume.config.en.html
+# This file is managed by Puppet.
+
+# volume=volume_number  scheme=protocol_type  size=volume_size
+<% if @enable_caching and @cache_volumes > 1 -%>
+<% volume_size = 100 / @cache_volumes -%>
+<% for i in 1..@cache_volumes -%>
+volume=<%= i %> scheme=http size=<%= volume_size %>%
+<% end -%>
+<% else -%>
+# Caching/Volume partitioning has not been enabled for this ATS instance. File empty on purpose
+<% end -%>

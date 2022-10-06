@@ -144,6 +144,10 @@
 #
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/storage.config.en.html
 #
+# [*cache_volumes*]
+#  Number of cache volumes to use. (default: 1)
+#  See https://docs.trafficserver.apache.org/admin-guide/files/volume.config.en.html
+#
 # [*ram_cache_size*]
 #   The amount of memory in bytes to reserve for RAM cache. Traffic Server
 #   automatically determines the RAM cache size if this value is not specified
@@ -236,6 +240,7 @@ define trafficserver::instance(
     Optional[Array[Trafficserver::Caching_rule]]    $caching_rules           = undef,
     Optional[Trafficserver::Negative_Caching]       $negative_caching        = undef,
     Optional[Array[Trafficserver::Storage_element]] $storage                 = undef,
+    Integer[1]                                      $cache_volumes           = 1,
     Optional[Integer]                               $ram_cache_size          = -1,
     Array[Trafficserver::Log_format]                $log_formats             = [],
     Array[Trafficserver::Log_filter]                $log_filters             = [],
@@ -350,6 +355,9 @@ define trafficserver::instance(
 
         "${paths['sysconfdir']}/storage.config":
           content => template('trafficserver/storage.config.erb'),;
+
+        "${paths['sysconfdir']}/volume.config":
+          content => template('trafficserver/volume.config.erb'),;
 
         "${paths['sysconfdir']}/plugin.config":
           content => template('trafficserver/plugin.config.erb'),;

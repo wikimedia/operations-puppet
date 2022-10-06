@@ -32,6 +32,7 @@ class profile::trafficserver::backend (
     Stdlib::Unixpath                          $trusted_ca_path          = lookup('profile::trafficserver::backend::trusted_ca_path'),
     Boolean                                   $monitor_enable           = lookup('profile::trafficserver::backend::monitor_enable'),
     Boolean                                   $is_ats9                  = lookup('profile::trafficserver::backend::is_ats9', {default_value => false}),
+    Integer[1]                                $cache_volumes            = lookup('profile::trafficserver::backend::cache_volumes', {default_value => 1}),
 ){
     $global_lua_script = $default_lua_script? {
         ''      => '',
@@ -118,6 +119,7 @@ class profile::trafficserver::backend (
         error_page              => template('mediawiki/errorpage.html.erb'),
         systemd_hardening       => $systemd_hardening,
         is_ats9                 => $is_ats9,
+        cache_volumes           => $cache_volumes,
     }
 
     # Install default Lua script
