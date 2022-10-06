@@ -21,6 +21,7 @@ class buildkitd(
     Boolean             $enable_webproxy = false,
     String              $http_proxy = 'http://webproxy:8080',
     String              $https_proxy = 'http://webproxy:8080',
+    String              $no_proxy = '127.0.0.1,::1,localhost,.wmnet,.wikimedia.org,.wikipedia.org,.wikibooks.org,.wikiquote.org,.wiktionary.org,.wikisource.org,.wikispecies.org,.wikiversity.org,.wikidata.org,.mediawiki.org,.wikinews.org,.wikivoyage.org',
 ){
     group { 'buildkitd':
         ensure => $ensure,
