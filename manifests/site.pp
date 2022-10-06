@@ -201,11 +201,6 @@ node /^apt[12]001\.wikimedia\.org/ {
 }
 
 # Analytics Query Service
-node /aqs100[456789]\.eqiad\.wmnet/ {
-    role(aqs)
-}
-
-# Analytics Query Service - buster+cassandra311
 node /aqs101[0-5]\.eqiad\.wmnet/ {
     role(aqs_next)
 }

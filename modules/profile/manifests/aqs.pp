@@ -74,6 +74,7 @@ class profile::aqs (
         ]
 
         rsync::server::module { 'transfer_cassandra_a_tmp':
+            ensure      => absent,
             path        => '/srv/cassandra-a/tmp',
             read_only   => 'no',
             list        => 'yes',
@@ -81,6 +82,7 @@ class profile::aqs (
             auto_ferm   => true,
         }
         rsync::server::module { 'transfer_cassandra_b_tmp':
+            ensure      => absent,
             path        => '/srv/cassandra-b/tmp',
             read_only   => 'no',
             list        => 'yes',
@@ -91,6 +93,7 @@ class profile::aqs (
         # Temporarily allow an-presto1001.eqiad.wmnet access to the cassandra
         # internode communication port to support loading by sstableloader
         ferm::service { 'cassandra-storage':
+            ensure => absent,
             proto  => 'tcp',
             port   => '7000',
             srange => '(@resolve((an-presto1001.eqiad.wmnet)) @resolve((an-presto1001.eqiad.wmnet), AAAA))',
