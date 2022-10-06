@@ -11,16 +11,9 @@ class k8s::proxy (
     Optional[K8s::ClusterCIDR] $cluster_cidr = undef,
 ) {
     if $packages_from_future {
-        if debian::codename::le('buster') {
-            apt::package_from_component { 'proxy-kubernetes-future':
-                component => 'component/kubernetes-future',
-                packages  => ['kubernetes-node'],
-            }
-        } else {
-            apt::package_from_component { 'proxy-kubernetes116':
-                component => 'component/kubernetes116',
-                packages  => ['kubernetes-node'],
-            }
+        apt::package_from_component { 'proxy-kubernetes116':
+            component => 'component/kubernetes116',
+            packages  => ['kubernetes-node'],
         }
     } else {
         ensure_packages('kubernetes-node')

@@ -22,16 +22,9 @@ class k8s::kubelet (
     Optional[Array[String]] $extra_params = undef,
 ) {
     if $packages_from_future {
-        if debian::codename::le('buster') {
-            apt::package_from_component { 'kubelet-kubernetes-future':
-                component => 'component/kubernetes-future',
-                packages  => ['kubernetes-node'],
-            }
-        } else {
-            apt::package_from_component { 'kubelet-kubernetes116':
-                component => 'component/kubernetes116',
-                packages  => ['kubernetes-node'],
-            }
+        apt::package_from_component { 'kubelet-kubernetes116':
+            component => 'component/kubernetes116',
+            packages  => ['kubernetes-node'],
         }
         # apparmor is needed for PodSecurityPolicy to be able to enforce profiles
         ensure_packages('apparmor')

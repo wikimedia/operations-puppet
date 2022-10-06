@@ -44,16 +44,9 @@ class k8s::apiserver (
     }
 
     if $packages_from_future {
-        if debian::codename::le('buster') {
-            apt::package_from_component { 'apiserver-kubernetes-future':
-                component => 'component/kubernetes-future',
-                packages  => ['kubernetes-master'],
-            }
-        } else {
-            apt::package_from_component { 'apiserver-kubernetes116':
-                component => 'component/kubernetes116',
-                packages  => ['kubernetes-master'],
-            }
+        apt::package_from_component { 'apiserver-kubernetes116':
+            component => 'component/kubernetes116',
+            packages  => ['kubernetes-master'],
         }
     } else {
         ensure_packages('kubernetes-master')

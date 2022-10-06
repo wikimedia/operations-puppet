@@ -3,7 +3,7 @@
 # @param user_defaults user group and mode defaults
 # @param services Dict of services
 # @param tokens dict of tokens
-# @param packages_from_future packages to install from component/kubernetes-future
+# @param packages_from_future packages to install from component/kubernetes116
 # @param include_admin if true include profile::kubernetes::kubeconfig::admin
 # @param helm_user_group the group used for the helm cache directory
 class profile::kubernetes::deployment_server (
