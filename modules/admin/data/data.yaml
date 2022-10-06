@@ -375,7 +375,7 @@ groups:
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
-              hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde]
+              hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4862,6 +4862,20 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKek16uOk9+HF1bkH4lphtdtVdDgsNhFlcjJdvpLyIb9 kcvelaga-ctr@wikimedia.org
+  hshaikh:
+    ensure: present
+    realname: Haroon Shaikh
+    gid: 500
+    uid: 41932
+    email: hshaikh@wikimedia.org
+    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
+  ptiwary:
+    ensure: present
+    realname: Prabhat Tiwary
+    gid: 500
+    uid: 41933
+    email: ptiwary@wikimedia.org
+    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
   mnz:
     ensure: present
     email: munaslam001@gmail.com
