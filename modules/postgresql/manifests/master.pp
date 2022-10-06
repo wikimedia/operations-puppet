@@ -113,7 +113,7 @@ class postgresql::master(
         exec { "create slot ${title}":
             user    => 'postgres',
             command => $psql_cmd.sprintf($create_sql),
-            unless  => "${psql_cmd.sprintf($create_sql)} | grep 1",
+            unless  => "${psql_cmd.sprintf($unless_sql)} | grep 1",
         }
     }
 }
