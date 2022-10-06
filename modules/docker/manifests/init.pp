@@ -8,7 +8,7 @@
 #
 # [*package_name*] Docker is going through various transitions changing package
 # names multiple times already. Support that so we can choose which one we want.
-# Defaults to docker-engine on < Buster, docker.io >= Buster (but this is subject to change).
+# Defaults to docker.io
 #
 # On Debian bullseye the 'libapparmor1' package is now installed by default but the
 # userspace uilities package 'apparmor' is not.
@@ -24,11 +24,7 @@ class docker(
 
     # If not set, pick a smart default value for docker packagename.
     if $package_name == undef {
-        if debian::codename::lt('buster') {
-            $_package_name = 'docker-engine'
-        } else {
-            $_package_name = 'docker.io'
-        }
+        $_package_name = 'docker.io'
     } else {
         $_package_name = $package_name
     }
