@@ -9,11 +9,11 @@ profile::elasticsearch::instances:
         transport_tcp_port: 9300
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2025.codfw.wmnet # to be decommissioned row A
-          - elastic2031.codfw.wmnet # to be decommissioned row C
           - elastic2042.codfw.wmnet # row B
+          - elastic2061.codfw.wmnet # row A
           - elastic2074.codfw.wmnet # row A
           - elastic2081.codfw.wmnet # row C
+          - elastic2084.codfw.wmnet # row D
 
         cluster_hosts:
           - elastic2025.codfw.wmnet # to be decommissioned
