@@ -4,4 +4,3 @@ profile::mariadb::dbstore_multiinstance::instances:
   s7: 192G
   s8: 192G
 profile::monitoring::notifications_enabled: false
-mariadb::package: 'wmf-mariadb106'
