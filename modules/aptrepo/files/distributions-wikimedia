@@ -145,6 +145,7 @@ Components: main
  thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/grafana
+ thirdparty/gvisor
  thirdparty/haproxy24
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-21
@@ -168,6 +169,7 @@ Update:
  elastic79
  elastic710
  grafana
+ gvisor
  jenkins
  hp-mcp-buster
  hwraid-stretch
@@ -226,6 +228,7 @@ Components: main
  thirdparty/elasticsearch-curator5
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
+ thirdparty/gvisor
  thirdparty/hwraid
  thirdparty/node14
  thirdparty/node16
@@ -240,6 +243,7 @@ Update:
  elastic68
  elastic710
  elasticsearch-curator5
+ gvisor
  hp-mcp-bullseye
  hwraid-stretch
  node14-bullseye

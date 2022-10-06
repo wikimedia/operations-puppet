@@ -405,3 +405,11 @@ Suite: bullseye
 Architectures: amd64
 VerifyRelease: 1655A0AB68576280
 ListShellHook: grep-dctrl -X -S 'nodejs' || [ $? -eq 1 ]
+
+Name: gvisor
+Method: https://storage.googleapis.com/gvisor/releases
+Components: main>thirdparty/gvisor
+UDebComponents:
+Suite: release
+Architectures: amd64
+VerifyRelease: 6FC6D554E32BD943
