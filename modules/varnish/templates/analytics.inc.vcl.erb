@@ -216,6 +216,9 @@ sub analytics_recv {
     // to later report this fact to X-Analytics
     if (!req.http.Cookie) {
         set req.http.X-WMF-NOCOOKIES = 1;
+    } else if(req.http.Cookie ~ "([sS]ession|Token)=")
+    {
+        set req.http.X-WMF-SESSIONCOOKIE = 1;
     }
 
     call analytics_provenance_recv_;
@@ -301,6 +304,10 @@ sub analytics_deliver_post {
 
     if (req.http.X-WMF-NOCOOKIES) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=1";
+    }
+
+    if (req.http.X-WMF-SESSIONCOOKIE) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";sessioncookie=1";
     }
 
     if (req.http.X-Public-Cloud) {
