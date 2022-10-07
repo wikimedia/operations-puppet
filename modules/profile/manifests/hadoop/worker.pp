@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::worker
 #
 # Configure a Analytics Hadoop worker node.

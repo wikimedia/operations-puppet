@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::firewall::master
 #
 # Set of common firewall rules for Hadoop Master nodes (active and standby)

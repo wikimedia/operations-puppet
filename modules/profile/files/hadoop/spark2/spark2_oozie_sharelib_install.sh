@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Installs an 'oozie sharelib' for spark 2 from WMF's spark2 package.
 # This roughly follows instructions from:

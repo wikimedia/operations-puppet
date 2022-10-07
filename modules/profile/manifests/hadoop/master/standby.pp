@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::master::standby
 #
 # Sets up a standby/backup Hadoop Master node.

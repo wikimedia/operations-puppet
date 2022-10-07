@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::master
 #
 # Sets up a Hadoop Master node.

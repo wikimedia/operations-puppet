@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::hadoop::yarn_proxy
 #
 # Sets up a yarn ldap auth http proxy to the Hadoop ResourceManager web interface.

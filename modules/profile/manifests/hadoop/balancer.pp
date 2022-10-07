@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::balancer
 #
 # Runs hdfs balancer periodically to keep data balanced across all DataNodes

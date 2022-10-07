@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # The HDFS topology should not contain any host in the 'default' rack.
 hdfs dfsadmin -printTopology | egrep -q 'Rack:.*default.*'

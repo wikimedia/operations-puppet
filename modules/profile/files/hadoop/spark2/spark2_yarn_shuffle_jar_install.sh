@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 #
 # Removes all Spark 1 spark-*yarn-shuffle.jar from /usr/lib/hadoop-yarn/lib and then

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::hadoop::monitoring::history
 #
 # Sets up Prometheus based monitoring for the Hadoop MapReduce History server.

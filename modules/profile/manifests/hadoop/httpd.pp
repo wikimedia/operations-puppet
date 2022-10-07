@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::hadoop::httpd
 #
 # Sets up a webserver for Hadoop UIs

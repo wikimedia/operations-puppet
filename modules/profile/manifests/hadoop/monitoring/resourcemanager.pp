@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::hadoop::monitoring::resourcemanager
 #
 # Sets up Prometheus based monitoring for the Hadoop Yarn Resourcemanager.

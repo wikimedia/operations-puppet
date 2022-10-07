@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::spark2
 # Ensure that the WMF creaed spark2 package is installed,
 # optionally Oozie has a spark2 sharelib.

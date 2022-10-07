@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # Uploads the current spark2 version's assembly file to HDFS.
 # This file is used as the value of spark.yarn.archive in spark-defaults.conf.

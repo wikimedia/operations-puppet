@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hadoop::common
 #
 # Configures Hadoop common configuration, the baseline for all the other
