@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure a PKI sevrver
 # @param ca_key_content The location of the private key as used by the secret function (Required)
 # @param ca_cert_content The location of the public cert as used by the file function (Required)

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure monitoring for the multirootca profile
 # @param ca_file path to the CA file
 # @param ensure ensurable parameter

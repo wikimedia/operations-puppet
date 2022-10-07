@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Profile::Pki::Intermediate = Struct[{
     ocsp_port      => Stdlib::Port,
     profiles       => Optional[Hash[String, Cfssl::Profile]],

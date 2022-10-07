@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @param vhost the vhost to use for the crl/ocsp responder
 # @param db_driver The db driver to use
 # @param db_user The db user to use

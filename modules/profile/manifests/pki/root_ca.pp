@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Configure a cfssl root ca with no API end point
 # @param common_name The common name to use on the CA cert
 # @param names The certificate authority names used for intermediates

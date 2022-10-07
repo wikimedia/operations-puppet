@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure WMF pki client
 # @param ensure whether to ensure the resource
 # @param signer_host The signer host

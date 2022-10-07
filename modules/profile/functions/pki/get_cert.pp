@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Ensure certificate is created and return a hash of the relevant paths
 # @param label the CA label to use 
 # @param label The cfssl CA label to use, this take precedent to over additional_params['label']
