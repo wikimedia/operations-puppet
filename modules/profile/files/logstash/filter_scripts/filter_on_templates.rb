@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # filter_on_templates.rb
 # Logstash Ruby script to strip incompatible top-level fields based on type from a set of index templates
 # @version 1.0.0

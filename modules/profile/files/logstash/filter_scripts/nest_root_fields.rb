@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # nest_root_fields.rb
 # Logstash Ruby script to copy all root fields into sub-fields of an object
 # @version 1.0.1

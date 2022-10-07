@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # dlq_transformer.rb
 # Logstash Ruby script transform a dead letter queue event into the expected format
 # @version: 1.0.2

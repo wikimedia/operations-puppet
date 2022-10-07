@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 fields:
   "rsyslog.hostname": "gerrit1001"
   "rsyslog.programname": "input-file-gerrit-json"

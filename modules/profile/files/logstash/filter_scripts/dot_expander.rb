@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # dot_expander.rb
 # Logstash Ruby script to expand dot-delimited fields into nested hashes
 # @version 1.0.2

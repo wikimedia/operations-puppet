@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # normalize_level.rb
 # Logstash Ruby script to populate `log.level` and `log.syslog` based on indicators in other fields
 # @version 1.0.4

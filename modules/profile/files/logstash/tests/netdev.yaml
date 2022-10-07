@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 fields:
   ecs.version: "1.7.0"
   host.name: "re0.cr2-eqiad"

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Custom filter that populates a 'streams' top-level key in the logstash event with
 # the format Loki expects.
 # https://github.com/grafana/loki/blob/master/docs/api.md#post-lokiapiv1push

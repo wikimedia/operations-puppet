@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 fields:
   "rsyslog.timereported": "1970-01-01T00:01:01"
   "rsyslog.hostname": "cloudhost0000"

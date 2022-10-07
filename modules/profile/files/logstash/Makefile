@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Supports docker and podman
 CONTAINER_RUNTIME := $(shell which podman || which docker)
 
