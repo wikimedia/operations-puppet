@@ -57,46 +57,4 @@ class profile::aqs (
             #notes_link     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
         #}
     }
-
-    # T249755
-    # Set up temporary rsync modules and a firewall rule
-    # in support of the cassndra 3 migration
-    # These should be removed once the migration is complete
-    if $::fqdn =~ /aqs101[0-5].eqiad.wmnet/ {
-
-        $aqs_hosts = [
-            'aqs1004.eqiad.wmnet',
-            'aqs1005.eqiad.wmnet',
-            'aqs1006.eqiad.wmnet',
-            'aqs1007.eqiad.wmnet',
-            'aqs1008.eqiad.wmnet',
-            'aqs1009.eqiad.wmnet'
-        ]
-
-        rsync::server::module { 'transfer_cassandra_a_tmp':
-            ensure      => absent,
-            path        => '/srv/cassandra-a/tmp',
-            read_only   => 'no',
-            list        => 'yes',
-            hosts_allow => $aqs_hosts,
-            auto_ferm   => true,
-        }
-        rsync::server::module { 'transfer_cassandra_b_tmp':
-            ensure      => absent,
-            path        => '/srv/cassandra-b/tmp',
-            read_only   => 'no',
-            list        => 'yes',
-            hosts_allow => $aqs_hosts,
-            auto_ferm   => true,
-        }
-
-        # Temporarily allow an-presto1001.eqiad.wmnet access to the cassandra
-        # internode communication port to support loading by sstableloader
-        ferm::service { 'cassandra-storage':
-            ensure => absent,
-            proto  => 'tcp',
-            port   => '7000',
-            srange => '(@resolve((an-presto1001.eqiad.wmnet)) @resolve((an-presto1001.eqiad.wmnet), AAAA))',
-        }
-    }
 }
