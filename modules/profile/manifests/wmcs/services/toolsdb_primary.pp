@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::services::toolsdb_primary (
     Stdlib::Unixpath $socket = lookup('profile::wmcs::services::toolsdb::socket', {default_value => '/var/run/mysqld/mysqld.sock'}),
     Boolean $rebuild = lookup('profile::wmcs::services::toolsdb::rebuild', {default_value => false}),

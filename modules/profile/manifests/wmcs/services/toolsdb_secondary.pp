@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::wmcs::services::toolsdb_secondary
 #
 # This class sets up MariaDB for a secondary tools database.

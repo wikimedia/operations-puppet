@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Type: Profile::Kubernetes::Services
 #
 # Hash containing the description of a kubernetes service for the

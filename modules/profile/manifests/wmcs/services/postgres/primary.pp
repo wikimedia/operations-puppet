@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::services::postgres::primary (
     Optional[Stdlib::Host] $postgres_secondary = lookup('profile::wmcs::services::postgres::secondary', {default_value => undef}),
     Optional[String] $replication_pass = lookup('profile::wmcs::services::postgres::replication_pass', {default_value => undef}),

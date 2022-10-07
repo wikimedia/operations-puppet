@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 
 class profile::wmcs::services::postgres::osm_primary (
     String $osm_password = lookup('profile::wmcs::services::postgres::osm_password'),

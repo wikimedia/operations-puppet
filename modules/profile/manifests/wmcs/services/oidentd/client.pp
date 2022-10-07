@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::wmcs::services::oidentd::client
 #
 # Provision an oident service acting as a client to a proxy running on an
