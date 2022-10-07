@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up the WMF annual report site
 # https://annual.wikimedia.org/
 # https://foundation.wikimedia.org/wiki/Annual_Report

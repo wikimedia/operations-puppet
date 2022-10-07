@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::microsites::os_reports (
     Stdlib::Host $os_reports_host = lookup('profile::sre::os_reports::host'),
 ) {

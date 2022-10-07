@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://security.wikimedia.org (T257834)
 class profile::microsites::security(
   $server_name = lookup('profile::microsites::security::server_name'),

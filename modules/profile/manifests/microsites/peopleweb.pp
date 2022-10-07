@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://people.wikimedia.org
 # lets shells users publish their own files (apache2, mod_userdir)
 # e.g. https://people.wikimedia.org/~username/

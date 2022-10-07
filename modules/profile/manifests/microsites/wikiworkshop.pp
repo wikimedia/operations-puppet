@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://wikiworkshop.org (T242374)
 class profile::microsites::wikiworkshop {
 

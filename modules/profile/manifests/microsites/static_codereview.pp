@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # static HTML archive of Extension:CodeReview
 class profile::microsites::static_codereview {
 

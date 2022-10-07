@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://sitemaps.wikimedia.org/
 class profile::microsites::sitemaps(
   Stdlib::Fqdn $server_name = lookup('profile::microsites::sitemaps::server_name'),

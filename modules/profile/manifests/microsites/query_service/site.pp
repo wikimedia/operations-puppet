@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # A single site served by Wikibase Query Service GUI
 #
 # $domain_name - The domain name to respond to

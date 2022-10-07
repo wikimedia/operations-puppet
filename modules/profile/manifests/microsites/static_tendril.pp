@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Provisions static site as graveyard of tendril
 # hosted at <http://tendril.wikimedia.org> and <http://dbtree.wikimedia.org>.
 #

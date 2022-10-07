@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://design.wikimedia.org (T185282)
 class profile::microsites::design(
   Stdlib::Fqdn $server_name = lookup('profile::microsites::design::server_name'),

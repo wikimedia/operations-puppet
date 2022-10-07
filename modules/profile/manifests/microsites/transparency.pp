@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Provisions the Wikimedia Transparency Report static site
 # hosted at <http://transparency.wikimedia.org>.
 #

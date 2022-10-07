@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://research.wikimedia.org (T183916)
 class profile::microsites::research(
   Stdlib::Fqdn $server_name = lookup('profile::microsites::research::server_name'),
