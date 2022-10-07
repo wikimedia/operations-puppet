@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::maps::postgresql_common
 #
 # Manages the postgresql configuration commone to master and replicas.

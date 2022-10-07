@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::maps::cassandra(
     Boolean $cassandra_enable           = lookup('profile::maps::cassandra::enable', { 'default_value' => true }),
     String $cassandra_kartotherian_pass = lookup('profile::maps::cassandra::kartotherian_pass'),

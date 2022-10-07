@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::maps::osm_master (
     String $planet_sync_period                   = lookup('profile::maps::osm_master::planet_sync_period', { 'default_value' => 'hour' }),
     String $planet_sync_day                      = lookup('profile::maps::osm_master::planet_sync_day', { 'default_value' => '*' }),

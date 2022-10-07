@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::maps::tlsproxy(
     String $servicename      = lookup('profile::maps::tlsproxy::servicename'),
     String $ocsp_proxy       = lookup('http_proxy', {'default_value' => ''}),

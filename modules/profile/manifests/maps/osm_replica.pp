@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::maps::osm_replica(
     Stdlib::Host $master     = lookup('profile::maps::osm_replica::master'),
     # check_postgres_replication_lag script relies on values that are only

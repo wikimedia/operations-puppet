@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::maps::apps(
     String $osm_engine = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
     Array[String] $cassandra_hosts = lookup('profile::cassandra::single_instance::seeds'),

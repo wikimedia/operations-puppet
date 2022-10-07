@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Define various checks for Maps
 class profile::maps::alerts(
     Stdlib::HTTPUrl $graphite_url = lookup('graphite_url'),
