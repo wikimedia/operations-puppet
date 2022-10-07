@@ -34,7 +34,6 @@ class profile::openstack::eqiad1::keystone::service(
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::eqiad1::keystone::enforce_new_policy_defaults'),
     Stdlib::Port $admin_bind_port = lookup('profile::openstack::eqiad1::keystone::admin_bind_port'),
     Stdlib::Port $public_bind_port = lookup('profile::openstack::eqiad1::keystone::public_bind_port'),
-    Boolean $enable_app_credentials = lookup('profile::openstack::eqiad1::keystone::enable_app_credentials'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -69,7 +68,6 @@ class profile::openstack::eqiad1::keystone::service(
         keystone_fqdn               => $keystone_fqdn,
         public_bind_port            => $public_bind_port,
         admin_bind_port             => $admin_bind_port,
-        enable_app_credentials      => $enable_app_credentials,
     }
     contain '::profile::openstack::base::keystone::service'
 

@@ -23,7 +23,7 @@ wiki_access_secret=<%= @wiki_status_access_secret %>
 driver = sql
 
 [auth]
-methods = external,password,token,wmtotp<%- if @enable_app_credentials -%>,application_credential<%- end %>
+methods = external,password,token,wmtotp,application_credential
 
 # Override the default password plugin with a custom
 #  one that checks source IPs.

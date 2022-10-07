@@ -9,4 +9,3 @@ profile::openstack::codfw1dev::keystone::wmcloud_domain_owner: "cloudinfra-codfw
 profile::openstack::codfw1dev::keystone::bastion_project_id: "bastioninfra-codfw1dev"
 profile::openstack::codfw1dev::keystone::enforce_policy_scope: false
 profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults: false
-profile::openstack::codfw1dev::keystone::enable_app_credentials: true
