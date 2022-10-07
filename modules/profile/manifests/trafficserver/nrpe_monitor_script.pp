@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Define profile::trafficserver::nrpe_monitor_script
 #
 # Install the script specified in $title (or $checkname) under

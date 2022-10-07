@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define profile::trafficserver::atsmtail(
     String $instance_name,
     Stdlib::Absolutepath $atsmtail_progs,

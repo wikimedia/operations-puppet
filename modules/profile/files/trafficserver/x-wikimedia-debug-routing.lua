@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 -- Route requests to a set of un-pooled application servers that are reserved
 -- for debugging, based on the value of the X-Wikimedia-Debug header. The
 -- X-Wikimedia-Debug header is made up of semicolon-separated fields. Each

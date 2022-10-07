@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 -- Usage:
 -- map / https://appservers-rw.discovery.wmnet @plugin=/usr/lib/trafficserver/modules/tslua.so \
 --     @pparam=/etc/trafficserver/lua/normalize-path.lua @pparam="3A 2F 40 21 24 28 29 2A 2C 3B" @pparam="5B 5D 26 27 2B 3D"

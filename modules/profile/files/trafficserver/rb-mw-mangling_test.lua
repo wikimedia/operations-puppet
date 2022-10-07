@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 _G.ts = {
   client_request = {
     header = {}

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 _G.ts = {}
 _G.ts.get_config_dir = function() return "/tmp" end
 _G.ts.error = function(msg) return true end

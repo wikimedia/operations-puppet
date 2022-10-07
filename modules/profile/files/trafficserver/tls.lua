@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 -- The JIT compiler is causing severe performance issues:
 -- https://phabricator.wikimedia.org/T265625
 jit.off(true, true)

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === class profile::trafficserver::backend
 #
 # Sets up a Traffic Server backend instance with relevant Nagios checks.
