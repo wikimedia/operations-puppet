@@ -13,6 +13,7 @@ ExecStart=/usr/bin/docker run --name buildkitd \
     --volume /etc/buildkitd.toml:/etc/buildkit/buildkitd.toml \
     --network <%= @network %> \
     --env-file /etc/default/buildkitd \
+    <%= @image %> \
     --addr tcp://<%= @address %>:<%= @port %> \
     --config /etc/buildkit/buildkitd.toml
 ExecStop=/usr/bin/docker stop buildkitd
