@@ -507,5 +507,5 @@ def webservice_kubernetes_test():
     return start_stop_webservice(
         "toolschecker-k8s-ws",
         "kubernetes",
-        "php7.2"
+        "php7.4"
     )
