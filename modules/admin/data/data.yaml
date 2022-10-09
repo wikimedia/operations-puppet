@@ -1663,7 +1663,7 @@ users:
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGsE8+18bBDtNStDNUPsyvQ7B0cWbTModZ9k4JtE7335HWVIaqMTBhhwRPw/INqDqjaIrBQkyZLukvMB1H3LwIeux5ew94EMBRcHQrdbQ4voXFDmLuM+xhUe0jogtEMNq5bEKg2hkudQQc8GmKKDHKkyd1+cJ8VwI6IcUxrOATYqtyra4/RcE5xpVwA2h8WuySrW4xMQMLsAKclYwDkvXY9hb4hIG3T5oBr01UMjcNTh+QC2S/L9HlF0g8Sbj1ZHF6LaBezcb19XKyG61L4K+N41OG6/yPiX4FxBR9rP7keTI+mzB4wLv2LvOPpdeaFKB2NwW06xItHjY2vYZMlsJ/]
     uid: 3182
     email: asarabadani@wikimedia.org
     krb: present
