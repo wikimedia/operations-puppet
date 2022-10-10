@@ -301,6 +301,12 @@ class profile::toolforge::prometheus (
             pod_name  => 'kube-state-metrics-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
             port      => 8080,
         },
+        {
+            name      => 'jobs-api',
+            namespace => 'jobs-api',
+            pod_name  => 'jobs-api-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9000,
+        },
     ].map |Hash $job| {
         $result = {
             'job_name'              => $job['name'],
