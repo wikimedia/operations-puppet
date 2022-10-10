@@ -1306,7 +1306,7 @@ node /^ganeti103[1-2]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^ganeti10(0[5-9]|1[0-9]|2[0-9]30)\.eqiad\.wmnet$/ {
+node /^ganeti10(0[5-9]|1[0-9]|2[0-9]|30)\.eqiad\.wmnet$/ {
     role(ganeti)
 }
 
