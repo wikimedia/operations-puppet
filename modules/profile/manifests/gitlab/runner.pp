@@ -150,12 +150,12 @@ class profile::gitlab::runner (
     # See https://wikitech.wikimedia.org/wiki/HTTP_proxy
     $proxy_variables = $enable_webproxy ? {
         true    => {
-            http_proxy  => $http_proxy,
-            https_proxy => $https_proxy,
-            no_proxy    => $no_proxy,
-            # HTTP_PROXY  => $http_proxy,
-            # HTTPS_PROXY => $https_proxy,
-            # NO_PROXY    => $no_proxy,
+            'http_proxy'  => $http_proxy,
+            'https_proxy' => $https_proxy,
+            'no_proxy'    => $no_proxy,
+            'HTTP_PROXY'  => $http_proxy,
+            'HTTPS_PROXY' => $https_proxy,
+            'NO_PROXY'    => $no_proxy,
         },
         default =>  {},
     }
