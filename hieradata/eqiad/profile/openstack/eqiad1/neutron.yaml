@@ -1,18 +1,20 @@
-profile::openstack::eqiad1::neutron::base_interface: "eno50"
 profile::openstack::eqiad1::neutron::bind_port: 19696
 profile::openstack::eqiad1::neutron::db_host: openstack.eqiad1.wikimediacloud.org
-profile::openstack::eqiad1::neutron::network_flat_interface_vlan: "1105"
-profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: "1107"
 profile::openstack::eqiad1::neutron::rabbit_user: "neutron"
-profile::openstack::eqiad1::neutron::network_flat_name: "cloudinstances2b"
-profile::openstack::eqiad1::neutron::l3_agent_bridges:
-  br-external:
-    addif: "eno50.1107"
-  br-internal:
-    addif: "eno50.1105"
-profile::openstack::eqiad1::neutron::l3_agent_bridge_mappings:
-  br-external: "br-external"
-  cloudinstances2b: "br-internal"
 profile::openstack::eqiad1::neutron::report_interval: "5"
 profile::openstack::eqiad1::neutron::agent_down_time: "64"
 profile::openstack::eqiad1::neutron::log_agent_heartbeats: "True"
+
+profile::openstack::eqiad1::neutron::network_flat_interface_vlan: "1105"
+profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: "1107"
+profile::openstack::eqiad1::neutron::legacy_vlan_naming: false
+profile::openstack::eqiad1::neutron::base_interface: "%{facts.networking.primary}"
+profile::openstack::eqiad1::neutron::l3_agent_bridges:
+  br-external:
+    addif: "vlan%{lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external')}"
+  br-internal:
+    addif: "vlan%{lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan')}"
+profile::openstack::eqiad1::neutron::network_flat_name: "cloudinstances2b"
+profile::openstack::eqiad1::neutron::l3_agent_bridge_mappings:
+  br-external: "br-external"
+  cloudinstances2b: "br-internal"

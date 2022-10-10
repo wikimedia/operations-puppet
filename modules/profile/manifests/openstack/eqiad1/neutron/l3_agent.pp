@@ -7,6 +7,7 @@ class profile::openstack::eqiad1::neutron::l3_agent(
     $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::eqiad1::neutron::base_interface'),
     Optional[Stdlib::MAC] $nic_rename_mac = lookup('profile::openstack::eqiad1::neutron::nic_rename_mac', {default_value => undef}),
+    Boolean               $legacy_vlan    = lookup('profile::openstack::eqiad1::neutron::legacy_vlan_naming'),
     ) {
 
     if $nic_rename_mac {
@@ -24,6 +25,7 @@ class profile::openstack::eqiad1::neutron::l3_agent(
         base_interface                       => $base_interface,
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
+        legacy_vlan_naming                   => $legacy_vlan,
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
