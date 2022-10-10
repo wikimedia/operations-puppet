@@ -14,6 +14,10 @@ class profile::base::linux510(
 ) {
     # only for Buster
     if $enable and debian::codename::eq('buster') {
-        ensure_packages('linux-image-5.10-amd64')
+        apt::pin { 'linux-image-apt-pin':
+            pin      => 'release a=buster-backports',
+            package  => 'linux-image-amd64',
+            priority => 1001,
+        }
     }
 }
