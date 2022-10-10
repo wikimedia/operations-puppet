@@ -18,17 +18,19 @@
 # @param enable_exporter Enable Prometheus metrics exporter
 # @param gitlab_runner_user User which is used to execute gitlab-runner daemon
 # @param restrict_firewall Enable default REJECT rule for all egress Docker traffic to wmnet
-# @param allowed_services List of TCP services (host and port) which can be accessed from Docker
-# with restricted firewall enabled. Only used when restrict_firewall is True.
+# @param allowed_services List of TCP services (host and port) which can be accessed
+#   from Docker with restricted firewall enabled. Only used when restrict_firewall is True.
 # @param ensure_buildkitd Whether to provide buildkitd for image building.
 # @param buildkitd_image Ref to buildkitd container image.
 # @param buildkitd_nameservers Nameservers that buildkitd will use for its executors.
 # @param clear_interval Interval for cleanup of docker cache/volumes from old jobs.
 # @param enable_clear_cache Enable automatic cleanup of cached/old docker volumes.
-# @param enable_webproxy Enable usage of webproxy for buildkit to access external resources
-# @param http_proxy Proxy URL to use for http
-# @param https_proxy Proxy URL to use for https
+# @param enable_webproxy Enable usage of webproxy for buildkit to access external resources.
+#   When 'true', uses values from http_proxy, http_proxy and no_proxy.
+# @param http_proxy Proxy URL to use for http (requires enable_webproxy=true)
+# @param https_proxy Proxy URL to use for https (requires enable_webproxy=true)
 # @param no_proxy Domains and addresses that shouldn't go through the proxies
+#   (requires enable_webproxy=true)
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -60,9 +62,9 @@ class profile::gitlab::runner (
     Systemd::Timer::Schedule                    $clear_interval     = lookup('profile::gitlab::runner::clear_interval'),
     Boolean                                     $enable_clear_cache = lookup('profile::gitlab::runner::enable_clear_cache'),
     Boolean                                     $enable_webproxy    = lookup('profile::gitlab::runner::enable_webproxy'),
-    String                                      $http_proxy         = lookup('profile::gitlab::runner::http_proxy'),
-    String                                      $https_proxy        = lookup('profile::gitlab::runner::https_proxy'),
-    String                                      $no_proxy           = lookup('profile::gitlab::runner::no_proxy'),
+    Optional[String]                            $http_proxy         = lookup('profile::gitlab::runner::http_proxy'),
+    Optional[String]                            $https_proxy        = lookup('profile::gitlab::runner::https_proxy'),
+    Optional[String]                            $no_proxy           = lookup('profile::gitlab::runner::no_proxy'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
