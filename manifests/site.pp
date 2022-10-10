@@ -965,6 +965,10 @@ node /^dns[123456]00[123]\.wikimedia\.org$/ {
     role(dnsbox)
 }
 
+node 'dns4004.wikimedia.org' {
+    role(insetup)
+}
+
 # backends for https://doc.wikimedia.org (T211974) on buster (T247653)
 node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
     role(doc)
