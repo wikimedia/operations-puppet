@@ -23,7 +23,7 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor]
+              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -157,7 +157,7 @@ groups:
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
-              kharlan, abi, bmansurov, musikanimal, nahidunlimited,
+              kharlan, abi, musikanimal, nahidunlimited,
               daimona, mepps, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, mfossati]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
@@ -347,7 +347,7 @@ groups:
               andyrussg, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, amire80, kartik, pcoombe, foks, kemayo, rmurthy,
+              amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, ladsgroup, musikanimal,
               goransm, dsaez, rho, mirrys, slaporte, jk,
@@ -588,7 +588,7 @@ groups:
     description: Service deploy users
     members: [bd808, mobrovac, thcipriani, dduvall,
               kartik, halfak, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
+              ssastry, cscott, arlolra, jdlrobson, jforrester,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit,
               kevinbazira, chrisalbon, jgiannelos, demon]
     privileges: []
@@ -959,7 +959,7 @@ groups:
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.
-    members: &analytics_research_admins_members [fab, bmansurov, gmodena]
+    members: &analytics_research_admins_members [fab, gmodena]
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
@@ -2294,16 +2294,13 @@ users:
     ssh_keys: []
     uid: 10747
   bmansurov:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bmansurov
     realname: Bahodir Mansurov
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDo4whVVoxM3qhsE2FPfQslsnkoZMQozoOlQln//9fEqQmm6ixZjrTqBLFlSD88ZBISR/42o7gxhEFNGYud70A46+txvnC5JoQjXlkRcZIhcegO1xJYu+dvmQAOAHSfwnM9XgZd55ib03v3ib8dVlQNwlMbO/ONOsJwwHLBYu43rhI2kimuEP00RvLwA+78S4x8c5E5haHbk063WzVpFAI5ntyAeANJ5EnEfiXhKV2J7R7YazXP178YOkgSRTBHJpb6CNTiuEtWfLCZ1MgS14vypD/cI20SzgvZovPQ/6kdaneziiNIhVLRPbFfVcg0HtvOxlld2NJwJfnkvWRTuJvp bmansurov@wikimedia.org]
+    ssh_keys: []
     uid: 10570
-    email: bmansurov@wikimedia.org
-    expiry_date: 2022-10-07
-    expiry_contact: leila@wikimedia.org
-    krb: present
+    krb: absent
   west1:
     ensure: present
     gid: 500
