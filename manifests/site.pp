@@ -1332,6 +1332,10 @@ node /^ganeti400[1234]\.ulsfo\.wmnet$/ {
     role(ganeti)
 }
 
+node 'ganeti4008.ulsfo.wmnet' {
+    role(insetup)
+}
+
 node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
