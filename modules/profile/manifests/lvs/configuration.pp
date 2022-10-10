@@ -13,7 +13,7 @@ class profile::lvs::configuration (
     }
     # Ensure we have at least one classification
     if $_host_class_hosts.size == 0 {
-        $lvs_class = 'unlcassified'
+        $lvs_class = 'unclassified'
         $primary = false
         $secondary = false
     } else {
