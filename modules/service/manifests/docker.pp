@@ -45,6 +45,8 @@
 #   opened within the container will be opened directly on the host without
 #   a NAT translation being involved.
 #
+# [*runtime*] String. default undef. If set, specifies the container runtime.
+#
 define service::docker(
     Stdlib::Port::User $port,
     String $version,
@@ -56,6 +58,7 @@ define service::docker(
     String $image_name = $title,
     Boolean $volume = false,
     Boolean $host_network = false,
+    Optional[String] $runtime = undef,
 ) {
     # Our docker registry is *not* configurable here.
     $registry = 'docker-registry.wikimedia.org'
