@@ -127,7 +127,7 @@ profile::gitlab::runner::user: "root"
 profile::gitlab::runner::restrict_firewall: false
 profile::gitlab::runner::allowed_services: {}
 profile::gitlab::runner::ensure_buildkitd: present
-profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/repos/releng/buildkit:wmf-v0.10-1
+profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.10-1
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
 profile::gitlab::runner::clear_interval:
   start: "OnCalendar"
