@@ -10,13 +10,7 @@
 # - bnx2x NICs firmware issues (cloudnet servers, see T271058)
 #
 class profile::base::linux510 {
-
     if debian::codename::eq('buster') {
-        apt::pin { 'linux-image-apt-pin':
-            pin      => 'release a=buster-backports',
-            package  => 'linux-image-amd64',
-            priority => 1001,
-        }
+        ensure_packages('linux-image-5.10-amd64')
     }
-
 }
