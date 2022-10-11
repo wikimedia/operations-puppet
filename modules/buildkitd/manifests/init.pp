@@ -16,7 +16,7 @@ class buildkitd(
     Stdlib::Port             $port = 1234,
     String                   $image = 'docker-registry.wikimedia.org/buildkitd:latest',
     Array[Stdlib::Host]      $nameservers = [],
-    Hash                     $environment = {},
+    Wmflib::POSIX::Variables $environment = {},
     Optional[Integer]        $gckeepstorage = 0,
 ){
     group { 'buildkitd':

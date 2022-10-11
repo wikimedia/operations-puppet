@@ -167,7 +167,7 @@ class profile::gitlab::runner (
             'HTTP_PROXY'  => $http_proxy,
             'HTTPS_PROXY' => $https_proxy,
             'NO_PROXY'    => $no_proxy,
-        },
+        }.filter |$k,$v| { $v != undef },
         default =>  {},
     }
 
