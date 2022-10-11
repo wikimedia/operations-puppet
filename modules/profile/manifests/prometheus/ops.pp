@@ -221,6 +221,8 @@ class profile::prometheus::ops (
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
+
+      # Smokeping replacement jobs, implemented with Blackbox exporter
       {
         'job_name'        => 'smoke/icmp',
         'metrics_path'    => '/probe',
@@ -238,6 +240,16 @@ class profile::prometheus::ops (
         'scrape_timeout'  => '3s',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/smoke-dns_*.yaml" ] }
+        ],
+        'relabel_configs' => $probes_relabel_configs,
+      },
+      {
+        'job_name'        => 'smoke/mgmt',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '45s',
+        'scrape_timeout'  => '3s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/smoke-mgmt_*.yaml" ] }
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
@@ -310,6 +322,17 @@ class profile::prometheus::ops (
     netops::prometheus::hosts { 'hiera':
       targets      => $site_smoke_hosts,
       targets_file => "${targets_path}/smoke-icmp_hosts-hiera.yaml",
+    }
+
+    include profile::netbox::data
+
+    $site_mgmt_hosts = $profile::netbox::data::mgmt.filter |$host, $config| {
+      $config['site'] == $::site
+    }
+
+    netops::prometheus::mgmt { 'site':
+      targets      => $site_mgmt_hosts,
+      targets_file => "${targets_path}/smoke-mgmt_site.yaml",
     }
 
     # Checks for custom probes, defined in puppet
