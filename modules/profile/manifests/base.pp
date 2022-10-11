@@ -9,6 +9,7 @@
 # @param enable_contacts use the contacts module
 # @param core_dump_pattern the core dump pattern
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
+# @param use_linux510_on_buster whether to setup kernel 5.10 on buster hosts
 class profile::base (
     Hash    $wikimedia_clusters        = lookup('wikimedia_clusters'),
     String  $cluster                   = lookup('cluster'),
@@ -19,6 +20,7 @@ class profile::base (
     Boolean $unprivileged_userns_clone = lookup('profile::base::unprivileged_userns_clone'),
     Array   $remote_syslog             = lookup('profile::base::remote_syslog'),
     Hash    $remote_syslog_tls         = lookup('profile::base::remote_syslog_tls'),
+    Boolean $use_linux510_on_buster    = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -43,6 +45,10 @@ class profile::base (
     contain profile::base::certificates
     include profile::apt
     include profile::systemd::timesyncd
+
+    if $use_linux510_on_buster {
+        include profile::base::linux510
+    }
 
     class { 'grub::defaults': }
 

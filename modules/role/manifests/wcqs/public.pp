@@ -6,8 +6,6 @@ class role::wcqs::public {
     # Standard for all roles
     include profile::base::production
     include profile::base::firewall
-    # The data import led to system hangs with Linux 4.9, see T294961
-    include profile::base::linux510
     # Standard wcqs installation
     require profile::query_service::wcqs
     # Public endpoint specific profiles

@@ -17,9 +17,5 @@ class role::analytics_cluster::hadoop::worker {
     include ::profile::kerberos::keytabs
     include ::profile::base::firewall
 
-    # Notes about the kernel versions:
-    # - 5.10 was added for GPU nodes only, to have a more up to date kernel and
-    #   AMD GPU drivers.
-    include ::profile::base::linux510
     include ::profile::base::production
 }

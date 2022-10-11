@@ -62,3 +62,6 @@ profile::contacts::role_contacts: ['Search Platform']
 
 # Customize the URI schemes for commons
 profile::query_service::uri_scheme_options: ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']
+
+# Use kernel 5.10 on buster. See T294961.
+profile::base::use_linux510_on_buster: true

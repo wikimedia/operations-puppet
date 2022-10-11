@@ -332,11 +332,12 @@ hadoop_gpu_workers_buster:
   __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
   profile::hadoop::common::min_datanode_mounts: 20
   profile::amd_gpu::rocm_version: '42'
-  profile::base::linux510::enable: true
+  profile::base::use_linux510_on_buster: true
 
 stat_gpu_hosts:
   __regex: !ruby/regexp /^stat100[58]\.eqiad\.wmnet$/
   profile::amd_gpu::rocm_version: '42'
+  profile::base::use_linux510_on_buster: true
 
 # memcached hosts hosting redis_sessions shards
 redis_sessions_eqiad:
