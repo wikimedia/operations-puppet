@@ -1,3 +1,0 @@
-profile::cache::varnish::frontend::listen_uds:
-  - /run/varnish-frontend.socket
-profile::cache::varnish::frontend::uds_owner: envoy
