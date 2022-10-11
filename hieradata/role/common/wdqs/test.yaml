@@ -29,7 +29,7 @@ profile::query_service::oauth: false
 profile::query_service::federation_user_agent: 'Wikidata Query Service (test); https://query.wikidata.org/'
 
 # Includes module for connection limits
-profile::nginx::variant: 'full'
+profile::nginx::variant: 'extras'
 
 profile::query_service::streaming_updater::kafka_cluster: main
 profile::query_service::streaming_updater::journal: 'wikidata'
