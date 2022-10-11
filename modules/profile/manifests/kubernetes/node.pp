@@ -41,6 +41,7 @@ class profile::kubernetes::node (
     }
 
     # TODO: consider using profile::pki::get_cert
+    # This installs /etc/kubernetes/ssl/{server.key,cert.pem}
     puppet::expose_agent_certs { '/etc/kubernetes':
         provide_private => true,
         user            => 'root',

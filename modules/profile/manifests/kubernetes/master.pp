@@ -34,19 +34,26 @@ class profile::kubernetes::master (
 
     $etcd_servers = join($etcd_urls, ',')
     # Get the local users and the corresponding tokens.
-    $_tokens = $all_infrastructure_users[$kubernetes_cluster_group].filter |$_,$data| {
+    $_users = $all_infrastructure_users[$kubernetes_cluster_group].filter |$_,$data| {
         # If "constrain_to" is defined, restrict the user to the masters that meet the regexp
         $data['constrain_to'] ? {
             undef => true,
             default => ($facts['fqdn'] =~ Regexp($data['constrain_to']))
         }
     }
+    # Ensure all tokens are unique.
+    # Kubernetes will use the last definition of a token, so strange things might
+    # happen if a token is used twice.
+    $_tokens = $_users.map |$_,$data| { $data['token'] }
+    if $_tokens != $_tokens.unique {
+        fail('Not all tokens in profile::kubernetes::infrastructure_users are unique')
+    }
 
     class { 'k8s::apiserver':
         etcd_servers             => $etcd_servers,
         ssl_cert_path            => $ssl_cert_path,
         ssl_key_path             => $ssl_key_path,
-        users                    => $_tokens,
+        users                    => $_users,
         authz_mode               => $authz_mode,
         allow_privileged         => $allow_privileged,
         packages_from_future     => $packages_from_future,
