@@ -1,4 +1,5 @@
 profile::systemd::timesyncd::ntp_servers:
   - dns4003.wikimedia.org
+  - dns4004.wikimedia.org
   - dns2001.wikimedia.org
   - dns2002.wikimedia.org
