@@ -88,3 +88,5 @@ profile::grafana::enable_cas: false
 
 profile::wmcs::prometheus::storage_retention_size: 500GB
 profile::contacts::role_contacts: ["WMCS"]
+
+profile::base::use_linux510_on_buster: true
