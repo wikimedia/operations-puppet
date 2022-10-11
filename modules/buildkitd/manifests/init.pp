@@ -51,13 +51,13 @@ class buildkitd(
     }
 
     systemd::service { 'buildkitd':
-        ensure  => $ensure,
-        content => template('buildkitd/buildkitd.service.erb'),
-        restart => true,
-        require => [
+        ensure    => $ensure,
+        content   => template('buildkitd/buildkitd.service.erb'),
+        restart   => true,
+        require   => [
             Class['docker'],
             User['buildkitd'],
-            File['/etc/buildkitd.toml'],
-        ]
+        ],
+        subscribe => File['/etc/buildkitd.toml', '/etc/default/buildkitd'],
     }
 }
