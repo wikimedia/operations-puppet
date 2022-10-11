@@ -1305,17 +1305,12 @@ node 'lists1001.wikimedia.org' {
     role(lists)
 }
 
-# new ganeti servers T299459
-node /^ganeti103[2]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
 # old ganeti nodes, to be decommed soon
 node /^ganeti100[6]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^ganeti10(0[5789]|1[0-9]|2[0-9]|3[0-1])\.eqiad\.wmnet$/ {
+node /^ganeti10(0[5789]|1[0-9]|2[0-9]|3[0-2])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
 
