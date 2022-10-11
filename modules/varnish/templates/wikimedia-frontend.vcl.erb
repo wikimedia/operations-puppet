@@ -71,6 +71,12 @@ acl wikimedia_nets {
        "3.23.12.83"/32;
        // T294798 : Second Wikimedia Enterprise Elastic IP
        "3.211.48.168"/32;
+       // T318065 : Temporary exemption for IABot continuity after T265864
+       //           (should be resolved by working with IABot developers to
+       //           handle 429s more-gracefully and/or understand usage
+       //           patterns better)
+       "185.15.56.22"/32;
+       "185.15.56.29"/32;
 }
 
 // Only wikimedia_trust can fake X-F-P
