@@ -19,7 +19,7 @@ phabricator::vcs::listen_addresses:
 
 # enable git-ssh.wikimedia.org, default absent on new hosts
 phabricator::vcs::enable: true
-phabricator::vcs::ssh_phab_service_ensure: present
+phabricator::vcs::ssh_phab_service_ensure: absent
 
 # TODO: don't repeat yourself here
 profile::phabricator::main::vcs_addresses:
