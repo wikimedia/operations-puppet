@@ -19,7 +19,7 @@ describe 'systemd::service' do
             .with_ensure('present')
             .with_content('test')
             .with_override(false)
-            .without_override_filename
+            .with_override_filename('puppet-override.conf')
             .with_restart(false)
         end
       end

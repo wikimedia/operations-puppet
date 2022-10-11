@@ -41,16 +41,16 @@
 #     restart  => true, # This will work only if you have service{ `nginx.socket`: }
 # }
 #
-define systemd::unit(
+define systemd::unit (
     String $content,
-    Wmflib::Ensure $ensure=present,
-    Boolean $restart=false,
-    Boolean $override=false,
-    Optional[String[1]] $override_filename=undef,
-){
-    require ::systemd
+    Wmflib::Ensure $ensure            = present,
+    Boolean        $restart           = false,
+    Boolean        $override          = false,
+    String[1]      $override_filename = 'puppet-override.conf',
+) {
+    require systemd
 
-    if ($title =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type){
+    if ($title =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type) {
         $unit_name = $title
     } else {
         $unit_name = "${title}.service"
@@ -58,7 +58,7 @@ define systemd::unit(
 
     if ($override) {
         # Define the override dir if not defined.
-        $override_dir = "${::systemd::override_dir}/${unit_name}.d"
+        $override_dir = "${systemd::override_dir}/${unit_name}.d"
         file { $override_dir:
             ensure => stdlib::ensure($ensure, 'directory'),
             owner  => 'root',
@@ -67,12 +67,11 @@ define systemd::unit(
         }
 
         $path = $override_filename ? {
-            undef     => "${override_dir}/puppet-override.conf",
             /\.conf$/ => "${override_dir}/${override_filename}",
             default   => "${override_dir}/${override_filename}.conf",
         }
     } else {
-        $path = "${::systemd::base_dir}/${unit_name}"
+        $path = "${systemd::base_dir}/${unit_name}"
     }
 
     $exec_label = "systemd daemon-reload for ${unit_name}"
