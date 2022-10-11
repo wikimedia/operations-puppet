@@ -32,7 +32,7 @@ groups:
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang]
+              jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6259,11 +6259,8 @@ ldap_only_users:
     ensure: absent
     realname: Mary Yang
   aassaf:
-    ensure: present
+    ensure: absent
     realname: A. Assaf
-    email: aassaf-ctr@wikimedia.org
-    expiry_date: 2022-10-10
-    expiry_contact: abaso@wikimedia.org
   relgu:
     ensure: present
     realname: Ariel Gutman
