@@ -33,10 +33,6 @@ elsif @authz_mode && @authz_mode != ''
   daemon_args.push("--authorization-mode=#{@authz_mode}")
 end
 
-if @apiserver_count
-  daemon_args.push("--apiserver-count=#{@apiserver_count}")
-end
-
 if @admission_plugins
   @admission_plugins.each do |k, v|
     if !v.empty?

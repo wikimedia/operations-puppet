@@ -24,7 +24,6 @@ class k8s::apiserver (
     Boolean $packages_from_future = false,
     Optional[Stdlib::IP::Address] $service_cluster_ip_range = undef,
     Optional[String] $service_node_port_range = undef,
-    Optional[Integer] $apiserver_count = undef,
     Optional[String] $runtime_config = undef,
     Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
     Optional[Array[Hash]] $admission_configuration = undef,
