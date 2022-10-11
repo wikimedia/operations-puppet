@@ -13,6 +13,8 @@
 # [*ensure*]
 #   The usual meta-parameter, defaults to present. Valid values are
 #   'absent' and 'present'
+# [*unit*]
+#   The name of the unit by default use the title
 # [*restart*]
 #   Whether to handle restarting the service when the file changes.
 # [*override*]
@@ -44,16 +46,17 @@
 define systemd::unit (
     String $content,
     Wmflib::Ensure $ensure            = present,
+    String         $unit              = $title,
     Boolean        $restart           = false,
     Boolean        $override          = false,
     String[1]      $override_filename = 'puppet-override.conf',
 ) {
     require systemd
 
-    if ($title =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type) {
-        $unit_name = $title
+    if ($unit =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type) {
+        $unit_name = $unit
     } else {
-        $unit_name = "${title}.service"
+        $unit_name = "${unit}.service"
     }
 
     if ($override) {
@@ -89,20 +92,20 @@ define systemd::unit (
         command     => '/bin/systemctl daemon-reload',
     }
 
-    # If the service is defined, add a dependency.
+    # If the unit  is defined as a service, add a dependency.
 
-    if defined(Service[$title]) {
+    if defined(Service[$unit]) {
         if $ensure == 'present' {
             # systemd must reload units before the service is managed
             if $restart {
                 # Refresh the service if restarts are required
-                Exec[$exec_label] ~> Service[$title]
+                Exec[$exec_label] ~> Service[$unit]
             } else {
-                Exec[$exec_label] -> Service[$title]
+                Exec[$exec_label] -> Service[$unit]
             }
         } else {
             # the service should be managed before the daemon-reload
-            Service[$title] -> Exec[$exec_label]
+            Service[$unit] -> Exec[$exec_label]
         }
     }
 }

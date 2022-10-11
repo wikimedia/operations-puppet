@@ -92,6 +92,22 @@ describe 'systemd::unit' do
           is_expected.to contain_file('/etc/systemd/system/extensionless.service.d/overridefile.conf')
         end
       end
+      context 'when passed a unit name and override' do
+        let(:params) { super().merge(override: true, unit: 'bar') }
+        let(:title) { 'foo' }
+        it { is_expected.to compile }
+        it 'appends .conf to the override filename' do
+          is_expected.to contain_file('/etc/systemd/system/bar.service.d/puppet-override.conf')
+        end
+      end
+      context 'when passed a unit name, override and override_filename' do
+        let(:params) { super().merge(override: true, unit: 'bar', override_filename: 'foobar') }
+        let(:title) { 'foo' }
+        it { is_expected.to compile }
+        it 'appends .conf to the override filename' do
+          is_expected.to contain_file('/etc/systemd/system/bar.service.d/foobar.conf')
+        end
+      end
     end
   end
 end
