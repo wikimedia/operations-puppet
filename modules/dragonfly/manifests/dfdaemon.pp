@@ -32,7 +32,7 @@ class dragonfly::dfdaemon (
   Array[String]        $proxy_urls_regex = ['blobs/sha256.*'],
   String               $ratelimit = '100M',
 ) {
-  ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], {'ensure' => $ensure})
+  ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], { 'ensure' => $ensure })
 
   # TODO: Custom type for supernode list
   #       host:port(default:8002)=weight(default:1)
@@ -55,7 +55,7 @@ class dragonfly::dfdaemon (
 
   # Configure the docker daemon to use the local dfdaemon as https_proxy
   $proxy_host = '127.0.0.1:65001'
-  systemd::unit{ 'docker':
+  systemd::unit { 'docker':
     ensure   => $ensure,
     override => true,
     restart  => true,

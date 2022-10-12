@@ -1,10 +1,10 @@
-class profile::dragonfly::dfdaemon(
+class profile::dragonfly::dfdaemon (
     Wmflib::Ensure $ensure = lookup('profile::dragonfly::dfdaemon::ensure'),
     Array[String] $supernodes = lookup('profile::dragonfly::dfdaemon::supernodes'),
     Stdlib::Fqdn  $docker_registry_fqdn = lookup('profile::dragonfly::dfdaemon::docker_registry_fqdn'),
     Array[String] $proxy_urls_regex = lookup('profile::dragonfly::dfdaemon::proxy_urls_regex'),
     String $ratelimit = lookup('profile::dragonfly::dfdaemon::ratelimit'),
-){
+) {
   # TODO: add a global hiera variable called docker_registry_fqdn and use it in the other
   #       places where we refer to it explicitly in hiera.
 
@@ -24,10 +24,15 @@ class profile::dragonfly::dfdaemon(
       'notify_service' => 'dragonfly-dfdaemon'
     })
   } else {
-    $ssl_paths = {'cert' => '/nonexistent', 'key' => '/nonexistent'}
+    # Create a dummy so that dragonfly::dfdaemon receives valid paths
+    $ssl_paths = {
+      'chained' => '/nonexistent',
+      'cert' => '/nonexistent',
+      'key' => '/nonexistent',
+    }
   }
 
-  class {'dragonfly::dfdaemon':
+  class { 'dragonfly::dfdaemon':
     ensure               => $ensure,
     supernodes           => $supernodes,
     dfdaemon_ssl_cert    => $ssl_paths['chained'],
