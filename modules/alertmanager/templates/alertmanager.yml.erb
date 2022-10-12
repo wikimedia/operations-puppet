@@ -135,6 +135,9 @@ route:
     - match:
         team: 'wikidata'
       receiver: 'wikidata-mail'
+   - match:
+        team: 'structured-data'
+      receiver: 'structured-data-mail'
     - match:
         team: 'search-platform'
       routes:
@@ -268,6 +271,10 @@ receivers:
   email_configs:
     - to: 'wikidata-monitoring@wikimedia.de'
       send_resolved: true
+
+- name: 'structured-data-mail'
+  email_configs:
+    - to: 'sd-alerts@lists.wikimedia.org'
 
 - name: 'releng-ircmail'
   webhook_configs:
