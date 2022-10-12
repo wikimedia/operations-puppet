@@ -44,6 +44,14 @@ case $(hostname) in
     ;;
 esac
 
+# On Dell PowerEdge 450 on Buster we need 5.10 before rebooting after early install, T319067
+case $(hostname) in
+    cp4045)
+	apt-install linux-image-5.10-amd64
+    ;;
+esac
+
+
 # Temporarily pre-provision swift user at a fixed UID on new installs.
 # Once T123918 is resolved and swift is the same uid/gid everywhere, the
 # 'admin' puppet module can take over.
