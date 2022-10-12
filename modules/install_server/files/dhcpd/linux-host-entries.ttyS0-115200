@@ -206,12 +206,6 @@ host debmonitor2002 {
     fixed-address debmonitor2002.codfw.wmnet;
 }
 
-# ganeti VM used for d-i testing
-host d-i-test {
-    hardware ethernet aa:00:00:9f:4d:f6;
-    fixed-address d-i-test.eqiad.wmnet;
-}
-
 host dispatch-be1001 {
     hardware ethernet aa:00:00:cb:c3:7a;
     fixed-address dispatch-be1001.eqiad.wmnet;
