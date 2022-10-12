@@ -18,7 +18,7 @@ class gitlab_runner::firewall (
         ferm::rule { 'docker-default-reject':
             ensure => $ensure,
             prio   => 19,
-            rule   => 'daddr 10.0.0.0/8 proto tcp REJECT;',
+            rule   => 'daddr 10.0.0.0/8 REJECT;',
             desc   => 'reject all docker traffic to internal wmnet network',
             chain  => 'DOCKER-ISOLATION',
         }
