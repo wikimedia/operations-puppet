@@ -20,8 +20,6 @@
 # [*interval*] Polling interval to etcd. If undefined, a direct watch will be
 #              executed (the default)
 #
-# [*monitor_files*] Wether to monitor confd failures or not. Default: true
-#
 # [*prefix*] A global prefix with respect to which confd will do all of its
 #            operations. Default: undef
 #
@@ -33,7 +31,6 @@ class confd(
     Stdlib::Fqdn     $srv_dns       = $facts['domain'],
     String           $scheme        = 'https',
     Integer          $interval      = 3,
-    Boolean          $monitor_files = true,
     Optional[String] $prefix        = undef,
 ) {
 
@@ -123,6 +120,7 @@ class confd(
         require  => File['/etc/logrotate.d/confd'],
     }
 
+    # Used by modules/profile/files/mediawiki/maintenance/mw-cli-wrapper.py
     nrpe::plugin { 'check_confd_template':
         source => 'puppet:///modules/confd/check_confd_template';
     }
