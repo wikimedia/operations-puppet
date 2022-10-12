@@ -30,7 +30,23 @@ testcases:
           "level": "ERROR",
           "type": "syslog"
         }
-
+      - >
+        {
+          "log":"{\"level\":\"warning\",\"time\":\"2022-10-12T17:46:04.951904Z\",\"scope\":\"envoy misc\",\"msg\":\"Deprecated field: type envoy.config.listener.v3.Listener Using deprecated option 'envoy.config.listener.v3.Listener.deprecated_v1' from file listener.proto. This configuration will be removed from Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/version_history/version_history for details. If continued use of this field is absolutely necessary, see https://www.envoyproxy.io/docs/envoy/latest/configuration/operations/runtime#using-runtime-overrides-for-deprecated-features for how to apply a temporary and highly discouraged override.\"}\n",
+          "stream":"stderr",
+          "time":"2022-10-12T17:46:04.952095419Z",
+          "program": "input-file-kubernetes",
+          "level": "NOTICE",
+          "type": "syslog",
+          "metadata": {
+            "filename": "/var/log/containers/nlwiki-damaging-predictor-default-c6l2f-deployment-784f676wm6ht_revscoring-editquality-damaging_istio-proxy-b637c11baa1641217140affaef8f8c054a3d8f8dca7fe243f3b87e9f407728c5.log",
+            "fileoffset": 42501010
+          },
+          "kubernetes": {
+            "container_name": "istio-proxy",
+            "namespace_name": "revscoring-editquality-damaging"
+          }
+        }
 
     expected:
       - __target_index: "logstash-k8s-1-1.0.0-N-daily"
