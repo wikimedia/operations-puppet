@@ -22,6 +22,12 @@ hidden gauge process_time_ms
 counter trafficserver_backend_sli_total
 counter trafficserver_backend_sli_good
 
+
+# Match every single line without a chance of messing it up due to bad regex (T320615)
+/^/ {
+  trafficserver_backend_sli_total++
+}
+
 # This block matches all log lines, regardless of the cache status. Hits,
 # misses, and passes are all included.
 /ClientTTFB:(?P<client_ttfb>[0-9]+).*CacheReadTime:(?P<cache_read_time>-?[0-9-]+).*CacheWriteTime:(?P<cache_write_time>-?[0-9-]+).*TotalPluginTime:(?P<total_plugin_time>[0-9]+).*ActivePluginTime:(?P<active_plugin_time>[0-9]+).*OriginServer:(?P<backend>\S+)/ {
@@ -45,7 +51,6 @@ counter trafficserver_backend_sli_good
   $cache_write_time > 0 {
     process_time_ms += $cache_write_time
   }
-  trafficserver_backend_sli_total++
 }
 
 # Request processed in less than 150ms and not resulting on a 500 response
