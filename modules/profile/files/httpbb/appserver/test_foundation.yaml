@@ -24,11 +24,11 @@ https://donate.wikimedia.org:
 - path: /wiki/Special:FundraiserRedirector
   assert_status: 302
   assert_headers:
-    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&utm_medium=spontaneous&utm_source=fr-redir&utm_campaign=spontaneous
-- path: /wiki/Special:FundraiserRedirector?rdfrom=%2F%2Ffoundation.wikimedia.org%2Fw%2Findex.php%3Ftitle%3DFundraising%26redirect%3Dno
+    Location: https://donate.wikimedia.org/w/index.php?title=Special:FundraiserRedirector&reloaded=true
+- path: /w/index.php?title=Special:FundraiserRedirector&reloaded=true
   assert_status: 302
   assert_headers:
-    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&utm_medium=spontaneous&utm_source=fr-redir&utm_campaign=spontaneous&rdfrom=%2F%2Ffoundation.wikimedia.org%2Fw%2Findex.php%3Ftitle%3DFundraising%26redirect%3Dno
+    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&utm_medium=spontaneous&utm_source=fr-redir&utm_campaign=spontaneous
 - path: /w/index.php?title=Special:LandingPage
   assert_status: 200
   assert_body_contains: Make your donation now - Wikimedia Foundation
