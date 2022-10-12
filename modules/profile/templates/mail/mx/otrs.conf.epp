@@ -5,12 +5,16 @@
       Stdlib::Host $vrts_mysql_user,
       String $vrts_aliases_file,
       String $vrts_mysql_password,
-      String $wikimedia_domains_path
+      String $wikimedia_domains_path,
+      String $vrts_aliases_format,
+      String $vrts_aliases_folder
 | -%>
 [DEFAULT]
 valid_domains = <%= $wikimedia_domains_path %>
 smtp_server = <%= $gmail_smtp_server %>
 aliases_file = <%= $vrts_aliases_file %>
+aliases_format = <%= $vrts_aliases_format %>
+aliases_folder = <%= $vrts_aliases_folder %>
 [DB]
 host = <%= $vrts_mysql_server %>
 name = <%= $vrts_mysql_dbname %>

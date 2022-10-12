@@ -9,6 +9,8 @@ from configparser import ConfigParser
 from pathlib import Path
 
 import pymysql
+import dbm
+import subprocess
 
 LOG = logging.getLogger(__file__)
 
@@ -57,22 +59,46 @@ def main():
     available, no_auth, gsuite = [], [], []
     valid_domains = []
     return_code = 0
-    aliases_folder = Path("/etc/exim4/aliases")
     aliases = set()
     query = "SELECT value0, create_time, change_time FROM system_address"
 
     config = ConfigParser()
     config.read(args.config)
-    for f in aliases_folder.iterdir():
-        if not f.is_file:
-            continue
-        domain = f.name
-        # filter comments empty lines
-        lines = filter(
-            lambda line: line and line[0] != "#", f.read_text().splitlines()
-        )
-        # build email address from userpart and domain
-        aliases.update({f"{line.split(':')[0]}@{domain}" for line in lines})
+    if "aliases_folder" not in config["DEFAULT"]:
+        LOG.error("Config must contain DEFAULT[aliases_folder]")
+        return 1
+    if "aliases_format" not in config["DEFAULT"]:
+        LOG.error("Config must contain DEFAULT[aliases_format] of 'exim' or 'postfix'")
+        return 1
+    if config["DEFAULT"]["aliases_format"] not in ["exim", "postfix"]:
+        LOG.error("Config DEFAULT[aliases_format] must be 'exim' or 'postfix'")
+        return 1
+    if config["DEFAULT"]["aliases_format"] == "postfix":
+        if "next_hop" not in config["DEFAULT"]:
+            LOG.error("Must provide next_hop in DEFAULT config for postfix")
+            return 1
+        else:
+            next_hop = config["DEFAULT"]["next_hop"]
+
+    if config["DEFAULT"]["aliases_format"] == "exim":
+        for f in Path(config["DEFAULT"]["aliases_folder"]).iterdir():
+            if not f.is_file:
+                continue
+            domain = f.name
+            # filter comments empty lines
+            lines = filter(
+                lambda line: line and line[0] != "#", f.read_text().splitlines()
+            )
+            # build email address from userpart and domain
+            aliases.update({f"{line.split(':')[0]}@{domain}" for line in lines})
+    elif config["DEFAULT"]["aliases_format"] == "postfix":
+        for f in Path(config["DEFAULT"]["aliases_folder"]).glob("*.db"):
+            # strip the .db extension to make dbm.open happy
+            db_path = str(f.with_suffix(""))
+            with dbm.open(db_path, "r") as db:
+                for key in db.keys():
+                    # postfix keys are NUL terminated, so we need to strip
+                    aliases.add(key.decode(encoding="UTF-8").rstrip("\x00"))
     with Path(config["DEFAULT"]["valid_domains"]).open() as config_fh:
         valid_domains = [
             line.strip()
@@ -114,7 +140,12 @@ def main():
         LOG.error(error)
         return 1
     with Path(config["DEFAULT"]["aliases_file"]).open("w") as aliases_fh:
-        aliases_fh.writelines([f"{row[0]}: {row[0]}\n" for row in available])
+        if config["DEFAULT"]["aliases_format"] == "exim":
+            aliases_fh.writelines([f"{row[0]}: {row[0]}\n" for row in available])
+        elif config["DEFAULT"]["aliases_format"] == "postfix":
+            aliases_fh.writelines([f"{row[0]}\t{next_hop}\n" for row in available])
+    if config["DEFAULT"]["aliases_format"] == "postfix":
+        subprocess.run(["postmap", Path(config["DEFAULT"]["aliases_file"])])
     return return_code
 
 

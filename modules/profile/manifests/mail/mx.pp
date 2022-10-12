@@ -192,6 +192,8 @@ class profile::mail::mx (
         content => epp('profile/mail/mx/otrs.conf.epp', {
             gmail_smtp_server      => $gmail_smtp_server,
             vrts_aliases_file      => $vrts_aliases_file,
+            vrts_aliases_format    => 'exim',
+            vrts_aliases_folder    => "${exim4::config_dir}/aliases",
             vrts_mysql_dbname      => $vrts_mysql_dbname,
             vrts_mysql_password    => $vrts_mysql_password,
             vrts_mysql_server      => $vrts_mysql_server,
