@@ -1298,11 +1298,11 @@ node 'lists1001.wikimedia.org' {
 }
 
 # old ganeti nodes, to be decommed soon
-node /^ganeti100[56]\.eqiad\.wmnet$/ {
+node /^ganeti100[567]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^ganeti10(0[789]|1[0-9]|2[0-9]|3[0-2])\.eqiad\.wmnet$/ {
+node /^ganeti10(0[89]|1[0-9]|2[0-9]|3[0-2])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
 
