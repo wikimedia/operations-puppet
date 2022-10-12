@@ -469,7 +469,7 @@ node /^cp40(2[89]|3[0256])\.ulsfo.wmnet$/ {
 }
 
 node 'cp4045.ulsfo.wmnet' {
-    role(spare::system)
+    role(insetup)
 }
 
 #
