@@ -6,10 +6,19 @@ class profile::netbox::host (
     Optional[Netbox::Host::Location] $location = lookup('profile::netbox::host::location'),
 ) {
     unless $status == 'active' {
-        warning("${facts['networking']['fqdn']} is ${status} in netbox")
+        warning("${facts['networking']['fqdn']} is ${status} in Netbox")
+    }
+    $_status = $status ? {
+        'active' => wmflib::ansi::fg($status, 'green'),
+        'staged' => wmflib::ansi::fg($status, 'yellow').wmflib::ansi::attr('bold'),
+        default  => wmflib::ansi::fg($status, 'red'),
+    }
+    motd::message { 'netbox status':
+        message  => "Netbox Status: ${_status}",
+        priority => 1,
     }
     unless $location {
-        warning("${facts['networking']['fqdn']}: no netbox location found")
+        warning("${facts['networking']['fqdn']}: no Netbox location found")
     } else {
         $message = $location ? {
             Netbox::Host::Location::Virtual => "Virtual Machine on Ganeti cluster ${location['ganeti_cluster']} and group ${location['ganeti_group']}",
