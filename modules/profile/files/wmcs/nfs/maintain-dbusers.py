@@ -68,7 +68,6 @@ import ldap3
 import pymysql
 import netifaces
 import requests
-from systemd import journal, daemon  # pylint: disable=F0401
 
 
 PROJECT = "tools"
@@ -93,6 +92,23 @@ ACCOUNT_CREATION_SQL = {
 }
 Account = Tuple[str, int]
 Config = Dict[str, Any]
+USER_AGENT = (
+    "WMCS Maintain-DBUsers/1.0 "
+    "(https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/"
+    "Shared_storage#maintain-dbusers;"
+    " cloudservices@wikimedia.org) "
+    "python-requests/2.12"
+)
+
+
+def get_headers():
+    """
+    update default headers with recommended user-agent
+    """
+    headers = requests.utils.default_headers()
+    # https://meta.wikimedia.org/wiki/User-Agent_policy
+    headers.update({"User-Agent": USER_AGENT})
+    return headers
 
 
 def generate_new_pw() -> str:
@@ -110,7 +126,7 @@ def mysql_hash(password: str) -> str:
     return "*" + sha1(sha1(password.encode("utf-8")).digest()).hexdigest()
 
 
-def write_replica_cnf(file_path: str, uid: int, mysql_username: str, pwd: str):
+def write_replica_cnf(file_path: str, uid: int, mysql_username: str, password: str):
     """
     Write a replica.my.cnf file.
 
@@ -119,7 +135,7 @@ def write_replica_cnf(file_path: str, uid: int, mysql_username: str, pwd: str):
     """
     replica_config = configparser.ConfigParser()
 
-    replica_config["client"] = {"user": mysql_username, "password": pwd}
+    replica_config["client"] = {"user": mysql_username, "password": password}
     # Because ConfigParser can only write to a file
     # and not just return the value as a string directly
     replica_buffer = io.StringIO()
@@ -150,10 +166,7 @@ def read_replica_cnf(file_path: str) -> Tuple[str, str]:
     cp = configparser.ConfigParser()
     cp.read(file_path)
     # sometimes these values have quotes around them
-    return (
-        cp["client"]["user"].strip("'"),
-        mysql_hash(cp["client"]["password"].strip("'")),
-    )
+    return (cp["client"]["user"].strip("'"), mysql_hash(cp["client"]["password"].strip("'")))
 
 
 def find_tools(config: Config) -> List[Account]:
@@ -162,7 +175,7 @@ def find_tools(config: Config) -> List[Account]:
 
     Return a list of tuples of toolname, uid
     """
-    with get_ldap_conn(config) as conn:
+    with get_ldap_conn(config=config) as conn:
         conn.search(
             "ou=people,ou=servicegroups,dc=wikimedia,dc=org",
             "(cn=%s.*)" % PROJECT,
@@ -203,7 +216,7 @@ def find_tools_users(config: Config) -> List[Account]:
     Return a list of tuples of username, uid
     """
 
-    with get_ldap_conn(config) as conn:
+    with get_ldap_conn(config=config) as conn:
         conn.search(
             "ou=groups,dc=wikimedia,dc=org",
             "(&(objectclass=groupOfNames)(cn=project-tools))",
@@ -212,6 +225,7 @@ def find_tools_users(config: Config) -> List[Account]:
         )
         members = conn.response[0]["attributes"]["member"]
         users = []
+        # TODO: should we support paging here?
         for member_dn in members:
             conn.search(
                 member_dn,
@@ -233,20 +247,7 @@ def get_global_wiki_user(uid: str) -> Dict:
         "https://meta.wikimedia.org/w/api.php?action=query&format=json&"
         "meta=globaluserinfo&guiid="
     )
-    headers = requests.utils.default_headers()
-    # https://meta.wikimedia.org/wiki/User-Agent_policy
-    ua = (
-        "WMCS Maintain-DBUsers/1.0 "
-        "(https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/"
-        "Shared_storage#maintain-dbusers;"
-        " cloudservices@wikimedia.org) "
-        "python-requests/2.12"
-    )
-    headers.update(
-        {
-            "User-Agent": ua,
-        }
-    )
+    headers = get_headers()
     resp = requests.get(api_url + uid, headers=headers)
     return resp.json()
 
@@ -262,14 +263,9 @@ def find_paws_users(_) -> List[Account]:
     paws_users = []
     for uid in user_ids:
         try:
-            user_info = get_global_wiki_user(uid)
-            paws_users.append(
-                (
-                    user_info["query"]["globaluserinfo"]["name"],
-                    int(uid),
-                )
-            )
-        except Exception:
+            user_info = get_global_wiki_user(uid=uid)
+            paws_users.append((user_info["query"]["globaluserinfo"]["name"], int(uid)))
+        except Exception:  # pylint: disable=broad-except
             # If it doesn't respond with a nice happy reply, assume this is
             # either a blocked user, or the API is not behaving. Should be safe
             # enough to skip.
@@ -279,7 +275,7 @@ def find_paws_users(_) -> List[Account]:
     return paws_users
 
 
-def get_ldap_conn(config):
+def get_ldap_conn(config: Config):
     """
     Return a ldap connection
 
@@ -301,25 +297,21 @@ def get_ldap_conn(config):
     )
 
 
-def get_accounts_db_conn(config):
+def get_accounts_db_conn(config: Config):
     """
     Return a pymysql connection to the accounts database
     """
     return pymysql.connect(
-        config["accounts-backend"]["host"],
-        config["accounts-backend"]["username"],
-        config["accounts-backend"]["password"],
+        host=config["accounts-backend"]["host"],
+        user=config["accounts-backend"]["username"],
+        password=config["accounts-backend"]["password"],
         db="labsdbaccounts",
         charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor,
     )
 
 
-account_finder = {
-    "user": find_tools_users,
-    "tool": find_tools,
-    "paws": find_paws_users,
-}
+account_finder = {"user": find_tools_users, "tool": find_tools, "paws": find_paws_users}
 
 
 def get_replica_path(account_type: str, name: str) -> str:
@@ -333,28 +325,24 @@ def get_replica_path(account_type: str, name: str) -> str:
             "replica.my.cnf",
         )
     elif account_type == "paws":
-        return os.path.join(
-            "/srv/misc/shared/paws/project/paws/userhomes/",
-            name,
-            ".my.cnf",
-        )
+        return os.path.join("/srv/misc/shared/paws/project/paws/userhomes/", name, ".my.cnf")
     else:
         return os.path.join("/srv/tools/shared/tools/home/", name, "replica.my.cnf")
 
 
-def harvest_cnf_files(config, account_type="tool"):
-    accounts_to_create = account_finder[account_type](config)
+def harvest_cnf_files(config: Config, account_type: str = "tool"):
+    accounts_to_create = account_finder[account_type](config=config)
     try:
-        acct_db = get_accounts_db_conn(config)
+        acct_db = get_accounts_db_conn(config=config)
         cur = acct_db.cursor()
         try:
             for account_name, acc_id in accounts_to_create:
                 if account_type == "paws":
-                    replica_path = get_replica_path(account_type, str(acc_id))
+                    replica_path = get_replica_path(account_type=account_type, name=str(acc_id))
                 else:
-                    replica_path = get_replica_path(account_type, account_name)
+                    replica_path = get_replica_path(account_type=account_type, name=account_name)
                 if os.path.exists(replica_path):
-                    mysql_user, pwd_hash = read_replica_cnf(replica_path)
+                    mysql_user, password_hash = read_replica_cnf(file_path=replica_path)
                     cur.execute(
                         """
                     INSERT INTO account (mysql_username, type, username, password_hash)
@@ -362,19 +350,11 @@ def harvest_cnf_files(config, account_type="tool"):
                     ON DUPLICATE KEY UPDATE
                     password_hash = %s
                     """,
-                        (
-                            mysql_user,
-                            account_type,
-                            account_name,
-                            pwd_hash,
-                            pwd_hash,
-                        ),
+                        (mysql_user, account_type, account_name, password_hash, password_hash),
                     )
                 else:
                     logging.info(
-                        "Found no replica.my.cnf to harvest for %s %s",
-                        account_type,
-                        account_name,
+                        "Found no replica.my.cnf to harvest for %s %s", account_type, account_name
                     )
             acct_db.commit()
         finally:
@@ -383,20 +363,20 @@ def harvest_cnf_files(config, account_type="tool"):
         acct_db.close
 
 
-def harvest_replica_accts(config):
+def harvest_replica_accounts(config: Config):
     labsdbs = []
     try:
-        acct_db = get_accounts_db_conn(config)
+        acct_db = get_accounts_db_conn(config=config)
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
-                hostnm = host.split(":")[0]
+                hostname = host.split(":")[0]
                 port = int(host.split(":")[1])
             else:
-                hostnm = host
+                hostname = host
                 port = 3306
             labsdbs.append(
                 pymysql.connect(
-                    hostnm,
+                    hostname,
                     config["labsdbs"]["username"],
                     config["labsdbs"]["password"],
                     port=port,
@@ -425,9 +405,9 @@ def harvest_replica_accts(config):
                             )
                             labsdb_cur.fetchone()
                             status = "present"
-                        except pymysql.err.InternalError as e:
+                        except pymysql.err.InternalError as err:
                             # Error code for when no grants exist for user
-                            if e.args[0] != 1141:
+                            if err.args[0] != 1141:
                                 raise
                             logging.info(
                                 "No acct found for %s %s in %s",
@@ -454,25 +434,25 @@ def harvest_replica_accts(config):
             ldb.close()
 
 
-def _populate_new_account(account_type, new_account, new_account_id, acct_db, cur, config):
+def _populate_new_account(
+    account_type: str, new_account: str, new_account_id: int, acct_db: str, cur, config: Config
+):
     # if a homedir for this account does not exist yet, just ignore
     # it home directory creation (for tools) is currently handled by
     # maintain-kubeusers, and we do not want to race. Tool accounts
     # that get passed over like this will be picked up on the next
     # round
     if account_type == "paws":
-        replica_path = get_replica_path(account_type, str(new_account_id))
+        replica_path = get_replica_path(account_type=account_type, name=str(new_account_id))
     else:
-        replica_path = get_replica_path(account_type, new_account)
+        replica_path = get_replica_path(account_type=account_type, name=new_account)
 
     if not os.path.exists(os.path.dirname(replica_path)):
         logging.debug(
-            "Skipping %s account %s, since no home directory exists yet",
-            account_type,
-            new_account,
+            "Skipping %s account %s, since no home directory exists yet", account_type, new_account
         )
         return
-    pwd = generate_new_pw()
+    password = generate_new_pw()
     prefix = {"tool": "s", "paws": "p", "user": "u"}
     mysql_username = "{0}{1:d}".format(prefix[account_type], new_account_id)
     cur.execute(
@@ -480,12 +460,7 @@ def _populate_new_account(account_type, new_account, new_account_id, acct_db, cu
                 INSERT INTO account (mysql_username, type, username, password_hash)
                 VALUES (%s, %s, %s, %s)
                 """,
-        (
-            mysql_username,
-            account_type,
-            new_account,
-            mysql_hash(pwd),
-        ),
+        (mysql_username, account_type, new_account, mysql_hash(password)),
     )
     acct_id = cur.lastrowid
     for hostname in config["labsdbs"]["hosts"]:
@@ -499,20 +474,30 @@ def _populate_new_account(account_type, new_account, new_account_id, acct_db, cu
     # Do this *before* the commit to the db has succeeded
     if account_type == "paws":
         # PAWS users share an LDAP account on disk
-        write_replica_cnf(replica_path, PAWS_RUNTIME_UID, mysql_username, pwd)
+        write_replica_cnf(
+            file_path=replica_path,
+            uid=PAWS_RUNTIME_UID,
+            mysql_username=mysql_username,
+            password=password,
+        )
     else:
-        write_replica_cnf(replica_path, new_account_id, mysql_username, pwd)
+        write_replica_cnf(
+            file_path=replica_path,
+            uid=new_account_id,
+            mysql_username=mysql_username,
+            password=password,
+        )
     acct_db.commit()
     logging.info("Wrote replica.my.cnf for %s %s", account_type, new_account)
 
 
-def populate_new_accounts(config, account_type="tool"):
+def populate_new_accounts(config: Config, account_type: str = "tool"):
     """
     Populate new tools/users into meta db
     """
-    all_accounts = account_finder[account_type](config)
+    all_accounts = account_finder[account_type](config=config)
     try:
-        acct_db = get_accounts_db_conn(config)
+        acct_db = get_accounts_db_conn(config=config)
         with acct_db.cursor() as cur:
             if account_type != "paws":
                 cur.execute(
@@ -555,36 +540,36 @@ def populate_new_accounts(config, account_type="tool"):
                         cur=cur,
                         config=config,
                     )
-                except Exception as e:
-                    logging.error("problem populating new account: %s", str(e))
+                except Exception as err:  # pylint: disable=broad-except
+                    logging.error("problem populating new account: %s", str(err))
 
             for del_account in deleted_accts:
                 if account_type != "paws":  # TODO: consider PAWS
-                    delete_account(config, del_account, account_type)
+                    delete_account(config=config, account=del_account, account_type=account_type)
                     logging.info("Deleted account %s %s", account_type, del_account)
 
     finally:
         acct_db.close()
 
 
-def create_accounts(config):
+def create_accounts(config: Config):
     """
     Find hosts with accounts in absent state, and creates them.
     """
     try:
-        acct_db = get_accounts_db_conn(config)
+        acct_db = get_accounts_db_conn(config=config)
         username_re = re.compile("^[su][0-9]")
         paws_account_re = re.compile("^p[0-9]")
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
-                hostnm = host.split(":")[0]
+                hostname = host.split(":")[0]
                 port = int(host.split(":")[1])
             else:
-                hostnm = host
+                hostname = host
                 port = 3306
             try:
                 labsdb = pymysql.connect(
-                    hostnm,
+                    hostname,
                     config["labsdbs"]["username"],
                     config["labsdbs"]["password"],
                     port=port,
@@ -672,7 +657,7 @@ def create_accounts(config):
         acct_db.close()
 
 
-def delete_account(config, account, account_type="tool"):
+def delete_account(config: Config, account: str, account_type: str = "tool"):
     """
     Deletes a mysql user account
 
@@ -680,7 +665,6 @@ def delete_account(config, account, account_type="tool"):
     - Removes them from accounts db
     - Drops users from labsdbs
     """
-    # TODO: Remove the dryrun arg once we think this works
     if account_type == "paws":
         # We have some special issues here. The file path is the UID, not username
         # and we really should enter the UID in general.
@@ -691,24 +675,21 @@ def delete_account(config, account, account_type="tool"):
 
         # Intentionally shadow the account arg with what the rest of the script
         # thinks is right.
-        acc_info = get_global_wiki_user(account)
+        acc_info = get_global_wiki_user(uid=account)
         uid = account
         account = acc_info["query"]["globaluserinfo"]["name"]
 
     try:
-        acct_db = get_accounts_db_conn(config)
+        acct_db = get_accounts_db_conn(config=config)
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
-                hostnm = host.split(":")[0]
+                hostname = host.split(":")[0]
                 port = int(host.split(":")[1])
             else:
-                hostnm = host
+                hostname = host
                 port = 3306
             labsdb = pymysql.connect(
-                hostnm,
-                config["labsdbs"]["username"],
-                config["labsdbs"]["password"],
-                port=port,
+                hostname, config["labsdbs"]["username"], config["labsdbs"]["password"], port=port
             )
             with acct_db.cursor() as cur:
                 cur.execute(
@@ -745,9 +726,9 @@ def delete_account(config, account, account_type="tool"):
 
         # Now we get rid of the file
         replica_file_path = (
-            get_replica_path(account_type, account)
+            get_replica_path(account_type=account_type, name=account)
             if account_type != "paws"
-            else get_replica_path(account_type, uid)
+            else get_replica_path(account_type=account_type, name=uid)
         )
         try:
             subprocess.check_output(["/usr/bin/chattr", "-i", replica_file_path])
@@ -771,7 +752,7 @@ def delete_account(config, account, account_type="tool"):
         acct_db.close()
 
 
-def is_active_nfs(config):
+def is_active_nfs(config: Config):
     """
     Return true if current host is the active NFS host
 
@@ -850,23 +831,25 @@ def main():
     args = argparser.parse_args()
 
     log_lvl = logging.DEBUG if args.debug else logging.INFO
+    # this is here as the systemd dependency is not available on most dev environments, and not
+    # really needed for testing
+    from systemd import journal, daemon  # pylint: disable=import-error,import-outside-toplevel
+
     if daemon.booted():
         logging.basicConfig(
-            format="%(message)s",
-            level=log_lvl,
-            handlers=[journal.JournalHandler()],
+            format="%(message)s", level=log_lvl, handlers=[journal.JournalHandler()]
         )
     else:
         logging.basicConfig(format="%(message)s", level=log_lvl)
 
-    with open(args.config) as f:
+    with open(args.config, encoding="utf8") as f:
         config = yaml.safe_load(f)
 
     if args.action == "harvest":
-        harvest_cnf_files(config, args.account_type)
-        harvest_replica_accts(config)
+        harvest_cnf_files(config=config, account_type=args.account_type)
+        harvest_replica_accounts(config=config)
     elif args.action == "harvest-replicas":
-        harvest_replica_accts(config)
+        harvest_replica_accounts(config=config)
     elif args.action == "maintain":
         while True:
             # Check if we're the primary NFS server.
@@ -875,17 +858,17 @@ def main():
             # monitoring given our puppet situation and also easy failover. When
             # NFS primaries are switched, nothing new needs to be done to
             # switch this over.
-            if is_active_nfs(config):
-                populate_new_accounts(config, "tool")
-                populate_new_accounts(config, "user")
-                populate_new_accounts(config, "paws")
-                create_accounts(config)
+            if is_active_nfs(config=config):
+                populate_new_accounts(config=config, account_type="tool")
+                populate_new_accounts(config=config, account_type="user")
+                populate_new_accounts(config=config, account_type="paws")
+                create_accounts(config=config)
             time.sleep(60)
     elif args.action == "delete":
         if args.extra_args is None:
             logging.error("Need to provide username to delete")
             sys.exit(1)
-        delete_account(config, args.extra_args, args.account_type)
+        delete_account(config=config, account=args.extra_args, account_type=args.account_type)
 
 
 if __name__ == "__main__":
