@@ -6,6 +6,8 @@ class profile::openstack::eqiad1::haproxy(
     Stdlib::Port $placement_api_bind_port = lookup('profile::openstack::eqiad1::placement::api_bind_port'),
     Stdlib::Port $cinder_api_bind_port = lookup('profile::openstack::eqiad1::cinder::api_bind_port'),
     Stdlib::Port $trove_api_bind_port = lookup('profile::openstack::base::trove::api_bind_port'),
+    Stdlib::Port $heat_bind_port = lookup('profile::openstack::eqiad1::heat::api_bind_port'),
+    Stdlib::Port $cloudformation_bind_port = lookup('profile::openstack::eqiad1::heat::cfn_api_bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::eqiad1::keystone::admin_bind_port'),
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::eqiad1::keystone::public_bind_port'),
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
@@ -98,6 +100,19 @@ class profile::openstack::eqiad1::haproxy(
         frontends          => [
             {
                 port                 => 28779,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
+    }
+
+    openstack::haproxy::site { 'heat':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $heat_bind_port,
+        frontends          => [
+            {
+                port                 => 28004,
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
