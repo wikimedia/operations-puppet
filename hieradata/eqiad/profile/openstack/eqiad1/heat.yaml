@@ -1,0 +1,6 @@
+profile::openstack::eqiad1::heat::api_bind_port: 18004
+profile::openstack::eqiad1::heat::cfn_api_bind_port: 18000
+profile::openstack::eqiad1::heat::db_host: "openstack.eqiad1.wikimediacloud.org"
+profile::openstack::eqiad1::heat::db_user: "heat"
+profile::openstack::eqiad1::heat::db_name: "eqiad1_heat"
+profile::openstack::eqiad1::heat::active: true

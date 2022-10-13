@@ -2,6 +2,7 @@
 
 class profile::openstack::codfw1dev::heat(
     String $version = lookup('profile::openstack::codfw1dev::version'),
+    Boolean $active = lookup('profile::openstack::codfw1dev::heat::active'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::codfw1dev::heat::db_pass'),
@@ -18,6 +19,7 @@ class profile::openstack::codfw1dev::heat(
 ) {
     class {'::profile::openstack::base::heat':
         version               => $version,
+        active                => $active,
         openstack_controllers => $openstack_controllers,
         keystone_fqdn         => $keystone_fqdn,
         db_user               => $db_user,
