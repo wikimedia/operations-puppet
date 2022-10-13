@@ -97,7 +97,7 @@ def package(name, version, os, arch):
     for elem in data["versions"]:
         if elem["version"] == version:
             for platform in elem["platforms"]:
-                if platform["os"] == os and platform["arch"]:
+                if platform["os"] == os and platform["arch"] == arch:
                     provider = platform
                     provider["protocols"] = elem["protocols"]
 

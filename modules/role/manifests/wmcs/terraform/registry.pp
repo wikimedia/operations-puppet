@@ -5,5 +5,6 @@ class role::wmcs::terraform::registry () {
     description => 'Terraform module registry',
   }
 
+  include ::profile::labs::cindermount::srv
   include ::profile::terraform::registry
 }

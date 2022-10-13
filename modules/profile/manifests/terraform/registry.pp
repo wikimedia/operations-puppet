@@ -36,7 +36,8 @@ class profile::terraform::registry (
 
   wmflib::dir::mkdir_p([
     '/srv/terraform-registry/config',
-    '/srv/terraform-registry/files'
+    '/srv/terraform-registry/config/providers',
+    '/srv/terraform-registry/files',
   ], {
     owner => 'root',
     group => $uploader_group,

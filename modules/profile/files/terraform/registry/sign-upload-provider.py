@@ -24,7 +24,7 @@ def get_args() -> Namespace:
     parser.add_argument("--os", default="linux")
     parser.add_argument("--arch", default="amd64")
     parser.add_argument(
-        "--destination-host", default="tf-registry-1.terraform.eqiad1.wikimedia.cloud"
+        "--destination-host", default="tf-registry-2.terraform.eqiad1.wikimedia.cloud"
     )
     parser.add_argument("--registry-base-path", default="/srv/terraform-registry")
     parser.add_argument("--registry-base-url", default="https://terraform.wmcloud.org")
@@ -42,12 +42,14 @@ def main():
         f"files/providers/{args.provider}/{args.version}/{args.os}/{args.arch}"
     )
 
+    config_file_full_path = (f"{args.registry_base_path}/config/providers/{args.provider}.json")
+
     print("retrieving current metadata, if it exists")
     metadata_str = subprocess.check_output(
         [
             "/usr/bin/ssh",
             args.destination_host,
-            f"cat {args.registry_base_path}/config/{args.provider}.json || echo does-not-exist",
+            f"cat {config_file_full_path} || echo does-not-exist",
         ]
     ).decode("utf-8")
 
@@ -59,7 +61,7 @@ def main():
     version_data = {
         "version": args.version,
         # TODO
-        "protcols": ["6.0"],
+        "protocols": ["6.0"],
         "platforms": [],
     }
 
@@ -95,6 +97,9 @@ def main():
                 stdout=f,
             )
         print(f"wrote shasums to {shasum_file}")
+
+        with shasum_file.open("r") as f:
+            file_shasum = f.readline().split(" ")[0]
 
         subprocess.check_call(
             [
@@ -132,6 +137,7 @@ def main():
         "arch": args.arch,
         "filename": f"{filename}.zip",
         "download_url": f"{download_base_url}/{filename}.zip",
+        "shasum": file_shasum,
         "shasums_url": f"{download_base_url}/{filename}_SHA256SUMS",
         "shasums_signature_url": f"{download_base_url}/{filename}_SHA256SUMS.sig",
         "signing_keys": {
@@ -153,7 +159,7 @@ def main():
         [
             "/usr/bin/ssh",
             args.destination_host,
-            f"cat > {args.registry_base_path}/config/{args.provider}.json",
+            f"cat > {config_file_full_path}",
         ],
         input=json.dumps(metadata, indent=2).encode("utf-8"),
     )
