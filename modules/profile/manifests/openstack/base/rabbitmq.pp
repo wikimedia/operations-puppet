@@ -28,6 +28,8 @@ class profile::openstack::base::rabbitmq(
     String $neutron_rabbit_password = lookup('profile::openstack::base::neutron::rabbit_pass'),
     String $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
     String $trove_guest_rabbit_pass = lookup('profile::openstack::base::trove::trove_guest_rabbit_pass'),
+    String $heat_rabbit_user = lookup('profile::openstack::base::heat::rabbit_user'),
+    String $heat_rabbit_password = lookup('profile::openstack::base::heat::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
@@ -96,6 +98,11 @@ class profile::openstack::base::rabbitmq(
     class { '::openstack::neutron::rabbit':
         username => $neutron_rabbit_user,
         password => $neutron_rabbit_password,
+    }
+
+    class { '::openstack::heat::rabbit':
+        username => $heat_rabbit_user,
+        password => $heat_rabbit_password,
     }
 
     class { '::openstack::trove::rabbit':

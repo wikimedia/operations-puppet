@@ -12,6 +12,7 @@ class openstack::heat::service::xena(
     String $keystone_internal_uri,
     Stdlib::Port $api_bind_port,
     Stdlib::Port $cfn_api_bind_port,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String $rabbit_user,
     String $rabbit_pass,
     String[32] $auth_encryption_key,

@@ -8,6 +8,9 @@ ldap:
 etcd::autogen_pwd_seed: "seed"
 profile::contacts::role_contacts: []
 
+# The puppet linter wants this here for some reason:
+profile::openstack::base::heat::rabbit_user: heat
+
 # There are no prod-like Kubernetes clusters unless a project has
 # specifically created them
 kubernetes_cluster_groups: {}

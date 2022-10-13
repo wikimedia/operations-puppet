@@ -1,0 +1,1 @@
+profile::openstack::base::heat::rabbit_user: 'heat'

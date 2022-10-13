@@ -20,6 +20,7 @@ class profile::openstack::base::heat(
     String $version = lookup('profile::openstack::base::version'),
     Boolean $active = lookup('profile::openstack::base::heat::active'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     Stdlib::Port $internal_auth_port = lookup('profile::openstack::base::keystone::internal_port'),
@@ -32,8 +33,8 @@ class profile::openstack::base::heat(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::heat::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),
     Stdlib::Port $cfn_api_bind_port = lookup('profile::openstack::base::heat::api_bind_port'),
-    String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
-    String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
+    String $rabbit_user = lookup('profile::openstack::base::heat::rabbit_user'),
+    String $rabbit_pass = lookup('profile::openstack::base::heat::rabbit_pass'),
     String[32] $auth_encryption_key = lookup('profile::openstack::base::heat::auth_encryption_key'),
     ) {
 
@@ -43,6 +44,7 @@ class profile::openstack::base::heat(
     class { '::openstack::heat::service':
         version               => $version,
         openstack_controllers => $openstack_controllers,
+        rabbitmq_nodes        => $rabbitmq_nodes,
         keystone_admin_uri    => $keystone_admin_uri,
         keystone_internal_uri => $keystone_internal_uri,
         db_user               => $db_user,

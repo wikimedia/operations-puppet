@@ -2,6 +2,7 @@
 class openstack::heat::service(
     String $version,
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String $db_user,
     String $region,
     String $db_pass,
@@ -30,6 +31,7 @@ class openstack::heat::service(
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
         openstack_controllers => $openstack_controllers,
+        rabbitmq_nodes        => $rabbitmq_nodes,
         auth_encryption_key   => $auth_encryption_key,
         region                => $region,
         domain_admin_pass     => $domain_admin_pass,
