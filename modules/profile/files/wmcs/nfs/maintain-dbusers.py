@@ -252,7 +252,7 @@ def get_global_wiki_user(uid: str) -> Dict:
     return resp.json()
 
 
-def find_paws_users(_) -> List[Account]:
+def find_paws_users(config: Config) -> List[Account]:
     """
     Return list of PAWS users, from their userhomes
 
