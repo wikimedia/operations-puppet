@@ -130,23 +130,8 @@ def _check_output(cmd, timeout=60, suppress_errors=False, stderr=subprocess.STDO
         raise
 
 
-def get_fact(fact_name):
-    """Ask 'facter' for the given fact name. Return the fact's value or None."""
-    command = '/usr/bin/facter --puppet --json -l error {}'.format(fact_name)
-    # NOTE: This command can take a long time T251293
-    raw_output = _check_output(command, stderr=subprocess.DEVNULL)
-    try:
-        fact_value = json.loads(raw_output).get(fact_name, None)
-    except ValueError:
-        return None
-    log.debug('Fact %r discovered: %r', fact_name, fact_value)
-    return fact_value
-
-
 def get_raid_drivers():
     """Ask facter script for the raid drivers. Return the fact's value or None."""
-    log.warning('Deprecated call to get_raid_drivers().  See T251293.')
-
     command = '/usr/bin/ruby /var/lib/puppet/lib/facter/raid.rb'
     raw_output = _check_output(command, timeout=120, stderr=subprocess.DEVNULL)
     try:
@@ -441,7 +426,7 @@ def main():
 
     physical_disks = []
 
-    raid_drivers = get_fact('raid_mgmt_tools')
+    raid_drivers = get_raid_drivers()
     if raid_drivers is None:
         log.error('Invalid value for "raid" fact: %r', raid_drivers)
         return 1
