@@ -5,5 +5,3 @@ profile::trafficserver::backend::storage_elements:
     id: disk.0
   - devname: nvme1n1
     id: disk.1
-
-profile::trafficserver::backend::cache_volumes: 5

@@ -2,3 +2,5 @@ profile::trafficserver::backend::storage_elements:
     - devname: nvme0n1
       id: disk.0
 profile::trafficserver::backend::is_ats9: true
+
+profile::trafficserver::backend::cache_volumes: 5
