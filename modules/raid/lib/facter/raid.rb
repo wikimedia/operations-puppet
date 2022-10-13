@@ -71,8 +71,8 @@ Facter.add('raid') do
   end
 end
 
-# Enable calling directly as a bypass for T251293
+# Enable calling directly as a bypass for T251293, T320636
 if $PROGRAM_NAME == __FILE__
   require 'json'
-  puts JSON.dump({ :raid => Facter.value('raid') })
+  puts JSON.dump({ :raid => Facter.value('raid_mgmt_tools') })
 end
