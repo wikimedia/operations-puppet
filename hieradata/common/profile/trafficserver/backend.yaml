@@ -563,3 +563,4 @@ profile::trafficserver::backend::h2_settings:
   stream_error_rate_threshold: 1.0
 # T315911 - Disable origin coalescing
 profile::trafficserver::backend::origin_coalescing: false
+profile::trafficserver::backend::cache_volumes: 5
