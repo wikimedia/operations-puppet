@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::statistics::explorer::ml
 #
 # This class is meant to collect scripts and configs related

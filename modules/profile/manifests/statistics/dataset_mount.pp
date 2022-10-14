@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::statistics::dataset_mount
 #
 class profile::statistics::dataset_mount (

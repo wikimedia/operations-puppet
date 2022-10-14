@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::statistics::explorer::misc_jobs
 #
 # This class is meant to collect crons/timers/scripts from
