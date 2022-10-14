@@ -1,0 +1,23 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<VirtualHost *:80>
+  ServerName <%= @service_fqdn %>
+  ServerAdmin noc@wikimedia.org
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+  ProxyPass /media !
+  ProxyPass /static !
+  ProxyPass / unix:<%= @uwsgi_socket %>|uwsgi://uwsgi-uds-idm/
+
+  Alias /media <%= @media_dir %>
+  Alias /static <%= @static_dir %>
+
+  <%- [@media_dir, @static_dir].each do |dir| -%>
+  <Directory <%= dir %>>
+    Require all granted
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+  </Directory>
+  <%- end -%>
+</VirtualHost>
