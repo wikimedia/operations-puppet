@@ -187,6 +187,21 @@ profile::opensearch::logstash::curator_actions:
         unit: days
         unit_count: 1
 
+  # T313099 - The size of these webrequest indexes are preventing indexes from rolling
+  #           onto hdd nodes.  Override curator action 20 for webrequest indexes.
+  #           TODO: this can be removed after 2023-01-10 or until webrequest
+  #                 indexes between 2022-08-11 through 2022-10-11 are removed.
+  '22':
+    description: 'logstash-webrequest set replicas to 0 for large indexes'
+    action: replicas
+    options:
+      count: 0
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^logstash-webrequest-1-7\.0\.0-1-2022\.(0[89]\...|10\.0.|10\.1[01])'
+
   # For any indices prefixed by "logstash-", and have "index.routing.allocation.require.disktype":"ssd" set,
   # and are older than 30 days, set "index.routing.allocation.require.disktype":"hdd".
   '40':
