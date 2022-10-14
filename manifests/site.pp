@@ -1062,20 +1062,16 @@ node /^(elastic108[4-9]|elastic109[0-9]|elastic110[0-2])\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic202[5-9]\.codfw\.wmnet/ {
-    role(elasticsearch::cirrus)
-}
-
-node 'elastic2049.codfw.wmnet' {
-    role(spare::system)
-}
-
-node /^elastic203[0-9]\.codfw\.wmnet/ {
+node /^elastic203[7-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
 node /^elastic204[0-8]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
+}
+
+node 'elastic2049.codfw.wmnet' {
+    role(spare::system)
 }
 
 node /^elastic205[0-9]\.codfw\.wmnet/ {

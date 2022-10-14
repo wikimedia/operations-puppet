@@ -16,17 +16,6 @@ profile::elasticsearch::instances:
           - elastic2084.codfw.wmnet # row D
 
         cluster_hosts:
-          - elastic2025.codfw.wmnet # to be decommissioned
-          - elastic2026.codfw.wmnet # to be decommissioned
-          - elastic2027.codfw.wmnet # to be decommissioned
-          - elastic2028.codfw.wmnet # to be decommissioned
-          - elastic2029.codfw.wmnet # to be decommissioned
-          - elastic2030.codfw.wmnet # to be decommissioned
-          - elastic2031.codfw.wmnet # to be decommissioned
-          - elastic2032.codfw.wmnet # to be decommissioned
-          - elastic2033.codfw.wmnet # to be decommissioned
-          - elastic2034.codfw.wmnet # to be decommissioned
-          - elastic2036.codfw.wmnet # to be decommissioned
           - elastic2037.codfw.wmnet
           - elastic2038.codfw.wmnet
           - elastic2039.codfw.wmnet
@@ -114,8 +103,6 @@ profile::elasticsearch::instances:
 
         cluster_hosts:
           # row A
-          - elastic2025.codfw.wmnet # to be decommissioned
-          - elastic2026.codfw.wmnet # to be decommissioned
           - elastic2037.codfw.wmnet
           - elastic2038.codfw.wmnet
           - elastic2056.codfw.wmnet
@@ -124,7 +111,6 @@ profile::elasticsearch::instances:
           - elastic2074.codfw.wmnet
 
           # row B
-          - elastic2028.codfw.wmnet # to be decommissioned
           - elastic2041.codfw.wmnet
           - elastic2042.codfw.wmnet
           - elastic2057.codfw.wmnet
@@ -133,7 +119,6 @@ profile::elasticsearch::instances:
           - elastic2077.codfw.wmnet
 
           # row C
-          - elastic2031.codfw.wmnet # to be decommissioned
           - elastic2045.codfw.wmnet
           - elastic2046.codfw.wmnet
           - elastic2047.codfw.wmnet
@@ -142,7 +127,6 @@ profile::elasticsearch::instances:
           - elastic2081.codfw.wmnet
 
           # row D
-          - elastic2034.codfw.wmnet # to be decommissioned
           - elastic2050.codfw.wmnet
           - elastic2051.codfw.wmnet
           - elastic2052.codfw.wmnet
@@ -174,7 +158,6 @@ profile::elasticsearch::instances:
 
         cluster_hosts:
           # row A
-          - elastic2027.codfw.wmnet # to be decommissioned
           - elastic2039.codfw.wmnet
           - elastic2040.codfw.wmnet
           - elastic2055.codfw.wmnet
@@ -184,8 +167,6 @@ profile::elasticsearch::instances:
           - elastic2076.codfw.wmnet
 
           # row B
-          - elastic2029.codfw.wmnet # to be decommissioned
-          - elastic2030.codfw.wmnet # to be decommissioned
           - elastic2043.codfw.wmnet
           - elastic2044.codfw.wmnet
           - elastic2058.codfw.wmnet
@@ -195,8 +176,6 @@ profile::elasticsearch::instances:
           - elastic2080.codfw.wmnet
 
           # row C
-          - elastic2032.codfw.wmnet # to be decommissioned
-          - elastic2033.codfw.wmnet # to be decommissioned
           - elastic2048.codfw.wmnet
           - elastic2066.codfw.wmnet
           - elastic2071.codfw.wmnet
@@ -205,7 +184,6 @@ profile::elasticsearch::instances:
           - elastic2083.codfw.wmnet
 
           # row D
-          - elastic2036.codfw.wmnet # to be decommissioned
           - elastic2053.codfw.wmnet
           - elastic2054.codfw.wmnet
           - elastic2060.codfw.wmnet
