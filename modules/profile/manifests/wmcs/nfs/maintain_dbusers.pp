@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 #
 # Provides account services for labs user accounts,
 # currently in the labstore module because we put these

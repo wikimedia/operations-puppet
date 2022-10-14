@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::wmcs::nfs::test
 #
 # Sets up a cloudstore NFS server on a Cloud VPS instance in a way to provide

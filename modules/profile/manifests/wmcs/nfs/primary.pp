@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::nfs::primary(
   String $observer_pass = lookup('profile::openstack::eqiad1::observer_password'),
   String $data_iface    = lookup('profile::wmcs::nfs::primary::data_iface', {'default_value' => 'eth1'}),

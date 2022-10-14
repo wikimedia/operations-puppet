@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Common ferm class for labstore servers.
 
 class profile::wmcs::nfs::ferm {

@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 # This script is managed by Puppet
 
 cat <<EOF

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 """
 This script keeps canonical source of mysql clouddb accounts in a
 database, and ensures that it is kept up to date with reality.

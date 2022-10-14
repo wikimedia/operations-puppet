@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::nfs::backup::primary::misc (
     String $passive_server = lookup(
         'profile::wmcs::nfs::primary::passive_server',

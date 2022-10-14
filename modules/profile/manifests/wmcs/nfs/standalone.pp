@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::wmcs::nfs::standalone
 #
 # Sets up an Openstack instance-based NFS server

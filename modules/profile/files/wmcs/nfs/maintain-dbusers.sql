@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 -- Keep state about tool / user accounts on Toolforge and their mysql
 -- account counterparts. This is the canonical store of this information.
 -- Schema is set up to be able to trivially query the following things:
