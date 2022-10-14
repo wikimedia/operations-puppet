@@ -4,6 +4,7 @@ class openstack::magnum::service::xena(
     String $db_user,
     String $region,
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String $db_pass,
     String $db_name,
     Stdlib::Fqdn $db_host,

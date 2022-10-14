@@ -225,7 +225,7 @@ state_path = /var/lock/magnum
 # Seconds to wait for a response from a call. (integer value)
 #rpc_response_timeout = 60
 
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
+transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 [api]
 

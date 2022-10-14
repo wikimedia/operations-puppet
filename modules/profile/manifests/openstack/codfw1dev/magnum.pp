@@ -3,6 +3,7 @@
 class profile::openstack::codfw1dev::magnum(
     String $version = lookup('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::codfw1dev::magnum::db_pass'),
     String $db_user = lookup('profile::openstack::codfw1dev::magnum::db_host'),
@@ -17,6 +18,7 @@ class profile::openstack::codfw1dev::magnum(
     class {'::profile::openstack::base::magnum':
         version               => $version,
         openstack_controllers => $openstack_controllers,
+        rabbitmq_nodes        => $rabbitmq_nodes,
         keystone_fqdn         => $keystone_fqdn,
         db_user               => $db_user,
         db_pass               => $db_pass,

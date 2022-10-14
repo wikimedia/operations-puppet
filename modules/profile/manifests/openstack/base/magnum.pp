@@ -4,6 +4,7 @@ class profile::openstack::base::magnum(
     String $version = lookup('profile::openstack::base::version'),
     Boolean $active = lookup('profile::openstack::codfw1dev::magnum::active'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     Stdlib::Port $internal_auth_port = lookup('profile::openstack::base::keystone::internal_port'),
@@ -25,6 +26,7 @@ class profile::openstack::base::magnum(
     class { '::openstack::magnum::service':
         version               => $version,
         openstack_controllers => $openstack_controllers,
+        rabbitmq_nodes        => $rabbitmq_nodes,
         keystone_admin_uri    => $keystone_admin_uri,
         keystone_internal_uri => $keystone_internal_uri,
         db_user               => $db_user,
