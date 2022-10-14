@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # prometheus instance for PAWS
 class profile::wmcs::paws::prometheus (
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::wmcs::paws::prometheus::storage_retention_size',   {default_value => undef}),

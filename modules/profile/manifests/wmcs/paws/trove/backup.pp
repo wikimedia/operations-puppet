@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::paws::trove::backup (
     String       $dbuser = lookup('profile::wmcs::paws::trove::dbuser', {default_value => 'paws'}),
     String       $dbpass = lookup('profile::wmcs::paws::trove::dbpass', {default_value => 'notarealpassword'}),

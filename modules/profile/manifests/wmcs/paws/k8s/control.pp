@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::paws::k8s::control (
 ) {
     class { '::profile::wmcs::kubeadm::control': }
