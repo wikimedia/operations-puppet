@@ -34,3 +34,9 @@ profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::listen_ipv6: true
 
 profile::phabricator::main::http_srange: '$DEPLOYMENT_HOSTS'
+
+profile::phabricator::main::dumps_rsync_clients:
+  - labstore1006.wikimedia.org
+  - labstore1007.wikimedia.org
+  - clouddumps1001.wikimedia.org
+  - clouddumps1002.wikimedia.org

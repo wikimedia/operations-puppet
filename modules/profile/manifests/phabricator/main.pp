@@ -89,6 +89,7 @@ class profile::phabricator::main (
                                                       { 'default_value' => true }),
     Optional[Array]             $vcs_addresses      = lookup('profile::phabricator::main::vcs_addressses',
                                                       { 'default_value' => [] }),
+    Array[Stdlib::Fqdn]         $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
 ) {
 
     $mail_alias = $::realm ? {
@@ -448,11 +449,10 @@ class profile::phabricator::main (
     }
 
     # Allow dumps servers to pull dump files.
-    $rsync_clients = ['labstore1006.wikimedia.org', 'labstore1007.wikimedia.org', 'clouddumps1001.wikimedia.org', 'clouddumps1002.wikimedia.org']
     rsync::server::module { 'srv-dumps':
             path           => '/srv/dumps',
             read_only      => 'yes',
-            hosts_allow    => $rsync_clients,
+            hosts_allow    => $dumps_rsync_clients,
             auto_ferm      => true,
             auto_ferm_ipv6 => true,
     }
