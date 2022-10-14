@@ -153,6 +153,7 @@ profile::gitlab::runner::allowed_images:
   - "opensuse/*:*"
   - "ubuntu:*"
   # Language-specific:
+  - "golang:*"
   - "python:*"
   - "ruby:*"
   - "rust:*"
