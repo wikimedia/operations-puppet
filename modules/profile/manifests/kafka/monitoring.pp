@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == class profile::kafka::cluster::monitoring
 #
 # Tools to monitor and expose metrics about a Kafka cluster

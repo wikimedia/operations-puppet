@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::kafka::broker::monitoring
 #
 # Sets up Prometheus based monitoring and icinga alerts.

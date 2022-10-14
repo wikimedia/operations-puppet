@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::kafka::broker
 # Sets up a Kafka broker instance belonging to the $kafka_cluster_name
 # cluster.  $kafka_cluster_name must have an entry in the hiera 'kafka_clusters'

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::kafka::mirror
 # Sets up an individual MirrorMaker instance to mirror from $source_cluster_name
 # to $destination_cluster_name.  Consumer and Producer properties will automatically

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::kafka::mirror::alerts
 #
 # Installs check_prometheus jobs to alert for MirrorMaker throughput and dropped messages.

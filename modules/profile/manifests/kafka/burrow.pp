@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == define profile::kafka::burrow
 #
 # Consumer offset lag monitoring tool template for a generic Kafka cluster.
