@@ -11,7 +11,7 @@ class profile::openstack::codfw1dev::magnum(
     String $db_name = lookup('profile::openstack::codfw1dev::magnum::db_name'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::magnum::api_bind_port'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::magnum::service_user_pass'),
-    String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
+    String $rabbit_pass = lookup('profile::openstack::codfw1dev::magnum::rabbit_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
     String $domain_admin_pass = lookup('profile::openstack::codfw1dev::magnum::domain_admin_pass'),
 ) {

@@ -13,6 +13,8 @@ class profile::openstack::eqiad1::rabbitmq(
     String $neutron_rabbit_password = lookup('profile::openstack::eqiad1::neutron::rabbit_pass'),
     String $heat_rabbit_user = lookup('profile::openstack::base::heat::rabbit_user'),
     String $heat_rabbit_password = lookup('profile::openstack::eqiad1::heat::rabbit_pass'),
+    String $magnum_rabbit_user = lookup('profile::openstack::base::magnum::rabbit_user'),
+    String $magnum_rabbit_password = lookup('profile::openstack::eqiad1::magnum::rabbit_pass'),
     String $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
     String $trove_guest_rabbit_pass = lookup('profile::openstack::eqiad1::trove::trove_guest_rabbit_pass'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::codfw1dev::rabbitmq::rabbit_cfssl_label', {default_value => undef}),

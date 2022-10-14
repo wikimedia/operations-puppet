@@ -16,8 +16,8 @@ class profile::openstack::base::magnum(
     String $domain_admin_pass = lookup('profile::openstack::base::magnum::domain_admin_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::magnum::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::magnum::api_bind_port'),
-    String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
-    String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
+    String $rabbit_user = lookup('profile::openstack::base::magnum::rabbit_user'),
+    String $rabbit_pass = lookup('profile::openstack::base::magnum::rabbit_pass'),
     ) {
 
     $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
