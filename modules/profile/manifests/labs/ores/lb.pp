@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Simple nginx HTTP load balancer for ores
 #
 class profile::labs::ores::lb (

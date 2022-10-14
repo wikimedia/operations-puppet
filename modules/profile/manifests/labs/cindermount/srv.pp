@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Format and mount an unattched cinder volume
 #
 class profile::labs::cindermount::srv {

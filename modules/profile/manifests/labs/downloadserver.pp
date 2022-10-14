@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Simple file server for the 'download' project
 #
 class profile::labs::downloadserver {
