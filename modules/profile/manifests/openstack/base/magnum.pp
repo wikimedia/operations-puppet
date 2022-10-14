@@ -2,7 +2,7 @@
 
 class profile::openstack::base::magnum(
     String $version = lookup('profile::openstack::base::version'),
-    Boolean $active = lookup('profile::openstack::codfw1dev::magnum::active'),
+    Boolean $active = lookup('profile::openstack::base::magnum::active'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),

@@ -39,6 +39,8 @@ class profile::openstack::eqiad1::rabbitmq(
         neutron_rabbit_password => $neutron_rabbit_password,
         heat_rabbit_user        => $heat_rabbit_user,
         heat_rabbit_password    => $heat_rabbit_password,
+        magnum_rabbit_user      => $magnum_rabbit_user,
+        magnum_rabbit_password  => $magnum_rabbit_password,
         trove_guest_rabbit_user => $trove_guest_rabbit_user,
         trove_guest_rabbit_pass => $trove_guest_rabbit_pass,
         rabbit_erlang_cookie    => $rabbit_erlang_cookie,

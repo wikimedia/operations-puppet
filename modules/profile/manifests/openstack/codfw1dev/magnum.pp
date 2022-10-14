@@ -2,6 +2,7 @@
 
 class profile::openstack::codfw1dev::magnum(
     String $version = lookup('profile::openstack::codfw1dev::version'),
+    Boolean $active = lookup('profile::openstack::codfw1dev::magnum::active'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
@@ -17,6 +18,7 @@ class profile::openstack::codfw1dev::magnum(
 ) {
     class {'::profile::openstack::base::magnum':
         version               => $version,
+        active                => $active,
         openstack_controllers => $openstack_controllers,
         rabbitmq_nodes        => $rabbitmq_nodes,
         keystone_fqdn         => $keystone_fqdn,

@@ -1,0 +1,5 @@
+profile::openstack::eqiad1::magnum::api_bind_port: 19511
+profile::openstack::eqiad1::magnum::db_host: "openstack.eqiad1.wikimediacloud.org"
+profile::openstack::eqiad1::magnum::db_user: "magnum"
+profile::openstack::eqiad1::magnum::db_name: "eqiad1_magnum"
+profile::openstack::eqiad1::magnum::active: true
