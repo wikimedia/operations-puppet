@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::node (
     K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),

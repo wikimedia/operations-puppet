@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary This profile handles installing the mediawiki configuration generated from puppet into mw on k8s
 #
 # @note This class generates yaml files under $general_dir/mediawiki to handle apache virtual hosts, mcrouter pools,

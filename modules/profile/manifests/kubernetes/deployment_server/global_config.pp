@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Kubernetes global configuration files.
 # They include data that's useful to all deployed services.
 #

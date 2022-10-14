@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """
 Temporary script to keep the mw-debug deployment up to date with
 the scap-released version. Given its temporary nature, the script

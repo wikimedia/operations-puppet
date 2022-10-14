@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs helmfile and helmfile-diff, plus
 # all the puppet-provided defaults and secrets for each service.
 #

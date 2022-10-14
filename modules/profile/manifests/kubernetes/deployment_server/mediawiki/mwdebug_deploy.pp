@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary This profile handles deploying automatically to the mwdebug namespace.
 #
 class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(

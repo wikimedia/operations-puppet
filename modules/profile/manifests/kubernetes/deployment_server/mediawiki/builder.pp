@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::deployment_server::mediawiki::builder(
     # TODO: migrate the hiera keys once the transition is completed.
     String $docker_user = lookup('profile::ci::pipeline::publisher::docker_registry_user'),

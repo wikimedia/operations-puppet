@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Profile to make sure we got a deployment server ready
 # @param version kubectl version to install
 # @param kubernetes_cluster_groups dict of kubernetes cluster groups

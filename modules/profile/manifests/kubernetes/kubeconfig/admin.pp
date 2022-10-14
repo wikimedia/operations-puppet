@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::kubeconfig::admin (
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
     Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', { default_value => {} }),

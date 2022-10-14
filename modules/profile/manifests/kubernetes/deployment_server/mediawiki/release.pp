@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::deployment_server::mediawiki::release (
     Array[Profile::Mediawiki_deployment] $mw_releases = lookup('profile::kubernetes::deployment_server::mediawiki::release::mw_releases'),
     Stdlib::Unixpath $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),

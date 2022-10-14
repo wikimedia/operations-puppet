@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::master (
     K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
