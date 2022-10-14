@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Standalone IDP class for creating an instance in WM cloud
 class profile::idp::standalone {
   ensure_packages(['python3-flask'])

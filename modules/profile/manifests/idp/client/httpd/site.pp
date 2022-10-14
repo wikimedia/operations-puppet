@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary private define used to configure an apache vhost using mod_auth_cas
 # @param vhost_content an erb template file to use for the apache vhost configuration
 # @param virtual_host FQDN of vhost

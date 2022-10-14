@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure mod_auth_cas authentication
 # @param cookie_path The location where cas stores information relating to authentication cookies issued
 # @param certificate_path the SSL certificate path used for validation

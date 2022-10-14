@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Class to build debs for Apereo CAS
 class profile::idp::build {
     ensure_packages(['openjdk-11-jdk-headless', 'dpkg-dev', 'debhelper'])

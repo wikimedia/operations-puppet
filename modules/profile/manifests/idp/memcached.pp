@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::idp::memcached (
     Wmflib::Ensure      $ensure           = lookup('profile::idp::memcached::ensure'),
     Array[Stdlib::Host] $idp_nodes        = lookup('profile::idp::memcached::idp_nodes'),
