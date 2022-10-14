@@ -1,4 +1,18 @@
 # @summary profile to configure puppetdb
+# @param puppetmasters the list of puppetmasters
+# @param master the write instance
+# @param jvm_opts additional jvm options
+# @param elk_logging enable elk_logging
+# @param ca_path the to the certificate authority
+# @param puppetboard_hosts list of puppet board hosts
+# @param tmpfs_stockpile_queue use a tmpfs for the file queue
+# @param clean_stockpile aggressively delete the stockpile queue if it gets too big
+# @param puppetdb_pass the puppetdb password
+# @param puppetdb_ro_pass the puppetdb readonly password password
+# @param log_level the loglevel to use
+# @param facts_blacklist a list of facts to not store, useful for rejecting complex
+#        large facts that change often
+# @param facts_blacklist_type the type of items in the facts list either regex or literal
 # @param gc_interval This controls how often, in minutes, to compact the database.
 #        The compaction process reclaims space and deletes unnecessary rows. If not
 #        supplied, the default is every 60 minutes. If set to zero, all database GC
@@ -9,8 +23,9 @@
 # @param node_purge_ttl Automatically delete nodes that have been deactivated or expired for
 #        the specified amount of time
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
+# @param ssldir the location of the ssldir
 #
-class profile::puppetdb(
+class profile::puppetdb (
     Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
     Stdlib::Host                         $master                = lookup('profile::puppetdb::master'),
     String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
@@ -32,11 +47,10 @@ class profile::puppetdb(
     Pattern[/\d+[dhms]/]                 $report_ttl            = lookup('profile::puppetdb::report_ttl'),
     Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir'),
 ) {
-
     # Prometheus JMX agent for the Puppetdb's JVM
     $jmx_exporter_config_file = '/etc/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'
     $prometheus_jmx_exporter_port = 9400
-    $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
+    $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${facts['networking']['ipaddress']}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
     # The JVM heap size has been raised to 6G for T170740
     class { 'puppetmaster::puppetdb':
@@ -65,24 +79,24 @@ class profile::puppetdb(
     # The result of this hack is that we will looses historical reports and fact
     # information which could affect cumin/puppetboard operations
     if $clean_stockpile {
-        file {'/usr/local/bin/puppetdb_clean_stockpile':
+        file { '/usr/local/bin/puppetdb_clean_stockpile':
             ensure => file,
             owner  => 'root',
             mode   => '0500',
-            source => 'puppet:///modules/profile/puppetdb/clean_stockpile.sh'
+            source => 'puppet:///modules/profile/puppetdb/clean_stockpile.sh',
         }
-        systemd::timer::job {'monitor_stockpile_queue':
+        systemd::timer::job { 'monitor_stockpile_queue':
             ensure      => 'present',
             user        => 'root',
             command     => '/usr/local/bin/puppetdb_clean_stockpile',
             description => 'Temporary job to clean out stockpile queue T263578',
-            interval    => {'start' => 'OnCalendar', 'interval' => '*:0/5'},  # every 5mins
+            interval    => { 'start' => 'OnCalendar', 'interval' => '*:0/5' },  # every 5mins
         }
     }
 
     # Export JMX metrics to prometheus
-    profile::prometheus::jmx_exporter { "puppetdb_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "puppetdb_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_port,
         config_file => $jmx_exporter_config_file,
         content     => file('profile/puppetmaster/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'),
