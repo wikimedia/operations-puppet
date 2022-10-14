@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # The default load balancer for Pontoon.
 
 # Provides the required integration with puppet.git for pontoon::lb class.

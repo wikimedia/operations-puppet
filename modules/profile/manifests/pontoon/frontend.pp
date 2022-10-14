@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::pontoon::frontend (
   $public_domain = lookup('public_domain'),
 ) {

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Pontoon Service Discovery
 #
 # The default implementation of sd: all routable services will be pointed to the first host
