@@ -449,7 +449,7 @@ class profile::phabricator::main (
 
     # Allow dumps servers to pull dump files.
     $rsync_clients = ['labstore1006.wikimedia.org', 'labstore1007.wikimedia.org', 'clouddumps1001.wikimedia.org', 'clouddumps1002.wikimedia.org']
-    rsync::server::module { 'srvdumps':
+    rsync::server::module { 'srv-dumps':
             path           => '/srv/dumps',
             read_only      => 'yes',
             hosts_allow    => $rsync_clients,
