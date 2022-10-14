@@ -121,4 +121,10 @@ class profile::puppetdb(
         }
     }
     include profile::puppetdb::microservice
+    ensure_packages(['python3-dateparser'])
+    file { '/usr/local/bin/pdb-changes':
+        ensure => file,
+        mode   => '0555',
+        source => 'puppet:///modules/profile/puppetdb/pdb_changes.py',
+    }
 }
