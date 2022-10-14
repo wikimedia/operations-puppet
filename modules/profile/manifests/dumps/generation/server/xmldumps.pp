@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::generation::server::xmldumps(
     $dumps_single_backend = lookup('profile::dumps::single_backend'),
     $internals = lookup('profile::dumps::internal'),

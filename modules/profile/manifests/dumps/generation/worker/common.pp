@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::generation::worker::common(
     $dumps_nfs_server = lookup('dumps_nfs_server'),
     $cron_nfs_server = lookup('dumps_cron_nfs_server'),

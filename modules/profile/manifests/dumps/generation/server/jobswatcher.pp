@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::generation::server::jobswatcher(
     $xmldumpspublicdir  = lookup('profile::dumps::xmldumpspublicdir'),
     $xmldumpsprivatedir = lookup('profile::dumps::xmldumpsprivatedir'),

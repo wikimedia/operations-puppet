@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::generation::worker::monitor {
     class { '::snapshot::dumps::monitor':
         xmldumpsuser  => 'dumpsgen',

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::generation::server::common(
     $datadir = lookup('profile::dumps::basedatadir'),
     $xmldumpsdir = lookup('profile::dumps::xmldumpspublicdir'),

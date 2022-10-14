@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # this class is for snapshot hosts that run regular dumps
 # meaning sql/xml dumps every couple of weeks or so
 class profile::dumps::generation::worker::dumper(
