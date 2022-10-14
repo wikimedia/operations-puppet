@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kerberos::kadminserver (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),

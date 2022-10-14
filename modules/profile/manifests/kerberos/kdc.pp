@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::kerberos::kdc
 #
 # This class sets up a kdc/kadmind environment preseeding

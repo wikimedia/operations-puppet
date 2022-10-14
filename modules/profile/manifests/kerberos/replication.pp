@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::kerberos::replication
 #
 # Configure the current Kerberos master/primary and its slaves to

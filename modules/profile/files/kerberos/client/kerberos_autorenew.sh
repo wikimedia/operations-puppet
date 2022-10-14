@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 
 # Upon login, check whether a user has a valid kerberos ticket
 # If there is a valid ticket, check whether the auto-renewal systemd timer is active

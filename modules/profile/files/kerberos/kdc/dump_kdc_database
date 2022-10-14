@@ -1,3 +1,4 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 /usr/sbin/kdb5_util dump /srv/backup/kdc_database_$(date +%Y%m%d%H%M%S)

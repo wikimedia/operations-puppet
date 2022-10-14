@@ -1,2 +1,3 @@
 # This file Is the access control list for krb5 administration.
 # When this file is edited run /etc/init.d/krb5-admin-server restart to activate
+# SPDX-License-Identifier: Apache-2.0

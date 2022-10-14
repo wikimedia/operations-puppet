@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == class profile::kerberos::keytabs
 #
 # Deploy keytabs based on metadata provided in input.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::kerberos::client (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Array[Stdlib::Fqdn] $krb_kdc_servers = lookup('kerberos_kdc_servers'),

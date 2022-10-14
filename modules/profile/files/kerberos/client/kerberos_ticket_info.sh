@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 
 # If a valid kerberos ticket is found in the credential cache of the user,
 # the output of klist is printed. Otherwise the user is warned to execute kinit.

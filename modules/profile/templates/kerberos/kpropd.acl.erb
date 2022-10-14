@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- @krb_kdc_servers.each do |kdc_server| -%>
 host/<%= kdc_server %>@<%= @krb_realm_name %>
 <%- end -%>
