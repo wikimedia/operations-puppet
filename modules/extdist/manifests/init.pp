@@ -12,9 +12,7 @@ class extdist(
     $src_path   = "${base_dir}/src"
     $pid_folder = '/run/extdist'
 
-    ensure_packages(['python3-requests', 'php-cli', 'unzip'])
-
-    ensure_packages(['composer'])
+    ensure_packages(['python3-requests', 'php-cli', 'unzip', 'composer'])
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
