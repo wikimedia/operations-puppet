@@ -20,6 +20,7 @@
 # @param uds_owner The owner of the uds sockets
 # @param uds_group The group of the uds sockets
 # @param uds_mode The mode of the uds sockets
+# @param enable_monitoring enable monitoring
 define varnish::instance(
     Hash                    $vcl_config,
     Array[Stdlib::Port]     $ports,
@@ -44,6 +45,7 @@ define varnish::instance(
     String                  $uds_owner         = 'root',
     String                  $uds_group         = 'root',
     Stdlib::Filemode        $uds_mode          = '700',
+    Boolean                 $enable_monitoring = true,
 ) {
 
     include varnish::common
@@ -244,7 +246,7 @@ define varnish::instance(
         instance => $title,
     }
 
-    if $listen_uds {
+    if $listen_uds and $enable_monitoring {
         $listen_uds.each |Stdlib::Unixpath $uds_path| {
             nrpe::monitor_service { "check-varnish-uds${instancesuffix}-${uds_path}":
                 ensure       => present,

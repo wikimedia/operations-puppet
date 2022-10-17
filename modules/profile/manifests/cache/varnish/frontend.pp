@@ -47,6 +47,7 @@ class profile::cache::varnish::frontend (
     Stdlib::Filemode        $uds_mode                  = lookup('profile::cache::varnish::frontend::uds_mode'),
     Boolean                 $use_etcd_req_filters      = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
     Boolean                 $do_esitest                = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value' => false}),
+    Boolean                 $enable_monitoring         = lookup('profile::cache::varnish::frontend::enable_monitoring'),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -253,5 +254,6 @@ class profile::cache::varnish::frontend (
         uds_owner         => $uds_owner,
         uds_group         => $uds_group,
         uds_mode          => $uds_mode,
+        enable_monitoring => $enable_monitoring,
     }
 }
