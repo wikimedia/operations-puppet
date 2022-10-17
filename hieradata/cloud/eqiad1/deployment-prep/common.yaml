@@ -4,7 +4,7 @@ profile::tlsproxy::envoy::cfssl_label: discovery
 cache_hosts:
   - 172.16.5.238 # proxy-03.project-proxy.eqiad1.wikimedia.cloud
   - 172.16.5.200 # proxy-04.project-proxy.eqiad1.wikimedia.cloud
-  - 172.16.1.181 # deployment-cache-text06.deployment-prep.eqiad1.wikimedia.cloud
+  - 172.16.0.113 # deployment-cache-text07.deployment-prep.eqiad1.wikimedia.cloud
 
 profile::base::remote_syslog:
   - "deployment-logstash03.deployment-prep.eqiad.wmflabs:10514"
@@ -402,10 +402,10 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
 cache::nodes:
     text:
         eqiad:
-          - 'deployment-cache-text05.deployment-prep.eqiad.wmflabs'
+          - 'deployment-cache-text07.deployment-prep.eqiad1.wikimedia.cloud'
     upload:
         eqiad:
-          - 'deployment-cache-upload05.deployment-prep.eqiad.wmflabs'
+          - 'deployment-cache-upload07.deployment-prep.eqiad1.wikimedia.cloud'
 
 ## Swift settings
 # Beta requires slower replication - T160990
