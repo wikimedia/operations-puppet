@@ -198,8 +198,6 @@ funnel	pk.wikimedia.org	https://wikimediapakistan.org
 
 rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 
-rewrite	ve.wikimedia.org	https://wikimedia.org.ve
-
 # Wikimania
 rewrite	wikimania2019.wikimedia.org	https://wikimania.wikimedia.org
 
