@@ -17,6 +17,7 @@ eventlogging_schemas_disabled = (
     'CitationUsagePageLoad',
     'CitationUsage',
     'ReadingDepth',
+    'EditConflict',
 
     'ContentTranslationAbuseFilter',
     'DesktopWebUIActionsTracking',
