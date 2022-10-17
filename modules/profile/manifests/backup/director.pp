@@ -133,7 +133,7 @@ class profile::backup::director(
     }
     # Eqiad pool for read-write External storage backups
     bacula::director::pool { 'EsRwEqiad':
-        max_vols         => 190,
+        max_vols         => 200,
         storage          => 'backup1003-FileStorageEsRwEqiad',
         volume_retention => '90 days',
         label_fmt        => 'es-rw-eqiad',
@@ -141,7 +141,7 @@ class profile::backup::director(
     }
     # Codfw pool for read-write External storage backups
     bacula::director::pool { 'EsRwCodfw':
-        max_vols         => 190,
+        max_vols         => 200,
         storage          => 'backup2003-FileStorageEsRwCodfw',
         volume_retention => '90 days',
         label_fmt        => 'es-rw-codfw',
