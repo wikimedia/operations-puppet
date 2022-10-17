@@ -196,6 +196,8 @@ codfw:
     cp2038.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2040.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2042.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
+  phabricator:
+    phab2001-vcs.codfw.wmnet: [git-ssh]
   swift:
     ms-fe2009.codfw.wmnet: [swift-fe, nginx]
     ms-fe2010.codfw.wmnet: [swift-fe, nginx]

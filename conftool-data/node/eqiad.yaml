@@ -289,6 +289,8 @@ eqiad:
     ms-fe1010.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1011.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1012.eqiad.wmnet: [swift-fe, nginx]
+  phabricator:
+    phab1001-vcs.eqiad.wmnet: [git-ssh]
   aqs:
     aqs1010.eqiad.wmnet: [aqs]
     aqs1011.eqiad.wmnet: [aqs]
