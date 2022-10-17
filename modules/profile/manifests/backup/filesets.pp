@@ -218,4 +218,9 @@ class profile::backup::filesets(
     bacula::director::fileset { 'opensearch-dashboards':
       includes => [ '/srv/backups/opensearch_dashboards/export_latest.ndjson.gz' ]
     }
+
+    # Analytics Postgresql Cluster (T319440)
+    bacula::director::fileset { 'data-engineering-postgres':
+        includes => [ '/srv/postgres-backup/' ]
+    }
 }

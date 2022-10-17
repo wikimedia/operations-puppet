@@ -1,0 +1,5 @@
+profile::contacts::role_contacts: ['Data Engineering']
+profile::analytics::postgresql::primary: an-db1001.eqiad.wmnet
+profile::analytics::postgresql::dump_interval: '*-*-* *:10:00'
+profile::analytics::postgresql::replicas:
+  - an-db1002.eqiad.wmnet

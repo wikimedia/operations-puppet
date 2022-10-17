@@ -45,7 +45,7 @@ node 'an-coord1002.eqiad.wmnet' {
 }
 
 node /^an-db100[1-2]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(analytics_cluster::postgresql)
 }
 
 node 'an-launcher1002.eqiad.wmnet' {
