@@ -732,34 +732,6 @@ service::catalog:
       - dnsdisc: eventstreams-internal
         active_active: true
 
-  git-ssh:
-    description: Git - to Phabricator hosting, git-ssh.wikimedia.org
-    encryption: true
-    ip:
-      codfw:
-        git-ssh4: 208.80.153.250
-        git-ssh6: 2620:0:860:ed1a::3:fa
-      eqiad:
-        git-ssh4: 208.80.154.250
-        git-ssh6: 2620:0:861:ed1a::3:16
-    lvs:
-      class: high-traffic2
-      conftool:
-        cluster: phabricator
-        service: git-ssh
-      depool_threshold: ".6"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      scheduler: wrr
-    port: 22
-    sites:
-      - eqiad
-      - codfw
-    state: production
-
   jobrunner:
     description: JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet
     encryption: true
