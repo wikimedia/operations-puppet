@@ -147,3 +147,4 @@ abuse_networks:
     networks:
       - '93.184.216.34/32'
 profile::trafficserver::backend::monitor_enable: false
+profile::cache::haproxy::monitoring_enabled: false

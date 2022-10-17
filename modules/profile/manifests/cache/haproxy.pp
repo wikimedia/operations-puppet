@@ -25,6 +25,7 @@ class profile::cache::haproxy(
     Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', {'default_value' => '/etc/haproxymtail'}),
     Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value' => 3906}),
     Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value' => '/var/log/haproxy.fifo'}),
+    Boolean $monitoring_enabled = lookup('profile::cache::haproxy::monitoring_enabled'),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -173,12 +174,14 @@ class profile::cache::haproxy(
         stickycounters       => $stickycounters,
     }
 
-    profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
-        port         => $tls_port,
-        certificates => $certificates,
-        do_ocsp      => $do_ocsp,
-        acme_chief   => $unified_acme_chief,
-        require      => Haproxy::Tls_terminator['tls'],
+    if $monitoring_enabled {
+      profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
+          port         => $tls_port,
+          certificates => $certificates,
+          do_ocsp      => $do_ocsp,
+          acme_chief   => $unified_acme_chief,
+          require      => Haproxy::Tls_terminator['tls'],
+      }
     }
 
     systemd::service { 'haproxy-mtail@tls.socket':

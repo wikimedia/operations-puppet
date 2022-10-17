@@ -237,3 +237,5 @@ profile::cache::haproxy::varnish_socket:
       address: /run/varnish-frontend-6.socket
     - prefix: unix
       address: /run/varnish-frontend-7.socket
+
+profile::cache::haproxy::monitoring_enabled: true
