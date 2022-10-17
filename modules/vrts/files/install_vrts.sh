@@ -12,7 +12,7 @@ popd
 sudo service cron stop
 sudo service exim4 stop
 sudo service apache2 stop
-sudo service otrs-daemon stop
+sudo service vrts-daemon stop
 
 sudo cp /opt/otrs/Kernel/Config.pm /opt/znuny-$1/Kernel
 sudo cp /opt/otrs/var/log/TicketCounter.log /opt/znuny-$1/var/log/
@@ -26,6 +26,6 @@ sudo -u www-data /opt/otrs/bin/otrs.Console.pl Admin::Package::ReinstallAll
 sudo service cron start
 sudo service exim4 start
 sudo service apache2 start
-sudo service otrs-daemon start
+sudo service vrts-daemon start
 
 sudo puppet agent -t
