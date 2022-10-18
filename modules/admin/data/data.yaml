@@ -4868,7 +4868,8 @@ users:
     gid: 500
     uid: 41932
     email: hshaikh@wikimedia.org
-    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII36+d2cbZCDz92VnEHh6JmciuNe8D2bvd3FnhuO14zm haroonshaikh@wmf3024
   ptiwary:
     ensure: present
     realname: Prabhat Tiwary
