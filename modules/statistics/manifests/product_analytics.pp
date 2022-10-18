@@ -38,21 +38,20 @@ class statistics::product_analytics {
     }
 
     kerberos::systemd_timer { 'product-analytics-movement-metrics':
-        ensure                    => 'present',
-        description               => 'Product Analytics monthly Movement Metrics run',
-        command                   => "${jobs_dir}/movement_metrics/main.sh",
-        interval                  => '*-*-7 00:00:00',
-        user                      => $user,
-        logfile_basedir           => $log_dir,
-        logfile_name              => 'monthly_movement_metrics.log',
-        logfile_owner             => $user,
-        logfile_group             => $group,
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'team-product-analytics',
-        syslog_force_stop         => true,
-        syslog_identifier         => 'product-analytics-movement-metrics',
-        slice                     => 'user.slice',
-        require                   => [
+        ensure            => 'present',
+        description       => 'Product Analytics monthly Movement Metrics run',
+        command           => "${jobs_dir}/movement_metrics/main.sh",
+        interval          => '*-*-7 00:00:00',
+        user              => $user,
+        logfile_basedir   => $log_dir,
+        logfile_name      => 'monthly_movement_metrics.log',
+        logfile_owner     => $user,
+        logfile_group     => $group,
+        send_mail_to      => 'product-analytics@wikimedia.org',
+        syslog_force_stop => true,
+        syslog_identifier => 'product-analytics-movement-metrics',
+        slice             => 'user.slice',
+        require           => [
             Class['::statistics::compute'],
             Git::Clone['analytics/wmf-product/jobs']
         ],

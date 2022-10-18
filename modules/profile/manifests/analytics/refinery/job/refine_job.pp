@@ -41,9 +41,9 @@
 #   one as the main Refine job, but with CLI flags to override --until to $monitor_until.
 #   Default: 4 hours ago.
 #
-# [*monitoring_enabled*]
+# [*send_mail*]
 #   If true, service failures will alert, e.g. a bad exit code from Refine or RefineMonitor
-#   will result in a service failure alert.
+#   will result in an email sent to Analytics/DSE
 #
 # [*refine_monitor_enabled*]
 #   If true, a RefineMonitor job will be scheduled using the same job_config
@@ -68,8 +68,8 @@ define profile::analytics::refinery::job::refine_job (
     $deploy_mode                      = 'cluster',
     $user                             = 'analytics',
     $interval                         = '*-*-* *:00:00',
-    $monitoring_enabled               = true,
-    $refine_monitor_enabled           = $monitoring_enabled,
+    $send_mail                        = true,
+    $refine_monitor_enabled           = $send_mail,
     $ensure                           = 'present',
     $use_keytab                       = false,
 ) {
@@ -101,7 +101,7 @@ define profile::analytics::refinery::job::refine_job (
         jar                => $_refinery_job_jar,
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,
-        monitoring_enabled => $monitoring_enabled,
+        send_mail          => $send_mail,
         use_keytab         => $use_keytab,
     }
 
@@ -160,12 +160,12 @@ define profile::analytics::refinery::job::refine_job (
         $ensure_monitor = 'absent'
     }
     profile::analytics::refinery::job::spark_job { "monitor_${job_name}":
-        ensure             => $ensure_monitor,
-        class              => $monitor_class,
+        ensure    => $ensure_monitor,
+        class     => $monitor_class,
         # Use the same config file as the Refine job, but override the since and until.
-        job_opts           => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
-        interval           => $monitor_interval,
-        monitoring_enabled => $monitoring_enabled,
+        job_opts  => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
+        interval  => $monitor_interval,
+        send_mail => $send_mail,
     }
 
 }

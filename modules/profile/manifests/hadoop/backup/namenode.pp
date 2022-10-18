@@ -45,15 +45,15 @@ class profile::hadoop::backup::namenode(
     }
 
     systemd::timer::job { 'hadoop-namenode-backup-prune':
-        description               => "Deletes namenode's fsimage backups in ${destination} older than ${fsimage_retention_days} days.",
-        command                   => "/usr/bin/find ${destination} -mtime +${fsimage_retention_days} -delete",
-        interval                  => {
+        description     => "Deletes namenode's fsimage backups in ${destination} older than ${fsimage_retention_days} days.",
+        command         => "/usr/bin/find ${destination} -mtime +${fsimage_retention_days} -delete",
+        interval        => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 01:00:00',
         },
-        logging_enabled           => false,
-        user                      => 'hdfs',
-        monitoring_contact_groups => 'analytics',
+        logging_enabled => false,
+        user            => 'hdfs',
+        send_mail_to    => 'data-engineering-alerts@lists.wikimedia.org',
     }
 
     if !defined(Sudo::User['nagios_check_newest_file_age']) {

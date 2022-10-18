@@ -41,7 +41,7 @@ define reportupdater::job(
     $output_dir = $title,
     $query_dir = undef,
     $interval = '*-*-* *:00:00',
-    $monitoring_enabled = true,
+    $send_mail = true,
     $ensure = present,
     $use_kerberos = true,
 )
@@ -84,40 +84,39 @@ define reportupdater::job(
 
     if $use_kerberos {
         kerberos::systemd_timer { "reportupdater-${title}":
-            ensure                    => $ensure,
-            description               => "Report Updater job for ${title}",
-            command                   => "/usr/bin/python3 ${::reportupdater::source_path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
-            interval                  => $interval,
-            user                      => $::reportupdater::user,
-            monitoring_enabled        => $monitoring_enabled,
-            monitoring_contact_groups => 'analytics',
-            logfile_basedir           => $::reportupdater::log_path,
-            logfile_name              => 'syslog.log',
-            logfile_owner             => $::reportupdater::user,
-            logfile_group             => $::reportupdater::user,
-            logfile_perms             => 'all',
-            syslog_force_stop         => true,
-            syslog_identifier         => "reportupdater-${title}",
+            ensure            => $ensure,
+            description       => "Report Updater job for ${title}",
+            command           => "/usr/bin/python3 ${::reportupdater::source_path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
+            interval          => $interval,
+            user              => $::reportupdater::user,
+            send_mail         => $send_mail,
+            logfile_basedir   => $::reportupdater::log_path,
+            logfile_name      => 'syslog.log',
+            logfile_owner     => $::reportupdater::user,
+            logfile_group     => $::reportupdater::user,
+            logfile_perms     => 'all',
+            syslog_force_stop => true,
+            syslog_identifier => "reportupdater-${title}",
         }
     } else {
         systemd::timer::job { "reportupdater-${title}":
-            ensure                    => $ensure,
-            description               => "Report Updater job for ${title}",
-            command                   => "/usr/bin/python3 ${::reportupdater::source_path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
-            interval                  => {
+            ensure            => $ensure,
+            description       => "Report Updater job for ${title}",
+            command           => "/usr/bin/python3 ${::reportupdater::source_path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
+            interval          => {
                 'start'    => 'OnCalendar',
                 'interval' => $interval
             },
-            user                      => $::reportupdater::user,
-            monitoring_enabled        => $monitoring_enabled,
-            monitoring_contact_groups => 'analytics',
-            logfile_basedir           => $::reportupdater::log_path,
-            logfile_name              => 'syslog.log',
-            logfile_owner             => $::reportupdater::user,
-            logfile_group             => $::reportupdater::user,
-            logfile_perms             => 'all',
-            syslog_identifier         => "reportupdater-${title}",
-            syslog_force_stop         => true,
+            user              => $::reportupdater::user,
+            send_mail         => $send_mail,
+            send_mail_to      => 'data-engineering-alerts@lists.wikimedia.org',
+            logfile_basedir   => $::reportupdater::log_path,
+            logfile_name      => 'syslog.log',
+            logfile_owner     => $::reportupdater::user,
+            logfile_group     => $::reportupdater::user,
+            logfile_perms     => 'all',
+            syslog_identifier => "reportupdater-${title}",
+            syslog_force_stop => true,
         }
     }
 }

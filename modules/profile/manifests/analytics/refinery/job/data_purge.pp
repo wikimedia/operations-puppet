@@ -29,7 +29,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # Send an email to analytics in case of failure
-    $mail_to = 'analytics-alerts@wikimedia.org'
+    $mail_to = 'data-engineering-alerts@lists.wikimedia.org'
 
     # Conventional Hive format path with partition keys (used by Gobblin), i.e. year=yyyy/month=mm/day=dd/hour=hh.
     $hive_date_path_format = 'year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?'

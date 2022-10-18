@@ -39,7 +39,7 @@ define profile::analytics::refinery::job::spark_job(
     $interval            = '*-*-* *:00:00',
     $environment         = undef,
     $ensure              = 'present',
-    $monitoring_enabled  = true,
+    $send_mail           = true,
     $use_keytab          = false,
 )
 {
@@ -63,23 +63,22 @@ define profile::analytics::refinery::job::spark_job(
     }
 
     kerberos::systemd_timer { $title:
-        ensure                    => $ensure,
-        description               => "Spark job for ${title}",
-        command                   => $script,
-        interval                  => $interval,
-        user                      => $user,
-        environment               => $environment,
-        monitoring_enabled        => $monitoring_enabled,
-        monitoring_contact_groups => 'analytics',
-        logfile_basedir           => '/var/log/refinery',
-        logfile_name              => "${title}.log",
-        logfile_owner             => $user,
-        logfile_group             => $user,
-        logfile_perms             => 'all',
-        syslog_force_stop         => true,
+        ensure                  => $ensure,
+        description             => "Spark job for ${title}",
+        command                 => $script,
+        interval                => $interval,
+        user                    => $user,
+        environment             => $environment,
+        send_mail               => $send_mail,
+        logfile_basedir         => '/var/log/refinery',
+        logfile_name            => "${title}.log",
+        logfile_owner           => $user,
+        logfile_group           => $user,
+        logfile_perms           => 'all',
+        syslog_force_stop       => true,
         # Only need to match equality here, not startswith.
-        syslog_match_startswith   => false,
-        syslog_identifier         => $title,
-        require                   => File[$script],
+        syslog_match_startswith => false,
+        syslog_identifier       => $title,
+        require                 => File[$script],
     }
 }

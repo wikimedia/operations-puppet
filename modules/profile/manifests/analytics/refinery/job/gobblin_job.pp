@@ -20,8 +20,8 @@ define profile::analytics::refinery::job::gobblin_job (
     $log_directory              = '/var/log/refinery/gobblin',
     $interval                   = undef,
     $environment                = {},
-    $monitoring_enabled         = true,
-    $monitoring_contact_groups  = 'analytics',
+    $send_mail                 = true,
+    $send_mail_to               = 'data-engineering-alerts@lists.wikimedia.org',
     $ensure                     = 'present',
 ) {
     require ::profile::analytics::refinery
@@ -57,20 +57,20 @@ define profile::analytics::refinery::job::gobblin_job (
     $command = "${_gobblin_script} --sysconfig=${sysconfig_properties_file} --jar=${_gobblin_jar_file} ${_jobconfig_properties_file}"
 
     kerberos::systemd_timer { "gobblin-${title}":
-        ensure                    => $ensure,
-        description               => "Hadoop Gobblin job ${title}",
-        command                   => $command,
-        interval                  => $interval,
-        user                      => $user,
-        environment               => $_environment,
-        monitoring_enabled        => $monitoring_enabled,
-        monitoring_contact_groups => $monitoring_contact_groups,
-        logfile_basedir           => $log_directory,
-        logfile_name              => "${title}.log",
-        logfile_owner             => $user,
-        logfile_group             => $user,
-        logfile_perms             => 'all',
-        syslog_force_stop         => true,
-        syslog_identifier         => "gobblin-${title}",
+        ensure            => $ensure,
+        description       => "Hadoop Gobblin job ${title}",
+        command           => $command,
+        interval          => $interval,
+        user              => $user,
+        environment       => $_environment,
+        send_mail         => $send_mail,
+        send_mail_to      => $send_mail_to,
+        logfile_basedir   => $log_directory,
+        logfile_name      => "${title}.log",
+        logfile_owner     => $user,
+        logfile_group     => $user,
+        logfile_perms     => 'all',
+        syslog_force_stop => true,
+        syslog_identifier => "gobblin-${title}",
     }
 }

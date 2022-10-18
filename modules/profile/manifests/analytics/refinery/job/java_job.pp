@@ -49,7 +49,7 @@ define profile::analytics::refinery::job::java_job(
     String $interval                            = '*-*-* *:00:00',
     Optional[Hash[String, String]] $environment = undef,
     String $ensure                              = 'present',
-    Boolean $monitoring_enabled                 = true,
+    Boolean $send_mail                          = true,
 ) {
     if $proxy_host and !$proxy_port {
         error('If using $proxy_host, you must also provide $proxy_port')
@@ -70,23 +70,22 @@ define profile::analytics::refinery::job::java_job(
     }
 
     kerberos::systemd_timer { $title:
-        ensure                    => $ensure,
-        description               => "Java job for ${title}",
-        command                   => $script,
-        interval                  => $interval,
-        user                      => $user,
-        environment               => $environment,
-        monitoring_enabled        => $monitoring_enabled,
-        monitoring_contact_groups => 'analytics',
-        logfile_basedir           => '/var/log/refinery',
-        logfile_name              => "${job_name}.log",
-        logfile_owner             => $user,
-        logfile_group             => $user,
-        logfile_perms             => 'all',
-        syslog_force_stop         => true,
+        ensure                  => $ensure,
+        description             => "Java job for ${title}",
+        command                 => $script,
+        interval                => $interval,
+        user                    => $user,
+        environment             => $environment,
+        send_mail               => $send_mail,
+        logfile_basedir         => '/var/log/refinery',
+        logfile_name            => "${job_name}.log",
+        logfile_owner           => $user,
+        logfile_group           => $user,
+        logfile_perms           => 'all',
+        syslog_force_stop       => true,
         # Only need to match equality here, not startswith.
-        syslog_match_startswith   => false,
-        syslog_identifier         => $title,
-        require                   => File[$script],
+        syslog_match_startswith => false,
+        syslog_identifier       => $title,
+        require                 => File[$script],
     }
 }
