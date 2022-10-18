@@ -28,6 +28,6 @@ class role::statistics::explorer {
     # Deploy wikimedia/discovery/analytics repository
     include ::profile::analytics::cluster::elasticsearch
 
-    # Run anaconda-wmf based jupyterhub server.
+    # Run conda-analytics based jupyterhub server.
     include ::profile::analytics::jupyterhub
 }

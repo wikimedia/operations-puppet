@@ -1,7 +1,7 @@
 # == Class profile::analytics::jupyterhub
 #
 # Sets up JupyterHub for use in the Analytics Cluster.
-# This uses anaconda-wmf to create and use user conda environments.
+# This uses conda-analytics to create and use user conda environments.
 #
 # == Parameters
 #

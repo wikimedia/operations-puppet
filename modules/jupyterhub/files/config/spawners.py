@@ -13,7 +13,7 @@ from jupyterhub.spawner import Spawner
 class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
     """
     Subclass of ProfilesSpawner that allows users to select from their
-    conda enviroments to use for launching their jupyterhub singleuser server.
+    conda environments to use for launching their jupyterhub singleuser server.
     """
 
     conda_cmd = List(
@@ -46,9 +46,9 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
     ).tag(config=True)
 
     conda_base_env_prefix = Unicode(
-        default_value='/usr/lib/anaconda-wmf',
+        default_value='/opt/conda-analytics',
         help="""If set, this conda env is assumed to be a readonly base env.
-        It can be configurably included or excluded form the list of available profiles
+        It can be configured to be included or excluded from the list of available profiles
         with the include_conda_base_env_profile setting.
         """
     ).tag(config=True)
@@ -91,7 +91,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         settings={}
     ):
         """
-        Creates a ProfileSpawner profile tuple for a conda conda environemnt
+        Creates a ProfilesSpawner profile tuple for a conda environment
         """
 
         if name is None:
@@ -100,9 +100,19 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         if description is None:
             description = name
 
+        # pass CONDA_BASE_ENV_PREFIX to launch script
+        environment = self.environment.copy()
+        if "CONDA_BASE_ENV_PREFIX" not in environment:
+            environment["CONDA_BASE_ENV_PREFIX"] = self.conda_base_env_prefix
+        else:  # sanity check
+            assert environment["CONDA_BASE_ENV_PREFIX"] == self.conda_base_env_prefix, \
+                "Expected CONDA_BASE_ENV_PREFIX == self.conda_base_env_prefix, " \
+                "but got: {} != {}.".format(environment['CONDA_BASE_ENV_PREFIX'],
+                                            self.conda_base_env_prefix)
+
         profile_settings = {
             'default_url': '/lab',
-            'environment': self.environment,
+            'environment': environment,
             'debug': self.debug,
             'cmd':  [self.jupyterhub_singleuser_conda_env_script, conda_env_prefix]
         }
@@ -116,14 +126,14 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
 
     def make_conda_env_creating_profile(self):
         """
-        Return a profile that will create a new stacked user conda env to use.
+        Return a profile that will create a new cloned user conda env to use.
         """
         return self.make_profile(
             # __NEW__ is used by jupyterhub_singleuser_conda_env_script to indicate
             # that it should create a new stacked conda user env.
             conda_env_prefix='__NEW__',
             name='new_conda_env',
-            description='Create and use new stacked conda environment...'
+            description='Create and use new cloned conda environment...'
         )
 
     def _conda_cmd(self):

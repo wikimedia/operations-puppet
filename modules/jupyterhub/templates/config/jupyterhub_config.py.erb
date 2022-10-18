@@ -28,7 +28,7 @@ puppet_config = {
 # Config defaults, overridden by puppet_config.
 config = {
     # Run JupyterHub out of this conda environment.
-    'conda_base_env_prefix': '/usr/lib/anaconda-wmf',
+    'conda_base_env_prefix': '/opt/conda-analytics',
 
     # Don't include the conda base env as a selectable profile by default.
     # Users should always use their own writable stacked conda env.
@@ -175,7 +175,7 @@ elif config['authenticator'] == 'cas':
 
 # SHOULD ONLY BE USED FOR TESTING.
 elif config['authenticator'] == 'dummy':
-    from dummyauthenticator import DummyAuthenticator
+    from jupyterhub.auth import DummyAuthenticator
     AuthenticatorClass = DummyAuthenticator
 
 else:
@@ -230,7 +230,7 @@ if 'external_http_proxy_host' in config:
     # Do not use proxying to talk to localhost. This will mostly just
     # never work, and will cause strange errors when the spawned
     # notebooks talk to the hub or if the hub tries to talk to them.
-    # Also don't uset the http proxy for any *.wmnet addresses.
+    # Also don't set the http proxy for any *.wmnet addresses.
     user_environment['no_proxy'] = 'localhost,127.0.0.1,{},.wmnet'.format(host_ip_address)
     # Set JAVA_OPTS to properly set up external http proxy for JVM processes too.
     user_environment['JAVA_OPTS'] = '-Djava.net.useSystemProxies'
@@ -247,6 +247,9 @@ c.CondaEnvProfilesSpawner.conda_cmd = [
     os.path.join(config['conda_base_env_prefix'], 'condabin', 'conda')
 ]
 
+# let spawner know if we have overridden the default base env
+c.CondaEnvProfilesSpawner.conda_base_env_prefix = config['conda_base_env_prefix']
+
 c.CondaEnvProfilesSpawner.include_conda_base_env_profile = config['include_conda_base_env_profile']
 
 # c.CondaEnvProfilesSpawner.debug = True
@@ -260,8 +263,8 @@ c.SystemdSpawner.slice = 'user.slice'
 # (symlinking/hardlinking), plus our users using Notebooks have all signed NDAs for private data.
 c.SystemdSpawner.isolate_tmp = False
 
-# Disable users from ever gaining root privilages for anything at all.
-# This protects against the notebook of a privilaged user being compromised
+# Disable users from ever gaining root privileges for anything at all.
+# This protects against the notebook of a privileged user being compromised
 # to gain root
 c.SystemdSpawner.disable_user_sudo = True
 
@@ -273,3 +276,7 @@ c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user',
 c.SystemdSpawner.unit_extra_properties = {
     'SyslogIdentifier':'jupyterhub-conda-singleuser'
 }
+
+# make systemd 'units' easy to correlate with user and conda env
+conda_base_env_name = os.path.basename(config['conda_base_env_prefix'])
+c.SystemdSpawner.unit_name_template = 'jupyter-{USERNAME}-singleuser-' + conda_base_env_name

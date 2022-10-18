@@ -2,7 +2,7 @@
 # == Class: jupyterhub::server
 # Sets up a JupyterHub server for WMF that spawns jupyterhub-singleuser processes
 # in conda environemnts with Systemd.
-# Uses the anaconda-wmf package as the base environment from which to spawn
+# Uses the conda-analytics package as the base environment from which to spawn
 # new user conda environments.
 #
 # NOTE: This class is deprecating the jupyterhub class in init.pp
@@ -17,7 +17,7 @@ class jupyterhub::server (
         'port' => '8880'
     }
 ) {
-    ensure_packages('anaconda-wmf')
+    Class['conda_analytics'] -> Class['jupyterhub::server']
 
     # TODO: 'jupyterhub' is defined by the deprecated jupyterhub class in init.pp.
     # Rename it to 'jupyterhub' here when we remove the other one.
@@ -25,8 +25,6 @@ class jupyterhub::server (
 
     $base_path           = "/srv/${service_name}"
     $data_path           = "${base_path}/data"
-
-    # TODO: rename this once old venv based jupyterhub is gone.
     $config_path         = "/etc/${service_name}"
 
     file { [$base_path, $data_path, $config_path]:
@@ -46,7 +44,7 @@ class jupyterhub::server (
     }
 
     $default_config = {
-        'conda_base_env_prefix' => '/usr/lib/anaconda-wmf',
+        'conda_base_env_prefix' => $::conda_analytics::prefix,
         'cookie_secret_file'    => "${data_path}/jupyterhub_cookie_secret",
         'db_url'                => "sqlite:///${data_path}/jupyterhub.sqlite.db",
         'proxy_pid_file'        => "${data_path}/jupyterhub-proxy.pid",
