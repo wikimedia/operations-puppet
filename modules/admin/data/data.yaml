@@ -2419,6 +2419,7 @@ users:
     gid: 500
     name: mvolz
     realname: Marielle Volz
+    email: mvolz@wikimedia.org
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKynyl6NqNr/+mz1p1RFkE4KLXr+gZQrisj56XtNjYOA marielle@dull]
     uid: 4724
   eevans:
@@ -5746,10 +5747,6 @@ ldap_only_users:
     ensure: present
     realname: Maarten Dammers
     email: maarten@mdammers.nl
-  mvolz:
-    ensure: present
-    realname: Marielle Volz
-    email: mvolz@wikimedia.org
   nharateh:
     ensure: absent
     realname: Natalia Harateh
