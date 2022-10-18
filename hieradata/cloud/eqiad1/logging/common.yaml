@@ -72,7 +72,6 @@ profile::opensearch::common_settings:
   curator_uses_unicast_hosts: false
   filter_cache_size: '10%'
   holds_data: false
-  gc_log: false
 
 profile::opensearch::logstash::jobs_host: 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
 profile::opensearch::logstash::curator_actions:
