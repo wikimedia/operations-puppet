@@ -457,6 +457,16 @@ class profile::phabricator::main (
             auto_ferm_ipv6 => true,
     }
 
+    # Allow pthers phab servers to pull tarballs with home dir files
+    file { '/srv/homes': ensure => 'directory',}
+
+    rsync::server::module { 'srv-homes':
+            path           => '/srv/homes',
+            read_only      => 'yes',
+            hosts_allow    => $phabricator_servers,
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
+    }
     # Backup repositories
     backup::set { 'srv-repos': }
 

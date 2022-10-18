@@ -22,6 +22,10 @@ class profile::phabricator::migration (
             ensure => 'directory',
         }
 
+        file { '/srv/homes':
+            ensure => 'directory',
+        }
+
         ferm::service { 'phabricator-migration-rsync':
             proto  => 'tcp',
             port   => '873',
