@@ -12,12 +12,14 @@ profile::lvs::realserver::pools:
       - mcrouter
       - nutcracker
       - envoyproxy
+      - php7.4-fpm
   videoscaler:
     services:
       - apache2
       - mcrouter
       - nutcracker
       - envoyproxy
+      - php7.4-fpm
 
 profile::mediawiki::php::enable_fpm: true
 # Bump the connections per backend to 5 in mcrouter, see T203786
