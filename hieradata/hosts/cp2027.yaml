@@ -14,11 +14,11 @@ profile::cache::haproxy::acls:
   - name: concurrent_queries
     criterion: sc0_trackers(httpreqrate)
     operator: gt
-    value: '150'
+    value: '150'  # 150 concurrently-executing requests, since we use sc0_trackers
   - name: excessive_new_conns
     criterion: sc1_conn_rate(newconnrate)
     operator: gt
-    value: '200'
+    value: '2000'  # 200 new conns/sec, aka 2000 new conns/10secs
 
 profile::cache::haproxy::vars:
   - direction: request
