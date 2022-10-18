@@ -172,13 +172,11 @@ define opensearch::instance(
     $master_eligible = $::fqdn in $unicast_hosts
 
     if $gc_log == true {
-        $gc_log_flags = $version ? {
-            '1' => [
-                "-Xlog:gc*:file=/var/log/opensearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
-                '-Xlog:gc+age=trace',
-                '-Xlog:safepoint',
-            ],
-        }
+        $gc_log_flags = [
+            "-Xlog:gc*:file=/var/log/opensearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
+            '-Xlog:gc+age=trace',
+            '-Xlog:safepoint',
+        ]
     } else {
         $gc_log_flags = []
     }
