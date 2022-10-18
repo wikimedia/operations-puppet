@@ -219,14 +219,6 @@ class gerrit(
         mode    => '0440',
     }
 
-    # Used by the motd plugin which lets one send a message when ones sends a
-    # a review. We never used it and might consider dropping the plugin and
-    # ths this file as well.
-    file { "${gerrit_site}/etc/motd.config":
-        ensure => 'link',
-        target => '/srv/deployment/gerrit/gerrit/etc/motd.config',
-    }
-
     if $ssh_host_key != undef {
         file { "${gerrit_site}/etc/ssh_host_key":
             ensure    => present,
