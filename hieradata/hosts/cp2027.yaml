@@ -29,9 +29,21 @@ profile::cache::haproxy::vars:
     name: req.dummy_excess_concurrency
     value: src,debug(excess_concurrency,stderr)
     acl: concurrent_queries
+
+  # The incantations below will cause haproxy to log both the source IP and the occurrences-over-period together on the same line.
+  # for example: Oct 18 21:02:52 cp2027 haproxy[25803]: [debug] excessive_new_conns: type=str <ip={::1} rate={2969}>
+  # We use curly braces as the inner field delimiter as they aren't already used by syslog, haproxy's config parsing, or IPv6 addresses.
+  - direction: request
+    name: req.dummy_excessive_new_conns_src
+    value: src
+    acl: excessive_new_conns
+  - direction: request
+    name: req.dummy_excessive_new_conns_rate
+    value: sc1_conn_rate(newconnrate)
+    acl: excessive_new_conns
   - direction: request
     name: req.dummy_excessive_new_conns
-    value: src,debug(excessive_new_conns,stderr)
+    value: str(),concat(ip={,req.dummy_excessive_new_conns_src,{\ ),concat(rate={,req.dummy_excessive_new_conns_rate,}),debug(excessive_new_conns,stderr)
     acl: excessive_new_conns
 
 
