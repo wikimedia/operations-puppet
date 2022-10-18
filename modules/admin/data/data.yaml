@@ -375,7 +375,8 @@ groups:
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
-              hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde]
+              hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
+              damilare]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5514,7 +5515,13 @@ users:
     uid: 31163
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
-
+  damilare:
+    ensure: present
+    realname: Damilare Adedoyin
+    email: dadedoyin@wikimedia.org
+    uid: 33093
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 ldap_only_users:
   abartov:
     ensure: present
@@ -6250,10 +6257,6 @@ ldap_only_users:
     ensure: present
     realname: Ollie Shotton
     email: oliver.shotton@wikimedia.de
-  damilare:
-    ensure: present
-    realname: Damilare Adedoyin
-    email: dadedoyin@wikimedia.org
   zabe:
     ensure: present
     realname: Alexander Vorwerk
