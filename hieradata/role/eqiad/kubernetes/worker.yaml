@@ -26,5 +26,8 @@ profile::kubernetes::master_hosts:
 - kubemaster1002.eqiad.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.72.3"
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::kubernetes::cluster_cidr:
+  v4: "10.64.64.0/21"
+  v6: "2620:0:861:cabe::/64"
 # Define in the private repo
 # profile::rsyslog::kubernetes::token

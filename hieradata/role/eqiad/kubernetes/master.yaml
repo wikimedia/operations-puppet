@@ -31,3 +31,6 @@ profile::kubernetes::master_hosts:
 - kubemaster1001.eqiad.wmnet
 - kubemaster1002.eqiad.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.72.3"
+profile::kubernetes::cluster_cidr:
+  v4: "10.64.64.0/21"
+  v6: "2620:0:861:cabe::/64"
