@@ -34,28 +34,13 @@ listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>
 
     # Allowed images - T291978
     allowed_images = [
-      # Everything in Wikimedia registry:
-      "docker-registry.wikimedia.org/**/*",
-      "docker-registry.discovery.wmnet/**/*",
-
-      # Distributions:
-      "centos/*:*",
-      "debian:*",
-      "fedora:*",
-      "opensuse/*:*",
-      "ubuntu:*",
-
-      # Language-specific:
-      "python:*",
-      "ruby:*",
-      "rust:*",
-      "rustlang/rust:nightly",
-
-      # GitLab upstream - includes security analyzers and terraform images:
-      "registry.gitlab.com/gitlab-org/**/*",
+      <%- @allowed_images.each do |allowed_image| -%>
+      "<%= allowed_image %>",
+      <%- end -%>
     ]
 
     allowed_services = [
-      "docker-registry.wikimedia.org/**/*",
-      "docker-registry.discovery.wmnet/**/*",
+      <%- @allowed_docker_services.each do |allowed_service| -%>
+      "<%= allowed_service %>",
+      <%- end -%>
     ]

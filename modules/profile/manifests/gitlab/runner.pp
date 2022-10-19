@@ -31,6 +31,9 @@
 # @param https_proxy Proxy URL to use for https (requires enable_webproxy=true)
 # @param no_proxy Domains and addresses that shouldn't go through the proxies
 #   (requires enable_webproxy=true)
+# @param allowed_images Images which are allowed to be executed in CI containers
+# @param allowed_docker_services Images which are allowed to be executed as services
+#   parallel to CI jobs
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -65,6 +68,8 @@ class profile::gitlab::runner (
     Optional[String]                            $http_proxy         = lookup('profile::gitlab::runner::http_proxy'),
     Optional[String]                            $https_proxy        = lookup('profile::gitlab::runner::https_proxy'),
     Optional[String]                            $no_proxy           = lookup('profile::gitlab::runner::no_proxy'),
+    Array[String]                               $allowed_images     = lookup('profile::gitlab::runner::allowed_images'),
+    Array[String]                               $allowed_docker_services = lookup('profile::gitlab::runner::allowed_docker_services'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -206,6 +211,8 @@ class profile::gitlab::runner (
             enable_exporter         => $enable_exporter,
             gitlab_runner_user      => $gitlab_runner_user,
             require                 => Docker::Network[$docker_network],
+            allowed_images          => $allowed_images,
+            allowed_docker_services => $allowed_docker_services,
         }
     } else {
         exec { 'gitlab-unregister-runner':

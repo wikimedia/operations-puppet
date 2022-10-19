@@ -14,6 +14,8 @@ class gitlab_runner::config (
     Integer                  $check_interval          = 3,
     Integer                  $session_timeout         = 1800,
     String                   $gitlab_runner_user      = 'gitlab-runner',
+    Array[String]            $allowed_images          = [],
+    Array[String]            $allowed_docker_services = [],
 ) {
     ensure_packages('python3-toml')
 

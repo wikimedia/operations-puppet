@@ -70,3 +70,10 @@ profile::gitlab::runner::enable_webproxy: true
 profile::gitlab::runner::http_proxy: 'http://webproxy:8080'
 profile::gitlab::runner::https_proxy: 'http://webproxy:8080'
 profile::gitlab::runner::no_proxy: '127.0.0.1,::1,localhost,.wmnet,.wikimedia.org,.wikipedia.org,.wikibooks.org,.wikiquote.org,.wiktionary.org,.wikisource.org,.wikispecies.org,.wikiversity.org,.wikidata.org,.mediawiki.org,.wikinews.org,.wikivoyage.org'
+profile::gitlab::runner::allowed_images:
+  # Everything in Wikimedia registry:
+  - "docker-registry.wikimedia.org/**/*"
+  - "docker-registry.discovery.wmnet/**/*"
+profile::gitlab::runner::allowed_docker_services:
+  - "docker-registry.wikimedia.org/**/*"
+  - "docker-registry.discovery.wmnet/**/*"
