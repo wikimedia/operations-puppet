@@ -1,7 +1,7 @@
 # @summary This profile handles installing the mediawiki configuration generated from puppet into mw on k8s
 #
 # @note This class generates yaml files under $general_dir/mediawiki to handle apache virtual hosts, mcrouter pools,
-#  nutcracker pools, tlsproxy pools. The reason to have this profile is to keep stuff in sync between the legacy and k8s worlds.
+# tlsproxy pools. The reason to have this profile is to keep stuff in sync between the legacy and k8s worlds.
 class profile::kubernetes::deployment_server::mediawiki::config(
     String $deployment_server                           = lookup('deployment_server'),
     Array[Mediawiki::SiteCollection] $common_sites      = lookup('mediawiki::common_sites'),
@@ -9,7 +9,6 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     String $domain_suffix                               = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
     Stdlib::Unixpath $general_dir                       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Hash  $servers_by_datacenter_category               = lookup('profile::mediawiki::mcrouter_wancache::shards'),
-    Hash  $redis_shards                                 = lookup('redis::shards'),
     Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
     String $statsd_server                               = lookup('statsd'),
     String $udp2log_aggregator                          = lookup('udp2log_aggregator')
@@ -44,9 +43,10 @@ class profile::kubernetes::deployment_server::mediawiki::config(
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
         servers_by_datacenter_category => $servers_by_datacenter_category,
     }
+    # TODO: remove definition and related class once the file has been deleted
     class { 'mediawiki::nutcracker::yaml_defs':
-        path         => "${general_dir}/mediawiki/nutcracker_pools.yaml",
-        redis_shards => $redis_shards,
+        ensure => absent,
+        path   => "${general_dir}/mediawiki/nutcracker_pools.yaml",
     }
     class { 'mediawiki::tlsproxy::yaml_defs':
         path      => "${general_dir}/mediawiki/tlsproxy.yaml",
