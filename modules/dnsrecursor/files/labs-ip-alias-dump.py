@@ -49,7 +49,9 @@ def main():
 
     projects = []
     for tenant in conn.identity.projects():
-        projects.append(tenant.name)
+        # Avoid getting magnum created projects (different domain)
+        if tenant.domain_id == "default":
+            projects.append(tenant.name)
 
     # The output template
     output_d = {"aliasmapping": {}, "extra_records": {}}
