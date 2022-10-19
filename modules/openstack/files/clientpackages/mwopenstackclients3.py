@@ -97,12 +97,22 @@ class Clients(object):
 
         if project not in self.sessions:
 
+            if project != self.project:
+                print("investigating project %s" % project)
+                # Check the domain of the project before proceeding.
+                # We rely on a least one auth project (self.project)
+                # to already know its domain.
+                projectobj = self.keystoneclient().projects.get(project)
+                projectdomain = projectobj.domain_id
+            else:
+                projectdomain = 'default'
+
             auth = KeystonePassword(
                 auth_url=self.url,
                 username=self.username,
                 password=self.password,
                 user_domain_name='Default',
-                project_domain_name='Default',
+                project_domain_id=projectdomain,
                 project_name=project)
 
             self.sessions[project] = keystone_session.Session(auth=auth)
