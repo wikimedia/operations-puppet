@@ -9,7 +9,6 @@ profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: "eth1"
 profile::openstack::eqiad1::nova::network_flat_interface_vlan: "1105"
 profile::openstack::eqiad1::nova::network_flat_interface: "eth1.1105"
 profile::openstack::eqiad1::nova::osapi_compute_listen_port: 18774
-profile::openstack::eqiad1::nova::placement_api_port: 18778
 profile::openstack::eqiad1::nova::instance_network_id: "7425e328-560c-4f00-8e99-706f3fb90bb4"
 profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: "eth1.1105"

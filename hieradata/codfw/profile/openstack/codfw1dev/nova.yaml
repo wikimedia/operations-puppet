@@ -12,7 +12,6 @@ profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: "eth1"
 profile::openstack::codfw1dev::nova::network_flat_interface_vlan: "2105"
 profile::openstack::codfw1dev::nova::network_flat_interface: "eth1.2105"
 profile::openstack::codfw1dev::nova::osapi_compute_listen_port: 18774
-profile::openstack::codfw1dev::nova::placement_api_port: 18778
 profile::openstack::codfw1dev::nova::flat_network_bridge: "br2105"
 profile::openstack::codfw1dev::nova::fixed_range: "172.16.128.0/24"
 profile::openstack::codfw1dev::nova::zone: "codfw"
