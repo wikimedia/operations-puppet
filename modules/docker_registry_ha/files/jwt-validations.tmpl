@@ -1,7 +1,12 @@
 {{- /* SPDX-License-Identifier: Apache-2.0 */ -}}
+{{- /* See https://docs.gitlab.com/ee/ci/examples/authenticating-with-hashicorp-vault/ for token claims */ -}}
 {{- $project_path := index .Claims "project_path" -}}
+{{- $ref_protected := index .Claims "ref_protected" -}}
+{{- $settings_url := printf "https://gitlab.wikimedia.org/%s/-/settings/repository" $project_path }}
 {{- if not $project_path -}}
-there is no "project_path" claim present
+There is no "project_path" claim present.
 {{- else if not (or (eq .Request $project_path) (hasPrefix .Request ($project_path | printf "%s/"))) -}}
-requested resource is not equal to or beneath the project path {{ $project_path }}
+Image name is not equal to or beneath the project path {{ $project_path }}.
+{{- else if not $ref_protected -}}
+Your git branch or tag is not protected. Adjust your settings at: {{ $settings_url }}
 {{- end -}}
