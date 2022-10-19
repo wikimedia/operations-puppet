@@ -7,6 +7,8 @@ profile::docker::engine::settings:
 profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
 profile::docker::builder::proxy_port: 8080
 profile::docker::builder::docker_pkg: true
+profile::docker::builder::known_uid_mappings:
+  spark: 185
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
 profile::docker::builder::prune_images: true
 #profile::docker::builder::prod_build_password: defined in the private repo
