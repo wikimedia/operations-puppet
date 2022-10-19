@@ -14,3 +14,6 @@ profile::calico::kubernetes::bgp_peers:
 profile::kubernetes::master_hosts:
 - kubestagemaster1001.eqiad.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
+profile::kubernetes::cluster_cidr:
+  v4: "10.64.75.0/24"
+  v6: "2620:0:861:babe::/64"

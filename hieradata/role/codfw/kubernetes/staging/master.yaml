@@ -14,3 +14,6 @@ profile::calico::kubernetes::bgp_peers:
 profile::kubernetes::master_hosts:
 - kubestagemaster2001.codfw.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
+profile::kubernetes::cluster_cidr:
+  v4: "10.192.75.0/24"
+  v6: "2620:0:860:babe::/64"
