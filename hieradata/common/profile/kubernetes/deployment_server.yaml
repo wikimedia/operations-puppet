@@ -134,6 +134,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mwdebug
         - name: mwdebug-deploy
+    mw-debug:
+      usernames:
+        - name: mw-debug
+        - name: mw-debug-deploy
     tegola-vector-tiles:
       usernames:
         - name: tegola-vector-tiles
