@@ -24,7 +24,7 @@ class profile::docker::builder(
     Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
     Boolean $prune_prod_images = lookup('profile::docker::builder::prune_images'),
     Boolean $rebuild_images = lookup('profile::docker::builder::rebuild_images'),
-    Hash[String,Integer] $known_uid_mappings = lookup('profile::docker::builder::known_uid_mappings')
+    Hash[String,Integer] $known_uid_mappings = lookup('profile::docker::builder::known_uid_mappings', {default_value => undef})
 ){
 
     if $docker_pkg {
