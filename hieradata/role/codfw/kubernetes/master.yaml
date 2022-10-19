@@ -32,3 +32,6 @@ profile::kubernetes::master_hosts:
 - kubemaster2001.codfw.wmnet
 - kubemaster2002.codfw.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.72.3"
+profile::kubernetes::cluster_cidr:
+  v4: "10.192.64.0/21"
+  v6: "2620:0:860:cabe::/64"
