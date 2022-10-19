@@ -98,7 +98,6 @@ class Clients(object):
         if project not in self.sessions:
 
             if project != self.project:
-                print("investigating project %s" % project)
                 # Check the domain of the project before proceeding.
                 # We rely on a least one auth project (self.project)
                 # to already know its domain.
