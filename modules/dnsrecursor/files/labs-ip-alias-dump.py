@@ -65,12 +65,16 @@ def main():
             r_conn = connection.Connection(
                 "2", session=project_session, connect_retries=5, region_name=region
             )
-
-            for floating_ip in r_conn.list_floating_ips():
-                if floating_ip.attached:
-                    output_d["aliasmapping"][
-                        floating_ip.floating_ip_address
-                    ] = floating_ip.fixed_ip_address
+            try:
+                for floating_ip in r_conn.list_floating_ips():
+                    if floating_ip.attached:
+                        output_d["aliasmapping"][
+                            floating_ip.floating_ip_address
+                        ] = floating_ip.fixed_ip_address
+            except Exception as error:
+                raise Exception(
+                    f"Unable to parse project={project}, region={region}, does the project exist?"
+                ) from error
 
     if "extra_records" in config:
         output_d["extra_records"] = config["extra_records"]
