@@ -6323,3 +6323,7 @@ ldap_only_users:
     ensure: present
     realname: Tanuja Doriya
     email: tanuja.doriya@wikimedia.de
+  arbo:
+    ensure: present
+    realname: Arian Bozorg
+    email: arian.bozorg@wikimedia.de
