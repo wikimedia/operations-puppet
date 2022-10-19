@@ -31,6 +31,7 @@ class profile::lvs::configuration (
         # At this point we know that $_host_class_hosts has size 1 if the host is primary
         $lvs_class = $secondary.bool2str('secondary', $_host_class_hosts.keys[0])
         motd::message { "LVS Class: ${lvs_class}": }
+        tag("${name}::${lvs_class}")
     }
     # We create a motd which also allows us to use rspec to test
 
