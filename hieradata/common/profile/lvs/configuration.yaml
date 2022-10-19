@@ -1,0 +1,49 @@
+profile::lvs::configuration::all_class_hosts:
+  codfw:
+    high-traffic1:
+      primary: lvs2007
+      secondary: lvs2010
+    high-traffic2:
+      primary: lvs2008
+      secondary: lvs2010
+    low-traffic:
+      primary: lvs2009
+      secondary: lvs2010
+  drmrs:
+    high-traffic1:
+      primary: lvs6001
+      secondary: lvs6003
+    high-traffic2:
+      primary: lvs6002
+      secondary: lvs6003
+  eqiad:
+    high-traffic1:
+      primary: lvs1017
+      secondary: lvs1020
+    high-traffic2:
+      primary: lvs1018
+      secondary: lvs1020
+    low-traffic:
+      primary: lvs1019
+      secondary: lvs1020
+  eqsin:
+    high-traffic1:
+      primary: lvs5001
+      secondary: lvs5003
+    high-traffic2:
+      primary: lvs5002
+      secondary: lvs5003
+  esams:
+    high-traffic1:
+      primary: lvs3005
+      secondary: lvs3007
+    high-traffic2:
+      primary: lvs3006
+      secondary: lvs3007
+  ulsfo:
+    high-traffic1:
+      primary: lvs4005
+      secondary: lvs4007
+    high-traffic2:
+      primary: lvs4006
+      secondary: lvs4007

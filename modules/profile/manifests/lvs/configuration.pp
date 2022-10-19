@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-# @param class_hosts lvs host classification
+# @param all_class_hosts lvs host classification
 class profile::lvs::configuration (
-    Hash[
+    Hash[Wmflib::Sites, Hash[
         Profile::Lvs::Classes,
         Profile::Lvs::Class_hosts
-    ] $class_hosts = lookup('profile::lvs::configuration::class_hosts'),
+    ]] $all_class_hosts = lookup('profile::lvs::configuration::all_class_hosts'),
 ) {
 
+    $class_hosts = $all_class_hosts[$::site]
     # get the list of classes for this host
     $_host_class_hosts = $class_hosts.filter |$_, $hosts| {
         $facts['networking']['hostname'] in $hosts.values
