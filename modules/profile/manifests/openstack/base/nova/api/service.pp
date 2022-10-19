@@ -6,10 +6,9 @@ class profile::openstack::base::nova::api::service(
     String       $dhcp_domain               = lookup('profile::openstack::base::nova::dhcp_domain',
                                                       {default_value => 'example.com'}),
     Integer      $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
+    Boolean      $public_apis = lookup('profile::openstack::base::public_apis'),
     ) {
 
-    $prod_networks = join($::network::constants::production_networks, ' ')
-    $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'::openstack::nova::api::service':
         version            => $version,
@@ -21,9 +20,19 @@ class profile::openstack::base::nova::api::service(
     }
     contain '::openstack::nova::api::service'
 
-    ferm::service { 'nova_api_public':
-        proto => 'tcp',
-        port  => '28774',
+    if $public_apis {
+        ferm::service { 'nova_api_public':
+            proto => 'tcp',
+            port  => '28774',
+        }
+    } else {
+        $prod_networks = join($::network::constants::production_networks, ' ')
+        $labs_networks = join($::network::constants::labs_networks, ' ')
+        ferm::rule{'nova_api_public':
+            ensure => 'present',
+            rule   => "saddr (${prod_networks} ${labs_networks}
+                                 ) proto tcp dport (28774) ACCEPT;",
+        }
     }
 
     $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
