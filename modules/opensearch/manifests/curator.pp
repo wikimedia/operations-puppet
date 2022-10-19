@@ -12,9 +12,9 @@ class opensearch::curator (
         $curator_version = $version
     } else {
         if debian::codename::le('buster') {
-            $curator_version = '5.8.5-1~wmf1'
+            $curator_version = '5.8.5-1~wmf3'
         } else {
-            $curator_version = '5.8.1-1'
+            $curator_version = '5.8.5-1~wmf3+deb11u1'
         }
     }
 
