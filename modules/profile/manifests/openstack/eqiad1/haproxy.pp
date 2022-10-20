@@ -16,7 +16,14 @@ class profile::openstack::eqiad1::haproxy(
     Stdlib::Port $galera_listen_port = lookup('profile::openstack::eqiad1::galera::listen_port'),
     Stdlib::Fqdn $galera_primary_host = lookup('profile::openstack::eqiad1::galera::primary_host'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::eqiad1::nova::osapi_compute_listen_port'),
+    Boolean      $public_apis                    = lookup('profile::openstack::eqiad1::public_apis')
 ) {
+    if $public_apis {
+        $firewall = 'public'
+    } else {
+        $firewall = 'internal'
+    }
+
     if $acme_chief_cert_name != undef {
         acme_chief::cert { $acme_chief_cert_name:
             puppet_svc => 'haproxy',
@@ -156,6 +163,7 @@ class profile::openstack::eqiad1::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'placement_api':

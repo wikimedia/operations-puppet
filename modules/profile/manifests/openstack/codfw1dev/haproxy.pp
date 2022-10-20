@@ -18,7 +18,14 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $galera_listen_port = lookup('profile::openstack::codfw1dev::galera::listen_port'),
     Stdlib::Fqdn $galera_primary_host = lookup('profile::openstack::codfw1dev::galera::primary_host'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
+    Boolean      $public_apis                    = lookup('profile::openstack::codfw1dev::public_apis')
 ) {
+    if $public_apis {
+        $firewall = 'public'
+    } else {
+        $firewall = 'internal'
+    }
+
     if $acme_chief_cert_name != undef {
         acme_chief::cert { $acme_chief_cert_name:
             puppet_svc => 'haproxy',
@@ -200,6 +207,7 @@ class profile::openstack::codfw1dev::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'placement_api':
