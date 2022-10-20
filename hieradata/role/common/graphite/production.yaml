@@ -26,3 +26,9 @@ profile::idp::client::httpd::sites:
     enable_monitor: false
 profile::contacts::role_contacts: ['Observability']
 profile::netconsole::client::ensure: present
+
+profile::graphite::hosts:
+  - graphite1004.eqiad.wmnet
+  - graphite1005.eqiad.wmnet
+  - graphite2003.codfw.wmnet
+  - graphite2004.codfw.wmnet

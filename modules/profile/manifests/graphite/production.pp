@@ -4,8 +4,11 @@
 # Also includes icinga checks for anomalies for MediaWiki, EL & Swift metrics
 # Instance requires people to authenticate via LDAP before they can see metrics.
 #
-class profile::graphite::production {
+class profile::graphite::production (
+    Array[Stdlib::Fqdn] $graphite_hosts = lookup('profile::graphite::hosts'),
+) {
     $storage_dir = '/srv/carbon'
+    $graphite_hosts_ferm = join($graphite_hosts, ' ')
 
     class { '::httpd':
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'uwsgi', 'authnz_ldap'],
@@ -87,12 +90,6 @@ class profile::graphite::production {
         directory => "${storage_dir}/whisper",
         keep_days => 1024,
     }
-
-    $graphite_hosts = [
-        'graphite1004.eqiad.wmnet',
-        'graphite2003.codfw.wmnet',
-    ]
-    $graphite_hosts_ferm = join($graphite_hosts, ' ')
 
     include rsync::server
 
