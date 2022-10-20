@@ -6330,3 +6330,7 @@ ldap_only_users:
     ensure: present
     realname: Arian Bozorg
     email: arian.bozorg@wikimedia.de
+  gfontenelle:
+    ensure: present
+    realname: Giovanna Fontenelle
+    email: gfontenelle@wikimedia.org
