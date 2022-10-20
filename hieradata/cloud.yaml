@@ -612,6 +612,7 @@ profile::ceph::auth::deploy::configuration: {}
 
 # Do not build images or generate reports
 profile::docker::builder::rebuild_images: false
+profile::docker::builder::known_uid_mappings: {}
 profile::docker::reporter::generate_reports: false
 
 # Do not use kafka shipping for central syslogserver
