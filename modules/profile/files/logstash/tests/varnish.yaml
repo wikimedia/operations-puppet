@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: Apache-2.0
+fields:
+  "rsyslog.severity": "info"
+  "rsyslog.facility": "daemon"
+  logsource: "cp0000"
+  facility: "user"
+  type: "syslog"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "level"
+  - "normalized_message"
+  - "tags"
+  - "normalized"
+testcases:
+  - input:
+      - >
+        {
+          "rsyslog.programname": "varnish-frontend-slowlog",
+          "program": "varnish-frontend-slowlog",
+          "time": "2022-10-20T15:35:39.926764",
+          "message": "commons.wikimedia.org/w/api.php",
+          "level": "INFO",
+          "logger": "varnishslowlog",
+          "filename": "varnishslowlog",
+          "layer": "frontend",
+          "levelname": "INFO",
+          "request-cookie": "WMF-Last-Access=20-Oct-2022; commonswikiwmE-sessionTickLastTickTime=1666279837395; commonswikiwmE-sessionTickTickCount=49; commonswikiss0-UserID=00000000; commonswikiUserID=00000000; commonswikiss0-UserName=User; commonswikiUserName=User; centralauth_ss0-User=User; centralauth_User=User; centralauth_ss0-Token=6d2a9f8f8174e86e27d565087a28a971; PHP_ENGINE=7.4; GeoIP=DE:BE:Berlin:0.0:0.0:v4; commonswikimwuser-sessionId=6d2a9f8f8174e86e27d565087a28a971; ss0-commonswikiSession=6d2a9f8f8174e86e27d565087a28a971; commonswikiSession=6d2a9f8f8174e86e27d565087a28a971; ss0-centralauth_Session=6d2a9f8f8174e86e27d565087a28a971; centralauth_Session=6d2a9f8f8174e86e27d565087a28a971; cpPosIndex=2%401666279993%aa6d2a9f8f8174e86e27d565087a28a971; UseDC=master; UseCDNCache=false; centralauth_Token=6d2a9f8f8174e86e27d565087a28a971"
+        }
+    expected:
+      - __target_index: "logstash-syslog-1-1.0.0-N-daily"
+        facility: "user"
+        filename: "varnishslowlog"
+        host: "cp0000"
+        layer: "frontend"
+        levelname: "INFO"
+        logger: "varnishslowlog"
+        logsource: "cp0000"
+        message: "commons.wikimedia.org/w/api.php"
+        program: "varnish-frontend-slowlog"
+        request-cookie: "WMF-Last-Access=20-Oct-2022; commonswikiwmE-sessionTickLastTickTime=redacted; commonswikiwmE-sessionTickTickCount=redacted; commonswikiss0-UserID=00000000; commonswikiUserID=00000000; commonswikiss0-UserName=User; commonswikiUserName=User; centralauth_ss0-User=User; centralauth_User=User; centralauth_ss0-Token=redacted; PHP_ENGINE=7.4; GeoIP=DE:BE:Berlin:0.0:0.0:v4; commonswikimwuser-sessionId=redacted; ss0-commonswikiSession=redacted; commonswikiSession=redacted; ss0-centralauth_Session=redacted; centralauth_Session=redacted; cpPosIndex=2%401666279993%aa6d2a9f8f8174e86e27d565087a28a971; UseDC=master; UseCDNCache=false; centralauth_Token=redacted"
+        time: "2022-10-20T15:35:39.926764"
+        type: "syslog"
+
+  - input:
+      - >
+        {
+          "rsyslog.programname": "varnish-frontend-fetcherr",
+          "program": "varnish-frontend-fetcherr",
+          "time": "2022-10-20T15:50:45.035058",
+          "message": "req.body read error: 11 (Resource temporarily unavailable) - backend write error: 11 (Resource temporarily unavailable) /w/api.php",
+          "level": "INFO",
+          "logger": "varnishfetcherr",
+          "request-cookie": "hewikiss0-UserName=User; hewikiUserName=User; cx_campaign_newarticle_hide=1; loginnotify_prevlogins=2022-aaaaaa-6d2a9f8f8174e86e27d565087a28a971; hewikiss0-UserID=000000; hewikiUserID=000000; centralauth_ss0-User=User; centralauth_User=User; centralauth_ss0-Token=6d2a9f8f8174e86e27d565087a28a971; centralauth_Token=6d2a9f8f8174e86e27d565087a28a971; PHP_ENGINE=7.4; WMF-Last-Access=20-Oct-2022; WMF-Last-Access-Global=20-Oct-2022; VEE=visualeditor; hewikiSession=6d2a9f8f8174e86e27d565087a28a971; GeoIP=IL:::0.0:0.0:v4; hewikimwuser-sessionId=6d2a9f8f8174e86e27d565087a28a971; ss0-centralauth_Session=6d2a9f8f8174e86e27d565087a28a971; centralauth_Session=6d2a9f8f8174e86e27d565087a28a971; hewikiwmE-sessionTickLastTickTime=1666280974809; hewikiwmE-sessionTickTickCount=49; ss0-hewikiSession=6d2a9f8f8174e86e27d565087a28a971"
+        }
+    expected:
+      - __target_index: "logstash-syslog-1-1.0.0-N-daily"
+        facility: "user"
+        host: "cp0000"
+        logger: "varnishfetcherr"
+        logsource: "cp0000"
+        message: "req.body read error: 11 (Resource temporarily unavailable) - backend write error: 11 (Resource temporarily unavailable) /w/api.php"
+        program: "varnish-frontend-fetcherr"
+        request-cookie: "hewikiss0-UserName=User; hewikiUserName=User; cx_campaign_newarticle_hide=1; loginnotify_prevlogins=2022-aaaaaa-6d2a9f8f8174e86e27d565087a28a971; hewikiss0-UserID=000000; hewikiUserID=000000; centralauth_ss0-User=User; centralauth_User=User; centralauth_ss0-Token=redacted; centralauth_Token=redacted; PHP_ENGINE=7.4; WMF-Last-Access=20-Oct-2022; WMF-Last-Access-Global=20-Oct-2022; VEE=visualeditor; hewikiSession=redacted; GeoIP=IL:::0.0:0.0:v4; hewikimwuser-sessionId=redacted; ss0-centralauth_Session=redacted; centralauth_Session=redacted; hewikiwmE-sessionTickLastTickTime=redacted; hewikiwmE-sessionTickTickCount=redacted; ss0-hewikiSession=redacted"
+        time: "2022-10-20T15:50:45.035058"
+        type: "syslog"
+
+  - input:
+      - >
+        {
+          "rsyslog.programname": "varnish-frontend-fetcherr",
+          "program": "varnish-frontend-fetcherr",
+          "time": "2022-10-12T15:21:06.477089",
+          "message": "HTC idle (3) /superset/sql_json/",
+          "level": "INFO",
+          "logger": "varnishfetcherr",
+          "request-cookie": "logged_out_marketing_header_id=eyJf6d2a9f8f8174e86e27d565087a28a971bVEzTkRRekxUWXdPR0l0TkR6d2a9f8f8174e86e27d565087a28a971Nek1pST0iLCJleHA6d2a9f8f8174e86e27d565087a28a971nZWRfb36d2a9f8f8174e86e27d565087a28a9710%3D--86d2a9f8f8174e86e27d565087a28a971c9688dd; GeoIP=DE:BY:Erlangen:0.0:0.0:v4; WMF-Last-Access=12-Oct-2022; MOD_AUTH_CAS=6d2a9f8f8174e86e27d565087a28a971; session=.eJw6d2a9f8f8174e86e27d565087a28a971gO1mF3D2GQC3rQdVPeea17rfyyH7e6d2a9f8f8174e86e27d565087a28a9711pAgNXIQ-DS6d2a9f8f8174e86e27d565087a28a971XuFeAyTbQRZwJhxA37IqcSsjlKHFf-6d2a9f8f8174e86e27d565087a28a-6d2a9f8f8174e86e27d5-12345-1234567890ab.12345.6d2a9f8f8174e86e27d56508--a"
+        }
+    expected:
+      - __target_index: "logstash-syslog-1-1.0.0-N-daily"
+        facility: "user"
+        host: "cp0000"
+        logger: "varnishfetcherr"
+        logsource: "cp0000"
+        message: "HTC idle (3) /superset/sql_json/"
+        program: "varnish-frontend-fetcherr"
+        request-cookie: "logged_out_marketing_header_id=eyJf6d2a9f8f8174e86e27d565087a28a971bVEzTkRRekxUWXdPR0l0TkR6d2a9f8f8174e86e27d565087a28a971Nek1pST0iLCJleHA6d2a9f8f8174e86e27d565087a28a971nZWRfb36d2a9f8f8174e86e27d565087a28a9710%3D--86d2a9f8f8174e86e27d565087a28a971c9688dd; GeoIP=DE:BY:Erlangen:0.0:0.0:v4; WMF-Last-Access=12-Oct-2022; MOD_AUTH_CAS=redacted; session=redacted"
+        time: "2022-10-12T15:21:06.477089"
+        type: "syslog"
