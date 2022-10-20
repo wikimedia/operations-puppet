@@ -46,7 +46,7 @@ esac
 
 # On Dell PowerEdge 450 on Buster we need 5.10 before rebooting after early install, T319067
 case $(hostname) in
-    cp4045|cp4037)
+    cp40*)
 	apt-install linux-image-5.10-amd64
     ;;
 esac
