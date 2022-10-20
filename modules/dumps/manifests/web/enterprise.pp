@@ -32,6 +32,12 @@ class dumps::web::enterprise(
         source => 'puppet:///modules/dumps/web/wm_enterprise_settings',
     }
 
+    file { '/srv/dumps/temp':
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => $user,
+        group  => $group,
+    }
 
     if $is_primary_server {
         $download_command = "/usr/bin/python3 ${script_path} --creds ${creds_path} --settings ${settings_path} --retries 2"
