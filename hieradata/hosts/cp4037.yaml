@@ -3,5 +3,3 @@ profile::base::use_linux510_on_buster: true
 profile::trafficserver::backend::storage_elements:
   - devname: nvme0n1
     id: disk.0
-  - devname: nvme1n1
-    id: disk.1
