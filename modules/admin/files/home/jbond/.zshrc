@@ -67,7 +67,7 @@ sudo-command-line() {
 function set_proxy {
   export HTTP_PROXY=http://webproxy:8080
   export HTTPS_PROXY=http://webproxy:8080
-  export http_proxy=http://webproxyt:8080
+  export http_proxy=http://webproxy:8080
   export https_proxy=http://webproxy:8080
   export NO_PROXY=127.0.0.1,::1,localhost,.wmnet,.wikimedia.org
   export no_proxy=127.0.0.1,::1,localhost,.wmnet,.wikimedia.org
