@@ -469,7 +469,7 @@ node /^cp40(2[2-6]|3[34]|4[5])\.ulsfo\.wmnet$/ {
 }
 
 # HAProxy test - T290005
-node /^cp40(2[89]|3[02567])\.ulsfo.wmnet$/ {
+node /^cp40(2[8]|3[02567])\.ulsfo.wmnet$/ {
     role(cache::text_haproxy)
 }
 
