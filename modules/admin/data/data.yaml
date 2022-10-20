@@ -3146,7 +3146,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILvhdG381YRtB7eyRf04bnH6dSYz1+6JF84mpY3yh9K0 sam@theresnotime.co.uk
     uid: 12744
     email: starling-ctr@wikimedia.org
-    expiry_date: 2022-10-17
+    expiry_date: 2023-04-21
     expiry_contact: ksiebert@wikimedia.org
   nithum:
     ensure: absent
