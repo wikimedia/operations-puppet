@@ -225,7 +225,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
   email_configs:
-    - to: 'analytics-alerts@<%= @facts["networking"]["domain"] %>'
+    - to: 'data-engineering-alerts@lists.wikimedia.org'
 
 - name: 'data-persistence-irc'
   webhook_configs:
