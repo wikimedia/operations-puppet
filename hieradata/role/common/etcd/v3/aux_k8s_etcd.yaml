@@ -1,0 +1,19 @@
+# ::profile::base
+cluster: 'aux_k8s_etcd'
+
+profile::etcd::v3::cluster_name: "aux_k8s_etcd.%{::site}"
+profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::discovery: "dns:dse-k8s-etcd.%{::site}.wmnet"
+# Firewall used for access limiting instead of certs
+profile::etcd::v3::use_client_certs: false
+# Allow access from entire site, should we trim this down further XXX?
+profile::etcd::v3::allow_from: '$DOMAIN_NETWORKS'
+profile::etcd::v3::do_backup: true
+# The following parameter enables automatic peer communication certificate
+# generation
+profile::etcd::v3::use_pki_certs: true
+profile::etcd::v3::max_latency: 10
+profile::etcd::v3::adv_client_port: 2379
+
+# XXX Who are the aux k8s cluster owners?
+profile::contacts::role_contacts: ['Infrastructure Foundations']
