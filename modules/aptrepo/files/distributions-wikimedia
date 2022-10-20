@@ -229,6 +229,7 @@ Components: main
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/gvisor
+ thirdparty/haproxy24
  thirdparty/hwraid
  thirdparty/node14
  thirdparty/node16
@@ -254,6 +255,7 @@ Update:
  thirdparty/conda
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
+ thirdparty/haproxy24
  thirdparty/openstack-db
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
