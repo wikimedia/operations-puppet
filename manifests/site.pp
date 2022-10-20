@@ -1324,6 +1324,10 @@ node /^ganeti400[1238]\.ulsfo\.wmnet$/ {
     role(ganeti)
 }
 
+node 'ganeti4005.ulsfo.wmnet' {
+    role(insetup)
+}
+
 node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
@@ -1775,6 +1779,10 @@ node /^lvs300[567]\.esams\.wmnet$/ {
 # ULSFO lvs servers
 node /^lvs400[567]\.ulsfo\.wmnet$/ {
     role(lvs::balancer)
+}
+
+node 'lvs4008.ulsfo.wmnet' {
+    role(insetup_noferm)
 }
 
 # EQSIN lvs servers
