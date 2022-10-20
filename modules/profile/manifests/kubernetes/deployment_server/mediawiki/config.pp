@@ -43,11 +43,6 @@ class profile::kubernetes::deployment_server::mediawiki::config(
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
         servers_by_datacenter_category => $servers_by_datacenter_category,
     }
-    # TODO: remove definition and related class once the file has been deleted
-    class { 'mediawiki::nutcracker::yaml_defs':
-        ensure => absent,
-        path   => "${general_dir}/mediawiki/nutcracker_pools.yaml",
-    }
     class { 'mediawiki::tlsproxy::yaml_defs':
         path      => "${general_dir}/mediawiki/tlsproxy.yaml",
         listeners => $enabled_listeners,
