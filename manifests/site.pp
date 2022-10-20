@@ -225,6 +225,11 @@ node /^authdns[12]001\.wikimedia\.org$/ {
     role(dns::auth)
 }
 
+# etcd cluster for aux kubernetes cluster
+node /^aux-k8s-etcd100[1-3]\.eqiad\.wmnet$/ {
+    role(etcd::v3::aux_k8s_etcd)
+}
+
 # Primary bacula director and storage daemon
 node 'backup1001.eqiad.wmnet' {
     role(backup)
