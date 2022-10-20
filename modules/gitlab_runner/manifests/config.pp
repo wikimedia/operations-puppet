@@ -64,7 +64,7 @@ class gitlab_runner::config (
     systemd::service{ 'gitlab-runner':
         ensure         => 'present',
         content        => template('gitlab_runner/gitlab-runner.service.erb'),
-        service_params => {'restart' => 'systemctl restart gitlab-runner'},
+        service_params => {'restart' => 'systemctl restart -s SIGQUIT gitlab-runner'},
         override       => true, #override default unit file for non-root user
     }
 }
