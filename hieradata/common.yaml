@@ -125,11 +125,9 @@ alertmanagers:
 wikimedia_clusters:
   decommissioned:
     description: "Decommissioned servers"
-    id: 1
     sites: {}
   lvs:
     description: "LVS loadbalancers"
-    id: 2
     sites:
       eqiad: []
       codfw: []
@@ -139,35 +137,29 @@ wikimedia_clusters:
       drmrs: []
   puppet:
     description: "Puppetmasters"
-    id: 3
     sites:
       eqiad: []
       codfw: []
   search:
     description: "Search"
-    id: 4
     sites: {}
   mysql:
     description: "MySQL"
-    id: 5
     sites:
       eqiad: []
       codfw: []
   etcd:
     description: "Etcd"
-    id: 6
     sites:
       eqiad: []
       codfw: []
   kafka_main:
     description: "Kafka main cluster"
-    id: 7
     sites:
       eqiad: []
       codfw: []
   misc:
     description: "Miscellaneous"
-    id: 8
     sites:
       eqiad: []
       codfw: []
@@ -177,25 +169,21 @@ wikimedia_clusters:
       drmrs: []
   kubernetes:
     description: "Kubernetes"
-    id: 9
     sites:
       eqiad: []
       codfw: []
   appserver:
     description: "Application servers"
-    id: 11
     sites:
       eqiad: []
       codfw: []
   api_appserver:
     description: "API application servers"
-    id: 13
     sites:
       eqiad: []
       codfw: []
   cache_text:
     description: "Text caches"
-    id: 20
     sites:
       eqiad: []
       codfw: []
@@ -205,7 +193,6 @@ wikimedia_clusters:
       drmrs: []
   cache_upload:
     description: "Upload caches"
-    id: 22
     sites:
       eqiad: []
       codfw: []
@@ -215,120 +202,99 @@ wikimedia_clusters:
       drmrs: []
   payments:
     description: "Fundraiser payments"
-    id: 23
     sites: {}
   ssl:
     description: "SSL cluster"
-    id: 26
     sites: {}
   swift:
     description: "Swift"
-    id: 27
     sites:
       eqiad: []
       codfw: []
       esams: []
   labvirt:
     description: "Labs virt hosts"
-    id: 29
     sites:
       eqiad: []
   labs:
     description: "Labs services"
-    id: 30
     sites:
       eqiad: []
   jobrunner:
     description: "Jobrunners"
-    id: 31
     sites:
       eqiad: []
       codfw: []
   analytics:
     description: "Analytics cluster"
-    id: 32
     sites:
       eqiad: []
   memcached:
     description: "Memcached"
-    id: 33
     sites:
       eqiad: []
       codfw: []
   memcached_gutter:
     description: "Memcached gutter pool"
-    id: 34
     sites:
       codfw: []
       eqiad: []
   fundraising:
     description: "Fundraising"
-    id: 35
     sites:
       eqiad:
         - pay-lvs1001.frack.eqiad.wmnet
         - pay-lvs1002.frack.eqiad.wmnet
   ceph:           # Not used anymore
     description: "Ceph"
-    id: 36
     sites: {}
   parsoid:
     description: "Parsoid"
-    id: 37
     sites:
       eqiad: []
       codfw: []
   redis:
     description: "Redis"
-    id: 39
     sites:
       eqiad: []
       codfw: []
   labsnfs:
     description: "Labs NFS cluster"
-    id: 40
     sites:
       eqiad: []
       codfw: []
   elasticsearch:
     description: "Elasticsearch cluster"
-    id: 42
     sites:
       eqiad: []
       codfw: []
   logstash:
     description: "Logstash cluster"
-    id: 43
     sites:
       eqiad: []
       codfw: []
   apifeatureusage:
     description: "API feature usage iog ingest cluster"
-    id: 44
     sites:
       eqiad: []
       codfw: []
   restbase:
     description: "Restbase"
-    id: 48
     sites:
       eqiad: []
       codfw: []
   wdqs:
     description: "Wikidata Query Service - Public cluster"
-    id: 49
     sites:
       eqiad: []
       codfw: []
   maps:
     description: "Maps Cluster"
-    id: 50
     sites:
       eqiad: []
       codfw: []
   ganeti:
     description: "Ganeti Virt cluster"
-    id: 52
     sites:
       eqiad: []
       codfw: []
@@ -338,77 +304,63 @@ wikimedia_clusters:
       drmrs: []
   aqs:
     description: "Analytics Query Service"
-    id: 54
     sites:
       eqiad: []
       codfw: []
   restbase_test:
     description: "Restbase test"
-    id: 55
     sites:
       eqiad: []
       codfw: []
   relforge:
     description: "Elasticsearch relforge cluster"
-    id: 56
     sites:
       eqiad: []
   labtestvirt:
     description: "Labtest virt hosts"
-    id: 57
     sites:
       codfw: []
   labtest:
     description: "Labtest services"
-    id: 58
     sites:
       codfw: []
   restbase_dev:
     description: "Services development test"
-    id: 59
     sites:
       eqiad: []
   thumbor:
     description: "Thumbor"
-    id: 61
     sites:
       codfw: []
       eqiad: []
   kafka_jumbo:
     description: "Kafka Jumbo Cluster"
-    id: 62
     sites:
       eqiad: []
   druid_analytics:
     description: "Druid Analytics Cluster"
-    id: 63
     sites:
       eqiad: []
   druid_public:
     description: "Druid Public Cluster"
-    id: 64
     sites:
       eqiad: []
   ores:
     description: "ORES Cluster"
-    id: 65
     sites:
       eqiad: []
       codfw: []
   wdqs-internal:
     description: "Wikidata Query Service - Internal cluster"
-    id: 66
     sites:
       eqiad: []
       codfw: []
   wdqs-test:
     description: "Wikidata Query Service - Test cluster"
-    id: 67
     sites:
       eqiad: []
   dnsbox:
     description: "DNS and NTP Combo Infra Boxes"
-    id: 69
     sites:
       eqiad: []
       codfw: []
@@ -418,7 +370,6 @@ wikimedia_clusters:
       drmrs: []
   spare:
     description: "Spare servers"
-    id: 70
     sites:
       eqiad: []
       codfw: []
@@ -428,7 +379,6 @@ wikimedia_clusters:
       drmrs: []
   prometheus:
     description: "Prometheus servers"
-    id: 71
     sites:
       eqiad: []
       codfw: []
@@ -438,13 +388,11 @@ wikimedia_clusters:
       drmrs: []
   graphite:
     description: "Graphite servers"
-    id: 72
     sites:
       eqiad: []
       codfw: []
   bastion:
     description: "Bastion servers"
-    id: 73
     sites:
       eqiad: []
       codfw: []
@@ -454,132 +402,109 @@ wikimedia_clusters:
       drmrs: []
   alerting:
     description: "Icinga"
-    id: 75
     sites:
       eqiad: []
       codfw: []
   ci:
     description: "Continuous Integration servers"
-    id: 76
     sites:
       eqiad: []
       codfw: []
   management:
     description: "Management servers"
-    id: 77
     sites:
       eqiad: []
       codfw: []
   wmcs:
     description: "WMCS servers"
-    id: 79
     sites:
       eqiad: []
   webperf:
     description: "Web Performance servers"
-    id: 80
     sites:
       eqiad: []
       codfw: []
   poolcounter:
     description: "Poolcounter servers"
-    id: 81
     sites:
       eqiad: []
       codfw: []
   dumps:
     description: "Dumps servers"
-    id: 82
     sites:
       eqiad: []
   syslog:
     description: "Syslog servers"
-    id: 83
     sites:
       eqiad: []
       codfw: []
   druid_test_analytics:
     description: "Druid Analytics Test Cluster"
-    id: 84
     sites:
       eqiad: []
   sessionstore:
     description: "Sessionstore cluster"
-    id: 85
     sites:
       eqiad: []
       codfw: []
   cloudelastic:
     description: "Elasticsearch cloudelastic cluster"
-    id: 86
     sites:
       eqiad: []
   acmechief:
     description: "acme-chief hosts"
-    id: 87
     sites:
       eqiad: []
       codfw: []
   eventschemas:
     description: "Event platform schemas"
-    id: 88
     sites:
       eqiad: []
       codfw: []
   thanos:
     description: "Prometheus long-term storage"
-    id: 90
     sites:
       eqiad: []
       codfw: []
   kafka_test:
     description: "Kafka Test Cluster"
-    id: 91
     sites:
       eqiad: []
   zookeeper_test:
     description: "Zookeeper Test Cluster"
-    id: 92
     sites:
       eqiad: []
   ml_serve:
     description: "ML Team serving clusters"
-    id: 93
     sites:
       eqiad: []
       codfw: []
   ml_etcd:
     description: "ML Team etcd clusters"
-    id: 94
     sites:
       eqiad: []
       codfw: []
   pki:
     description: "PKI (cfssl) infrastructure"
-    id: 95
     sites:
       eqiad: []
       codfw: []
   ganeti_test:
     description: "Ganeti Virt cluster test environment"
-    id: 96
     sites:
       codfw: []
   backup:
     description: "Backup cluster (bacula, databases and media)"
-    id: 97
     sites:
       eqiad: []
       codfw: []
   wcqs:
     description: "Wikimedia Commons Query Service - Public cluster"
-    id: 98
     sites:
       eqiad: []
       codfw: []
   wikidough:
     description: "DoH and DoT recursive resolver"
-    id: 99
     sites:
       eqiad: []
       codfw: []
@@ -589,7 +514,6 @@ wikimedia_clusters:
       drmrs: []
   durum:
     description: "Wikidough check service"
-    id: 100
     sites:
       eqiad: []
       codfw: []
@@ -599,34 +523,28 @@ wikimedia_clusters:
       drmrs: []
   kubernetes-staging:
     description: "Kubernetes staging"
-    id: 101
     sites:
       eqiad: []
       codfw: []
   ml_staging_etcd:
     description: "ML Team staging etcd clusters"
-    id: 102
     sites:
       codfw: []
   ml_staging:
     description: "ML Team staging clusters"
-    id: 103
     sites:
       codfw: []
   ml_cache:
     description: "ML Team cache and Feature Store clusters"
-    id: 104
     sites:
       eqiad: []
       codfw: []
   dse_k8s:
     description: "Kubernetes cluster for Data Science and Engineering (DSE) workloads"
-    id: 105
     sites:
       eqiad: []
   dse_k8s_etcd:
     description: "Etcd cluster for the DSE Kubernetes cluster"
-    id: 106
     sites:
       eqiad: []
   aux_k8s_etcd:
