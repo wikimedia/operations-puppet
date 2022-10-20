@@ -377,7 +377,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare]
+              damilare, appledora]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5531,6 +5531,18 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG4lSIP3z/s9oM8xlGfpLwMM4kttgOk9eDM0hWRR/gyC sdunlap@wikimedia.org
+  appledora:
+    ensure: present
+    krb: present
+    realname: Nazia Tasnim
+    email: ntasnim-ctr@wikimedia.org
+    uid: 37831
+    gid: 500
+    expiry_date: 2023-05-01
+    expiry_contact: ijohnson@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDl3CP/l+yFwQqG5ifShJgIgmp1x/krK8slFXTIRYuFOj1imPrZJRoWp144UPZsQ279ulIpaVJol4vNULqIFuG1nE1TCH9ICnIUquoZEjqRrm+1U0jXFrrye1U4SjUnq2bdFli1rkNkLI9MT/ZcPBBcN9kwASfwYAHQOnUtlHgvGdGvtSeQzV0G3lqwYCqyZzEQi6N+DR/s5tfQo2osnufEGZZpf2jRWrm6D6AK7LDODyzj/LmNvCgH3yme024kn3KvGjzs2B5+nQqIFa1cA21ETKbq3jS6HwqHaOYGR/aAfGFBaAn3G89ppTlAMqXKdfRAfqb7O7bQKxxfWnXxJLYEwkKBKc/XEq6Zyil3WJd0/Z5Bhaglopp2TLcGHhO//kM4P+IlAowp/YNwEpZnIu4zojW0cd3u7hH+84yfjqonKt9j2BPodZArdJDavNUS2ZmPXm/Ddql4qnGQmYK21XVrAswNeEI/y6PlYVmxTiV4rTaZMHaP6IU6ay3ko9zYO35xQcsHv/yXALh4K/myxP0QLHFz3dBXIFdVZt5n6y90+mINsI3zy9r9RigjPX52iaccAI0vyJo/hGUk1vlt8nmB0/CiVKlDHSrGAT20Jcp004ezkASNP77RE1H8wqfIB6Iew4UnW6+wJ/PCGRhMW3CyWWSQzOGABHna52yfFQhbdw== appledora@pop-os
+
 ldap_only_users:
   abartov:
     ensure: present
