@@ -3,7 +3,7 @@ cluster: 'aux_k8s_etcd'
 
 profile::etcd::v3::cluster_name: "aux_k8s_etcd.%{::site}"
 profile::etcd::v3::cluster_bootstrap: true
-profile::etcd::v3::discovery: "dns:dse-k8s-etcd.%{::site}.wmnet"
+profile::etcd::v3::discovery: "dns:aux-k8s-etcd.%{::site}.wmnet"
 # Firewall used for access limiting instead of certs
 profile::etcd::v3::use_client_certs: false
 # Allow access from entire site, should we trim this down further XXX?
