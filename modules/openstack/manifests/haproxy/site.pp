@@ -32,11 +32,21 @@
 # [*healthcheck_method*]
 #   HTTP Method (String)
 #   The HTTP request method to use for the healthcheck
-
+#
 # [*healthcheck_options*]
 #   Array of Strings
 #   A list of healthcheck (http-check) options
 #
+# [*type*]
+#   Enum['http', 'tcp'] $type = 'http',
+#   Specifies if the proxied service is http.
+#
+# [*firewall*]
+#   Enum['public', 'internal', 'ignore']
+#   Determines the ferm rule for the frontend port.
+#    'public': expose port to the entire internet
+#    'internal': expose port to internal WMF host only
+#    'ignore': do not set a ferm rule, leave that to the calling code
 #
 # === Examples
 #
@@ -44,6 +54,8 @@
 #      port_frontend => '8775',
 #      port_backend  => '18775',
 #      servers       => ['backend-host01', 'backend-host02'],
+#      type          => 'http',
+#      firewall      => 'internal'
 #  }
 #
 define openstack::haproxy::site(
@@ -56,6 +68,7 @@ define openstack::haproxy::site(
     Array[String] $healthcheck_options = [],
     Wmflib::Ensure $ensure = present,
     Enum['http', 'tcp'] $type = 'http',
+    Enum['public', 'internal', 'ignore'] $firewall = 'ignore',
 ) {
     # If the host's FQDN is in $servers configure FERM to allow peer
     # connections on the backend service port.
@@ -91,5 +104,23 @@ define openstack::haproxy::site(
         }
     } else {
         fail("Unknown service type ${type}")
+    }
+
+    $frontends.each | Integer $index, OpenStack::HAProxy::Frontend $frontend | {
+        if $firewall == 'public' {
+            ferm::service { "${title}_public_${index}":
+                ensure => $ensure,
+                proto  => 'tcp',
+                port   => $frontend['port'],
+            }
+        } elsif $firewall == 'internal' {
+            ferm::service { "${title}_public_${index}":
+                ensure => $ensure,
+                proto  => 'tcp',
+                port   => $frontend['port'],
+                srange => join(concat($::network::constants::production_networks,
+                                      $::network::constants::labs_networks), ' '),
+            }
+        }
     }
 }
