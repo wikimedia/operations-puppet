@@ -594,6 +594,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:prometheus'
         end
+        openstack_puppetenc_files = filter_files_by("modules/openstack/files/puppet/master/encapi/**")
+        unless openstack_puppetenc_files.empty?
+          desc 'Run tox for openstack puppet enc'
+          task :openstack_puppetenc do
+            res = system("tox -e openstack_puppetenc")
+            raise 'Tests for openstack_puppetenc failed!'.red unless res
+          end
+          tasks << 'tox:openstack_puppetenc'
+        end
         # Get all python files that don't have a tox.ini in their module
         py_files = sort_python_files(filter_files_by("*.py"))
 
