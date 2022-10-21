@@ -2,7 +2,7 @@ new cache_local = directors.shard();
 new cache_local_random = directors.random();
 
 <% @directors_keyspaces.each do |keyspace| -%>
-{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if and (eq $data.pooled "yes") (ne $node "<%= @confd_experiment_fqdn %>") }}
+{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes" }}
 cache_local.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }});
 cache_local_random.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }}, {{ $data.weight }});
 {{end}}{{end}}
