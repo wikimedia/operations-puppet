@@ -416,3 +416,11 @@ eqiad:
   dse-k8s:
     dse-k8s-ctrl1001.eqiad.wmnet: [kubemaster]
     dse-k8s-ctrl1002.eqiad.wmnet: [kubemaster]
+    dse-k8s-worker1001.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1002.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1003.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1004.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1005.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1006.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1007.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1008.eqiad.wmnet: [kubesvc]
