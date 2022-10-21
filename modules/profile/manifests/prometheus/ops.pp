@@ -263,13 +263,13 @@ class profile::prometheus::ops (
 
     # Populate target files for probes jobs defined above
     if !empty($probe_services) {
-      prometheus::service_catalog_targets { 'public':
+      prometheus::targets::service_catalog { 'public':
         services_config => $probe_services,
         targets_file    => "${targets_path}/probes-service_catalog_public.yaml",
         networks        => slice_network_constants('production', { 'sphere' => 'public', 'site' => $::site }),
       }
 
-      prometheus::service_catalog_targets { 'private':
+      prometheus::targets::service_catalog { 'private':
         services_config => $probe_services,
         targets_file    => "${targets_path}/probes-service_catalog_private.yaml",
         networks        => slice_network_constants('production', { 'sphere' => 'private', 'site' => $::site }),

@@ -1,10 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+
 # Read $services_config and generate Prometheus targets in $targets_file for
 # all services with addresses within $networks.
 
 # $service_ips_override is the single IP all services will point to when
 # specified. Used in testing environments.
 
-define prometheus::service_catalog_targets (
+define prometheus::targets::service_catalog (
   Hash[String, Wmflib::Service] $services_config,
   String $targets_file,
   Array $networks,

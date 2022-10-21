@@ -10,7 +10,7 @@ function wmflib::service::probe::http_module_options(
   $common = { 'ip_protocol_fallback' => false }
 
   # Find out which SNI to send. Similar logic to
-  # prometheus::service_catalog_targets for DNS names; in this case
+  # prometheus::targets::service_catalog for DNS names; in this case
   # try discovery since that is the standard going forward and
   # more likely for services to have it in SNI.
 
