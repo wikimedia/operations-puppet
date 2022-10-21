@@ -48,13 +48,22 @@ profile::opensearch::dc_settings:
     - logging-opensearch-ssd-01.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-02.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-03.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-ssd-04.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-ssd-05.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-ssd-06.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-hdd-01.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-hdd-02.logging.eqiad1.wikimedia.cloud
     - logging-logstash-01.logging.eqiad1.wikimedia.cloud
+    - logging-logstash-02.logging.eqiad1.wikimedia.cloud
   unicast_hosts:
     - logging-opensearch-ssd-01.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-02.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-03.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-ssd-04.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-ssd-05.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-ssd-06.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-hdd-01.logging.eqiad1.wikimedia.cloud
+    - logging-opensearch-hdd-02.logging.eqiad1.wikimedia.cloud
 
 # unset the explicit version setting
 opensearch::curator::version: 'present'
