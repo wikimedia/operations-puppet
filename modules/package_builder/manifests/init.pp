@@ -145,7 +145,7 @@ class package_builder(
     # Ship an apt configuration to integrate deb-src entries for older distros
     # simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
-    ['stretch'].each |String $dist| {
+    ['stretch', 'buster', 'bookworm'].each |String $dist| {
         apt::repository{"${dist}-wikimedia_source_only":
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${dist}-wikimedia",
