@@ -133,7 +133,7 @@ groups:
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
-              aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer
+              aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer, kindrobot
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
@@ -5526,6 +5526,14 @@ users:
     uid: 33093
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  kindrobot:
+    ensure: present
+    realname: Stef Dunlap
+    email: sdunlap@wikimedia.org
+    uid: 41801
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG4lSIP3z/s9oM8xlGfpLwMM4kttgOk9eDM0hWRR/gyC sdunlap@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -5684,10 +5692,6 @@ ldap_only_users:
     ensure: present
     realname: Jorge Vargas
     email: jvargas@wikimedia.org
-  kindrobot:
-    ensure: present
-    realname: Stef Dunlap
-    email: sdunlap@wikimedia.org
   krli:
     ensure: present
     realname: Kris Litson
