@@ -1,5 +1,5 @@
 cluster: backup
-
+profile::contacts::role_contacts: ['Data Persistence']
 profile::backup::director::offsite_pool: offsite
 profile::backup::director::onsite_sd: backup1009
 profile::backup::director::offsite_sd: backup2001
