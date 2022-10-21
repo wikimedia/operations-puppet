@@ -1,8 +1,12 @@
-class openstack::puppet::master::encapi(
+class openstack::puppet::master::encapi (
     Stdlib::Host                         $mysql_host,
     String[1]                            $mysql_db,
     String[1]                            $mysql_username,
     String[1]                            $mysql_password,
+    String[1]                            $git_repository_url,
+    Stdlib::Unixpath                     $git_repository_path,
+    String[1]                            $git_repository_ssh_key,
+    Boolean                              $git_worker_active,
     String[1]                            $acme_certname,
     Stdlib::HTTPSUrl                     $keystone_api_url,
     String[1]                            $token_validator_username,
@@ -28,9 +32,24 @@ class openstack::puppet::master::encapi(
             'python3-flask-keystone',  # this one is built and maintained by us
             'python3-oslo.context',
             'python3-oslo.policy',
+            'python3-oslo.log',
+            'python3-git',
             'python3-pymysql',
             'python3-yaml',
         ])
+    }
+
+    keyholder::agent { $git_repository_ssh_key:
+        ensure         => $ensure,
+        trusted_groups => ['www-data'],
+    }
+
+    wmflib::dir::mkdir_p($git_repository_path, {
+        owner => 'www-data',
+        group => 'www-data',
+    })
+    systemd::tmpfile { 'encapi-git-data':
+        content => "d ${git_repository_path} 0755 www-data www-data -",
     }
 
     $python_version = $::lsbdistcodename ? {
@@ -43,6 +62,14 @@ class openstack::puppet::master::encapi(
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/openstack/puppet/master/encapi/puppet-enc.py',
+    }
+
+    file { '/usr/local/bin/puppet-enc-git-worker':
+        ensure => stdlib::ensure($ensure, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/openstack/puppet/master/encapi/puppet-enc-git-worker.py',
     }
 
     file {'/etc/logrotate.d/puppet-enc':
@@ -122,5 +149,11 @@ class openstack::puppet::master::encapi(
     nginx::site { 'puppet-enc-public':
         ensure  => $ensure,
         content => template('openstack/puppet/master/encapi/nginx-puppet-enc-public.conf.erb'),
+    }
+
+    systemd::service { 'puppet-enc-git-worker':
+        ensure    => $git_worker_active.bool2str('present', 'absent'),
+        content   => template('openstack/puppet/master/encapi/puppet-enc-git-worker.service.erb'),
+        subscribe => File['/usr/local/bin/puppet-enc-git-worker'],
     }
 }

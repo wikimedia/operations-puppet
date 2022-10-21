@@ -9,3 +9,6 @@ profile::openstack::codfw1dev::puppetmaster::encapi::db_name: labspuppet
 profile::openstack::codfw1dev::puppetmaster::encapi::db_user: labspuppet
 profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_project: cloudinfra-codfw1dev
 profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_username: cloudinfrakeystonevalidate
+profile::openstack::codfw1dev::puppetmaster::encapi::git_repository_url: ssh://instance-puppet-user-dev@gerrit.wikimedia.org:29418/cloud/instance-puppet-dev
+profile::openstack::codfw1dev::puppetmaster::encapi::git_repository_ssh_key: wmcs_openstack_instance_puppet_user_dev
+profile::openstack::codfw1dev::puppetmaster::encapi::git_updater_active_host: enc-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # ^ above line exists purely to make Jenkins test this using Python 3
 import re
-from typing import Optional
+from typing import Dict, Optional
 
 import pymysql
 import yaml
-from flask import Flask, Response, abort, g, jsonify, request
-from flask_keystone import FlaskKeystone
+from flask import Flask, Response, abort, g, has_request_context, jsonify, request
+from flask_keystone import FlaskKeystone, current_user
 from flask_oslolog import OsloLog
 from oslo_config import cfg
 from oslo_context import context
@@ -19,6 +19,9 @@ opts = [
     cfg.StrOpt("mysql_db"),
     cfg.StrOpt("mysql_username", secret=True),
     cfg.StrOpt("mysql_password"),
+    cfg.StrOpt("git_repository_path"),
+    cfg.StrOpt("git_repository_url"),
+    cfg.StrOpt("git_keyholder_key"),
     cfg.StrOpt("allowed_writers"),
 ]
 
@@ -126,6 +129,48 @@ def enforce_policy(rule: str, project_id: Optional[str]):
         do_raise=True,
         exc=Forbidden,
     )
+
+
+def should_edit_git():
+    """Checks if Git should be updated for these changes."""
+    if not has_request_context():
+        return True
+    return request.headers.get("X-Enc-Edit-Git", "true") != "false"
+
+
+def get_git_author() -> str:
+    return current_user.user_id
+
+
+def get_git_path(project: str, path: str, extension: str) -> str:
+    if path == "":
+        path = "_"
+    return f"{project}/{path}.{extension}"
+
+
+def add_git_commit(*, cursor, files: Dict[str, Optional[str]], message: str):
+    if not should_edit_git():
+        return
+
+    author = get_git_author()
+    cursor.execute(
+        """
+        INSERT INTO git_update_queue_commit (guqc_author_user, guqc_commit_message)
+        VALUES (%s, %s)
+        """,
+        (author, message),
+    )
+
+    commit_id = cursor.lastrowid
+
+    for file_path, file_content in files.items():
+        cursor.execute(
+            """
+            INSERT INTO git_update_queue_file (guqf_commit, guqf_file_path, guqf_new_content)
+            VALUES (%s, %s, %s)
+            """,
+            (commit_id, file_path, file_content),
+        )
 
 
 @app.before_request
@@ -254,6 +299,13 @@ def set_roles(project, prefix):
             "INSERT INTO roleassignment (prefix_id, role) VALUES (%s, %s)",
             [(prefix_id, role) for role in roles],
         )
+
+        add_git_commit(
+            cursor=cur,
+            files={get_git_path(project, prefix, "roles"): request.data},
+            message=f"Update roles for {project} {prefix}",
+        )
+
         g.db.commit()
     finally:
         cur.close()
@@ -304,6 +356,7 @@ def set_hiera(project, prefix):
             ),
             400,
         )
+
     if type(hiera) is not dict:
         return (
             dump_with_requested_format(
@@ -336,6 +389,13 @@ def set_hiera(project, prefix):
             """,
             (prefix_id, request.data, request.data),
         )
+
+        add_git_commit(
+            cursor=cur,
+            files={get_git_path(project, prefix, "yaml"): request.data},
+            message=f"Update Hiera for {project} {prefix}",
+        )
+
         g.db.commit()
     finally:
         cur.close()
@@ -503,6 +563,16 @@ def delete_prefix(project, prefix):
             "DELETE FROM prefix WHERE id = %s",
             (prefix_id,),
         )
+
+        add_git_commit(
+            cursor=cur,
+            files={
+                get_git_path(project, prefix, "yaml"): None,
+                get_git_path(project, prefix, "roles"): None,
+            },
+            message=f"Delete data for {project} {prefix}",
+        )
+
         g.db.commit()
 
         return dump_with_requested_format({"status": "ok"})

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=Puppet ENC Git update worker
+After=keyholder-proxy.service
+
+[Service]
+User=www-data
+Group=www-data
+ExecStart=/usr/local/bin/puppet-enc-git-worker
+
+ProtectSystem=strict
+ReadOnlyPaths=/etc/puppet-enc
+ReadWritePaths=<%= @git_repository_path %>
+
+[Install]
+WantedBy=multi-user.target
