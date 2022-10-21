@@ -392,6 +392,7 @@ groups:
     members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako, xcollazo, hokwelum]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
+                 'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/systemctl start *',
                  'ALL = NOPASSWD: /bin/systemctl restart *',
