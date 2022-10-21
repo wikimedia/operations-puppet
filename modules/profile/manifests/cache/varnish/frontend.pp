@@ -158,27 +158,34 @@ class profile::cache::varnish::frontend (
 
     $directors_keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
 
-    if $etcd_backends {
+    # This is the etcd-driven list of backends for this frontend for chashing,
+    # but deployment-prep and single-backend cases will have a false
+    # $etcd_backends and thus hit ensure => absent below
+    confd::file {
+        '/etc/varnish/directors.frontend.vcl':
+            ensure     => bool2str($etcd_backends, 'present', 'absent'),
+            reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+            before     => Service['varnish-frontend'],
+            watch_keys => $directors_keyspaces,
+            content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb');
+    }
+
+    if $use_etcd_req_filters {
         confd::file {
             default:
                 ensure => present,
                 reload => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
-                before => Service['varnish-frontend'],;
-            # Backend caches used by this Frontend from Etcd
-            '/etc/varnish/directors.frontend.vcl':
-                watch_keys => $directors_keyspaces,
-                content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),;
-            # Abuse networks
+                before => Service['varnish-frontend'];
             '/etc/varnish/blocked-nets.inc.vcl':
                 watch_keys => ['/request-ipblocks/abuse'],
                 content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
-                prefix     => $conftool_prefix,;
+                prefix     => $conftool_prefix;
             # request filter actions based on the content of the /request-vcl
             # tree in conftool.
             '/etc/varnish/requestctl-filters.inc.vcl':
                 watch_keys => ["/request-vcl/cache-${cache_cluster}"],
                 content    => template('profile/cache/varnish-frontend-requestctl-filters.vcl.tpl.erb'),
-                prefix     => $conftool_prefix,;
+                prefix     => $conftool_prefix;
         }
     } else {
         # deployment-prep still uses the old template.
@@ -191,7 +198,7 @@ class profile::cache::varnish::frontend (
             mode    => '0444',
         }
 
-        file { [ '/etc/varnish/directors.frontend.vcl', '/etc/varnish/requestctl-filters.inc.vcl' ]:
+        file { '/etc/varnish/requestctl-filters.inc.vcl':
             ensure => absent,
         }
     }
