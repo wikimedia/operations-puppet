@@ -14,7 +14,7 @@
 # @param fe_transient_gb Amount of Transient=malloc to configure in GB
 # @param separate_vcl list of addtional VCLs
 # @param has_lvs Indicate of cache is behind LVS
-# @param single_backend_experiment Feature flag to test single backend
+# @param single_backend Feature flag to use only the host-local ats-be
 # @param listen_uds list of uds for varnish
 # @param uds_owner The owner of the uds sockets
 # @param uds_group The group of the uds sockets
@@ -23,31 +23,31 @@
 # @param do_esitest temporary for testing ESI
 class profile::cache::varnish::frontend (
     # Globals
-    String                  $conftool_prefix           = lookup('conftool_prefix'),
-    Boolean                 $has_lvs                   = lookup('has_lvs', {'default_value' => true}),
+    String                  $conftool_prefix      = lookup('conftool_prefix'),
+    Boolean                 $has_lvs              = lookup('has_lvs', {'default_value' => true}),
     # TODO: fix theses so they re under the profile namespace
-    Hash[String, Hash]      $cache_nodes               = lookup('cache::nodes'),
-    String                  $cache_cluster             = lookup('cache::cluster'),
-    Profile::Cache::Sites   $req_handling              = lookup('cache::req_handling'),
-    Profile::Cache::Sites   $alternate_domains         = lookup('cache::alternate_domains', {'default_value' => {}}),
-    Optional[Stdlib::Fqdn]  $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
+    Hash[String, Hash]      $cache_nodes          = lookup('cache::nodes'),
+    String                  $cache_cluster        = lookup('cache::cluster'),
+    Profile::Cache::Sites   $req_handling         = lookup('cache::req_handling'),
+    Profile::Cache::Sites   $alternate_domains    = lookup('cache::alternate_domains', {'default_value' => {}}),
+    Boolean                 $single_backend       = lookup('profile::cache::varnish::frontend::single_backend', {'default_value' => false}),
     # locals
-    Hash[String, Any]       $fe_vcl_config             = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
-    Hash[String, Any]       $fe_cache_be_opts          = lookup('profile::cache::varnish::frontend::cache_be_opts'),
-    Boolean                 $backends_in_etcd          = lookup('profile::cache::varnish::frontend::backends_in_etcd'),
-    String                  $fe_jemalloc_conf          = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
-    Array[String]           $fe_extra_vcl              = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
-    Array[String]           $runtime_params            = lookup('profile::cache::varnish::frontend::runtime_params'),
-    String                  $packages_component        = lookup('profile::cache::varnish::frontend::packages_component'),
-    Array[String]           $separate_vcl              = lookup('profile::cache::varnish::frontend::separate_vcl'),
-    Integer                 $fe_transient_gb           = lookup('profile::cache::varnish::frontend::transient_gb'),
-    Array[Stdlib::Unixpath] $listen_uds                = lookup('profile::cache::varnish::frontend::listen_uds'),
-    String                  $uds_owner                 = lookup('profile::cache::varnish::frontend::uds_owner'),
-    String                  $uds_group                 = lookup('profile::cache::varnish::frontend::uds_group'),
-    Stdlib::Filemode        $uds_mode                  = lookup('profile::cache::varnish::frontend::uds_mode'),
-    Boolean                 $use_etcd_req_filters      = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
-    Boolean                 $do_esitest                = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value' => false}),
-    Boolean                 $enable_monitoring         = lookup('profile::cache::varnish::frontend::enable_monitoring'),
+    Hash[String, Any]       $fe_vcl_config        = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
+    Hash[String, Any]       $fe_cache_be_opts     = lookup('profile::cache::varnish::frontend::cache_be_opts'),
+    Boolean                 $backends_in_etcd     = lookup('profile::cache::varnish::frontend::backends_in_etcd'),
+    String                  $fe_jemalloc_conf     = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
+    Array[String]           $fe_extra_vcl         = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
+    Array[String]           $runtime_params       = lookup('profile::cache::varnish::frontend::runtime_params'),
+    String                  $packages_component   = lookup('profile::cache::varnish::frontend::packages_component'),
+    Array[String]           $separate_vcl         = lookup('profile::cache::varnish::frontend::separate_vcl'),
+    Integer                 $fe_transient_gb      = lookup('profile::cache::varnish::frontend::transient_gb'),
+    Array[Stdlib::Unixpath] $listen_uds           = lookup('profile::cache::varnish::frontend::listen_uds'),
+    String                  $uds_owner            = lookup('profile::cache::varnish::frontend::uds_owner'),
+    String                  $uds_group            = lookup('profile::cache::varnish::frontend::uds_group'),
+    Stdlib::Filemode        $uds_mode             = lookup('profile::cache::varnish::frontend::uds_mode'),
+    Boolean                 $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
+    Boolean                 $do_esitest           = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value' => false}),
+    Boolean                 $enable_monitoring    = lookup('profile::cache::varnish::frontend::enable_monitoring'),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -136,15 +136,10 @@ class profile::cache::varnish::frontend (
 
     $separate_vcl_frontend = $separate_vcl.map |$vcl| { "${vcl}-frontend" }
 
-    # Experiment with single backend CDN nodes T288106
-    if $single_backend_experiment {
-        if $facts['networking']['fqdn'] == $single_backend_experiment {
-            $backend_caches = [ $facts['networking']['fqdn'] ]
-            $etcd_backends = false
-        } else {
-            $backend_caches = $cache_nodes[$cache_cluster][$::site] - $single_backend_experiment
-            $etcd_backends = $backends_in_etcd
-        }
+    # Single-backend nodes (only those with the new 6.4TB NVMe)
+    if $single_backend {
+        $backend_caches = [ $facts['networking']['fqdn'] ]
+        $etcd_backends = false
     } else {
         $backend_caches = $cache_nodes[$cache_cluster][$::site]
         $etcd_backends = $backends_in_etcd
