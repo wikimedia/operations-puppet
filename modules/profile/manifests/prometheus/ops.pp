@@ -221,6 +221,21 @@ class profile::prometheus::ops (
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
+      # Probes for the management network (ssh). Scrape interval is higher since mgmt is lower
+      # priority and mgmt SSH interfaces have been historically finicky
+      {
+        'job_name'        => 'probes/mgmt',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '240s',
+        # blackbox-exporter will use the lower value between this and
+        # the module configured timeout. We want the latter, therefore
+        # set a high timeout here (but no longer than scrape_interval)
+        'scrape_timeout'  => '15s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/probes-mgmt_*.yaml" ] }
+        ],
+        'relabel_configs' => $probes_relabel_configs,
+      },
 
       # Smokeping replacement jobs, implemented with Blackbox exporter
       {
@@ -333,6 +348,11 @@ class profile::prometheus::ops (
     netops::prometheus::mgmt { 'site':
       targets      => $site_mgmt_hosts,
       targets_file => "${targets_path}/smoke-mgmt_site.yaml",
+    }
+
+    prometheus::targets::mgmt { 'site':
+      targets      => $site_mgmt_hosts,
+      targets_file => "${targets_path}/probes-mgmt_site.yaml",
     }
 
     # Checks for custom probes, defined in puppet
