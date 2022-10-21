@@ -376,6 +376,38 @@ trafficserver_network_bytes_total:
       value: proxy.process.net.read_bytes
     - labels: {operation: write}
       value: proxy.process.net.write_bytes
+trafficserver_request_document_size_total:
+  documentation: Size of ATS document request traffic
+  type: counter
+  values:
+  - labels: {protocol: http, source: origin_server}
+    value: proxy.process.http.origin_server_request_document_total_size
+  - labels: {protocol: http, source: user_agent}
+    value: proxy.process.http.user_agent_request_document_total_size
+trafficserver_request_header_size_total:
+  documentation: Size of ATS header request traffic
+  type: counter
+  values:
+  - labels: {protocol: http, source: origin_server}
+    value: proxy.process.http.origin_server_request_header_total_size
+  - labels: {protocol: http, source: user_agent}
+    value: proxy.process.http.user_agent_request_header_total_size
+trafficserver_response_document_size_total:
+  documentation: Size of ATS document response traffic
+  type: counter
+  values:
+  - labels: {protocol: http, source: origin_server}
+    value: proxy.process.http.origin_server_response_document_total_size
+  - labels: {protocol: http, source: user_agent}
+    value: proxy.process.http.user_agent_response_document_total_size
+trafficserver_response_header_size_total:
+  documentation: Size of ATS header response traffic
+  type: counter
+  values:
+  - labels: {protocol: http, source: origin_server}
+    value: proxy.process.http.origin_server_response_header_total_size
+  - labels: {protocol: http, source: user_agent}
+    value: proxy.process.http.user_agent_response_header_total_size
 trafficserver_throttled_connections_total:
   documentation: Total throttled connections
   type: counter
