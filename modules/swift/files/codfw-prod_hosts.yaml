@@ -35,7 +35,8 @@ hosts:
     - ms-be2047
     - ms-be2048
     - ms-be2049
-    - ms-be2050
+    - ms-be2050:
+        - drain
     - ms-be2051
     - ms-be2052
     - ms-be2053
