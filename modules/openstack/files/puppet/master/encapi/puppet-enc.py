@@ -5,7 +5,7 @@ from typing import Optional
 
 import pymysql
 import yaml
-from flask import Flask, Response, g, request
+from flask import Flask, Response, abort, g, jsonify, request
 from flask_keystone import FlaskKeystone
 from flask_oslolog import OsloLog
 from oslo_config import cfg
@@ -71,6 +71,19 @@ def _preprocess_prefix(prefix):
     prefix = re.sub(r"\.eqiad\.wmflabs$", ".eqiad1.wikimedia.cloud", prefix)
 
     return prefix
+
+
+def dump_with_requested_format(data):
+    """Returns the given data in the format specified in the Accept header."""
+    accept = request.headers.get("Accept", "")
+
+    if "application/json" in accept:
+        return jsonify(data)
+
+    if "application/x-yaml" in accept:
+        return Response(yaml.safe_dump(data), mimetype="application/x-yaml")
+
+    return abort(400, f"unsupported Accept header: {accept}")
 
 
 class Forbidden(HTTPException):
@@ -155,17 +168,10 @@ def get_roles(project, prefix):
             (project, prefix),
         )
         roles = [r[0] for r in cur.fetchall()]
+
         if len(roles) == 0:
-            return Response(
-                yaml.dump({"status": "notfound"}),
-                status=404,
-                mimetype="application/x-yaml",
-            )
-        return Response(
-            yaml.dump({"roles": roles}),
-            status=200,
-            mimetype="application/x-yaml",
-        )
+            return dump_with_requested_format({"error": "notfound"}), 404
+        return dump_with_requested_format({"roles": roles})
     finally:
         cur.close()
 
@@ -179,16 +185,8 @@ def get_all_roles():
         cur.execute("SELECT distinct roleassignment.role FROM roleassignment")
         roles = [r[0] for r in cur.fetchall()]
         if len(roles) == 0:
-            return Response(
-                yaml.dump({"status": "notfound"}),
-                status=404,
-                mimetype="application/x-yaml",
-            )
-        return Response(
-            yaml.dump({"roles": roles}),
-            status=200,
-            mimetype="application/x-yaml",
-        )
+            return dump_with_requested_format({"error": "notfound"}), 404
+        return dump_with_requested_format({"roles": roles})
     finally:
         cur.close()
 
@@ -202,16 +200,8 @@ def get_all_projects():
         cur.execute("SELECT distinct prefix.project FROM prefix")
         projects = [r[0] for r in cur.fetchall()]
         if len(projects) == 0:
-            return Response(
-                yaml.dump({"status": "notfound"}),
-                status=404,
-                mimetype="application/x-yaml",
-            )
-        return Response(
-            yaml.dump({"projects": projects}),
-            status=200,
-            mimetype="application/x-yaml",
-        )
+            return dump_with_requested_format({"error": "notfound"}), 404
+        return dump_with_requested_format({"projects": projects})
     finally:
         cur.close()
 
@@ -223,34 +213,29 @@ def get_all_projects():
 def set_roles(project, prefix):
     enforce_policy("prefix:update", project)
     if request.remote_addr not in g.allowed_writers:
-        return Response(
-            yaml.dump({"status": "forbidden"}),
-            status=403,
-            mimetype="application/x-yaml",
-        )
+        return dump_with_requested_format({"error": "forbidden"}), 403
 
     prefix = _preprocess_prefix(prefix)
     try:
         roles = yaml.safe_load(request.data)
     except yaml.YAMLError:
-        return Response(
-            yaml.dump(
+        return (
+            dump_with_requested_format(
                 {
-                    "status": "fail",
-                    "message": "Unable to parse input provided as YAML",
+                    "error": "Unable to parse input provided as YAML",
                 }
             ),
-            status=400,
-            mimetype="application/x-yaml",
+            400,
         )
+
     if type(roles) is not list:
-        return Response(
-            yaml.dump(
-                {"status": "fail", "message": "Provided YAML should be a list"}
+        return (
+            dump_with_requested_format(
+                {"error": "Provided YAML should be a list"}
             ),
-            status=400,
-            mimetype="application/x-yaml",
+            400,
         )
+
     # TODO: Add more validation for roles?
     cur = g.db.cursor()
     try:
@@ -280,9 +265,8 @@ def set_roles(project, prefix):
         g.db.commit()
     finally:
         cur.close()
-    return Response(
-        yaml.dump({"status": "ok"}), status=200, mimetype="application/x-yaml"
-    )
+
+    return dump_with_requested_format({"status": "ok"})
 
 
 @app.route("/v1/<string:project>/prefix/<string:prefix>/hiera", methods=["GET"])
@@ -302,16 +286,9 @@ def get_hiera(project, prefix):
         )
         row = cur.fetchone()
         if row is None:
-            return Response(
-                yaml.dump({"status": "notfound"}),
-                status=404,
-                mimetype="application/x-yaml",
-            )
-        return Response(
-            yaml.dump({"hiera": row[0]}),
-            status=200,
-            mimetype="application/x-yaml",
-        )
+            return dump_with_requested_format({"error": "notfound"}), 404
+
+        return dump_with_requested_format({"hiera": row[0]})
     finally:
         cur.close()
 
@@ -323,37 +300,30 @@ def get_hiera(project, prefix):
 def set_hiera(project, prefix):
     enforce_policy("prefix:update", project)
     if request.remote_addr not in g.allowed_writers:
-        return Response(
-            yaml.dump({"status": "forbidden"}),
-            status=403,
-            mimetype="application/x-yaml",
-        )
+        return dump_with_requested_format({"error": "forbidden"}), 403
 
     prefix = _preprocess_prefix(prefix)
     try:
         hiera = yaml.safe_load(request.data)
     except yaml.YAMLError:
-        return Response(
-            yaml.dump(
+        return (
+            dump_with_requested_format(
                 {
-                    "status": "fail",
-                    "message": "Unable to parse input provided as YAML",
+                    "error": "Unable to parse input provided as YAML",
                 }
             ),
-            status=400,
-            mimetype="application/x-yaml",
+            400,
         )
     if type(hiera) is not dict:
-        return Response(
-            yaml.dump(
+        return (
+            dump_with_requested_format(
                 {
-                    "status": "fail",
-                    "message": "Provided YAML should be a dictionary",
+                    "error": "Provided YAML should be a dictionary",
                 }
             ),
-            status=400,
-            mimetype="application/x-yaml",
+            400,
         )
+
     # TODO: Add more validation for hiera?
     cur = g.db.cursor()
     try:
@@ -379,11 +349,8 @@ def set_hiera(project, prefix):
         g.db.commit()
     finally:
         cur.close()
-    return Response(
-        yaml.safe_dump({"status": "ok"}),
-        status=200,
-        mimetype="application/x-yaml",
-    )
+
+    return dump_with_requested_format({"status": "ok"})
 
 
 # No @key.login_required, since this one is queried by Puppetmasters
@@ -432,6 +399,8 @@ def get_node_config(project, fqdn):
             hiera.update(yaml.safe_load(row[1]))
     finally:
         cur.close()
+
+    # this is only queried by Puppet, and explicitely only returns yaml
     return Response(
         yaml.safe_dump({"roles": roles, "hiera": hiera}),
         status=200,
@@ -450,17 +419,13 @@ def get_prefixes(project):
             (project,),
         )
         # Do the inverse of _preprocess_prefix, so callers get a consistent view
-        return Response(
-            yaml.safe_dump(
-                {
-                    "prefixes": [
-                        "_" if r[0] == b"" or r[0] == "" else r[0]
-                        for r in cur.fetchall()
-                    ]
-                }
-            ),
-            status=200,
-            mimetype="application/x-yaml",
+        return dump_with_requested_format(
+            {
+                "prefixes": [
+                    "_" if r[0] == b"" or r[0] == "" else r[0]
+                    for r in cur.fetchall()
+                ]
+            }
         )
     finally:
         cur.close()
@@ -482,17 +447,13 @@ def get_prefixes_for_project_and_role(project, role):
             (project, role),
         )
         # Do the inverse of _preprocess_prefix, so callers get a consistent view
-        return Response(
-            yaml.safe_dump(
-                {
-                    "prefixes": [
-                        "_" if r[0] == b"" or r[0] == "" else r[0]
-                        for r in cur.fetchall()
-                    ]
-                }
-            ),
-            status=200,
-            mimetype="application/x-yaml",
+        return dump_with_requested_format(
+            {
+                "prefixes": [
+                    "_" if r[0] == b"" or r[0] == "" else r[0]
+                    for r in cur.fetchall()
+                ]
+            }
         )
     finally:
         cur.close()
@@ -522,9 +483,8 @@ def get_prefixes_for_role(role):
             rdict[project]["prefixes"].append(
                 "_" if prefix == b"" or prefix == "" else r[1]
             )
-        return Response(
-            yaml.safe_dump(rdict), status=200, mimetype="application/x-yaml"
-        )
+
+        return dump_with_requested_format(rdict)
     finally:
         cur.close()
 
@@ -534,11 +494,7 @@ def get_prefixes_for_role(role):
 def delete_prefix(project, prefix):
     enforce_policy("prefix:delete", project)
     if request.remote_addr not in g.allowed_writers:
-        return Response(
-            yaml.dump({"status": "forbidden"}),
-            status=403,
-            mimetype="application/x-yaml",
-        )
+        return dump_with_requested_format({"error": "forbidden"}), 403
 
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
@@ -550,11 +506,7 @@ def delete_prefix(project, prefix):
         row = cur.fetchone()
 
         if not row:
-            return Response(
-                yaml.dump({"status": "notfound"}),
-                status=404,
-                mimetype="application/x-yaml",
-            )
+            return dump_with_requested_format({"error": "notfound"}), 404
 
         prefix_id = row[0]
 
@@ -575,11 +527,7 @@ def delete_prefix(project, prefix):
         )
         g.db.commit()
 
-        return Response(
-            yaml.safe_dump({"status": "ok"}),
-            status=200,
-            mimetype="application/x-yaml",
-        )
+        return dump_with_requested_format({"status": "ok"})
     finally:
         cur.close()
 
@@ -594,11 +542,7 @@ def healthz():
         cur.execute("SHOW TABLES")
         cur.fetchall()
 
-        return Response(
-            yaml.safe_dump({"status": "ok"}),
-            status=200,
-            mimetype="application/x-yaml",
-        )
+        return dump_with_requested_format({"status": "ok"})
     finally:
         cur.close()
 
