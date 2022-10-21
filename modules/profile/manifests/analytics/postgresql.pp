@@ -10,6 +10,8 @@ class profile::analytics::postgresql (
     Array[Stdlib::Host] $replicas             = lookup('profile::analytics::postgresql::replicas'),
     Boolean             $ipv6_ok              = lookup('profile::analytics::postgresql::ipv6_ok', default_value => true),
     Boolean             $do_backups           = lookup('profile::analytics::postgresql::do_backup', default_value => true),
+    Array[String]       $databases            = lookup('profile::analytics::postgresql::databases', default_value => [] ),
+    Hash[String,String] $users                = lookup('profile::analytics::postgresql::users', default_value => {} ),
 )
 {
   # We continue to use non-inclusive language here until T280268 can be addressed
@@ -61,6 +63,23 @@ class profile::analytics::postgresql (
           proto  => 'tcp',
           port   => '5432',
           srange => "(@resolve((${replicas_ferm})) @resolve((${replicas_ferm}), AAAA))",
+      }
+    }
+    # This is a simplistic method of creating users with an identically named database
+    $users.each |$user, $pass| {
+      postgresql::user { $user :
+        ensure   => present,
+        user     => $user,
+        database => $user,
+        password => $pass,
+        cidr     => '10.0.0.0/8',
+        master   => $on_primary,
+      }
+    }
+    $databases.each |$database| {
+      postgresql::db { $database:
+        owner   => $database,
+        require => Class['postgresql::master'],
       }
     }
   }
