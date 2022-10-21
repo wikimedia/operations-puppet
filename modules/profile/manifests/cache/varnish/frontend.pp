@@ -173,9 +173,8 @@ class profile::cache::varnish::frontend (
                 watch_keys => ['/request-ipblocks/abuse'],
                 content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
                 prefix     => $conftool_prefix,;
-            # New request filter actions based on the content of the
-            # /request-vcl tree in conftool.
-            # Not enabled right now, will be in a future patchset.
+            # request filter actions based on the content of the /request-vcl
+            # tree in conftool.
             '/etc/varnish/requestctl-filters.inc.vcl':
                 watch_keys => ["/request-vcl/cache-${cache_cluster}"],
                 content    => template('profile/cache/varnish-frontend-requestctl-filters.vcl.tpl.erb'),
