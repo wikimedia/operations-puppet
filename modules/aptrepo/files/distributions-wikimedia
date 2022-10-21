@@ -156,6 +156,7 @@ Components: main
  thirdparty/php56
  thirdparty/postgres96
  thirdparty/pyall
+ thirdparty/tekton
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -187,6 +188,7 @@ Update:
  thirdparty/kubeadm-k8s-kubernetes.io-1-22
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
+ thirdparty/tekton
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
@@ -237,6 +239,7 @@ Components: main
  thirdparty/opensearch2
  thirdparty/openstack-db
  thirdparty/routinator
+ thirdparty/tekton
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -257,6 +260,7 @@ Update:
  thirdparty/gitlab-runner
  thirdparty/haproxy24
  thirdparty/openstack-db
+ thirdparty/tekton
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
