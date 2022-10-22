@@ -12,7 +12,8 @@ def get_url(clients, project):
     keystone = clients.keystoneclient()
     proxy = keystone.services.list(type="puppet-enc")[0]
     endpoint = keystone.endpoints.list(
-        service=proxy.id, interface="public", enabled=True)[0]
+        service=proxy.id, interface="public", enabled=True
+    )[0]
     enc_api_url = endpoint.url.replace("$(project_id)s", project)
     session = clients.session(project)
 
@@ -39,7 +40,8 @@ class EncConnection:
                 self.enc_url,
                 prefix,
             ),
-            raise_exc=False
+            headers={"Accept": "application/x-yaml"},
+            raise_exc=False,
         )
         if not response.ok:
             raise EncError(
@@ -59,7 +61,11 @@ class EncConnection:
                 prefix,
             ),
             data=yaml.dump(yaml.safe_load(data)),
-            raise_exc=False
+            headers={
+                "Content-Type": "application/x-yaml",
+                "Accept": "application/x-yaml",
+            },
+            raise_exc=False,
         )
         if not response.ok:
             raise EncError(
@@ -79,8 +85,12 @@ class EncConnection:
                 self.enc_url,
                 prefix,
             ),
+            headers={
+                "Content-Type": "application/x-yaml",
+                "Accept": "application/x-yaml",
+            },
             data=yaml.dump(yaml.safe_load(data)),
-            raise_exc=False
+            raise_exc=False,
         )
         if not response.ok:
             raise EncError(
@@ -104,7 +114,8 @@ class EncConnection:
                 self.enc_url,
                 fqdn,
             ),
-            raise_exc=False
+            headers={"Accept": "application/x-yaml"},
+            raise_exc=False,
         )
         if not response.ok:
             raise EncError(
@@ -128,7 +139,8 @@ class EncConnection:
                 self.enc_url,
                 fqdn,
             ),
-            raise_exc=False
+            headers={"Accept": "application/x-yaml"},
+            raise_exc=False,
         )
         if not response.ok:
             raise EncError(
@@ -144,8 +156,7 @@ class EncConnection:
 
 def main(args: Namespace) -> int:
     enc_connection = EncConnection(
-        mwopenstackclients.Clients(envfile=args.envfile),
-        args.openstack_project
+        mwopenstackclients.Clients(envfile=args.envfile), args.openstack_project
     )
 
     fn = getattr(enc_connection, args.action)
@@ -163,7 +174,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--envfile",
         default="/etc/novaadmin.yaml",
-        help="Path to OpenStack authentication YAML file"
+        help="Path to OpenStack authentication YAML file",
     )
     parser.add_argument("--openstack-project")
     parser.add_argument("action", choices=available_actions)
