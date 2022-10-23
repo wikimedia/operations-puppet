@@ -20,13 +20,18 @@ class apt(
     }
 
     # Directory to hold the repository signing keys
-    file { '/var/lib/apt/keys':
+    file { '/etc/apt/keyrings':
         ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
+        mode    => '0755',
         recurse => true,
         purge   => true,
+    }
+
+    file { '/var/lib/apt/keys':
+        ensure  => absent,
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
 
     # prefer Wikimedia APT repository packages in all cases

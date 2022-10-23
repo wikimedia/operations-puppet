@@ -6,7 +6,7 @@ define apt::repository(
     Boolean                   $source      = true,
     Boolean                   $comment_old = false,
     Optional[String]          $keyfile     = undef,
-    Enum['present','absent']  $ensure      = present,
+    Wmflib::Ensure            $ensure      = present,
     Boolean                   $trust_repo  = false,
 ) {
     if $ensure == 'present' and ! ($uri and $dist and $components) {
@@ -14,6 +14,20 @@ define apt::repository(
     }
     if $trust_repo {
         $trustedline = '[trusted=yes] '
+    } elsif $keyfile {
+        # using ascii armored key files is fine,
+        # as we only support Stretch and newer
+
+        file { "/etc/apt/keyrings/${name}.asc":
+            ensure => stdlib::ensure($ensure, 'file'),
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => $keyfile,
+            notify => Exec['apt-get update'],
+        }
+
+        $trustedline = "[signed-by=/etc/apt/keyrings/${name}.asc] "
     } else {
         $trustedline = ''
     }
@@ -28,7 +42,7 @@ define apt::repository(
     }
 
     file { "/etc/apt/sources.list.d/${name}.list":
-        ensure  => $ensure,
+        ensure  => stdlib::ensure($ensure, 'file'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -45,25 +59,6 @@ define apt::repository(
             command => "/bin/sed -ri '/${binre}/s/^deb/#deb/' /etc/apt/sources.list",
             creates => "/etc/apt/sources.list.d/${name}.list",
             before  => File["/etc/apt/sources.list.d/${name}.list"],
-        }
-    }
-
-    ensure_packages(['gnupg'])
-
-    if $keyfile {
-        file { "/var/lib/apt/keys/${name}.gpg":
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            source  => $keyfile,
-            require => File['/var/lib/apt/keys'],
-            before  => File["/etc/apt/sources.list.d/${name}.list"],
-        }
-
-        exec { "/usr/bin/apt-key add /var/lib/apt/keys/${name}.gpg":
-            subscribe   => File["/var/lib/apt/keys/${name}.gpg"],
-            refreshonly => true,
         }
     }
 }
