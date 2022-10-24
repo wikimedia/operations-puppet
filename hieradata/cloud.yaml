@@ -161,6 +161,8 @@ profile::gitlab::runner::allowed_images:
   # GitLab upstream - includes security analyzers and terraform images:
   - "registry.gitlab.com/gitlab-org/**/*"
   - "registry.gitlab.com/security-products/**/*"
+  # Toolforge CI images
+  - "docker-registry.tools.wmflabs.org/cloud-cicd*"
 profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
