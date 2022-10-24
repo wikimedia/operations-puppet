@@ -89,9 +89,9 @@ describe 'puppetmaster::web_frontend' do
               ensure: 'present',
               priority: '90'
             ).with_content(
-              %r{RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
+              %r{RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25c8:1946'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
+              \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25c8:1946'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'192\.0\.2\.42'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'2001:db8::1'"
