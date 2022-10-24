@@ -959,7 +959,7 @@ node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
 
 # Dispatch hosts
 node 'dispatch-be1001.eqiad.wmnet' {
-    role(insetup)
+    role(dispatch::backend)
 }
 
 node /^dns[123456]00[1234]\.wikimedia\.org$/ {
