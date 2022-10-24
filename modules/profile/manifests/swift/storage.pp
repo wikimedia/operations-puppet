@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
+# @summary profile to configure swift storage
+# @param disks_by_path if true configure drives using the pci path
 class profile::swift::storage (
     Array[String] $aux_partitions                       = lookup('swift_aux_partitions'),
     Array[String] $all_drives                           = lookup('swift_storage_drives'),
@@ -21,6 +23,7 @@ class profile::swift::storage (
     Optional[String] $loopback_device_size              = lookup('profile::swift::storage::loopback_device_size'),
     Optional[Integer] $loopback_device_count            = lookup('profile::swift::storage::loopback_device_count'),
     Boolean $disable_fallocate                          = lookup('profile::swift::storage::disable_fallocate'),
+    Boolean $disks_by_path                              = lookup('profile::swift::storage::disks_by_path'),
 ){
 
     $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
@@ -62,8 +65,17 @@ class profile::swift::storage (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
 
-    swift::init_device { $all_drives:
-        partition_nr => '1',
+    if $disks_by_path {
+        class { 'profile::swift::storage::configure_disks':
+            swift_storage_dir => $swift::storage::swift_data_dir,
+        }
+    } else {
+        swift::init_device { $all_drives:
+            partition_nr => '1',
+        }
+        # these are already partitioned and xfs formatted by the installer
+        swift::label_filesystem { $aux_partitions: }
+        swift::mount_filesystem { $aux_partitions: }
     }
 
     $swift_access = concat($swift_backends, $swift_frontends)
@@ -89,7 +101,4 @@ class profile::swift::storage (
         srange  => "@resolve((${swift_rsync_access_ferm}))",
     }
 
-    # these are already partitioned and xfs formatted by the installer
-    swift::label_filesystem { $aux_partitions: }
-    swift::mount_filesystem { $aux_partitions: }
 }
