@@ -4,7 +4,7 @@
       Stdlib::Host $vrts_mysql_server,
       Stdlib::Host $vrts_mysql_user,
       String $vrts_aliases_file,
-      Sensitive[String] $vrts_mysql_password,
+      String $vrts_mysql_password,
       String $wikimedia_domains_path,
       String $vrts_aliases_format,
       String $vrts_aliases_folder
