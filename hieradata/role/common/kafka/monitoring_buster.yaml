@@ -8,7 +8,7 @@ profile::kafka::monitoring::config:
   jumbo-eqiad:
     burrow_port: 8700
     burrow_exporter_port: 9700
-    to_email: 'analytics-alerts@wikimedia.org'
+    to_email: 'data-engineering-alerts@lists.wikimedia.org'
     alert_whitelist: '(eventlogging_processor_client_side_00|eventlogging_consumer_mysql_00|eventlogging_consumer_files_00)'
   logging-eqiad:
     burrow_port: 8101
