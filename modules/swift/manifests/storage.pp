@@ -183,7 +183,7 @@ class swift::storage (
     }
 
     udev::rule{ 'swift_disks':
-        source => 'puppet:///modules/swift/swift_disks.rules',
+        ensure => absent,
     }
 
     # Loopback storage has been requested, initialize it and make sure devices exist at boot
