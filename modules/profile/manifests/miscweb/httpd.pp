@@ -26,4 +26,12 @@ class profile::miscweb::httpd (
         port   => '80',
         srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
+
+    rsyslog::input::file { 'miscweb-apache2-error':
+        path => '/var/log/apache2/*error*.log',
+    }
+
+    rsyslog::input::file { 'miscweb-apache2-access':
+        path => '/var/log/apache2/*access*.log',
+    }
 }
