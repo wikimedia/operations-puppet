@@ -9,6 +9,8 @@ set -o nounset
 
 SOURCEHOST="master.download.kiwix.org"
 BWLIMIT="--bwlimit=40000"
+declare -a PROJECTS=("wikipedia", "wikibooks", "wikinews", "wikiquote",
+                     "wikisource", "wikiversity", "wiktionary", "wikivoyage")
 
 do_rsync(){
     local srcpath=$1
@@ -53,4 +55,6 @@ if [[ "$1" == "" ]]; then
     exit 1
 fi
 
-do_rsync "download.kiwix.org/zim/wikipedia/" "kiwix/zim/wikipedia/" "$1"
+for project in ${PROJECTS[$]}; do
+    do_rsync "download.kiwix.org/zim/${project}/" "kiwix/zim/${project}/" "$1"
+done
