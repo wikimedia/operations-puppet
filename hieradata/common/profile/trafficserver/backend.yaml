@@ -176,10 +176,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://planet.discovery.wmnet
     - type: map
       target: http://prometheus-eqiad.wikimedia.org
-      replacement: https://prometheus.svc.eqiad.wmnet
+      replacement: https://prometheus1005.eqiad.wmnet
     - type: map
       target: http://prometheus-codfw.wikimedia.org
-      replacement: https://prometheus.svc.codfw.wmnet
+      replacement: https://prometheus2005.codfw.wmnet
     - type: map
       target: http://prometheus-esams.wikimedia.org
       replacement: https://prometheus.svc.esams.wmnet
