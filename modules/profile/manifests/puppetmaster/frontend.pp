@@ -177,14 +177,12 @@ class profile::puppetmaster::frontend(
     $swift_clusters.each |String $sc, Swift::Cluster_info $sc_info| {
         if $sc_info['ring_manager'] != undef {
             systemd::timer::job { "fetch-rings-${sc}":
-                ensure                    => $ring_fetch,
-                user                      => 'root',
-                description               => "rsync swift rings from cluster ${sc}",
-                command                   => "/usr/bin/rsync -bcptz ${sc_info['ring_manager']}::swiftrings/new_rings.tar.bz2 /var/lib/puppet/volatile/swift/${sc_info['cluster_name']}/",
-                interval                  => {'start' => 'OnCalendar', 'interval' => '*:5/20:00'},
-                monitoring_enabled        => true,
-                monitoring_contact_groups => 'databases-testing',
-                logging_enabled           => false,
+                ensure          => $ring_fetch,
+                user            => 'root',
+                description     => "rsync swift rings from cluster ${sc}",
+                command         => "/usr/bin/rsync -bcptz ${sc_info['ring_manager']}::swiftrings/new_rings.tar.bz2 /var/lib/puppet/volatile/swift/${sc_info['cluster_name']}/",
+                interval        => {'start' => 'OnCalendar', 'interval' => '*:5/20:00'},
+                logging_enabled => false,
             }
         }
     }

@@ -57,15 +57,13 @@ class swift::ring_manager (
     }
 
     systemd::timer::job { 'swift_ring_manager':
-        ensure                    => $ensure,
-        command                   => "/usr/local/bin/swift_ring_manager -o ${ring_dir} --doit --syslog",
-        interval                  => {'start' => 'OnCalendar', 'interval' => '*:10:00'},
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'databases-testing',
-        logfile_name              => 'swift_ring_manager.log',
-        logfile_owner             => 'swift',
-        user                      => 'root',
-        description               => 'Swift ring manager',
+        ensure        => $ensure,
+        command       => "/usr/local/bin/swift_ring_manager -o ${ring_dir} --doit --syslog",
+        interval      => {'start' => 'OnCalendar', 'interval' => '*:10:00'},
+        logfile_name  => 'swift_ring_manager.log',
+        logfile_owner => 'swift',
+        user          => 'root',
+        description   => 'Swift ring manager',
     }
 
     rsync::server::module { 'swiftrings':
