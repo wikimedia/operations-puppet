@@ -191,7 +191,7 @@ profile::idp::services:
       - wmf
   prometheus:
     id: 26
-    service_id: 'https://prometheus\.[^.]+\.wikimedia.org(/.*)?'
+    service_id: 'https://prometheus-[^.]+\.wikimedia.org(/.*)?'
     required_groups:
       - ops
 profile::idp::ldap_attributes:

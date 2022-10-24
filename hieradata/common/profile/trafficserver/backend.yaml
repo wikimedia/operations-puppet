@@ -175,22 +175,22 @@ profile::trafficserver::backend::mapping_rules:
       target: 'http://([^.]+\.)?planet\.wikimedia\.org'
       replacement: https://planet.discovery.wmnet
     - type: map
-      target: http://prometheus.eqiad.wikimedia.org
+      target: http://prometheus-eqiad.wikimedia.org
       replacement: https://prometheus.svc.eqiad.wmnet
     - type: map
-      target: http://prometheus.codfw.wikimedia.org
+      target: http://prometheus-codfw.wikimedia.org
       replacement: https://prometheus.svc.codfw.wmnet
     - type: map
-      target: http://prometheus.esams.wikimedia.org
+      target: http://prometheus-esams.wikimedia.org
       replacement: https://prometheus.svc.esams.wmnet
     - type: map
-      target: http://prometheus.ulsfo.wikimedia.org
+      target: http://prometheus-ulsfo.wikimedia.org
       replacement: https://prometheus.svc.ulsfo.wmnet
     - type: map
-      target: http://prometheus.eqsin.wikimedia.org
+      target: http://prometheus-eqsin.wikimedia.org
       replacement: https://prometheus.svc.eqsin.wmnet
     - type: map
-      target: http://prometheus.drmrs.wikimedia.org
+      target: http://prometheus-drmrs.wikimedia.org
       replacement: https://prometheus.svc.drmrs.wmnet
     - type: map
       target: http://puppetboard.wikimedia.org

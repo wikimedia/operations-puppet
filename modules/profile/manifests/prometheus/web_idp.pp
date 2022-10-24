@@ -5,7 +5,7 @@ class profile::prometheus::web_idp {
     include ::profile::tlsproxy::envoy
 
     # IDP authenticated prometheus.wikimedia.org vhost
-    profile::idp::client::httpd::site {"prometheus.${::site}.wikimedia.org":
+    profile::idp::client::httpd::site {"prometheus-${::site}.wikimedia.org":
         vhost_content    => 'profile/idp/client/httpd-prometheus.erb',
         proxied_as_https => true,
         document_root    => '/var/www/html',
