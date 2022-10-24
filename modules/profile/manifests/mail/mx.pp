@@ -11,6 +11,7 @@ class profile::mail::mx (
     Stdlib::Host          $gmail_smtp_server        = lookup('profile::mail::mx::gmail_smtp_server'),
     Stdlib::Host          $vrts_mysql_server        = lookup('profile::mail::mx::vrts_mysql_server'),
     Stdlib::Host          $vrts_mysql_user          = lookup('profile::mail::mx::vrts_mysql_user'),
+    Sensitive[String[1]]  $vrts_mysql_password      = lookup('profile::mail::mx::vrts_mysql_password'),
     Stdlib::Host          $vrts_mysql_dbname        = lookup('profile::mail::mx::vrts_mysql_dbname'),
     Stdlib::Host          $dkim_domain              = lookup('profile::mail::mx::dkim_domain'),
     Array[Stdlib::Host]   $verp_domains             = lookup('profile::mail::mx::verp_domains'),
@@ -20,6 +21,7 @@ class profile::mail::mx (
     String[1]             $alias_file_mail_rcpt     = lookup('profile::mail::mx::alias_file_mail_rcpt'),
     String[1]             $alias_file_mail_subject  = lookup('profile::mail::mx::alias_file_mail_subject'),
     Array[String[1]]      $sender_discards          = lookup('profile::mail::mx::sender_discards', {'default_value' => []}),
+    Sensitive[String[1]]  $smtp_ldap_password       = lookup('profile::mail::mx::smtp_ldap_password'),
     Hash[
         Stdlib::Email,
         String[1]
@@ -46,10 +48,6 @@ class profile::mail::mx (
         max_children     => 32,
         trusted_networks => $trusted_networks,
     }
-
-    include passwords::exim
-    $vrts_mysql_password = $passwords::exim::vrts_mysql_password
-    $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
 
     # enable dkim_verbose logs, needed for mtail metric collection
     $log_selector_extra = '+dkim_verbose'

@@ -3,6 +3,8 @@
 lookup_options:
   "^profile::pki::(.*)::db_pass$":
     convert_to: 'Sensitive'
+  '^profile::mail::mx::[\w_]+_password$':
+    convert_to: 'Sensitive'
   profile::pki::client::auth_key:
     convert_to: 'Sensitive'
   profile::cache::varnish::frontend::runtime_params:
