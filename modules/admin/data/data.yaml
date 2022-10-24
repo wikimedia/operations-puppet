@@ -23,7 +23,8 @@ groups:
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
-              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov]
+              aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
+              bscarone]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -372,7 +373,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, bscarone, kstoller, samtar, xcollazo,
+              essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
@@ -5341,15 +5342,13 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bscarone:
-    ensure: present
+    ensure: absent
     email: scarone.b@northeastern.edu
-    realname: Bruno Scarone
     uid: 39391
     gid: 500
     expiry_date: 2022-10-31
     expiry_contact: lzia@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J scarone.b@northeastern.edu
+    ssh_keys: []
     krb: present
   kstoller:
     ensure: present
