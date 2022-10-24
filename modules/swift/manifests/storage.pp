@@ -33,6 +33,7 @@ class swift::storage (
     }
 
     $loopback_dir = '/var/lib/swift/'
+    $swift_data_dir = '/srv/swift-storage/'
 
     # Install overrides for object replication daemons (rsync, swift-object-replicator) to be able
     # to limit their memory usage
@@ -58,7 +59,7 @@ class swift::storage (
         uid             => 'swift',
         gid             => 'swift',
         max_connections => Integer(length($backends) * 2),
-        path            => '/srv/swift-storage/',
+        path            => $swift_data_dir,
         read_only       => 'no',
         lock_file       => '/var/lock/account.lock',
     }
@@ -66,7 +67,7 @@ class swift::storage (
         uid             => 'swift',
         gid             => 'swift',
         max_connections => Integer(length($backends) * 2),
-        path            => '/srv/swift-storage/',
+        path            => $swift_data_dir,
         read_only       => 'no',
         lock_file       => '/var/lock/container.lock',
     }
@@ -74,7 +75,7 @@ class swift::storage (
         uid             => 'swift',
         gid             => 'swift',
         max_connections => Integer(length($backends) * 2),
-        path            => '/srv/swift-storage/',
+        path            => $swift_data_dir,
         read_only       => 'no',
         lock_file       => '/var/lock/object.lock',
     }
@@ -98,7 +99,7 @@ class swift::storage (
             content => template('swift/swift-account-server-uwsgi.ini.erb');
         '/etc/swift/swift-container-server-uwsgi.ini':
             content => template('swift/swift-container-server-uwsgi.ini.erb');
-        '/srv/swift-storage':
+        $swift_data_dir:,
             ensure  => directory,
             require => Package['swift'],
             # the 1 is to allow nagios to read the drives for check_disk
