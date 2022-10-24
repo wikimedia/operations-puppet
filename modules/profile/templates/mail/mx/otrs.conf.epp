@@ -4,7 +4,7 @@
       Stdlib::Host $vrts_mysql_server,
       Stdlib::Host $vrts_mysql_user,
       String $vrts_aliases_file,
-      String $vrts_mysql_password,
+      Sensitive[String] $vrts_mysql_password,
       String $wikimedia_domains_path,
       String $vrts_aliases_format,
       String $vrts_aliases_folder
@@ -19,4 +19,4 @@ aliases_folder = <%= $vrts_aliases_folder %>
 host = <%= $vrts_mysql_server %>
 name = <%= $vrts_mysql_dbname %>
 user = <%= $vrts_mysql_user %>
-pass = <%= $vrts_mysql_password %>
+pass = <%= $vrts_mysql_password.unwrap %>
