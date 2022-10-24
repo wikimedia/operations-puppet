@@ -28,10 +28,10 @@ kubernetes_cluster_groups:
       master: kubestagemaster.svc.eqiad.wmnet
 profile::kubernetes::deployment_server::services:
   main:
-    mwdebug:
+    mw-debug:
       usernames:
-        - name: mwdebug
-      namespace: mwdebug
+        - name: mw-debug
+      namespace: mw-debug
     ci:
       usernames:
         - name: jenkins

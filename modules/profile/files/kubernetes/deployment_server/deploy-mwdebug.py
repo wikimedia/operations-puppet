@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Temporary script to keep the mwdebug deployment up to date with
+Temporary script to keep the mw-debug deployment up to date with
 the scap-released version. Given its temporary nature, the script
 will hardcode most values.
 
@@ -24,9 +24,9 @@ logger = logging.getLogger()
 # Default values we don't expect to change
 REGISTRY = "docker-registry.discovery.wmnet"
 VALUES_FILE = pathlib.Path(
-    "/etc/helmfile-defaults/mediawiki/release/mwdebug-pinkunicorn.yaml"
+    "/etc/helmfile-defaults/mediawiki/release/mw-debug-pinkunicorn.yaml"
 )
-DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mwdebug"
+DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mw-debug"
 good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-(publish|webserver)")
 
 # Lock file, to ensure parallel executions didn't happen.
@@ -110,7 +110,7 @@ def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
     VALUES_FILE.write_text(values)
     # Commit the file to the repository
     repo = str(VALUES_FILE.absolute().parent)
-    subprocess.run(["git", "add", "mwdebug-pinkunicorn.yaml"], cwd=repo, check=True)
+    subprocess.run(["git", "add", VALUES_FILE.name], cwd=repo, check=True)
     subprocess.run(["git", "commit", "-m", "'Updating release'"], cwd=repo, check=True)
     return True
 
