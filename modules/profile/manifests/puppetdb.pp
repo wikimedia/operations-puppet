@@ -50,7 +50,7 @@ class profile::puppetdb (
     # Prometheus JMX agent for the Puppetdb's JVM
     $jmx_exporter_config_file = '/etc/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'
     $prometheus_jmx_exporter_port = 9400
-    $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${facts['networking']['ipaddress']}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
+    $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${facts['networking']['ip']}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
     # The JVM heap size has been raised to 6G for T170740
     class { 'puppetmaster::puppetdb':
