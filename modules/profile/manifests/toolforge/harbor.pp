@@ -9,9 +9,26 @@ class profile::toolforge::harbor (
     Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db::primary'),
     Stdlib::Fqdn $harbor_url = lookup('profile::toolforge::harbor::url'),
 ) {
-    # Easy way to get docker and such from our repos.
-    require profile::wmcs::kubeadm::client
-    class { 'kubeadm::docker': }
+    if debian::codename::lt('bullseye') {
+        # Easy way to get docker and such from our repos.
+        require profile::wmcs::kubeadm::client
+        class { 'kubeadm::docker': }
+    } else {
+        # we don't need any special repo for bullseye
+        ensure_packages(['docker.io'])
+        service { 'docker':
+            ensure => 'running'
+        }
+
+        file { '/etc/docker/daemon.json':
+            source  => 'puppet:///modules/toolforge/docker-config.json',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Service['docker'],
+            require => Package['docker.io'],
+        }
+    }
 
     # Useful packages and harbor runs in docker-compose
     ensure_packages(['postgresql-client', 'redis-tools', 'docker-compose'])
