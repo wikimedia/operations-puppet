@@ -7,7 +7,7 @@
 set -o errexit
 set -o nounset
 
-SOURCEHOST="download.kiwix.org"
+SOURCEHOST="master.download.kiwix.org"
 BWLIMIT="--bwlimit=40000"
 
 do_rsync(){
