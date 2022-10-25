@@ -5343,13 +5343,11 @@ users:
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bscarone:
     ensure: absent
-    email: scarone.b@northeastern.edu
+    realname: Bruno Scarone
     uid: 39391
     gid: 500
-    expiry_date: 2022-10-31
-    expiry_contact: lzia@wikimedia.org
     ssh_keys: []
-    krb: present
+    krb: absent
   kstoller:
     ensure: present
     realname: Kirsten Stoller
