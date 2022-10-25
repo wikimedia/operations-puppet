@@ -56,14 +56,10 @@ class profile::analytics::postgresql (
         do_backups    => $do_backups,
       }
     }
-    if !empty($replicas) {
-      $replicas_ferm = join($replicas, ' ')
-      # Access to postgres primary from postgres replicas
-      ferm::service { 'postgres_replication':
-          proto  => 'tcp',
-          port   => '5432',
-          srange => "(@resolve((${replicas_ferm})) @resolve((${replicas_ferm}), AAAA))",
-      }
+    ferm::service { 'postgres':
+        proto  => 'tcp',
+        port   => '5432',
+        srange => '$ANALYTICS_NETWORKS',
     }
     # This is a simplistic method of creating users with an identically named database
     $users.each |$user, $pass| {
