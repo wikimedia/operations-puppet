@@ -122,6 +122,7 @@ Components: main
  component/postgis
  component/pygments
  component/python35
+ component/python39
  component/redis2
  component/rsyslog
  component/rsyslog-k8s
