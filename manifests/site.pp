@@ -464,12 +464,12 @@ node /^cp30(5[13579]|6[135])\.esams\.wmnet$/ {
 #
 
 # HAProxy test
-node /^cp40(2[246]|3[34]|4[579])\.ulsfo\.wmnet$/ {
+node /^cp40(3[3]|4[579])\.ulsfo\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
 # HAProxy test - T290005
-node /^cp40(2[8]|3[02567])\.ulsfo.wmnet$/ {
+node /^cp40(3[57])\.ulsfo.wmnet$/ {
     role(cache::text_haproxy)
 }
 
