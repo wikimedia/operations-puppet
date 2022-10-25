@@ -1,4 +1,4 @@
-# Hiera settings for dumps distribution servers (labstore1006|7)
+# Hiera settings for dumps distribution servers (clouddumps1001|2)
 
 profile::dumps::distribution::basedatadir: '/srv/dumps/xmldatadumps'
 profile::dumps::distribution::miscdumpsdir: '/srv/dumps/xmldatadumps/public/other'

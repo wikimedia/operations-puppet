@@ -1,5 +1,5 @@
 profile::dumps::stats_hosts: 'stat1006.eqiad.wmnet stat1007.eqiad.wmnet'
-profile::dumps::peer_hosts: 'dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet dumpsdata1003.eqiad.wmnet labstore1006.wikimedia.org labstore1007.wikimedia.org clouddumps1001.wikimedia.org clouddumps1002.wikimedia.org'
+profile::dumps::peer_hosts: 'dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet dumpsdata1003.eqiad.wmnet clouddumps1001.wikimedia.org clouddumps1002.wikimedia.org'
 profile::dumps::phab_hosts: 'phab1001.eqiad.wmnet'
 profile::dumps::rsync_internal_clients:
   - mwlog1002.eqiad.wmnet
@@ -8,8 +8,6 @@ profile::dumps::rsync_internal_clients:
   - dumpsdata1001.eqiad.wmnet
   - dumpsdata1002.eqiad.wmnet
   - dumpsdata1003.eqiad.wmnet
-  - labstore1006.wikimedia.org
-  - labstore1007.wikimedia.org
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
   - stat1006.eqiad.wmnet
@@ -22,8 +20,6 @@ profile::dumps::single_backend: false
 # 'public' ones are public-facing, the 'internal' ones
 # are for generation fallback use
 profile::dumps::public:
-    - labstore1006.wikimedia.org
-    - labstore1007.wikimedia.org
     - clouddumps1001.wikimedia.org
     - clouddumps1002.wikimedia.org
 profile::dumps::internal:

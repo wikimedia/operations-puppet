@@ -564,8 +564,6 @@ statistics_servers:
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
   - stat1008.eqiad.wmnet
-  - labstore1006.wikimedia.org
-  - labstore1007.wikimedia.org
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
   - an-launcher1002.eqiad.wmnet
@@ -1486,10 +1484,6 @@ druid_public_hosts:
 - 2620:0:861:107:10:64:48:227 # druid1008.eqiad.wmnet
 
 labstore_hosts:
-- 208.80.154.7                # labstore1006.wikimedia.org
-- 2620:0:861:1:208:80:154:7   # labstore1006.wikimedia.org
-- 208.80.155.106              # labstore1007.wikimedia.org
-- 2620:0:861:4:208:80:155:106 # labstore1007.wikimedia.org
 - 208.80.154.142              # clouddumps1001.wikimedia.org
 - 2620:0:861:2:208:80:154:142 # clouddumps1001.wikimedia.org
 - 208.80.154.71               # clouddumps1002.wikimedia.org
