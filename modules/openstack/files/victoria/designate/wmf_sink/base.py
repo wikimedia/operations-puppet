@@ -157,7 +157,11 @@ class BaseAddressWMFHandler(BaseAddressHandler):
     def _delete_puppet_config(self, project, fqdn):
         enc_url, session = self._get_enc_client(project)
 
-        response = session.delete("{}/prefix/{}".format(enc_url, fqdn), raise_exc=False)
+        response = session.delete(
+            "{}/prefix/{}".format(enc_url, fqdn),
+            headers={"Accept": "application/json"},
+            raise_exc=False,
+        )
         # no prefix, no problem!
         if response.status_code != 404:
             response.raise_for_status()
