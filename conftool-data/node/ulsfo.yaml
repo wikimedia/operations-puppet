@@ -9,7 +9,6 @@ ulsfo:
   cache_upload:
     cp4022.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4024.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
-    cp4025.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4026.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4033.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4034.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
