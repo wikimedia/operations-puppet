@@ -35,7 +35,7 @@ class profile::toolforge::bastion () {
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
     }
 
-    apt::repository { 'thirdparty/tekton':
+    apt::repository { 'thirdparty-tekton':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
         components => 'thirdparty/tekton',
