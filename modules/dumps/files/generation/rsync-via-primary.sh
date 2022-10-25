@@ -45,9 +45,9 @@ Example:
 (single xml/sql and misc dumps producer)
 
  $0 --xmldumpsdir /data/xmldatadumps/public \\
-   --xmlremotedirs dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,labstore1006.wikimedia.org::data/xmldatadumps/public/,labstore1007.wikimedia.org::data/xmldatadumps/public/ \\
+   --xmlremotedirs dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,clouddumps1001.wikimedia.org::data/xmldatadumps/public/,clouddumps1002.wikimedia.org::data/xmldatadumps/public/ \\
    --miscdumpsdir /data/otherdumps \\
-   --miscremotedirs dumpsdata1002.eqiad.wmnet::data/otherdumps/,labstore1006.wikimedia.org::data/xmldatadumps/public/,labstore1007.wikimedia.org::data/xmldatadumps/public/ \\
+   --miscremotedirs dumpsdata1002.eqiad.wmnet::data/otherdumps/,clouddumps1001.wikimedia.org::data/xmldatadumps/public/,clouddumps1002.wikimedia.org::data/xmldatadumps/public/ \\
    --miscremotesubdirs incr,categoriesrdf \\
    --miscremotedirs dumpsdata1003.eqiad.wmnet::data/otherdumps/ \\
    --do_tarball --do_rsync_xml --do_rsync_misc --do_rsync_miscsubs
@@ -57,13 +57,13 @@ or:
 (xml/sql dumps producer separate from misc dumps producer)
 
  $0 --xmldumpsdir /data/xmldatadumps/public \\
-   --xmlremotedirs dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,labstore1006.wikimedia.org::data/xmldatadumps/public/,labstore1007.wikimedia.org::data/xmldatadumps/public/ \\
+   --xmlremotedirs dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,clouddumps1001.wikimedia.org::data/xmldatadumps/public/,clouddumps1002.wikimedia.org::data/xmldatadumps/public/ \\
    --do_tarball --do_rsync_xml
 
 and
 
  $0 --miscdumpsdir /data/otherdumps \\
-   --miscremotedirs dumpsdata1002.eqiad.wmnet::data/otherdumps/,labstore1006.wikimedia.org::data/xmldatadumps/public/,labstore1007.wikimedia.org::data/xmldatadumps/public/ \\
+   --miscremotedirs dumpsdata1002.eqiad.wmnet::data/otherdumps/,clouddumps1001.wikimedia.org::data/xmldatadumps/public/,clouddumps1002.wikimedia.org::data/xmldatadumps/public/ \\
    --miscsubdirs incr,categoriesrdf \\
    --miscremotedirs dumpsdata1003.eqiad.wmnet::data/otherdumps/ \\
    --do_rsync_misc --do_rsync_miscsubs
