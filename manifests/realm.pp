@@ -45,6 +45,7 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
             fail("Incorrect site in certname. Should be ${site} but is ${pieces[2]}")
         }
         $labsproject = $pieces[1]
+        $wmcs_project = $pieces[1]
         $wmcs_deployment = $pieces[2] ? {
             'eqiad' => 'eqiad1',
             'codfw' => 'codfw1dev',
@@ -53,6 +54,7 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
     } else {
         # new FQDN wikimedia.cloud
         $labsproject = $pieces[1] # $wmcs_project may make more sense
+        $wmcs_project = $pieces[1]
         $wmcs_deployment = $pieces[2]
     }
 
@@ -62,6 +64,9 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
     }
     if $::labsproject == undef {
         fail('Failed to determine $::labsproject')
+    }
+    if $::wmcs_project == undef {
+        fail('Failed to determine $::wmcs_project')
     }
     if $::wmcs_deployment == undef {
         fail('Failed to determine $::wmcs_deployment')
