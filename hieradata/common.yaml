@@ -2491,11 +2491,11 @@ blackbox_smoke_hosts:
     site: esams
     rack: OE16
 
-  ganeti4003.ulsfo.wmnet:
+  ganeti4005.ulsfo.wmnet:
     realm: production
     site: ulsfo
     rack: "103.02.22"
-  ganeti4002.ulsfo.wmnet:
+  ganeti4008.ulsfo.wmnet:
     realm: production
     site: ulsfo
     rack: "103.02.23"
