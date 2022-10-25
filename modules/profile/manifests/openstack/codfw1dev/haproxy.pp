@@ -119,6 +119,7 @@ class profile::openstack::codfw1dev::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'radosgw_api':

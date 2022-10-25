@@ -58,12 +58,6 @@ class profile::openstack::base::trove(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'trove_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (28779) ACCEPT;",
-    }
-
     openstack::db::project_grants { 'trove':
         access_hosts => $openstack_controllers,
         db_name      => $db_name,
