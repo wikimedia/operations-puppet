@@ -2,6 +2,7 @@ cluster: ganeti
 profile::ganeti::nodes:
   - ganeti4002.ulsfo.wmnet
   - ganeti4003.ulsfo.wmnet
+  - ganeti4005.ulsfo.wmnet
   - ganeti4008.ulsfo.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.ulsfo.wmnet
 profile::ganeti::ganeti3: true
