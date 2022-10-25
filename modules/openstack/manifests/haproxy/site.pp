@@ -117,7 +117,7 @@ define openstack::haproxy::site(
             $srange = join(concat($::network::constants::production_networks,
                                   $::network::constants::labs_networks), ' ')
 
-            ferm::service { "${title}_public_${index}":
+            ferm::service { "${title}_internal_${index}":
                 ensure => $ensure,
                 proto  => 'tcp',
                 port   => $frontend['port'],
