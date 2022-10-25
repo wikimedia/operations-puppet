@@ -24,6 +24,16 @@ class profile::ceph::mon(
         $network::constants::all_network_subnets['production']['codfw']['private']['cloud-hosts1-codfw']['ipv4'],
     ]
 
+    # Make sure the mgr keyring dir has the right permissions
+    $keyring_path = ceph::auth::get_keyring_path("mgr.${::hostname}", $ceph_auth_conf["mgr.${::hostname}"]['keyring_path'])
+
+    file { "${keyring_path.dirname}":
+        ensure => directory,
+        mode   => '0750',
+        owner  => 'ceph',
+        group  => 'ceph',
+    }
+
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
