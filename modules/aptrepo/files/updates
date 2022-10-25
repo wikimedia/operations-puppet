@@ -423,7 +423,7 @@ Suite: release
 Architectures: amd64
 VerifyRelease: 6FC6D554E32BD943
 
-Name: tekton
+Name: thirdparty/tekton
 Method: https://ppa.launchpadcontent.net/tektoncd/cli/ubuntu
 Components: main>thirdparty/tekton
 UDebComponents:
