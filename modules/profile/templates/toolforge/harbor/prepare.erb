@@ -60,7 +60,7 @@ docker run --rm -v $input_dir:/input \
                     -v $config_dir:/config \
                     -v <%= @tlscertdir -%>:/hostfs<%= @tlscertdir -%> \
                     --privileged \
-                    goharbor/prepare:v2.2.3 prepare $@
+                    goharbor/prepare:v2.5.4 prepare $@
 
 echo "Clean up the input dir"
 # Clean up input dir
