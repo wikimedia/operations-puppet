@@ -667,24 +667,6 @@ class profile::prometheus::ops (
           'cluster' => 'cache_upload',
         }
     }
-    prometheus::class_config{ "trafficserver_tls_text_${::site}":
-        dest       => "${targets_path}/trafficserver_tls_text_${::site}.yaml",
-        class_name => 'role::cache::text',
-        port       => 9322,
-        labels     => {
-          'layer'   => 'tls',
-          'cluster' => 'cache_text',
-        }
-    }
-    prometheus::class_config{ "trafficserver_tls_upload_${::site}":
-        dest       => "${targets_path}/trafficserver_tls_upload_${::site}.yaml",
-        class_name => 'role::cache::upload',
-        port       => 9322,
-        labels     => {
-          'layer'   => 'tls',
-          'cluster' => 'cache_upload',
-        }
-    }
 
     $cache_haproxy_tls_jobs = [
       {

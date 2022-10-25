@@ -331,19 +331,6 @@ groups:
     expr: sum by(job, backend) (job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate2m{status=~"5.."})
       / sum by(job, backend) (job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate2m{status=~"[12345].."})
 
-  # ats-tls TTFB and rates for clients
-  - record: cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m
-    expr: sum by (cluster, http_status_family, cache_status, le) (rate(trafficserver_tls_client_ttfb_bucket[2m]))
-  - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:50p2m
-    expr: histogram_quantile(0.50, cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m)
-  - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:75p2m
-    expr: histogram_quantile(0.75, cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m)
-  - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:95p2m
-    expr: histogram_quantile(0.95, cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m)
-  - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:99p2m
-    expr: histogram_quantile(0.99, cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m)
-  - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:rate2m
-    expr: sum by (cluster, http_status_family, cache_status) (rate(trafficserver_tls_client_ttfb_count[2m]))
   # HAproxy TTFB and rates for clients
   - record: cluster_http_status_family_cache_status_le:haproxy_client_ttfb_bucket:rate2m
     expr: sum by (cluster, http_status_family, cache_status, le) (rate(haproxy_client_ttfb_bucket[2m]))

@@ -23,7 +23,6 @@ profile::cache::purge::kafka_cluster_name: main-deployment-prep
 # T286502
 profile::trafficserver::backend::ram_cache_size: 134217728
 profile::trafficserver::backend::monitor_enable: false
-profile::trafficserver::tls::monitor_enable: false
 profile::cache::haproxy::monitoring_enabled: false
 profile::cache::varnish::frontend::enable_monitoring: false
 # T247147

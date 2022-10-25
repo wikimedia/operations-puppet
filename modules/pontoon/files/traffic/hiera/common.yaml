@@ -2,5 +2,3 @@
 http_proxy: ''
 has_lvs: false
 has_nrpe: false
-profile::trafficserver::tls::unified_acme_chief: false
-profile::trafficserver::tls::extra_certs: {}
