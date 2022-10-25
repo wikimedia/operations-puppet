@@ -72,7 +72,7 @@ node 'an-test-coord1001.eqiad.wmnet' {
 
 # new an-test-coord1002  T293938
 node 'an-test-coord1002.eqiad.wmnet' {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 node 'an-test-client1001.eqiad.wmnet' {
@@ -177,7 +177,7 @@ node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
 
 # New an-presto nodes in eqiad T306835
 node /^an-presto10(0[6-9]|1[0-5])\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # Analytics Web Node.
@@ -207,7 +207,7 @@ node /aqs101[0-5]\.eqiad\.wmnet/ {
 
 # New aqs nodes in eqiad T305570
 node /^aqs10(1[6-9]|2[0-1])\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # New aqs nodes in codfw T305568
@@ -346,7 +346,7 @@ node 'centrallog1001.eqiad.wmnet', 'centrallog2002.codfw.wmnet' {
 }
 
 node 'centrallog1002.eqiad.wmnet' {
-    role(insetup)
+    role(insetup::observability)
 }
 
 node 'centrallog2001.codfw.wmnet' {
@@ -367,7 +367,7 @@ node /^cloudgw200[12]-dev\.codfw\.wmnet$/ {
 
 # New cloudgw node T306854
 node 'cloudgw2003-dev.codfw.wmnet' {
-    role(insetup)
+    role(insetup::wmcs)
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
@@ -542,7 +542,7 @@ node 'db2173.codfw.wmnet' {
 
 # codfw new db node T313979
 node /^db218[34]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # s2 (large wikis) core production dbs on eqiad
@@ -1038,11 +1038,11 @@ node /^dumpsdata1001\.eqiad\.wmnet$/ {
 }
 # new dumpsdata servers T283290
 node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::core_platform)
 }
 
 node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(insetup::core_platform)
 }
 
 node /^elastic104[8-9]\.eqiad\.wmnet/ {
@@ -1099,7 +1099,7 @@ node /^(elastic207[3-9]|elastic208[0-6])\.codfw\.wmnet$/ {
 
 # new eqiad row e-f elastic servers T299609
 node /^(elastic1089|elastic109[0-9]|elastic110[0-2])\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(insetup::search_platform)
 }
 
 # External Storage, Shard 1 (es1) databases
@@ -1237,7 +1237,7 @@ node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
 # 9 expansion hosts T273566
 # Set them to spare individually as it will take take to transfer the data
 node /^db11(76)\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(insetup::data_persistence)
 }
 
 # Backup system, see T176505.
@@ -1308,7 +1308,7 @@ node /^ganeti20(09|1[0-9]|2[0-9]|30)\.codfw\.wmnet$/ {
 
 # codfw new ganeti nodes T313856
 node /^ganeti203[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::infrastructure_foundations)
 }
 
 # Ganeti test cluster
@@ -1353,7 +1353,7 @@ node 'gitlab2002.wikimedia.org' {
 }
 
 node /^gitlab2003\.wikimedia\.org$/ {
-    role(insetup)
+    role(insetup::serviceops)
 }
 
 # gitlab runners - codfw (T3011183)
@@ -1495,7 +1495,7 @@ node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
 
 # New pki node # T305489
 node 'pki2002.codfw.wmnet' {
-    role(insetup)
+    role(insetup::infrastructure_foundations)
 }
 
 # pki-root server T276625
@@ -1509,7 +1509,7 @@ node /kafka-logging100[123]\.eqiad\.wmnet/ {
 
 # New kafka node T313960
 node /^kafka-logging100[45]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::observability)
 }
 
 node /^kafka-logging200[123]\.codfw\.wmnet/ {
@@ -1518,7 +1518,7 @@ node /^kafka-logging200[123]\.codfw\.wmnet/ {
 
 # New kafka node T313959
 node /^kafka-logging200[45]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::observability)
 }
 
 node /kafka-main100[1-5]\.eqiad\.wmnet/ {
@@ -1548,7 +1548,7 @@ node /kafka-stretch100[12]\.eqiad\.wmnet/ {
 
 # New Kafka nodes T314160
 node /kafka-stretch200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # Karapace VM in support of DataHub
@@ -1589,7 +1589,7 @@ node 'krb2001.codfw.wmnet' {
 
 # New pki node # T305488
 node 'krb2002.codfw.wmnet' {
-    role(insetup)
+    role(insetup::infrastructure_foundations)
 }
 
 node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
@@ -1598,7 +1598,7 @@ node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
 
 # New kubernetes node T313870
 node /kubernetes202[34]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::serviceops)
 }
 
 node /kubestage100[34]\.eqiad\.wmnet/ {
@@ -1725,7 +1725,7 @@ node /^logstash20(2[345]|3[012])\.codfw\.wmnet$/ {
 
 # New logstash nodes T313848 (codfw)
 node /^logstash203[67]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::observability)
 }
 
 # Logging data nodes (eqiad)
@@ -1825,7 +1825,7 @@ node /^mc20(19|2[0-7]|29|3[0-8])\.codfw\.wmnet/ {
 
 # New mc nodes T294962
 node /^mc20(39|4[0-9]|5[0-5])\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::serviceops)
 }
 
 node /^mc-gp100[1-3]\.eqiad\.wmnet/ {
@@ -1838,7 +1838,7 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
 
 # new mc-wf nodes T313963
 node /^mc-wf100[12]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::serviceops)
 }
 
 # New mc-wf nodes T313966
@@ -1899,22 +1899,22 @@ node 'moscovium.eqiad.wmnet' {
 }
 
 node /^moss-fe100[12]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_persistence)
 }
 
 # New moss-be nodes T276637
 node /^moss-be100[12]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_persistence)
 }
 
 # New moss-be nodes T276642
 node /^moss-be200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::data_persistence)
 }
 
 # New moss-fe nodes T275513
 node /^moss-fe200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(insetup::data_persistence)
 }
 
 node /^ms-backup100[12]\.eqiad\.wmnet/ {
@@ -1958,7 +1958,7 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # New mw servers T306121
 node /^mw14(5[7-9]|6[0-9]|7[0-9]|8[0-9]|9[0-8])\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::serviceops)
 }
 
 # Row A
@@ -2434,7 +2434,7 @@ node /^netmon1003\.wikimedia\.org$/ {
 
 # New netmon node T313867
 node /^netmon2002\.wikimedia\.org$/ {
-    role(insetup)
+    role(insetup::observability)
 }
 
 # Network insights (netflow/pmacct, etc.)
@@ -2525,7 +2525,7 @@ node /^prometheus[3456]001\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
 
 # new puppetmaster servers T291963
 node 'puppetmaster1005.eqiad.wmnet' {
-    role(insetup)
+    role(insetup::infrastructure_foundations)
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
@@ -2538,7 +2538,7 @@ node /^puppetmaster[12]00[234]\.(codfw|eqiad)\.wmnet$/ {
 
 # New puppetmaster nodes T289733
 node 'puppetmaster2005.codfw.wmnet' {
-    role(insetup)
+    role(insetup::infrastructure_foundations)
 }
 
 node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
@@ -2607,7 +2607,7 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
 
 # New restbase dev nodes T299437
 node /^restbase-dev200[1-3]\.codfw\.wmnet$/ {
-    role(insetup)
+    role(insetup::core_platform)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
@@ -2666,7 +2666,7 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
 
 # New stat nodes T299466 and T307399
 node /^stat10(0[9]|1[0])\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # NOTE: new snapshot hosts must also be manually added to
@@ -2692,7 +2692,7 @@ node /^snapshot1013\.eqiad\.wmnet/ {
 }
 
 node /^snapshot101[45]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::core_platform)
 }
 
 # Servers for SRE tests which are not suitable for Cloud VPS
@@ -2838,7 +2838,7 @@ node /^wdqs200[568]\.codfw\.wmnet$/ {
 
 # Codfw new wdqs nodes T294297
 node /^(wdqs2009|wdqs2010|wdqs2011|wdqs2012)\.codfw\.wmnet$/ {
-    role(insetup)
+    role(insetup::search_platform)
 }
 
 # Wikidata query service test
