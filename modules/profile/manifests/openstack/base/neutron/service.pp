@@ -13,9 +13,4 @@ class profile::openstack::base::neutron::service(
         bind_port => $bind_port,
     }
     contain '::openstack::neutron::service'
-
-    ferm::service { 'neutron-server-api':
-        proto => 'tcp',
-        port  => '29696',
-    }
 }

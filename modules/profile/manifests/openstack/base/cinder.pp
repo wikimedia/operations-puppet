@@ -57,12 +57,6 @@ class profile::openstack::base::cinder(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-
-    ferm::service { 'cinder_api_all':
-        proto => 'tcp',
-        port  => '28776',
-    }
-
     openstack::db::project_grants { 'cinder':
         access_hosts => $openstack_controllers,
         db_name      => 'cinder',

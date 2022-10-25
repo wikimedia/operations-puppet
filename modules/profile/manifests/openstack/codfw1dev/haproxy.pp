@@ -77,6 +77,7 @@ class profile::openstack::codfw1dev::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'glance_api':
@@ -90,6 +91,7 @@ class profile::openstack::codfw1dev::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'cinder_api':
@@ -103,6 +105,7 @@ class profile::openstack::codfw1dev::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'trove_api':
@@ -194,6 +197,7 @@ class profile::openstack::codfw1dev::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'nova_api':

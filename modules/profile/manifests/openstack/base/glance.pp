@@ -40,11 +40,6 @@ class profile::openstack::base::glance(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::service { 'glance_api_all':
-        proto => 'tcp',
-        port  => '29292',
-    }
-
     openstack::db::project_grants { 'glance':
         access_hosts => $openstack_controllers,
         db_name      => 'glance',

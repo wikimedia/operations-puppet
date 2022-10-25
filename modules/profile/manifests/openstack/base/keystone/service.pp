@@ -121,11 +121,6 @@ class profile::openstack::base::keystone::service(
         srange => "(${nova_hosts_ranges.join(' ')})",
     }
 
-    ferm::service {'keystone_public':
-        proto => 'tcp',
-        port  => '25000',
-    }
-
     openstack::db::project_grants { 'keystone':
         access_hosts => $openstack_controllers,
         db_name      => 'keystone',
