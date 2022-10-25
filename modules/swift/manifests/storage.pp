@@ -182,10 +182,6 @@ class swift::storage (
         source => 'puppet:///modules/swift/swift-drive-audit.conf',
     }
 
-    udev::rule{ 'swift_disks':
-        ensure => absent,
-    }
-
     # Loopback storage has been requested, initialize it and make sure devices exist at boot
     if $loopback_device_count > 0 {
         systemd::unit { 'loopback-device@':
