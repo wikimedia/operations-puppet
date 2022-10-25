@@ -1320,7 +1320,7 @@ node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti400[12358]\.ulsfo\.wmnet$/ {
+node /^ganeti400[358]\.ulsfo\.wmnet$/ {
     role(ganeti)
 }
 
