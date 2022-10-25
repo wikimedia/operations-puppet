@@ -27,11 +27,19 @@ class profile::ceph::mon(
     # Make sure the mgr keyring dir has the right permissions
     $keyring_path = ceph::auth::get_keyring_path("mgr.${::hostname}", $ceph_auth_conf["mgr.${::hostname}"]['keyring_path'])
 
-    file { "${keyring_path.dirname}":
-        ensure => directory,
-        mode   => '0750',
-        owner  => 'ceph',
-        group  => 'ceph',
+    # if nobody defined it yet, set permissions on the parent dirs (copied from mkdir_p.pp)
+    $_dirs = wmflib::dir::normalise($keyring_path)
+    $parents = wmflib::dir::split($_dirs) - $_dirs
+    $parents.each |$parent_dir| {
+        # avoid touching the data_dir and it's parents too
+        if !defined(File[$parent_dir]) and ($parent_dir !~ Regexp("^${data_dir}$")) and ($data_dir !~ Regexp("^${parent_dir}/.*")) {
+            file { $parent_dir:
+                ensure => directory,
+                mode   => '0750',
+                owner  => 'ceph',
+                group  => 'ceph',
+            }
+        }
     }
 
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
