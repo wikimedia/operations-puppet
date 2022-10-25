@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: GPL-3.0
-
-# (C) 2020 by Arturo Borrero Gonzalez <aborrero@wikimedia.org>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
+# SPDX-License-Identifier: Apache-2.0
 
 # Read the docs here:
 # TODO: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Kubernetes/Upgrading_Kubernetes
