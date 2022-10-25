@@ -114,12 +114,14 @@ define openstack::haproxy::site(
                 port   => $frontend['port'],
             }
         } elsif $firewall == 'internal' {
+            $srange = join(concat($::network::constants::production_networks,
+                                  $::network::constants::labs_networks), ' ')
+
             ferm::service { "${title}_public_${index}":
                 ensure => $ensure,
                 proto  => 'tcp',
                 port   => $frontend['port'],
-                srange => join(concat($::network::constants::production_networks,
-                                      $::network::constants::labs_networks), ' '),
+                srange => "(${srange})",
             }
         }
     }
