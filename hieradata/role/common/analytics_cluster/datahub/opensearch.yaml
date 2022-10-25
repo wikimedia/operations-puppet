@@ -39,3 +39,5 @@ profile::lvs::realserver::pools:
   datahubsearch:
     services:
       - opensearch_1@datahub
+
+profile::contacts::role_contacts: ['Data Engineering']
