@@ -53,6 +53,8 @@
     {"index" : "input-file-canary-appserver-mw-access", "value" : "kafka" },
     {"index" : "input-file-canary-api-mw-access", "value" : "kafka" },
     {"index" : "input-file-generic-mw-access", "value" : "kafka" },
+    {"index" : "input-file-miscweb-apache2-access", "value" : "kafka" },
+    {"index" : "input-file-miscweb-apache2-error", "value" : "kafka" },
     {"index" : "webrequest", "value" : "kafka" },
     {"index" : "mjolnir-kafka-bulk-daemon", "value": "kafka" },
     {"index" : "mjolnir-kafka-msearch-daemon", "value": "kafka" },
