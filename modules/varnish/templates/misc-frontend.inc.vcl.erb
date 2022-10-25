@@ -16,6 +16,10 @@ sub cluster_fe_vcl_switch {
         set req.url = "/" + req.http.Host + req.url;
         set req.http.Host = "sitemaps.wikimedia.org";
     }
+
+    // We need to be able to tell that this domain is an alt domain down the
+    // line.
+    set req.http.X-IS-ALT-DOMAIN = "1";
 }
 
 sub cluster_fe_recv_pre_purge {

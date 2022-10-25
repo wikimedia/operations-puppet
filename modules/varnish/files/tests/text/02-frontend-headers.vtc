@@ -1,7 +1,7 @@
 varnishtest "cache_text frontend headers"
 
 server s1 {
-    loop 11 {
+    loop 13 {
         rxreq
         txresp
     }
@@ -77,6 +77,18 @@ client c1 {
     # We make exceptions for analytics cookies: We don't want any analytics
     # cookies sent through the API
     txreq -url "/" -hdr "Host: api.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
+    expect resp.http.Set-Cookie !~ "WMF-Last-Access="
+    expect resp.http.Set-Cookie !~ "GeoIP="
+
+    txreq -url "/" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
+    expect resp.http.Set-Cookie !~ "WMF-Last-Access="
+    expect resp.http.Set-Cookie !~ "GeoIP="
+
+    txreq -url "/" -hdr "Host: doc.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
     expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
     expect resp.http.Set-Cookie !~ "WMF-Last-Access="

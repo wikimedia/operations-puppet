@@ -218,17 +218,20 @@ sub analytics_recv {
         set req.http.X-WMF-NOCOOKIES = 1;
     }
 
-    call analytics_last_access_recv_;
+    call analytics_provenance_recv_;
+}
 
+// Not all hosts using analytics_recv need to use the "WMF-Last-Access" cookie,
+// so split this into its own subroutine.
+sub analytics_last_access_recv {
+    call analytics_last_access_recv_;
     // Global last access cookies not used w/ wikimedia.org
     if(req.http.Host !~ "\.wikimedia\.org$") {
         call analytics_last_access_global_recv_;
     }
-
-    call analytics_provenance_recv_;
 }
 
-sub analytics_deliver {
+sub analytics_deliver_pre {
     // Create empty header if none, to avoid tons of if/else clauses; will
     // clean up at the end.  Note that if we defined one of the k=v pairs as
     // required (having a real value for the false/negative case), we could
@@ -236,8 +239,13 @@ sub analytics_deliver {
     if (!resp.http.X-Analytics) {
         set resp.http.X-Analytics = "";
     }
+}
 
+sub analytics_deliver_last_access {
     call analytics_last_access_deliver_;
+}
+
+sub analytics_deliver_post {
     call analytics_provenance_deliver_;
     call analytics_client_hints_deliver_;
 
