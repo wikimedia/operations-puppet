@@ -4,7 +4,6 @@ ulsfo:
     cp4038.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
   cache_upload:
     cp4045.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
-    cp4046.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4047.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4049.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
   ncredir:
