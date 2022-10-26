@@ -61,12 +61,12 @@ profile::dumps::distribution::mirrors:
     addedby: 'atg'
     addeddate: 'May 11, 2012'
     active: 'no'
-  - url: 'http://ftp.acc.umu.se/mirror/wikimedia.org/dumps/'
-    hostname: 'poincare.acc.umu.se'
-    ipv4: ['poincare.acc.umu.se']
-    ipv6: ['poincare.acc.umu.se']
+  - url: 'http://mirror.accum.se/mirror/wikimedia.org/dumps/'
+    hostname: 'mirror.accum.se'
+    ipv4: ['ftp.acc.umu.se', 'mirror.accum.se']
+    ipv6: ['ftp.acc.umu.se', 'mirror.accum.se']
     contactname: 'Mirror admin'
-    contactaddy: 'ftp-adm@acc.umu.se'
+    contactaddy: 'ftp-adm@accum.se'
     institution: 'Academic Computer Club, Umeå University'
     addedby: 'atg'
     addeddate: 'Oct 25 2016'
