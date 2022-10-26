@@ -68,18 +68,18 @@ puppet_compiler::uploader::realms:
   deployment-prep:
     deployment-puppetmaster04: |
       -----BEGIN PUBLIC KEY-----
-      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAzGYpQWVtd4h8hmgQEL1s
-      +QY7G89++MskMaq03NqjBhVQ7w4Ia/aIG0FtbQ7KYDK5VPMp3uGlfk9I54yqjVGg
-      mHcGOoLndG1DpOqGLgArIPglbN+Ar7QK51iohn6Cl5KK1zmkpxnVV56gjtNVhLc5
-      +vIVl+QebmgZDfoaPcgEwWuzmjkLiA0RPyzseQafe7hoFuLnNQBeTtw3ZW75L2kG
-      7vZ0Lq5D27JOVprKvzRZbTcZPgrk6/8uG9I6jOo20cvxSOwaGDKUmYSJrSMMBPcG
-      md1x7bL6TROhar3MVOKkWNQSX/mWQ7DYupxCIiokVsQ63+lkwFeYB7mJfkwA9Qre
-      2lm9ewjvCR54CZDXVV8BfTml1V6y7Q3Zmb9otnb0h4d6iZQNb0yQiZ363RF9ceeX
-      m6qrD3AVcXAyUMoeuqIRty+cPSR/ZSR5hUmgiCUoF1C6HOcDdy1pqx55dt53RD//
-      J91r315JnKkJ1QCD6srm7o1LQx2aHZg2SZWzFP2Y2q4THtZbU1jGdBw+71gKS5Ki
-      uPhZjH2YBUD5yIAYHQFY6PMHF6kWX2nVW2fYnehphD5GkpkN3W4zdjvGi2FIT1Er
-      rG/iBs4i/5MI9b9k7a/EzR/Kh3jcRJnQ3cpVsbZSJhtJR9OHlr17vu7sqa1yasbB
-      9Ai6aH37BF/3aGYP9UWmG8UCAwEAAQ==
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA75Jo/aaLRjvrPc2QI07n
+      nDJPE0leIAVWcJi1pIjeTd+rSGKjwMe8/+poUgrcF61RDftKQXLS9gZYkZcctfGi
+      q69cUzEYsC1W9qf0PSIyTitMvTeG7xevnxsBtgMunE8Q31JKzCRB7BfnAgO43oMv
+      FtFbz7MqDGtoR+e84pq+QDQr6TGJjRFi4Xhdk3EBEUzQ+a47+PBMlroJhX+MshGy
+      4HYZJy7Hxda3jHbL0b8WZ1RRfwIY08GtfJ9H5IBH6h6yeRqpSBOl00IYfrfZTTuM
+      h2RthKzeTA2OIsxoUni4O+RsvE2YXlhi5YK2zli+S4tvMrkqvwV4dsL/Agp30IeC
+      yi/fws8psZo1Zw7LOxZwkeYK0pgj3NCM6Bvcd1KP/+34cqufNABCgT1xWEHXo5RW
+      njwLCXeUyfeBECrDQ2G/UPhtojn55j+f+iW6GY/v/kchHm1splDpwPbAgvoyUEqN
+      doiOf6CGtbt3NOPiWNmJO9/hsSVAzPBZUgGEiWxduHr0oca55wK0SvlhtjFWRvXf
+      B+VWunVq/YRkcxINwm3cB6S7PQR5EUwPlUpoCC3WRdati5OmsbaclaHty6+pzWwg
+      TD1dyQxsdJpAwXvETPd9x4IyYW9beWBlH1S9A3PVt3xbaEvwIkwfAkFTvFzRj2PC
+      6Nc7/uKguz2fPe1jBnF0rKECAwEAAQ==
       -----END PUBLIC KEY-----
   metricsinfra:
     metricsinfra-puppetmaster-1: |
