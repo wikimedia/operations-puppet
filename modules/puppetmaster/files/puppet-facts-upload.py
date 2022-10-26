@@ -4,16 +4,16 @@
 import logging
 import subprocess
 
+from argparse import ArgumentParser
 from base64 import b64encode
+from pathlib import Path
+from socket import gethostname
+
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
-from pathlib import Path
 from requests import post
-from socket import gethostname
-
-from argparse import ArgumentParser
 
 
 def get_args():
@@ -24,6 +24,7 @@ def get_args():
     )
     parser.add_argument("-s", "--skip", action="store_true")
     parser.add_argument("-p", "--proxy")
+    parser.add_argument("-R", "--realm", help="Pass this to override the realm value")
     parser.add_argument("-v", "--verbose", action="count")
     return parser.parse_args()
 
@@ -39,6 +40,7 @@ def get_log_level(args_level):
 
 
 def get_signature(key, payload):
+    """Generate the signitue."""
     logging.debug("Generating signiture")
     private_key = serialization.load_pem_private_key(
         key, password=None, backend=default_backend()
@@ -58,6 +60,7 @@ def get_signature(key, payload):
 
 
 def get_realm():
+    """Get the realm."""
     wmcs_projects_file = Path("/etc/wmcs-project")
     if wmcs_projects_file.is_file():
         return wmcs_projects_file.read_text().strip()
@@ -65,6 +68,7 @@ def get_realm():
 
 
 def generate_facts_file(facts_file, skip):
+    """Generate the facts file payload."""
     if not skip:
         if facts_file.is_file():
             logging.debug("deleting old file: %s", facts_file)
@@ -77,6 +81,7 @@ def generate_facts_file(facts_file, skip):
 
 
 def get_key_file():
+    """Get the key file location"""
     return Path(
         subprocess.run(
             "facter -p puppet_config.hostprivkey".split(),
@@ -99,7 +104,8 @@ def main():
     key_file = get_key_file()
     signature = get_signature(key_file.read_bytes(), facts_file.read_bytes())
 
-    data = {"realm": get_realm(), "hostname": gethostname(), "signature": signature}
+    realm = args.realm if args.realm else get_realm()
+    data = {"realm": realm, "hostname": gethostname(), "signature": signature}
     files = {"file": facts_file.read_bytes()}
     proxies = {"http": args.proxy, "https": args.proxy} if args.proxy else None
 

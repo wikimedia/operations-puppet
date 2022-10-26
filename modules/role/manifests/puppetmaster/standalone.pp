@@ -34,6 +34,11 @@
 #  use the ::geoip::data::puppet class in their manifests.
 #  Default: false
 #
+# [*realm_override*]
+#   this is use to override the realm used for the facts upload. its only really
+#   used if you have two puppet masters in the same projects servicing different
+#   clients e.g. cloudinfra
+
 class role::puppetmaster::standalone(
     Boolean                                  $autosign            = false,
     Boolean                                  $prevent_cherrypicks = false,
@@ -44,6 +49,7 @@ class role::puppetmaster::standalone(
     Boolean                                  $use_r10k            = false,
     Boolean                                  $upload_facts        = false,
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
+    Optional[String[1]]                      $realm_override      = undef,
 ) {
     system::role { 'puppetmaster::standalone':
         description => 'Cloud VPS project puppetmaster',
@@ -93,6 +99,7 @@ class role::puppetmaster::standalone(
         use_r10k            => $use_r10k,
         r10k_sources        => $r10k_sources,
         upload_facts        => $upload_facts,
+        realm_override      => $realm_override,
     }
 
     # Update git checkout

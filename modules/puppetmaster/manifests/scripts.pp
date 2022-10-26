@@ -9,11 +9,16 @@
 # @param upload_facts use the upload facts feature
 #   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Manually_update_cloud
 # @param http_proxy the http proxy to use
+# @param realm_override
+#   this is use to override the realm used for the facts upload. its only really
+#   used if you have two puppet masteres in the same projects servicing different
+#   clients e.g. cloudinfra
 class puppetmaster::scripts(
     Integer                              $keep_reports_minutes = 960, # 16 hours
     Boolean                              $has_puppetdb         = true,
     Boolean                              $upload_facts         = true,
     Optional[Stdlib::HTTPUrl]            $http_proxy           = undef,
+    Optional[String[1]]                  $realm_override       = undef,
 ){
     # export and sanitize facts for puppet compiler
     ensure_packages(['python3-requests', 'python3-yaml'])
@@ -38,15 +43,14 @@ class puppetmaster::scripts(
         source => 'puppet:///modules/puppetmaster/puppet-facts-upload.py',
     }
 
-    $timer_command = $http_proxy ? {
-        undef   => '/usr/local/sbin/puppet-facts-upload',
-        default => "/usr/local/sbin/puppet-facts-upload --proxy ${http_proxy}"
-    }
+    $proxy_arg = $http_proxy.then |$x| { "--proxy ${http_proxy}" }
+    $realm_arg = $realm_override.then |$x| { "--realm ${realm_override}" }
+
     systemd::timer::job { 'upload_puppet_facts':
         ensure      => $upload_facts.bool2str('present', 'absent'),
         user        => 'root',
         description => 'Upload facts export to puppet compiler',
-        command     => $timer_command,
+        command     => "/usr/local/sbin/puppet-facts-upload ${proxy_arg} ${realm_arg}",
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
     }
 

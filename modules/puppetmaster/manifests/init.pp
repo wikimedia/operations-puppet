@@ -25,6 +25,11 @@
 # @param r10k_sources the r10k sources to configure
 # @param servers Hash of puppetmaster servers, their workers and loadfactors
 # @param http_proxy The http_proxy to use if required
+# @param realm_override
+#   this is use to override the realm used for the facts upload. its only really
+#   used if you have two puppet masteres in the same projects servicing different
+#   clients e.g. cloudinfra
+
 #
 class puppetmaster(
     String[1]                                $server_name        = 'puppet',
@@ -49,6 +54,7 @@ class puppetmaster(
     Hash[String, Puppetmaster::Backends]     $servers             = {},
     Optional[Stdlib::HTTPUrl]                $http_proxy          = undef,
     Optional[String]                         $extra_auth_rules    = undef,
+    Optional[String]                         $realm_override      = undef,
 ){
 
     $workers = $servers[$facts['fqdn']]
@@ -132,9 +138,10 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::scripts' :
-        has_puppetdb => $has_puppetdb,
-        upload_facts => $upload_facts,
-        http_proxy   => $http_proxy,
+        has_puppetdb   => $has_puppetdb,
+        upload_facts   => $upload_facts,
+        http_proxy     => $http_proxy,
+        realm_override => $realm_override,
     }
 
     class { 'puppetmaster::merge_cli':

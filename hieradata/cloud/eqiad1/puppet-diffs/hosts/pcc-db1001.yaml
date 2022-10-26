@@ -33,6 +33,7 @@ puppet_compiler::uploader::realms:
       Z2wTK1Jvcet458vmj3SA2jFxessEdPsIp6vK/x7onc5TJcjLPnnXvIrcrKtyV4nY
       HDi/OSkn4TkA9IpiqeUaFocCAwEAAQ==
       -----END PUBLIC KEY-----
+  cloudinfra-internal:
     cloudinfra-internal-puppetmaster-02: |
       -----BEGIN PUBLIC KEY-----
       MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAvLbVSxOsgcn9uIIEqwHg
