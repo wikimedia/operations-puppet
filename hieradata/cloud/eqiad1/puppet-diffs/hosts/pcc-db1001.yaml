@@ -145,3 +145,19 @@ puppet_compiler::uploader::realms:
       XRZcgbmwvtYIkaU/DY0D0Kcmh/gRP29IE2AVBqWlkzrS90y8HedBDEA4jmW0fKvx
       +iOcRuNWOD+fII/vM8WAtjkCAwEAAQ==
       -----END PUBLIC KEY-----
+  devtools:
+    puppetmaster-1001: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA3d4u7BY+hCoWLnqYSho6
+      cTIajz+tqFIKK/ntD23DmNfKDiFLlvFsFmVtUi8a3eXX7wV+qdvAwIQ0DUAj4hXn
+      mZuW6Z/3HcaClk62+p//rX6Gs+gyMwF+2NWNTNWE4mi4COhhbKbBLivLDoCOyVn2
+      r8KF9kNNcVXfH6q4LqjIpL6/esOFPAbbWd+DATtVS9cDkBeOqBJ+B4vWPvSiezus
+      gKUYD4L8G7oeZSI9VUq04o85TT5t0nZiSQt/zDg/WsrEB+5FBlcCLvAPwKxxJ0AK
+      vVFopBq/BD41itgh1QfIz+WX48oe4GxhycJw+WJKvhFSajZxZDtX+t3KGIMVDchV
+      24uRrBNeIBmEOLNbAceBKHZAI1NH27xku+Qlr/NBN9oHgPlEuY1E7XUoE4LngNzk
+      nVx7xDGV2z/l/l8zoXr+n2Sj5R1MDIkVMvPV2bmRFOYZ1oKisrgj6lBlWxHJmTEB
+      A70cjZmDkpdK2lO4lSZ7vACWSF1Yzwvz75U43xeGT6Ut1+ONlDxAoKp/0k5rRVoM
+      g2g7aVc3gRcev/mGyBaUYOKKNFThNugZijpKARRdizrccXcQ+9YNZ8a4oQbDY3hr
+      jBccEqIKLSe5mCTqeYLVZr4GEVxj76jA48br33gg0+INGFtFk6HAll039UUKXSr0
+      9JokSQI11qvmY5zCm2U/VHUCAwEAAQ==
+      -----END PUBLIC KEY-----
