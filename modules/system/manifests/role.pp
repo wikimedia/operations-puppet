@@ -1,37 +1,30 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Define: system::role
+# @summary
+#   Adds a banner message to the server MOTD (usually displayed on login)
+#   that identifies the role of the server.
 #
-# Adds a banner message to the server MOTD (usually displayed on login)
-# that identifies the role of the server.
+# @param ensure Present or absent. (Default: present.)
+# @param description A human-readable description of the role. Optional.
 #
-# === Parameters
-#
-# [*ensure*]
-#   Present or absent. (Default: present.)
-#
-# [*description*]
-#   A human-readable description of the role. Optional.
-#
-# === Example
-#
+# @example
 #  system::role { 'analytics::hadoop::master':
 #    description => 'Hadoop Master (NameNode & ResourceManager)'
 #  }
 #
 define system::role(
-    $ensure      = present,
-    $description = undef,
+    Wmflib::Ensure      $ensure      = present,
+    Optional[String[1]] $description = undef,
 ) {
-    $message = $description ? {
-        undef   => "${::hostname} is ${title}",
-        default => "${::hostname} is a ${description} (${title})",
-    }
-
     $role_title = regsubst($title, '^role::', '')
 
-    motd::script { "role-${role_title}":
+    $message = $description ? {
+        undef   => "${facts['networking']['hostname']} is ${role_title}",
+        default => "${facts['networking']['hostname']} is a ${description} (${role_title})",
+    }
+
+    motd::message { "role-${role_title}":
         ensure   => $ensure,
         priority => 5,
-        content  => "#!/bin/sh\ncat <<'EOF'\n${message}\nEOF\n",
+        message  => $message,
     }
 }
