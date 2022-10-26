@@ -25,7 +25,7 @@ class profile::toolforge::grid::base (
     file { $sysdir:
         ensure  => directory,
         owner   => 'root',
-        group   => "${::labsproject}.admin",
+        group   => "${::wmcs_project}.admin",
         mode    => '2775',
         require => Exec['ensure-grid-is-on-NFS'],
     }

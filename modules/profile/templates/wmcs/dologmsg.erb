@@ -36,9 +36,9 @@ if [[ $SUDO_USER ]]; then
     message="<$SUDO_USER> $message"
 fi
 
-labsproject=$(</etc/wmcs-project)
-if [[ $labsproject == "tools" ]] && ! [[ $USER == "${labsproject}."* ]]; then
-    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$USER"
+wmcs_project=$(</etc/wmcs-project)
+if [[ $wmcs_project == "tools" ]] && ! [[ $USER == "${wmcs_project}."* ]]; then
+    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$wmcs_project" "$USER"
     usage
     exit 1
 fi

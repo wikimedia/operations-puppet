@@ -21,10 +21,10 @@ base passwd <%= @ldapconfig["users_rdn"] %>,ou=servicegroups,<%= @ldapconfig["ba
 base shadow <%= @ldapconfig["users_rdn"] %>,ou=servicegroups,<%= @ldapconfig["basedn"] %>
 base group ou=servicegroups,<%= @ldapconfig["basedn"] %>
 <% elsif @realm == "labs" -%>
-<% if has_variable?("@labsproject") then -%>
-base passwd <%= @ldapconfig["users_rdn"] %>,cn=<%= @labsproject %>,ou=projects,<%= @ldapconfig["basedn"] %>
-base shadow <%= @ldapconfig["users_rdn"] %>,cn=<%= @labsproject %>,ou=projects,<%= @ldapconfig["basedn"] %>
-base group <%= @ldapconfig["groups_rdn"] %>,cn=<%= @labsproject %>,ou=projects,<%= @ldapconfig["basedn"] %>
+<% if has_variable?("@wmcs_project") then -%>
+base passwd <%= @ldapconfig["users_rdn"] %>,cn=<%= @wmcs_project %>,ou=projects,<%= @ldapconfig["basedn"] %>
+base shadow <%= @ldapconfig["users_rdn"] %>,cn=<%= @wmcs_project %>,ou=projects,<%= @ldapconfig["basedn"] %>
+base group <%= @ldapconfig["groups_rdn"] %>,cn=<%= @wmcs_project %>,ou=projects,<%= @ldapconfig["basedn"] %>
 <% end %><% end -%>
 
 # The DN to bind with for normal lookups.

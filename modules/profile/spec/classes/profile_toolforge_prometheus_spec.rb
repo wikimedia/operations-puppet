@@ -8,7 +8,7 @@ describe 'profile::toolforge::prometheus' do
           let(:facts) {
             os_facts.merge(
               {
-                'labsproject' => project,
+                'wmcs_project' => project,
               }
             )
           }

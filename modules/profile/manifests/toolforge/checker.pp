@@ -139,9 +139,9 @@ class profile::toolforge::checker {
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
         'ETCD_K8S' => [
-            "tools-k8s-etcd-13.${::labsproject}.eqiad1.wikimedia.cloud",
-            "tools-k8s-etcd-14.${::labsproject}.eqiad1.wikimedia.cloud",
-            "tools-k8s-etcd-15.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-13.${::wmcs_project}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-14.${::wmcs_project}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-15.${::wmcs_project}.eqiad1.wikimedia.cloud",
         ],
         'ETCD_AUTH' => {
             'KEY'  => $etcd_cert_priv,
@@ -149,7 +149,7 @@ class profile::toolforge::checker {
             'CA'   => $etcd_cert_ca,
         },
         'NFS_HOME_PATH' => '/data/project/toolschecker/nfs-test/',
-        'PROJECT'       => $::labsproject,
+        'PROJECT'       => $::wmcs_project,
         'TOOLS_DOMAIN'  => 'tools.wmflabs.org',
     }
     file { "${install_dir}/config.yaml":
@@ -205,9 +205,9 @@ class profile::toolforge::checker {
     # Allow the www-data user to perform actions as related tools.
     sudo::user { 'www-data':
         privileges => [
-            "ALL=(${::labsproject}.toolschecker) NOPASSWD: ALL",
-            "ALL=(${::labsproject}.toolschecker-k8s-ws) NOPASSWD: ALL",
-            "ALL=(${::labsproject}.toolschecker-ge-ws) NOPASSWD: ALL",
+            "ALL=(${::wmcs_project}.toolschecker) NOPASSWD: ALL",
+            "ALL=(${::wmcs_project}.toolschecker-k8s-ws) NOPASSWD: ALL",
+            "ALL=(${::wmcs_project}.toolschecker-ge-ws) NOPASSWD: ALL",
         ],
     }
 
@@ -219,7 +219,7 @@ class profile::toolforge::checker {
     file { '/data/project/toolschecker/nfs-test':
         ensure => directory,
         owner  => 'www-data',
-        group  => "${::labsproject}.toolschecker",
+        group  => "${::wmcs_project}.toolschecker",
         mode   => '0755',
         before => File[$wsgi_file],
     }

@@ -13,7 +13,7 @@ class profile::toolforge::grid::node::compute (
 
     motd::script { 'exechost-banner':
         ensure => present,
-        source => "puppet:///modules/profile/toolforge/40-${::labsproject}-exechost-banner.sh",
+        source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-exechost-banner.sh",
     }
 
     file { "${profile::toolforge::grid::base::store}/execnode-${facts['fqdn']}":

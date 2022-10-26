@@ -3,9 +3,9 @@
 # modules/toolforge/templates/automated-toolfoge-tests.yaml.erb
 ---
 - envvars:
-  - PROJECT: <%= @labsproject %>
+  - PROJECT: <%= @wmcs_project %>
     TOOLNAME: automated-toolforge-tests
-    SUDO: sudo -niu <%= @labsproject %>.automated-toolforge-tests
+    SUDO: sudo -niu <%= @wmcs_project %>.automated-toolforge-tests
     JOB_NAME: grid-test-script
     JOB_SCRIPT: ./grid-test-script.sh
     SCRIPT_FULLPATH: /data/project/automated-toolforge-tests/grid-test-script.sh
@@ -22,12 +22,12 @@
     TJF_SCRIPT_FULLPATH: /data/project/automated-toolforge-tests/tjf-test-script.sh
     TJF_SCRIPT_SHORTPATH: ./tjf-test-script.sh
     TJF_IMAGE: tf-bullseye-std
-<% if @labsproject == 'toolsbeta' -%>
+<% if @wmcs_project == 'toolsbeta' -%>
     # toolsbeta using special cloudstore VM NFS server
     NFS_PATH: /mnt/nfs/nfs-01-toolsbeta-project/automated-toolforge-tests
     TOOLFORGE_DOMAIN: toolsbeta.wmflabs.org
 <% end -%>
-<% if @labsproject == 'tools' -%>
+<% if @wmcs_project == 'tools' -%>
     NFS_PATH: /mnt/nfs/labstore-secondary-tools-project/automated-toolforge-tests
     TOOLFORGE_DOMAIN: toolforge.org
 <% end -%>

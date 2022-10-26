@@ -263,11 +263,11 @@ profile::keyholder::server::agents:
 
   phabricator:
     trusted_groups:
-      - project-%{::labsproject}
+      - project-%{::wmcs_project}
 
   eventlogging:
     trusted_groups:
-      - project-%{::labsproject}
+      - project-%{::wmcs_project}
 
   deploy-service:
     trusted_groups:
@@ -275,15 +275,15 @@ profile::keyholder::server::agents:
 
   dumpsdeploy:
     trusted_groups:
-      - project-%{::labsproject}
+      - project-%{::wmcs_project}
 
   analytics_deploy:
     trusted_groups:
-      - project-%{::labsproject}
+      - project-%{::wmcs_project}
 
   scap:
     trusted_groups:
-      - project-%{::labsproject}
+      - project-%{::wmcs_project}
 
 # deployment-prep scap::source declarations.  These are created
 # by the role deployment::server.  Each source listed here

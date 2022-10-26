@@ -20,7 +20,7 @@ class kubeadm::helm (
             # so that we can more easily apply per-project (tools, toolsbeta, paws, ...)
             # settings in our Helmfiles
             # for more details, see: https://github.com/roboll/helmfile#environment
-            'HELMFILE_ENVIRONMENT' => $::labsproject,
+            'HELMFILE_ENVIRONMENT' => $::wmcs_project,
         },
     }
 }

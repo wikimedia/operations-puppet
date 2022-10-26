@@ -33,8 +33,8 @@ export INSTANCENAME=<%= @hostname %>
 <% end %>
 PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 
-<% if has_variable?("labsproject") then %>
-export INSTANCEPROJECT=<%= @labsproject %>
+<% if has_variable?("wmcs_project") then %>
+export INSTANCEPROJECT=<%= @wmcs_project %>
 <% end %>
 
 # Commented out, don't overwrite xterm -T "title" -n "icontitle" by default.

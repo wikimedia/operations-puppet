@@ -19,7 +19,7 @@ class profile::toolforge::bastion () {
 
     motd::script { 'bastion-banner':
         ensure => present,
-        source => "puppet:///modules/profile/toolforge/40-${::labsproject}-bastion-banner.sh",
+        source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-bastion-banner.sh",
     }
 
     package { 'mosh':

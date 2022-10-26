@@ -17,7 +17,7 @@
 #
 #   [*allowed_posix_groups*]
 #       Users in these groups will be allowed to log into JupyterHub.
-#       Default: admin::groups in production, project-$labsproject in Cloud VPS.
+#       Default: admin::groups in production, project-$wmcs_project in Cloud VPS.
 #
 #   [*admin_posix_groups*]
 #       Users in these groups will be allowed admin access to JupyterHub.

@@ -552,7 +552,7 @@ profile::openstack::base::cinder::backup::path: /dev/null
 profile::openstack::base::cinder::backup::user: nobody
 
 # To be overridden in Pontoon stacks
-public_domain: "%{::labsproject}.wmcloud.org"
+public_domain: "%{::wmcs_project}.wmcloud.org"
 
 profile::trafficserver::backend::trusted_ca_path: "/etc/ssl/certs/ats_trusted_ca.pem"
 profile::trafficserver::backend::trusted_ca_source: "%{facts.puppet_config.localcacert}"

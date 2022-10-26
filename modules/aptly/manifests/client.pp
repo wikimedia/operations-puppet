@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 class aptly::client(
-    $servername="${::labsproject}-packages.${::labsproject}.${::site}.wmflabs",
+    $servername="${::wmcs_project}-packages.${::wmcs_project}.${::site}.wmflabs",
     $source=false,
     $components='main',
     $protocol='http',
 ) {
     apt::repository { 'project-aptly':
         uri        => "${protocol}://${servername}/repo",
-        dist       => "${::lsbdistcodename}-${::labsproject}",
+        dist       => "${::lsbdistcodename}-${::wmcs_project}",
         components => $components,
         source     => $source,
         trust_repo => true,

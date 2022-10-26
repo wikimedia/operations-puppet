@@ -50,7 +50,7 @@
 #   Kafka cluster name.  This should be the non DC/project suffixed cluster name,
 #   e.g. main, aggregate, simple, etc.  The kafka_cluster_name() puppet parser
 #   function will determine the proper full cluster name based on $::site
-#   and/or $::labsproject.  Hiera: kafka_cluster_name
+#   and/or $::wmcs_project.  Hiera: kafka_cluster_name
 #
 # [*statsd*]
 #   Statsd URI to use for metrics.  Hiera: statsd

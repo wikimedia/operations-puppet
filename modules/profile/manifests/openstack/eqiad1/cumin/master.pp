@@ -30,9 +30,9 @@ class profile::openstack::eqiad1::cumin::master(
     Optional[Stdlib::Host] $puppetdb_host = lookup('profile::openstack::eqiad1::cumin::master::puppetdb_host', {default_value => undef}),
 ) {
         # TODO: simplify once hiera converts null properly to undef (this can be fixed now)
-        if $::labsproject and $project_ssh_priv_key_path and $project_ssh_priv_key_path != '' and $project_ssh_priv_key_path != 'undef' {
+        if $::wmcs_project and $project_ssh_priv_key_path and $project_ssh_priv_key_path != '' and $project_ssh_priv_key_path != 'undef' {
             $is_project = true
-            keyholder::agent { "cumin_openstack_${::labsproject}_master":
+            keyholder::agent { "cumin_openstack_${::wmcs_project}_master":
                 trusted_groups => ['root'],
                 priv_key_path  => $project_ssh_priv_key_path,
             }

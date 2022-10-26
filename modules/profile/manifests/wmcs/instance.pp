@@ -42,7 +42,7 @@ class profile::wmcs::instance(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => "${::labsproject}\n",
+        content => "${::wmcs_project}\n",
     }
 
     if debian::codename::le('bullseye') {
@@ -124,7 +124,7 @@ class profile::wmcs::instance(
     # Diamond isn't packaged for Bullseye so we'll have to live without it.
     if ! $diamond_remove and debian::codename::le('buster') {
         # Prefix labs metrics with project name
-        $path_prefix  = $::labsproject
+        $path_prefix  = $::wmcs_project
         $server_ip    = ipresolve($metrics_server, 4)
 
         class { 'diamond':

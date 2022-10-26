@@ -34,15 +34,15 @@ class profile::toolforge::prometheus (
 
     # the certs are used by prometheus to auth to the k8s API and are
     # generated in the k8s control nodes using the wmcs-k8s-get-cert script
-    $toolforge_certname = $::labsproject ? {
+    $toolforge_certname = $::wmcs_project ? {
         'tools'     => 'toolforge-k8s-prometheus',
         'toolsbeta' => 'toolsbeta-k8s-prometheus',
     }
 
-    $instance_prefix = $::labsproject
-    $instance_prefix_k8s = $::labsproject ? {
+    $instance_prefix = $::wmcs_project
+    $instance_prefix_k8s = $::wmcs_project ? {
         'toolsbeta' => 'toolsbeta-test',
-        default     => $::labsproject,
+        default     => $::wmcs_project,
     }
 
     $cert_pub  = "/etc/ssl/localcerts/${toolforge_certname}.crt"
@@ -175,7 +175,7 @@ class profile::toolforge::prometheus (
                     'username'          => $observer_user,
                     'password'          => $observer_password,
                     'domain_name'       => 'default',
-                    'project_name'      => pick($job['project'], $::labsproject),
+                    'project_name'      => pick($job['project'], $::wmcs_project),
                     'all_tenants'       => false,
                     'refresh_interval'  => '5m',
                     'port'              => $job['port'],
@@ -403,7 +403,7 @@ class profile::toolforge::prometheus (
         scrape_configs_extra           => $jobs,
         alertmanager_discovery_extra   => $alertmanager_discovery_extra,
         alerting_relabel_configs_extra => [
-            { 'target_label' => 'project', 'replacement' => $::labsproject, 'action' => 'replace' },
+            { 'target_label' => 'project', 'replacement' => $::wmcs_project, 'action' => 'replace' },
         ],
     }
 

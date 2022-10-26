@@ -5,7 +5,7 @@ class ldap::config::labs {
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = [ $hieraldapconfig['hostname'] ]
     $sudobasedn = $::realm ? {
-        'labs'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
+        'labs'       => "ou=sudoers,cn=${::wmcs_project},ou=projects,${basedn}",
         'production' => "ou=sudoers,${basedn}"
     }
 

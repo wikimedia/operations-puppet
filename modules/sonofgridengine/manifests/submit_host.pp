@@ -14,8 +14,8 @@ class sonofgridengine::submit_host {
         require => Package['gridengine-common'],
     }
 
-    sonofgridengine::resource { "submit-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
-        rname  => "${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud",
+    sonofgridengine::resource { "submit-${facts['hostname']}.${::wmcs_project}.eqiad1.wikimedia.cloud":
+        rname  => "${facts['hostname']}.${::wmcs_project}.eqiad1.wikimedia.cloud",
         dir    => 'submithosts',
         config => 'sonofgridengine/nothing.erb', # the content here doesn't actually matter
     }

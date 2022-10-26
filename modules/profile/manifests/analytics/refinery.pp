@@ -45,7 +45,7 @@ class profile::analytics::refinery (
     $log_dir = '/var/log/refinery'
     $log_dir_group = $::realm ? {
         'production' => 'analytics',
-        'labs'       => "project-${::labsproject}",
+        'labs'       => "project-${::wmcs_project}",
     }
 
     if $deploy_hadoop_config {

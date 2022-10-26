@@ -105,7 +105,7 @@ class profile::toolforge::proxy (
 
     ensure_packages('goaccess')  # webserver statistics, T121233
 
-    $graphite_metric_prefix = "${::labsproject}.reqstats"
+    $graphite_metric_prefix = "${::wmcs_project}.reqstats"
 
     file { '/usr/local/lib/python2.7/dist-packages/toolsweblogster.py':
         source => 'puppet:///modules/profile/toolforge/toolsweblogster.py',

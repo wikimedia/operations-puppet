@@ -11,7 +11,7 @@ class profile::toolforge::toolviews (
     # due to wrong or missing DB credentials, toolviews will produce cronspam
     # if not running in the tools project. If you want to run this in toolsbeta
     # make sure you provide relevant hiera keys and update the following if:
-    if $::labsproject == 'tools' {
+    if $::wmcs_project == 'tools' {
         class { '::toolforge::toolviews':
             enabled        => $enabled,
             mysql_host     => $mysql_host,

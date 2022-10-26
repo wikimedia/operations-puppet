@@ -24,7 +24,7 @@ class labs_bootstrapvz() {
             source  => 'puppet:///modules/labs_bootstrapvz/cloud-buster.manifest.yaml';
     }
 
-    $projectregex = "s/${::labsproject}/_PROJECT_/g"
+    $projectregex = "s/${::wmcs_project}/_PROJECT_/g"
     $fqdnregex = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master

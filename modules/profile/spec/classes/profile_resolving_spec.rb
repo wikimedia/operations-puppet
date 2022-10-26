@@ -6,7 +6,7 @@ describe 'profile::resolving' do
         facts.merge(
           {
             'networking' => facts[:networking].merge({'domain' => 'example.com'}),
-            'labsproject' => 'fun',
+            'wmcs_project' => 'fun',
           }
         )
       end

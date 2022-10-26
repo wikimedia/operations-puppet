@@ -24,7 +24,7 @@ class profile::toolforge::grid::cronrunner(
 
     motd::script { 'submithost-banner':
         ensure => present,
-        source => "puppet:///modules/profile/toolforge/40-${::labsproject}-submithost-banner.sh",
+        source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-submithost-banner.sh",
     }
 
     # We need to include exec environment here since the current
@@ -63,7 +63,7 @@ class profile::toolforge::grid::cronrunner(
     file { "${sysdir}/crontabs":
         ensure => directory,
         owner  => 'root',
-        group  => "${::labsproject}.admin",
+        group  => "${::wmcs_project}.admin",
         mode   => '0770',
     }
 
@@ -71,7 +71,7 @@ class profile::toolforge::grid::cronrunner(
         ensure    => directory,
         source    => '/var/spool/cron/crontabs',
         owner     => 'root',
-        group     => "${::labsproject}.admin",
+        group     => "${::wmcs_project}.admin",
         mode      => '0440',
         recurse   => true,
         show_diff => false,

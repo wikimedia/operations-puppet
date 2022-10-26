@@ -10,7 +10,7 @@ class profile::hadoop::yarn_proxy (
 
     $server_name = $::realm ? {
         'production' => 'yarn.wikimedia.org',
-        'labs'       => "yarn-${::labsproject}.${::site}.wmnet",
+        'labs'       => "yarn-${::wmcs_project}.${::site}.wmnet",
     }
 
     $resourcemanager_primary_host = $profile::hadoop::common::resourcemanager_hosts[0]

@@ -40,7 +40,7 @@ module Puppet::Parser::Functions
     realm = lookupvar('::realm')
 
     if realm == 'labs'
-      labsp = lookupvar('::labsproject')
+      labsp = lookupvar('::wmcs_project')
       "#{prefix}-#{labsp}"
     # Else expect that the caller wants the kafka cluster for prefix in the current datacenter.
     else

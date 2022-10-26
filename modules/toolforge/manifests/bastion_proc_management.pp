@@ -27,7 +27,7 @@
 # A accepting defaults, but setting the project correctly.
 #
 # class { 'toolforge::bastion_proc_management':
-#        project => $::labsproject,
+#        project => $::wmcs_project,
 #    }
 
 class toolforge::bastion_proc_management (

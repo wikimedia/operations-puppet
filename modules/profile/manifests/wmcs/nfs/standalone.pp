@@ -20,7 +20,7 @@ class profile::wmcs::nfs::standalone(
     # The prefix used to create an nfs server has a -count added, so truncating at
     #  the last dash should get us the original host prefix used for the service name
     $host_prefix = regsubst($::hostname, '-[^-]*$', '')
-    $nfs_service_name = "${host_prefix}.svc.${::labsproject}.${::wmcs_deployment}.wikimedia.cloud"
+    $nfs_service_name = "${host_prefix}.svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud"
 
     if ($cinder_attached) {
         $nfs_service_ip = ipresolve($nfs_service_name, 4)

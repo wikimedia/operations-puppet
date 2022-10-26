@@ -7,7 +7,7 @@ define sonofgridengine::join(
 ) {
 
     if $list {
-        file { "${sourcedir}/${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
+        file { "${sourcedir}/${facts['hostname']}.${::wmcs_project}.eqiad1.wikimedia.cloud":
             ensure  => file,
             owner   => 'root',
             group   => 'root',
@@ -15,7 +15,7 @@ define sonofgridengine::join(
             content => inline_template("<% @list.each do |g| -%><%= g %>\n<% end -%>"),
         }
     } else {
-        file { "${sourcedir}/${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
+        file { "${sourcedir}/${facts['hostname']}.${::wmcs_project}.eqiad1.wikimedia.cloud":
             ensure  => absent,
         }
     }

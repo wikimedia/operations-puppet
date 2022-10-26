@@ -6,22 +6,22 @@ defaults:
 hierarchy:
   - name: 'Http Yaml'
     data_hash: cloudlib::httpyaml
-    uri: "http://puppet-enc.cloudinfra.wmcloud.org:8100/v1/%{::labsproject}/node/%{facts.fqdn}"
+    uri: "http://puppet-enc.cloudinfra.wmcloud.org:8100/v1/%{::wmcs_project}/node/%{facts.fqdn}"
   - name: "cloud hierarchy"
     paths:
-      - "cloud/%{::wmcs_deployment}/%{::labsproject}/hosts/%{::hostname}.yaml"
-      - "cloud/%{::wmcs_deployment}/%{::labsproject}/common.yaml"
+      - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/hosts/%{::hostname}.yaml"
+      - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/common.yaml"
       - "cloud/%{::wmcs_deployment}.yaml"
       - "cloud.yaml"
   - name: "Secret hierarchy"
     paths:
       - "hosts/%{::trusted.certname}.yaml"
-      - "%{::labsproject}.yaml"
+      - "%{::wmcs_project}.yaml"
     datadir: "/etc/puppet/secret/hieradata"
   - name: "Private hierarchy"
     paths:
-      - "labs/%{::labsproject}/common.yaml"
-      - "%{::labsproject}.yaml"
+      - "labs/%{::wmcs_project}/common.yaml"
+      - "%{::wmcs_project}.yaml"
       - "labs.yaml"
     datadir: "/etc/puppet/private/hieradata"
   - name: "Common hierarchy"

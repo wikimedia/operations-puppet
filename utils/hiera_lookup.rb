@@ -54,7 +54,9 @@ def determine_scope
     unless bits.length == 4
       Kernel.abort('labs FQDN must be <hostname>.<project>.<site>.(wmflabs|labtest|cloud)')
     end
+    # labsproject will not be needed once nobody uses it, replaced by wmcs_project
     scope['::labsproject'] = bits[1]
+    scope['::wmcs_project'] = bits[1]
     scope['::site'] = bits[2]
   end
 

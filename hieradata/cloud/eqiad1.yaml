@@ -17,8 +17,8 @@ profile::monitoring::raid_check: false
 
 profile::resolving::domain_search:
   - "%{facts.networking.domain}"
-  - "%{::labsproject}.eqiad1.wikimedia.cloud"
-  - "%{::labsproject}.eqiad.wmflabs"
+  - "%{::wmcs_project}.eqiad1.wikimedia.cloud"
+  - "%{::wmcs_project}.eqiad.wmflabs"
   - "eqiad.wmflabs"
 
 profile::openstack::eqiad1::version: "victoria"
@@ -191,7 +191,7 @@ profile::trafficserver::backend::logs:
 profile::trafficserver::backend::default_lua_script: "default"
 
 zookeeper_clusters:
-  "%{::labsproject}":
+  "%{::wmcs_project}":
     hosts:
       "%{::fqdn}": 1
 
@@ -216,7 +216,7 @@ bigtop::hadoop::datanode_mounts:
 
 # Default to creating home directories for all
 # users in the current Labs Project.
-bigtop::hadoop::users::groups: project-%{::labsproject}
+bigtop::hadoop::users::groups: project-%{::wmcs_project}
 
 sudo_flavor: "sudoldap"
 labsldapconfig:

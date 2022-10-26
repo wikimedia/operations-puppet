@@ -10,7 +10,7 @@ class profile::toolforge::bastion::resourcecontrol(
     }
 
     class { 'toolforge::bastion_proc_management':
-        project => $::labsproject,
+        project => $::wmcs_project,
         dry_run => false,
     }
 

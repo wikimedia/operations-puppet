@@ -5,7 +5,7 @@
 class role::aptly::server {
     include ::aptly
 
-    aptly::repo { "stretch-${::labsproject}":
+    aptly::repo { "stretch-${::wmcs_project}":
         publish => true,
         user    => $::aptly::owner,
     }

@@ -93,7 +93,7 @@ class profile::wmcs::paws::prometheus (
                     'username'          => $observer_user,
                     'password'          => $observer_password,
                     'domain_name'       => 'default',
-                    'project_name'      => $::labsproject,
+                    'project_name'      => $::wmcs_project,
                     'all_tenants'       => false,
                     'refresh_interval'  => '5m',
                     'port'              => $job['port'],
@@ -259,7 +259,7 @@ class profile::wmcs::paws::prometheus (
         scrape_configs_extra           => $jobs,
         alertmanager_discovery_extra   => $alertmanager_discovery_extra,
         alerting_relabel_configs_extra => [
-            { 'target_label' => 'project', 'replacement' => $::labsproject, 'action' => 'replace' },
+            { 'target_label' => 'project', 'replacement' => $::wmcs_project, 'action' => 'replace' },
         ],
     }
 

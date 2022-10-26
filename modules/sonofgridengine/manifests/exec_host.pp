@@ -20,8 +20,8 @@ class sonofgridengine::exec_host(
         require   => Package['gridengine-exec'],
     }
 
-    sonofgridengine::resource { "exec-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
-        rname  => "${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud",
+    sonofgridengine::resource { "exec-${facts['hostname']}.${::wmcs_project}.eqiad1.wikimedia.cloud":
+        rname  => "${facts['hostname']}.${::wmcs_project}.eqiad1.wikimedia.cloud",
         dir    => 'exechosts',
         config => $config,
     }

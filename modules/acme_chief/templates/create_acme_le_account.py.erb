@@ -14,7 +14,7 @@ from acme_chief import acme_requests
 from cryptography.hazmat.primitives import serialization
 
 acc = acme_requests.ACMEAccount.create(
-    "acmechiefletsencrypt@<%= @labsproject %>.wmflabs.org",
+    "acmechiefletsencrypt@<%= @wmcs_project %>.wmflabs.org",
     directory_url="https://acme-v02.api.letsencrypt.org/directory",
 )
 print(

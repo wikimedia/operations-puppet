@@ -12,7 +12,7 @@ class profile::hadoop::backup::namenode(
 
     $backup_dir_group = $::realm ? {
         'production' => 'analytics-admins',
-        'labs'       => "project-${::labsproject}",
+        'labs'       => "project-${::wmcs_project}",
     }
 
     if !defined(File['/srv/backup']) {
