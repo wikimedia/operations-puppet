@@ -1,5 +1,6 @@
 class profile::kubernetes::master (
     String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
+    Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[String] $etcd_urls=lookup('profile::kubernetes::master::etcd_urls'),
     # List of hosts this is accessible to.
     # SPECIAL VALUE: use 'all' to have this port be open to the world
@@ -65,9 +66,8 @@ class profile::kubernetes::master (
     }
 
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler_config'
-    # $service_cert holds the FQDN for the load balanced API
     k8s::kubeconfig { $scheduler_kubeconfig:
-        master_host => $service_cert,
+        master_host => $master_fqdn,
         username    => 'system:kube-scheduler',
         token       => $scheduler_token,
         owner       => 'kube',
@@ -79,9 +79,8 @@ class profile::kubernetes::master (
     }
 
     $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager_config'
-    # $service_cert holds the FQDN for the load balanced API
     k8s::kubeconfig { $controllermanager_kubeconfig:
-        master_host => $service_cert,
+        master_host => $master_fqdn,
         username    => 'system:kube-controller-manager',
         token       => $controllermanager_token,
         owner       => 'kube',
