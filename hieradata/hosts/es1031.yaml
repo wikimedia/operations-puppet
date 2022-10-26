@@ -1,3 +1,4 @@
 # es1031
 mariadb::shard: 'es3'
 profile::mariadb::mysql_role: 'standalone'
+profile::monitoring::notifications_enabled: false
