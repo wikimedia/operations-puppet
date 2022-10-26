@@ -4,9 +4,9 @@
 # Sets up an Openstack instance-based NFS server
 #
 class profile::wmcs::nfs::standalone(
-    Boolean $cinder_attached = lookup('profile::wcms::nfs::standalone::cinder_attached'),
-    Boolean $host_scratch    = lookup('profile::wcms::nfs::standalone::host_scratch', {'default_value' => false}),
-    Array[String] $volumes   = lookup('profile::wcms::nfs::standalone::volumes'),
+    Boolean $cinder_attached = lookup('profile::wmcs::nfs::standalone::cinder_attached'),
+    Boolean $host_scratch    = lookup('profile::wmcs::nfs::standalone::host_scratch', {'default_value' => false}),
+    Array[String] $volumes   = lookup('profile::wmcs::nfs::standalone::volumes'),
 ) {
     require profile::openstack::eqiad1::observerenv
 

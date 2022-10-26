@@ -8,7 +8,7 @@ class profile::wmcs::nfs::primary(
   Array[Stdlib::Fqdn] $nfs_cluster = lookup('profile::wmcs::nfs::primary_cluster'),
   Hash[String, Stdlib::IP::Address::V4] $drbd_cluster = lookup('profile::wmcs::nfs::primary::drbd_cluster'),
   Stdlib::IP::Address::V4 $cluster_ip = lookup('profile::wmcs::nfs::primary::cluster_ip'),
-  Integer $cluster_ip_netmask         = lookup('profile::wcms::nfs::primary::cluster_ip_netmask'),
+  Integer $cluster_ip_netmask         = lookup('profile::wmcs::nfs::primary::cluster_ip_netmask'),
   Stdlib::IP::Address::V4 $subnet_gateway_ip = lookup('profile::wmcs::nfs::primary::subnet_gateway_ip'),
 ) {
     require profile::openstack::eqiad1::clientpackages
