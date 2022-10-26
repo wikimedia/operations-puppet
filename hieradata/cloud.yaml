@@ -128,9 +128,32 @@ profile::gitlab::runner::locked: false
 profile::gitlab::runner::run_untagged: true
 profile::gitlab::runner::tags: []
 profile::gitlab::runner::user: "root"
-# restricted firewall is not used in cloud
-profile::gitlab::runner::restrict_firewall: false
-profile::gitlab::runner::allowed_services: {}
+# restricted firewall is used in cloud
+profile::gitlab::runner::restrict_firewall: true
+profile::gitlab::runner::internal_ip_range: '172.16.0.0/21'
+profile::gitlab::runner::allowed_services:
+  dns:
+    host: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
+    port: 53
+    proto: udp
+  dns-1:
+    host: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
+    port: 53
+    proto: udp
+  docker-internal-dns:
+    host: '127.0.0.11'
+    port: 53
+    proto: udp
+  gitlab-https:
+    host: 'gitlab.wikimedia.org'
+    port: 443
+  gitlab-replica-https: # for failover between instances without restarting ferm on runners
+    host: 'gitlab-replica.wikimedia.org'
+    port: 443
+  gitlab-test:
+    host: 'gitlab.devtools.wmcloud.org'
+    port: 443
+    proto: tcp
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.10-1
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"

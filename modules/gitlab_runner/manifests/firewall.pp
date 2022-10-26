@@ -4,6 +4,7 @@ class gitlab_runner::firewall (
     Wmflib::Ensure                              $ensure            = present,
     Boolean                                     $restrict_firewall = false,
     Hash[String, Gitlab_runner::AllowedService] $allowed_services  = [],
+    Stdlib::IP::Address::V4::CIDR               $internal_ip_range = '10.0.0.0/8',
 ) {
 
     ferm::conf { 'docker-ferm':
@@ -18,7 +19,7 @@ class gitlab_runner::firewall (
         ferm::rule { 'docker-default-reject':
             ensure => $ensure,
             prio   => 19,
-            rule   => 'daddr 10.0.0.0/8 REJECT;',
+            rule   => "daddr ${internal_ip_range} REJECT;",
             desc   => 'reject all docker traffic to internal wmnet network',
             chain  => 'DOCKER-ISOLATION',
         }

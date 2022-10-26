@@ -24,6 +24,7 @@ profile::gitlab::runner::enable_exporter: true
 profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" -i '/(var/lib|run)/docker/*' --exclude-type=fuse.fuse_dfs --exclude-type=tracefs
 profile::gitlab::runner::user: 'gitlab-runner'
 profile::gitlab::runner::restrict_firewall: true
+profile::gitlab::runner::internal_ip_range: '10.0.0.0/8'
 profile::gitlab::runner::allowed_services:
   dns:
     host: 'recdns.anycast.wmnet'

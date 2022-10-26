@@ -35,7 +35,10 @@ domain ip {
 		}
 		chain POSTROUTING {
 			policy ACCEPT;
-                        outerface !docker0 saddr <%= @subnet %> MASQUERADE;
+			# NAT for default bridge network
+			outerface !docker0 saddr 172.17.0.0/16 MASQUERADE;
+			# NAT for gitlab-runner custom network
+			outerface !docker0 saddr <%= @subnet %> MASQUERADE;
 		}
 		chain DOCKER {
 			interface docker0 RETURN;

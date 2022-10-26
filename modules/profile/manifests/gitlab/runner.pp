@@ -34,6 +34,7 @@
 # @param allowed_images Images which are allowed to be executed in CI containers
 # @param allowed_docker_services Images which are allowed to be executed as services
 #   parallel to CI jobs
+# @param internal_ip_range IPv4 range which is blocked when restrict_firewall=true
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -70,6 +71,7 @@ class profile::gitlab::runner (
     Optional[String]                            $no_proxy           = lookup('profile::gitlab::runner::no_proxy'),
     Array[String]                               $allowed_images     = lookup('profile::gitlab::runner::allowed_images'),
     Array[String]                               $allowed_docker_services = lookup('profile::gitlab::runner::allowed_docker_services'),
+    Stdlib::IP::Address::V4::CIDR               $internal_ip_range  = lookup('profile::gitlab::runner::internal_ip_range'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -101,6 +103,7 @@ class profile::gitlab::runner (
         subnet            => $docker_subnet,
         restrict_firewall => $restrict_firewall,
         allowed_services  => $allowed_services,
+        internal_ip_range => $internal_ip_range,
     }
 
     if $gitlab_runner_user != 'root' {
