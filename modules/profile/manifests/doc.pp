@@ -3,6 +3,8 @@ class profile::doc (
     Stdlib::Fqdn        $active_host  = lookup('profile::doc::active_host'),
     Array[Stdlib::Fqdn] $all_hosts    = lookup('profile::doc::all_hosts'),
     Stdlib::Unixpath    $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
+    Array[Stdlib::Host] $gitlab_runner_hosts = lookup('profile::doc::gitlab_runner_hosts'),
+    Array[Stdlib::Host] $contint_hosts = lookup('profile::doc::contint_hosts'),
 ) {
 
     $deploy_user = 'deploy-ci-docroot'
@@ -108,7 +110,7 @@ class profile::doc (
         uid            => 'doc-uploader',
         gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
-        hosts_allow    => ['contint1001.wikimedia.org', 'contint2001.wikimedia.org'],
+        hosts_allow    => $gitlab_runner_hosts + $contint_hosts,
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
         require        => [

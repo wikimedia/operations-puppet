@@ -2,3 +2,5 @@ profile::doc::active_host: doc1002.eqiad.wmnet
 profile::doc::all_hosts:
   - doc1002.eqiad.wmnet
   - doc2001.codfw.wmnet
+profile::doc::gitlab_runner_hosts: "%{alias('profile::docker_registry_ha::registry::jwt_allowed_ips')}"
+profile::doc::contint_hosts: "%{alias('profile::ci::firewall::jenkins_master_hosts')}"
