@@ -8,16 +8,19 @@ profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
 profile::docker::builder::proxy_port: 8080
 profile::docker::builder::docker_pkg: true
 profile::docker::builder::known_uid_mappings:
+  root: 0
+  www-data: 33
   spark: 185
+  nobody: 65534
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
 profile::docker::builder::prune_images: true
 #profile::docker::builder::prod_build_password: defined in the private repo
-profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::contacts::role_contacts: ["Infrastructure Foundations"]
 # we need overlayfs
 profile::base::overlayfs: true
 
 profile::java::java_packages:
-  - version: '8'
-    variant: 'jdk'
-  - version: '11'
-    variant: 'jdk'
+  - version: "8"
+    variant: "jdk"
+  - version: "11"
+    variant: "jdk"
