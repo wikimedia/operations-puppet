@@ -1,0 +1,31 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+extensions:
+  health_check:
+
+receivers:
+  otlp: # https://github.com/open-telemetry/opentelemetry-collector/blob/main/receiver/otlpreceiver/README.md
+    protocols:
+      grpc:
+        endpoint: "localhost:4317"
+
+processors:
+  batch:
+
+exporters:
+  logging:
+  <% if defined?(@otel_gateway_otlp_port) %>
+  otlp: # https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter
+    endpoint: "<%= @otel_gateway_fqdn %>:<%= @otel_gateway_otlp_port %>"
+  <% end %>
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters:
+        - logging
+        <% if defined?(@otel_gateway_otlp_port) %>
+        - otlp
+        <% end %>
+  extensions: [health_check]

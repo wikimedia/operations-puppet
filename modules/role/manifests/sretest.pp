@@ -13,4 +13,5 @@ class role::sretest {
     include profile::base::production
     include profile::base::firewall
     include profile::sretest
+    include profile::opentelemetry::collector
 }
