@@ -23,6 +23,7 @@
 # @param fe_jemalloc_conf jemalloc configuration
 # @param thread_pool_max Maximum threads per pool
 # @param vsl_size Size of the space for VSL records (varnish default is 80M)
+# @param fe_mem_gb_reserved Frontend memory cache size will be set to total host memory minus this many GB
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix         = lookup('conftool_prefix'),
@@ -53,6 +54,7 @@ class profile::cache::varnish::frontend (
     Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
     Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
+    Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value' => undef}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -115,10 +117,12 @@ class profile::cache::varnish::frontend (
     if ($mem_gb < 90.0) {
         # virtuals, test hosts, etc...
         $fe_mem_gb = 1
+    } elsif ($fe_mem_gb_reserved != undef) {
+        $fe_mem_gb = ceiling($mem_gb - $fe_mem_gb_reserved)
     } else {
-        # Removing a constant factor before scaling helps with
-        # low-memory hosts, as they need more relative space to
-        # handle all the non-cache basics.
+        # Legacy calculation, from back when we had cache hosts with much
+        # smaller memory, and before solving multiple issues over time that
+        # lead to transient large memory usage spikes
         $fe_mem_gb = ceiling(0.7 * ($mem_gb - 100.0))
     }
 
