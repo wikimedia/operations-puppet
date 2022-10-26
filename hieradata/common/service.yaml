@@ -981,6 +981,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
+    role: "kubernetes::master"
     state: production
 
   labweb:
