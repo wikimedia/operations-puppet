@@ -101,6 +101,13 @@ class confd(
         user        => 'root',
     }
 
+    # Cleanup stale confd errors
+    # https://phabricator.wikimedia.org/T321678
+    tidy { '/var/run/confd-template':
+        age     => '30m',
+        matches => '.*.err',
+    }
+
     # Any change to a service configuration or to a template should reload confd.
     Confd::File <| |> ~> Service['confd']
 
