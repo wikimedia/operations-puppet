@@ -27,4 +27,7 @@ class profile::sretest {
         'tag'     => 'foo::bar::merge',
     })
     wmflib::resource::import('file', undef, { tag => 'foo::bar::merge' }, true)
+    motd::message { 'netbox status':
+        message => wmflib::ansi::fg('yellow Status', 'yellow').wmflib::ansi::attr('bold'),
+    }
 }
