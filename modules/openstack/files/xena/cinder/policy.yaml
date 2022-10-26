@@ -17,6 +17,7 @@
 "clusters:get": ""
 "volume:get_snapshot_metadata": ""
 "volume:get_all_snapshots": ""
+"volume:get_all_transfers": ""
 
 "backup:get_all": "is_admin:True"
 "backup:get": "is_admin:True"
