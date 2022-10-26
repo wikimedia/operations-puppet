@@ -63,22 +63,12 @@ class profile::analytics::postgresql (
     }
     # This is a simplistic method of creating users with an identically named database
     $users.each |$user, $pass| {
-      postgresql::user { "${user}-ipv4" :
+      postgresql::user { $user :
         ensure   => present,
         user     => $user,
         database => $user,
         password => $pass,
         cidr     => '10.0.0.0/8',
-        master   => $on_primary,
-      }
-    }
-    $users.each |$user, $pass| {
-      postgresql::user { "${user}-ipv6" :
-        ensure   => present,
-        user     => $user,
-        database => $user,
-        password => $pass,
-        cidr     => 'fc00::/7',
         master   => $on_primary,
       }
     }
