@@ -23,13 +23,12 @@ frontend lb
 backend <%= name %>
     mode tcp
     balance roundrobin
-    # <%= svc['backend_use_tls'] ? 'tls' : 'tcp' %> only to not spam request logs
     <%- if svc['backend_use_tls'] -%>
-    option ssl-hello-chk
+    # We don't verify certificates here to be closer to pybal
     <% else %>
     option tcp-check
     <% end %>
   <%- svc['hosts'].sort.each do |host| -%>
-    server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> check
+    server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> <%= svc['backend_use_tls'] ? 'check-ssl verify none' : 'check' %>
   <% end %>
 <% end %>
