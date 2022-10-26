@@ -7,7 +7,7 @@ class openstack::monitor::networktests (
     $usr = 'srv-networktests'
 
     systemd::sysuser { $usr:
-        home => "/var/lib/${usr}",
+        home_dir => "/var/lib/${usr}",
     }
 
     $basedir = '/etc/networktests'
