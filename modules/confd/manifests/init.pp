@@ -104,8 +104,7 @@ class confd(
     # Cleanup stale confd errors
     # https://phabricator.wikimedia.org/T321678
     tidy { '/var/run/confd-template':
-        age     => '30m',
-        matches => '.*.err',
+        age => '30m',
     }
 
     # Any change to a service configuration or to a template should reload confd.
