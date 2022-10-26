@@ -80,6 +80,8 @@ class profile::lists (
         content => epp('profile/lists/apache.conf.epp', $apache_conf),
     }
 
+    profile::auto_restarts::service { 'apache2': }
+
     # Add files in /var/www (docroot)
     file { '/var/www':
         source  => 'puppet:///modules/profile/lists/docroot/',
