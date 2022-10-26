@@ -107,6 +107,7 @@ class confd(
         age     => '30m',
         type    => 'mtime',
         recurse => true,
+        backup  => false,
     }
 
     # Any change to a service configuration or to a template should reload confd.
