@@ -1,19 +1,19 @@
-# Class: puppetmaster::scripts
-#
-# This class installs some puppetmaster server side scripts required for the
-# manifests
-#
-# == Parameters
-#
-# [*keep_reports_minutes*]
+# @summary
+#   This class installs some puppetmaster server side scripts required for the
+#   manifests
+# @param keep_reports_minutes
 #   Number of minutes to keep older reports for before deleting them.
 #   The job to remove these is run only every 8 hours, however,
 #   to prevent excess load on the prod puppetmasters.
+# @param has_puppetdb inidcate if the system uses puppetdb
+# @param upload_facts use the upload facts feature
+#   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Manually_update_cloud
+# @param http_proxy the http proxy to use
 class puppetmaster::scripts(
     Integer                              $keep_reports_minutes = 960, # 16 hours
     Boolean                              $has_puppetdb         = true,
     Boolean                              $upload_facts         = true,
-    Optional[Stdlib::HTTPUrl]            $http_proxy             = undef,
+    Optional[Stdlib::HTTPUrl]            $http_proxy           = undef,
 ){
     # export and sanitize facts for puppet compiler
     ensure_packages(['python3-requests', 'python3-yaml'])
@@ -23,7 +23,7 @@ class puppetmaster::scripts(
         default => 'puppet:///modules/puppetmaster/puppet-facts-export-puppetdb.py',
     }
     file { '/usr/local/bin/puppet-facts-export':
-        ensure => present,
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
