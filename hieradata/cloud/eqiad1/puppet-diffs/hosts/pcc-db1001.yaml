@@ -17,7 +17,7 @@ puppet_compiler::uploader::realms:
       y3hOQS4EW3C2l0tknlM07hwWU8KCzfoT+JBstH5FTwXYqlMfPANzrJIE5t7FNhu4
       kOHUQwj4Rl5xXaZ8GCV6feECAwEAAQ==
       -----END PUBLIC KEY-----
-  cloud:
+  cloudinfra:
     cloud-puppetmaster-03: |
       -----BEGIN PUBLIC KEY-----
       MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwbvrexHERg9qubWIqAIE
@@ -33,7 +33,6 @@ puppet_compiler::uploader::realms:
       Z2wTK1Jvcet458vmj3SA2jFxessEdPsIp6vK/x7onc5TJcjLPnnXvIrcrKtyV4nY
       HDi/OSkn4TkA9IpiqeUaFocCAwEAAQ==
       -----END PUBLIC KEY-----
-  cloudinfra:
     cloudinfra-internal-puppetmaster-02: |
       -----BEGIN PUBLIC KEY-----
       MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAvLbVSxOsgcn9uIIEqwHg
