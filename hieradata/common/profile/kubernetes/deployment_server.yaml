@@ -166,6 +166,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: image-suggestion
         - name: image-suggestion-deploy
+    thumbor:
+      usernames:
+        - name: thumbor
+        - name: thumbor-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
