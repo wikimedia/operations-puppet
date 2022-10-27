@@ -23,9 +23,8 @@ class statistics::rsyncd($hosts_allow)
         path        => '/home',
         read_only   => 'yes',
         list        => 'yes',
-        # Set uid/gid to false to override rsync::server::module's default of 0/0
-        uid         => false,
-        gid         => false,
+        uid         => 'nobody',
+        gid         => 'nobody',
         hosts_allow => $hosts_allow,
         auto_ferm   => true,
     }
@@ -36,9 +35,8 @@ class statistics::rsyncd($hosts_allow)
         path        => '/srv',
         read_only   => 'yes',
         list        => 'yes',
-        # Set uid/gid to false to override rsync::server::module's default of 0/0
-        uid         => false,
-        gid         => false,
+        uid         => 'nobody',
+        gid         => 'nobody',
         hosts_allow => $hosts_allow,
         auto_ferm   => true,
     }
