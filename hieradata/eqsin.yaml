@@ -5,7 +5,7 @@ prometheus_nodes:
   - prometheus5001.eqsin.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "digicert-2021"
+public_tls_unified_cert_vendor: "digicert-2022"
 
 mail_smarthost:
 - 'mx1001.wikimedia.org'
