@@ -18,6 +18,5 @@ class role::netmon {
     include ::profile::atlasexporter
     include ::profile::librenms
     include ::profile::rancid
-    include ::profile::smokeping
     include profile::netmon::prober
 }

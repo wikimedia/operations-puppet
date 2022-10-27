@@ -9,8 +9,6 @@ AllCops:
   StyleGuideCopsOnly: true
   DisplayCopNames: true
   Exclude:
-    # not a Ruby script
-    - 'modules/smokeping/files/smokeping.fcgi'
     # third party modules
     - 'vendor_modules/**/*'
     # bundler installation files
