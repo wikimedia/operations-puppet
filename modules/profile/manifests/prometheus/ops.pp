@@ -330,10 +330,10 @@ class profile::prometheus::ops (
       $config['site'] == $::site
     }
 
-    # netops::prometheus::mgmt { 'site':
-    #   targets      => $site_mgmt_hosts,
-    #   targets_file => "${targets_path}/smoke-mgmt_site.yaml",
-    # }
+    netops::prometheus::mgmt { 'site':
+      targets      => $site_mgmt_hosts,
+      targets_file => "${targets_path}/smoke-mgmt_site.yaml",
+    }
 
     # Checks for custom probes, defined in puppet
     prometheus::blackbox::import_checks { 'ops':
