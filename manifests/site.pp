@@ -1665,11 +1665,6 @@ node /labstore100[45]\.eqiad\.wmnet/ {
     # include ::profile::base::firewall
 }
 
-# T319217
-node /labstore100[67]\.wikimedia\.org/ {
-    role(spare::system)
-}
-
 node /cloudbackup100[34]\.eqiad\.wmnet/ {
     role(wmcs::openstack::eqiad1::backy)
 }

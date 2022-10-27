@@ -20,7 +20,7 @@ class labstore::monitoring::interfaces(
 
     monitoring::check_prometheus { 'network_out_saturated':
         description     => 'Outgoing network saturation',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000568/labstore1004-1005-1006-1007'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000568/labstore1004-1005'],
         query           => "sum(irate(node_network_transmit_bytes_total{instance=\"${::hostname}:9100\",device=\"${monitor_iface}\"}[5m]))",
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
@@ -33,7 +33,7 @@ class labstore::monitoring::interfaces(
 
     monitoring::check_prometheus { 'network_in_saturated':
         description     => 'Incoming network saturation',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000568/labstore1004-1005-1006-1007'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000568/labstore1004-1005'],
         query           => "sum(irate(node_network_receive_bytes_total{instance=\"${::hostname}:9100\",device=\"${monitor_iface}\"}[5m]))",
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
@@ -46,7 +46,7 @@ class labstore::monitoring::interfaces(
 
     monitoring::check_prometheus { 'high_iowait_stalling':
         description     => 'Persistent high iowait',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000568/labstore1004-1005-1006-1007'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000568/labstore1004-1005'],
         # iowait % across all CPUs
         query           => "100 * sum(irate(node_cpu_seconds_total{instance=\"${::hostname}:9100\",mode=\"iowait\"}[5m])) / scalar(count(node_cpu_seconds_total{mode=\"idle\",instance=\"${::hostname}:9100\"}))",
         warning         => 5,

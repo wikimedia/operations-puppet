@@ -43,7 +43,6 @@ profile::acme_chief::certificates:
         - 'dumps.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^labstore100[67]\.wikimedia\.org$'
         - '^clouddumps100[12]\.wikimedia\.org$'
     durum:
         CN: 'check.wikimedia-dns.org'
