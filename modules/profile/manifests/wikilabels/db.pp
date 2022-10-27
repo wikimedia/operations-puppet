@@ -3,7 +3,7 @@ class profile::wikilabels::db (
     Stdlib::Unixpath $root_dir = lookup('profile::wikilabels::db::root_dir', {default_value => '/srv/postgres'}),
 ){
     $pgversion = $::lsbdistcodename ? {
-        'bullseye' => 11,
+        'bullseye' => 13,
     }
 
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
@@ -11,7 +11,7 @@ class profile::wikilabels::db (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/profile/wikilabels/db/postgres/tuning.conf',
+        source  => 'puppet:///modules/profile/files/wikilabels/db/postgres/tuning.conf',
         require => Class['postgresql::server'],
     }
 
