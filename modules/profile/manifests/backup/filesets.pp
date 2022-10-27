@@ -166,10 +166,6 @@ class profile::backup::filesets(
         includes => [ '/var/lib/librenms', '/srv/librenms' ]
     }
 
-    bacula::director::fileset { 'smokeping':
-        includes => [ '/var/lib/smokeping', '/var/cache/smokeping' ]
-    }
-
     bacula::director::fileset { 'rancid':
         includes => [ '/var/lib/rancid' ]
     }

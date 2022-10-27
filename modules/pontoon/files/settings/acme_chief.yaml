@@ -7,8 +7,6 @@ profile::acme_chief::certificates:
     authorized_hosts: "%{alias('__hosts_for_role_alerting_host')}"
   librenms:
     authorized_hosts: "%{alias('__hosts_for_role_netmon')}"
-  smokeping:
-    authorized_hosts: "%{alias('__hosts_for_role_netmon')}"
 
 
 lookup_options:

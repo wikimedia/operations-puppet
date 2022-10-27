@@ -196,13 +196,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'dborch1001.wikimedia.org'
-    smokeping:
-        CN: 'smokeping.wikimedia.org'
-        SNI:
-        - 'smokeping.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^netmon\d{4}\.wikimedia\.org$'
     unified:
         CN: '*.wikipedia.org'
         SNI:
