@@ -14,6 +14,7 @@ ulsfo:
     cp4049.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4050.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4051.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp4052.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
   ncredir:
     ncredir4001.ulsfo.wmnet: [nginx]
     ncredir4002.ulsfo.wmnet: [nginx]

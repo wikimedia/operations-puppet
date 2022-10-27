@@ -88,6 +88,7 @@ cache::nodes:
       - 'cp4049.ulsfo.wmnet'
       - 'cp4050.ulsfo.wmnet'
       - 'cp4051.ulsfo.wmnet'
+      - 'cp4052.ulsfo.wmnet'
     eqsin:
       - 'cp5002.eqsin.wmnet'
       - 'cp5003.eqsin.wmnet'
