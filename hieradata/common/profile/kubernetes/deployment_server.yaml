@@ -138,6 +138,28 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-debug
         - name: mw-debug-deploy
+    mw-api-int:
+      usernames:
+        - name: mw-api-int
+        - name: mw-api-int-deploy
+    mw-api-ext:
+      usernames:
+        - name: mw-api-ext
+        - name: mw-api-ext-deploy
+    mw-jobrunner:
+      usernames:
+        - name: mw-jobrunner
+        - name: mw-jobrunner-deploy
+# Commented out until discussion of videoscaler on kubernetes is done
+# https://phabricator.wikimedia.org/T321899
+#    mw-videoscaler:
+#      usernames:
+#        - name: mw-videoscaler
+#        - name: mw-videoscaler-deploy
+    mw-web:
+      usernames:
+        - name: mw-web
+        - name: mw-web-deploy
     tegola-vector-tiles:
       usernames:
         - name: tegola-vector-tiles
