@@ -123,6 +123,7 @@ Components: main
  component/pygments
  component/python35
  component/python39
+ component/pyall
  component/redis2
  component/rsyslog
  component/rsyslog-k8s
