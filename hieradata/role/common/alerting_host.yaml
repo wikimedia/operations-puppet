@@ -85,3 +85,4 @@ profile::vopsbot::irc_channels:
 #    team: SRE
 #    vo_admin: false
 
+profile::dispatch::db_hostname: dispatch-be1001.eqiad.wmnet
