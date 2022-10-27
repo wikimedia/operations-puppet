@@ -11,7 +11,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     CLOUDGW_B_IP: 208.80.153.189
     CLOUDGW_VIRT_IP: 185.15.57.9
     CLOUDGW_WAN_IP: 208.80.153.190
-    CLOUDGW_A_FQDN: cloudgw2001-dev.codfw1dev.wikimediacloud.org
+    CLOUDGW_A_FQDN: cloudgw2003-dev.codfw1dev.wikimediacloud.org
     CLOUDGW_B_FQDN: cloudgw2002-dev.codfw1dev.wikimediacloud.org
     CLOUDGW_VIRT_FQDN: virt.cloudgw.codfw1dev.wikimediacloud.org
     CLOUDGW_WAN_FQDN: wan.cloudgw.codfw1dev.wikimediacloud.org

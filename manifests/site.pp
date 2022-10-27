@@ -361,13 +361,13 @@ node /^cloudgw100[12]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::cloudgw)
 }
 
-node /^cloudgw200[12]-dev\.codfw\.wmnet$/ {
+node /^cloudgw200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::cloudgw)
 }
 
-# New cloudgw node T306854
-node 'cloudgw2003-dev.codfw.wmnet' {
-    role(insetup::wmcs)
+# we may repurpose this soon for a PoC (cloudlb)
+node 'cloudgw2001-dev.codfw.wmnet' {
+    role(spare::system)
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
