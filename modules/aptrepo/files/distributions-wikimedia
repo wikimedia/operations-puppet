@@ -128,7 +128,6 @@ Components: main
  component/rsyslog
  component/rsyslog-k8s
  component/spicerack
- component/trafficserver9
  component/wmf-sre-laptop
  thirdparty/amd-rocm42
  thirdparty/amd-rocm431

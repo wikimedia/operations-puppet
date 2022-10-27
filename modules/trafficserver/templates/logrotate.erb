@@ -1,11 +1,9 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%= @paths['logdir'] %>/*.log {
     daily
-<% if @is_ats9 -%>
     postrotate
       /bin/systemctl is-active --quiet <%= @service_name %>.service && /bin/kill -USR2 $(/bin/systemctl show --property MainPID --value <%= @service_name %>.service)
     endscript
-<% end -%>
     missingok
     nocreate
     rotate 28

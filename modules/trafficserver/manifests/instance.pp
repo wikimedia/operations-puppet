@@ -190,9 +190,6 @@
 #   * 1 Tracks IO Buffer Memory allocations and releases
 #   * 2 Tracks IO Buffer Memory and OpenSSL Memory allocations and releases
 #
-# [*is_ats9*]
-#   Whether the configuration for ATS9.x should be used instead of 8.x. (default: false)
-#
 # === Examples
 #
 #  trafficserver::instance { 'backend':
@@ -250,16 +247,12 @@ define trafficserver::instance(
     Integer[0,1]                                    $x_forwarded_for         = 0,
     Boolean                                         $systemd_hardening       = true,
     Optional[Integer[0,2]]                          $res_track_memory        = undef,
-    Boolean                                         $is_ats9                 = false,
 ) {
 
     # trafficserver::instance can be defined multiple times we need to make sure
     # we only initiate the trafficserver class once
-    if !defined(Class['trafficserver']) {
-        class { 'trafficserver':
-          install_ats9 => $is_ats9,
-        }
-    }
+    require trafficserver
+
     $user = $trafficserver::user  # needed by udev_storage.rules.erb and records.config.erb
 
     if !defined('$http_port') and !defined('$https_port') {
@@ -323,16 +316,12 @@ define trafficserver::instance(
 
     # needed by plugin.config.erb
     $compress_config_path = "${paths['sysconfdir']}/compress.config"
-    $_logging = {
+    $logging = { 'logging' => {
         'formats' => $log_formats,
         'filters' => $log_filters,
         'logs'    => $logs.filter |$log| { $log['ensure'] == 'present' }.map |$log| { $log.delete('ensure') },
-    }.filter |$value| { !$value[1].empty }
+    }.filter |$value| { !$value[1].empty } }
 
-    $logging = $is_ats9 ? {
-        true    => {'logging' => $_logging},
-        default => $_logging,
-    }
 
     ## Config files
     file {
@@ -382,24 +371,12 @@ define trafficserver::instance(
           require => File[$error_template_path];
     }
 
-    # ATS 9.x uses YAML files for configuration but we need backward
-    # compatibility with ATS 8.x for now.
-    if $is_ats9 {
-        file { "${paths['sysconfdir']}/ip_allow.yaml":
-            content => template('trafficserver/ip_allow.yaml.erb'),
-            owner   => $trafficserver::user,
-            mode    => '0400',
-            require => $config_requires,
-            notify  => Service[$service_name],
-        }
-    } else {
-        file { "${paths['sysconfdir']}/ip_allow.config":
-            content => template('trafficserver/ip_allow.config.erb'),
-            owner   => $trafficserver::user,
-            mode    => '0400',
-            require => $config_requires,
-            notify  => Service[$service_name],
-        }
+    file { "${paths['sysconfdir']}/ip_allow.yaml":
+        content => template('trafficserver/ip_allow.yaml.erb'),
+        owner   => $trafficserver::user,
+        mode    => '0400',
+        require => $config_requires,
+        notify  => Service[$service_name],
     }
 
     if $enable_compress {

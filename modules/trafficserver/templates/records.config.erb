@@ -13,14 +13,9 @@ CONFIG proxy.config.http.insert_squid_x_forwarded_for INT <%= @x_forwarded_for %
 CONFIG proxy.config.http.response_server_enabled INT 2
 
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
-<% unless @is_ats9 -%>
-CONFIG proxy.config.disable_configuration_modification INT 1
-<% end -%>
 
-<% if @is_ats9 -%>
 CONFIG proxy.config.exec_thread.autoconfig.scale FLOAT 1.5
 CONFIG proxy.config.plugin.dynamic_reload_mode INT 0
-<% end -%>
 CONFIG proxy.config.plugin.lua.max_states INT <%= @max_lua_states %>
 
 <% if @res_track_memory -%>
@@ -32,11 +27,7 @@ CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connecti
 CONFIG proxy.config.net.sock_option_flag_in INT <%= @network_settings['sock_option_flag_in'] %>
 CONFIG proxy.config.net.default_inactivity_timeout INT <%= @network_settings['default_inactivity_timeout'] %>
 CONFIG proxy.config.net.max_connections_in INT <%= @network_settings['max_connections_in'] %>
-<% if @is_ats9 -%>
 CONFIG proxy.config.net.max_requests_in INT <%= @network_settings['max_requests_in'] %>
-<% else -%>
-CONFIG proxy.config.net.max_connections_active_in INT <%= @network_settings['max_connections_active_in'] %>
-<% end -%>
 <% end -%>
 <% if @h2_settings -%>
 # HTTP/2 settings
@@ -111,9 +102,6 @@ CONFIG proxy.config.http.insert_age_in_response INT 0
 
 <% if @parent_rules and @parent_rules != [] -%>
 # Parent proxy
-<% unless @is_ats9 -%>
-CONFIG proxy.config.http.parent_proxy_routing_enable INT 1
-<% end -%>
 CONFIG proxy.config.http.parent_proxy.self_detect INT 0
 CONFIG proxy.config.http.parent_proxy.retry_time INT 1
 CONFIG proxy.config.http.no_dns_just_forward_to_parent INT <%= @disable_dns_resolution %>
@@ -257,12 +245,7 @@ CONFIG proxy.config.ssl.client.TLSv1_3.cipher_suites STRING <%= @outbound_tls_se
 CONFIG proxy.config.ssl.client.groups_list STRING <%= @outbound_tls_settings['common']['groups_list'] %>
 <% end -%>
 <% if @outbound_tls_settings['verify_origin'] -%>
-<% if @is_ats9 -%>
 CONFIG proxy.config.ssl.client.verify.server.policy STRING <%= @outbound_tls_settings['verify_server_policy'] %>
-<% else -%>
-# Origin server certificate validation settings
-CONFIG proxy.config.ssl.client.verify.server INT 1
-<% end -%>
 <% if @outbound_tls_settings['cacert_dirpath'] -%>
 CONFIG proxy.config.ssl.client.CA.cert.path STRING <%= @outbound_tls_settings['cacert_dirpath'] %>
 <% end -%>

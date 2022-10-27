@@ -4,5 +4,4 @@ type Trafficserver::Mapping_rule = Struct[{
     'target'      => String,
     'replacement' => String,
     'params'      => Optional[Array[String]],
-    'params_ats9' => Optional[Array[String]],
 }]
