@@ -7,13 +7,6 @@
 # resulting in sysctl trying to configure this before the interface exists
 # See T305494 for details.
 
-auto <%= @nic_dataplane %>
-iface <%= @nic_dataplane %> inet manual
-    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>.forwarding=1
-    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>.rp_filter=0
-    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>.accept_ra=0
-    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>.forwarding=1
-
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
