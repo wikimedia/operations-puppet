@@ -34,9 +34,7 @@ enforcer = policy.Enforcer(cfg.CONF)
 enforcer.register_defaults(
     [
         policy.RuleDefault("admin", "role:admin"),
-        policy.RuleDefault(
-            "admin_or_projectadmin", "rule:admin or role:projectadmin"
-        ),
+        policy.RuleDefault("admin_or_projectadmin", "rule:admin or role:projectadmin"),
         policy.RuleDefault("prefix:index", ""),
         policy.RuleDefault("prefix:view", ""),
         policy.RuleDefault("prefix:create", "rule:admin_or_projectadmin"),
@@ -140,9 +138,7 @@ def before_request():
         charset="utf8",
     )
 
-    g.allowed_writers = [
-        writer.strip() for writer in cfg.CONF.enc.allowed_writers.split(",")
-    ]
+    g.allowed_writers = [writer.strip() for writer in cfg.CONF.enc.allowed_writers.split(",")]
 
 
 @app.teardown_request
@@ -206,9 +202,7 @@ def get_all_projects():
         cur.close()
 
 
-@app.route(
-    "/v1/<string:project>/prefix/<string:prefix>/roles", methods=["POST"]
-)
+@app.route("/v1/<string:project>/prefix/<string:prefix>/roles", methods=["POST"])
 @key.login_required
 def set_roles(project, prefix):
     enforce_policy("prefix:update", project)
@@ -230,9 +224,7 @@ def set_roles(project, prefix):
 
     if type(roles) is not list:
         return (
-            dump_with_requested_format(
-                {"error": "Provided YAML should be a list"}
-            ),
+            dump_with_requested_format({"error": "Provided YAML should be a list"}),
             400,
         )
 
@@ -293,9 +285,7 @@ def get_hiera(project, prefix):
         cur.close()
 
 
-@app.route(
-    "/v1/<string:project>/prefix/<string:prefix>/hiera", methods=["POST"]
-)
+@app.route("/v1/<string:project>/prefix/<string:prefix>/hiera", methods=["POST"])
 @key.login_required
 def set_hiera(project, prefix):
     enforce_policy("prefix:update", project)
@@ -420,12 +410,7 @@ def get_prefixes(project):
         )
         # Do the inverse of _preprocess_prefix, so callers get a consistent view
         return dump_with_requested_format(
-            {
-                "prefixes": [
-                    "_" if r[0] == b"" or r[0] == "" else r[0]
-                    for r in cur.fetchall()
-                ]
-            }
+            {"prefixes": ["_" if r[0] == b"" or r[0] == "" else r[0] for r in cur.fetchall()]}
         )
     finally:
         cur.close()
@@ -448,12 +433,7 @@ def get_prefixes_for_project_and_role(project, role):
         )
         # Do the inverse of _preprocess_prefix, so callers get a consistent view
         return dump_with_requested_format(
-            {
-                "prefixes": [
-                    "_" if r[0] == b"" or r[0] == "" else r[0]
-                    for r in cur.fetchall()
-                ]
-            }
+            {"prefixes": ["_" if r[0] == b"" or r[0] == "" else r[0] for r in cur.fetchall()]}
         )
     finally:
         cur.close()
@@ -480,9 +460,7 @@ def get_prefixes_for_role(role):
             prefix = r[1]
             if project not in rdict:
                 rdict[project] = {"prefixes": []}
-            rdict[project]["prefixes"].append(
-                "_" if prefix == b"" or prefix == "" else r[1]
-            )
+            rdict[project]["prefixes"].append("_" if prefix == b"" or prefix == "" else r[1])
 
         return dump_with_requested_format(rdict)
     finally:
