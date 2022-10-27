@@ -5,10 +5,13 @@ class profile::smokeping (
 ){
 
     class{ '::smokeping':
+        ensure        => present,
         active_server => $active_server,
     }
 
-    class{ '::smokeping::web': }
+    class{ '::smokeping::web':
+        ensure => present,
+    }
 
     ferm::service { 'smokeping-http':
         proto => 'tcp',

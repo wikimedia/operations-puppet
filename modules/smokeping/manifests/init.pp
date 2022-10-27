@@ -9,16 +9,18 @@
 
 class smokeping(
     Stdlib::Fqdn $active_server,
+    Wmflib::Ensure $ensure = present,
 ) {
 
     ensure_packages(['smokeping', 'dnsutils'])
 
     file { '/etc/smokeping/config.d':
-        ensure  => directory,
+        ensure  => stdlib::ensure($ensure, 'directory'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['smokeping'],
+        force   => true,
     }
 
     if $active_server == $::fqdn {
@@ -29,7 +31,7 @@ class smokeping(
 
     ['Targets', 'General', 'pathnames', 'Alerts', 'Probes'].each |String $f| {
         file { "/etc/smokeping/config.d/${f}":
-            ensure  => present,
+            ensure  => $ensure,
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
@@ -40,12 +42,14 @@ class smokeping(
     }
 
     service { 'smokeping':
-        ensure  => running,
+        ensure  => stdlib::ensure($ensure, 'service'),
         require => [
             Package['smokeping'],
             File['/etc/smokeping/config.d'],
         ],
     }
 
-    profile::auto_restarts::service { 'smokeping': }
+    profile::auto_restarts::service { 'smokeping':
+        ensure => $ensure,
+    }
 }
