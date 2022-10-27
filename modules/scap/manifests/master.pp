@@ -30,8 +30,9 @@ class scap::master(
         recurse_submodules => true,
     }
 
-    git::clone { 'mediawiki/tools/scap':
+    git::clone { 'repos/releng/scap':
         ensure    => present,
+        source    => 'gitlab',
         directory => $scap_source_path,
         owner     => 'scap',
         group     => $deployment_group,
