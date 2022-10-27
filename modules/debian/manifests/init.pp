@@ -10,6 +10,7 @@ class debian {
             'stretch'  => 9,
             'buster'   => 10,
             'bullseye' => 11,
+            'bookworm' => 12,
         }
     }
     unless $facts['os']['name'] in $supported {
