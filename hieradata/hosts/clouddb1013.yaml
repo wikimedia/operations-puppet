@@ -2,4 +2,3 @@
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s1: 243G
   s3: 100G
-profile::monitoring::notifications_enabled: false
