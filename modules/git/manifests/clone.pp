@@ -81,7 +81,7 @@ define git::clone(
         'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
         'github'      => 'https://github.com/wikimedia/%s.git',
         'gerrit'      => 'https://gerrit.wikimedia.org/r/%s',
-        'gitlab'      => 'https://gitlab.wikimedia.org/%s',
+        'gitlab'      => 'https://gitlab.wikimedia.org/%s.git',
         default       => 'https://gerrit.wikimedia.org/r/%s',
     }
 
