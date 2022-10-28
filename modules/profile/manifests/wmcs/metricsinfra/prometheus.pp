@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::prometheus(
-    Array[Hash]  $projects          = lookup('profile::wmcs::metricsinfra::monitored_projects'),
     Stdlib::Fqdn $ext_fqdn          = lookup('profile::wmcs::metricsinfra::prometheus::ext_fqdn'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String       $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
