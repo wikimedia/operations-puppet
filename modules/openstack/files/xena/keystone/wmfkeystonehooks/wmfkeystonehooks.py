@@ -80,12 +80,12 @@ wmfkeystone_opts = [
     cfg.StrOpt('instance_ip_range',
                default='172.16.0.0/21',
                help='Range of instances to accept SSH from by default'),
-    cfg.StrOpt('prometheus_metricsinfra_reserved_ips',
-               default='',
-               help='Comma-separated list of IP addresses to be added to default security groups.'),
-    cfg.StrOpt('prometheus_metricsinfra_default_ports',
-               default='',
-               help='Comma-separated list of ports to be added to default security groups.')]
+    cfg.ListOpt('prometheus_metricsinfra_reserved_ips',
+                default='',
+                help='Comma-separated list of IP addresses to be added to default security groups'),
+    cfg.ListOpt('prometheus_metricsinfra_default_ports',
+                default='',
+                help='Comma-separated list of ports to be added to default security groups')]
 
 
 CONF = cfg.CONF
@@ -273,13 +273,8 @@ class KeystoneHooks(notifier.Driver):
             except (exceptions.NeutronClientException):
                 LOG.warning("Project security rule for ICMP already exists.")
 
-            metricsinfra_ips = [
-                ip for ip in CONF.wmfhooks.prometheus_metricsinfra_reserved_ips.split(',')
-                if ip.strip() != ''
-            ]
-
-            for ip in metricsinfra_ips:
-                for port_str in CONF.wmfhooks.prometheus_metricsinfra_default_ports.split(','):
+            for ip in CONF.wmfhooks.prometheus_metricsinfra_reserved_ips:
+                for port_str in CONF.wmfhooks.prometheus_metricsinfra_default_ports:
                     port = int(port_str)
 
                     try:
