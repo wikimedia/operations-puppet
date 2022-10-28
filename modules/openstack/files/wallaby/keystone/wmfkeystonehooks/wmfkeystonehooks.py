@@ -279,7 +279,7 @@ class KeystoneHooks(notifier.Driver):
             ]
 
             for ip in metricsinfra_ips:
-                for port_str in CONF.wmfhooks.prometheus_metricsinfra_reserved_ips.split(','):
+                for port_str in CONF.wmfhooks.prometheus_metricsinfra_default_ports.split(','):
                     port = int(port_str)
 
                     try:
