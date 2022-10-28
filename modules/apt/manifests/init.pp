@@ -167,14 +167,5 @@ class apt(
             mode   => '0555',
             source => 'puppet:///modules/apt/apt_audit_installed.py',
         }
-        file {'/usr/local/share/apt':
-            ensure => directory,
-        }
-
-        file {'/usr/local/share/apt/base_packages.txt':
-            ensure => file,
-            mode   => '0555',
-            source => "puppet:///modules/apt/base_packages.${facts['os']['distro']['codename']}",
-        }
     }
 }
