@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::base::labs(
     Wmflib::Ensure $unattended_wmf = lookup('profile::base::labs::unattended_wmf'),
     Wmflib::Ensure $unattended_distro = lookup('profile::base::labs::unattended_distro'),

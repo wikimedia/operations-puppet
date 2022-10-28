@@ -1,3 +1,4 @@
+## SPDX-License-Identifier: Apache-2.0
 # The puppet_ca_content variable here is intended to be used temporarily to assist with a puppetmaster
 # switch. You can set it at the same time as changing an agent's puppetmaster, obviously using the CA of
 # the new puppetmaster, and on the agent's last run with the old puppetmaster, it will replace the CA file

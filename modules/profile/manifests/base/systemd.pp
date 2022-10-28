@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::base::systemd(
     Stdlib::Yes_no $systemd_cpu_accounting = lookup('profile::base::systemd::cpu_accounting'),
     Stdlib::Yes_no $systemd_blockio_accounting = lookup('profile::base::systemd::blockio_accounting'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Temporary solution until someone has input about what to do with base::firewall
 # @param conftool_prefix the prfix used for conftool
 # @param defs_from_etcd build ferm definitions from requestctl etcd data

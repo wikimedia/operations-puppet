@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary install production specific classes
 # @param enable weather to enable or disabl this profile.  This is most often used to disable this profile
 #   in cloud environments which directly include a role:: class

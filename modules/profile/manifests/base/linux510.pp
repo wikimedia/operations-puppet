@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::base::linux510
 #
 # Setup Kernel 5.10 on Buster hosts. Used for special use cases:

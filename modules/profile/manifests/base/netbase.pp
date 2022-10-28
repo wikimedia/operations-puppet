@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::base::netbase(
     Boolean                       $manage_etc_services = lookup('profile::base::netbase::manage_etc_services'),
     Hash[String,Netbase::Service] $extra_services      = lookup('profile::base::netbase::extra_services'),

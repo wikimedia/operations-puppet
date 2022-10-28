@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Firewall logging class
 class profile::base::firewall::log (
     Integer                                  $log_burst     = lookup('profile::base::firewall::log::log_burst'),

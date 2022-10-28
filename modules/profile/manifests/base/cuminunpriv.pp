@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Make a server reachable by unprivileged Cumin (and eventually Spicerack)
 #
 # - Install the Kerberos client tools
