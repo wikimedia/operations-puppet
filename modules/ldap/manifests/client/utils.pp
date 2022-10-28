@@ -52,12 +52,11 @@ class ldap::client::utils($ldapconfig) {
             shell  => '/bin/false',
         }
     }
-    $python3_version = $facts['os']['release']['major'] ? {
-        '8'     => '3.4',
-        '9'     => '3.5',
-        '10'    => '3.7',
-        '11'    => '3.9',
-        default => '3.7',
+    $python3_version = debian::codename() ? {
+        'stretch'  => '3.5',
+        'buster'   => '3.7',
+        'bullseye' => '3.9',
+        default    => '3.7',
     }
 
     file { "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py":
