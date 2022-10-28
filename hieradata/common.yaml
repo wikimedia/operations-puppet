@@ -551,7 +551,7 @@ wikimedia_clusters:
     description: "etcd cluster for aux kubernetes cluster"
     sites:
       eqiad: []
-  aux-k8s-ctrl:
+  aux-k8s:
     description: "control-plane cluster for aux kubernetes cluster"
     sites:
       eqiad: []
