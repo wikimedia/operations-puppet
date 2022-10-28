@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::thanos::query
 #
 # Thanos query exposes a Prometheus-compatible query API over HTTP. Results are

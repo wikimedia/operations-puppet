@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::thanos::swift::frontend (
     Array $thanos_backends                   = lookup('profile::thanos::backends'),
     Array $thanos_frontends                  = lookup('profile::thanos::frontends'),

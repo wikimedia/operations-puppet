@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::thanos::query_frontend
 #
 # Configure the Thanos query-frontend component.

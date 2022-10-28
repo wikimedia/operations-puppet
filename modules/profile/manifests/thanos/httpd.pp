@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::thanos::httpd
 #
 # Setup httpd to proxy requests to thanos query running on localhost.

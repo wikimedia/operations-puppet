@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::thanos::compact (
     Stdlib::Fqdn $thanos_compact_host = lookup('profile::thanos::compact_host'),
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
