@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Parsoid RT testing services
 
 # This instantiates testreduce::server

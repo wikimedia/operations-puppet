@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This instantiates testreduce::client
 class profile::parsoid::rt_client(
     Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Parsoid testing rig: repo clone, nginx site, mysql client, firewall holes
 class profile::parsoid::testing (
     Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),

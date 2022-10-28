@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Testreduce server for aggregating and displaying visualdiff results
 
 # This instantiates testreduce::server

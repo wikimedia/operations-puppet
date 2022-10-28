@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # visual diff server for displaying/generating diffs
 # for a specific test item
 
