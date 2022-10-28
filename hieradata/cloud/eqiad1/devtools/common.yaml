@@ -13,6 +13,7 @@ profile::mail::default_mail_relay::enabled: false
 phabricator_logmail: false
 phabricator_deploy_user: 'deploy-devtools'
 phabricator::tools::dump: false
+profile::phabricator::main::dumps_rsync_clients: []
 
 docker::registry: 'localhost'
 
