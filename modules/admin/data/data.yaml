@@ -135,7 +135,8 @@ groups:
               wikigit, arlolra, dancy, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
-              aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer, kindrobot
+              aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer, kindrobot,
+              mfossati
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
@@ -161,7 +162,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, mepps, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, mfossati, essexigyan]
+              komla, sgimeno, essexigyan]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
