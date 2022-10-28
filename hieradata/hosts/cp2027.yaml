@@ -71,3 +71,5 @@ lookup_options:
   profile::cache::haproxy::vars:
     merge:
       strategy: unique
+
+profile::cache::haproxy::version: haproxy26
