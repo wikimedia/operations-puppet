@@ -1441,3 +1441,15 @@ host aux-k8s-etcd1003 {
     fixed-address aux-k8s-etcd1003.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
+
+host aux-k8s-ctrl1001 {
+    hardware ethernet aa:00:00:c2:fb:97;
+    fixed-address aux-k8s-ctrl1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
+host aux-k8s-ctrl1002 {
+    hardware ethernet aa:00:00:85:d6:b0;
+    fixed-address aux-k8s-ctrl1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
