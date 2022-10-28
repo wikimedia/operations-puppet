@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # setup a webserver for misc. apps
 class profile::miscweb::httpd (
     Stdlib::Fqdn $deployment_server = lookup('deployment_server'),
