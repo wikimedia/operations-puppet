@@ -148,6 +148,7 @@ Components: main
  thirdparty/grafana
  thirdparty/gvisor
  thirdparty/haproxy24
+ thirdparty/haproxy26
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-21
  thirdparty/kubeadm-k8s-1-22
@@ -185,6 +186,7 @@ Update:
  thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/haproxy24
+ thirdparty/haproxy26
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-21
  thirdparty/kubeadm-k8s-kubernetes.io-1-22
@@ -234,6 +236,7 @@ Components: main
  thirdparty/gitlab-runner
  thirdparty/gvisor
  thirdparty/haproxy24
+ thirdparty/haproxy26
  thirdparty/hwraid
  thirdparty/node14
  thirdparty/node16
@@ -262,6 +265,7 @@ Update:
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/haproxy24
+ thirdparty/haproxy26
  thirdparty/openstack-db
  thirdparty/tekton
 Description: Wikimedia packages for Debian bullseye

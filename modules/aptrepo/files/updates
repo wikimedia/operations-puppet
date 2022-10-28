@@ -370,11 +370,29 @@ Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
 
+Name: thirdparty/haproxy26
+Method: http://haproxy.debian.net
+Components: main>thirdparty/haproxy26
+UDebComponents:
+Suite: buster-backports-2.6
+Architectures: amd64
+VerifyRelease: 95A42FE8353525F9
+ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
+
 Name: thirdparty/haproxy24-bullseye
 Method: http://haproxy.debian.net
 Components: main>thirdparty/haproxy24
 UDebComponents:
 Suite: bullseye-backports-2.4
+Architectures: amd64
+VerifyRelease: 95A42FE8353525F9
+ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
+
+Name: thirdparty/haproxy26-bullseye
+Method: http://haproxy.debian.net
+Components: main>thirdparty/haproxy26
+UDebComponents:
+Suite: bullseye-backports-2.6
 Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
