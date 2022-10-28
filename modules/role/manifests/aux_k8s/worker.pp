@@ -16,5 +16,5 @@ class role::aux_k8s::worker {
     include profile::calico::kubernetes
 
     # LVS configuration, for service VIPs
-    include ::profile::lvs::realserver
+    # include ::profile::lvs::realserver
 }

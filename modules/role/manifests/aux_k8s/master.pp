@@ -18,5 +18,5 @@ class role::aux_k8s::master {
     include ::profile::calico::kubernetes
 
     # LVS configuration, for master VIPs
-    include ::profile::lvs::realserver
+    # include ::profile::lvs::realserver
 }
