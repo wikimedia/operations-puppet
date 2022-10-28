@@ -14,7 +14,7 @@ profile::cache::haproxy::acls:
   - name: concurrent_queries
     criterion: sc0_trackers(httpreqrate)
     operator: gt
-    value: '150'  # 150 concurrently-executing requests, since we use sc0_trackers
+    value: '200'  # 200 concurrently-executing requests, since we use sc0_trackers
   - name: excessive_new_conns
     criterion: sc1_conn_rate(newconnrate)
     operator: gt
@@ -22,29 +22,24 @@ profile::cache::haproxy::acls:
 
 profile::cache::haproxy::vars:
   - direction: request
-    name: req.dummy_connection_drop
+    name: req.dummy_concurrency_drop
     value: src,debug(would_drop,stderr)
     acl: backend_saturation concurrent_queries
-  - direction: request
-    name: req.dummy_excess_concurrency
-    value: src,debug(excess_concurrency,stderr)
-    acl: concurrent_queries
-
   # The incantations below will cause haproxy to log both the source IP and the occurrences-over-period together on the same line.
   # for example: Oct 18 21:02:52 cp2027 haproxy[25803]: [debug] excessive_new_conns: type=str <ip={::1} rate={2969}>
   # We use curly braces as the inner field delimiter as they aren't already used by syslog, haproxy's config parsing, or IPv6 addresses.
   - direction: request
-    name: req.dummy_excessive_new_conns_src
+    name: req.dummy_excess_concurrency_src
     value: src
-    acl: excessive_new_conns
+    acl: concurrent_queries
   - direction: request
-    name: req.dummy_excessive_new_conns_rate
-    value: sc1_conn_rate(newconnrate)
-    acl: excessive_new_conns
+    name: req.dummy_excess_concurrency_concur
+    value: sc0_trackers(httpreqrate)
+    acl: concurrent_queries
   - direction: request
     name: req.dummy_excessive_new_conns
-    value: str(),concat(ip={,req.dummy_excessive_new_conns_src,{\ ),concat(rate={,req.dummy_excessive_new_conns_rate,}),debug(excessive_new_conns,stderr)
-    acl: excessive_new_conns
+    value: str(),concat(ip={,req.dummy_excess_concurrency_src,}\ ),concat(concur={,req.dummy_excess_concurrency_concur,}),debug(excess_concurrency,stderr)
+    acl: concurrent_queries
 
 
 profile::cache::haproxy::sticktables:
