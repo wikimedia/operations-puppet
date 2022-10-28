@@ -23,11 +23,11 @@ function debian::codename::compare (
     }
 
     $operator ? {
-        '>='    => Integer($facts['os']['release']['major']) >= $valid_codenames[$codename],
-        '>'     => Integer($facts['os']['release']['major']) > $valid_codenames[$codename],
-        '<='    => Integer($facts['os']['release']['major']) <= $valid_codenames[$codename],
-        '<'     => Integer($facts['os']['release']['major']) < $valid_codenames[$codename],
-        '!='    => Integer($facts['os']['release']['major']) != $valid_codenames[$codename],
-        default => Integer($facts['os']['release']['major']) == $valid_codenames[$codename],
+        '>='    => $debian::major >= $valid_codenames[$codename],
+        '>'     => $debian::major > $valid_codenames[$codename],
+        '<='    => $debian::major <= $valid_codenames[$codename],
+        '<'     => $debian::major < $valid_codenames[$codename],
+        '!='    => $debian::major != $valid_codenames[$codename],
+        default => $debian::major == $valid_codenames[$codename],
     }
 }
