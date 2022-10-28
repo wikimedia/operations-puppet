@@ -269,3 +269,22 @@ SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: bookworm-wikimedia
+Codename: bookworm-wikimedia
+AlsoAcceptFor: bookworm bookworm-backports
+Version: 12
+Architectures: source amd64 i386
+Components: main
+# sorted list, leading whitespace matters!
+ thirdparty/hwraid
+UDebComponents: main
+Update:
+# sorted list, leading whitespace matters!
+Description: Wikimedia packages for Debian bookworm
+SignWith: 9D392D3FFADF18FB
+DebOverride: deb-override
+Log:
+ log
