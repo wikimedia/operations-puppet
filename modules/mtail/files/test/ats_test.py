@@ -47,6 +47,13 @@ class ATSBackendTest(unittest.TestCase):
         bucket_dict = dict(bucket_samples)
         self.assertEqual(bucket_dict['backend=swift.discovery.wmnet']['buckets']['0.15'], 4)
 
+        samples = self.store.get_samples('trafficserver_backend_cache_result_code_client_ttfb')
+        bucket_dict = dict(samples)
+        refresh_hit_labels = 'backend=swift.discovery.wmnet,cache_result_code=TCP_REFRESH_HIT'
+        miss_labels = 'backend=swift.discovery.wmnet,cache_result_code=TCP_MISS'
+        self.assertEqual(bucket_dict[refresh_hit_labels]['buckets']['0.15'], 1)
+        self.assertEqual(bucket_dict[miss_labels]['buckets']['0.15'], 3)
+
     def testPluginTimeMetrics(self):
         s = self.store.get_samples('trafficserver_backend_total_plugin_time')
         s_dict = dict(s)
