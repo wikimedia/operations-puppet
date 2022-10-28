@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Set up rsync server and base config
 class profile::dumps::distribution::rsync(
     $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Set up NFS Server for the public dumps servers
 # Firewall rules are managed separately through profile::wmcs::nfs::ferm
 

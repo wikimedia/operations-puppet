@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::datasets::dumpstatusfiles_sync(
     $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
 ) {

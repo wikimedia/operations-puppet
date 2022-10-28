@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::ferm(
     Array[Stdlib::Fqdn] $internal_rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
     $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),

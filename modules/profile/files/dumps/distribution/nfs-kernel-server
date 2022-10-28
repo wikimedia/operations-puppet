@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Number of servers to start up
 # To disable nfsv4 on the server, specify '--no-nfs-version 4' here
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::web (
     $is_primary_server = lookup('profile::dumps::distribution::web::is_primary_server'),
     $dumps_active_web_server = lookup('dumps_dist_active_web'),

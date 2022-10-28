@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::datasets::fetcher(
     $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),

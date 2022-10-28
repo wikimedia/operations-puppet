@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::rsyncer_peer(
     $rsyncer_settings = lookup('profile::dumps::rsyncer'),
     $peer_hosts = lookup('profile::dumps::peer_hosts'),

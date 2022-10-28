@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dumps::nfs(
     Hash $clients_all = lookup('dumps_nfs_clients'),
     String $clients_wanted = lookup('profile::dumps::nfs::clients_wanted'),
