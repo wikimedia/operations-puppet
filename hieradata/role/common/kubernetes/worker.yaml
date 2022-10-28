@@ -2,7 +2,6 @@ cluster: kubernetes
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
-profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 # Enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50
 profile::kubernetes::node::kubelet_ipv6: true

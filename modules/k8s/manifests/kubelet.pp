@@ -3,20 +3,19 @@
 class k8s::kubelet (
     K8s::KubernetesVersion $version,
     String $kubeconfig,
-    String $pod_infra_container_image,
-    String $listen_address,
     Boolean $cni,
-    Optional[String] $docker_kubernetes_user_password = undef,
-    Optional[Stdlib::Port] $listen_port = undef,
-    String $cluster_domain = 'kube',
-    Optional[String] $cluster_dns = undef,
-    String $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
-    String $tls_key = '/var/lib/kubernetes/ssl/private_keys/server.key',
-    String $cni_bin_dir = '/opt/cni/bin',
-    String $cni_conf_dir = '/etc/cni/net.d',
+    String $pod_infra_container_image = 'docker-registry.discovery.wmnet/pause',
+    Stdlib::Fqdn $cluster_domain = 'cluster.local',
+    Stdlib::Unixpath $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
+    Stdlib::Unixpath $tls_key = '/var/lib/kubernetes/ssl/private_keys/server.key',
+    Stdlib::Unixpath $cni_bin_dir = '/opt/cni/bin',
+    Stdlib::Unixpath $cni_conf_dir = '/etc/cni/net.d',
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $kubelet_ipv6=false,
+    Optional[Stdlib::IP::Address] $listen_address = undef,
+    Optional[String] $docker_kubernetes_user_password = undef,
+    Optional[Stdlib::IP::Address] $cluster_dns = undef, #FIXME: This should be an array of V4 addresses
     Optional[Array[String]] $node_labels = [],
     Optional[Array[String]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
@@ -29,6 +28,40 @@ class k8s::kubelet (
     ensure_packages('apparmor')
     # socat is needed on k8s nodes for kubectl proxying to work
     ensure_packages('socat')
+
+    # Create the KubeletConfiguration YAML
+    $kubelet_config_yaml = {
+        apiVersion        => 'kubelet.config.k8s.io/v1beta1',
+        kind              => 'KubeletConfiguration',
+        address           => $listen_address,
+        tlsPrivateKeyFile => $tls_key,
+        tlsCertFile       => $tls_cert,
+        clusterDomain     => $cluster_domain,
+        clusterDNS        => [$cluster_dns],
+        featureGates      => if $kubelet_ipv6 { { 'IPv6DualStack' => true } },
+        # FIXME: Do we really need anonymous read only access to kubelets enabled?
+        #
+        # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).
+        # Using --config the default changes to 0 (e.g. disabled).
+        # As I see it, we don't use 10255 in prod, so this should be safe to disable.
+        #readOnlyPort => 10255,
+
+        # --anonymous-auth which is enabled by default without --config but disabled when --config is used.
+        # TODO: With k8s 1.23, the default for anonymous auth via --config changed back to 'true'
+        authentication    => { anonymous => { enabled => true } },
+        # Authorization mode defaults to 'AlwaysAllow' when running without --config but
+        # 'Webhook' when --config is used.
+        authorization     => { mode => 'AlwaysAllow' },
+    }
+    $kubelet_config_file = '/etc/kubernetes/kubelet-config.yaml'
+    file { $kubelet_config_file:
+        ensure  => file,
+        owner   => 'kube',
+        group   => 'kube',
+        mode    => '0400',
+        content => $kubelet_config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
+        notify  => Service['kubelet'],
+    }
 
     file { '/etc/default/kubelet':
         ensure  => file,

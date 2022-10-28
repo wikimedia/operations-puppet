@@ -4,47 +4,34 @@
 
 <%-
 daemon_args = [
-  "--kubeconfig=#{@kubeconfig}",
-  "--logtostderr=#{@logtostderr}",
-  "--v=#{@v_log_level}",
-  "--address=#{@listen_address}",
-  "--hostname-override=#{@fqdn}",
+  "--config=#{@kubelet_config_file}", # Path to the KubeletConfiguration YAML
+  "--kubeconfig=#{@kubeconfig}",      # No KubeletConfiguration equivalent
+  "--logtostderr=#{@logtostderr}",    # Deprecated in 1.23, can be removed (AIUI logging will go to stderr by default)
+  "--v=#{@v_log_level}",              # There is a replacement in KubeletConfiguration but the flag is not deprecated (1.23) an I like it here
+  "--hostname-override=#{@fqdn}",     # No KubeletConfiguration equivalent
+  # TODO: Split pod-infra-container-image in image and version. Let the cluster decide the image and the k8s version the version?
+  "--pod-infra-container-image=#{@pod_infra_container_image}", # No KubeletConfiguration equivalent
 ]
 
-if @listen_port
-  daemon_args.push("--port=#{@listen_port}")
+if @cni
+	daemon_args.push("--network-plugin=cni") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
+	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
+	daemon_args.push("--cni-conf-dir=#{@cni_conf_dir}") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
 end
 
-if @pod_infra_container_image
-	daemon_args.push("--pod-infra-container-image=#{@pod_infra_container_image}")
-end
-if @tls_cert and @tls_key
-	daemon_args.push("--tls-private-key-file=#{@tls_key}")
-  daemon_args.push("--tls-cert-file=#{@tls_cert}")
-end
-if @cluster_domain
-	daemon_args.push("--cluster-domain=#{@cluster_domain}")
-end
-if @cluster_dns
-	daemon_args.push("--cluster-dns=#{@cluster_dns}")
-end
-if @cni
-	daemon_args.push("--network-plugin=cni")
-	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}")
-	daemon_args.push("--cni-conf-dir=#{@cni_conf_dir}")
-end
-if @kubelet_ipv6
-	daemon_args.push("--feature-gates=IPv6DualStack=true")
-end
+# No KubeletConfiguration equivalent
 if !@node_labels.empty?
   daemon_args.push("--node-labels=#{@node_labels.sort.join(',')}")
 end
+
+# TODO: Move to KubeletConfiguration with 1.23 (1.16 does only support this as command line flag)
 if !@node_taints.empty?
   daemon_args.push("--register-with-taints=#{@node_taints.sort.join(',')}")
 end
+
+# Command line arguments will override KubeletConfig settings. So this is still fine.
 if @extra_params
   daemon_args.concat(@extra_params)
 end
-
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

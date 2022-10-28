@@ -36,7 +36,6 @@ profile::kubernetes::node::kubelet_node_taints:
   - node-role.kubernetes.io/master:NoSchedule
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none

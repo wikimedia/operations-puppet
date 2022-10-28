@@ -2,7 +2,6 @@ cluster: kubernetes-staging
 profile::calico::kubernetes::calico_version: '3'
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none

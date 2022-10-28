@@ -2,13 +2,13 @@ class profile::kubernetes::node (
     K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
-    String $infra_pod = lookup('profile::kubernetes::infra_pod'),
+    String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause' }),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
     Boolean $masquerade_all = lookup('profile::kubernetes::node::masquerade_all', { default_value => true }),
     Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', { default_value => '/etc/kubernetes/kubelet_config' }),
     Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', { default_value => '/etc/kubernetes/kubeproxy_config' }),
     Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', { default_value => "http://prometheus.svc.${::site }.wmnet/k8s" }),
-    String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', { default_value => 'kube' }),
+    String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', { default_value => 'cluster.local' }),
     Optional[Stdlib::IP::Address] $kubelet_cluster_dns = lookup('profile::kubernetes::node::kubelet_cluster_dns', { default_value => undef }),
     String $kubelet_username = lookup('profile::kubernetes::node::kubelet_username', { default_value => 'kubelet' }),
     String $kubelet_token = lookup('profile::kubernetes::node::kubelet_token'),
@@ -78,7 +78,6 @@ class profile::kubernetes::node (
 
     $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { 'k8s::kubelet':
-        listen_address                  => '0.0.0.0',
         cni                             => $use_cni,
         cluster_domain                  => $kubelet_cluster_domain,
         cluster_dns                     => $kubelet_cluster_dns,
@@ -122,10 +121,11 @@ class profile::kubernetes::node (
     }
     # lint:endignore
 
+    $kubelet_default_port = 10250
     $master_hosts_ferm = join($master_hosts, ' ')
     ferm::service { 'kubelet-http':
         proto  => 'tcp',
-        port   => '10250',
+        port   => $kubelet_default_port,
         srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
     }
 

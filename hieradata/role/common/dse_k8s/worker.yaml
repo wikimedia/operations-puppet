@@ -1,7 +1,6 @@
 cluster: dse_k8s
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none
@@ -21,7 +20,6 @@ profile::kubernetes::node::masquerade_all: false
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
 profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
-profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::rsyslog::kubernetes::kubernetes_url: https://dse-k8s-ctrl.svc.%{::site}.wmnet:6443
 profile::rsyslog::kubernetes::enable: true
 profile::kubernetes::master_fqdn: dse-k8s-ctrl.svc.%{::site}.wmnet
