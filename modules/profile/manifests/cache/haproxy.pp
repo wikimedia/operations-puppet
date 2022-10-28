@@ -1,9 +1,9 @@
 class profile::cache::haproxy(
     Stdlib::Port $tls_port = lookup('profile::cache::haproxy::tls_port'),
-    Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', {'default_value' => 9422}),
+    Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', {'default_value'                                          => 9422}),
     Hash[String, Haproxy::Tlscertificate] $available_unified_certificates = lookup('profile::cache::haproxy::available_unified_certificates'),
     Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', {'default_value' => undef}),
-    Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value' => undef}),
+    Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value'                                   => undef}),
     Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
     Array[Haproxy::Backend] $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
@@ -12,20 +12,21 @@ class profile::cache::haproxy(
     Integer[0] $tls_session_lifetime = lookup('profile::cache::haproxy::tls_session_lifetime'),
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
-    Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', {'default_value' => undef}),
+    Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', {'default_value'                        => undef}),
     Array[Haproxy::Var] $vars = lookup('profile::cache::haproxy::vars'),
     Array[Haproxy::Acl] $acls = lookup('profile::cache::haproxy::acls'),
     Array[Haproxy::Header] $add_headers = lookup('profile::cache::haproxy::add_headers'),
     Array[Haproxy::Header] $del_headers = lookup('profile::cache::haproxy::del_headers'),
-    Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value' => undef}),
-    Optional[Array[Haproxy::Stickycounter]] $stickycounters = lookup('profile::cache::haproxy::stickycounters', {'default_value' => undef}),
+    Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value'                          => undef}),
+    Optional[Array[Haproxy::Stickycounter]] $stickycounters = lookup('profile::cache::haproxy::stickycounters', {'default_value'                 => undef}),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
-    Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', {'default_value' => '/etc/haproxymtail'}),
-    Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value' => 3906}),
-    Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value' => '/var/log/haproxy.fifo'}),
+    Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', {'default_value'                                                  => '/etc/haproxymtail'}),
+    Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value'                                              => 3906}),
+    Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value'                                                => '/var/log/haproxy.fifo'}),
     Boolean $monitoring_enabled = lookup('profile::cache::haproxy::monitoring_enabled'),
+    Enum['haproxy24', 'haproxy26'] $haproxy_version = lookup('profile::cache::haproxy::version', {'default_value'                                => 'haproxy24'}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -39,7 +40,7 @@ class profile::cache::haproxy(
     $exec_start = '/usr/sbin/haproxy -Ws'
 
     apt::package_from_component { 'haproxy':
-        component       => 'thirdparty/haproxy24',
+        component       => "thirdparty/${haproxy_version}",
         before          => Class['::haproxy'],
         priority        => 1002, # Take precedence over main
         ensure_packages => false, # this is handled by ::haproxy
