@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #  Class that sets up and configures kubelet
 class k8s::kubelet (
+    K8s::KubernetesVersion $version,
     String $kubeconfig,
     String $pod_infra_container_image,
     String $listen_address,
@@ -15,27 +16,17 @@ class k8s::kubelet (
     String $cni_conf_dir = '/etc/cni/net.d',
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
-    Boolean $packages_from_future=false,
     Boolean $kubelet_ipv6=false,
     Optional[Array[String]] $node_labels = [],
     Optional[Array[String]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
 ) {
-    if $packages_from_future {
-        apt::package_from_component { 'kubelet-kubernetes116':
-            component => 'component/kubernetes116',
-            packages  => ['kubernetes-node'],
-        }
-        # apparmor is needed for PodSecurityPolicy to be able to enforce profiles
-        ensure_packages('apparmor')
-    } else {
-        ensure_packages('kubernetes-node')
-        # Old kubernetes nodes can't create containers when apparmor is installed (due to missing profiles)
-        # Bug: T273563
-        # TODO: Remove this after all clusters have been upgraded to kubernetes >=1.16
-        package { 'apparmor': ensure => purged }
+    k8s::package { 'kubelet':
+        package => 'node',
+        version => $version,
     }
-
+    # apparmor is needed for PodSecurityPolicy to be able to enforce profiles
+    ensure_packages('apparmor')
     # socat is needed on k8s nodes for kubectl proxying to work
     ensure_packages('socat')
 

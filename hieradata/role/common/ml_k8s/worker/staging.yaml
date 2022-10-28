@@ -1,5 +1,4 @@
 cluster: ml_staging
-profile::kubernetes::node::packages_from_future: true
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'

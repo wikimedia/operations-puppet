@@ -1,18 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #  Class that sets up and configures kube-scheduler
 class k8s::scheduler (
+    K8s::KubernetesVersion $version,
     Stdlib::Unixpath $kubeconfig,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
-    Boolean $packages_from_future = false,
 ) {
-    if $packages_from_future {
-        apt::package_from_component { 'scheduler-kubernetes116':
-            component => 'component/kubernetes116',
-            packages  => ['kubernetes-master'],
-        }
-    } else {
-        ensure_packages('kubernetes-master')
+    k8s::package { 'scheduler':
+        package => 'master',
+        version => $version,
     }
 
     file { '/etc/default/kube-scheduler':

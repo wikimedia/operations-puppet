@@ -2,8 +2,6 @@ cluster: dse_k8s
 profile::kubernetes::master::cluster_group: dse-k8s
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::allow_privileged: true
-profile::kubernetes::master::packages_from_future: true
-profile::kubernetes::client::packages_from_future: true
 profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::service_cert: "dse-k8s-ctrl.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/dse-k8s-ctrl.svc.%{::site}.wmnet.crt"
@@ -36,7 +34,6 @@ profile::admin::groups:
 # usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
   - node-role.kubernetes.io/master:NoSchedule
-profile::kubernetes::node::packages_from_future: true
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'

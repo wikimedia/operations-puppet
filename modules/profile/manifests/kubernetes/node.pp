@@ -1,4 +1,5 @@
 class profile::kubernetes::node (
+    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
     String $infra_pod = lookup('profile::kubernetes::infra_pod'),
@@ -16,7 +17,6 @@ class profile::kubernetes::node (
     Optional[Array[String]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
     String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', { default_value => 'system:kube-proxy' }),
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
-    Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', { default_value => false }),
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', { default_value => undef }),
     Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', { default_value => false }),
     Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
@@ -89,7 +89,7 @@ class profile::kubernetes::node (
         node_labels                     => $node_labels,
         node_taints                     => $kubelet_node_taints,
         extra_params                    => $kubelet_extra_params,
-        packages_from_future            => $packages_from_future,
+        version                         => $version,
         kubelet_ipv6                    => $kubelet_ipv6,
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
     }
@@ -103,7 +103,7 @@ class profile::kubernetes::node (
         masquerade_all       => $masquerade_all,
         metrics_bind_address => $kubeproxy_metrics_bind_address,
         kubeconfig           => $kubeproxy_config,
-        packages_from_future => $packages_from_future,
+        version              => $version,
         cluster_cidr         => $cluster_cidr,
     }
 

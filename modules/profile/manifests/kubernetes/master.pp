@@ -1,4 +1,5 @@
 class profile::kubernetes::master (
+    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[String] $etcd_urls=lookup('profile::kubernetes::master::etcd_urls'),
@@ -15,7 +16,6 @@ class profile::kubernetes::master (
     Optional[Stdlib::Unixpath] $service_account_private_key_file=lookup('profile::kubernetes::master::service_account_private_key_file', { 'default_value' => undef }),
     Stdlib::Httpurl $prometheus_url=lookup('profile::kubernetes::master::prometheus_url', { 'default_value' => "http://prometheus.svc.${::site}.wmnet/k8s" }),
     Optional[String] $runtime_config=lookup('profile::kubernetes::master::runtime_config', { 'default_value' => undef }),
-    Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', { default_value => false }),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', { default_value => false }),
     String $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token'),
     String $scheduler_token = lookup('profile::kubernetes::master::scheduler_token'),
@@ -57,7 +57,7 @@ class profile::kubernetes::master (
         users                    => $_users,
         authz_mode               => $authz_mode,
         allow_privileged         => $allow_privileged,
-        packages_from_future     => $packages_from_future,
+        version                  => $version,
         service_cluster_ip_range => $service_cluster_ip_range,
         service_node_port_range  => $service_node_port_range,
         runtime_config           => $runtime_config,
@@ -74,8 +74,8 @@ class profile::kubernetes::master (
         group       => 'kube',
     }
     class { 'k8s::scheduler':
-        packages_from_future => $packages_from_future,
-        kubeconfig           => $scheduler_kubeconfig,
+        version    => $version,
+        kubeconfig => $scheduler_kubeconfig,
     }
 
     $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager_config'
@@ -89,7 +89,7 @@ class profile::kubernetes::master (
     class { 'k8s::controller':
         service_account_private_key_file => $service_account_private_key_file,
         kubeconfig                       => $controllermanager_kubeconfig,
-        packages_from_future             => $packages_from_future,
+        version                          => $version,
     }
 
     if $accessible_to == 'all' {

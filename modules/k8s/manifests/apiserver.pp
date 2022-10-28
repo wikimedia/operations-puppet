@@ -3,6 +3,8 @@
 #   This class sets up and configures kube-apiserver
 #
 # === Parameters
+# @param version
+#   The Kubernetes version to use
 # @param admission_plugins
 #   Admission plugins that should be enabled or disabled.
 #   Some plugins are enabled by default and need to be explicitely disabled.
@@ -13,6 +15,7 @@
 #   Array of admission plugin configurations (as YAML)
 #   https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/#apiserver-k8s-io-v1alpha1-AdmissionPluginConfiguration
 class k8s::apiserver (
+    K8s::KubernetesVersion $version,
     String $etcd_servers,
     Stdlib::Unixpath $ssl_cert_path,
     Stdlib::Unixpath $ssl_key_path,
@@ -21,7 +24,6 @@ class k8s::apiserver (
     Boolean $allow_privileged = false,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
-    Boolean $packages_from_future = false,
     Optional[Stdlib::IP::Address] $service_cluster_ip_range = undef,
     Optional[String] $service_node_port_range = undef,
     Optional[String] $runtime_config = undef,
@@ -42,13 +44,9 @@ class k8s::apiserver (
         shell  => '/usr/sbin/nologin',
     }
 
-    if $packages_from_future {
-        apt::package_from_component { 'apiserver-kubernetes116':
-            component => 'component/kubernetes116',
-            packages  => ['kubernetes-master'],
-        }
-    } else {
-        ensure_packages('kubernetes-master')
+    k8s::package { 'apiserver':
+        package => 'master',
+        version => $version,
     }
 
     file { '/etc/kubernetes/infrastructure-users':

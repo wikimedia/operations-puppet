@@ -12,19 +12,15 @@
 # Note: This has the drawback that the kube-controller-manager will no longer talk to the local
 #       apiserver, but to the LVS service instead (to be able to verify TLS cert).
 class k8s::controller (
+    K8s::KubernetesVersion $version,
     String $service_account_private_key_file,
     Stdlib::Unixpath $kubeconfig,
     Boolean $logtostderr=true,
     Integer $v_log_level=0,
-    Boolean $packages_from_future = false,
 ) {
-    if $packages_from_future {
-        apt::package_from_component { 'controller-kubernetes116':
-            component => 'component/kubernetes116',
-            packages  => ['kubernetes-master'],
-        }
-    } else {
-        ensure_packages('kubernetes-master')
+    k8s::package { 'controller':
+        package => 'master',
+        version => $version,
     }
 
     file { '/etc/default/kube-controller-manager':

@@ -1,7 +1,5 @@
 cluster: kubernetes
 profile::kubernetes::master::cluster_group: main
-profile::kubernetes::master::packages_from_future: true
-profile::kubernetes::client::packages_from_future: true
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::use_cergen: true
@@ -48,7 +46,6 @@ profile::contacts::role_contacts: ['ServiceOps']
 # usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
   - node-role.kubernetes.io/master:NoSchedule
-profile::kubernetes::node::packages_from_future: true
 # Enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50
 profile::kubernetes::node::kubelet_ipv6: true
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
