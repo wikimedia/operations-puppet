@@ -1112,6 +1112,13 @@ releases_servers_failover:
 # servers in the role specific Hiera.
 phabricator_server: phab1004.eqiad.wmnet
 
+# Jenkins masters are agents to themselves and to each other. They thus need to
+# allow ssh access from the other masters.
+jenkins_master_hosts:
+    - contint1001.wikimedia.org
+    - contint2001.wikimedia.org
+    - contint2002.wikimedia.org
+
 kerberos_realm_name: WIKIMEDIA
 kerberos_kadmin_server_primary: 'krb1001.eqiad.wmnet'
 kerberos_kadmin_keytabs_repo: 'puppetmaster1001.eqiad.wmnet'
