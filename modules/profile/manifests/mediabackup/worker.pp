@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # mediabackup worker installs the software and sets up
 # the schedule needed to trigger the generation and
 # recovery of media (swift) backups for wikis.

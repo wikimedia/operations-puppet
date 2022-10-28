@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # mediabackup storage hosts expose the api and store
 # the files generated from the media backup workers.
 class profile::mediabackup::storage (
