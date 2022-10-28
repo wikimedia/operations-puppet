@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # [*jenkins_prefix*]
 # The HTTP path used to reach the Jenkins instance. Must have a leading slash.
 # Default: '/ci'.

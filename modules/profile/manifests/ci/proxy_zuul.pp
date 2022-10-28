@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # A http proxy in front of Zuul status page
 class profile::ci::proxy_zuul {
 

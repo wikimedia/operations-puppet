@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::ci::shipyard(
     Stdlib::Fqdn $registry = lookup('docker::registry'),
     String $password = lookup('profile::ci::shipyard::ci_build_user_password'),

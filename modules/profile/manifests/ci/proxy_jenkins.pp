@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class contint::proxy_jenkins
 #
 # A http proxy in front of Jenkins

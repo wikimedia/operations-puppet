@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# SPDX-License-Identifier: Apache-2.0
 # Purpose: run Debian package checks using lintian and report in JUnit format
 ################################################################################
 # Notes:

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == profile::ci::pipeline::publisher
 #
 # Pipeline server that can publish Docker images to the WMF registry.

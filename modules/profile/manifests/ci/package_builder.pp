@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::ci::package_builder
 #
 # Setup cow images and jenkins-debian-glue

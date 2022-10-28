@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Common configuration to be applied on any labs Jenkins slave
 #
 class profile::ci::slave::labs::common (

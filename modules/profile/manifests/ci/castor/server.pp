@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class role::ci::castor::server
 #
 # rsync server to store cache related material from CI jobs.

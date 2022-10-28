@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # A webserver configured for a CI master, as proxy
 class profile::ci::httpd {
 

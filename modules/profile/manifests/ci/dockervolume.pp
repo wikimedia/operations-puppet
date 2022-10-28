@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::ci::dockervolume
 #
 # Configures an LVM logical volume just for Docker.

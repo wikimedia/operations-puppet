@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::ci::docker
 #
 # Configures a host to be a docker-backed Jenkins agent

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 #
 # Create QCOW2 image for some CI jobs requiring to run Docker inside a VM.
 #

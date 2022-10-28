@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # allow rsyncing data between CI servers during server migrations
 class profile::ci::data_rsync (
     Stdlib::Fqdn $src_host = lookup(profile::ci::migration::rsync_src_host),

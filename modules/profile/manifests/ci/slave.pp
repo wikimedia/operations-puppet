@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Set up a Jenkins slave on PRODUCTION
 #
 # Most jobs are running on labs instances, but we still have a few runnining

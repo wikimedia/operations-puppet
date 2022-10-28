@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == profile::ci::qemu
 #
 # Setup the bits we need to have Qemu and a base VM image
