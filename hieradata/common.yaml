@@ -1344,6 +1344,8 @@ cache_hosts:
 - 2620:0:863:101:10:128:0:35     # cp4046.ulsfo.wmnet
 - 10.128.0.21                    # cp4047.ulsfo.wmnet
 - 2620:0:863:101:10:128:0:21     # cp4047.ulsfo.wmnet
+- 10.128.0.36                    # cp4048.ulsfo.wmnet
+- 2620:0:863:101:10:128:0:36     # cp4048.ulsfo.wmnet
 - 10.128.0.24                    # cp4049.ulsfo.wmnet
 - 2620:0:863:101:10:128:0:24     # cp4049.ulsfo.wmnet
 - 10.128.0.10                    # cp4050.ulsfo.wmnet
