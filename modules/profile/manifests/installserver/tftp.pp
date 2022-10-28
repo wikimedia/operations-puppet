@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::installserver::tftp
 #
 # A WMF profile class used to install all the install_server TFTP stuff

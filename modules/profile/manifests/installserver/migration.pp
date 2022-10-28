@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class to be added to the installserver
 # role to allow copying files for a migration
 # to a new server.

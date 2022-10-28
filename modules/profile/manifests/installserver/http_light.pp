@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs a web server for "light" install_servers without APT
 class profile::installserver::http_light {
 

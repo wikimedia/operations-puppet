@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs a web server for the install server
 class profile::installserver::http {
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Installs a proxy server for the install server
 # @param ensure ensurable parameter
 # @param structured_logs use the cee structured logs format
