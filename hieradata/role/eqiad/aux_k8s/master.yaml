@@ -1,0 +1,17 @@
+profile::kubernetes::master::service_cluster_ip_range: '10.67.64.0/20'
+profile::kubernetes::master::etcd_urls:
+- 'https://aux-k8s-etcd1001.eqiad.wmnet:2379'
+- 'https://aux-k8s-etcd1002.eqiad.wmnet:2379'
+- 'https://aux-k8s-etcd1003.eqiad.wmnet:2379'
+profile::kubernetes::master_hosts:
+- 'aux-k8s-ctrl1001.eqiad.wmnet'
+- 'aux-k8s-ctrl1002.eqiad.wmnet'
+
+# CoreDNS static IP
+profile::kubernetes::node::kubelet_cluster_dns: '10.67.64.3'
+
+# These are used to open up the firewall for BPG peering with our core routers
+# or top of rack switches if we are in rows E or F
+profile::calico::kubernetes::bgp_peers:
+- 'cr1-eqiad.wikimedia.org'
+- 'cr2-eqiad.wikimedia.org'

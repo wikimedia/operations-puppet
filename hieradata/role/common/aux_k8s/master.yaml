@@ -1,0 +1,61 @@
+cluster: 'aux-k8s'
+profile::kubernetes::master::cluster_group: 'aux-k8s'
+profile::kubernetes::master::accessible_to: 'all'
+profile::kubernetes::master::allow_privileged: true
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::master::use_cergen: true
+profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/aux-k8s-ctrl.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/aux-k8s-ctrl.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::authz_mode: 'RBAC'
+profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/aux-k8s-ctrl.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::service_node_port_range: '1-65535'
+profile::kubernetes::master::admission_plugins:
+  enable:
+    - 'PodSecurityPolicy'
+  disable:
+    - 'StorageObjectInUseProtection'
+    - 'PersistentVolumeClaimResize'
+
+profile::kubernetes::client::packages_from_future: true
+
+profile::lvs::realserver::pools:
+  aux-k8s-ctrl:
+    services:
+      - 'kubemaster'
+
+# Taint to force kubernetes to consider these nodes not usable to schedule pods
+# onto.
+profile::kubernetes::node::kubelet_node_taints:
+  - 'node-role.kubernetes.io/master:NoSchedule'
+profile::kubernetes::node::packages_from_future: true
+profile::kubernetes::node::kubeproxy_metrics_bind_address: '0.0.0.0'
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::kubernetes::node::masquerade_all: false
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
+profile::kubernetes::use_cni: true
+profile::kubernetes::master_fqdn: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
+
+# Enable overlayfs, needed by docker
+profile::base::overlayfs: true
+
+profile::docker::engine::declare_service: true
+profile::docker::engine::settings:
+  bridge: none
+  iptables: false
+  ip-masq: false
+  log-opts:
+    max-size: '100m'
+  live-restore: true
+
+profile::monitoring::nrpe_check_disk_options: "-w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs"
+
+profile::calico::kubernetes::calico_version: '3'
+
+profile::rsyslog::kubernetes::kubernetes_url: 'https://aux-k8s-ctrl.svc.%{::site}.wmnet:6443'
+profile::rsyslog::kubernetes::enable: true
+
+prometheus::node_exporter::collectors_extra:
+  - 'processes'
+
+profile::contacts::role_contacts: ['Infrastructure Foundations']

@@ -1,0 +1,68 @@
+cluster: aux_k8s
+
+# Enable overlayfs, needed by docker
+profile::base::overlayfs: true
+
+profile::docker::engine::declare_service: true
+profile::docker::engine::settings:
+  bridge: 'none'
+  iptables: false
+  ip-masq: false
+  log-opts:
+    max-size: '100m'
+  live-restore: true
+
+# kubernetes node
+profile::kubernetes::node::masquerade_all: false
+profile::kubernetes::node::kubeproxy_metrics_bind_address: '0.0.0.0'
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::kubernetes::node::packages_from_future: true
+profile::kubernetes::master_fqdn: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
+profile::kubernetes::use_cni: true
+
+profile::monitoring::nrpe_check_disk_options: "-w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs"
+
+prometheus::node_exporter::collectors_extra:
+  - 'processes'
+
+profile::rsyslog::kubernetes::kubernetes_url: 'https://aux-k8s-ctrl.svc.%{::site}.wmnet:6443'
+profile::rsyslog::kubernetes::enable: true
+
+# We don't need conftool's safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+# Use itsio for ingress
+profile::lvs::realserver::pools:
+  inference: {}
+
+profile::calico::kubernetes::calico_version: '3'
+profile::calico::kubernetes::cni_config:
+  name: 'k8s-pod-network'
+  cniVersion: '0.3.1'
+  plugins:
+  - type: 'calico'
+    log_level: 'info'
+    datastore_type: 'kubernetes'
+    mtu: 1500
+    ipam:
+      type: 'calico-ipam'
+      assign_ipv4: 'true'
+      assign_ipv6: 'true'
+    policy:
+      type: 'k8s'
+    kubernetes:
+      kubeconfig: '/etc/cni/net.d/calico-kubeconfig'
+  - name: 'istio-cni'
+    type: 'istio-cni'
+    log_level: 'info'
+    kubernetes:
+      kubeconfig: '/etc/cni/net.d/istio-kubeconfig'
+      cni_bin_dir: '/opt/cni/bin'
+      exclude_namespaces:
+      - 'istio-system'
+      - 'kube-system'
+      - 'knative-serving'
+      - 'cert-manager'
+      - 'kserve'
+
+profile::contacts::role_contacts: ['Infrastructure Foundations']

@@ -551,6 +551,10 @@ wikimedia_clusters:
     description: "etcd cluster for aux kubernetes cluster"
     sites:
       eqiad: []
+  aux-k8s:
+    description: "control-plane cluster for aux kubernetes cluster"
+    sites:
+      eqiad: []
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_ca_source: puppet:///modules/profile/puppet/ca.production.pem

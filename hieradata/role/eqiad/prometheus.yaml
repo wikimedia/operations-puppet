@@ -26,6 +26,12 @@ profile::prometheus::kubernetes::clusters:
     port: 9910
     class_name: role::dse_k8s::worker
     controller_class_name: role::dse_k8s::master
+  aux-k8s:
+    enabled: true
+    master_host: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
+    port: 9911
+    class_name: 'role::aux_k8s::worker'
+    controller_class_name: 'role::aux_k8s::master'
 # In the private repo a stanza like the following is required
 # profile::prometheus::kubernetes::cluster_tokens:
 # k8s:

@@ -230,6 +230,16 @@ node /^aux-k8s-etcd100[1-3]\.eqiad\.wmnet$/ {
     role(etcd::v3::aux_k8s_etcd)
 }
 
+# control-plane servers for aux kubernetes cluster
+node /^aux-k8s-ctrl100[1-2]\.eqiad\.wmnet$/ {
+    role(aux_k8s::master)
+}
+
+# worker nodes for aux kubernetes cluster
+node /^aux-k8s-worker100[1-2]\.eqiad\.wmnet$/ {
+    role(aux_k8s::worker)
+}
+
 # Primary bacula director and storage daemon
 node 'backup1001.eqiad.wmnet' {
     role(backup)
