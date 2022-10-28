@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure exim on mx hosts
 # @param dkim_domain Configure dkim for this domain
 # @param verp_domains configure verp for theses domains

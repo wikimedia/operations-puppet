@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Script to dump OTRS aliases, alerting if the list is already a gsuite email"""
 
 import logging

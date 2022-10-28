@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up a mail smarthost for Wikimedia cloud environment
 class profile::mail::smarthost::wmcs {
 

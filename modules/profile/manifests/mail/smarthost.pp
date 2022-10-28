@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # profile::mail::smarthost - configure an outbound smarthost
 #
 # * $dkim_domains     - DKIM signing specifics. More than one may be supplied
