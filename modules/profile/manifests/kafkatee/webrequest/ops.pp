@@ -55,4 +55,15 @@ class profile::kafkatee::webrequest::ops (
         type          => 'pipe',
     }
 
+    if debian::codename::gt('buster') {
+        ensure_packages('python3-gjson')
+        file { '/usr/local/bin/json-webrequests-stats':
+            ensure => file,
+            source => 'puppet:///modules/profile/kafkatee/webrequest/ops/json_webrequests_stats.py',
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+
 }
