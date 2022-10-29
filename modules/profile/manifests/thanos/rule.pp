@@ -31,6 +31,7 @@ class profile::thanos::rule (
                               '/etc/thanos-rule/alerts/*.yaml',
                               '/srv/alerts-thanos/*.yaml'],
         rule_hosts        => $thanos_rule_hosts,
+        use_objstore      => true,
         objstore_account  => $objstore_account,
         objstore_password => $objstore_password,
         http_port         => $http_port,

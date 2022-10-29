@@ -5,7 +5,9 @@ ExecStart=/usr/bin/thanos rule \
   --http-address <%= @http_address %> \
   --grpc-address <%= @grpc_address %> \
   --data-dir <%= @data_dir %> \
+<%- if @use_objstore -%>
   --objstore.config-file <%= @objstore_config_file %> \
+<%- end -%>
   --alert.query-url <%= @query_url %> \
   --alert.relabel-config-file <%= @relabel_config_file %> \
   --alertmanagers.config-file <%= @am_config_file %> \

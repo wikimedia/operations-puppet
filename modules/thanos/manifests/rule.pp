@@ -29,8 +29,9 @@
 
 class thanos::rule (
     Hash[Stdlib::Fqdn, Hash] $rule_hosts,
-    Hash[String, String] $objstore_account,
-    String $objstore_password,
+    Boolean $use_objstore,
+    Optional[Hash[String, String]] $objstore_account,
+    Optional[String] $objstore_password,
     Array[Stdlib::Host] $alertmanagers,
     Array[String] $rule_files,
     Stdlib::HTTPSUrl $query_url,
@@ -40,6 +41,10 @@ class thanos::rule (
     Stdlib::Port::Unprivileged $grpc_port = 17901,
 ) {
     ensure_packages(['thanos'])
+
+    if $use_objstore and ($objstore_account == undef or $objstore_password == undef) {
+        fail('thanos::rule: objstore_account and objstore_password are required when use_objstore is true')
+    }
 
     $http_address = "0.0.0.0:${http_port}"
     $grpc_address = "0.0.0.0:${grpc_port}"
@@ -81,13 +86,19 @@ class thanos::rule (
         group  => 'root',
     }
 
-    file { $objstore_config_file:
-        ensure    => $ensure,
-        mode      => '0440',
-        owner     => 'thanos',
-        group     => 'root',
-        show_diff => false,
-        content   => template('thanos/objstore.yaml.erb'),
+    if $use_objstore and $ensure == 'present' {
+        file { $objstore_config_file:
+            ensure    => file,
+            mode      => '0440',
+            owner     => 'thanos',
+            group     => 'root',
+            show_diff => false,
+            content   => template('thanos/objstore.yaml.erb'),
+        }
+    } else {
+        file { $objstore_config_file:
+            ensure => absent,
+        }
     }
 
     file { $am_config_file:
