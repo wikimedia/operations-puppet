@@ -33,6 +33,9 @@ profile::gitlab::runner::allowed_services:
     host: '127.0.0.11'
     port: 53
     proto: udp
+  doc-rsync: # T321629
+    host: 'doc.discovery.wmnet'
+    port: 873
   gitlab-https:
     host: 'gitlab.wikimedia.org'
     port: 443
