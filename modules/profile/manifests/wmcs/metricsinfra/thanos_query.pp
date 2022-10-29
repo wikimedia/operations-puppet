@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::thanos_query (
     Array[Stdlib::Fqdn] $prometheus_hosts = lookup('profile::wmcs::metricsinfra::prometheus_hosts'),
+    Array[Stdlib::Fqdn] $thanos_fe_hosts  = lookup('profile::wmcs::metricsinfra::thanos_fe_hosts'),
 ) {
     $sd_files = '/etc/thanos-query/stores/*.yml'
     $sd_files_path = dirname($sd_files)
@@ -18,5 +19,14 @@ class profile::wmcs::metricsinfra::thanos_query (
         owner   => 'root',
         group   => 'root',
         content => to_yaml($prometheus_targets),
+    }
+
+    $rule_targets = [ { 'targets' => $thanos_fe_hosts.map |$h| { "${h}:17901" } } ]
+    file { "${sd_files_path}/rule.yml":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => to_yaml($rule_targets),
     }
 }
