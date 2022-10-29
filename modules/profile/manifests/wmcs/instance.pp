@@ -26,9 +26,9 @@ class profile::wmcs::instance(
 
     class { 'profile::ldap::client::labs': }
 
-    # make common logs readable
-    class { 'base::syslogs':
-        readable => true,
+    # TODO: remove after a full puppet cycle
+    file { [ '/var/log/syslog', '/var/log/messages', ]:
+        mode => '0640',
     }
 
     file { '/etc/wmcs-instancename':
