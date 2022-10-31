@@ -10,6 +10,7 @@
 #   include profile::dispatch
 #
 # Parameters:
+#   $active_host    Which (alertmanager) host is active
 #   $db_hostname    DB to connect to
 #   $db_password    DB password to use
 #   $port           port to listen on
@@ -21,6 +22,7 @@
 #   $ldap_config    the LDAP configuration ('ldap' global variable, for SSO)
 
 class profile::dispatch (
+    Stdlib::Host         $active_host        = lookup('profile::alertmanager::active_host'),
     String[1]            $db_hostname        = lookup('profile::dispatch::db_hostname'),
     String[1]            $db_password        = lookup('profile::dispatch::db_password'),
     Stdlib::Port::User   $port               = lookup('profile::dispatch::port', { 'default_value' => 8000 }),
@@ -34,6 +36,12 @@ class profile::dispatch (
     Hash[String, String] $ldap_config        = lookup('ldap', {'merge' => 'hash'}),
 ) {
     require ::profile::docker::engine
+
+    if $active_host == $::fqdn {
+        $scheduler_ensure = present
+    } else {
+        $scheduler_ensure = absent
+    }
 
     $registry = 'docker-registry.wikimedia.org'
     $image = 'dispatch'
@@ -84,6 +92,7 @@ class profile::dispatch (
     }
 
     service::docker { 'dispatch-scheduler':
+        ensure       => $scheduler_ensure,
         image_name   => $image,
         version      => $version,
         port         => $port, # ignored when in host_network mode
