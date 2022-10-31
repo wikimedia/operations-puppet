@@ -86,3 +86,7 @@ profile::vopsbot::irc_channels:
 #    vo_admin: false
 
 profile::dispatch::db_hostname: dispatch-be1001.eqiad.wmnet
+
+# We're running docker, exclude /run/docker from monitoring since user
+# 'nagios' can't read it
+profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/run/docker" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs
