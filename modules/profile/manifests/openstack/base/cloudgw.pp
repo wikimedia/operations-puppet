@@ -94,6 +94,10 @@ class profile::openstack::base::cloudgw (
         config    => template('profile/openstack/base/cloudgw/keepalived.conf.erb'),
     }
 
+    nftables::file { 'keepalived_vrrp':
+        content => "add rule inet basefirewall input ip saddr ${vrrp_peer} ip protocol vrrp accept\n",
+    }
+
     # this expects a data structure like this:
     # profile::openstack::base::cloudgw::conntrackd_conf:
     #   node1:
