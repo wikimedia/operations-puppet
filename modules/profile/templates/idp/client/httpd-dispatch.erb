@@ -26,7 +26,7 @@
     </Directory>
 
     <Location />
-        ProxyPass "http://localhost:<%= @dispatch_port %>/"
+        ProxyPass "http://localhost:<%= @vhost_settings['dispatch_port'] %>/"
         <%- @cas_auth_settings.each_pair do |key, setting| -%>
           <%- if setting.is_a?(Array) -%>
             <%- setting.each do |_setting| -%>
@@ -40,7 +40,7 @@
 
     ProxyRequests Off
 
-    <Proxy http://localhost:<%= @dispatch_port %>>
+    <Proxy http://localhost:<%= @vhost_settings['dispatch_port'] %>>
         ProxySet connectiontimeout=5 timeout=90 retry=0
     </Proxy>
 
