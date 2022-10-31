@@ -190,10 +190,12 @@ profile::idp::services:
       - nda
       - wmf
   prometheus:
-    id: 26
+    id: 27
     service_id: 'https://prometheus-[^.]+\.wikimedia.org(/.*)?'
     required_groups:
       - ops
+      - nda
+      - wmf
   dispatch:
     id: 28
     service_id: 'https://dispatch\.wikimedia\.org(/.*)?'
