@@ -10,7 +10,7 @@ class profile::idm(
     }
 
     class { 'idm::uwsgi_processes':
-        processes => $uwsgi_process_count,
+        uwsgi_process_count => $uwsgi_process_count,
     }
 
     class {'httpd':
