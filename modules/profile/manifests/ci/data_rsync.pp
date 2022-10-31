@@ -22,7 +22,7 @@ class profile::ci::data_rsync (
             rsync::server::module { "ci-${module_name}":
                 path        => $data_dir,
                 read_only   => 'no',
-                hosts_allow => $src_host,
+                hosts_allow => [$src_host],
             }
         }
     }
