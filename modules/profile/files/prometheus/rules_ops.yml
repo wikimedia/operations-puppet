@@ -309,12 +309,12 @@ groups:
     expr: >
       label_replace(sum by (instance) (trafficserver_active_connections_count), "instance", "$1:0", "instance", "(.*):.*")
       /
-      on (instance) group_left label_replace(ats_proxy_config_net_max_connections_in, "instance", "$1:0", "instance", "(.*):.*") * 100
+      on (instance) group_left label_replace(trafficserver_proxy_config_net_max_connections_in, "instance", "$1:0", "instance", "(.*):.*") * 100
   - record: trafficserver_requests_used_percent
     expr: >
       label_replace(sum by (instance) (trafficserver_active_transaction_count), "instance", "$1:0", "instance", "(.*):.*")
       /
-      on (instance) group_left label_replace(ats_proxy_config_net_max_requests_in, "instance", "$1:0", "instance", "(.*):.*") * 100
+      on (instance) group_left label_replace(trafficserver_proxy_config_net_max_requests_in, "instance", "$1:0", "instance", "(.*):.*") * 100
 
 
   # Availability
