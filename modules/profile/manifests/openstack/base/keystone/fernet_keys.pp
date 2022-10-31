@@ -15,7 +15,7 @@ class profile::openstack::base::keystone::fernet_keys(
         gid         => 'keystone',
         hosts_allow => $keystone_hosts,
         auto_ferm   => true,
-        read_only   => true,
+        read_only   => 'yes',
     }
 
     # It's important to do these steps in the right order: a host should rotate its keys, and immediately
