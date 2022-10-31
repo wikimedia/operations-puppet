@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: Apache-2.0
+
+diff --git a/usr/lib/python3/dist-packages/keystone/api/projects.py b/projects.py
+index 27725d6..3338cf2 100644
+--- a/usr/lib/python3/dist-packages/keystone/api/projects.py
++++ b/projects.py
+@@ -169,6 +169,17 @@ class ProjectResource(ks_flask.ResourceBase):
+             # Our API requires that you specify the location in the hierarchy
+             # unambiguously. This could be by parent_id or, if it is a top
+             # level project, just by providing a domain_id.
++
++            # HACK ALERT
++            #
++            #  Ensure that project id == project name, which supports reverse-
++            #   compatibility for a bunch of our custom code and tools.
++            #  We can't alter the project ID in a notification hook, because
++            #   by that time the record has already been created and the old
++            #   ID returned to Horizon.
++            # This is the only line that's added:
++            project['id'] = project['name']
++
+         if not project.get('parent_id'):
+             project['parent_id'] = project.get('domain_id')
+         project = self._normalize_dict(project)
