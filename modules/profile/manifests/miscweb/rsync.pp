@@ -18,7 +18,7 @@ class profile::miscweb::rsync (
         rsync::server::module { 'miscapps-srv':
             path        => '/srv/',
             read_only   => 'no',
-            hosts_allow => $src_host,
+            hosts_allow => [$src_host],
         }
     }
 }

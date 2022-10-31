@@ -22,13 +22,13 @@ class profile::gerrit::migration (
         rsync::server::module { 'gerrit-data':
             path        => $data_dir,
             read_only   => 'no',
-            hosts_allow => $src_host,
+            hosts_allow => [$src_host],
         }
 
         rsync::server::module { 'gerrit-var-lib':
             path        => $gerrit_site,
             read_only   => 'no',
-            hosts_allow => $src_host,
+            hosts_allow => [$src_host],
         }
 
         file { "/srv/home-${src_host}/":
@@ -38,7 +38,7 @@ class profile::gerrit::migration (
         rsync::server::module { 'gerrit-home':
             path        => "/srv/home-${src_host}",
             read_only   => 'no',
-            hosts_allow => $src_host,
+            hosts_allow => [$src_host],
         }
     }
 }
