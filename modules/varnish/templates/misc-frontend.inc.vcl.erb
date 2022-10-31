@@ -2,25 +2,25 @@ include "geoip.inc.vcl";
 
 sub cluster_fe_vcl_switch {
 // XXX testing whether this works at all - note this duplicates similar code in text-frontend, as apparently request data is re-set on VCL switching.  If this works, next week we'll want to factor this out a little differently...
-	// Rewrite sitemap requests for itwiki into the sitemaps backend.
-	// sitemaps is part of alternate_domains, so this rewrite has to happen
-	// in the frontend before VCL switching.  We'll update the conditional
-	// later if we add more maps for more sites.
-	if ((req.http.Host == "it.wikipedia.org"
+    // Rewrite sitemap requests for itwiki into the sitemaps backend.
+    // sitemaps is part of alternate_domains, so this rewrite has to happen
+    // in the frontend before VCL switching.  We'll update the conditional
+    // later if we add more maps for more sites.
+    if ((req.http.Host == "it.wikipedia.org"
         || req.http.Host == "id.wikipedia.org"
         || req.http.Host == "pt.wikipedia.org"
         || req.http.Host == "pa.wikipedia.org"
         || req.http.Host == "pnb.wikipedia.org"
         || req.http.Host == "nl.wikipedia.org"
         || req.http.Host == "ko.wikipedia.org") && req.url ~ "^/sitemap") {
-		set req.url = "/" + req.http.Host + req.url;
-		set req.http.Host = "sitemaps.wikimedia.org";
-	}
+        set req.url = "/" + req.http.Host + req.url;
+        set req.http.Host = "sitemaps.wikimedia.org";
+    }
 }
 
 sub cluster_fe_recv_pre_purge {
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ phabricator_abusers && req.http.Host == "phabricator.wikimedia.org") {
-		return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ phabricator_abusers && req.http.Host == "phabricator.wikimedia.org") {
+        return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
     }
 }
 
@@ -74,7 +74,7 @@ sub cluster_fe_ratelimit {
 }
 
 sub cluster_fe_hit {
-	call cluster_fe_ratelimit_hit;
+    call cluster_fe_ratelimit_hit;
 }
 sub cluster_fe_ratelimit_hit {}
 
@@ -88,10 +88,10 @@ sub cluster_fe_pass {
 
 sub cluster_fe_backend_fetch {
     // When we receive NEL reports, attach some GeoIP data as backend request headers.
-	if (bereq.http.Host == "intake-logging.wikimedia.org") {
-		call nel_geoip_bereq;
-	}
-	set bereq.http.X-Varnish-Cluster = "misc";
+    if (bereq.http.Host == "intake-logging.wikimedia.org") {
+        call nel_geoip_bereq;
+    }
+    set bereq.http.X-Varnish-Cluster = "misc";
 }
 sub cluster_fe_backend_response_early { }
 

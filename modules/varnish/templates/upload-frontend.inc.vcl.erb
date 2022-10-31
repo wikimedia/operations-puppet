@@ -31,397 +31,397 @@ sub normalize_upload_path { C{
 // Facebook ACL to reduce facebookexternalhit / facebookexternalua traffic to
 // cache_upload. T192688
 acl fb_nets {
-	"31.13.24.0"/21;
-	"31.13.64.0"/18;
-	"45.64.40.0"/22;
-	"66.220.144.0"/20;
-	"69.63.176.0"/20;
-	"69.171.224.0"/19;
-	"74.119.76.0"/22;
-	"103.4.96.0"/22;
-	"157.240.0.0"/17;
-	"173.252.64.0"/19;
-	"173.252.96.0"/19;
-	"179.60.192.0"/22;
-	"185.60.216.0"/22;
-	"204.15.20.0"/22;
-	"2620:0:1c00::0"/40;
-	"2620:0:1cff::0"/48;
-	"2a03:2880::0"/32;
+    "31.13.24.0"/21;
+    "31.13.64.0"/18;
+    "45.64.40.0"/22;
+    "66.220.144.0"/20;
+    "69.63.176.0"/20;
+    "69.171.224.0"/19;
+    "74.119.76.0"/22;
+    "103.4.96.0"/22;
+    "157.240.0.0"/17;
+    "173.252.64.0"/19;
+    "173.252.96.0"/19;
+    "179.60.192.0"/22;
+    "185.60.216.0"/22;
+    "204.15.20.0"/22;
+    "2620:0:1c00::0"/40;
+    "2620:0:1cff::0"/48;
+    "2a03:2880::0"/32;
 }
 
 sub cluster_fe_vcl_switch { }
 
 sub cluster_fe_recv_pre_purge {
-	// Normalize paths before purging
-	if (req.http.host ~ "^upload\.wikimedia\.org$") {
-		call normalize_upload_path;
-	}
+    // Normalize paths before purging
+    if (req.http.host ~ "^upload\.wikimedia\.org$") {
+        call normalize_upload_path;
+    }
 }
 
 sub cluster_fe_recv {
-	// The upload cluster does not serve page views or authenticated
-	// requests, so we keep it cookie-free on the sending side in
-	// vcl_deliver to avoid pointless network traffic and to improve
-	// cacheability.  Here we'll also strip Auth/Cookie info at ingress
-	// as well, as this information should be at best pointless and could
-	// cause functional issues.
-	unset req.http.Authorization;
-	unset req.http.Cookie;
+    // The upload cluster does not serve page views or authenticated
+    // requests, so we keep it cookie-free on the sending side in
+    // vcl_deliver to avoid pointless network traffic and to improve
+    // cacheability.  Here we'll also strip Auth/Cookie info at ingress
+    // as well, as this information should be at best pointless and could
+    // cause functional issues.
+    unset req.http.Authorization;
+    unset req.http.Cookie;
 
-	// 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
-	if (req.http.Host != "<%= @vcl_config.fetch('upload_domain') %>"
-	    && req.http.Host != "<%= @vcl_config.fetch('maps_domain') %>") {
-		return (synth(421, "Misdirected Request"));
-	}
+    // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
+    if (req.http.Host != "<%= @vcl_config.fetch('upload_domain') %>"
+        && req.http.Host != "<%= @vcl_config.fetch('maps_domain') %>") {
+        return (synth(421, "Misdirected Request"));
+    }
 
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
-		// CORS preflight requests
-		if (req.method == "OPTIONS" && req.http.Origin) {
-			return (synth(200, "CORS Preflight"));
-		}
+    if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+        // CORS preflight requests
+        if (req.method == "OPTIONS" && req.http.Origin) {
+            return (synth(200, "CORS Preflight"));
+        }
 
-		// Homepage redirect to commons
-		if (req.url == "/") {
-			return (synth(301, "Commons Redirect"));
-		}
-	}
+        // Homepage redirect to commons
+        if (req.url == "/") {
+            return (synth(301, "Commons Redirect"));
+        }
+    }
 
-	unset req.http.X-Range;
+    unset req.http.X-Range;
 
-	if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
-		// The Maps service has been chronically underprovisioned (in terms of staffing and
-		// hardware) for a while. WMF has made the policy decision we can only support Maps
-		// traffic that is relevant to the Movement, and to not serve as a tileserver for the
-		// whole Internet; prior to this, much of our Maps traffic was serving unrelated sites,
-		// including for-profit organizations.
-		// See T261424 and <https://lists.wikimedia.org/pipermail/maps-l/2020-August/001729.html>.
-		// We allow a Referer of only Wikimedia domains, plus several affiliates:
-		// <https://wikitech.wikimedia.org/wiki/Maps/External_usage>.
-		//
-		// To implement this, we regex on the Referer header.  Similar to wikimedia-frontend's
-		// normalize_request, said regex is encoded here as a VCL Long String with {""} delimiters
-		// containing a PCRE regex with the x-flag to allow expansion with whitespace, newlines,
-		// and comments for clarity:
-		if (req.http.referer && req.http.referer !~ {"(?x)		# Allow inline comments & whitespace
-			^https?://		# http or https, anchored to start
-			([^/]*\.)*(		# any number of subdomain components, but only within the hostname portion
-				# First, WMF-owned domains.
-				<%= @wikimedia_domains_regex %>
-				# Then WMCS domains
-				|<%= @wmcs_domains_regex %>
-				# Then testing domains
-				|localhost(:\d*)?	# to ease the lives of devs
-				|wmftest.net(:\d*)?	# to ease the lives of MediaWiki-Vagrant devs
-				# Now the affiliates
-				|wikilovesmonuments\.org	# T260520
-				|wikimedia\.pl	# T261506
-				|wikimedia\.cz	# T261694#6522016
-				|wikimedia\.it	# T261694#7172223
-				# Consultants working in T276317
-				|gospatial\.org
-				|go-spatial\.org
-				# Approved in T297968#7690363
-				|bbcrewind\.co\.uk
-			)(/|$)		# Anchor to the end of the hostname portion: either end of string or a /.
-		"}) {
-			return (synth(403, "Forbidden: Map tiles are restricted to Wikimedia & affiliated sites only.  See https://wikitech.wikimedia.org/wiki/Maps/External_usage if you believe your usage supports the Movement."));
-		}
-	}
+    if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
+        // The Maps service has been chronically underprovisioned (in terms of staffing and
+        // hardware) for a while. WMF has made the policy decision we can only support Maps
+        // traffic that is relevant to the Movement, and to not serve as a tileserver for the
+        // whole Internet; prior to this, much of our Maps traffic was serving unrelated sites,
+        // including for-profit organizations.
+        // See T261424 and <https://lists.wikimedia.org/pipermail/maps-l/2020-August/001729.html>.
+        // We allow a Referer of only Wikimedia domains, plus several affiliates:
+        // <https://wikitech.wikimedia.org/wiki/Maps/External_usage>.
+        //
+        // To implement this, we regex on the Referer header.  Similar to wikimedia-frontend's
+        // normalize_request, said regex is encoded here as a VCL Long String with {""} delimiters
+        // containing a PCRE regex with the x-flag to allow expansion with whitespace, newlines,
+        // and comments for clarity:
+        if (req.http.referer && req.http.referer !~ {"(?x)        # Allow inline comments & whitespace
+            ^https?://          # http or https, anchored to start
+            ([^/]*\.)*(         # any number of subdomain components, but only within the hostname portion
+                # First, WMF-owned domains.
+                <%= @wikimedia_domains_regex %>
+                # Then WMCS domains
+                |<%= @wmcs_domains_regex %>
+                # Then testing domains
+                |localhost(:\d*)?    # to ease the lives of devs
+                |wmftest.net(:\d*)?    # to ease the lives of MediaWiki-Vagrant devs
+                # Now the affiliates
+                |wikilovesmonuments\.org    # T260520
+                |wikimedia\.pl    # T261506
+                |wikimedia\.cz    # T261694#6522016
+                |wikimedia\.it    # T261694#7172223
+                # Consultants working in T276317
+                |gospatial\.org
+                |go-spatial\.org
+                # Approved in T297968#7690363
+                |bbcrewind\.co\.uk
+            )(/|$)        # Anchor to the end of the hostname portion: either end of string or a /.
+        "}) {
+            return (synth(403, "Forbidden: Map tiles are restricted to Wikimedia & affiliated sites only.  See https://wikitech.wikimedia.org/wiki/Maps/External_usage if you believe your usage supports the Movement."));
+        }
+    }
 
-	if (req.http.Range) {
-		set req.hash_ignore_busy = true;
-	}
+    if (req.http.Range) {
+        set req.hash_ignore_busy = true;
+    }
 
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
-		// Look for a "download" request parameter
-		if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
-			set req.http.X-Content-Disposition = "attachment";
-		}
+    if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+        // Look for a "download" request parameter
+        if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
+            set req.http.X-Content-Disposition = "attachment";
+        }
 
-		// Strip away all query parameters
-		set req.url = regsub(req.url, "\?.*$", "");
+        // Strip away all query parameters
+        set req.url = regsub(req.url, "\?.*$", "");
 
-		// Replace double slashes
-		set req.url = regsuball(req.url, "/{2,}", "/");
+        // Replace double slashes
+        set req.url = regsuball(req.url, "/{2,}", "/");
 
-		// Thumb fixups
-		if (req.url ~ "(?i)/thumb/") {
-			if (req.url !~ "(?i)\.(jpg|jpeg|jpe|gif|png|webp)$") {
-				// Invalid file extension
-				return (synth(400, "Bad Request"));
-			}
+        // Thumb fixups
+        if (req.url ~ "(?i)/thumb/") {
+            if (req.url !~ "(?i)\.(jpg|jpeg|jpe|gif|png|webp)$") {
+                // Invalid file extension
+                return (synth(400, "Bad Request"));
+            }
 
-			// Normalize end of thumbnail URL (redundant filename)
-			// Lowercase last part of the URL, to avoid case variations on extension or thumbnail parameters
-			// eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-FOO.JPG => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-foo.jpg
-			set req.url = regsub(req.url, "^(.+/)[^/]+$", "\1") + std.tolower(regsub(req.url, "^.+/([^/]+)$", "\1"));
+            // Normalize end of thumbnail URL (redundant filename)
+            // Lowercase last part of the URL, to avoid case variations on extension or thumbnail parameters
+            // eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-FOO.JPG => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-foo.jpg
+            set req.url = regsub(req.url, "^(.+/)[^/]+$", "\1") + std.tolower(regsub(req.url, "^.+/([^/]+)$", "\1"));
 
-			// In the abbreviated case, where MediaWiki turns the end of the thumbnail URL into -thumbnail.ext
-			// (see abbrvThreshold in FileRepo), there is no need to copy over the canonical filename
-			// However, we filter out potentially abusive use of -thumbnail.ext on short filenames (<= 160 characters), where the
-			// normalization is warranted.
-			if ( req.url ~ "[^/]{161,}/[^/]+$" ) {
-				// Abbreviated case, ensure that the end of the URL is thumbnail.ext
-				set req.url = regsub(req.url, "/([^/]+)/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2thumbnail.\3");
-			} else {
-				// Copy canonical filename from beginning of URL to thumbnail parameters at the end
-				// eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-bar.jpg => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg.jpg
-				set req.url = regsub(req.url, "/([^/]+)/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2\1.\3");
+            // In the abbreviated case, where MediaWiki turns the end of the thumbnail URL into -thumbnail.ext
+            // (see abbrvThreshold in FileRepo), there is no need to copy over the canonical filename
+            // However, we filter out potentially abusive use of -thumbnail.ext on short filenames (<= 160 characters), where the
+            // normalization is warranted.
+            if ( req.url ~ "[^/]{161,}/[^/]+$" ) {
+                // Abbreviated case, ensure that the end of the URL is thumbnail.ext
+                set req.url = regsub(req.url, "/([^/]+)/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2thumbnail.\3");
+            } else {
+                // Copy canonical filename from beginning of URL to thumbnail parameters at the end
+                // eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-bar.jpg => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg.jpg
+                set req.url = regsub(req.url, "/([^/]+)/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2\1.\3");
 
-				// Last pass, clean up any redundant extension
-				// .jpg.jpg => .jpg, .JPG.jpg => .JPG
-				// eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg.jpg => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg
-				if (req.url ~ "(?i)(.*)(\.\w+)\2$") {
-					set req.url = regsub(req.url, "(?i)(.*)(\.\w+)\2$", "\1\2");
-				}
-			}
-		}
-	}
+                // Last pass, clean up any redundant extension
+                // .jpg.jpg => .jpg, .JPG.jpg => .JPG
+                // eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg.jpg => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg
+                if (req.url ~ "(?i)(.*)(\.\w+)\2$") {
+                    set req.url = regsub(req.url, "(?i)(.*)(\.\w+)\2$", "\1\2");
+                }
+            }
+        }
+    }
 
-	// Fixup borked client Range: headers
-	if (req.http.Range ~ "(?i)bytes:") {
-		set req.http.Range = regsub(req.http.Range, "(?i)bytes:\s*", "bytes=");
-	}
+    // Fixup borked client Range: headers
+    if (req.http.Range ~ "(?i)bytes:") {
+        set req.http.Range = regsub(req.http.Range, "(?i)bytes:\s*", "bytes=");
+    }
 }
 
 sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_ratelimit {
-	// dont apply any rate limiting to internal networks
-	// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		if (req.http.User-Agent ~ "omnibot") {
-			if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
-					return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
-			}
-		}
+    // dont apply any rate limiting to internal networks
+    // Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+        if (req.http.User-Agent ~ "omnibot") {
+            if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
+                    return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
+            }
+        }
 
-		// Requests in violation of the User-Agent policy
-		if (req.http.User-Agent ~ "^(Go-http-client|Python-urllib|Java/|Wget/)") {
-			// UA-policy violations: 10/10s (1/s long term, with 10 burst)
-			if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
-				return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
-			}
-		}
+        // Requests in violation of the User-Agent policy
+        if (req.http.User-Agent ~ "^(Go-http-client|Python-urllib|Java/|Wget/)") {
+            // UA-policy violations: 10/10s (1/s long term, with 10 burst)
+            if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
+                return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+            }
+        }
 
-		// Bytedance issue mitigation: 100/10s (10/s long term, with 100 burst)
-		if (req.http.X-Client-IP ~ "^130\.44\.21[2345]\." && vsthrottle.is_denied("bytedance", 100, 10s)) {
-			return (synth(429, "Too Many Requests"));
+        // Bytedance issue mitigation: 100/10s (10/s long term, with 100 burst)
+        if (req.http.X-Client-IP ~ "^130\.44\.21[2345]\." && vsthrottle.is_denied("bytedance", 100, 10s)) {
+            return (synth(429, "Too Many Requests"));
                 }
 
-		// 403 all python-requests UA
-		if (req.http.User-Agent ~ "^python-requests") {
-		    return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
-		}
+        // 403 all python-requests UA
+        if (req.http.User-Agent ~ "^python-requests") {
+            return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+        }
 
-		// 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
-		if (req.http.User-Agent ~ "^DownloadBot/") {
-		    return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
-		}
+        // 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
+        if (req.http.User-Agent ~ "^DownloadBot/") {
+            return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
+        }
 
-		// Missing or empty User-Agent header
-		if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
-			return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
-		}
+        // Missing or empty User-Agent header
+        if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
+            return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+        }
 
-		// Bingbot excessive media fetch limiting
-		if (req.http.User-Agent ~ "bingbot") {
-			return (synth(403, "Forbidden"));
-		}
+        // Bingbot excessive media fetch limiting
+        if (req.http.User-Agent ~ "bingbot") {
+            return (synth(403, "Forbidden"));
+        }
 
-		// geoshape limit rate: 10/10s (1/s long term, with 10 burst)
-		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>" && req.url ~ "/geoshape") {
-			if (vsthrottle.is_denied("maps-geoshape:" + req.http.X-Client-IP, 10, 10s)) {
-				return (synth(429, "Too Many Requests"));
-			}
-		}
+        // geoshape limit rate: 10/10s (1/s long term, with 10 burst)
+        if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>" && req.url ~ "/geoshape") {
+            if (vsthrottle.is_denied("maps-geoshape:" + req.http.X-Client-IP, 10, 10s)) {
+                return (synth(429, "Too Many Requests"));
+            }
+        }
 
-		// General public_cloud rate limiting: 100/10s (10/s long term, with 100 burst)
-		if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud:" + req.http.X-Client-IP, 100, 10s)) {
-			return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
-		}
+        // General public_cloud rate limiting: 100/10s (10/s long term, with 100 burst)
+        if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud:" + req.http.X-Client-IP, 100, 10s)) {
+            return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
+        }
 
-		// General upload rate limiting: 1000/10s (100/s long term, with 1000 burst)
-		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 10s)) {
-			return (synth(429, "Too Many Requests"));
-		}
-		<%- if @etcd_filters -%>
-		// These are the ratelimits generated from etcd
-		// They only apply to non-wikimedia networks and come after all of the above rules.
-		// our goal would be to move most of these rules to etcd long-term.
-		include "requestctl-filters.inc.vcl";
-		<%- end -%>
-	}
+        // General upload rate limiting: 1000/10s (100/s long term, with 1000 burst)
+        if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 10s)) {
+            return (synth(429, "Too Many Requests"));
+        }
+        <%- if @etcd_filters -%>
+        // These are the ratelimits generated from etcd
+        // They only apply to non-wikimedia networks and come after all of the above rules.
+        // our goal would be to move most of these rules to etcd long-term.
+        include "requestctl-filters.inc.vcl";
+        <%- end -%>
+    }
 }
 
 sub cluster_fe_hit {
-	call cluster_fe_ratelimit_hit;
+    call cluster_fe_ratelimit_hit;
 }
 sub cluster_fe_ratelimit_hit {}
 
 sub cluster_fe_miss {
-	call cluster_fe_ratelimit;
+    call cluster_fe_ratelimit;
 
-	// Convert range requests into pass
-	if (req.http.Range) {
-		// Varnish strips the Range header before copying req into bereq. Save it into
-		// a header and restore it in cluster_fe_backend_fetch
-		set req.http.X-Range = req.http.Range;
-		return (pass);
-	}
+    // Convert range requests into pass
+    if (req.http.Range) {
+        // Varnish strips the Range header before copying req into bereq. Save it into
+        // a header and restore it in cluster_fe_backend_fetch
+        set req.http.X-Range = req.http.Range;
+        return (pass);
+    }
 }
 
 sub cluster_fe_pass {
-	call cluster_fe_ratelimit;
+    call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_backend_fetch {
-	if (bereq.http.X-Range) {
-		set bereq.http.Range = bereq.http.X-Range;
-		unset bereq.http.X-Range;
-	}
+    if (bereq.http.X-Range) {
+        set bereq.http.Range = bereq.http.X-Range;
+        unset bereq.http.X-Range;
+    }
 }
 
 sub cluster_fe_backend_response_early { }
 
 sub cluster_fe_backend_response {
-	if (beresp.http.Content-Range) {
-		// Varnish itself doesn't ask for ranges, so this must have been
-		// a passed range request
-		set beresp.http.X-Content-Range = beresp.http.Content-Range;
-	}
+    if (beresp.http.Content-Range) {
+        // Varnish itself doesn't ask for ranges, so this must have been
+        // a passed range request
+        set beresp.http.X-Content-Range = beresp.http.Content-Range;
+    }
 
-	// Debugging T144257. Don't cache 200 responses with CL:0.
-	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
-		// HFM
-		set beresp.ttl = 10m;
-		set beresp.grace = 0s;
-		set beresp.keep = 0s;
-		set beresp.uncacheable = true;
-	}
+    // Debugging T144257. Don't cache 200 responses with CL:0.
+    if (beresp.http.Content-Length == "0" && beresp.status == 200) {
+        // HFM
+        set beresp.ttl = 10m;
+        set beresp.grace = 0s;
+        set beresp.keep = 0s;
+        set beresp.uncacheable = true;
+    }
 }
 
 sub cluster_fe_deliver {
-	if (resp.http.X-Content-Range) {
-		set resp.http.Content-Range = resp.http.X-Content-Range;
-		unset resp.http.X-Content-Range;
-	}
+    if (resp.http.X-Content-Range) {
+        set resp.http.Content-Range = resp.http.X-Content-Range;
+        unset resp.http.X-Content-Range;
+    }
 
-	// The upload cluster does not serve page views or authenticated requests, so keep
-	// it cookie-free to avoid pointless network traffic and to improve cacheability.
-	unset resp.http.Set-Cookie;
-	unset resp.http.X-MediaWiki-Original;
+    // The upload cluster does not serve page views or authenticated requests, so keep
+    // it cookie-free to avoid pointless network traffic and to improve cacheability.
+    unset resp.http.Set-Cookie;
+    unset resp.http.X-MediaWiki-Original;
 
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
-		// In general, do not send Cache-Control. Exceptions such as setting CC for
-		// specific clients can be specified further down in this subroutine.
-		unset resp.http.Cache-Control;
-	}
+    if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+        // In general, do not send Cache-Control. Exceptions such as setting CC for
+        // specific clients can be specified further down in this subroutine.
+        unset resp.http.Cache-Control;
+    }
 
-	// Strip away unnecessary response headers set by Thumbor: T194814
-	unset resp.http.Thumbor-Request-Id;
-	unset resp.http.Thumbor-Request-Date;
-	unset resp.http.Thumbor-Processing-Utime;
-	unset resp.http.Thumbor-Engine;
-	unset resp.http.Thumbor-Processing-Time;
+    // Strip away unnecessary response headers set by Thumbor: T194814
+    unset resp.http.Thumbor-Request-Id;
+    unset resp.http.Thumbor-Request-Date;
+    unset resp.http.Thumbor-Processing-Utime;
+    unset resp.http.Thumbor-Engine;
+    unset resp.http.Thumbor-Processing-Time;
 
-	if (req.http.X-Content-Disposition == "attachment") {
-		set resp.http.Content-Disposition = "attachment";
-	}
+    if (req.http.X-Content-Disposition == "attachment") {
+        set resp.http.Content-Disposition = "attachment";
+    }
 
-	// Workaround for broken Content-Type due to Swift bug T162035/T188831
-	if (resp.http.Content-Type == "application/x-www-form-urlencoded") {
-		if (req.url ~ "(?i)\.(jpg|jpeg|jpe)$") {
-			set resp.http.Content-Type = "image/jpeg";
-		} else if (req.url ~ "(?i)\.png$") {
-			set resp.http.Content-Type = "image/png";
-		} else if (req.url ~ "(?i)\.webp$") {
-			set resp.http.Content-Type = "image/webp";
-		}
-	}
+    // Workaround for broken Content-Type due to Swift bug T162035/T188831
+    if (resp.http.Content-Type == "application/x-www-form-urlencoded") {
+        if (req.url ~ "(?i)\.(jpg|jpeg|jpe)$") {
+            set resp.http.Content-Type = "image/jpeg";
+        } else if (req.url ~ "(?i)\.png$") {
+            set resp.http.Content-Type = "image/png";
+        } else if (req.url ~ "(?i)\.webp$") {
+            set resp.http.Content-Type = "image/webp";
+        }
+    }
 
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
-		set resp.http.Access-Control-Allow-Origin = "*";
+    if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+        set resp.http.Access-Control-Allow-Origin = "*";
 
-		// Headers exposed for CORS:
-		// - Age, Content-Length, Date, X-Cache
-		//
-		// - X-Content-Duration: used for OGG audio and video files (7077999966).
-		//   Firefox 41 dropped support for this header, but OGV.js still supports it.
-		//   See <https://bugzilla.mozilla.org/show_bug.cgi?id=1160695#c27> and
-		//   <https://github.com/brion/ogv.js/issues/88>.
-		//
-		// - Content-Range: indicates total file and actual range returned for RANGE
-		//   requests (939b436512). Used by ogv.js to eliminate an extra HEAD request
-		//   to get the total file size.
-		set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache";
+        // Headers exposed for CORS:
+        // - Age, Content-Length, Date, X-Cache
+        //
+        // - X-Content-Duration: used for OGG audio and video files (7077999966).
+        //   Firefox 41 dropped support for this header, but OGV.js still supports it.
+        //   See <https://bugzilla.mozilla.org/show_bug.cgi?id=1160695#c27> and
+        //   <https://github.com/brion/ogv.js/issues/88>.
+        //
+        // - Content-Range: indicates total file and actual range returned for RANGE
+        //   requests (939b436512). Used by ogv.js to eliminate an extra HEAD request
+        //   to get the total file size.
+        set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache";
 
-		// "Timing-Allow-Origin" is part of the Resource Timing specification
-		// (https://www.w3.org/TR/resource-timing/). Setting this header allows
-		// JavaScript with a different origin to access resource timing info
-		// (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
-		set resp.http.Timing-Allow-Origin = "*";
+        // "Timing-Allow-Origin" is part of the Resource Timing specification
+        // (https://www.w3.org/TR/resource-timing/). Setting this header allows
+        // JavaScript with a different origin to access resource timing info
+        // (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
+        set resp.http.Timing-Allow-Origin = "*";
 
-		// Restrict uploads from loading external resources. (T117618)
-		// Currently experimental and testing on large but not huge wikis.
-		if (req.url ~ "^/wikipedia/(el|fr|ru|it|de|uk|ja|id|he|fi|zh|test)") {
-			set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
-			set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
-			set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
-		}
-	}
+        // Restrict uploads from loading external resources. (T117618)
+        // Currently experimental and testing on large but not huge wikis.
+        if (req.url ~ "^/wikipedia/(el|fr|ru|it|de|uk|ja|id|he|fi|zh|test)") {
+            set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
+            set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+            set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+        }
+    }
 
 
-	// We normally emit no-cache headers to protect our ability to purge
-	// images quickly, however facebookexternalhit / facebookexternalua have
-	// created traffic troubles in the past (T192688), so emit CC:public for
-	// Facebook. Do not rely on the User-Agent string but use the source IPs
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets
-		&& (resp.status == 200 || resp.status == 206)) {
-			set resp.http.Cache-control = "public, max-age=3600, s-maxage=3600";
-			set resp.http.Age = "0";
-	}
+    // We normally emit no-cache headers to protect our ability to purge
+    // images quickly, however facebookexternalhit / facebookexternalua have
+    // created traffic troubles in the past (T192688), so emit CC:public for
+    // Facebook. Do not rely on the User-Agent string but use the source IPs
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets
+        && (resp.status == 200 || resp.status == 206)) {
+            set resp.http.Cache-control = "public, max-age=3600, s-maxage=3600";
+            set resp.http.Age = "0";
+    }
 
-	# If the client supports WebP and the thumbnail is popular enough, attempt to serve a WebP thumbnail instead of JPG/PNG
-	if (obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.http.User-Agent !~ "(^Opera|Safari\/6)" && req.restarts == 0) {
-		# Append .webp to the request URL
-		set req.url = req.url + ".webp";
-		return(restart);
-	}
+    # If the client supports WebP and the thumbnail is popular enough, attempt to serve a WebP thumbnail instead of JPG/PNG
+    if (obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.http.User-Agent !~ "(^Opera|Safari\/6)" && req.restarts == 0) {
+        # Append .webp to the request URL
+        set req.url = req.url + ".webp";
+        return(restart);
+    }
 
-	# The WebP thumbnail failed, fall back to the JPG/PNG one
-	if (resp.status >= 400 && req.restarts >= 1 && req.url ~ "(?i)\.webp$" && req.url ~ "(?i)/thumb/") {
-		# Remove .webp from the request URL
-		set req.url = regsub(req.url, "(?i)\.webp$", "");
-		return(restart);
-	}
+    # The WebP thumbnail failed, fall back to the JPG/PNG one
+    if (resp.status >= 400 && req.restarts >= 1 && req.url ~ "(?i)\.webp$" && req.url ~ "(?i)/thumb/") {
+        # Remove .webp from the request URL
+        set req.url = regsub(req.url, "(?i)\.webp$", "");
+        return(restart);
+    }
 }
 
 sub cluster_fe_err_synth {
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
-		// Handle CORS preflight requests
-		if (resp.reason == "CORS Preflight") {
-			set resp.reason = "OK";
-			set resp.http.Connection = "keep-alive";
-			set resp.http.Content-Length = "0";
+    if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+        // Handle CORS preflight requests
+        if (resp.reason == "CORS Preflight") {
+            set resp.reason = "OK";
+            set resp.http.Connection = "keep-alive";
+            set resp.http.Content-Length = "0";
 
-			// allow Range requests, used by ogv.js
-			// also avoid strange errors when testing on a debug host
-			set resp.http.Access-Control-Allow-Origin = "*";
-			set resp.http.Access-Control-Allow-Headers = "Range,X-Wikimedia-Debug";
-			set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
-			set resp.http.Access-Control-Max-Age = "86400";
-		}
+            // allow Range requests, used by ogv.js
+            // also avoid strange errors when testing on a debug host
+            set resp.http.Access-Control-Allow-Origin = "*";
+            set resp.http.Access-Control-Allow-Headers = "Range,X-Wikimedia-Debug";
+            set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+            set resp.http.Access-Control-Max-Age = "86400";
+        }
 
-		// Homepage redirect to commons
-		if (resp.reason == "Commons Redirect") {
-			set resp.reason = "Moved Permanently";
-			set resp.http.Location = "https://commons.wikimedia.org/";
-			set resp.http.Connection = "keep-alive";
-			set resp.http.Content-Length = "0";
-		}
-	}
+        // Homepage redirect to commons
+        if (resp.reason == "Commons Redirect") {
+            set resp.reason = "Moved Permanently";
+            set resp.http.Location = "https://commons.wikimedia.org/";
+            set resp.http.Connection = "keep-alive";
+            set resp.http.Content-Length = "0";
+        }
+    }
 }
 # vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:

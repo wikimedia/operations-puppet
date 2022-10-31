@@ -7,7 +7,7 @@ include "normalize_path.inc.vcl";
 # Not a complete list.
 # Do not use; use X-Public-Cloud == "gcp" instead; see also T270391
 acl google_cloud_nets {
-	"2600:1900::0"/28;
+    "2600:1900::0"/28;
 }
 
 /******************************************************************************
@@ -97,311 +97,311 @@ sub normalize_rest_path { C{
 // the example of traffic sourced directly by satellite or something.
 
 sub mobile_redirect {
-	if (!req.http.X-Subdomain && (req.method == "GET" || req.method == "HEAD")
-		&& (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
-			|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.X-WMF-GT-Redirect-Scoped || req.http.Accept ~ "vnd.wap.wml")
-		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
-		// The smart TV from Samsung normally stays on desktop, unless the request
-		// is specifically scoped for GT redirection
-		&& (req.http.User-Agent !~ "(SMART-TV.*SamsungBrowser)" || req.http.X-WMF-GT-Redirect-Scoped)
-		&& req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
-		&& (
-			req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
-			|| ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
-		)) {
+    if (!req.http.X-Subdomain && (req.method == "GET" || req.method == "HEAD")
+        && (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
+            || req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.X-WMF-GT-Redirect-Scoped || req.http.Accept ~ "vnd.wap.wml")
+        && req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
+        // The smart TV from Samsung normally stays on desktop, unless the request
+        // is specifically scoped for GT redirection
+        && (req.http.User-Agent !~ "(SMART-TV.*SamsungBrowser)" || req.http.X-WMF-GT-Redirect-Scoped)
+        && req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
+        && (
+            req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
+            || ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
+        )) {
 
-		// Separate regexps for clarity, but multiple regsubs instead of
-		// "if host ~"/regsub matches for efficiency. Be careful to not
-		// write overlapping/chaining regexps.
-		set req.http.MobileHost = req.http.Host;
-		set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
-		set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|incubator|legalteam|meta|office|outreach|pl|species|strategy|vote|wikimania20[0-9][0-9])\.wikimedia\.", "\1.m.wikimedia.");
-		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www|commons|donate|meta|nostalgia|quote|quality|sep11|sources|species|textbook|thankyou|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+        // Separate regexps for clarity, but multiple regsubs instead of
+        // "if host ~"/regsub matches for efficiency. Be careful to not
+        // write overlapping/chaining regexps.
+        set req.http.MobileHost = req.http.Host;
+        set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
+        set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|incubator|legalteam|meta|office|outreach|pl|species|strategy|vote|wikimania20[0-9][0-9])\.wikimedia\.", "\1.m.wikimedia.");
+        set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www|commons|donate|meta|nostalgia|quote|quality|sep11|sources|species|textbook|thankyou|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
 
-		if (req.http.Host != req.http.MobileHost) {
-			set req.http.Location = "https://" + req.http.MobileHost + req.url;
-			return (synth(302, "Mobile Redirect"));
-		}
-		unset req.http.MobileHost;
-	}
+        if (req.http.Host != req.http.MobileHost) {
+            set req.http.Location = "https://" + req.http.MobileHost + req.url;
+            return (synth(302, "Mobile Redirect"));
+        }
+        unset req.http.MobileHost;
+    }
 }
 
 sub cluster_fe_vcl_switch {
-	// Rewrite sitemap requests for itwiki into the sitemaps backend.
-	// sitemaps is part of alternate_domains, so this rewrite has to happen
-	// in the frontend before VCL switching.  We'll update the conditional
-	// later if we add more maps for more sites.
-	if ((req.http.Host == "it.wikipedia.org"
+    // Rewrite sitemap requests for itwiki into the sitemaps backend.
+    // sitemaps is part of alternate_domains, so this rewrite has to happen
+    // in the frontend before VCL switching.  We'll update the conditional
+    // later if we add more maps for more sites.
+    if ((req.http.Host == "it.wikipedia.org"
         || req.http.Host == "id.wikipedia.org"
         || req.http.Host == "pt.wikipedia.org"
         || req.http.Host == "pa.wikipedia.org"
         || req.http.Host == "pnb.wikipedia.org"
         || req.http.Host == "nl.wikipedia.org"
         || req.http.Host == "ko.wikipedia.org") && req.url ~ "^/sitemap") {
-		set req.url = "/" + req.http.Host + req.url;
-		set req.http.Host = "sitemaps.wikimedia.org";
-	}
+        set req.url = "/" + req.http.Host + req.url;
+        set req.http.Host = "sitemaps.wikimedia.org";
+    }
 
 <% if @vcl_config.fetch('alternate_domains', {}).length > 0 -%>
-	// Switch to cache_misc VCL if the request is for a site listed in
-	// cache::alternate_domains
-	if (alternate_domains.match(req.http.Host)) {
-		return (vcl(wikimedia_misc));
-	}
+    // Switch to cache_misc VCL if the request is for a site listed in
+    // cache::alternate_domains
+    if (alternate_domains.match(req.http.Host)) {
+        return (vcl(wikimedia_misc));
+    }
 <% end -%>
 }
 
 sub cluster_fe_recv_pre_purge {
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ text_abuse_nets) {
-		return (synth(403, "Abuse"));
-	}
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ text_abuse_nets) {
+        return (synth(403, "Abuse"));
+    }
 
-	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
-		return (synth(403, "Noise"));
-	}
+    if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
+        return (synth(403, "Noise"));
+    }
 
-	if (req.method == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
-		return (synth(403, "Noise"));
-	}
+    if (req.method == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
+        return (synth(403, "Noise"));
+    }
 
-	if (req.url ~ "&limit=2000&action=history") {
-		return (synth(403, "Excessive load"));
-	}
+    if (req.url ~ "&limit=2000&action=history") {
+        return (synth(403, "Excessive load"));
+    }
 
-	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
-	// Disable Range requests for now.
-	unset req.http.Range;
+    // FIXME: we're seeing an issue with Range requests and gzip/gunzip.
+    // Disable Range requests for now.
+    unset req.http.Range;
 
-	if (req.restarts == 0) {
-		// Always set or clear X-Subdomain and X-Orig-Cookie
-		unset req.http.X-Orig-Cookie;
-		unset req.http.X-Subdomain;
-		unset req.http.x-dt-host; // desktop host, if mobile hostname on request
+    if (req.restarts == 0) {
+        // Always set or clear X-Subdomain and X-Orig-Cookie
+        unset req.http.X-Orig-Cookie;
+        unset req.http.X-Subdomain;
+        unset req.http.x-dt-host; // desktop host, if mobile hostname on request
 
-		if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
-			set req.http.X-Subdomain = "M";
-		}
+        if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
+            set req.http.X-Subdomain = "M";
+        }
 
-		// The following headers were removed by zero's tag_carrier_cleanup.
-		// MediaWiki takes them into account, so make sure they cannot be
-		// injected from the outside
-		unset req.http.X-Forwarded-By;
-		unset req.http.X-CS;
-		unset req.http.X-CS2;
+        // The following headers were removed by zero's tag_carrier_cleanup.
+        // MediaWiki takes them into account, so make sure they cannot be
+        // injected from the outside
+        unset req.http.X-Forwarded-By;
+        unset req.http.X-CS;
+        unset req.http.X-CS2;
 
-		// mobile-subdomains-only for Host-rewrite
-		if (req.http.X-Subdomain) {
-			// Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
-			// hostnames are being rewritten by the regex in the final else
-			// clause, except for m.mediawiki.org and m.wikidata.org which are
-			// rewritten here (because of the www.).
-			if (req.http.host == "m.mediawiki.org") {
-				set req.http.x-dt-host = "www.mediawiki.org";
-			} else if (req.http.host == "m.wikidata.org") {
-				set req.http.x-dt-host = "www.wikidata.org";
-			} else {
-				// All other hostnames are taken care of here.
-				// Replace <language>.m.<project>.org by <language>.<project>.org
-				// as well as m.<project>.org by <project>.org
-				//
-				// Example:
-				// foundation.m.wikimedia.org -> foundation.wikimedia.org
-				// it.m.wikipedia.org -> it.wikipedia.org
-				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?m\.", "\1");
-			}
+        // mobile-subdomains-only for Host-rewrite
+        if (req.http.X-Subdomain) {
+            // Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
+            // hostnames are being rewritten by the regex in the final else
+            // clause, except for m.mediawiki.org and m.wikidata.org which are
+            // rewritten here (because of the www.).
+            if (req.http.host == "m.mediawiki.org") {
+                set req.http.x-dt-host = "www.mediawiki.org";
+            } else if (req.http.host == "m.wikidata.org") {
+                set req.http.x-dt-host = "www.wikidata.org";
+            } else {
+                // All other hostnames are taken care of here.
+                // Replace <language>.m.<project>.org by <language>.<project>.org
+                // as well as m.<project>.org by <project>.org
+                //
+                // Example:
+                // foundation.m.wikimedia.org -> foundation.wikimedia.org
+                // it.m.wikipedia.org -> it.wikipedia.org
+                set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?m\.", "\1");
+            }
 
-			if (req.url ~ "^/api/rest_v1/") {
-				// for Restbase, there is no difference in desktop-vs-mobile hostnames,
-				// so rewrite mobile hostnames to desktop hostnames for singular caching
-				// (this affects the Host: header, and also the url rewrite for restbase
-				// elsewhere that uses req.http.host)
-				set req.http.host = req.http.x-dt-host;
-			}
-		}
+            if (req.url ~ "^/api/rest_v1/") {
+                // for Restbase, there is no difference in desktop-vs-mobile hostnames,
+                // so rewrite mobile hostnames to desktop hostnames for singular caching
+                // (this affects the Host: header, and also the url rewrite for restbase
+                // elsewhere that uses req.http.host)
+                set req.http.host = req.http.x-dt-host;
+            }
+        }
 
-		# normalize all /static to the same hostname for caching
-		if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
+        # normalize all /static to the same hostname for caching
+        if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
 
-		# normalize all /w/static.php to the same wiki host for improved caching
-		# https://wikitech.wikimedia.org/wiki/MediaWiki_at_WMF#Static_files
-		if (req.url ~ "^/w/(skins|resources|extensions)/" ) {
-			set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
-		}
+        # normalize all /w/static.php to the same wiki host for improved caching
+        # https://wikitech.wikimedia.org/wiki/MediaWiki_at_WMF#Static_files
+        if (req.url ~ "^/w/(skins|resources|extensions)/" ) {
+            set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
+        }
 
-		// X-RB-NOREDIR: redirect=false optimization: T134464
-		// RB sends the same content regardless of ?redirect=false, but
-		// switches from 302 w/ Location (normal) to 200 w/o Location
-		// (?redirect=false) for wikitext redirect responses.  We can
-		// make this more-efficient by doing this in Varnish and sharing
-		// the cache object (stripping the parameter and doing the
-		// transform at deliver time).
-		unset req.http.X-RB-NOREDIR; // do not let clients interfere!
-		if (req.url ~ "^/api/rest_v1/.*[?&]redirect=") {
-			// extract the redirect= value to boolean X-RB-NOREDIR for later
-			set req.http.X-RB-NOREDIR = regsub(req.url, "^.+[?&]redirect=([^&]+).*$", "\1");
-			if (req.http.X-RB-NOREDIR ~ "(?i)^(false|no|0)$") {
-				set req.http.X-RB-NOREDIR = "1";
-			} else {
-				unset req.http.X-RB-NOREDIR;
-			}
-			// Remove the redirect=X parameter from req.url to avoid cache
-			// fragmentation using two regexes to cover distinct cases:
-			// (1) Simple strip if final query arg:
-			set req.url = regsub(req.url, "[?&]redirect=[^&]+$", "");
-			// (2) When not the final arg, we need to capture the leading
-			//     [?&] to reuse with the parameter that follows:
-			set req.url = regsub(req.url, "([?&])redirect=[^&]+&", "\1");
-		}
+        // X-RB-NOREDIR: redirect=false optimization: T134464
+        // RB sends the same content regardless of ?redirect=false, but
+        // switches from 302 w/ Location (normal) to 200 w/o Location
+        // (?redirect=false) for wikitext redirect responses.  We can
+        // make this more-efficient by doing this in Varnish and sharing
+        // the cache object (stripping the parameter and doing the
+        // transform at deliver time).
+        unset req.http.X-RB-NOREDIR; // do not let clients interfere!
+        if (req.url ~ "^/api/rest_v1/.*[?&]redirect=") {
+            // extract the redirect= value to boolean X-RB-NOREDIR for later
+            set req.http.X-RB-NOREDIR = regsub(req.url, "^.+[?&]redirect=([^&]+).*$", "\1");
+            if (req.http.X-RB-NOREDIR ~ "(?i)^(false|no|0)$") {
+                set req.http.X-RB-NOREDIR = "1";
+            } else {
+                unset req.http.X-RB-NOREDIR;
+            }
+            // Remove the redirect=X parameter from req.url to avoid cache
+            // fragmentation using two regexes to cover distinct cases:
+            // (1) Simple strip if final query arg:
+            set req.url = regsub(req.url, "[?&]redirect=[^&]+$", "");
+            // (2) When not the final arg, we need to capture the leading
+            //     [?&] to reuse with the parameter that follows:
+            set req.url = regsub(req.url, "([?&])redirect=[^&]+&", "\1");
+        }
 
-		// Normalize Accept headers for the REST API: Ignore unless a profile is
-		// specified or this is a request for the root REST URI
-		if (req.url ~ "^/api/rest_v1/?(\?doc)?$" && req.http.Accept ~ "text/html") {
-			set req.http.Accept = "text/html";
-		} else if (req.url ~ "^/api/rest_v1/") {
-			if (req.http.Accept !~ {"profile="https://www.mediawiki.org/wiki/Specs/"}) {
-				unset req.http.Accept;
-			} else {
-				// Only replaces the patch version if it's specified.
-				// We ignore the patch version differences to avoid additional
-				// work on guaranteed backwards compatible changes.
-				set req.http.Accept = regsub(req.http.Accept, "([0-9]+\.[0-9]+\.)[0-9]+(\\\x22)$", "\10\2");
-			}
-		}
-		// Normalise the Accept-Language header for REST API requests
-		// For the time being we only take the first lang variant passed in and ignore the rest
-		if (req.url ~ "^/api/rest_v1/" && req.http.Accept-Language) {
-			if (req.http.Accept-Language ~ "^[a-zA-Z]+(-[a-zA-Z]+)?") {
-				set req.http.Accept-Language = regsub(req.http.Accept-Language, "([a-zA-Z]+(-[a-zA-Z]+)?)(.*)$", "\1");
-			} else {
-				unset req.http.Accept-Language;
-			}
-		}
+        // Normalize Accept headers for the REST API: Ignore unless a profile is
+        // specified or this is a request for the root REST URI
+        if (req.url ~ "^/api/rest_v1/?(\?doc)?$" && req.http.Accept ~ "text/html") {
+            set req.http.Accept = "text/html";
+        } else if (req.url ~ "^/api/rest_v1/") {
+            if (req.http.Accept !~ {"profile="https://www.mediawiki.org/wiki/Specs/"}) {
+                unset req.http.Accept;
+            } else {
+                // Only replaces the patch version if it's specified.
+                // We ignore the patch version differences to avoid additional
+                // work on guaranteed backwards compatible changes.
+                set req.http.Accept = regsub(req.http.Accept, "([0-9]+\.[0-9]+\.)[0-9]+(\\\x22)$", "\10\2");
+            }
+        }
+        // Normalise the Accept-Language header for REST API requests
+        // For the time being we only take the first lang variant passed in and ignore the rest
+        if (req.url ~ "^/api/rest_v1/" && req.http.Accept-Language) {
+            if (req.http.Accept-Language ~ "^[a-zA-Z]+(-[a-zA-Z]+)?") {
+                set req.http.Accept-Language = regsub(req.http.Accept-Language, "([a-zA-Z]+(-[a-zA-Z]+)?)(.*)$", "\1");
+            } else {
+                unset req.http.Accept-Language;
+            }
+        }
 
-		// Custom rule to block traffic coming from bots, hitting the Analytics AQS API.
-		if (req.http.User-Agent ~ "^(python-requests|rest-client\/2\.1\.0)" && req.url ~ "^/api/rest_v1/metrics/pageviews") {
-			return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
-		}
-	}
+        // Custom rule to block traffic coming from bots, hitting the Analytics AQS API.
+        if (req.http.User-Agent ~ "^(python-requests|rest-client\/2\.1\.0)" && req.url ~ "^/api/rest_v1/metrics/pageviews") {
+            return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
+        }
+    }
 
-	// Normalize paths before purging
-	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url ~ "^/api/rest_v1/" || req.url ~ "^/w/rest\.php/" || req.http.host ~ "^cxserver\.wikimedia\.org$") {
-		call normalize_rest_path;
-	} else {
-		call normalize_mediawiki_path;
-	}
+    // Normalize paths before purging
+    // Don't decode percent-encoded slashes in paths for REST APIs
+    if (req.url ~ "^/api/rest_v1/" || req.url ~ "^/w/rest\.php/" || req.http.host ~ "^cxserver\.wikimedia\.org$") {
+        call normalize_rest_path;
+    } else {
+        call normalize_mediawiki_path;
+    }
 }
 
 sub evaluate_cookie {
-	// For hash->lookup purposes, if there's a valid-seeming session|token
-	// cookie, replace it with the shared Cookie value "Token=1",
-	// otherwise remove the Cookie completely.  In either case, in
-	// vcl_(pass|miss) on the way to any backend fetch, it will be
-	// restored to the original value.
-	// Later in cluster_fe_backend_response, we'll create hit-for-pass objects for any
-	// response with Vary:Cookie and Cookie:Token=1.  This will allow
-	// logged-in users to share the anonymous users' cache for
-	// non-Vary:Cookie responses, and then share a single hit-for-pass
-	// object in a single Vary slot per object for those responses that
-	// should Vary:Cookie.
-	if (req.restarts == 0) {
-		unset req.http.X-Orig-Cookie;
-		if (req.http.Cookie) {
-			set req.http.X-Orig-Cookie = req.http.Cookie;
-			if (req.http.Cookie ~ "([sS]ession|Token)=") {
-				set req.http.Cookie = "Token=1";
-			} else {
-				unset req.http.Cookie;
-			}
-		}
-	}
+    // For hash->lookup purposes, if there's a valid-seeming session|token
+    // cookie, replace it with the shared Cookie value "Token=1",
+    // otherwise remove the Cookie completely.  In either case, in
+    // vcl_(pass|miss) on the way to any backend fetch, it will be
+    // restored to the original value.
+    // Later in cluster_fe_backend_response, we'll create hit-for-pass objects for any
+    // response with Vary:Cookie and Cookie:Token=1.  This will allow
+    // logged-in users to share the anonymous users' cache for
+    // non-Vary:Cookie responses, and then share a single hit-for-pass
+    // object in a single Vary slot per object for those responses that
+    // should Vary:Cookie.
+    if (req.restarts == 0) {
+        unset req.http.X-Orig-Cookie;
+        if (req.http.Cookie) {
+            set req.http.X-Orig-Cookie = req.http.Cookie;
+            if (req.http.Cookie ~ "([sS]ession|Token)=") {
+                set req.http.Cookie = "Token=1";
+            } else {
+                unset req.http.Cookie;
+            }
+        }
+    }
 }
 
 sub pass_authorization {
-	// As a general rule, per the RFCs, shared caches shouldn't use cached
-	// responses for requests with Authorization headers (with a few
-	// notable exceptions aside).  The default vcl_recv (which text
-	// doesn't use) in varnish does this alongside its pass for Cookie.
-	// We deal with Cookies properly elsewhere.
-	//
-	// By letting Authorization reqs cache, we're breaking our own OAuth
-	// in some corner cases: https://phabricator.wikimedia.org/T105387
-	// Any browser/curl fetch of an OAuth URL without the header can
-	// cause a redirect to be cached, which then affects real fetches that
-	// have the Authorization header set, which is Bad.
-	//
-	// It's *probably* best to just pass all Authorization-headered
-	// requests in general, but on the other hand, I see a lot of random
-	// Authorization headers in our traffic that don't look like stuff
-	// we're using or want to pay attention to, and we've otherwise seemed
-	// ok on this stuff.  So for now, only (pass) on ones that seem to
-	// have OAuth data, with the same header-matching as in:
-	// https://phabricator.wikimedia.org/diffusion/EOAU/browse/master/backend/MWOAuthUtils.php;8029ef146211a1016b1f8e676944c3750f78b0eb$89
-	if (req.http.Authorization ~ "^OAuth ") {
-		return (pass);
-	}
+    // As a general rule, per the RFCs, shared caches shouldn't use cached
+    // responses for requests with Authorization headers (with a few
+    // notable exceptions aside).  The default vcl_recv (which text
+    // doesn't use) in varnish does this alongside its pass for Cookie.
+    // We deal with Cookies properly elsewhere.
+    //
+    // By letting Authorization reqs cache, we're breaking our own OAuth
+    // in some corner cases: https://phabricator.wikimedia.org/T105387
+    // Any browser/curl fetch of an OAuth URL without the header can
+    // cause a redirect to be cached, which then affects real fetches that
+    // have the Authorization header set, which is Bad.
+    //
+    // It's *probably* best to just pass all Authorization-headered
+    // requests in general, but on the other hand, I see a lot of random
+    // Authorization headers in our traffic that don't look like stuff
+    // we're using or want to pay attention to, and we've otherwise seemed
+    // ok on this stuff.  So for now, only (pass) on ones that seem to
+    // have OAuth data, with the same header-matching as in:
+    // https://phabricator.wikimedia.org/diffusion/EOAU/browse/master/backend/MWOAuthUtils.php;8029ef146211a1016b1f8e676944c3750f78b0eb$89
+    if (req.http.Authorization ~ "^OAuth ") {
+        return (pass);
+    }
 }
 
 sub cluster_fe_recv {
-	// 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
-	if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
-	    || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
-		return (synth(421, "Misdirected Request"));
-	}
+    // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
+    if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
+        || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
+        return (synth(421, "Misdirected Request"));
+    }
 
-	if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
-		set req.http.Location = "https://foundation.wikimedia.org" + req.url;
-		return (synth(302, "Foundation Wiki Moved"));
-	}
+    if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
+        set req.http.Location = "https://foundation.wikimedia.org" + req.url;
+        return (synth(302, "Foundation Wiki Moved"));
+    }
 
-	if (req.http.Host ~ "^((www|m)\.)?wikifunctions\.org$") {
-		set req.http.Location = "https://meta.wikimedia.org/wiki/Wikilambda";
-		return (synth(302, "Temporary Lambda Redirect"));
-	}
+    if (req.http.Host ~ "^((www|m)\.)?wikifunctions\.org$") {
+        set req.http.Location = "https://meta.wikimedia.org/wiki/Wikilambda";
+        return (synth(302, "Temporary Lambda Redirect"));
+    }
 
-	call mobile_redirect;
+    call mobile_redirect;
 
-	// shortener URLs can be validated and restricted here
-	if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
-		// Only allow GET/HEAD to the shortener
-		if (req.method != "GET" && req.method != "HEAD") {
-			return (synth(405, "Method not allowed"));
-		}
-	        // Strip query args: we don't use them, but others may send junk which would hurt caching
-		set req.url = regsub(req.url, "\?.*$", "");
-		// Validate that we're only handling true short URLs, as
-		// otherwise there are potentially holes by which unrelated
-		// metawiki URLs can be accessed via w.wiki after the rewrite in
-		// text-backend.
-		if (req.url !~ "^/_?[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$]*$") {
-			return (synth(404, "Short URL Not Found"));
-		}
-	}
+    // shortener URLs can be validated and restricted here
+    if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
+        // Only allow GET/HEAD to the shortener
+        if (req.method != "GET" && req.method != "HEAD") {
+            return (synth(405, "Method not allowed"));
+        }
+        // Strip query args: we don't use them, but others may send junk which would hurt caching
+        set req.url = regsub(req.url, "\?.*$", "");
+        // Validate that we're only handling true short URLs, as
+        // otherwise there are potentially holes by which unrelated
+        // metawiki URLs can be accessed via w.wiki after the rewrite in
+        // text-backend.
+        if (req.url !~ "^/_?[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$]*$") {
+            return (synth(404, "Short URL Not Found"));
+        }
+    }
 
-	// Users that just logged out, should not get a 304 for their
-	// (locally cached) logged in pages.
-	if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
-		unset req.http.If-Modified-Since;
-	}
+    // Users that just logged out, should not get a 304 for their
+    // (locally cached) logged in pages.
+    if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
+        unset req.http.If-Modified-Since;
+    }
 
-	if (req.method != "GET" && req.method != "HEAD") {
-		return (pass);
-	}
+    if (req.method != "GET" && req.method != "HEAD") {
+        return (pass);
+    }
 
-	if (req.http.X-Wikimedia-Debug) {
-		return (pass);
-	}
+    if (req.http.X-Wikimedia-Debug) {
+        return (pass);
+    }
 
-	// The cookies below represent mobile preferences that can be set for anonymous users.
-	if (req.http.X-Subdomain) {
-		// Do not cache the beta variant of the mobile site. T228861
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
-			return (pass);
-		}
-	}
+    // The cookies below represent mobile preferences that can be set for anonymous users.
+    if (req.http.X-Subdomain) {
+        // Do not cache the beta variant of the mobile site. T228861
+        if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
+            return (pass);
+        }
+    }
 
-	call evaluate_cookie;
-	call pass_authorization;
+    call evaluate_cookie;
+    call pass_authorization;
 }
 
 sub cluster_fe_recv_tail { }
@@ -409,216 +409,216 @@ sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_ratelimit {
-	if (req.url ~ "^/api/rest_v1/page/pdf/") {
-		if (vsthrottle.is_denied("proton_limiter:" + req.http.X-Client-IP, 10, 10s)) {
-			return (synth(429, "Too Many Requests"));
-		}
-	}
+    if (req.url ~ "^/api/rest_v1/page/pdf/") {
+        if (vsthrottle.is_denied("proton_limiter:" + req.http.X-Client-IP, 10, 10s)) {
+            return (synth(429, "Too Many Requests"));
+        }
+    }
 
-	// Rate limit public cloud to 100/s with bursts of 1000 (excluding
-	// cloud IPs included in wikimedia_nets)
-	if (req.http.X-Public-Cloud
-		&& std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets
-		&& vsthrottle.is_denied("public_cloud_all:" + req.http.X-Client-IP, 1000, 10s)) {
-		return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
-	}
+    // Rate limit public cloud to 100/s with bursts of 1000 (excluding
+    // cloud IPs included in wikimedia_nets)
+    if (req.http.X-Public-Cloud
+        && std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets
+        && vsthrottle.is_denied("public_cloud_all:" + req.http.X-Client-IP, 1000, 10s)) {
+        return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
+    }
 
-	// T284479
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
-		return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
-	}
+    // T284479
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
+        return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
+    }
 
-	// Ratelimit miss/pass requests per IP:
-	//   * Excluded for now:
-	//       * all WMF IPs (including labs)
-	//       * seemingly-authenticated requests (simple cookie check)
-	//   * RB and MW API, Wikidata: 1000/10s (100/s long term, with 1000 burst)
-	//   * All others from public cloud IPs: 100/10s (10/s long term, with 100 burst)
-	//   * All others: 1000/50s (20/s long term, with 1000 burst)
-	//       (current data leads us to believe sustaining 20/s should be
-	//       nearly impossible against standard MW outputs without
-	//       concurrency>1)
-	if (req.http.Cookie !~ "([sS]ession|Token)=" &&
-	    std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		if (req.url ~ "^/(api/rest_v1/|w/api.php|wiki/Special:EntityData)") {
-			if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
-				return (synth(429, "Too Many Requests"));
-			}
-		} else {
-			if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud_uncached:" + req.http.X-Client-IP, 100, 10s)) {
-				return (synth(429, "Too Many Requests"));
-			} else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
-				return (synth(429, "Too Many Requests"));
-			}
-		}
-	}
+    // Ratelimit miss/pass requests per IP:
+    //   * Excluded for now:
+    //       * all WMF IPs (including labs)
+    //       * seemingly-authenticated requests (simple cookie check)
+    //   * RB and MW API, Wikidata: 1000/10s (100/s long term, with 1000 burst)
+    //   * All others from public cloud IPs: 100/10s (10/s long term, with 100 burst)
+    //   * All others: 1000/50s (20/s long term, with 1000 burst)
+    //       (current data leads us to believe sustaining 20/s should be
+    //       nearly impossible against standard MW outputs without
+    //       concurrency>1)
+    if (req.http.Cookie !~ "([sS]ession|Token)=" &&
+        std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+        if (req.url ~ "^/(api/rest_v1/|w/api.php|wiki/Special:EntityData)") {
+            if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
+                return (synth(429, "Too Many Requests"));
+            }
+        } else {
+            if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud_uncached:" + req.http.X-Client-IP, 100, 10s)) {
+                return (synth(429, "Too Many Requests"));
+            } else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
+                return (synth(429, "Too Many Requests"));
+            }
+        }
+    }
 
-	<%- if @etcd_filters -%>
-	// These are the ratelimits generated from etcd
-	// They're only applied to external clients
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		include "requestctl-filters.inc.vcl";
-	}
-	<%- end -%>
+    <%- if @etcd_filters -%>
+    // These are the ratelimits generated from etcd
+    // They're only applied to external clients
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+        include "requestctl-filters.inc.vcl";
+    }
+    <%- end -%>
 
-	<%- if @varnish_testing -%>
-	if (req.http.User-Agent ~ "^varnishTest") {
-		if (vsthrottle.is_denied("varnishTest:" + req.http.X-Client-IP, 25, 5s)) {
-			return (synth(429, "Too Many Requests"));
-		}
-	}
-	<%- end -%>
+    <%- if @varnish_testing -%>
+    if (req.http.User-Agent ~ "^varnishTest") {
+        if (vsthrottle.is_denied("varnishTest:" + req.http.X-Client-IP, 25, 5s)) {
+            return (synth(429, "Too Many Requests"));
+        }
+    }
+    <%- end -%>
 }
 
 sub cluster_fe_hit {
-	call cluster_fe_ratelimit_hit;
+    call cluster_fe_ratelimit_hit;
 }
 sub cluster_fe_ratelimit_hit {}
 
 sub cluster_fe_miss {
-	call cluster_fe_ratelimit;
+    call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_pass {
-	call cluster_fe_ratelimit;
+    call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_backend_fetch {
-	// Restore the original Cookie header for upstream
-	// Assumes client header X-Orig-Cookie has been filtered!
-	if (bereq.http.X-Orig-Cookie) {
-		set bereq.http.Cookie = bereq.http.X-Orig-Cookie;
-		unset bereq.http.X-Orig-Cookie;
-	}
+    // Restore the original Cookie header for upstream
+    // Assumes client header X-Orig-Cookie has been filtered!
+    if (bereq.http.X-Orig-Cookie) {
+        set bereq.http.Cookie = bereq.http.X-Orig-Cookie;
+        unset bereq.http.X-Orig-Cookie;
+    }
 }
 
 sub cluster_fe_backend_response_early {
-	// Re-do the same changes as evalute_cookie above, but on the bereq
-	// Cookie header and without bothering to save originals.  The reason we
-	// have to do this very late in the game here is that Varnish 4 uses
-	// bereq.http.Cookie to set the cache storage Vary:Cookie slot for a
-	// fetched object shortly after vcl_backend_response.  Under Varnish3
-	// when all this session-cookie related VCL was developed, the vary slot
-	// was being set from req.http.Cookie.
-	// Note this must happen in the "backend_response_early" hook before the
-	// global common VCL tries to create generic hit-for-pass objects for
-	// TTL<=0, or else the Vary-slotting will be wrong there!
-	if (bereq.http.Cookie ~ "([sS]ession|Token)=") {
-		set bereq.http.Cookie = "Token=1";
-	} else {
-		unset bereq.http.Cookie;
-	}
+    // Re-do the same changes as evalute_cookie above, but on the bereq
+    // Cookie header and without bothering to save originals.  The reason we
+    // have to do this very late in the game here is that Varnish 4 uses
+    // bereq.http.Cookie to set the cache storage Vary:Cookie slot for a
+    // fetched object shortly after vcl_backend_response.  Under Varnish3
+    // when all this session-cookie related VCL was developed, the vary slot
+    // was being set from req.http.Cookie.
+    // Note this must happen in the "backend_response_early" hook before the
+    // global common VCL tries to create generic hit-for-pass objects for
+    // TTL<=0, or else the Vary-slotting will be wrong there!
+    if (bereq.http.Cookie ~ "([sS]ession|Token)=") {
+        set bereq.http.Cookie = "Token=1";
+    } else {
+        unset bereq.http.Cookie;
+    }
 }
 
 sub cluster_fe_backend_response {
-	if (beresp.ttl > 60s && bereq.http.X-Subdomain && (bereq.url ~ "mobileaction=" || bereq.url ~ "useformat=")) {
-		set beresp.ttl = 60 s;
-	}
+    if (beresp.ttl > 60s && bereq.http.X-Subdomain && (bereq.url ~ "mobileaction=" || bereq.url ~ "useformat=")) {
+        set beresp.ttl = 60 s;
+    }
 
 <%- if @vcl_config.fetch('do_esitest', false) -%>
-	if (bereq.url ~ "^/esitest-fa8a495983347898/includer") {
-		set beresp.do_esi = true;
-	}
+    if (bereq.url ~ "^/esitest-fa8a495983347898/includer") {
+        set beresp.do_esi = true;
+    }
 <%- end -%>
 
-	// set a 607s hit-for-pass object based on response conditions in vcl_backend_response:
-	//    Token=1 + Vary:Cookie:
-	//    All requests with real login session|token cookies share the
-	//    Cookie:Token=1 value for Vary purposes.  This allows them to
-	//    share a single hit-for-pass object here if the response
-	//    shouldn't be shared between users (Vary:Cookie).
-	if (
-		bereq.http.Cookie == "Token=1"
-		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
-	) {
-		set beresp.grace = 31s;
-		set beresp.keep = 0s;
-		set beresp.http.X-CDIS = "pass";
-		// HFP
-		return(pass(607s));
-	}
+    // set a 607s hit-for-pass object based on response conditions in vcl_backend_response:
+    //    Token=1 + Vary:Cookie:
+    //    All requests with real login session|token cookies share the
+    //    Cookie:Token=1 value for Vary purposes.  This allows them to
+    //    share a single hit-for-pass object here if the response
+    //    shouldn't be shared between users (Vary:Cookie).
+    if (
+        bereq.http.Cookie == "Token=1"
+        && beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
+    ) {
+        set beresp.grace = 31s;
+        set beresp.keep = 0s;
+        set beresp.http.X-CDIS = "pass";
+        // HFP
+        return(pass(607s));
+    }
 }
 
 sub cluster_fe_deliver {
-	# Other half of X-RB-NOREDIR (see cluster_fe_recv_pre_purge)
-	if (req.http.X-RB-NOREDIR) {
-		if (resp.status == 302) {
-			unset resp.http.Location;
-			set resp.status = 200;
-			set resp.reason = "OK";
-		} elsif (resp.status == 301) {
-			// preserve the original client redirect preference on title redirects
-			if (resp.http.Location ~ "[?]") {
-				if (resp.http.Location !~ "[?&]redirect=") {
-					set resp.http.Location = resp.http.Location + "&redirect=false";
-				}
-			} else {
-				set resp.http.Location = resp.http.Location + "?redirect=false";
-			}
-		}
-	}
+    # Other half of X-RB-NOREDIR (see cluster_fe_recv_pre_purge)
+    if (req.http.X-RB-NOREDIR) {
+        if (resp.status == 302) {
+            unset resp.http.Location;
+            set resp.status = 200;
+            set resp.reason = "OK";
+        } elsif (resp.status == 301) {
+            // preserve the original client redirect preference on title redirects
+            if (resp.http.Location ~ "[?]") {
+                if (resp.http.Location !~ "[?&]redirect=") {
+                    set resp.http.Location = resp.http.Location + "&redirect=false";
+                }
+            } else {
+                set resp.http.Location = resp.http.Location + "?redirect=false";
+            }
+        }
+    }
 
-	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
-	// by MediaWiki $wgUseCdn, sends purges internally). But pages musn't be cached elsewhere.
-	// NOTE: Language variants URLs are not currently covered by these regexps.
-	// Instead of writing regexps for every edge-case, we should impose some order and coherence
-	// on our URL routing schemes.
-	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
+    // Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
+    // by MediaWiki $wgUseCdn, sends purges internally). But pages musn't be cached elsewhere.
+    // NOTE: Language variants URLs are not currently covered by these regexps.
+    // Instead of writing regexps for every edge-case, we should impose some order and coherence
+    // on our URL routing schemes.
+    // NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
 
-	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
-		// ...but exempt CentralNotice banner special pages
-		if (req.url !~ "^/(wiki/|(w/index\.php)?\?title=)Special:Banner") {
-			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
-		}
-	}
+    if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
+        // ...but exempt CentralNotice banner special pages
+        if (req.url !~ "^/(wiki/|(w/index\.php)?\?title=)Special:Banner") {
+            set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+        }
+    }
 
-	// Age experiment for load.php T105657
-	if (req.url ~ "^/w/load\.php" ) {
-		set resp.http.Age = 0;
-	}
+    // Age experiment for load.php T105657
+    if (req.url ~ "^/w/load\.php" ) {
+        set resp.http.Age = 0;
+    }
 
-	// Perform GeoIP look-up and send the result as a session cookie
-	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
-		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
-		call geoip_cookie;
-	}
-	// Fix old IPv6 no-data cookies
-	else if (req.http.X-Orig-Cookie ~ "(^|;\s*)GeoIP=:::::v6"
-		|| req.http.Cookie ~ "(^|;\s*)GeoIP=:::::v6") {
-		call geoip_cookie;
-	}
+    // Perform GeoIP look-up and send the result as a session cookie
+    if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
+        && req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
+        call geoip_cookie;
+    }
+    // Fix old IPv6 no-data cookies
+    else if (req.http.X-Orig-Cookie ~ "(^|;\s*)GeoIP=:::::v6"
+        || req.http.Cookie ~ "(^|;\s*)GeoIP=:::::v6") {
+        call geoip_cookie;
+    }
 }
 
 sub cluster_fe_err_synth {
-	// Support mobile redirects
-	if (resp.reason == "Mobile Redirect") {
-		set resp.reason = "Found";
-		set resp.http.Location = req.http.Location;
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0"; // BZ #62245
-		set resp.http.Access-Control-Allow-Origin = "*"; // Allow client-side JS to follow this redirect
-	}
+    // Support mobile redirects
+    if (resp.reason == "Mobile Redirect") {
+        set resp.reason = "Found";
+        set resp.http.Location = req.http.Location;
+        set resp.http.Connection = "keep-alive";
+        set resp.http.Content-Length = "0"; // BZ #62245
+        set resp.http.Access-Control-Allow-Origin = "*"; // Allow client-side JS to follow this redirect
+    }
 
-	if (resp.reason == "Foundation Wiki Moved") {
-		set resp.reason = "Found";
-		set resp.http.Location = req.http.Location;
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0"; // BZ #62245
-	}
+    if (resp.reason == "Foundation Wiki Moved") {
+        set resp.reason = "Found";
+        set resp.http.Location = req.http.Location;
+        set resp.http.Connection = "keep-alive";
+        set resp.http.Content-Length = "0"; // BZ #62245
+    }
 
-	// Set a generic Retry-After of 1 for any response matching the string.
-	// If we have a request Retry-After header (added by requestctl)
-	// we will use its value instead.
-	if (resp.reason ~ "^Too Many Requests") {
-		set resp.http.Retry-After = 1;
-	}
+    // Set a generic Retry-After of 1 for any response matching the string.
+    // If we have a request Retry-After header (added by requestctl)
+    // we will use its value instead.
+    if (resp.reason ~ "^Too Many Requests") {
+        set resp.http.Retry-After = 1;
+    }
 
-	if (resp.reason == "Temporary Lambda Redirect") {
-		set resp.reason = "Found";
-		set resp.http.Location = req.http.Location;
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0"; // BZ #62245
-		set resp.http.Cache-control = "public, max-age=600, s-maxage=600";
-	}
+    if (resp.reason == "Temporary Lambda Redirect") {
+        set resp.reason = "Found";
+        set resp.http.Location = req.http.Location;
+        set resp.http.Connection = "keep-alive";
+        set resp.http.Content-Length = "0"; // BZ #62245
+        set resp.http.Cache-control = "public, max-age=600, s-maxage=600";
+    }
 }
 # vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:

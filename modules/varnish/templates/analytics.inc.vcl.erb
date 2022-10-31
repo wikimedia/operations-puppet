@@ -53,12 +53,12 @@ sub analytics_last_access_global_recv_ {
  * Use a 12h-resolution expiry so people cannot infer an exact request time.
  ****************************************************************************/
 sub set_last_access_cookie__ {
-	header.append(resp.http.Set-Cookie,
-		"WMF-Last-Access="
-		+ req.http.X-NowDay
-		+ ";Path=/;HttpOnly;secure;Expires="
-		+ std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
-	);
+    header.append(resp.http.Set-Cookie,
+        "WMF-Last-Access="
+        + req.http.X-NowDay
+        + ";Path=/;HttpOnly;secure;Expires="
+        + std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
+    );
 }
 
 /******************************************************************************
@@ -66,14 +66,14 @@ sub set_last_access_cookie__ {
  * (eg: Domain=.wikipedia.org)
  ******************************************************************************/
 sub set_last_access_global_cookie__ {
-	header.append(resp.http.Set-Cookie,
-		"WMF-Last-Access-Global="
-		+ req.http.X-NowDay
-		+ ";Path=/;Domain=."
-		+ regsub(req.http.Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain', 'org') %>)$", "\2")
-		+ ";HttpOnly;secure;Expires="
-		+ std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
-	);
+    header.append(resp.http.Set-Cookie,
+        "WMF-Last-Access-Global="
+        + req.http.X-NowDay
+        + ";Path=/;Domain=."
+        + regsub(req.http.Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain', 'org') %>)$", "\2")
+        + ";HttpOnly;secure;Expires="
+        + std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
+    );
 }
 
 // Call from vcl_deliver near other X-Analytics code

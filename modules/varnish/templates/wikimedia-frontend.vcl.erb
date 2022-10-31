@@ -99,19 +99,19 @@ include "<%= @vcl %>.inc.vcl";
 # frontends in front of ATS backend instances should send probes that don't
 # depend on the app backend
 probe varnish {
-	.request =
-		"GET /ats-be HTTP/1.1"
-		"Host: healthcheck.wikimedia.org"
-		"User-agent: Varnish backend check"
+    .request =
+        "GET /ats-be HTTP/1.1"
+        "Host: healthcheck.wikimedia.org"
+        "User-agent: Varnish backend check"
 <% if @vcl_config.fetch('varnish_probe_connection', 'close') == 'keep-alive' -%>
-		"Connection: keep-alive";
+        "Connection: keep-alive";
 <% else -%>
-		"Connection: close";
+        "Connection: close";
 <% end -%>
-	.timeout = <%= @vcl_config.fetch('varnish_probe_ms') %>ms;
-	.interval = 100ms;
-	.window = 5;
-	.threshold = 3;
+    .timeout = <%= @vcl_config.fetch('varnish_probe_ms') %>ms;
+    .interval = 100ms;
+    .window = 5;
+    .threshold = 3;
 }
 
 <%
@@ -133,13 +133,13 @@ probe varnish {
 
 <% @backend_caches.sort.each do |backend| -%>
 backend <%= 'be_' + backend.gsub(/[-.]/, '_') %> {
-	.host = "<%= backend %>";
-	.port = "<%= @backend_options['port'] %>";
-	.connect_timeout = <%= @backend_options['connect_timeout'] %>;
-	.first_byte_timeout = <%= @backend_options['first_byte_timeout'] %>;
-	.between_bytes_timeout = <%= @backend_options['between_bytes_timeout'] %>;
-	.max_connections = <%= @backend_options['max_connections'] %>;
-	.probe = varnish;
+    .host = "<%= backend %>";
+    .port = "<%= @backend_options['port'] %>";
+    .connect_timeout = <%= @backend_options['connect_timeout'] %>;
+    .first_byte_timeout = <%= @backend_options['first_byte_timeout'] %>;
+    .between_bytes_timeout = <%= @backend_options['between_bytes_timeout'] %>;
+    .max_connections = <%= @backend_options['max_connections'] %>;
+    .probe = varnish;
 }
 
 <% end # backend_caches loop -%>
@@ -150,376 +150,376 @@ backend <%= 'be_' + backend.gsub(/[-.]/, '_') %> {
 // by default rate limit but if public_clouds_shutdown is set block
 sub shutdown_public_clouds {
 <% if @vcl_config.fetch("public_clouds_shutdown") -%>
-	// Unconditionally return 403 to all traffic from public clouds like ec2
-	if (req.http.X-Public-Cloud)) {
-		return (synth(403));
-	}
+    // Unconditionally return 403 to all traffic from public clouds like ec2
+    if (req.http.X-Public-Cloud)) {
+        return (synth(403));
+    }
 <% end -%>
 }
 
 // *** HTTPS-forcing recv code
 sub https_recv_redirect {
-	if (req.http.X-Forwarded-Proto != "https") {
-		if (req.method == "GET" || req.method == "HEAD") {
-			set req.http.Location = "https://" + req.http.Host + req.url;
-			return (synth(301, "TLS Redirect"));
-		} else {
-			return (synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html"));
-		}
-	}
+    if (req.http.X-Forwarded-Proto != "https") {
+        if (req.method == "GET" || req.method == "HEAD") {
+            set req.http.Location = "https://" + req.http.Host + req.url;
+            return (synth(301, "TLS Redirect"));
+        } else {
+            return (synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html"));
+        }
+    }
 }
 
 // *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
-	if (resp.reason == "TLS Redirect") {
-		set resp.http.Location = req.http.Location;
-		set resp.http.Content-Length = "0"; // T64245
-		return(deliver);
-	}
+    if (resp.reason == "TLS Redirect") {
+        set resp.http.Location = req.http.Location;
+        set resp.http.Content-Length = "0"; // T64245
+        return(deliver);
+    }
 }
 
 // *** HTTPS deliver code - domain-based HSTS headers
 sub https_deliver_hsts {
-	if (req.http.X-Forwarded-Proto == "https") {
-		if (req.http.Host ~ "((^|\.)(<%= @wikimedia_domains_regex %>))$") {
-			set resp.http.Strict-Transport-Security = "max-age=106384710; includeSubDomains; preload";
-		}
-	}
+    if (req.http.X-Forwarded-Proto == "https") {
+        if (req.http.Host ~ "((^|\.)(<%= @wikimedia_domains_regex %>))$") {
+            set resp.http.Strict-Transport-Security = "max-age=106384710; includeSubDomains; preload";
+        }
+    }
 }
 
 // *** HTTPS deliver code - domain-based W3C Reporting API / Network Error Logging headers
 // https://phabricator.wikimedia.org/T257527
 // c.f. https://www.w3.org/TR/network-error-logging/ and https://w3c.github.io/reporting/
 sub https_deliver_networkerrorlogging {
-	// User agents only accept these headers via HTTPS.
-	if (req.http.X-Forwarded-Proto == "https") {
-		// Don't serve NEL response headers if users somehow wind up routed for us for domains that aren't ours.
-		// (See also normalize_request's Host header processing.)
-		if (req.http.Host != "invalid") {
-			// The values of these headers are JSON, but you must be careful to *not* embed `{"` or `"}`
-			// in the JSON itself, as those bigrams are VCL long-string delimiters.  One way to mangle JSON
-			// in the needed fashion is with the following Python snippet:
-			//     report_to = dict(group='wm_nel', max_age=86400, endpoints=[dict(url='https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0')])
-			//     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }'))
-			// VTC string literals can similarly be obtained with:
-			//     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }').replace('"', '\\"'))
-			set resp.http.Report-To = {"{ "group": "wm_nel", "max_age": 86400, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }"};
-			//     nel=dict(report_to='wm_nel', max_age=86400, failure_fraction=0.05, success_fraction=0.0)
-			set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 86400, "failure_fraction": 0.05, "success_fraction": 0.0}"};
-			// The failure_fraction was guesstimated based on group0's reporting ratio: https://phabricator.wikimedia.org/T257527#6489683
-		}
-	}
+    // User agents only accept these headers via HTTPS.
+    if (req.http.X-Forwarded-Proto == "https") {
+        // Don't serve NEL response headers if users somehow wind up routed for us for domains that aren't ours.
+        // (See also normalize_request's Host header processing.)
+        if (req.http.Host != "invalid") {
+            // The values of these headers are JSON, but you must be careful to *not* embed `{"` or `"}`
+            // in the JSON itself, as those bigrams are VCL long-string delimiters.  One way to mangle JSON
+            // in the needed fashion is with the following Python snippet:
+            //     report_to = dict(group='wm_nel', max_age=86400, endpoints=[dict(url='https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0')])
+            //     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }'))
+            // VTC string literals can similarly be obtained with:
+            //     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }').replace('"', '\\"'))
+            set resp.http.Report-To = {"{ "group": "wm_nel", "max_age": 86400, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }"};
+            //     nel=dict(report_to='wm_nel', max_age=86400, failure_fraction=0.05, success_fraction=0.0)
+            set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 86400, "failure_fraction": 0.05, "success_fraction": 0.0}"};
+            // The failure_fraction was guesstimated based on group0's reporting ratio: https://phabricator.wikimedia.org/T257527#6489683
+        }
+    }
 }
 
 // *** HTTPS deliver code - disable Google ad targeting (FLoC)
 // See T279804, https://github.com/wicg/floc#opting-out-of-computation
 sub https_deliver_permissionspolicy {
-	set resp.http.Permissions-Policy = "interest-cohort=()";
+    set resp.http.Permissions-Policy = "interest-cohort=()";
 }
 
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
-	// Sanity-check the overall format defined by the config of ATS-TLS/envoyproxy
-	if (req.http.X-Connection-Properties !~ "^H2=[01]; SSR=[012]; SSL=[^; ]+; C=[^; ]+; EC=[^; ]+;$") {
-		set req.http.x-tls-prot = "invalid";
-		set req.http.x-tls-sess = "invalid";
-		set req.http.x-tls-vers = "invalid";
-		set req.http.x-tls-keyx = "invalid";
-		set req.http.x-tls-auth = "invalid";
-		set req.http.x-tls-ciph = "invalid";
-	} else {
-		set req.http.x-tls-prot = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
-		if (req.http.x-tls-prot == "1") {
-			set req.http.x-tls-prot = "h2";
-		} else {
-			set req.http.x-tls-prot = "h1";
-		}
+    // Sanity-check the overall format defined by the config of ATS-TLS/envoyproxy
+    if (req.http.X-Connection-Properties !~ "^H2=[01]; SSR=[012]; SSL=[^; ]+; C=[^; ]+; EC=[^; ]+;$") {
+        set req.http.x-tls-prot = "invalid";
+        set req.http.x-tls-sess = "invalid";
+        set req.http.x-tls-vers = "invalid";
+        set req.http.x-tls-keyx = "invalid";
+        set req.http.x-tls-auth = "invalid";
+        set req.http.x-tls-ciph = "invalid";
+    } else {
+        set req.http.x-tls-prot = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
+        if (req.http.x-tls-prot == "1") {
+            set req.http.x-tls-prot = "h2";
+        } else {
+            set req.http.x-tls-prot = "h1";
+        }
 
-		set req.http.x-tls-sess = regsub(req.http.X-Connection-Properties, ".* SSR=([012]);.*", "\1");
-		if (req.http.x-tls-sess == "1") {
-			set req.http.x-tls-sess = "reused";
-		} elsif (req.http.x-tls-sess == "2") {
-			set req.http.x-tls-sess = "unknown";
-		} else {
-			set req.http.x-tls-sess = "new";
-		}
+        set req.http.x-tls-sess = regsub(req.http.X-Connection-Properties, ".* SSR=([012]);.*", "\1");
+        if (req.http.x-tls-sess == "1") {
+            set req.http.x-tls-sess = "reused";
+        } elsif (req.http.x-tls-sess == "2") {
+            set req.http.x-tls-sess = "unknown";
+        } else {
+            set req.http.x-tls-sess = "new";
+        }
 
-		set req.http.x-tls-vers = regsub(req.http.X-Connection-Properties, ".* SSL=([^; ]+);.*", "\1");
-		set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([^; ]+);.*", "\1");
+        set req.http.x-tls-vers = regsub(req.http.X-Connection-Properties, ".* SSL=([^; ]+);.*", "\1");
+        set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([^; ]+);.*", "\1");
 
-		set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* C=([^; ]+);.*", "\1");
-		set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA)-", "");
-		if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
-			set req.http.x-tls-auth = "RSA";
-		} else if (req.http.x-tls-auth ~ "^DHE-RSA") {
-			set req.http.x-tls-auth = "RSA";
-			set req.http.x-tls-keyx = "DHE";
-		} else {
-			set req.http.x-tls-auth = "ECDSA";
-		}
+        set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* C=([^; ]+);.*", "\1");
+        set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA)-", "");
+        if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
+            set req.http.x-tls-auth = "RSA";
+        } else if (req.http.x-tls-auth ~ "^DHE-RSA") {
+            set req.http.x-tls-auth = "RSA";
+            set req.http.x-tls-keyx = "DHE";
+        } else {
+            set req.http.x-tls-auth = "ECDSA";
+        }
 
-		// Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
-		// CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
-		// later on.
-		set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
-		if (req.http.x-tls-vers == "TLSv1.3") {
-			// Every TLSv1.3 cipher begins with TLS_
-			set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^TLS_", "");
-			// TLSv1.3 uses _ instead of - as a separator
-			set req.http.x-tls-ciph = regsuball(req.http.x-tls-ciph, "_", "-");
-		}
-	}
+        // Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
+        // CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
+        // later on.
+        set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
+        if (req.http.x-tls-vers == "TLSv1.3") {
+            // Every TLSv1.3 cipher begins with TLS_
+            set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^TLS_", "");
+            // TLSv1.3 uses _ instead of - as a separator
+            set req.http.x-tls-ciph = regsuball(req.http.x-tls-ciph, "_", "-");
+        }
+    }
 
-	// Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
-	std.log("tls: vers=" + req.http.x-tls-vers
-		+ ";keyx=" + req.http.x-tls-keyx
-		+ ";auth=" + req.http.x-tls-auth
-		+ ";ciph=" + req.http.x-tls-ciph
-		+ ";prot=" + req.http.x-tls-prot
-		+ ";sess=" + req.http.x-tls-sess);
+    // Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
+    std.log("tls: vers=" + req.http.x-tls-vers
+        + ";keyx=" + req.http.x-tls-keyx
+        + ";auth=" + req.http.x-tls-auth
+        + ";ciph=" + req.http.x-tls-ciph
+        + ";prot=" + req.http.x-tls-prot
+        + ";sess=" + req.http.x-tls-sess);
 
-	<%- if !@varnish_testing -%>
-	// Keep these in the test VCL version to ease testing
-	unset req.http.x-tls-prot;
-	unset req.http.x-tls-vers;
-	unset req.http.x-tls-sess;
-	unset req.http.x-tls-keyx;
-	unset req.http.x-tls-auth;
-	unset req.http.x-tls-ciph;
-	<%- end -%>
+    <%- if !@varnish_testing -%>
+    // Keep these in the test VCL version to ease testing
+    unset req.http.x-tls-prot;
+    unset req.http.x-tls-vers;
+    unset req.http.x-tls-sess;
+    unset req.http.x-tls-keyx;
+    unset req.http.x-tls-auth;
+    unset req.http.x-tls-ciph;
+    <%- end -%>
 }
 
 
 sub normalize_request {
-	// We shouldn't even legally be receiving proxy-style requests, as we're not a
-	// proxy from any client's point of view.  Just in case, we support it anyways
-	// according to RFC7230 rules: we ignore any Host header sent along with it
-	// and set a new Host header based on the host part we strip from the abs URI.
-	// ref: http://tools.ietf.org/html/rfc7230#section-5.4
-	if(req.url ~ "(?i)^https?://[^/]") {
-		# this strips away 'user:pass@' and ':port' when copying from URI to Host:
-		set req.http.Host = regsub(req.url, "(?i)^https?://(.*@)?([^/:]+).*$", "\2");
-		set req.url = regsub(req.url, "(?i)^https?://[^/]+/?", "/");
-	}
+    // We shouldn't even legally be receiving proxy-style requests, as we're not a
+    // proxy from any client's point of view.  Just in case, we support it anyways
+    // according to RFC7230 rules: we ignore any Host header sent along with it
+    // and set a new Host header based on the host part we strip from the abs URI.
+    // ref: http://tools.ietf.org/html/rfc7230#section-5.4
+    if(req.url ~ "(?i)^https?://[^/]") {
+        # this strips away 'user:pass@' and ':port' when copying from URI to Host:
+        set req.http.Host = regsub(req.url, "(?i)^https?://(.*@)?([^/:]+).*$", "\2");
+        set req.url = regsub(req.url, "(?i)^https?://[^/]+/?", "/");
+    }
 
-	// Strip :port from req.http.host and normalize to lowercase
-	set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
+    // Strip :port from req.http.host and normalize to lowercase
+    set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
 
-	// Check that host header looks reasonably-legitimate/parseable now
-	if (req.http.Host ~ "^[a-z0-9][-a-z0-9]*(\.[a-z0-9][-a-z0-9]*)*\.?$") {
-		// Strip optional trailing terminal dot if present
-		set req.http.Host = regsub(req.http.Host, "\.$", "");
-	} else {
-		set req.http.Host = "invalid";
-		// Unparseable / empty Host header
-		return (synth(400, ""));
-	}
-	// Enforce RFC 9112 request-target definition:
-	// at this point after absolute-form requests being transformed to
-	// origin-form ones, we should only have a request-target matching
-	// either origin-form or asterisk-form. See T318676 for more details
-	if(req.url !~ "^(/|\*$)") {
-		return (synth(400, ""));
-	}
+    // Check that host header looks reasonably-legitimate/parseable now
+    if (req.http.Host ~ "^[a-z0-9][-a-z0-9]*(\.[a-z0-9][-a-z0-9]*)*\.?$") {
+        // Strip optional trailing terminal dot if present
+        set req.http.Host = regsub(req.http.Host, "\.$", "");
+    } else {
+        set req.http.Host = "invalid";
+        // Unparseable / empty Host header
+        return (synth(400, ""));
+    }
+    // Enforce RFC 9112 request-target definition:
+    // at this point after absolute-form requests being transformed to
+    // origin-form ones, we should only have a request-target matching
+    // either origin-form or asterisk-form. See T318676 for more details
+    if(req.url !~ "^(/|\*$)") {
+        return (synth(400, ""));
+    }
 
-	if (req.http.Accept-Language) {
-		set req.http.Accept-Language = std.tolower(req.http.Accept-Language);
-	}
+    if (req.http.Accept-Language) {
+        set req.http.Accept-Language = std.tolower(req.http.Accept-Language);
+    }
 
-	// Check that the normalized hostname actually matches our SAN set from
-	// the Unified multi/wildcard certificate we use for prod cache cluster
-	// termination.  This won't eliminate every bad hostname down at the
-	// applayer (e.g. nosuchlanguage.wikimedia.org), but it does precisely
-	// match the wildcarding of the certificate itself and greatly limits
-	// the potential bad cases.
-	// --
-	// RFC 2616 Section 5.2 notes that 400 responses are also required
-	// if the hostname isn't one we recognize as legit *on the server*,
-	// meaning our own list of hostnames:
-	// "3. If the host as determined by rule 1 or 2 is not a valid host on
-	// the server, the response MUST be a 400 (Bad Request) error message."
-	// RFC 723x is less-clear on this case, but this is still a reasonable
-	// stance.  There are reasonable reasons that 404, 410, 421 and others
-	// are inappropriate if we receive a request accidentally for some
-	// legitimate domainname on the Internet which doesn't belong to us.
-	// --
-	// This regex exactly matches the canonical domains SAN list used in
-	// our Unified certificates, according to the normal SAN rules where a
-	// wildcard only matches a single DNS label.  It's encoded here as a
-	// VCL Long String with delimiters {""} containing a PCRE regex with
-	// the x-flag to allow expansion with whitespace, newlines, and
-	// comments for clarity:
+    // Check that the normalized hostname actually matches our SAN set from
+    // the Unified multi/wildcard certificate we use for prod cache cluster
+    // termination.  This won't eliminate every bad hostname down at the
+    // applayer (e.g. nosuchlanguage.wikimedia.org), but it does precisely
+    // match the wildcarding of the certificate itself and greatly limits
+    // the potential bad cases.
+    // --
+    // RFC 2616 Section 5.2 notes that 400 responses are also required
+    // if the hostname isn't one we recognize as legit *on the server*,
+    // meaning our own list of hostnames:
+    // "3. If the host as determined by rule 1 or 2 is not a valid host on
+    // the server, the response MUST be a 400 (Bad Request) error message."
+    // RFC 723x is less-clear on this case, but this is still a reasonable
+    // stance.  There are reasonable reasons that 404, 410, 421 and others
+    // are inappropriate if we receive a request accidentally for some
+    // legitimate domainname on the Internet which doesn't belong to us.
+    // --
+    // This regex exactly matches the canonical domains SAN list used in
+    // our Unified certificates, according to the normal SAN rules where a
+    // wildcard only matches a single DNS label.  It's encoded here as a
+    // VCL Long String with delimiters {""} containing a PCRE regex with
+    // the x-flag to allow expansion with whitespace, newlines, and
+    // comments for clarity:
 
 <% if @realm == "production" -%>
-	if (req.http.Host !~ {"(?x) # Allow inline comments and ignore ws
-	    ^(  # The outer () here are to keep the anchors ^$ separate
-	        # All of the .org domains which all have leading wildcards:
-	        ([^.]+\.)? ( # any leading singular dns label, but not multiple
-	            # all of these have exactly *.domain.org + *.m.domain.org
-	            (m\.)?(wik(i(pedia|data|books|news|quote|source|versity|voyage|functions)|tionary)|mediawiki)
-	            # wikimedia is special: it's like above + *.planet
-	            | ((m|planet)\.)?wikimedia
-	            # these two have only the root wildcard (no m nor planet)
-	            | (wmfusercontent|wikimediafoundation)
-	        )\.org
-	        # w.wiki is separate as a singular hostname, no wildcards:
-	        | w\.wiki
-	        # This is used by internal healthchecking
-	        | varnishcheck
-	        # Non-unified domainnames we support through alternate SNI certs
-	        | (www\.)?wikiworkshop\.org
-	    )$
-	"}) {
-	    set req.http.Host = "invalid";
-	    return (synth(400, ""));
-	}
+    if (req.http.Host !~ {"(?x) # Allow inline comments and ignore ws
+        ^(  # The outer () here are to keep the anchors ^$ separate
+            # All of the .org domains which all have leading wildcards:
+            ([^.]+\.)? ( # any leading singular dns label, but not multiple
+                # all of these have exactly *.domain.org + *.m.domain.org
+                (m\.)?(wik(i(pedia|data|books|news|quote|source|versity|voyage|functions)|tionary)|mediawiki)
+                # wikimedia is special: it's like above + *.planet
+                | ((m|planet)\.)?wikimedia
+                # these two have only the root wildcard (no m nor planet)
+                | (wmfusercontent|wikimediafoundation)
+            )\.org
+            # w.wiki is separate as a singular hostname, no wildcards:
+            | w\.wiki
+            # This is used by internal healthchecking
+            | varnishcheck
+            # Non-unified domainnames we support through alternate SNI certs
+            | (www\.)?wikiworkshop\.org
+        )$
+    "}) {
+        set req.http.Host = "invalid";
+        return (synth(400, ""));
+    }
 <% end -%>
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
-	// this subroutine "owns" these 5 headers - nothing else in our VCL or
-	// anywhere in our network should be setting them.
-	unset req.http.X-Trusted-Proxy;
-	unset req.http.X-Carrier;
-	unset req.http.X-Carrier-Meta;
-	unset req.http.X-Public-Cloud;
-	unset req.http.X-Abuse-Network;
+    // this subroutine "owns" these 5 headers - nothing else in our VCL or
+    // anywhere in our network should be setting them.
+    unset req.http.X-Trusted-Proxy;
+    unset req.http.X-Carrier;
+    unset req.http.X-Carrier-Meta;
+    unset req.http.X-Public-Cloud;
+    unset req.http.X-Abuse-Network;
 
-	// unset this one just because it's well-known and some default
-	// software configs may look at it, and an external client may spoof
-	// it. We don't set or use this header internally (we use X-Client-IP)
-	unset req.http.X-Real-IP;
+    // unset this one just because it's well-known and some default
+    // software configs may look at it, and an external client may spoof
+    // it. We don't set or use this header internally (we use X-Client-IP)
+    unset req.http.X-Real-IP;
 
-	// unset the X-Requestctl request header. This should be handled by the
-	// VCL fragments coming from requestctl and not be in the request.
-	unset req.http.X-Requestctl;
-	// Same for the *request* header Retry-After, also managed by requestctl.
-	unset req.http.Retry-After;
+    // unset the X-Requestctl request header. This should be handled by the
+    // VCL fragments coming from requestctl and not be in the request.
+    unset req.http.X-Requestctl;
+    // Same for the *request* header Retry-After, also managed by requestctl.
+    unset req.http.Retry-After;
 
-	if (client.ip !~ wikimedia_trust && remote.ip !~ local_tls_terminator) {
-		// Ensure we only accept XFP from our own networks.  Ideally
-		// it should only be set by our nginx TLS terminator
-		// specifically, but there are known cases where internal apps
-		// set XFP to fake HTTPS when making a request to our public
-		// endpoints from the inside.
-		unset req.http.X-Forwarded-Proto;
-		// Ensure external clients do not set X-Request-Id because we
-		// generate, use and propagate it internally in order to be able
-		// to trace request chains. If internal clients propagate it,
-		// though, let it pass through.
-		unset req.http.X-Request-Id;
-	}
+    if (client.ip !~ wikimedia_trust && remote.ip !~ local_tls_terminator) {
+        // Ensure we only accept XFP from our own networks.  Ideally
+        // it should only be set by our nginx TLS terminator
+        // specifically, but there are known cases where internal apps
+        // set XFP to fake HTTPS when making a request to our public
+        // endpoints from the inside.
+        unset req.http.X-Forwarded-Proto;
+        // Ensure external clients do not set X-Request-Id because we
+        // generate, use and propagate it internally in order to be able
+        // to trace request chains. If internal clients propagate it,
+        // though, let it pass through.
+        unset req.http.X-Request-Id;
+    }
 
-	if (client.ip !~ local_host && remote.ip !~ local_tls_terminator) {
-		// only the local nginx TLS terminator should set these at all -
-		// there are no other internal exceptions to that rule
-		unset req.http.X-Client-IP;
-		unset req.http.X-Connection-Properties;
-	}
+    if (client.ip !~ local_host && remote.ip !~ local_tls_terminator) {
+        // only the local nginx TLS terminator should set these at all -
+        // there are no other internal exceptions to that rule
+        unset req.http.X-Client-IP;
+        unset req.http.X-Connection-Properties;
+    }
 
-	if (local.ip ~ UDS && remote.ip ~ UDS) {
-		if (client.ip ~ UDS) {
-			// If the client request is received via UDS without PROXY protocol 0.0.0.0 is added to XFF
-			set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "0.0.0.0$", "<%= @vcl_ip %>");
-		} else {
-			// If UDS is used along with PROXY protocol we need to append the varnish IP to keep the applayer happy
-			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + "<%= @vcl_ip %>";
-		}
-	}
+    if (local.ip ~ UDS && remote.ip ~ UDS) {
+        if (client.ip ~ UDS) {
+            // If the client request is received via UDS without PROXY protocol 0.0.0.0 is added to XFF
+            set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "0.0.0.0$", "<%= @vcl_ip %>");
+        } else {
+            // If UDS is used along with PROXY protocol we need to append the varnish IP to keep the applayer happy
+            set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + "<%= @vcl_ip %>";
+        }
+    }
 
-	// To make further parsing/sanitizing simpler, convert all whitespace
-	// in XFF to single spaces, and make sure all commas have a space
-	// suffix but no space prefix.
-	set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
-	set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
+    // To make further parsing/sanitizing simpler, convert all whitespace
+    // in XFF to single spaces, and make sure all commas have a space
+    // suffix but no space prefix.
+    set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
+    set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
 
-	// Now fully-sanitize it to only the strict form "X(, X)*", where X is
-	// a string of legal characters in IPv[46] addresses.  Note
-	// that injections can still leave well-formed junk on the
-	// left, but it's up to the trusted proxy code to ignore that,
-	// e.g.:
-	// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
-	set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
-		"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
+    // Now fully-sanitize it to only the strict form "X(, X)*", where X is
+    // a string of legal characters in IPv[46] addresses.  Note
+    // that injections can still leave well-formed junk on the
+    // left, but it's up to the trusted proxy code to ignore that,
+    // e.g.:
+    // "junk2, 123.123.123.123" -> "2, 123.123.123.123"
+    set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
+        "^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
 
-	// There are two possible cases here: either nginx acted as our TLS
-	// proxy and already set X-Client-IP (as well as appended the same value
-	// to XFF, and we appended nginx's IP to XFF already as well...), or the
-	// traffic was direct to varnish-fe, in which case XCIP is not yet set
-	// and XFF is external + our addition of client.ip.
+    // There are two possible cases here: either nginx acted as our TLS
+    // proxy and already set X-Client-IP (as well as appended the same value
+    // to XFF, and we appended nginx's IP to XFF already as well...), or the
+    // traffic was direct to varnish-fe, in which case XCIP is not yet set
+    // and XFF is external + our addition of client.ip.
 
-	if (!req.http.X-Client-IP) {
-		unset req.http.via-nginx;
-		set req.http.X-Client-IP = client.ip;
-		if (!req.http.X-Client-IP) {
-			// apparently sometimes the above doesn't set it???  use
-			// illegal RFC 5735 documentation network to avoid
-			// sending NULL to netmapper-1.3 for now
-			set req.http.X-Client-IP = "192.0.2.1";
-		}
-	} else {
-		set req.http.via-nginx = 1;
-	}
+    if (!req.http.X-Client-IP) {
+        unset req.http.via-nginx;
+        set req.http.X-Client-IP = client.ip;
+        if (!req.http.X-Client-IP) {
+            // apparently sometimes the above doesn't set it???  use
+            // illegal RFC 5735 documentation network to avoid
+            // sending NULL to netmapper-1.3 for now
+            set req.http.X-Client-IP = "192.0.2.1";
+        }
+    } else {
+        set req.http.via-nginx = 1;
+    }
 
-	set req.http.X-Trusted-Proxy = netmapper.map("trusted_proxies", req.http.X-Client-IP);
-	// normalize to boolean post-netmapper (varnish-3.0.4...)
-	if (req.http.X-Trusted-Proxy == "") {
-		unset req.http.X-Trusted-Proxy;
-	}
+    set req.http.X-Trusted-Proxy = netmapper.map("trusted_proxies", req.http.X-Client-IP);
+    // normalize to boolean post-netmapper (varnish-3.0.4...)
+    if (req.http.X-Trusted-Proxy == "") {
+        unset req.http.X-Trusted-Proxy;
+    }
 
-	if (req.http.X-Trusted-Proxy) {
-		// We need the right-most entry of XFF that was set externally
-		// to our software stack.  If this was direct-to-varnish, that
-		// means the 2nd entry in from the right (varnish already
-		// appended client.ip).  If this was nginx->varnish, we want
-		// the 3rd entry in from the right (nginx appended a client IP,
-		// then varnish appended nginx's IP).
+    if (req.http.X-Trusted-Proxy) {
+        // We need the right-most entry of XFF that was set externally
+        // to our software stack.  If this was direct-to-varnish, that
+        // means the 2nd entry in from the right (varnish already
+        // appended client.ip).  If this was nginx->varnish, we want
+        // the 3rd entry in from the right (nginx appended a client IP,
+        // then varnish appended nginx's IP).
 
-		// set maybe-xcip to XFF with final entry stripped (added by this varnish)
-		set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
+        // set maybe-xcip to XFF with final entry stripped (added by this varnish)
+        set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
 
-		// repeat final-strip if this was via-nginx to remove the one added by nginx
-		if (req.http.via-nginx) {
-			unset req.http.via-nginx;
-			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, ", [^,]+$", "");
-		}
+        // repeat final-strip if this was via-nginx to remove the one added by nginx
+        if (req.http.via-nginx) {
+            unset req.http.via-nginx;
+            set req.http.maybe-xcip = regsub(req.http.maybe-xcip, ", [^,]+$", "");
+        }
 
-		// set maybe-xcip to the right-most entry left in itself
-		set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
+        // set maybe-xcip to the right-most entry left in itself
+        set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
 
-		// if it's an outside IP, use it to set XCIP (otherwise leave
-		// XCIP alone and it's still the proxy's IP)
-		if(req.http.maybe-xcip && std.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
-			// the check for empty/false maybe-xcip is to prevent
-			// the same netmapper-1.3 breakage as the 192.0.2.1 hack
-			set req.http.X-Client-IP = req.http.maybe-xcip;
-		}
+        // if it's an outside IP, use it to set XCIP (otherwise leave
+        // XCIP alone and it's still the proxy's IP)
+        if(req.http.maybe-xcip && std.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+            // the check for empty/false maybe-xcip is to prevent
+            // the same netmapper-1.3 breakage as the 192.0.2.1 hack
+            set req.http.X-Client-IP = req.http.maybe-xcip;
+        }
 
-		// cleanup
-		unset req.http.maybe-xcip;
-	}
+        // cleanup
+        unset req.http.maybe-xcip;
+    }
 
-	set req.http.X-Public-Cloud = netmapper.map("public_clouds", req.http.X-Client-IP);
-	// normalize to boolean post-netmapper (varnish-3.0.4...)
-	if (req.http.X-Public-Cloud == "") {
-		unset req.http.X-Public-Cloud;
-	}
-	set req.http.X-Abuse-Network = netmapper.map("abuse_networks", req.http.X-Client-IP);
-	// normalize to boolean post-netmapper
-	if (req.http.X-Abuse-Network == "") {
-		unset req.http.X-Abuse-Network;
-	}
-	// From this (very early) point forward, regardless of cache tier/layer:
-	// req.http.X-Client-IP ->
-	//     This is our standard notion of the Client/UA's real IP, after
-	//     decoding XFF for our internal infrastructure addresses as well
-	//     as any trusted proxies.
-	// req.http.X-Trusted-Proxy ->
-	//     If the traffic pass through a trusted proxy in our "proxies"
-	//     database (such as OperaMini), this will be the official name of
-	//     the trusted proxy.  Otherwise it will be unset (boolean false).
+    set req.http.X-Public-Cloud = netmapper.map("public_clouds", req.http.X-Client-IP);
+    // normalize to boolean post-netmapper (varnish-3.0.4...)
+    if (req.http.X-Public-Cloud == "") {
+        unset req.http.X-Public-Cloud;
+    }
+    set req.http.X-Abuse-Network = netmapper.map("abuse_networks", req.http.X-Client-IP);
+    // normalize to boolean post-netmapper
+    if (req.http.X-Abuse-Network == "") {
+        unset req.http.X-Abuse-Network;
+    }
+    // From this (very early) point forward, regardless of cache tier/layer:
+    // req.http.X-Client-IP ->
+    //     This is our standard notion of the Client/UA's real IP, after
+    //     decoding XFF for our internal infrastructure addresses as well
+    //     as any trusted proxies.
+    // req.http.X-Trusted-Proxy ->
+    //     If the traffic pass through a trusted proxy in our "proxies"
+    //     database (such as OperaMini), this will be the official name of
+    //     the trusted proxy.  Otherwise it will be unset (boolean false).
 }
 
 sub vcl_init {
@@ -527,66 +527,66 @@ sub vcl_init {
 <% if @dynamic_backend_caches -%>
 include "directors.frontend.vcl";
 <% else -%>
-	new cache_local = directors.shard();
-	new cache_local_random = directors.random();
+    new cache_local = directors.shard();
+    new cache_local_random = directors.random();
 <% if @varnish_testing -%>
-	// "vtc_backend" is the backend name we use in all VTC tests
-	cache_local.add_backend(vtc_backend);
-	cache_local_random.add_backend(vtc_backend, 100);
+    // "vtc_backend" is the backend name we use in all VTC tests
+    cache_local.add_backend(vtc_backend);
+    cache_local_random.add_backend(vtc_backend, 100);
 <% else
 @backend_caches.sort.each do |backend|
-	name = 'be_' + backend.gsub(/[-.]/, '_')
+    name = 'be_' + backend.gsub(/[-.]/, '_')
 -%>
-	cache_local.add_backend(<%= name %>);
-	cache_local_random.add_backend(<%= name %>, 100);
-<% 	end #backends loop -%>
+    cache_local.add_backend(<%= name %>);
+    cache_local_random.add_backend(<%= name %>, 100);
+<%     end #backends loop -%>
 <% end #if @varnish_testing -%>
-	cache_local.reconfigure();
+    cache_local.reconfigure();
 <% end #dynamic_backend_caches -%>
 
-	call wm_domains_init;
+    call wm_domains_init;
 
-	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
-	// TODO: We no longer use carriers, will remove this in a follow up patch - jbond 10-03-2022
-	netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
-	netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
+    // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+    netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
+    // TODO: We no longer use carriers, will remove this in a follow up patch - jbond 10-03-2022
+    netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
+    netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
 }
 
 sub wm_recv_early {
-	unset req.http.X-CDIS; // clear internal cache-disposition header
-	unset req.http.X-Varnish-Cluster; // internal cache cluster header
+    unset req.http.X-CDIS; // clear internal cache-disposition header
+    unset req.http.X-Varnish-Cluster; // internal cache cluster header
 
-	// To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
-	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:
-	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
-		|| (req.method == "OPTIONS" && !req.http.Origin)) {
-		return (synth(405, "Method not allowed"));
-	}
+    // To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
+    // Additionally, if OPTIONS is allowed, it must be accompanied by Origin:
+    if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
+        || (req.method == "OPTIONS" && !req.http.Origin)) {
+        return (synth(405, "Method not allowed"));
+    }
 
-	if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
-		return (synth(200, "healthcheck"));
-	}
+    if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
+        return (synth(200, "healthcheck"));
+    }
 }
 
 sub normalize_request_nonmisc {
-	// Sort query parameters to improve cache efficiency.
-	// See <https://wikitech.wikimedia.org/wiki/Query_string_normalization>.
-	set req.url = querysort.querysort(req.url);
+    // Sort query parameters to improve cache efficiency.
+    // See <https://wikitech.wikimedia.org/wiki/Query_string_normalization>.
+    set req.url = querysort.querysort(req.url);
 }
 
 sub wm_recv_purge {
-	/* Support HTTP PURGE */
-	if (req.method == "PURGE") {
-		if (client.ip !~ local_host) {
-			return (synth(405, "Method not allowed"));
-		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
-			set req.hash_ignore_busy = true;
-			return (purge);
-		} else {
-			return (synth(204, "Domain not cached here"));
-		}
-	}
+    /* Support HTTP PURGE */
+    if (req.method == "PURGE") {
+        if (client.ip !~ local_host) {
+            return (synth(405, "Method not allowed"));
+        } elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
+            set req.hash_ignore_busy = true;
+            return (purge);
+        } else {
+            return (synth(204, "Domain not cached here"));
+        }
+    }
 }
 
 sub wm_recv_pass {
@@ -608,9 +608,9 @@ sub wm_recv_pass {
     caching = []
     caching_default = ""
     if @is_separate_vcl
-	req_handling = @vcl_config['alternate_domains']
+        req_handling = @vcl_config['alternate_domains']
     else
-	req_handling = @vcl_config['req_handling']
+        req_handling = @vcl_config['req_handling']
     end
 
     req_handling.keys.sort.each do |reqhost|
@@ -677,159 +677,159 @@ sub wm_recv_pass {
 
 sub vcl_recv {
 <% if @traffic_shutdown -%>
-	// Hieradata switch to shut users out of a DC/cluster. T129424
-	// We refuse to authorize the request and describe the reason in the
-	// response payload. https://tools.ietf.org/html/rfc7231#section-6.5.3
-	return (synth(403, "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching"));
+    // Hieradata switch to shut users out of a DC/cluster. T129424
+    // We refuse to authorize the request and describe the reason in the
+    // response payload. https://tools.ietf.org/html/rfc7231#section-6.5.3
+    return (synth(403, "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching"));
 <% end -%>
 
-	// no injection from outside our stack allowed for these
-	unset req.http.X-DCPath;
-	unset req.http.X-Next-Is-Cache;
-	unset req.http.Proxy; // https://httpoxy.org/
-	unset req.http.X-ATS-Debug; // We use this header for the XDebug Traffic Server plugin
-	unset req.http.X-Analytics-TLS; // Used by atskafka
+    // no injection from outside our stack allowed for these
+    unset req.http.X-DCPath;
+    unset req.http.X-Next-Is-Cache;
+    unset req.http.Proxy; // https://httpoxy.org/
+    unset req.http.X-ATS-Debug; // We use this header for the XDebug Traffic Server plugin
+    unset req.http.X-Analytics-TLS; // Used by atskafka
 
-	if (req.restarts == 0) {
-		// IP processing is req->req mangling that shouldn't be re-done on restart
-		call recv_fe_ip_processing;
+    if (req.restarts == 0) {
+        // IP processing is req->req mangling that shouldn't be re-done on restart
+        call recv_fe_ip_processing;
 
-		// Parse X-Connection-Properties and log TLS/HTTP2 connection
-		// information, which is sent via varnishkafka to Analytics.
-		// If we don't do this super-early, some rejected/invalid
-		// requests from early checks won't have any TLS analytics,
-		// which is very confusing and looks like plain-HTTP.
-		if (req.http.X-Connection-Properties) {
-			call log_xcps_info;
-		}
+        // Parse X-Connection-Properties and log TLS/HTTP2 connection
+        // information, which is sent via varnishkafka to Analytics.
+        // If we don't do this super-early, some rejected/invalid
+        // requests from early checks won't have any TLS analytics,
+        // which is very confusing and looks like plain-HTTP.
+        if (req.http.X-Connection-Properties) {
+            call log_xcps_info;
+        }
 
-		// Block requests from IPs in blocked_nets. It is important to do this
-		// early but after recv_fe_ip_processing has been called, as the procedure
-		// takes care of writing X-Client-IP if it the request did not come
-		// through the TLS terminator
-		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ blocked_nets) {
-			return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
-		}
+        // Block requests from IPs in blocked_nets. It is important to do this
+        // early but after recv_fe_ip_processing has been called, as the procedure
+        // takes care of writing X-Client-IP if it the request did not come
+        // through the TLS terminator
+        if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ blocked_nets) {
+            return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
+        }
 
-		// Block requests from common bot User-Agents that originate from bot_blocked_nets.
-		// For now, we define our list of common bot UAs as just one that has often been
-		// associated with trouble in the past, plus the blank or empty UA.
-		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^(python-requests|Go-http-client/2.0|CInetHttp/1.0)")) {
-			return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
-		}
+        // Block requests from common bot User-Agents that originate from bot_blocked_nets.
+        // For now, we define our list of common bot UAs as just one that has often been
+        // associated with trouble in the past, plus the blank or empty UA.
+        if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^(python-requests|Go-http-client/2.0|CInetHttp/1.0)")) {
+            return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
+        }
 
-		// Block POST requests from bot User-Agents which originate from bot_posts_blocked_nets.
-		// For now, we define our list of common bot UAs as just one that has often been
-		// associated with trouble in the past, plus the blank or empty UA.
-		// 'PostmanRuntime/' and variants come from https://phabricator.wikimedia.org/T272330
-		if (req.method == "POST" && std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_posts_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^([PRK]ostmanRuntime/)")) {
-			return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
-		}
+        // Block POST requests from bot User-Agents which originate from bot_posts_blocked_nets.
+        // For now, we define our list of common bot UAs as just one that has often been
+        // associated with trouble in the past, plus the blank or empty UA.
+        // 'PostmanRuntime/' and variants come from https://phabricator.wikimedia.org/T272330
+        if (req.method == "POST" && std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_posts_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^([PRK]ostmanRuntime/)")) {
+            return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
+        }
 
-		if (req.http.User-Agent == "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" && vsthrottle.is_denied("node-fetch:" + req.http.X-Client-IP, 10, 10s)) {
-			return (synth(429, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
-		}
+        if (req.http.User-Agent == "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" && vsthrottle.is_denied("node-fetch:" + req.http.X-Client-IP, 10, 10s)) {
+            return (synth(429, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
+        }
 
 <% if @vcl_config.fetch('attack_mode', false) -%>
-		// A heavy hammer for dire circumstances.
-		// This is a long-term average of 20rps, which is more than enough
-		// for a couple human users.
-		if (vsthrottle.is_denied("attack_mode:" + req.http.X-Client-IP, 200, 10s)) {
-			return (synth(429, "Too Many Requests. Sorry, please try again later"));
-		}
+        // A heavy hammer for dire circumstances.
+        // This is a long-term average of 20rps, which is more than enough
+        // for a couple human users.
+        if (vsthrottle.is_denied("attack_mode:" + req.http.X-Client-IP, 200, 10s)) {
+            return (synth(429, "Too Many Requests. Sorry, please try again later"));
+        }
 <% end -%>
 
-		// This unwraps proxy-style URLs and sanitizes the Host header
-		// (lowercase, no port, no funny chars, matches cert SAN, etc)
-		call normalize_request;
+        // This unwraps proxy-style URLs and sanitizes the Host header
+        // (lowercase, no port, no funny chars, matches cert SAN, etc)
+        call normalize_request;
 
-		// Possibly switch to separate VCL
-		call cluster_fe_vcl_switch;
+        // Possibly switch to separate VCL
+        call cluster_fe_vcl_switch;
 
-		// This normalizes query parameters.
-		call normalize_request_nonmisc;
-	}
+        // This normalizes query parameters.
+        call normalize_request_nonmisc;
+    }
 
-	call wm_recv_early;
+    call wm_recv_early;
 
-	set req.backend_hint = cache_local.backend();
+    set req.backend_hint = cache_local.backend();
 
-	if (req.method != "PURGE") {
-		call https_recv_redirect;
-	}
+    if (req.method != "PURGE") {
+        call https_recv_redirect;
+    }
 
-	if(req.restarts == 0) {
-		call analytics_recv;
-		call translation_engine_recv;
-	}
+    if(req.restarts == 0) {
+        call analytics_recv;
+        call translation_engine_recv;
+    }
 
-	if (req.url ~ "^/beacon\/[^/?]+") {
-		// Logging beacon endpoints
-		//
-		// They are handled by the log tailer (varnishkafka) that filters the
-		// Varnish shm log for reqs to these endpoints and forwards them to log
-		// processors for storage and analysis.
-		return (synth(204, ""));
-	}
+    if (req.url ~ "^/beacon\/[^/?]+") {
+        // Logging beacon endpoints
+        //
+        // They are handled by the log tailer (varnishkafka) that filters the
+        // Varnish shm log for reqs to these endpoints and forwards them to log
+        // processors for storage and analysis.
+        return (synth(204, ""));
+    }
 
-	call cluster_fe_recv_pre_purge;
-	call wm_recv_purge;
+    call cluster_fe_recv_pre_purge;
+    call wm_recv_purge;
 
-	call cluster_fe_recv;
-	call wm_recv_pass;
-	call cluster_fe_recv_tail;
+    call cluster_fe_recv;
+    call wm_recv_pass;
+    call cluster_fe_recv_tail;
 
-	return (hash); // no default VCL
+    return (hash); // no default VCL
 }
 
 sub vcl_hash {
-	call cluster_fe_hash;
-	// default vcl_hash invokes here!
+    call cluster_fe_hash;
+    // default vcl_hash invokes here!
 }
 
 // http://book.varnish-software.com/4.0/chapters/Cache_Invalidation.html
 sub vcl_purge {
-	return (synth(204, "Purged"));
+    return (synth(204, "Purged"));
 }
 
 sub vcl_hit {
-	set req.http.X-CDIS = "hit";
-	call cluster_fe_hit;
-	// default vcl_hit invokes here!
+    set req.http.X-CDIS = "hit";
+    call cluster_fe_hit;
+    // default vcl_hit invokes here!
 }
 
 sub vcl_miss {
-	set req.http.X-CDIS = "miss";
-	call shutdown_public_clouds;
-	call cluster_fe_miss;
-	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
+    set req.http.X-CDIS = "miss";
+    call shutdown_public_clouds;
+    call cluster_fe_miss;
+    return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 sub vcl_pass {
-	set req.http.X-CDIS = "pass";
+    set req.http.X-CDIS = "pass";
 
 <% if @vcl_config.fetch("pass_random", false) -%>
-	// pass-traffic should not use consistent hashing, to avoid unecessary
-	// traffic focus on one node and keep things performant, *if* we're
-	// fairly sure that all layers/tiers make equivalent pass decisions...
-	set req.backend_hint = cache_local_random.backend();
+    // pass-traffic should not use consistent hashing, to avoid unecessary
+    // traffic focus on one node and keep things performant, *if* we're
+    // fairly sure that all layers/tiers make equivalent pass decisions...
+    set req.backend_hint = cache_local_random.backend();
 <% end -%>
 
-	call shutdown_public_clouds;
-	call cluster_fe_pass;
-	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
+    call shutdown_public_clouds;
+    call cluster_fe_pass;
+    return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 sub vcl_pipe {
-	// for websockets over pipe
-	if (req.http.upgrade) {
-		set bereq.http.upgrade = req.http.upgrade;
-		set bereq.http.connection = req.http.connection;
-	}
+    // for websockets over pipe
+    if (req.http.upgrade) {
+        set bereq.http.upgrade = req.http.upgrade;
+        set bereq.http.connection = req.http.connection;
+    }
 
-	// Similarly to pass-traffic, pipe-traffic should also pick backends
-	// randomly to avoid focus on a single node
-	set bereq.backend = cache_local_random.backend();
+    // Similarly to pass-traffic, pipe-traffic should also pick backends
+    // randomly to avoid focus on a single node
+    set bereq.backend = cache_local_random.backend();
 }
 
 sub vcl_backend_fetch {
@@ -837,137 +837,137 @@ sub vcl_backend_fetch {
 }
 
 sub wm_backend_response {
-	// This prevents the application layer from setting this in a response.
-	// We'll be setting this same variable internally in VCL in hit-for-pass
-	// cases later.
-	unset beresp.http.X-CDIS;
+    // This prevents the application layer from setting this in a response.
+    // We'll be setting this same variable internally in VCL in hit-for-pass
+    // cases later.
+    unset beresp.http.X-CDIS;
 
-	/* Don't cache private, no-cache, no-store objects. */
-	if (beresp.http.Cache-Control ~ "(?i:private|no-cache|no-store)") {
-		set beresp.ttl = 0s;
-		// translated to hit-for-pass below
-	}
-	/* Especially don't cache Set-Cookie responses. Log violations. */
-	if ((beresp.ttl > 0s || beresp.http.Cache-Control ~ "public") && beresp.http.Set-Cookie) {
-		if (bereq.http.Host !~ "^.*\.wikimedia\.org$" || bereq.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
-			std.syslog(27, "Cacheable object with Set-Cookie found!" +
-				           " beresp.status: " + beresp.status +
-				           " beresp.was_304: " + beresp.was_304 +
-				           " bereq.http.Host: " + bereq.http.Host +
-				           " bereq.url: " + bereq.url +
-				           " Cache-Control: " + beresp.http.Cache-Control +
-				           " Set-Cookie: " + beresp.http.Set-Cookie +
-				           " Server: " + beresp.http.Server +
-				           " ReqId: " + beresp.http.X-Request-Id +
-				           " X-Cache-Int: " + beresp.http.X-Cache-Int);
-		}
-		set beresp.ttl = 0s;
-		// translated to hit-for-pass below
-	}
-	// Set a maximum cap on the TTL for 404s. Objects that don't exist now may
-	// be created later on, and we want to put a limit on the amount of time
-	// it takes for new resources to be visible.
-	elsif (beresp.status == 404 && beresp.ttl > <%= @vcl_config.fetch("ttl_cap_404", "10m") %>) {
-		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap_404", "10m") %>;
-	}
+    /* Don't cache private, no-cache, no-store objects. */
+    if (beresp.http.Cache-Control ~ "(?i:private|no-cache|no-store)") {
+        set beresp.ttl = 0s;
+        // translated to hit-for-pass below
+    }
+    /* Especially don't cache Set-Cookie responses. Log violations. */
+    if ((beresp.ttl > 0s || beresp.http.Cache-Control ~ "public") && beresp.http.Set-Cookie) {
+        if (bereq.http.Host !~ "^.*\.wikimedia\.org$" || bereq.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
+            std.syslog(27, "Cacheable object with Set-Cookie found!" +
+                           " beresp.status: " + beresp.status +
+                           " beresp.was_304: " + beresp.was_304 +
+                           " bereq.http.Host: " + bereq.http.Host +
+                           " bereq.url: " + bereq.url +
+                           " Cache-Control: " + beresp.http.Cache-Control +
+                           " Set-Cookie: " + beresp.http.Set-Cookie +
+                           " Server: " + beresp.http.Server +
+                           " ReqId: " + beresp.http.X-Request-Id +
+                           " X-Cache-Int: " + beresp.http.X-Cache-Int);
+        }
+        set beresp.ttl = 0s;
+        // translated to hit-for-pass below
+    }
+    // Set a maximum cap on the TTL for 404s. Objects that don't exist now may
+    // be created later on, and we want to put a limit on the amount of time
+    // it takes for new resources to be visible.
+    elsif (beresp.status == 404 && beresp.ttl > <%= @vcl_config.fetch("ttl_cap_404", "10m") %>) {
+        set beresp.ttl = <%= @vcl_config.fetch("ttl_cap_404", "10m") %>;
+    }
 
-	// Set keep, which influences the amount of time objects are kept available
-	// in cache for IMS requests (TTL+grace+keep). Scale keep to the app-provided
-	// TTL.
-	if (beresp.ttl > 0s) {
-		if (beresp.http.ETag || beresp.http.Last-Modified) {
-			if (beresp.ttl < <%= @vcl_config.fetch("keep", "7d") %>) {
-				set beresp.keep = beresp.ttl;
-			} else {
-				set beresp.keep = <%= @vcl_config.fetch("keep", "7d") %>;
-			}
-		}
+    // Set keep, which influences the amount of time objects are kept available
+    // in cache for IMS requests (TTL+grace+keep). Scale keep to the app-provided
+    // TTL.
+    if (beresp.ttl > 0s) {
+        if (beresp.http.ETag || beresp.http.Last-Modified) {
+            if (beresp.ttl < <%= @vcl_config.fetch("keep", "7d") %>) {
+                set beresp.keep = beresp.ttl;
+            } else {
+                set beresp.keep = <%= @vcl_config.fetch("keep", "7d") %>;
+            }
+        }
 
-		// Hard TTL cap on all fetched objects (default 1d)
-		if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
-			set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
-		}
+        // Hard TTL cap on all fetched objects (default 1d)
+        if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
+            set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
+        }
 
-		set beresp.grace = <%= @vcl_config.fetch("def_grace", "20m") %>;
-	}
+        set beresp.grace = <%= @vcl_config.fetch("def_grace", "20m") %>;
+    }
 
-	// Swizzled random reduction of all TTLs by up to 5%, to avoid various
-	// possible cases of stampedes of aligned natural expiries.
-	// Note VCL supports DURATION*REAL natively, and DURATIONs do support
-	// fractional seconds, so this doesn't technically need a guard
-	// condition against short TTLs.
-	// However, sub-second TTLs like 0.97s might poke edge cases in VCL,
-	// which would be a good reason to not do this for TTLs < 2s.
-	// Furthermore, swizzling a stampede of very short TTLs such that they
-	// expire milliseconds apart may do more perf harm than good.  60s
-	// seems like a reasonably-conservative cutoff, where the swizzle will
-	// be spreading things by ~3s.
-	if (beresp.ttl >= 60s) {
-		set beresp.ttl = beresp.ttl * std.random(0.95, 1.0);
-	}
+    // Swizzled random reduction of all TTLs by up to 5%, to avoid various
+    // possible cases of stampedes of aligned natural expiries.
+    // Note VCL supports DURATION*REAL natively, and DURATIONs do support
+    // fractional seconds, so this doesn't technically need a guard
+    // condition against short TTLs.
+    // However, sub-second TTLs like 0.97s might poke edge cases in VCL,
+    // which would be a good reason to not do this for TTLs < 2s.
+    // Furthermore, swizzling a stampede of very short TTLs such that they
+    // expire milliseconds apart may do more perf harm than good.  60s
+    // seems like a reasonably-conservative cutoff, where the swizzle will
+    // be spreading things by ~3s.
+    if (beresp.ttl >= 60s) {
+        set beresp.ttl = beresp.ttl * std.random(0.95, 1.0);
+    }
 
-	// Compress compressible things if the backend didn't already, but
-	// avoid explicitly-defined CL < 860 bytes.  We've seen varnish do
-	// gzipping on CL:0 302 responses, resulting in output that has CE:gzip
-	// and CL:20 and sends a pointless gzip header.
-	// Very small content may actually inflate from gzipping, and
-	// sub-one-packet content isn't saving a lot of latency for the gzip
-	// costs (to the server and the client, who must also decompress it).
-	// The magic 860 number comes from Akamai, Google recommends anywhere
-	// from 150-1000.  See also:
-	// https://webmasters.stackexchange.com/questions/31750/what-is-recommended-minimum-object-size-for-gzip-performance-benefits
-	//
-	// Explicitly skip docker-registry due to the issues described in T270270
-	if (bereq.http.Host != "docker-registry.wikimedia.org" && beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla"
-		&& (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 860)) {
-			set beresp.do_gzip = true;
-	}
-	// SVGs served by MediaWiki are part of the interface. That makes them
-	// very hot objects, as a result the compression time overhead is a
-	// non-issue. Several of them tend to be requested at the same time,
-	// as the browser finds out about them when parsing stylesheets that
-	// contain multiple. This means that the "less than 1 packet" rationale
-	// for not compressing very small objects doesn't apply either. Lastly,
-	// since they're XML, they contain a fair amount of repetitive content
-	// even when small, which means that gzipped SVGs tend to be
-	// consistantly smaller than their uncompressed version, even when tiny.
-	// For all these reasons, it makes sense to have a lower threshold for
-	// SVG. Applying it to XML in general is a more unknown tradeoff, as it
-	// would affect small API responses that are more likely to be cold
-	// objects due to low traffic to specific API URLs.
-	if (beresp.http.content-type ~ "svg" && (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 150)) {
-		set beresp.do_gzip = true;
-	}
+    // Compress compressible things if the backend didn't already, but
+    // avoid explicitly-defined CL < 860 bytes.  We've seen varnish do
+    // gzipping on CL:0 302 responses, resulting in output that has CE:gzip
+    // and CL:20 and sends a pointless gzip header.
+    // Very small content may actually inflate from gzipping, and
+    // sub-one-packet content isn't saving a lot of latency for the gzip
+    // costs (to the server and the client, who must also decompress it).
+    // The magic 860 number comes from Akamai, Google recommends anywhere
+    // from 150-1000.  See also:
+    // https://webmasters.stackexchange.com/questions/31750/what-is-recommended-minimum-object-size-for-gzip-performance-benefits
+    //
+    // Explicitly skip docker-registry due to the issues described in T270270
+    if (bereq.http.Host != "docker-registry.wikimedia.org" && beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla"
+        && (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 860)) {
+            set beresp.do_gzip = true;
+    }
+    // SVGs served by MediaWiki are part of the interface. That makes them
+    // very hot objects, as a result the compression time overhead is a
+    // non-issue. Several of them tend to be requested at the same time,
+    // as the browser finds out about them when parsing stylesheets that
+    // contain multiple. This means that the "less than 1 packet" rationale
+    // for not compressing very small objects doesn't apply either. Lastly,
+    // since they're XML, they contain a fair amount of repetitive content
+    // even when small, which means that gzipped SVGs tend to be
+    // consistantly smaller than their uncompressed version, even when tiny.
+    // For all these reasons, it makes sense to have a lower threshold for
+    // SVG. Applying it to XML in general is a more unknown tradeoff, as it
+    // would affect small API responses that are more likely to be cold
+    // objects due to low traffic to specific API URLs.
+    if (beresp.http.content-type ~ "svg" && (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 150)) {
+        set beresp.do_gzip = true;
+    }
 
-	// set a 601s hit-for-pass object based on response conditions in vcl_backend_response:
-	//    Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
-	//    These are generally uncacheable responses.  The 5xx exception
-	//    avoids us accidentally replacing a good stale/grace object with
-	//    an hfp (and then repeatedly passing on potentially-cacheable
-	//    content) due to an isolated 5xx response, and the exception for
-	//    underlying cache hits (detected from X-Cache-Int) is to avoid
-	//    creating a persist HFP object when a lower-level varnish
-	//    returned an expired object under grace-mode rules.
-	if (
-		beresp.ttl <= 0s
-		&& beresp.status < 500
-		&& (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
-	) {
-		set beresp.grace = 31s;
-		set beresp.keep = 0s;
-		set beresp.http.X-CDIS = "pass";
-		// XXX: HFP for now, but this requires further work: T180712
-		return(pass(601s));
-	}
+    // set a 601s hit-for-pass object based on response conditions in vcl_backend_response:
+    //    Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
+    //    These are generally uncacheable responses.  The 5xx exception
+    //    avoids us accidentally replacing a good stale/grace object with
+    //    an hfp (and then repeatedly passing on potentially-cacheable
+    //    content) due to an isolated 5xx response, and the exception for
+    //    underlying cache hits (detected from X-Cache-Int) is to avoid
+    //    creating a persist HFP object when a lower-level varnish
+    //    returned an expired object under grace-mode rules.
+    if (
+        beresp.ttl <= 0s
+        && beresp.status < 500
+        && (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
+    ) {
+        set beresp.grace = 31s;
+        set beresp.keep = 0s;
+        set beresp.http.X-CDIS = "pass";
+        // XXX: HFP for now, but this requires further work: T180712
+        return(pass(601s));
+    }
 }
 
 sub wm_admission_policies {
-	// hit-for-pass objects >= <%= @vcl_config.fetch("large_objects_cutoff") %> size. Do cache if Content-Length is missing.
-	if (std.integer(beresp.http.Content-Length, 0) >= <%= @vcl_config.fetch("large_objects_cutoff") %>) {
-		// HFP
-		set beresp.http.X-CDIS = "pass";
-		return(pass(beresp.ttl));
-	}
+    // hit-for-pass objects >= <%= @vcl_config.fetch("large_objects_cutoff") %> size. Do cache if Content-Length is missing.
+    if (std.integer(beresp.http.Content-Length, 0) >= <%= @vcl_config.fetch("large_objects_cutoff") %>) {
+        // HFP
+        set beresp.http.X-CDIS = "pass";
+        return(pass(beresp.ttl));
+    }
 
 <% if @vcl_config.fetch("admission_policy", "none") == "exp" -%>
 if (beresp.status == 200 && bereq.http.X-CDIS == "miss") {
@@ -1011,203 +1011,203 @@ C{
 }
 <% end -%>
 
-	return (deliver);
+    return (deliver);
 }
 
 sub vcl_backend_response {
-	// retry 503 once in frontend instances, to paper over transient issues
-	// This catches the backending handing us an explicit 503
-	if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
-		return(retry);
-	}
-	call cluster_fe_backend_response_early; // e.g. to fix up Vary-slotting in bereq
-	call wm_backend_response;
-	call cluster_fe_backend_response;
-	// It is important that this happens after the code responsible for translating TTL<=0
-	// (uncacheable) responses into hit-for-pass. That code lives in wm_backend_response.
-	call wm_admission_policies;
-	// default vcl_(fetch|backend_response) does not invoke here because wm_admission_policies unconditionally returns!
+    // retry 503 once in frontend instances, to paper over transient issues
+    // This catches the backending handing us an explicit 503
+    if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
+        return(retry);
+    }
+    call cluster_fe_backend_response_early; // e.g. to fix up Vary-slotting in bereq
+    call wm_backend_response;
+    call cluster_fe_backend_response;
+    // It is important that this happens after the code responsible for translating TTL<=0
+    // (uncacheable) responses into hit-for-pass. That code lives in wm_backend_response.
+    call wm_admission_policies;
+    // default vcl_(fetch|backend_response) does not invoke here because wm_admission_policies unconditionally returns!
 }
 
 sub wm_xcache_deliver {
-	if (req.method != "PURGE") {
-		// we copy through from beresp->resp->req here for the initial hit-for-pass case
-		if (resp.http.X-CDIS) {
-			set req.http.X-CDIS = resp.http.X-CDIS;
-			unset resp.http.X-CDIS;
-		}
+    if (req.method != "PURGE") {
+        // we copy through from beresp->resp->req here for the initial hit-for-pass case
+        if (resp.http.X-CDIS) {
+            set req.http.X-CDIS = resp.http.X-CDIS;
+            unset resp.http.X-CDIS;
+        }
 
-		if (!req.http.X-CDIS) {
-			set req.http.X-CDIS = "bug";
-		}
+        if (!req.http.X-CDIS) {
+            set req.http.X-CDIS = "bug";
+        }
 
-		// X-Cache-Int gets appended-to as we traverse cache layers
-		if (resp.http.X-Cache-Int) {
-			set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
-		} else {
-			set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
-		}
-	}
+        // X-Cache-Int gets appended-to as we traverse cache layers
+        if (resp.http.X-Cache-Int) {
+            set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
+        } else {
+            set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
+        }
+    }
 }
 
 // Common code in frontend vcl_deliver + vcl_synth
 sub deliver_synth_ {
-	call wm_xcache_deliver;
+    call wm_xcache_deliver;
 
-	// At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
-	// This prevents double-set of X-Cache in log parsing on varnish4.
-	// In this block we also decipher X-Cache into an overall X-Cache-Status
-	// output header with one of the following simple values:
-	// hit-{front,local,remote}, int-{front,local,remote}, miss, pass, unknown.
-	if (req.method != "PURGE") {
-		set resp.http.X-Cache = resp.http.X-Cache-Int;
-		<%- if @varnish_testing -%>
-		// The test VCL version uses X-Cache-Int-Testing accepted as is
-		// from the upstream server to simplify writing VTC tests.
-		if (resp.http.X-Cache-Int-Testing) {
-			set resp.http.X-Cache = resp.http.X-Cache-Int-Testing;
-			unset resp.http.X-Cache-Int-Testing;
-		}
-		<%- end -%>
-		set resp.http.X-Cache-Status = regsuball(resp.http.X-Cache, "cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?", "\1");
+    // At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
+    // This prevents double-set of X-Cache in log parsing on varnish4.
+    // In this block we also decipher X-Cache into an overall X-Cache-Status
+    // output header with one of the following simple values:
+    // hit-{front,local,remote}, int-{front,local,remote}, miss, pass, unknown.
+    if (req.method != "PURGE") {
+        set resp.http.X-Cache = resp.http.X-Cache-Int;
+        <%- if @varnish_testing -%>
+        // The test VCL version uses X-Cache-Int-Testing accepted as is
+        // from the upstream server to simplify writing VTC tests.
+        if (resp.http.X-Cache-Int-Testing) {
+            set resp.http.X-Cache = resp.http.X-Cache-Int-Testing;
+            unset resp.http.X-Cache-Int-Testing;
+        }
+        <%- end -%>
+        set resp.http.X-Cache-Status = regsuball(resp.http.X-Cache, "cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?", "\1");
 
-		unset resp.http.X-Cache-Int;
-		unset resp.http.Via;
+        unset resp.http.X-Cache-Int;
+        unset resp.http.Via;
 
-		if (resp.http.X-Cache-Status ~ "hit$") {
-			set resp.http.X-Cache-Status = "hit-front";
-		} elsif (resp.http.X-Cache-Status ~ "hit,[^,]+$") {
-			set resp.http.X-Cache-Status = "hit-local";
-		} elsif (resp.http.X-Cache-Status ~ "hit") {
-			set resp.http.X-Cache-Status = "hit-remote";
-		} elsif (resp.http.X-Cache-Status ~ "int$") {
-			set resp.http.X-Cache-Status = "int-front";
-		} elsif (resp.http.X-Cache-Status ~ "int,[^,]+$") {
-			set resp.http.X-Cache-Status = "int-local";
-		} elsif (resp.http.X-Cache-Status ~ "int") {
-			set resp.http.X-Cache-Status = "int-remote";
-		} elsif (resp.http.X-Cache-Status ~ "miss$") {
-			set resp.http.X-Cache-Status = "miss";
-		} elsif (resp.http.X-Cache-Status ~ "pass$") {
-			set resp.http.X-Cache-Status = "pass";
-		} else {
-			set resp.http.X-Cache-Status = "unknown";
-		}
+        if (resp.http.X-Cache-Status ~ "hit$") {
+            set resp.http.X-Cache-Status = "hit-front";
+        } elsif (resp.http.X-Cache-Status ~ "hit,[^,]+$") {
+            set resp.http.X-Cache-Status = "hit-local";
+        } elsif (resp.http.X-Cache-Status ~ "hit") {
+            set resp.http.X-Cache-Status = "hit-remote";
+        } elsif (resp.http.X-Cache-Status ~ "int$") {
+            set resp.http.X-Cache-Status = "int-front";
+        } elsif (resp.http.X-Cache-Status ~ "int,[^,]+$") {
+            set resp.http.X-Cache-Status = "int-local";
+        } elsif (resp.http.X-Cache-Status ~ "int") {
+            set resp.http.X-Cache-Status = "int-remote";
+        } elsif (resp.http.X-Cache-Status ~ "miss$") {
+            set resp.http.X-Cache-Status = "miss";
+        } elsif (resp.http.X-Cache-Status ~ "pass$") {
+            set resp.http.X-Cache-Status = "pass";
+        } else {
+            set resp.http.X-Cache-Status = "unknown";
+        }
 
-		set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"", host;desc="<%= @hostname %>""};
-	}
+        set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"", host;desc="<%= @hostname %>""};
+    }
 
-	// 5xx should not carry set-cookies, this seems risky in general
-	if (resp.status >= 500 && resp.http.Set-Cookie) {
-		// Log it for cases we care about more:
-		if (req.http.Host !~ "^.*\.wikimedia\.org$" || req.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
-			std.syslog(27, "5XX with Set-Cookie found!" +
-				" req.http.Host: " + req.http.Host +
-				" req.url: " + req.url +
-				" req.http.Cookie: " + req.http.Cookie +
-				" resp.status: " + resp.status +
-				" Cache-Control: " + resp.http.Cache-Control +
-				" Set-Cookie: " + resp.http.Set-Cookie +
-				" Server: " + resp.http.Server +
-				" ReqId: " + resp.http.X-Request-Id +
-				" Age: " + resp.http.Age +
-				" X-Cache: " + resp.http.X-Cache);
-		}
-		// Clear it for all traffic.  It's a 5xx, nothing was guaranteed to work anyways
-		unset resp.http.Set-Cookie;
-	}
+    // 5xx should not carry set-cookies, this seems risky in general
+    if (resp.status >= 500 && resp.http.Set-Cookie) {
+        // Log it for cases we care about more:
+        if (req.http.Host !~ "^.*\.wikimedia\.org$" || req.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
+            std.syslog(27, "5XX with Set-Cookie found!" +
+                " req.http.Host: " + req.http.Host +
+                " req.url: " + req.url +
+                " req.http.Cookie: " + req.http.Cookie +
+                " resp.status: " + resp.status +
+                " Cache-Control: " + resp.http.Cache-Control +
+                " Set-Cookie: " + resp.http.Set-Cookie +
+                " Server: " + resp.http.Server +
+                " ReqId: " + resp.http.X-Request-Id +
+                " Age: " + resp.http.Age +
+                " X-Cache: " + resp.http.X-Cache);
+        }
+        // Clear it for all traffic.  It's a 5xx, nothing was guaranteed to work anyways
+        unset resp.http.Set-Cookie;
+    }
 
-	std.collect(resp.http.X-Varnish);
+    std.collect(resp.http.X-Varnish);
 
-	call https_deliver_hsts;
+    call https_deliver_hsts;
 
-	call https_deliver_networkerrorlogging;
+    call https_deliver_networkerrorlogging;
 
-	call https_deliver_permissionspolicy;
+    call https_deliver_permissionspolicy;
 
-	call analytics_deliver;
+    call analytics_deliver;
 
-	// echo metadata about the client back to the client (analytics looks at this as well)
-	set resp.http.X-Client-IP = req.http.X-Client-IP;
+    // echo metadata about the client back to the client (analytics looks at this as well)
+    set resp.http.X-Client-IP = req.http.X-Client-IP;
 }
 
 sub vcl_deliver {
-	// hit count
-	if (req.method != "PURGE") {
-		if(req.http.X-CDIS == "hit") {
-			// obj.hits isn't known in vcl_hit, and not useful for other states
-			set req.http.X-CDIS = "hit/" + obj.hits;
-		}
-	}
+    // hit count
+    if (req.method != "PURGE") {
+        if(req.http.X-CDIS == "hit") {
+            // obj.hits isn't known in vcl_hit, and not useful for other states
+            set req.http.X-CDIS = "hit/" + obj.hits;
+        }
+    }
     // Provides custom error html if error response has no body
     if (resp.http.Content-Length == "0" && resp.status >= 400) {
         return(synth(resp.status));
     }
-	call deliver_synth_;
-	call cluster_fe_deliver;
-	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
+    call deliver_synth_;
+    call cluster_fe_deliver;
+    return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
 // Varnish4 vcl_synth+vcl_backend_error
 
 sub vcl_synth {
-	if (req.method != "PURGE") {
-		set resp.http.X-CDIS = "int";
-		call deliver_synth_;
-		call https_error_redirect;
-		call cluster_fe_err_synth;
+    if (req.method != "PURGE") {
+        set resp.http.X-CDIS = "int";
+        call deliver_synth_;
+        call https_error_redirect;
+        call cluster_fe_err_synth;
 
-		// Set Retry-After for requests throttled by requestctl.
-		// Please note: this request header is only set for requests that are
-		// being throttled, so even if non-standard, it never leaves varnish.
-		// see T305824.
-		if (req.http.Retry-After) {
-			set resp.http.Retry-After = req.http.Retry-After;
-		}
+        // Set Retry-After for requests throttled by requestctl.
+        // Please note: this request header is only set for requests that are
+        // being throttled, so even if non-standard, it never leaves varnish.
+        // see T305824.
+        if (req.http.Retry-After) {
+            set resp.http.Retry-After = req.http.Retry-After;
+        }
 
-		// This is for 421 Misdirected for bad HTTP/2 coalescing
-		// between text and upload cluster IPs:
-		if (resp.reason == "Misdirected Request") {
-			set resp.http.Connection = "keep-alive";
-			set resp.http.Content-Length = "0"; // BZ #62245
-			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
-		}
+        // This is for 421 Misdirected for bad HTTP/2 coalescing
+        // between text and upload cluster IPs:
+        if (resp.reason == "Misdirected Request") {
+            set resp.http.Connection = "keep-alive";
+            set resp.http.Content-Length = "0"; // BZ #62245
+            set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+        }
 
-		// Browser sec warning (TLSv1.1/TLSv1.1 intercepted request)
-		if (resp.reason == "Browser Connection Security Redirect") {
-			set resp.http.Location = req.http.Location;
-			set resp.http.Content-Length = "0";
-			return (deliver);
-		}
-		// Browser sec warning
-		if (resp.reason == "Browser Connection Security Warning") {
-			set resp.http.Connection = "keep-alive";
-			set resp.http.Cache-Control = "public, max-age=3600, s-maxage=3600";
-			call browser_sec_synth;
-			return (deliver);
-		}
+        // Browser sec warning (TLSv1.1/TLSv1.1 intercepted request)
+        if (resp.reason == "Browser Connection Security Redirect") {
+            set resp.http.Location = req.http.Location;
+            set resp.http.Content-Length = "0";
+            return (deliver);
+        }
+        // Browser sec warning
+        if (resp.reason == "Browser Connection Security Warning") {
+            set resp.http.Connection = "keep-alive";
+            set resp.http.Cache-Control = "public, max-age=3600, s-maxage=3600";
+            call browser_sec_synth;
+            return (deliver);
+        }
 
-		if (resp.status >= 400) {
-			call synth_errorpage;
-		}
-	}
+        if (resp.status >= 400) {
+            call synth_errorpage;
+        }
+    }
 
-	if (resp.reason == "healthcheck") {
-		set resp.reason = "OK";
-		synthetic("Varnish frontend running on <%= @hostname %> is up");
-	}
+    if (resp.reason == "healthcheck") {
+        set resp.reason = "OK";
+        synthetic("Varnish frontend running on <%= @hostname %> is up");
+    }
 
-	return (deliver);
+    return (deliver);
 }
 
 sub vcl_backend_error {
-	// retry 503 once in frontend instances, to paper over transient issues
-	// This catches an implicit 503 (e.g. connectfail, timeout, etc)
-	if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
-		return(retry);
-	}
-	set beresp.http.X-CDIS = "int";
-	call backend_error_errorpage;
-	return (deliver);
+    // retry 503 once in frontend instances, to paper over transient issues
+    // This catches an implicit 503 (e.g. connectfail, timeout, etc)
+    if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
+        return(retry);
+    }
+    set beresp.http.X-CDIS = "int";
+    call backend_error_errorpage;
+    return (deliver);
 }
 # vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:

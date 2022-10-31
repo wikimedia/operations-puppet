@@ -1,4 +1,4 @@
 sub browser_sec_synth {
-	set resp.http.Content-Type = "text/html; charset=utf-8";
-	synthetic({"<%= @error_browsersec_html %>"});
+    set resp.http.Content-Type = "text/html; charset=utf-8";
+    synthetic({"<%= @error_browsersec_html %>"});
 }
