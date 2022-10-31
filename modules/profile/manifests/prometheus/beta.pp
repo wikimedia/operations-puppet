@@ -152,12 +152,4 @@ class profile::prometheus::beta (
         class_name => 'profile::wmcs::instance',
         port       => 9100,
     }
-
-    class { 'prometheus::wmcs_scripts':
-        ensure => absent,
-    }
-
-    systemd::timer::job { 'prometheus_labs_project_targets':
-        ensure => absent,
-    }
 }
