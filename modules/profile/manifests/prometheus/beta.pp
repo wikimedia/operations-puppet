@@ -147,15 +147,17 @@ class profile::prometheus::beta (
         source   => 'puppet:///modules/role/prometheus/alerts_beta.yml',
     }
 
-    $targets_file = "${targets_path}/node_project.yml"
+    prometheus::class_config { 'node_project':
+        dest       => "${targets_path}/node_project.yaml",
+        class_name => 'profile::wmcs::instance',
+        port       => 9100,
+    }
 
-    include ::prometheus::wmcs_scripts
+    class { 'prometheus::wmcs_scripts':
+        ensure => absent,
+    }
 
     systemd::timer::job { 'prometheus_labs_project_targets':
-        ensure      => 'present',
-        description => 'Generate Prometheus targets configuration for a given project from nova API',
-        command     => '/usr/local/bin/prometheus-labs-targets.sh',
-        user        => 'prometheus',
-        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/10:00'},
+        ensure => absent,
     }
 }
