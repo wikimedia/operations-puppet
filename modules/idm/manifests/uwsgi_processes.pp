@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class idm::uwsgi_processes (
-    String           $project             = 'idm',
+    String           $project             = 'bitu',
     Stdlib::Unixpath $base_dir            = '/srv/idm',
     Stdlib::Unixpath $static_dir          = "${base_dir}/static",
     StdLib::Unixpath $media_dir           = "${base_dir}/media",
