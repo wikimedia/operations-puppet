@@ -4,9 +4,6 @@
   <%- arguments << "--collector.filesystem.ignored-mount-points=#{@ignored_mount_points}" -%>
   <%- arguments << "--collector.filesystem.ignored-fs-types=#{@ignored_fs_types}" -%>
 <%- end -%>
-<%- if @collectors_enabled.include? 'diskstats' -%>
-  <%- arguments << "--collector.diskstats.ignored-devices=#{@ignored_devices}" -%>
-<%- end -%>
 <%- if @collectors_enabled.include? 'textfile' -%>
   <%- arguments << "--collector.textfile.directory=#{@textfile_directory}" -%>
 <%- end -%>

@@ -8,9 +8,6 @@
 
 # === Parameters
 #
-# [*$ignored_devices*]
-#  Regular expression to exclude block devices from being reported
-#
 # [*$ignored_fs_types*]
 #  Regular expression to exclude filesystem types from being reported
 #
@@ -33,7 +30,6 @@
 
 
 class prometheus::node_exporter (
-    String $ignored_devices  = '^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme[0-9]+n[0-9]+p)[0-9]+$',
     String $ignored_fs_types  = '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
     String $ignored_mount_points  = '^/(sys|proc|dev|var/lib/docker|var/lib/kubelet)($|/)',
     String $netstat_fields = '^(.*)',
