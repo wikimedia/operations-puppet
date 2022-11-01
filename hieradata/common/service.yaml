@@ -174,7 +174,7 @@ service::catalog:
     port: 6443
     sites:
       - 'eqiad'
-    state: 'lvs_setup'
+    state: 'production'
 
   blubberoid:
     description: Blubberoid, blubberoid.svc.%{::site}.wmnet (https)
