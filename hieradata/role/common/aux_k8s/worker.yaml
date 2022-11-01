@@ -1,4 +1,4 @@
-cluster: aux_k8s
+cluster: 'aux-k8s-workers'
 
 # Enable overlayfs, needed by docker
 profile::base::overlayfs: true
