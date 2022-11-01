@@ -24,7 +24,7 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon]
+              bscarone, faidon, ejoseph]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -221,7 +221,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph, sstefanova, raymond-ndibe, pfischer]
+    members: [ebernhardson, dcausse, bd808, nskaggs, sstefanova, raymond-ndibe, pfischer]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -369,7 +369,7 @@ groups:
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
+              echetty, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
@@ -4916,14 +4916,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINePauIf1ypkDo5OXhkw4TyuUAToQy2qR4SLdj6nMBE8 emilchetty@MacBook-Pro-2.cable.virginm.net
   ejoseph:
-    ensure: present
+    ensure: absent
     realname: Emmanuel Joseph
-    email: ejoseph@wikimedia.org
     uid: 34889
     gid: 500
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEyb+tb1j4OG2HHW1fDSEtTLB0rV532F3Q1zB42z9dH ejoseph@wikimedia.org
+    krb: absent
+    ssh_keys: []
   natalia-rodriguez:
     ensure: present
     realname: Natalia Rodriguez
