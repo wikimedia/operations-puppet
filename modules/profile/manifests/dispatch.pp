@@ -43,40 +43,20 @@ class profile::dispatch (
         $scheduler_ensure = absent
     }
 
-    $registry = 'docker-registry.wikimedia.org'
-    $image = 'dispatch'
-
-    $env_base = {
-        'DISPATCH_ENCRYPTION_KEY'                      => $encryption_key,
-        'DATABASE_HOSTNAME'                            => $db_hostname,
-        'DATABASE_CREDENTIALS'                         => "dispatch:${db_password}",
-        'DISPATCH_UI_URL'                              => "https://${vhost}",
+    $final_env = deep_merge($env_extra, {
         'DISPATCH_AUTHENTICATION_PROVIDER_HEADER_NAME' => 'x-cas-mail',
         'DISPATCH_AUTHENTICATION_PROVIDER_SLUG'        => 'dispatch-auth-provider-header',
-        'LOG_LEVEL'                                    => $log_level,
-    }
+    })
 
-    $env = deep_merge($env_base, $env_extra)
-
-    $wrapper = @("WRAPPER")
-    #!/bin/sh
-    docker run --interactive --tty --env-file /etc/dispatch/env --network host ${registry}/${image}:${version} $@
-    | WRAPPER
-
-    file { '/usr/local/bin/dispatch':
-        content => $wrapper,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-    }
-
-    service::docker { 'dispatch':
-        image_name   => $image,
-        version      => $version,
-        port         => $port, # ignored when in host_network mode
-        environment  => $env,
-        host_network => true,
-        override_cmd => "server start dispatch.main:app --port ${port}",
+    class { 'dispatch::web':
+        db_hostname      => $db_hostname,
+        db_password      => $db_password,
+        port             => $port,
+        encryption_key   => $encryption_key,
+        version          => $version,
+        env_extra        => $final_env,
+        vhost            => $vhost,
+        scheduler_ensure => $scheduler_ensure,
     }
 
     profile::idp::client::httpd::site { $vhost:
@@ -91,15 +71,5 @@ class profile::dispatch (
             "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             "cn=nda,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
         ],
-    }
-
-    service::docker { 'dispatch-scheduler':
-        ensure       => $scheduler_ensure,
-        image_name   => $image,
-        version      => $version,
-        port         => $port, # ignored when in host_network mode
-        environment  => $env,
-        host_network => true,
-        override_cmd => 'scheduler start',
     }
 }
