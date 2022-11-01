@@ -47,11 +47,13 @@ class profile::dispatch (
     $image = 'dispatch'
 
     $env_base = {
-        'DISPATCH_ENCRYPTION_KEY' => $encryption_key,
-        'DATABASE_HOSTNAME' => $db_hostname,
-        'DATABASE_CREDENTIALS' => "dispatch:${db_password}",
-        'DISPATCH_UI_URL' => "https://${vhost}",
-        'LOG_LEVEL' => $log_level,
+        'DISPATCH_ENCRYPTION_KEY'                      => $encryption_key,
+        'DATABASE_HOSTNAME'                            => $db_hostname,
+        'DATABASE_CREDENTIALS'                         => "dispatch:${db_password}",
+        'DISPATCH_UI_URL'                              => "https://${vhost}",
+        'DISPATCH_AUTHENTICATION_PROVIDER_HEADER_NAME' => 'x-cas-mail',
+        'DISPATCH_AUTHENTICATION_PROVIDER_SLUG'        => 'dispatch-auth-provider-header',
+        'LOG_LEVEL'                                    => $log_level,
     }
 
     $env = deep_merge($env_base, $env_extra)
