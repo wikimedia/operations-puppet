@@ -16,7 +16,6 @@ class profile::dispatch::db (
     String              $primary              = lookup('profile::dispatch::db::primary'),
     String              $password             = lookup('profile::dispatch::db::password'),
     String              $replication_password = lookup('profile::dispatch::db::replication_password'),
-    String              $dump_interval        = lookup('profile::dispatch::db::dump_interval'),
     Array[Stdlib::Host] $replicas             = lookup('profile::dispatch::db::replicas'),
     Array[Stdlib::Host] $frontends            = lookup('profile::dispatch::db::frontends'),
     Boolean             $ipv6_ok              = lookup('profile::dispatch::db::ipv6_ok'),
@@ -24,13 +23,11 @@ class profile::dispatch::db (
 ) {
     # Inspired by modules/puppetprimary/manifests/puppetdb/database.pp
     if $primary == $facts['networking']['fqdn'] {
-        # We do this for the require in postgres::db
-        $require_class = 'postgresql::master'
+
         class { '::postgresql::master':
             root_dir => '/srv/postgres',
             use_ssl  => true,
         }
-        $on_primary = true
 
         $replicas.each |$secondary| {
             $sec_ip4 = ipresolve($secondary, 4)
@@ -42,7 +39,7 @@ class profile::dispatch::db (
                 database => 'replication',
                 password => $replication_password,
                 cidr     => "${sec_ip4}/32",
-                master   => $on_primary,
+                master   => true,
                 attrs    => 'REPLICATION',
             }
 
@@ -53,7 +50,7 @@ class profile::dispatch::db (
                 database => 'dispatch',
                 password => $password,
                 cidr     => "${sec_ip4}/32",
-                master   => $on_primary,
+                master   => true,
             }
 
             if $ipv6_ok {
@@ -64,7 +61,7 @@ class profile::dispatch::db (
                     database => 'replication',
                     password => $replication_password,
                     cidr     => "${sec_ip6}/128",
-                    master   => $on_primary,
+                    master   => true,
                     attrs    => 'REPLICATION',
                 }
                 # User for monitoring check running on secondary server
@@ -75,19 +72,8 @@ class profile::dispatch::db (
                     database => 'dispatch',
                     password => $replication_password,
                     cidr     => "${sec_ip6}/128",
-                    master   => $on_primary,
+                    master   => true,
                 }
-            }
-
-        }
-
-        if !empty($frontends) {
-            $frontends_ferm = join($frontends, ' ')
-
-            ferm::service { 'dispatch_fe':
-                proto  => 'tcp',
-                port   => '5432',
-                srange => "(@resolve((${frontends_ferm})) @resolve((${frontends_ferm}), AAAA))",
             }
         }
 
@@ -102,7 +88,7 @@ class profile::dispatch::db (
                 type     => 'hostssl',
                 password => $password,
                 cidr     => "${fe_ip4}/32",
-                master   => $on_primary,
+                master   => true,
             }
             if $ipv6_ok {
                 $fe_ip6 = ipresolve($frontend, 6)
@@ -113,7 +99,7 @@ class profile::dispatch::db (
                     type     => 'hostssl',
                     password => $password,
                     cidr     => "${fe_ip6}/128",
-                    master   => $on_primary,
+                    master   => true,
                 }
             }
         }
@@ -125,13 +111,13 @@ class profile::dispatch::db (
             user     => 'dispatch',
             database => 'dispatch',
             password => $password,
-            master   => $on_primary,
+            master   => true,
         }
 
         # Create the database
         postgresql::db { 'dispatch':
             owner   => 'dispatch',
-            require => Class[$require_class],
+            require => Class['postgresql::master'],
         }
         postgresql::user { 'prometheus@localhost':
             user     => 'prometheus',
@@ -140,21 +126,11 @@ class profile::dispatch::db (
             method   => 'peer',
         }
 
-        if !empty($replicas) {
-            $replicas_ferm = join($replicas, ' ')
-            # Access to postgres primary from postgres replicas
-            ferm::service { 'dispatch_postgres':
-                proto  => 'tcp',
-                port   => '5432',
-                srange => "(@resolve((${replicas_ferm})) @resolve((${replicas_ferm}), AAAA))",
-            }
-        }
         # On the primary node, do a daily DB dump
         class { '::postgresql::backup':
             do_backups    => $do_backups,
         }
     } else {
-        $require_class = 'postgresql::slave'
         class { '::postgresql::slave':
             master_server    => $primary,
             root_dir         => '/srv/postgres',
@@ -162,7 +138,6 @@ class profile::dispatch::db (
             use_ssl          => true,
             rep_app          => "replication-${::hostname}"
         }
-        $on_primary = false
 
         class { '::postgresql::slave::monitoring':
             pg_master   => $primary,
@@ -174,11 +149,23 @@ class profile::dispatch::db (
         # On secondary nodes, do an hourly DB dump
         class { '::postgresql::backup':
             do_backups    => $do_backups,
-            dump_interval => $dump_interval
+            dump_interval => '*-*-* *:37:00',
         }
     }
+
     if $do_backups {
         include ::profile::backup::host
         backup::set { 'dispatch-postgres': }
+    }
+
+    $allowed_hosts = $replicas + $frontends
+    if !empty($allowed_hosts) {
+        $hosts_ferm = join($allowed_hosts, ' ')
+
+        ferm::service { 'dispatch_postgres':
+            proto  => 'tcp',
+            port   => '5432',
+            srange => "(@resolve((${hosts_ferm})) @resolve((${hosts_ferm}), AAAA))",
+        }
     }
 }

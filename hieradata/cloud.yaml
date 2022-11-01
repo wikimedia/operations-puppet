@@ -401,7 +401,6 @@ profile::graphite::base::cluster_servers: []
 profile::graphite::base::uwsgi_processes: 8
 profile::dispatch::db::ipv6_ok: false
 profile::dispatch::db::do_backup: false
-profile::dispatch::db::dump_interval: '*-*-* *:37:00'
 
 profile::swift::storagehosts: []
 profile::swift::proxyhosts: []
