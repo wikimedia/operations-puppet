@@ -142,6 +142,16 @@ class base::standard_packages {
             ]
             $purged_packages = []
         }
+        'bookworm': {
+            # A dist upgrade to bookworm leaves some old binary packages around, remove those
+            $absent_packages = [
+                'libboost-filesystem1.74.0', 'libboost-locale1.74.0', 'libboost-log1.74.0', 'libboost-nowide1.74.0',
+                'libboost-program-options1.74.0', 'libboost-thread1.74.0', 'libicu67', 'libwsutil12', 'libwireshark14',
+                'libwiretap11', 'ruby2.7', 'python3.9-minimal', 'python3.9', 'perl-modules-5.32', 'libpython3.9',
+                'libperl5.32', 'libpython3.9-minimal', 'libpython3.9-stdlib',
+            ]
+            $purged_packages = []
+        }
         default: {
             $absent_packages = []
             $purged_packages = []
