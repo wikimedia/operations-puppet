@@ -45,13 +45,9 @@ class haproxy(
         ensure => present,
     }
 
-    # FIXME: Migrate to systemd::tmpfile
     if $socket == '/run/haproxy/haproxy.sock' or $pid == '/run/haproxy/haproxy.pid' {
-        file { '/run/haproxy':
-            ensure => directory,
-            mode   => '0775',
-            owner  => 'root',
-            group  => 'haproxy',
+        systemd::tmpfile { 'haproxy':
+            content => 'd /run/haproxy 0775 root haproxy',
         }
     }
     # /etc/haproxy is created by installing the haproxy package.

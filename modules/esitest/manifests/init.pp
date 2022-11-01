@@ -20,12 +20,8 @@ class esitest(
     # between site-level configs with a single daemon, and what we want here is
     # a completely independent daemon instance with its own custom config and
     # runtime paths.
-
-    file { '/run/esitest':
-        ensure => stdlib::ensure($ensure, 'directory'),
-        mode   => '0775',
-        owner  => 'root',
-        group  => 'haproxy',
+    systemd::tmpfile { 'esitest':
+        content => 'd /run/esitest 0775 root haproxy',
     }
 
     # /etc/haproxy is created by the haproxy class as long as that is included
