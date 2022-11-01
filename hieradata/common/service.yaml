@@ -153,6 +153,29 @@ service::catalog:
       - eqiad
     state: production
 
+  aux-k8s-ctrl:
+    description: 'Kubernetes API service for aux cluster'
+    encryption: true
+    ip:
+      eqiad:
+        default: '10.2.2.74'
+    lvs:
+      class: 'low-traffic'
+      conftool:
+        cluster: 'aux-k8s'
+        service: 'kubemaster'
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: 'wrr'
+    port: 6443
+    sites:
+      - 'eqiad'
+    state: 'service_setup'
+
   blubberoid:
     description: Blubberoid, blubberoid.svc.%{::site}.wmnet (https)
     encryption: true
