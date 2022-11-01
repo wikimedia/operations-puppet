@@ -82,6 +82,10 @@ kubernetes_cluster_groups:
     "dse-k8s-eqiad":
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
+  aux-k8s:
+    aux-k8s-eqiad:
+      dc: eqiad
+      master: aux-k8s-ctrl.svc.eqiad.wmnet
 
 # Swift cluster metadata
 # The keys here are called "cluster_label" in puppet code
