@@ -58,7 +58,7 @@ class profile::dispatch (
 
     $wrapper = @("WRAPPER")
     #!/bin/sh
-    docker run --env-file /etc/dispatch/env --network host ${registry}/${image}:${version} $@
+    docker run --interactive --tty --env-file /etc/dispatch/env --network host ${registry}/${image}:${version} $@
     | WRAPPER
 
     file { '/usr/local/bin/dispatch':
