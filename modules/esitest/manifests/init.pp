@@ -32,7 +32,7 @@ class esitest(
         owner   => 'root',
         group   => 'root',
         content => template('esitest/esitest.cfg.erb'),
-        require => File['/run/esitest'],
+        require => Systemd::Tmpfile['esitest'],
         notify  => Service['esitest'],
     }
 
