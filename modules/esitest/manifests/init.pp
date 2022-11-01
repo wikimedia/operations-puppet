@@ -44,5 +44,9 @@ class esitest(
         ensure         => $ensure,
         content        => template('esitest/esitest.service.erb'),
         service_params => {'restart' => '/bin/systemctl reload esitest.service'},
+        require        => [
+            File['/run/esitest'],
+            File['/etc/haproxy/esitest.cfg'],
+        ]
     }
 }
