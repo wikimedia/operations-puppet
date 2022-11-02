@@ -2,3 +2,5 @@ cluster: dumps
 profile::admin::groups:
   - dumps-roots
   - dumpsdata-admins
+
+profile::contacts::role_contacts: ['Core Platform']
