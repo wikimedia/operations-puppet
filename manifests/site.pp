@@ -431,8 +431,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 }
 # New contint and gerrit node T299575
 node /^(contint2002)\.wikimedia\.org$/ {
-    role(insetup)
-
+    role(insetup::unowned)
 }
 
 # HAproxy test T290005
@@ -1553,7 +1552,7 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
 
 # New Kafka nodes T314156
 node /kafka-stretch100[12]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # New Kafka nodes T314160
