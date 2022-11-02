@@ -1709,6 +1709,8 @@ shared_acme_certificates:
     - 'wiktionary.eu'
     - 'pywikibot.org'
     - '*.pywikibot.org'
+    - 'wikimediaenterprise.com'
+    - '*.wikimediaenterprise.com'
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
