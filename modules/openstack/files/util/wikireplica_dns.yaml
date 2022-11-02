@@ -22,8 +22,6 @@ zones:
       - 172.16.7.153
     osm:
       - 172.16.6.105
-    wikilabels:
-      - 172.16.3.117
   analytics.db.svc.wikimedia.cloud.: &analytics
     s1:
       - 172.16.1.6
