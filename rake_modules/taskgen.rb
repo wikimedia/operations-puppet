@@ -456,10 +456,11 @@ class TaskGen < ::Rake::TaskLib
     end
     return [] if spec_modules.empty?
     pattern_end = 'spec/{aliases,classes,defines,functions,hosts,integration,plans,tasks,type_aliases,types,unit}/**/*_spec.rb'
+    pattern = Rake::FileList["modules/{#{spec_modules.to_a.join(',')}}/#{pattern_end}"].to_a
+    return [] if pattern.empty?
 
     desc 'Run spec for modules'
     task :spec do
-      pattern = "modules/{#{spec_modules.to_a.join(',')}}/#{pattern_end}"
       args = ['-t', 'rspec', '--']
       args.concat(Rake::FileList[pattern].to_a)
       ParallelTests::CLI.new.run(args)
