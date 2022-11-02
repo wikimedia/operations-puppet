@@ -24,6 +24,9 @@
 # @param numa_iface
 #   Network interface used to bound HAProxy to a NUMA node.
 #   Defaults to lo
+# @param haproxy_version
+#   HAProxy version being used.
+#   Defaults to haproxy24
 # @param tls_ciphers
 #   Allowed ciphersuites for <= TLSv1.2
 # @param tls13_ciphers
@@ -74,6 +77,7 @@ define haproxy::tls_terminator(
     Integer[0] $tls_session_lifetime = 300,
     Haproxy::Httpreuse $http_reuse = 'safe',
     String $numa_iface = 'lo',
+    Haproxy::Version $haproxy_version = 'haproxy24',
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,

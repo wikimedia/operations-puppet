@@ -26,7 +26,7 @@ class profile::cache::haproxy(
     Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value'                                              => 3906}),
     Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value'                                                => '/var/log/haproxy.fifo'}),
     Boolean $monitoring_enabled = lookup('profile::cache::haproxy::monitoring_enabled'),
-    Enum['haproxy24', 'haproxy26'] $haproxy_version = lookup('profile::cache::haproxy::version', {'default_value'                                => 'haproxy24'}),
+    Haproxy::Version $haproxy_version = lookup('profile::cache::haproxy::version', {'default_value'                                              => 'haproxy24'}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -173,6 +173,7 @@ class profile::cache::haproxy(
         numa_iface           => $numa_iface,
         sticktables          => $sticktables,
         stickycounters       => $stickycounters,
+        haproxy_version      => $haproxy_version,
     }
 
     if $monitoring_enabled {

@@ -5,7 +5,9 @@ global
     cpus = htsets.flatten.join(' ')
     num_threads = htsets.flatten.size
 -%>
+<%- if @haproxy_version == 'haproxy24' -%>
     nbproc 1
+<%- end -%>
     nbthread <%= num_threads %>
     cpu-map 1/1- <%= cpus %>
 
