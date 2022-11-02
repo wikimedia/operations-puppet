@@ -29,6 +29,7 @@ profile::phabricator::main::rate_limits:
   connection: 0
 
 profile::phabricator::main::phd_service_ensure: running
+profile::phabricator::main::dumps_rsync_clients: []
 phabricator_phd_taskmasters: 4
 phabricator_domain: phab.wmflabs.org
 phabricator_altdomain: phab-prod-usercontent.wmflabs.org
