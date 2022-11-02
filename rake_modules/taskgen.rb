@@ -462,7 +462,7 @@ class TaskGen < ::Rake::TaskLib
     desc 'Run spec for modules'
     task :spec do
       args = ['-t', 'rspec', '--']
-      args.concat(Rake::FileList[pattern].to_a)
+      args.concat(pattern)
       ParallelTests::CLI.new.run(args)
     end
     [:spec]
