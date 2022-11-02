@@ -37,3 +37,5 @@ profile::java::extra_args:
 
 # includes module for bandwidth limits
 profile::nginx::variant: "full"
+
+profile::contacts::role_contacts: ["WMCS"]
