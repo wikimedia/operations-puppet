@@ -1,4 +1,4 @@
-class role::ml_k8s::worker::staging {
+class role::ml_k8s::staging::worker {
     include ::profile::base::production
     include ::profile::base::firewall
 

@@ -24,8 +24,8 @@ profile::prometheus::kubernetes::clusters:
     enabled: true
     master_host: 'ml-staging-ctrl.svc.codfw.wmnet'
     port: 9910
-    class_name: role::ml_k8s::worker::staging
-    controller_class_name: role::ml_k8s::master::staging
+    class_name: role::ml_k8s::staging::worker
+    controller_class_name: role::ml_k8s::staging::master
 # In the private repo a stanza like the following is required
 # profile::prometheus::kubernetes::cluster_tokens:
 # k8s:
