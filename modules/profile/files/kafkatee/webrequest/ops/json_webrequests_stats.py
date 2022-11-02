@@ -18,7 +18,7 @@ Example usage:
     # statistics relative to only that specific traffic
     cat ~/sampled.json | json-webrequests-stats -n 20 -c text -q 'uri_path="/w/api.php"'
     # Apply multiple filters to narrow down the search
-    cat ~/sampled.json | json-webrequests-stats -n 20 -c text \
+    cat ~/sampled.json | json-webrequests-stats -n 20 -c text \\
         -q 'uri_path="/w/api.php"' 'user_agent%"SomeBot.*"'
 
     # Get stats from the live 5xx error logs
