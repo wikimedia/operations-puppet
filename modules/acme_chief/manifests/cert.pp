@@ -36,6 +36,7 @@ define acme_chief::cert (
         show_diff => false,
         backup    => false,
         source    => "puppet://${::acmechief_host}/acmedata/${title}",
+        force     => true,
     }
 
     if $puppet_svc {
