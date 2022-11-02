@@ -1,1 +1,2 @@
 profile::contacts::role_contacts: ["WMCS"]
+profile::monitoring::notifications_enabled: false

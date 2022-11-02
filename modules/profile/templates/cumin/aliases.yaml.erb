@@ -176,6 +176,7 @@ hadoop-dumps-client: P{O:dumps::distribution::server}
 icinga: P{O:alerting_host}
 idp: P{O:idp} or A:idp-test
 idp-test: P{O:idp_test}
+insetup: P{O:insetup::serviceops or O:insetup::data_engineering or O:insetup::wmcs or O:insetup::unowned or O:insetup::search_platform or O:insetup::observability or O:insetup::infrastructure_foundations or O:insetup::traffic or O:insetup::data_persistence or O:insetup::core_platform or O:insetup::machine_learning  or O:insetup_noferm}
 installserver: P{O:installserver::light or O:apt_repo}
 installserver-light: P{O:installserver::light}
 kafka-all: A:kafka-main or A:kafka-jumbo or A:kafka-logging or A:kafka-test
@@ -410,7 +411,7 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::webserver} or A:eventlogging
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:vrts or O:miscweb} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
-misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:insetup or O:insetup_noferm or O:sretest}
+misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:sretest} or A:insetup
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:kafkamon or A:puppetboard or A:apt or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or A:flowspec or A:pki or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:lists or O:netinsights}
 #### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ####
