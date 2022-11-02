@@ -6,29 +6,9 @@
 
 <%-
 daemon_args = [
-  "--kubeconfig=#{@kubeconfig}",
-  "--logtostderr=#{@logtostderr}",
-  "--v=#{@v_log_level}",
-  "--hostname-override=#{@fqdn}",
+  "--config=#{@config_file}",         # Path to the KubeProxyConfiguration YAML
+  "--logtostderr=#{@logtostderr}",    # Deprecated in 1.23, can be removed (AIUI logging will go to stderr by default)
+  "--v=#{@v_log_level}",              # There is a replacement in KubeletConfiguration but the flag is not deprecated (1.23) an I like it here
 ]
-
-# IPv6 is an alpha feature on 1.16 and needs a variety of tunables
-# (https://kubernetes.io/docs/concepts/services-networking/dual-stack/) to
-# fully work.
-# We are on purpose NOT adding support for IPv6 feature gate for kube-proxy as
-# the feature is alpha grade and not deemed stable yet on our version.
-# We DO currently only enable it for kubelet, see I54a042731f60dc02494907022cb8115fae052c50
-if @cluster_cidr
-  daemon_args.push("--cluster-cidr=#{@cluster_cidr['v4']}")
-end
-if @proxy_mode
-	daemon_args.push("--proxy-mode='#{@proxy_mode}'")
-end
-if @masquerade_all
-	daemon_args.push("--masquerade-all=true")
-end
-if @metrics_bind_address
-	daemon_args.push("--metrics-bind-address='#{@metrics_bind_address}'")
-end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

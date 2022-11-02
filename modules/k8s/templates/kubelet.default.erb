@@ -4,7 +4,7 @@
 
 <%-
 daemon_args = [
-  "--config=#{@kubelet_config_file}", # Path to the KubeletConfiguration YAML
+  "--config=#{@config_file}",         # Path to the KubeletConfiguration YAML
   "--kubeconfig=#{@kubeconfig}",      # No KubeletConfiguration equivalent
   "--logtostderr=#{@logtostderr}",    # Deprecated in 1.23, can be removed (AIUI logging will go to stderr by default)
   "--v=#{@v_log_level}",              # There is a replacement in KubeletConfiguration but the flag is not deprecated (1.23) an I like it here

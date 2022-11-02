@@ -17,14 +17,12 @@ profile::calico::kubernetes::calico_version: '3'
 # Tokens for the calico kubernetes users in private repo at:
 #profile::calico::kubernetes::calico_cni::token
 #profile::calico::kubernetes::calicoctl::token
-profile::kubernetes::node::masquerade_all: false
 # Defined in the private repo
 #profile::kubernetes::node::kubelet_token:
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
-profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::rsyslog::kubernetes::enable: true
 profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.%{::site}.wmnet:6443
 profile::dragonfly::dfdaemon::ensure: present

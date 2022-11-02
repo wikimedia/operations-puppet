@@ -30,7 +30,7 @@ class k8s::kubelet (
     ensure_packages('socat')
 
     # Create the KubeletConfiguration YAML
-    $kubelet_config_yaml = {
+    $config_yaml = {
         apiVersion        => 'kubelet.config.k8s.io/v1beta1',
         kind              => 'KubeletConfiguration',
         address           => $listen_address,
@@ -53,13 +53,13 @@ class k8s::kubelet (
         # 'Webhook' when --config is used.
         authorization     => { mode => 'AlwaysAllow' },
     }
-    $kubelet_config_file = '/etc/kubernetes/kubelet-config.yaml'
-    file { $kubelet_config_file:
+    $config_file = '/etc/kubernetes/kubelet-config.yaml'
+    file { $config_file:
         ensure  => file,
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
-        content => $kubelet_config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
+        content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
         notify  => Service['kubelet'],
     }
 

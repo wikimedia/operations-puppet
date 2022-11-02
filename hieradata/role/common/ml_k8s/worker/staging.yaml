@@ -14,12 +14,10 @@ profile::calico::kubernetes::calico_version: '3'
 # Tokens for the calico kubernetes users in private repo at:
 #profile::calico::kubernetes::calico_cni::token
 #profile::calico::kubernetes::calicoctl::token
-profile::kubernetes::node::masquerade_all: false
 # Defined in the private repo
 #profile::kubernetes::node::kubelet_token:
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
-profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::rsyslog::kubernetes::kubernetes_url: https://ml-staging-ctrl.svc.%{::site}.wmnet:6443
 profile::rsyslog::kubernetes::enable: true

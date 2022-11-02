@@ -4,7 +4,6 @@ class profile::kubernetes::node (
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
     String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause' }),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
-    Boolean $masquerade_all = lookup('profile::kubernetes::node::masquerade_all', { default_value => true }),
     Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', { default_value => '/etc/kubernetes/kubelet_config' }),
     Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', { default_value => '/etc/kubernetes/kubeproxy_config' }),
     Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', { default_value => "http://prometheus.svc.${::site }.wmnet/k8s" }),
@@ -17,7 +16,6 @@ class profile::kubernetes::node (
     Optional[Array[String]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
     String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', { default_value => 'system:kube-proxy' }),
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
-    Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', { default_value => undef }),
     Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', { default_value => false }),
     Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
     Optional[K8s::ClusterCIDR] $cluster_cidr = lookup('profile::kubernetes::cluster_cidr', { default_value => undef }),
@@ -99,11 +97,9 @@ class profile::kubernetes::node (
         token       => $kubeproxy_token,
     }
     class { 'k8s::proxy':
-        masquerade_all       => $masquerade_all,
-        metrics_bind_address => $kubeproxy_metrics_bind_address,
-        kubeconfig           => $kubeproxy_config,
-        version              => $version,
-        cluster_cidr         => $cluster_cidr,
+        kubeconfig   => $kubeproxy_config,
+        version      => $version,
+        cluster_cidr => $cluster_cidr,
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6

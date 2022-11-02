@@ -14,13 +14,11 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 # Tokens for the calico kubernetes users in private repo at:
 #profile::calico::kubernetes::calico_cni::token
 #profile::calico::kubernetes::calicoctl::token
-profile::kubernetes::node::masquerade_all: false
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 # Defined in the private repo
 #profile::kubernetes::node::kubelet_token:
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
-profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::rsyslog::kubernetes::enable: true
 # Define in the private repo
 # profile::rsyslog::kubernetes::token

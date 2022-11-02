@@ -13,8 +13,6 @@ profile::docker::engine::settings:
   live-restore: true
 
 # kubernetes node
-profile::kubernetes::node::masquerade_all: false
-profile::kubernetes::node::kubeproxy_metrics_bind_address: '0.0.0.0'
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::kubernetes::node::packages_from_future: true
 profile::kubernetes::master_fqdn: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
