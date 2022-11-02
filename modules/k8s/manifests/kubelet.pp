@@ -43,8 +43,8 @@ class k8s::kubelet (
         #
         # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).
         # Using --config the default changes to 0 (e.g. disabled).
-        # As I see it, we don't use 10255 in prod, so this should be safe to disable.
-        #readOnlyPort => 10255,
+        # 10255 is used by prometheus to scrape kubelet and cadvisor metrics.
+        readOnlyPort => 10255,
 
         # --anonymous-auth which is enabled by default without --config but disabled when --config is used.
         # TODO: With k8s 1.23, the default for anonymous auth via --config changed back to 'true'
