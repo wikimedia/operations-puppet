@@ -1,18 +1,18 @@
-# == Class statistics::rsyncd
-# Sets up rsyncd and common modules
-# for statistic servers.  Currently
-# this is read/write between statistic
-# servers in /srv and /home
+# @summary
+#   Sets up rsyncd and common modules
+#   for statistic servers.  Currently
+#   this is read/write between statistic
+#   servers in /srv and /home
 #
-# == Parameters
-#   hosts_allow - array.   Hosts to grant rsync access.
-class statistics::rsyncd($hosts_allow)
-{
-    Class['::statistics'] -> Class['statistics::rsyncd']
+# @param  hosts_allow - array.   Hosts to grant rsync access.
+class statistics::rsyncd(
+    Array[Wmflib::Host_or_network] $hosts_allow,
+) {
+    Class['statistics'] -> Class['statistics::rsyncd']
 
     # this uses modules/rsync to
     # set up an rsync daemon service
-    class { '::rsync::server':
+    class { 'rsync::server':
         # the default timeout of 300 is too low
         timeout => 1000,
     }
@@ -24,7 +24,7 @@ class statistics::rsyncd($hosts_allow)
         read_only   => 'yes',
         list        => 'yes',
         uid         => 'nobody',
-        gid         => 'nobody',
+        gid         => 'nogroup',
         hosts_allow => $hosts_allow,
         auto_ferm   => true,
     }
@@ -36,7 +36,7 @@ class statistics::rsyncd($hosts_allow)
         read_only   => 'yes',
         list        => 'yes',
         uid         => 'nobody',
-        gid         => 'nobody',
+        gid         => 'nogroup',
         hosts_allow => $hosts_allow,
         auto_ferm   => true,
     }
