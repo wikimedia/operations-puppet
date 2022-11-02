@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Set up rsync server and base config
 class profile::dumps::distribution::rsync(
-    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
+    Hash $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
 ) {
     $user = $rsyncer_settings['dumps_user']
     $group = $rsyncer_settings['dumps_group']

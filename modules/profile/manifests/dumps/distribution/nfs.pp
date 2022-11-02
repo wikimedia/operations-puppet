@@ -3,8 +3,8 @@
 # Firewall rules are managed separately through profile::wmcs::nfs::ferm
 
 class profile::dumps::distribution::nfs (
-    $nfs_clients = lookup('profile::dumps::distribution::nfs_clients')
-  ) {
+    Array[Stdlib::Host] $nfs_clients = lookup('profile::dumps::distribution::nfs_clients'),
+){
 
     ensure_packages(['nfs-kernel-server', 'nfs-common', 'rpcbind'])
 

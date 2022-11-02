@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::mirrors::rsync_config(
-    $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
-    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
-    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
+    Array $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
+    Hash $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
+    Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ) {
     $active_mirrors = $rsync_mirrors.filter |$item| { $item['active'] == 'yes' }
     $ipv4_mirrors = $active_mirrors.reduce([]) |$mirrorlist, $item| { $mirrorlist + $item['ipv4'] }

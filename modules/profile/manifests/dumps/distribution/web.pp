@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::web (
-    $is_primary_server = lookup('profile::dumps::distribution::web::is_primary_server'),
-    $dumps_active_web_server = lookup('dumps_dist_active_web'),
-    $datadir = lookup('profile::dumps::distribution::basedatadir'),
-    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
+    Boolean $is_primary_server = lookup('profile::dumps::distribution::web::is_primary_server'),
+    Stdlib::Host $dumps_active_web_server = lookup('dumps_dist_active_web'),
+    Stdlib::Unixpath $datadir = lookup('profile::dumps::distribution::basedatadir'),
+    Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
     String $blocked_user_agent_regex = lookup('profile::dumps::distribution::blocked_user_agent_regex'),
 ){
     class { '::sslcert::dhparam': }

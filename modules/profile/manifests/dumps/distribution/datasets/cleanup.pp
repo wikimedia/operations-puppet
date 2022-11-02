@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::datasets::cleanup(
-    $isreplica = lookup('profile::dumps::distribution::datasets::cleanup::isreplica'),
-    $miscdumpsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
-    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
-    $dumpstempdir = lookup('profile::dumps::distribution::dumpstempdir'),
+    Boolean $isreplica = lookup('profile::dumps::distribution::datasets::cleanup::isreplica'),
+    Stdlib::Unixpath $miscdumpsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
+    Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    Stdlib::Unixpath $dumpstempdir = lookup('profile::dumps::distribution::dumpstempdir'),
 ) {
     class {'::dumps::web::cleanup':
         isreplica    => $isreplica,
