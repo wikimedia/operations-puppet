@@ -78,14 +78,6 @@ class icinga::monitor::toollabs {
         contact_group => 'wmcs-team',
     }
 
-    monitoring::service { 'tools-checker-wikilabelsrw':
-        description   => 'toolschecker: wikilabels read/write',
-        check_command => "${checker}!/db/wikilabelsrw!OK",
-        host          => $test_entry_host,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team-email',
-    }
-
     monitoring::service { 'tools-checker-labs-dns-private':
         description   => 'toolschecker: Verify internal DNS from within Tools',
         check_command => "${checker}!/dns/private!OK",

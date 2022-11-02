@@ -21,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-import configparser
 import logging.config
 import os
 import socket
@@ -31,7 +30,6 @@ import uuid
 
 import flask
 import ldap3
-import psycopg2
 import pymysql
 import redis
 import requests
@@ -151,36 +149,6 @@ def db_toolsdb():
         "tools.db.svc.eqiad.wmflabs",
         "s52524__rwtest"
     )
-
-
-@check("/db/wikilabelsrw")
-def postgres_read_write_check():
-    dbconfig = configparser.RawConfigParser()
-    dbconfig.read(os.path.join(__dir__, 'postgres.my.cnf'))
-    user = dbconfig.get("client", "user")
-    password = dbconfig.get("client", "password")
-    magicnumber = int(time.time())
-
-    try:
-        connection = psycopg2.connect(
-            host="wikilabels.db.svc.eqiad.wmflabs",
-            dbname="{}_rwtest".format(user),
-            user=user,
-            password=password,
-        )
-        cur = connection.cursor()
-        cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
-        connection.commit()
-        cur.execute("SELECT * FROM test WHERE test=%s" % magicnumber)
-        result = cur.fetchone()
-        if result:
-            cur.execute("DELETE FROM test WHERE test=%s" % magicnumber)
-            connection.commit()
-            success = True
-    finally:
-        cur.close()
-        connection.close()
-    return success
 
 
 @check("/dns/private")

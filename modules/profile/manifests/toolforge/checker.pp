@@ -15,7 +15,6 @@ class profile::toolforge::checker {
     ensure_packages([
         'python3-flask',
         'python3-ldap3',
-        'python3-psycopg2',
         'python3-pymysql',
         'python3-redis',
         'python3-requests',
@@ -35,7 +34,6 @@ class profile::toolforge::checker {
     $checks = {
         'cron'                            => '/cron',
         'db_toolsdb'                      => '/db/toolsdb',
-        'db_wikilabelsrw'                 => '/db/wikilabelsrw',
         'dns_private'                     => '/dns/private',
         'etcd_kubernetes'                 => '/etcd/k8s',
         'grid_continuous_buster'          => '/grid/continuous/buster',
@@ -173,12 +171,7 @@ class profile::toolforge::checker {
     }
 
     file { "${install_dir}/postgres.my.cnf":
-        ensure => present,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0400',
-        source => '/data/project/toolschecker/postgres.my.cnf',
-        before => File[$wsgi_file],
+        ensure => absent,
     }
 
     file { "${install_dir}/kubernetes.json":
