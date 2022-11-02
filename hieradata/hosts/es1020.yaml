@@ -2,3 +2,4 @@
 # candidate master for es4
 mariadb::shard: 'es4'
 mariadb::binlog_format: 'ROW'
+profile::monitoring::notifications_enabled: false
