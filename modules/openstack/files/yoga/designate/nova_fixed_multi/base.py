@@ -165,9 +165,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         for record in records:
             LOG.warn('Deleting forward record %s in recordset %s' % (record['id'],
                                                                      record['recordset_id']))
-
-            central_api.delete_record(context, cfg.CONF[self.name].domain_id,
-                                      record['recordset_id'], record['id'])
+            self._update_or_delete_recordset(
+                context, cfg.CONF[self.name].domain_id, record['recordset_id'], record
+            )
 
         legacy_zone_id = cfg.CONF[self.name].get('legacy_domain_id')
         if legacy_zone_id:
@@ -187,9 +187,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             for record in records:
                 LOG.warn('Deleting legacy record %s in recordset %s' % (record['id'],
                                                                         record['recordset_id']))
-
-                central_api.delete_record(context, legacy_zone_id,
-                                          record['recordset_id'], record['id'])
+                self._update_or_delete_recordset(
+                    context, legacy_zone_id, record['recordset_id'], record
+                )
 
         reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
         if reverse_zone_id:
@@ -208,7 +208,6 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             for record in records:
                 LOG.warn('Deleting reverse record %s in recordset %s' % (record['id'],
                                                                          record['recordset_id']))
-
-                central_api.delete_record(context,
-                                          reverse_zone_id,
-                                          record['recordset_id'], record['id'])
+                self._update_or_delete_recordset(
+                    context, reverse_zone_id, record['recordset_id'], record
+                )
