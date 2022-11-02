@@ -41,7 +41,16 @@ class puppetdb::app(
 ) {
     # PuppetDB installation
 
-    ensure_packages('puppetdb')
+    if debian::codename::eq('bookworm') {
+        apt::package_from_component { 'puppetdb7':
+            component => 'component/puppetdb7',
+            packages  => ['puppetdb', 'puppet-terminus-puppetdb'],
+            priority  => 1002,
+        }
+    } else {
+        ensure_packages('puppetdb')
+    }
+
     $vardir              = '/var/lib/puppetdb'
     $stockpile_queue_dir = "${vardir}/stockpile/cmd/q"
 
