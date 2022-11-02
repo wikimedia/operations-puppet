@@ -33,7 +33,7 @@ class profile::dumps::distribution::datasets::fetcher(
     }
 
     class {'dumps::web::fetches::phab':
-        src             => 'phab1001.eqiad.wmnet::srvdumps',
+        src             => 'phab1001.eqiad.wmnet::srv-dumps',
         miscdatasetsdir => $miscdatasetsdir,
         user            => root,
     }
