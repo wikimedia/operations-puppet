@@ -431,6 +431,8 @@ profile::swift::proxyhosts:
 profile::swift::storagehosts:
   - deployment-ms-be05
   - deployment-ms-be06
+  - deployment-ms-be07
+  - deployment-ms-be08
 profile::swift::stats_reporter_host: somenonexistenthost
 swift_aux_partitions: []
 swift_storage_drives:
