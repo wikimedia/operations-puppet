@@ -283,6 +283,7 @@ Version: 12
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/puppetdb7
  thirdparty/hwraid
 UDebComponents: main
 Update:
