@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::datasets::fetcher(
-    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
-    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
+    Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
+    Hash $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
 ) {
 
     $user = $rsyncer_settings['dumps_user']
