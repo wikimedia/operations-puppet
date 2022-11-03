@@ -69,4 +69,8 @@ class dispatch::web (
         host_network => true,
         override_cmd => 'scheduler start',
     }
+
+    class { 'dispatch::ldap_sync':
+        ensure => $scheduler_ensure,
+    }
 }
