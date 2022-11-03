@@ -1,6 +1,6 @@
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::version: 'yoga'
-profile::openstack::codfw1dev::horizon_version: 'wallaby'
+profile::openstack::codfw1dev::horizon_version: 'zed'
 
 # Keep codfw1dev APIs limited to VMs and prod hosts
 profile::openstack::codfw1dev::public_apis: false

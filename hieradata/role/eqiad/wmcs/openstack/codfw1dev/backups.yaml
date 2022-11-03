@@ -27,7 +27,7 @@ profile::ceph::auth::deploy::selected_creds:
   - codfw1dev-cinder
 
 profile::openstack::codfw1dev::region: codfw1dev-r
-profile::openstack::codfw1dev::version: wallaby
+profile::openstack::codfw1dev::version: yoga
 profile::openstack::codfw1dev::cinder::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::keystone_api_fqdn: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::openstack_controllers:
