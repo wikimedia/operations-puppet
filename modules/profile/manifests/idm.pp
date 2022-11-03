@@ -13,6 +13,7 @@ class profile::idm(
 ) {
 
     $base_dir = '/srv/idm'
+    $project = 'bitu'
 
     ferm::service { 'idm_http':
         proto => 'tcp',
@@ -20,6 +21,7 @@ class profile::idm(
     }
 
     class { 'idm::deployment':
+        project                  => $project,
         django_secret_key        => $django_secret_key,
         django_mysql_db_name     => $django_mysql_db_name,
         django_mysql_db_host     => $django_mysql_db_host,
@@ -31,6 +33,7 @@ class profile::idm(
     }
 
     class { 'idm::uwsgi_processes':
+        project             => $project,
         base_dir            => $base_dir,
         uwsgi_process_count => $uwsgi_process_count,
     }
