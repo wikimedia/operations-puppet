@@ -162,11 +162,15 @@ def validate_mutually_exclusive_privileged_ldap_groups():
     return log
 
 
-# Every account in the LDAP ops should be in either the ops or datacenter-ops YAML group
+# Every account in the LDAP ops should be in either the ops, datacenter-ops or
+# fr-tech-admins YAML groups
 def validate_common_ops_group(yamldata):
     ldap_ops = set(get_ldap_group_members('ops'))
     yml_ops = set(
-        yamldata['groups']['ops']['members'] + yamldata['groups']['datacenter-ops']['members']
+        yamldata['groups']['ops']['members']
+        + yamldata['groups']['datacenter-ops']['members']
+        + yamldata['groups']['sre-admins']['members']
+        + yamldata['groups']['fr-tech-admins']['members']
     )
     if ldap_ops != yml_ops:
         ops_diff = list(ldap_ops.symmetric_difference(yml_ops))
