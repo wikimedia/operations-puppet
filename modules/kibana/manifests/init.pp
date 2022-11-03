@@ -45,14 +45,6 @@ class kibana (
         name   => $kibana_package,
     }
 
-    # ugly hack to solve https://phabricator.wikimedia.org/T192279 / https://github.com/elastic/kibana/issues/12915
-    file { '/usr/share/kibana/optimize/bundles/stateSessionStorageRedirect.style.css':
-        ensure => present,
-        owner  => 'kibana',
-        group  => 'kibana',
-        mode   => '0664',
-    }
-
     # https://phabricator.wikimedia.org/T275658 (need different kibana.yml based off ES version)
     $kibana_template_filepath = $config_version ? {
         '6'     => 'kibana/kibana_6.yml.erb',
