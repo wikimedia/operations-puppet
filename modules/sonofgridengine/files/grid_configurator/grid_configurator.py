@@ -335,7 +335,6 @@ class HostProcessor:
         self.regions = self._get_regions()
         self.os_instances = {}
         self.host_set = self._hosts(host_prefixes, host_types)
-        self.legacy_domain = f"{self.project}.eqiad.wmflabs"
         self.config_dir = config_dir
         self.grid_root = grid_root
 
@@ -544,25 +543,6 @@ class HostProcessor:
 
         result = cmd_run(["qconf", get_arg], timeout=60)
         current_hosts = result.stdout.decode("utf-8").splitlines()
-
-        # additional step: cleanup duplicate hosts that may exist. We know this is
-        # happening if there are 2 hosts with the exact same hostname but different
-        # domain (legacy vs new). Leave the legacy one, for manual cleanup
-        for current_host in current_hosts[:]:
-            if not current_host.endswith(self.legacy_domain):
-                # already configured host but it uses the new domain. This is fine, continue
-                # with normal script operations
-                continue
-
-            # there is a host using the legacy domain. Do we have a host with the same hostname
-            # in the list of new domain hosts? If so, remove the duplicate.
-            current_host_hostname = current_host.split(".")[0]
-            for nova_host in self.host_set[host_class][:]:
-                nova_host_hostname = nova_host.split(".")[0]
-                if current_host_hostname == nova_host_hostname:
-                    logging.debug(f"Leaving {current_host} as is instead of using {nova_host}")
-                    self.host_set[host_class].remove(nova_host)
-                    current_hosts.remove(current_host)
 
         for host in self.host_set[host_class]:
             if host_class == "exec":

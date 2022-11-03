@@ -11,8 +11,8 @@ from grid_configurator import grid_configurator
 OPENSTACK_MOCK_HOSTS = {
     "exec": ["dummy01", "dummy02", "dummy03"],
     "submit": [
-        "toolsbeta-sgecron-0000.toolsbeta.eqiad.wmflabs",
-        "toolsbeta-sgebastion-0000.toolsbeta.eqiad.wmflabs",
+        "toolsbeta-sgecron-0000.toolsbeta.eqiad1.wikimedia.cloud",
+        "toolsbeta-sgebastion-0000.toolsbeta.eqiad1.wikimedia.cloud",
     ],
 }
 
