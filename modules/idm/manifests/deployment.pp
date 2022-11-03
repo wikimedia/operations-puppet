@@ -1,11 +1,33 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class idm::deployment (
-    String           $project     = 'bitu',
-    Stdlib::Unixpath $base_dir    = '/srv/idm',
-    String           $deploy_user = 'www-data',
-    Boolean          $development = True,
+    String           $project,
+    String           $django_secret_key,
+    String           $django_mysql_db_host,
+    String           $django_mysql_db_name,
+    String           $django_mysql_db_user,
+    String           $django_mysql_db_password,
+    Stdlib::Unixpath $base_dir,
+    String           $deploy_user,
+    Boolean          $development,
 ){
+
+    # Create log directory
+    file { '/var/log/idm':
+        ensure => directory,
+        owner  => $deploy_user,
+        group  => $deploy_user,
+        mode   => '0700',
+    }
+
+    # Django configuration
+    file { '/etc/idm/settings.py':
+        ensure  => present,
+        content => template('idm/idm-django-settings.erb'),
+        owner   => $deploy_user,
+        group   => $deploy_user,
+
+    }
 
     # For staging and production we want to install
     # from Debian packages, but for the development
@@ -21,8 +43,8 @@ class idm::deployment (
             ensure    => 'latest',
             directory => "${base_dir}/${project}",
             branch    => 'master',
-            owner     => 'www-data',
-            group     => 'www-data',
+            owner     => $deploy_user,
+            group     => $deploy_user,
             source    => 'gerrit',
         }
     }

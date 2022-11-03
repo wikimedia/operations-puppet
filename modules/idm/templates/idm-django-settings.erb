@@ -1,0 +1,53 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+from base_settings import *
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '<%= @django_secret_key %>'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = <%- if @development -%>True<%- else -%>False<%- end -%>
+
+ALLOWED_HOSTS = ['<%= @fqdn %>',]
+
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': '<%= @django.db.backends.mysql %>',
+        'NAME': '<%= @django_mysql_db_name %>'
+        'HOST': '<%= @django_mysql_db_host %>',
+        'USER': '<%= @django_mysql_db_user %>',
+        'PASSWORD': '<%= @django_mysql_db_password %>',
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'django': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/idm/django.log',
+        },
+        'bitu': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/idm/bitu.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'bitu': {
+            'handlers': ['bitu'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
