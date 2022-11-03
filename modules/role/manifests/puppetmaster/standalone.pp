@@ -57,6 +57,7 @@ class role::puppetmaster::standalone(
 
     include profile::openstack::base::puppetmaster::enc_client
     include profile::openstack::base::puppetmaster::stale_certs_exporter
+    include profile::puppetmaster::fetch_swift_rings
 
     $base_config = {
         'node_terminus'     => 'exec',

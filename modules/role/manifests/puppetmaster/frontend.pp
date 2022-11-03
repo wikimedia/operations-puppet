@@ -29,6 +29,9 @@ class role::puppetmaster::frontend {
     # Installs a script to update the netboot images in volatile with firmware
     include ::profile::puppetmaster::updatenetboot
 
+    # Sync swift rings
+    include ::profile::puppetmaster::fetch_swift_rings
+
     # Cergen is Java-based
     include ::profile::java
 }

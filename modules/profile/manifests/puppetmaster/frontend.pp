@@ -6,7 +6,6 @@
 # @param ca_server the CA server
 # @param ca_source source of the CA file
 # @param manage_ca_file if true manage the CA file
-# @param swift_clusters instance of Swift::Clusters (hash of cluster info)
 # @param prevent_cherrypicks disable cherry picks
 # @param monitor_signed_certs if true monitor signed certs for expiry
 # @param extra_auth_rules Addtional auth rules
@@ -23,7 +22,6 @@ class profile::puppetmaster::frontend(
     Stdlib::Filesource  $ca_source               = lookup('puppet_ca_source'),
     Boolean             $manage_ca_file          = lookup('manage_puppet_ca_file'),
     Optional[Stdlib::HTTPUrl] $http_proxy        = lookup('http_proxy'),
-    Swift::Clusters     $swift_clusters          = lookup('swift_clusters'),
     # Class scope
     # TODO: we should probably configure theses in P:puppetmaster::common
     Hash[String, Puppetmaster::Backends] $servers        = lookup('puppetmaster::servers'),
@@ -59,9 +57,6 @@ class profile::puppetmaster::frontend(
     # Puppet frontends are git masters at least for their datacenter
     $ca = $ca_server == $facts['networking']['fqdn']
     $sync_ensure = $ca.bool2str('absent', 'present')
-    # The master frontend copies updated swift rings from each clusters'
-    # ring management host into volatile
-    $ring_fetch = $ca.bool2str('present', 'absent')
 
     if $ca {
         # Ensure cergen is present for managing TLS keys and
@@ -172,19 +167,6 @@ class profile::puppetmaster::frontend(
         server      => $ca_server,
         sync_ensure => $sync_ensure,
         frontends   => keys($servers),
-    }
-
-    $swift_clusters.each |String $sc, Swift::Cluster_info $sc_info| {
-        if $sc_info['ring_manager'] != undef {
-            systemd::timer::job { "fetch-rings-${sc}":
-                ensure          => $ring_fetch,
-                user            => 'root',
-                description     => "rsync swift rings from cluster ${sc}",
-                command         => "/usr/bin/rsync -bcptz ${sc_info['ring_manager']}::swiftrings/new_rings.tar.bz2 /var/lib/puppet/volatile/swift/${sc_info['cluster_name']}/",
-                interval        => {'start' => 'OnCalendar', 'interval' => '*:5/20:00'},
-                logging_enabled => false,
-            }
-        }
     }
 
     ferm::service { 'puppetmaster-frontend':
