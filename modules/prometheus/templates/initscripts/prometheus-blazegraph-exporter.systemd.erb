@@ -1,5 +1,7 @@
 [Unit]
 Description=Prometheus Blazegraph Exporter (<%= @title %>)
+After=<%= @title %>.service
+BindsTo=<%= @title %>.service
 
 [Service]
 Restart=always
