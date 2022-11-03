@@ -72,4 +72,4 @@ profile::java::java_packages:
 
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ['ServiceOps-Collab']

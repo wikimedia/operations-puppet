@@ -82,4 +82,4 @@ profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
 
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ['ServiceOps-Collab']
