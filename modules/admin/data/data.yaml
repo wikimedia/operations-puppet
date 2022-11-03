@@ -5663,6 +5663,24 @@ ldap_only_users:
   heather:
     ensure: absent
     realname: Heather Walls
+  hshaath:
+    ensure: present
+    realname: Hiba Sha'ath
+    email: hshaath-ctr@wikimedia.org
+    expiry_date: 2023-04-21
+    expiry_contact: cmacholan@wikimedia.org
+  hghani:
+    ensure: present
+    realname: Hghani
+    email: hghani-ctr@wikimedia.org
+    expiry_date: 2023-04-21
+    expiry_contact: cmacholan@wikimedia.org
+  ilooremeta:
+    ensure: present
+    realname: Isaac Looremeta
+    email: ilooremeta-ctr@wikimedia.org
+    expiry_date: 2023-04-21
+    expiry_contact: cmacholan@wikimedia.org
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
@@ -5696,6 +5714,10 @@ ldap_only_users:
     ensure: present
     realname: Jorge Vargas
     email: jvargas@wikimedia.org
+  kmorgan:
+    ensure: present
+    realname: Kayla Morgan
+    email: kmorgan@wikimedia.org
   krli:
     ensure: present
     realname: Kris Litson
