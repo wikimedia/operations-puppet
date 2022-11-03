@@ -13,7 +13,7 @@ class idm::uwsgi_processes (
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
     $project_dir = "${base_dir}/${project}"
 
-    file { [$base_dir, $static_dir, $media_dir] :
+    file { [$static_dir, $media_dir] :
         ensure => directory,
         owner  => $deploy_user,
         group  => $deploy_user,
