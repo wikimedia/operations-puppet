@@ -5396,6 +5396,7 @@ users:
     email: sstefanova@wikimedia.org
     uid: 35710
     gid: 500
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuL12ew55XLwqKgUOYIq6DI1CjTH/3Bjab4QIcG18wj sstefanova@wikimedia.org
   raymond-ndibe:
