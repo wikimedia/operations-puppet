@@ -30,4 +30,6 @@ class haveged (
         ensure => running,
         enable => true,
     }
+
+    profile::auto_restarts::service { 'haveged': }
 }
