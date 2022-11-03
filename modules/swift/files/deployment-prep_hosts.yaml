@@ -30,5 +30,6 @@ hosts:
     - deployment-ms-be06:
       - drain
   prodbullseye:
-    - deployment-ms-be07
+    - deployment-ms-be07:
+      - immediate
     - deployment-ms-be08
