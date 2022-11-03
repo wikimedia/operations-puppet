@@ -15,3 +15,5 @@ profile::bird::advertise_vips:
     ensure: present
     service_type: authdns
 profile::bird::bind_anycast_service: 'gdnsd.service'
+
+profile::contacts::role_contacts: ['Traffic']
