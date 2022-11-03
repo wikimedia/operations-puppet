@@ -246,6 +246,7 @@ Components: main
  thirdparty/otelcol-contrib
  thirdparty/routinator
  thirdparty/tekton
+ thirdparty/terraform
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -268,6 +269,7 @@ Update:
  thirdparty/haproxy26
  thirdparty/openstack-db
  thirdparty/tekton
+ thirdparty/terraform-bullseye
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override

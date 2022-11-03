@@ -351,6 +351,15 @@ Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
 ListShellHook: grep-dctrl \( -P 'gitlab-runner' -a -FVersion --lt 15.5 -a -FVersion --ge 15.4 \) || [ $? -eq 1 ]
 
+Name: thirdparty/terraform-bullseye
+Method: https://apt.releases.hashicorp.com/
+Suite: bullseye
+Components: main>thirdparty/terraform
+UDebComponents:
+Architectures: amd64
+VerifyRelease: DA418C88A3219F7B
+ListShellHook: grep-dctrl \( -P 'terraform' -a -FVersion --ge 1.3.4 \) || [ $? -eq 1 ]
+
 Name: routinator
 Method: https://packages.nlnetlabs.nl/linux/debian/
 Suite: bullseye
