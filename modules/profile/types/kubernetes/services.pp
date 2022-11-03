@@ -13,6 +13,9 @@
 #
 # [*private_files*] Hash of unix-level access permissions for private helmfile data.
 #
+# [*ensure*] Optional Wmflib::Ensure to mark services absent/present 
+#
+
 type Profile::Kubernetes::Services = Struct[{
     usernames       => Array[Struct[{
         name => String,
@@ -22,6 +25,7 @@ type Profile::Kubernetes::Services = Struct[{
         kubeconfig => Optional[String],
     }]],
     namespace       => Optional[String],
-    private_files   => Optional[Struct[{'owner' => String, 'group' => String, 'mode' => String, }]]
+    private_files   => Optional[Struct[{'owner' => String, 'group' => String, 'mode' => String, }]],
+    ensure => Optional[Wmflib::Ensure],
 
 }]

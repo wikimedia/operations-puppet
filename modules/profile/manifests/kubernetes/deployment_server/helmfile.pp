@@ -39,11 +39,16 @@ class profile::kubernetes::deployment_server::helmfile(
         # New-style private directories are one per service, not per cluster too.
         $merged_services.each |String $svcname, Hash $data| {
             $permissions = $data['private_files'] ? {
-                undef => $user_defaults,
+                undef   => $user_defaults,
                 default => $data['private_files']
             }
+            $service_dir_ensure = $data['ensure'] ? {
+                undef   => directory,
+                present => directory,
+                default => $data['ensure'],
+            }
             file { "${private_dir}/${svcname}":
-                ensure => directory,
+                ensure => $service_dir_ensure,
                 owner  => $permissions['owner'],
                 group  => $permissions['group'],
                 mode   => '0750',
@@ -64,7 +69,12 @@ class profile::kubernetes::deployment_server::helmfile(
                     } else {
                         $permissions = $user_defaults
                     }
+                    $service_ensure = $data['ensure'] ? {
+                        undef   => present,
+                        default => $data['ensure'],
+                    }
                     file { "${private_dir}/${svcname}/${environment}.yaml":
+                        ensure  => $service_ensure,
                         owner   => $permissions['owner'],
                         group   => $permissions['group'],
                         mode    => $permissions['mode'],

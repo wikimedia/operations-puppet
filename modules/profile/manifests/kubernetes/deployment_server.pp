@@ -39,6 +39,10 @@ class profile::kubernetes::deployment_server (
                 undef   => $srv,
                 default => $data['namespace']
             }
+            $service_ensure = $data['ensure'] ? {
+                undef   => present,
+                default => $data['ensure'],
+            }
             $clusters.each |$cluster, $cluster_data| {
                 $data['usernames'].each |$usr_raw| {
                     $usr = $user_defaults.merge($usr_raw)
@@ -48,10 +52,12 @@ class profile::kubernetes::deployment_server (
                         undef => $usr['name'],
                         default => $usr['kubeconfig']
                     }
+
                     $kubeconfig_path = "/etc/kubernetes/${kubeconfig_name}-${cluster}.config"
                     # TODO: separate username data from the services structure?
                     if ($token and !defined(K8s::Kubeconfig[$kubeconfig_path])) {
                         k8s::kubeconfig { $kubeconfig_path:
+                            ensure      => $service_ensure,
                             master_host => $cluster_data['master'],
                             username    => $usr['name'],
                             token       => $token['token'],
