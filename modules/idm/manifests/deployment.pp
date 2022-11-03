@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class idm::deployment (
+    String           $project     = 'bitu',
     Stdlib::Unixpath $base_dir    = '/srv/idm',
     String           $deploy_user = 'www-data',
     Boolean          $development = True,
@@ -18,7 +19,7 @@ class idm::deployment (
 
         git::clone { 'operations/software/bitu':
             ensure    => 'latest',
-            directory => $base_dir,
+            directory => "${base_dir}/${project}",
             branch    => 'master',
             owner     => 'www-data',
             group     => 'www-data',
