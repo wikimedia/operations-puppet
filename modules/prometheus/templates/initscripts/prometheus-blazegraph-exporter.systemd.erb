@@ -6,6 +6,7 @@ BindsTo=<%= @title %>.service
 [Service]
 Restart=always
 User=prometheus
+ExecStartPre=/usr/bin/sleep 30
 ExecStart=/usr/local/bin/prometheus-blazegraph-exporter --listen :<%= @prometheus_port %> --blazegraph-port <%= @blazegraph_port %><% if @collect_via_nginx %> --nginx-port <%= @nginx_port %><% end %> --namespace <%= @blazegraph_main_ns %>
 
 [Install]
