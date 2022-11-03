@@ -539,7 +539,7 @@ node /^db1(107|118|119|128|132|134|135|163|169|184|186|196)\.eqiad\.wmnet/ {
 
 # To be productionized T322256
 node 'db1206.eqiad.wmnet' {
-    role(spare::system)
+    role(insetup::data_engineering)
 }
 
 # eqiad sanitarium master
