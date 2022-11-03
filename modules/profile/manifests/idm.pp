@@ -39,7 +39,7 @@ class profile::idm(
     }
 
     class {'httpd':
-        modules => ['proxy_http', 'proxy', 'proxy-uwsgi']
+        modules => ['proxy_http', 'proxy', 'proxy_uwsgi']
     }
 
     httpd::site { 'idm':
