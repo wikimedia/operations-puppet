@@ -1496,8 +1496,12 @@ node /^alert[12]001\.wikimedia\.org$/ {
 
 
 # Phabricator - old hardware - to be removed soon
-node /^phab[12]001\.(eqiad|codfw)\.wmnet$/ {
+node /^phab1001\.eqiad\.wmnet$/ {
     role(phabricator)
+}
+
+node /^phab2001\.codfw\.wmnet$/ {
+    role(insetup::serviceops)
 }
 
 # Phabricator eqiad (T280540, T279176) (production)
