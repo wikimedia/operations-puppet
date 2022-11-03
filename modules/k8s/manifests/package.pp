@@ -11,9 +11,10 @@ define k8s::package (
     Integer                          $priority        = 1001,
     Boolean                          $ensure_packages = true,
 ) {
-    $component = "kubernetes${regsubst($version, '\\.', '')}"
-    apt::package_from_component { "${title}-${component}":
-        component => "component/${component}",
-        packages  => ["kubernetes-${package}"],
-    }
+    $component_title = "kubernetes${regsubst($version, '\\.', '')}"
+    ensure_resource('apt::package_from_component', $component_title, {
+        component => "component/${component_title}",
+        packages  => [],
+    })
+    ensure_packages("kubernetes-${package}")
 }
