@@ -14,30 +14,7 @@ class extdist(
 
     ensure_packages(['python3-requests', 'php-cli', 'unzip'])
 
-    if debian::codename::ge('bullseye') {
-        ensure_packages(['composer'])
-        $composer_bin_path = '/usr/bin/composer'
-    } else {
-        $composer_dir = "${base_dir}/composer"
-        $composer_bin_path = "${composer_dir}/vendor/bin/composer"
-
-        file { $composer_dir:
-            ensure => directory,
-            owner  => 'extdist',
-            group  => 'www-data',
-            mode   => '0755',
-        }
-
-        git::clone { 'integration/composer':
-            ensure             => latest,
-            directory          => $composer_dir,
-            branch             => 'master',
-            require            => [File[$composer_dir], User['extdist'], Package['php-cli']],
-            recurse_submodules => true,
-            owner              => 'extdist',
-            group              => 'extdist',
-        }
-    }
+    ensure_packages(['composer'])
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
@@ -46,7 +23,7 @@ class extdist(
         'LOG_FILE'  => "${log_dir}/extdist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/pid.lock",
-        'COMPOSER'  => $composer_bin_path,
+        'COMPOSER'  => '/usr/bin/composer',
     }
 
     $skin_settings = {
@@ -56,7 +33,7 @@ class extdist(
         'LOG_FILE'  => "${log_dir}/skindist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/skinpid.lock",
-        'COMPOSER'  => $composer_bin_path,
+        'COMPOSER'  => '/usr/bin/composer',
     }
 
     user { 'extdist':
