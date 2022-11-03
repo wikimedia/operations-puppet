@@ -11,6 +11,14 @@ class idm::deployment (
     String           $deploy_user,
     Boolean          $development,
 ){
+    # We need django from backports to get latest LTS.
+    if debian::codename::eq('bullseye') {
+        apt::pin { 'python3-django':
+            pin      => 'release a=bullseye-backports',
+            package  => 'python3-django',
+            priority => 1001,
+        }
+    }
 
     # Create log directory
     file { '/var/log/idm':
@@ -41,6 +49,11 @@ class idm::deployment (
     # from Debian packages, but for the development
     # process the latest git version is deployed.
     if($development){
+        ensure_packages([
+            'python3-redis','python3-django', python3-mysqldb,
+            'python3-memcache', 'python3-ldap3'
+        ])
+
         file { $base_dir :
             ensure => directory,
             owner  => $deploy_user,
