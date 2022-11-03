@@ -11,6 +11,22 @@ class k8s::scheduler (
         version => $version,
     }
 
+    # Create the KubeSchedulerConfiguration YAML
+    $config_yaml = {
+        apiVersion         => 'kubescheduler.config.k8s.io/v1alpha1',
+        kind               => 'KubeSchedulerConfiguration',
+        clientConnection   => { kubeconfig => $kubeconfig },
+    }
+    $config_file = '/etc/kubernetes/kube-scheduler-config.yaml'
+    file { $config_file:
+        ensure  => file,
+        owner   => 'kube',
+        group   => 'kube',
+        mode    => '0400',
+        content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
+        notify  => Service['kube-scheduler'],
+    }
+
     file { '/etc/default/kube-scheduler':
         ensure  => file,
         owner   => 'root',
