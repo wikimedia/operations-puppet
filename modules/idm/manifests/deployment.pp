@@ -20,6 +20,14 @@ class idm::deployment (
         mode   => '0700',
     }
 
+    # Create configuration dir.
+    file { '/etc/idm':
+        ensure => directory,
+        owner  => $deploy_user,
+        group  => $deploy_user,
+        mode   => '0700',
+    }
+
     # Django configuration
     file { '/etc/idm/settings.py':
         ensure  => present,
