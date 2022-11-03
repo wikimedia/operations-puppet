@@ -560,7 +560,7 @@ node 'db2173.codfw.wmnet' {
 
 # codfw new db node T313979
 node /^db218[34]\.codfw\.wmnet/ {
-    role(insetup::data_engineering)
+    role(insetup::data_persistence)
 }
 
 # s2 (large wikis) core production dbs on eqiad
