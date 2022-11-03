@@ -537,6 +537,11 @@ node /^db1(107|118|119|128|132|134|135|163|169|184|186|196)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# To be productionized T322256
+node 'db1206.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # eqiad sanitarium master
 node 'db1106.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
