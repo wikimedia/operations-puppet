@@ -169,6 +169,10 @@ class docker_registry_ha::web (
         validation_template => 'puppet:///modules/docker_registry_ha/jwt-validations.tmpl',
     }
 
+    profile::auto_restarts::service { 'docker-registry-ha-jwt':
+        ensure => $jwt_authorizer_ensure,
+    }
+
     nginx::site { 'registry':
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
     }
