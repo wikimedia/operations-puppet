@@ -41,7 +41,7 @@ class profile::spicerack(
 
     # Packages required by spicerack cookbooks
     ensure_packages([
-        'python3-dateutil', 'python3-prettytable', 'python3-requests', ' python3-packaging', 'spicerack',
+        'python3-dateutil', 'python3-prettytable', 'python3-requests', 'python3-packaging', 'spicerack',
     ])
 
     $cookbooks_dir = '/srv/deployment/spicerack'
