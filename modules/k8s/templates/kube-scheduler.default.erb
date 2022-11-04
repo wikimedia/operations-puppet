@@ -5,8 +5,11 @@
 <%-
 daemon_args = [
   "--config=#{@config_file}",         # Path to the KubeSchedulerConfiguration YAML
-  "--logtostderr=#{@logtostderr}",    # Deprecated in 1.23, can be removed (AIUI logging will go to stderr by default)
   "--v=#{@v_log_level}",              # There is a replacement in KubeletConfiguration but the flag is not deprecated (1.23) an I like it here
 ]
+if scope.call_function('versioncmp', [@version, '1.16']) <= 0
+  # has been deprecated, will be removed in a future release
+  daemon_args.push("--logtostderr=#{@logtostderr}")
+end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

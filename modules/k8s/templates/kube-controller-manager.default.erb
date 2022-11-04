@@ -4,14 +4,17 @@
 #
 <%-
 daemon_args = [
-  "--logtostderr=#{@logtostderr}",
   "--v=#{@v_log_level}",
-  # Should be the default in 1.4 at least, but specify to ensure backwards compatibility
-  "--leader-elect=true",
   "--service-account-private-key-file=#{@service_account_private_key_file}",
   "--root-ca-file=/etc/ssl/certs/Puppet_Internal_CA.pem",
   "--use-service-account-credentials",
   "--kubeconfig=#{@kubeconfig}",
 ]
+if scope.call_function('versioncmp', [@version, '1.16']) <= 0
+  # has been deprecated, will be removed in a future release
+  daemon_args.push("--logtostderr=#{@logtostderr}")
+  # Should be the default in 1.4 at least, but specify to ensure backwards compatibility
+  daemon_args.push("--leader-elect=true")
+end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

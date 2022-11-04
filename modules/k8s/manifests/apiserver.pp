@@ -78,9 +78,12 @@ class k8s::apiserver (
     # .to_yaml in erb templates always adds a document separator so it's
     # not possible to join yaml in the template with .to_yaml from a variable.
     $admission_configuration_content = {
-        'apiVersion' => 'apiserver.k8s.io/v1alpha1',
-        'kind'       => 'AdmissionConfiguration',
-        'plugins'    => $admission_configuration,
+        apiVersion         => versioncmp($version, '1.16') <= 0 ? {
+            true  => 'apiserver.k8s.io/v1alpha1',
+            false => 'apiserver.config.k8s.io/v1',
+        },
+        kind       => 'AdmissionConfiguration',
+        plugins    => $admission_configuration,
     }
     file { $admission_configuration_file:
         ensure  => $admission_configuration_ensure,

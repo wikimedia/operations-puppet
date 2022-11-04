@@ -13,7 +13,10 @@ class k8s::scheduler (
 
     # Create the KubeSchedulerConfiguration YAML
     $config_yaml = {
-        apiVersion         => 'kubescheduler.config.k8s.io/v1alpha1',
+        apiVersion         => versioncmp($version, '1.16') <= 0 ? {
+            true  => 'kubescheduler.config.k8s.io/v1alpha1',
+            false => 'kubescheduler.config.k8s.io/v1beta3',
+        },
         kind               => 'KubeSchedulerConfiguration',
         clientConnection   => { kubeconfig => $kubeconfig },
     }

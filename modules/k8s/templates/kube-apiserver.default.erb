@@ -7,7 +7,6 @@
 #
 <%-
 daemon_args = [
-  "--logtostderr=#{@logtostderr}",
   "--v=#{@v_log_level}",
   "--allow-privileged=#{@allow_privileged}",
   "--etcd-servers=#{@etcd_servers}",
@@ -15,9 +14,8 @@ daemon_args = [
   "--tls-cert-file=#{@ssl_cert_path}",
   "--tls-private-key-file=#{@ssl_key_path}",
   "--service-account-key-file=#{@ssl_cert_path}",
-  # disable the unprotected API port that used to be open on 127.0.0.1:8080
-  "--insecure-port=0",
 ]
+
 
 if @service_cluster_ip_range
   daemon_args.push("--service-cluster-ip-range=#{@service_cluster_ip_range}")
@@ -49,7 +47,13 @@ if @admission_configuration
   daemon_args.push("--admission-control-config-file=#{@admission_configuration_file}")
 end
 
-if @version == '1.23'
+if scope.call_function('versioncmp', [@version, '1.16']) <= 0
+  # disable the unprotected API port that used to be open on 127.0.0.1:8080
+  # will be removed with >= 1.24
+  daemon_args.push("--insecure-port=0")
+  # has been deprecated, will be removed in a future release
+  daemon_args.push("--logtostderr=#{@logtostderr}")
+elsif scope.call_function('versioncmp', [@version, '1.23']) >= 0
   # From 1.20 changelog:
   # TokenRequest and TokenRequestProjection are now GA features. The following flags are required by the API server:
   #  --service-account-issuer, should be set to a URL identifying the API server that will be stable over the cluster lifetime.

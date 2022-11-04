@@ -38,7 +38,8 @@ class k8s::kubelet (
         tlsCertFile       => $tls_cert,
         clusterDomain     => $cluster_domain,
         clusterDNS        => [$cluster_dns],
-        featureGates      => if $kubelet_ipv6 { { 'IPv6DualStack' => true } },
+        # IPv6DualStack is GA and enabled by default in k8s >=1.22
+        featureGates      => if $kubelet_ipv6 and versioncmp($version, '1.22') < 0 { { 'IPv6DualStack' => true } },
         # FIXME: Do we really need anonymous read only access to kubelets enabled?
         #
         # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).
@@ -52,6 +53,8 @@ class k8s::kubelet (
         # Authorization mode defaults to 'AlwaysAllow' when running without --config but
         # 'Webhook' when --config is used.
         authorization     => { mode => 'AlwaysAllow' },
+
+        # FIXME: Add registerWithTaints if >=1.23
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     file { $config_file:
