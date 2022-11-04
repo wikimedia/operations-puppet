@@ -52,18 +52,21 @@ class profile::kubernetes::master (
     }
 
     class { 'k8s::apiserver':
-        etcd_servers             => $etcd_servers,
-        ssl_cert_path            => $ssl_cert_path,
-        ssl_key_path             => $ssl_key_path,
-        users                    => $_users,
-        authz_mode               => $authz_mode,
-        allow_privileged         => $allow_privileged,
-        version                  => $version,
-        service_cluster_ip_range => $service_cluster_ip_range,
-        service_node_port_range  => $service_node_port_range,
-        runtime_config           => $runtime_config,
-        admission_plugins        => $admission_plugins,
-        admission_configuration  => $admission_configuration,
+        etcd_servers                => $etcd_servers,
+        ssl_cert_path               => $ssl_cert_path,
+        ssl_key_path                => $ssl_key_path,
+        users                       => $_users,
+        authz_mode                  => $authz_mode,
+        allow_privileged            => $allow_privileged,
+        version                     => $version,
+        service_cluster_ip_range    => $service_cluster_ip_range,
+        service_node_port_range     => $service_node_port_range,
+        runtime_config              => $runtime_config,
+        admission_plugins           => $admission_plugins,
+        admission_configuration     => $admission_configuration,
+        service_account_issuer      => "https://${master_fqdn}:6443",
+        service_account_signing_key => $service_account_private_key_file,
+        service_account_key         => $ssl_cert_path,
     }
 
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler_config'

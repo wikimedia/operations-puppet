@@ -13,7 +13,7 @@
 #       apiserver, but to the LVS service instead (to be able to verify TLS cert).
 class k8s::controller (
     K8s::KubernetesVersion $version,
-    String $service_account_private_key_file,
+    Stdlib::Unixpath $service_account_private_key_file,
     Stdlib::Unixpath $kubeconfig,
     Boolean $logtostderr=true,
     Integer $v_log_level=0,

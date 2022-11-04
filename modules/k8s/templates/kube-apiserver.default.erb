@@ -49,5 +49,15 @@ if @admission_configuration
   daemon_args.push("--admission-control-config-file=#{@admission_configuration_file}")
 end
 
+if @version == '1.23'
+  # From 1.20 changelog:
+  # TokenRequest and TokenRequestProjection are now GA features. The following flags are required by the API server:
+  #  --service-account-issuer, should be set to a URL identifying the API server that will be stable over the cluster lifetime.
+  #  --service-account-key-file, set to one or more files containing one or more public keys used to verify tokens.
+  #  --service-account-signing-key-file, set to a file containing a private key to use to sign service account tokens. Can be the same file given to kube-controller-manager with --service-account-private-key-file.
+  daemon_args.push("--service-account-issuer=#{@service_account_issuer}")
+  daemon_args.push("--service-account-key-file=#{@service_account_key}")
+  daemon_args.push("--service-account-signing-key-file=#{@service_account_signing_key}")
+end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"
