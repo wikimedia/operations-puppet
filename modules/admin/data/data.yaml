@@ -136,7 +136,7 @@ groups:
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
               aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer, kindrobot,
-              mfossati
+              mfossati, isaranto
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
@@ -379,7 +379,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath, hghani, ilooremeta]
+              damilare, appledora, hshaath, hghani, ilooremeta, isaranto]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -912,7 +912,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou]
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto]
     privileges: []
     approval:
       - Chris Albon
@@ -5571,6 +5571,15 @@ users:
     expiry_contact: cmacholan@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN/8v9W+7UsdvRkDd+UjLrHpok4pbnVqckw1r6UXWov1 ilooremeta-ctr@wikimedia.org
+  isaranto:
+    ensure: present
+    realname: Ilias Sarantopoulos
+    email: isarantopoulos@wikimedia.org
+    uid: 42440
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFeaCui46ZnfzOjgl7AY+JTPZFmOyoW9CMjlR2XjCwH4 isaranto
 
 ldap_only_users:
   abartov:
