@@ -40,7 +40,7 @@ class openstack::cinder::service::yoga(
             notify  => Service['cinder-api'],
             require => Package['cinder-api'];
         '/etc/cinder/cinder-api-uwsgi.ini':
-            content => template('openstack/yoga/cinder/cinder-api-uwsgi.ini'),
+            source  => 'puppet:///modules/openstack/yoga/cinder/cinder-api-uwsgi.ini',
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
