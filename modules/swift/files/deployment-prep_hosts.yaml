@@ -32,4 +32,5 @@ hosts:
   prodbullseye:
     - deployment-ms-be07:
       - immediate
-    - deployment-ms-be08
+    - deployment-ms-be08:
+      - immediate
