@@ -55,7 +55,7 @@ groups:
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert, eevans]
+              brett, fnegri, cgoubert, eevans, stevemunene]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -379,7 +379,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath, hghani, ilooremeta, isaranto]
+              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5580,6 +5580,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFeaCui46ZnfzOjgl7AY+JTPZFmOyoW9CMjlR2XjCwH4 isaranto
+  stevemunene:
+    ensure: present
+    krb: present
+    realname: Stevemunene
+    email: smunene@wikimedia.org
+    uid: 42437
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICTE4Vngw1vsJ1D4aywTcAKb1IW2/02pdJnjGrCThZRW smunene@SMunene.local
 
 ldap_only_users:
   abartov:
