@@ -379,7 +379,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath]
+              damilare, appledora, hshaath, hghani, ilooremeta]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5549,6 +5549,28 @@ users:
     expiry_contact: cmacholan@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII/DXyJu2isoAtF0gq8kBYqrYQXHW+WeGLYgqfDRP3Y5 hshaath-ctr@wikimedia.org
+  hghani:
+    ensure: present
+    krb: present
+    realname: Hghani
+    email: hghani-ctr@wikimedia.org
+    uid: 42383
+    gid: 500
+    expiry_date: 2023-04-21
+    expiry_contact: cmacholan@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE9YrjjXUnDX0d8mk62yYBR6Pcflz/1pw/tkoMTeSrM0 hghani-ctr@wikimedia.org
+  ilooremeta:
+    ensure: present
+    krb: present
+    realname: Isaac Looremeta
+    email: ilooremeta-ctr@wikimedia.org
+    uid: 42384
+    gid: 500
+    expiry_date: 2023-04-21
+    expiry_contact: cmacholan@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN/8v9W+7UsdvRkDd+UjLrHpok4pbnVqckw1r6UXWov1 ilooremeta-ctr@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -5675,18 +5697,6 @@ ldap_only_users:
   heather:
     ensure: absent
     realname: Heather Walls
-  hghani:
-    ensure: present
-    realname: Hghani
-    email: hghani-ctr@wikimedia.org
-    expiry_date: 2023-04-21
-    expiry_contact: cmacholan@wikimedia.org
-  ilooremeta:
-    ensure: present
-    realname: Isaac Looremeta
-    email: ilooremeta-ctr@wikimedia.org
-    expiry_date: 2023-04-21
-    expiry_contact: cmacholan@wikimedia.org
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
