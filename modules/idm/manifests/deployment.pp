@@ -20,8 +20,10 @@ class idm::deployment (
         }
     }
 
+    $idm_log_dir = '/var/log/idm'
+
     # Create log directory
-    file { '/var/log/idm':
+    file { $idm_log_dir:
         ensure => directory,
         owner  => $deploy_user,
         group  => $deploy_user,
@@ -67,6 +69,23 @@ class idm::deployment (
             owner     => $deploy_user,
             group     => $deploy_user,
             source    => 'gerrit',
+        }
+    }
+
+    $logs = ['idm', 'django']
+    $logs.each |$log| {
+        logrotate::rule { "bitu-${log}":
+        ensure        => present,
+        file_glob     => "${idm_log_dir}/${log}.log",
+        frequency     => 'daily',
+        not_if_empty  => true,
+        copy_truncate => true,
+        max_age       => 30,
+        rotate        => 30,
+        date_ext      => true,
+        compress      => true,
+        missing_ok    => true,
+        no_create     => true,
         }
     }
 }

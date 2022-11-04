@@ -30,12 +30,12 @@ LOGGING = {
         'django': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/idm/django.log',
+            'filename': '<%= @idm_log_dir %>/django.log',
         },
         'bitu': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/idm/bitu.log',
+            'filename': ''<%= @idm_log_dir %>/idm.log',
         },
     },
     'loggers': {
