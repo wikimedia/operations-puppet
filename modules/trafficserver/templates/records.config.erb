@@ -59,6 +59,9 @@ CONFIG proxy.config.http.allow_half_open INT <%= @http_settings['allow_half_open
 # keep-alive configuration for connections against origin servers
 CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @http_settings['keep_alive_enabled_out'] %>
 CONFIG proxy.config.http.keep_alive_post_out INT <%= @http_settings['keep_alive_post_out'] %>
+# Avoid marking origin servers as down/dead
+CONFIG proxy.config.http.connect.dead.policy INT 0
+CONFIG proxy.config.http.down_server.cache_time INT 0
 
 # Origin server connection reuse
 CONFIG proxy.config.http.server_session_sharing.match STRING <%= @http_settings['server_session_sharing_match'] %>
