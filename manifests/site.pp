@@ -1911,8 +1911,13 @@ node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
 }
 
-node /^moss-fe100[12]\.eqiad\.wmnet/ {
+node /^moss-fe1002\.eqiad\.wmnet/ {
     role(insetup::data_persistence)
+}
+
+node /^moss-fe1001\.eqiad\.wmnet/ {
+    role(swift::proxy)
+    include ::lvs::realserver # lint:ignore:wmf_styleguide
 }
 
 # New moss-be nodes T276637
@@ -1926,7 +1931,12 @@ node /^moss-be200[12]\.codfw\.wmnet/ {
 }
 
 # New moss-fe nodes T275513
-node /^moss-fe200[12]\.codfw\.wmnet/ {
+node /^moss-fe2001\.codfw\.wmnet/ {
+    role(swift::proxy)
+    include ::lvs::realserver # lint:ignore:wmf_styleguide
+}
+
+node /^moss-fe2002\.codfw\.wmnet/ {
     role(insetup::data_persistence)
 }
 
