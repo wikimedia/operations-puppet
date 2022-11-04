@@ -31,4 +31,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/purgeExpiredMentorStatus.php',
         interval => '*-*-01,15 8:45:00',
     }
+
+    # push periodically-computed metrics into statsd (T318684)
+    profile::mediawiki::periodic_job { 'growthexperiments-updateMetrics':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMetrics.php --verbose',
+        interval => '*-*-* 04:30:00',
+    }
 }
