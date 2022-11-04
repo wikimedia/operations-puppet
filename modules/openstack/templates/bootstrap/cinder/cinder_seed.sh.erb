@@ -1,0 +1,19 @@
+config/yoga.pp:# SPDX-License-Identifier: Apache-2.0
+sudo systemctl stop cinder-api cinder-scheduler cinder-volume
+sudo puppet agent --disable 'cinder setup'
+
+#
+#
+# CREATE DATABASE cinder;
+#
+# Grants can be found in /etc/cinder/cinder_grants.mysql
+#
+
+openstack service create --name cinderv2 --description "OpenStack Block Storage" volumev3
+openstack endpoint create --region <%= @region %> compute public https://<%= @ipaddress %>:28776/v3
+openstack endpoint create --region <%= @region %> compute internal https://<%= @ipaddress %>:28776/v3
+openstack endpoint create --region <%= @region %> compute admin https://<%= @ipaddress %>:28776/v3
+
+su -s /bin/sh -c "cinder-manage db sync" cinder; echo $?
+
+openstack volume service list
