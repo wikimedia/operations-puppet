@@ -219,4 +219,9 @@ class profile::backup::filesets(
     bacula::director::fileset { 'data-engineering-postgres':
         includes => [ '/srv/postgres-backup/' ]
     }
+
+    # Dispatch Postgresql (T313229)
+    bacula::director::fileset { 'dispatch-postgres':
+        includes => [ '/srv/postgres-backup' ]
+    }
 }
