@@ -60,8 +60,7 @@ define profile::trafficserver::monitoring(
     }
 
     # For monitoring where we're at versus maximums defined in configs
-    class { 'prometheus::node_ats_config': }
-
+    prometheus::node_ats_config { "trafficserver_${instance_name}_ats_config": }
 
     monitoring::service { "traffic_manager_${instance_name}_check_http":
         description   => "Ensure traffic_manager binds on ${port} and responds to HTTP requests",

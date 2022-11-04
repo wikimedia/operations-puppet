@@ -13,7 +13,7 @@
 # [*outfile*]
 #   Path to write the finished textfile-exporter-format file.
 
-class prometheus::node_ats_config (
+define prometheus::node_ats_config (
     Wmflib::Ensure $ensure = 'present',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/ats_config.prom',
 ) {
