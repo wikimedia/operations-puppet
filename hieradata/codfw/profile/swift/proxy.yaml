@@ -3,7 +3,8 @@ profile::swift::proxy::memcached_servers: [
   'ms-fe2009.codfw.wmnet',
   'ms-fe2010.codfw.wmnet',
   'ms-fe2011.codfw.wmnet',
-  'ms-fe2012.codfw.wmnet'
+  'ms-fe2012.codfw.wmnet',
+  'moss-fe2001.codfw.wmnet'
 # no trailing comma!
 ]
 
