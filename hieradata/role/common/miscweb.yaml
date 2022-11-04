@@ -28,4 +28,4 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
 
 profile::sre::os_reports::host: cumin2002.codfw.wmnet
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ['ServiceOps-Collab']

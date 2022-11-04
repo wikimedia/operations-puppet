@@ -10,3 +10,4 @@ profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 22280
 profile::tlsproxy::envoy::websockets: true
+profile::contacts::role_contacts: ['ServiceOps-Collab']

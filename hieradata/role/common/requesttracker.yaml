@@ -7,3 +7,4 @@ profile::idp::client::httpd::sites:
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
+profile::contacts::role_contacts: ['ServiceOps-Collab']
