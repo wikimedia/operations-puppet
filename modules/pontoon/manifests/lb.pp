@@ -16,6 +16,9 @@
 # The service discovery layer operates via a local DNS server to provide addresses.
 # Refer to 'pontoon::sd' class for the service discovery implementation details and
 # 'profile::pontoon:sd' for integration with puppet.git
+#
+# Divergent from the default sd DNS implementation, dnsmasq will listen on the primary interface
+# as well to provide a central DNS server for the pontoon stack to use (for example k8s).
 
 # Usage (LB + SD)
 #
@@ -49,5 +52,16 @@ class pontoon::lb (
 
     haproxy::site { 'pontoon_lb':
         content => template('pontoon/haproxy.lb.erb'),
+    }
+
+    file { '/etc/dnsmasq.d/pontoon-lb.conf':
+        content => "listen-address=${facts['ipaddress']}",
+        notify  => Exec['dnsmasq-restart'],
+    }
+
+    ferm::service { 'pontoon-lb-dns':
+        proto   => '(tcp udp)',
+        notrack => true,
+        port    => 53,
     }
 }
