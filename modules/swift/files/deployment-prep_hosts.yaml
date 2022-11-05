@@ -26,7 +26,7 @@ schemes:
 hosts:
   prod:
     - deployment-ms-be05:
-      - drain
+      - failed
     - deployment-ms-be06:
       - drain
   prodbullseye:
