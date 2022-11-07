@@ -421,7 +421,7 @@ profile::swift::storage::container_replicator_interval: 1200 # seconds
 swift_clusters:
   deployment-prep:
     cluster_name: 'deployment-prep'
-    ring_manager: 'deployment-ms-fe04.deployment-prep.eqiad.wmflabs'
+    ring_manager: 'deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud'
 
 profile::swift::cluster: deployment-prep
 profile::swift::cluster_label: deployment-prep
@@ -550,7 +550,7 @@ profile::swift::proxy::shard_container_list:
 profile::swift::proxy::statsd_host: localhost
 profile::swift::proxy::memcached_servers:
   - deployment-ms-fe04
-profile::swift::proxy::proxy_service_host: deployment-ms-fe04.deployment-prep.eqiad.wmflabs
+profile::swift::proxy::proxy_service_host: deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
 profile::swift::proxy::rewrite_account: mw_media
 profile::swift::proxy::thumborhost: deployment-imagescaler03.eqiad.wmflabs:8800
 profile::swift::storage::statsd_host: localhost
