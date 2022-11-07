@@ -429,7 +429,6 @@ profile::swift::hash_path_suffix: abcdef
 profile::swift::proxyhosts:
   - deployment-ms-fe03
 profile::swift::storagehosts:
-  - deployment-ms-be05
   - deployment-ms-be06
   - deployment-ms-be07
   - deployment-ms-be08
