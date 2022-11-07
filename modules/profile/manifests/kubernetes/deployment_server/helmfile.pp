@@ -48,14 +48,26 @@ class profile::kubernetes::deployment_server::helmfile(
                 default => $data['ensure'],
             }
             file { "${private_dir}/${svcname}":
-                ensure => $service_dir_ensure,
-                owner  => $permissions['owner'],
-                group  => $permissions['group'],
-                mode   => '0750',
+                ensure  => $service_dir_ensure,
+                owner   => $permissions['owner'],
+                group   => $permissions['group'],
+                mode    => '0750',
+                force   => true,
+                recurse => true,
             }
         }
         $cluster_groups[$service_group].each |String $environment, Hash $_| {
             $merged_services.map |String $svcname, Hash $data| {
+                # Permission and file presence setup
+                if $data['private_files'] {
+                    $permissions = $user_defaults.merge($data['private_files'])
+                } else {
+                    $permissions = $user_defaults
+                }
+                $service_ensure = $data['ensure'] ? {
+                    undef   => present,
+                    default => $data['ensure'],
+                }
                 $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
                 # write private section only if there is any secret defined.
                 unless $raw_data.empty {
@@ -64,22 +76,13 @@ class profile::kubernetes::deployment_server::helmfile(
                     # This allows to avoid having to copy/paste certs inside of yaml files directly,
                     # for example.
                     $secret_data = wmflib::inject_secret($raw_data)
-                    if $data['private_files'] {
-                        $permissions = $user_defaults.merge($data['private_files'])
-                    } else {
-                        $permissions = $user_defaults
-                    }
-                    $service_ensure = $data['ensure'] ? {
-                        undef   => present,
-                        default => $data['ensure'],
-                    }
                     file { "${private_dir}/${svcname}/${environment}.yaml":
                         ensure  => $service_ensure,
                         owner   => $permissions['owner'],
                         group   => $permissions['group'],
                         mode    => $permissions['mode'],
                         content => to_yaml($secret_data),
-                        require => "File[${private_dir}/${svcname}]"
+                        require => "File[${private_dir}/${svcname}]",
                     }
                 }
             }
