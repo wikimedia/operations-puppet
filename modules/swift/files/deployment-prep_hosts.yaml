@@ -25,10 +25,8 @@ schemes:
 
 hosts:
   prod:
-    - deployment-ms-be05:
-      - failed
     - deployment-ms-be06:
-      - drain
+      - failed
   prodbullseye:
     - deployment-ms-be07:
       - immediate
