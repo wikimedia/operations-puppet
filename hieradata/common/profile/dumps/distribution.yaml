@@ -63,8 +63,8 @@ profile::dumps::distribution::mirrors:
     active: 'no'
   - url: 'http://mirror.accum.se/mirror/wikimedia.org/dumps/'
     hostname: 'mirror.accum.se'
-    ipv4: ['ftp.acc.umu.se', 'mirror.accum.se']
-    ipv6: ['ftp.acc.umu.se', 'mirror.accum.se']
+    ipv4: ['poincare.acc.umu.se', 'ftp.acc.umu.se', 'mirror.accum.se']
+    ipv6: ['poincare.acc.umu.se', 'ftp.acc.umu.se', 'mirror.accum.se']
     contactname: 'Mirror admin'
     contactaddy: 'ftp-adm@accum.se'
     institution: 'Academic Computer Club, Umeå University'
