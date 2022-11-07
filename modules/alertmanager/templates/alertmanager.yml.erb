@@ -105,6 +105,9 @@ route:
             - match_re:
                 instance: '^.*<%= site %>.*$'
               receiver: 'dcops-<%= site %>-task'
+            - match:
+                site: '<%= site %>'
+              receiver: 'dcops-<%= site %>-task'
 <% end -%>
     - match:
         team: 'noc'
