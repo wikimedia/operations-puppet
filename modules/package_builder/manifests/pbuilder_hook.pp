@@ -72,15 +72,6 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D03spicerack'
     }
 
-    # on stretch, add a hook for building VP9/ffmpeg dependencies from a dedicated component
-    file { "${basepath}/hooks/${distribution}/D04vp9":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/package_builder/hooks/D04vp9'
-    }
-
     # on stretch, add a hook for building packages against the ICU63 backport
     file { "${basepath}/hooks/${distribution}/D04icu63":
         ensure => present,
