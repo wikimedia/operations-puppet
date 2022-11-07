@@ -16,10 +16,14 @@ class profile::access_new_install {
         mode    => '0444',
         content => secret('ssh/new_install/new_install.pub'),
     }
-    file { '/usr/local/bin/install_console':
+    file { '/usr/local/bin/install-console':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/role/access_new_install/install_console',
+        source => 'puppet:///modules/role/access_new_install/install-console',
+    }
+    file { '/usr/local/bin/install_console':
+        ensure => 'link',
+        target => '/usr/local/bin/install-console',
     }
 }

@@ -629,6 +629,7 @@ groups:
     description: Group of datacenter ops engineers
     members: [wpao, jclark]
     privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
+                 'ALL = NOPASSWD: /usr/local/bin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
                  'ALL = NOPASSWD: /usr/sbin/hpssacli *',
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
