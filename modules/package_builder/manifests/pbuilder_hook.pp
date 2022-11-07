@@ -63,15 +63,6 @@ define package_builder::pbuilder_hook(
         }
     }
 
-    # on stretch and buster, add a hook for building Spicerack dependencies from a dedicated component
-    file { "${basepath}/hooks/${distribution}/D03spicerack":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/package_builder/hooks/D03spicerack'
-    }
-
     # on buster, add a hook for building JDK 8 forward port dependencies from a dedicated component
     file { "${basepath}/hooks/${distribution}/D04java8":
         ensure => present,
