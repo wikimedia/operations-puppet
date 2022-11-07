@@ -440,44 +440,44 @@ profile::swift::accounts:
   mw_media:
     access: .admin
     account_name: AUTH_mw
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     user: mw:media
   mw_thumbor:
     access: ''
     account_name: AUTH_mw
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     stats_enabled: 'no'
     user: mw:thumbor
   netbox_attachments:
     access: .admin
     account_name: AUTH_netbox
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     stats_enabled: 'no'
     user: netbox:attachments
   pagecompilation_zim:
     access: .admin
     account_name: AUTH_pagecompilation
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     user: pagecompilation:zim
   performance_arclamp:
     access: .admin
     account_name: AUTH_performance
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     user: performance:arclamp
   phabricator_files:
     access: .admin
     account_name: AUTH_phab
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     user: phabricator:files
   swift_dispersion:
     access: .admin
     account_name: AUTH_dispersion
-    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    auth: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
     stats_enabled: 'no'
     user: swift:dispersion
 profile::swift::replication_accounts:
   mw_media:
-    cluster_codfw: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs/v1/
+    cluster_codfw: http://deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud/v1/
 
 profile::swift::proxy::private_container_list: []
 profile::swift::proxy::shard_container_list:
