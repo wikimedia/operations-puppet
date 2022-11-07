@@ -27,7 +27,8 @@ profile::lvs::realserver::pools:
 # Taint to force kubernetes to consider these nodes not usable to schedule pods
 # onto.
 profile::kubernetes::node::kubelet_node_taints:
-  - 'node-role.kubernetes.io/master:NoSchedule'
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
 profile::kubernetes::node::packages_from_future: true
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'

@@ -17,7 +17,7 @@ class k8s::kubelet (
     Optional[String] $docker_kubernetes_user_password = undef,
     Optional[Stdlib::IP::Address] $cluster_dns = undef, #FIXME: This should be an array of V4 addresses
     Optional[Array[String]] $node_labels = [],
-    Optional[Array[String]] $node_taints = [],
+    Optional[Array[K8s::Core::V1Taint]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
 ) {
     k8s::package { 'kubelet':
@@ -31,30 +31,29 @@ class k8s::kubelet (
 
     # Create the KubeletConfiguration YAML
     $config_yaml = {
-        apiVersion        => 'kubelet.config.k8s.io/v1beta1',
-        kind              => 'KubeletConfiguration',
-        address           => $listen_address,
-        tlsPrivateKeyFile => $tls_key,
-        tlsCertFile       => $tls_cert,
-        clusterDomain     => $cluster_domain,
-        clusterDNS        => [$cluster_dns],
+        apiVersion         => 'kubelet.config.k8s.io/v1beta1',
+        kind               => 'KubeletConfiguration',
+        address            => $listen_address,
+        tlsPrivateKeyFile  => $tls_key,
+        tlsCertFile        => $tls_cert,
+        clusterDomain      => $cluster_domain,
+        clusterDNS         => [$cluster_dns],
         # IPv6DualStack is GA and enabled by default in k8s >=1.22
-        featureGates      => if $kubelet_ipv6 and versioncmp($version, '1.22') < 0 { { 'IPv6DualStack' => true } },
+        featureGates       => if $kubelet_ipv6 and versioncmp($version, '1.22') < 0 { { 'IPv6DualStack' => true } },
         # FIXME: Do we really need anonymous read only access to kubelets enabled?
         #
         # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).
         # Using --config the default changes to 0 (e.g. disabled).
         # 10255 is used by prometheus to scrape kubelet and cadvisor metrics.
-        readOnlyPort => 10255,
+        readOnlyPort       => 10255,
 
         # --anonymous-auth which is enabled by default without --config but disabled when --config is used.
         # TODO: With k8s 1.23, the default for anonymous auth via --config changed back to 'true'
-        authentication    => { anonymous => { enabled => true } },
+        authentication     => { anonymous => { enabled => true } },
         # Authorization mode defaults to 'AlwaysAllow' when running without --config but
         # 'Webhook' when --config is used.
-        authorization     => { mode => 'AlwaysAllow' },
-
-        # FIXME: Add registerWithTaints if >=1.23
+        authorization      => { mode => 'AlwaysAllow' },
+        registerWithTaints => if versioncmp($version, '1.23') >= 0 { $node_taints },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     file { $config_file:

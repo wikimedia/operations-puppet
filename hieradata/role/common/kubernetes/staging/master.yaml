@@ -42,7 +42,8 @@ profile::contacts::role_contacts: ['ServiceOps']
 # The nodes are also tainted to force kubernetes to consider these nodes not
 # usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
-  - node-role.kubernetes.io/master:NoSchedule
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
 # Enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50
 profile::kubernetes::node::kubelet_ipv6: true
 profile::kubernetes::use_cni: true

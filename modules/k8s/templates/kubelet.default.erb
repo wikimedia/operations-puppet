@@ -23,10 +23,6 @@ if !@node_labels.empty?
   daemon_args.push("--node-labels=#{@node_labels.sort.join(',')}")
 end
 
-# TODO: Move to KubeletConfiguration with 1.23 (1.16 does only support this as command line flag)
-if !@node_taints.empty?
-  daemon_args.push("--register-with-taints=#{@node_taints.sort.join(',')}")
-end
 
 # Command line arguments will override KubeletConfig settings. So this is still fine.
 if @extra_params
@@ -36,6 +32,15 @@ end
 if scope.call_function('versioncmp', [@version, '1.16']) <= 0
   # has been deprecated, will be removed in a future release
   daemon_args.push("--logtostderr=#{@logtostderr}")
+
+  # 1.16 does only support this as command line flag
+  if !@node_taints.empty?
+    taints = []
+    @node_taints.each do |taint|
+      taints.push("#{taint['key']}#{(taint['value'].nil? || taint['value'].empty?) ? '': "=#{taint['value']}"}:#{taint['effect']}")
+    end
+    daemon_args.push("--register-with-taints=#{taints.sort.join(',')}")
+  end
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

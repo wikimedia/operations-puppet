@@ -14,7 +14,7 @@ class profile::kubernetes::node (
     String $kubelet_token = lookup('profile::kubernetes::node::kubelet_token'),
     Optional[Array[String]] $kubelet_extra_params = lookup('profile::kubernetes::node::kubelet_extra_params', { default_value => undef }),
     Optional[Array[String]] $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
-    Optional[Array[String]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
+    Optional[Array[K8s::Core::V1Taint]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
     String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', { default_value => 'system:kube-proxy' }),
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
     Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', { default_value => false }),

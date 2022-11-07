@@ -33,7 +33,8 @@ profile::admin::groups:
 # The nodes are also tainted to force kubernetes to consider these nodes not
 # usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
-  - node-role.kubernetes.io/master:NoSchedule
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::use_cni: true

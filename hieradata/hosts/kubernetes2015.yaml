@@ -3,5 +3,9 @@ profile::kubernetes::node::kubelet_node_labels:
   - failure-domain.beta.kubernetes.io/region=codfw
   - failure-domain.beta.kubernetes.io/zone=row-c
 profile::kubernetes::node::kubelet_node_taints:
-  - dedicated=kask:NoExecute
-  - dedicated=kask:NoSchedule
+  - key: dedicated
+    value: kask
+    effect: NoExecute
+  - key: dedicated
+    value: kask
+    effect: NoSchedule
