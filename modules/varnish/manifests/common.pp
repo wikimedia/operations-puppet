@@ -4,8 +4,10 @@ class varnish::common(
     Optional[Stdlib::Port] $logstash_json_lines_port = undef,
 ) {
     # Python version
-    # TODO: use case for python_version fact
-    $python_version = '3.7'
+    $python_version = debian::codename() ? {
+        'bullseye'  => '3.9',
+        'buster'    => '3.7',
+    }
 
     file { '/usr/local/sbin/reload-vcl':
         source => 'puppet:///modules/varnish/reload-vcl.py',
@@ -54,30 +56,8 @@ class varnish::common(
         mode   => '0555',
     }
 
-    file { '/usr/local/lib/python2.7/dist-packages/varnishprocessor':
-        ensure  => absent,
-        recurse => true,
-        purge   => true,
-        force   => true,
-    }
-
-    file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
-        ensure => absent,
-    }
-
-    file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-        ensure => absent,
-    }
-
-    file { '/usr/local/lib/python2.7/dist-packages/cachestats.py':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'check_varnish_uds':
         source => 'puppet:///modules/varnish/check_varnish_uds.py';
     }
 
-    sudo::user { 'nagios_varnish_uds':
-        ensure => absent,
-    }
 }
