@@ -548,7 +548,7 @@ profile::swift::proxy::shard_container_list:
 
 profile::swift::proxy::statsd_host: localhost
 profile::swift::proxy::memcached_servers:
-  - deployment-ms-fe04
+  - deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
 profile::swift::proxy::proxy_service_host: deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
 profile::swift::proxy::rewrite_account: mw_media
 profile::swift::proxy::thumborhost: deployment-imagescaler03.eqiad.wmflabs:8800
