@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::grafana::grizzly
 #
 # Grizzly is a tool for managing grafana dashboards, datasources, etc.
