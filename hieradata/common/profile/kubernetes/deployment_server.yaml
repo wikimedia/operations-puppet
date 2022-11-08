@@ -276,6 +276,10 @@ profile::kubernetes::deployment_server::services:
         owner: 'root'
         group: 'root'
         mode: '640'
+    spark-operator:
+      usernames:
+        - name: spark-operator
+        - name: spark-operator-deploy
     stream-enrichment-poc:
       usernames:
         - name: stream-enrichment-poc
