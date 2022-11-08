@@ -130,11 +130,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: miscweb
         - name: miscweb-deploy
-    mwdebug:
-      ensure: absent
-      usernames:
-        - name: mwdebug
-        - name: mwdebug-deploy
     mw-debug:
       usernames:
         - name: mw-debug
