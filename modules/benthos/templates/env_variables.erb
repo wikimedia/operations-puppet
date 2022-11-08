@@ -1,0 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- @env_variables.each do |name, value| -%>
+<%= name.upcase %>=<%= value %>
+<%- end -%>

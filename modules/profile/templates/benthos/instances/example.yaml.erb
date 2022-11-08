@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: Apache-2.0
+# Any value that needs to be injected in the template should be passed
+# as environment variable (see https://www.benthos.dev/docs/configuration/interpolation/)
+#
+http:
+  enabled: true
+  address: 0.0.0.0:${PORT}
+  root_path: /benthos
+
+input:
+  label: "example"
+  kafka:
+    addresses: [ "${KAFKA_BROKERS}" ]
+    topics: [ "${KAFKA_TOPICS}" ]
+    consumer_group: 'benthos-example-realtime'
+#    start_from_oldest: false
+
+pipeline:
+  processors:
+  - label: "drop"
+    bloblang: |
+      root = if random_int() % 10 != 0 { deleted() }
+
+  -  label: "geoip"
+      bloblang: |
+      root = this
+      root.asn = this.ip.geoip_asn(path: "/usr/share/GeoIP/GeoIP2-Country.mmdb").AutonomousSystemNumber
+
+output:
+  label: "stdout"
+  stdout:
+    codec: lines
+  kafka:
+    addresses: [ "${KAFKA_BROKERS}" ]
+    topic: 'example-realtime'
+
+metrics:
+  prometheus:
+    use_histogram_timing: true
+    add_process_metrics: true
+    add_go_metrics: true
+  mapping: |
+    root = "benthos_" + this

@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=Benthos %i
+
+[Service]
+Type=simple
+User=benthos
+Group=benthos
+ExecStart=<%= @exec_path %> -c <%= @config_path %>
+<%- if @env_variables %>
+EnvironmentFile=<%= @env_config_path %>
+<%- end %>
+Restart=always
+SyslogIdentifier=benthos@%i
+
+[Install]
+WantedBy=multi-user.target
