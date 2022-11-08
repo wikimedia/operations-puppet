@@ -29,7 +29,6 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::neutron::common
     include profile::openstack::codfw1dev::neutron::service
     include profile::openstack::codfw1dev::haproxy
-    include profile::openstack::codfw1dev::designate::firewall::api
     include profile::prometheus::haproxy_exporter
     include profile::ldap::client::labs
     include profile::memcached::instance
