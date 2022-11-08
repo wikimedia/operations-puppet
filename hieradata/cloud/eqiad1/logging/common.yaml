@@ -82,7 +82,7 @@ profile::opensearch::common_settings:
   filter_cache_size: '10%'
   holds_data: false
 
-profile::opensearch::logstash::jobs_host: 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
+profile::opensearch::logstash::jobs_host: 'logging-logstash-02.logging.eqiad1.wikimedia.cloud'
 profile::opensearch::logstash::curator_actions:
   '01':
     description: 'logstash: delete older than 14 days'
