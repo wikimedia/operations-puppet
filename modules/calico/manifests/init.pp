@@ -2,7 +2,7 @@
 # == Class calico
 #
 # Installs calico-cni and calicoctl
-class calico(
+class calico (
     Stdlib::Host            $master_fqdn,
     String                  $calicoctl_username,
     String                  $calicoctl_token,
@@ -37,7 +37,7 @@ class calico(
             }
 
             file { '/etc/calico/calicoctl.cfg':
-                ensure  => present,
+                ensure  => file,
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0444',
