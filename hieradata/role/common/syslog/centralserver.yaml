@@ -19,3 +19,17 @@ profile::profile::kafkatee::webrequest::ops::active_host: 'centrallog1001.eqiad.
 mtail::group: 'ops'
 
 profile::netconsole::server::ensure: present
+
+# Note: By default the Benthos class doesn't install geoip. In the centralserver
+# role use case, another profile is already deploying it, so we want to avoid
+# a duplicate resource declaration.
+profile::benthos::use_geoip: false
+profile::benthos::instances:
+  webrequest_live:
+    port: 4151
+    kafka:
+      cluster: jumbo
+      site: eqiad
+      topics:
+      - webrequest_text
+      - webrequest_upload

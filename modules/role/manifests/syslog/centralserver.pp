@@ -15,6 +15,7 @@ class role::syslog::centralserver {
     include ::profile::bird::anycast
     include ::profile::kafkatee::webrequest::ops
     include ::profile::netconsole::server
+    include ::profile::benthos
 
     # https://phabricator.wikimedia.org/T199406
     include ::toil::rsyslog_tls_remedy # lint:ignore:wmf_styleguide

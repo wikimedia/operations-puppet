@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: Apache-2.0
+# Any value that needs to be injected in the template should be passed
+# as environment variable (see https://www.benthos.dev/docs/configuration/interpolation/)
+#
+http:
+  enabled: true
+  address: "0.0.0.0:${PORT}"
+
+input:
+  label: "webrequest_sampled_live"
+  kafka:
+    addresses: [ "${KAFKA_BROKERS}" ]
+    topics: [ "${KAFKA_TOPICS}" ]
+    tls:
+      enabled: true
+      root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
+      skip_cert_verify: true # See https://phabricator.wikimedia.org/T291905
+    consumer_group: 'benthos-webrequest-sampled-live'
+    start_from_oldest: false
+
+pipeline:
+  processors:
+  - label: "drop"
+    bloblang: |
+      root = if this.sequence != "-" && this.dt != "-" && this.sequence % 128 != 0 { deleted() }
+
+  - label: "geoip"
+    bloblang: |
+      root = this
+      root.as_number = this.ip.geoip_asn(path: "/usr/share/GeoIP/GeoIP2-ISP.mmdb").AutonomousSystemNumber
+      root.isp = this.ip.geoip_isp(path: "/usr/share/GeoIP/GeoIP2-ISP.mmdb").ISP
+      root.country_code = this.ip.geoip_country(path: "/usr/share/GeoIP/GeoIP2-Country.mmdb").Country.IsoCode
+      root.continent = this.ip.geoip_country(path: "/usr/share/GeoIP/GeoIP2-Country.mmdb").Continent.Names.en
+
+  - label: "meta"
+    bloblang: |
+      root = this
+      root.webrequest_source = (
+          meta("kafka_topic").split("_").index(1)
+      ).catch("-")
+
+  - label: "analytics"
+    bloblang: |
+      root = this
+      root.is_pageview = "-"
+      root.x_analytics_data = (
+        (this.x_analytics.split(";").map_each(
+          field -> {(field.split("=").index(0)): (field.split("=").index(1))}
+        )).squash()
+      ).catch({})
+
+      root.is_from_public_cloud = root.x_analytics_data.public_cloud.or("0")
+      root.requestctl = root.x_analytics_data.requestctl.or("0")
+      root.is_debug = root.x_analytics_data.is_debug.or("0")
+      root.client_port = root.x_analytics_data.client_port.or("-")
+
+      root.x_analytics_data = deleted()
+      root.x_analytics = deleted()
+
+  - label: "tls_data"
+    bloblang: |
+      root = this
+      root.tls_data = (
+          (this.tls.split(";").map_each(
+              field -> {
+                 (field.split("=").index(0)): (field.split("=").index(1))
+              })
+          ).squash()
+      ).catch({})
+      root.tls_version = root.tls_data.get("vers").catch("-")
+      root.tls_key_exchange = root.tls_data.get("keyx").catch("-")
+      root.tls_auth = root.tls_data.get("auth").catch("-")
+      root.tls_cipher = root.tls_data.get("ciph").catch("-")
+      root.tls_data = deleted()
+      root.tls = deleted()
+
+output:
+  kafka:
+    addresses: [ "${KAFKA_BROKERS}" ]
+    topic: webrequest_sampled
+    tls:
+      enabled: true
+      root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
+      # See https://phabricator.wikimedia.org/T291905
+      skip_cert_verify: true
+
+metrics:
+  prometheus:
+    use_histogram_timing: true
+    add_process_metrics: true
+    add_go_metrics: true
+  mapping: |
+    root = "benthos_" + this
+
+
+tests:
+  - name: tls_data parsing
+    target_processors: 'tls_data'
+    environment: {}
+    input_batch:
+      - content: '{"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new"}'
+    output_batches:
+      -
+        - json_equals:
+             tls_version: TLSv1.3
+             tls_auth: ECDSA
+             tls_cipher: AES-256-GCM-SHA384
+             tls_key_exchange: UNKNOWN
+
+  - name: analytics parsing
+    target_processors: 'analytics'
+    environment: {}
+    input_batch:
+      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1"}'
+    output_batches:
+      -
+        - json_equals:
+             client_port: "4181"
+             is_debug: "0"
+             is_from_public_cloud: "1"
+             is_pageview: "-"
+             requestctl: "0"
