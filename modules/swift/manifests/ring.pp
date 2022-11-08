@@ -2,6 +2,8 @@
 class swift::ring (
     String $swift_cluster,
 ) {
+    ensure_packages('bzip2')
+
     file { '/usr/local/bin/swift_check_ring_tarball.sh':
         ensure => present,
         owner  => 'root',
