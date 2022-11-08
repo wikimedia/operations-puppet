@@ -46,6 +46,7 @@ class profile::java (
         'stretch'   => [{'version' => '8', 'variant' => 'jdk'}],
         'buster'    => [{'version' => '11', 'variant' => 'jdk'}],
         'bullseye'  => [{'version' => '11', 'variant' => 'jdk'}],
+        'bookworm'  => [{'version' => '17', 'variant' => 'jdk'}],
         default     => fail("${module_name} doesn't support ${facts['os']['distro']['codename']}")
     }
 
