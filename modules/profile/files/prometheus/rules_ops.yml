@@ -362,7 +362,7 @@ groups:
     expr: sum by (cluster, method) (rate(mediawiki_http_requests_duration_count[2m]))
   # ATS backend TTFB per backend and cache result code
   - record: cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:rate2m
-    expr: sum by (cluster, backend, cache_result_code) (rate(trafficserver_backend_cache_result_code_client_ttfb_bucket[2m]))
+    expr: sum by (cluster, backend, cache_result_code, le) (rate(trafficserver_backend_cache_result_code_client_ttfb_bucket[2m]))
   - record: cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:50p2m
     expr: histogram_quantile(0.50, cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:rate2m)
   - record: cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:75p2m
