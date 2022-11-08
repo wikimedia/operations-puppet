@@ -2453,19 +2453,8 @@ node /^netbox-dev2002\.codfw\.wmnet$/ {
     role(netbox::standalone)
 }
 
-# network monitoring tools, stretch (T125020, T166180)
-node /^netmon(1002|2001)\.wikimedia\.org$/ {
+node /^netmon[0-9]{4}\.wikimedia\.org$/ {
     role(netmon)
-}
-
-# New netmon node T299106
-node /^netmon1003\.wikimedia\.org$/ {
-    role(netmon)
-}
-
-# New netmon node T313867
-node /^netmon2002\.wikimedia\.org$/ {
-    role(insetup::observability)
 }
 
 # Network insights (netflow/pmacct, etc.)
