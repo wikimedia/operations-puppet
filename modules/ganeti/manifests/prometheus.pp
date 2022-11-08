@@ -30,4 +30,6 @@ class ganeti::prometheus(
     service {'prometheus-ganeti-exporter':
         ensure => running,
     }
+
+    profile::auto_restarts::service { 'prometheus-ganeti-exporter': }
 }
