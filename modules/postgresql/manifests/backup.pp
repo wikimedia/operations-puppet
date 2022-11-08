@@ -33,12 +33,12 @@ class postgresql::backup(
     }
 
     # Keep the file in case manual dump need to be done even if $do_backups is False
-    file { '/usr/local/bin/dump_all.sh':
+    file { '/usr/local/bin/pg-dump-all':
         ensure => 'file',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/postgresql/dump_all.sh',
+        source => 'puppet:///modules/postgresql/dump-all.sh',
     }
 
     $active_ensure = $do_backups.bool2str('present', 'absent')
@@ -46,7 +46,7 @@ class postgresql::backup(
         ensure      => $active_ensure,
         description => 'Regular jobs to dump all databases and meta information',
         user        => 'postgres',
-        command     => "/usr/local/bin/dump_all.sh ${path}",
+        command     => "/usr/local/bin/pg-dump-all ${path}",
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => $dump_interval,

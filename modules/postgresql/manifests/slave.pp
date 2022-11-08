@@ -62,12 +62,17 @@ class postgresql::slave(
         log_min_duration_statement => $log_min_duration_statement,
     }
 
-    file { '/usr/local/bin/resync_replica':
+    file { '/usr/local/bin/pg-resync-replica':
         ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/postgresql/resync_replica.sh',
+        source => 'puppet:///modules/postgresql/resync-replica.sh',
+    }
+
+    file { '/usr/local/bin/resync_replica':
+        ensure => link,
+        target => '/usr/local/bin/pg-resync-replica',
     }
 
     file { "/etc/postgresql/${_pgversion}/main/slave.conf":
@@ -104,7 +109,7 @@ class postgresql::slave(
             }
         }
     } else {
-        notify {'Replication not initialised please run: resync_replica': }
+        notify {'Replication not initialised please run: pg-resync-replica': }
     }
 
     # Having this file here helps perform slave initialization.
