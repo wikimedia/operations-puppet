@@ -24,17 +24,11 @@ role::configcluster:
   target-q: TBD
 role::wmcs::nfs::primary:
   target-q: TBD
-role::wmcs::nfs::primary_backup::tools:
-  target-q: TBD
-role::wmcs::nfs::primary_backup::misc:
+role::wmcs::openstack::eqiad1::backy
   target-q: TBD
 role::installserver::light:
   target-q: TBD
-role::dumps::distribution::server:
-  target-q: TBD
 role::webperf::xhgui:
-  target-q: TBD
-role::backup::offsite:
   target-q: TBD
 role::pybaltest:
   target-q: TBD
@@ -43,8 +37,6 @@ role::ci::master:
 role::mw_rc_irc:
   target-q: TBD
 role::vrts:
-  target-q: TBD
-role::ores::redis:
   target-q: TBD
 role::logging::mediawiki::udp2log:
   target-q: TBD
@@ -387,40 +379,22 @@ role::dumps::generation::worker::dumper_monitor:
   target-q: TBD
 role::dumps::generation::worker::dumper_misc_crons_only:
   target-q: TBD
-role::mirrors:
+role::dumps::generation::worker::testbed:
+  target-q: TBD
+role::dumps::generation::worker::dumper:
   target-q: TBD
 role::statistics::explorer:
-  target-q: TBD
-  phab-task: 288804
-role::statistics::cruncher:
-  target-q: TBD
-  phab-task: 288804
-role::statistics::private:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::webserver:
   target-q: TBD
   phab-task: 288804
-role::logging::webrequest::ops:
-  target-q: TBD
-role::webperf::processors_and_site:
-  target-q: TBD
-role::webperf::profiling_tools:
-  target-q: TBD
 role::analytics_test_cluster::hadoop::worker:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::hadoop::yarn:
   target-q: TBD
   phab-task: 288804
-role::wmcs::openstack::eqiad1::virt_ceph:
-  target-q: TBD
-role::insetup:
-  target-q: TBD
-role::mariadb::misc::db_inventory:
-  target-q: TBD
-role::dbbackups::metadata:
-  target-q: TBD
 role::syslog::centralserver:
   target-q: TBD
 role::dns::auth:
