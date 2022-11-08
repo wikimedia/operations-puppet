@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # update-ocsp - creates or updates an OCSP stapling file for an SSL cert
@@ -22,12 +22,12 @@ import os
 import re
 import errno
 import argparse
-import ConfigParser
+import configparser
 import subprocess
 import glob
 import tempfile
 import datetime
-import urlparse
+import urllib.parse
 
 
 def file_exists(fname):
@@ -49,7 +49,7 @@ def parse_options():
     args, _ = parser.parse_known_args()
     defaults = {}
     if args.config:
-        config = ConfigParser.SafeConfigParser()
+        config = configparser.SafeConfigParser()
         config.read([args.config])
         defaults = dict(config.items("Options"))
 
@@ -196,7 +196,7 @@ def certs_fetch_ocsp(out_temp, args):
     else:
         # OpenSSL only speaks HTTP/1.0 and sends no Host header. This doesn't
         # really work in many OCSP servers, so supply the Host header manually.
-        hosthdr = urlparse.urlparse(ocsp_uri).netloc
+        hosthdr = urllib.parse.urlparse(ocsp_uri).netloc
         cmd.extend([
             "-url", ocsp_uri,
             "-header", "Host={}".format(hosthdr),
@@ -273,7 +273,7 @@ def mkdir_p(path):
 def main():
     args = parse_options()
 
-    os.umask(022)
+    os.umask(0o22)
     out_fn = os.path.basename(args.output)
     out_basedir = os.path.dirname(args.output)
     mkdir_p(out_basedir)
