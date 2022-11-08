@@ -42,5 +42,9 @@ class profile::base::production (
         if $facts['has_ipmi'] and debian::codename::ge('buster') {
             class { 'prometheus::ipmi_exporter': }
         }
+
+        if $facts['is_virtual'] {
+            class { 'toil::ganeti_ifupdown': }
+        }
     }
 }
