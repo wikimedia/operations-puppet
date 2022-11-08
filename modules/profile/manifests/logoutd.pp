@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary this class provides scaffolding for logoutd
 #   A cli based API for deleting user sessions
 # @param owner the owner of the scripts

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Wrapper script to call all logout.d scripts."""
 
 import logging

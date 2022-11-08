@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # install the private key needed to contact newly-installed servers
 #  to set up the initial puppet run.
 # This key is dangerous, do not deploy widely!

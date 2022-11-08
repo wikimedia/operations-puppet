@@ -1,4 +1,5 @@
 # /var/lib/locales/supported.d/local
+# SPDX-License-Identifier: Apache-2.0
 # !! this file is managed by puppet !!
 
 da_DK ISO-8859-1

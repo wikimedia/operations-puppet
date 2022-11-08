@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::pwstore
 #
 # Profile which designates that a pwstore repository is hosted.

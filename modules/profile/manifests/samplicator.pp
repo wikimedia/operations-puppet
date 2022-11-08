@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::samplicator
 # Sets up Samplicator: UDP datagrams duplicator
 # Actions:

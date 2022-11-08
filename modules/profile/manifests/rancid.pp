@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Really Awful Notorious CIsco config Differ
 class profile::rancid (
     Stdlib::Fqdn        $active_server   = lookup('netmon_server'),

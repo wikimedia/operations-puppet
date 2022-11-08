@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::netbox::scripts
 #
 # This profile configures a small proxy for retrieving results from Netbox CustomScripts

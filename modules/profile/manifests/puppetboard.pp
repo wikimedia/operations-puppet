@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary a profile to configure puppetboard
 #  profile::puppetboard is only around while we transition and will be moved
 #  renamed when we are happy with it

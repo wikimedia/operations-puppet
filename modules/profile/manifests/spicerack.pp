@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Installs the spicerack library and cookbook entry point and their configuration.
 #
 # @param tcpircbot_host Hostname for the IRC bot.

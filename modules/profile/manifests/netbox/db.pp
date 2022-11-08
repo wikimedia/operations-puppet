@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::netbox::db
 #
 # This profile installs all the Netbox related database things.

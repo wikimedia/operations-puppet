@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile for sretest hosts
 class profile::sretest {
     if debian::codename::eq('buster') {

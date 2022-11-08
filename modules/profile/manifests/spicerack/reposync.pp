@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to configure a server as a reposync receiver
 # @param ensure ensureable parameter
 # @param repos list of repos to configure

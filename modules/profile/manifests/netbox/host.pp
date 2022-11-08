@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile for collecting netbox host data
 # @param status the netbox status of the host or unknown
 # @param location location data including site and cluster

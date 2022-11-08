@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::auto_restarts::service
 #
 # This define can be used to add an automatic restart for a stateless service.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::locales::extended
 #
 # Provisions a set of "extended" hand-picked locales that are useful on most

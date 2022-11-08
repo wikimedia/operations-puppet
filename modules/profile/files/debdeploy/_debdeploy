@@ -1,5 +1,6 @@
 #compdef debdeploy
 # ZSH completion function for debdeploy
+# SPDX-License-Identifier: Apache-2.0
 
 local line
 _arguments -C \

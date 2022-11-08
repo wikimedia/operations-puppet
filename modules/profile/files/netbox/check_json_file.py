@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 """Check a JSON file and convert it to Icinga API.
 
 The JSON file should have this structure:

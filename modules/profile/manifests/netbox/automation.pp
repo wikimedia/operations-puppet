@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary This profile creates and exposes git repositories created by automation.
 #
 # Actions:

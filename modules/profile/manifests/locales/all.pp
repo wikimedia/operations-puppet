@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::locales::all
 #
 # Provisions all available supported locales. WARNING: this can take a very

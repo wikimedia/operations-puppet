@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::flowspec
 #
 # Install and manage a Flowspec controller and its requirements

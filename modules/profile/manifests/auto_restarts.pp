@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::auto_restarts
 #
 # This class automates service restarts for stateless services after

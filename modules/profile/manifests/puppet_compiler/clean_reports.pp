@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::puppet_compiler::clean_reports {
     $output_dir = '/srv/jenkins/puppet-compiler/output'
     systemd::timer::job {'delete-old-output-files':

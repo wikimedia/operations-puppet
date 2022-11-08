@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 """Base module IDM related classes and functions (Python 3.5 version).
 
 See pywmflib for the original version.

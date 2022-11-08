@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profiletp configure the compiler nodes
 # @param puppetdb_proxy if we proxy db queries
 # @param puppetdb_host puppetdb host

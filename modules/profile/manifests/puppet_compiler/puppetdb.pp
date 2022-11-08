@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to install the puppetdb component of pcc
 # @param ssldir loation of the ssldir
 # @param master fqdn of the puppetmaster

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::homer
 #
 # This class installs & manages Homer, a network configuration management tool.

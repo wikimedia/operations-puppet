@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary resource used to install logout.d scripts into the logout.d folder.
 #   All scripts must be CLI programs which implement a specific API.  See T283242
 #   for more details

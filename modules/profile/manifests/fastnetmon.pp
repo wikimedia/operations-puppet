@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::fastnetmon
 # Sets up Fastnetmon: netflow collector and DDoS detection
 class profile::fastnetmon (

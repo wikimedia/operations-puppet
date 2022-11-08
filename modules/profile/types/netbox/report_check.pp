@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Profile::Netbox::Report_check = Struct[{
     'name'           => String[1],
     'class'          => String[1],
