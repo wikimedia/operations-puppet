@@ -33,12 +33,8 @@ alertmanager_config:
     # resend them.
     repeat_interval: 3h
 
-    # Default receiver to use when there is not matching route
-    receiver: 'cloud-admin-feed'
+    # When there is no project-specific receiver, do not send notifications at all
+    receiver: 'blackhole'
 
   receivers:
-  - name: 'cloud-admin-feed'
-    email_configs:
-    - to: 'cloud-admin-feed@lists.wikimedia.org'
-    webhook_configs:
-    - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
+    - name: 'blackhole'
