@@ -182,6 +182,9 @@ class apereo_cas (
         source  => $keystore_source,
     }
 
+    # /usr/bin/memcdump is needed by memcached-dump tool
+    ensure_packages('libmemcached-tools')
+
     file { '/usr/local/sbin/memcached-dump':
         ensure => file,
         mode   => '0550',
