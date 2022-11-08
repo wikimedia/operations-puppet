@@ -429,13 +429,12 @@ profile::swift::hash_path_suffix: abcdef
 profile::swift::proxyhosts:
   - deployment-ms-fe04
 profile::swift::storagehosts:
-  - deployment-ms-be06
   - deployment-ms-be07
   - deployment-ms-be08
 profile::swift::stats_reporter_host: somenonexistenthost
 swift_aux_partitions: []
 swift_storage_drives:
-  - lv-a
+  - /dev/sdb
 profile::swift::accounts:
   mw_media:
     access: .admin
