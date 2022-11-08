@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::piwik::database
 #
 # Set up a simple mysql database for Piwik. This config is not standard

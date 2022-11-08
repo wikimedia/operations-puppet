@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::piwik::webserver
 #
 # Apache webserver instance configured with mpm-prefork and mod_php.

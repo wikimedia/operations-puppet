@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::archiva::proxy
 #
 # Installs a nginx proxy in front of Archiva with
