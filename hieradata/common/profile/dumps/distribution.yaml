@@ -50,7 +50,7 @@ profile::dumps::distribution::mirrors:
     institution: 'Bytemark'
     addedby: 'reedy'
     addeddate: 'March 1 2017'
-    active: 'notyet'
+    active: 'no' # was: 'notyet'
   - url: 'http://ftp.fi.muni.cz/pub/wikimedia/'
     hostname: 'odysseus.fi.muni.cz'
     ipv4: ['odysseus.fi.muni.cz', 'odysseus.linux.cz']
@@ -82,15 +82,15 @@ profile::dumps::distribution::mirrors:
     addeddate: 'June 8 2012'
     active: 'no'
   - url: 'http://wikimedia.wansec.com/'
-    hostname: ''
+    hostname: 'none.example.com'
     ipv4: ['199.47.196.26', 'wikimedia.wansec.com']
     ipv6: []
     contactname: 'Robert Smith'
     contactaddy: 'rtsmith@wansecurity.com'
     institution: 'WANSecurity'
     addedby: 'atg'
-    addeddate: ''
-    active: 'notrightnow'
+    addeddate: 'unknown'
+    active: 'no' # was: 'notrightnow'
   - url: 'http://dumps.wikimedia.your.org/'
     hostname: 'your.org'
     ipv4: ['ftpmirror.your.org', 'ftpmirror-ae0-4.us.your.org']
@@ -125,8 +125,8 @@ profile::dumps::distribution::mirrors:
     hostname: 'amazonaws.com'
     ipv4: ['ec2-174-129-186-231.compute-1.amazonaws.com']
     ipv6: []
-    contactname: ''
-    contactaddy: ''
+    contactname: 'unknown'
+    contactaddy: 'unknown@example.com'
     institution: 'Amazon AWS'
     addedby: 'atg'
     addeddate: 'Oct 31 2012'
