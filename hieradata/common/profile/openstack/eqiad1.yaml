@@ -5,21 +5,10 @@ profile::openstack::eqiad1::horizon_version: 'zed'
 # Expose openstack APIs to the open internet
 profile::openstack::eqiad1::public_apis: true
 
-# The openstack_controllers host the following services:
-#
-#   keystone-api
-#   nova-conductor
-#   nova-scheduler
-#   nova-placement
-#   nova-api
-#   glance-api
-#
-# All of the above api endpoints are behind HA-proxy, which also runs
-#  on each cloud_vps_controller.
-#
-# These hostnames should not be accessed using hostnames in this list;
-#  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
-#
+# The openstack_controllers host most of the cloud-vps OpenStack
+# control plane, with the notable exclusion of the Designate API.
+# All of the API endpoints are behind a HAProxy load balancer, running
+# haproxy_nodes (defined below).
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
@@ -32,6 +21,16 @@ profile::openstack::eqiad1::openstack_controllers:
 #  external code will want to talk to first.
 #
 profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.org'
+
+# List of servers hosting the HAProxy load balancer instance used by
+# the Cloud VPS control plane.
+#
+# These servers should not be accessed using hostnames in this list;
+# rather, that should happen via the keystone_api_fqdn defined above.
+profile::openstack::eqiad1::haproxy_nodes:
+  - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org
 
 profile::openstack::eqiad1::glance_backends:
   - rbd

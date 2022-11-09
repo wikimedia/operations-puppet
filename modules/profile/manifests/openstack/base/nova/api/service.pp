@@ -6,8 +6,13 @@ class profile::openstack::base::nova::api::service(
     String       $dhcp_domain               = lookup('profile::openstack::base::nova::dhcp_domain',
                                                       {default_value => 'example.com'}),
     Integer      $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
-    ) {
-
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
+    ferm::service { 'nova-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
 
     class {'::openstack::nova::api::service':
         version            => $version,

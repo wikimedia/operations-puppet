@@ -5,21 +5,10 @@ profile::openstack::codfw1dev::horizon_version: 'zed'
 # Keep codfw1dev APIs limited to VMs and prod hosts
 profile::openstack::codfw1dev::public_apis: false
 
-# The openstack_controllers host the following services:
-#
-#   keystone-api
-#   nova-conductor
-#   nova-scheduler
-#   nova-placement
-#   nova-api
-#   glance-api
-#
-# All of the above api endpoints are behind HA-proxy, which also runs
-#  on each cloud_vps_controller.
-#
-# These hostnames should not be accessed using hostnames in this list;
-#  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
-#
+# The openstack_controllers host most of the cloud-vps OpenStack
+# control plane, with the notable exclusion of the Designate API.
+# All of the API endpoints are behind a HAProxy load balancer, running
+# haproxy_nodes (defined below).
 profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2001-dev.wikimedia.org
   - cloudcontrol2004-dev.wikimedia.org
@@ -33,6 +22,16 @@ profile::openstack::codfw1dev::openstack_controllers:
 #  external code will want to talk to first.
 #
 profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimediacloud.org'
+
+# List of servers hosting the HAProxy load balancer instance used by
+# the Cloud VPS control plane.
+#
+# These servers should not be accessed using hostnames in this list;
+# rather, that should happen via the keystone_api_fqdn defined above.
+profile::openstack::codfw1dev::haproxy_nodes:
+  - cloudcontrol2001-dev.wikimedia.org
+  - cloudcontrol2004-dev.wikimedia.org
+  - cloudcontrol2005-dev.wikimedia.org
 
 profile::openstack::codfw1dev::glance_backends:
   - rbd
