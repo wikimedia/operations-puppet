@@ -191,6 +191,12 @@ network::subnets:
         cloud-hosts1-c8-eqiad:
           ipv4: 10.64.151.0/24
           ipv6: 2620:0:861:11f::/64
+        private1-aux-kubepods-eqiad:
+          ipv4: 10.67.80.0/21
+          ipv6: 2620:0:861:305::/64
+        private1-aux-kubesvc-eqiad:
+          ipv4: 10.67.64.0/20
+          ipv6: 2620:0:861:304::/64
 
     codfw:
       public:
