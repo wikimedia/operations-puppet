@@ -1091,10 +1091,6 @@ node /^elastic204[0-8]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node 'elastic2049.codfw.wmnet' {
-    role(spare::system)
-}
-
 node /^elastic205[0-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
