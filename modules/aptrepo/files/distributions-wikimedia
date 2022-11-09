@@ -215,6 +215,7 @@ Components: main
  component/dnsdist
  component/elastic68
  component/istio195
+ component/istio115
  component/jdk8
  component/kubernetes116
  component/kubernetes123
