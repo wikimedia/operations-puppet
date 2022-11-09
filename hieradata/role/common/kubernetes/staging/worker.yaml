@@ -1,5 +1,4 @@
 cluster: kubernetes-staging
-profile::calico::kubernetes::calico_version: '3'
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::use_cni: true

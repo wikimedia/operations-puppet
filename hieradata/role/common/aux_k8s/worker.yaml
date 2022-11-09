@@ -33,6 +33,4 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference: {}
 
-profile::calico::kubernetes::calico_version: '3'
-
 profile::contacts::role_contacts: ['Infrastructure Foundations']

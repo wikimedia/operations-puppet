@@ -6,7 +6,7 @@ class calico (
     Stdlib::Host            $master_fqdn,
     String                  $calicoctl_username,
     String                  $calicoctl_token,
-    String                  $calico_version     = '3',
+    Calico::CalicoVersion   $calico_version     = '3.17',
 ) {
     file { '/etc/calico':
         ensure => directory,
@@ -15,35 +15,25 @@ class calico (
         mode   => '0755',
     }
 
-    case $calico_version {
-        '3': {
-            if debian::codename::le('buster') {
-                apt::package_from_component { 'calico-future':
-                    component => 'component/calico-future',
-                    packages  => ['calicoctl', 'calico-cni'],
-                }
-            } else {
-                apt::package_from_component { 'calico317':
-                    component => 'component/calico317',
-                    packages  => ['calicoctl', 'calico-cni'],
-                }
-            }
-            # Create a kubeconfig for calicoctl to use.
-            $kubeconfig = '/etc/calico/calicoctl-kubeconfig'
-            k8s::kubeconfig { $kubeconfig:
-                master_host => $master_fqdn,
-                username    => $calicoctl_username,
-                token       => $calicoctl_token,
-            }
+    $component_title = "calico${regsubst($calico_version, '\\.', '')}"
+    apt::package_from_component { $component_title:
+        component => "component/${component_title}",
+        packages  => ['calicoctl', 'calico-cni'],
+    }
 
-            file { '/etc/calico/calicoctl.cfg':
-                ensure  => file,
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                content => template('calico/calicoctl.cfg_v3.erb'),
-            }
-        }
-        default: { fail('Unsupported calico version') }
+    # Create a kubeconfig for calicoctl to use.
+    $kubeconfig = '/etc/calico/calicoctl-kubeconfig'
+    k8s::kubeconfig { $kubeconfig:
+        master_host => $master_fqdn,
+        username    => $calicoctl_username,
+        token       => $calicoctl_token,
+    }
+
+    file { '/etc/calico/calicoctl.cfg':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('calico/calicoctl.cfg_v3.erb'),
     }
 }
