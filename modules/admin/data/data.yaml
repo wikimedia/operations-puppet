@@ -1015,11 +1015,10 @@ groups:
     gid: 835
     description: Created for deploying airflow-dags/research
     members: [*analytics_research_admins_members]
-  # TODO: (otto, gmodena)
-  # platform-eng-deployers:
-  #   gid: 836
-  #   description: Created for deploying airflow-dags/platform_eng
-  #   members: [*analytics_platform_eng_admins_members]
+  platform-eng-deployers:
+    gid: 836
+    description: Created for deploying airflow-dags/platform_eng
+    members: [*analytics_platform_eng_admins_members]
 
   reprepro:
     gid: 901

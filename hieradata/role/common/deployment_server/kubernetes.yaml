@@ -112,8 +112,7 @@ profile::keyholder::server::agents:
     trusted_groups:
       - analytics-deployers
       - research-deployers
-      # TODO: (otto, gmodena)
-      # - platform-eng-deployers
+      - platform-eng-deployers
 
   scap:
     trusted_groups:
