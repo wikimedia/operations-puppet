@@ -15,18 +15,18 @@ import re
 import subprocess
 import sys
 from datetime import datetime
+from typing import List
 
 import yaml
-from wmflib.interactive import ask_confirmation, AbortError
 from docker_report.registry import operations
+from wmflib.interactive import AbortError, ask_confirmation
 
 logger = logging.getLogger()
 
 # Default values we don't expect to change
 REGISTRY = "docker-registry.discovery.wmnet"
-VALUES_FILE = pathlib.Path(
-    "/etc/helmfile-defaults/mediawiki/release/mw-debug-pinkunicorn.yaml"
-)
+RELEASES_FILE = pathlib.Path("/etc/helmfile-defaults/mediawiki-deployments.yaml")
+VALUES_DIR = pathlib.Path("/etc/helmfile-defaults/mediawiki/release/")
 DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mw-debug"
 good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-(publish|webserver)")
 
@@ -76,6 +76,17 @@ def parse_args(args=sys.argv[1:]):
     return parser.parse_args(args)
 
 
+def get_deployment_files() -> List[pathlib.Path]:
+    deployments = yaml.safe_load(RELEASES_FILE.read_text(encoding="utf-8"))
+    results = []
+    for deployment in deployments:
+        if deployment.get("release") is not None:
+            results.append(VALUES_DIR / f"{deployment['namespace']}-{deployment['release']}.yaml")
+        if deployment.get("canary") is not None:
+            results.append(VALUES_DIR / f"{deployment['namespace']}-{deployment['canary']}.yaml")
+    return results
+
+
 def find_last_tag(registry: operations.RegistryOperations, image: str) -> str:
     """Finds the last standard tag present on the registry"""
     maxtag = "0"
@@ -93,7 +104,7 @@ def find_last_tag(registry: operations.RegistryOperations, image: str) -> str:
     return f"{image}:{maxtag}"
 
 
-def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
+def values_file_update(filepath: pathlib.Path, maxtag_mw: str, maxtag_web: str) -> bool:
     """Updates the values file, if necessary. Returns true in that case."""
     values = yaml.safe_dump(
         {
@@ -102,17 +113,16 @@ def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
         }
     )
     try:
-        orig_values = VALUES_FILE.read_text()
+        orig_values = filepath.read_text()
         if values == orig_values:
             return False
         logger.info("Updating the values file")
     except FileNotFoundError:
         logger.info("Creating the releases file")
-    VALUES_FILE.write_text(values)
+    filepath.write_text(values)
     # Commit the file to the repository
-    repo = str(VALUES_FILE.absolute().parent)
-    subprocess.run(["git", "add", VALUES_FILE.name], cwd=repo, check=True)
-    subprocess.run(["git", "commit", "-m", "'Updating release'"], cwd=repo, check=True)
+    repo = str(filepath.absolute().parent)
+    subprocess.run(["git", "add", filepath.name], cwd=repo, check=True)
     return True
 
 
@@ -164,8 +174,22 @@ def main():
         ops = operations.RegistryOperations(REGISTRY, logger=logger)
         maxtag_mw = find_last_tag(ops, opts.mediawiki_image)
         maxtag_web = find_last_tag(ops, opts.web_image)
-        is_update = values_file_update(maxtag_mw, maxtag_web)
-        if is_update or opts.force:
+        repo = str(VALUES_DIR.absolute())
+        commit = False
+        # check if we should deploy mwdebug
+        is_deploy = False
+        # We update all releases, but we only deploy to mwdebug for now.
+        for deployment_file in get_deployment_files():
+            updated = values_file_update(deployment_file, maxtag_mw, maxtag_web)
+            if updated:
+                commit = True
+                if "mw-debug" in str(deployment_file):
+                    is_deploy = True
+
+        if commit:
+            subprocess.run(["git", "commit", "-m", "'Updating release'"], cwd=repo, check=True)
+
+        if is_deploy or opts.force:
             deployment(opts.noninteractive)
         else:
             logger.info("Nothing to deploy")
