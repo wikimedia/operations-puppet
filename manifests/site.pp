@@ -425,7 +425,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 }
 # New contint and gerrit node T299575
 node /^(contint2002)\.wikimedia\.org$/ {
-    role(insetup::unowned)
+    role(insetup::serviceops)
 }
 
 # HAproxy test T290005
