@@ -251,7 +251,30 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: true
-
+  - namespace: mw-web
+    release: main
+    canary: canary
+    mw_flavour: "publish"
+    web_flavour: "webserver"
+    debug: false
+  - namespace: mw-api-int
+    release: main
+    canary: canary
+    mw_flavour: "publish"
+    web_flavour: "webserver"
+    debug: false
+  - namespace: mw-api-ext
+    release: main
+    canary: canary
+    mw_flavour: "publish"
+    web_flavour: "webserver"
+    debug: false
+  - namespace: mw-jobrunner
+    release: main
+    canary: canary
+    mw_flavour: "publish"
+    web_flavour: "webserver"
+    debug: false
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
 profile::kubernetes::deployment_server::include_admin: true
