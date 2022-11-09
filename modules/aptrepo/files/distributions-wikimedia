@@ -214,6 +214,7 @@ Components: main
  component/cassandradev
  component/dnsdist
  component/elastic68
+ component/gocql
  component/istio195
  component/istio115
  component/jdk8
