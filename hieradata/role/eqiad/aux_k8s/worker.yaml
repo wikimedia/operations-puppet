@@ -1,6 +1,12 @@
-# These are used to open up the firewall for BPG peering with our core routers
-# or top of rack switches if we are in rows E or F
+# 1. These are used to open up the firewall for BPG peering with our core
+#    routers or top of rack switches if we are in rows E or F.
+# 2. They are also used to open up Calico's typha node port between our nodes,
+#    so we need to list *every* node of our kubernetes cluster.
 profile::calico::kubernetes::bgp_peers:
+- 'aux-k8s-ctrl1001.eqiad.wmnet'
+- 'aux-k8s-ctrl1002.eqiad.wmnet'
+- 'aux-k8s-worker1001.eqiad.wmnet'
+- 'aux-k8s-worker1002.eqiad.wmnet'
 - 'cr1-eqiad.wikimedia.org'
 - 'cr2-eqiad.wikimedia.org'
 
