@@ -52,6 +52,10 @@ server {
   root <%= @docroot -%>/output;
   index index.html index.htm;
 
+  location ~ "\.gz$" {
+    add_header content-encoding "gzip";
+  }
+
   location = / {
     autoindex on;
     try_files $uri $uri/ 404;

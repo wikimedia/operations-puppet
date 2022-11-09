@@ -48,7 +48,7 @@ class profile::puppet_compiler (
     }
     file_line { 'modify_nginx_magic_types':
         path    => '/etc/nginx/mime.types',
-        line    => "    text/plain                            txt pson err diff;",
+        line    => "    text/plain                            txt pson err diff gz;",
         match   => '\s+text/plain\s+txt',
         require => Nginx::Site['puppet-compiler'],
         notify  => Service['nginx'],
