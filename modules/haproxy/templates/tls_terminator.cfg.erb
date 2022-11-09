@@ -76,7 +76,7 @@ listen tls
 
 <%- if @pre_acl_actions -%>
 <%- @pre_acl_actions.each do |action| -%>
-    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %>
+    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
 <%- end -%>
 
@@ -103,7 +103,7 @@ listen tls
 
 <%- if @post_acl_actions -%>
 <%- @post_acl_actions.each do |action| -%>
-    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %>
+    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
 <%- end -%>
 

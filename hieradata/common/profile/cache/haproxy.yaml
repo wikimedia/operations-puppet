@@ -1,4 +1,30 @@
+profile::cache::haproxy::post_acl_actions:
+    # To disable concurrency enforcement, comment out this entire block below.
+    - context: http-request
+      verb: silent-drop
+      condition: if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
+      comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
+    # To disable concurrency enforcement, comment out this entire block above.
+
+profile::cache::haproxy::sticktables:
+    - name: httpreqrate
+      type: ipv6
+      size: 1m
+      expire: 300s
+      store:
+        - 'http_req_rate(10s)'
+        - 'gpc0_rate(300s)'
+
+profile::cache::haproxy::pre_acl_actions:
+    - context: http-request
+      verb: track-sc0 src table httpreqrate
+
 profile::cache::haproxy::vars:
+    - direction: request
+      name: 'req.dummy_silent_drop'  # exists only for logging purposes
+      value: 'src,debug(silent-drop_for_300s,stderr)'
+      # only log the first time an IP violates too_many_concurrent_queries and starts being silent-dropped
+      acl: 'too_many_concurrent_queries !too_much_recent_concurrency'
     - direction: request
       name: 'txn.xwd_count'
       value: 'req.hdr_cnt(X-Wikimedia-Debug)'
@@ -39,6 +65,21 @@ profile::cache::haproxy::vars:
       acl: '!ssl_auth_rsa'
 
 profile::cache::haproxy::acls:
+    - name: 'too_many_concurrent_queries'
+      criterion: 'sc0_trackers(httpreqrate)'
+      operator: 'ge'
+      value: '2000'
+    - name: 'too_much_recent_concurrency'
+      # Add hysteresis.
+      criterion: 'sc0_gpc0_rate(httpreqrate)'
+      operator: 'gt'
+      value: '0'
+    - name: 'mark_as_too_much_concurrency'
+      criterion: 'sc0_inc_gpc0(httpreqrate)'  # increments the gpc0 counter
+      # (so yes, evaluating this ACL is mutating, and yes, this is haproxy-idiomatic)
+      operator: 'gt'
+      value: '0'
+
     - name: missing_xwd
       criterion: 'var(txn.xwd_count)'
       operator: '-m int eq'
