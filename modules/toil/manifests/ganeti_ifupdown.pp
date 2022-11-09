@@ -14,7 +14,7 @@ class toil::ganeti_ifupdown (
         },
         user            => 'root',
         logging_enabled => false,
-        command         => '/usr/bin/systemctl reset-failed ifup@*',
+        command         => '/bin/systemctl reset-failed ifup@*',
         description     => 'Bandaid for ifupdown race. T273026',
     }
 }
