@@ -29,7 +29,7 @@ profile::rsyslog::kubernetes::enable: true
 
 # We don't need conftool's safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
-# Use itsio for ingress
+# Use istio for ingress
 profile::lvs::realserver::pools:
   inference: {}
 
