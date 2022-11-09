@@ -1,7 +1,7 @@
 ## Minimal defaults to get catalogs to compile
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
-profile::openstack::eqiad1::version: 'victoria'
+profile::openstack::eqiad1::version: 'xena'
 profile::base::labs::clean_kernels: false
 
 # Pontoon is including 'role' classes directly in Cloud VPS

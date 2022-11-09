@@ -41,7 +41,7 @@ profile::openstack::base::observer_project: "observer"
 profile::openstack::codfw1dev::region: "codfw1dev-r"
 profile::openstack::codfw1dev::keystone_host: "openstack.codfw1dev.wikimediacloud.org"
 profile::openstack::codfw1dev::observer_password: "lt-RiBeyokCO81bVvcX"
-profile::openstack::codfw1dev::version: "victoria"
+profile::openstack::codfw1dev::version: "xena"
 
 profile::openstack::base::puppetmaster::enc_client::api_endpoint: "http://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8100"
 

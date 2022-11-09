@@ -21,7 +21,7 @@ profile::resolving::domain_search:
   - "%{::wmcs_project}.eqiad.wmflabs"
   - "eqiad.wmflabs"
 
-profile::openstack::eqiad1::version: "victoria"
+profile::openstack::eqiad1::version: "xena"
 profile::openstack::base::region: "eqiad1-r"
 profile::openstack::eqiad1::nova_controller: "openstack.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::keystone_host: "openstack.eqiad1.wikimediacloud.org"
