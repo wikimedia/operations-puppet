@@ -1083,6 +1083,7 @@ netmon_server: netmon1003.wikimedia.org
 netmon_servers_failover:
     - 'netmon2001.wikimedia.org'
     - 'netmon1002.wikimedia.org'
+    - 'netmon2002.wikimedia.org'
 
 releases_server: releases1002.eqiad.wmnet
 releases_servers_failover:
