@@ -1,13 +1,17 @@
 # Firewall rules for the misc db host used by internet-facing websites.
 # We need special rules to allow access for some services which
 # run on hosts with public IPs.
-class profile::mariadb::ferm_misc {
+class profile::mariadb::ferm_misc (
+    Stdlib::Host $netmon_server = lookup('netmon_server'),
+    Array[Stdlib::Host] $netmon_servers_failover = lookup('netmon_servers_failover'),
+) {
     ferm::service { 'netmon-librenms':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((netmon1002.wikimedia.org netmon2001.wikimedia.org netmon1003.wikimedia.org))',
+        srange  => "@resolve((${netmon_server} ${netmon_servers_failover.join(' ')}))"
     }
+
     ferm::service { 'netbox-librenms-reports':
         proto   => 'tcp',
         port    => '3306',
