@@ -74,12 +74,9 @@ listen tls
 <%- end -%>
 <%- end -%>
 
-<%# TODO: some stickycounters might need to go before ACLs (when ACLs use
-          sc0_tracked for instance), others might need to be defined
-          after ACLs are defined depending on 'condition'. -%>
-<%- if @stickycounters -%>
-<%- @stickycounters.each_with_index do |counter, index| -%>
-    <%= counter['context'] %> track-sc<%= index %> <%= counter['key'] %> <%= counter['table'] ? "table " + counter['table'] : "" %> <%= counter['condition'] or "" %>
+<%- if @pre_acl_actions -%>
+<%- @pre_acl_actions.each do |action| -%>
+    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %>
 <%- end -%>
 <%- end -%>
 
@@ -103,6 +100,13 @@ listen tls
 <%- @del_headers.each do |del_header| -%>
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
+
+<%- if @post_acl_actions -%>
+<%- @post_acl_actions.each do |action| -%>
+    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %>
+<%- end -%>
+<%- end -%>
+
 
 <%- @backends.each_with_index do |backend, backend_index| -%>
 <%- if backend['prefix'] == 'unix' -%>

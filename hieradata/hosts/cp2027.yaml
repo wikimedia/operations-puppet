@@ -56,13 +56,11 @@ profile::cache::haproxy::sticktables:
     store:
       - conn_rate(5s)
 
-profile::cache::haproxy::stickycounters:
+profile::cache::haproxy::pre_acl_actions:
   - context: http-request
-    key: src
-    table: httpreqrate
+    verb: track-sc0 src table httpreqrate
   - context: tcp-request connection
-    key: src
-    table: newconnrate
+    verb: track-sc1 src table newconnrate
 
 lookup_options:
   profile::cache::haproxy::acls:

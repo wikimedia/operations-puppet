@@ -53,12 +53,14 @@
 #   List of headers to add on HTTP requests or responses
 # @param del_headers
 #   List of headers to remove on HTTP requests or respones
+# @param pre_acl_actions
+#   List of actions to take before ACLs are defined
+# @param post_acl_actions
+#   List of actions to take after ACLs are defined
 # @param prometheus_port
 #   Port to expose stats and prometheus metrics. Requires HAProxy >= 2.0
 # @param sticktables
 #   List of pseudo-backends to create for tracking stats with stick-tables.
-# @param stickycounters
-#   Array of Stickycounter objects to link requests to stick-tables.
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Array[Haproxy::Backend] $backends,
@@ -85,9 +87,10 @@ define haproxy::tls_terminator(
     Optional[Array[Haproxy::Acl]] $acls = undef,
     Optional[Array[Haproxy::Header]] $add_headers = undef,
     Optional[Array[Haproxy::Header]] $del_headers = undef,
+    Optional[Array[Haproxy::Action]] $pre_acl_actions = undef,
+    Optional[Array[Haproxy::Action]] $post_acl_actions = undef,
     Optional[Stdlib::Port] $prometheus_port = undef,
     Optional[Array[Haproxy::Sticktable]] $sticktables = undef,
-    Optional[Array[Haproxy::Stickycounter]] $stickycounters = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
