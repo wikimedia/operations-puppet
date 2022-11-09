@@ -4,6 +4,8 @@ profile::admin::groups:
   - phabricator-roots
   - phabricator-bulk-manager
 
+profile::contacts::role_contacts: ['ServiceOps-Collab']
+
 # List of all Phabricator servers.
 # Used in firewall as sources who are allowed to rsync from the
 # active phabricator server. That's it.
