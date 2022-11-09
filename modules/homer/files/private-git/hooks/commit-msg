@@ -1,7 +1,17 @@
 #!/bin/sh
 # SPDX-License-Identifier: Apache-2.0
 
-# Audit the committer adding it's login to the message
+# Abort if the message is empty, so we don't commit with *just* $SUDO_USER as the message.
+# This sed invocation:
+# (1) exits status 0 at the divider comment used in git commit -v, or at EOF
+# (2) ignores lines starting with # (comments)
+# (3) exits status 1 if it finds anything left (commit message)
+if sed -n '/-\{24\} >8 -\{24\}/q ; /^#/d ; /./q1' "${1}"; then
+    echo "Empty commit message, aborting"
+    exit 1
+fi
+
+# Audit the committer adding its login to the message
 if [ -n "${SUDO_USER}" ]; then
     sed -i -e "1s/^/(${SUDO_USER}) /" "${1}"
 fi
