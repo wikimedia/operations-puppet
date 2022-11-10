@@ -1490,10 +1490,6 @@ node /^phab1001\.eqiad\.wmnet$/ {
     role(phabricator)
 }
 
-node /^phab2001\.codfw\.wmnet$/ {
-    role(insetup::serviceops)
-}
-
 # Phabricator eqiad (T280540, T279176) (production)
 node 'phab1004.eqiad.wmnet' {
     role(phabricator)
