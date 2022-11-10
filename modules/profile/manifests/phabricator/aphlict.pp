@@ -1,6 +1,7 @@
 # aphlict for phabricator
 #
 class profile::phabricator::aphlict (
+    Wmflib::Ensure $ensure = lookup('profile::phabricator::aphlict::ensure', { 'default_value' => absent }),
     Stdlib::Unixpath $base_dir = lookup('aphlict_base_dir', { 'default_value' => '/srv/aphlict' }),
     Boolean $aphlict_ssl = lookup('phabricator_aphlict_enable_ssl', { 'default_value' => false }),
     Optional[Stdlib::Unixpath] $aphlict_cert  = lookup('phabricator_aphlict_cert', { 'default_value' => undef }),
@@ -19,7 +20,7 @@ class profile::phabricator::aphlict (
     $deploy_root = "/srv/deployment/${deploy_target}"
 
     class { '::phabricator::aphlict':
-        ensure        => 'present',
+        ensure        => $ensure,
         enable_ssl    => $aphlict_ssl,
         sslcert       => $aphlict_cert,
         sslkey        => $aphlict_key,

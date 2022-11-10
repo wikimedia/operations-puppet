@@ -1,7 +1,6 @@
 phabricator::mysql::master: "m3-master.eqiad.wmnet"
 phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
 
-phabricator_aphlict_enabled: false
 phabricator_aphlict_enable_ssl: false
 # phabricator_aphlict_cert: "/path/to/cert"
 # phabricator_aphlict_key: "/path/to/key"

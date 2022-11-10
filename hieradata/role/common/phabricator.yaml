@@ -30,6 +30,10 @@ profile::phabricator::main::rate_limits:
 
 phabricator_phd_taskmasters: 4
 
+# In our prod setup aphlict is running on a separate dedicated VM.
+# But it can also run on the main Phabricator server by enabling it here.
+profile::phabricator::aphlict::ensure: absent
+
 profile::tlsproxy::envoy::global_cert_name: "phabricator.discovery.wmnet"
 profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::listen_ipv6: true
