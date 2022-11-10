@@ -7,7 +7,6 @@ describe 'elasticsearch', :type => :class do
       describe 'when NOT sending logs to logstash' do
         let(:params) { {
           :apt_component => 'elastic65',
-          :java_vers => 11,
           :default_instance_params => {
             :cluster_name          => 'my_cluster_name',
             :short_cluster_name    => 'the_short_cluster_name',
@@ -22,7 +21,6 @@ describe 'elasticsearch', :type => :class do
       describe 'when sending logs to logstash' do
         let(:params) { {
           :apt_component => 'elastic65',
-          :java_vers => 11,
           :logstash_host => 'logstash.example.net',
           :default_instance_params => {
             :cluster_name          => 'my_cluster_name',

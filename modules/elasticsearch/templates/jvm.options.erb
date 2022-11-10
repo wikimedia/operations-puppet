@@ -37,16 +37,14 @@
 ##
 ################################################################
 
-<% if @use_cms_gc -%>
 ## GC configuration
--XX:+UseConcMarkSweepGC
--XX:CMSInitiatingOccupancyFraction=<%= @cms_gc_init_occupancy_fraction %>
-<% end -%>
+8-13:-XX:+UseConcMarkSweepGC
+8-13:-XX:CMSInitiatingOccupancyFraction=75
+8-13:-XX:+UseCMSInitiatingOccupancyOnly
 
-## optimizations
-
-# disable calls to System#gc
--XX:+DisableExplicitGC
+9-:-Xlog:gc*:file=/var/log/elasticsearch/<%= @cluster_name %>_jvm_gc.%p.log::filecount=10,filesize=20M
+9-:-Xlog:gc+age=trace
+9-:-Xlog:safepoint
 
 ## basic
 
@@ -66,46 +64,11 @@
 # ensure the directory exists and has sufficient space
 -XX:HeapDumpPath=<%= @data_dir %>
 
-## GC logging
-
-#-XX:+PrintGCDetails
-#-XX:+PrintGCTimeStamps
-#-XX:+PrintGCDateStamps
-#-XX:+PrintClassHistogram
-#-XX:+PrintTenuringDistribution
-#-XX:+PrintGCApplicationStoppedTime
-
-# log GC status to a file with time stamps
-# ensure the directory exists
-#-Xloggc:${loggc}
-
-# Elasticsearch 5.0.0 will throw an exception on unquoted field names in JSON.
-# If documents were already indexed with unquoted fields in a previous version
-# of Elasticsearch, some operations may throw errors.
-#
-# WARNING: This option will be removed in Elasticsearch 6.0.0 and is provided
-# only for migration purposes.
-#-Delasticsearch.json.allow_unquoted_field_names=true
-
 ## Custom Wikimedia configuration
-
-# Defines a limit of proportion of time spent in GC before
-# an OutOfMemory error is thrown.  The goal is to bail and
-# restart the server if throughput is suffering due to
-# GC stalls.
-# TODO: Why 70? why not 60 or 80?
--XX:GCTimeLimit=70
-
-# Defines minimum percentage of free space after a full GC
-# before an OutOfMemoryError is thrown. Typically a full GC
-# should leave > 50% of heap free. If we are down to 10%
-# something is wrong and bailing is a reasonable solution.
--XX:GCHeapFreeLimit=10
 
 # Exit on OutOfMemoryError, since in most cases the JVM does not recover
 -XX:+ExitOnOutOfMemoryError
 
-# Custom WMF GC flags
-<% @gc_flags.each do |gc_flag| -%>
-<%= gc_flag %>
+<% if @tune_gc_new_size_ratio != :undef -%>
+9-:-XX:NewRatio=<%= @tune_gc_new_size_ratio %>
 <% end -%>

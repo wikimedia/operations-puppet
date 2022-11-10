@@ -1,6 +1,6 @@
 # There are additional parameters to elasticsearch::instance that
 # are not mentioned here. Those are not to be set per-instance and
-# instead are globaly set and flow from the elasticsearch class.
+# instead are globally set and flow from the elasticsearch class.
 type Elasticsearch::InstanceParams = Struct[{
     # the following parameters are injected by the main elasticsearch class
     'cluster_name'       => Optional[String],
@@ -29,7 +29,6 @@ type Elasticsearch::InstanceParams = Struct[{
     'bulk_thread_pool_executors'         => Optional[Integer],
     'bulk_thread_pool_capacity'          => Optional[Integer],
     'load_fixed_bitset_filters_eagerly'  => Optional[Boolean],
-    'gc_log'                             => Optional[Boolean],
     'search_shard_count_limit'           => Optional[Integer],
     'reindex_remote_whitelist'           => Optional[String],
     # TODO: remove
@@ -39,8 +38,6 @@ type Elasticsearch::InstanceParams = Struct[{
     'send_logs_to_logstash'              => Optional[Boolean],
     'tune_gc_new_size_ratio'             => Optional[Integer],
     'disktype'                           => Optional[Enum['ssd','hdd']],
-    'use_cms_gc'                         => Optional[Boolean],
-    'cms_gc_init_occupancy_fraction'     => Optional[Integer],
 
     # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to declare per-cluster

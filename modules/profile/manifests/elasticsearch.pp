@@ -37,7 +37,6 @@ class profile::elasticsearch(
 ) {
 
     require profile::java
-    $java_vers = Integer($profile::java::_java_packages[0]['version'])
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.
@@ -124,7 +123,6 @@ class profile::elasticsearch(
         rack                  => $rack,
         row                   => $row,
         java_home             => $java_home,
-        java_vers             => $java_vers,
         s3_username           => $s3_username,
         s3_password           => $s3_password,
     }

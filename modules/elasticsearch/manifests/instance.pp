@@ -69,8 +69,6 @@
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
-# - $gc_log: set to true to activate garbage collection logs
-#        Default: true
 # - $search_shard_count_limit: Maximum number of indices that can be
 #        queried in a single search request. Default: 1000.
 # - $reindex_remote_whitelist: set to a comma delimited list of allowed remote
@@ -107,7 +105,6 @@ define elasticsearch::instance (
     # the following parameters are injected by the main elasticsearch class
     String $cluster_name,
     String $version,
-    Integer[8, 17] $java_vers,
     Stdlib::Port $http_port,
     Stdlib::Port $transport_tcp_port,
     Stdlib::Absolutepath $base_data_dir,
@@ -142,7 +139,6 @@ define elasticsearch::instance (
     Optional[Integer] $bulk_thread_pool_executors            = undef,
     Optional[Integer] $bulk_thread_pool_capacity             = undef,
     Boolean $load_fixed_bitset_filters_eagerly               = true,
-    Boolean $gc_log                                          = true,
     Integer $search_shard_count_limit                        = 1000,
     Optional[String] $reindex_remote_whitelist               = undef,
     Optional[Integer[0]] $script_max_compilations_per_minute = undef,
@@ -150,8 +146,6 @@ define elasticsearch::instance (
     Boolean $curator_uses_unicast_hosts                      = true,
     Optional[Integer] $tune_gc_new_size_ratio                = undef,
     Optional[Enum['ssd', 'hdd']] $disktype                   = undef,
-    Boolean $use_cms_gc                                      = false,
-    Integer $cms_gc_init_occupancy_fraction                  = 75,
 
     # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to unify per-cluster configuration
@@ -172,41 +166,6 @@ define elasticsearch::instance (
     }
 
     $master_eligible = $::fqdn in $unicast_hosts
-
-    if $gc_log == true {
-        $gc_log_flags = $java_vers ? {
-            8 => [
-                "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
-                '-XX:+PrintGCDetails',
-                '-XX:+PrintGCDateStamps',
-                '-XX:+PrintGCTimeStamps',
-                '-XX:+PrintTenuringDistribution',
-                '-XX:+PrintGCCause',
-                '-XX:+PrintGCApplicationStoppedTime',
-                '-XX:+UseGCLogFileRotation',
-                '-XX:NumberOfGCLogFiles=10',
-                '-XX:GCLogFileSize=20M',
-            ],
-            # the above GC flags are no longer valid as of Java 11, which is the default
-            # Java for Debian 10 and 11.
-            11 => [
-                "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20M",
-                '-Xlog:gc+age=trace',
-                '-Xlog:safepoint',
-            ],
-            default   => fail("Java version ${java_vers} not supported"),
-        }
-
-    } else {
-        $gc_log_flags = []
-    }
-
-    $gc_tune_flags = $tune_gc_new_size_ratio ? {
-        default => ["-XX:NewRatio=${tune_gc_new_size_ratio}"],
-        undef   => []
-    }
-
-    $gc_flags = $gc_log_flags + $gc_tune_flags
 
     $curator_hosts = $curator_uses_unicast_hosts ? {
         true    => concat($unicast_hosts, '127.0.0.1'),
