@@ -97,7 +97,7 @@ profile::elasticsearch::instances:
         tls_port: 9443
         certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9500
-        heap_memory: '8G'
+        heap_memory: '10G'
         # ES-specific: Not default
         # We want each master on a different row
         unicast_hosts: # this is also the list of master eligible nodes
@@ -159,7 +159,7 @@ profile::elasticsearch::instances:
         tls_port: 9643
         certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9700
-        heap_memory: '8G'
+        heap_memory: '10G'
         # ES-specific: Not default
         # We want each master on a different row
         unicast_hosts: # this is also the list of master eligible nodes

@@ -92,7 +92,7 @@ profile::elasticsearch::instances:
         tls_port: 9443
         certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9500
-        heap_memory: '8G'
+        heap_memory: '10G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2042.codfw.wmnet # row B
@@ -147,7 +147,7 @@ profile::elasticsearch::instances:
         tls_port: 9643
         certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9700
-        heap_memory: '8G'
+        heap_memory: '10G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2054.codfw.wmnet # row D
