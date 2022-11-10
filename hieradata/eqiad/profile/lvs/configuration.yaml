@@ -1,0 +1,10 @@
+profile::lvs::configuration::class_hosts:
+  high-traffic1:
+    primary: lvs1017
+    secondary: lvs1020
+  high-traffic2:
+    primary: lvs1018
+    secondary: lvs1020
+  low-traffic:
+    primary: lvs1019
+    secondary: lvs1020

@@ -1,0 +1,7 @@
+profile::lvs::configuration::class_hosts:
+  high-traffic1:
+    primary: lvs6001
+    secondary: lvs6003
+  high-traffic2:
+    primary: lvs6002
+    secondary: lvs6003

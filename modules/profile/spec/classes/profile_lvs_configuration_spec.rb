@@ -8,34 +8,18 @@ describe 'profile::lvs::configuration' do
       let(:node) { 'idontexist1001' }
       let(:params) do
         {
-          all_class_hosts: {
-            'eqiad' => {
-              'high-traffic1' => {
-                'primary' => 'lvs1017',
-                'secondary' => 'lvs1020',
-              },
-              'high-traffic2' => {
-                'primary' => 'lvs1018',
-                'secondary' => 'lvs1020',
-              },
-              'low-traffic' => {
-                'primary' => 'lvs1019',
-                'secondary' => 'lvs1020',
-              }
+          class_hosts: {
+            'high-traffic1' => {
+              'primary' => 'lvs1017',
+              'secondary' => 'lvs1020',
             },
-            'codfw' => {
-              'high-traffic1' => {
-                'primary' => 'lvs2017',
-                'secondary' => 'lvs2020',
-              },
-              'high-traffic2' => {
-                'primary' => 'lvs2018',
-                'secondary' => 'lvs2020',
-              },
-              'low-traffic' => {
-                'primary' => 'lvs2019',
-                'secondary' => 'lvs2020',
-              }
+            'high-traffic2' => {
+              'primary' => 'lvs1018',
+              'secondary' => 'lvs1020',
+            },
+            'low-traffic' => {
+              'primary' => 'lvs1019',
+              'secondary' => 'lvs1020',
             }
           }
         }
