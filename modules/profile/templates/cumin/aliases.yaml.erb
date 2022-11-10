@@ -236,7 +236,6 @@ lvs-canary: P{lvs4007.ulsfo.wmnet}
 <%- @datacenters.each_with_index do |dc, dc_index| -%>
 lvs-<%= dc %>: A:lvs and A:<%= dc %>
   <%- %w[high-traffic1 high-traffic2 low-traffic secondary].each do |traffic_class| -%>
-    <%- next if traffic_class == 'low-traffic' and ['esams', 'ulsfo', 'eqsin', 'drmrs'].include?(dc) -%>
     <%- if dc_index.zero? -%>
 lvs-<%= traffic_class %>: P{P:lvs::configuration@tag = profile::lvs::configuration::<%= traffic_class %>}
     <%- end -%>
