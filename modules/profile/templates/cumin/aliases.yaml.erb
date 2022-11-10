@@ -233,15 +233,12 @@ logstash-collector: P{O:logging::opensearch::collector}
 logstash-canary: P{logstash1023.eqiad.wmnet}
 lvs: P{O:lvs::balancer}
 lvs-canary: P{lvs4007.ulsfo.wmnet}
-<%- @datacenters.each_with_index do |dc, dc_index| -%>
-lvs-<%= dc %>: A:lvs and A:<%= dc %>
-  <%- %w[high-traffic1 high-traffic2 low-traffic secondary].each do |traffic_class| -%>
-    <%- if dc_index.zero? -%>
-lvs-<%= traffic_class %>: P{P:lvs::configuration@tag = profile::lvs::configuration::<%= traffic_class %>}
-    <%- end -%>
-lvs-<%= traffic_class %>-<%= dc %>: A:lvs-<%= traffic_class %> and A:<%= dc %>
-  <%- end -%>
-<%- end -%>
+lvs-codfw: A:lvs and A:codfw
+lvs-eqiad: A:lvs and A:eqiad
+lvs-esams: A:lvs and A:esams
+lvs-ulsfo: A:lvs and A:ulsfo
+lvs-eqsin: A:lvs and A:eqsin
+lvs-drmrs: A:lvs and A:drmrs
 maps: P{O:maps::master or O:maps::replica}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
