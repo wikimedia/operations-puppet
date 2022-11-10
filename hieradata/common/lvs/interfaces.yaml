@@ -185,6 +185,7 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.255.240'
     iface:
       lvs4005: 'enp5s0f0:198.35.26.9'
+      lvs4008: 'enp175s0f0np0:198.35.26.4'
       lvs4006: 'enp5s0f0:198.35.26.10'
       lvs4007: 'enp5s0f0:198.35.26.11'
   public1-eqsin:

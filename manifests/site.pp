@@ -1789,7 +1789,7 @@ node /^lvs400[567]\.ulsfo\.wmnet$/ {
 }
 
 node 'lvs4008.ulsfo.wmnet' {
-    role(insetup_noferm)
+    role(lvs::balancer)
 }
 
 # EQSIN lvs servers
