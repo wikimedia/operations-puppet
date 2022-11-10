@@ -5,7 +5,7 @@ describe 'profile::openstack::base::nova::compute::service' do
     [
       'class { "::apt": }',
       'class{ \'openstack::nova::common\':
-          version => \'victoria\',
+          version => \'xena\',
           region => \'eqiad1-r\',
           db_user => \'dummydbuser\',
           db_pass => \'dummydbpass\',
@@ -28,11 +28,11 @@ describe 'profile::openstack::base::nova::compute::service' do
       'class { \'prometheus::node_exporter\': }',
     ]
   end
-  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on(11, 11)).each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
       let(:params) {{
-        'version' => 'victoria',
+        'version' => 'xena',
         'instance_dev' => 'thinvirt',
         'network_flat_interface' => 'eno50.1105',
         'network_flat_tagged_base_interface' => 'eno50',
