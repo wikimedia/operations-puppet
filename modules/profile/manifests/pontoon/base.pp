@@ -4,6 +4,7 @@
 # for code running on all Pontoon hosts.
 class profile::pontoon::base (
     Boolean $sd_enabled = lookup('profile::pontoon::sd_enabled', { default_value => false }),
+    Boolean $pki_enabled = lookup('profile::puppetmaster::pontoon::pki_enabled', { default_value => false }),
 ) {
     if $sd_enabled {
         include profile::pontoon::sd
@@ -32,5 +33,31 @@ class profile::pontoon::base (
     exec { 'base-locale-gen':
         command     => '/usr/sbin/locale-gen --purge',
         refreshonly => true,
+    }
+
+    # Trust the Pontoon Puppet CA (and optionally PKI)
+    # In theory this could be handled via profile::base::certificates::trusted_certs
+    # however there isn't a mechanism to optionally include a cert (i.e.
+    # when PKI isn't enabled)
+    ensure_packages(['wmf-certificates'])
+
+    file { '/usr/share/ca-certificates/wikimedia/pontoon_puppet_ca.crt':
+        ensure => present,
+        source => '/var/lib/puppet/ssl/certs/ca.pem',
+        notify => Exec['reconfigure-wmf-certificates'],
+    }
+
+    if $pki_enabled {
+        file { '/usr/share/ca-certificates/wikimedia/pontoon_pki_ca.crt':
+            ensure  => present,
+            content => file('/etc/pontoon/pki/ca.pem'),
+            notify  => Exec['reconfigure-wmf-certificates'],
+        }
+    }
+
+    exec { 'reconfigure-wmf-certificates':
+        command     => '/usr/sbin/dpkg-reconfigure wmf-certificates',
+        refreshonly => true,
+        require     => Package['wmf-certificates'],
     }
 }
