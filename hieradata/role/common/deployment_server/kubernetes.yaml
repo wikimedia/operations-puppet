@@ -22,8 +22,7 @@ profile::admin::groups:
   - deployment-ci-admins
   - deployment-docker
   - research-deployers
-  # TODO: (otto, gmodena)
-  # - platform-eng-deployers
+  - platform-eng-deployers
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
