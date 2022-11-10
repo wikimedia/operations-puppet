@@ -68,11 +68,15 @@ class profile::kubernetes::node (
     # Kubelet on 1.16 doesn't support it, so we need to revert
     # the behavior to what was available on Buster
     # (until we upgrade to k8s 1.2x).
-    if debian::codename::eq('bullseye') {
-        grub::bootparam { 'disable_unified_cgroup_hierarchy':
-            key   => 'systemd.unified_cgroup_hierarchy',
-            value => '0',
-        }
+    if debian::codename::eq('bullseye') and versioncmp($version, '1.16') == 0 {
+        $disable_unified_cgroup_hierarchy_ensure = present
+    } else {
+        $disable_unified_cgroup_hierarchy_ensure = absent
+    }
+    grub::bootparam { 'disable_unified_cgroup_hierarchy':
+        ensure => $disable_unified_cgroup_hierarchy_ensure,
+        key    => 'systemd.unified_cgroup_hierarchy',
+        value  => '0',
     }
 
     $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")

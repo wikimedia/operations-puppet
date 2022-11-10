@@ -54,6 +54,8 @@ class k8s::kubelet (
         # 'Webhook' when --config is used.
         authorization      => { mode => 'AlwaysAllow' },
         registerWithTaints => if versioncmp($version, '1.23') >= 0 { $node_taints },
+        # Use systemd cgroup driver with k8s >= 1.23
+        cgroupDriver       => if versioncmp($version, '1.23') >= 0 { 'systemd' },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     file { $config_file:
