@@ -17,6 +17,7 @@ acmechief: P{O:acme_chief}
 all-mw: A:mw-api or A:mw or A:mw-jobrunner or A:parsoid
 all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
+all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-etcd
 an-conf: P{O:analytics_cluster::zookeeper}
 analytics-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web or A:presto-analytics or A:analytics-launcher
 analytics-airflow: P{O:search::airflow or O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy}
