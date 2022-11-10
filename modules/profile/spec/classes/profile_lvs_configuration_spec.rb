@@ -27,7 +27,8 @@ describe 'profile::lvs::configuration' do
 
       describe 'unclassified host' do
         it { is_expected.to compile }
-        it { is_expected.to have_motd__message_resource_count(0) }
+        it { is_expected.to contain_notify('unable to find lvs class') }
+        it { is_expected.to contain_motd__message('LVS Class: unlcassified') }
       end
       describe 'high-traffic1 primary' do
         let(:node) { 'lvs1017' }
