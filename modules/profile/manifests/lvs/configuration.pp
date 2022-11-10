@@ -1,47 +1,77 @@
-# SPDX-License-Identifier: Apache-2.0
-# @param class_hosts lvs host classification
-class profile::lvs::configuration (
-    Hash[
-        Profile::Lvs::Classes,
-        Profile::Lvs::Class_hosts
-    ] $class_hosts = lookup('profile::lvs::configuration::class_hosts'),
-) {
+class profile::lvs::configuration {
 
-    # get the list of classes for this host
-    $_host_class_hosts = $class_hosts.filter |$_, $hosts| {
-        $facts['networking']['hostname'] in $hosts.values
+    $lvs_class_hosts = {
+        'high-traffic1' => $::realm ? {
+            'production' => $::site ? {
+                'eqiad' => [ 'lvs1017', 'lvs1020' ],
+                'codfw' => [ 'lvs2007', 'lvs2010' ],
+                'esams' => [ 'lvs3005', 'lvs3007' ],
+                'ulsfo' => [ 'lvs4005', 'lvs4007' ],
+                'eqsin' => [ 'lvs5001', 'lvs5003' ],
+                'drmrs' => [ 'lvs6001', 'lvs6003' ],
+                default => undef,
+            },
+            'labs' => $::site ? {
+                default => undef,
+            },
+            default => undef,
+        },
+        'high-traffic2' => $::realm ? {
+            'production' => $::site ? {
+                'eqiad' => [ 'lvs1018', 'lvs1020' ],
+                'codfw' => [ 'lvs2008', 'lvs2010' ],
+                'esams' => [ 'lvs3006', 'lvs3007' ],
+                'ulsfo' => [ 'lvs4006', 'lvs4007' ],
+                'eqsin' => [ 'lvs5002', 'lvs5003' ],
+                'drmrs' => [ 'lvs6002', 'lvs6003' ],
+                default => undef,
+            },
+            'labs' => $::site ? {
+                default => undef,
+            },
+            default => undef,
+        },
+        'low-traffic' => $::realm ? {
+            'production' => $::site ? {
+                'eqiad' => [ 'lvs1019', 'lvs1020' ],
+                'codfw' => [ 'lvs2009', 'lvs2010' ],
+                'esams' => [ ],
+                'ulsfo' => [ ],
+                'eqsin' => [ ],
+                'drmrs' => [ ],
+                default => undef,
+            },
+            'labs' => $::labsproject ? {
+                'deployment-prep' => [ ],
+                default => undef,
+            },
+            default => undef,
+        },
     }
-    # Ensure we have at least one classification
-    if $_host_class_hosts.size == 0 {
-        notify { 'unable to find lvs class': }
-        $lvs_class = 'unlcassified'
-        $primary = false
-        $secondary = false
-    } else {
-        # Check if we are a primary
-        $primary = $_host_class_hosts.any |$item| { $item[1]['primary'] == $facts['networking']['hostname'] }
-        $secondary = $_host_class_hosts.any |$item| { $item[1]['secondary'] == $facts['networking']['hostname'] }
-        if $primary and $secondary {
-            fail('host is listed as both an lvs primary and secondary')
-        }
-        # If we are primary we only want to be primary for one class
-        if $primary and $_host_class_hosts.size > 1 {
-            fail('host is primary for more then one class')
-        }
-        # At this point we know that $_host_class_hosts has size 1 if the host is primary
-        $lvs_class = $secondary.bool2str('secondary', $_host_class_hosts.keys[0])
-    }
-    # We create a motd which also allows us to use rspec to test
-    motd::message { "LVS Class: ${lvs_class}": }
 
-    # Create backwards compatible data structure
-    # We create an empty hash of defaults as not all sites have a all keys specifcally low-traffic
-    $default = {
-        'high-traffic1' => [],
-        'high-traffic2' => [],
-        'low-traffic' => [],
+    # This is technically redundant information from $lvs_class_hosts, but
+    # transforming one into the other in puppet is a huge PITA.
+    $lvs_class = $::hostname ? {
+        'lvs1017'      => 'high-traffic1',
+        'lvs1018'      => 'high-traffic2',
+        'lvs1019'      => 'low-traffic',
+        'lvs1020'      => 'secondary',
+        'lvs2007'      => 'high-traffic1',
+        'lvs2008'      => 'high-traffic2',
+        'lvs2009'      => 'low-traffic',
+        'lvs2010'      => 'secondary',
+        'lvs3005'      => 'high-traffic1',
+        'lvs3006'      => 'high-traffic2',
+        'lvs3007'      => 'secondary',
+        'lvs4005'      => 'high-traffic1',
+        'lvs4006'      => 'high-traffic2',
+        'lvs4007'      => 'secondary',
+        'lvs5001'      => 'high-traffic1',
+        'lvs5002'      => 'high-traffic2',
+        'lvs5003'      => 'secondary',
+        'lvs6001'      => 'high-traffic1',
+        'lvs6002'      => 'high-traffic2',
+        'lvs6003'      => 'secondary',
+        default        => 'unknown',
     }
-    $lvs_class_hosts = $default + Hash($class_hosts.map |$value| {
-        [$value[0], $value[1].values]
-    })
 }
