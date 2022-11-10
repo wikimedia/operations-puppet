@@ -61,6 +61,8 @@
 #   Port to expose stats and prometheus metrics. Requires HAProxy >= 2.0
 # @param sticktables
 #   List of pseudo-backends to create for tracking stats with stick-tables.
+# @param http_redirection_port
+#   Port used to perform http->https redirection for GET/HEAD requests
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Array[Haproxy::Backend] $backends,
@@ -91,6 +93,7 @@ define haproxy::tls_terminator(
     Optional[Array[Haproxy::Action]] $post_acl_actions = undef,
     Optional[Stdlib::Port] $prometheus_port = undef,
     Optional[Array[Haproxy::Sticktable]] $sticktables = undef,
+    Optional[Stdlib::Port] $http_redirection_port = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {

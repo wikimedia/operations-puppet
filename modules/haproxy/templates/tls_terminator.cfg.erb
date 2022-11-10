@@ -130,3 +130,24 @@ frontend stats
     stats uri /stats
     stats refresh 10s
 <%- end -%>
+
+<%- if @http_redirection_port -%>
+frontend http
+    no log
+    maxconn 1000
+    bind :<%= @http_redirection_port -%>
+    bind :::<%= @http_redirection_port -%> v6only
+
+    # we can be rather aggresive regarding timeouts here as only impact http to https redirections
+    # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
+    timeout http-request 5s
+    # set the maximum allowed time to wait for a new HTTP request to appear
+    timeout http-keep-alive 10s
+    # set the maximum inactivity time on the client side
+    timeout client 10s
+
+    # METH_GET is a predefined ACL that includes GET and HEAD requests
+    # http://docs.haproxy.org/2.6/configuration.html#7.4
+    http-request redirect scheme https code 301 if METH_GET
+    http-request deny
+<%- end -%>
