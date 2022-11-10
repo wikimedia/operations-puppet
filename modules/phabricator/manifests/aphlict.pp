@@ -135,5 +135,7 @@ class phabricator::aphlict(
         },
     }
 
-    profile::auto_restarts::service { 'aphlict': }
+    profile::auto_restarts::service { 'aphlict':
+        ensure => $ensure,
+    }
 }
