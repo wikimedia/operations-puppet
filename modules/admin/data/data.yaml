@@ -379,7 +379,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene]
+              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene, ryasmeen]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5590,6 +5590,12 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICTE4Vngw1vsJ1D4aywTcAKb1IW2/02pdJnjGrCThZRW smunene@SMunene.local
+  ryasmeen:
+    ensure: present
+    realname: Rummana Yasmeen
+    email: ryasmeen@wikimedia.org
+    uid: 3884
+    gid: 500
 
 ldap_only_users:
   abartov:
@@ -5851,10 +5857,6 @@ ldap_only_users:
     ensure: absent
     realname: Ramsey Isler
     email: risler@wikimedia.org
-  ryasmeen:
-    ensure: present
-    realname: Rummana Yasmeen
-    email: ryasmeen@wikimedia.org
   scfc:
     ensure: present
     realname: Tim Landscheidt
