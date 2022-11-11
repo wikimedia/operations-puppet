@@ -3,10 +3,10 @@
 class k8s::proxy (
     K8s::KubernetesVersion $version,
     Stdlib::Unixpath $kubeconfig,
+    K8s::ClusterCIDR $cluster_cidr,
     Enum['iptables', 'ipvs'] $proxy_mode = 'iptables',
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
-    Optional[K8s::ClusterCIDR] $cluster_cidr = undef,
 ) {
     k8s::package { 'proxy':
         package => 'node',
@@ -25,7 +25,7 @@ class k8s::proxy (
         # We are on purpose NOT adding support for IPv6 feature gate for kube-proxy as
         # the feature is alpha grade and not deemed stable yet on our version.
         # We DO currently only enable it for kubelet, see I54a042731f60dc02494907022cb8115fae052c50
-        clusterCIDR        => if $cluster_cidr =~ NotUndef { $cluster_cidr['v4'] },
+        clusterCIDR        => $cluster_cidr['v4'],
         mode               => $proxy_mode,
         metricsBindAddress => '0.0.0.0',
     }

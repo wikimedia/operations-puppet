@@ -16,3 +16,7 @@ profile::kubernetes::master_hosts:
 
 # CoreDNS static IP
 profile::kubernetes::node::kubelet_cluster_dns: '10.67.64.3'
+
+profile::kubernetes::cluster_cidr:
+  v4: "10.67.80.0/21"
+  v6: "2620:0:861:305::/64"

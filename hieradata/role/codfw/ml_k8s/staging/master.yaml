@@ -18,3 +18,7 @@ profile::calico::kubernetes::bgp_peers:
 - ml-staging-ctrl2002.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
+
+profile::kubernetes::cluster_cidr:
+  v4: "10.194.61.0/24"
+  v6: "2620:0:860:302::/64"

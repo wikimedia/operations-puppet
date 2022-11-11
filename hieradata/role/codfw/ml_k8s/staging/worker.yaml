@@ -9,3 +9,7 @@ profile::kubernetes::node::kubelet_cluster_dns: "10.194.62.3"
 profile::kubernetes::master_hosts:
 - ml-staging-ctrl2001.codfw.wmnet
 - ml-staging-ctrl2002.codfw.wmnet
+
+profile::kubernetes::cluster_cidr:
+  v4: "10.194.61.0/24"
+  v6: "2620:0:860:302::/64"

@@ -21,3 +21,7 @@ profile::calico::kubernetes::bgp_peers:
 - 'aux-k8s-worker1002.eqiad.wmnet'
 - 'cr1-eqiad.wikimedia.org'
 - 'cr2-eqiad.wikimedia.org'
+
+profile::kubernetes::cluster_cidr:
+  v4: "10.67.80.0/21"
+  v6: "2620:0:861:305::/64"

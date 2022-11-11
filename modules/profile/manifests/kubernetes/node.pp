@@ -19,7 +19,7 @@ class profile::kubernetes::node (
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
     Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', { default_value => false }),
     Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
-    Optional[K8s::ClusterCIDR] $cluster_cidr = lookup('profile::kubernetes::cluster_cidr', { default_value => undef }),
+    K8s::ClusterCIDR $cluster_cidr = lookup('profile::kubernetes::cluster_cidr'),
 ) {
     require ::profile::rsyslog::kubernetes
 

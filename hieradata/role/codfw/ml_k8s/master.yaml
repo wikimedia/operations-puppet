@@ -24,3 +24,7 @@ profile::calico::kubernetes::bgp_peers:
 - ml-serve-ctrl2002.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
+
+profile::kubernetes::cluster_cidr:
+  v4: "10.194.16.0/21"
+  v6: "2620:0:860:300::/64"

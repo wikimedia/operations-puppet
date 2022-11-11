@@ -15,3 +15,7 @@ profile::kubernetes::node::kubelet_cluster_dns: "10.194.0.3"
 profile::kubernetes::master_hosts:
 - ml-serve-ctrl2001.codfw.wmnet
 - ml-serve-ctrl2002.codfw.wmnet
+
+profile::kubernetes::cluster_cidr:
+  v4: "10.194.16.0/21"
+  v6: "2620:0:860:300::/64"
