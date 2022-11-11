@@ -124,9 +124,8 @@ class profile::openstack::base::nova::compute::service(
     }
     contain 'openstack::nova::compute::service'
 
-    class { 'prometheus::node_cloudvirt_ceph_network':
-        ensure => present,
-    }
+    # this can be deleted
+    class { 'prometheus::node_cloudvirt_ceph_network': }
 
     class { 'prometheus::node_cloudvirt_libvirt_stats': }
 
