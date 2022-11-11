@@ -9,7 +9,7 @@ class profile::phabricator::main (
                                                       { 'default_value' => 'phab.wmfusercontent.org' }),
     Stdlib::Fqdn                $mysql_master       = lookup('phabricator::mysql::master',
                                                       { 'default_value' => 'localhost' }),
-    Integer                     $mysql_port         = lookup('phabricator::mysql::master::port',
+    Integer                     $mysql_master_port  = lookup('phabricator::mysql::master::port',
                                                       { 'default_value' => 3306 }),
     String                      $mysql_slave        = lookup('phabricator::mysql::slave',
                                                       { 'default_value' => 'localhost' }),
@@ -113,10 +113,12 @@ class profile::phabricator::main (
             $aphlict_ensure = 'absent'
         }
         $mysql_host = $mysql_master
+        $mysql_port = $mysql_master_port
     } else {
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
         $mysql_host = $mysql_slave
+        $mysql_port = $mysql_slave_port
     }
 
     # in prod we just open port 80 for deployment_hosts for testing, caching layer speaks TLS to envoy
@@ -250,6 +252,7 @@ class profile::phabricator::main (
             'phabricator.base-uri'           => "https://${domain}",
             'security.alternate-file-domain' => "https://${altdom}",
             'mysql.host'                     => $mysql_host,
+            'mysql.port'                     => $mysql_port,
             'cluster.mailers'                => $mail_config,
             'metamta.default-address'        => "no-reply@${domain}",
             'metamta.reply-handler-domain'   => $domain,
