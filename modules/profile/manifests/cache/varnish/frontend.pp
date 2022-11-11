@@ -4,7 +4,6 @@
 # @param conftool_prefix the prefix to use for conftool
 # @param fe_vcl_config A hash if vcl config
 # @param runtime_params A hash of runtime parameters
-# @param fe_jemalloc_conf jemalloc configuration
 # @param fe_cache_be_opts hash of backend configs
 # @param backends_in_etcd indicate if backends are in etcd
 # @param fe_extra_vcl list of extra VCLs
@@ -21,21 +20,21 @@
 # @param uds_mode The mode of the uds sockets
 # @param use_etcd_req_filters use confd dynamically generated rules
 # @param do_esitest temporary for testing ESI
+# @param fe_jemalloc_conf jemalloc configuration
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix      = lookup('conftool_prefix'),
-    Boolean                 $has_lvs              = lookup('has_lvs', {'default_value' => true}),
+    Boolean                 $has_lvs              = lookup('has_lvs', {'default_value'                                             => true}),
     # TODO: fix theses so they re under the profile namespace
     Hash[String, Hash]      $cache_nodes          = lookup('cache::nodes'),
     String                  $cache_cluster        = lookup('cache::cluster'),
     Profile::Cache::Sites   $req_handling         = lookup('cache::req_handling'),
-    Profile::Cache::Sites   $alternate_domains    = lookup('cache::alternate_domains', {'default_value' => {}}),
-    Boolean                 $single_backend       = lookup('profile::cache::varnish::frontend::single_backend', {'default_value' => false}),
+    Profile::Cache::Sites   $alternate_domains    = lookup('cache::alternate_domains', {'default_value'                            => {}}),
+    Boolean                 $single_backend       = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'   => false}),
     # locals
     Hash[String, Any]       $fe_vcl_config        = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
     Hash[String, Any]       $fe_cache_be_opts     = lookup('profile::cache::varnish::frontend::cache_be_opts'),
     Boolean                 $backends_in_etcd     = lookup('profile::cache::varnish::frontend::backends_in_etcd'),
-    String                  $fe_jemalloc_conf     = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
     Array[String]           $fe_extra_vcl         = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
     Array[String]           $runtime_params       = lookup('profile::cache::varnish::frontend::runtime_params'),
     String                  $packages_component   = lookup('profile::cache::varnish::frontend::packages_component'),
@@ -46,8 +45,9 @@ class profile::cache::varnish::frontend (
     String                  $uds_group            = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode             = lookup('profile::cache::varnish::frontend::uds_mode'),
     Boolean                 $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
-    Boolean                 $do_esitest           = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value' => false}),
+    Boolean                 $do_esitest           = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
     Boolean                 $enable_monitoring    = lookup('profile::cache::varnish::frontend::enable_monitoring'),
+    Optional[String]        $fe_jemalloc_conf     = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets

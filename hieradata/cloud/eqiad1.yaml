@@ -104,7 +104,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
   keep: "1d"
   public_clouds_shutdown: false
   large_objects_cutoff: 262144
-profile::cache::varnish::frontend::fe_jemalloc_conf: "lg_dirty_mult:8,lg_chunk:17"
 
 profile::netconsole::client::ensure: absent
 profile::trafficserver::backend::storage_elements:
