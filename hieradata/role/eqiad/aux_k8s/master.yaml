@@ -1,4 +1,7 @@
-profile::kubernetes::master::service_cluster_ip_range: '10.67.64.0/20'
+profile::kubernetes::service_cluster_cidr:
+  v4: "10.67.64.0/20"
+  v6: "2620:0:861:304::/64"
+
 profile::kubernetes::master::etcd_urls:
 - 'https://aux-k8s-etcd1001.eqiad.wmnet:2379'
 - 'https://aux-k8s-etcd1002.eqiad.wmnet:2379'

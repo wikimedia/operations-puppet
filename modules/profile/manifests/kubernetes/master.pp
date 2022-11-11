@@ -7,7 +7,7 @@ class profile::kubernetes::master (
     # List of hosts this is accessible to.
     # SPECIAL VALUE: use 'all' to have this port be open to the world
     String $accessible_to=lookup('profile::kubernetes::master::accessible_to'),
-    String $service_cluster_ip_range=lookup('profile::kubernetes::master::service_cluster_ip_range'),
+    K8s::ClusterCIDR $service_cluster_cidr=lookup('profile::kubernetes::service_cluster_cidr'),
     Optional[String] $service_node_port_range=lookup('profile::kubernetes::master::service_node_port_range', { 'default_value' => undef }),
     Optional[Stdlib::Fqdn] $service_cert=lookup('profile::kubernetes::master::service_cert', { 'default_value' => undef }),
     Boolean $use_cergen=lookup('profile::kubernetes::master::use_cergen', { default_value => false }),
@@ -59,7 +59,7 @@ class profile::kubernetes::master (
         authz_mode                  => $authz_mode,
         allow_privileged            => $allow_privileged,
         version                     => $version,
-        service_cluster_ip_range    => $service_cluster_ip_range,
+        service_cluster_cidr        => $service_cluster_cidr,
         service_node_port_range     => $service_node_port_range,
         runtime_config              => $runtime_config,
         admission_plugins           => $admission_plugins,

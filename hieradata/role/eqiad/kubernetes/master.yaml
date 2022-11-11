@@ -1,4 +1,7 @@
-profile::kubernetes::master::service_cluster_ip_range: 10.64.72.0/24
+profile::kubernetes::service_cluster_cidr:
+  v4: "10.64.72.0/24"
+  v6: "2620:0:861:cabf::/64"
+
 profile::kubernetes::master::etcd_urls:
  - https://kubetcd1004.eqiad.wmnet:2379
  - https://kubetcd1005.eqiad.wmnet:2379

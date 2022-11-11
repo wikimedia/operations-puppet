@@ -1,4 +1,7 @@
-profile::kubernetes::master::service_cluster_ip_range: 10.192.76.0/24
+profile::kubernetes::service_cluster_cidr:
+  v4: "10.192.76.0/24"
+  v6: "2620:0:860:babf::/64"
+
 profile::kubernetes::master::etcd_urls:
  - https://kubestagetcd2001.codfw.wmnet:2379
  - https://kubestagetcd2002.codfw.wmnet:2379

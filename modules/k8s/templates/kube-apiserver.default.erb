@@ -14,12 +14,10 @@ daemon_args = [
   "--tls-cert-file=#{@ssl_cert_path}",
   "--tls-private-key-file=#{@ssl_key_path}",
   "--service-account-key-file=#{@ssl_cert_path}",
+  "--service-cluster-ip-range=#{@service_cluster_cidr['v4']}",
 ]
 
 
-if @service_cluster_ip_range
-  daemon_args.push("--service-cluster-ip-range=#{@service_cluster_ip_range}")
-end
 if @service_node_port_range
   daemon_args.push("--service-node-port-range=#{@service_node_port_range}")
 end
