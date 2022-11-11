@@ -399,9 +399,10 @@ role::syslog::centralserver:
   target-q: TBD
 role::dns::auth:
   target-q: TBD
-role::mariadb::proxy::replicas:
+  phab-task: 321309
+role::logging::opensearch::data:
   target-q: TBD
-role::logstash::elasticsearch7:
+role::logging::opensearch::collector:
   target-q: TBD
 role::wmcs::ceph::osd:
   target-q: TBD
@@ -411,12 +412,7 @@ role::wmcs::monitoring:
   target-q: TBD
 role::dnsbox:
   target-q: TBD
-role::netbox::frontend:
-  target-q: TBD
-role::netbox::database:
-  target-q: TBD
-role::netbox::standalone:
-  target-q: TBD
+  phab-task: 321309
 role::grafana:
   target-q: TBD
 role::analytics_cluster::zookeeper:
@@ -425,22 +421,13 @@ role::zookeeper::test:
   target-q: TBD
 role::apt_repo:
   target-q: TBD
-role::backup:
-  target-q: TBD
-role::backup::es:
-  target-q: TBD
-role::dbbackups::content:
-  target-q: TBD
-role::ml_k8s::master:
-  target-q: TBD
-role::ml_k8s::worker:
-  target-q: TBD
 role::poolcounter::server:
   target-q: TBD
 role::orchestrator:
   target-q: TBD
 role::durum:
   target-q: TBD
+  phab-task: 305589
 role::flowspec:
   target-q: TBD
 role::thanos::backend:
