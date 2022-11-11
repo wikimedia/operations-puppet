@@ -145,4 +145,12 @@ class profile::kubernetes::node (
         },
         priority => 75,
     }
+
+    # docker/runc will spam syslog for every exec inside a container, see:
+    # https://github.com/docker/for-linux/issues/679
+    # Stop the messages from reaching syslog until there is a proper fix available.
+    rsyslog::conf { 'block-docker-mount-spam':
+        priority => 1,
+        content  => 'if $msg contains "run-docker-runtime\\\\x2drunc-moby-" and $msg contains ".mount: Succeeded." then { stop }',
+    }
 }
