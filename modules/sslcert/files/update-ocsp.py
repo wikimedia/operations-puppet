@@ -94,7 +94,8 @@ def parse_options():
 def check_output_errtext(args):
     """exec args, returns (stdout,stderr). raises on rv!=0 w/ stderr in msg"""
 
-    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(
+        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     (p_out, p_err) = p.communicate()
     if p.returncode != 0:
         raise Exception("Command %s failed with exit code %i, stderr:\n%s" %
