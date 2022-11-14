@@ -200,6 +200,11 @@ node /^apt[12]001\.wikimedia\.org/ {
     role(apt_repo)
 }
 
+# New arclamp node T319428
+node 'arclamp2001.codfw.wmnet' {
+    role(insetup::observability)
+}
+
 # Analytics Query Service
 node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet/ {
     role(aqs_next)
@@ -934,6 +939,11 @@ node 'dbprov2002.codfw.wmnet' {
 }
 node 'dbprov2003.codfw.wmnet' {
     role(dbbackups::metadata)
+}
+
+# New dbprov server T321128
+node 'dbprov2004.codfw.wmnet' {
+    role(insetup::data_persistence)
 }
 # Active eqiad proxies for misc databases
 node /^dbproxy10(12|13|14|15|16|17|20|21)\.eqiad\.wmnet$/ {
@@ -2535,6 +2545,11 @@ node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
 
 node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetdb)
+}
+
+# New puppetdb node T317894
+node 'puppetdb2003.codfw.wmnet' {
+    role(insetup::infrastructure_foundations)
 }
 
 # Test instance for puppetdb 7
