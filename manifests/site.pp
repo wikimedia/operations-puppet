@@ -353,10 +353,6 @@ node 'centrallog1002.eqiad.wmnet' {
     role(insetup::observability)
 }
 
-node 'centrallog2001.codfw.wmnet' {
-    role(spare::system)
-}
-
 node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(chartmuseum)
 }
