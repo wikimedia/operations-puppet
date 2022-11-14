@@ -2646,12 +2646,6 @@ node 'mirror1001.wikimedia.org' {
     role(mirrors)
 }
 
-node 'thorium.eqiad.wmnet' {
-    # replaced by an-web1001, being decommissioned:
-    # https://phabricator.wikimedia.org/T292075
-    role(spare::system)
-}
-
 # The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
 node /^stat100[4-8]\.eqiad\.wmnet/ {
