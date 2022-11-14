@@ -126,8 +126,6 @@ class spamassassin(
             user          => 'root',
             command       => '/usr/local/sbin/spamassassin_updates',
             interval      => {'start' => 'OnCalendar', 'interval' => '*-*-* 09:17:00'},
-            send_mail     => true,
-            environment   => {'MAILTO' => 'sre-foundations@wikimedia.org'},
             ignore_errors => true,
         }
     }
