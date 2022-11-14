@@ -13,6 +13,8 @@ class profile::idm(
 ) {
 
     $base_dir = '/srv/idm'
+    $media_dir = "${base_dir}/media"
+    $static_dir = "${base_dir}/static"
     $project = 'bitu'
 
     ferm::service { 'idm_http':
