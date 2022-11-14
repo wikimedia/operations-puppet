@@ -320,11 +320,6 @@ node 'bast3005.wikimedia.org' {
     role(bastionhost)
 }
 
-# To be repurposed, T257324
-node 'bast4002.wikimedia.org' {
-    role(spare::system)
-}
-
 # ulsfo/bastion on Ganeti
 node 'bast4003.wikimedia.org' {
     role(bastionhost)
