@@ -18,7 +18,7 @@ class profile::mediawiki::maintenance::wikidata() {
     # Needed to find the LVS servers we need to check.
     $my_lvs_class = $svc['lvs']['class']
     # Select only the hosts in our class
-    $lb = $profile::lvs::configuration::lvs_classes.filter |$h, $val| { $my_lvs_class == $val}.map |$host| { "--lb ${host}:9090"}.join(' ')
+    $lb = $profile::lvs::configuration::lvs_classes.filter |$h, $val| { $my_lvs_class == $val}.map |$host, $_| { "--lb ${host}:9090"}.join(' ')
 
     $additional_args = "--lb-pool ${svc_lbl} ${lb}"
     profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
