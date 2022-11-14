@@ -51,7 +51,7 @@ gzip=$(getsetting "$results" "tools" "gzip") || exit 1
 php=$(getsetting "$results" "tools" "php") || exit 1
 
 for settingname in "allList" "privateList" "multiversion" "tempDir" "gzip" "php"; do
-    checkval "$settingname" "${!settingname}"
+	checkval "$settingname" "${!settingname}"
 done
 
 function log_err {
@@ -66,7 +66,7 @@ hasErrors=0
 
 # create todays folder
 if [ "$dryrun" = "true" ]; then
-	echo mkdir -p "$targetDir"
+	echo "mkdir -p '$targetDir'"
 else
 	if ! mkdir -p "$targetDir"; then
 		echo "Can't make output directory: $targetDir"
@@ -80,14 +80,14 @@ while read wiki; do
 	# exclude all private wikis
 	if ! grep -E -q "^$wiki$" "$privateList"; then
 		# most wikis only have two indices
-		types="content general"
+		suffixes="content general"
 		# commonswiki is special, it also has a file index
 		if [ "$wiki" = "commonswiki" ]; then
-			types="$types file"
+			suffixes="$suffixes file"
 		fi
 		# run the dump for each index type
-		for type in $types; do
-			filename="$wiki-$today-cirrussearch-$type"
+		for indexSuffix in $suffixes; do
+			filename="$wiki-$today-cirrussearch-$indexSuffix"
 			targetFile="$targetDir/$filename.json.gz"
 			tempFile="$tempDir/$filename.json.gz"
 			if [ -e "$tempFile" ] || [ -e "$targetFile" ]; then
@@ -95,12 +95,13 @@ while read wiki; do
 				hasErrors=1
 			else
 				if [ "$dryrun" = "true" ]; then
-					echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/DumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $tempFile"
+					echo "$php '$multiVersionScript' extensions/CirrusSearch/maintenance/DumpIndex.php --wiki='$wiki' --indexSuffix='$indexSuffix' 2> '/var/log/cirrusdump/cirrusdump-$filename.log' | $gzip > '$tempFile'"
+					echo "mv '$tempFile' '$targetFile'"
 				else
 					$php "$multiVersionScript" \
 						extensions/CirrusSearch/maintenance/DumpIndex.php \
 						--wiki="$wiki" \
-						--indexType="$type" \
+						--indexSuffix="$indexSuffix" \
 						2> "/var/log/cirrusdump/cirrusdump-$filename.log" \
 						| $gzip > "$tempFile"
 					PSTATUS_COPY=( "${PIPESTATUS[@]}" )
@@ -126,7 +127,8 @@ for cluster in $clusters; do
 	filename="cirrus-metastore-$cluster-$today"
 	targetFile="$targetDir/$filename.json.gz"
 	if [ "$dryrun" = "true" ]; then
-		echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/Metastore.php --wiki=metawiki --dump --cluster=$cluster 2>> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > ${targetFile}.tmp"
+		echo "$php '$multiVersionScript' extensions/CirrusSearch/maintenance/Metastore.php --wiki=metawiki --dump --cluster='$cluster' 2>> '/var/log/cirrusdump/cirrusdump-$filename.log' | $gzip > '${targetFile}.tmp'"
+		echo "mv '${targetFile}.tmp' '$targetFile'"
 	else
 		$php "$multiVersionScript" \
 			extensions/CirrusSearch/maintenance/Metastore.php \
@@ -144,7 +146,7 @@ done
 # Maintain a 'current' symlink always pointing at the most recently completed dump
 if [ "$dryrun" = "false" ]; then
 	cd "$targetDirBase"
-        rm -f "current"
+	rm -f "current"
 	ln -s "$today" "current"
 fi
 
