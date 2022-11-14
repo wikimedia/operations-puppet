@@ -1,2 +1,37 @@
 profile::pki::root_ca::enable_backups: true
 profile::pki::root_ca::bootstrap: false
+
+profile::pki::root_ca::vhost: 'pki.discovery.wmnet'
+profile::pki::root_ca::db_driver: 'mysql'
+profile::pki::root_ca::db_user: 'pki'
+profile::pki::root_ca::db_name: 'pki'
+profile::pki::root_ca::intermediates:
+  - debmonitor
+  - discovery
+  - kafka
+  - cloud_wmnet_ca
+  - etcd
+profile::pki::root_ca::common_name: 'Wikimedia_Internal_Root_CA'
+profile::pki::root_ca::key_params:
+   algo: ecdsa
+   size: 521
+profile::pki::root_ca::names:
+  - organisation: Wikimedia Foundation, Inc
+    organisational_unit: SRE Foundations
+    locality: San Francisco
+    state: California
+    country: US
+profile::pki::root_ca::profiles:
+  intermediate:
+    usages:
+      - 'cert sign'
+      - 'crl sign'
+    ca_constraint:
+      is_ca: true
+      max_path_len: 1
+    expiry: '43800h'
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'

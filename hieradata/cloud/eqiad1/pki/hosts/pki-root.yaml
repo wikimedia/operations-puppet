@@ -10,30 +10,10 @@ profile::pki::root_ca::intermediates:
 profile::pki::root_ca::common_name: 'WMF_TEST_CA'
 # This is the vhost used for the ocsp/crl responder
 profile::pki::root_ca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
-profile::pki::root_ca::db_driver: 'mysql'
-profile::pki::root_ca::db_user: 'pki'
 profile::pki::root_ca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
-profile::pki::root_ca::db_name: 'pki'
-profile::pki::root_ca::key_params:
-   algo: ecdsa
-   size: 521
 profile::pki::root_ca::names:
   - organisation: Wikimedia Foundation, Inc
     organisational_unit: Cloud Services
     locality: San Francisco
     state: California
     country: US
-profile::pki::root_ca::profiles:
-  intermediate:
-    usages:
-      - 'cert sign'
-      - 'crl sign'
-    ca_constraint:
-      is_ca: true
-      max_path_len: 1
-    expiry: '43800h'
-  ocsp:
-    usages:
-      - 'digital signature'
-      - 'ocsp signing'
-    expiry: '43800h'
