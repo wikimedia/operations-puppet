@@ -49,7 +49,7 @@ def parse_options():
     args, _ = parser.parse_known_args()
     defaults = {}
     if args.config:
-        config = configparser.SafeConfigParser()
+        config = configparser.ConfigParser()
         config.read([args.config])
         defaults = dict(config.items("Options"))
 
