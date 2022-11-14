@@ -51,7 +51,9 @@ class profile::lvs::configuration {
 
     # This is technically redundant information from $lvs_class_hosts, but
     # transforming one into the other in puppet is a huge PITA.
-    $lvs_class = $::hostname ? {
+    # Warning: if you change this, look out for the usage of this data structure
+    # in profile::mediawiki::maintenance::wikidata
+    $lvs_classes =  {
         'lvs1017'      => 'high-traffic1',
         'lvs1018'      => 'high-traffic2',
         'lvs1019'      => 'low-traffic',
@@ -73,6 +75,6 @@ class profile::lvs::configuration {
         'lvs6001'      => 'high-traffic1',
         'lvs6002'      => 'high-traffic2',
         'lvs6003'      => 'secondary',
-        default        => 'unknown',
     }
+    $lvs_class = pick($lvs_classes[$::hostname], 'unknown')
 }

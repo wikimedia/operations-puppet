@@ -1,11 +1,6 @@
-class profile::mediawiki::maintenance::wikidata(
-    Hash[Wmflib::Sites, Hash[
-        Profile::Lvs::Classes,
-        Profile::Lvs::Class_hosts
-    ]] $lb_by_class = lookup('profile::lvs::configuration::all_class_hosts'),
-    ) {
+class profile::mediawiki::maintenance::wikidata() {
     require profile::mediawiki::common
-
+    require profile::lvs::configuration
     # Resubmit changes in wb_changes that are older than 6 hours
     profile::mediawiki::periodic_job { 'wikidata_resubmit_changes_for_dispatch':
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/ResubmitChanges.php --wiki wikidatawiki --minimum-age 21600',
@@ -23,8 +18,7 @@ class profile::mediawiki::maintenance::wikidata(
     # Needed to find the LVS servers we need to check.
     $my_lvs_class = $svc['lvs']['class']
     # Select only the hosts in our class
-    $lbs_my_class = $lb_by_class.values.filter |$val| { $my_lvs_class in $val}.map |$lbs| {$lbs[$my_lvs_class].values}.flatten.unique
-    $lb = $lbs_my_class.map |$host| { "--lb ${host}:9090"}.join(' ')
+    $lb = $profile::lvs::configuration::lvs_classes.filter |$h, $val| { $my_lvs_class == $val}.map |$host| { "--lb ${host}:9090"}.join(' ')
 
     $additional_args = "--lb-pool ${svc_lbl} ${lb}"
     profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
