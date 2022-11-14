@@ -111,6 +111,13 @@ class gerrit(
         key_name    => $scap_key_name,
     }
 
+    file { '/usr/local/bin/gerrit-git-gc-timing':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gerrit/gerrit-git-gc-timing.py',
+    }
+
     file { [
         '/srv/gerrit',
         '/srv/gerrit/jvmlogs',
