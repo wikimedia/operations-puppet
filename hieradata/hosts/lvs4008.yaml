@@ -1,5 +1,3 @@
-profile::pybal::override_bgp_med: 50
-
 profile::lvs::interface_tweaks:
   ens3f0np0:
     txqlen: 10000
