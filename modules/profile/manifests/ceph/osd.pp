@@ -15,8 +15,10 @@ class profile::ceph::osd(
     String[1]                  $ceph_repository_component       = lookup('profile::ceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
-    $cluster_iface = $osd_hosts[$facts['fqdn']]['cluster']['iface']
-    $public_iface = $osd_hosts[$facts['fqdn']]['public']['iface']
+    $host_conf = $osd_hosts[$facts['fqdn']]
+
+    $cluster_iface = $host_conf['cluster']['iface']
+    $public_iface = $host_conf['public']['iface']
 
     require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
@@ -42,8 +44,8 @@ class profile::ceph::osd(
     }
     interface::ip { 'osd-cluster-ip':
         interface => $cluster_iface,
-        address   => $osd_hosts[$facts['fqdn']]['cluster']['addr'],
-        prefixlen => $osd_hosts[$facts['fqdn']]['cluster']['prefix'],
+        address   => $host_conf['cluster']['addr'],
+        prefixlen => $host_conf['cluster']['prefix'],
         require   => Interface::Manual['osd-cluster'],
         before    => Class['ceph::common'],
     }
@@ -85,7 +87,7 @@ class profile::ceph::osd(
         proto  => 'tcp',
         port   => '6800:7100',
         srange => "(${ferm_cluster_srange})",
-        drange => $osd_hosts[$facts['fqdn']]['cluster']['addr'],
+        drange => $host_conf['cluster']['addr'],
         before => Class['ceph::common'],
     }
 
@@ -94,7 +96,7 @@ class profile::ceph::osd(
     # We are assuming /24 for each network, and .254 to be the GW
     $cluster_networks.each | Stdlib::IP::Address $cluster_network_with_nm | {
         $cluster_network = split($cluster_network_with_nm, '[/]')[0]
-        $cur_ip_chunks = split($osd_hosts[$facts['fqdn']]['cluster']['addr'], '[.]')
+        $cur_ip_chunks = split($host_conf['cluster']['addr'], '[.]')
         $cur_network_chunks = $cur_ip_chunks[0, -2]
         $cur_network_substring = join($cur_network_chunks, '.')
         $new_ip_chunks = split($cluster_network, '[.]')
@@ -131,7 +133,7 @@ class profile::ceph::osd(
         proto  => 'tcp',
         port   => '6800:7100',
         srange => "(${ferm_public_srange})",
-        drange => $osd_hosts[$facts['fqdn']]['public']['addr'],
+        drange => $host_conf['public']['addr'],
         before => Class['ceph::common'],
     }
 
