@@ -1741,16 +1741,6 @@ node /^logstash10(2[345]|3[012])\.eqiad\.wmnet$/ {
     role(logging::opensearch::collector)
 }
 
-# Deprecated Logstash collectors (codfw)
-node /^logstash200[4-6]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
-# Deprecated Logstash collectors (eqiad)
-node /^logstash100[7-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # new lvs servers T295804 (in prod use)
 node /^lvs10(1[789]|20)\.eqiad\.wmnet$/ {
     role(lvs::balancer)

@@ -754,24 +754,6 @@ host lists1001 {
     fixed-address lists1001.wikimedia.org;
 }
 
-host logstash1007 {
-    hardware ethernet aa:00:00:83:d6:d4;
-    fixed-address logstash1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host logstash1008 {
-    hardware ethernet aa:00:00:dd:60:7b;
-    fixed-address logstash1008.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host logstash1009 {
-    hardware ethernet aa:00:00:bf:62:dc;
-    fixed-address logstash1009.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host logstash1023 {
     hardware ethernet aa:00:00:1b:0f:aa;
     fixed-address logstash1023.eqiad.wmnet;
@@ -800,24 +782,6 @@ host logstash1031 {
 host logstash1032 {
     hardware ethernet aa:00:00:b7:26:e5;
     fixed-address logstash1032.eqiad.wmnet;
-}
-
-host logstash2004 {
-    hardware ethernet aa:00:00:b8:ec:a0;
-    fixed-address logstash2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host logstash2005 {
-    hardware ethernet aa:00:00:9a:96:89;
-    fixed-address logstash2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host logstash2006 {
-    hardware ethernet aa:00:00:6b:b7:01;
-    fixed-address logstash2006.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash2023 {
