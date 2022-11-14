@@ -39,14 +39,5 @@ class snapshot::systemdjobs::cirrussearch(
                 require            => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
             }
         }
-
-        # Cleanup historical non-sharded dump
-        systemd::timer::job { 'cirrussearch-dump':
-            ensure      => absent,
-            description => 'Regular jobs to build snapshot of cirrus search',
-            user        => $user,
-            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other",
-            interval    => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 16:15:0'},
-        }
     }
 }
