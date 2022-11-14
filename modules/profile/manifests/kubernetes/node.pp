@@ -17,7 +17,7 @@ class profile::kubernetes::node (
     Optional[Array[K8s::Core::V1Taint]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
     String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', { default_value => 'system:kube-proxy' }),
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
-    Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', { default_value => false }),
+    Boolean $ipv6dualstack = lookup('profile::kubernetes::ipv6dualstack', { default_value => false }),
     Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
     K8s::ClusterCIDR $cluster_cidr = lookup('profile::kubernetes::cluster_cidr'),
 ) {
@@ -92,7 +92,7 @@ class profile::kubernetes::node (
         node_taints                     => $kubelet_node_taints,
         extra_params                    => $kubelet_extra_params,
         version                         => $version,
-        kubelet_ipv6                    => $kubelet_ipv6,
+        ipv6dualstack                   => $ipv6dualstack,
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
     }
 
@@ -102,9 +102,10 @@ class profile::kubernetes::node (
         token       => $kubeproxy_token,
     }
     class { 'k8s::proxy':
-        kubeconfig   => $kubeproxy_config,
-        version      => $version,
-        cluster_cidr => $cluster_cidr,
+        kubeconfig    => $kubeproxy_config,
+        version       => $version,
+        ipv6dualstack => $ipv6dualstack,
+        cluster_cidr  => $cluster_cidr,
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6

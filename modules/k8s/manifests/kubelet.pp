@@ -12,7 +12,7 @@ class k8s::kubelet (
     Stdlib::Unixpath $cni_conf_dir = '/etc/cni/net.d',
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
-    Boolean $kubelet_ipv6=false,
+    Boolean $ipv6dualstack = false,
     Optional[Stdlib::IP::Address] $listen_address = undef,
     Optional[String] $docker_kubernetes_user_password = undef,
     Optional[Stdlib::IP::Address] $cluster_dns = undef, #FIXME: This should be an array of V4 addresses
@@ -39,7 +39,7 @@ class k8s::kubelet (
         clusterDomain      => $cluster_domain,
         clusterDNS         => [$cluster_dns],
         # IPv6DualStack is GA and enabled by default in k8s >=1.22
-        featureGates       => if $kubelet_ipv6 and versioncmp($version, '1.22') < 0 { { 'IPv6DualStack' => true } },
+        featureGates       => if $ipv6dualstack and versioncmp($version, '1.22') < 0 { { 'IPv6DualStack' => true } },
         # FIXME: Do we really need anonymous read only access to kubelets enabled?
         #
         # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).

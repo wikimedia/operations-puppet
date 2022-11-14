@@ -22,8 +22,8 @@ class profile::kubernetes::master (
     String $scheduler_token = lookup('profile::kubernetes::master::scheduler_token'),
     Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', { default_value => undef }),
-    Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', { default_value => undef })
-
+    Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', { default_value => undef }),
+    Boolean $ipv6dualstack = lookup('profile::kubernetes::ipv6dualstack', { default_value => false }),
 ) {
     if $service_cert {
         sslcert::certificate { $service_cert:
@@ -67,6 +67,7 @@ class profile::kubernetes::master (
         service_account_issuer      => "https://${master_fqdn}:6443",
         service_account_signing_key => $service_account_private_key_file,
         service_account_key         => $ssl_cert_path,
+        ipv6dualstack               => $ipv6dualstack,
     }
 
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler_config'

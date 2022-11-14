@@ -41,6 +41,13 @@ if scope.call_function('versioncmp', [@version, '1.16']) <= 0
     end
     daemon_args.push("--register-with-taints=#{taints.sort.join(',')}")
   end
+else
+  if @ipv6dualstack
+    daemon_args.push("--node-ip=#{@facts['ipaddress']},#{@facts['ipaddress6']}")
+  else
+    daemon_args.push("--node-ip=#{@facts['ipaddress']}")
+  end
+
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

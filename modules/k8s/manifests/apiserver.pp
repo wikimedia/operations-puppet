@@ -28,6 +28,7 @@ class k8s::apiserver (
     Boolean $allow_privileged = false,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
+    Boolean $ipv6dualstack = false,
     Optional[String] $service_node_port_range = undef,
     Optional[String] $runtime_config = undef,
     Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
