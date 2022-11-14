@@ -19,11 +19,7 @@ define prometheus::node_ats_config (
 ) {
     $exec = '/usr/local/bin/prometheus-ats-config'
     file { $exec:
-        ensure => $ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-ats-config.sh',
+        ensure => absent,
     }
 
     # Collect every 10 minutes
