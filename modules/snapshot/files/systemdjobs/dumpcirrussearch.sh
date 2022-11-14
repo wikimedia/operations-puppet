@@ -10,11 +10,12 @@
 source /usr/local/etc/dump_functions.sh
 
 usage() {
-	echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
+	echo "Usage: $0 [--config <pathtofile>] [--dryrun] [--dblist <pathtofile>]"
 	echo
 	echo "  --config  path to configuration file for dump generation"
 	echo "            (default value: ${confsdir}/wikidump.conf.other"
 	echo "  --dryrun  don't run dump, show what would have been done"
+	echo "  --dblist  run dump against specified dblist instead of the all wikis dblist"
 	exit 1
 }
 
@@ -28,6 +29,9 @@ while [ $# -gt 0 ]; do
 	elif [ "$1" = "--dryrun" ]; then
 		dryrun="true"
 		shift
+	elif [ "$1" = "--dblist" ]; then
+		dbList="$2"
+		shift; shift;
 	else
 		echo "$0: Unknown option $1"
 		usage
@@ -53,6 +57,15 @@ php=$(getsetting "$results" "tools" "php") || exit 1
 for settingname in "allList" "privateList" "multiversion" "tempDir" "gzip" "php"; do
 	checkval "$settingname" "${!settingname}"
 done
+
+if [ -z "$dbList" ]; then
+	dbList="$allList"
+fi
+if [ ! -f "$dbList" ]; then
+	echo "Could not find dblist: $dbList"
+	echo "Exiting..."
+	exit 1
+fi
 
 function log_err {
 	logger --no-act -s -- "$@"
@@ -116,34 +129,12 @@ while read wiki; do
 			fi
 		done
 	fi
-done < "$allList"
-
-# dump the metastore index (contains persistent states used by cirrus
-# administrative tasks). This index is cluster scoped and not bound to a
-# particular wiki (we pass --wiki to mwscript because it's mandatory but this
-# option is not used by the script itself)
-clusters="eqiad codfw"
-for cluster in $clusters; do
-	filename="cirrus-metastore-$cluster-$today"
-	targetFile="$targetDir/$filename.json.gz"
-	if [ "$dryrun" = "true" ]; then
-		echo "$php '$multiVersionScript' extensions/CirrusSearch/maintenance/Metastore.php --wiki=metawiki --dump --cluster='$cluster' 2>> '/var/log/cirrusdump/cirrusdump-$filename.log' | $gzip > '${targetFile}.tmp'"
-		echo "mv '${targetFile}.tmp' '$targetFile'"
-	else
-		$php "$multiVersionScript" \
-			extensions/CirrusSearch/maintenance/Metastore.php \
-			--wiki=metawiki \
-			--dump \
-			--cluster="$cluster" \
-			2>> "/var/log/cirrusdump/cirrusdump-$filename.log" \
-			| $gzip > "${targetFile}.tmp"
-		mv "${targetFile}.tmp" "$targetFile"
-	fi
-done
-
-
+done < "$dbList"
 
 # Maintain a 'current' symlink always pointing at the most recently completed dump
+# Note that this could be somewhat out of sync when the script is invoked multiple times
+# in parallel with separate dblists, but hopefully close enough. The symlink will swap when
+# the first task finishes, rather than when the full dump is complete.
 if [ "$dryrun" = "false" ]; then
 	cd "$targetDirBase"
 	rm -f "current"

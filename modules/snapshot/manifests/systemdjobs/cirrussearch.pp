@@ -3,6 +3,7 @@ class snapshot::systemdjobs::cirrussearch(
     $filesonly = false,
 ) {
     $confsdir = $snapshot::dumps::dirs::confsdir
+    $apachedir = $snapshot::dumps::dirs::apachedir
 
     file { '/var/log/cirrusdump':
         ensure => 'directory',
@@ -19,16 +20,33 @@ class snapshot::systemdjobs::cirrussearch(
     }
 
     if !$filesonly {
+        # The dumps take quite some time to complete. Split the dump up into
+        # one process per dbshard. The dumps don't have anything to do with db
+        # shards, but this is a convenient split of wikis with small wikis
+        # grouped together and large wikis separated out. Shards 9 and 10 do
+        # not exist (as of nov 2022).
+        (range(1, 8) + [11]).each |$shard| {
+            $dblist = "${apachedir}/dblists/s${shard}.dblist"
+            systemd::timer::job { "cirrussearch-dump-s${shard}":
+                ensure             => present,
+                description        => 'Regular jobs to build snapshot of cirrus search',
+                user               => $user,
+                monitoring_enabled => false,
+                send_mail          => true,
+                environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+                command            => "${scriptpath} --config ${confsdir}/wikidump.conf.other --dblist ${dblist}",
+                interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 16:15:0'},
+                require            => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
+            }
+        }
+
+        # Cleanup historical non-sharded dump
         systemd::timer::job { 'cirrussearch-dump':
-            ensure             => present,
-            description        => 'Regular jobs to build snapshot of cirrus search',
-            user               => $user,
-            monitoring_enabled => false,
-            send_mail          => true,
-            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
-            command            => "${scriptpath} --config ${confsdir}/wikidump.conf.other",
-            interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 16:15:0'},
-            require            => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
+            ensure      => absent,
+            description => 'Regular jobs to build snapshot of cirrus search',
+            user        => $user,
+            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other",
+            interval    => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 16:15:0'},
         }
     }
 }
