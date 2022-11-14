@@ -1,6 +1,6 @@
 profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::version: 'yoga'
-profile::openstack::eqiad1::horizon_version: 'wallaby'
+profile::openstack::eqiad1::horizon_version: 'zed'
 
 # Expose openstack APIs to the open internet
 profile::openstack::eqiad1::public_apis: true
