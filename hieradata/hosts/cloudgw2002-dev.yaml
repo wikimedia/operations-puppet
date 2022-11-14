@@ -1,6 +1,7 @@
 profile::monitoring::notifications_enabled: false
 
 # network settings
+profile::openstack::codfw1dev::cloudgw::new_nic_vlan: true
 profile::openstack::codfw1dev::cloudgw::nic_controlplane: eno1
 profile::openstack::codfw1dev::cloudgw::nic_dataplane: eno1
 

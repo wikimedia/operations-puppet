@@ -16,6 +16,7 @@ class profile::openstack::eqiad1::cloudgw (
     Array[String]                 $vrrp_vips      = lookup('profile::openstack::eqiad1::cloudgw::vrrp_vips',        {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address           $vrrp_peer      = lookup('profile::openstack::eqiad1::cloudgw::vrrp_peer',        {default_value => '127.0.0.1'}),
     Hash                          $conntrackd     = lookup('profile::openstack::eqiad1::cloudgw::conntrackd',       {default_value => {}}),
+    Optional[Boolean]             $new_nic_vlan   = lookup('profile::openstack::eqiad1::cloudgw::new_nic_vlan',     {default_value => false}),
 ) {
 
     if $mac_dataplane {
@@ -43,6 +44,7 @@ class profile::openstack::eqiad1::cloudgw (
         vrrp_vips                => $vrrp_vips,
         vrrp_peer                => $vrrp_peer,
         conntrackd               => $conntrackd,
+        new_nic_vlan             => $new_nic_vlan,
     }
     contain '::profile::openstack::base::cloudgw'
 }

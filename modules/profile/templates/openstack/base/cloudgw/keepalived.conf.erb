@@ -6,7 +6,7 @@ global_defs {
 
 vrrp_instance VRRP1 {
   state BACKUP
-  interface <%= @nic_dataplane %>.<%= @wan_vlan %>
+  interface <%= @nic_wan %>
   virtual_router_id 52
   # leave primary peer as is even if lower priority: avoids some flapping
   nopreempt
@@ -18,7 +18,7 @@ vrrp_instance VRRP1 {
   }
   # go to FAULT state if the cloud-facing NIC goes down
   track_interface {
-    <%= @nic_dataplane %>.<%= @virt_vlan %>
+    <%= @nic_virt %>
   }
   # some routes that keepalived should add when promoting a given router to primary
   virtual_routes {

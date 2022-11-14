@@ -11,6 +11,32 @@ auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
 
+<% if @new_nic_vlan -%>
+auto <%= @nic_virt %>
+iface <%= @nic_virt %> inet manual
+    vlan-raw-device <%= @facts['interface_primary'] %>
+    # no address given the VIP is handle by keepalived / VRRP
+    # hook this interface to the VRF
+    post-up ip link set <%= @nic_virt %> master vrf-cloudgw
+    post-up sysctl -w net.ipv4.conf.<%= @nic_virt %>.forwarding=1
+    post-up sysctl -w net.ipv4.conf.<%= @nic_virt %>.rp_filter=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_virt %>.accept_ra=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_virt %>.forwarding=1
+
+auto <%= @nic_wan %>
+iface <%= @nic_wan %> inet static
+    vlan-raw-device <%= @facts['interface_primary'] %>
+    address <%= @wan_addr %>
+    netmask <%= @wan_netm %>
+    # hook this interface to the VRF
+    post-up ip link set <%= @nic_wan %> master vrf-cloudgw
+    # route default to the core router
+    post-up ip route add table cloudgw default via <%= @wan_gw %> dev <%= @nic_wan %> onlink
+    post-up sysctl -w net.ipv4.conf.<%= @nic_wan %>.forwarding=1
+    post-up sysctl -w net.ipv4.conf.<%= @nic_wan %>.rp_filter=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_wan %>.accept_ra=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_wan %>.forwarding=1
+<% else -%>
 auto <%= @nic_dataplane %>.<%= @virt_vlan %>
 iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet manual
     # no address given the VIP is handle by keepalived / VRRP
@@ -33,3 +59,4 @@ iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
     post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.rp_filter=0
     post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.accept_ra=0
     post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.forwarding=1
+<% end -%>
