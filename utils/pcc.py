@@ -57,7 +57,9 @@ GERRIT_HOST = "gerrit.wikimedia.org"
 GERRIT_BASE = "https://{}/r/changes".format(GERRIT_HOST)
 
 
-red, green, yellow, blue, white = [("\x1b[9%sm{}\x1b[0m" % n).format for n in (1, 2, 3, 4, 7)]
+red, green, yellow, blue, white = [
+    ("\x1b[9%sm{}\x1b[0m" % n).format for n in (1, 2, 3, 4, 7)
+]
 
 
 def format_console_output(text):
@@ -159,10 +161,13 @@ def parse_nodes(string_list, default_suffix=".eqiad.wmnet"):
 
     Otherwise qualify any unqualified nodes in a comma-separated list by
     appending a default domain suffix."""
-    if string_list.startswith(("P:", "C:", "O:", "re:", "parse_commit", "cumin:")):
+    if string_list.startswith(
+        ("P:", "C:", "O:", "R:", "re:", "parse_commit", "cumin:", "auto", "basic")
+    ):
         return string_list
     return ",".join(
-        node if "." in node else node + default_suffix for node in string_list.split(",")
+        node if "." in node else node + default_suffix
+        for node in string_list.split(",")
     )
 
 
@@ -204,18 +209,21 @@ def parse_commit(change):
 def get_args():
     """Parse Arguments"""
 
-    parser = ArgumentParser(description=__doc__, formatter_class=RawDescriptionHelpFormatter)
+    parser = ArgumentParser(
+        description=__doc__, formatter_class=RawDescriptionHelpFormatter
+    )
     parser.add_argument(
         "change",
         default="last",
-        nargs='?',
-        help="The change number or change ID to test. " "Alternatively last or latest to test head",
+        nargs="?",
+        help="The change number or change ID to test. "
+        "Alternatively last or latest to test head",
     )
     parser.add_argument(
         "nodes",
         type=parse_nodes,
         default="parse_commit",
-        nargs='?',
+        nargs="?",
         help="Either a Comma-separated list of nodes or a Host Variable Override. "
         "Alternatively use `parse_commit` to parse",
     )
@@ -242,7 +250,10 @@ def get_args():
         help="Post PCC report to gerrit when polling fails",
     )
     parser.add_argument(
-        "-N", "--no-post-success", action="store_true", help="Do not post PCC report to gerrit"
+        "-N",
+        "--no-post-success",
+        action="store_true",
+        help="Do not post PCC report to gerrit",
     )
     parser.add_argument(
         "-f",
@@ -256,9 +267,12 @@ def get_args():
 
 def get_log_level(args_level):
     """Configure logging"""
-    return {None: logging.ERROR, 1: logging.WARN, 2: logging.INFO, 3: logging.DEBUG}.get(
-        args_level, logging.DEBUG
-    )
+    return {
+        None: logging.ERROR,
+        1: logging.WARN,
+        2: logging.INFO,
+        3: logging.DEBUG,
+    }.get(args_level, logging.DEBUG)
 
 
 def post_comment(change, comment, verify=None):
@@ -317,7 +331,7 @@ def main():  # pylint: disable=too-many-locals
 
     jenkins = jenkinsapi.jenkins.Jenkins(
         baseurl=JENKINS_URL,
-        username=args.username.encode('utf-8'),
+        username=args.username.encode("utf-8"),
         password=args.api_token,
         # sometimes jenkins is quite slow to reply
         timeout=30,
@@ -331,7 +345,9 @@ def main():  # pylint: disable=too-many-locals
         )
     )
     try:
-        nodes = parse_commit(change["id"]) if args.nodes == "parse_commit" else args.nodes
+        nodes = (
+            parse_commit(change["id"]) if args.nodes == "parse_commit" else args.nodes
+        )
     except KeyError as error:
         print("Unable to find commit message: {}".format(error))
         return 1
@@ -348,8 +364,8 @@ def main():  # pylint: disable=too-many-locals
                 "doing it by accident, it consumes quite a lot of resources."
             )
         )
-        confirm = input(yellow('Continue? (y/n) '))
-        if not confirm.lower().startswith('y'):
+        confirm = input(yellow("Continue? (y/n) "))
+        if not confirm.lower().startswith("y"):
             return 1
 
     job = jenkins.get_job("operations-puppet-catalog-compiler")
@@ -379,7 +395,9 @@ def main():  # pylint: disable=too-many-locals
             sleep(1)
             running = invocation.is_running()
             new_output = build.get_console().rstrip("\n")
-            console_output = format_console_output(new_output[len(output) :]).strip()  # noqa: E203
+            console_output = format_console_output(
+                new_output[len(output):]
+            ).strip()  # noqa: E203
             if console_output:
                 print(console_output)
             output = new_output
@@ -395,7 +413,9 @@ def main():  # pylint: disable=too-many-locals
             post_comment(change, "PCC Check manually: {}".format(build.baseurl))
 
     node_status = {}
-    node_status_matcher = re.compile(r"(?P<count>\d+)\s+(?P<mode>(?:DIFF|NOOP|FAIL|ERROR))")
+    node_status_matcher = re.compile(
+        r"(?P<count>\d+)\s+(?P<mode>(?:DIFF|NOOP|FAIL|ERROR))"
+    )
     for match in node_status_matcher.finditer(output):
         # as the information we are intrested is at the end we only care about the last matches
         node_status[match["mode"]] = match["count"]
@@ -406,11 +426,17 @@ def main():  # pylint: disable=too-many-locals
     if "Run finished" in output and not re.search(r"[1-9]\d* (ERROR|FAIL)", output):
         print(green("SUCCESS ({})".format(node_status_str)))
         if not args.no_post_success:
-            post_comment(change, "PCC SUCCESS ({}): {}".format(node_status_str, console_url), True)
+            post_comment(
+                change,
+                "PCC SUCCESS ({}): {}".format(node_status_str, console_url),
+                True,
+            )
         return 0
     print(red("FAIL ({})".format(node_status_str)))
     if args.post_fail:
-        post_comment(change, "PCC FAIL ({}): {}".format(node_status_str, console_url), False)
+        post_comment(
+            change, "PCC FAIL ({}): {}".format(node_status_str, console_url), False
+        )
     return 1
 
 
