@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class profile::idm(
-    Stdlib::Fqdn $service_name              = lookup('profile::idm::service_fqdn'),
+    Stdlib::Fqdn $service_fqdn              = lookup('profile::idm::service_fqdn'),
     String       $django_secret_key         = lookup('profile::idm::server::django_secret_key'),
     String       $django_mysql_db_host      = lookup('profile::idm::server::django_mysql_db_host'),
     String       $django_mysql_db_password  = lookup('profile::idm::server::django_mysql_db_password'),
