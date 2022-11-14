@@ -49,27 +49,37 @@ class DataTest(unittest.TestCase):
         with open(os.path.join(os.path.dirname(__file__), "system_users.txt")) as f:
             cls.system_users = set(i.strip() for i in f.readlines() if i[0] != "#")
 
+    def _human_users(self):
+        return set(
+            username
+            for username, val in self.admins["users"].items()
+            if val["ensure"] == "present" and not val.get("system", False)
+        )
+
     def test_shell_user_is_not_system_user(self):
         """
         Ensure shell accounts don't use one of the system user account usernames
         (unless explicitly declared as a system user in data.yaml).
         """
 
-        # List of all human (non system) users in data.yaml
-        present_users = set(
-            username
-            for username, val in self.admins["users"].items()
-            if val["ensure"] == "present" and not val.get("system", False)
-        )
+        human_users = self._human_users()
 
         # List of system users declared in Puppet but not in data.yaml.
-        system_users = self.system_users.intersection(present_users)
+        system_users = self.system_users.intersection(human_users)
         self.assertEqual(
             set(),
             system_users,
             "The following shell account(s) are reserve system users: %r"
             % system_users,
         )
+
+    def test_humans_have_ssh_keys(self):
+        """
+        Ensure we're declaring ssh_keys for humans (even if empty)
+        """
+
+        for username in self._human_users():
+            self.assertIn("ssh_keys", self.admins["users"][username])
 
     def test_ldap_user_is_not_system_user(self):
         """Ensure LDAP accounts don't use one of the system user account usernames"""
