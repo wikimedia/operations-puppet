@@ -3,13 +3,18 @@ HOSTS:
   debian-10-x64:
     platform: debian-10-amd64
     hypervisor: docker
-    image: debian:10
+    image: docker-registry.wikimedia.org/buster
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
-    - 'apt-get update && apt-get install -y cron locales-all net-tools wget systemd-sysv'
+    - 'apt-get update && apt-get install -y cron locales-all net-tools wget systemd-sysv puppet git iproute2'
     - 'rm -f /usr/sbin/policy-rc.d'
     - 'systemctl mask getty@tty1.service getty-static.service'
+    - 'mkdir -p /usr/share/man/man1'
+    - 'echo net.ipv6.conf.all.disable_ipv6=0 > /etc/sysctl.d/50-enable_ipv6.conf'
+    - 'useradd cas'
+    - 'git clone https://gerrit.wikimedia.org/r/operations/puppet /etc/puppet/code/environments/production'
+    - 'echo "modulepath = vendor_modules:modules:$basemodulepath" > /etc/puppet/code/environments/production/environment.conf'
 CONFIG:
   trace_limit: 200
   masterless: true
