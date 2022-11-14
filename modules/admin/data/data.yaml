@@ -5596,6 +5596,7 @@ users:
     email: ryasmeen@wikimedia.org
     uid: 3884
     gid: 500
+    ssh_keys: []
 
 ldap_only_users:
   abartov:
