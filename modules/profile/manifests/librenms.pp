@@ -2,7 +2,7 @@
 
 # $active_server
 # Which of the netmon servers should actually poll data and
-# have active cron jobs. We don't want both to do it at the same time.
+# have active systemd timers. We don't want both to do it at the same time.
 # Switch it in hieradata/common.yaml, the default is just a fallback.
 #
 class profile::librenms (

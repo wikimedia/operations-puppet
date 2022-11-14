@@ -4,12 +4,12 @@
 [Logster](https://github.com/wikimedia/operations-debs-logster) is a utility
 from Etsy for watching for changes in logfiles and reporting metrics about them.
 
-This puppet module abstracts some details out of installing logster cronjobs.
+This puppet module abstracts some details out of installing logster systemd timers
 
 # Usage
 
 ```puppet
-# install a logster cron job to report on number
+# install a logster systemd timer to report on number
 # of different error messages in apache error log.
 logster::job { 'apache-error-log':
     parser  => 'ErrorLogParser',

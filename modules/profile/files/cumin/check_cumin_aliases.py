@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Check Cumin aliases configuration file for inconsistencies.
 
-Suitable to be used as a cron job, it will print no output if no inconsistency is found,
+Suitable to be used from a script, it will print no output if no inconsistency is found,
 and other report the errors to correct.
 """
 import time

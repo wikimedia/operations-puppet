@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Define logster::job
-# Installs a logster cronjob.
+# Installs a logster systemd timer
 #
 # == Parameters
 # $parser            - Logster parser class name to use.
 # $logfile           - Path to logfile to tail and report metrics about.
 # $logster_options   - Full CLI option string to pass to logster.  Default: undef
 #
-# This class also takes the usual time frequency parameters that the cron
-# resource type does: $minute (defaults to */5), $hour, $weekday, $month, $monthday.
+# This class also configures the timer frequency:
+# $minute (defaults to */5), $hour, $weekday, $month, $monthday.
 # These are used for scheduling how often you want logster to parse the logfile
 # and send metrics.
 #
