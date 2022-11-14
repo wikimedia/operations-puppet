@@ -374,10 +374,6 @@ node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudcephmon200[2-3]-dev\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^cloudcephmon200[4-6]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
