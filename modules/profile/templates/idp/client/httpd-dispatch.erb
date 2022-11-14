@@ -19,6 +19,17 @@
     <%-end -%>
     DocumentRoot <%= @document_root %>
 
+    # Redirect from "default" org to wikimedia org.
+    # MOD_AUTH_CAS_S cookie condition used to issue
+    # redirects only to logged in users
+    #
+    RewriteEngine On
+    RewriteCond %{HTTP_COOKIE} MOD_AUTH_CAS_S=
+    RewriteRule ^/?$ /wikimedia/dashboards/incidents [L,R=301]
+
+    RewriteCond %{HTTP_COOKIE} MOD_AUTH_CAS_S=
+    RewriteRule ^/?default(.*)$ /wikimedia$1 [L,R=301]
+
     <Directory />
         Options FollowSymLinks
         AllowOverride None
