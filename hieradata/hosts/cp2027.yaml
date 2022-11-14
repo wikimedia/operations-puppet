@@ -43,12 +43,6 @@ profile::cache::haproxy::vars:
 
 
 profile::cache::haproxy::sticktables:
-  - name: httpreqrate
-    type: ipv6
-    size: 1m
-    expire: 60s
-    store:
-      - http_req_rate(10s)
   - name: newconnrate
     type: ipv6
     size: 1m
@@ -69,5 +63,9 @@ lookup_options:
   profile::cache::haproxy::vars:
     merge:
       strategy: unique
+  profile::cache::haproxy::sticktables:
+    merge:
+      strategy: unique
+
 
 profile::cache::haproxy::version: haproxy26
