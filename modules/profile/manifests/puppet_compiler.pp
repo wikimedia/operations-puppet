@@ -6,7 +6,7 @@
 # @param puppetdb_port puppetdb port
 class profile::puppet_compiler (
     Stdlib::Unixpath       $output_dir     = lookup('profile::puppet_compiler::output_dir'),
-    Boolean                $web_frontend   = lookup('profile::puppet_compiler::web_fronend'),
+    Boolean                $web_frontend   = lookup('profile::puppet_compiler::web_frontend'),
     Optional[Stdlib::Host] $puppetdb_host  = lookup('profile::puppet_compiler::puppetdb_host'),
     Optional[Stdlib::Port] $puppetdb_port  = lookup('profile::puppet_compiler::puppetdb_port'),
 ) {
