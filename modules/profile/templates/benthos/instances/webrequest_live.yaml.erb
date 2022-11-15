@@ -19,6 +19,7 @@ input:
     start_from_oldest: false
 
 pipeline:
+  threads: 5
   processors:
   - label: "drop"
     bloblang: |
@@ -75,6 +76,7 @@ pipeline:
       root.tls = deleted()
 
 output:
+  label: "webrequest_sampled_live"
   kafka:
     addresses: [ "${KAFKA_BROKERS}" ]
     topic: webrequest_sampled
