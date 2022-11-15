@@ -1,4 +1,3 @@
 profile::puppet_compiler::puppetdb_host: ~
 profile::puppet_compiler::puppetdb_port: ~
 profile::puppet_compiler::puppetdb_proxy: false
-profile::puppet_compiler::output_dir: '/mnt/nfs/labstore-secondary-project/output'

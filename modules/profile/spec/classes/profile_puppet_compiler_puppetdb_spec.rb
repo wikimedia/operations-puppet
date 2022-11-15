@@ -9,6 +9,7 @@ describe 'profile::puppet_compiler::puppetdb' do
           ssldir: '/foobar',
           master: 'foobar.example.org',
           max_content_length: 42,
+          output_dir: '/output',
         }
       end
       let(:pre_condition) do

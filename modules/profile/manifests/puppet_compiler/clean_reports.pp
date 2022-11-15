@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::puppet_compiler::clean_reports {
-    $output_dir = '/srv/jenkins/puppet-compiler/output'
+# @param output_dir the directory where reports are located
+class profile::puppet_compiler::clean_reports (
+    Stdlib::Unixpath $output_dir = lookup('profile::puppet_compiler::clean_reports::output_dir'),
+) {
+    # TODO: now we store reports in gzip we can probably loosen this
     systemd::timer::job {'delete-old-output-files':
         ensure      => 'present',
         description => 'Clean up old PCC reports',
