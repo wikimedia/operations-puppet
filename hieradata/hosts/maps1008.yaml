@@ -1,2 +1,4 @@
 cassandra::rack: c
 do_paging: false
+profile::maps::osm_replica::use_replication_slots: true
+

@@ -1,2 +1,4 @@
 cassandra::rack: a
 do_paging: false
+profile::maps::osm_master::use_replication_slots: true
+profile::maps::osm_master::replication_slots: ['wal_maps1008_eqiad_wmnet']
