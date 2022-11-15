@@ -3,6 +3,7 @@ define profile::trafficserver::monitoring(
     Stdlib::Port $port,
     Stdlib::Port::User $prometheus_exporter_port,
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls = undef,
+    Optional[Trafficserver::Network_settings] $network_settings = undef,
     Boolean $default_instance = false,
     Boolean $acme_chief = false,
     Boolean $disable_config_check = false,
@@ -59,7 +60,13 @@ define profile::trafficserver::monitoring(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
-    prometheus::node_trafficserver_config { "trafficserver_${instance_name}_config": }
+    if $network_settings['max_connections_in'] and $network_settings['max_requests_in'] {
+        prometheus::node_trafficserver_config { "trafficserver_${instance_name}_config":
+            config_max_conns => $network_settings['max_connections_in'],
+            config_max_reqs  => $network_settings['max_requests_in'],
+            outfile          => "/var/lib/prometheus/node.d/trafficserver_config_${instance_name}.prom",
+        }
+    }
 
     monitoring::service { "traffic_manager_${instance_name}_check_http":
         description   => "Ensure traffic_manager binds on ${port} and responds to HTTP requests",

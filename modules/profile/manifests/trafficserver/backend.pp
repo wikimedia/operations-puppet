@@ -160,6 +160,7 @@ class profile::trafficserver::backend (
             default_instance         => true,
             instance_name            => $instance_name,
             user                     => $user,
+            network_settings         => $network_settings,
         }
     }
 

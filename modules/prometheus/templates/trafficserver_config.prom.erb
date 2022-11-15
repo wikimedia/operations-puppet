@@ -1,0 +1,7 @@
+<%# SPDX-License-Identifier: Apache-2.0 -%>
+# HELP trafficserver_proxy_config_net_max_connections_in Total number of client requests that Traffic Server can handle simultaneously
+# TYPE trafficserver_proxy_config_net_max_connections_in gauge
+trafficserver_proxy_config_net_max_connections_in <%= @config_max_conns %>
+# HELP trafficserver_proxy_config_net_max_requests_in Total number of concurrent requests or active client connections that the Traffic Server can handle simultaneously
+# TYPE trafficserver_proxy_config_net_max_requests_in gauge
+trafficserver_proxy_config_net_max_requests_in <%= @config_max_reqs %>

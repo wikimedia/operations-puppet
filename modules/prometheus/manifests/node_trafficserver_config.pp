@@ -2,38 +2,41 @@
 #
 # = define: prometheus::node_trafficserver_config
 #
-# Periodically parse the ATS configuration file text and export e.g. the max
-# number of connnections set via a node_exporter textfile collector.
+# Output the hiera configurations for ATS for consumption by Prometheus' node_exporter.
 #
 # = Parameters
 #
-# [*records config*]
-#   Path to read in ATS' records configuration
+# [*config_max_conns*]
+#   ATS max_connections_in value to represent to Prometheus.
+#
+# [*config_max_reqs*]
+#   ATS max_requests_in value to represent to Prometheus.
 #
 # [*outfile*]
-#   Path to write the finished textfile-exporter-format file.
+#   Path to write the consumable file.
 
 define prometheus::node_trafficserver_config (
+    Integer[0] $config_max_conns,
+    Integer[0] $config_max_reqs,
+    Pattern[/\.prom$/] $outfile,
     Wmflib::Ensure $ensure = 'present',
-    Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/trafficserver_config.prom',
 ) {
-    $exec = '/usr/local/bin/prometheus-trafficserver-config'
-    file { $exec:
-        ensure => $ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-trafficserver-config.sh',
+    file { $outfile:
+        ensure  => stdlib::ensure($ensure, 'file'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('prometheus/trafficserver_config.prom.erb'),
     }
 
-    # Collect every 10 minutes
+    # Old collection script/timer
+    file { '/usr/local/bin/prometheus-trafficserver-config': ensure => 'absent' }
     systemd::timer::job { 'prometheus-trafficserver-config':
-        ensure          => $ensure,
+        ensure          => 'absent',
         description     => 'Export select ATS configuration paramaters to node_exporter',
-        command         => $exec,
+        command         => '/bin/true',
         user            => 'root',
         logging_enabled => false,
-        require         => [File[$exec]],
         interval        => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '10m',
