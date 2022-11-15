@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::wmcs::services::postgres::osm_primary' do
-  on_supported_os(WMFConfig.test_on(9, 10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
       base_params = {
         'osm_password' => 'osmdummypass',
