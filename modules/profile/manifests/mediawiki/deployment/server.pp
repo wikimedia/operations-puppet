@@ -65,6 +65,8 @@ class profile::mediawiki::deployment::server(
 
     class {'::httpd': }
 
+    profile::auto_restarts::service { 'apache2': }
+
     # T298165
     class { '::git::daemon':
         directories => ['/srv/patches', '/srv/mediawiki-staging/private'],
