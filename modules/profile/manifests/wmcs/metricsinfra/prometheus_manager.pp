@@ -150,7 +150,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
         ensure      => present,
         description => 'Syncronize list of OpenStack projects monitored by metricsinfra',
         command     => "${venv_dir}/bin/python3 ${clone_dir}/scripts/pm-maintain-projects",
-        user        => 'prometheus-configurator',
+        user        => 'www-data',
         # every 20 minutes, so at minute :7, :27, :47
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:7/20:00'},
         environment => $env,
