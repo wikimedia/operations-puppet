@@ -71,7 +71,8 @@ profile::puppet::client_bucket::file_age: 14
 profile::puppet::client_bucket::max_size: 100M
 profile::puppet_compiler::puppetdb_host: ~
 profile::puppet_compiler::puppetdb_port: ~
-profile::puppet_compiler::puppetdb_proxy: false
+profile::puppet_compiler::web_frontend: false
+profile::puppet_compiler::output_dir: '/mnt/nfs/labstore-secondary-project/output'
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
 profile::base::core_dump_pattern: "/var/tmp/core/core.%h.%e.%p.%t"

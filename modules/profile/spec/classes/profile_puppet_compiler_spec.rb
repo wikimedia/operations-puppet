@@ -8,7 +8,7 @@ describe 'profile::puppet_compiler' do
         {
           puppetdb_host: 'puppetdb.example.org',
           puppetdb_port: 8080,
-          puppetdb_proxy: true
+          web_frontend: true
         }
       end
       let(:pre_condition) do

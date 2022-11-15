@@ -17,14 +17,19 @@ server {
     include uwsgi_params;
     uwsgi_pass uwsgi://127.0.0.1:8001;
   }
-
-
-# Proxy-pass requests for stretch compilers
-  location ~ '^/(?<fwd_host>(compiler|pcc-worker)\d{4})/(?<uri_path>.*)$' {
-    resolver <%= scope.lookupvar('::nameservers')[0] %>;
-    # strip first directory
-    rewrite '.*' /$uri_path break;
-    proxy_pass http://$fwd_host.puppet-diffs.eqiad1.wikimedia.cloud;
+  location /output {
+    root <%= @output_dir %>;
+    autoindex on;
+    location ~ "\.gz$" {
+      add_header content-encoding "gzip";
+    }
   }
+
+  # Backwards compatible paths
+  location ~ '^/(?<fwd_host>(compiler|pcc-worker)\d{4})/(?<uri_path>.*)$' {
+    # strip first directory
+    rewrite '.*' /output/$uri_path;
+  }
+
 }
 # vim: set filetype=nginx:
