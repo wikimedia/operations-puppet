@@ -4,6 +4,7 @@ class profile::puppetmaster::pontoon (
     Optional[Array[Stdlib::Host]] $puppetdb_hosts = lookup('profile::puppetmaster::common::puppetdb_hosts', {'default_value' => undef}),
     Boolean                       $pki_enabled = lookup('profile::puppetmaster::pontoon::pki_enabled', {'default_value' => false}),
     Array[String[3]]              $intermediates = lookup('profile::pki::root_ca::intermediates', {'default_value' => []}),
+    String                        $root_ca_name = lookup('profile::pki::root_ca::common_name', {'default_value' => ''}),
 ) {
     ensure_packages('libapache2-mod-passenger')
     class { 'pontoon::enc': }
@@ -157,6 +158,7 @@ class profile::puppetmaster::pontoon (
 
         class { 'pontoon::pki_root':
             intermediates => $intermediates,
+            root_ca_name  => $root_ca_name,
         }
     }
 }
