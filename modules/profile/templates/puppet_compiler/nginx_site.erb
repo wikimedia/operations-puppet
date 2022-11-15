@@ -18,7 +18,7 @@ server {
     uwsgi_pass uwsgi://127.0.0.1:8001;
   }
   location /output {
-    root <%= @output_dir %>;
+    alias <%= @output_dir %>;
     autoindex on;
     location ~ "\.gz$" {
       add_header content-encoding "gzip";
