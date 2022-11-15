@@ -24,6 +24,7 @@ class profile::openstack::base::cloudgw (
     }
 
     if $new_nic_vlan {
+        ensure_packages('vlan')
         $nic_virt = "vlan${virt_vlan}"
         $nic_wan  = "vlan${wan_vlan}"
     } else {
