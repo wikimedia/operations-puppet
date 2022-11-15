@@ -69,6 +69,6 @@
 # Exit on OutOfMemoryError, since in most cases the JVM does not recover
 -XX:+ExitOnOutOfMemoryError
 
-<% if @tune_gc_new_size_ratio != :undef -%>
+<% if @tune_gc_new_size_ratio -%>
 9-:-XX:NewRatio=<%= @tune_gc_new_size_ratio %>
 <% end -%>
