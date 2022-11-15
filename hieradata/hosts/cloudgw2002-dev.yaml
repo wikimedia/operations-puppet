@@ -2,8 +2,6 @@ profile::monitoring::notifications_enabled: false
 
 # network settings
 profile::openstack::codfw1dev::cloudgw::new_nic_vlan: true
-profile::openstack::codfw1dev::cloudgw::nic_controlplane: eno1
-profile::openstack::codfw1dev::cloudgw::nic_dataplane: eno1
 
 # leg in the cloud-gw-transport-codfw (vlan 2107) 185.15.57.8/30
 profile::openstack::codfw1dev::cloudgw::virt_vlan: 2107
