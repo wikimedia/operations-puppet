@@ -108,6 +108,7 @@ db-backups: P{O:dbbackups::metadata or O:dbbackups::content}
 db-proxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
 debmonitor: P{O:debmonitor::server}
 deployment-servers: P{O:deployment_server}
+dispatch-be: P{O:dispatch::backend}
 dns-auth: P{R:Class = profile::dns::auth}
 dns-auth-canary: P{authdns2001.wikimedia.org}
 dns-rec: P{R:Class = profile::dns::recursor}
