@@ -9,7 +9,7 @@
 # @param homedir the useres home dir
 class puppet_compiler (
     Wmflib::Ensure   $ensure  = 'present',
-    String           $version = '2.4.2',  # can and often is overridden in horizon
+    String           $version = '2.5.0',  # can and often is overridden in horizon
     Stdlib::Unixpath $workdir = '/srv/jenkins/puppet-compiler',
     Stdlib::Unixpath $libdir  = '/var/lib/catalog-differ',
     String           $user    = 'jenkins-deploy',
