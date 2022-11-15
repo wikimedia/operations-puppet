@@ -57,14 +57,14 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     }
 
     # TODO: better deployment model (scap, debian, so on) - T288052
-    git::clone { 'cloud/metricsinfra/prometheus-manager':
+    git::clone { 'cloud/metricsinfra/prometheus-manager':
         ensure    => latest,
         directory => $clone_dir,
         owner     => 'www-data',
         group     => 'www-data',
         notify    => [
             Uwsgi::App['prometheus-manager'],
-            Exec['prometheus-manager-venv-requirements'],
+            Exec['prometheus-manager-venv-install'],
             Exec['prometheus-manager-migrate'],
         ],
     }
@@ -86,12 +86,12 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     exec { 'prometheus-manager-venv-update-pip-wheel':
         user        => 'www-data',
         command     => "${venv_dir}/bin/pip install -U pip wheel",
-        notify      => Exec['prometheus-manager-venv-requirements'],
+        notify      => Exec['prometheus-manager-venv-install'],
         refreshonly => true,
     }
-    exec { 'prometheus-manager-venv-requirements':
+    exec { 'prometheus-manager-venv-install':
         user        => 'www-data',
-        command     => "${venv_dir}/bin/pip install -r ${clone_dir}/requirements.txt",
+        command     => "${venv_dir}/bin/pip install -e .",
         notify      => Uwsgi::App['prometheus-manager'],
         refreshonly => true,
     }
@@ -122,14 +122,10 @@ class profile::wmcs::metricsinfra::prometheus_manager (
 
     # again, a better tool would be nice for deployment
     # automatically run database migrations after git updates
-    $migrate_env = $env + [
-        # TODO: why is this needed, I have no clue
-        "PYTHONPATH=${clone_dir}"
-    ]
     exec { 'prometheus-manager-migrate':
         command     => "${venv_dir}/bin/python3 scripts/pm-migrate",
         cwd         => $clone_dir,
-        environment => $migrate_env,
+        environment => $env,
         user        => 'www-data',
         require     => [
             File[$config_file],
