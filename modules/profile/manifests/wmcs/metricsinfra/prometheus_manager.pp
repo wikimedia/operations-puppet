@@ -38,6 +38,9 @@ class profile::wmcs::metricsinfra::prometheus_manager (
             # unlike default mariadb at 300s
             'pool_recycle' => 90,
         },
+        'OPENSTACK' => {
+            'CONFIG' => '/etc/novaobserver.yaml',
+        },
     }
 
     file { $config_file:
@@ -96,13 +99,17 @@ class profile::wmcs::metricsinfra::prometheus_manager (
         refreshonly => true,
     }
 
-    $env = [
+    $env = {
         # fix prometheus exporter for multiple uwsgi processes/workers
-        "PROMETHEUS_MULTIPROC_DIR=${metrics_dir}",
+        'PROMETHEUS_MULTIPROC_DIR' => $metrics_dir,
 
         # location of our config file
-        "PROMETHEUS_MANAGER_CONFIG_PATH=${config_file}",
-    ]
+        'PROMETHEUS_MANAGER_CONFIG_PATH' => $config_file,
+    }
+
+    $env_array = $env.map |String $key, String $value| {
+        "${key}=${value}"
+    }
 
     uwsgi::app { 'prometheus-manager':
         settings => {
@@ -115,7 +122,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
                 'master'    => true,
                 'processes' => 4,
                 'venv'      => $venv_dir,
-                'env'       => $env,
+                'env'       => $env_array,
             },
         },
     }
@@ -125,7 +132,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     exec { 'prometheus-manager-migrate':
         command     => "${venv_dir}/bin/python3 scripts/pm-migrate",
         cwd         => $clone_dir,
-        environment => $env,
+        environment => $env_array,
         user        => 'www-data',
         require     => [
             File[$config_file],
@@ -137,5 +144,15 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     nginx::site { 'prometheus-manager-web-nginx':
         require => Uwsgi::App['prometheus-manager'],
         content => template('profile/wmcs/metricsinfra/configserver/prometheus-manager.nginx.erb'),
+    }
+
+    systemd::timer::job { 'metricsinfra-maintain-projects':
+        ensure      => present,
+        description => 'Syncronize list of OpenStack projects monitored by metricsinfra',
+        command     => "${venv_dir}/bin/python3 ${clone_dir}/scripts/pm-maintain-projects",
+        user        => 'prometheus-configurator',
+        # every 20 minutes, so at minute :7, :27, :47
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:7/20:00'},
+        environment => $env,
     }
 }
