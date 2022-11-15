@@ -3,12 +3,15 @@
 # This profile is injected by the Pontoon ENC and used as the hook
 # for code running on all Pontoon hosts.
 class profile::pontoon::base (
+    String  $provider   = lookup('profile::pontoon::provider', { default_value => 'cloud_vps' }),
     Boolean $sd_enabled = lookup('profile::pontoon::sd_enabled', { default_value => false }),
     Boolean $pki_enabled = lookup('profile::puppetmaster::pontoon::pki_enabled', { default_value => false }),
 ) {
     if $sd_enabled {
         include profile::pontoon::sd
     }
+
+    include "profile::pontoon::provider::${provider}"
 
     # PKI is a "base" service, often required even in minimal stacks
     # (e.g. puppetdb can use PKI).

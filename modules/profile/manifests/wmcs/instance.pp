@@ -4,7 +4,7 @@ class profile::wmcs::instance(
     Boolean             $diamond_remove                = lookup('diamond::remove', {default_value => false}),
     String              $sudo_flavor                   = lookup('sudo_flavor',     {default_value => 'sudoldap'}),
     Stdlib::Fqdn        $metrics_server                = lookup('graphite_host',   {default_value => 'localhost'}),
-    Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('profile::wmcs::instance::metricsinfra_prometheus_nodes', {default_value => []}),
+    Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
 ) {
     # force sudo on buster
     if $sudo_flavor == 'sudo' or debian::codename::ge('buster') {

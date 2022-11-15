@@ -284,7 +284,3 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-
-profile::wmcs::instance::metricsinfra_prometheus_nodes:
-  - metricsinfra-prometheus-2.metricsinfra.eqiad1.wikimedia.cloud
-  - metricsinfra-prometheus-3.metricsinfra.eqiad1.wikimedia.cloud

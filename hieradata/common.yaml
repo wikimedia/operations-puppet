@@ -2527,3 +2527,9 @@ blackbox_smoke_hosts:
     realm: production
     site: drmrs
     rack: B13
+
+# List of FQDNs for the Prometheus nodes monitoring all of Cloud VPS.
+# These are for eqiad1, but are listed here to also apply to Pontoon.
+metricsinfra_prometheus_nodes:
+  - metricsinfra-prometheus-2.metricsinfra.eqiad1.wikimedia.cloud
+  - metricsinfra-prometheus-3.metricsinfra.eqiad1.wikimedia.cloud
