@@ -1619,10 +1619,6 @@ node /cloudmetrics100[34]\.eqiad\.wmnet/ {
     role(wmcs::monitoring)
 }
 
-node /cloudmetrics100[1-2]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 node /^cloudcontrol100[5-7]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
