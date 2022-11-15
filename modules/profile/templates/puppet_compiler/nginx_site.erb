@@ -17,6 +17,7 @@ server {
     include uwsgi_params;
     uwsgi_pass uwsgi://127.0.0.1:8001;
   }
+
   location /output {
     alias <%= @output_dir %>;
     autoindex on;
@@ -24,12 +25,10 @@ server {
       add_header content-encoding "gzip";
     }
   }
-
   # Backwards compatible paths
   location ~ '^/(?<fwd_host>(compiler|pcc-worker)\d{4})/(?<uri_path>.*)$' {
     # strip first directory
     rewrite '.*' /output/$uri_path;
   }
-
 }
 # vim: set filetype=nginx:

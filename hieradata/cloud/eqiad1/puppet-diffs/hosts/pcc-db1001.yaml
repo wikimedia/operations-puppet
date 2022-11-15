@@ -1,5 +1,4 @@
 ---
-profile::puppet_compiler::web_frontend: true
 puppetdb::app::bind_ip_insecure: '0.0.0.0'
 puppet_compiler::uploader::realms:
   production:
