@@ -65,7 +65,9 @@ profile::openstack::codfw1dev::cloudgw::dmz_cidr:
 
 profile::openstack::codfw1dev::cloudgw::routing_source_ip: 185.15.57.1
 profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
-
+profile::openstack::codfw1dev::cloudgw::new_nic_vlan: true
+profile::openstack::codfw1dev::cloudgw::virt_vlan: 2107
+profile::openstack::codfw1dev::cloudgw::wan_vlan: 2120
 profile::openstack::codfw1dev::cloudgw::vrrp_vips:
   # xx.yy.zz.ww dev vlanXYZW
   - 185.15.57.9/30 dev vlan%{lookup('profile::openstack::codfw1dev::cloudgw::virt_vlan')}

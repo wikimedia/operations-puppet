@@ -1,10 +1,6 @@
 profile::monitoring::notifications_enabled: false
 
-# network settings
-profile::openstack::codfw1dev::cloudgw::new_nic_vlan: true
-
 # leg in the cloud-gw-transport-codfw (vlan 2107) 185.15.57.8/30
-profile::openstack::codfw1dev::cloudgw::virt_vlan: 2107
 profile::openstack::codfw1dev::cloudgw::virt_peer: 185.15.57.10
 profile::openstack::codfw1dev::cloudgw::virt_floating: 185.15.57.0/29
 profile::openstack::codfw1dev::cloudgw::virt_floating_additional: 185.15.57.16/29
@@ -14,7 +10,6 @@ profile::openstack::codfw1dev::cloudgw::virt_floating_additional: 185.15.57.16/2
 # 208.80.153.188/29: cloudgw2003-dev.codfw1dev.wikimediacloud.org
 # 208.80.153.189/29: cloudgw2002-dev.codfw1dev.wikimediacloud.org
 # 208.80.153.190/29: wan.cloudgw.codfw1dev.wikimediacloud.org (VIP)
-profile::openstack::codfw1dev::cloudgw::wan_vlan: 2120
 profile::openstack::codfw1dev::cloudgw::wan_addr: 208.80.153.189
 profile::openstack::codfw1dev::cloudgw::wan_netm: 29
 # this is vrrp-gw-2120.wikimedia.org
