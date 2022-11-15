@@ -7,7 +7,7 @@ http:
   address: "0.0.0.0:${PORT}"
 
 input:
-  label: "webrequest_sampled_live"
+  label: "webrequest_sampled_in"
   kafka:
     addresses: [ "${KAFKA_BROKERS}" ]
     topics: [ "${KAFKA_TOPICS}" ]
@@ -76,7 +76,7 @@ pipeline:
       root.tls = deleted()
 
 output:
-  label: "webrequest_sampled_live"
+  label: "webrequest_sampled_out"
   kafka:
     addresses: [ "${KAFKA_BROKERS}" ]
     topic: webrequest_sampled
