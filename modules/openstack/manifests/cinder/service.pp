@@ -49,6 +49,21 @@ class openstack::cinder::service(
         notify  => Service['cinder-api'],
     }
 
+    $access_file_to_patch = '/usr/lib/python3/dist-packages/cinder/api/schemas/volume_type_access.py'
+    $access_patch_file = "${access_file_to_patch}.patch"
+    file {$access_patch_file:
+        source => "puppet:///modules/openstack/${version}/cinder/hacks/api/volume_type_access.py.patch",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+    exec { "apply ${access_patch_file}":
+        command => "/usr/bin/patch --forward ${access_file_to_patch} ${access_patch_file}",
+        unless  => "/usr/bin/patch --reverse --dry-run -f ${access_file_to_patch} ${access_patch_file}",
+        require => [File[$access_patch_file], Package['cinder-api']],
+        notify  => Service['cinder-api'],
+    }
+
     if $cinder_backup_volumes != {} {
         file { '/etc/wmcs-cinder-backup-manager.yaml':
             content   => $cinder_backup_volumes.to_yaml,
