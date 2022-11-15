@@ -44,3 +44,4 @@ profile::java::java_packages:
     variant: 'jdk'
 
 profile::maps::osm_replica::log_min_duration_statement: 10000 # 10 seconds
+profile::maps::osm_replica::use_replication_slots: false

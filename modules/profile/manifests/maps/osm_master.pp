@@ -20,7 +20,10 @@ class profile::maps::osm_master (
     String $tilerator_storage_id                 = lookup('profile::maps::apps::tilerator_storage_id'),
     Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
-    Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef })
+    Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef }),
+    Boolean $use_replication_slots               = lookup('profile::maps::osm_master::use_replication_slots'),
+    Array[String[1]] $replication_slots          = lookup('profile::maps::osm_master::replication_slots')
+
 ) {
 
     require profile::maps::postgresql_common
@@ -54,6 +57,8 @@ class profile::maps::osm_master (
         wal_keep_segments          => 768,
         max_wal_senders            => $max_senders,
         log_min_duration_statement => $log_min_duration_statement,
+        replication_slots          => $replication_slots,
+
     }
 
     class { '::osm': }
