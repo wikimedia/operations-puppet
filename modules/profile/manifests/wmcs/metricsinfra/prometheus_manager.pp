@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::metricsinfra::prometheus_manager (
-    String $db_hostname       = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_hostname', {default_value => 'wu5emp5wblz.svc.trove.eqiad1.wikimedia.cloud'}),
-    String $db_database       = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_database', {default_value => 'prometheusconfig'}),
-    String $db_user_username  = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_user_username', {default_value => 'configuser'}),
-    String $db_user_password  = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_user_password'),
-    String $db_admin_username = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_admin_username', {default_value => 'configadmin'}),
-    String $db_admin_password = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_admin_password'),
+    String           $db_hostname           = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_hostname', {default_value => 'wu5emp5wblz.svc.trove.eqiad1.wikimedia.cloud'}),
+    String           $db_database           = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_database', {default_value => 'prometheusconfig'}),
+    String           $db_user_username      = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_user_username', {default_value => 'configuser'}),
+    String           $db_user_password      = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_user_password'),
+    String           $db_admin_username     = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_admin_username', {default_value => 'configadmin'}),
+    String           $db_admin_password     = lookup('profile::wmcs::metricsinfra::prometheus_manager::db_admin_password'),
+    Array[String[1]] $sync_exclude_projects = lookup('profile::wmcs::metricsinfra::prometheus_manager::sync_exclude_projects', {default_value => []}),
 ) {
     $gitdir = '/var/lib/git'
     $clone_dir = "${gitdir}/cloud/metricsinfra/prometheus-manager"
@@ -39,7 +40,8 @@ class profile::wmcs::metricsinfra::prometheus_manager (
             'pool_recycle' => 90,
         },
         'OPENSTACK' => {
-            'CONFIG' => '/etc/novaobserver.yaml',
+            'CONFIG'       => '/etc/novaobserver.yaml',
+            'SYNC_EXCLUDE' => $sync_exclude_projects,
         },
     }
 
