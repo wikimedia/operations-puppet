@@ -13,7 +13,7 @@ daemon_args = [
   "--token-auth-file=/etc/kubernetes/infrastructure-users",
   "--tls-cert-file=#{@ssl_cert_path}",
   "--tls-private-key-file=#{@ssl_key_path}",
-  "--service-account-key-file=#{@ssl_cert_path}",
+  "--service-account-key-file=#{@service_account_key}",
   "--service-cluster-ip-range=#{@service_cluster_cidr['v4']}",
 ]
 
@@ -58,7 +58,6 @@ elsif scope.call_function('versioncmp', [@version, '1.23']) >= 0
   #  --service-account-key-file, set to one or more files containing one or more public keys used to verify tokens.
   #  --service-account-signing-key-file, set to a file containing a private key to use to sign service account tokens. Can be the same file given to kube-controller-manager with --service-account-private-key-file.
   daemon_args.push("--service-account-issuer=#{@service_account_issuer}")
-  daemon_args.push("--service-account-key-file=#{@service_account_key}")
   daemon_args.push("--service-account-signing-key-file=#{@service_account_signing_key}")
 end
 -%>
