@@ -5,16 +5,17 @@
 # @param workdir main working directory
 # @param libdir main software directory
 # @param user the user to run daemons
+# @param group the group for dir permissions
 # @param homedir the useres home dir
-class puppet_compiler(
+class puppet_compiler (
     Wmflib::Ensure   $ensure  = 'present',
     String           $version = '2.4.2',  # can and often is overridden in horizon
     Stdlib::Unixpath $workdir = '/srv/jenkins/puppet-compiler',
     Stdlib::Unixpath $libdir  = '/var/lib/catalog-differ',
     String           $user    = 'jenkins-deploy',
+    String           $group   = 'jenkins-deploy',
     Stdlib::Unixpath $homedir = '/srv/home/jenkins-deploy',
 ) {
-
     $vardir = "${libdir}/puppet"
     $yamldir = "${vardir}/yaml"
     $yaml_mount = '/mnt/nfs/labstore-secondary-project/yaml'
@@ -23,17 +24,18 @@ class puppet_compiler(
         'python3-yaml', 'python3-requests', 'python3-jinja2', 'python3-clustershell',
         'nginx', 'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', 'ruby-multi-json',
     ])
-    file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
+    file { '/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
         ensure  => stdlib::ensure($ensure, 'file'),
         content => file('puppet_compiler/puppet_master_pup-8187.rb.nocheck'),
     }
 
     # We cant use wmflib::dir::mkdir_p because the following creates /srv and /srv/jenkins
     # profile::ci::slave::labs::common
-    file{
+    file {
         default:
             ensure => stdlib::ensure($ensure, 'directory'),
             owner  => $user,
+            group  => $group,
             mode   => '0644';
         [$workdir, $vardir]: ;
         $libdir:

@@ -11,7 +11,9 @@ class profile::puppet_compiler (
     requires_realm('labs')
 
     include profile::openstack::base::puppetmaster::enc_client
-    class {'puppet_compiler': }
+    class { 'puppet_compiler':
+        group => 'wikidev',
+    }
     class { 'puppetmaster::puppetdb::client':
         hosts => [$facts['networking']['fqdn']],
     }
@@ -25,10 +27,10 @@ class profile::puppet_compiler (
         $ssl_settings = ssl_ciphersuite('nginx', 'strong')
         $docroot = $puppet_compiler::workdir
 
-        nginx::site {'puppet-compiler':
+        nginx::site { 'puppet-compiler':
             content => template('profile/puppet_compiler/puppetdb-proxy.erb'),
         }
-        ferm::service {'puppetdb-proxy':
+        ferm::service { 'puppetdb-proxy':
             proto  => 'tcp',
             port   => 'https',
             prio   => '30',
