@@ -5603,6 +5603,10 @@ ldap_only_users:
     ensure: present
     realname: Asaf Bartov
     email: abartov@wikimedia.org
+  abhas:
+    ensure: present
+    realname: Abhas Tripathi
+    email: atripathi@wikimedia.org
   adavenport:
     ensure: absent
     realname: Allison Davenport
