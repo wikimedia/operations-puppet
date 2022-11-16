@@ -109,7 +109,7 @@ class postgresql::master(
     $replication_slots.each |$slot| {
         $create_sql = "SELECT pg_create_physical_replication_slot('${slot}')"
         $unless_sql = "SELECT 1 FROM pg_replication_slots WHERE slot_name = '${slot}'"
-        exec { "create slot ${title}":
+        exec { "create slot ${title}_${slot}":
             user    => 'postgres',
             command => $psql_cmd.sprintf($create_sql),
             unless  => "${psql_cmd.sprintf($unless_sql)} | grep 1",
