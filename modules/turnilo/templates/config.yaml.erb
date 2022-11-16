@@ -1914,7 +1914,7 @@ dataCubes:
 
   - name: webrequest_sampled_live
     title: webrequest_sampled_live
-    description: All web requests received for all projects sampled to 1/128.
+    description: Live web requests received for all projects sampled to 1/128.
     clusterName: druid-analytics-eqiad
     source: webrequest_sampled_live
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -2052,6 +2052,10 @@ dataCubes:
       - name: x_cache
         title: X Cache
         formula: $x_cache
+
+      - name: cache_status
+        title: Cache status
+        formula: $cache_status
 
       - name: client_port
         title: Client source port
