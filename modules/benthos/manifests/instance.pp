@@ -35,10 +35,14 @@ define benthos::instance(
         }
     }
 
-    systemd::service { "benthos@-${title}":
+    systemd::service { "benthos@${title}":
         ensure  => present,
         content => systemd_template('benthos@'),
         restart => true,
         require => File[$config_path],
+    }
+
+    systemd::service { "benthos@-${title}":
+        ensure  => absent,
     }
 }
