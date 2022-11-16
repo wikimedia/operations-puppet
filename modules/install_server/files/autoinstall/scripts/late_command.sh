@@ -37,6 +37,8 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # 1, or 2 such drives).
 case $(hostname) in
     cp[123456][0-9][0-9][0-9])
+	# Starting with bullseye the fdisk udeb is no longer enabled by default
+	anna-install fdisk-udeb
         for nvmedev in /dev/nvme?n1; do
             in-target /usr/sbin/nvme format "$nvmedev" -l 2
             echo ';' | /usr/sbin/sfdisk "$nvmedev"
