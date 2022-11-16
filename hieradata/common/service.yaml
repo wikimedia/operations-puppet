@@ -2997,7 +2997,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: apple-search
         active_active: true

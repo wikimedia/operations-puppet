@@ -59,7 +59,6 @@ profile::lvs::realserver::pools:
   toolhub: {}
   linkrecommendation: {}
   tegola-vector-tiles: {}
-  apple-search: {}
   k8s-ingress-wikikube: {}
 prometheus::node_exporter::collectors_extra:
   - processes
