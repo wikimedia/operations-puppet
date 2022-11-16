@@ -14,6 +14,8 @@ profile::cassandra::single_instance::seeds:
 
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_replica::master: 'maps1009.eqiad.wmnet'
+profile::maps::osm_replica::use_replication_slots: true
+
 
 cassandra::target_version: '3.x'
 

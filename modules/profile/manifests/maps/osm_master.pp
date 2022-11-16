@@ -22,7 +22,6 @@ class profile::maps::osm_master (
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef }),
     Boolean $use_replication_slots               = lookup('profile::maps::osm_master::use_replication_slots'),
-    Array[String[1]] $replication_slots          = lookup('profile::maps::osm_master::replication_slots')
 
 ) {
 
@@ -49,6 +48,22 @@ class profile::maps::osm_master (
     # thread). 6 will give us the overhead to allow for 3 new hosts to
     # be added at once in case we need this.
     $max_senders = length($maps_hosts) + 6
+
+    # We iterate through all maps hosts of the DC, and skip ourselves (master)
+    $replication_slots = $use_replication_slots ? {
+        true    => $maps_hosts.map |$replica| {
+                    if $facts['networking']['fqdn'] != $replica {
+                        "wal_${replica.regsubst('\.', '_', 'G')}"
+                    }
+                    else {
+                        undef
+                    }
+                }
+                .filter |$replica| {
+                        $replica != undef
+                },
+        default => [],
+      }
 
     class { 'postgresql::master':
         root_dir                   => '/srv/postgresql',
