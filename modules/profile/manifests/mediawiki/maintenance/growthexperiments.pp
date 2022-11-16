@@ -53,4 +53,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteExpiredUserImpactData.php --expiry 2days',
         interval => '*-*-* 02:10:00',
     }
+
+    # update the "is active" flag for mentees (T318457)
+    profile::mediawiki::periodic_job { 'growthexperiments-updateIsActiveFlagForMentees':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateIsActiveFlagForMentees.php',
+        interval => 'Mon *-*-* 09:42:00',
+    }
 }
