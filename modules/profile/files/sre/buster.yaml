@@ -434,39 +434,30 @@ role::thanos::backend:
   target-q: TBD
 role::requesttracker:
   target-q: TBD
-role::netinsights:
-  target-q: TBD
 role::url_downloader:
   target-q: TBD
 role::gerrit:
   target-q: TBD
 role::dragonfly::supernode:
   target-q: TBD
-role::etherpad:
-  target-q: TBD
 role::puppetmaster::puppetdb:
-  target-q: TBD
+  target-q: 2022-04
 role::puppetmaster::frontend:
   target-q: TBD
 role::puppetmaster::backend:
   target-q: TBD
 role::sretest:
-  target-q: TBD
+  target-q: 2023-03
 role::wikidough:
   target-q: TBD
+  phab-task: 305589
 role::kerberos::kdc:
   target-q: TBD
 role::pki::multirootca:
   target-q: TBD
 role::pki::root:
   target-q: TBD
-role::idp:
-  target-q: TBD
-role::idp_test:
-  target-q: TBD
 role::search::loader:
-  target-q: TBD
-role::gitlab:
   target-q: TBD
 role::chartmuseum:
   target-q: TBD
@@ -478,7 +469,21 @@ role::aphlict:
   target-q: TBD
 role::phabricator:
   target-q: TBD
-role::mediabackup::worker:
-  target-q: TBD
-role::mediabackup::storage:
+role::insetup::search_platform:
+  target-q: 2022-04
+role::insetup::core_platform:
+  target-q: 2022-04
+role::insetup_noferm:
+  target-q: 2022-04
+role::insetup::data_persistence:
+  target-q: 2022-04
+role::insetup::service_ops:
+  target-q: 2022-04
+role::insetup::observability:
+  target-q: 2022-04
+role::insetup::infrastructure_foundations:
+  target-q: 2022-04
+role::insetup::data_engineering:
+  target-q: 2022-04
+role::ml_cache::storage:
   target-q: TBD
