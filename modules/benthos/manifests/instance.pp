@@ -44,5 +44,6 @@ define benthos::instance(
 
     systemd::service { "benthos@-${title}":
         ensure  => absent,
+        content => systemd_template('benthos@'),
     }
 }
