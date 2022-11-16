@@ -299,6 +299,7 @@ class profile::phabricator::main (
                     'cluster_search'            => $cluster_search,
                     'cluster_mailers'           => $mail_config,
                     'database_host'             => $mysql_host,
+                    'database_port'             => $mysql_port,
                 },
             },
         },
