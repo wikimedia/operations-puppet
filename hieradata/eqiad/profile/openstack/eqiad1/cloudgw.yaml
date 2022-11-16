@@ -66,13 +66,16 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
 profile::openstack::eqiad1::cloudgw::routing_source_ip: 185.15.56.1
 profile::openstack::eqiad1::cloudgw::virt_subnet_cidr: 172.16.0.0/21
 
+profile::openstack::eqiad1::cloudgw::new_nic_vlan: true
+profile::openstack::eqiad1::cloudgw::virt_vlan: 1107
+profile::openstack::eqiad1::cloudgw::wan_vlan: 1120
 profile::openstack::eqiad1::cloudgw::vrrp_vips:
-  - 185.15.56.237/30 dev dataplane.1107
-  - 185.15.56.244/29 dev dataplane.1120
+  - 185.15.56.237/30 dev vlan%{lookup('profile::openstack::eqiad1::cloudgw::virt_vlan')}
+  - 185.15.56.244/29 dev vlan%{lookup('profile::openstack::eqiad1::cloudgw::wan_vlan')}
 
 profile::openstack::eqiad1::cloudgw::conntrackd:
   cloudgw1001:
-    nic: "enp101s0f0np0"
+    nic: "%{facts.networking.primary}"
     local_addr: cloudgw1001.eqiad.wmnet
     remote_addr: cloudgw1002.eqiad.wmnet
     filter_ipv4:
@@ -82,7 +85,7 @@ profile::openstack::eqiad1::cloudgw::conntrackd:
       - 185.15.56.237
       - 185.15.56.244
   cloudgw1002:
-    nic: "enp101s0f0np0"
+    nic: "%{facts.networking.primary}"
     local_addr: cloudgw1002.eqiad.wmnet
     remote_addr: cloudgw1001.eqiad.wmnet
     filter_ipv4:
