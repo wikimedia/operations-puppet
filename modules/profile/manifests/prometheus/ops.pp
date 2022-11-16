@@ -2323,6 +2323,22 @@ class profile::prometheus::ops (
         },
     }
 
+    $benthos_jobs = [
+      {
+        'job_name'        => 'benthos',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/benthos_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::resource_config{ "benthos_${::site}":
+        dest           => "${targets_path}/benthos_${::site}.yaml",
+        define_name    => 'benthos::instance',
+        port_parameter => 'port'
+    }
+
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -2352,7 +2368,7 @@ class profile::prometheus::ops (
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
-            $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs
+            $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
