@@ -16,7 +16,7 @@ DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs")
 CLUSTERS = ("text", "upload")
 PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/|/etc/confd/.*_etc_varnish.*)")
 COMPILER_RE = re.compile(
-    ".*(https://puppet-compiler.wmflabs.org/(compiler|pcc-worker)[0-9]{4}/[0-9]+/)"
+    ".*(https://puppet-compiler.wmflabs.org/output/[0-9]+/[0-9]+/)"
 )
 TIMEOUT = 30
 
@@ -56,7 +56,7 @@ def get_pcc_url(hostname, patch_id, pcc):
 
 
 def dump_files(url, hostname):
-    catalog_url = "{}/{}/change.{}.pson".format(url, hostname, hostname)
+    catalog_url = "{}/{}/change.{}.pson.gz".format(url, hostname, hostname)
     print("\tCatalog URL: {}".format(catalog_url))
 
     catalog = requests.get(catalog_url, timeout=TIMEOUT).json()
