@@ -8,12 +8,10 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address $wan_addr     = lookup('profile::openstack::base::cloudgw::wan_addr',     {default_value => '127.0.0.4'}),
     Integer             $wan_netm     = lookup('profile::openstack::base::cloudgw::wan_netm',     {default_value => 8}),
     Stdlib::IP::Address $wan_gw       = lookup('profile::openstack::base::cloudgw::wan_gw',       {default_value => '127.0.0.4'}),
-    String              $nic_dataplane= lookup('profile::openstack::base::cloudgw::nic_dataplane',{default_value => 'eno2'}),
     String              $vrrp_passwd  = lookup('profile::openstack::base::cloudgw::vrrp_passwd',  {default_value => 'dummy'}),
     Array[String]       $vrrp_vips    = lookup('profile::openstack::base::cloudgw::vrrp_vips',    {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address $vrrp_peer    = lookup('profile::openstack::base::cloudgw::vrrp_peer',    {default_value => '127.0.0.1'}),
     Hash                $conntrackd   = lookup('profile::openstack::base::cloudgw::conntrackd',   {default_value => {}}),
-    Optional[Boolean]   $new_nic_vlan = lookup('profile::openstack::base::cloudgw::new_nic_vlan', {default_value => false}),
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::base::cloudgw::routing_source_ip',{default_value => '127.0.0.7'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::base::cloudgw::virt_subnet_cidr', {default_value => '127.0.0.8/32'}),
     Array[Stdlib::IP::Address::V4::Nosubnet] $dmz_cidr = lookup('profile::openstack::base::cloudgw::dmz_cidr',    {default_value => ['0.0.0.0']}),
@@ -23,14 +21,9 @@ class profile::openstack::base::cloudgw (
         ensure_service => 'present',
     }
 
-    if $new_nic_vlan {
-        ensure_packages('vlan')
-        $nic_virt = "vlan${virt_vlan}"
-        $nic_wan  = "vlan${wan_vlan}"
-    } else {
-        $nic_virt = "${nic_dataplane}.${virt_vlan}"
-        $nic_wan  = "${nic_dataplane}.${wan_vlan}"
-    }
+    ensure_packages('vlan')
+    $nic_virt = "vlan${virt_vlan}"
+    $nic_wan  = "vlan${wan_vlan}"
 
     nftables::file { 'cloudgw':
         ensure  => present,
@@ -108,21 +101,19 @@ class profile::openstack::base::cloudgw (
     # this expects a data structure like this:
     # profile::openstack::base::cloudgw::conntrackd_conf:
     #   node1:
-    #     nic: eno0
     #     local_addr: node1.dc.wmnet
     #     remote_addr: node2.dc.wmnet
     #     filter_ipv4:
     #      - x.x.x.x
     #      - y.y.y.y
     #   node2:
-    #     nic: eno0
     #     local_addr: node2.dc.wmnet
     #     remote_addr: node1.dc.wmnet
     #     filter_ipv4:
     #      - x.x.x.x
     #      - y.y.y.y
 
-    $conntrackd_nic            = $conntrackd[$::hostname]['nic']
+    $conntrackd_nic            = $facts['interface_primary']
     $conntrackd_local_address  = ipresolve($conntrackd[$::hostname]['local_addr'], 4)
     $conntrackd_remote_address = ipresolve($conntrackd[$::hostname]['remote_addr'], 4)
     $conntrackd_filter_ipv4    = $conntrackd[$::hostname]['filter_ipv4']

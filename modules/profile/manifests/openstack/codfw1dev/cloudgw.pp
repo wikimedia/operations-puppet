@@ -10,12 +10,9 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $wan_addr       = lookup('profile::openstack::codfw1dev::cloudgw::wan_addr',         {default_value => '127.0.0.4'}),
     Integer                       $wan_netm       = lookup('profile::openstack::codfw1dev::cloudgw::wan_netm',         {default_value => 8}),
     Stdlib::IP::Address           $wan_gw         = lookup('profile::openstack::codfw1dev::cloudgw::wan_gw',           {default_value => '127.0.0.1'}),
-    String                        $nic_sshplane   = lookup('profile::openstack::codfw1dev::cloudgw::nic_controlplane', {default_value => 'eno1'}),
-    String                        $nic_dataplane  = lookup('profile::openstack::codfw1dev::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
     Array[String]                 $vrrp_vips      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_vips',        {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address           $vrrp_peer      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_peer',        {default_value => '127.0.0.1'}),
     Hash                          $conntrackd     = lookup('profile::openstack::codfw1dev::cloudgw::conntrackd',       {default_value => {}}),
-    Optional[Boolean]             $new_nic_vlan   = lookup('profile::openstack::codfw1dev::cloudgw::new_nic_vlan',     {default_value => false}),
 ) {
     class { '::profile::openstack::base::cloudgw':
         dmz_cidr                 => $dmz_cidr,
@@ -30,11 +27,9 @@ class profile::openstack::codfw1dev::cloudgw (
         wan_addr                 => $wan_addr,
         wan_netm                 => $wan_netm,
         wan_gw                   => $wan_gw,
-        nic_dataplane            => $nic_dataplane,
         vrrp_vips                => $vrrp_vips,
         vrrp_peer                => $vrrp_peer,
         conntrackd               => $conntrackd,
-        new_nic_vlan             => $new_nic_vlan,
     }
     contain '::profile::openstack::base::cloudgw'
 }

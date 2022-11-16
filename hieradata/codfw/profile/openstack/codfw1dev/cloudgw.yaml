@@ -65,7 +65,6 @@ profile::openstack::codfw1dev::cloudgw::dmz_cidr:
 
 profile::openstack::codfw1dev::cloudgw::routing_source_ip: 185.15.57.1
 profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
-profile::openstack::codfw1dev::cloudgw::new_nic_vlan: true
 profile::openstack::codfw1dev::cloudgw::virt_vlan: 2107
 profile::openstack::codfw1dev::cloudgw::wan_vlan: 2120
 profile::openstack::codfw1dev::cloudgw::vrrp_vips:
@@ -75,7 +74,6 @@ profile::openstack::codfw1dev::cloudgw::vrrp_vips:
 
 profile::openstack::codfw1dev::cloudgw::conntrackd:
   cloudgw2003-dev:
-    nic: "%{facts.networking.primary}"
     local_addr: cloudgw2003-dev.codfw.wmnet
     remote_addr: cloudgw2002-dev.codfw.wmnet
     filter_ipv4:
@@ -85,7 +83,6 @@ profile::openstack::codfw1dev::cloudgw::conntrackd:
       - 185.15.57.9
       - 208.80.153.190
   cloudgw2002-dev:
-    nic: "%{facts.networking.primary}"
     local_addr: cloudgw2002-dev.codfw.wmnet
     remote_addr: cloudgw2003-dev.codfw.wmnet
     filter_ipv4:
