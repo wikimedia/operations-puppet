@@ -5,6 +5,7 @@
 http:
   enabled: true
   address: "0.0.0.0:${PORT}"
+  debug_endpoints: true
 
 input:
   label: "webrequest_sampled_in"
@@ -17,6 +18,9 @@ input:
       skip_cert_verify: true # See https://phabricator.wikimedia.org/T291905
     consumer_group: 'benthos-webrequest-sampled-live'
     start_from_oldest: false
+    batching:
+      count: 2048
+      period: 100ms
 
 pipeline:
   threads: 5
