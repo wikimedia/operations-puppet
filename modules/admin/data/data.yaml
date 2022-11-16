@@ -3307,7 +3307,7 @@ users:
     name: phedenskog
     realname: Peter Hedenskog
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOPYJ4us3KjcEB/P+6EY9i9ekawa6jLF4VTt3nPhUb6h peter@wmf2826
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHFenFHbdZElD9PNg2qoarmoFd17Q8rfYqaXMDZCr5Bs peter@Peters-MBP-2
     uid: 12719
     email: phedenskog@wikimedia.org
     krb: present
