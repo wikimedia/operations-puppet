@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # check-fresh-files-in-dir.py - nagios check for age of files in dir
@@ -70,15 +70,15 @@ def main():
                             % (checkme, args.warn_age))
 
     if crit_out:
-        print "\n".join(crit_out)
-        print "\n".join(warn_out)
+        print("\n".join(crit_out))
+        print("\n".join(warn_out))
         return 2
 
     if warn_out:
-        print "\n".join(warn_out)
+        print("\n".join(warn_out))
         return 1
 
-    print "OK\n"
+    print("OK\n")
     return 0
 
 
