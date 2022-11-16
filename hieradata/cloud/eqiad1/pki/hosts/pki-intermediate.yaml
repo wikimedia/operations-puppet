@@ -4,7 +4,6 @@ profile::pki::multirootca::private_cert_base: 'pki/wmcs-intermediates'
 profile::pki::multirootca::public_cert_base: 'profile/pki/wmcs-intermediates'
 profile::pki::multirootca::prometheus_nodes: "%{alias('prometheus_nodes')}"
 profile::pki::multirootca::enable_monitoring: false
-profile::pki::multirootca::enable_k8s_vhost: true
 profile::pki::multirootca::intermediates:
   debmonitor:
     ocsp_port: 10001
@@ -85,19 +84,10 @@ profile::pki::multirootca::root_ca_cn: 'WMF_TEST_CA'
 profile::pki::multirootca::root_ca_cert: 'profile/pki/ROOT/WMF_TEST_CA.pem'
 profile::pki::multirootca::root_ocsp_cert: 'profile/pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
 profile::pki::multirootca::root_ocsp_key: 'pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
-profile::pki::multirootca::root_ocsp_port: 10000
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
-profile::pki::multirootca::db_driver: 'mysql'
-profile::pki::multirootca::db_user: 'pki'
 profile::pki::multirootca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
-profile::pki::multirootca::db_name: 'pki'
-profile::pki::multirootca::enable_client_auth: true
 profile::pki::multirootca::client_ca_source: 'puppet:///modules/profile/pki/cloud/client_auth_CA.pem'
-profile::pki::multirootca::default_usages:
-  - 'signing'
-  - 'key encipherment'
-  - 'client auth'
 profile::pki::multirootca::default_nets:
   - 127.0.0.1/32
 profile::pki::multirootca::default_profiles:
