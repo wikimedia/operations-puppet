@@ -82,7 +82,7 @@ define prometheus::server (
     Array                      $scrape_configs_extra           = [],
     Array                      $rule_files_extra               = [],
     Array                      $alerting_relabel_configs_extra = [],
-    Stdlib::HTTPUrl            $external_url                   = "http://prometheus.svc.${::site}.wmnet/${title}",
+    Stdlib::HTTPUrl            $external_url                   = "https://prometheus-${::site}.wikimedia.org/${title}",
     String                     $min_block_duration             = '2h',
     String                     $max_block_duration             = '24h',
     Array                      $alertmanagers                  = [],
