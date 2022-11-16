@@ -8,6 +8,8 @@ class pontoon::pki_root (
     include cfssl  # lint:ignore:wmf_styleguide
 
     $pki_base = '/etc/pontoon/pki'
+    $public_base = '/var/lib/puppet/volatile/pontoon/pki'
+
     file { $pki_base:
         ensure => directory,
         owner  => 'root',
@@ -15,13 +17,17 @@ class pontoon::pki_root (
         mode   => '0440',
     }
 
+    wmflib::dir::mkdir_p($public_base)
+
     # The CA public cert for clients to trust (via profile::pontoon::base)
-    file { "${pki_base}/ca.pem":
-        ensure => present,
-        owner  => 'root',
-        group  => 'puppet',
-        mode   => '0440',
-        source => "${cfssl::signer_dir}/${root_ca_name}/ca/ca.pem",
+    ["${pki_base}/ca.pem", "${public_base}/ca.pem"].each |$dest| {
+        file { $dest:
+            ensure => present,
+            owner  => 'root',
+            group  => 'puppet',
+            mode   => '0440',
+            source => "${cfssl::signer_dir}/${root_ca_name}/ca/ca.pem",
+        }
     }
 
     # The intermediates keypairs to serve to the multiroot CA host.
@@ -37,6 +43,12 @@ class pontoon::pki_root (
                 group     => 'puppet',
                 subscribe => Cfssl::Cert[$int]
             }
+        }
+
+        # Make the public cert available via puppet:///
+        file { "${public_base}/${int}.pem":
+            source    => "${cfssl::ssl_dir}/${int}/${int}.pem",
+            subscribe => Cfssl::Cert[$int],
         }
     }
 }
