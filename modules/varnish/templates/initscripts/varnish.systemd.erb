@@ -21,8 +21,8 @@ CapabilityBoundingSet=<%= @capabilities %>
 PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
-<% if @enable_geoiplookup -%>
-Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lmaxminddb"
+<% if @lib_flags -%>
+Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s <%= @lib_flags %>"
 <% else -%>
 Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -o %%o %%s"
 <% end -%>

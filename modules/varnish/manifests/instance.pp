@@ -152,7 +152,9 @@ define varnish::instance(
         "/etc/varnish/wikimedia_${vcl_name}.vcl"
     }
 
-    $enable_geoiplookup = $vcl == 'text-frontend'
+    if $vcl == 'text-frontend' {
+        $lib_flags = '-lmaxminddb -lsodium'
+    }
 
     systemd::service { "varnish${instancesuffix}":
         content        => systemd_template('varnish'),
