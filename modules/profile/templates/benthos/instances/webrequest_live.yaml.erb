@@ -84,6 +84,7 @@ output:
   kafka:
     addresses: [ "${KAFKA_BROKERS}" ]
     topic: webrequest_sampled
+    compression: "snappy"
     tls:
       enabled: true
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
