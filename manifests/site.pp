@@ -1746,11 +1746,7 @@ node /^lvs300[567]\.esams\.wmnet$/ {
 }
 
 # ULSFO lvs servers
-node /^lvs400[567]\.ulsfo\.wmnet$/ {
-    role(lvs::balancer)
-}
-
-node 'lvs4008.ulsfo.wmnet' {
+node /^lvs400[56789]\.ulsfo\.wmnet$/ {
     role(lvs::balancer)
 }
 
