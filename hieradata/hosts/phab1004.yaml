@@ -1,4 +1,4 @@
 phabricator::phd::use_systemd_sysuser: true
-phabricator_logmail: false
+phabricator_logmail: true
 profile::phabricator::main::phd_service_ensure: stopped
 profile::phabricator::main::dump_enabled: false
