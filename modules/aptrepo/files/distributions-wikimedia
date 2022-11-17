@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Remember to run any needed commands when adding/removing entries, see:
 #   https://wikitech.wikimedia.org/wiki/Reprepro
+#
+# If you are adding an external repository (thirdparty), remember to update it
+# by running on apt1001:
+#
+#   reprepro --noskipold --component thirdparty/foo update bar-wikimedia
 Origin: Wikimedia
 Label: Wikimedia
 Suite: stretch-wikimedia
