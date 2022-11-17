@@ -31,7 +31,7 @@ profile::maps::osm_master::disable_admin_timer: true
 profile::maps::osm_master::engine: "imposm3"
 # Disable tile generation trigger while testing Tegola in k8s
 profile::maps::osm_master::disable_tile_generation_cron: false
-
+profile::maps::osm_master::use_replication_slots: true
 profile::maps::osm_master::replicas:
   maps2005:
     ip_address: 10.192.0.155

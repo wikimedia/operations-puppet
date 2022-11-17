@@ -2,6 +2,7 @@ profile::maps::apps::redis_server: 'redis://maps2009.codfw.wmnet'
 
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_replica::master: 'maps2009.codfw.wmnet'
+profile::maps::osm_replica::use_replication_slots: true
 
 profile::cassandra::single_instance::dc: 'codfw'
 profile::cassandra::single_instance::seeds:
