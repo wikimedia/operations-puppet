@@ -6,7 +6,6 @@ search: [eqiad, codfw]
 # All the rest
 apertium: [eqiad, codfw]
 api-gateway: [eqiad, codfw]
-apple-search: [eqiad, codfw]
 apt: [eqiad, codfw]
 aqs: [eqiad, codfw]
 blubberoid: [eqiad, codfw]
