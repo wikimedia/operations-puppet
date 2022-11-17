@@ -30,12 +30,6 @@ class profile::openstack::base::nova::compute::service(
         legacy_vlan_naming => $legacy_vlan_naming,
     }
 
-    if $facts['fqdn'] =~ /^labvirt100[0-9].eqiad.wmnet/ {
-        openstack::nova::compute::partition{ '/dev/sdb':
-            before => File['/var/lib/nova/instances'],
-        }
-    }
-
     # The special value 'thinvirt' indicates that there's no local instance
     #  storage on this host. Ultimately all cloudvirts will be like this,
     #  at which point we won't need this hack.
