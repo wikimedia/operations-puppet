@@ -47,6 +47,7 @@ profile::maps::osm_master::replicas:
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad.wmnet:4492/v1/events"
 profile::maps::osm_master::tegola_swift_container: "tegola-swift-new"
+profile::maps::osm_master::use_replication_slots: true
 
 cassandra::target_version: '3.x'
 
