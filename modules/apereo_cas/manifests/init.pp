@@ -68,6 +68,8 @@
 # @param cors_allowed_headers list of headers allowed to in CORS requests
 # @param cors_allowed_methods list of methods allowed with CORS
 # @param delegated_authenticators list of delegated authenticators
+# @param oidc_issuers_pattern defines the regular expression pattern that is
+#        matched against the calculated issuer from the request.
 class apereo_cas (
     Array[Stdlib::Fqdn]               $idp_nodes,
     Optional[String[1]]               $tgc_signing_key               = undef,
@@ -131,6 +133,8 @@ class apereo_cas (
     String                            $u2f_jpa_server                = '127.0.0.1',
     String                            $u2f_jpa_db                    = 'cas',
     Optional[Integer]                 $u2f_token_expiry_days         = undef,
+    String                            $oidc_issuers_pattern          = 'a^',
+    Boolean                           $oidc_id_token_claims          = false,
     Boolean                           $enable_cors                   = false,
     Boolean                           $cors_allow_credentials        = false,
     Array[Stdlib::HTTPSUrl]           $cors_allowed_origins          = [],
