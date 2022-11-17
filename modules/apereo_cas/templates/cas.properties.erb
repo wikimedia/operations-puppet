@@ -136,8 +136,8 @@ cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
 <% if @web_authn_encryption_key %>cas.authn.mfa.web-authn.crypto.encryption.key=<%= @web_authn_encryption_key %><% end %>
 <% if @oauth_crypto_signing_key %>cas.authn.oauth.crypto.signing.key=<%= @oauth_crypto_signing_key %><% end %>
 <% if @oauth_crypto_encryption_key %>cas.authn.oauth.crypto.encryption.key=<%= @oauth_crypto_signing_key %><% end %>
-<% if @oauth_token_signing_key %>cas.authn.oauth.access-token.signing.key=<%= @oauth_token_signing_key %><% end %>
-<% if @oauth_token_encryption_key %>cas.authn.oauth.access-token.encryption.key=<%= @oauth_token_signing_key %><% end %>
+<% if @oauth_token_signing_key %>cas.authn.oauth.access-token.crypto.signing.key=<%= @oauth_token_signing_key %><% end %>
+<% if @oauth_token_encryption_key %>cas.authn.oauth.access-token.crypto.encryption.key=<%= @oauth_token_signing_key %><% end %>
 <%- end -%>
 
 <%- if @memcached_enable -%>
