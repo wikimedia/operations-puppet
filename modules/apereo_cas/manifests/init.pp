@@ -10,6 +10,14 @@
 # @param enable_u2f If to enable u2f
 # @param u2f_signing_key the utf signing key
 # @param u2f_encryption_key the utf encyption key
+# @param web_authn_signing_key the utf signing key
+# @param web_authn_encryption_key the utf encyption key
+# @param oauth_crypto_signing_key the utf signing key
+# @param oauth_crypto_encryption_key the utf encyption key
+# @param oauth_token_signing_key the utf signing key
+# @param oauth_token_encryption_key the utf encyption key
+# @param spring_username spring.security.user.name
+# @param spring_password spring.security.user.password
 # @param keystore_source the keystore source location.  only one of keystore_source and keystore_content can be presetn
 # @param keystore_content the keystore content.  only one of keystore_source and keystore_content can be presetn
 # @param max_session_length maximum session length in seconds. https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration#Session_timeout_handling
@@ -71,6 +79,14 @@ class apereo_cas (
     Boolean                           $enable_u2f                    = true,
     Optional[String[1]]               $u2f_signing_key               = undef,
     Optional[String[1]]               $u2f_encryption_key            = undef,
+    Optional[String[1]]               $web_authn_signing_key         = undef,
+    Optional[String[1]]               $web_authn_encryption_key      = undef,
+    Optional[String[1]]               $oauth_crypto_signing_key      = undef,
+    Optional[String[1]]               $oauth_crypto_encryption_key   = undef,
+    Optional[String[1]]               $oauth_token_signing_key       = undef,
+    Optional[String[1]]               $oauth_token_encryption_key    = undef,
+    String[1]                         $spring_username               = 'casuser',
+    Optional[String[1]]               $spring_password               = undef,
     Optional[Stdlib::Filesource]      $keystore_source               = undef,
     Optional[String[1]]               $keystore_content              = undef,
     Integer[60,604800]                $max_session_length            = 604800,

@@ -14,10 +14,14 @@ def get_addresses(hostnames)
   raise Puppet::Error, "#{hostnames.join(',')} do not resolve" if answers.empty?
   answers.flatten.sort
 end
+cas_version = Gem::Version.new(@facts.fetch('cas_version', '0.a'))
 -%>
 # Without the following line we seem to have 5-15 sec lag for most requests
 spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration
-
+<%- if @spring_password -%>
+spring.security.user.name=<%= @spring_username %>
+spring.security.user.password=<%= @spring_password %>
+<%- end -%>
 server.ssl.enabled=<%= @server_enable_ssl %>
 <%- if @server_enable_ssl -%>
 server.ssl.key-store-file:<%= @keystore_path %>
@@ -35,7 +39,11 @@ server.tomcat.basedir=<%= @tomcat_basedir %>
 server.tomcat.remoteip.internal-proxies=127\\.0\\.0\\.1
 management.endpoints.web.base-path=/api
 
+<%- if cas_version >= Gem::Version.new('6.6') -%>
+cas.server.tomcat.http[0].enabled=false
+<%- else -%>
 cas.server.tomcat.http.enabled=false
+<%- end -%>
 cas.server.tomcat.http-proxy.enabled=true
 cas.server.tomcat.http-proxy.secure=true
 cas.server.tomcat.http-proxy.scheme=https
@@ -122,6 +130,15 @@ cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
 <% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>
 <% if @webflow_signing_key %>cas.webflow.crypto.signing.key=<%= @webflow_signing_key %><% end %>
 <% if @webflow_encryption_key %>cas.webflow.crypto.encryption.key=<%= @webflow_encryption_key %><% end %>
+
+<%- if cas_version >= Gem::Version.new('6.6') -%>
+<% if @web_authn_signing_key %>cas.authn.mfa.web-authn.crypto.signing.key=<%= @web_authn_signing_key %><% end %>
+<% if @web_authn_encryption_key %>cas.authn.mfa.web-authn.crypto.encryption.key=<%= @web_authn_encryption_key %><% end %>
+<% if @oauth_crypto_signing_key %>cas.authn.oauth.crypto.signing.key=<%= @oauth_crypto_signing_key %><% end %>
+<% if @oauth_crypto_encryption_key %>cas.authn.oauth.crypto.encryption.key=<%= @oauth_crypto_signing_key %><% end %>
+<% if @oauth_token_signing_key %>cas.authn.oauth.access-token.signing.key=<%= @oauth_token_signing_key %><% end %>
+<% if @oauth_token_encryption_key %>cas.authn.oauth.access-token.encryption.key=<%= @oauth_token_signing_key %><% end %>
+<%- end -%>
 
 <%- if @memcached_enable -%>
 cas.ticket.registry.memcached.servers=<%= @memcached_server %>:<%= @memcached_port %>
