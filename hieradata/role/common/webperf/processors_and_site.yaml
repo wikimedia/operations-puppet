@@ -32,3 +32,5 @@ profile::prometheus::statsd_exporter::mappings:
     action: drop
     match_type: regex
   # All other queries convert natively
+
+profile::contacts::role_contacts: ['Observability']
