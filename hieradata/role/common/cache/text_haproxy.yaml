@@ -118,6 +118,18 @@ cache::alternate_domains:
   '^([^.]+\.)?planet\.wikimedia\.org$':
     regex_key: true
     caching: 'normal'
+  prometheus-eqiad.wikimedia.org:
+    caching: 'pass'
+  prometheus-codfw.wikimedia.org:
+    caching: 'pass'
+  prometheus-esams.wikimedia.org:
+    caching: 'pass'
+  prometheus-ulsfo.wikimedia.org:
+    caching: 'pass'
+  prometheus-eqsin.wikimedia.org:
+    caching: 'pass'
+  prometheus-drmrs.wikimedia.org:
+    caching: 'pass'
   puppetboard.wikimedia.org:
     caching: 'pass'
   puppetboard-idptest.wikimedia.org:
