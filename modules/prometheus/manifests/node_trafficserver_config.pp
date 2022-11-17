@@ -28,18 +28,4 @@ define prometheus::node_trafficserver_config (
         group   => 'root',
         content => template('prometheus/trafficserver_config.prom.erb'),
     }
-
-    # Old collection script/timer
-    file { '/usr/local/bin/prometheus-trafficserver-config': ensure => 'absent' }
-    systemd::timer::job { 'prometheus-trafficserver-config':
-        ensure          => 'absent',
-        description     => 'Export select ATS configuration paramaters to node_exporter',
-        command         => '/bin/true',
-        user            => 'root',
-        logging_enabled => false,
-        interval        => {
-            'start'    => 'OnUnitInactiveSec',
-            'interval' => '10m',
-        },
-    }
 }
