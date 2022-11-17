@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::nova::compute::service(
     $version = lookup('profile::openstack::eqiad1::version'),
-    $network_flat_interface = lookup('profile::openstack::eqiad1::nova::network_flat_interface'),
-    $network_flat_tagged_base_interface = lookup('profile::openstack::eqiad1::nova::network_flat_tagged_base_interface'),
+    String[1] $network_flat_interface = lookup('profile::openstack::eqiad1::nova::network_flat_interface'),
+    Optional[String[1]] $network_flat_tagged_base_interface = lookup('profile::openstack::eqiad1::nova::network_flat_tagged_base_interface', {default_value => undef}),
     $network_flat_interface_vlan = lookup('profile::openstack::eqiad1::nova::network_flat_interface_vlan'),
     $network_flat_name = lookup('profile::openstack::eqiad1::neutron::network_flat_name'),
     $physical_interface_mappings = lookup('profile::openstack::eqiad1::nova::physical_interface_mappings'),

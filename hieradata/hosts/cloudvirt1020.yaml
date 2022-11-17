@@ -4,3 +4,4 @@ profile::openstack::eqiad1::nova::network_flat_interface: 'eno50.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eno50.1105'
 
+profile::openstack::base::nova::modern_nic_setup: false

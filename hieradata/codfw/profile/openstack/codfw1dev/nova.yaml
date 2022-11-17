@@ -15,11 +15,10 @@ profile::openstack::codfw1dev::nova::zone: "codfw"
 profile::openstack::codfw1dev::nova::db_host: "openstack.codfw1dev.wikimediacloud.org"
 profile::openstack::codfw1dev::nova::live_migration_uri: "test"
 
-profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: "%{facts.networking.primary}"
-profile::openstack::codfw1dev::nova::network_flat_interface: "%{facts.networking.primary}.2105"
 profile::openstack::codfw1dev::nova::network_flat_interface_vlan: "2105"
+profile::openstack::codfw1dev::nova::network_flat_interface: "vlan%{lookup('profile::openstack::codfw1dev::nova::network_flat_interface_vlan')}"
 profile::openstack::codfw1dev::nova::physical_interface_mappings:
-  cloudinstances2b: "%{facts.networking.primary}.2105"
+  cloudinstances2b: "%{lookup('profile::openstack::codfw1dev::nova::network_flat_interface')}"
 
 profile::openstack::codfw1dev::nova::instance_network_id: "05a5494a-184f-4d5c-9e98-77ae61c56daa"
 profile::openstack::codfw1dev::nova::fullstack_bastion_ip: 185.15.57.2

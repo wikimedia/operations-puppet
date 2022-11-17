@@ -1,8 +1,8 @@
 class profile::openstack::base::nova::compute::service(
     String $version = lookup('profile::openstack::base::version'),
     String $instance_dev = lookup('profile::openstack::base::nova::instance_dev'),
-    String $network_flat_interface = lookup('profile::openstack::base::nova::network_flat_interface'),
-    String $network_flat_tagged_base_interface = lookup('profile::openstack::base::nova::network_flat_tagged_base_interface'),
+    String[1] $network_flat_interface = lookup('profile::openstack::base::nova::network_flat_interface'),
+    Optional[String[1]] $network_flat_tagged_base_interface = lookup('profile::openstack::base::nova::network_flat_tagged_base_interface', {default_value => undef}),
     String $network_flat_interface_vlan = lookup('profile::openstack::base::nova::network_flat_interface_vlan'),
     Boolean $legacy_vlan_naming = lookup('legacy_vlan_naming', {default_value => true}),
     Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts'),
@@ -11,8 +11,8 @@ class profile::openstack::base::nova::compute::service(
     Optional[String] $ceph_rbd_pool = lookup('profile::ceph::client::rbd::pool', {'default_value' => undef}),
     Optional[String] $ceph_rbd_client_name = lookup('profile::ceph::client::rbd::client_name', {'default_value' => undef}),
     Optional[String] $libvirt_rbd_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
-    ) {
-
+    Boolean          $modern_nic_setup = lookup('profile::openstack::base::nova::modern_nic_setup', {default_value => true}),
+) {
     ensure_packages('conntrack')
 
     # If this node was previously a 'spare' node then it will have ferm installed
@@ -21,13 +21,22 @@ class profile::openstack::base::nova::compute::service(
         ensure  => absent,
     }
 
-    interface::tagged { $network_flat_interface:
-        base_interface     => $network_flat_tagged_base_interface,
-        vlan_id            => $network_flat_interface_vlan,
-        method             => 'manual',
-        up                 => 'ip link set $IFACE up',
-        down               => 'ip link set $IFACE down',
-        legacy_vlan_naming => $legacy_vlan_naming,
+    if $modern_nic_setup {
+        interface::tagged { $network_flat_interface:
+            base_interface     => $facts['interface_primary'],
+            vlan_id            => $network_flat_interface_vlan,
+            method             => 'manual',
+            legacy_vlan_naming => false,
+        }
+    } else {
+        interface::tagged { $network_flat_interface:
+            base_interface     => $network_flat_tagged_base_interface,
+            vlan_id            => $network_flat_interface_vlan,
+            method             => 'manual',
+            up                 => 'ip link set $IFACE up',
+            down               => 'ip link set $IFACE down',
+            legacy_vlan_naming => $legacy_vlan_naming,
+        }
     }
 
     # The special value 'thinvirt' indicates that there's no local instance

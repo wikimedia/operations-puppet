@@ -5,3 +5,4 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'vlan1105'
 legacy_vlan_naming: false
 profile::wmcs::backy2::backup_time: '*-*-* 14:00:00'
+profile::openstack::base::nova::modern_nic_setup: false

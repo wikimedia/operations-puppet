@@ -5,3 +5,4 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eno2np1.1105'
 
 profile::wmcs::backy2::backup_time: '*-*-* 11:00:00'
+profile::openstack::base::nova::modern_nic_setup: false

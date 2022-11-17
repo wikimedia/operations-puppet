@@ -1,1 +1,8 @@
 profile::openstack::base::nova::instance_dev: 'thinvirt'
+
+profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: "%{facts.networking.primary}"
+profile::openstack::codfw1dev::nova::network_flat_interface: "%{facts.networking.primary}.2105"
+profile::openstack::codfw1dev::nova::network_flat_interface_vlan: "2105"
+profile::openstack::codfw1dev::nova::physical_interface_mappings:
+  cloudinstances2b: "%{facts.networking.primary}.2105"
+profile::openstack::base::nova::modern_nic_setup: false
