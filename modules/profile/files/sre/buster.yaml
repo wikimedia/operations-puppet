@@ -18,13 +18,15 @@ role::etcd::v3::kubernetes::staging:
   target-q: TBD
 role::etcd::v3::ml_etcd:
   target-q: TBD
+role::etcd::v3::ml_etcd::staging:
+  target-q: TBD
 role::lists:
   target-q: TBD
 role::configcluster:
   target-q: TBD
 role::wmcs::nfs::primary:
   target-q: TBD
-role::wmcs::openstack::eqiad1::backy
+role::wmcs::openstack::eqiad1::backy:
   target-q: TBD
 role::installserver::light:
   target-q: TBD
@@ -127,6 +129,9 @@ role::analytics_cluster::ui::staging:
 role::analytics_cluster::ui::superset:
   target-q: TBD
   phab-task: 288804
+role::analytics_cluster::ui::superset::staging:
+  target-q: TBD
+  phab-task: 288804
 role::analytics_cluster::presto::server:
   target-q: TBD
   phab-task: 288804
@@ -145,6 +150,9 @@ role::analytics_cluster::airflow::research:
 role::analytics_cluster::airflow::platform_eng:
   target-q: TBD
   phab-task: 288804
+role::analytics_cluster::airflow::platform_eng_legacy:
+  target-q: TBD
+  phab-task: 288804
 role::aqs:
   target-q: TBD
   phab-task: 288804
@@ -156,9 +164,9 @@ role::bastionhost:
 role::elasticsearch::cloudelastic:
   target-q: TBD
   phab-task: 289135
-role::cache::upload:
+role::cache::upload_haproxy:
   target-q: TBD
-role::cache::text:
+role::cache::text_haproxy:
   target-q: TBD
 role::test:
   target-q: TBD
@@ -219,7 +227,7 @@ role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: TBD
 role::configcluster_stretch:
   target-q: TBD
-role::deployment_server:
+role::deployment_server::kubernetes:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::net:
   target-q: TBD
@@ -325,6 +333,9 @@ role::analytics_test_cluster::coordinator:
   target-q: TBD
   phab-task: 288804
 role::analytics_test_cluster::hadoop::ui:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_test_cluster::presto::server:
   target-q: TBD
   phab-task: 288804
 role::druid::test_analytics::worker:
@@ -440,8 +451,8 @@ role::gerrit:
   target-q: TBD
 role::dragonfly::supernode:
   target-q: TBD
-role::puppetmaster::puppetdb:
-  target-q: 2022-04
+role::puppetdb:
+  target-q: 2023-01
 role::puppetmaster::frontend:
   target-q: TBD
 role::puppetmaster::backend:
@@ -470,20 +481,26 @@ role::aphlict:
 role::phabricator:
   target-q: TBD
 role::insetup::search_platform:
-  target-q: 2022-04
+  target-q: 2023-01
 role::insetup::core_platform:
-  target-q: 2022-04
+  target-q: 2023-01
 role::insetup_noferm:
-  target-q: 2022-04
+  target-q: 2023-01
 role::insetup::data_persistence:
-  target-q: 2022-04
-role::insetup::service_ops:
-  target-q: 2022-04
+  target-q: 2023-01
+role::insetup::serviceops:
+  target-q: 2023-01
 role::insetup::observability:
-  target-q: 2022-04
+  target-q: 2023-01
 role::insetup::infrastructure_foundations:
-  target-q: 2022-04
+  target-q: 2023-01
 role::insetup::data_engineering:
-  target-q: 2022-04
+  target-q: 2023-01
+role::insetup::traffic:
+  target-q: 2023-01
 role::ml_cache::storage:
+  target-q: TBD
+role::apifeatureusage::logstash:
+  target-q: TBD
+role::dispatch::backend:
   target-q: TBD
