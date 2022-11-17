@@ -181,9 +181,6 @@ cache::alternate_domains:
     caching: 'normal'
   turnilo.wikimedia.org:
     caching: 'normal'
-  '^(www\.)?wikiba\.se$':
-    regex_key: true
-    caching: 'normal'
   yarn.wikimedia.org:
     caching: 'normal'
 profile::base::systemd::cpu_accounting: 'yes'
