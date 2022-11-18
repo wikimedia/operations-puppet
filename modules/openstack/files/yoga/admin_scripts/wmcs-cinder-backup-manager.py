@@ -13,6 +13,7 @@ voluem IDs, or specify ALL volumes:
   - <volume1ID>
     <volume2ID>
     <volume3ID>
+  FREQUENCY: 1
   FULL_FREQUENCY: 7
   PURGE_AFTER: 20
 <project2>
@@ -21,7 +22,7 @@ voluem IDs, or specify ALL volumes:
 """
 
 import argparse
-import datetime
+import time
 import logging
 import shutil
 import subprocess
@@ -66,15 +67,25 @@ if __name__ == "__main__":
 
     osclients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
     total_errors = 0
+    epoch_days = int(time.time() / (24*60*60))
 
     for project in conf:
         cinderclient = osclients.cinderclient(project=project)
         all_volumes = cinderclient.volumes.list()
         volume_ids = []
         full_frequency = int(conf[project].get("FULL_FREQUENCY", "7"))
+        frequency = int(conf[project].get("FREQUENCY", "1"))
 
         # FULL_FREQUENCY_OFFSET lets us stagger full backups for big projects
         full_frequency_offset = int(conf[project].get("FULL_FREQUENCY_OFFSET", "0"))
+
+        full = False
+        if epoch_days % full_frequency == full_frequency_offset:
+            # If it's a full backup day, then we're definitely backing up
+            full = True
+        elif (epoch_days % frequency != 0):
+            # otherwise, check frequency to see if we should skip today
+            continue
 
         purge_after = int(conf[project].get("PURGE_AFTER", "30"))
         volumes = conf[project].get("volumes")
@@ -102,9 +113,7 @@ if __name__ == "__main__":
                 # Create today's backup
 
                 backupargs = [backup_tool, volume_id, "--timeout", str(args.timeout)]
-                if (
-                    datetime.datetime.now() - datetime.datetime.min
-                ).days % full_frequency == full_frequency_offset:
+                if full:
                     backupargs.append("--full")
 
                 r = subprocess.call(backupargs)
