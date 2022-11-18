@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::spark_job
 #
 # Renders a spark2-submit wrapper script and sets up a systemd timer to run it.

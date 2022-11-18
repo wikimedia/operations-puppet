@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::data_check
 #
 # Configures systemd timer jobs that:

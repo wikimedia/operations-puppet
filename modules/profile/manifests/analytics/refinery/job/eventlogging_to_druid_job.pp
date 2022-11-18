@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::eventlogging_to_druid_job
 #
 # Installs crons to run HiveToDruid Spark jobs on EventLogging datasets.

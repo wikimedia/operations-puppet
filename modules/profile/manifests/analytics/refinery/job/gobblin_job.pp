@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::gobblin_job
 # Wrapper define for declaring a gobblin job systemd timer.
 # This is planned to be replaced by an Airflow job in the near future.

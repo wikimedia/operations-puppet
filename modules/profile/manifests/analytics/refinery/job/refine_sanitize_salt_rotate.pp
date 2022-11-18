@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::refinery::job::refine_sanitize_salt_rotate
 #
 # Creates and rotates salts for RefineSanitize jobs.

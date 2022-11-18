@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::refine
 # Install cron jobs for Spark Refine jobs.  These jobs
 # transform data imported into Hadoop into augmented Parquet backed

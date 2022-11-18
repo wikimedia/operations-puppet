@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::data_purge
 #
 # Installs systemd-timer jobs to drop old hive partitions,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::import_wikidata_entities_dumps
 # Schedules imports of wikidata entites dumps (all-json and all-ttl) to hadoop.
 #

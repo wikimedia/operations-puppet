@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::refinery::job::test::refine_sanitize
 #
 # Sets up RefineSanitize jobs for the analytics test cluster.

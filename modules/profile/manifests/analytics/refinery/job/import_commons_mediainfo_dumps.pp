@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::import_commons_mediainfo_dumps
 # Schedules imports of commons mediainfo dumps (ttl) to hadoop.
 #

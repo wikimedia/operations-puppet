@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::config
 # Renders a properties file from $properties suitable for
 # using with Refinery jobs configured via ConfigHelper.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::hdfs_cleaner
 #
 # Deletes files and empty directories older than 31 days from HDFS dirs:

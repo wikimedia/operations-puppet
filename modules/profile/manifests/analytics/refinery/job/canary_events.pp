@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::refinery::job::canary_events
 #
 # Installs a systemd timer that produces canary events for all streams that have

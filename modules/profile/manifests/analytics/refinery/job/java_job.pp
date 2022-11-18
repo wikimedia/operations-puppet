@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::java_job
 #
 # Renders a wrapper script to launch a java job and sets up a systemd timer to run it.

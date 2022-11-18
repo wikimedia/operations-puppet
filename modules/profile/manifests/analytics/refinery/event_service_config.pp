@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::refinery::event_service_config
 #
 # Looks up service URLs for event_service_names in each of the datacenters,

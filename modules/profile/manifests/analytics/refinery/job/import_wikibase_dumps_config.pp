@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::import_wikibase_dumps_config
 #
 # Renders a bash script allowing to import wikibase-dumps onto hdfs, and

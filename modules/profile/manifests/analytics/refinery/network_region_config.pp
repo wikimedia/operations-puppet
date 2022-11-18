@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::refinery::network_region_config
 #
 # Looks up Wikimedia network infrastructure configuration and

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::repository
 #
 # Deploy the analytics/refinery repository without any

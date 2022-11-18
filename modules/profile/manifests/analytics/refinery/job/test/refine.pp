@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::test::refine
 #
 # Install cron jobs for Spark Refine jobs.  These jobs

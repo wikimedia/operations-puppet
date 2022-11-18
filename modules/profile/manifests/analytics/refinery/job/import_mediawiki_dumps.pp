@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::import_mediawiki_dumps
 # Schedules an import of page-history xmldumps and site-info jsondumps to hadoop.
 #

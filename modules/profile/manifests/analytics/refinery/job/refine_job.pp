@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::refine_job
 #
 # Installs a systemd timer to run the Refine Spark job.  This is

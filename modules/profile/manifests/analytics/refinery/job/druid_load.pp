@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::druid_load
 #
 # Installs spark jobs to load data sets to Druid.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::project_namespace_map
 #
 # Installs a systemd timer to download the Wikimedia sitematrix project

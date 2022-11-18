@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::import_mediawiki_dumps_config
 #
 # Renders a bash script allowing to import mediawiki-dumps onto hdfs, and

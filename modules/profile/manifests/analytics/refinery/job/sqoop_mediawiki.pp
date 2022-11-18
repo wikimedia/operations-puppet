@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::refinery::job::sqoop_mediawiki
 # Schedules sqoop to import MediaWiki databases into Hadoop monthly and daily.
 # NOTE: This requires that role::analytics_cluster::mysql_password has
