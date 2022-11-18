@@ -1,15 +1,15 @@
 class role::cache::text {
 
     system::role { 'cache::text':
-        description => 'text Varnish/ATS cache server',
+        description => 'text HAProxy/Varnish/ATS cache server',
     }
     include ::profile::base::production
     include ::profile::cache::base
+    include ::profile::cache::haproxy
     include ::profile::cache::varnish::frontend
     include ::profile::prometheus::varnish_exporter
     include ::profile::cache::varnish::frontend::text
     include ::profile::trafficserver::backend
-    include ::profile::trafficserver::tls
 
     # varnishkafka statsv listens for special stats related requests
     # and sends them to the 'statsv' topic in Kafka. A kafka consumer

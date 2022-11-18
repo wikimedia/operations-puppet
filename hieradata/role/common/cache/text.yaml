@@ -165,10 +165,10 @@ cache::alternate_domains:
         caching: 'pipe'
   superset.wikimedia.org:
     caching: 'normal'
-  tendril.wikimedia.org:
-    caching: 'pass'
   superset-next.wikimedia.org:
     caching: 'normal'
+  tendril.wikimedia.org:
+    caching: 'pass'
   thanos.wikimedia.org:
     caching: 'pass'
   ticket.wikimedia.org:
@@ -259,7 +259,6 @@ prometheus::varnishkafka_exporter::config:
     - 'varnishkafka'
 
   num_entries_to_get: 2
-profile::trafficserver::tls::websocket_support: true
 
 # Default weights for conftool
 profile::cache::base::default_weights:
@@ -267,17 +266,14 @@ profile::cache::base::default_weights:
   ats-tls: 1
   ats-be: 100
 
-profile::trafficserver::tls::extra_certs:
+profile::cache::haproxy::extra_certificates:
   wikiworkshop:
-    acme_chief: true
-    cert_files: ['acmecerts/wikiworkshop/live/rsa-2048.chained.crt', 'acmecerts/wikiworkshop/live/ec-prime256v1.chained.crt']
-    private_key_files: ['acmecerts/wikiworkshop/live/rsa-2048.key', 'acmecerts/wikiworkshop/live/ec-prime256v1.key']
-    ocsp_stapling_files: ['acmecerts/wikiworkshop/live/rsa-2048.ocsp', 'acmecerts/wikiworkshop/live/ec-prime256v1.ocsp']
-    default: false
-    common_name: 'wikiworkshop.org'
-    sni: [
-      'wikiworkshop.org', 'www.wikiworkshop.org'
-    ]
+    cert_paths:
+      - /etc/acmecerts/wikiworkshop/live/rsa-2048.chained.crt.key
+      - /etc/acmecerts/wikiworkshop/live/ec-prime256v1.chained.crt.key
+    server_names:
+      - wikiworkshop.org
+      - www.wikiworkshop.org
     warning_threshold: 21
     critical_threshold: 15
 profile::lvs::realserver::pools:
