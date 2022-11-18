@@ -5,7 +5,6 @@ profile::dumps::rsync_internal_clients:
   - mwlog1002.eqiad.wmnet
   - mwlog2002.codfw.wmnet
   - phab1004.eqiad.wmnet
-  - phab1001.eqiad.wmnet
   - dumpsdata1001.eqiad.wmnet
   - dumpsdata1002.eqiad.wmnet
   - dumpsdata1003.eqiad.wmnet
