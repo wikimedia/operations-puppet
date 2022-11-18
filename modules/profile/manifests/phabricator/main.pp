@@ -587,4 +587,16 @@ class profile::phabricator::main (
         group  => 'root',
         mode   => '0550',
     }
+
+    # mysql read access for phab admins, in production (T238425)
+    if $::realm == 'production' {
+        $::admin::data['groups']['phabricator-admin']['members'].each |String $user| {
+            file { "/home/${user}/.my.cnf":
+                content => template('phabricator/my.cnf.erb'),
+                owner   => $user,
+                group   => 'root',
+                mode    => '0440',
+            }
+        }
+    }
 }
