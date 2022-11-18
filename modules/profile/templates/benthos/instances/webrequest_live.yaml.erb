@@ -27,7 +27,7 @@ pipeline:
   processors:
   - label: "drop"
     bloblang: |
-      root = if this.sequence != "-" && this.dt != "-" && this.sequence % env(SAMPLING).number() != 0 { deleted() }
+      root = if this.ip != "-" && this.sequence != "-" && this.dt != "-" && this.sequence % env("SAMPLING").number() != 0 { deleted() }
 
   - label: "geoip"
     bloblang: |
