@@ -16,7 +16,7 @@
 # @param peeringdb_temp_dir a temp directory to use for peeringdb cache
 # @param peeringdb_token_ro The perringdb readonly  token
 # @param firmware_store_dir The location to store firmware images
-class profile::spicerack(
+class profile::spicerack (
     String           $tcpircbot_host     = lookup('tcpircbot_host'),
     Stdlib::Port     $tcpircbot_port     = lookup('tcpircbot_port'),
     String           $http_proxy         = lookup('http_proxy'),
@@ -55,7 +55,7 @@ class profile::spicerack(
 
     # this directory is created by the debian package however we still manage it to force
     # an auto require on all files under it this directory
-    file {'/etc/spicerack':
+    file { '/etc/spicerack':
         ensure  => directory,
         owner   => 'root',
         group   => 'ops',
@@ -116,7 +116,7 @@ class profile::spicerack(
 
     # Elasticsearch cluster configuration
     $elasticsearch_config_data = {
-      'search' => {
+    'search'                                          => {
         'search_eqiad' => {
           'production-search-eqiad' => 'https://search.svc.eqiad.wmnet:9243',
           'production-search-omega-eqiad' => 'https://search.svc.eqiad.wmnet:9443',
@@ -137,7 +137,7 @@ class profile::spicerack(
           'cloudelastic-psi-https' => 'https://cloudelastic.wikimedia.org:9643',
         },
       },
-      'logging' => {
+    'logging'                                         => {
           'logging-eqiad' => 'http://logstash1010.eqiad.wmnet:9200',
           'logging-codfw' => 'http://logstash2001.codfw.wmnet:9200',
       },
@@ -145,7 +145,7 @@ class profile::spicerack(
 
     # Install all configuration files
     # Semicolon needed for https://tickets.puppetlabs.com/browse/PUP-10782
-    ;{
+    ; {
         'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data },
         'ganeti' => { 'config.yaml' => $ganeti_auth_data },
         'kafka' => { 'config.yaml' => $kafka_config_data },
@@ -180,14 +180,16 @@ class profile::spicerack(
         mode   => '0550',
     }
 
-    wmflib::dir::mkdir_p($firmware_store_dir)
+    wmflib::dir::mkdir_p($firmware_store_dir, {
+        group => 'datacenter-ops',
+        mode  => '2775',
+    })
     file { '/etc/spicerack/cookbooks/sre.hardware.upgrade-firmware.yaml':
         ensure  => file,
         content => {
             'firmware_store' => $firmware_store_dir,
         }.to_yaml,
     }
-
 
     file { '/etc/spicerack/cookbooks/sre.network.cf.yaml':
         ensure  => file,
