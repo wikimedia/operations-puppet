@@ -623,6 +623,8 @@ region_name = <%= @region %>
 user_domain_id = default
 username = magnum
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
+service_token_roles = admin, service
+service_token_roles_required = true
 
 # Some magnum code expects this to be available under the legacy
 #  names, so we duplicate things here:

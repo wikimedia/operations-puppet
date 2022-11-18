@@ -137,8 +137,8 @@ project_name = admin
 region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
-# We want this but need to figure out about service roles first
-#service_token_roles_required = True
+service_token_roles = admin, service
+service_token_roles_required = true
 
 #-----------------------
 # Sink Service

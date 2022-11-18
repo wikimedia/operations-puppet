@@ -369,6 +369,8 @@ region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
+service_token_roles = admin, service, projectadmin
+service_token_roles_required = true
 
 
 [service_credentials]

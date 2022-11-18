@@ -119,8 +119,8 @@ project_name = admin
 username = novaadmin
 password = <%= @ldap_user_pass %>
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
-# We want this but need to figure out about service roles first
-#service_token_roles_required = True
+service_token_roles = admin, service
+service_token_roles_required = true
 
 
 [oslo_messaging_rabbit]
