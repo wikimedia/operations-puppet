@@ -169,6 +169,7 @@ profile::kubernetes::deployment_server::services:
         - name: toolhub
         - name: toolhub-deploy
     apple-search:
+      ensure: absent
       usernames:
         - name: apple-search
         - name: apple-search-deploy
