@@ -22,7 +22,7 @@ class profile::pki::server(
     Hash[String, Cfssl::Profile]  $root_ca_profiles = lookup('profile::pki::server::root_ca_profiles'),
     Hash[String, Cfssl::Profile]  $default_profiles = lookup('profile::pki::server::default_profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys        = lookup('profile::pki::server::auth_keys'),
-    Hash[String, Hash]            $intermediates    = lookup('profile::pki::server::intermediates'),
+    Hash[Cfssl::Ca_name, Hash]    $intermediates    = lookup('profile::pki::server::intermediates'),
 ) {
     $crl_base_url = "http://${vhost}/crl"
     $ocsp_base_url = "http://${vhost}/ocsp"

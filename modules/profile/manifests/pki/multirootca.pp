@@ -31,7 +31,7 @@ class profile::pki::multirootca (
     Sensitive[String[1]]          $db_pass            = lookup('profile::pki::multirootca::db_pass'),
     String                        $db_name            = lookup('profile::pki::multirootca::db_name'),
     Stdlib::Host                  $db_host            = lookup('profile::pki::multirootca::db_host'),
-    String                        $root_ca_cn         = lookup('profile::pki::multirootca::root_ca_cn'),
+    Cfssl::Ca_name                $root_ca_cn         = lookup('profile::pki::multirootca::root_ca_cn'),
     String                        $root_ca_cert       = lookup('profile::pki::multirootca::root_ca_cert'),
     String                        $root_ocsp_cert     = lookup('profile::pki::multirootca::root_ocsp_cert'),
     String                        $root_ocsp_key      = lookup('profile::pki::multirootca::root_ocsp_key'),
@@ -48,7 +48,7 @@ class profile::pki::multirootca (
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
-    Hash[String, Profile::Pki::Intermediate] $intermediates = lookup('profile::pki::multirootca::intermediates'),
+    Hash[Cfssl::Ca_name, Profile::Pki::Intermediate] $intermediates = lookup('profile::pki::multirootca::intermediates'),
 ) {
     # we need to include this as we use some of the variables
     include cfssl  # lint:ignore:wmf_styleguide

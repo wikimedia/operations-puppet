@@ -24,7 +24,7 @@ class profile::pki::client (
     Stdlib::IP::Address          $listen_addr            = lookup('profile::pki::client::listen_addr'),
     Stdlib::Port                 $listen_port            = lookup('profile::pki::client::listen_port'),
     Stdlib::Filesource           $bundles_source         = lookup('profile::pki::client::bundles_source'),
-    String                       $root_ca_cn             = lookup('profile::pki::client::root_ca_cn'),
+    Cfssl::Ca_name               $root_ca_cn             = lookup('profile::pki::client::root_ca_cn'),
     Optional[Stdlib::Filesource] $root_ca_source         = lookup('profile::pki::client::root_ca_source'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_key  = lookup('profile::pki::client::mutual_tls_client_key'),

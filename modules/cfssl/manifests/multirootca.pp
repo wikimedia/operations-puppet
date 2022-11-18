@@ -9,14 +9,14 @@
 # @param tls_cert path to the tls public cert used for client auth if any
 # @param tls_key path to the tls private key used for client auth if any
 class cfssl::multirootca (
-    Wmflib::Ensure                  $ensure              = 'present',
-    Stdlib::Host                    $host                = '127.0.0.1',
-    Stdlib::Port                    $port                = 8888,
-    Boolean                         $enable_monitoring   = false,
-    Boolean                         $monitoring_critical = false,
-    Hash[String, Cfssl::CA::Config] $signers             = {},
-    Optional[Stdlib::Unixpath]      $tls_cert            = undef,
-    Optional[Stdlib::Unixpath]      $tls_key             = undef,
+    Wmflib::Ensure             $ensure               = 'present',
+    Stdlib::Host               $host                 = '127.0.0.1',
+    Stdlib::Port               $port                 = 8888,
+    Boolean                    $enable_monitoring    = false,
+    Boolean                    $monitoring_critical  = false,
+    Optional[Stdlib::Unixpath] $tls_cert             = undef,
+    Optional[Stdlib::Unixpath] $tls_key              = undef,
+    Hash[Cfssl::Ca_name, Cfssl::CA::Config] $signers = {},
 ) {
     include cfssl
     $config_file = "${cfssl::conf_dir}/multiroot.conf"

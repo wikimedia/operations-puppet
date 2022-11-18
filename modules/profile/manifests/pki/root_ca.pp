@@ -16,7 +16,7 @@
 #   created however you will need to manually copy the created certificate to the puppet repo
 # @param bootstrap Whether or not to attempt to bootstrap the root CA
 class profile::pki::root_ca(
-    String                        $common_name    = lookup('profile::pki::root_ca::common_name'),
+    Cfssl::Ca_name                $common_name    = lookup('profile::pki::root_ca::common_name'),
     String                        $vhost          = lookup('profile::pki::root_ca::vhost'),
     Array[Cfssl::Name]            $names          = lookup('profile::pki::root_ca::names'),
     Cfssl::Key                    $key_params     = lookup('profile::pki::root_ca::key_params'),
@@ -27,7 +27,7 @@ class profile::pki::root_ca(
     Stdlib::Host                  $db_host        = lookup('profile::pki::root_ca::db_host'),
     Hash[String, Cfssl::Profile]  $profiles       = lookup('profile::pki::root_ca::profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys      = lookup('profile::pki::root_ca::auth_keys'),
-    Array[String[3]]              $intermediates  = lookup('profile::pki::root_ca::intermediates'),
+    Array[Cfssl::Ca_name]         $intermediates  = lookup('profile::pki::root_ca::intermediates'),
     Boolean                       $bootstrap      = lookup('profile::pki::root_ca::bootstrap'),
 ) {
     $safe_title   = $common_name.regsubst('\W', '_', 'G')

@@ -15,7 +15,7 @@ define cfssl::cert (
     Boolean                        $provide_chain  = false,
     # We need this because the puppet CA cert used for TLS mutual auth has no SAN
     Array[String]                  $environment    = ['GODEBUG=x509ignoreCN=0'],
-    Optional[String]               $label          = undef,
+    Optional[Cfssl::Ca_name]       $label          = undef,
     Optional[String]               $profile        = undef,
     Optional[String]               $notify_service = undef,
     Optional[Stdlib::Unixpath]     $outdir         = undef,
