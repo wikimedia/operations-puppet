@@ -1,2 +1,2 @@
 profile::graphite::base::cluster_servers:
-  - graphite2003.codfw.wmnet
+  - graphite2004.codfw.wmnet
