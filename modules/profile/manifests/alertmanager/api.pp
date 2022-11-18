@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Provision an apache virtualhost to reverse-proxy AM API access
 
 class profile::alertmanager::api (

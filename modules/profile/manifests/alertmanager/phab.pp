@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::alertmanager::phab (
     Stdlib::HTTPSUrl $url = lookup('profile::alertmanager::phab::url'),
     String $username  = lookup('profile::alertmanager::phab::username'),

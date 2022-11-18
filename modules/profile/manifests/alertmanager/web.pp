@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # enable_sso is used to disable sso in cloud
 
 class profile::alertmanager::web (
