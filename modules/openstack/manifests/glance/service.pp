@@ -12,6 +12,7 @@ class openstack::glance::service(
     Stdlib::Port $api_bind_port,
     String $ceph_pool,
     $glance_backends,
+    Array[Stdlib::Fqdn] $openstack_controllers,
 ) {
 
     class { "openstack::glance::service::${version}":
@@ -26,6 +27,7 @@ class openstack::glance::service(
         api_bind_port         => $api_bind_port,
         glance_backends       => $glance_backends,
         ceph_pool             => $ceph_pool,
+        openstack_controllers => $openstack_controllers,
     }
 
     file { $glance_data_dir:

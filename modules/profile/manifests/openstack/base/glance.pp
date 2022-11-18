@@ -33,6 +33,7 @@ class profile::openstack::base::glance(
         api_bind_port         => $api_bind_port,
         glance_backends       => $glance_backends,
         ceph_pool             => $ceph_pool,
+        openstack_controllers => $openstack_controllers,
     }
     contain '::openstack::glance::service'
 
