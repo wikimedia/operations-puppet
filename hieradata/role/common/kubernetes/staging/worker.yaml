@@ -33,3 +33,5 @@ profile::kubernetes::node::prometheus_url: http://prometheus.svc.%{::site}.wmnet
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   k8s-ingress-staging: {}
+
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause:k8s_116'

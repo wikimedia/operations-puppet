@@ -71,3 +71,4 @@ profile::rsyslog::kubernetes::enable: true
 # profile::rsyslog::kubernetes::token
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.%{::site}.wmnet:6443
 profile::kubernetes::master_fqdn: kubestagemaster.svc.%{::site}.wmnet
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause:k8s_116'

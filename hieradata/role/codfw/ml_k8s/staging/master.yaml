@@ -25,3 +25,5 @@ profile::calico::kubernetes::bgp_peers:
 profile::kubernetes::cluster_cidr:
   v4: "10.194.61.0/24"
   v6: "2620:0:860:302::/64"
+
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause:k8s_116'
