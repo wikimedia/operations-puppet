@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class profile::keyholder::server
 #
 # Sets up the keyholder agents on a server.

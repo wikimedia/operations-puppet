@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Interact with ripe atlas API from command line
 class profile::netops::ripeatlas::cli (
     String $http_proxy = lookup('http_proxy'),

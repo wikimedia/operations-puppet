@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Sets up a puppetdb postgresql database.
 #
 # @param master The primary db server

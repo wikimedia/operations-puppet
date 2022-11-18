@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::rpkivalidator
 #
 # This profile installs and configure a RPKI validator - T220669

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 role::mediawiki::canary_appserver:
   target-q: TBD
 role::mediawiki::appserver::canary_api:

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::resolving (
     Integer[1,30]       $timeout             = lookup('profile::resolving::timeout'),
     Integer[1,5]        $ndots               = lookup('profile::resolving::ndots'),

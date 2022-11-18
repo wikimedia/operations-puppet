@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 NODE_GROUPS=`/usr/sbin/gnt-group list --output name --no-headers`
 

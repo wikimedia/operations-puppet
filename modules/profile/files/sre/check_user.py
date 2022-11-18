@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """A simple example of how to access the Google Analytics API."""
 
 import json

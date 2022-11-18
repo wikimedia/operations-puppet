@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::pmacct
 # Sets up a pmacct passive monitoring deployment (http://www.pmacct.net/).
 # It can also produce statistics/data to kafka if configured.

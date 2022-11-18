@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure puppetdb
 # @param puppetmasters the list of puppetmasters
 # @param master the write instance

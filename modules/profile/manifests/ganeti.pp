@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class: profile::ganeti
 #
 # This profile configures Ganeti's keys, RAPI users, and configures

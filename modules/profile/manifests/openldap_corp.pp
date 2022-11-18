@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openldap_corp (
     String $master             = lookup('profile::openldap_corp::master_server'),
     Integer $server_id         = lookup('profile::openldap_corp::server_id'),

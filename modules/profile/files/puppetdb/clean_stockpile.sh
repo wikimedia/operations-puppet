@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 PATH=/usr/bin
 MAX_SIZE=1000000 # 1GB
 QUEUE='/var/lib/puppetdb/stockpile/cmd/q'

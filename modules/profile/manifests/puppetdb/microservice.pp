@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 #
 class profile::puppetdb::microservice (
     Boolean             $enabled       = lookup('profile::puppetdb::microservice::enabled'),

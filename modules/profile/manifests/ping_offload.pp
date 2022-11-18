@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up the ping offload servers - T190090
 # == Parameters:
 # [*target_ips*]

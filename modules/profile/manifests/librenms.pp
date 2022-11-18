@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # http://www.librenms.org/ | https://github.com/librenms/librenms
 
 # $active_server

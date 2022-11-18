@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Proxy access to PuppetDB.
 
 Provides a secure proxy to PuppetDB that exposes only non-sensitive

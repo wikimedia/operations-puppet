@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # server running "Request Tracker"
 # https://bestpractical.com/request-tracker
 class profile::requesttracker {

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::sre::os_updates
 #
 # Installs a script to track the status of OS upgrades across our fleet

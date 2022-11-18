@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """
 NRPE script to search puppetdb to find all hosts which perform a puppet change on
 every puppet agent run

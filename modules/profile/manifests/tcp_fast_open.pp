@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::tcp_fast_open {
     # Enable client/server TCP Fast Open (TFO)
     #

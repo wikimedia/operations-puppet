@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to install a script for validating user email addresses
 # @param super_admin the support admin account to impersonate
 # @param service_file_source the location in the secret module of the service account json file
