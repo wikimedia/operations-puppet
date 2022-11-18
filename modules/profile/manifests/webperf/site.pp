@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::webperf::site
 #
 # This profile provisions <https://performance.wikimedia.org>,

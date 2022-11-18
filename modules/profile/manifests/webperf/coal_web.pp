@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::webperf::coal_web
 #
 # Provision the coal_web service on a webperf node.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::webperf::processors
 #
 # Provision the webperf data processors. Consumes from Kafka (incl. EventLogging),

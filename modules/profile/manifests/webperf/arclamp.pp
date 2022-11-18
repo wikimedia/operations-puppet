@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::webperf::arclamp
 #
 # Provision Arc Lamp, which processes PHP stack traces and generates
