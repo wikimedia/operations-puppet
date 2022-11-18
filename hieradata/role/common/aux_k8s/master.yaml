@@ -2,7 +2,6 @@ cluster: 'aux-k8s'
 profile::kubernetes::master::cluster_group: 'aux-k8s'
 profile::kubernetes::master::accessible_to: 'all'
 profile::kubernetes::master::allow_privileged: true
-profile::kubernetes::master::packages_from_future: true
 profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/aux-k8s-ctrl.svc.%{::site}.wmnet.crt"
@@ -17,8 +16,6 @@ profile::kubernetes::master::admission_plugins:
     - 'StorageObjectInUseProtection'
     - 'PersistentVolumeClaimResize'
 
-profile::kubernetes::client::packages_from_future: true
-
 profile::lvs::realserver::pools:
   aux-k8s-ctrl:
     services:
@@ -29,9 +26,6 @@ profile::lvs::realserver::pools:
 profile::kubernetes::node::kubelet_node_taints:
   - key: node-role.kubernetes.io/master
     effect: NoSchedule
-profile::kubernetes::node::packages_from_future: true
-profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
-profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::kubernetes::master_fqdn: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
 
