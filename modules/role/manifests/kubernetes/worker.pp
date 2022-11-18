@@ -8,6 +8,8 @@ class role::kubernetes::worker {
     include profile::dragonfly::dfdaemon
     # Setup kubernetes stuff
     include profile::kubernetes::node
+    # Set up mediawiki-related stuff
+    include profile::kubernetes::mediawiki_runner
     # Setup calico
     include profile::calico::kubernetes
     # Setup LVS
