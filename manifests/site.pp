@@ -473,7 +473,7 @@ node /^cp50(0[23456]|1[34]|3[2])\.eqsin\.wmnet$/ {
 }
 
 # HAProxy test - T290005
-node /^cp50(0[7-9]|1[01256])\.eqsin\.wmnet$/ {
+node /^cp50(0[7-9]|1[012567])\.eqsin\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
