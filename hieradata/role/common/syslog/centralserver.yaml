@@ -27,9 +27,20 @@ profile::benthos::use_geoip: false
 profile::benthos::instances:
   webrequest_live:
     port: 4151
+    # A note on sampling: since varnishkafka produces webrequest messages/events
+    # randomly to the various webrequest partitions, it makes sense to avoid
+    # pulling data from 24 webrequest_text and 24 webrequest_upload partitions,
+    # since a smaller set would be equally representative.
+    # The target sampling is 1/128th of the overall data, so if we read less
+    # partitions we'll also need to adjust the sampling. To calculate
+    # the sampling value use the selected number of partitions (per topic!):
+    # 128 / (24 / #partitions)
+    # The partition range is specified below in the topic list.
+    env_variables:
+      - sampling: 64
     kafka:
       cluster: jumbo
       site: eqiad
       topics:
-      - webrequest_text
-      - webrequest_upload
+      - "webrequest_text:0-11"
+      - "webrequest_upload:0-11"
