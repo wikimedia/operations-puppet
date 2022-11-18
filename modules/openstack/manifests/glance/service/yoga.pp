@@ -8,7 +8,7 @@ class openstack::glance::service::yoga(
     $glance_data_dir,
     $ldap_user_pass,
     $keystone_admin_uri,
-    $keystone_public_uri,
+    $keystone_internal_uri,
     Stdlib::Port $api_bind_port,
     Array[String] $glance_backends,
     String $ceph_pool,

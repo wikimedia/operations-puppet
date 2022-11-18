@@ -301,7 +301,7 @@ image_cache_dir = /var/lib/glance/image-cache/
 
 [keystone_authtoken]
 auth_type = password
-auth_uri = <%= @keystone_public_uri %>
+www_authenticate_uri = <%= @keystone_internal_uri %>
 auth_url = <%= @keystone_admin_uri %>
 password = <%= @ldap_user_pass %>
 project_domain_id = default
