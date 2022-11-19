@@ -20,6 +20,7 @@ eqsin:
     cp5006.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5013.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5014.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp5028.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5032.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
   ncredir:
     ncredir5001.eqsin.wmnet: [nginx]

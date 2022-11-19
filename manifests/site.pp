@@ -468,7 +468,7 @@ node /^cp40(3[789]|4[01234])\.ulsfo.wmnet$/ {
 #
 
 # HAProxy test T290005
-node /^cp50(0[23456]|1[34]|3[2])\.eqsin\.wmnet$/ {
+node /^cp50(0[23456]|1[34]|2[8]|3[2])\.eqsin\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
