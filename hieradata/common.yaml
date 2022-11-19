@@ -1403,6 +1403,8 @@ cache_hosts:
 - 2001:df2:e500:101:10:132:0:18  # cp5018.eqsin.wmnet
 - 10.132.0.19                    # cp5019.eqsin.wmnet
 - 2001:df2:e500:101:10:132:0:19  # cp5019.eqsin.wmnet
+- 10.132.0.24                    # cp5020.eqsin.wmnet
+- 2001:df2:e500:101:10:132:0:24  # cp5020.eqsin.wmnet
 - 10.132.0.16                    # cp5032.eqsin.wmnet
 - 2001:df2:e500:101:10:132:0:16  # cp5032.eqsin.wmnet
 - 10.136.0.6                     # cp6001.drmrs.wmnet
