@@ -6,6 +6,10 @@
 
 pushd /tmp/
 curl -L -O $DOWNLOAD_URL/znuny-$1.tar.gz
+if [[ $? -ne 0 ]]; then
+    echo "ERROR: Failed Downloading $DOWNLOAD_URL/znuny-$1.tar.gz"
+    exit 1
+fi
 sudo tar xfz znuny-$1.tar.gz -C /opt
 popd
 
