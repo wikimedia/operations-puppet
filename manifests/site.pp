@@ -459,7 +459,7 @@ node /^cp40(3[789]|4[01234])\.ulsfo.wmnet$/ {
 # eqsin caches
 #
 
-node /^cp50(0[23456]|1[34]|2[89]|3[02])\.eqsin\.wmnet$/ {
+node /^cp50(0[23456]|1[34]|2[89]|3[012])\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
 
