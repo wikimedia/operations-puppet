@@ -16,7 +16,8 @@ scap::dsh::scap_masters:
 
 scap::dsh::groups:
   kubernetes-workers:
-    - {'cluster': 'kubernetes', 'service': 'kubesvc'}
+    conftool:
+      - {'cluster': 'kubernetes', 'service': 'kubesvc'}
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
