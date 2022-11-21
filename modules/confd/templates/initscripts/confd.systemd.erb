@@ -16,9 +16,9 @@ Environment="CONFD_BACKEND=<%= @backend %>"
 Environment="CONFD_DISCOVERY=-node <%= @node %>"
 <%- else -%>
 <%- if @scheme == "https" -%>
-Environment="CONFD_DISCOVERY=-srv-record _etcd-client-ssl.<%= @srv_dns %> -scheme https"
+Environment="CONFD_DISCOVERY=-srv-record _etcd-client-ssl._tcp.<%= @srv_dns %> -scheme https"
 <%- else -%>
-Environment="CONFD_DISCOVERY=-srv-record _etcd-client.<%= @srv_dns %>"
+Environment="CONFD_DISCOVERY=-srv-record _etcd-client._tcp.<%= @srv_dns %>"
 <%- end -%>
 <%- end -%>
 Environment="CONFD_OPTS=<%= opts %>"
