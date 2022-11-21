@@ -103,7 +103,19 @@ class confd(
 
     # Cleanup stale confd errors
     # https://phabricator.wikimedia.org/T321678
-    tidy { '/var/run/confd-template':
+    $run_dir = '/var/run/confd-template'
+
+    # Force creation here to avoid the following spam from puppet:
+    # Info: /Stage[main]/Confd/Tidy[/var/run/confd-template]: File does not exist
+    # Normally confd creates the directory on errors
+    file { $run_dir:
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    tidy { $run_dir:
         age     => '30m',
         type    => 'mtime',
         recurse => true,
