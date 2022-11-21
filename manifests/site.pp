@@ -415,80 +415,68 @@ node /^(contint2002)\.wikimedia\.org$/ {
     role(insetup::serviceops)
 }
 
-# HAproxy test T290005
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
-    role(cache::text_haproxy)
+    role(cache::text)
 }
 
-# HAProxy test T290005
 node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
-    role(cache::upload_haproxy)
+    role(cache::upload)
 }
 
-# HAProxy test T290005
 node /^cp20(2[79]|3[13579]|41)\.codfw\.wmnet$/ {
-    role(cache::text_haproxy)
+    role(cache::text)
 }
 
-# HAProxy test T290005
 node /^cp20(28|3[02468]|4[02])\.codfw\.wmnet$/ {
-    role(cache::upload_haproxy)
+    role(cache::upload)
 }
 
 #
 # esams caches
 #
 
-# HAProxy test - T290005
 node /^cp30(5[02468]|6[024])\.esams\.wmnet$/ {
-    role(cache::text_haproxy)
+    role(cache::text)
 }
 
-# HAProxy test T290005
 node /^cp30(5[13579]|6[135])\.esams\.wmnet$/ {
-    role(cache::upload_haproxy)
+    role(cache::upload)
 }
 
 #
 # ulsfo caches
 #
 
-# HAProxy test
 node /^cp40(4[56789]|5[012])\.ulsfo\.wmnet$/ {
-    role(cache::upload_haproxy)
+    role(cache::upload)
 }
 
-# HAProxy test - T290005
 node /^cp40(3[789]|4[01234])\.ulsfo.wmnet$/ {
-    role(cache::text_haproxy)
+    role(cache::text)
 }
 
 #
 # eqsin caches
 #
 
-# HAProxy test T290005
 node /^cp50(0[23456]|1[34]|2[89]|3[2])\.eqsin\.wmnet$/ {
-    role(cache::upload_haproxy)
+    role(cache::upload)
 }
 
-# HAProxy test - T290005
 node /^cp50(0[7-9]|1[01256789]|2[0])\.eqsin\.wmnet$/ {
-    role(cache::text_haproxy)
+    role(cache::text)
 }
 
 #
 # cp drmrs nodes
 #
 
-# HAProxy test T290005
 node /^cp600[1-8]\.drmrs\.wmnet$/ {
-    role(cache::upload_haproxy)
+    role(cache::upload)
 }
 
-# HAProxy test T290005
 node /^cp60(09|1[0-6])\.drmrs\.wmnet$/ {
-    role(cache::text_haproxy)
+    role(cache::text)
 }
 
 node 'cumin1001.eqiad.wmnet' {
