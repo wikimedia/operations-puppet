@@ -66,7 +66,7 @@ END
 #echo "result_column_changes"
 result_column_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT CONCAT("https://phabricator.wikimedia.org/project/board/", prj.id) AS url, prj.name AS projectName, cl.name AS columnName, cltr.oldValue, cltr.newValue, usr.userName
+SELECT CONCAT("https://phabricator.wikimedia.org/project/board/", prj.id) AS url, usr.userName, prj.name AS projectName, cl.name AS columnName, cltr.oldValue, cltr.newValue
     FROM phabricator_project.project_columntransaction cltr
     JOIN phabricator_project.project prj
     JOIN phabricator_project.project_column pcl
