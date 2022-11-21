@@ -12,7 +12,7 @@ if [ -z "$1" ]; then
 fi
 IMAGE="$IMAGE_BASE_NAME:$1"
 echo "Pulling '$IMAGE'..."
-docker -c /var/lib/kubelet/ pull "$IMAGE"
+docker --config /var/lib/kubelet pull "$IMAGE"
 echo "Removing all mediawiki images but the last ${IMAGES_TO_KEEP}"
 # Our tags for the docker images are in YYYY-MM-DD-HH-MM-SS format, so we can rely on them
 # to get a consistent sorting.
