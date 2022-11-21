@@ -227,6 +227,24 @@ SELECT CONCAT("https://phabricator.wikimedia.org/W", dp.id) AS panel,
 END
 )
 
+#echo "result_dashboards"
+# see https://phabricator.wikimedia.org/T323471
+result_dashboards=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/dashboard/view/", d.id) AS dashboard,
+    d.phid,
+    u.userName AS author,
+    u.isDisabled AS disabled,
+    d.name AS dashboardName,
+    d.viewPolicy AS viewPolicy
+    FROM phabricator_dashboard.dashboard d
+    INNER JOIN phabricator_user.user u
+    WHERE d.authorPHID = u.phid
+    AND d.dateModified > (UNIX_TIMESTAMP() - 605300)
+    ORDER BY d.dateModified;
+END
+)
+
 #echo "result_portals"
 # see https://phabricator.wikimedia.org/T323477
 result_portals=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
@@ -439,6 +457,8 @@ ${result_workboard_column_triggers}
 DASHBOARD PANEL CHANGES WITHIN THE LAST 1 WEEK (to spam check):
 ${result_dashboard_panels}
 
+DASHBOARD CHANGES WITHIN THE LAST 1 WEEK (to spam check):
+${result_dashboards}
 
 PORTAL CHANGES WITHIN THE LAST 1 WEEK (to spam check):
 ${result_portals}
