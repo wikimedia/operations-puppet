@@ -3,7 +3,7 @@
 
 class pontoon::pki_root (
     Array[String[3]] $intermediates,
-    String $root_ca_name,
+    Cfssl::Ca_name $root_ca_name,
 ) {
     include cfssl  # lint:ignore:wmf_styleguide
 

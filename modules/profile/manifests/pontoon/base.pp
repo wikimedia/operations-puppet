@@ -6,6 +6,7 @@ class profile::pontoon::base (
     String  $provider   = lookup('profile::pontoon::provider', { default_value => 'cloud_vps' }),
     Boolean $sd_enabled = lookup('profile::pontoon::sd_enabled', { default_value => false }),
     Boolean $pki_enabled = lookup('profile::puppetmaster::pontoon::pki_enabled', { default_value => false }),
+    Cfssl::Ca_name $root_ca_name = lookup('profile::pki::root_ca::common_name', {'default_value' => ''}),
 ) {
     if $sd_enabled {
         include profile::pontoon::sd
@@ -44,14 +45,19 @@ class profile::pontoon::base (
     # when PKI isn't enabled)
     ensure_packages(['wmf-certificates'])
 
-    file { '/usr/share/ca-certificates/wikimedia/pontoon_puppet_ca.crt':
+    # This is cheeky but necessary to give that production look and feel:
+    # Replace the Puppet CA (and PKI) public certs with Pontoon's, since
+    # that's what the user expect (i.e. these two certs will 'just work')
+    # and the filenames must be compatible with what will work in production
+
+    file { '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.pem':
         ensure => present,
         source => '/var/lib/puppet/ssl/certs/ca.pem',
         notify => Exec['reconfigure-wmf-certificates'],
     }
 
-    if $pki_enabled {
-        file { '/usr/share/ca-certificates/wikimedia/pontoon_pki_ca.crt':
+    if $pki_enabled and $root_ca_name != '' {
+        file { "/usr/share/ca-certificates/wikimedia/${root_ca_name}":
             ensure  => present,
             content => file('/etc/pontoon/pki/ca.pem'),
             notify  => Exec['reconfigure-wmf-certificates'],
