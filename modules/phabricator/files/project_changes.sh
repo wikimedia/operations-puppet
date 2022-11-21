@@ -286,6 +286,7 @@ result_herald_rules=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_
     INNER JOIN phabricator_user.user u
     WHERE h.authorPHID = u.phid
     AND h.isDisabled = 0
+    AND h.ruleType = "personal"
     AND h.authorPHID NOT IN
         (SELECT trs.authorPHID FROM phabricator_maniphest.maniphest_transaction trs
         INNER JOIN phabricator_user.user u
@@ -430,7 +431,7 @@ ${result_parent_projects_without_desc}
 ${result_sub_projects_without_desc}
 
 
-ACTIVE HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
+ACTIVE PERSONAL HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
 ${result_herald_rules}
 
 
