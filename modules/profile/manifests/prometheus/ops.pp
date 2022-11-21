@@ -641,64 +641,41 @@ class profile::prometheus::ops (
     ]
 
     prometheus::class_config{ "cache_haproxy_tls_upload_${::site}":
-        dest             => "${targets_path}/cache_haproxy_tls_upload_${::site}.yaml",
-        class_name       => 'profile::cache::haproxy',
-        class_parameters => {
-          'extra_certificates' => undef,
-        },
-        port             => 9422,
-        labels           => {
+        dest       => "${targets_path}/cache_haproxy_tls_upload_${::site}.yaml",
+        class_name => 'profile::cache::varnish::frontend::upload',
+        port       => 9422,
+        labels     => {
           'layer'   => 'tls',
           'cluster' => 'cache_upload',
         }
     }
 
     prometheus::class_config{ "cache_haproxy_tls_mtail_upload_${::site}":
-        dest             => "${targets_path}/cache_haproxy_tls_mtail_upload_${::site}.yaml",
-        class_name       => 'profile::cache::haproxy',
-        class_parameters => {
-          'extra_certificates' => undef,
-        },
-        port             => 3906,
-        labels           => {
+        dest       => "${targets_path}/cache_haproxy_tls_mtail_upload_${::site}.yaml",
+        class_name => 'profile::cache::varnish::frontend::upload',
+        port       => 3906,
+        labels     => {
             'layer'   => 'tls',
             'cluster' => 'cache_upload',
         }
     }
 
-    # Remove after T323365 is done and fallback to class_name => role::cache::(text|upload)
-    $cache_haproxy_text_parameters = {
-      'wikiworkshop' =>  {
-        'cert_paths'         => [
-          '/etc/acmecerts/wikiworkshop/live/rsa-2048.chained.crt.key',
-          '/etc/acmecerts/wikiworkshop/live/ec-prime256v1.chained.crt.key',
-        ],
-        'server_names'       => [
-          'wikiworkshop.org',
-          'www.wikiworkshop.org',
-        ],
-        'warning_threshold'  => 21,
-        'critical_threshold' => 15,
-      }
-    }
-
+    # Fallback to class_name => role::cache::(text|upload) after T323365 is done
     prometheus::class_config{ "cache_haproxy_tls_text_${::site}":
-        dest             => "${targets_path}/cache_haproxy_tls_text_${::site}.yaml",
-        class_name       => 'profile::cache::haproxy',
-        class_parameters => $cache_haproxy_text_parameters,
-        port             => 9422,
-        labels           => {
+        dest       => "${targets_path}/cache_haproxy_tls_text_${::site}.yaml",
+        class_name => 'profile::cache::varnish::frontend::text',
+        port       => 9422,
+        labels     => {
           'layer'   => 'tls',
           'cluster' => 'cache_text',
         }
     }
 
     prometheus::class_config{ "cache_haproxy_tls_mtail_text_${::site}":
-        dest             => "${targets_path}/cache_haproxy_tls_mtail_text_${::site}.yaml",
-        class_name       => 'profile::cache::haproxy',
-        class_parameters => $cache_haproxy_text_parameters,
-        port             => 3906,
-        labels           => {
+        dest       => "${targets_path}/cache_haproxy_tls_mtail_text_${::site}.yaml",
+        class_name => 'profile::cache::varnish::frontend::text',
+        port       => 3906,
+        labels     => {
             'layer'   => 'tls',
             'cluster' => 'cache_text',
         }
