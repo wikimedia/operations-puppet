@@ -227,6 +227,25 @@ SELECT CONCAT("https://phabricator.wikimedia.org/W", dp.id) AS panel,
 END
 )
 
+#echo "result_portals"
+# see https://phabricator.wikimedia.org/T323477
+result_portals=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/portal/view/", dpo.id) AS portal,
+    dpo.phid,
+    u.userName AS author,
+    u.isDisabled AS userDisabled,
+    dpo.name AS panelName,
+    dpo.viewPolicy AS viewPolicy
+    FROM phabricator_dashboard.dashboard_portal dpo
+    INNER JOIN phabricator_dashboard.dashboard_portaltransaction dpot
+    INNER JOIN phabricator_user.user u
+    WHERE dpo.phid = dpot.objectPHID
+    AND dpot.authorPHID = u.phid
+    AND dpot.transactionType = "core:create"
+    AND dpo.dateModified > (UNIX_TIMESTAMP() - 605300);
+END
+)
+
 #echo "result_past_due_dates"
 # see https://phabricator.wikimedia.org/T249807
 result_past_due_dates=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
@@ -419,6 +438,10 @@ ${result_workboard_column_triggers}
 
 DASHBOARD PANEL CHANGES WITHIN THE LAST 1 WEEK (to spam check):
 ${result_dashboard_panels}
+
+
+PORTAL CHANGES WITHIN THE LAST 1 WEEK (to spam check):
+${result_portals}
 
 
 OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO:
