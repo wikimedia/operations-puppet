@@ -2,10 +2,10 @@
 # == Class scap::ferm
 # Allows ssh access from $DEPLOYMENT_HOSTS
 #
-class scap::ferm {
+class scap::ferm(Wmflib::Ensure $ensure = 'present') {
     # allow ssh from deployment hosts
     ferm::service { 'deployment-ssh':
-        ensure => present,
+        ensure => $ensure,
         proto  => 'tcp',
         port   => 'ssh',
         srange => '$DEPLOYMENT_HOSTS',
