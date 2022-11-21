@@ -164,9 +164,9 @@ role::bastionhost:
 role::elasticsearch::cloudelastic:
   target-q: TBD
   phab-task: 289135
-role::cache::upload_haproxy:
+role::cache::upload:
   target-q: TBD
-role::cache::text_haproxy:
+role::cache::text:
   target-q: TBD
 role::test:
   target-q: TBD
