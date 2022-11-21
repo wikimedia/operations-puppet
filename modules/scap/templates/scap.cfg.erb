@@ -80,6 +80,8 @@ k8s_releases_dir: <%= @k8s_releases_dir %>
 # Comma separated list of the clusters we will deploy to
 k8s_clusters: <%= @k8s_clusters.join(",") %>
 k8s_deployments_file: <%= @k8s_deployments_file %>
+# DSH group naming k8s nodes where we might run MediaWiki
+mw_k8s_nodes: kubernetes-workers
 <%- end -%>
 
 [eqiad.wmnet]
@@ -110,6 +112,7 @@ canary_dashboard_url: https://logstash.wikimedia.org
 #php7-admin-port: <%= @php7_admin_port %>
 mw_web_clusters: appserver,api_appserver,testserver,parsoid_php
 mediawiki_canary_swagger_url: https://en.wikipedia.org
+
 
 beta_only_config_files: wmf-config/CirrusSearch-labs.php
                         wmf-config/CommonSettings-labs.php
@@ -174,10 +177,10 @@ delay_messageblobstore_purge: true
 # More importantly, they do still revalidate opcache and they're excluded from restarts during a sync.
 [mwmaint1002.eqiad.wmnet]
 php_fpm_always_restart: False
-php_fpm_unsafe_restart_script: 
-php_fpm_restart_script: 
+php_fpm_unsafe_restart_script:
+php_fpm_restart_script:
 
 [mwmaint2002.codfw.wmnet]
 php_fpm_always_restart: False
-php_fpm_unsafe_restart_script: 
-php_fpm_restart_script: 
+php_fpm_unsafe_restart_script:
+php_fpm_restart_script:
