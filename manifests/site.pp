@@ -210,11 +210,11 @@ node 'arclamp1001.eqiad.wmnet' {
 }
 # Analytics Query Service
 node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet/ {
-    role(aqs_next)
+    role(aqs)
 }
 
 node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet/ {
-    role(aqs_next)
+    role(aqs)
 }
 
 # New Archiva host on Buster

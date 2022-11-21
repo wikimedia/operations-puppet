@@ -66,8 +66,7 @@ class profile::prometheus::analytics (
         'scrape_timeout'  => '25s',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/jmx_aqs_cassandra_*.yaml",
-                          "${targets_path}/jmx_aqs_next_cassandra_*.yaml" ]
+          { 'files' => [ "${targets_path}/jmx_aqs_cassandra_*.yaml" ]
           }
         ],
         # Drop restbase table/cf 'meta' metrics, not needed
@@ -185,11 +184,6 @@ class profile::prometheus::analytics (
     prometheus::jmx_exporter_config{ "cassandra_aqs_${::site}":
         dest       => "${targets_path}/jmx_aqs_cassandra_${::site}.yaml",
         class_name => 'role::aqs',
-    }
-
-    prometheus::jmx_exporter_config{ "cassandra_aqs_next_${::site}":
-        dest       => "${targets_path}/jmx_aqs_next_cassandra_${::site}.yaml",
-        class_name => 'role::aqs_next',
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_analytics_${::site}":

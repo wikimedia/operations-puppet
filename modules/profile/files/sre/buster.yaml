@@ -149,9 +149,6 @@ role::analytics_cluster::airflow::platform_eng_legacy:
 role::aqs:
   target-q: TBD
   phab-task: 288804
-role::aqs_next:
-  target-q: TBD
-  phab-task: 288804
 role::bastionhost:
   target-q: TBD
 role::elasticsearch::cloudelastic:
