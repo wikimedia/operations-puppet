@@ -15,6 +15,8 @@ scap::dsh::scap_masters:
   - "deploy2002.codfw.wmnet"
 
 scap::dsh::groups:
+  kubernetes-workers:
+    - {'cluster': 'kubernetes', 'service': 'kubesvc'}
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
