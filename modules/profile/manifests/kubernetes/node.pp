@@ -3,7 +3,7 @@ class profile::kubernetes::node (
     K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
-    String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause' }),
+    String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause:k8s_116' }),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
     Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', { default_value => '/etc/kubernetes/kubelet_config' }),
     Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', { default_value => '/etc/kubernetes/kubeproxy_config' }),
