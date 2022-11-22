@@ -19,8 +19,6 @@ class profile::swift::storage::configure_disks (
             }
         }
     }
-    ensure_packages(['xfsprogs', 'parted'])
-
     # TODO: why start at 1M, copied from swift::init_device
     $parted_script = 'mklabel gpt mkpart primary 1M 100%'
     $facts['swift_disks']['objects'].each |$idx, $drive| {
