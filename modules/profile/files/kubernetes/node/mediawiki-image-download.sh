@@ -19,4 +19,4 @@ echo "Removing all mediawiki images but the last ${IMAGES_TO_KEEP}"
 # Please note that as of today `docker image ls` will return the results in the same order.
 TO_REMOVE=$(docker image ls --format "{{.Tag}}\t{{.ID}}" "$IMAGE_BASE_NAME" | sort -r | awk '{print $2}' | tail -n +${IMAGES_TO_KEEP} | sort -u)
 # Please note, we don't double quote TO_REMOVE at the end of the line on purpose
-test -n "$TO_REMOVE" && docker rmi $TO_REMOVE
+test -n "$TO_REMOVE" && docker rmi $TO_REMOVE || /bin/true
