@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
+# @summary swift mount_point 
+# @param mount_point_override explicitly set the mount oint
 define swift::mount_filesystem (
-    $mount_base = '/srv/swift-storage',
-){
+    Optional[Stdlib::Unixpath] $mount_point_override = undef,
+) {
+    $mount_base = '/srv/swift-storage'
     $dev         = $title
     $dev_suffix  = regsubst($dev, '^\/dev\/(.*)$', '\1')
-    $mount_point = "${mount_base}/${dev_suffix}"
+    $mount_point = $mount_point_override.lest || { "${mount_base}/${dev_suffix}" }
 
     # When the filesystem is _not_ mounted, its mountpoint permissions must not
     # allow 'swift' to write to it. Conversely, when the filesystem is mounted

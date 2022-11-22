@@ -15,7 +15,7 @@ class profile::swift::storage::configure_disks (
             $partition_path = "/dev/disk/by-path/${partition}"
             $mount_point = "${swift_storage_dir}/${$storage_type}${idx}"
             swift::mount_filesystem { $partition_path:
-                mount_point => $mount_point,
+                mount_point_override => $mount_point,
             }
         }
     }
@@ -42,8 +42,8 @@ class profile::swift::storage::configure_disks (
         }
         $mount_point = "${swift_storage_dir}/objects${idx}"
         swift::mount_filesystem { $partition_path:
-            mount_point => $mount_point,
-            require     => Exec["mkfs-${drive}"],
+            mount_point_override => $mount_point,
+            require              => Exec["mkfs-${drive}"],
         }
     }
 }
