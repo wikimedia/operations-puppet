@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary swift mount_point 
 # @param mount_point_override explicitly set the mount oint
+# @param use_label if true use a mount point label otherwise use the full title
 define swift::mount_filesystem (
     Optional[Stdlib::Unixpath] $mount_point_override = undef,
+    Boolean                    $use_label = true
 ) {
     $mount_base = '/srv/swift-storage'
-    $dev         = $title
-    $dev_suffix  = regsubst($dev, '^\/dev\/(.*)$', '\1')
+    $dev_suffix  = regsubst($title, '^\/dev\/(.*)$', '\1')
     $mount_point = $mount_point_override.lest || { "${mount_base}/${dev_suffix}" }
+    $device = $use_label.bool2str("LABEL=swift-${dev_suffix}", $title)
 
     # When the filesystem is _not_ mounted, its mountpoint permissions must not
     # allow 'swift' to write to it. Conversely, when the filesystem is mounted
@@ -48,7 +50,7 @@ define swift::mount_filesystem (
         # it would conflict with swift-drive-auditor trying to keep FS
         # unmounted.
         ensure   => present,
-        device   => "LABEL=swift-${dev_suffix}",
+        device   => $device,
         name     => $mount_point,
         fstype   => 'xfs',
         options  => $mount_options,

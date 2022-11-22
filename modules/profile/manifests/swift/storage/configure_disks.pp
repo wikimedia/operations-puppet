@@ -13,8 +13,9 @@ class profile::swift::storage::configure_disks (
         }
         $facts['swift_disks'][$storage_type].sort.each |$idx, $partition| {
             $partition_path = "/dev/disk/by-path/${partition}"
-            $mount_point = "${swift_storage_dir}/${$storage_type}${idx}"
+            $mount_point = "${swift_storage_dir}${$storage_type}${idx}"
             swift::mount_filesystem { $partition_path:
+                use_label            => false,
                 mount_point_override => $mount_point,
             }
         }
@@ -24,7 +25,7 @@ class profile::swift::storage::configure_disks (
     $facts['swift_disks']['objects'].each |$idx, $drive| {
         $device_path = "/dev/disk/by-path/${drive}"
         $partition_path = "${device_path}-part1"
-        $swift_path = "${swift_storage_dir}/${drive}-part1"
+        $swift_path = "${swift_storage_dir}${drive}-part1"
 
         exec { "parted-${drive}":
             command => "/usr/sbin/parted --script --align optimal ${device_path} -- ${parted_script}",
@@ -40,8 +41,9 @@ class profile::swift::storage::configure_disks (
                 Exec["parted-${drive}"],
             ],
         }
-        $mount_point = "${swift_storage_dir}/objects${idx}"
+        $mount_point = "${swift_storage_dir}objects${idx}"
         swift::mount_filesystem { $partition_path:
+            use_label            => false,
             mount_point_override => $mount_point,
             require              => Exec["mkfs-${drive}"],
         }
