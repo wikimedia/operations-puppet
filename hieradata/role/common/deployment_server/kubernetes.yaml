@@ -286,6 +286,8 @@ profile::kubernetes::deployment_server::general:
     # envoy
     tls:
       image_version: 1.18.3-1
+    mesh:
+      image_version: 1.18.3-1
     # prometheus-statsd-exporter
     monitoring:
       image_version: 0.0.10
