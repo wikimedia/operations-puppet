@@ -1912,34 +1912,6 @@ class profile::prometheus::ops (
         }
     }
 
-    # Jobs maintained by perf-team:
-    $webperf_jobs = [
-      {
-        'job_name'        => 'webperf_navtiming',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/webperf_navtiming_*.yaml" ]}
-        ],
-      }, {
-        'job_name'        => 'webperf_arclamp',
-        'scheme'          => 'http',
-        'metrics_path'    => '/arclamp/metrics',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/webperf_arclamp_*.yaml" ]}
-        ],
-      },
-    ]
-    prometheus::class_config{ "webperf_navtiming_${::site}":
-        dest       => "${targets_path}/webperf_navtiming_${::site}.yaml",
-        class_name => 'profile::webperf::processors',
-        port       => 9230,
-    }
-    prometheus::class_config{ "webperf_arclamp_${::site}":
-        dest       => "${targets_path}/webperf_arclamp_${::site}.yaml",
-        class_name => 'profile::webperf::arclamp',
-        port       => 80,
-    }
-
     $thanos_jobs = [
       {
         'job_name'        => 'thanos-query',
@@ -2321,7 +2293,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
+            $envoy_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,

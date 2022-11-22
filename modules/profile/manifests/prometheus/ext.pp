@@ -28,8 +28,8 @@ class profile::prometheus::ext (
         },
     }
 
-    # StatsD Exporter on webperf:
     $scrape_configs_extra = [
+        # StatsD Exporter on webperf
         {
             'job_name'        => 'statsv',
             'scheme'          => 'http',
@@ -37,11 +37,40 @@ class profile::prometheus::ext (
                 { 'files' => [ "${targets_path}/statsv_*.yaml" ]}
             ],
         },
+        # Jobs maintained by perf-team:
+        {
+            'job_name'        => 'webperf_navtiming',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/webperf_navtiming_*.yaml" ]}
+            ],
+        },
+        {
+            'job_name'        => 'webperf_arclamp',
+            'scheme'          => 'http',
+            'metrics_path'    => '/arclamp/metrics',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/webperf_arclamp_*.yaml" ]}
+            ],
+        },
     ]
+
     prometheus::class_config{ "statsv_${::site}":
         dest       => "${targets_path}/statsv_${::site}.yaml",
         class_name => 'profile::webperf::processors',
         port       => 9112,
+    }
+
+    prometheus::class_config{ "webperf_navtiming_${::site}":
+        dest       => "${targets_path}/webperf_navtiming_${::site}.yaml",
+        class_name => 'profile::webperf::processors',
+        port       => 9230,
+    }
+
+    prometheus::class_config{ "webperf_arclamp_${::site}":
+        dest       => "${targets_path}/webperf_arclamp_${::site}.yaml",
+        class_name => 'profile::webperf::arclamp',
+        port       => 80,
     }
 
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
