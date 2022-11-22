@@ -905,6 +905,10 @@ node 'dbprov1002.eqiad.wmnet' {
 node 'dbprov1003.eqiad.wmnet' {
     role(dbbackups::metadata)
 }
+# New dbprov node T321122
+node 'dbprov1004.eqiad.wmnet' {
+    role(insetup::data_persistence)
+}
 node 'dbprov2001.codfw.wmnet' {
     role(dbbackups::metadata)
 }
@@ -2519,6 +2523,11 @@ node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
 
 # New puppetdb node T317894
 node 'puppetdb2003.codfw.wmnet' {
+    role(insetup::infrastructure_foundations)
+}
+
+# New puppetdb node T317892
+node 'puppetdb1003.eqiad.wmnet' {
     role(insetup::infrastructure_foundations)
 }
 
