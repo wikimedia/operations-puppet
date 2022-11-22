@@ -41,7 +41,7 @@ class dumps::web::xmldumps(
 
     monitoring::service { 'http':
         description   => 'HTTP',
-        check_command => 'check_http',
+        check_command => 'check_http_port_status!80!403',
         contact_group => 'wmcs-team,admins',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#A_labstore_host_dies_(web_or_nfs_server_for_dumps)',
     }
