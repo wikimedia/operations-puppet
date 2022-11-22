@@ -58,9 +58,9 @@
     ServerAdmin noc@wikimedia.org
     DocumentRoot /usr/share/icinga/htdocs
 
-    RewriteEngine on
-    RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
+    <Location />
+        Require all denied
+    </Location>
 
     ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
     LogLevel warn
