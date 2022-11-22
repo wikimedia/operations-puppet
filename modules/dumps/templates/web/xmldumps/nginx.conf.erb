@@ -9,7 +9,7 @@ server {
    listen [::]:80 default ipv6only=off;
    server_name <%= @xmldumps_server %>;
 
-   return 301 https://<%= @xmldumps_server %>$request_uri;
+   return 403;
 }
 
 server {
