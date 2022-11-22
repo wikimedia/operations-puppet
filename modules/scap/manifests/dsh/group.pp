@@ -10,11 +10,15 @@
 define scap::dsh::group(
     Optional[Array[Stdlib::Fqdn]] $hosts = undef,
     Optional[Array] $conftool            = undef,
+    Optional[String] $pdb_query          = undef,
 ){
-
-    $host_list = $hosts ? {
-        undef   => lookup("scap::dsh::${title}", {'default_value' => []}),
-        default => $hosts,
+    if $pdb_query {
+        $host_list = query_nodes($pdb_query)
+    } else {
+        $host_list = $hosts ? {
+            undef   => lookup("scap::dsh::${title}", {'default_value' => []}),
+            default => $hosts,
+        }
     }
 
     if $conftool {
