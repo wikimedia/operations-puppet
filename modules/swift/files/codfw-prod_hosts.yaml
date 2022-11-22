@@ -2,6 +2,16 @@
 ---
 # yamllint disable rule:line-length
 schemes:
+  prod_ng:
+    objects: [objects0, objects1, objects2, objects3, objects4, objects5, objects6, objects7, objects8, objects9, objects10, objects11]
+    accounts: &accounts [accounts0, accounts1]
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 4000
+      accounts: 100
+      containers: 100
+      ssds: 311
   prod:
     objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1]
     accounts: &ap [sda3, sdb3]
@@ -24,6 +34,8 @@ schemes:
       ssds: 311
 
 hosts:
+  prod_ng:
+    - ms-be2050
   prod:
     - ms-be2040
     - ms-be2041
