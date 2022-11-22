@@ -60,6 +60,8 @@ profile::lvs::realserver::pools:
   linkrecommendation: {}
   tegola-vector-tiles: {}
   k8s-ingress-wikikube: {}
+  mw-api-ext: {}
+  mw-web: {}
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps']

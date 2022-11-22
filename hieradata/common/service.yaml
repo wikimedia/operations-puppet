@@ -1340,6 +1340,80 @@ service::catalog:
       - dnsdisc: mwdebug
         active_active: true
 
+  mw-web:
+    description: mw-web, mw-web.svc.discovery.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.75
+      eqiad:
+        default: 10.2.2.75
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    page: false
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
+    port: 4450
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery: &mw-web-disc
+      - dnsdisc: mw-web
+        active_active: false
+      - dnsdisc: mw-web-ro
+        active_active: true
+
+  mw-api-ext:
+    description: mw-api-ext, mw-api-ext.svc.discovery.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.76
+      eqiad:
+        default: 10.2.1.76
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    page: false
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
+    port: 4447
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery: &mw-api-ext-disc
+      - dnsdisc: mw-api-ext
+        active_active: false
+      - dnsdisc: mw-api-ext-ro
+        active_active: true
+
   ncredir:
     description: Non canonical domains redirect service
     encryption: false
