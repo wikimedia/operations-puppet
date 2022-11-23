@@ -116,4 +116,6 @@ class openstack::nova::compute::service(
         mode   => '0644',
         source => 'puppet:///modules/openstack/nova/kvm_intel.conf',
     }
+
+    profile::auto_restarts::service { 'virtlogd': }
 }
