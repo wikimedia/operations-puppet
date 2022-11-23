@@ -1936,11 +1936,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Appservers (serving normal website traffic)
 
-# New mw servers T306121
-node /^mw14(5[7-9]|6[0-9]|7[0-9]|8[0-9]|9[0-8])\.eqiad\.wmnet/ {
-    role(insetup::serviceops)
-}
-
 # Row A
 
 # rack A1
@@ -1987,6 +1982,11 @@ node /^mw1(39[3579]|40[13])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# rack B6
+node /^mw14(7[2-9]|8[01])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
 # Row C
 
 # rack C3
@@ -2012,6 +2012,11 @@ node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
 
 # rack D1
 node /^mw13(49|5[0-5])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# rack D1
+node /^mw148[78]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -2059,6 +2064,13 @@ node /^mw144([1-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# Row F
+node /^mw149[6-8]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+## Api servers
+
 # Row A
 
 # rack A6
@@ -2068,6 +2080,11 @@ node 'mw1312.eqiad.wmnet' {
 
 # rack A5
 node /^mw13(8[68]|9[02])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# rack A8
+node /^mw146[2-5]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -2088,6 +2105,11 @@ node /^mw1(39[468]|40[024])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
+# rack B6
+node /^mw147[01]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
 # Row C
 
 # rack C6
@@ -2097,6 +2119,11 @@ node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
 
 # rack C3
 node /^mw1406\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# rack C5
+node /^mw148[2-6]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -2116,6 +2143,11 @@ node /^mw14(4[7-9]|50)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
 
+# Row E
+node /^mw14(89|9[0-3])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
 
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
@@ -2133,6 +2165,11 @@ node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
+# rack A8
+node /^mw14(5[7-9]|6[01])\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
 # Row B
 
 # rack B5
@@ -2140,10 +2177,20 @@ node 'mw1318.eqiad.wmnet' {
     role(mediawiki::jobrunner)
 }
 
+# rack B6
+node /^mw146[6-9]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
 # Row C
 
 # rack C6
 node /^mw133[4-8]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Row F
+node /^mw149[45]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
