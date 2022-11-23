@@ -1370,7 +1370,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery: &mw-web-disc
       - dnsdisc: mw-web
         active_active: false
@@ -1407,7 +1407,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery: &mw-api-ext-disc
       - dnsdisc: mw-api-ext
         active_active: false
