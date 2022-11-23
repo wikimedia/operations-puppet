@@ -26,11 +26,15 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
     ensure_packages(['make'])
 
     # Deployers should be able to execute whatever wrapper we will write for tools/release
-    # as user mwbuilder.
+    # as user mwbuilder. And also the wrapper that updates the mediawiki/tools/release repo
     sudo::group { 'deploy_build_image':
         group      => 'deployment',
-        privileges => ['ALL = (mwbuilder) NOPASSWD: /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile *']
+        privileges => [
+            'ALL = (mwbuilder) NOPASSWD: /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile *',
+            'ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release'
+        ]
     }
+
     # Install a small wrapper around git pull --ff-only
     file { '/usr/local/bin/update-mediawiki-tools-release':
         ensure  => present,
