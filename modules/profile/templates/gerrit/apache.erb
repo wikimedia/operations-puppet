@@ -30,8 +30,9 @@
 
     CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
-    RewriteEngine on
-    RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
+    <Location />
+        Require all denied
+    </Location>
 </VirtualHost>
 
 <VirtualHost *:443>
