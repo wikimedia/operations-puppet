@@ -2003,10 +2003,6 @@ node /^mw14(3[4-6])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# rack C6
-node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
-}
 
 # rack C8
 node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
@@ -2078,11 +2074,6 @@ node /^mw149[6-8]\.eqiad\.wmnet$/ {
 
 # Row A
 
-# rack A6
-node 'mw1312.eqiad.wmnet' {
-    role(mediawiki::appserver::api)
-}
-
 # rack A5
 node /^mw13(8[68]|9[02])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
@@ -2095,15 +2086,6 @@ node /^mw146[2-5]\.eqiad\.wmnet$/ {
 
 # Row B
 
-# rack B5
-node 'mw1317.eqiad.wmnet' {
-    role(mediawiki::appserver::api)
-}
-
-# rack B7
-node /^mw13(1[3-6])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
 
 # rack B3 and B5
 node /^mw1(39[468]|40[024])\.eqiad\.wmnet$/ {
@@ -2116,11 +2098,6 @@ node /^mw147[01]\.eqiad\.wmnet$/ {
 }
 
 # Row C
-
-# rack C6
-node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
 
 # rack C3
 node /^mw1406\.eqiad\.wmnet$/ {
@@ -2165,11 +2142,6 @@ node 'mwmaint1002.eqiad.wmnet', 'mwmaint2002.codfw.wmnet' {
 
 # Row A
 
-# rack A6
-node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
 # rack A8
 node /^mw14(5[7-9]|6[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
@@ -2177,22 +2149,12 @@ node /^mw14(5[7-9]|6[01])\.eqiad\.wmnet$/ {
 
 # Row B
 
-# rack B5
-node 'mw1318.eqiad.wmnet' {
-    role(mediawiki::jobrunner)
-}
-
 # rack B6
 node /^mw146[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
 # Row C
-
-# rack C6
-node /^mw133[4-8]\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
 
 # Row F
 node /^mw149[45]\.eqiad\.wmnet$/ {
