@@ -1,1 +1,2 @@
+profile::pybal::override_bgp_med: 150   # in preparation for replacing lvs4007 with lvs4010
 profile::pybal::primary: false
