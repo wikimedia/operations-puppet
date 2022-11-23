@@ -88,4 +88,6 @@ class turnilo(
             Systemd::Syslog['turnilo'],
         ],
     }
+
+    profile::auto_restarts::service { 'turnilo': }
 }
