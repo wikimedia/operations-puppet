@@ -5,7 +5,7 @@ configure_swift_disks() {
   devices=""
   for disk in /sys/block/*/queue/rotational
   do
-    grep -q 0 "${disk}" && devices="${devices} $(echo "${disk}" | awk -F/ '{print $4}')"
+    grep -q 0 "${disk}" && devices="${devices} $(echo "${disk}" | cut -d/ -f3 -)"
   done
   devices_hash_sep=$(echo "${devices}" | tr ' ' '#')
 cat > /tmp/dynamic_disc.cfg <<EOF
