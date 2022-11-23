@@ -204,7 +204,10 @@ node /^apt[12]001\.wikimedia\.org/ {
 node 'arclamp2001.codfw.wmnet' {
     role(insetup::observability)
 }
-
+# New arclamp node T319433
+node 'arclam11001.eqiad.wmnet' {
+    role(insetup::observability)
+}
 # Analytics Query Service
 node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet/ {
     role(aqs_next)
