@@ -70,7 +70,6 @@ profile::puppetdb::facts_blacklist:
   - '^lvm_vg_.*'
   - '^blockdevices.*'
   - '^block_devices.*'
-  - '^cpu_flags.*'
   - '^mountpoints.*'  # used in cloud by cinderutils::ensure but not in production
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
