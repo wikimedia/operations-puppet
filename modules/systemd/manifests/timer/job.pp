@@ -102,7 +102,7 @@ define systemd::timer::job (
     Hash[String, String]                    $environment               = {},
     Boolean                                 $monitoring_enabled        = false,
     String                                  $monitoring_contact_groups = 'admins',
-    Stdlib::HTTPSUrl                        $monitoring_notes_url      = 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
+    Stdlib::HTTPSUrl                        $monitoring_notes_url      = 'https://wikitech.wikimedia.org/wiki/Monitoring/systemd_unit_state',
     Boolean                                 $logging_enabled           = true,
     String                                  $logfile_basedir           = '/var/log',
     String                                  $logfile_name              = 'syslog.log',
