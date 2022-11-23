@@ -549,23 +549,20 @@ logstash::pipeline_batch_size: 1000
 
 profile::mediawiki::deployment::server::rsync_host: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 profile::mediawiki::apc_shm_size: 128M
+profile::mediawiki::mcrouter_wancache::memcached_notls_port: 11211
+profile::mediawiki::mcrouter_wancache::memcached_tls_port: 11214
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
 profile::mediawiki::mcrouter_wancache::shards:
   gutter:
-    eqiad: {}
-  proxies:
-    eqiad: {}
+    eqiad:
+      shard01:
+        host: deployment-memc10
   wancache:
     eqiad:
       shard01:
         host: deployment-memc08
-        port: 11211
       shard02:
         host: deployment-memc09
-        port: 11211
-      shard03:
-        host: deployment-memc10
-        port: 11211
 
 profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; test'
 profile::prometheus::memcached_exporter::arguments: ''

@@ -4,10 +4,11 @@
 
 class mediawiki::mcrouter::yaml_defs(
     Stdlib::Unixpath $path                 = undef,
+    Stdlib::Port $memcached_notls_port     = undef,
+    Stdlib::Port $memcached_tls_port       = undef,
     Hash  $servers_by_datacenter_category  = {},
 ){
-    $pools = union(
-        $servers_by_datacenter_category['wancache'].map |$datacenter, $servers| {
+    $pools = $servers_by_datacenter_category['wancache'].map |$datacenter, $servers| {
         {
             'name' => "${datacenter}-servers",
             'zone' => $datacenter,
@@ -18,24 +19,17 @@ class mediawiki::mcrouter::yaml_defs(
                 $address['host']
             },
         }
-    },
-    # TODO: fix when we switch to TLS
-    $servers_by_datacenter_category['proxies'].map |$datacenter, $servers| {
-        {
-            'name' => "${datacenter}-proxies",
-            'zone' => $datacenter,
-            'servers' =>  $servers.map |$shard_slot, $address| {
-                $address['host']
-            },
-            'failover' =>  $servers.map |$shard_slot, $address| {
-                $address['host']
-            },
-        }
     }
-)
+
     file { $path:
         ensure  => present,
-        content => to_yaml({'mw' => {'mcrouter' => {'pools' => $pools}}}),
+        content => to_yaml(
+            {'mw' => {'mcrouter' => {
+                'pools'                => $pools,
+                'memcached_notls_port' => $memcached_notls_port,
+                'memcached_tls_port'   => $memcached_tls_port
+            }}}
+        ),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

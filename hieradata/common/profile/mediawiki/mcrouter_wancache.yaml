@@ -1,5 +1,6 @@
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 60
 profile::mediawiki::mcrouter_wancache::port: 11213
+profile::mediawiki::mcrouter_wancache::memcached_notls_port: 11211
 profile::mediawiki::mcrouter_wancache::memcached_tls_port: 11214
 profile::mediawiki::mcrouter_wancache::num_proxies: 1
 profile::mediawiki::mcrouter_wancache::timeouts_until_tko: 10
@@ -11,278 +12,89 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad:
       shard01:
         host: 10.64.0.53    # mc-gp1001.eqiad.wmnet
-        port: 11211
       shard02:
         host: 10.64.32.101  # mc-gp1002.eqiad.wmnet
-        port: 11211
       shard03:
         host: 10.64.48.32   # mc-gp1003.eqiad.wmnet
-        port: 11211
     codfw:
       shard01:
         host: 10.192.0.156  # mc-gp2001.codfw.wmnet
-        port: 11211
       shard02:
         host: 10.192.16.147 # mc-gp2002.codfw.wmnet
-        port: 11211
       shard03:
         host: 10.192.48.138 # mc-gp2003.codfw.wmnet
-        port: 11211
-  proxies:
-    eqiad:
-      shard01:
-        host: 10.64.0.124   # mc1037
-        port: 11214
-        ssl: true
-      shard02:
-        host: 10.64.0.125   # mc1038
-        port: 11214
-        ssl: true
-      shard03:
-        host: 10.64.0.64    # mc1039
-        port: 11214
-        ssl: true
-      shard04:
-        host: 10.64.0.65    # mc1040
-        port: 11214
-        ssl: true
-      shard05:
-        host: 10.64.16.140  # mc1041
-        port: 11214
-        ssl: true
-      shard07:
-        host: 10.64.16.21   # mc1042
-        port: 11214
-        ssl: true
-      shard06:
-        host: 10.64.16.102  # mc1043
-        port: 11214
-        ssl: true
-      shard08:
-        host: 10.64.16.190  # mc1044
-        port: 11214
-        ssl: true
-      shard09:
-        host: 10.64.32.133  # mc1045
-        port: 11214
-        ssl: true
-      shard10:
-        host: 10.64.32.148  # mc1046
-        port: 11214
-        ssl: true
-      shard11:
-        host: 10.64.32.151  # mc1047
-        port: 11214
-        ssl: true
-      shard12:
-        host: 10.64.32.153  # mc1048
-        port: 11214
-        ssl: true
-      shard13:
-        host: 10.64.32.157  # mc1049
-        port: 11214
-        ssl: true
-      shard14:
-        host: 10.64.32.158  # mc1050
-        port: 11214
-        ssl: true
-      shard15:
-        host: 10.64.48.90   # mc1051
-        port: 11214
-        ssl: true
-      shard16:
-        host: 10.64.48.91   # mc1052
-        port: 11214
-        ssl: true
-      shard17:
-        host: 10.64.48.92   # mc1053
-        port: 11214
-        ssl: true
-      shard18:
-        host: 10.64.48.93   # mc1054
-        port: 11214
-        ssl: true
-    codfw:
-      shard01:
-        host: 10.192.0.191   # mc2038
-        port: 11214
-        ssl: true
-      shard02:
-        host: 10.192.0.22    # mc2039
-        port: 11214
-        ssl: true
-      shard03:
-        host: 10.192.0.148   # mc2040
-        port: 11214
-        ssl: true
-      shard04:
-        host: 10.192.0.200   # mc2041
-        port: 11214
-        ssl: true
-      shard05:
-        host: 10.192.16.117  # mc2042
-        port: 11214
-        ssl: true
-      shard06:
-        host: 10.192.16.116  # mc2043
-        port: 11214
-        ssl: true
-      shard07:
-        host: 10.192.16.118  # mc2044
-        port: 11214
-        ssl: true
-      shard08:
-        host: 10.192.16.119  # mc2045
-        port: 11214
-        ssl: true
-      shard09:
-        host: 10.192.16.120  # mc2046
-        port: 11214
-        ssl: true
-      shard10:
-        host: 10.192.32.79   # mc2047
-        port: 11214
-        ssl: true
-      shard11:
-        host: 10.192.32.80   # mc2048
-        port: 11214
-        ssl: true
-      shard12:
-        host: 10.192.32.81   # mc2049
-        port: 11214
-        ssl: true
-      shard13:
-        host: 10.192.32.82   # mc2050
-        port: 11214
-        ssl: true
-      shard14:
-        host: 10.192.48.74   # mc2051
-        port: 11214
-        ssl: true
-      shard15:
-        host: 10.192.48.176  # mc2052
-        port: 11214
-        ssl: true
-      shard16:
-        host: 10.192.48.177  # mc2053
-        port: 11214
-        ssl: true
-      shard17:
-        host: 10.192.48.178  # mc2054
-        port: 11214
-        ssl: true
-      shard18:
-        host: 10.192.0.205   # mc2055
-        port: 11214
-        ssl: true
   wancache:
     eqiad:
       shard01:
         host: 10.64.0.124   # mc1037
-        port: 11211
       shard02:
         host: 10.64.0.125   # mc1038
-        port: 11211
       shard03:
         host: 10.64.0.64    # mc1039
-        port: 11211
       shard04:
         host: 10.64.0.65    # mc1040
-        port: 11211
       shard05:
         host: 10.64.16.140  # mc1041
-        port: 11211
       shard07:
         host: 10.64.16.21   # mc1042
-        port: 11211
       shard06:
         host: 10.64.16.102  # mc1043
-        port: 11211
       shard08:
         host: 10.64.16.190  # mc1044
-        port: 11211
       shard09:
         host: 10.64.32.133  # mc1045
-        port: 11211
       shard10:
         host: 10.64.32.148  # mc1046
-        port: 11211
       shard11:
         host: 10.64.32.151  # mc1047
-        port: 11211
       shard12:
         host: 10.64.32.153  # mc1048
-        port: 11211
       shard13:
         host: 10.64.32.157  # mc1049
-        port: 11211
       shard14:
         host: 10.64.32.158  # mc1050
-        port: 11211
       shard15:
         host: 10.64.48.90   # mc1051
-        port: 11211
       shard16:
         host: 10.64.48.91   # mc1052
-        port: 11211
       shard17:
         host: 10.64.48.92   # mc1053
-        port: 11211
       shard18:
-        host: 10.64.48.93   # mc1053
-        port: 11211
+        host: 10.64.48.93   # mc1054
     codfw:
       shard01:
         host: 10.192.0.191   # mc2038
-        port: 11211
       shard02:
         host: 10.192.0.22    # mc2039
-        port: 11211
       shard03:
         host: 10.192.0.148   # mc2040
-        port: 11211
       shard04:
         host: 10.192.0.200   # mc2041
-        port: 11211
       shard05:
         host: 10.192.16.117  # mc2042
-        port: 11211
       shard06:
         host: 10.192.16.116  # mc2043
-        port: 11211
       shard07:
         host: 10.192.16.118  # mc2044
-        port: 11211
       shard08:
         host: 10.192.16.119  # mc2045
-        port: 11211
       shard09:
         host: 10.192.16.120  # mc2046
-        port: 11211
       shard10:
         host: 10.192.32.79   # mc2047
-        port: 11211
       shard11:
         host: 10.192.32.80   # mc2048
-        port: 11211
       shard12:
         host: 10.192.32.81   # mc2049
-        port: 11211
       shard13:
         host: 10.192.32.82   # mc2050
-        port: 11211
       shard14:
         host: 10.192.48.74   # mc2051
-        port: 11211
       shard15:
         host: 10.192.48.176  # mc2052
-        port: 11211
       shard16:
         host: 10.192.48.177  # mc2053
-        port: 11211
       shard17:
         host: 10.192.48.178  # mc2054
-        port: 11211
       shard18:
         host: 10.192.0.205   # mc2055
-        port: 11211

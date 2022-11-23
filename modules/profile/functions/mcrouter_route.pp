@@ -1,16 +1,15 @@
-function profile::mcrouter_route(String $region, Integer $ttl) >> Variant[Hash, String] {
+function profile::mcrouter_route(String $dc, Integer $ttl, Boolean $failover_route) >> Variant[Hash, String] {
     # For remote sites, the route is always the simple "PoolRoute|${region}"
-    if ($region != $::site) {
-        "PoolRoute|${region}"
-    }
-    else {
+    if  $failover_route {
         {
             'type' => 'FailoverWithExptimeRoute',
-            'normal' => "PoolRoute|${region}",
-            'failover' => 'PoolRoute|gutter',
+            'normal' => "PoolRoute|${dc}",
+            'failover' => "PoolRoute|${dc}-gutter",
             'failover_exptime' => $ttl,
             'failover_errors' => ['tko']
 
         }
+    } else  {
+        "PoolRoute|${dc}"
     }
 }

@@ -1,14 +1,9 @@
-function profile::mcrouter_pools(String $region, Hash $servers) >> Hash {
+function profile::mcrouter_pools(String $pool_name, Hash $servers, String $proto, Stdlib::Port $port) >> Hash {
+    alert("Vars ${$pool_name} ${servers}");
     {
-        $region => {
+        $pool_name => {
             'servers' => $servers.map |$shard_slot, $address| {
-                if $address['socket'] {
-                    "unix:${$address['socket']}:ascii:plain"
-                } elsif  $address['ssl'] == true {
-                    "${address['host']}:${address['port']}:ascii:ssl"
-                } else {
-                    "${address['host']}:${address['port']}:ascii:plain"
-                }
+                    "${address['host']}:${port}:ascii:${proto}"
             }
         }
     }

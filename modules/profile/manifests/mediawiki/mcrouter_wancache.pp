@@ -6,6 +6,7 @@
 #  TLS port to connect to other memcached servers for cross dc key replication. Check profile::memcached::port
 class profile::mediawiki::mcrouter_wancache(
     Stdlib::Port $port                           = lookup('profile::mediawiki::mcrouter_wancache::port'),
+    Stdlib::Port $memcached_notls_port           = lookup('profile::mediawiki::mcrouter_wancache::memcached_notls_port'),
     Stdlib::Port $memcached_tls_port             = lookup('profile::mediawiki::mcrouter_wancache::memcached_tls_port'),
     Integer      $num_proxies                    = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
     Integer      $timeouts_until_tko             = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
@@ -63,66 +64,89 @@ class profile::mediawiki::mcrouter_wancache(
     }
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
-    $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
+    $gutters_by_datacenter = $servers_by_datacenter_category['gutter']
+
     if $use_onhost_memcached {
         if $use_onhost_memcached_socket {
-            $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'socket' => '/var/run/memcached/memcached.sock'}})
+            $onhost_pool =  { 'onhost' => {
+                                'servers' => [
+                                  'unix:/var/run/memcached/memcached.sock:ascii:plain'
+                                  ]
+                                }
+                            }
         } else {
-            $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => $onhost_port}})
+            $onhost_pool = { 'onhost' => {
+                                'servers' => [
+                                  "127.0.0.1:${onhost_port}:ascii:plain"
+                                  ]
+                                }
+                            }
         }
     } else {
         $onhost_pool = {}
     }
-    # We only need to configure the gutter pool for DC-local routes. Remote-DC
-    # routes are reached via an mcrouter proxy in that dc, that will be
-    # configured to use its gutter pool itself.
-    $local_gutter_pool = profile::mcrouter_pools('gutter', $servers_by_datacenter_category['gutter'][$::site])
 
-    $pools = $servers_by_datacenter.map |$region, $servers| {
-        # We need to get the servers from the current datacenter, and the proxies from the others
-        if $region == $::site {
-            profile::mcrouter_pools($region, $servers)
+    # Gutter pools:
+    $gutter_pools = $gutters_by_datacenter.map |$dc, $servers| {
+        if $dc == $::site {
+            profile::mcrouter_pools("${dc}-gutter", $servers, 'plain', $memcached_notls_port)
         } else {
-            profile::mcrouter_pools($region, $proxies_by_datacenter[$region])
+            profile::mcrouter_pools("${dc}-gutter", $servers, 'ssl', $memcached_tls_port)
         }
-    }
-    .reduce($onhost_pool + $local_gutter_pool) |$memo, $value| { $memo + $value }
+    }.reduce()|$memo, $value| { $memo + $value }
+
+    # Server pools
+    $pools = $servers_by_datacenter.map |$dc, $servers| {
+        if $dc == $::site {
+            profile::mcrouter_pools($dc, $servers, 'plain', $memcached_notls_port)
+        } else {
+            profile::mcrouter_pools($dc, $servers, 'ssl', $memcached_tls_port)
+        }
+    }.reduce($onhost_pool + $gutter_pools) |$memo, $value| { $memo + $value }
 
     $routes = union(
         # Local cache for each region
-        $servers_by_datacenter.map |$region, $servers| {
-            {
-                'aliases' => [ "/${region}/mw/" ],
-                'route' => profile::mcrouter_route($region, $gutter_ttl)
-            }
+        $servers_by_datacenter.map |$dc, $_| {
+            $failover_route = $dc ? {
+                $::site => true,
+                default => false
+            };
+                {
+                    'aliases' => [ "/${dc}/mw/" ],
+                    'route' => profile::mcrouter_route($dc, $gutter_ttl, $failover_route)
+                }
         },
         # WAN cache: issues reads and add/cas/touch locally and issues set/delete everywhere.
         # MediaWiki will set a prefix of /*/mw-wan when broadcasting, explicitly matching
         # all the mw-wan routes. Broadcasting is thus completely controlled by MediaWiki,
         # but is only allowed for set/delete operations.
-        $servers_by_datacenter.map |$region, $servers| {
+        $servers_by_datacenter.map |$dc, $_| {
+            $failover_route = $dc ? {
+                $::site => true,
+                default => false
+            };
             {
-                'aliases' => [ "/${region}/mw-wan/" ],
+                'aliases' => [ "/${dc}/mw-wan/" ],
                 'route'   => {
                     'type'               => 'OperationSelectorRoute',
-                    'default_policy'     => profile::mcrouter_route($region, $gutter_ttl),
+                    'default_policy'     => profile::mcrouter_route($dc, $gutter_ttl, $failover_route),
                     # AllAsyncRoute is used by mcrouter when replicating data to the non-active DC:
                     # https://github.com/facebook/mcrouter/wiki/List-of-Route-Handles#allasyncroute
                     # More info in T225642
                     'operation_policies' => {
                         'set'    => {
-                            'type'     => $region ? {
+                            'type'     => $dc ? {
                                 $::site => 'AllSyncRoute',
                                 default => 'AllAsyncRoute'
                             },
-                            'children' => [ profile::mcrouter_route($region, $gutter_ttl) ]
+                            'children' => [ profile::mcrouter_route($dc, $gutter_ttl, $failover_route) ]
                         },
                         'delete' => {
-                            'type'     => $region ? {
+                            'type'     => $dc ? {
                                 $::site => 'AllSyncRoute',
                                 default => 'AllAsyncRoute'
                             },
-                            'children' => [ profile::mcrouter_route($region, $gutter_ttl) ]
+                            'children' => [ profile::mcrouter_route($dc, $gutter_ttl, $failover_route) ]
                         },
                     }
                 }
@@ -130,9 +154,13 @@ class profile::mediawiki::mcrouter_wancache(
         },
         # On-host memcache tier: Keep a short-lived local cache to reduce network load for very hot
         # keys, at the cost of a few seconds' staleness.
-        $servers_by_datacenter.map |$region, $servers| {
+        $servers_by_datacenter.map |$dc, $_| {
+            $failover_route = $dc ? {
+                $::site => true,
+                default => false
+            };
             {
-                'aliases' => [ "/${region}/mw-with-onhost-tier/" ],
+                'aliases' => [ "/${dc}/mw-with-onhost-tier/" ],
                 'route'   => $use_onhost_memcached ? {
                     true  => {
                         'type'               => 'OperationSelectorRoute',
@@ -146,7 +174,7 @@ class profile::mediawiki::mcrouter_wancache(
                             'get' => {
                                 'type'    => 'WarmUpRoute',
                                 'cold'    => 'PoolRoute|onhost',
-                                'warm'    => profile::mcrouter_route($region, $gutter_ttl),
+                                'warm'    => profile::mcrouter_route($dc, $gutter_ttl, $failover_route),
                                 'exptime' => 10,
                             }
                         },
@@ -156,10 +184,10 @@ class profile::mediawiki::mcrouter_wancache(
                         # on-host cache, read-your-writes consistency would depend on whether the
                         # requests happened to hit the same host or not, so e.g. mwdebug hosts would
                         # behave differently from the rest of prod, which would be confusing.)
-                        'default_policy'     => profile::mcrouter_route($region, $gutter_ttl)
+                        'default_policy'     => profile::mcrouter_route($dc, $gutter_ttl, $failover_route)
                     },
                     # If use_onhost_memcached is turned off, always bypass the onhost tier.
-                    false => profile::mcrouter_route($region, $gutter_ttl)
+                    false => profile::mcrouter_route($dc, $gutter_ttl, $failover_route)
                 }
             }
         }

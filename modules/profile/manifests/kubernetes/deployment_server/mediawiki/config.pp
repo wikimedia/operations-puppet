@@ -10,6 +10,8 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     String $domain_suffix                               = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
     Stdlib::Unixpath $general_dir                       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Hash  $servers_by_datacenter_category               = lookup('profile::mediawiki::mcrouter_wancache::shards'),
+    Stdlib::Port $memcached_notls_port                  = lookup('profile::mediawiki::mcrouter_wancache::memcached_notls_port'),
+    Stdlib::Port $memcached_tls_port                    = lookup('profile::mediawiki::mcrouter_wancache::memcached_tls_port'),
     Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
     String $statsd_server                               = lookup('statsd'),
     String $udp2log_aggregator                          = lookup('udp2log_aggregator')
@@ -42,6 +44,8 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     }
     class { 'mediawiki::mcrouter::yaml_defs':
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
+        memcached_notls_port           => $memcached_notls_port,
+        memcached_tls_port             => $memcached_tls_port,
         servers_by_datacenter_category => $servers_by_datacenter_category,
     }
     class { 'mediawiki::tlsproxy::yaml_defs':
