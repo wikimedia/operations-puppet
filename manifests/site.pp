@@ -1435,15 +1435,11 @@ node 'graphite1004.eqiad.wmnet' {
     include ::role::elasticsearch::alerts
 }
 
-# Standby graphite host
-node 'graphite2003.codfw.wmnet' {
-    role(graphite::production)
-}
-
 node 'graphite1005.eqiad.wmnet' {
     role(graphite::production)
 }
 
+# Standby graphite host
 node 'graphite2004.codfw.wmnet' {
     role(graphite::production)
 }
