@@ -3,21 +3,6 @@ eqiad:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
   appserver:
-    mw1319.eqiad.wmnet: [nginx]
-    mw1320.eqiad.wmnet: [nginx]
-    mw1321.eqiad.wmnet: [nginx]
-    mw1322.eqiad.wmnet: [nginx]
-    mw1323.eqiad.wmnet: [nginx]
-    mw1324.eqiad.wmnet: [nginx]
-    mw1325.eqiad.wmnet: [nginx]
-    mw1326.eqiad.wmnet: [nginx]
-    mw1327.eqiad.wmnet: [nginx]
-    mw1328.eqiad.wmnet: [nginx]
-    mw1329.eqiad.wmnet: [nginx]
-    mw1330.eqiad.wmnet: [nginx]
-    mw1331.eqiad.wmnet: [nginx]
-    mw1332.eqiad.wmnet: [nginx]
-    mw1333.eqiad.wmnet: [nginx]
     mw1349.eqiad.wmnet: [nginx]
     mw1350.eqiad.wmnet: [nginx]
     mw1351.eqiad.wmnet: [nginx]
@@ -90,22 +75,6 @@ eqiad:
     mw1497.eqiad.wmnet: [nginx]
     mw1498.eqiad.wmnet: [nginx]
   api_appserver:
-    mw1312.eqiad.wmnet: [nginx]
-    mw1313.eqiad.wmnet: [nginx]
-    mw1314.eqiad.wmnet: [nginx]
-    mw1315.eqiad.wmnet: [nginx]
-    mw1316.eqiad.wmnet: [nginx]
-    mw1317.eqiad.wmnet: [nginx]
-    mw1339.eqiad.wmnet: [nginx]
-    mw1340.eqiad.wmnet: [nginx]
-    mw1341.eqiad.wmnet: [nginx]
-    mw1342.eqiad.wmnet: [nginx]
-    mw1343.eqiad.wmnet: [nginx]
-    mw1344.eqiad.wmnet: [nginx]
-    mw1345.eqiad.wmnet: [nginx]
-    mw1346.eqiad.wmnet: [nginx]
-    mw1347.eqiad.wmnet: [nginx]
-    mw1348.eqiad.wmnet: [nginx]
     mw1356.eqiad.wmnet: [nginx]
     mw1357.eqiad.wmnet: [nginx]
     mw1358.eqiad.wmnet: [nginx]
@@ -169,23 +138,12 @@ eqiad:
     mw1492.eqiad.wmnet: [nginx]
     mw1493.eqiad.wmnet: [nginx]
   jobrunner: &jobrunner
-    mw1307.eqiad.wmnet: [apache2,nginx]
-    mw1308.eqiad.wmnet: [apache2,nginx]
-    mw1309.eqiad.wmnet: [apache2,nginx]
-    mw1310.eqiad.wmnet: [apache2,nginx]
-    mw1311.eqiad.wmnet: [apache2,nginx]
-    mw1318.eqiad.wmnet: [apache2,nginx]
-    mw1334.eqiad.wmnet: [apache2,nginx]
-    mw1335.eqiad.wmnet: [apache2,nginx] # Only pooled as videoscaler
-    mw1336.eqiad.wmnet: [apache2,nginx] # Only pooled as videoscaler
-    mw1337.eqiad.wmnet: [apache2,nginx] # Only pooled as jobrunner
-    mw1338.eqiad.wmnet: [apache2,nginx] # Only pooled as jobrunner
     mw1437.eqiad.wmnet: [apache2,nginx,canary] # canary jobrunner
     mw1438.eqiad.wmnet: [apache2,nginx,canary] # canary jobrunner
-    mw1439.eqiad.wmnet: [apache2,nginx]
-    mw1440.eqiad.wmnet: [apache2,nginx]
-    mw1445.eqiad.wmnet: [apache2,nginx]
-    mw1446.eqiad.wmnet: [apache2,nginx]
+    mw1439.eqiad.wmnet: [apache2,nginx] # Only pooled as jobrunner
+    mw1440.eqiad.wmnet: [apache2,nginx] # Only pooled as jobrunner
+    mw1445.eqiad.wmnet: [apache2,nginx] # Only pooled as videoscaler
+    mw1446.eqiad.wmnet: [apache2,nginx] # Only pooled as videoscaler
     mw1457.eqiad.wmnet: [apache2,nginx]
     mw1458.eqiad.wmnet: [apache2,nginx]
     mw1459.eqiad.wmnet: [apache2,nginx]
