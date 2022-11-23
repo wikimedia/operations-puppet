@@ -68,7 +68,6 @@ use_syslog: True
 gerrit_push_user: trainbranchbot
 
 # Settings for mediawiki container image building (T297673)
-build_mw_container_image: False
 release_repo_dir: /srv/mwbuilder/release
 release_repo_update_cmd: sudo -u mwbuilder /usr/local/bin/update-mediawiki-tools-release
 release_repo_build_and_push_images_cmd: sudo -u mwbuilder /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile build-and-push-all-images http_proxy=http://webproxy.eqiad.wmnet:8080 https_proxy=http://webproxy.eqiad.wmnet:8080
@@ -124,6 +123,9 @@ beta_only_config_files: wmf-config/CirrusSearch-labs.php
                         wmf-config/reverse-proxy-labs.php
                         wikiversions-labs.json
                         langlist-labs
+
+# Settings for mediawiki container image building (T297673)
+build_mw_container_image: True
 
 [eqiad1.wikimedia.cloud]
 # Wikimedia Foundation beta eqiad datacenter
