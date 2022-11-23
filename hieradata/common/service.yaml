@@ -1384,7 +1384,7 @@ service::catalog:
       codfw:
         default: 10.2.1.76
       eqiad:
-        default: 10.2.1.76
+        default: 10.2.2.76
     lvs:
       class: low-traffic
       conftool:
