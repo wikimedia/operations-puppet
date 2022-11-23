@@ -21,3 +21,5 @@ profile::debdeploy::client::filter_services:
     - '*'
   ssh-agent-proxy:
     - '*'
+  systemd-udevd:
+    - '*'
