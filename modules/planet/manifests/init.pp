@@ -58,6 +58,7 @@ class planet (
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     # creates one RSS/Atom feed config per language
     planet::config { $languages_keys:
