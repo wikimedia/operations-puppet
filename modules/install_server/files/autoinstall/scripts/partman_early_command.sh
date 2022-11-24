@@ -11,20 +11,16 @@ configure_swift_disks() {
       expr "${device}" : "sd.$" && devices="${devices## } /dev/${device}"
     fi
   done
-  root_parts=$(printf "%s1#%s1" "${devices% *}" "${devices#* }")
-  swap_parts=$(printf "%s" "${root_parts}" | tr '1' '2')
+  root_parts=$(printf "%s2#%s2" "${devices% *}" "${devices#* }")
 cat > /tmp/dynamic_disc.cfg <<EOF
-d-i grub-installer/bootdev  string  ${devices}
 d-i partman-auto/disk   string ${devices}
+d-i grub-installer/bootdev  string  ${devices}
 # Parameters are:
 # <raidtype> <devcount> <sparecount> <fstype> <mountpoint> \\
 #   <devices> <sparedevices>
 d-i partman-auto-raid/recipe    string      \\
         1   2   0   ext4    /   \\
             ${root_parts}     \\
-        .                   \\
-        1   2   0   swap    -   \\
-            ${swap_parts}     \\
         .
 EOF
 debconf-set-selections /tmp/dynamic_disc.cfg
@@ -34,3 +30,4 @@ case $(hostname) in
     configure_swift_disks
     ;;
 esac
+
