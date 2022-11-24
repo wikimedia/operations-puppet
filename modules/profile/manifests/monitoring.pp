@@ -15,7 +15,6 @@
 #
 # @param hardware_monitoring indicate if we should monitor HW
 # @param contact_group Nagios contact_group to use for notifications.
-# @param mgmt_contact_group Nagios contact_group to use for notifications related to the drac/ilo interface.
 # @param notifications_enabled inticate if we should send notifications
 # @param is_critical indicate this host is critical
 # @param monitor_systemd indicate if we should monitor systemd
@@ -31,7 +30,6 @@ class profile::monitoring(
     Wmflib::Ensure      $hardware_monitoring        = lookup('profile::monitoring::hardware_monitoring'),
     # TODO: make this an array
     String              $contact_group              = lookup('profile::monitoring::contact_group'),
-    String              $mgmt_contact_group         = lookup('profile::monitoring::mgmt_contact_group'),
     String              $cluster                    = lookup('profile::monitoring::cluster'),
     Boolean             $is_critical                = lookup('profile::monitoring::is_critical'),
     Boolean             $monitor_systemd            = lookup('profile::monitoring::monitor_systemd'),
@@ -65,7 +63,6 @@ class profile::monitoring(
 
     class { 'monitoring':
         contact_group         => $contact_group,
-        mgmt_contact_group    => $mgmt_contact_group,
         nagios_group          => $nagios_group,
         cluster               => $cluster,
         notifications_enabled => $notifications_enabled,

@@ -15,8 +15,6 @@ define monitoring::host (
 
     include monitoring
     $_contact_group          = pick($contact_group, $monitoring::contact_group)
-    $mgmt_contact_group     = $monitoring::mgmt_contact_group
-    $mgmt_parents           = $monitoring::mgmt_parents
     # Use pick default as it allows an undef default
     $_notifications_enabled = pick($notifications_enabled, $monitoring::notifications_enabled)
     $hostgroup              = pick($group, $monitoring::nagios_group)
@@ -57,31 +55,7 @@ define monitoring::host (
         } else {
             $real_parents = undef
         }
-        # We have a BMC, and the BMC is configured and it has an IP address
-        # We always monitor the BMC so never skip notifications
-        if $facts['has_ipmi'] and $facts['ipmi_lan'] and 'ipaddress' in $facts['ipmi_lan'] {
-            $mgmt_host = {
-                "${title}.mgmt" => {
-                    ensure                => $ensure,
-                    host_name             => "${title}.mgmt",
-                    parents               => $mgmt_parents[$::site],
-                    address               => $facts['ipmi_lan']['ipaddress'],
-                    hostgroups            => 'mgmt',
-                    check_command         => 'check_ping!500,20%!2000,100%',
-                    check_period          => '24x7',
-                    max_check_attempts    => 2,
-                    contact_groups        => "${mgmt_contact_group},admins",
-                    notification_interval => 0,
-                    notification_period   => '24x7',
-                    notification_options  => 'd,u,r,f',
-                    icon_image            => undef,
-                    vrml_image            => undef,
-                    statusmap_image       => undef,
-                }
-            }
-        } else {
-            $mgmt_host = undef
-        }
+
         # Populate a network related hostgroup for directly connected to switches
         # hosts
         if $facts['lldp'] and $facts['lldp']['parent'] =~ /asw|cloudsw|lsw/ {
@@ -100,7 +74,6 @@ define monitoring::host (
             $statusmap_image = undef
         }
         $real_parents    = $parents
-        $mgmt_host = undef
         $hostgroups = $hostgroup
     }
     $host = {
@@ -131,28 +104,4 @@ define monitoring::host (
         $rtype = 'monitoring::exported_nagios_host'
     }
     create_resources($rtype, $host)
-    if !empty($mgmt_host) {
-        create_resources($rtype, $mgmt_host)
-        # We always monitor the BMC so never skip notifications
-        monitoring::service { "dns_${title}.mgmt":
-            description           => 'DNS',
-            host                  => "${title}.mgmt",
-            check_command         => "check_fqdn!${title}.mgmt.${::site}.wmnet",
-            notifications_enabled => true,
-            group                 => 'mgmt',
-            check_interval        => 60,
-            retry_interval        => 60,
-            notes_url             => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
-        }
-        monitoring::service { "ssh_${title}.mgmt":
-            description           => 'SSH',
-            host                  => "${title}.mgmt",
-            check_command         => 'check_ssh',
-            notifications_enabled => true,
-            group                 => 'mgmt',
-            check_interval        => 60,
-            retry_interval        => 60,
-            notes_url             => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
-        }
-    }
 }

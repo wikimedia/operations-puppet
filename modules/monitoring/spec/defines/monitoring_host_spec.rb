@@ -29,10 +29,6 @@ describe 'monitoring::host' do
               'icon_image' => 'vendors/debian.png',
               'address'    => '192.0.2.42'
             )
-            is_expected.to contain_nagios_host('ahost.mgmt').with(
-              'host_name'  => 'ahost.mgmt',
-              'address'    => '198.51.100.42'
-            )
           end
         end
 
@@ -50,10 +46,6 @@ describe 'monitoring::host' do
               'parents'    => 'aparent',
               'icon_image' => 'vendors/debian.png',
               'address'    => '192.0.2.42'
-            )
-            is_expected.to contain_nagios_host('ahost.mgmt').with(
-              'host_name'  => 'ahost.mgmt',
-              'address'    => '198.51.100.42'
             )
           end
         end
@@ -72,7 +64,6 @@ describe 'monitoring::host' do
               'icon_image' => 'vendors/debian.png',
               'address'    => '192.0.2.42'
             )
-            is_expected.not_to contain_nagios_host('ahost.mgmt')
           end
         end
         describe 'with a parents parameters' do
@@ -89,7 +80,6 @@ describe 'monitoring::host' do
               'icon_image' => 'vendors/debian.png',
               'address'    => '192.0.2.42'
             )
-            is_expected.not_to contain_nagios_host('ahost.mgmt')
           end
         end
       end
@@ -108,10 +98,6 @@ describe 'monitoring::host' do
               'icon_image' => 'vendors/debian.png',
               'address'    => '192.0.2.42'
             )
-            is_expected.to contain_nagios_host('icingahost.mgmt').with(
-              'host_name'  => 'icingahost.mgmt',
-              'address'    => '198.51.100.42'
-            )
           end
         end
 
@@ -124,7 +110,6 @@ describe 'monitoring::host' do
               'icon_image' => nil,
               'address'    => '192.0.2.42'
             )
-            is_expected.not_to contain_nagios_host('service.svc.wmnet.mgmt')
           end
         end
         describe 'monitoring a service, with ip_address,parents' do
@@ -141,7 +126,6 @@ describe 'monitoring::host' do
               'icon_image' => nil,
               'address'    => '4.3.2.1'
             )
-            is_expected.not_to contain_nagios_host('service.svc.wmnet.mgmt')
           end
         end
         describe 'monitoring a service, with fqdn' do
@@ -154,7 +138,6 @@ describe 'monitoring::host' do
               'icon_image' => nil,
               'address'    => 'blah.foo.bar'
             )
-            is_expected.not_to contain_nagios_host('service.svc.wmnet.mgmt')
           end
         end
       end
