@@ -9,7 +9,7 @@ class ldap::client::utils($ldapconfig) {
     if debian::codename::le('buster') {
         ensure_packages(['python-pycurl', 'python-pyldap'])
     }
-    ensure_packages(['python3-pycurl', 'python3-pyldap'])
+    ensure_packages(['python3-pycurl', 'python3-pyldap', 'python3-bitu-ldap'])
 
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',
@@ -77,6 +77,26 @@ class ldap::client::utils($ldapconfig) {
             group   => 'root',
             mode    => '0700',
             content => template('ldap/ldapscriptrc.erb'),
+        }
+
+        $bitu_config = {
+            uri      => $ldapconfig['servernames_rw'].map |$server| { "ldap://${server}:389" },
+            username => $ldapconfig['script_user_dn'],
+            password => $ldapconfig['script_user_pass'],
+            users    => {
+                dn                => "${ldapconfig['users_cn']},${ldapconfig['basedn']}",
+                auxiliary_classes => ['posixAccount']
+            },
+            groups => {
+                auxiliary_classes => ['posixGroup']
+            }
+        }
+
+        file { '/etc/bitu/ldap.json':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0700',
+            content => $bitu_config.to_json,
         }
     }
 }

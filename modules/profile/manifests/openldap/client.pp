@@ -18,6 +18,7 @@ class profile::openldap::client(
     $ldapconfig = {
         'servernames'      => [$ldap_config['ro-server'], $ldap_config['ro-server-fallback']],
         'servernames_rw'   => [$ldap_config['rw-server'], $ldap_config['rw-server-fallback']],
+        'users_cn'         => $ldap_config['users_cn'],
         'basedn'           => $ldap_config['base-dn'],
         'proxyagent'       => $ldap_config['proxyagent'],
         'proxypass'        => $ldap_config['proxypass'],
