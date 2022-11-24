@@ -12,7 +12,7 @@
 define apereo_cas::service (
     Integer                              $id,
     String                               $service_id,
-    Apereo_cas::Service::Class           $service_class    = 'RegexRegisteredService',
+    Apereo_cas::Service::Class           $service_class   = 'CasRegisteredService',
     Apereo_cas::Service::Release_policy  $release_policy   = 'ReturnAllAttributeReleasePolicy',
     Apereo_cas::Service::Access_strategy $access_strategy  = 'DefaultRegisteredServiceAccessStrategy',
     Array[String]                        $required_groups  = [],
