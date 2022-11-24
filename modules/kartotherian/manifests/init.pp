@@ -21,12 +21,8 @@
 #   Contact groups for alerting.
 #   Default: 'admins'
 #
-# [*cassandra_servers*]
-#   List of cassandra server names used by Kartotherian
 #
 class kartotherian(
-    Array[String] $cassandra_servers,
-    String $cassandra_pass,
     String $pgsql_pass,
     String $storage_id,
     String $tilerator_storage_id,
@@ -34,7 +30,6 @@ class kartotherian(
     String  $contact_groups = 'admins',
     Stdlib::Port $port      = 6533,
     String  $num_workers    = 'ncpu',
-    String  $cassandra_user = 'kartotherian',
     String  $pgsql_user     = 'kartotherian',
 ) {
 
@@ -47,9 +42,6 @@ class kartotherian(
         deployment_vars   => {
             geoshapes_user         => $pgsql_user,
             geoshapes_password     => $pgsql_pass,
-            cassandra_user         => $cassandra_user,
-            cassandra_password     => $cassandra_pass,
-            cassandra_servers      => $cassandra_servers,
             osmdb_password         => $pgsql_pass,
             osmdb_user             => $pgsql_user,
             storage_id             => $storage_id,

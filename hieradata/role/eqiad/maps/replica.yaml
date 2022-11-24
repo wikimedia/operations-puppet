@@ -2,22 +2,9 @@ profile::maps::apps::redis_server: 'redis://maps1009.eqiad.wmnet'
 
 profile::maps::apps::tilerator_enable: false
 
-profile::cassandra::single_instance::dc: 'eqiad'
-
-profile::cassandra::single_instance::seeds:
-  - '10.64.0.12'  # maps1005.eqiad.wmnet
-  - '10.64.0.18'  # maps1006.eqiad.wmnet
-  - '10.64.16.6'  # maps1007.eqiad.wmnet
-  - '10.64.16.27' # maps1008.eqiad.wmnet
-  - '10.64.32.8'  # maps1009.eqiad.wmnet
-  - '10.64.48.6'  # maps1010.eqiad.wmnet
-
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_replica::master: 'maps1009.eqiad.wmnet'
 profile::maps::osm_replica::use_replication_slots: true
-
-
-cassandra::target_version: '3.x'
 
 # Could be as high as 32GB
 # profile::maps::postgresql_common::shared_buffers: '16GB'

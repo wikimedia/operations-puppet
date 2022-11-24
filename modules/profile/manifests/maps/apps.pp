@@ -1,10 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::maps::apps(
     String $osm_engine = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
-    Array[String] $cassandra_hosts = lookup('profile::cassandra::single_instance::seeds'),
-    String $cassandra_kartotherian_pass = lookup('profile::maps::cassandra::kartotherian_pass'),
-    String $cassandra_tilerator_pass = lookup('profile::maps::cassandra::tilerator_pass'),
-    String $cassandra_tileratorui_pass = lookup('profile::maps::cassandra::tileratorui_pass'),
     String $pgsql_kartotherian_pass = lookup('profile::maps::osm_master::kartotherian_pass'),
     String $pgsql_tilerator_pass = lookup('profile::maps::osm_master::tilerator_pass'),
     String $pgsql_tileratorui_pass = lookup('profile::maps::osm_master::tileratorui_pass'),
@@ -26,32 +22,7 @@ class profile::maps::apps(
 
     $num_workers = floor($::processorcount * $tilerator_ncpu_ratio)
 
-    class { '::tilerator':
-        cassandra_servers => $cassandra_hosts,
-        cassandra_pass    => $cassandra_tilerator_pass,
-        pgsql_pass        => $pgsql_tilerator_pass,
-        redis_server      => $redis_server,
-        redis_pass        => $redis_pass,
-        contact_groups    => $contact_groups,
-        storage_id        => $tilerator_storage_id,
-        num_workers       => $num_workers,
-        enable            => $tilerator_enable
-    }
-
-    class { '::tilerator::ui':
-        cassandra_servers => $cassandra_hosts,
-        cassandra_pass    => $cassandra_tileratorui_pass,
-        pgsql_pass        => $pgsql_tileratorui_pass,
-        redis_server      => $redis_server,
-        redis_pass        => $redis_pass,
-        contact_groups    => $contact_groups,
-        storage_id        => $tilerator_storage_id,
-        osm_dir           => $osm_dir
-    }
-
     class { 'kartotherian':
-        cassandra_servers      => $cassandra_hosts,
-        cassandra_pass         => $cassandra_kartotherian_pass,
         pgsql_pass             => $pgsql_kartotherian_pass,
         contact_groups         => $contact_groups,
         storage_id             => $kartotherian_storage_id,

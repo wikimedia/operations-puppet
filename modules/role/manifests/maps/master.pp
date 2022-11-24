@@ -6,7 +6,6 @@ class role::maps::master {
     include ::profile::lvs::realserver
 
     include ::profile::maps::apps
-    include ::profile::maps::cassandra
     include ::profile::maps::osm_master
     include ::profile::maps::tlsproxy
     include ::profile::redis::master
@@ -14,7 +13,7 @@ class role::maps::master {
 
     system::role { 'maps::master':
       ensure      => 'present',
-      description => 'Maps master (postgresql, cassandra, redis, tilerator, kartotherian)',
+      description => 'Maps master (postgresql, redis, kartotherian)',
     }
 
 }

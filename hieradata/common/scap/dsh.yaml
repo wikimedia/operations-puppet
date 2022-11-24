@@ -69,7 +69,6 @@ scap::dsh::groups:
   cassandra:
     conftool:
       - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
-      - {'cluster': 'maps', 'service': 'cassandra', 'datacenters': ['codfw']}
       - {'cluster': 'restbase', 'service': 'cassandra'}
     hosts:
       - restbase-dev1001.eqiad.wmnet

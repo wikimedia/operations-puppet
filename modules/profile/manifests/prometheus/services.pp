@@ -63,11 +63,6 @@ class profile::prometheus::services (
         class_name => 'role::sessionstore',
     }
 
-    prometheus::jmx_exporter_config{ "cassandra_maps_production_${::site}":
-        dest       => "${targets_path}/cassandra_maps_production_${::site}.yaml",
-        class_name => 'profile::maps::cassandra',
-    }
-
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
