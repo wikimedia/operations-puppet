@@ -80,4 +80,6 @@ class prometheus::ipmi_exporter (
         ensure  => running,
         require => Package['prometheus-ipmi-exporter'],
     }
+
+    profile::auto_restarts::service { 'prometheus-ipmi-exporter': }
 }
