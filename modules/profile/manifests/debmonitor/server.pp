@@ -124,6 +124,7 @@ class profile::debmonitor::server (
 
     profile::auto_restarts::service { 'uwsgi-debmonitor': }
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI
     ferm::service { 'apache-https':
