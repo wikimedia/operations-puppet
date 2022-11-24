@@ -85,6 +85,14 @@ groups:
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
               daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
+  release-engineering:
+    gid: 837
+    description: 'Members of the Release Engineering team. Transitively, they are also members of:
+                  gerrit-root, gerrit-deployers, deployment, contint-roots, contint-admins, deployment-ci-admins,
+                  zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator, contint-docker, deployment-docker'
+    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, demon, dduvall, jnuche]
+    approval:
+      - Tyler Cipriani
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -105,7 +113,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [hashar, thcipriani, qchris, brennen, dancy, jnuche, demon, dduvall, jhuneidi]
+    members: &gerrit_root_members [*releng_members, qchris]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -118,24 +126,24 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [*platform_engineering_members, *ops_members,
+    members: [*platform_engineering_members, *ops_members, *releng_members,
               bd808, brion, cscott, ebernhardson,
-              gjg, halfak, hashar, hoo,
+              gjg, halfak, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
-              mobrovac, nuria, thcipriani, joal,
-              mforns, dcausse, dduvall,
+              mobrovac, nuria, joal,
+              mforns, dcausse,
               addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
-              jhuneidi, wmde-fisch, mvolz, brennen, cparle,
+              wmde-fisch, mvolz, cparle,
               urbanecm, awight, jakob, andrew-wmde,
               mstyles, phuedx, samwilson, dmaza, tchanders,
-              wikigit, arlolra, dancy, chrisalbon,
+              wikigit, arlolra, chrisalbon,
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
-              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche,
-              aikochou, kevinbazira, tsepothoabala, samtar, demon, pfischer, kindrobot,
+              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
+              aikochou, kevinbazira, tsepothoabala, samtar, pfischer, kindrobot,
               mfossati, isaranto
     ]
     system_members: [mwbuilder, mwpresync]
@@ -253,7 +261,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, jhuneidi, dancy, jnuche, demon]
+    members: &contint_roots_members [*releng_members, jforrester]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -264,7 +272,7 @@ groups:
       - Tyler Cipriani
     members: &contint_admins_members [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy, marktraceur,
-              gjg, addshore, jhuneidi, dancy, jnuche, taavi]
+              gjg, addshore, taavi]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (doc-uploader) NOPASSWD: ALL',
@@ -484,7 +492,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [twentyafterfour, thcipriani, brennen, jnuche, hashar, demon, dancy, dduvall, jhuneidi]
+    members: [*releng_members, twentyafterfour]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -728,7 +736,7 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [twentyafterfour, thcipriani, brennen, demon, jnuche, hashar, dduvall, dancy, jhuneidi]
+    members: [*releng_members, twentyafterfour]
     approval:
       - Tyler Cipriani
   notebook-roots:
@@ -843,14 +851,14 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche, demon]
+    members: [*ops_members, *releng_members, gjg, addshore, reedy, krinkle, jforrester]
     system_members: [jenkins-slave]
   deployment-docker:
     # See the comment above regarding both security and the use of the posix name instead than the gid.
     # Might be removed in the future if there is no more need. See T303450
     posix_name: docker
     description: Allow releng team to be in the docker group on deployment servers. No gid on purpose
-    members: [*ops_members, dancy, dduvall, hashar, jhuneidi, jnuche, thcipriani, demon]
+    members: [*ops_members, *releng_members]
     system_members: [mwbuilder]
   builder-docker:
     # There is no gid on purpose, same as above
