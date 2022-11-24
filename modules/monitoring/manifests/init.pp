@@ -6,7 +6,6 @@ class monitoring (
     Boolean              $do_paging             = true,
     Hash                 $hosts                 = {},
     Hash                 $services              = {},
-    Hash[String, String] $mgmt_parents          = {},
 ) {
     $hosts.each |$host, $config| {
         monitoring::host { $host:

@@ -8,4 +8,10 @@ profile::icinga::icinga_group: 'nagios'
 profile::icinga::icinga_user: 'nagios'
 profile::icinga::ensure_service: 'running'
 profile::icinga::logs_keep_days: 780
-profile::icinga::mgmt_parents: "%{alias('profile::monitoring::mgmt_parents')}"
+profile::icinga::mgmt_parents:
+  eqiad: msw1-eqiad  # FIXME: eqiad expansion uses msw2, connected to msw1
+  codfw: msw1-codfw
+  ulsfo: mr1-ulsfo
+  esams: mr1-esams
+  eqsin: mr1-eqsin
+  drmrs: mr1-drmrs

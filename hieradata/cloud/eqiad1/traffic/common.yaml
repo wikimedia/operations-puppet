@@ -51,13 +51,6 @@ profile::monitoring::services:
     description: 'SSH'
     check_command: 'check_ssh'
     notes_url: 'https://wikitech.wikimedia.org/wiki/SSH/monitoring'
-profile::monitoring::mgmt_parents:
-  eqiad: msw1-eqiad
-  codfw: msw1-codfw
-  ulsfo: mr1-ulsfo
-  esams: mr1-esams
-  eqsin: mr1-eqsin
-  drmrs: mr1-drmrs
 profile::prometheus::cadvisor_exporter::port: 4194
 profile::trafficserver::backend::log_formats:
   - name: wmf

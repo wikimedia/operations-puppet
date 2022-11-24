@@ -41,7 +41,6 @@ class profile::monitoring(
     Boolean             $notifications_enabled      = lookup('profile::monitoring::notifications_enabled'),
     Boolean             $do_paging                  = lookup('profile::monitoring::do_paging'),
     String              $nagios_group               = lookup('profile::monitoring::nagios_group'),
-    Hash                $mgmt_parents               = lookup('profile::monitoring::mgmt_parents'),
     Hash                $services                   = lookup('profile::monitoring::services'),
     Hash                $hosts                      = lookup('profile::monitoring::hosts'),
     Array[Stdlib::Host] $monitoring_hosts           = lookup('profile::monitoring::monitoring_hosts'),
@@ -67,7 +66,6 @@ class profile::monitoring(
         cluster               => $cluster,
         notifications_enabled => $notifications_enabled,
         do_paging             => $do_paging,
-        mgmt_parents          => $mgmt_parents,
         hosts                 => $hosts,
         services              => $services,
     }
