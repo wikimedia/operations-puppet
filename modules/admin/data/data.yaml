@@ -387,7 +387,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene, ryasmeen, dpujol, abartov]
+              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene, ryasmeen, dpujol, abartov, dasm]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5622,6 +5622,16 @@ users:
     uid: 2176
     gid: 500
     ssh_keys: []
+  dasm:
+    ensure: present
+    realname: Daniel Simmons-Marengo
+    email: dasm@tmlt.io
+    uid: 42464
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7ltKIKe7rrL2LacWR7RgP+YKB2KqMzvve40nJI1ypJ dasm@Daniels-MacBook-Pro.local
+    expiry_date: 2023-06-30
+    expiry_contact: jcross@wikimedia.org
 
 ldap_only_users:
   abhas:
