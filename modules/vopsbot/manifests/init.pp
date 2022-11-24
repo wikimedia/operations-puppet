@@ -63,6 +63,7 @@ class vopsbot(
         group   => $daemon_user,
         mode    => '0440',
         content => to_json($config),
+        notify  => Systemd::Service['vopsbot'],
     }
 
     file { $user_config:
@@ -71,6 +72,7 @@ class vopsbot(
         group   => $daemon_user,
         mode    => '0440',
         content => to_yaml($users),
+        notify  => Systemd::Service['vopsbot'],
     }
 
     file { $data_path:
