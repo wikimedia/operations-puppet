@@ -8,6 +8,5 @@ prometheus_nodes:
   - prometheus1006.eqiad.wmnet
 
 contactgroups: wmcs-team-email
-mgmt_contactgroups: wmcs-team-email
 
 profile::contacts::role_contacts: ['WMCS']

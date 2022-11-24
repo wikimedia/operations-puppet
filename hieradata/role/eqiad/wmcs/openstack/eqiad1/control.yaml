@@ -10,7 +10,6 @@ prometheus_nodes:
     - prometheus1006.eqiad.wmnet
 
 contactgroups: wmcs-team-email
-mgmt_contactgroups: wmcs-team-email
 
 prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
 

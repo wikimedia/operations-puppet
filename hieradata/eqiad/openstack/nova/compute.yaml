@@ -1,2 +1,1 @@
 openstack::nova::compute::contactgroups: "wmcs-team-email"
-openstack::nova::compute::mgmt_contactgroups: "wmcs-team-email"

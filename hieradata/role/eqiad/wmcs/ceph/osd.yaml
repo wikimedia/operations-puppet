@@ -2,7 +2,6 @@ profile::admin::groups:
   - wmcs-roots
 
 contactgroups: 'wmcs-team-email'
-mgmt_contactgroups: 'wmcs-team-email'
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
   - admin

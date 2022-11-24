@@ -55,5 +55,4 @@ prometheus::node_exporter::collectors_extra:
   - drbd
 
 contactgroups: wmcs-team-email
-mgmt_contactgroups: wmcs-team-email
 profile::contacts::role_contacts: ["WMCS"]

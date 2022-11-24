@@ -1,6 +1,5 @@
 # Notify the Data Engineering team about services on these hosts
 contactgroups: 'admins,analytics'
-mgmt_contactgroups: 'admins,analytics'
 
 nagios_group: analytics_eqiad
 cluster: analytics

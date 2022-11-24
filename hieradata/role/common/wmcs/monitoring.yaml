@@ -19,7 +19,6 @@ profile::wmcs::monitoring::statsd_standby: cloudmetrics1004.eqiad.wmnet
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
 contactgroups: wmcs-team-email
-mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
 graphite_host: cloudmetrics1003.eqiad.wmnet
 

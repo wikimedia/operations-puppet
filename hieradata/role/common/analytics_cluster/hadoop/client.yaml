@@ -1,6 +1,5 @@
 # Notify the Data Engineering team about services on these hosts
 contactgroups: 'admins,analytics'
-mgmt_contactgroups: 'admins,analytics'
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::oozie::client::oozie_service: 'analytics-oozie'

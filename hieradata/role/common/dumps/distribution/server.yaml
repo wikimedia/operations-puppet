@@ -1,7 +1,6 @@
 cluster: wmcs
 
 contactgroups: "wmcs-team-email,admins"
-mgmt_contactgroups: "wmcs-team-email"
 profile::monitoring::monitor_systemd: false
 
 profile::admin::groups:

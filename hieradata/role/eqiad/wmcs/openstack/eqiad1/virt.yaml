@@ -4,7 +4,6 @@ profile::admin::groups:
 profile::base::enable_microcode: true
 
 contactgroups: wmcs-team-email
-mgmt_contactgroups: wmcs-team-email
 
 # Reveal these to local-storage virts so we can transfer
 #  things into rbd by hand

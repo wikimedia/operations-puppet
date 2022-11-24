@@ -1,4 +1,3 @@
-# Notify the Data Engineering team about services on these hosts contactgroups: 'admins,analytics' mgmt_contactgroups: 'admins,analytics'
 
 profile::admin::groups:
   - analytics-privatedata-users
