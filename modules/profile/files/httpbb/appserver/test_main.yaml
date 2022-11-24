@@ -210,6 +210,7 @@ https://thankyou.wikipedia.org:
 # Meta (uses wikimedia-common.incl)
 https://meta.wikimedia.org:
 - path: /wiki/List_of_Wikipedias
+  timeout_seconds: 60  # up from the default 10 - T323707
   assert_status: 200
   assert_body_contains: List of Wikipedias
 
