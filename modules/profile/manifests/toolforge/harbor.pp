@@ -5,8 +5,8 @@ class profile::toolforge::harbor (
     Stdlib::Unixpath $tlscertdir = lookup('profile::toolforge::harbor::tlscertdir', {default_value => '/etc/acmecerts/toolforge/live'}),
     Boolean $cinder_attached = lookup('profile::toolforge::harbor::cinder_attached', {default_value => false}),
     String $harbor_init_pwd = lookup('profile::toolforge::harbor::init_pwd', {default_value => 'insecurityrules'}),
-    String $harbor_db_pwd = lookup('profile::toolforge::harbor::db::harbor_pwd'),
-    Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db::primary'),
+    String $harbor_db_pwd = lookup('profile::toolforge::harbor::db_harbor_pwd'),
+    Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db_primary'),
     Stdlib::Fqdn $harbor_url = lookup('profile::toolforge::harbor::url'),
 ) {
     ensure_packages(['docker.io'])
