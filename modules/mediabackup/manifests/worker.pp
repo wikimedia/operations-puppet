@@ -141,6 +141,16 @@ class mediabackup::worker (
         mode   => '0444',
         source => 'puppet:///modules/mediabackup/readandlist.json',
     }
+    # extra read and deletion policy for the deletion account
+    # Temporarily applied to the read only account until a separate
+    # account is created for it.
+    file { '/etc/mediabackup/readlistanddelete.json':
+        ensure => present,
+        owner  => 'mediabackup',
+        group  => 'mediabackup',
+        mode   => '0444',
+        source => 'puppet:///modules/mediabackup/readlistanddelete.json',
+    }
     # configuration and credentials to access final storage (S3-compatible
     # cluster on the same dc) for reading and listing (backup recovery)
     file { '/etc/mediabackup/mediabackups_recovery.conf':
