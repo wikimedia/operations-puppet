@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::klaxon (
     Klaxon::Klaxon_config $config   = lookup('profile::klaxon::klaxon_config', {'merge' => hash}),
     String $escalation_policy_slug  = lookup('profile::klaxon::escalation_policy_slug'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary add a contact to the system
 # @title the title should represent the area the contact is responsible for
 # @param param A list of contacts, can be personal names (referring to a shell username

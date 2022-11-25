@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::netconsole::client
 #
 # This profile configures netconsole client on the host.

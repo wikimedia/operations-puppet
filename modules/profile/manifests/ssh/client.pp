@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class to managed ssh client config
 # @param manage_ssh_keys indicate if we should manage the known_hosts file
 # @param manage_ssh_config if true manage the /etc/ssh/ssh_config file,

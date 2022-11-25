@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary class for managing contact meta data
 # @param role_contacts the default contact for this role, most often this is a Team
 class profile::contacts (

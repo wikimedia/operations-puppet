@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 function profile::contacts::get_owners (
 ) {
     $pql = @("PQL")

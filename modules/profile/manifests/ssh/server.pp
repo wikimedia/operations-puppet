@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary manage the ssh server daemon and config
 # @param listen_port the port to listen on
 # @param listen_addresses an array of addresses to listen on

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary This profile installs all the Debmonitor server related parts as WMF requires it
 # Actions:
 #       Deploy Debmonitor

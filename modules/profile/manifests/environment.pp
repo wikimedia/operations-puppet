@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Sets up the base environment for all hosts (profile, editor, sysctl, etc)
 # @param ls_aliases if true, will setup the ll/la aliases
 # @param export_systemd_env if true, add login scripts to ensure systemd environment.d variables are exported

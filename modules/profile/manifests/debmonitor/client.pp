@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::debmonitor::client
 # @summary
 # This profile installs the Debmonitor client and its configuration.
