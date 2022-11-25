@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::trove(
     String              $version                 = lookup('profile::openstack::codfw1dev::version'),
     Integer             $workers                 = lookup('profile::openstack::codfw1dev::trove::workers'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::haproxy(
     Optional[String] $acme_chief_cert_name = lookup('profile::openstack::codfw1dev::haproxy::acme_chief_cert_name', {default_value => undef}),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),

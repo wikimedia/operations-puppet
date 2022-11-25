@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::pdns::recursor::service(
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $observer_password = lookup('profile::openstack::codfw1dev::observer_password'),

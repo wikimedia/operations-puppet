@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::nova::api::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     String $dhcp_domain = lookup('profile::openstack::codfw1dev::nova::dhcp_domain', {default_value => 'example.com'}),

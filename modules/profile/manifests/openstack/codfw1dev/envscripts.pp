@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::envscripts(
     $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::cinder::backup (
     String[1]               $version                 = lookup('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn]     $openstack_controllers   = lookup('profile::openstack::codfw1dev::openstack_controllers'),

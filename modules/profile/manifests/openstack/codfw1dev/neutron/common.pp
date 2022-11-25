@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::neutron::common(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::neutron::db_host'),
     $version = lookup('profile::openstack::codfw1dev::version'),

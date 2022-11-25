@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::wikitech::monitor(
     $osm_host = lookup('profile::openstack::codfw1dev::osm_host'),
     ) {

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::networktests (
     Stdlib::Fqdn        $sshbastion            = lookup('profile::openstack::codfw1dev::networktests::sshbastion'),
     Hash                $envvars               = lookup('profile::openstack::codfw1dev::networktests::envvars'),

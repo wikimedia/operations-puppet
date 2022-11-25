@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::rbd_cloudcontrol(
     Stdlib::Fqdn        $keystone_fqdn             = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String              $radosgw_service_user_pass = lookup('profile::openstack::codfw1dev::radosgw::service_user_pass'),

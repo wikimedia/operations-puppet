@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::nova::scheduler::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     ) {

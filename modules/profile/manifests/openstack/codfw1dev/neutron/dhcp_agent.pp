@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::neutron::dhcp_agent(
     $version = lookup('profile::openstack::codfw1dev::version'),
     $dhcp_domain = lookup('profile::openstack::codfw1dev::nova::dhcp_domain'),

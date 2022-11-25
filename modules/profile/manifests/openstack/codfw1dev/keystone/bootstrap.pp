@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::keystone::bootstrap(
     $region = lookup('profile::openstack::codfw1dev::region'),
     $db_pass = lookup('profile::openstack::codfw1dev::keystone::db_pass'),

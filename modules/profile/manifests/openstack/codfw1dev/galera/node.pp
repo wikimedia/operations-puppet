@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::galera::node(
     Integer             $server_id             = lookup('profile::openstack::codfw1dev::galera::server_id'),
     Boolean             $enabled               = lookup('profile::openstack::codfw1dev::galera::enabled'),

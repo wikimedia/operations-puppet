@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::nova::compute::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     String[1] $network_flat_interface = lookup('profile::openstack::codfw1dev::nova::network_flat_interface'),

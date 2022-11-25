@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::galera::monitoring(
     Integer             $nodecount             = lookup('profile::openstack::codfw1dev::galera::node_count'),
     Stdlib::Port        $port                  = lookup('profile::openstack::codfw1dev::galera::listen_port'),

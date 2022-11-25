@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::db(
     Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
     Array[Stdlib::IP::Address] $mysql_root_clients = lookup('mysql_root_clients', {default_value => []}),

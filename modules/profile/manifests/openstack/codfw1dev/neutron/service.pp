@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::neutron::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     Stdlib::Port $bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),

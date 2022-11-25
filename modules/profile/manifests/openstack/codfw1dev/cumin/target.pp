@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == profile::openstack::codfw1dev::cumin::target
 #
 # Profile to allow a Cumin master for WMCS or a specific Cloud VPS project to

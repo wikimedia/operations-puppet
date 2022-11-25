@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
     String          $horizon_version = lookup('profile::openstack::codfw1dev::horizon_version'),
     String          $openstack_version = lookup('profile::openstack::codfw1dev::version'),

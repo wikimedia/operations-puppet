@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::pdns::dns_floating_ip_updater(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers', {default_value => ['cloudcontrol2002-dev.wikimedia.org']}),
     $floating_ip_ptr_zone = lookup('profile::openstack::codfw1dev::designate::floating_ip_ptr_zone'),

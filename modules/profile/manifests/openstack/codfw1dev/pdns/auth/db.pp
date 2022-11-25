@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::pdns::auth::db(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     $pdns_db_pass = lookup('profile::openstack::codfw1dev::pdns::db_pass'),

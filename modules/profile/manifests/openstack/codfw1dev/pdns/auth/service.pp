@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
