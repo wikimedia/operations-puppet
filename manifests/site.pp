@@ -1301,12 +1301,12 @@ node /^ganeti10(09|1[0-9]|2[0-9]|3[0-4])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti20(09|1[0-9]|2[0-9]|30)\.codfw\.wmnet$/ {
+node /^ganeti20(09|1[0-9]|2[0-9]|3[0-1])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
 # codfw new ganeti nodes T313856
-node /^ganeti203[12]\.codfw\.wmnet/ {
+node /^ganeti203[2]\.codfw\.wmnet/ {
     role(insetup::infrastructure_foundations)
 }
 
