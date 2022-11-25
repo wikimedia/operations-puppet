@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::elasticsearch::relforge (
     Array[Stdlib::IP::Address] $maintenance_hosts = lookup('maintenance_hosts'),
     Array[Stdlib::IP::Address] $cumin_masters = lookup('cumin_masters'),
