@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up a webserver configured for phabricator
 #
 class profile::phabricator::httpd (
