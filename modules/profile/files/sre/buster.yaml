@@ -18,9 +18,9 @@ role::etcd::v3::kubernetes:
 role::etcd::v3::kubernetes::staging:
   target-q: TBD
 role::etcd::v3::ml_etcd:
-  target-q: TBD
+  target-q: 2023-01
 role::etcd::v3::ml_etcd::staging:
-  target-q: TBD
+  target-q: 2023-01
 role::lists:
   target-q: TBD
 role::configcluster:
@@ -86,9 +86,9 @@ role::restbase::production:
 role::restbase::base:
   target-q: TBD
 role::ores:
-  target-q: TBD
+  target-q: 2023-02
 role::orespoolcounter:
-  target-q: TBD
+  target-q: 2023-02
 role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:
@@ -247,9 +247,6 @@ role::wmcs::openstack::eqiad1::control:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::control:
   target-q: TBD
-role::graphite::production:
-  phab-task: T247963
-  target-q: 2021-04
 role::kafka::jumbo::broker:
   target-q: TBD
   phab-task: 288804
@@ -289,7 +286,8 @@ role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
 role::openldap::replica:
   target-q: TBD
 role::openldap::corp:
-  target-q: TBD
+  target-q: 2022-04
+  phab-task: T323820
 role::wmcs::openstack::eqiad1::labweb:
   target-q: TBD
 role::piwik:
