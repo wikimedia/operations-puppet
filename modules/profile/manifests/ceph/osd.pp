@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::ceph::osd
 #
 # This profile configures Ceph object storage hosts with the osd daemon

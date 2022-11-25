@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::ceph::mon
 #
 # This profile configures Ceph monitor hosts with the mon and mgr daemons

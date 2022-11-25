@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::ceph::client::rbd_cloudcontrol(
     Boolean                    $enable_v2_messenger          = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
     Hash[String,Hash]          $mon_hosts                    = lookup('profile::ceph::mon::hosts'),

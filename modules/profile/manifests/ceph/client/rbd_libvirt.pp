@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::ceph::client:rbd_libvirt
 #
 # This profile will configure clients for connecting to Ceph rados block storage
