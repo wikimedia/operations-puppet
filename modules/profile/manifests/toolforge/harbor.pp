@@ -107,5 +107,23 @@ class profile::toolforge::harbor (
             subscribe   => File['/srv/harbor/data/secret/cert/server.key'],
             refreshonly => true,
         }
+
+        # I did not find an easy way (avoiding extra wrappers) to use a systemd unit that
+        # detected also when the containers were stopped and declared the unit failed if so
+        # this is a poor-person's effective alternative
+        # the following script relies on docker-compose starting one container per service
+        $check_script = @("EOS"/L)
+            bash -c "
+                want_services=\$(docker-compose -f ${composefile} ps --services --all | wc -l);
+                got_services=\$(docker-compose -f ${composefile} ps | grep Up | wc -l);
+                [[ \\\$want_services -ne \\\$got_services ]]
+            "
+            | EOS
+        exec {'ensure-compose-started':
+            command => "/usr/bin/docker-compose -f ${composefile} up -d",
+            onlyif  => $check_script,
+            require => File['/srv/harbor/data/secret/cert/server.key'],
+            path    => ['/usr/bin'],
+        }
     }
 }
