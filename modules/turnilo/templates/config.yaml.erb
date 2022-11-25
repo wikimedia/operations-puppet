@@ -2141,12 +2141,12 @@ dataCubes:
         formula: $main.sum($hits)
 
       - name: aggregated_response_size
-        title: Aggregated Response Size
+        title: Aggregated Response Size (B)
         formula: $main.sum($aggregated_response_size)
 
-      - name: aggregated_time_firstbyte
-        title: Aggregated time to first byte
-        formula: $main.sum($time_firstbyte)
+      - name: average_time_firstbyte
+        title: Average time to first byte (ms)
+        formula: $main.sum($aggregated_time_firstbyte) * 1000 / $main.sum($hits)
 
       # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
       #
@@ -2386,12 +2386,12 @@ dataCubes:
         formula: $main.sum($hits)
 
       - name: aggregated_response_size
-        title: Aggregated Response Size
+        title: Aggregated Response Size (B)
         formula: $main.sum($aggregated_response_size)
 
-      - name: aggregated_time_firstbyte
-        title: Aggregated time to first byte
-        formula: $main.sum($time_firstbyte)
+      - name: average_time_firstbyte
+        title: Average time to first byte (ms)
+        formula: $main.sum($aggregated_time_firstbyte) * 1000 / $main.sum($hits)
 
       # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
       #
