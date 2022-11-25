@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::graphite::production
 #
 # Set up graphite instance for production.

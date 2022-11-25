@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: profile::graphite::base
 # Base class for setting up a graphite instance.
 #
