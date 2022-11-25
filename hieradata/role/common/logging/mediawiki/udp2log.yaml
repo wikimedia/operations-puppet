@@ -12,3 +12,5 @@ profile::rsyslog::udp_tee::listen: '0.0.0.0:8420'
 profile::rsyslog::udp_tee::destinations:
   - 'mwlog1002.eqiad.wmnet:8421'
   - 'mwlog2002.codfw.wmnet:8421'
+
+profile::contacts::role_contacts: ['Observability']
