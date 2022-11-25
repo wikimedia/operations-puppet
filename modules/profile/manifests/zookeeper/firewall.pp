@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::zookeeper::firewall::generic
 #
 # Firewall rules for a zookeeper cluster.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::zookeeper::server
 #
 # zookeeper_cluster_name in hiera will be used to make jmxtrans
