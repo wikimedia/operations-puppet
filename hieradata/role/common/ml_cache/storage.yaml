@@ -35,3 +35,5 @@ profile::cassandra::settings:
     # Enable client encryption, though optional for the time being (see: T307798).
     client_encryption_enabled: true
     client_encryption_optional: true
+
+profile::contacts::role_contacts: ["Machine Learning"]
