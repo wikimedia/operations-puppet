@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Rsyslog filters for shellbox
 class profile::rsyslog::shellbox () {
   rsyslog::conf { 'shellbox':

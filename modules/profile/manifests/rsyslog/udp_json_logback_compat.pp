@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class profile::rsyslog::udp_json_logback_compat - UDP json log compatibility endpoint
 #
 # This provides a compatibility endpoint to enable applications that do not yet support

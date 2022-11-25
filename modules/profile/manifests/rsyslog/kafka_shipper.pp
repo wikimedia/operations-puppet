@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary generalized rsyslog configuration to ship logs into logging pipeline
 # @param enable if true enable config
 # @param queue_enabled_sites list of sites to enable queues

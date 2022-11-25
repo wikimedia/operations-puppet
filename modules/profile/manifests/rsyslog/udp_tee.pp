@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class profile::rsyslog::udp_tee - udp_tee
 
 # Listen on a local UDP port and relay rawmsg to multiple destinations.

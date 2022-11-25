@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class profile::rsyslog::udp_localhost_compat - UDP syslog localhost compatiblity endpoint
 
 # This class is meant to ease the transition for applications sending their logs to localhost.

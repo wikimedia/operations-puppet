@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class profile::rsyslog::netdev_kafka_relay - UDP syslog compatiblity endpoint for network devices
 
 # This provides an entry point into the kafka logging pipeline for network hardware devices which do
