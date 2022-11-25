@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Shared profile for front- and back-end puppetmasters.
 #
 # @base_param config:  Dict merged with front- or back- specifics and then passed

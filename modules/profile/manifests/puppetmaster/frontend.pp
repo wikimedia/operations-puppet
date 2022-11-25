@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summray  config puppetmaster frontends
 # @param config addtional config to use
 # @param secure_private If false, /etc/puppet/private will be labs/private.git.

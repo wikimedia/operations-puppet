@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 # @summray  config puppetmaster backends
 # @param config addtional config to use

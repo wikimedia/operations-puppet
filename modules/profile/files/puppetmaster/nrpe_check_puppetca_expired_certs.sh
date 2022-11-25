@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 if [ $# -ne 3 ]
 then
   printf "Usage:\\n\\t%s WARN_SECS CRIT_SECS\\n" %0

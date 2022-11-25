@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 if [[ $# -eq 0 ]]; then
     echo 'You need to specific the name of the distro for which firmware should be added, e.g. "buster"'

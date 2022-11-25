@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Installs a script to add firmware to Debian netboot images
 class profile::puppetmaster::updatenetboot {
 

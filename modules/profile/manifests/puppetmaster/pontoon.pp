@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::puppetmaster::pontoon (
     Integer[1,30]                 $git_sync_minutes = lookup('profile::puppetmaster::pontoon::git_sync_minutes', {'default_value' => 10}),
     Enum['puppetdb', 'none']      $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs', {'default_value' => 'none' }),
