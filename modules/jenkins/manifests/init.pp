@@ -228,4 +228,16 @@ class jenkins(
         require => Package['jenkins'],
     }
 
+    scap::target { 'releng/jenkins-deploy':
+      deploy_user  => 'deploy-jenkins',
+      service_name => 'jenkins',
+      sudo_rules   => [
+          # Options to the JVM and Jenkins daemon are passed using a systemd override in the deployment repository which
+          # requires a reload when changed
+          'ALL=(root) NOPASSWD: systemctl daemon-reload',
+          'ALL=(root) NOPASSWD: apt-get install -y jenkins',
+          # To allow the installation process to run any required jars in the deployment repository
+          'ALL=(jenkins) NOPASSWD: java -jar /srv/deployment/releng/jenkins-deploy*',
+      ]
+    }
 }
