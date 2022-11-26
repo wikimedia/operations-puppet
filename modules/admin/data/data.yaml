@@ -5602,6 +5602,7 @@ users:
     ensure: present
     krb: present
     realname: David Pujol
+    email: david.pujol@tmlt.io
     uid: 42474
     gid: 500
     ssh_keys:
