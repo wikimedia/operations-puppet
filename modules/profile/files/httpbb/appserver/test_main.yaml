@@ -209,10 +209,9 @@ https://thankyou.wikipedia.org:
 
 # Meta (uses wikimedia-common.incl)
 https://meta.wikimedia.org:
-- path: /wiki/List_of_Wikipedias
-  timeout_seconds: 60  # up from the default 10 - T323707
+- path: /wiki/Wikimedia_servers
   assert_status: 200
-  assert_body_contains: List of Wikipedias
+  assert_body_contains: Wikimedia servers
 
 # Donate wiki
 https://donate.wikimedia.org:
