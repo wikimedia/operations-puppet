@@ -44,11 +44,11 @@ class opentelemetry::collector(
     }
 
     file { '/etc/otelcol-contrib/config.yaml':
-        ensure => $ensure,
-        source => 'puppet:///modules/opentelemetry/config.yaml.erb',
-        owner  => $otel_user,
-        group  => $otel_user,
-        mode   => '0640',
-        notify => Service['otelcol-contrib'],
+        ensure  => $ensure,
+        content => template('opentelemetry/config.yaml.erb'),
+        owner   => $otel_user,
+        group   => $otel_user,
+        mode    => '0640',
+        notify  => Service['otelcol-contrib'],
     }
 }
