@@ -10,6 +10,7 @@ class ldap::management(
     ensure_packages([
         'ldapvi',
         'python3-yaml',
+        'python3-bitu-ldap'
     ])
 
     apt::package_from_component { 'python3-ldap':
@@ -34,6 +35,7 @@ class ldap::management(
             content => file('ldap/modify-ldap-group');
         '/usr/local/bin/modify-mfa':
             content => file('ldap/scripts/modify-mfa.py');
+
     }
     file { '/usr/local/bin/rewrite-group-for-memberof':
         source => 'puppet:///modules/ldap/rewrite-group-for-memberof.py',
