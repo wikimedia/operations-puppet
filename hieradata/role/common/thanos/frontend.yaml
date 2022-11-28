@@ -19,7 +19,11 @@ profile::lvs::realserver::pools:
   thanos-swift:
     services:
       - swift-proxy
-
+  thanos-web:
+    services:
+      - thanos-query
+      - thanos-query-frontend
+      - apache2
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'yes'

@@ -2267,6 +2267,42 @@ service::catalog:
       - dnsdisc: thanos-query
         active_active: true
     role: "thanos::frontend"
+
+  thanos-web:
+    description: Prometheus long-term storage, web interface
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.77
+      eqiad:
+        default: 10.2.2.77
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: thanos
+        service: thanos-web
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - https://thanos-query.discovery.wmnet/-/ready
+      scheduler: sh # needed for SSO sessions to stick
+    probes:
+      - type: http
+        path: /-/ready
+    port: 443
+    sites:
+      - codfw
+      - eqiad
+    state: service_setup
+    discovery:
+      - dnsdisc: thanos-web
+        active_active: true
+    role: "thanos::frontend"
     public_endpoint: "thanos"
 
   thanos-swift:
