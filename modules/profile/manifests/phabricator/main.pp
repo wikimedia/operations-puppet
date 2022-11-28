@@ -1,8 +1,6 @@
 # phabricator instance
 #
 class profile::phabricator::main (
-    Hash                        $cache_nodes        = lookup('cache::nodes',
-                                                      { 'default_value' => {} }),
     String                      $domain             = lookup('phabricator_domain',
                                                       { 'default_value' => 'phabricator.wikimedia.org' }),
     String                      $altdom             = lookup('phabricator_altdomain',
