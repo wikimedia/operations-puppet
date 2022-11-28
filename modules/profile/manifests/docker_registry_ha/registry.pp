@@ -15,8 +15,6 @@ class profile::docker_registry_ha::registry(
     String $password_salt = lookup('profile::docker_registry_ha::password_salt'),
     # Which machines are allowed to build images.
     Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry_ha::registry::image_builders', { 'default_value' => undef }),
-    # cache text nodes are allowed to connect via HTTP, if defined
-    Hash $cache_nodes = lookup('cache::nodes', { 'default_value' => {} }),
     # Storage configuration
     Optional[String] $certname = lookup('profile::docker_registry_ha::registry::certname', { 'default_value' => undef }),
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
@@ -94,7 +92,6 @@ class profile::docker_registry_ha::registry(
         ssl_settings                => ssl_ciphersuite('nginx', 'mid'),
         use_puppet_certs            => $use_puppet,
         ssl_certificate_name        => $certname,
-        http_allowed_hosts          => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
         read_only_mode              => $registry_read_only_mode,
         nginx_cache                 => $nginx_cache,
         deployment_hosts            => $deployment_hosts,

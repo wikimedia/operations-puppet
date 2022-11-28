@@ -21,7 +21,6 @@ class docker_registry_ha::web (
     Array[String] $ssl_settings,
     Boolean $use_puppet_certs=false,
     Optional[String] $ssl_certificate_name=undef,
-    Array[Stdlib::Host] $http_allowed_hosts=[],
     Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips=[],
     Stdlib::HTTPUrl $jwt_keys_url='https://gitlab.wikimedia.org/-/jwks',
     Stdlib::Host $jwt_issuer='gitlab.wikimedia.org',
