@@ -14,7 +14,6 @@ profile::openstack::base::nova::osapi_compute_listen_port: 18774
 # - Resource/overcommit checks
 profile::openstack::base::nova::scheduler_filters: [
   'ComputeFilter', # operational and enabled
-  'AvailabilityZoneFilter', # matches requested zone
   'ServerGroupAffinityFilter', # has group members instances
   'ServerGroupAntiAffinityFilter', # does NOT have group member instances
   'ImagePropertiesFilter', # supports requested image properties
