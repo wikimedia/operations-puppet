@@ -1,7 +1,7 @@
 phabricator::mysql::master: "m3-master.codfw.wmnet"
-phabricator::mysql::master::port: 3306
+phabricator::mysql::master::port: '3306'
 phabricator::mysql::slave: "m3-slave.codfw.wmnet"
-phabricator::mysql::slave::port: 3323
+phabricator::mysql::slave::port: '3323'
 
 phabricator_cluster_search:
   - type: 'elasticsearch'
