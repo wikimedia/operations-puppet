@@ -1,6 +1,5 @@
 eqsin:
   cache_text:
-    cp5009.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5010.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5011.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5012.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
@@ -11,7 +10,6 @@ eqsin:
     cp5019.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5020.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
   cache_upload:
-    cp5004.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5005.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5006.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5013.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
