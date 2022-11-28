@@ -34,8 +34,13 @@ class opentelemetry::collector(
         ensure_packages => true,
     }
 
+    $service_ensure = $ensure ? {
+        'present' => 'running',
+        default   => 'stopped',
+    }
+
     service { 'otelcol-contrib':
-        ensure => $ensure,
+        ensure => $service_ensure,
     }
 
     file { '/etc/otelcol-contrib/config.yaml':
