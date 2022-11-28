@@ -45,7 +45,7 @@ define phabricator::logmail (
     String $sndr_address,
     Variant[String, Array] $rcpt_address,
     Stdlib::Fqdn $mysql_slave,
-    Stdlib::Port $mysql_slave_port,
+    String $mysql_slave_port,
     String $mysql_db_name,
     Stdlib::Unixpath $basedir  = '/usr/local/bin',
     Optional[Integer] $hour = 0,
