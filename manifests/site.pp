@@ -205,7 +205,7 @@ node 'arclamp2001.codfw.wmnet' {
     role(insetup::observability)
 }
 # New arclamp node T319433
-node 'arclam11001.eqiad.wmnet' {
+node 'arclamp1001.eqiad.wmnet' {
     role(insetup::observability)
 }
 # Analytics Query Service
