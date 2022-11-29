@@ -22,6 +22,9 @@ profile::idp::services:
       - ops
       - sre-admins
       - idptest-users
+  idp_cloud_dev:
+    id: 2
+    service_id: 'https://idp-dev\.wmcloud\.org(/.*)?'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
