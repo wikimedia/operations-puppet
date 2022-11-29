@@ -25,6 +25,7 @@ class openstack::magnum::service::yoga(
         ensure => 'present',
     }
 
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
     file {
         '/etc/magnum/magnum.conf':
             content   => template('openstack/yoga/magnum/magnum.conf.erb'),

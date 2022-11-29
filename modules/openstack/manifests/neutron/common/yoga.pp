@@ -21,6 +21,9 @@ class openstack::neutron::common::yoga(
 
     class { "openstack::neutron::common::yoga::${::lsbdistcodename}": }
 
+    # Subtemplates of neutron.conf are going to want to know what
+    #  version this is
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
     file { '/etc/neutron/neutron.conf':
             owner     => 'neutron',
             group     => 'neutron',

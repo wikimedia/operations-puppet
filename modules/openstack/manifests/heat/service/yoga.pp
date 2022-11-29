@@ -30,6 +30,7 @@ class openstack::heat::service::yoga(
         ensure => 'present',
     }
 
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
     file {
         '/etc/heat/heat.conf':
             content   => template('openstack/yoga/heat/heat.conf.erb'),

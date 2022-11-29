@@ -32,6 +32,9 @@ class openstack::trove::service::yoga(
         ensure => 'present',
     }
 
+    # Subtemplates of trove.conf are going to want to know what
+    #  version this is
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
     file {
         '/etc/trove/trove.conf':
             content   => template('openstack/yoga/trove/trove.conf.erb'),

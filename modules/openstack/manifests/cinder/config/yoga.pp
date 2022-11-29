@@ -26,6 +26,9 @@ class openstack::cinder::config::yoga(
         group  => 'cinder',
     }
 
+    # Subtemplates of cinder.conf are going to want to know what
+    #  version this is
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
     file { '/etc/cinder/cinder.conf':
         content   => template('openstack/yoga/cinder/cinder.conf.erb'),
         owner     => 'cinder',

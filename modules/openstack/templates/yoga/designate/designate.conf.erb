@@ -259,16 +259,7 @@ puppet_git_repo_key_path = "<%= @puppet_git_repo_key_path %>"
 #control_exchange = 'neutron'
 #format = '%(octet0)s-%(octet1)s-%(octet2)s-%(octet3)s.%(domain)s'
 
-[oslo_messaging_rabbit]
-rabbit_retry_interval=1
-rabbit_retry_backoff=2
-rabbit_durable_queues=true
-amqp_durable_queues=true
-rabbit_ha_queues=true
-
-ssl = True
-ssl_ca_file = /etc/ssl/certs/wmf-ca-certificates.crt
-ssl_version = TLSv1_2
+<%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
 
 [oslo_messaging_notifications]
 driver = messagingv2
