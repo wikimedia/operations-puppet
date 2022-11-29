@@ -33,4 +33,6 @@ class dragonfly::supernode (
   service { 'dragonfly-supernode':
     ensure  => running,
   }
+
+  profile::auto_restarts::service { 'dragonfly-supernode': }
 }
