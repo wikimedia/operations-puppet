@@ -7,8 +7,7 @@ class openstack::glance::service::yoga(
     $db_host,
     $glance_data_dir,
     $ldap_user_pass,
-    $keystone_admin_uri,
-    $keystone_internal_uri,
+    $keystone_fqdn,
     Stdlib::Port $api_bind_port,
     Array[String] $glance_backends,
     String $ceph_pool,
@@ -20,6 +19,9 @@ class openstack::glance::service::yoga(
         ensure => 'present',
     }
 
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
     file {
         '/etc/glance/glance-api.conf':
             content   => template('openstack/yoga/glance/glance-api.conf.erb'),

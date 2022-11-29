@@ -2,8 +2,6 @@ class profile::openstack::base::glance(
     String $version = lookup('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
-    Stdlib::Port $internal_port = lookup('profile::openstack::base::keystone::internal_port'),
     String $db_user = lookup('profile::openstack::base::glance::db_user'),
     String $db_name = lookup('profile::openstack::base::glance::db_name'),
     String $db_pass = lookup('profile::openstack::base::glance::db_pass'),
@@ -16,14 +14,10 @@ class profile::openstack::base::glance(
     Boolean $active = lookup('profile::openstack::base::glance_active'),
     ) {
 
-    $keystone_internal_uri = "https://${keystone_fqdn}:${internal_port}"
-    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
-
     class { '::openstack::glance::service':
         version               => $version,
         active                => $active,
-        keystone_internal_uri => $keystone_internal_uri,
-        keystone_admin_uri    => $keystone_admin_uri,
+        keystone_fqdn         => $keystone_fqdn,
         db_user               => $db_user,
         db_pass               => $db_pass,
         db_name               => $db_name,

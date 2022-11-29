@@ -77,25 +77,13 @@ log_agent_heartbeats = <%= @log_agent_heartbeats %>
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
 max_overflow = 25
 
-[keystone_authtoken]
-auth_type = password
-www_authenticate_uri = <%= @keystone_public_uri %>
-auth_url = <%= @keystone_admin_uri %>
-password = <%= @ldap_user_pass %>
-project_domain_id = default
-project_name = admin
-region_name = <%= @region %>
-user_domain_id = default
-username = novaadmin
-memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
-service_token_roles = admin, service
-service_token_roles_required = true
+<%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 [matchmaker_redis]
 
 [nova]
 region_name = <%= @region %>
-auth_url = https://<%= @keystone_api_fqdn %>:25000/v3
+auth_url = https://<%= @keystone_fqdn %>:25000/v3
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default

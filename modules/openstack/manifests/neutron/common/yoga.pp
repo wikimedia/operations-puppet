@@ -3,7 +3,7 @@
 class openstack::neutron::common::yoga(
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
-    Stdlib::Fqdn $keystone_api_fqdn,
+    Stdlib::Fqdn $keystone_fqdn,
     $db_pass,
     $db_user,
     $db_host,
@@ -15,8 +15,6 @@ class openstack::neutron::common::yoga(
     $log_agent_heartbeats,
     $agent_down_time,
     Stdlib::Port $bind_port,
-    Stdlib::HTTPUrl $keystone_admin_uri,
-    Stdlib::HTTPUrl $keystone_public_uri,
     ) {
 
     class { "openstack::neutron::common::yoga::${::lsbdistcodename}": }
@@ -24,6 +22,8 @@ class openstack::neutron::common::yoga(
     # Subtemplates of neutron.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file { '/etc/neutron/neutron.conf':
             owner     => 'neutron',
             group     => 'neutron',

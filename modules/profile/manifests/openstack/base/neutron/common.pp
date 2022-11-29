@@ -13,21 +13,14 @@ class profile::openstack::base::neutron::common(
     $rabbit_pass = lookup('profile::openstack::base::neutron::rabbit_pass'),
     $agent_down_time = lookup('profile::openstack::base::neutron::agent_down_time'),
     $log_agent_heartbeats = lookup('profile::openstack::base::neutron::log_agent_heartbeats'),
-    Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     Stdlib::Port $bind_port = lookup('profile::openstack::base::neutron::bind_port'),
-    Stdlib::Port $public_port = lookup('profile::openstack::base::keystone::public_port'),
     ) {
-
-    $keystone_admin_uri = "https://${keystone_api_fqdn}:${auth_port}"
-    $keystone_public_uri = "https://${keystone_api_fqdn}:${public_port}"
 
     class {'::openstack::neutron::common':
         version               => $version,
         openstack_controllers => $openstack_controllers,
         rabbitmq_nodes        => $rabbitmq_nodes,
-        keystone_admin_uri    => $keystone_admin_uri,
-        keystone_api_fqdn     => $keystone_api_fqdn,
-        keystone_public_uri   => $keystone_public_uri,
+        keystone_fqdn         => $keystone_api_fqdn,
         db_pass               => $db_pass,
         db_user               => $db_user,
         db_host               => $db_host,

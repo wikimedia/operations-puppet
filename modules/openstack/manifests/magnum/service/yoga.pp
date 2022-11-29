@@ -9,8 +9,7 @@ class openstack::magnum::service::yoga(
     String $db_name,
     Stdlib::Fqdn $db_host,
     String $ldap_user_pass,
-    String $keystone_admin_uri,
-    String $keystone_internal_uri,
+    Stdlib::Fqdn $keystone_fqdn,
     Stdlib::Port $api_bind_port,
     String $rabbit_user,
     String $rabbit_pass,
@@ -26,6 +25,8 @@ class openstack::magnum::service::yoga(
     }
 
     $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'magnum'
+    $keystone_auth_project = 'service'
     file {
         '/etc/magnum/magnum.conf':
             content   => template('openstack/yoga/magnum/magnum.conf.erb'),

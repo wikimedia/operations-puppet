@@ -7,8 +7,7 @@ class openstack::placement::service::yoga(
     $db_name,
     $db_host,
     $ldap_user_pass,
-    $keystone_admin_uri,
-    $keystone_public_uri,
+    $keystone_fqdn,
     Stdlib::Port $api_bind_port,
 ) {
     require "openstack::serverpackages::yoga::${::lsbdistcodename}"
@@ -17,6 +16,11 @@ class openstack::placement::service::yoga(
         ensure => 'present',
     }
 
+    # Subtemplates of placement.conf are going to want to know what
+    #  version this is
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file {
         '/etc/placement/placement.conf':
             content   => template('openstack/yoga/placement/placement.conf.erb'),

@@ -14,7 +14,7 @@ describe 'profile::openstack::base::nova::compute::service' do
           db_name_api => \'dummydbnameapi\',
           openstack_controllers => [\'controller01\'],
           rabbitmq_nodes => [\'rabbit01\'],
-          keystone_api_fqdn => \'dummy.api.fqdn\',
+          keystone_fqdn => \'dummy.api.fqdn\',
           scheduler_filters => [\'filter1\'],
           ldap_user_pass => \'dummypass\',
           rabbit_user => \'dummyuser\',

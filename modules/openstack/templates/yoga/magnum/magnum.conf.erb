@@ -603,7 +603,7 @@ region_name = <%= @region %>
 
 [keystone_auth]
 auth_type = password
-auth_url = <%= @keystone_internal_uri %>
+auth_url = https://<%= @keystone_fqdn %>:25000
 project_name = service
 project_domain_id = default
 default_domain_id = default
@@ -611,24 +611,10 @@ username = magnum
 user_domain_id = default
 password = <%= @ldap_user_pass %>
 
-
-[keystone_authtoken]
-auth_type = password
-www_authenticate_url = <%= @keystone_internal_uri %>
-auth_url = <%= @keystone_internal_uri %>
-password = <%= @ldap_user_pass %>
-project_domain_id = default
-project_name = service
-region_name = <%= @region %>
-user_domain_id = default
-username = magnum
-memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
-service_token_roles = admin, service
-service_token_roles_required = true
-
+<%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 # Some magnum code expects this to be available under the legacy
 #  names, so we duplicate things here:
-www_authenticate_uri = <%= @keystone_internal_uri %>
+www_authenticate_uri = https://<%= @keystone_fqdn %>:25000
 
 
 [kubernetes]

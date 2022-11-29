@@ -3,7 +3,6 @@ class profile::openstack::base::cinder(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     String $region = lookup('profile::openstack::base::region'),
     String $db_user = lookup('profile::openstack::base::cinder::db_user'),
     String $db_name = lookup('profile::openstack::base::cinder::db_name'),
@@ -21,12 +20,10 @@ class profile::openstack::base::cinder(
     String              $ceph_rbd_client_name  = lookup('profile::openstack::base::cinder::ceph_rbd_client_name'),
     ) {
 
-    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
-
     class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,
         rabbitmq_nodes          => $rabbitmq_nodes,
-        keystone_admin_uri      => $keystone_admin_uri,
+        keystone_fqdn           => $keystone_fqdn,
         region                  => $region,
         db_user                 => $db_user,
         db_pass                 => $db_pass,

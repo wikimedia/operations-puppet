@@ -2,7 +2,7 @@ class profile::openstack::codfw1dev::designate::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
+    Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $db_pass = lookup('profile::openstack::codfw1dev::designate::db_pass'),
     $db_host = lookup('profile::openstack::codfw1dev::designate::db_host'),
@@ -26,7 +26,7 @@ class profile::openstack::codfw1dev::designate::service(
     class{'::profile::openstack::base::designate::service':
         version                           => $version,
         designate_hosts                   => $designate_hosts,
-        keystone_api_fqdn                 => $keystone_api_fqdn,
+        keystone_fqdn                     => $keystone_fqdn,
         db_pass                           => $db_pass,
         db_host                           => $db_host,
         domain_id_internal_forward        => $domain_id_internal_forward,

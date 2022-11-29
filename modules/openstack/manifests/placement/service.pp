@@ -6,8 +6,7 @@ class openstack::placement::service(
     $db_name,
     $db_host,
     $ldap_user_pass,
-    $keystone_admin_uri,
-    $keystone_public_uri,
+    $keystone_fqdn,
     Stdlib::Port $api_bind_port,
 ) {
     class { "openstack::placement::service::${version}":
@@ -17,8 +16,7 @@ class openstack::placement::service(
         db_name               => $db_name,
         db_host               => $db_host,
         ldap_user_pass        => $ldap_user_pass,
-        keystone_admin_uri    => $keystone_admin_uri,
-        keystone_public_uri   => $keystone_public_uri,
+        keystone_fqdn         => $keystone_fqdn,
         api_bind_port         => $api_bind_port,
     }
 

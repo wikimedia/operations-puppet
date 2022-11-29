@@ -6,8 +6,6 @@ class profile::openstack::base::magnum(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
-    Stdlib::Port $internal_auth_port = lookup('profile::openstack::base::keystone::internal_port'),
     String $region = lookup('profile::openstack::base::region'),
     String $db_user = lookup('profile::openstack::base::magnum::db_user'),
     String $db_name = lookup('profile::openstack::base::magnum::db_name'),
@@ -20,15 +18,11 @@ class profile::openstack::base::magnum(
     String $rabbit_pass = lookup('profile::openstack::base::magnum::rabbit_pass'),
     ) {
 
-    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
-    $keystone_internal_uri = "https://${keystone_fqdn}:${internal_auth_port}"
-
     class { '::openstack::magnum::service':
         version               => $version,
         openstack_controllers => $openstack_controllers,
         rabbitmq_nodes        => $rabbitmq_nodes,
-        keystone_admin_uri    => $keystone_admin_uri,
-        keystone_internal_uri => $keystone_internal_uri,
+        keystone_fqdn         => $keystone_fqdn,
         db_user               => $db_user,
         db_pass               => $db_pass,
         db_name               => $db_name,

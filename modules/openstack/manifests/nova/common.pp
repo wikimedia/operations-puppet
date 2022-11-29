@@ -8,7 +8,7 @@ class openstack::nova::common(
     $db_name_api,
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
-    Stdlib::Fqdn $keystone_api_fqdn,
+    Stdlib::Fqdn $keystone_fqdn,
     $scheduler_filters,
     $ldap_user_pass,
     $rabbit_user,
@@ -30,6 +30,8 @@ class openstack::nova::common(
         require => Package['nova-common'],
     }
 
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file { '/etc/nova/nova.conf':
         content   => template("openstack/${version}/nova/common/nova.conf.erb"),
         owner     => 'nova',

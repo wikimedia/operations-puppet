@@ -86,7 +86,7 @@ enable_api_v2 = True
 
 enable_host_header = True
 
-api_base_uri=https://<%= @keystone_api_fqdn -%>:29001/
+api_base_uri=https://<%= @keystone_fqdn -%>:29001/
 
 # Show the pecan HTML based debug interface (v2 only)
 # This is only useful for development, and WILL break python-designateclient
@@ -124,21 +124,7 @@ default_limit_admin = 10000
 #max_limit_admin = 1000
 
 
-#-----------------------
-# Keystone Middleware
-#-----------------------
-[keystone_authtoken]
-auth_type = password
-www_authenticate_uri = <%= @keystone_public_uri %>
-auth_url = <%= @keystone_admin_uri %>
-password = <%= @ldap_user_pass %>
-project_domain_id = default
-project_name = admin
-region_name = <%= @region %>
-user_domain_id = default
-username = novaadmin
-service_token_roles = admin, service
-service_token_roles_required = true
+<%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 #-----------------------
 # Sink Service

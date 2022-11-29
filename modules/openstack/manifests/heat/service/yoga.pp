@@ -8,8 +8,7 @@ class openstack::heat::service::yoga(
     String $db_name,
     Stdlib::Fqdn $db_host,
     String $ldap_user_pass,
-    String $keystone_admin_uri,
-    String $keystone_internal_uri,
+    Stdlib::Fqdn $keystone_fqdn,
     Stdlib::Port $api_bind_port,
     Stdlib::Port $cfn_api_bind_port,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
@@ -31,6 +30,8 @@ class openstack::heat::service::yoga(
     }
 
     $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'heat'
+    $keystone_auth_project = 'service'
     file {
         '/etc/heat/heat.conf':
             content   => template('openstack/yoga/heat/heat.conf.erb'),

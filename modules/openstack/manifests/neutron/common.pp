@@ -2,7 +2,7 @@ class openstack::neutron::common(
     $version,
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
-    Stdlib::Fqdn $keystone_api_fqdn,
+    Stdlib::Fqdn $keystone_fqdn,
     $db_pass,
     $db_user,
     $db_host,
@@ -14,16 +14,12 @@ class openstack::neutron::common(
     $log_agent_heartbeats,
     $agent_down_time,
     Stdlib::Port $bind_port,
-    Stdlib::HTTPUrl $keystone_admin_uri,
-    Stdlib::HTTPUrl $keystone_public_uri,
     ) {
 
     class { "openstack::neutron::common::${version}":
         openstack_controllers => $openstack_controllers,
         rabbitmq_nodes        => $rabbitmq_nodes,
-        keystone_admin_uri    => $keystone_admin_uri,
-        keystone_api_fqdn     => $keystone_api_fqdn,
-        keystone_public_uri   => $keystone_public_uri,
+        keystone_fqdn         => $keystone_fqdn,
         db_pass               => $db_pass,
         db_user               => $db_user,
         db_host               => $db_host,

@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::barbican::service::yoga(
+    Array[Stdlib::Fqdn] $openstack_controllers,
     String $db_user,
     String $db_pass,
     String $db_name,
     Stdlib::Fqdn $db_host,
     String $crypto_kek,
     String $ldap_user_pass,
-    String $keystone_admin_uri,
-    String $keystone_public_uri,
+    String $keystone_fqdn,
     Stdlib::Port $bind_port,
 ) {
     require "openstack::serverpackages::yoga::${::lsbdistcodename}"
@@ -17,6 +17,9 @@ class openstack::barbican::service::yoga(
         ensure => 'present',
     }
 
+    $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file {
         '/etc/barbican/barbican.conf':
             content   => template('openstack/yoga/barbican/barbican.conf.erb'),

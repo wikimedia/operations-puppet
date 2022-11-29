@@ -229,7 +229,7 @@ transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}
 
 [trustee]
 auth_type = password
-auth_url = <%= @keystone_internal_uri %>
+auth_url = https://<%= @keystone_fqdn %>:25000
 username = heat
 password = <%= @ldap_user_pass %>
 user_domain_name = default
@@ -242,7 +242,7 @@ user_domain_name = default
 #
 
 endpoint_type = internal
-auth_uri = <%= @keystone_internal_uri %>
+auth_uri = https://<%= @keystone_fqdn %>:25000
 
 
 [clients_magnum]
@@ -446,21 +446,7 @@ workers = 2
 #tcp_keepidle = 600
 
 
-[keystone_authtoken]
-auth_type = password
-www_authenticate_url = <%= @keystone_internal_uri %>
-www_authenticate_uri = <%= @keystone_internal_uri %>
-auth_url = <%= @keystone_internal_uri %>
-password = <%= @ldap_user_pass %>
-project_domain_id = default
-project_name = service
-region_name = <%= @region %>
-user_domain_id = default
-username = heat
-memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
-service_token_roles = admin, service
-service_token_roles_required = true
-
+<%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
 

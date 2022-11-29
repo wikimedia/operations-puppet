@@ -5,7 +5,7 @@ class openstack::designate::service(
     $active,
     $version,
     Array[Stdlib::Fqdn] $designate_hosts,
-    Stdlib::Fqdn $keystone_api_fqdn,
+    Stdlib::Fqdn $keystone_fqdn,
     $db_user,
     $db_pass,
     $db_host,
@@ -23,15 +23,11 @@ class openstack::designate::service(
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String[1] $rabbit_user,
     String[1] $rabbit_pass,
-    $keystone_public_port,
-    $keystone_auth_port,
     $region,
     $puppet_git_repo_name,
     $puppet_git_repo_user,
     ) {
 
-    $keystone_public_uri = "https://${keystone_api_fqdn}:${keystone_public_port}"
-    $keystone_admin_uri = "https://${keystone_api_fqdn}:${keystone_auth_port}"
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
@@ -118,6 +114,8 @@ class openstack::designate::service(
     # We'll need this key to push to the instance-puppet repo
     $puppet_git_repo_key_path = '/var/lib/designate/.ssh/instance-puppet-user.priv'
 
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file {
         '/etc/designate/designate.conf':
             owner     => 'designate',

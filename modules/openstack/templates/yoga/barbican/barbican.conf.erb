@@ -426,18 +426,7 @@ enabled_crypto_plugins = simple_crypto
 # the kek should be a 32-byte value which is base64 encoded
 kek = <%= @crypto_kek %>
 
-[keystone_authtoken]
-auth_type = password
-auth_uri = <%= @keystone_public_uri %>
-auth_url = <%= @keystone_admin_uri %>
-password = <%= @ldap_user_pass %>
-project_domain_id = default
-project_name = admin
-region_name = <%= @region %>
-user_domain_id = default
-username = novaadmin
-service_token_roles = admin, service
-service_token_roles_required = true
+<%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 
 [keystone_notifications]

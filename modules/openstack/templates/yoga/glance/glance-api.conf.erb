@@ -299,20 +299,7 @@ scrub_time = 43200
 # Base directory that the Image Cache uses
 image_cache_dir = /var/lib/glance/image-cache/
 
-[keystone_authtoken]
-auth_type = password
-www_authenticate_uri = <%= @keystone_internal_uri %>
-auth_url = <%= @keystone_admin_uri %>
-password = <%= @ldap_user_pass %>
-project_domain_id = default
-project_name = admin
-region_name = <%= @region %>
-user_domain_id = default
-username = novaadmin
-memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
-service_token_roles = admin, service
-service_token_roles_required = true
-
+<%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines

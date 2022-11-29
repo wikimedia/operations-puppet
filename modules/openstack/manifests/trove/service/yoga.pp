@@ -9,8 +9,7 @@ class openstack::trove::service::yoga(
     String              $db_name,
     Stdlib::Fqdn        $db_host,
     String              $ldap_user_pass,
-    String              $keystone_admin_uri,
-    String              $keystone_internal_uri,
+    Stdlib::Fqdn        $keystone_fqdn,
     String              $region,
     Stdlib::Port        $api_bind_port,
     String              $rabbit_user,
@@ -35,6 +34,8 @@ class openstack::trove::service::yoga(
     # Subtemplates of trove.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file {
         '/etc/trove/trove.conf':
             content   => template('openstack/yoga/trove/trove.conf.erb'),

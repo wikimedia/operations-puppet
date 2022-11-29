@@ -9,8 +9,6 @@ class profile::openstack::base::trove(
     Stdlib::Fqdn        $db_host                 = lookup('profile::openstack::base::trove::db_host'),
     String              $ldap_user_pass          = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Fqdn        $keystone_fqdn           = lookup('profile::openstack::base::keystone_api_fqdn'),
-    Stdlib::Port        $auth_port               = lookup('profile::openstack::base::keystone::auth_port'),
-    Stdlib::Port        $internal_auth_port      = lookup('profile::openstack::base::keystone::internal_port'),
     String              $region                  = lookup('profile::openstack::base::region'),
     Stdlib::Port        $api_bind_port           = lookup('profile::openstack::base::trove::api_bind_port'),
     String              $rabbit_user             = lookup('profile::openstack::base::nova::rabbit_user'),
@@ -24,8 +22,6 @@ class profile::openstack::base::trove(
     String              $trove_dns_zone_id       = lookup('profile::openstack::base::trove::dns_zone_id'),
     ) {
 
-    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
-    $keystone_internal_uri = "https://${keystone_fqdn}:${internal_auth_port}"
     $designate_internal_uri = "https://${keystone_fqdn}:29001"
 
     class { '::openstack::trove::service':
@@ -38,8 +34,7 @@ class profile::openstack::base::trove(
         db_name                 => $db_name,
         db_host                 => $db_host,
         ldap_user_pass          => $ldap_user_pass,
-        keystone_admin_uri      => $keystone_admin_uri,
-        keystone_internal_uri   => $keystone_internal_uri,
+        keystone_fqdn           => $keystone_fqdn,
         designate_internal_uri  => $designate_internal_uri,
         region                  => $region,
         api_bind_port           => $api_bind_port,

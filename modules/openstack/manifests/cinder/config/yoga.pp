@@ -8,7 +8,7 @@ class openstack::cinder::config::yoga(
     String[1]           $db_name,
     Stdlib::Fqdn        $db_host,
     String[1]           $ldap_user_pass,
-    String[1]           $keystone_admin_uri,
+    Stdlib::Fqdn        $keystone_fqdn,
     String[1]           $region,
     String[1]           $ceph_pool,
     String[1]           $ceph_rbd_client_name,
@@ -29,6 +29,8 @@ class openstack::cinder::config::yoga(
     # Subtemplates of cinder.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
+    $keystone_auth_username = 'novaadmin'
+    $keystone_auth_project = 'admin'
     file { '/etc/cinder/cinder.conf':
         content   => template('openstack/yoga/cinder/cinder.conf.erb'),
         owner     => 'cinder',

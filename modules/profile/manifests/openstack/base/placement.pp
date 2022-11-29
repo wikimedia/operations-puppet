@@ -2,8 +2,6 @@ class profile::openstack::base::placement(
     String $version = lookup('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
-    Stdlib::Port $public_port = lookup('profile::openstack::base::keystone::public_port'),
     String $db_user = lookup('profile::openstack::base::placement::db_user'),
     String $db_name = lookup('profile::openstack::base::placement::db_name'),
     String $db_pass = lookup('profile::openstack::base::placement::db_pass'),
@@ -12,14 +10,10 @@ class profile::openstack::base::placement(
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::placement::api_bind_port'),
     ) {
 
-    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
-    $keystone_public_uri = "https://${keystone_fqdn}:${public_port}"
-
     class { '::openstack::placement::service':
         openstack_controllers => $openstack_controllers,
         version               => $version,
-        keystone_admin_uri    => $keystone_admin_uri,
-        keystone_public_uri   => $keystone_public_uri,
+        keystone_fqdn         => $keystone_fqdn,
         db_user               => $db_user,
         db_pass               => $db_pass,
         db_name               => $db_name,
