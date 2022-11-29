@@ -99,6 +99,7 @@ cache::nodes:
       - 'cp5013.eqsin.wmnet'
       - 'cp5014.eqsin.wmnet'
       - 'cp5025.eqsin.wmnet'
+      - 'cp5026.eqsin.wmnet'
       - 'cp5028.eqsin.wmnet'
       - 'cp5029.eqsin.wmnet'
       - 'cp5030.eqsin.wmnet'
