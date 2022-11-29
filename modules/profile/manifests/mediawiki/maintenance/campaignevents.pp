@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # T320403
 class profile::mediawiki::maintenance::campaignevents {
-    if $::realm == 'labs' {
-        # beta-meta
-        profile::mediawiki::periodic_job { 'campaignevents-updateutcts-metawiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki metawiki',
-            interval => '03:52'
-        }
-    } else {
+    # group0: meta.wikimedia.org both in beta and production
+    profile::mediawiki::periodic_job { 'campaignevents-updateutcts-metawiki':
+        command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki metawiki',
+        interval => '02:52'
+    }
+    unless $::realm == 'labs' {
         # group0: test.wikipedia.org
         profile::mediawiki::periodic_job { 'campaignevents-updateutcts-testwiki':
             command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki testwiki',
