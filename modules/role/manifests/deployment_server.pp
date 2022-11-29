@@ -18,7 +18,6 @@ class role::deployment_server {
 
     # memcached-related
     include profile::mediawiki::mcrouter_wancache
-    include profile::mediawiki::nutcracker
 
     # client to fetch configuration data
     include profile::conftool::client

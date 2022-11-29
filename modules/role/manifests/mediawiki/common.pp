@@ -2,7 +2,6 @@ class role::mediawiki::common {
     include profile::base::production
     include profile::mediawiki::scap_proxy
     include profile::mediawiki::common
-    include profile::mediawiki::nutcracker
 
     include profile::mediawiki::mcrouter_wancache
 

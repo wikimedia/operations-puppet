@@ -33,7 +33,7 @@ do
 done
 
 # Now let's check for nutcracker, mcrouter and php-fpm
-for service in nutcracker mcrouter php7.4-fpm;
+for service in mcrouter php7.4-fpm;
 do
   is_installed "${service}" && stop_and_mask "${service}"
 done

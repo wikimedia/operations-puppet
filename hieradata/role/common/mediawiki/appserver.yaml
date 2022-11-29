@@ -33,7 +33,6 @@ profile::lvs::realserver::pools:
       - php7.4-fpm
       - apache2
       - mcrouter
-      - nutcracker
       - envoyproxy
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception

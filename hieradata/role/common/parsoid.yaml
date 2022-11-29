@@ -11,7 +11,6 @@ profile::lvs::realserver::pools:
       - php7.4-fpm
       - envoyproxy
       - mcrouter
-      - nutcracker
       - apache2
 
 has_lvs: true

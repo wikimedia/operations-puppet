@@ -51,9 +51,6 @@ class profile::mediawiki::alerts {
   ### making the metrics we calculate from it effectively global. Thus icinga
   ### in each site only needs to check its local prometheus instance.
 
-  # Monitor memcached error rate from MediaWiki. This is commonly a sign of
-  # a failing nutcracker instance that can be tracked down via
-  # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
   monitoring::check_prometheus { 'mediawiki-memcached-threshold':
     description     => 'MediaWiki memcached error rate',
     query           => 'sum(log_mediawiki_level_channel_doc_count{channel="memcached", level="ERROR"})',

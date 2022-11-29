@@ -11,7 +11,6 @@ class profile::dumps::generation::worker::common(
     # mw packages and dependencies
     require profile::mediawiki::scap_proxy
     require profile::mediawiki::common
-    require profile::mediawiki::nutcracker
     class { 'profile::mediawiki::mcrouter_wancache':
         prometheus_exporter => false
     }

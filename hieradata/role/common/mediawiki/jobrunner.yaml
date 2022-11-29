@@ -10,14 +10,12 @@ profile::lvs::realserver::pools:
     services:
       - apache2
       - mcrouter
-      - nutcracker
       - envoyproxy
       - php7.4-fpm
   videoscaler:
     services:
       - apache2
       - mcrouter
-      - nutcracker
       - envoyproxy
       - php7.4-fpm
 
