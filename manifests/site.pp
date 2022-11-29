@@ -509,6 +509,11 @@ node /^db1(107|118|119|128|132|134|135|163|169|184|186|196)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# New db node T313978
+node /^(db1204|db1205)\.eqiad\.wmnet$/ {
+    role(insetup::data_persistence)
+}
+
 # To be productionized T322256
 node 'db1206.eqiad.wmnet' {
     role(insetup::data_persistence)
