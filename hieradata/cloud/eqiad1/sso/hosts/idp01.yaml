@@ -33,7 +33,7 @@ profile::idp::delegated_authenticators:
     protocol: CAS30
     client_name: WMF_test
     display_name: 'WMF Test'
-    auto_redirect: true
+    auto_redirect_type: 'SERVER'
 profile::idp::client::httpd::sites:
   'idp-test-login.wmcloud.org':
     vhost_content: 'profile/idp/client/httpd-uwsgi.erb'

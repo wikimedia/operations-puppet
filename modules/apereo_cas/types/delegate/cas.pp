@@ -5,5 +5,5 @@ type Apereo_cas::Delegate::Cas = Struct[{
     protocol      => Enum['CAS20', 'CAS30'],
     client_name   => Optional[String[1]],
     display_name  => Optional[String[1]],
-    auto_redirect => Optional[Boolean],
+    auto_redirect_type => ENUM['NONE', 'SERVER'],
 }]

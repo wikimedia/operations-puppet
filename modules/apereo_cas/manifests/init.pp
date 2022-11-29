@@ -159,6 +159,7 @@ class apereo_cas (
     }
     file{$config_dir:
         ensure => directory,
+        owner  => $daemon_user,
     }
     file{$services_dir:
         ensure  => directory,
