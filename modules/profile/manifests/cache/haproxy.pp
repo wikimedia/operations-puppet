@@ -28,6 +28,7 @@ class profile::cache::haproxy(
     Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value'                                                => '/var/log/haproxy.fifo'}),
     Boolean $monitoring_enabled = lookup('profile::cache::haproxy::monitoring_enabled'),
     Haproxy::Version $haproxy_version = lookup('profile::cache::haproxy::version', {'default_value'                                              => 'haproxy24'}),
+    Boolean $do_systemd_hardening = lookup('profile::cache::haproxy::do_systemd_hardening', {'default_value'                                     => false}),
 ) {
     class { 'sslcert::dhparam':
     }
