@@ -1,22 +1,32 @@
 #!/bin/bash
+
 set -e
 set -u
-SERVICE=${1}
-OPTS=${@:2}
-STATE=$(systemctl show ${SERVICE})
-if ! echo ${STATE} | grep -Fq 'ActiveState=active'; then
-    echo "${SERVICE} is not active"
-    exit 0
-fi;
-if ! echo ${STATE} | grep -Fq 'SubState=running'; then
-    echo "${SERVICE} is active but not running";
-    exit 0
-fi;
 
-# We don't care who broke confd, do we?
-STATE_FILE="/var/run/reload-vcl-state"
-if /usr/local/sbin/reload-vcl ${OPTS}; then
-    echo 'OK' > ${STATE_FILE}
-else
-    echo 'KO' > ${STATE_FILE}
+service=${1}
+reload_opts=${*:2}
+substate=$(systemctl show --value --property SubState "${service}")
+icinga_file="${ICINGA_FILE:-/var/run/reload-vcl-state}"
+prom_file="${PROM_FILE:-/var/lib/prometheus/node.d/confd-reload-vcl.prom}"
+
+if [ "${substate}" != "running" ]; then
+    echo "${service} is not running"
+    exit 0
 fi
+
+# Need to pass distinct arguments, don't quote
+# shellcheck disable=SC2086
+if /usr/local/sbin/reload-vcl ${reload_opts}; then
+    state=1
+else
+    state=0
+fi
+
+echo ${state} > "${icinga_file}"
+
+cat <<EOF > "${prom_file}.$$"
+# HELP confd_vcl_reload_success Whether a vcl reload by confd was successful
+# TYPE confd_vcl_reload_success gauge
+confd_vcl_reload_success ${state}
+EOF
+mv "${prom_file}.$$" "${prom_file}"
