@@ -68,6 +68,7 @@ class profile::releases::common(
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     monitoring::service { 'https_releases':
         description   => "HTTPS ${sitename}",
