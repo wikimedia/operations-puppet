@@ -31,6 +31,7 @@ class profile::mail::smarthost (
     $envelope_rewrite_rules   = lookup('profile::mail::smarthost::envelope_rewrite_rules', {'default_value' => []}),
     $root_alias_rcpt          = lookup('profile::mail::smarthost::root_alias_rcpt', {'default_value' => ':blackhole:'}),
     $exim_primary_hostname    = lookup('profile::mail::smarthost::exim_primary_hostname', {'default_value' => $facts['fqdn']}),
+    Boolean $support_ipv6     = lookup('profile::mail::smarthost::support_ipv6', {default_value => true}),
 ) {
 
     class { 'exim4':

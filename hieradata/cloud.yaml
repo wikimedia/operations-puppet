@@ -205,8 +205,8 @@ profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
 
-
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
+profile::mail::smarthost::support_ipv6: false
 
 profile::netbox::discovery_name: "%{facts.networking.fqdn}"
 profile::netbox::additional_sans: []

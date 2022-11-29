@@ -24,6 +24,8 @@ ignore_bounce_errors_after = 0h
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
 message_logs = false
 
+disable_ipv6 = true
+
 # Simple acl that simply blindly allows mail to the local_domains
 
 begin acl

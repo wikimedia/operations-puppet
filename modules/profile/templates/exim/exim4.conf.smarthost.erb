@@ -62,6 +62,10 @@ tls_privatekey = /etc/acmecerts/<%= @cert_name.gsub(/[-.]/, '_') %>/live/rsa-204
 tls_advertise_hosts = *
 tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
 
+<%- unless @support_ipv6 -%>
+disable_ipv6 = true
+<%- end -%>
+
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
