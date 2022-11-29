@@ -47,16 +47,16 @@ role::parsoid:
   target-q: TBD
 role::wdqs::internal:
   target-q: TBD
-role::wdqs::autodeploy:
-  target-q: TBD
+  phab-task: T323921
 role::wdqs::public:
   target-q: TBD
-role::wdqs:
-  target-q: TBD
+  phab-task: T323921
 role::wdqs::test:
   target-q: TBD
+  phab-task: T323921
 role::wcqs::public:
   target-q: TBD
+  phab-task: T323921
 role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
@@ -467,6 +467,7 @@ role::pki::root:
   target-q: TBD
 role::search::loader:
   target-q: TBD
+  phab-task: T323921
 role::chartmuseum:
   target-q: TBD
 role::acme_chief:
