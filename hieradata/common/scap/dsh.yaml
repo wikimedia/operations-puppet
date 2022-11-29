@@ -6,6 +6,8 @@ scap::dsh::scap_proxies:
   - "mw1313.eqiad.wmnet" # B7 eqiad
   - "mw1319.eqiad.wmnet" # C6 eqiad
   - "mw1366.eqiad.wmnet" # D6 eqiad
+  - "mw1491.eqiad.wmnet" # E3 eqiad
+  - "mw1498.eqiad.wmnet" # F3 eqiad
   - "mw2259.codfw.wmnet" # B3 codfw
   - "mw2300.codfw.wmnet" # A3 codfw
   - "mw2289.codfw.wmnet" # D4 codfw
