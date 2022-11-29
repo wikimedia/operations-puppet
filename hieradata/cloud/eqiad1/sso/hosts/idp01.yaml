@@ -29,7 +29,7 @@ profile::idp::services:
     service_id: 'https://(.*)\.monitoring\.wmflabs\.org(/.*)?'
 profile::idp::delegated_authenticators:
   - provider: cas
-    login_url: https://idp-dev.wikimedia.org/
+    login_url: https://idp-test.wikimedia.org/
     protocol: CAS30
     client_name: WMF_test
     display_name: 'WMF Test'
