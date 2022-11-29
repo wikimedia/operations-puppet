@@ -228,7 +228,8 @@ def main():
         last_run_summary = get_puppet_yaml_file("lastrunfile")
         has_errors = (
             last_run_summary["events"]["failure"] > 0
-            or last_run_summary["events"]["total"] == 0
+            # check if the catalog failed to compile
+            or last_run_summary["resources"]["total"] == 0
         )
         if has_errors:
             failed_resources = get_last_run_report_failed_resources()
