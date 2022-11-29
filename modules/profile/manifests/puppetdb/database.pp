@@ -28,7 +28,7 @@ class profile::puppetdb::database(
     Optional[Integer]      $log_autovacuum_min_duration = lookup('profile::puppetdb::database::log_autovacuum_min_duration'),
 ) {
     $pgversion = debian::codename() ? {
-        'bookworm' => 14,
+        'bookworm' => 15,
         'bullseye' => 13,
         'buster'   => 11,
     }
