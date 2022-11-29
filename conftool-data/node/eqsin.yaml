@@ -17,6 +17,7 @@ eqsin:
     cp5014.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5025.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5026.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp5027.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5028.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5029.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5030.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
