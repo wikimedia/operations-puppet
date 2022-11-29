@@ -1,0 +1,7 @@
+profile::base::use_linux510_on_buster: true
+
+profile::cache::varnish::frontend::single_backend: true
+
+profile::trafficserver::backend::storage_elements:
+  - devname: nvme0n1
+    id: disk.0
