@@ -291,6 +291,8 @@ groups:
     expr: sum by(cluster, code) (rate(haproxy_frontend_http_responses_total[5m]))
   - record: cluster_code:haproxy_frontend_http_responses_total:rate2m
     expr: sum by(cluster, code) (rate(haproxy_frontend_http_responses_total[2m]))
+  - record: job:haproxy_frontend_http_responses_total:rate2m
+    expr: sum by(job) (rate(haproxy_frontend_http_responses_total[2m]))
   - record: job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate5m
     expr: sum by(job, method, status, backend, layer) (rate(trafficserver_backend_requests_seconds_count[5m]))
   - record: job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate2m
@@ -358,6 +360,46 @@ groups:
     expr: histogram_quantile(0.95, cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:rate2m)
   - record: cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:99p2m
     expr: histogram_quantile(0.99, cluster_backend_cache_result_code:trafficserver_backend_cache_result_code_client_ttfb_bucket:rate2m)
+
+  # Aggregated availability
+
+  # Varnish
+  - record: job:varnish_requests:avail2m
+    expr: sum by(job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
+      / sum by(job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
+  - record: job:varnish_requests:avail5m
+    expr: sum by(job) (job_method_status:varnish_requests:rate5m{status=~"5.."})
+      / sum by(job) (job_method_status:varnish_requests:rate5m{status=~"[12345].."})
+  - record: job_backend:varnish_backend_requests:avail5m
+    expr: sum by(backend, job) (job_method_status_backend:varnish_backend_requests_seconds_count:rate5m{status=~"5.."})
+      / sum by(backend, job) (job_method_status_backend:varnish_backend_requests_seconds_count:rate5m{status=~"[12345].."})
+
+  # Trafficserver / ATS
+  - record: cluster_layer:trafficserver_requests:avail2m
+    expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"5.."})
+      / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"[12345].."})
+  - record: cluster_layer:trafficserver_requests:avail5m
+    expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"5.."})
+      / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"[12345].."})
+  - record: job_backend:trafficserver_backend_requests:avail5m
+    expr: sum by(backend, job) (job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate5m{status=~"5.."})
+      / sum by(backend, job) (job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate5m{status=~"[12345].."})
+
+  # haproxy
+  - record: cluster:haproxy_requests:avail2m
+    expr: sum by(cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code="5xx"})
+      / sum by(cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code=~"[12345]xx"})
+  - record: job:haproxy_requests:avail2m
+    expr: sum by(cluster) (job:haproxy_frontend_http_responses_total:rate2m{code="5xx"})
+      / sum by(cluster) (job:haproxy_frontend_http_responses_total:rate2m{code=~"[12345]xx"})
+
+  # Aggregated request rates
+
+  # Varnish
+  - record: job:varnish_requests:avg1d
+    expr: sum by(job) (avg_over_time(job_method_status:varnish_requests:rate5m[1d]))
+  - record: job:varnish_requests:avg7d
+    expr: sum by(job) (avg_over_time(job_method_status:varnish_requests:rate5m[1w]))
 
 - name: mysql
   rules:
