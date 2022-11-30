@@ -5,8 +5,6 @@ role::mediawiki::appserver::canary_api:
   target-q: TBD
 role::mediawiki::appserver:
   target-q: TBD
-role::scb:
-  target-q: TBD
 role::mediawiki::memcached:
   target-q: TBD
   phab-task: T293216
@@ -73,8 +71,6 @@ role::dumps::generation::server::xmlfallback:
   target-q: TBD
 role::openldap::rw:
   target-q: TBD
-role::rpkivalidator:
-  target-q: TBD
 role::parsoid::testing:
   target-q: TBD
 role::parsoid::testreduce:
@@ -92,8 +88,6 @@ role::orespoolcounter:
 role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:
-  target-q: TBD
-role::mail::mx:
   target-q: TBD
 role::mediawiki::jobrunner:
   target-q: TBD
@@ -234,10 +228,6 @@ role::wmcs::openstack::eqiad1::net:
   target-q: TBD
 role::miscweb:
   target-q: TBD
-role::builder:
-  target-q: TBD
-role::kubernetes::master:
-  target-q: TBD
 role::archiva:
   target-q: TBD
   phab-task: 288804
@@ -256,10 +246,6 @@ role::kafka::main::logging:
   target-q: TBD
 role::kafka::logging:
   target-q: TBD
-role::kubernetes::worker:
-  target-q: TBD
-role::kubernetes::staging::worker:
-  target-q: TBD
 role::logstash:
   target-q: TBD
 role::logstash7:
@@ -271,17 +257,13 @@ role::kibana7_ecs:
 role::analytics_cluster::hadoop::client:
   target-q: TBD
   phab-task: 288804
-role::cluster::management:
-  target-q: TBD
 role::cluster::unprivmanagement:
-  target-q: TBD
+  target-q: 2023-01
 role::wmcs::db::wikireplicas::web_multiinstance:
   target-q: TBD
 role::wmcs::db::wikireplicas::analytics_multiinstance:
   target-q: TBD
 role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
-  target-q: TBD
-role::openldap::replica:
   target-q: TBD
 role::openldap::corp:
   target-q: 2022-04
@@ -295,13 +277,8 @@ role::webserver_misc_apps:
   target-q: TBD
 role::mediawiki::maintenance:
   target-q: TBD
-role::kubernetes::staging::master:
-  target-q: TBD
 role::netmon:
   target-q: TBD
-role::swap:
-  target-q: TBD
-  phab-task: 288804
 role::analytics_cluster::coordinator:
   target-q: TBD
   phab-task: 288804
