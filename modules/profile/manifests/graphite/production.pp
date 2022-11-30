@@ -24,12 +24,10 @@ class profile::graphite::production (
         c_relay_settings                   => {
             forward_clusters => {
                 'default'   => [
-                  'graphite1004.eqiad.wmnet:1903',
                   'graphite1005.eqiad.wmnet:1903',
                   'graphite2004.codfw.wmnet:1903',
                 ],
                 'big_users' => [
-                  'graphite1004.eqiad.wmnet:1903',
                   'graphite1005.eqiad.wmnet:1903',
                   'graphite2004.codfw.wmnet:1903',
                 ]

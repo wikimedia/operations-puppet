@@ -1423,15 +1423,10 @@ node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
 }
 
 # Primary graphite host
-node 'graphite1004.eqiad.wmnet' {
-    role(graphite::production)
-    # TODO: move the roles below to ::role::alerting::host
-    include ::role::graphite::alerts
-    include ::role::elasticsearch::alerts
-}
-
 node 'graphite1005.eqiad.wmnet' {
     role(graphite::production)
+    include ::role::graphite::alerts # lint:ignore:wmf_styleguide
+    include ::role::elasticsearch::alerts # lint:ignore:wmf_styleguide
 }
 
 # Standby graphite host
