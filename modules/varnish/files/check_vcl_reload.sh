@@ -20,7 +20,7 @@ REMNANT=$(( $STATEAGE - $STATEHOURS * $HOUR ))
 STATEMINS=$(( $REMNANT / $MIN ))
 
 STATE=$(cat ${STATE_FILE})
-if [ "${STATE}" = "1" ]; then
+if [ "${STATE}" = "1" ] || [ "${STATE}" = "OK" ]; then
     echo "reload-vcl successfully ran ${STATEHOURS}h, ${STATEMINS} minutes ago."
     exit $STATE_OK
 else
