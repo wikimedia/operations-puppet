@@ -296,6 +296,10 @@ codfw:
     wdqs2003.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2004.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2007.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
+    wdqs2009.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
+    wdqs2010.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
+    wdqs2011.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
+    wdqs2012.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
   wdqs-internal:
     wdqs2005.codfw.wmnet: [wdqs]
     wdqs2006.codfw.wmnet: [wdqs]

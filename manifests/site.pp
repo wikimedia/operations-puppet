@@ -2843,7 +2843,7 @@ node /^wdqs200[568]\.codfw\.wmnet$/ {
 
 # Codfw new wdqs nodes T294297
 node /^(wdqs2009|wdqs2010|wdqs2011|wdqs2012)\.codfw\.wmnet$/ {
-    role(insetup::search_platform)
+    role(wdqs::public)
 }
 
 # Wikidata query service test
