@@ -805,31 +805,37 @@ host logstash1032 {
 host logstash2023 {
     hardware ethernet aa:00:00:a9:b5:8c;
     fixed-address logstash2023.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash2024 {
     hardware ethernet aa:00:00:5c:74:ac;
     fixed-address logstash2024.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash2025 {
     hardware ethernet aa:00:00:b7:fe:53;
     fixed-address logstash2025.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash2030 {
     hardware ethernet aa:00:00:67:5c:06;
     fixed-address logstash2030.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash2031 {
     hardware ethernet aa:00:00:85:5a:a6;
     fixed-address logstash2031.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash2032 {
     hardware ethernet aa:00:00:8f:3c:29;
     fixed-address logstash2032.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host matomo1002 {
