@@ -24,27 +24,11 @@ class varnish::common(
         source => 'puppet:///modules/varnish/varnish-frontend-restart.sh',
     }
 
+    # Clean-up of unused dstat plugin
     file { '/usr/local/share/dstat':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { '/usr/local/share/dstat/dstat_varnishstat.py':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/varnish/dstat_varnishstat.py',
-        require => File['/usr/local/share/dstat'],
-    }
-
-    file { '/usr/local/share/dstat/dstat_varnish_hit.py':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/varnish/dstat_varnish_hit.py',
-        require => File['/usr/local/share/dstat'],
+        ensure  => absent,
+        force   => true,
+        recurse => true,
     }
 
     # `vlogdump` is a small tool to filter the output of varnishlog
