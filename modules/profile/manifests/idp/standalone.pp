@@ -1,7 +1,7 @@
 # SPDX-LicensekIdentifier: Apache-2.0
 # @summary Standalone IDP class for creating an instance in WM cloud
 class profile::idp::standalone {
-  ensure_packages(['python3-flask'])
+  ensure_packages(['python3-flask', 'python3-venv'])
   # Standard stuff
   include profile::base::production
   include profile::base::firewall
@@ -21,21 +21,29 @@ class profile::idp::standalone {
   include profile::idp
   include profile::java
   # Set up test web application
-  $wsgi_file = '/usr/local/share/idp-test/wsgi.py'
+  $wsgi_file = '/srv/idp-test-login/wsgi.py'
+  $venv_path = $wsgi_file.dirname
 
-  # BUG: need to use dirname() vs dirname
-  # https://github.com/rodjek/puppet-lint/issues/937
-  file { $wsgi_file.dirname():
-    ensure => directory,
+  file { $venv_path:
+    ensure  => directory,
+    recurse => remote,
+    purge   => true,
+    source  => 'puppet:///modules/profile/idp/standalone/idp_test_login',
   }
-  file { $wsgi_file:
-    ensure => file,
-    source => 'puppet:///modules/profile/idp/standalone/idp_test_login.py',
+  exec { "create virtual environment ${venv_path}":
+      command => "/usr/bin/python3 -m venv ${venv_path}",
+      creates => "${venv_path}/bin/activate",
+  }
+  exec { "install requirements to ${venv_path}":
+      command => "${venv_path}/bin/pip3 install -r ${venv_path}/requirements.txt",
+      creates => "${venv_path}/lib/python3.9/site-packages/social_flask/__init__.py",
+      require => Exec["create virtual environment ${venv_path}"],
   }
   uwsgi::app { 'idp-test':
     settings => {
       uwsgi => {
         'plugins'     => 'python3',
+        'venv'        => $venv_path,
         'master'      => true,
         'http-socket' => '127.0.0.1:8081',
         'wsgi-file'   => $wsgi_file,

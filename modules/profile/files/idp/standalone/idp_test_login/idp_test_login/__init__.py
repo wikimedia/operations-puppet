@@ -6,6 +6,3 @@ app = Flask(__name__)
 @app.route("/")
 def root():
     return '<br />'.join(['{}={}'.format(k, v) for k, v in request.environ.items()])
-
-
-application = app
