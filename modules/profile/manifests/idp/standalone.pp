@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-LicensekIdentifier: Apache-2.0
 # @summary Standalone IDP class for creating an instance in WM cloud
 class profile::idp::standalone {
   ensure_packages(['python3-flask'])
@@ -22,14 +22,6 @@ class profile::idp::standalone {
   include profile::java
   # Set up test web application
   $wsgi_file = '/usr/local/share/idp-test/wsgi.py'
-  $simple_flask_debug_app = @("APP")
-  from flask import Flask, request
-  app = Flask(__name__)
-  @app.route("/")
-  def root():
-    return '<br />'.join(['{}={}'.format(k,v) for k,v in request.environ.items()])
-  application = app
-  | APP
 
   # BUG: need to use dirname() vs dirname
   # https://github.com/rodjek/puppet-lint/issues/937
@@ -37,8 +29,8 @@ class profile::idp::standalone {
     ensure => directory,
   }
   file { $wsgi_file:
-    ensure  => file,
-    content => $simple_flask_debug_app,
+    ensure => file,
+    source => 'puppet:///modules/profile/idp/standalone/idp_test_login.py',
   }
   uwsgi::app { 'idp-test':
     settings => {
