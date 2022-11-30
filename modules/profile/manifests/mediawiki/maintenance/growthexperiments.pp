@@ -40,17 +40,17 @@ class profile::mediawiki::maintenance::growthexperiments {
 
     # update user impact data (T313395)
     profile::mediawiki::periodic_job { 'growthexperiments-userImpactUpdateRecentlyRegistered':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin 2week --ignoreIfUpdatedWithin 6hour --verbose --use-job-queue',
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin=2week --hasEditsAtLeast=3 --ignoreIfUpdatedWithin=6hour --verbose --use-job-queue',
         interval => '*-*-* 05:15:00',
     }
     profile::mediawiki::periodic_job { 'growthexperiments-userImpactUpdateRecentlyEdited':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin 1year --editedWithin 2week --ignoreIfUpdatedWithin 6hour --verbose --use-job-queue',
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin=1year --editedWithin=2week --hasEditsAtLeast=3 --ignoreIfUpdatedWithin=6hour --verbose --use-job-queue',
         interval => '*-*-* 07:45:00',
     }
 
     # delete old user impact data (T313395)
     profile::mediawiki::periodic_job { 'growthexperiments-userImpactDelete':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteExpiredUserImpactData.php --expiry 2days',
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteExpiredUserImpactData.php --expiry=2days',
         interval => '*-*-* 02:10:00',
     }
 
