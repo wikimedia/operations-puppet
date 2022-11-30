@@ -3,7 +3,6 @@ class profile::openstack::base::cinder::backup (
     Array[Stdlib::Fqdn]     $openstack_controllers   = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn]     $rabbitmq_nodes          = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn            $keystone_fqdn           = lookup('profile::openstack::base::keystone_api_fqdn'),
-    Stdlib::Port            $auth_port               = lookup('profile::openstack::base::keystone::auth_port'),
     String[1]               $region                  = lookup('profile::openstack::base::region'),
     String[1]               $db_user                 = lookup('profile::openstack::base::cinder::db_user'),
     String[1]               $db_name                 = lookup('profile::openstack::base::cinder::db_name'),
@@ -26,11 +25,9 @@ class profile::openstack::base::cinder::backup (
     String[1]               $user                    = lookup('profile::openstack::base::cinder::backup::user'),
     Boolean                 $vg_createonly           = lookup('profile::openstack::base::cinder::backup::vg_createonly'),
 ) {
-    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
-
     class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,
-        keystone_admin_uri      => $keystone_admin_uri,
+        keystone_fqdn           => $keystone_fqdn,
         rabbitmq_nodes          => $rabbitmq_nodes,
         region                  => $region,
         db_user                 => $db_user,
