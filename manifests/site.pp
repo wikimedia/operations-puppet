@@ -1326,6 +1326,10 @@ node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
 
+node 'ganeti5004.eqsin.wmnet' {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^ganeti600[1234]\.drmrs\.wmnet$/ {
     role(ganeti)
 }
