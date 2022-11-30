@@ -5381,7 +5381,7 @@ users:
     email: ddesouza-ctr@wikimedia.org
     uid: 39452
     gid: 500
-    expiry_date: 2022-12-01
+    expiry_date: 2023-01-31
     expiry_contact: bgerdemann@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bgwiki:
