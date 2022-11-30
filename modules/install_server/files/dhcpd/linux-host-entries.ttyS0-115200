@@ -757,31 +757,37 @@ host lists1001 {
 host logstash1023 {
     hardware ethernet aa:00:00:1b:0f:aa;
     fixed-address logstash1023.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash1024 {
     hardware ethernet aa:00:00:76:9a:51;
     fixed-address logstash1024.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash1025 {
     hardware ethernet aa:00:00:7a:86:44;
     fixed-address logstash1025.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash1030 {
     hardware ethernet aa:00:00:74:db:34;
     fixed-address logstash1030.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash1031 {
     hardware ethernet aa:00:00:d5:24:1e;
     fixed-address logstash1031.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash1032 {
     hardware ethernet aa:00:00:b7:26:e5;
     fixed-address logstash1032.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host logstash2023 {
