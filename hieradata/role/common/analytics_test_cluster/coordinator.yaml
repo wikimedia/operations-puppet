@@ -89,6 +89,8 @@ profile::presto::server::catalogs:
       hive.max-partitions-per-scan: 840
       hive.storage-format: PARQUET
       hive.compression-codec: SNAPPY
+      # Use the parquet column names instead of the ordinals to order of query results. T321960
+      hive.parquet.use-column-names: true
 
   analytics_test_iceberg:
     properties:
