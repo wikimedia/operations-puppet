@@ -1,0 +1,7 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# configuration for kube-env helpers
+
+# kube environments
+export KUBE_ENV_ENVIRONMENTS="<%= @kube_env_environments.join(" ") %>"
+export KUBE_ENV_SERVICES="<%= @kube_env_services.join(" ") %>"

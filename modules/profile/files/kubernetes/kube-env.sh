@@ -1,5 +1,5 @@
 #!/bin/bash
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# SPDX-License-Identifier: Apache-2.0
 # function helpers to set and manage kubernetes env variables
 
 # Set a k8s environment for your shell. This will allow correct usage of
@@ -34,8 +34,8 @@ kube_env_clear() {
 }
 
 # Bash completion for kube_env
-__kube_env_environments="<%= @kube_env_environments.join(" ") %>"
-__kube_env_services="<%= @kube_env_services.join(" ") %>"
+__kube_env_environments="${KUBE_ENV_ENVIRONMENTS}"
+__kube_env_services="${KUBE_ENV_SERVICES}"
 __kube_env_complete() {
     local cur
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -70,3 +70,11 @@ export HELM_CONFIG_HOME="/etc/helm"
 export HELM_DATA_HOME="/usr/share/helm"
 # This contains repository cache and plugin cache (which we don't use)
 export HELM_CACHE_HOME="/var/cache/helm"
+
+# add aliases and new helpers
+alias kube-env='kube_env'
+alias kube-environments="echo \${KUBE_ENV_ENVIRONMENTS}"
+alias kube-services="echo \${KUBE_ENV_SERVICES}"
+alias kube_environments="echo \${KUBE_ENV_ENVIRONMENTS}"
+alias kube_services="echo \${KUBE_ENV_SERVICES}"
+

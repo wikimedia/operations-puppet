@@ -92,10 +92,18 @@ class profile::kubernetes::deployment_server (
     $kube_env_environments = $kubernetes_cluster_groups.map |$_, $clusters| {
         keys($clusters)
     }.flatten().unique()
+
+    # Add separate environment variable file for kube-env config.
+    # profile.d is sourced alphabetically, so it needs to be named such as it comes before kube-env
+    file { '/etc/profile.d/kube-conf.sh':
+        ensure  => file,
+        content => template('profile/kubernetes/kube-conf.sh.erb'),
+        mode    => '0555',
+    }
     # Add a script to profile.d with functions to set the configuration for kubernetes.
     file { '/etc/profile.d/kube-env.sh':
-        ensure  => file,
-        content => template('profile/kubernetes/kube-env.sh.erb'),
-        mode    => '0555',
+        ensure => file,
+        source => 'puppet:///modules/profile/kubernetes/kube-env.sh',
+        mode   => '0555',
     }
 }
