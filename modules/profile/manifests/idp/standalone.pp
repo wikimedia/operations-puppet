@@ -1,7 +1,7 @@
 # SPDX-LicensekIdentifier: Apache-2.0
 # @summary Standalone IDP class for creating an instance in WM cloud
 class profile::idp::standalone {
-  ensure_packages(['python3-flask', 'python3-venv'])
+  ensure_packages(['python3-venv'])
   # Standard stuff
   include profile::base::production
   include profile::base::firewall
@@ -33,6 +33,10 @@ class profile::idp::standalone {
   exec { "create virtual environment ${venv_path}":
       command => "/usr/bin/python3 -m venv ${venv_path}",
       creates => "${venv_path}/bin/activate",
+      require => [
+        File[$venv_path],
+        Package['python3-venv'],
+      ],
   }
   exec { "install requirements to ${venv_path}":
       command => "${venv_path}/bin/pip3 install -r ${venv_path}/requirements.txt",
@@ -43,6 +47,7 @@ class profile::idp::standalone {
     settings => {
       uwsgi => {
         'plugins'     => 'python3',
+        'chdir'       => $venv_path,
         'venv'        => $venv_path,
         'master'      => true,
         'http-socket' => '127.0.0.1:8081',
