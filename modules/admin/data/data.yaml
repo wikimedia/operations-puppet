@@ -387,7 +387,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene, ryasmeen, dpujol]
+              damilare, appledora, hshaath, hghani, ilooremeta, isaranto, stevemunene, ryasmeen, dpujol, abartov]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5617,12 +5617,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPrO2p2KUW1Fd/k+63WrU+wFScl2La3eAgjcVUjD13/1 david.pujol@tmlt.io
     expiry_date: 2023-06-30
     expiry_contact: jcross@wikimedia.org
-
-ldap_only_users:
   abartov:
     ensure: present
     realname: Asaf Bartov
     email: abartov@wikimedia.org
+    uid: 2176
+    gid: 500
+    ssh_keys: []
+
+ldap_only_users:
   abhas:
     ensure: present
     realname: Abhas Tripathi
