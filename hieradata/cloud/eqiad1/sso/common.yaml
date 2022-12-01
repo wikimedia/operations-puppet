@@ -5,7 +5,7 @@ apereo_cas:
   production:
     login_url: 'https://idp-dev.wmcloud.org/login'
     validate_url: 'https://idp-dev.wmcloud.org/serviceValidate'
-    oidc_endpoint: https://idp-dev.wmcloud.org/oidc'
+    oidc_endpoint: 'https://idp-dev.wmcloud.org/oidc'
 ldap:
     ro-server: localhost
     ro-server-fallback: localhost

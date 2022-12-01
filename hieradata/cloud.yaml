@@ -5,6 +5,19 @@ ldap:
   base-dn: dc=wikimedia,dc=org
   users_cn: ou=people
   groups_cn: ou=groups
+apereo_cas:
+  production:
+    base_url: 'https://idp.wmcloud.org/'
+    login_url: 'https://idp.wmcloud.org/login'
+    validate_url: 'https://idp.wmcloud.org/serviceValidate'
+    validate_url_saml: 'https://idp.wmcloud.org/samlValidate'
+    oidc_endpoint: 'https://idp.wmcloud.org/oidc'
+  staging:
+    base_url: 'https://idp.wmcloud.org/'
+    login_url: 'https://idp.wmcloud.org/login'
+    validate_url: 'https://idp.wmcloud.org/serviceValidate'
+    validate_url_saml: 'https://idp.wmcloud.org/samlValidate'
+    oidc_endpoint: 'https://idp.wmcloud.org/oidc'
 etcd::autogen_pwd_seed: "seed"
 profile::contacts::role_contacts: []
 
