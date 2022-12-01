@@ -4,8 +4,7 @@ set -e
 
 script="$(basename "$0")"
 hostname="$(hostname -f)"
-#TODO: This will be renamed as soon as we get rid of ats-tls
-conftool_service="ats-tls"
+conftool_service="cdn"
 selector="name=${hostname},service=${conftool_service}"
 
 # Exit immediately if the service is not pooled

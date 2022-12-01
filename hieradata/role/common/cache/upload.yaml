@@ -87,10 +87,9 @@ profile::netconsole::client::ensure: absent
 profile::lvs::realserver::pools:
   upload-https:
     services:
-      - ats-tls
-      - varnish-fe
+      - cdn
   upload:
     services:
-      - varnish-fe
+      - cdn
 profile::contacts::role_contacts: ['Traffic']
 profile::cache::varnish::frontend::use_etcd_req_filters: true

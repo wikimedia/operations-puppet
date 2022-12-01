@@ -2,11 +2,8 @@
 
 set -e
 
-# Depool ats-tls
-confctl --quiet select name=`hostname -f`,service='ats-tls' set/pooled=no
-
-# Depool varnish-fe
-confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=no
+# Depool cdn
+confctl --quiet select name=`hostname -f`,service='cdn' set/pooled=no
 
 # Wait a bit for the service to be drained
 sleep 20
@@ -16,8 +13,5 @@ sleep 20
 
 sleep 15
 
-# Repool varnish-fe
-confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=yes
-
-# Repool ats-tls
-confctl --quiet select name=`hostname -f`,service='ats-tls' set/pooled=yes
+# Repool cdn
+confctl --quiet select name=`hostname -f`,service='cdn' set/pooled=yes

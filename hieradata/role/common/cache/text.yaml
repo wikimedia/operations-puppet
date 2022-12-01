@@ -280,10 +280,9 @@ profile::cache::haproxy::extra_certificates:
 profile::lvs::realserver::pools:
   text-https:
     services:
-      - ats-tls
-      - varnish-fe
+      - cdn
   text:
     services:
-      - varnish-fe
+      - cdn
 profile::contacts::role_contacts: ['Traffic']
 profile::cache::varnish::frontend::use_etcd_req_filters: true
