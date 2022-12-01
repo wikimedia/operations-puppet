@@ -73,8 +73,8 @@ export HELM_CACHE_HOME="/var/cache/helm"
 
 # add aliases and new helpers
 alias kube-env='kube_env'
-alias kube-environments="echo \${KUBE_ENV_ENVIRONMENTS}"
-alias kube-services="echo \${KUBE_ENV_SERVICES}"
-alias kube_environments="echo \${KUBE_ENV_ENVIRONMENTS}"
-alias kube_services="echo \${KUBE_ENV_SERVICES}"
+alias kube-environments='kube_environments'
+alias kube-services='kube_services'
+alias kube_environments="echo \${KUBE_ENV_ENVIRONMENTS} | tr ' ' $'\n'"
+alias kube_services="echo \${KUBE_ENV_SERVICES} | tr ' ' $'\n'"
 
