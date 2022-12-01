@@ -20,15 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# TODO: needs to come from hiera, we shuld be able to drop a file to:
-#  oidc_auth.local_settings.py
-SECRET_KEY = "B-ca.BL=!>AM6gCV9'lMakkhh2Sq1tJ.z5rEHYZ&@Wlq>!kaB"
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["idp-test-login.wmcloud.org", "localhost"]
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -110,9 +105,6 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/done/"
 SOCIAL_AUTH_STRATEGY = "social_django.strategy.DjangoStrategy"
 SOCIAL_AUTH_STORAGE = "social_django.models.DjangoStorage"
-SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = "https://idp-dev.wmcloud.org/oidc"
-SOCIAL_AUTH_OIDC_KEY = "unkown"
-SOCIAL_AUTH_OIDC_SECRET = "unkown"
 SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.social_details",
     "social_core.pipeline.social_auth.social_uid",

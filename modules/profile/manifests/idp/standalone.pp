@@ -1,6 +1,15 @@
 # SPDX-LicensekIdentifier: Apache-2.0
 # @summary Standalone IDP class for creating an instance in WM cloud
-class profile::idp::standalone {
+# @param oidc_endpoint the oidc endpoint to use
+# @param django_secret_key the secret key used by django
+# @param oidc_key the oidc key
+# @param oidc_secret the oidc secret
+class profile::idp::standalone (
+    Stdlib::HTTPSUrl $oidc_endpoint     = lookup('apereo_cas.oidc_endpoint'),
+    String           $django_secret_key = lookup('profile::idp::standalone::django_secret_key'),
+    String           $oidc_key          = lookup('profile::idp::standalone::oidc_key'),
+    String           $oidc_secret       = lookup('profile::idp::standalone::oidc_secret'),
+) {
   ensure_packages(['python3-venv'])
   # Standard stuff
   include profile::base::production
@@ -58,6 +67,18 @@ class profile::idp::standalone {
         },
         },
     }
+  }
+  $config = {
+      'ALLOWED_HOSTS'                  => ['localhost', 'sso-django-login.wmcloud.org'],
+      'SECRET_KEY'                     => $django_secret_key,
+      'SOCIAL_AUTH_OIDC_OIDC_ENDPOINT' => oidc_endpoint,
+      'SOCIAL_AUTH_OIDC_KEY'           => $oidc_key,
+      'SOCIAL_AUTH_OIDC_SECRET'        => $oidc_secret,
+  }
+  file { '/srv/django_oidc/oidc_auth/local-setting.py':
+      ensure  => file,
+      content => $config.wmflib::to_python,
+      notify  => Service['uwsgi-django_oidc'],
   }
 
   class { 'httpd': modules => ['proxy_http', 'proxy'] }
