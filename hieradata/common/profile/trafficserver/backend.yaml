@@ -276,7 +276,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://an-tool1005.eqiad.wmnet
     - type: map
       target: http://thanos.wikimedia.org
-      replacement: https://thanos-sso.discovery.wmnet
+      replacement: https://thanos-web.discovery.wmnet
     - type: map
       target: http://ticket.wikimedia.org
       replacement: https://ticket.discovery.wmnet:1443
