@@ -68,16 +68,16 @@ class profile::idp::standalone (
         },
     }
   }
-  $config = {
-      'ALLOWED_HOSTS'                  => ['localhost', 'sso-django-login.wmcloud.org'],
-      'SECRET_KEY'                     => $django_secret_key,
-      'SOCIAL_AUTH_OIDC_OIDC_ENDPOINT' => oidc_endpoint,
-      'SOCIAL_AUTH_OIDC_KEY'           => $oidc_key,
-      'SOCIAL_AUTH_OIDC_SECRET'        => $oidc_secret,
-  }
+  $config = @("CONFIG")
+  ALLOWED_HOSTS = ['localhost', 'sso-django-login.wmcloud.org']
+  SECRET_KEY = "${django_secret_key}"
+  SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = "${oidc_endpoint}"
+  SOCIAL_AUTH_OIDC_KEY = "${oidc_key}"
+  SOCIAL_AUTH_OIDC_SECRET = "${oidc_secret}"
+  | CONFIG
   file { '/srv/django_oidc/oidc_auth/local_setting.py':
       ensure  => file,
-      content => $config.wmflib::to_python,
+      content => $config,
       notify  => Service['uwsgi-django_oidc'],
   }
 
