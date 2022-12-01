@@ -24,13 +24,6 @@ class varnish::common(
         source => 'puppet:///modules/varnish/varnish-frontend-restart.sh',
     }
 
-    # Clean-up of unused dstat plugin
-    file { '/usr/local/share/dstat':
-        ensure  => absent,
-        force   => true,
-        recurse => true,
-    }
-
     # `vlogdump` is a small tool to filter the output of varnishlog
     # See <https://github.com/cosimo/vlogdump> for more.
     file { '/usr/local/bin/vlogdump':
