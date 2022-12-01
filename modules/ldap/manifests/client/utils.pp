@@ -19,15 +19,11 @@ class ldap::client::utils($ldapconfig) {
     }
 
     file { '/usr/local/sbin/ldaplist':
-        ensure => link,
-        target => '/usr/local/bin/ldaplist',
+        ensure => absent
     }
 
     file { '/usr/local/bin/ldaplist':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/ldap/scripts/ldaplist.py',
+        ensure => absent
     }
 
     if $::realm == 'labs' {
