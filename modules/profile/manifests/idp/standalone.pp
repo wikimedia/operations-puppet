@@ -5,7 +5,7 @@
 # @param oidc_key the oidc key
 # @param oidc_secret the oidc secret
 class profile::idp::standalone (
-    Stdlib::HTTPSUrl $oidc_endpoint     = lookup('apereo_cas.oidc_endpoint'),
+    Stdlib::HTTPSUrl $oidc_endpoint     = lookup('apereo_cas.production.oidc_endpoint'),
     String           $django_secret_key = lookup('profile::idp::standalone::django_secret_key'),
     String           $oidc_key          = lookup('profile::idp::standalone::oidc_key'),
     String           $oidc_secret       = lookup('profile::idp::standalone::oidc_secret'),
