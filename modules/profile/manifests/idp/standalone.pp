@@ -37,7 +37,7 @@ class profile::idp::standalone (
     file { $venv_path:
         ensure  => directory,
         recurse => remote,
-        purge   => true,
+        owner   => 'www-data',
         source  => "puppet:///modules/profile/idp/standalone/${app}",
     }
     exec { "create virtual environment ${venv_path}":
@@ -75,6 +75,10 @@ class profile::idp::standalone (
   SOCIAL_AUTH_OIDC_KEY = "${oidc_key}"
   SOCIAL_AUTH_OIDC_SECRET = "${oidc_secret}"
   | CONFIG
+  file { '/srv/django_oidc/oidc_auth/db.sqlite3':
+      ensure => file,
+      owner  => 'www-data',
+  }
   file { '/srv/django_oidc/oidc_auth/local_settings.py':
       ensure  => file,
       content => $config,
