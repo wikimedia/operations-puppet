@@ -17,6 +17,9 @@ profile::phabricator::main::dumps_rsync_clients: []
 
 docker::registry: 'localhost'
 
+phabricator::mysql::master::port: '3306'
+phabricator::mysql::slave::port: '3306'
+
 profile::phabricator::main::manage_scap_user: true
 
 profile::phabricator::main::http_srange: '($DEPLOYMENT_HOSTS $CACHES)'
