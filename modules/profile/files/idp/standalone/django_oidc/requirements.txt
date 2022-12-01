@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
 django
 django-jinja
+python-jose
 social-auth-app-django

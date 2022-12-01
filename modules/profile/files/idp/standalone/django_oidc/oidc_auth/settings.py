@@ -68,6 +68,7 @@ TEMPLATES = [
             "filters": {
                 "backend_name": "common.filters.backend_name",
                 "backend_class": "common.filters.backend_class",
+                "icon_name": "common.filters.icon_name",
                 "social_backends": "common.filters.social_backends",
                 "legacy_backends": "common.filters.legacy_backends",
                 "oauth_backends": "common.filters.oauth_backends",
