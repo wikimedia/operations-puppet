@@ -334,6 +334,65 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    # Map test2wiki to mw on k8s. T290536#8434995
+    - type: map
+      target: 'http://test2.wikipedia.org/w/rest.php'
+      replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=api-ext-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    - type: map
+      target: 'http://test2.wikipedia.org/w/api.php'
+      replacement: https://mw-api-ext.discovery.wmnet:4447/w/api.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=api-ext-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    - type: map
+      target: 'http://test2.wikipedia.org/'
+      replacement: https://mw-web.discovery.wmnet:4450
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  /  @  !  $  (  )  *  ,  ;
+          - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
+          # encode    [  ]  &  '  +  =
+          - '@pparam="5B 5D 26 27 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=mw-web-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    # on-prem, everything else
     - type: regex_map
       target: 'http://(.*)/w/rest.php'
       replacement: https://api-rw.discovery.wmnet/w/rest.php
