@@ -28,4 +28,5 @@ class profile::hadoop::yarn_proxy (
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 }
