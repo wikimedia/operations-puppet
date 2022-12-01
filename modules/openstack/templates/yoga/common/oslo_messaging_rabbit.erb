@@ -3,8 +3,8 @@
 # common openstack-wide rabbit config
 [oslo_messaging_rabbit]
 rabbit_quorum_queue=true
-rabbit_retry_interval=1
-rabbit_retry_backoff=2
+rabbit_retry_interval=5
+rabbit_retry_backoff=20
 
 ssl = True
 ssl_ca_file = /etc/ssl/certs/wmf-ca-certificates.crt
