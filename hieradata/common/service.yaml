@@ -2294,11 +2294,14 @@ service::catalog:
     probes:
       - type: http
         path: /-/ready
+        # thanos-web.discovery.wmnet is used only for internal routing
+        # vhost selection is done via thanos-query
+        host: thanos-query.discovery.wmnet
     port: 443
     sites:
       - codfw
       - eqiad
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: thanos-web
         active_active: true
