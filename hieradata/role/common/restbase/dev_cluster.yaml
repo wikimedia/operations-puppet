@@ -123,7 +123,7 @@ profile::cassandra::settings:
   tls_cluster_name: "services-dev"
   dc: "%{::site}"
   cluster_name: "services-dev"
-  target_version: 'dev'
+  target_version: '3.x'
   extra_classpath:
     - /srv/deployment/cassandra/twcs/lib/cassandra-v2.2/TimeWindowCompactionStrategy-2.2.5.jar
   default_instance_params:

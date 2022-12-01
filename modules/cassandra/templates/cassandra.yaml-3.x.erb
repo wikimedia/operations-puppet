@@ -377,7 +377,12 @@ counter_cache_save_period: 7200
 # If not set, the default directory is $CASSANDRA_HOME/data/saved_caches.
 saved_caches_directory: <%= @saved_caches_directory %>
 
-# commitlog_sync may be either "periodic" or "batch." 
+# Number of seconds the server will wait for each cache (row, key, etc ...) to load while starting
+# the Cassandra process. Setting this to a negative value is equivalent to disabling all cache loading on startup
+# while still having the cache during runtime.
+# cache_load_timeout_seconds: 30
+
+# commitlog_sync may be either "periodic" or "batch."
 # 
 # When in batch mode, Cassandra won't ack writes until the commit log
 # has been fsynced to disk.  It will wait
@@ -517,6 +522,19 @@ concurrent_materialized_view_writes: 32
 # offheap_objects
 #    off heap objects
 memtable_allocation_type: offheap_objects
+
+# Limits the maximum Merkle tree depth to avoid consuming too much
+# memory during repairs.
+#
+# The default setting of 18 generates trees of maximum size around
+# 50 MiB / tree. If you are running out of memory during repairs consider
+# lowering this to 15 (~6 MiB / tree) or lower, but try not to lower it
+# too much past that or you will lose too much resolution and stream
+# too much redundant data during repair. Cannot be set lower than 10.
+#
+# For more details see https://issues.apache.org/jira/browse/CASSANDRA-14096.
+#
+# repair_session_max_tree_depth: 18
 
 # Total space to use for commit logs on disk.
 #
@@ -858,6 +876,19 @@ sstable_preemptive_open_interval_in_mb: 50
 # When unset, the default is 200 Mbps or 25 MB/s
 # inter_dc_stream_throughput_outbound_megabits_per_sec: 200
 
+# Server side timeouts for requests. The server will return a timeout exception
+# to the client if it can't complete an operation within the corresponding
+# timeout. Those settings are a protection against:
+#   1) having client wait on an operation that might never terminate due to some
+#      failures.
+#   2) operations that use too much CPU/read too much data (leading to memory build
+#      up) by putting a limit to how long an operation will execute.
+# For this reason, you should avoid putting these settings too high. In other words, 
+# if you are timing out requests because of underlying resource constraints then 
+# increasing the timeout will just cause more problems. Of course putting them too 
+# low is equally ill-advised since clients could get timeouts even for successful 
+# operations just because the timeout setting is too tight.
+
 # How long the coordinator should wait for read operations to complete
 read_request_timeout_in_ms: 5000
 # How long the coordinator should wait for seq or index scans to complete
@@ -1119,10 +1150,6 @@ enable_user_defined_functions: false
 # This option has no effect, if enable_user_defined_functions is false.
 enable_scripted_user_defined_functions: false
 
-# Enables materialized view creation on this node.
-# Materialized views are considered experimental and are not recommended for production use.
-enable_materialized_views: false
-
 # The default Windows kernel timer and scheduling resolution is 15.6ms for power conservation.
 # Lowering this value on Windows can provide much tighter latency and better throughput, however
 # some virtualized environments may see a negative performance impact from changing this setting
@@ -1175,6 +1202,26 @@ auto_bootstrap: <%= @auto_bootstrap %>
 # using the StorageService mbean.
 tombstone_warn_threshold: 1000
 tombstone_failure_threshold: 100000
+
+# Filtering and secondary index queries at read consistency levels above ONE/LOCAL_ONE use a
+# mechanism called replica filtering protection to ensure that results from stale replicas do
+# not violate consistency. (See CASSANDRA-8272 and CASSANDRA-15907 for more details.) This
+# mechanism materializes replica results by partition on-heap at the coordinator. The more possibly
+# stale results returned by the replicas, the more rows materialized during the query.
+replica_filtering_protection:
+    # These thresholds exist to limit the damage severely out-of-date replicas can cause during these
+    # queries. They limit the number of rows from all replicas individual index and filtering queries
+    # can materialize on-heap to return correct results at the desired read consistency level.
+    #
+    # "cached_replica_rows_warn_threshold" is the per-query threshold at which a warning will be logged.
+    # "cached_replica_rows_fail_threshold" is the per-query threshold at which the query will fail.
+    #
+    # These thresholds may also be adjusted at runtime using the StorageService mbean.
+    #
+    # If the failure threshold is breached, it is likely that either the current page/fetch size
+    # is too large or one or more replicas is severely out-of-sync and in need of repair.
+    cached_rows_warn_threshold: 2000
+    cached_rows_fail_threshold: 32000
 
 # Log WARN on any multiple-partition batch size exceeding this value. 5kb per batch by default.
 # Caution should be taken on increasing the size of this threshold as it can lead to node instability.
@@ -1259,3 +1306,18 @@ back_pressure_strategy:
 
 # See: https://phabricator.wikimedia.org/T137419
 disk_access_mode: mmap_index_only
+#########################
+# EXPERIMENTAL FEATURES #
+#########################
+
+# Enables materialized view creation on this node.
+# Materialized views are considered experimental and are not recommended for production use.
+enable_materialized_views: false
+
+# Enables SASI index creation on this node.
+# SASI indexes are considered experimental and are not recommended for production use.
+enable_sasi_indexes: true
+
+# Enables the used of 'ALTER ... DROP COMPACT STORAGE' statements on this node.
+# 'ALTER ... DROP COMPACT STORAGE' is considered experimental and is not recommended for production use.
+enable_drop_compact_storage: false
