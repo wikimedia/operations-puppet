@@ -75,7 +75,7 @@ class profile::idp::standalone (
   SOCIAL_AUTH_OIDC_KEY = "${oidc_key}"
   SOCIAL_AUTH_OIDC_SECRET = "${oidc_secret}"
   | CONFIG
-  file { '/srv/django_oidc/oidc_auth/local_setting.py':
+  file { '/srv/django_oidc/oidc_auth/local_settings.py':
       ensure  => file,
       content => $config,
       notify  => Service['uwsgi-django_oidc'],
