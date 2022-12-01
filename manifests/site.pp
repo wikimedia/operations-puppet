@@ -2680,6 +2680,11 @@ node /^sretest100[1-2]\.eqiad\.wmnet$/ {
     role(sretest)
 }
 
+# Servers for SRE tests in codfw
+node /^sretest200[1-2]\.codfw\.wmnet$/ {
+    role(insteup::infrastructure_foundations)
+}
+
 # parsoid visual diff and roundtrip testing (T257940)
 # also see scandium.eqiad.wmnet
 node 'testreduce1001.eqiad.wmnet' {
