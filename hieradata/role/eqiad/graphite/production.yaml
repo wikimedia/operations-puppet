@@ -1,3 +1,2 @@
 profile::graphite::base::cluster_servers:
-  - graphite1004.eqiad.wmnet
   - graphite1005.eqiad.wmnet
