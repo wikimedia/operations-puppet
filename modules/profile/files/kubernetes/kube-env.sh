@@ -51,6 +51,7 @@ __kube_env_complete() {
     esac
 }
 complete -F __kube_env_complete kube_env
+complete -F __kube_env_complete kube-env
 
 # Add this function to your PS1 to add the currently configured
 # k8s cluster to your prompt.
@@ -77,4 +78,3 @@ alias kube-environments='kube_environments'
 alias kube-services='kube_services'
 alias kube_environments="echo \${KUBE_ENV_ENVIRONMENTS} | tr ' ' $'\n'"
 alias kube_services="echo \${KUBE_ENV_SERVICES} | tr ' ' $'\n'"
-
