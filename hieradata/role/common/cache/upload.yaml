@@ -80,8 +80,6 @@ prometheus::varnishkafka_exporter::config:
 # Default weights for conftool
 profile::cache::base::default_weights:
   cdn: 1
-  varnish-fe: 1
-  ats-tls: 1
   ats-be: 100
 profile::netconsole::client::ensure: absent
 profile::lvs::realserver::pools:
