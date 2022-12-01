@@ -183,6 +183,7 @@ class superset(
 
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
+    profile::auto_restarts::service { 'superset': }
 
     systemd::service { 'superset':
         ensure  => 'present',
