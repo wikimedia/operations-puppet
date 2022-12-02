@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hive::client
 # Installs base configs and packages for hive client nodes.
 #

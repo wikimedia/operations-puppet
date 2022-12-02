@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::hive::monitoring::server
 #
 # Sets up Prometheus based monitoring for the Hive Server.

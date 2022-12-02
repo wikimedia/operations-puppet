@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hive::site_hdfs
 #
 # Ensures latest /etc/hive/conf/hive-site.xml is in hdfs

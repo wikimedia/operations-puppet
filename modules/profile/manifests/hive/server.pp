@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::hive::server
 #
 # Sets up Hive Server2 (no metastore, needs another profile).
