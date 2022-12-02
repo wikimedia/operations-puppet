@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === class profile::cache::kafka::webrequest
 #
 # Sets up a varnishkafka instance producing varnish

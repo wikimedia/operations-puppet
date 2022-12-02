@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Class profile::cache::kafka::statsv
 #
 # Sets up a varnishkafka logging endpoint for collecting

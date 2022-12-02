@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::cache::kafka::certificate
 # Installs certificates and keys for varnishkafka to produce to Kafka over TLS.
 # This expects that a 'varnishkafka' SSL/TLS key and certificate is created by Cergen and
