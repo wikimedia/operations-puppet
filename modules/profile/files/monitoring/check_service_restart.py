@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 
 """check_service_restart.py: Really, you should restart that service!
 

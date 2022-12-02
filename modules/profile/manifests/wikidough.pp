@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::wikidough (
     Stdlib::Fqdn              $service_domain   = lookup('profile::wikidough::service_domain'),
     Dnsdist::Resolver         $resolver         = lookup('profile::wikidough::dnsdist::resolver'),
