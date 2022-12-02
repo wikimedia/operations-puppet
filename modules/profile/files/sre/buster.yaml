@@ -7,10 +7,10 @@ role::mediawiki::appserver:
   target-q: TBD
 role::mediawiki::memcached:
   target-q: TBD
-  phab-task: T293216
+  phab-task: 293216
 role::mediawiki::memcached::gutter:
   target-q: TBD
-  phab-task: T293216
+  phab-task: 293216
 role::etcd::v3::kubernetes:
   target-q: TBD
 role::etcd::v3::kubernetes::staging:
@@ -39,22 +39,23 @@ role::mw_rc_irc:
   target-q: TBD
 role::vrts:
   target-q: TBD
+  phab-task: 295416
 role::logging::mediawiki::udp2log:
   target-q: TBD
 role::parsoid:
   target-q: TBD
 role::wdqs::internal:
   target-q: TBD
-  phab-task: T323921
+  phab-task: 323921
 role::wdqs::public:
   target-q: TBD
-  phab-task: T323921
+  phab-task: 323921
 role::wdqs::test:
   target-q: TBD
-  phab-task: T323921
+  phab-task: 323921
 role::wcqs::public:
   target-q: TBD
-  phab-task: T323921
+  phab-task: 323921
 role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
@@ -105,12 +106,12 @@ role::maps::master:
   target-q: TBD
 role::ping_offload:
   target-q: 2022-04
-  phab-task: T273509
+  phab-task: 273509
 role::planet:
   target-q: TBD
 role::ganeti:
   target-q: 2022-04
-  phab-task: T311687,T311686
+  phab-task: 311687,311686
 role::alerting_host:
   target-q: TBD
 role::analytics_cluster::launcher:
@@ -166,6 +167,7 @@ role::mariadb::misc:
   target-q: TBD
 role::mariadb::misc::analytics::backup:
   target-q: TBD
+  phab-task: 304492
 role::mariadb::core_test:
   target-q: TBD
 role::mariadb::misc::phabricator:
@@ -194,6 +196,7 @@ role::debmonitor::server:
   target-q: TBD
 role::doc:
   target-q: TBD
+  phab-task: 319477
 role::druid::analytics::worker:
   target-q: TBD
   phab-task: 288804
@@ -264,7 +267,7 @@ role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
   target-q: TBD
 role::openldap::corp:
   target-q: 2022-04
-  phab-task: T323820
+  phab-task: 323820
 role::wmcs::openstack::eqiad1::labweb:
   target-q: TBD
 role::piwik:
@@ -340,6 +343,7 @@ role::prometheus:
   target-q: TBD
 role::prometheus::pop:
   target-q: TBD
+  phab-task: 309979
 role::proton:
   target-q: TBD
 role::puppetboard:
@@ -384,12 +388,16 @@ role::dns::auth:
   phab-task: 321309
 role::logging::opensearch::data:
   target-q: TBD
+  phab-task: 321410
 role::logging::opensearch::collector:
   target-q: TBD
+  phab-task: 321410
 role::wmcs::ceph::osd:
   target-q: TBD
+  phab-task: 309789
 role::wmcs::ceph::mon:
   target-q: TBD
+  phab-task: 309789
 role::wmcs::monitoring:
   target-q: TBD
 role::dnsbox:
@@ -407,6 +415,7 @@ role::poolcounter::server:
   target-q: TBD
 role::orchestrator:
   target-q: TBD
+  phab-task: 298959
 role::durum:
   target-q: TBD
   phab-task: 305589
@@ -414,6 +423,7 @@ role::flowspec:
   target-q: TBD
 role::thanos::backend:
   target-q: TBD
+  phab-task: 288937
 role::requesttracker:
   target-q: TBD
 role::url_downloader:
@@ -426,8 +436,10 @@ role::puppetdb:
   target-q: 2023-01
 role::puppetmaster::frontend:
   target-q: TBD
+  phab-task: 285086
 role::puppetmaster::backend:
   target-q: TBD
+  phab-task: 285086
 role::sretest:
   target-q: 2023-03
 role::wikidough:
@@ -441,7 +453,7 @@ role::pki::root:
   target-q: TBD
 role::search::loader:
   target-q: TBD
-  phab-task: T323921
+  phab-task: 323921
 role::chartmuseum:
   target-q: TBD
 role::acme_chief:
