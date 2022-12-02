@@ -1752,7 +1752,7 @@ service::catalog:
     aliases:
       - "parsoid"
 
-  prometheus:
+  prometheus: &prometheus_default
     description: Prometheus monitoring
     encryption: false
     ip:
@@ -1784,6 +1784,28 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+
+  prometheus-https:
+    <<: *prometheus_default
+    description: "prometheus monitoring https"
+    encryption: true
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: prometheus
+        service: prometheus
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - https://prometheus-%{::site}.wikimedia.org/
+      scheduler: wrr
+    port: 443
+    state: lvs_setup
 
   proton:
     description: Proton PDF rendering service. proton.svc.%{::site}.wmnet
