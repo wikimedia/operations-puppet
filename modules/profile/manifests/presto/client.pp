@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::presto::client
 # Installs presto-cli and configures it to contact the Presto service at $discovery_uri
 #
