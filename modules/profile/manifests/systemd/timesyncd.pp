@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure systemd timesyncd
 # @param ensure wether to ensure the profile
 # @param ntp_servers list of ntp servers

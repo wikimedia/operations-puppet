@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::java::java_8
 #
 # Installs Java 8 on Debian Buster as well as older releases.

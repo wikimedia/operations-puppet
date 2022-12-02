@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::nftables::basefirewall (
     Array[Stdlib::IP::Address] $cumin_masters       = lookup('cumin_masters', {default_value => []}),
     Array[Stdlib::IP::Address] $cloud_cumin_masters = lookup('cloud_cumin_masters', {default_value => []}),

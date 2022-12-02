@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://racktables.wikimedia.org
 ## Please note that Racktables is a tarball extraction based installation
 ## into its web directory root.  This means that puppet cannot fully automate

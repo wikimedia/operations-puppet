@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 #== Class profile::java
 #
 # This profile takes care of deploying openjdk following the best
