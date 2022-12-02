@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dragonfly::dfdaemon (
     Wmflib::Ensure $ensure = lookup('profile::dragonfly::dfdaemon::ensure'),
     Array[String] $supernodes = lookup('profile::dragonfly::dfdaemon::supernodes'),

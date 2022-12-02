@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::calico::kubernetes
 #
 # Installs calico for use in a kubernetes cluster.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::dragonfly::supernode (
   Stdlib::Port::Unprivileged $listen_port = lookup('profile::dragonfly::supernode::listen_port'),
   Stdlib::Port::Unprivileged $download_port = lookup('profile::dragonfly::supernode::download_port'),
