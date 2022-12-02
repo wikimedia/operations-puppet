@@ -1,4 +1,4 @@
 # db1206 
-# spare
+mariadb::shard: 's1'
 profile::monitoring::notifications_enabled: false
 
