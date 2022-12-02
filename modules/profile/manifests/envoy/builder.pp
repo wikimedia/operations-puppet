@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Add tools to build envoy
 class profile::envoy::builder {
     # we need a very large /tmp because the envoy build dumps more than 100 GB of

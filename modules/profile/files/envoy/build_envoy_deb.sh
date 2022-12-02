@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Simple script to build envoyproxy inside a chroot similar to the ones pbuilder creates.
 set -exo pipefail
 

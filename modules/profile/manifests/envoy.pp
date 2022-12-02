@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Sets up a basic installation of the envoy proxy. You will need to define listeners and clusters separately
 # @param ensure ensurable parameter
 # @param cluster the WMF cluster
