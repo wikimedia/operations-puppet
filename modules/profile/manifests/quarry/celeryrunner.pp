@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::quarry::celeryrunner
 #
 # Runs queries submitted via celery

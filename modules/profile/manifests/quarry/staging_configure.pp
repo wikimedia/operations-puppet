@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::quarry::staging_configure
 #
 # Sets up a mysql database and configs for use by the Quarry

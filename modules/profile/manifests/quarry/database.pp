@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::quarry::database
 #
 # Sets up a mysql database for use by Quarry web frontends

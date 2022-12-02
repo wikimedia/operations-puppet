@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::quarry::base
 #
 # This class sets up the basic underlying structure for both

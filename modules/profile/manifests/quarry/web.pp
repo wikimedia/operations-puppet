@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::quarry::web
 #
 # This class sets up a web frontend for Quarry, which lets

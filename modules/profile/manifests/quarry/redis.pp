@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: profile::quarry::redis
 #
 # Sets up a redis instance for use as caching and session storage

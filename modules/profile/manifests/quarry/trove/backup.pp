@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::quarry::trove::backup
 # Sets up a very simple mysqldump to NFS on a schedule since trove lacks
 # native backup at this time.
