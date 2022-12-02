@@ -110,3 +110,5 @@ profile::java::extra_args:
 profile::monitoring::notifications_enabled: false
 
 profile::base::certificates::include_bundle_jks: true
+
+profile::contacts::role_contacts: ['Data Engineering']
