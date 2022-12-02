@@ -50,13 +50,10 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
         group  => 'root',
         mode   => '0555',
     }
-    $ensure_deploy = $deployment_server ? {
-        $facts['networking']['fqdn'] => 'present',
-        default => 'absent'
-    }
+
     # Run the deployment check every 5 minutes
     systemd::timer::job { 'deploy_to_mwdebug':
-        ensure            => $ensure_deploy,
+        ensure            => absent,
         description       => 'Deploy the latest available set of images to mw on k8s',
         command           => '/usr/local/sbin/deploy-mwdebug --noninteractive',
         user              => 'mwbuilder',
