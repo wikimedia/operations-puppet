@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::lvs::configuration {
 
     $lvs_class_hosts = {

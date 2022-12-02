@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::lvs::realserver.
 # Sets up the lvs realserver IPs and the corresponding conftool-based scripts
 #

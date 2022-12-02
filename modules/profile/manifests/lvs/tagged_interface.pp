@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define profile::lvs::tagged_interface($interfaces) {
     $vlan_info = $interfaces[$title]
     $vlan_id = $vlan_info['id']
