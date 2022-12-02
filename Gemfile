@@ -28,6 +28,8 @@ gem 'pry-byebug', '~> 3.7.0'
 # defined above.
 gem 'pry', '~> 0.12.2', :require => false
 
+gem 'sorted_set' if RUBY_VERSION >= '3.0.0'
+
 # Theses are required for running beaker acceptance test
 # you can forgo installing them using `bundle install --without system_tests`
 group :system_tests do
