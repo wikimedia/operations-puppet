@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::oozie::monitoring::server
 #
 # Sets up Prometheus based monitoring for the Oozie Server.

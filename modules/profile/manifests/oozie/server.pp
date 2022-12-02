@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class role::analytics_cluster::oozie::server
 #
 # Installs the Oozie server.
