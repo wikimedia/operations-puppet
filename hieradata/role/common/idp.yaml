@@ -183,8 +183,6 @@ profile::idp::services:
   superset-next:
     id: 26
     service_id: 'https://superset-next\.wikimedia\.org(/.*)?'
-    # When we're ready, change required_u2f to true for T280691
-    require_u2f: false
     required_groups:
       - ops
       - nda
