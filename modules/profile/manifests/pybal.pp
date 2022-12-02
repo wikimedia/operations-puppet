@@ -24,15 +24,14 @@ class profile::pybal(
 
     $global_options = {
         'bgp' => $bgp,
-        # This is being transitioned to a fixed list of all local routers,
-        # per-DC.  Perhaps we can pull this from other shared site hieradata
-        # instead after we're done with the conversion?
         'bgp-peer-address' => $::hostname ? {
             /^lvs10[0-9][0-9]$/ => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
-            /^lvs20[01][0789]$/ => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
-            /^lvs300[567]$/     => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
+            /^lvs20[0-9][0-9]$/ => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
+            /^lvs30[0-9][0-9]$/ => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
             /^lvs40[0-9][0-9]$/ => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo
-            /^lvs500[123]$/     => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
+            /^lvs50[0-9][0-9]$/ => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
+            # Note drmrs is different because it has L3 ToR switches, while the
+            # others above are a shared L2 domain across both racks
             /^lvs600[13]$/      => "[ '10.136.0.1' ]", # asw1-b12-drmrs gateway
             /^lvs6002$/         => "[ '10.136.1.1' ]", # asw1-b13-drmrs gateway
             default             => '(unspecified)'
