@@ -1,6 +1,5 @@
 
 cluster: apifeatureusage
-# profile::contacts::role_contacts: ['TBD']
 
 profile::base::certificates::include_bundle_jks: true
 
@@ -64,3 +63,5 @@ profile::apifeatureusage::logstash::curator_actions:
         direction: older
         unit: days
         unit_count: 2
+
+profile::contacts::role_contacts: ['Search Platform']
