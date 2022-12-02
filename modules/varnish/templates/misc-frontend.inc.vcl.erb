@@ -75,6 +75,14 @@ sub cluster_fe_ratelimit {
             return (synth(429, "vscode-phabricator fetches users too aggressively: https://phabricator.wikimedia.org/T271528"));
         }
     }
+
+    <%- if @etcd_filters -%>
+    // These are the ratelimits generated from etcd
+    // They're only applied to external clients
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+        include "requestctl-filters.inc.vcl";
+    }
+    <%- end -%>
 }
 
 sub cluster_fe_hit {
