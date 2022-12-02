@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Type: Profile::Durum::Common
 #
 # Common configurations used by durum.

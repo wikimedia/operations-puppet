@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::durum (
   Stdlib::Fqdn                $domain   = lookup('profile::durum::service::domain'),
   Profile::Durum::Service_ips $ips      = lookup('profile::durum::service::ips'),

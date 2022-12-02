@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 (function () {
   const testUUID = uuidv4();
   const testTime = new Date().toLocaleTimeString();

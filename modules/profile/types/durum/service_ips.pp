@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Type: Profile::Durum::Service_ips
 #
 # IP addresses used by the durum hosts (IPv4 and IPv6).
