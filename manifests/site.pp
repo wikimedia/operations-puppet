@@ -171,12 +171,12 @@ node /an-conf100[1-3]\.eqiad\.wmnet/ {
 }
 
 # Analytics Presto nodes.
-node /^an-presto100[1-6]\.eqiad\.wmnet$/ {
+node /^an-presto100[1-7]\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
 }
 
 # New an-presto nodes in eqiad T306835
-node /^an-presto10(0[7-9]|1[0-5])\.eqiad\.wmnet/ {
+node /^an-presto10(0[8-9]|1[0-5])\.eqiad\.wmnet/ {
     role(insetup::data_engineering)
 }
 
