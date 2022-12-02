@@ -5,9 +5,9 @@ class profile::toolforge::harbor (
     Stdlib::Unixpath $tlscertdir = lookup('profile::toolforge::harbor::tlscertdir', {default_value => '/etc/acmecerts/toolforge/live'}),
     Boolean $cinder_attached = lookup('profile::toolforge::harbor::cinder_attached', {default_value => false}),
     String $harbor_init_pwd = lookup('profile::toolforge::harbor::init_pwd', {default_value => 'insecurityrules'}),
-    String $harbor_db_pwd = lookup('profile::toolforge::harbor::db_harbor_pwd'),
-    Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db_primary'),
-    Stdlib::Fqdn $harbor_url = lookup('profile::toolforge::harbor::url'),
+    String $harbor_db_pwd = lookup('profile::toolforge::harbor::db_harbor_pwd', {default_value => 'dummypass'}),
+    Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db_primary', {default_value => 'dummy.db.host'}),
+    Stdlib::Fqdn $harbor_url = lookup('profile::toolforge::harbor::url', {default_value => 'dummy.harbor.fqdn'}),
 ) {
     ensure_packages(['docker.io'])
     service { 'docker':
@@ -112,10 +112,10 @@ class profile::toolforge::harbor (
         # detected also when the containers were stopped and declared the unit failed if so
         # this is a poor-person's effective alternative
         # the following script relies on docker-compose starting one container per service
-        $check_script = @("EOS"/L)
+        $check_script = @("EOS"/$)
             bash -c "
-                want_services=\$(docker-compose -f ${composefile} ps --services --all | wc -l);
-                got_services=\$(docker-compose -f ${composefile} ps | grep Up | wc -l);
+                want_services=$(docker-compose -f ${composefile} ps --services --all | wc -l);
+                got_services=$(docker-compose -f ${composefile} ps | grep Up | wc -l);
                 [[ \\\$want_services -ne \\\$got_services ]]
             "
             | EOS
