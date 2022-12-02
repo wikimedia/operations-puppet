@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::zuul::server(
     Hash $conf_common = lookup('zuul::common'),
     Hash $conf_server = lookup('profile::zuul::server::conf'),

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::zuul::merger(
     Hash $conf_common = lookup('zuul::common'),
     Hash $conf_merger = lookup('profile::zuul::merger::conf'),
