@@ -15,6 +15,7 @@ class profile::openstack::eqiad1::magnum(
     String $rabbit_pass = lookup('profile::openstack::eqiad1::magnum::rabbit_pass'),
     String $region = lookup('profile::openstack::eqiad1::region'),
     String $domain_admin_pass = lookup('profile::openstack::eqiad1::magnum::domain_admin_pass'),
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
     class {'::profile::openstack::base::magnum':
         version               => $version,
@@ -31,5 +32,6 @@ class profile::openstack::eqiad1::magnum(
         rabbit_pass           => $rabbit_pass,
         region                => $region,
         domain_admin_pass     => $domain_admin_pass,
+        haproxy_nodes         => $haproxy_nodes,
     }
 }

@@ -16,8 +16,8 @@ class profile::openstack::base::magnum(
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::magnum::api_bind_port'),
     String $rabbit_user = lookup('profile::openstack::base::magnum::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::magnum::rabbit_pass'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
     class { '::openstack::magnum::service':
         version               => $version,
         openstack_controllers => $openstack_controllers,
@@ -39,10 +39,17 @@ class profile::openstack::base::magnum(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'magnum_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (19511 29511 9511) ACCEPT;",
+    ferm::service { 'magnum-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
+
+    # TODO: move to haproxy/cloudlb profiles
+    ferm::service { 'magnum-api-access':
+        proto  => 'tcp',
+        port   => 29511,
+        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'magnum':

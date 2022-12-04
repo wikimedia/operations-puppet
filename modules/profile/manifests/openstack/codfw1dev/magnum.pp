@@ -15,6 +15,7 @@ class profile::openstack::codfw1dev::magnum(
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::magnum::rabbit_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
     String $domain_admin_pass = lookup('profile::openstack::codfw1dev::magnum::domain_admin_pass'),
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
 ) {
     class {'::profile::openstack::base::magnum':
         version               => $version,
@@ -31,5 +32,6 @@ class profile::openstack::codfw1dev::magnum(
         rabbit_pass           => $rabbit_pass,
         region                => $region,
         domain_admin_pass     => $domain_admin_pass,
+        haproxy_nodes         => $haproxy_nodes,
     }
 }
