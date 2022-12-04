@@ -20,7 +20,8 @@ class profile::openstack::base::trove(
     String              $trove_quay_pass         = lookup('profile::openstack::base::trove::quay_pass'),
     String              $trove_dns_zone          = lookup('profile::openstack::base::trove::dns_zone'),
     String              $trove_dns_zone_id       = lookup('profile::openstack::base::trove::dns_zone_id'),
-    ) {
+    Array[Stdlib::Fqdn] $haproxy_nodes           = lookup('profile::openstack::base::haproxy_nodes'),
+) {
 
     $designate_internal_uri = "https://${keystone_fqdn}:29001"
 
@@ -49,9 +50,11 @@ class profile::openstack::base::trove(
         trove_dns_zone_id       => $trove_dns_zone_id,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
+    ferm::service { 'trove-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
 
     openstack::db::project_grants { 'trove':
         access_hosts => $openstack_controllers,

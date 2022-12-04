@@ -16,8 +16,8 @@ class profile::openstack::eqiad1::trove(
     String              $trove_quay_pass         = lookup('profile::openstack::eqiad1::trove::quay_pass'),
     String              $trove_dns_zone          = lookup('profile::openstack::eqiad1::trove::dns_zone'),
     String              $trove_dns_zone_id       = lookup('profile::openstack::eqiad1::trove::dns_zone_id'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes           = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+) {
     class {'::profile::openstack::base::trove':
         version                 => $version,
         workers                 => $workers,
@@ -36,5 +36,6 @@ class profile::openstack::eqiad1::trove(
         trove_quay_pass         => $trove_quay_pass,
         trove_dns_zone          => $trove_dns_zone,
         trove_dns_zone_id       => $trove_dns_zone_id,
+        haproxy_nodes           => $haproxy_nodes,
     }
 }
