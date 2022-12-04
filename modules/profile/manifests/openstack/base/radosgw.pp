@@ -1,8 +1,10 @@
 # radosgw packages and service.  The config is combined with glance/ceph config
 #  and defined in profile::openstack::base::rbd_cloudcontrol
 class profile::openstack::base::radosgw(
-    String $version = lookup('profile::openstack::base::version'),
-    ) {
+    String              $version       = lookup('profile::openstack::base::version'),
+    Stdlib::Port        $api_bind_port = lookup('profile::openstack::base::radosgw::api_bind_port'),
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
     require profile::ceph::auth::deploy
 
     class { '::openstack::radosgw::service':
@@ -13,9 +15,16 @@ class profile::openstack::base::radosgw(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'radosgw_api':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (28080) ACCEPT;",
+    ferm::service { 'radosgw-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
+
+    # TODO: move to haproxy/cloudlb profiles
+    ferm::service { 'radosgw-api-access':
+        proto  => 'tcp',
+        port   => 28080,
+        srange => "(${prod_networks} ${labs_networks})",
     }
 }
