@@ -18,6 +18,7 @@ class profile::openstack::base::cinder(
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
     Stdlib::Unixpath    $backup_path           = lookup('profile::openstack::base::cinder::backup::path'),
     String              $ceph_rbd_client_name  = lookup('profile::openstack::base::cinder::ceph_rbd_client_name'),
+    Array[Stdlib::Fqdn] $haproxy_nodes         = lookup('profile::openstack::base::haproxy_nodes'),
     ) {
 
     class { "::openstack::cinder::config::${version}":
@@ -50,9 +51,11 @@ class profile::openstack::base::cinder(
         active                => $active,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
+    ferm::service { 'cinder-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
 
     openstack::db::project_grants { 'cinder':
         access_hosts => $openstack_controllers,

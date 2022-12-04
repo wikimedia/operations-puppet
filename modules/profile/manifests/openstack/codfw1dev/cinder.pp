@@ -12,6 +12,7 @@ class profile::openstack::codfw1dev::cinder(
     String $region = lookup('profile::openstack::codfw1dev::region'),
     Hash   $cinder_backup_volumes = lookup('profile::openstack::codfw1dev::cinder_backup_volumes'),
     String[1]           $ceph_rbd_client_name  = lookup('profile::openstack::codfw1dev::cinder::ceph_rbd_client_name'),
+    Array[Stdlib::Fqdn] $haproxy_nodes         = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
 ) {
     class {'::profile::openstack::base::cinder':
         version               => $version,
@@ -28,5 +29,6 @@ class profile::openstack::codfw1dev::cinder(
         region                => $region,
         active                => true,
         cinder_backup_volumes => $cinder_backup_volumes,
+        haproxy_nodes         => $haproxy_nodes,
     }
 }
