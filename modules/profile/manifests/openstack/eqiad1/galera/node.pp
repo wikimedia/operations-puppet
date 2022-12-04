@@ -7,8 +7,8 @@ class profile::openstack::eqiad1::galera::node(
     Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::eqiad1::designate_hosts'),
     Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::eqiad1::labweb_hosts'),
     Array[Stdlib::Fqdn] $cinder_backup_nodes   = lookup('profile::openstack::eqiad1::cinder::backup::nodes'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes         = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+) {
     class {'::profile::openstack::base::galera::node':
         server_id             => $server_id,
         enabled               => $enabled,
@@ -18,5 +18,6 @@ class profile::openstack::eqiad1::galera::node(
         labweb_hosts          => $labweb_hosts,
         prometheus_db_pass    => $prometheus_db_pass,
         cinder_backup_nodes   => $cinder_backup_nodes,
+        haproxy_nodes         => $haproxy_nodes,
     }
 }
