@@ -34,6 +34,7 @@ class profile::openstack::codfw1dev::keystone::service(
     Stdlib::Port $public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips = lookup('profile::openstack::codfw1dev::prometheus_metricsinfra_reserved_ips'),
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports = lookup('profile::openstack::codfw1dev::prometheus_metricsinfra_default_ports'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
 ) {
     class {'::profile::openstack::base::keystone::service':
         daemon_active                         => $daemon_active,
@@ -68,6 +69,7 @@ class profile::openstack::codfw1dev::keystone::service(
         admin_bind_port                       => $admin_bind_port,
         prometheus_metricsinfra_reserved_ips  => $prometheus_metricsinfra_reserved_ips,
         prometheus_metricsinfra_default_ports => $prometheus_metricsinfra_default_ports,
+        haproxy_nodes                         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::keystone::service'
 

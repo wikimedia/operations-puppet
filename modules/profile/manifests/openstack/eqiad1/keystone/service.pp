@@ -36,6 +36,7 @@ class profile::openstack::eqiad1::keystone::service(
     Stdlib::Port $public_bind_port = lookup('profile::openstack::eqiad1::keystone::public_bind_port'),
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips = lookup('profile::openstack::eqiad1::prometheus_metricsinfra_reserved_ips'),
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports = lookup('profile::openstack::eqiad1::prometheus_metricsinfra_default_ports'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -72,6 +73,7 @@ class profile::openstack::eqiad1::keystone::service(
         admin_bind_port                       => $admin_bind_port,
         prometheus_metricsinfra_reserved_ips  => $prometheus_metricsinfra_reserved_ips,
         prometheus_metricsinfra_default_ports => $prometheus_metricsinfra_default_ports,
+        haproxy_nodes                         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::keystone::service'
 
@@ -90,12 +92,4 @@ class profile::openstack::eqiad1::keystone::service(
 
     class {'::openstack::monitor::spreadcheck':
     }
-
-    # allow foreign designate(and co) to call back to admin auth port
-    # to validate issued tokens
-    ferm::rule{'main_designate_25357':
-        ensure => 'present',
-        rule   => "saddr @resolve((${join($designate_hosts,' ')})) proto tcp dport (25357) ACCEPT;",
-    }
-
 }

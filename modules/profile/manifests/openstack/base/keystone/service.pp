@@ -45,6 +45,7 @@ class profile::openstack::base::keystone::service(
     Stdlib::Port $public_bind_port = lookup('profile::openstack::base::public_bind_port'),
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips = lookup('profile::openstack::base::prometheus_metricsinfra_reserved_ips'),
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports = lookup('profile::openstack::base::prometheus_metricsinfra_default_ports'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
 
     $keystone_admin_uri = "${auth_protocol}://${keystone_fqdn}:${auth_port}/v3"
@@ -105,24 +106,23 @@ class profile::openstack::base::keystone::service(
     }
     contain '::openstack::util::admin_scripts'
 
+    ferm::service { 'keystone-api-backend':
+        proto  => 'tcp',
+        port   => "(${public_bind_port} ${admin_bind_port})",
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
+
     # keystone admin API only for openstack services that might need it.
     #
     # Note that because keystone admin uses a weird, extremely-high-number
     #  port by default, we need to use a non-standard port for its
     #  tls port as well: 25357 rather than the more expected 225357
-
-    ferm::service { 'keystone_admin':
-        proto  => 'tcp',
-        port   => '(25357)',
-        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${labweb_hosts.join(' ')})))",
-    }
-
+    # TODO: move these to the haproxy/cloudlb profile
     $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
-
-    ferm::service { 'keystone-admin-nova-hosts':
+    ferm::service { 'keystone-admin-access':
         proto  => 'tcp',
         port   => '(25357)',
-        srange => "(${nova_hosts_ranges.join(' ')})",
+        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${labweb_hosts.join(' ')})) ${nova_hosts_ranges.join(' ')})",
     }
 
     openstack::db::project_grants { 'keystone':
