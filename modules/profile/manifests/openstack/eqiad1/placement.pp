@@ -6,8 +6,8 @@ class profile::openstack::eqiad1::placement(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::eqiad1::placement::db_host'),
     String $ldap_user_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::eqiad1::placement::api_bind_port'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+) {
     class {'::profile::openstack::base::placement':
         version               => $version,
         openstack_controllers => $openstack_controllers,
@@ -16,6 +16,7 @@ class profile::openstack::eqiad1::placement(
         db_host               => $db_host,
         ldap_user_pass        => $ldap_user_pass,
         api_bind_port         => $api_bind_port,
+        haproxy_nodes         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::placement'
 }

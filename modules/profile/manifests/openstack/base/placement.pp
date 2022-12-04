@@ -8,8 +8,8 @@ class profile::openstack::base::placement(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::placement::db_host'),
     String $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::placement::api_bind_port'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
     class { '::openstack::placement::service':
         openstack_controllers => $openstack_controllers,
         version               => $version,
@@ -26,16 +26,17 @@ class profile::openstack::base::placement(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'placement_ha_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (28778) ACCEPT;",
+    ferm::service { 'placement-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
 
-    ferm::rule {'placement_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (28778) ACCEPT;",
+    # TODO: move to haproxy/cloudlb profiles
+    ferm::service { 'placement-api-access':
+        proto  => 'tcp',
+        port   => 28778,
+        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'placement':

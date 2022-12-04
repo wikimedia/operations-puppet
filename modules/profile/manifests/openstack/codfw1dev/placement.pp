@@ -6,8 +6,8 @@ class profile::openstack::codfw1dev::placement(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::placement::db_host'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::placement::api_bind_port'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
+) {
     class {'::profile::openstack::base::placement':
         version               => $version,
         openstack_controllers => $openstack_controllers,
@@ -16,6 +16,7 @@ class profile::openstack::codfw1dev::placement(
         db_host               => $db_host,
         ldap_user_pass        => $ldap_user_pass,
         api_bind_port         => $api_bind_port,
+        haproxy_nodes         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::placement'
 }
