@@ -9,7 +9,8 @@ class profile::openstack::codfw1dev::barbican(
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     Stdlib::Port $bind_port = lookup('profile::openstack::codfw1dev::barbican::bind_port'),
     String $crypto_kek = lookup('profile::openstack::codfw1dev::barbican::kek'),
-    ) {
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
+) {
 
     class {'::profile::openstack::base::barbican':
         version               => $version,
@@ -22,6 +23,7 @@ class profile::openstack::codfw1dev::barbican(
         ldap_user_pass        => $ldap_user_pass,
         bind_port             => $bind_port,
         crypto_kek            => $crypto_kek,
+        haproxy_nodes         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::barbican'
 }

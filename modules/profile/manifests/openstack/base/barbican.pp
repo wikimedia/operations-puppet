@@ -9,7 +9,8 @@ class profile::openstack::base::barbican(
     String $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Port $bind_port = lookup('profile::openstack::base::barbican::bind_port'),
     String $crypto_kek = lookup('profile::openstack::base::barbican::kek'),
-    ) {
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
 
     class { '::openstack::barbican::service':
         version               => $version,
@@ -28,10 +29,17 @@ class profile::openstack::base::barbican(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'barbican_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (2${bind_port}) ACCEPT;",
+    ferm::service { 'barbican-api-backend':
+        proto  => 'tcp',
+        port   => $bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
+
+    # TODO: move to haproxy/cloudlb profiles
+    ferm::service { 'barbican-api-access':
+        proto  => 'tcp',
+        port   => $bind_port + 20000,
+        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'barbican':
