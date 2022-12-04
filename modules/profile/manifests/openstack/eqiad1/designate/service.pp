@@ -16,11 +16,11 @@ class profile::openstack::eqiad1::designate::service(
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
     $rabbit_pass = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
     $osm_host = lookup('profile::openstack::eqiad1::osm_host'),
-    $labweb_hosts = lookup('profile::openstack::eqiad1::labweb_hosts'),
     $region = lookup('profile::openstack::eqiad1::region'),
     $puppet_git_repo_name = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::eqiad1::designate::mcrouter_port'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -42,11 +42,11 @@ class profile::openstack::eqiad1::designate::service(
         rabbitmq_nodes                    => $rabbitmq_nodes,
         rabbit_pass                       => $rabbit_pass,
         osm_host                          => $osm_host,
-        labweb_hosts                      => $labweb_hosts,
         region                            => $region,
         puppet_git_repo_name              => $puppet_git_repo_name,
         puppet_git_repo_user              => $puppet_git_repo_user,
         mcrouter_port                     => $mcrouter_port,
+        haproxy_nodes                     => $haproxy_nodes,
     }
 
     class {'::openstack::designate::monitor':

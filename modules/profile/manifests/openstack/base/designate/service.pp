@@ -20,12 +20,12 @@ class profile::openstack::base::designate::service(
     $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
     $osm_host = lookup('profile::openstack::base::osm_host'),
-    $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     $region = lookup('profile::openstack::base::region'),
     $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
-    ) {
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
 
     class{'::openstack::designate::service':
         active                            => true,
@@ -55,13 +55,10 @@ class profile::openstack::base::designate::service(
     }
     contain '::openstack::designate::service'
 
-    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
-    $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
-    # Open designate API to WMCS web UIs and the commandline on control servers
-    ferm::rule { 'designate-api':
-        rule => "saddr (@resolve((${join($openstack_controllers,' ')}))
-                        @resolve((${join($openstack_controllers,' ')}), AAAA)
-                 ) proto tcp dport (9001) ACCEPT;",
+    ferm::service { 'designate-api-backend':
+        proto  => 'tcp',
+        port   => 9001,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
 
     # allow axfr traffic between mdns and pdns on the pdns hosts

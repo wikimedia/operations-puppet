@@ -16,11 +16,11 @@ class profile::openstack::codfw1dev::designate::service(
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     $osm_host = lookup('profile::openstack::codfw1dev::osm_host'),
-    $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
     $region = lookup('profile::openstack::codfw1dev::region'),
     $puppet_git_repo_name = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
 
     class{'::profile::openstack::base::designate::service':
@@ -41,11 +41,11 @@ class profile::openstack::codfw1dev::designate::service(
         rabbitmq_nodes                    => $rabbitmq_nodes,
         rabbit_pass                       => $rabbit_pass,
         osm_host                          => $osm_host,
-        labweb_hosts                      => $labweb_hosts,
         region                            => $region,
         puppet_git_repo_name              => $puppet_git_repo_name,
         puppet_git_repo_user              => $puppet_git_repo_user,
         mcrouter_port                     => $mcrouter_port,
+        haproxy_nodes                     => $haproxy_nodes,
     }
     contain '::profile::openstack::base::designate::service'
 }
