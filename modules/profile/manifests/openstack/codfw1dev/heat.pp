@@ -17,6 +17,7 @@ class profile::openstack::codfw1dev::heat(
     String $domain_admin_pass = lookup('profile::openstack::codfw1dev::heat::domain_admin_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
     String[32] $auth_encryption_key = lookup('profile::openstack::codfw1dev::heat::auth_encryption_key'),
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
 ) {
     class {'::profile::openstack::base::heat':
         version               => $version,
@@ -35,5 +36,6 @@ class profile::openstack::codfw1dev::heat(
         region                => $region,
         auth_encryption_key   => $auth_encryption_key,
         domain_admin_pass     => $domain_admin_pass,
+        haproxy_nodes         => $haproxy_nodes,
     }
 }

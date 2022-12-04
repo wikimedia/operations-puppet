@@ -34,8 +34,8 @@ class profile::openstack::base::heat(
     String $rabbit_user = lookup('profile::openstack::base::heat::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::heat::rabbit_pass'),
     String[32] $auth_encryption_key = lookup('profile::openstack::base::heat::auth_encryption_key'),
-    ) {
-
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
     class { '::openstack::heat::service':
         version               => $version,
         openstack_controllers => $openstack_controllers,
@@ -59,10 +59,17 @@ class profile::openstack::base::heat(
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
 
-    ferm::rule {'heat_api_all':
-        ensure => 'present',
-        rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (28004) ACCEPT;",
+    ferm::service { 'heat-api-backend':
+        proto  => 'tcp',
+        port   => "(${api_bind_port} ${cfn_api_bind_port})",
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
+
+    # TODO: move to haproxy/cloudlb profiles
+    ferm::service { 'heat-api-access':
+        proto  => 'tcp',
+        port   => 28004,
+        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'heat':
