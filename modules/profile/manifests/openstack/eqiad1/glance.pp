@@ -8,7 +8,8 @@ class profile::openstack::eqiad1::glance (
     Stdlib::Port $api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
     Array[String] $glance_backends = lookup('profile::openstack::eqiad1::glance_backends'),
     String $ceph_pool = lookup('profile::openstack::eqiad1::glance::ceph_pool'),
-    ) {
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+) {
 
     require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::glance':
@@ -22,6 +23,7 @@ class profile::openstack::eqiad1::glance (
         glance_backends       => $glance_backends,
         ceph_pool             => $ceph_pool,
         active                => true,
+        haproxy_nodes         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::glance'
 

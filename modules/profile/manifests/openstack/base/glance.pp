@@ -12,7 +12,8 @@ class profile::openstack::base::glance(
     Array[String] $glance_backends = lookup('profile::openstack::base::glance_backends'),
     String $ceph_pool = lookup('profile::openstack::base::glance::ceph_pool'),
     Boolean $active = lookup('profile::openstack::base::glance_active'),
-    ) {
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+) {
 
     class { '::openstack::glance::service':
         version               => $version,
@@ -31,9 +32,11 @@ class profile::openstack::base::glance(
     }
     contain '::openstack::glance::service'
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
+    ferm::service { 'glance-api-backend':
+        proto  => 'tcp',
+        port   => $api_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+    }
 
     openstack::db::project_grants { 'glance':
         access_hosts => $openstack_controllers,

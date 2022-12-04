@@ -8,7 +8,8 @@ class profile::openstack::codfw1dev::glance(
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::codfw1dev::glance::ceph_pool'),
     Array[String] $glance_backends = lookup('profile::openstack::codfw1dev::glance_backends'),
-    ) {
+    Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
+) {
 
     class {'::profile::openstack::base::glance':
         version               => $version,
@@ -21,6 +22,7 @@ class profile::openstack::codfw1dev::glance(
         glance_backends       => $glance_backends,
         ceph_pool             => $ceph_pool,
         active                => true,
+        haproxy_nodes         => $haproxy_nodes,
     }
     contain '::profile::openstack::base::glance'
 }
