@@ -298,12 +298,3 @@ stat_gpu_hosts:
   __regex: !ruby/regexp /^stat100[58]\.eqiad\.wmnet$/
   profile::amd_gpu::rocm_version: '42'
   profile::base::use_linux510_on_buster: true
-
-# memcached hosts hosting redis_sessions shards
-redis_sessions_eqiad:
-  __regex: !ruby/regexp /^mc10(38|4[0248]|5[024])\.eqiad\.wmnet/
-  profile::redis::multidc::version_override: 2
-
-redis_sessions_codfw:
-  __regex: !ruby/regexp /^mc20(2[026]|3[02468])\.codfw.wmnet/
-  profile::redis::multidc::version_override: 2

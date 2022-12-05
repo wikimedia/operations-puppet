@@ -1398,14 +1398,6 @@ class profile::prometheus::ops (
     # Configure one job per redis multidc 'category', plus redis for maps.
     $redis_jobs = [
       {
-        'job_name'        => 'redis_sessions',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/redis_sessions_*.yaml" ]}
-        ],
-        'metric_relabel_configs' => [ $redis_exporter_relabel ],
-      },
-      {
         'job_name'        => 'redis_misc',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -1431,10 +1423,6 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::redis_exporter_config{ "redis_sessions_${::site}":
-        dest       => "${targets_path}/redis_sessions_${::site}.yaml",
-        class_name => 'role::mediawiki::memcached',
-    }
 
     prometheus::redis_exporter_config{ "redis_misc_master_${::site}":
         dest       => "${targets_path}/redis_misc_master_${::site}.yaml",

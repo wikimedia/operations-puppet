@@ -2,7 +2,7 @@
 class role::mediawiki::memcached{
 
     system::role { 'mediawiki::memcached':
-        description => 'memcached+redis sessions',
+        description => 'memcached',
     }
 
     include ::profile::base::production
@@ -10,5 +10,4 @@ class role::mediawiki::memcached{
     include profile::memcached::instance
     include profile::memcached::memkeys
     include profile::memcached::performance
-    include profile::redis::multidc
 }
