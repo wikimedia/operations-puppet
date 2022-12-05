@@ -596,6 +596,10 @@ class PrometheusWMFElasticsearchExporter(object):
     def collect_latency(self, conn):
         nodes = conn.request(self.latency_path)['nodes']
 
+        # Shared labels for all metrics
+        global_label_names = ['cluster']
+        global_label_values = [conn.cluster_name]
+
         # we only want to collect latencies for the local node, so let's
         # filter out everything else reported names are something like:
         # elastic1034-production-search-eqiad
@@ -604,12 +608,12 @@ class PrometheusWMFElasticsearchExporter(object):
 
         per_node_latency = GaugeMetricFamily('elasticsearch_per_node_latency',
                                              'Per node latency percentiles',
-                                             labels=['bucket', 'percentile'])
+                                             labels=global_label_names + ['bucket', 'percentile'])
 
         for handler, latencies in node_latencies.items():
             for latency in latencies:
                 per_node_latency.add_metric(
-                    [handler, str(latency['percentile'])],
+                    global_label_values + [handler, str(latency['percentile'])],
                     latency['latencyMs']
                 )
         yield per_node_latency
