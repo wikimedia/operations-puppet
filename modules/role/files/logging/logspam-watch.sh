@@ -5,7 +5,7 @@
 # Watch error log spam.  See /usr/bin/logspam for log-filtering implementation
 # details.
 
-set -eu
+set -eu -o pipefail
 
 # shellcheck disable=SC1091
 . /etc/profile.d/mw-log.sh
@@ -35,8 +35,8 @@ COLUMN_LABELS=(
 )
 
 MINIMUM_HITS=1
-# Minutes
-LOGSPAM_WINDOW=60
+LOGSPAM_WINDOW=60 # Minutes
+SHOW_JUNK=0
 
 if [ -r ~/.logspamwatchrc ]; then
   . ~/.logspamwatchrc
@@ -79,11 +79,22 @@ function display {
   printf '  [%s123456%s sort]' "$BOLD" "$NORMAL"
   printf '  [%sh%selp]' "$BOLD" "$NORMAL"
   printf '  [%sq%suit] ' "$BOLD" "$NORMAL"
+  if [ "$SHOW_JUNK" = 1 ]; then
+    printf '[no%sj%sunk] ' "$BOLD" "$NORMAL"
+  else
+    printf '[show%sj%sunk] ' "$BOLD" "$NORMAL"
+  fi
 }
 
 function run_logspam {
+  local junk_option=""
+
+  if [ "$SHOW_JUNK" = 1 ]; then
+    junk_option="--junk"
+  fi
+
   # shellcheck disable=SC2086
-  logspam --window "$LOGSPAM_WINDOW" --minimum-hits "$MINIMUM_HITS" "$filter" | \
+  logspam $junk_option --window "$LOGSPAM_WINDOW" --minimum-hits "$MINIMUM_HITS" "$filter" | \
     sort $sort_dir $sort_type -t$'\t' -k "$sort_key" | \
     head -n "$(listing_height)"
 }
@@ -154,16 +165,17 @@ Glyphs in the "first" and "last" columns indicate the recency of the event:
   ◦ means seen less than 10 minutes ago
   ○ means seen < 5 min ago
   ◍ means seen < 2.5 min ago
-  ● means seen < 1 min ago'
+  ● means seen < 1 min ago
 
 Keys:
 
   p:   set a Perl regular expression to match
   w:   set a time window to view in minutes
   m:   set a minimm error threshold
-  1-5: sort on a column, or invert existing sort
+  1-6: sort on a column, or invert existing sort
   h:   read this help page
   q:   quit
+  j:   toggle display of "junk" log entries (errors that are almost always present)
 
 HELPTEXT
 
@@ -240,6 +252,11 @@ while [ -z "$quit" ]; do
         if [ -z "$MINIMUM_HITS" ]; then
             MINIMUM_HITS=1
         fi
+        ticks="$MAXTICKS"
+        ;;
+
+      j)
+        SHOW_JUNK=$(( SHOW_JUNK ^ 1))
         ticks="$MAXTICKS"
         ;;
 

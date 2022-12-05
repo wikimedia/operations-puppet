@@ -73,12 +73,14 @@ my $window = 1440; # minutes. Default is 24 hour window.
 my $minimum_hits = 0;
 my $debug = 0;
 my $cat_mode = 0;
+my $junk = 0;
 
 GetOptions(
   'cat'            => \$cat_mode,
   'debug'          => \$debug,
   'window=i'       => \$window,
   'minimum-hits=i' => \$minimum_hits,
+  'junk!'          => \$junk,
   help             => sub { pod2usage(0) },
 ) or pod2usage();
 
@@ -132,6 +134,15 @@ my %consolidate_patterns = (
   qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
   qr/Cannot access the database:/                          => '[db]',
   qr/max_statement_time exceeded/                          => '[db]',
+  qr/Duplicate entry '.*' for key '.*'/                    => '[db-duplicate-key]',
+);
+
+# These (along with those in %consolidate_patterns) are a constant source of log noise.
+my @junk_patterns = (
+  qr/A database query timeout has occurred\./,
+  qr/A connection error occurred during a query\./,
+  qr/Invariant failed: Bad UTF-8 at (start|end) of string/,
+  qr/Shellbox server returned status code 503/,
 );
 
 # A pattern for extracting exception names and the invariant error messages /
@@ -165,7 +176,7 @@ if ($window) {
 my $timestamp;
 my $host;
 
-while (my $line = <$logstream>) {
+LINES: while (my $line = <$logstream>) {
   if ($line =~ /$header_pat/) {
     # Set timestamp then skip ahead to look for Exception:
     $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
@@ -191,6 +202,13 @@ while (my $line = <$logstream>) {
 
   my $exception_class = $2;
   my $stack_trace = shorten($3);
+
+  if (!$junk) {
+    # Strip some junk
+    for my $pattern (@junk_patterns,keys %consolidate_patterns) {
+      next LINES if ($stack_trace =~ $pattern);
+    }
+  }
 
   # Condense some common errors:
   for my $pattern (keys %consolidate_patterns) {
