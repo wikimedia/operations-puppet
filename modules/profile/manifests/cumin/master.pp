@@ -6,11 +6,12 @@
 # @param monitor_agentrun weather to monitor agent runs
 # @param email_alerts whether to send email alerts
 class profile::cumin::master (
-    Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
-    Array[String] $datacenters          = lookup('datacenters'),
-    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary'),
-    Boolean       $monitor_agentrun     = lookup('profile::cumin::monitor_agentrun'),
-    Boolean       $email_alerts         = lookup('profile::cumin::master::email_alerts'),
+    Stdlib::Host  $puppetdb_host           = lookup('puppetdb_host'),
+    Array[String] $datacenters             = lookup('datacenters'),
+    Stdlib::Host  $kerberos_kadmin_host    = lookup('kerberos_kadmin_server_primary'),
+    Boolean       $monitor_agentrun        = lookup('profile::cumin::monitor_agentrun'),
+    Boolean       $email_alerts            = lookup('profile::cumin::master::email_alerts'),
+    Integer[0,31] $insetup_role_report_day = lookup('profile::cumin::master::insetup_role_report_day'),
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
@@ -94,6 +95,14 @@ class profile::cumin::master (
         group  => 'root',
     }
 
+    file { '/usr/local/sbin/insetup-role-report':
+        ensure => file,
+        source => 'puppet:///modules/profile/cumin/insetup_role_report.py',
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { $ssh_config_path:
         ensure => file,
         owner  => 'root',
@@ -117,6 +126,18 @@ class profile::cumin::master (
         send_mail     => $email_alerts,
         ignore_errors => true,
         interval      => { 'start' => 'OnCalendar', 'interval' => $times['OnCalendar'] },
+    }
+
+    # Audit servers in insetup role periodic job, splayed between the week across the Cumin masters
+    $insetup_role_report_ensure = ($insetup_role_report_day == 0).bool2str('absent', 'present')
+    systemd::timer::job { 'cumin-insetup-role-report':
+        ensure        => $insetup_role_report_ensure,
+        user          => 'root',
+        description   => 'Send an audit report for servers in insetup roles.',
+        command       => '/usr/local/sbin/insetup-role-report',
+        send_mail     => $email_alerts,
+        ignore_errors => true,
+        interval      => { 'start' => 'OnCalendar', 'interval' => "*-*-${insetup_role_report_day} 09:42:00" },
     }
 
     class { 'phabricator::bot':

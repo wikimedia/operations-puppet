@@ -42,6 +42,7 @@ profile::base::remote_syslog_tls: {}
 
 # Disable email alerts
 profile::cumin::master::email_alerts: false
+profile::cumin::master::insetup_role_report_day: 0  # disabled
 
 ## Customizations
 

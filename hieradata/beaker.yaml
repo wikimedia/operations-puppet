@@ -32,6 +32,8 @@ ntp_peers:
 
 # Disable email alerts
 # profile::cumin::master::email_alerts: false
+# Disable insetup role report
+# profile::cumin::master::insetup_role_report_day: 0
 
 # diamond::remove: true
 

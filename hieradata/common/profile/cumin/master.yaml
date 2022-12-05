@@ -1,1 +1,2 @@
 profile::cumin::master::email_alerts: false
+profile::cumin::master::insetup_role_report_day: 0  # disabled
