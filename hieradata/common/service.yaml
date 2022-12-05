@@ -2290,7 +2290,11 @@ service::catalog:
         ProxyFetch:
           url:
             - https://thanos-query.discovery.wmnet/-/ready
-      scheduler: sh # needed for SSO sessions to stick
+      # Needed for SSO sessions to stick. As of Dec 2022 backend
+      # selection from varnish -> ATS is always random for pass traffic
+      # therefore even with this we need at most one thanos-fe host
+      # pooled at a time (per site).
+      scheduler: sh
     probes:
       - type: http
         path: /-/ready
