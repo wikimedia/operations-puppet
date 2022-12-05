@@ -68,6 +68,7 @@ define systemd::syslog(
             group  => $group,
             mode   => $dirmode,
             force  => true,
+            backup => false,
         }
     }
 
@@ -78,6 +79,7 @@ define systemd::syslog(
         owner   => $owner,
         group   => $group,
         mode    => $filemode,
+        backup  => false,
         before  => Rsyslog::Conf[$title],
     }
 
