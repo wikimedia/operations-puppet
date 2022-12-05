@@ -1,6 +1,5 @@
 eqsin:
   cache_text:
-    cp5016.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5017.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5018.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5019.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
