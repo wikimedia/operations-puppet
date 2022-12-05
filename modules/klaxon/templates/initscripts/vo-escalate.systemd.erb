@@ -16,7 +16,8 @@ Environment=PYTHONPATH=<%= @install_dir %>
 ExecStart=/usr/bin/python3 klaxon/victorops.py escalate_unpaged <%= @escalation_policy_slug %>
 SyslogIdentifier=vo-escalate
 
-TimeoutStartSec=15s  # oneshot services default to infinite timeout; see also T324466
+# oneshot services default to infinite timeout; see also T324466
+TimeoutStartSec=15s
 
 [Install]
 WantedBy=multi-user.target
