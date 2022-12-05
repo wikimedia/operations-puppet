@@ -15,6 +15,7 @@ class uwsgi (
         'stretch'  => ['uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.3'],
         'buster'   => ['uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.5'],
         'bullseye' => ['uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.7'],
+        'bookworm' => ['uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby3.1'],
         default    => fail("${debian::codename()}: not supported"),
     }
 
