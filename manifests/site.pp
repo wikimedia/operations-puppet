@@ -470,7 +470,7 @@ node /^cp50(2[56789]|3[012])\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp50(1[56789]|2[01234])\.eqsin\.wmnet$/ {
+node /^cp50(1[6789]|2[01234])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
