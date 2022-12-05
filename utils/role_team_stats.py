@@ -10,7 +10,8 @@ from pathlib import Path
 
 import yaml
 
-HIERA_DIR = '../hieradata'
+SCRIPT_PATH = Path(__file__)
+HIERA_DIR = SCRIPT_PATH.parent.joinpath('../hieradata')
 ROLE_PATTERN = 'role'
 
 
@@ -20,6 +21,8 @@ def collect_hiera_files(hiera_dir: str) -> list:
     '''
 
     base_path = Path(hiera_dir)
+    if not base_path.exists():
+        raise ValueError(f'{hiera_dir} not found')
     files = base_path.glob(f'**/{ROLE_PATTERN}/**/*.yaml')
     return files
 
