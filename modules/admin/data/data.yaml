@@ -442,7 +442,7 @@ groups:
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde]
+              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6431,6 +6431,13 @@ users:
     realname: Joely Rooke
     email: joely.rooke@wikimedia.de
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  ifeatunnaobiwmde:
+    ensure: present
+    gid: 500
+    uid: 46162
+    realname: Ifeatu Nnaobi
+    email: ifeatu.nnaobi@wikimedia.de
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7180,10 +7187,6 @@ ldap_only_users:
     ensure: present
     realname: Frederik Ring
     email: frederik.ring@wikimedia.de
-  ifeatunnaobiwmde:
-    ensure: present
-    realname: Ifeatu Nnaobi
-    email: ifeatu.nnaobi@wikimedia.de
   febinbellamy:
     ensure: absent
     realname: Febin Bellamy
