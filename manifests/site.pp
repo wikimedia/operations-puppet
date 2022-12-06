@@ -1613,6 +1613,11 @@ node /^cloudcontrol100[5-7]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
+#new cephosd servers T322760
+node /^cephosd100[12345]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # ceph monitor nodes
 node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
