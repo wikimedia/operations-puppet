@@ -19,6 +19,7 @@
 # @param private_cert_base the locations in the private repo to find private keys
 # @param prometheus_nodes list of prometheus hosts
 # @param default_usages list of default usages
+# @param default_expiry contains the default expiry
 # @param default_nets a array of networks used by the multirootca as an ACL.  Access is configured
 #   via apache so this config is not useful and should be left at the default
 # @param default_auth_keys a Hash of default_auth_keys
@@ -45,6 +46,7 @@ class profile::pki::multirootca (
     String[1]                     $private_cert_base  = lookup('profile::pki::multirootca::private_cert_base'),
     Array[Stdlib::Host]           $prometheus_nodes   = lookup('profile::pki::multirootca::prometheus_nodes'),
     Array[Cfssl::Usage]           $default_usages     = lookup('profile::pki::multirootca::default_usages'),
+    Cfssl::Expiry                 $default_expiry     = lookup('profile::pki::multirootca::default_expiry'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
@@ -117,6 +119,7 @@ class profile::pki::multirootca (
         $auth_keys       = pick($config['auth_keys'], $default_auth_keys)
         $nets            = pick($config['nets'], $default_nets)
         $_default_usages = pick($config['default_usages'], $default_usages)
+        $_default_expiry = pick($config['default_expiry'], $default_expiry)
         $ca_key_file     = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
         $ca_file         = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
         $key_content     = "${private_cert_base}/${intermediate}-key.pem"
@@ -139,6 +142,7 @@ class profile::pki::multirootca (
             default_crl_url  => "${crl_base_url}/${safe_title}",
             default_ocsp_url => "${ocsp_base_url}/${safe_title}",
             default_usages   => $_default_usages,
+            default_expiry   => $_default_expiry,
             serve_service    => $multirootca_service,
             db_conf_file     => $db_conf_file,
             manage_db        => false,

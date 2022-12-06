@@ -5,4 +5,5 @@ type Profile::Pki::Intermediate = Struct[{
     auth_keys      => Optional[Hash[String, Cfssl::Auth_key]],
     nets           => Optional[Array[Stdlib::IP::Address]],
     default_usages => Optional[Array[Cfssl::Usage]],
+    default_expiry => Optional[Cfssl::Expiry],
 }]
