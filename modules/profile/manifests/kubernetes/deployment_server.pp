@@ -7,17 +7,27 @@
 # @param tokens dict of tokens
 # @param include_admin if true include profile::kubernetes::kubeconfig::admin
 # @param helm_user_group the group used for the helm cache directory
+# @param helm_home the directory where helm plugins and config live (HELM_HOME, HELM_CONFIG_HOME)
+# @param helm_cache the helm cache directory (HELM_CACHE_HOME)
+# @param helm_data the helm data directory (HELM_DATA_HOME)
+
 class profile::kubernetes::deployment_server (
-    K8s::KubernetesVersion $version                                         = lookup('profile::kubernetes::version', { default_value => '1.16' }),
+    K8s::KubernetesVersion $version                                    = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
     Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { default_value => {} }),
     Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', { default_value => {} }),
     Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', { default_value => false }),
-    String $helm_user_group                                            = lookup('profile::kubernetes::helm_user_group')
+    String $helm_user_group                                            = lookup('profile::kubernetes::helm_user_group'),
+    Stdlib::Unixpath $helm_home                                        = lookup('profile::kubernetes::helm_home', { default_value => '/etc/helm'}),
+    Stdlib::Unixpath $helm_data                                        = lookup('profile::kubernetes::helm_data', { default_value => '/usr/share/helm'}),
+    Stdlib::Unixpath $helm_cache                                       = lookup('profile::kubernetes::helm_cache', { default_value => '/var/cache/helm'}),
 ) {
     class { 'helm':
         helm_user_group => $helm_user_group,
+        helm_home       => $helm_home,
+        helm_data       => $helm_data,
+        helm_cache      => $helm_cache,
     }
     class { 'k8s::client':
         version => $version,

@@ -20,8 +20,11 @@ class profile::mediawiki::deployment::server(
                         'repository'      => Optional[String],
                         'scap_repository' => Optional[String]
     }]] $sources  = lookup('scap::sources'),
-    Boolean $enable_auto_deploy          = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
+    Boolean $enable_auto_deploy                              = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
     Optional[Systemd::Timer::Datetime] $auto_deploy_interval = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
+    Stdlib::Unixpath $helm_home                              = lookup('profile::kubernetes::helm_home', { default_value => '/etc/helm'}),
+    Stdlib::Unixpath $helm_data                              = lookup('profile::kubernetes::helm_data', { default_value => '/usr/share/helm'}),
+    Stdlib::Unixpath $helm_cache                             = lookup('profile::kubernetes::helm_cache', { default_value => '/var/cache/helm'}),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -178,7 +181,13 @@ class profile::mediawiki::deployment::server(
             command                 => '/usr/bin/scap stage-train --yes auto',
             send_mail               => true,
             send_mail_only_on_error => false,
-            environment             => {'MAILTO' => 'releng@lists.wikimedia.org'},
+            environment             => {
+                'MAILTO'           => 'releng@lists.wikimedia.org',
+                'HELM_CONFIG_HOME' => $helm_home,
+                'HELM_CACHE_HOME'  => $helm_cache,
+                'HELM_DATA_HOME'   => $helm_data,
+                'HELM_HOME'        => $helm_home,
+            },
             interval                => {'start' => 'OnCalendar', 'interval' => $auto_deploy_interval},
         }
     }
