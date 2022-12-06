@@ -1,7 +1,5 @@
 # the following passwords are defined in private repo:
 #profile::maps::osm_master::kartotherian_pass: some_password
-#profile::maps::osm_master::tilerator_pass: some_password
-#profile::maps::osm_master::tileratorui_pass: some_password
 #profile::maps::osm_master::replication_pass: some_password
 
 profile::lvs::realserver::pools:
@@ -17,10 +15,6 @@ profile::admin::groups:
 
 cluster: 'maps'
 
-profile::redis::master::instances: ['6379']
-profile::redis::master::settings:
-  bind: "0.0.0.0"
-
 profile::maps::apps::kartotherian_storage_id: v4
 profile::maps::apps::tilerator_storage_id: v4
 
@@ -28,7 +22,6 @@ profile::maps::apps::tilerator_ncpu_ratio: 0.3
 
 profile::maps::apps::use_proxy: true
 
-profile::maps::apps::tilerator_enable: false
 profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
 profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
 profile::tlsproxy::instance::nginx_variant: 'light'

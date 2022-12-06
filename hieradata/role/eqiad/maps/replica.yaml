@@ -1,7 +1,3 @@
-profile::maps::apps::redis_server: 'redis://maps1009.eqiad.wmnet'
-
-profile::maps::apps::tilerator_enable: false
-
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_replica::master: 'maps1009.eqiad.wmnet'
 profile::maps::osm_replica::use_replication_slots: true

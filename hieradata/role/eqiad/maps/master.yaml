@@ -6,17 +6,6 @@ profile::maps::hosts:
   - 'maps1009.eqiad.wmnet'
   - 'maps1010.eqiad.wmnet'
 
-profile::redis::master::clients:
-  - 'maps1005.eqiad.wmnet'
-  - 'maps1006.eqiad.wmnet'
-  - 'maps1007.eqiad.wmnet'
-  - 'maps1008.eqiad.wmnet'
-  - 'maps1009.eqiad.wmnet'
-  - 'maps1010.eqiad.wmnet'
-
-profile::maps::apps::redis_server: 'redis://maps1009.eqiad.wmnet'
-profile::maps::apps::tilerator_enable: true
-
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_master::planet_sync_hours: '0/12'
 profile::maps::osm_master::disable_replication_cron: false

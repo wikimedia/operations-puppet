@@ -1395,21 +1395,13 @@ class profile::prometheus::ops (
       'action' => 'labeldrop',
     }
 
-    # Configure one job per redis multidc 'category', plus redis for maps.
+    # Configure one job per redis multidc 'category'.
     $redis_jobs = [
       {
         'job_name'        => 'redis_misc',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/redis_misc_*.yaml" ]}
-        ],
-        'metric_relabel_configs' => [ $redis_exporter_relabel ],
-      },
-      {
-        'job_name'        => 'redis_maps',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/redis_maps_*.yaml" ]}
         ],
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
@@ -1432,11 +1424,6 @@ class profile::prometheus::ops (
     prometheus::redis_exporter_config{ "redis_misc_slave_${::site}":
         dest       => "${targets_path}/redis_misc_slave_${::site}.yaml",
         class_name => 'role::redis::misc::slave',
-    }
-
-    prometheus::redis_exporter_config{ "redis_maps_${::site}":
-        dest       => "${targets_path}/redis_maps_${::site}.yaml",
-        class_name => 'role::maps::master',
     }
 
     prometheus::redis_exporter_config{ "redis_ores_${::site}":

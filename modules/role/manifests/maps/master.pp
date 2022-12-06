@@ -8,12 +8,11 @@ class role::maps::master {
     include ::profile::maps::apps
     include ::profile::maps::osm_master
     include ::profile::maps::tlsproxy
-    include ::profile::redis::master
     include ::profile::prometheus::postgres_exporter
 
     system::role { 'maps::master':
       ensure      => 'present',
-      description => 'Maps master (postgresql, redis, kartotherian)',
+      description => 'Maps master (postgresql, kartotherian)',
     }
 
 }
