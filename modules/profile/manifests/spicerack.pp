@@ -30,9 +30,12 @@ class profile::spicerack (
     Stdlib::Unixpath $peeringdb_temp_dir = lookup('profile::spicerack::peeringdb_temp_dir'),
     String           $peeringdb_token_ro = lookup('profile::spicerack::peeringdb_ro_token'),
     Stdlib::Unixpath $firmware_store_dir = lookup('profile::spicerack::firmware_store_dir'),
+    Boolean          $require_conftool   = lookup('profile::spicerack::require_conftool'),
 ) {
     # Ensure pre-requisite profiles are included
-    require profile::conftool::client
+    if $require_conftool {
+        require profile::conftool::client
+    }
     require profile::cumin::master
     require profile::ipmi::mgmt
     require profile::access_new_install

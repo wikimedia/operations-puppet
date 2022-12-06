@@ -74,8 +74,12 @@ class profile::cumin::master (
         require => File['/etc/cumin'],
     }
 
+    $check_cumin_aliases_ensure = $email_alerts ? {
+        true => file,
+        false => absent,
+    }
     file { '/usr/local/sbin/check-cumin-aliases':
-        ensure => file,
+        ensure => $check_cumin_aliases_ensure,
         source => 'puppet:///modules/profile/cumin/check_cumin_aliases.py',
         mode   => '0544',
         owner  => 'root',
@@ -100,9 +104,13 @@ class profile::cumin::master (
 
     # Check aliases periodic job, splayed between the week across the Cumin masters
     $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
+    $check_cumin_aliases_timer_ensure = $email_alerts ? {
+        true => present,
+        false => absent,
+    }
 
     systemd::timer::job { 'cumin-check-aliases':
-        ensure        => 'present',
+        ensure        => $check_cumin_aliases_timer_ensure,
         user          => 'root',
         description   => 'Checks the cumin aliases file for problems.',
         command       => '/usr/local/sbin/check-cumin-aliases',

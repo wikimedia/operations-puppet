@@ -1,0 +1,6 @@
+cluster: cloud_management
+  - os-installers
+profile::contacts::role_contacts: ['WMCS']
+profile::cumin::monitor_agentrun: false
+profile::cumin::master::email_alerts: false
+profile::spicerack::require_conftool: false
