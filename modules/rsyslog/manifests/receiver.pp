@@ -31,6 +31,9 @@
 #   Property to be used for determining the file name (e.g.
 #   /srv/syslog/<property>/syslog.log) of the log file. Can be
 #   either hostname ('host1001') or fromhost-ip (10.0.0.1). Default is hostname.
+#
+# [*acme_cert_name*]
+#   Optional name for acme-chief cert to use for tls clients
 class rsyslog::receiver (
     $udp_port                                                   = 514,
     $tcp_port                                                   = 6514,
@@ -39,7 +42,8 @@ class rsyslog::receiver (
     $archive_directory                                          = '/srv/syslog/archive',
     Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = 'x509/certvalid',
     Enum['gtls', 'ossl'] $tls_netstream_driver                  = 'gtls',
-    Enum['fromhost-ip', 'hostname'] $file_template_property     = 'hostname'
+    Enum['fromhost-ip', 'hostname'] $file_template_property     = 'hostname',
+    Optional[Stdlib::Fqdn] $acme_cert_name                      = undef
 ) {
     if $tls_netstream_driver == 'gtls' {
         # Unlike rsyslog-openssl (see below), rsyslog-gnutls is available
@@ -71,10 +75,20 @@ class rsyslog::receiver (
         fail("rsyslog log and archive are the same: ${log_directory}")
     }
 
-    # SSL configuration
-    # TODO: consider using profile::pki::get_cert
-    puppet::expose_agent_certs { '/etc/rsyslog-receiver':
-        provide_private => true,
+    if $acme_cert_name {
+        $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
+        $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.crt"
+        $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
+    } else {
+        # SSL configuration
+        # TODO: consider using profile::pki::get_cert
+        puppet::expose_agent_certs { '/etc/rsyslog-receiver':
+            provide_private => true,
+        }
+
+        $ca_file = '/var/lib/puppet/ssl/certs/ca.pem'
+        $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
+        $key_file = '/etc/rsyslog-receiver/ssl/server.key'
     }
 
     systemd::unit { 'rsyslog':

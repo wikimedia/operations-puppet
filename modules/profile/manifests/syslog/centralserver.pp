@@ -19,6 +19,9 @@
 # [*file_template_property*]
 #   property to use for the destination log file name (either hostname or IP
 #   address)
+# [*acme_cert_name*]
+#   optional name of acme_chief cert to use instead of puppet certs.
+#
 #
 class profile::syslog::centralserver (
     Integer $log_retention_days                                 = lookup('profile::syslog::centralserver::log_retention_days'),
@@ -27,6 +30,7 @@ class profile::syslog::centralserver (
     Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = lookup('profile::syslog::centralserver::tls_auth_mode', {'default_value' => 'x509/certvalid'}),
     Enum['gtls', 'ossl'] $tls_netstream_driver                  = lookup('profile::syslog::centralserver::tls_netstream_driver', {'default_value' => 'gtls'}),
     Enum['fromhost-ip', 'hostname'] $file_template_property     = lookup('profile::syslog::centralserver::file_template_property', {'default_value' => 'hostname'}),
+    Optional[Stdlib::Fqdn]  $acme_cert_name                     = lookup('profile::syslog::centralserver::acme_cert_name', {'default_value' => undef}),
 ){
 
     ferm::service { 'rsyslog-receiver_udp':
@@ -43,11 +47,18 @@ class profile::syslog::centralserver (
         srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
 
+    if $acme_cert_name {
+        acme_chief::cert { $acme_cert_name:
+            puppet_svc => 'rsyslog',
+        }
+    }
+
     class { 'rsyslog::receiver':
         log_retention_days     => $log_retention_days,
         tls_auth_mode          => $tls_auth_mode,
         tls_netstream_driver   => $tls_netstream_driver,
         file_template_property => $file_template_property,
+        acme_cert_name         => $acme_cert_name,
     }
 
     # Prune old /srv/syslog/host directories on disk (from decommed hosts, etc.) after grace period expires
