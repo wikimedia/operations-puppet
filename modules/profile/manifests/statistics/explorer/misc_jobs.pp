@@ -25,10 +25,6 @@ class profile::statistics::explorer::misc_jobs(
             wmde_secrets  => $wmde_secrets,
         }
 
-        # Systemd timers owned by the Search team
-        # (leveraging Analytics' refinery)
-        include profile::analytics::search::jobs
-
         # Product Analytics team statistics scripts and cron jobs
         class { 'statistics::product_analytics': }
 
