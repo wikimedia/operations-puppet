@@ -36,6 +36,8 @@ define profile::kafka::burrow(
         port        => $prometheus_burrow_http_port,
     }
 
+    profile::auto_restarts::service { "burrow-${title}": }
+
     # Burrow offers a HTTP REST API
     ferm::service { "burrow-${title}":
         proto  => 'tcp',
