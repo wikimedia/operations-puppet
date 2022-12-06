@@ -4,6 +4,7 @@
 # @param remote_syslog_tls_client_auth TLS client authentication enabled for remote syslog
 # @param remote_syslog_tls_netstream_driver rsyslog network stream driver to use
 # for TLS in remote syslog, either 'gtls' (default)  or 'ossl'
+# @param remote_syslog_tls_ca CA used for TLS, defaults to puppet CA
 # @param remote_syslog_send_logs config for send logs
 # @param overlayfs if to use overlays
 # @param wikimedia_clusters the wikimedia clusters
@@ -23,6 +24,7 @@ class profile::base (
     Hash                    $remote_syslog_tls                  = lookup('profile::base::remote_syslog_tls'),
     Boolean                 $remote_syslog_tls_client_auth      = lookup('profile::base::remote_syslog_client_tls_auth'),
     Enum['gtls', 'ossl']    $remote_syslog_tls_netstream_driver = lookup('profile::base::remote_syslog_tls_netstream_driver', {'default_value' => 'gtls'}),
+    Stdlib::Unixpath $remote_syslog_tls_ca                      = lookup('profile::base::remote_syslog_tls_ca', {'default_value' => '/var/lib/puppet/ssl/certs/ca.pem'}),
     Boolean                 $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
@@ -73,6 +75,7 @@ class profile::base (
             send_logs            => $remote_syslog_send_logs,
             tls_client_auth      => $remote_syslog_tls_client_auth,
             tls_netstream_driver => $remote_syslog_tls_netstream_driver,
+            tls_trusted_ca       => $remote_syslog_tls_ca,
         }
     }
 

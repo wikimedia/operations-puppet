@@ -25,6 +25,9 @@
 # [*tls_netstream_driver*]
 #   Rsyslog Network Stream driver to use for TLS support. Can be either 'gtls'
 #   (GnuTLS, default) or 'ossl' (OpenSSL).
+# [*tls_trusted_ca*]
+#   ca file to use for netstream pki; defaults to using puppet CA
+#
 
 class base::remote_syslog (
     Boolean                         $enable,
@@ -33,6 +36,7 @@ class base::remote_syslog (
     Integer                         $queue_size = 10000,
     Boolean                         $tls_client_auth = true,
     Enum['gtls', 'ossl']            $tls_netstream_driver = 'gtls',
+    Stdlib::Unixpath                $tls_trusted_ca = '/var/lib/puppet/ssl/certs/ca.pem',
 ) {
     $owner = 'root'
     $group = 'root'

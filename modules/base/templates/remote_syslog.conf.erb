@@ -1,6 +1,6 @@
 # NOTE: This file is managed by Puppet.
 <%- unless @central_hosts_tls.empty? %>
-$DefaultNetstreamDriverCAFile /var/lib/puppet/ssl/certs/ca.pem
+$DefaultNetstreamDriverCAFile <%= @tls_trusted_ca %>
 <%- if @tls_client_auth -%>
 $DefaultNetstreamDriverCertFile /etc/rsyslog/ssl/cert.pem
 $DefaultNetstreamDriverKeyFile /etc/rsyslog/ssl/server.key
