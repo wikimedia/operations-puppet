@@ -67,4 +67,7 @@ class noc {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Noc.wikimedia.org',
     }
 
+    profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
+    profile::auto_restarts::service { 'php7.4-fpm': }
 }
