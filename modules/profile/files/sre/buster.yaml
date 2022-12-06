@@ -228,6 +228,7 @@ role::wmcs::openstack::eqiad1::net:
   target-q: TBD
 role::miscweb:
   target-q: TBD
+  phab-task: 300171
 role::archiva:
   target-q: TBD
   phab-task: 288804
@@ -483,7 +484,8 @@ role::insetup::data_engineering:
 role::insetup::traffic:
   target-q: 2023-01
 role::ml_cache::storage:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 324542
 role::apifeatureusage::logstash:
   target-q: TBD
 role::dispatch::backend:
