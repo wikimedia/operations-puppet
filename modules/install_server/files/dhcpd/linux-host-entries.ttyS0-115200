@@ -168,6 +168,16 @@ host chartmuseum2001 {
     fixed-address chartmuseum2001.codfw.wmnet;
 }
 
+host cloudcumin1001 {
+    hardware ethernet aa:00:00:58:77:b1;
+    fixed-address cloudcumin1001.eqiad.wmnet;
+}
+
+host cloudcumin2001 {
+    hardware ethernet aa:00:00:36:2b:d7;
+    fixed-address cloudcumin2001.codfw.wmnet;
+}
+
 host cuminunpriv1001 {
     hardware ethernet aa:00:00:67:7a:39;
     fixed-address cuminunpriv1001.eqiad.wmnet;

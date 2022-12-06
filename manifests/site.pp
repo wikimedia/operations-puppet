@@ -1379,6 +1379,15 @@ node 'irc2001.wikimedia.org' {
     role(mw_rc_irc)
 }
 
+# Cloud cumin hosts
+node 'cloudcumin1001.eqiad.wmnet' {
+    role(cluster::cloud_management)
+}
+
+node 'cloudcumin2001.codfw.wmnet' {
+    role(cluster::cloud_management)
+}
+
 # cloudservices1004/1005 hosts openstack-designate
 # and the powerdns auth and recursive services for instances in eqiad1.
 node /^cloudservices100[45]\.wikimedia\.org$/ {
