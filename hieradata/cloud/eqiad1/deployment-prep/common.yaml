@@ -6,8 +6,7 @@ cache_hosts:
   - 172.16.5.200 # proxy-04.project-proxy.eqiad1.wikimedia.cloud
   - 172.16.0.113 # deployment-cache-text07.deployment-prep.eqiad1.wikimedia.cloud
 
-profile::base::remote_syslog:
-  - "deployment-logstash03.deployment-prep.eqiad.wmflabs:10514"
+profile::base::remote_syslog_tls: {}
 profile::apt::purge_sources: true
 # No LVS nor etcd-based load-balancing here
 has_lvs: false

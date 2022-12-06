@@ -36,11 +36,4 @@ if ($syslogfacility-text == 'auth' or
 <% end -%>
     )
 <% end -%>
-
-<%- @central_hosts.sort.each do |log_host| %>
-  <% host, port = log_host.split(':') %>
-  action(type="omfwd" name="fwd_<%= log_host %>" Target="<%= log_host %>" Port="<%= port or '514' %>"
-    StreamDriver="tcp"
-    Protocol="tcp" template="LongTagForwardFormat")
-<% end -%>
 }

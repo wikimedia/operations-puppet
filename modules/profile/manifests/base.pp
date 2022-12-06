@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure base config
-# @param remote_syslog Central syslog servers
 # @param remote_syslog_tls Central TLS enabled syslog servers
 # @param remote_syslog_tls_client_auth TLS client authentication enabled for remote syslog
 # @param remote_syslog_send_logs config for send logs
@@ -19,7 +18,6 @@ class profile::base (
     Boolean $enable_contacts                = lookup('profile::base::enable_contacts'),
     String  $core_dump_pattern              = lookup('profile::base::core_dump_pattern'),
     Boolean $unprivileged_userns_clone      = lookup('profile::base::unprivileged_userns_clone'),
-    Array   $remote_syslog                  = lookup('profile::base::remote_syslog'),
     Hash    $remote_syslog_tls              = lookup('profile::base::remote_syslog_tls'),
     Boolean $remote_syslog_tls_client_auth  = lookup('profile::base::remote_syslog_client_tls_auth'),
     Boolean $use_linux510_on_buster         = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
@@ -65,10 +63,9 @@ class profile::base (
 
     $remote_syslog_tls_servers = $remote_syslog_tls[$::site]
 
-    unless empty($remote_syslog) and empty($remote_syslog_tls_servers) {
+    unless empty($remote_syslog_tls_servers) {
         class { 'base::remote_syslog':
             enable            => true,
-            central_hosts     => $remote_syslog,
             central_hosts_tls => $remote_syslog_tls_servers,
             send_logs         => $remote_syslog_send_logs,
             tls_client_auth   => $remote_syslog_tls_client_auth,
