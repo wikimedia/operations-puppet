@@ -69,6 +69,10 @@ class gerrit(
         "-Xmx${heap_limit} -Xms${heap_limit}",
         '-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance',
         '-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance',
+        # Disk based caches and account_patch_reviews are held in H2 DBs.
+        # When disconnecting it vacuum/defrag/compact, the default window is
+        # 200 ms which is not enough.
+        '-Dh2.maxCompactTime=15000', # milliseconds
         # These settings apart from the bottom control logging for gc
         '-XX:+UnlockExperimentalVMOptions',
         '-XX:G1NewSizePercent=15',
