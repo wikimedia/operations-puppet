@@ -22,21 +22,23 @@ class package_builder(
     }
 
     systemd::timer::job { 'package_builder_Clean_up_build_directory':
-        ensure      => present,
-        user        => 'root',
-        description => 'Delete builds older the 2 weeks',
-        command     => "/usr/bin/find ${basepath}/build -type f -daystart -mtime +14 -delete",
-        interval    => {
+        ensure        => present,
+        user          => 'root',
+        description   => 'Delete builds older the 2 weeks',
+        command       => "/usr/bin/find ${basepath}/build -type f -daystart -mtime +14 -delete",
+        ignore_errors => true,
+        interval      => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 02:00:00',  # Every day at 2:00
         },
     }
     systemd::timer::job { 'package_builder_Clean_up_result_directory':
-        ensure      => present,
-        user        => 'root',
-        description => 'Delete results older the 6 months',
-        command     => "/usr/bin/find ${basepath}/result -type f -daystart -mtime +180 -delete",
-        interval    => {
+        ensure        => present,
+        user          => 'root',
+        description   => 'Delete results older the 6 months',
+        command       => "/usr/bin/find ${basepath}/result -type f -daystart -mtime +180 -delete",
+        ignore_errors => true,
+        interval      => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
         },
