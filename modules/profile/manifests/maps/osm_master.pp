@@ -17,7 +17,6 @@ class profile::maps::osm_master (
     Boolean $disable_replication_cron            = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
     Boolean $disable_tile_generation_cron        = lookup('profile::maps::osm_master::disable_tile_generation_cron', { 'default_value' => false }),
     Boolean $disable_admin_timer                 = lookup('profile::maps::osm_master::disable_admin_timer', { 'default_value' => false }),
-    String $tilerator_storage_id                 = lookup('profile::maps::apps::tilerator_storage_id'),
     Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef }),
@@ -220,10 +219,6 @@ class profile::maps::osm_master (
             ensure              => present,
             disable_admin_timer => $disable_admin_timer,
         }
-    }
-
-    class { 'tilerator::regen':
-        storage_id => $tilerator_storage_id,
     }
 
     $state_path = $osm_engine ? {
