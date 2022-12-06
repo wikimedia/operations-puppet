@@ -32,7 +32,8 @@ role::installserver::light:
 role::webperf::xhgui:
   target-q: TBD
 role::pybaltest:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 321309
 role::ci::master:
   target-q: TBD
 role::mw_rc_irc:
@@ -89,7 +90,8 @@ role::orespoolcounter:
 role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 321309
 role::mediawiki::jobrunner:
   target-q: TBD
 role::mediawiki::appserver::api:
@@ -97,7 +99,8 @@ role::mediawiki::appserver::api:
 role::swift::proxy:
   target-q: TBD
 role::lvs::balancer:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 321309
 role::spare::system:
   target-q: TBD
 role::maps::replica:
@@ -156,9 +159,11 @@ role::elasticsearch::cloudelastic:
   target-q: TBD
   phab-task: 289135
 role::cache::upload:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 321309
 role::cache::text:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 321309
 role::test:
   target-q: TBD
 role::mariadb::core:
@@ -385,7 +390,7 @@ role::analytics_cluster::hadoop::yarn:
 role::syslog::centralserver:
   target-q: TBD
 role::dns::auth:
-  target-q: TBD
+  target-q: 2023-01
   phab-task: 321309
 role::logging::opensearch::data:
   target-q: TBD
@@ -402,7 +407,7 @@ role::wmcs::ceph::mon:
 role::wmcs::monitoring:
   target-q: TBD
 role::dnsbox:
-  target-q: TBD
+  target-q: 2023-01
   phab-task: 321309
 role::grafana:
   target-q: TBD
@@ -418,7 +423,7 @@ role::orchestrator:
   target-q: TBD
   phab-task: 298959
 role::durum:
-  target-q: TBD
+  target-q: 2023-01
   phab-task: 305589
 role::flowspec:
   target-q: TBD
@@ -444,7 +449,7 @@ role::puppetmaster::backend:
 role::sretest:
   target-q: 2023-03
 role::wikidough:
-  target-q: TBD
+  target-q: 2023-01
   phab-task: 305589
 role::kerberos::kdc:
   target-q: TBD
@@ -458,7 +463,8 @@ role::search::loader:
 role::chartmuseum:
   target-q: TBD
 role::acme_chief:
-  target-q: TBD
+  target-q: 2023-01
+  phab-task: 321309
 role::mw_rc_irc:
   target-q: TBD
 role::aphlict:
