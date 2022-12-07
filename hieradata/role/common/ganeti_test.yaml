@@ -8,6 +8,7 @@ profile::ganeti::rapi_nodes:
     - netbox-dev2002.codfw.wmnet
     - netmon1002.wikimedia.org
     - netmon2001.wikimedia.org
+    - netmon2002.wikimedia.org
     - cumin1001.eqiad.wmnet
     - cumin2002.codfw.wmnet
 profile::ganeti::ganeti3: true
