@@ -7250,3 +7250,7 @@ ldap_only_users:
     ensure: present
     realname: Halley Coplin
     email: hcoplin@wikimedia.org
+  greyolson:
+    ensure: present
+    realname: Grey Olson
+    email: golson@wikimedia.org
