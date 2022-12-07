@@ -11,7 +11,7 @@ testcases:
           "rsyslog.timereported": "2021-08-26T19:39:19.208",
           "rsyslog.hostname": "alert2001",
           "rsyslog.programname": "alertmanager-webhook-logger",
-          "rsyslog.severity": "WARNING",
+          "rsyslog.severity": "INFO",
           "rsyslog.facility": "user",
           "timestamp": "2021-08-26T19:39:19.208Z",
           "host": "alert2001",
@@ -26,7 +26,7 @@ testcases:
           "alertname": "Icinga/Elevated latency for icinga checks in codfw",
           "receiver": "logger",
           "dashboard": "https://grafana.wikimedia.org/d/rsCfQfuZz/icinga",
-          "severity": "WARNING",
+          "severity": "warning",
           "program": "alertmanager-webhook-logger",
           "team": "sre",
           "externalURL": "http://alert2001:9093",
@@ -43,15 +43,15 @@ testcases:
         host:
           name: "alert2001"
         log:
-          level: "WARNING"
+          level: "INFO"
           syslog:
             facility:
               code: 1
               name: "user"
             severity:
-              code: 4
-              name: "warning"
-            priority: 12
+              code: 6
+              name: "informational"
+            priority: 14
         ecs:
           version: "1.7.0"
         labels:
@@ -61,6 +61,7 @@ testcases:
           summary: "cluster=alerting instance=alert2001 job=icinga site=codfw"
           instance: "alert1001"
           source: "icinga"
+          alert_severity: "warning"
         service:
           type: "alertmanager-webhook-logger"
         event:
@@ -77,7 +78,7 @@ testcases:
           "rsyslog.timereported": "2021-08-27T15:19:00.738126887",
           "rsyslog.hostname": "alert2001",
           "rsyslog.programname": "alertmanager-webhook-logger",
-          "rsyslog.severity": "WARNING",
+          "rsyslog.severity": "INFO",
           "rsyslog.facility": "user",
           "timestamp": "2021-08-27T15:19:00.738126887Z",
           "timestamp": "2021-08-27T15:19:00.883Z",
@@ -93,7 +94,7 @@ testcases:
           "description": "All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.",
           "receiver": "logger",
           "type": "syslog",
-          "severity": "WARNING",
+          "severity": "warning",
           "browser": "firefox",
           "program": "alertmanager-webhook-logger",
           "logsource": "alert2001",
@@ -110,15 +111,15 @@ testcases:
         host:
           name: "alert2001"
         log:
-          level: "WARNING"
+          level: "INFO"
           syslog:
             facility:
               code: 1
               name: "user"
             severity:
-              code: 4
-              name: "warning"
-            priority: 12
+              code: 6
+              name: "informational"
+            priority: 14
         ecs:
           version: "1.7.0"
         labels:
@@ -129,6 +130,7 @@ testcases:
           browser: "firefox"
           alertname: "Increased Speed Index for en.wiki on desktop"
           summary: "Increased Speed Index for en.wiki on desktop"
+          alert_severity: "warning"
         service:
           type: "alertmanager-webhook-logger"
         event:
