@@ -19,7 +19,12 @@ class kubeadm::core (
         tag    => 'kubeadm-k8s',
     }
 
-    class { 'k8s::base_dirs': }
+    file { '/etc/kubernetes':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
     sysctl::parameters { 'kubelet':
         values   => {
