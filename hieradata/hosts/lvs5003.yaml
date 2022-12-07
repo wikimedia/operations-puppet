@@ -1,3 +1,0 @@
-profile::pybal::override_bgp_med: 150   # decom preperation
-
-profile::pybal::primary: false
