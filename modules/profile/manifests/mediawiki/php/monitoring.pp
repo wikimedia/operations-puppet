@@ -132,9 +132,11 @@ class profile::mediawiki::php::monitoring(
 
     if $monitor_opcache {
         nrpe::monitor_service { 'opcache':
-            description  => 'PHP opcache health',
-            nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
+            description    => 'PHP opcache health',
+            nrpe_command   => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
+            retries        => 6,
+            retry_interval => 10,
         }
     }
 }
