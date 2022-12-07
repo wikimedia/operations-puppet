@@ -6449,3 +6449,7 @@ ldap_only_users:
     ensure: present
     realname: Kelton Hurd
     email: khurd@wikimedia.org
+  vwalters:
+    ensure: present
+    realname: Vaughn Walters
+    email: vwalters@wikimedia.org
