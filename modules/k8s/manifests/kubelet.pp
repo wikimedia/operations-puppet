@@ -4,10 +4,9 @@ class k8s::kubelet (
     K8s::KubernetesVersion $version,
     String $kubeconfig,
     Boolean $cni,
+    Hash[String, Stdlib::Unixpath] $kubelet_cert,
     String $pod_infra_container_image = 'docker-registry.discovery.wmnet/pause',
     Stdlib::Fqdn $cluster_domain = 'cluster.local',
-    Stdlib::Unixpath $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
-    Stdlib::Unixpath $tls_key = '/var/lib/kubernetes/ssl/private_keys/server.key',
     Stdlib::Unixpath $cni_bin_dir = '/opt/cni/bin',
     Stdlib::Unixpath $cni_conf_dir = '/etc/cni/net.d',
     Boolean $logtostderr = true,
@@ -20,6 +19,7 @@ class k8s::kubelet (
     Optional[Array[K8s::Core::V1Taint]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
 ) {
+    $k8s_le_116 = versioncmp($version, '1.16') <= 0
     k8s::package { 'kubelet':
         package => 'node',
         version => $version,
@@ -29,13 +29,28 @@ class k8s::kubelet (
     # socat is needed on k8s nodes for kubectl proxying to work
     ensure_packages('socat')
 
+    if $k8s_le_116 {
+        # Without k8s 1.16, fall back to AlwaysAllow and anonymous access
+        $authentication = { anonymous => { enabled => true } }
+        $authorization = { mode => 'AlwaysAllow' }
+    } else {
+        # With k8s 1.23 we have aggregation layer support and can enable authentication/authorization
+        # of requests against kubelet. Webhook mode uses the SubjectAccessReview API to determine authorization.
+        $authentication = {
+            anonymous => { enabled => false },
+            webhook => { enabled => true },
+            x509 => { clientCAFile => $kubelet_cert['chain'] },
+        }
+        $authorization = { mode => 'Webhook' }
+    }
+
     # Create the KubeletConfiguration YAML
     $config_yaml = {
         apiVersion         => 'kubelet.config.k8s.io/v1beta1',
         kind               => 'KubeletConfiguration',
         address            => $listen_address,
-        tlsPrivateKeyFile  => $tls_key,
-        tlsCertFile        => $tls_cert,
+        tlsPrivateKeyFile  => $kubelet_cert['key'],
+        tlsCertFile        => $kubelet_cert['cert'],
         clusterDomain      => $cluster_domain,
         clusterDNS         => [$cluster_dns],
         # IPv6DualStack is GA and enabled by default in k8s >=1.22
@@ -46,16 +61,11 @@ class k8s::kubelet (
         # Using --config the default changes to 0 (e.g. disabled).
         # 10255 is used by prometheus to scrape kubelet and cadvisor metrics.
         readOnlyPort       => 10255,
-
-        # --anonymous-auth which is enabled by default without --config but disabled when --config is used.
-        # TODO: With k8s 1.23, the default for anonymous auth via --config changed back to 'true'
-        authentication     => { anonymous => { enabled => true } },
-        # Authorization mode defaults to 'AlwaysAllow' when running without --config but
-        # 'Webhook' when --config is used.
-        authorization      => { mode => 'AlwaysAllow' },
-        registerWithTaints => if versioncmp($version, '1.23') >= 0 { $node_taints },
+        authentication     => $authentication,
+        authorization      => $authorization,
+        registerWithTaints => unless $k8s_le_116 { $node_taints },
         # Use systemd cgroup driver with k8s >= 1.23
-        cgroupDriver       => if versioncmp($version, '1.23') >= 0 { 'systemd' },
+        cgroupDriver       => unless $k8s_le_116 { 'systemd' },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     file { $config_file:
@@ -102,7 +112,6 @@ class k8s::kubelet (
         enable    => true,
         subscribe => [
             File[$kubeconfig],
-            File['/etc/default/kubelet'],
         ],
     }
 }

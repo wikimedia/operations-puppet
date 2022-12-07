@@ -59,7 +59,6 @@ class k8s::proxy (
         enable    => true,
         subscribe => [
             File[$kubeconfig],
-            File['/etc/default/kube-proxy'],
         ],
     }
 }

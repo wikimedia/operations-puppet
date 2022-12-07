@@ -5,8 +5,6 @@ class profile::kubernetes::node (
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
     String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause:k8s_116' }),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
-    Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', { default_value => '/etc/kubernetes/kubelet_config' }),
-    Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', { default_value => '/etc/kubernetes/kubeproxy_config' }),
     Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', { default_value => "http://prometheus.svc.${::site }.wmnet/k8s" }),
     String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', { default_value => 'cluster.local' }),
     Optional[Stdlib::IP::Address] $kubelet_cluster_dns = lookup('profile::kubernetes::node::kubelet_cluster_dns', { default_value => undef }),
@@ -20,8 +18,23 @@ class profile::kubernetes::node (
     Boolean $ipv6dualstack = lookup('profile::kubernetes::ipv6dualstack', { default_value => false }),
     Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
     K8s::ClusterCIDR $cluster_cidr = lookup('profile::kubernetes::cluster_cidr'),
+    # It is expected that there is a second intermediate suffixed with _front_proxy to be used
+    # to configure the aggregation layer. So by setting "wikikube" here you are required to add
+    # the intermediates "wikikube" and "wikikube_front_proxy".
+    #
+    # FIXME: This should be something like "cluster group/name" while retaining the discrimination
+    #        between production and staging as we don't want to share the same intermediate across
+    #        that boundary.
+    # FIXME: This is *not* optional for k8s versions > 1.16, make it mandatory after 1.23 migration
+    Optional[Cfssl::Ca_name] $pki_intermediate = lookup('profile::kubernetes::pki::intermediate', { default_value => undef }),
+    # 952200 seconds is the default from cfssl::cert:
+    # the default https checks go warning after 10 full days i.e. anywhere
+    # from 864000 to 950399 seconds before the certificate expires.  As such set this to
+    # 11 days + 30 minutes to capture the puppet run schedule.
+    Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 })
 ) {
-    require ::profile::rsyslog::kubernetes
+    require profile::rsyslog::kubernetes
+    $k8s_le_116 = versioncmp($version, '1.16') <= 0
 
     rsyslog::input::file { 'kubernetes-json':
         path               => '/var/log/containers/*.log',
@@ -32,19 +45,37 @@ class profile::kubernetes::node (
         priority           => 8,
     }
 
-    # Note: this will also install /etc/kubernetes
-    k8s::kubeconfig { $kubelet_config:
-        master_host => $master_fqdn,
-        username    => $kubelet_username,
-        token       => $kubelet_token,
-    }
-
-    # TODO: consider using profile::pki::get_cert
-    # This installs /etc/kubernetes/ssl/{server.key,cert.pem}
-    puppet::expose_agent_certs { '/etc/kubernetes':
-        provide_private => true,
-        user            => 'root',
-        group           => 'root',
+    if $k8s_le_116 {
+        # This installs /etc/kubernetes/ssl/{server.key,cert.pem}
+        puppet::expose_agent_certs { '/etc/kubernetes':
+            provide_private => true,
+            user            => 'root',
+            group           => 'root',
+        }
+        $kubelet_cert = {
+            'chained' => '/etc/kubernetes/ssl/cert.pem',
+            'chain'   => '/nonexistent',
+            'cert'    => '/etc/kubernetes/ssl/cert.pem',
+            'key'     => '/etc/kubernetes/ssl/server.key',
+        }
+    } else {
+        if $pki_intermediate == undef {
+            fail('profile::kubernetes::pki::intermediate is mandatory for k8s = 1.16')
+        }
+        # On newer clusters, use PKI
+        $kubelet_cert = profile::pki::get_cert($pki_intermediate, 'kubelet', {
+            'profile'        => 'server',
+            'renew_seconds'  => $pki_renew_seconds,
+            'owner'          => 'kube',
+            'outdir'         => '/etc/kubernetes/pki',
+            'hosts'          => [
+                $facts['hostname'],
+                $facts['fqdn'],
+                $facts['ipaddress'],
+                $facts['ipaddress6'],
+            ],
+            'notify_service' => 'kubelet'
+        })
     }
 
     # Figure out if this node has SSD or spinning disks
@@ -68,7 +99,7 @@ class profile::kubernetes::node (
     # Kubelet on 1.16 doesn't support it, so we need to revert
     # the behavior to what was available on Buster
     # (until we upgrade to k8s 1.2x).
-    if debian::codename::eq('bullseye') and versioncmp($version, '1.16') == 0 {
+    if debian::codename::eq('bullseye') and $k8s_le_116 {
         $disable_unified_cgroup_hierarchy_ensure = present
     } else {
         $disable_unified_cgroup_hierarchy_ensure = absent
@@ -79,15 +110,40 @@ class profile::kubernetes::node (
         value  => '0',
     }
 
+    # Setup kubelet
+    if $k8s_le_116 {
+        $kubelet_kubeconfig = '/etc/kubernetes/kubelet_config'
+        k8s::kubeconfig { $kubelet_kubeconfig:
+            master_host => $master_fqdn,
+            username    => $kubelet_username,
+            token       => $kubelet_token,
+        }
+    } else {
+        $kubelet_kubeconfig = '/etc/kubernetes/kubelet.conf'
+        $default_auth = profile::pki::get_cert($pki_intermediate, "system:node:${facts['fqdn']}", {
+            'renew_seconds'  => $pki_renew_seconds,
+            'names'          => [{ 'organisation' => 'system:nodes' }],
+            'owner'          => 'kube',
+            'outdir'         => '/etc/kubernetes/pki',
+            'notify_service' => 'kubelet'
+        })
+        k8s::kubeconfig { $kubelet_kubeconfig:
+            master_host => $master_fqdn,
+            username    => 'default-auth',
+            auth_cert   => $default_auth,
+            owner       => 'kube',
+            group       => 'kube',
+        }
+    }
+
     $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { 'k8s::kubelet':
         cni                             => $use_cni,
         cluster_domain                  => $kubelet_cluster_domain,
         cluster_dns                     => $kubelet_cluster_dns,
         pod_infra_container_image       => $infra_pod,
-        tls_cert                        => '/etc/kubernetes/ssl/cert.pem',
-        tls_key                         => '/etc/kubernetes/ssl/server.key',
-        kubeconfig                      => $kubelet_config,
+        kubelet_cert                    => $kubelet_cert,
+        kubeconfig                      => $kubelet_kubeconfig,
         node_labels                     => $node_labels,
         node_taints                     => $kubelet_node_taints,
         extra_params                    => $kubelet_extra_params,
@@ -96,13 +152,33 @@ class profile::kubernetes::node (
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
     }
 
-    k8s::kubeconfig { $kubeproxy_config:
-        master_host => $master_fqdn,
-        username    => $kubeproxy_username,
-        token       => $kubeproxy_token,
+    # Setup kube-proxy
+    if $k8s_le_116 {
+        $kubeproxy_kubeconfig = '/etc/kubernetes/kubeproxy_config'
+        k8s::kubeconfig { $kubeproxy_kubeconfig:
+            master_host => $master_fqdn,
+            username    => $kubeproxy_username,
+            token       => $kubeproxy_token,
+        }
+    } else {
+        $kubeproxy_kubeconfig = '/etc/kubernetes/proxy.conf'
+        $default_proxy = profile::pki::get_cert($pki_intermediate, 'system:kube-proxy', {
+            'renew_seconds'  => $pki_renew_seconds,
+            'names'          => [{ 'organisation' => 'system:node-proxier' }],
+            'owner'          => 'kube',
+            'outdir'         => '/etc/kubernetes/pki',
+            'notify_service' => 'kube-proxy'
+        })
+        k8s::kubeconfig { $kubeproxy_kubeconfig:
+            master_host => $master_fqdn,
+            username    => 'default-proxy',
+            auth_cert   => $default_proxy,
+            owner       => 'kube',
+            group       => 'kube',
+        }
     }
     class { 'k8s::proxy':
-        kubeconfig    => $kubeproxy_config,
+        kubeconfig    => $kubeproxy_kubeconfig,
         version       => $version,
         ipv6dualstack => $ipv6dualstack,
         cluster_cidr  => $cluster_cidr,

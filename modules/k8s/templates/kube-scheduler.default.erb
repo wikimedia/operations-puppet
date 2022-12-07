@@ -10,6 +10,13 @@ daemon_args = [
 if scope.call_function('versioncmp', [@version, '1.16']) <= 0
   # has been deprecated, will be removed in a future release
   daemon_args.push("--logtostderr=#{@logtostderr}")
+elsif scope.call_function('versioncmp', [@version, '1.23']) >= 0
+  # Defaults from kubeadm setup
+  daemon_args.push("--bind-address=127.0.0.1")
+
+  # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer
+  daemon_args.push("--authorization-kubeconfig=#{@kubeconfig}")
+  daemon_args.push("--authentication-kubeconfig=#{@kubeconfig}")
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

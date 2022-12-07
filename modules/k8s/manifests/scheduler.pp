@@ -40,7 +40,10 @@ class k8s::scheduler (
     }
 
     service { 'kube-scheduler':
-        ensure => running,
-        enable => true,
+        ensure    => running,
+        enable    => true,
+        subscribe => [
+            File[$kubeconfig],
+        ],
     }
 }

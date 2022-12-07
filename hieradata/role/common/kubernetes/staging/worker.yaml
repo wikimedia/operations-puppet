@@ -1,6 +1,7 @@
 cluster: kubernetes-staging
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
+profile::kubernetes::pki::intermediate: 'wikikube_staging'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none

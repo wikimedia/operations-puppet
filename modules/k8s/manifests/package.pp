@@ -11,6 +11,7 @@ define k8s::package (
     Integer                          $priority        = 1001,
     Boolean                          $ensure_packages = true,
 ) {
+    require k8s::base_dirs
     $component_title = "kubernetes${regsubst($version, '\\.', '')}"
     ensure_resource('apt::package_from_component', $component_title, {
         component => "component/${component_title}",

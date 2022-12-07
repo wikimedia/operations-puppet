@@ -11,9 +11,9 @@ daemon_args = [
   "--allow-privileged=#{@allow_privileged}",
   "--etcd-servers=#{@etcd_servers}",
   "--token-auth-file=/etc/kubernetes/infrastructure-users",
-  "--tls-cert-file=#{@ssl_cert_path}",
-  "--tls-private-key-file=#{@ssl_key_path}",
-  "--service-account-key-file=#{@service_account_key}",
+  "--tls-cert-file=#{@apiserver_cert['chained']}",
+  "--tls-private-key-file=#{@apiserver_cert['key']}",
+  "--service-account-key-file=#{@sa_cert['cert']}",
   "--service-cluster-ip-range=#{@service_cluster_cidr['v4']}",
 ]
 
@@ -26,7 +26,12 @@ if @authz_mode == 'abac'
   daemon_args.push("--authorization-mode=ABAC")
   daemon_args.push("--authorization-policy-file=/etc/kubernetes/abac")
 elsif @authz_mode && @authz_mode != ''
-  daemon_args.push("--authorization-mode=#{@authz_mode}")
+  if scope.call_function('versioncmp', [@version, '1.23']) >= 0
+    # Enable node authorizer for k8s >= 1.23
+    daemon_args.push("--authorization-mode=Node,#{@authz_mode}")
+  else
+    daemon_args.push("--authorization-mode=#{@authz_mode}")
+  end
 end
 
 if @admission_plugins
@@ -58,7 +63,19 @@ elsif scope.call_function('versioncmp', [@version, '1.23']) >= 0
   #  --service-account-key-file, set to one or more files containing one or more public keys used to verify tokens.
   #  --service-account-signing-key-file, set to a file containing a private key to use to sign service account tokens. Can be the same file given to kube-controller-manager with --service-account-private-key-file.
   daemon_args.push("--service-account-issuer=#{@service_account_issuer}")
-  daemon_args.push("--service-account-signing-key-file=#{@service_account_signing_key}")
+  daemon_args.push("--service-account-signing-key-file=#{@sa_cert['key']}")
+  daemon_args.push("--client-ca-file=#{@apiserver_cert['chain']}")
+  daemon_args.push("--kubelet-client-key=#{@kubelet_client_cert['key']}")
+  daemon_args.push("--kubelet-client-certificate=#{@kubelet_client_cert['cert']}")
+
+  # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer
+  daemon_args.push("--requestheader-username-headers=X-Remote-User")
+  daemon_args.push("--requestheader-group-headers=X-Remote-Group")
+  daemon_args.push("--requestheader-extra-headers-prefix=X-Remote-Extra-")
+  daemon_args.push("--requestheader-client-ca-file=#{@frontproxy_cert['chain']}")
+  daemon_args.push("--requestheader-allowed-names=front-proxy-client")
+  daemon_args.push("--proxy-client-cert-file=#{@frontproxy_cert['cert']}")
+  daemon_args.push("--proxy-client-key-file=#{@frontproxy_cert['key']}")
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

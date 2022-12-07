@@ -1,6 +1,7 @@
 cluster: kubernetes
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
+profile::kubernetes::pki::intermediate: 'wikikube'
 profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::use_cni: true
 # With k8s 1.16, this will enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50

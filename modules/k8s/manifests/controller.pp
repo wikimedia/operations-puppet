@@ -14,9 +14,10 @@
 class k8s::controller (
     K8s::KubernetesVersion $version,
     Stdlib::Unixpath $service_account_private_key_file,
+    Stdlib::Unixpath $ca_file,
     Stdlib::Unixpath $kubeconfig,
-    Boolean $logtostderr=true,
-    Integer $v_log_level=0,
+    Boolean $logtostderr = true,
+    Integer $v_log_level = 0,
 ) {
     k8s::package { 'controller':
         package => 'master',
@@ -33,7 +34,10 @@ class k8s::controller (
     }
 
     service { 'kube-controller-manager':
-        ensure => running,
-        enable => true,
+        ensure    => running,
+        enable    => true,
+        subscribe => [
+            File[$kubeconfig],
+        ],
     }
 }

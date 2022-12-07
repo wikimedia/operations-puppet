@@ -17,11 +17,11 @@
 class k8s::apiserver (
     K8s::KubernetesVersion $version,
     String $etcd_servers,
-    Stdlib::Unixpath $ssl_cert_path,
-    Stdlib::Unixpath $ssl_key_path,
+    Hash[String, Stdlib::Unixpath] $apiserver_cert,
+    Hash[String, Stdlib::Unixpath] $sa_cert,
+    Hash[String, Stdlib::Unixpath] $kubelet_client_cert,
+    Hash[String, Stdlib::Unixpath] $frontproxy_cert,
     Stdlib::HTTPSUrl $service_account_issuer,
-    Stdlib::Unixpath $service_account_signing_key,
-    Stdlib::Unixpath $service_account_key,
     Hash[String, Any] $users,
     K8s::ClusterCIDR $service_cluster_cidr,
     String $authz_mode = 'RBAC',
@@ -34,8 +34,6 @@ class k8s::apiserver (
     Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
     Optional[Array[Hash]] $admission_configuration = undef,
 ) {
-    require k8s::base_dirs
-
     group { 'kube':
         ensure => present,
         system => true,
