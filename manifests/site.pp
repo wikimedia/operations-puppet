@@ -1764,7 +1764,7 @@ node /^lvs40(0[56789]|1[0])\.ulsfo\.wmnet$/ {
 }
 
 # EQSIN lvs servers
-node /^lvs500[2345]\.eqsin\.wmnet$/ {
+node /^lvs500[345]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
 }
 
