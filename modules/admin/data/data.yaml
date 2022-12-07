@@ -6445,3 +6445,7 @@ ldap_only_users:
     ensure: present
     realname: Giovanna Fontenelle
     email: gfontenelle@wikimedia.org
+  kelhurd:
+    ensure: present
+    realname: Kelton Hurd
+    email: khurd@wikimedia.org
