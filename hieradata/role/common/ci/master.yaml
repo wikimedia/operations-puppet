@@ -43,8 +43,8 @@ profile::zuul::server::conf:
 
 profile::zuul::merger::ferm_srange: >-
   (($LABS_NETWORKS
-  @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), A)
-  @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), AAAA)))
+  @resolve((contint1001.wikimedia.org contint1002.wikimedia.org contint2001.wikimedia.org), A)
+  @resolve((contint1001.wikimedia.org contint1002.wikimedia.org contint2001.wikimedia.org), AAAA)))
 
 profile::zuul::server::email_server: localhost
 

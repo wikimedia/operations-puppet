@@ -1,3 +1,22 @@
 # For the service setup T313832
 profile::admin::groups:
   - contint-roots
+
+# role::ci::master runs at least three services:
+# - Jenkins
+# - Zuul merger
+# - Zuul scheduler (zuul server)
+#
+# The default is to bring up the first two on all hosts but
+# for a host being provisionned we need to disabled those
+# services.
+
+# Jenkins is masked/stopped in role::ci::master
+profile::ci::jenkins::service_monitor: false
+
+# Zuul merger is "running" in role::ci::master
+profile::zuul::merger::ensure_service: stopped
+
+# Zuul server is running/enabled in role::ci::master
+profile::zuul::server::service_enable: false
+profile::zuul::server::service_ensure: stopped
