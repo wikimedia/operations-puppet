@@ -45,6 +45,8 @@ class profile::vrts(
         modules => ['headers', 'rewrite', 'perl'],
     }
 
+    profile::auto_restarts::service { 'apache2': }
+
     # TODO: On purpose here since it references a file not in a module which is
     # used by other classes as well
     # lint:ignore:puppet_url_without_modules
