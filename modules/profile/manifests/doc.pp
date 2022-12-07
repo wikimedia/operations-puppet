@@ -70,6 +70,7 @@ class profile::doc (
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     user { 'doc-uploader':
         ensure => present,
