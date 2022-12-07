@@ -132,6 +132,7 @@ Components: main
  component/redis2
  component/rsyslog
  component/rsyslog-k8s
+ component/rsyslog-openssl
  component/spicerack
  component/wmf-sre-laptop
  thirdparty/amd-rocm42
