@@ -114,6 +114,7 @@ dispatch-be: P{O:dispatch::backend}
 dns-auth: P{R:Class = profile::dns::auth}
 dns-auth-canary: P{authdns2001.wikimedia.org}
 dns-rec: P{R:Class = profile::dns::recursor}
+doc: P{O:doc}
 docker-registry: P{O:docker::registry or O:docker_registry_ha::registry}
 dns-rec-canary: P{dns2001.wikimedia.org}
 dragonfly-peer: P{R:Class = dragonfly::dfdaemon}
@@ -321,6 +322,7 @@ parsoid-canary: P{parse1001.eqiad.wmnet or parse1002.eqiad.wmnet or parse2001.co
 parsoid-codfw: A:parsoid and A:codfw
 parsoid-eqiad: A:parsoid and A:eqiad
 parsoid-testing: P{O:parsoid::testing} or P{O:parsoid::testreduce}
+people: P{O:microsites::peopleweb}
 phabricator: P{O:phabricator}
 phabricator-aphlict: P{O:aphlict}
 phabricator-all: A:phabricator or A:phabricator-aphlict
@@ -409,7 +411,6 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::webserver} or A:eventlogging
-misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:vrts or O:miscweb} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:sretest} or A:insetup
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:kafkamon or A:puppetboard or A:apt or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or A:flowspec or A:pki or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
