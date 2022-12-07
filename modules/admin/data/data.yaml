@@ -7246,3 +7246,7 @@ ldap_only_users:
     ensure: present
     realname: Jasmine Kilani
     email: jkilani@wikimedia.org
+  hcoplin:
+    ensure: present
+    realname: Halley Coplin
+    email: hcoplin@wikimedia.org
