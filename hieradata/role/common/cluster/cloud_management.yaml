@@ -1,4 +1,5 @@
 cluster: cloud_management
+profile::admin::groups:
   - os-installers
 profile::contacts::role_contacts: ['WMCS']
 profile::cumin::monitor_agentrun: false
