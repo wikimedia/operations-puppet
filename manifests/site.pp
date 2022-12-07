@@ -1598,7 +1598,7 @@ node /kubernetes202[34]\.codfw\.wmnet/ {
 
 # New kubernetes node T313873
 node /kubernetes102[34]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::serviceops)
 }
 
 node /kubestage100[34]\.eqiad\.wmnet/ {
