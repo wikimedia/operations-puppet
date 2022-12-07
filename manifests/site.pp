@@ -2701,7 +2701,7 @@ node /^sretest100[1-2]\.eqiad\.wmnet$/ {
 
 # Servers for SRE tests in codfw
 node /^sretest200[1-2]\.codfw\.wmnet$/ {
-    role(insteup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations)
 }
 
 # parsoid visual diff and roundtrip testing (T257940)
