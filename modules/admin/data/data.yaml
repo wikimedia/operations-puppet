@@ -6453,3 +6453,7 @@ ldap_only_users:
     ensure: present
     realname: Vaughn Walters
     email: vwalters@wikimedia.org
+  jhancock:
+    ensure: present
+    realname: Jennifer Hancock
+    email: jhancock-ctr@wikimedia.org
