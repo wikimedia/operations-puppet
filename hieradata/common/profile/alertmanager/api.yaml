@@ -4,7 +4,6 @@ profile::alertmanager::api::rw:
   - 'grafana1002.eqiad.wmnet'
   - 'grafana2001.codfw.wmnet'
   - 'netmon1003.wikimedia.org'
-  - 'netmon2001.wikimedia.org'
   - 'netmon2002.wikimedia.org'
   - 'cumin1001.eqiad.wmnet'
   - 'cumin2002.codfw.wmnet'
