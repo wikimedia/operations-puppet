@@ -171,11 +171,13 @@ host chartmuseum2001 {
 host cloudcumin1001 {
     hardware ethernet aa:00:00:58:77:b1;
     fixed-address cloudcumin1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host cloudcumin2001 {
     hardware ethernet aa:00:00:36:2b:d7;
     fixed-address cloudcumin2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host cuminunpriv1001 {
