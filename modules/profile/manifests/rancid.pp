@@ -23,14 +23,6 @@ class profile::rancid (
         }
     }
 
-    # TODO: clean up after T309074
-    rsync::quickdatacopy { 'var-lib-rancid':
-        ensure      => absent,
-        source_host => 'netmon1002.wikimedia.org',
-        dest_host   => 'netmon2001.wikimedia.org',
-        module_path => '/var/lib/rancid',
-    }
-
     profile::contact { $title:
         contacts => ['ayounsi']
     }
