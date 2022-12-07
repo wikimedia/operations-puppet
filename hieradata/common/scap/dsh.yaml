@@ -145,10 +145,12 @@ scap::dsh::groups:
   ci-docroot:
     hosts:
       - contint1001.wikimedia.org
+      - contint1002.wikimedia.org
       - contint2001.wikimedia.org
       - doc1002.eqiad.wmnet
       - doc2001.codfw.wmnet
   zuul:
     hosts:
       - contint1001.wikimedia.org
+      - contint1002.wikimedia.org
       - contint2001.wikimedia.org
