@@ -1797,13 +1797,13 @@ node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
 }
 
-node /^mc20(19|2[0-7]|29|3[0-8])\.codfw\.wmnet/ {
+node /^mc20(19|2[0-7]|29|3[0-7])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
 }
 
 # New mc nodes T294962
-node /^mc20(39|4[0-9]|5[0-5])\.codfw\.wmnet/ {
-    role(insetup::serviceops)
+node /^mc20(38|4[0-9]|5[0-5])\.codfw\.wmnet/ {
+    role(mediawiki::memcached)
 }
 
 node /^mc-gp100[1-3]\.eqiad\.wmnet/ {
