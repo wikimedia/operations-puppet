@@ -17,6 +17,10 @@ profile::ci::jenkins::service_enable: "mask"
 
 profile::ci::jenkins::java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
 
+profile::ci::docker::settings:
+  data-root: '/srv/docker'
+  iptables: false
+
 profile::java::java_packages:
   - version: "11"
     variant: "jdk"

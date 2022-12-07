@@ -1,7 +1,3 @@
-profile::ci::docker::settings:
-  data-root: '/srv/docker'
-  iptables: false
-
 profile::ci::jenkins::service_monitor: false
 profile::zuul::server::service_enable: false
 profile::zuul::server::service_ensure: stopped
