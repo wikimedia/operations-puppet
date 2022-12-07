@@ -22,7 +22,9 @@
 #   relevant for mutual authentication. Server verification (e.g. checks on
 #   certificate authority or the Subject Alt Names) is not affected. Defaults to
 #   true.
-#
+# [*tls_netstream_driver*]
+#   Rsyslog Network Stream driver to use for TLS support. Can be either 'gtls'
+#   (GnuTLS, default) or 'ossl' (OpenSSL).
 
 class base::remote_syslog (
     Boolean                         $enable,
@@ -30,12 +32,27 @@ class base::remote_syslog (
     Enum['auth-logs', 'standard']   $send_logs = 'standard',
     Integer                         $queue_size = 10000,
     Boolean                         $tls_client_auth = true,
+    Enum['gtls', 'ossl']            $tls_netstream_driver = 'gtls',
 ) {
     $owner = 'root'
     $group = 'root'
 
     if $enable {
-        ensure_packages('rsyslog-gnutls')
+        if $tls_netstream_driver == 'gtls' {
+            ensure_packages('rsyslog-gnutls')
+        } else {
+            # for >= bullseye, available in debian main
+            # otherwise through component/rsyslog-openssl (T324623)
+            if debian::codename::eq('buster') {
+                apt::package_from_component { 'rsyslog_receiver':
+                    component => 'component/rsyslog-openssl',
+                    packages  => ['rsyslog-openssl', 'rsyslog-kafka', 'rsyslog'],
+                    before    => Class['rsyslog'],
+                }
+            } else {
+                ensure_packages('rsyslog-openssl')
+            }
+        }
 
         if empty($central_hosts_tls) {
             fail('::base::remote_syslog::central_hosts_tls is required')

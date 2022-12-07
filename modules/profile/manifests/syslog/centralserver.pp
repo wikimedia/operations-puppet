@@ -13,6 +13,9 @@
 #   kafka output support
 # [*tls_auth_mode*]
 #   specify client authentication mode for syslog clients
+# [*tls_netstream_driver*]
+#   Rsyslog Network Stream driver to use for TLS support. Can be either 'gtls'
+#   (GnuTLS, default) or 'ossl' (OpenSSL).
 # [*file_template_property*]
 #   property to use for the destination log file name (either hostname or IP
 #   address)
@@ -22,6 +25,7 @@ class profile::syslog::centralserver (
     Integer $log_deletion_grace_days                            = lookup('profile::syslog::centralserver::log_deletion_grace_days', {'default_value' => 45}),
     Boolean $use_kafka_relay                                    = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
     Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = lookup('profile::syslog::centralserver::tls_auth_mode', {'default_value' => 'x509/certvalid'}),
+    Enum['gtls', 'ossl'] $tls_netstream_driver                  = lookup('profile::syslog::centralserver::tls_netstream_driver', {'default_value' => 'gtls'}),
     Enum['fromhost-ip', 'hostname'] $file_template_property     = lookup('profile::syslog::centralserver::file_template_property', {'default_value' => 'hostname'}),
 ){
 
@@ -42,6 +46,7 @@ class profile::syslog::centralserver (
     class { 'rsyslog::receiver':
         log_retention_days     => $log_retention_days,
         tls_auth_mode          => $tls_auth_mode,
+        tls_netstream_driver   => $tls_netstream_driver,
         file_template_property => $file_template_property,
     }
 

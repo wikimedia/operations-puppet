@@ -26,7 +26,7 @@ if ($syslogfacility-text == 'auth' or
 <%- @central_hosts_tls.sort.each do |log_host| %>
   <% host, port = log_host.split(':') %>
   action(type="omfwd" name="fwd_<%= log_host %>" Target="<%= host %>" Port="<%= port or '6514' %>"
-    StreamDriver="gtls" StreamDriverAuthMode="x509/certvalid" StreamDriverMode="1"
+    StreamDriver="<%= @tls_netstream_driver %>" StreamDriverAuthMode="x509/certvalid" StreamDriverMode="1"
     Protocol="tcp" template="LongTagForwardFormat"
 <%- if @queue_size > 0 -%>
     queue.type="LinkedList" queue.size="<%= @queue_size %>" queue.filename="<%= log_host %>"

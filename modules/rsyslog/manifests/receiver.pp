@@ -24,6 +24,9 @@
 # [*tls_auth_mode*]
 #   Specifies the authentication mode for syslog clients. Default is
 #   x509/certvalid (verify certificate for all clients).
+# [*tls_netstream_driver*]
+#   Rsyslog Network Stream driver to use for TLS support. Can be either 'gtls'
+#   (GnuTLS, default) or 'ossl' (OpenSSL).
 # [*file_template_property*]
 #   Property to be used for determining the file name (e.g.
 #   /srv/syslog/<property>/syslog.log) of the log file. Can be
@@ -35,16 +38,33 @@ class rsyslog::receiver (
     $log_directory                                              = '/srv/syslog',
     $archive_directory                                          = '/srv/syslog/archive',
     Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = 'x509/certvalid',
+    Enum['gtls', 'ossl'] $tls_netstream_driver                  = 'gtls',
     Enum['fromhost-ip', 'hostname'] $file_template_property     = 'hostname'
 ) {
+    if $tls_netstream_driver == 'gtls' {
+        # Unlike rsyslog-openssl (see below), rsyslog-gnutls is available
+        # in buster, but on buster systems, we need a newer version of
+        # rsyslog due to segfaults (T259780)
+        $buster_component = 'component/rsyslog'
+        $netstream_package = 'rsyslog-gnutls'
+    } else {
+        # rsyslog-openssl is available by default in bullseye and later,
+        # the package has been backported to component/rsyslog-openssl for
+        # buster systems (T324623)
+        # component/rsyslog-openssl also incorporated the fix for
+        # T259780 (see above), hence component/rsyslog is redundant
+        $buster_component = 'component/rsyslog-openssl'
+        $netstream_package = 'rsyslog-openssl'
+    }
+
     if debian::codename::eq('buster') {
         apt::package_from_component { 'rsyslog_receiver':
-            component => 'component/rsyslog',
-            packages  => ['rsyslog-gnutls', 'rsyslog-kafka', 'rsyslog'],
+            component => $buster_component,
+            packages  => [$netstream_package, 'rsyslog-kafka', 'rsyslog'],
             before    => Class['rsyslog'],
         }
     } else {
-        ensure_packages('rsyslog-gnutls')
+        ensure_packages($netstream_package)
     }
 
     if ($log_directory == $archive_directory) {
