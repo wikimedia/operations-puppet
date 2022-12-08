@@ -1802,7 +1802,7 @@ node /^mc20(19|2[0-7]|29|3[0-7])\.codfw\.wmnet/ {
 }
 
 # New mc nodes T294962
-node /^mc20(38|4[0-9]|5[0-5])\.codfw\.wmnet/ {
+node /^mc20(3[8-9]|4[0-9]|5[0-5])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
 }
 
