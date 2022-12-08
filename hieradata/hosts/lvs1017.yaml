@@ -9,5 +9,3 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   ens2f0np0:
     txqlen: 10000
-
-profile::pybal::override_bgp_med: 101   # temporary, to debug IPv6 issues (page on Dec 7)
