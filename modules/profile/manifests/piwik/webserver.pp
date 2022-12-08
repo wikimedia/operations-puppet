@@ -35,6 +35,7 @@ class profile::piwik::webserver {
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     require profile::analytics::httpd::utils
     include profile::idp::client::httpd
