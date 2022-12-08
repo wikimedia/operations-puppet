@@ -24,7 +24,6 @@ class k8s::apiserver (
     Stdlib::HTTPSUrl $service_account_issuer,
     Hash[String, Any] $users,
     K8s::ClusterCIDR $service_cluster_cidr,
-    String $authz_mode = 'RBAC',
     Boolean $allow_privileged = false,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,

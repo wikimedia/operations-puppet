@@ -8,7 +8,6 @@ profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
 
-profile::kubernetes::master::authz_mode: 'RBAC'
 profile::kubernetes::master::service_node_port_range: '1-65535'
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).

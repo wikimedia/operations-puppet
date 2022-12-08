@@ -5,7 +5,6 @@ profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/aux-k8s-ctrl.svc.%{::site}.wmnet.crt"
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/aux-k8s-ctrl.svc.%{::site}.wmnet.key"
-profile::kubernetes::master::authz_mode: 'RBAC'
 profile::kubernetes::master::service_node_port_range: '1-65535'
 profile::kubernetes::master::admission_plugins:
   enable:

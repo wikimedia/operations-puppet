@@ -17,21 +17,8 @@ daemon_args = [
   "--service-cluster-ip-range=#{@service_cluster_cidr['v4']}",
 ]
 
-
 if @service_node_port_range
   daemon_args.push("--service-node-port-range=#{@service_node_port_range}")
-end
-
-if @authz_mode == 'abac'
-  daemon_args.push("--authorization-mode=ABAC")
-  daemon_args.push("--authorization-policy-file=/etc/kubernetes/abac")
-elsif @authz_mode && @authz_mode != ''
-  if scope.call_function('versioncmp', [@version, '1.23']) >= 0
-    # Enable node authorizer for k8s >= 1.23
-    daemon_args.push("--authorization-mode=Node,#{@authz_mode}")
-  else
-    daemon_args.push("--authorization-mode=#{@authz_mode}")
-  end
 end
 
 if @admission_plugins
@@ -51,12 +38,16 @@ if @admission_configuration
 end
 
 if scope.call_function('versioncmp', [@version, '1.16']) <= 0
+  daemon_args.push("--authorization-mode=RBAC")
   # disable the unprotected API port that used to be open on 127.0.0.1:8080
   # will be removed with >= 1.24
   daemon_args.push("--insecure-port=0")
   # has been deprecated, will be removed in a future release
   daemon_args.push("--logtostderr=#{@logtostderr}")
 elsif scope.call_function('versioncmp', [@version, '1.23']) >= 0
+  # Enable node authorizer for k8s >= 1.23
+  daemon_args.push("--authorization-mode=Node,RBAC")
+
   # From 1.20 changelog:
   # TokenRequest and TokenRequestProjection are now GA features. The following flags are required by the API server:
   #  --service-account-issuer, should be set to a URL identifying the API server that will be stable over the cluster lifetime.

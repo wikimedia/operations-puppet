@@ -18,7 +18,6 @@ class profile::kubernetes::master (
     Stdlib::Unixpath $ssl_cert_path=lookup('profile::kubernetes::master::ssl_cert_path'),
     # TODO: Remove ssl_key_path after all clusters are 1.23
     Stdlib::Unixpath $ssl_key_path=lookup('profile::kubernetes::master::ssl_key_path'),
-    String $authz_mode=lookup('profile::kubernetes::master::authz_mode'),
     Stdlib::Httpurl $prometheus_url=lookup('profile::kubernetes::master::prometheus_url', { 'default_value' => "http://prometheus.svc.${::site}.wmnet/k8s" }),
     Optional[String] $runtime_config=lookup('profile::kubernetes::master::runtime_config', { 'default_value' => undef }),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', { default_value => false }),
@@ -163,7 +162,6 @@ class profile::kubernetes::master (
         kubelet_client_cert     => $kubelet_client_cert,
         frontproxy_cert         => $frontproxy_cert,
         users                   => $_users,
-        authz_mode              => $authz_mode,
         allow_privileged        => $allow_privileged,
         version                 => $version,
         service_cluster_cidr    => $service_cluster_cidr,
