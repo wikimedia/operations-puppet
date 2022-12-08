@@ -80,8 +80,6 @@ root_grant_option = True
 # backup_segment_max_size = 2147483648
 
 
-# ========== Sample Logging Configuration ==========
-
 # Show debugging output in logs (sets DEBUG log level output)
 # debug = True
 
@@ -97,12 +95,17 @@ log_file = logfile.txt
 #trace_sqlalchemy = True
 
 [oslo_messaging_rabbit]
+rabbit_quorum_queue=true
 rabbit_retry_interval=1
 rabbit_retry_backoff=2
-rabbit_durable_queues=true
-amqp_durable_queues=true
-rabbit_ha_queues=true
-ssl = False
+
+kombu_reconnect_delay=0.1
+
+# We can't use ssl until/unless we build our own guest image
+#  with the cert installed.
+#ssl = True
+#ssl_ca_file = /etc/ssl/certs/wmf-ca-certificates.crt
+#ssl_version = TLSv1_2
 
 [oslo_messaging_notifications]
 
