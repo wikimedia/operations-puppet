@@ -37,7 +37,7 @@ profile::maps::osm_master::replicas:
     ip_address: '10.64.48.6'
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad.wmnet:4492/v1/events"
-profile::maps::osm_master::tegola_swift_container: "tegola-swift-new"
+profile::maps::osm_master::tegola_swift_container: "tegola-swift-eqiad-v002"
 profile::maps::osm_master::use_replication_slots: true
 
 # Could be as high as 32GB
