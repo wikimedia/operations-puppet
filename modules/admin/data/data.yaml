@@ -5473,7 +5473,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB8/dfbAQjsOu3EzPIosLsY0Dxz0LOMtW2dKPndAqDnh trokhymovych.mykola@gmail.com
-    expiry_date: 2022-12-15
+    expiry_date: 2023-06-30
     expiry_contact: diego@wikimedia.org
   siko:
     ensure: present
