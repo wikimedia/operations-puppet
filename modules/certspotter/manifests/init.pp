@@ -63,7 +63,7 @@ class certspotter(
 
     $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -start_at_end -logs ${ctlogslist} -state_dir ${statedir}"
     systemd::timer::job { 'certspotter':
-        ensure                  => present,
+        ensure                  => absent,
         description             => 'Run certspotter periodically to monitor for issuance of certificates',
         command                 => $cmd,
         send_mail               => true,
