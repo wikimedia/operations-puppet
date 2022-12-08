@@ -43,8 +43,8 @@ profile::zuul::server::conf:
 
 profile::zuul::merger::ferm_srange: >-
   (($LABS_NETWORKS
-  @resolve((contint1001.wikimedia.org contint1002.wikimedia.org contint2001.wikimedia.org), A)
-  @resolve((contint1001.wikimedia.org contint1002.wikimedia.org contint2001.wikimedia.org), AAAA)))
+  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org), A)
+  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org), AAAA)))
 
 profile::zuul::server::email_server: localhost
 
@@ -80,7 +80,7 @@ profile::kubernetes::deployment_server::services:
 
 profile::ci::migration::rsync_src_host: "contint2001.wikimedia.org"
 profile::ci::migration::rsync_dst_hosts:
-  - "contint1001.wikimedia.org"
+  - "contint1002.wikimedia.org"
 profile::ci::migration::rsync_data_dirs:
   - "/var/lib/jenkins/"
   - "/var/lib/zuul/"
