@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
-diff --git a/usr/lib/python3/dist-packages/trove/instance/models.py b/models.py
-index e00bff0..b6812e8 100644
---- a/usr/lib/python3/dist-packages/trove/instance/models.py
-+++ b/models.py
-@@ -255,16 +255,18 @@ class SimpleInstance(object):
+--- models.py.orig	2022-03-29 01:43:36.000000000 +0000
++++ models.py	2022-12-08 23:06:43.170992166 +0000
+@@ -262,18 +262,19 @@
  
      def get_visible_ip_addresses(self):
          """Returns IPs that will be visible to the user."""
@@ -25,7 +23,9 @@ index e00bff0..b6812e8 100644
 +                    if not ip_visible(addr_info['addr'], CONF.ip_regex,
 +                                      CONF.black_list_regex):
 +                        continue
+ 
+-            IPs.append(addr_info)
 +                IPs.append(addr_info['addr'])
  
-             IPs.append(addr_info)
+         return IPs
  
