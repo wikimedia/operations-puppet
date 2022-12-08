@@ -2606,8 +2606,8 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
 }
 
-# New restbase dev nodes T299437
-node /^restbase-dev200[1-3]\.codfw\.wmnet$/ {
+# New cassandra dev nodes T324113
+node /^(cassandra|restbase)-dev200[1-3]\.codfw\.wmnet$/ {
     role(insetup::core_platform)
 }
 
