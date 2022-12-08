@@ -1325,6 +1325,12 @@ host testreduce1001 {
     fixed-address testreduce1001.eqiad.wmnet;
 }
 
+host test-reimage2001 {
+    hardware ethernet aa:00:00:e8:73:78;
+    fixed-address test-reimage2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host testvm2001 {
     hardware ethernet aa:00:00:71:97:0d;
     fixed-address testvm2001.codfw.wmnet;
