@@ -2706,6 +2706,11 @@ node 'testreduce1001.eqiad.wmnet' {
     role(parsoid::testreduce)
 }
 
+# Test instances for cookbook testing
+node /^test-reimage2001\.codfw\.wmnet$/ {
+    role(test)
+}
+
 # Test instances for Ganeti test cluster
 node /^testvm200[1-9]\.codfw\.wmnet$/ {
     role(test)
