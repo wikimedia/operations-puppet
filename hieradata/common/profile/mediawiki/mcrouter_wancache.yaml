@@ -168,7 +168,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         port: 11214
         ssl: true
       shard17:
-        host: 10.192.48.79  # mc2035
+        host: 10.192.48.178  # mc2054
         port: 11214
         ssl: true
       shard18:
@@ -281,7 +281,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: 10.192.48.78  # mc2034
         port: 11211
       shard17:
-        host: 10.192.48.79  # mc2035
+        host: 10.192.48.178  # mc2054
         port: 11211
       shard18:
         host: 10.192.0.205  # mc2055
