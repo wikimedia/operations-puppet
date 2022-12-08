@@ -15,6 +15,7 @@
 # @param registration_token Token used to register the runner with the GitLab instance.
 # @param run_untagged Whether the runner should also run untagged jobs
 # @param tags Tags used to schedule matching jobs to this runner
+# @param environment Environment variables to configure for the GitLab runner.
 # @param enable_exporter Enable Prometheus metrics exporter
 # @param gitlab_runner_user User which is used to execute gitlab-runner daemon
 # @param restrict_firewall Enable default REJECT rule for all egress Docker traffic to wmnet
@@ -56,6 +57,7 @@ class profile::gitlab::runner (
     String                                      $registration_token = lookup('profile::gitlab::runner::registration_token'),
     Boolean                                     $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
     Array[String]                               $tags               = lookup('profile::gitlab::runner::tags'),
+    Wmflib::POSIX::Variables                    $environment        = lookup('profile::gitlab::runner::environment'),
     Boolean                                     $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
     String                                      $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
     Boolean                                     $restrict_firewall  = lookup('profile::gitlab::runner::restrict_firewall'),
@@ -207,7 +209,7 @@ class profile::gitlab::runner (
             docker_image            => $docker_image,
             docker_network          => $docker_network,
             ensure_buildkitd        => $ensure_buildkitd,
-            environment             => $proxy_variables,
+            environment             => $environment + $proxy_variables,
             gitlab_url              => $gitlab_url,
             runner_name             => $runner_name,
             exporter_listen_address => $exporter_listen_address,

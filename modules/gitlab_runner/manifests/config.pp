@@ -5,7 +5,7 @@ class gitlab_runner::config (
     String                   $docker_image            = 'docker-registry.wikimedia.org/buster:latest',
     String                   $docker_network          = 'gitlab-runner',
     Wmflib::Ensure           $ensure_buildkitd        = 'present',
-    Hash                     $environment             = {},
+    Wmflib::POSIX::Variables $environment             = {},
     Stdlib::HTTPSUrl         $gitlab_url              = 'https://gitlab.wikimedia.org/',
     String                   $runner_name             = 'GitLab Runner',
     Boolean                  $enable_exporter         = false,
