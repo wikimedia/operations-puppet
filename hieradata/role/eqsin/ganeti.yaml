@@ -3,5 +3,6 @@ profile::ganeti::nodes:
   - ganeti5002.eqsin.wmnet
   - ganeti5003.eqsin.wmnet
   - ganeti5004.eqsin.wmnet
+  - ganeti5005.eqsin.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.eqsin.wmnet
 profile::ganeti::ganeti3: true
