@@ -16,9 +16,9 @@ role::etcd::v3::kubernetes:
 role::etcd::v3::kubernetes::staging:
   target-q: TBD
 role::etcd::v3::ml_etcd:
-  target-q: 2023-01
+  target-q: 2023-1
 role::etcd::v3::ml_etcd::staging:
-  target-q: 2023-01
+  target-q: 2023-1
 role::lists:
   target-q: TBD
 role::configcluster:
@@ -32,7 +32,7 @@ role::installserver::light:
 role::webperf::xhgui:
   target-q: TBD
 role::pybaltest:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::ci::master:
   target-q: TBD
@@ -84,13 +84,13 @@ role::restbase::production:
 role::restbase::base:
   target-q: TBD
 role::ores:
-  target-q: 2023-02
+  target-q: 2023-2
 role::orespoolcounter:
-  target-q: 2023-02
+  target-q: 2023-2
 role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::mediawiki::jobrunner:
   target-q: TBD
@@ -99,7 +99,7 @@ role::mediawiki::appserver::api:
 role::swift::proxy:
   target-q: TBD
 role::lvs::balancer:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::spare::system:
   target-q: TBD
@@ -108,12 +108,12 @@ role::maps::replica:
 role::maps::master:
   target-q: TBD
 role::ping_offload:
-  target-q: 2022-04
+  target-q: 2022-4
   phab-task: 273509
 role::planet:
   target-q: TBD
 role::ganeti:
-  target-q: 2022-04
+  target-q: 2023-1
   phab-task: 311687,311686
 role::alerting_host:
   target-q: TBD
@@ -159,10 +159,10 @@ role::elasticsearch::cloudelastic:
   target-q: TBD
   phab-task: 289135
 role::cache::upload:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::cache::text:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::test:
   target-q: TBD
@@ -264,7 +264,7 @@ role::analytics_cluster::hadoop::client:
   target-q: TBD
   phab-task: 288804
 role::cluster::unprivmanagement:
-  target-q: 2023-01
+  target-q: 2023-1
 role::wmcs::db::wikireplicas::web_multiinstance:
   target-q: TBD
 role::wmcs::db::wikireplicas::analytics_multiinstance:
@@ -272,7 +272,7 @@ role::wmcs::db::wikireplicas::analytics_multiinstance:
 role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
   target-q: TBD
 role::openldap::corp:
-  target-q: 2022-04
+  target-q: 2022-4
   phab-task: 323820
 role::wmcs::openstack::eqiad1::labweb:
   target-q: TBD
@@ -390,7 +390,7 @@ role::analytics_cluster::hadoop::yarn:
 role::syslog::centralserver:
   target-q: TBD
 role::dns::auth:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::logging::opensearch::data:
   target-q: TBD
@@ -407,7 +407,7 @@ role::wmcs::ceph::mon:
 role::wmcs::monitoring:
   target-q: TBD
 role::dnsbox:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::grafana:
   target-q: TBD
@@ -423,12 +423,12 @@ role::orchestrator:
   target-q: TBD
   phab-task: 298959
 role::durum:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 305589
 role::flowspec:
   target-q: TBD
 role::thanos::backend:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 288937
 role::requesttracker:
   target-q: TBD
@@ -439,7 +439,7 @@ role::gerrit:
 role::dragonfly::supernode:
   target-q: TBD
 role::puppetdb:
-  target-q: 2023-01
+  target-q: 2023-1
 role::puppetmaster::frontend:
   target-q: TBD
   phab-task: 285086
@@ -447,9 +447,9 @@ role::puppetmaster::backend:
   target-q: TBD
   phab-task: 285086
 role::sretest:
-  target-q: 2023-03
+  target-q: 2023-3
 role::wikidough:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 305589
 role::kerberos::kdc:
   target-q: TBD
@@ -463,7 +463,7 @@ role::search::loader:
 role::chartmuseum:
   target-q: TBD
 role::acme_chief:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 321309
 role::mw_rc_irc:
   target-q: TBD
@@ -472,25 +472,25 @@ role::aphlict:
 role::phabricator:
   target-q: TBD
 role::insetup::search_platform:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::core_platform:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup_noferm:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::data_persistence:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::serviceops:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::observability:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::infrastructure_foundations:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::data_engineering:
-  target-q: 2023-01
+  target-q: 2023-1
 role::insetup::traffic:
-  target-q: 2023-01
+  target-q: 2023-1
 role::ml_cache::storage:
-  target-q: 2023-01
+  target-q: 2023-1
   phab-task: 324542
 role::apifeatureusage::logstash:
   target-q: TBD
