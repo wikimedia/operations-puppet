@@ -83,9 +83,9 @@ class puppetdb::app(
         content => template('puppetdb/etc/default/puppetdb.erb'),
     }
 
-    service { 'puppetdb':,
-        ensure => running,
-        enable => true,
+    systemd::service { 'puppetdb':
+        override => true,
+        content  => "[Service]\nRestart=on-failure\nRestartSec=5s\n"
     }
 
     ## Configuration
