@@ -1,0 +1,2 @@
+# Cassandra rack equivalencies are: A_D, B_E & C_F
+profile::cassandra::rack: 'C_F'
