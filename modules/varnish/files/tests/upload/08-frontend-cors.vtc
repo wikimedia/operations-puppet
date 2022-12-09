@@ -1,8 +1,10 @@
 varnishtest "CORS"
 
 server s1 {
+    # The first OPTIONS test doesn't reach s1 since it returns a synth before
+    # hitting any backend.
     rxreq
-    txresp
+    txresp -status 502
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -24,4 +26,13 @@ client c1 {
     expect resp.http.Access-Control-Allow-Headers == "Range,X-Wikimedia-Debug"
     expect resp.http.Access-Control-Allow-Methods == "GET, HEAD, OPTIONS"
     expect resp.http.Access-Control-Max-Age == "86400"
+
+    # We should still serve CORS on error pages
+    txreq -url "/test2" -hdr "Origin: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 502
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Access-Control-Expose-Headers == "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache"
+    expect resp.http.Timing-Allow-Origin == "*"
 } -run
