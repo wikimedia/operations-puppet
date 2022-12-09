@@ -1,3 +1,6 @@
+# These settings are the default values for 100% of cloud-vps VMs in all
+# deployments, but can be overridden.
+
 lookup_options:
   classes:
     merge: unique

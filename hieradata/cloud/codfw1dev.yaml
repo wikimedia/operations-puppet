@@ -1,3 +1,5 @@
+# These settings are applied to all cloud-vps VMs in the codfw1dev deployment.
+
 # BEWARE: this file has been added to the production-realm
 # hieradata, but it's not really for it; it is used by a different realm instead
 # and the lookup logic is different than everywhere else.
