@@ -60,4 +60,24 @@ class profile::puppetmaster::common (
         enable  => false,
         require => Package['puppet'],
     }
+
+    # Clean up facts for idle hosts. This is just a cache so there's no danger of
+    #  premature deletion.
+    systemd::timer::job { 'puppet_fact_cleanup':
+        ensure      => present,
+        description => 'clean up fact cache for absent hosts',
+        user        => 'puppet',
+        command     => "/usr/bin/find  /var/lib/puppet/yaml -mtime +7 -exec rm {} \\;",
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
+    }
+
+    # Clean up reports for idle hosts. This is just a cache so there's no danger of
+    #  premature deletion.
+    systemd::timer::job { 'puppet_report_cleanup':
+        ensure      => present,
+        description => 'clean up puppet reports cache for absent hosts',
+        user        => 'puppet',
+        command     => "/usr/bin/find  /var/lib/puppet/reports -mtime +14 -exec rm {} \\;",
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
+    }
 }
