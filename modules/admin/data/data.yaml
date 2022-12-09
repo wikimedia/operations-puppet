@@ -6456,3 +6456,7 @@ ldap_only_users:
     ensure: present
     realname: Jennifer Hancock
     email: jhancock-ctr@wikimedia.org
+  sdelbecque:
+    ensure: present
+    realname: Stephanie Delbecque
+    email: sdelbecque@wikimedia.org
