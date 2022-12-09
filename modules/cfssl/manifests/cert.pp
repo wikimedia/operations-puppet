@@ -1,9 +1,28 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary a resource for creating csr json files
+# @param common_name th common name and SNI for the certificate
+# @param names an array of values used for the certificate subject
+# @param key the key algorithm and size
+# @param ensure the ensure parameter
+# @param owner the user to use as the owner of files
+# @param group the user to use as the owner of files
+# @param auto_renew if true we will auto_renew the certificate
+# @param renew_seconds renew the certificate if its due to expire in this many seconds
+# @param provide_chain provide the certificate chain in the output dir
+# @param environment environment to use when running commands
+# @param label the cfssl label to use, this is essentially the CA
+# @param profile the cfssl profile to use
+# @param notify_service a service to notify when the certificate changes
+# @param outdir specify a specific directory to write all certificate files to
+# @param tls_cert the tls client certificate use when requesting signing
+# @param tls_key the tls client key use when requesting signing
+# @param tls_remote_ca the CA bundle used for connecting to the pki service
+# @param signer_config the configuration used for signing (only for advance usage)
+# @param hosts an array of hosts to be added to the SNI
 define cfssl::cert (
     String                         $common_name    = $title,
     Array[Cfssl::Name]             $names          = [],
-    Cfssl::Key                     $key            = {'algo' => 'ecdsa', 'size' => 256},
+    Cfssl::Key                     $key            = { 'algo' => 'ecdsa', 'size' => 256 },
     Wmflib::Ensure                 $ensure         = 'present',
     String                         $owner          = 'root',
     String                         $group          = 'root',
@@ -41,7 +60,7 @@ define cfssl::cert (
         default => $tls_remote_ca,
     }
     # use the client config by default
-    $_signer_config = pick($signer_config, {'config_file' => $cfssl::client::conf_file})
+    $_signer_config = pick($signer_config, { 'config_file' => $cfssl::client::conf_file })
 
     if $key['algo'] == 'rsa' and $key['size'] < 2048 {
         fail('RSA keys must be either 2048, 4096 or 8192 bits')
@@ -65,7 +84,7 @@ define cfssl::cert (
     }
 
     unless defined(File[$_outdir]) {
-        file {$_outdir:
+        file { $_outdir:
             ensure  => stdlib::ensure($ensure, 'directory'),
             owner   => $owner,
             group   => $group,
@@ -122,14 +141,14 @@ define cfssl::cert (
             undef   => undef,
             default => Service[$notify_service],
         }
-        exec{"Generate cert ${title}":
+        exec { "Generate cert ${title}":
             command     => $gen_command,
             environment => $environment,
             unless      => $test_command,
             notify      => $_notify_service,
             require     => Cfssl::Csr[$csr_json_path],
         }
-        exec{"Generate cert ${title} refresh":
+        exec { "Generate cert ${title} refresh":
             command     => $gen_command,
             environment => $environment,
             refreshonly => true,
@@ -137,7 +156,7 @@ define cfssl::cert (
             subscribe   => File[$csr_json_path],
         }
         if $auto_renew {
-            exec {"renew certificate - ${title}":
+            exec { "renew certificate - ${title}":
                 command     => $sign_command,
                 environment => $environment,
                 unless      => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
@@ -193,7 +212,7 @@ define cfssl::cert (
             true    => [Exec["renew certificate - ${title}"], File[$cert_chain_path, $cert_path]],
             default => File[$cert_chain_path, $cert_path],
         }
-        exec {"create chained cert ${cert_chain_path}":
+        exec { "create chained cert ${cert_chain_path}":
             command   => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
             unless    => $test_chained,
             notify    => $_notify_service,
