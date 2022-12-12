@@ -12,15 +12,16 @@ class role::cluster::management {
     include profile::base::production
     include profile::base::firewall
 
-    include profile::spicerack
-    include profile::homer
-    include profile::spicerack::reposync
-
     include profile::cumin::master
     include profile::ipmi::mgmt
     include profile::access_new_install
     include profile::conftool::client
     include profile::conftool::dbctl_client
+
+    include profile::spicerack
+    include profile::spicerack::reposync
+    include profile::homer
+
     include profile::debdeploy
     include profile::httpbb
     include profile::pwstore

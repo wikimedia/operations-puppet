@@ -1,0 +1,26 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+Host restricted.bastion.wmcloud.org
+    ProxyJump <%= @production_bastion_host %>
+    IdentityFile /etc/keyholder.d/cumin_openstack_master
+
+Host *.eqiad1.wmflabs.org *.eqiad1.wmcloud.org *.eqiad1.toolforge.org *.eqiad1.wmflabs *.eqiad1.wikimedia.cloud
+    ProxyJump restricted.bastion.wmcloud.org
+
+Host *.codfw1dev.wmflabs.org *.codfw1dev.wmcloud.org *.codfw1dev.toolforge.org *.codfw1dev.wmflabs *.codfw1dev.wikimedia.cloud
+    ProxyJump bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
+
+Host *.wmflabs.org *.wmcloud.org *.toolforge.org *.wmflabs *.wikimedia.cloud
+    IdentityFile /etc/keyholder.d/cumin_openstack_master
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    GlobalKnownHostsFile /dev/null
+    LogLevel QUIET
+    # In case there is no Openstack deployment name in the FQDN, use the eqiad1 one.
+    ProxyJump restricted.bastion.wmcloud.org
+
+Host *
+    IdentityFile /etc/keyholder.d/cloud_cumin_master
+    BatchMode yes
+    ConnectTimeout 2
+    StrictHostKeyChecking yes
+    UserKnownHostsFile /dev/null
