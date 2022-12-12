@@ -71,6 +71,45 @@ profile::pki::multirootca::intermediates:
       - 'key encipherment'
       - 'server auth'
       - 'client auth'
+  wikikube:
+    # Main CA for the wikikube kubernetes cluster
+    # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
+    ocsp_port: 20010
+    profiles:
+      # Keys with this profile are used to sign/verify service account tokens so
+      # there is no need for server or client auth.
+      service-account-management:
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+  wikikube_front_proxy:
+    # Separate CA for the front proxy, using the same as for client-auth won't work:
+    # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
+    # Kubernetes will only use the default profile for client auth certs
+    ocsp_port: 20011
+  wikikube_staging:
+    # Main CA for the wikikube staging kubernetes cluster
+    # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
+    ocsp_port: 20020
+    # Short expiry for staging
+    default_expiry: '24h'
+    profiles:
+      # Keys with this profile are used to sign/verify service account tokens so
+      # there is no need for server or client auth.
+      service-account-management:
+        # Short expiry for staging
+        expiry: '24h'
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+  wikikube_staging_front_proxy:
+    # Separate CA for the front proxy, using the same as for client-auth won't work:
+    # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
+    # Kubernetes will only use the default profile for client auth certs
+    ocsp_port: 20021
+    # Short expiry for staging
+    default_expiry: '24h'
+
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
 profile::pki::multirootca::db_host: 'm1-master.eqiad.wmnet'
