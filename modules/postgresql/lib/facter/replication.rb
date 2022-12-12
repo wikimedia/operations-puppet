@@ -13,7 +13,7 @@ end
 
 Facter.add('postgres_replica_initialised') do
   confine do
-    Facter::Util::Resolution.which('psql')
+    Facter::Util::Resolution.which('psql') &&
     Facter::Util::Resolution.which('sudo')
   end
   setcode do
