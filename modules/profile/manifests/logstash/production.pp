@@ -189,6 +189,34 @@ class profile::logstash::production (
     consumer_threads                      => 3,
   }
 
+  logstash::input::kafka { 'mediawiki-http-accesslog-eqiad':
+    kafka_cluster_name                    => 'logging-eqiad',
+    topic                                 => 'mediawiki.http.accesslog',
+    group_id                              => $input_kafka_consumer_group_id,
+    tags                                  => ['input-kafka-mediawiki-http-accesslog-eqiad', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
+  }
+
+  logstash::input::kafka { 'mediawiki-http-accesslog-codfw':
+    kafka_cluster_name                    => 'logging-codfw',
+    topic                                 => 'mediawiki.http.accesslog',
+    group_id                              => $input_kafka_consumer_group_id,
+    tags                                  => ['input-kafka-mediawiki-http-accesslog-codfw', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
+  }
+
   # Collect all EventGate instance error.validation topics into logstash.
   # Maps logstash::input::kafka title to a kafka cluster and topic to consume.
   $eventgate_validation_error_logstash_inputs = {
