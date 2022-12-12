@@ -266,13 +266,13 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: 10.192.32.161 # mc2029
         port: 11211
       shard12:
-        host: 10.192.32.162 # mc2030
+        host: 10.192.32.81   # mc2049
         port: 11211
       shard13:
-        host: 10.192.32.82 #mc2050
+        host: 10.192.32.82   # mc2050
         port: 11211
       shard14:
-        host: 10.192.48.74  # mc2051
+        host: 10.192.48.74   # mc2051
         port: 11211
       shard15:
         host: 10.192.48.176  # mc2052
@@ -284,5 +284,5 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: 10.192.48.178  # mc2054
         port: 11211
       shard18:
-        host: 10.192.0.205  # mc2055
+        host: 10.192.0.205   # mc2055
         port: 11211
