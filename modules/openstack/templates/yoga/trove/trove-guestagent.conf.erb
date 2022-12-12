@@ -93,11 +93,6 @@ log_dir = /var/log/trove/
 log_file = logfile.txt
 # log_config_append = /etc/trove/trove-logging-guestagent.conf
 
-[profiler]
-# If False fully disable profiling feature.
-#enabled = False
-# If False doesn't trace SQL requests.
-#trace_sqlalchemy = True
 
 [oslo_messaging_rabbit]
 rabbit_quorum_queue=true
@@ -112,66 +107,16 @@ kombu_reconnect_delay=0.1
 #ssl_ca_file = /etc/ssl/certs/wmf-ca-certificates.crt
 #ssl_version = TLSv1_2
 
-[oslo_messaging_notifications]
-
-#
-# From oslo.messaging
-#
-
-# The Driver(s) to handle sending notifications. Possible
-# values are messaging, messagingv2, routing, log, test, noop
-# (multi valued)
-# Deprecated group/name - [DEFAULT]/notification_driver
-#driver =
-
-# A URL representing the messaging driver to use for
-# notifications. If not set, we fall back to the same
-# configuration used for RPC. (string value)
-# Deprecated group/name - [DEFAULT]/notification_transport_url
-#transport_url = <None>
-
-# AMQP topic used for OpenStack notifications. (list value)
-# Deprecated group/name - [rpc_notifier2]/topics
-# Deprecated group/name - [DEFAULT]/notification_topics
-#topics = notifications
-
-# The maximum number of attempts to re-send a notification
-# message which failed to be delivered due to a recoverable
-# error. 0 - No retry, -1 - indefinite (integer value)
-#retry = -1
-
 # ========== Datastore Specific Configuration Options ==========
 
 [mysql]
 docker_image = quay.io/wikimedia-cloud-services/mysql
 device_path = /dev/sdb
 
-# For mysql, the following are the defaults for backup, and restore:
-# backup_strategy = InnoBackupEx
-# backup_namespace = trove.guestagent.strategies.backup.mysql_impl
-# restore_namespace = trove.guestagent.strategies.restore.mysql_impl
-# Default configuration for mysql replication
-# replication_strategy = MysqlBinlogReplication
-# replication_namespace = trove.guestagent.strategies.replication.mysql_binlog
-# replication_user = slave_user
-# replication_password = slave_password
-
-# Users to ignore for user create/list/delete operations
-# ignore_users = os_admin
-
-# Databases to ignore for db create/list/delete operations
-# ignore_dbs = mysql, information_schema, performance_schema
 
 [mariadb]
 docker_image = quay.io/wikimedia-cloud-services/mariadb
 device_path = /dev/sdb
-
-[vertica]
-device_path = /dev/sdb
-# For vertica, following are the defaults needed:
-# mount_point = /var/lib/vertica
-# readahead_size = 2048
-# guestagent_strategy = trove.common.strategies.cluster.experimental.vertica.guestagent.VerticaGuestAgentStrategy
 
 [redis]
 device_path = /dev/sdb
@@ -189,30 +134,6 @@ docker_image = quay.io/wikimedia-cloud-services/postgres
 device_path = /dev/sdb
 backup_namespace = trove.guestagent.strategies.backup.mysql_impl
 restore_namespace = trove.guestagent.strategies.restore.mysql_impl
-
-[couchbase]
-device_path = /dev/sdb
-backup_namespace = trove.guestagent.strategies.backup.experimental.couchbase_impl
-restore_namespace = trove.guestagent.strategies.restore.experimental.couchbase_impl
-
-[cassandra]
-device_path = /dev/sdb
-backup_namespace = trove.guestagent.strategies.backup.experimental.cassandra_impl
-restore_namespace = trove.guestagent.strategies.restore.experimental.cassandra_impl
-
-[db2]
-device_path = /dev/sdb
-# For db2, the following are the defaults for backup, and restore:
-# backup_strategy = DB2OfflineBackup
-# backup_namespace = trove.guestagent.strategies.backup.experimental.db2_impl
-# restore_namespace = trove.guestagent.strategies.restore.experimental.db2_impl
-
-[couchdb]
-device_path = /dev/sdb
-#For CouchDB, the following are the defaults for backup and restore:
-# backup_strategy = CouchDBBackup
-# backup_namespace = trove.guestagent.strategies.backup.experimental.couchdb_impl
-# restore_namespace = trove.guestagent.strategies.restore.experimental.couchdb_impl
 
 [guest_agent]
 device_path = /dev/sdb
