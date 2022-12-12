@@ -98,7 +98,11 @@ class superset(
     }
 
     if $worker_class == 'gevent' {
-        ensure_packages(['python-gevent'])
+        if debian::codename::ge('bullseye') {
+            ensure_packages(['python3-gevent'])
+        } else {
+            ensure_packages(['python-gevent'])
+        }
     }
 
     $deployment_dir = '/srv/deployment/analytics/superset/deploy'
