@@ -1,1 +1,3 @@
 # add here, each on a separate line, the name of the jobs to be ignored by monitoring
+contint1001.wikimedia.org-Monthly-1st-Sun-productionEqiad-contint
+contint1001.wikimedia.org-Monthly-1st-Sun-productionEqiad-var-lib-jenkins-config
