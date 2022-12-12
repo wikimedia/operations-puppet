@@ -1,0 +1,140 @@
+# reduce escape timeout delay, so that the cursor changes faster 
+set keyseq-timeout 200
+# set the main editing mode to vi so we can use the vi-*-mode-string functions
+set editing-mode vi
+# enable mode strings in prompt
+set show-mode-in-prompt on
+# vi-insert mode use a bar cursor
+set vi-ins-mode-string \1\e[6 q\2
+# vi-command use a block cursor
+set vi-cmd-mode-string \1\e[2 q\2
+# don't reassign keys based on the stty settings, this breaks emacs C-w
+set bind-tty-special-chars off
+# Based on this wonderfully helpful post,
+# https://stackoverflow.com/a/38989262/1236063 the key map vi-insert is mostly
+# a subset of emacs mode, so add all the mappings from emacs mode into
+# vi-insert
+#
+# INPUTRC=/dev/null bash -ic 'bind -pm emacs' |
+#   grep -vE '^#|: (do-lowercase-version|self-insert)$' |
+#   sort > emacs
+#
+set keymap vi-insert
+# unbind \C-x so it is not bound by readline to self-insert
+"\C-x":
+"\C-a": beginning-of-line
+"\C-?": backward-delete-char
+"\C-b": backward-char
+"\C-]": character-search
+"\C-d": delete-char
+"\C-e": end-of-line
+"\C-f": forward-char
+"\C-g": abort
+"\C-h": backward-delete-char
+"\C-i": complete
+"\C-j": accept-line
+"\C-k": kill-line
+"\C-l": clear-screen
+"\C-m": accept-line
+"\C-n": next-history
+"\C-o": operate-and-get-next
+"\C-p": previous-history
+"\C-q": quoted-insert
+"\C-r": reverse-search-history
+"\C-@": set-mark
+"\C-s": forward-search-history
+"\C-t": transpose-chars
+"\C-_": undo
+"\C-u": unix-line-discard
+"\C-v": quoted-insert
+"\C-w": unix-word-rubout
+"\C-x$": possible-variable-completions
+"\C-x\C-?": backward-kill-line
+"\C-x\C-e": edit-and-execute-command
+"\C-x\C-g": abort
+"\C-x\C-r": re-read-init-file
+"\C-x\C-u": undo
+"\C-x\C-v": display-shell-version
+"\C-x\C-x": exchange-point-and-mark
+"\C-xe": call-last-kbd-macro
+"\C-x)": end-kbd-macro
+"\C-xg": glob-list-expansions
+"\C-x*": glob-expand-word
+"\C-x!": possible-command-completions
+"\C-x/": possible-filename-completions
+"\C-x@": possible-hostname-completions
+"\C-x~": possible-username-completions
+"\C-x(": start-kbd-macro
+"\C-y": yank
+"\e$": complete-variable
+"\e0": digit-argument
+"\e[1;3C": forward-word
+"\e[1;3D": backward-word
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+"\e1": digit-argument
+"\e[200~": bracketed-paste-begin
+"\e2": digit-argument
+"\e[2~": overwrite-mode
+"\e[3;5~": kill-word
+"\e[3~": delete-char
+"\e3": digit-argument
+"\e4": digit-argument
+"\e5": digit-argument
+"\e6": digit-argument
+"\e7": digit-argument
+"\e8": digit-argument
+"\e9": digit-argument
+"\e[A": previous-history
+"\eb": backward-word
+"\e<": beginning-of-history
+"\e[B": next-history
+"\e\C-?": backward-kill-word
+"\ec": capitalize-word
+"\e\C-]": character-search-backward
+"\e\C-e": shell-expand-line
+"\e[C": forward-char
+"\e\C-g": abort
+"\e\C-h": backward-kill-word
+"\e\C-i": dynamic-complete-history
+"\e!": complete-command
+"\e/": complete-filename
+"\e@": complete-hostname
+"\e{": complete-into-braces
+"\e~": complete-username
+"\e\C-r": revert-line
+"\e\C-y": yank-nth-arg
+"\e[D": backward-char
+"\e\\": delete-horizontal-space
+"\e-": digit-argument
+"\ed": kill-word
+"\e\e": complete
+"\e>": end-of-history
+"\e[F": end-of-line
+"\ef": forward-word
+"\eg": glob-complete-word
+"\e[H": beginning-of-line
+"\e^": history-expand-line
+"\e#": insert-comment
+"\e*": insert-completions
+"\e.": insert-last-argument
+"\e_": insert-last-argument
+"\el": downcase-word
+"\en": non-incremental-forward-search-history
+"\eOA": previous-history
+"\eOB": next-history
+"\eOC": forward-char
+"\eOD": backward-char
+"\eOF": end-of-line
+"\eOH": beginning-of-line
+"\ep": non-incremental-reverse-search-history
+"\e=": possible-completions
+"\e?": possible-completions
+"\er": revert-line
+"\e ": set-mark
+"\e&": tilde-expand
+"\et": transpose-words
+"\eu": upcase-word
+"\e.": yank-last-arg
+"\e_": yank-last-arg
+"\ey": yank-pop

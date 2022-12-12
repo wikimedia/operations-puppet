@@ -1,0 +1,6 @@
+#!/bin/bash
+exec docker run --rm \
+	--mount type=bind,src=$PWD/inputrc,dst=/etc/inputrc \
+	--mount type=bind,src=$PWD/bashrc,dst=/etc/bash.bashrc \
+	-e 'PS1=bash-rsi\n$ ' \
+	-it debian:stable-slim bash
