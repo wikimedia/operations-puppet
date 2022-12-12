@@ -2516,7 +2516,7 @@ blackbox_smoke_hosts:
     site: ulsfo
     rack: "103.02.23"
 
-  ganeti5003.eqsin.wmnet:
+  ganeti5007.eqsin.wmnet:
     realm: production
     site: eqsin
     rack: "603"
