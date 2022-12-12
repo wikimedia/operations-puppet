@@ -6464,3 +6464,7 @@ ldap_only_users:
     ensure: present
     realname: Kwaku Addo Ofori
     email: kofori@wikimedia.org
+  muja:
+    ensure: present
+    realname: Muhammad Jaziraly
+    email: muhammad.jaziraly@wikimedia.de
