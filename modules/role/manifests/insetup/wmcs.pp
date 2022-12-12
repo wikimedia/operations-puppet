@@ -7,4 +7,5 @@ class role::insetup::wmcs {
 
     include profile::base::production
     include profile::base::firewall
+    include profile::base::cloud_production
 }

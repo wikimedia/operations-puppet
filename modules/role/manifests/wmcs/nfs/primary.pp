@@ -6,6 +6,7 @@ class role::wmcs::nfs::primary {
     include ::profile::base::production
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
+    include ::profile::base::cloud_production
     include ::profile::wmcs::nfs::ferm
     include ::profile::wmcs::nfs::primary
     include ::profile::wmcs::nfs::maintain_dbusers

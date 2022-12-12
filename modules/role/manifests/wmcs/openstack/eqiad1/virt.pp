@@ -5,6 +5,7 @@ class role::wmcs::openstack::eqiad1::virt {
     system::role { $name: }
     include profile::base::production
     # include profile::base::firewall
+    include profile::base::cloud_production
     include profile::ceph::client::rbd_libvirt
     include profile::openstack::eqiad1::clientpackages
     include profile::openstack::eqiad1::envscripts

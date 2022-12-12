@@ -6,6 +6,7 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     include ::profile::base::production
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
+    include ::profile::base::cloud_production
 
     # Currently we run both nutcracker and mcrouter.  Nutcracker is for
     #  the soon-to-be-moved wikitech/mediawiki install;

@@ -2,6 +2,7 @@ class role::wmcs::openstack::eqiad1::control {
     system::role { $name: }
     include profile::base::production
     include profile::base::firewall
+    include profile::base::cloud_production
     include profile::openstack::eqiad1::metrics
     include profile::openstack::eqiad1::observerenv
 
