@@ -1,0 +1,177 @@
+# SPDX-License-Identifier: Apache-2.0
+
+profile::wmcs::cloudlb::haproxy::config:
+  designate-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 29001
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: 9001
+      servers: "%{alias('profile::openstack::eqiad1::designate_hosts')}"
+    healthcheck:
+      method: HEAD
+      path: /
+
+  # Note that because keystone admin uses a weird, extremely-high-number
+  #  port by default, we need to use a non-standard port for its
+  #  tls port as well: 25357 rather than the more expected 225357
+  keystone-admin-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 25357
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::keystone::admin_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  keystone-public-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 5000
+      - port: 25000
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::keystone::public_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  glance-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 29292
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::glance::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  cinder-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 28776
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::cinder::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  trove-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 28779
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::base::trove::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  heat-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 28004
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::heat::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  magnum-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 29511
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::magnum::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  neutron-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 29696
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::neutron::bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  nova-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 28774
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::nova::osapi_compute_listen_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: HEAD
+      path: /
+
+  placement-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 28778
+        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::placement::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
+  nova-metadata-api:
+    type: http
+    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 8775
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::nova::metadata_listen_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /healthcheck
+
+  mysql:
+    type: tcp
+    open_firewall: false
+    frontends:
+      - port: 3306
+    backend:
+      port: "%{alias('profile::openstack::eqiad1::galera::listen_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      primary_host: "%{lookup('profile::openstack::eqiad1::galera::primary_host')}"
+    healthcheck:
+      options:
+        - option httpchk
+        - http-check connect
+        - http-check send meth GET uri /
+        - http-check expect status 200

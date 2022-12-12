@@ -358,9 +358,8 @@ node /^cloudgw200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::cloudgw)
 }
 
-# we may repurpose this soon for a PoC (cloudlb)
 node 'cloudgw2001-dev.codfw.wmnet' {
-    role(spare::system)
+    role(wmcs::cloudlb)
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {

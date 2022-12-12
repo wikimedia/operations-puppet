@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+# modules/cloudlb/templates/haproxy/conf.d/tcp-service.cfg.erb
+
+listen <%= @title %>
+<%- @frontends.each do |frontend| -%>
+    bind *:<%= frontend['port'] %>
+<%- end -%>
+    mode tcp
+    option tcpka
+<%- if !@healthcheck_options -%>
+    <%= fail("the haproxy config entry lacks the 'healthcheck options' key, mandatory for TCP services") -%>
+<% end -%>
+<% @healthcheck_options.each do |option| -%>
+    <%= option %>
+<% end -%>
+<% @servers.each do |server| -%>
+<% if @primary_host and @primary_host != server -%>
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 inter 2s rise 2 fall 4 backup
+<% else -%>
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 on-marked-up shutdown-backup-sessions inter 2s rise 2 fall 4
+<% end -%>
+<% end -%>
+    timeout  client 90m
+    timeout  server 90m
+    acl is-blocked-ip src -f /etc/haproxy/ipblocklist.txt
+    tcp-request connection reject if is-blocked-ip
+    # log /dev/log local0 debug
