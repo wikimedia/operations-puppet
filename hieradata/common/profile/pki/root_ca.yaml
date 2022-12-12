@@ -11,6 +11,10 @@ profile::pki::root_ca::intermediates:
   - kafka
   - cloud_wmnet_ca
   - etcd
+  - wikikube
+  - wikikube_front_proxy
+  - wikikube_staging
+  - wikikube_staging_front_proxy
 profile::pki::root_ca::common_name: 'Wikimedia_Internal_Root_CA'
 profile::pki::root_ca::key_params:
    algo: ecdsa
