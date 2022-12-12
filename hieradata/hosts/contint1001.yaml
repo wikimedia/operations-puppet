@@ -1,6 +1,0 @@
-profile::ci::jenkins::service_monitor: false
-profile::zuul::server::service_enable: false
-profile::zuul::server::service_ensure: stopped
-
-# Zuul merger is "running" in role::ci::master
-profile::zuul::merger::ensure_service: stopped
