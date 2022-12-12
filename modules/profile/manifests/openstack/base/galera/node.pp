@@ -48,7 +48,7 @@ class profile::openstack::base::galera::node(
     ferm::service { 'galera-access':
         proto  => 'tcp',
         port   => 3306,
-        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${cinder_backup_nodes.join(' ')} ${labweb_hosts.join(' ')}))",
+        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${cinder_backup_nodes.join(' ')} ${labweb_hosts.join(' ')})))",
     }
 
     nrpe::monitor_service { 'check_galera_mariadbd_process':
