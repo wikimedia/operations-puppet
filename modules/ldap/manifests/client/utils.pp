@@ -9,7 +9,7 @@ class ldap::client::utils($ldapconfig) {
     if debian::codename::le('buster') {
         ensure_packages(['python-pycurl', 'python-pyldap'])
     }
-    ensure_packages(['python3-pycurl', 'python3-pyldap', 'python3-bitu-ldap'])
+    ensure_packages(['python3-pycurl', 'python3-pyldap'])
 
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',

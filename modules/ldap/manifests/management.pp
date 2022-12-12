@@ -10,7 +10,6 @@ class ldap::management(
     ensure_packages([
         'ldapvi',
         'python3-yaml',
-        'python3-bitu-ldap'
     ])
 
     apt::package_from_component { 'python3-ldap':
