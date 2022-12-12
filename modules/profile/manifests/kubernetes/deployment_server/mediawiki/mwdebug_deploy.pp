@@ -37,14 +37,18 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
     }
     # Directory where the file lock and error file are stored.
     file { '/var/lib/deploy-mwdebug':
-        ensure => directory,
-        owner  => 'mwbuilder',
-        group  => 'deployment',
-        mode   => '0775'
+        ensure  => absent,
+        owner   => 'mwbuilder',
+        group   => 'deployment',
+        mode    => '0775',
+        force   => true,
+        recurse => true,
+        purge   => true
     }
 
     # Add a script that updates the mediawiki images.
     file { '/usr/local/sbin/deploy-mwdebug':
+        ensure => absent,
         source => 'puppet:///modules/profile/kubernetes/deployment_server/deploy-mwdebug.py',
         owner  => 'root',
         group  => 'root',
