@@ -152,3 +152,12 @@ scap::dsh::groups:
     hosts:
       - contint1002.wikimedia.org
       - contint2001.wikimedia.org
+  jenkins-ci:
+    hosts:
+      - contint1002.wikimedia.org
+      - contint2001.wikimedia.org
+      - contint2002.wikimedia.org
+  jenkins-rel:
+    hosts:
+      - releases1002.eqiad.wmnet
+      - releases2002.codfw.wmnet
