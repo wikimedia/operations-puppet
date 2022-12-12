@@ -30,12 +30,14 @@ define systemd::timer(
     Integer $splay = 0,
     Systemd::Timer::Interval $accuracy = '15sec',
 ) {
-    $timer_intervals.each |$schedule| {
-        # Each Schedule has either an Interval (which is already validated by
-        # regex) or a Datetime.
-        $interval = $schedule['interval']
-        if $interval !~ Systemd::Timer::Interval {
-            generate('/usr/bin/systemd-analyze', 'calendar', $interval)
+    if $ensure == 'present' {
+        $timer_intervals.each |$schedule| {
+            # Each Schedule has either an Interval (which is already validated by
+            # regex) or a Datetime.
+            $interval = $schedule['interval']
+            if $interval !~ Systemd::Timer::Interval {
+                generate('/usr/bin/systemd-analyze', 'calendar', $interval)
+            }
         }
     }
 
