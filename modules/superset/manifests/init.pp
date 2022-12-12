@@ -70,30 +70,39 @@
 # [*data_cache_uri*]
 #   If specified, Superset uses this to cache the results of data queries.
 #
-class superset(
-    $port               = 9080,
-    $database_uri       = 'sqlite:////var/lib/superset/superset.db',
-    $workers            = 1,
-    $worker_class       = 'sync',
-    $admin_user         = 'admin',
-    $admin_password     = 'admin',
-    $secret_key         = 'not_really_a_secret_key',
-    $password_mapping   = undef,
-    $auth_type          = undef,
-    $auth_settings      = undef,
-    $statsd             = undef,
-    $deployment_user    = 'analytics_deploy',
-    $gunicorn_app       = 'superset:app',
-    $enable_cas         = false,
-    $metadata_cache_uri = undef,
-    $data_cache_uri     = undef,
+# [*filter_state_cache_uri*]
+#   If specified, Superset uses this to cache its dashboard filter state.
+#
+# [*explore_form_data_cache_uri*]
+#   If specified, Superset uses this to cache the explorer form data.
+#
+class superset (
+    Stdlib::Port $port                            = 9080,
+    String $database_uri                          = 'sqlite:////var/lib/superset/superset.db',
+    Integer $workers                              = 1,
+    String $worker_class                          = 'sync',
+    String $admin_user                            = 'admin',
+    String $admin_password                        = 'admin',
+    String $secret_key                            = 'not_really_a_secret_key',
+    Optional[Hash] $password_mapping              = undef,
+    Optional[String] $auth_type                   = undef,
+    Optional[Hash] $auth_settings                 = undef,
+    Optional[String] $statsd                      = undef,
+    String $deployment_user                       = 'analytics_deploy',
+    String $gunicorn_app                          = 'superset:app',
+    Boolean $enable_cas                           = false,
+    Optional[String] $metadata_cache_uri          = undef,
+    Optional[String] $data_cache_uri              = undef,
+    Optional[String] $filter_state_cache_uri      = undef,
+    Optional[String] $explore_form_data_cache_uri = undef,
 ) {
     ensure_packages([
         'virtualenv',
         'firejail',
     ])
 
-    if $metadata_cache_uri or $data_cache_uri {
+    # Add the required memcached support package if any of the cache backends are specified
+    if $metadata_cache_uri or $data_cache_uri or $filter_state_cache_uri or $explore_form_data_cache_uri {
         ensure_packages(['python3-pylibmc'])
     }
 
@@ -107,7 +116,6 @@ class superset(
 
     $deployment_dir = '/srv/deployment/analytics/superset/deploy'
     $virtualenv_dir = '/srv/deployment/analytics/superset/venv'
-
 
     scap::target { 'analytics/superset/deploy':
         deploy_user  => $deployment_user,
@@ -129,7 +137,7 @@ class superset(
     }
 
     file { '/etc/firejail/superset.profile':
-        ensure => 'present',
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -137,7 +145,7 @@ class superset(
     }
 
     file { '/etc/superset':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -150,7 +158,7 @@ class superset(
     }
 
     file { '/etc/superset/gunicorn_config.py':
-        ensure  => 'present',
+        ensure  => file,
         owner   => 'root',
         group   => 'superset',
         mode    => '0444',
@@ -158,7 +166,7 @@ class superset(
     }
 
     file { '/etc/superset/superset_config.py':
-        ensure  => 'present',
+        ensure  => file,
         owner   => 'root',
         group   => 'superset',
         mode    => '0440',
@@ -190,7 +198,7 @@ class superset(
     profile::auto_restarts::service { 'superset': }
 
     systemd::service { 'superset':
-        ensure  => 'present',
+        ensure  => present,
         content => systemd_template('superset'),
         restart => true,
         require => [

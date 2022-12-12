@@ -19,6 +19,8 @@ profile::superset::proxy::ferm_srange: '($CACHES $ANALYTICS_NETWORKS)'
 # Disabling due to permission issue https://phabricator.wikimedia.org/T273850
 # profile::superset::data_cache_uri: 'localhost'
 profile::superset::metadata_cache_uri: 'localhost'
+profile::superset::filter_state_cache_uri: 'localhost'
+profile::superset::explore_form_data_cache_uri: 'localhost'
 
 # TLS Terminator settings
 # Please note: the service name is used to pick up the

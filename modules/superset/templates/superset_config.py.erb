@@ -96,6 +96,22 @@ DATA_CACHE_CONFIG = {
     'CACHE_MEMCACHED_SERVERS': ['<%= @data_cache_uri %>'],
 }
 <% end -%>
+<% if @filter_state_cache_uri -%>
+CACHE_CONFIG = {
+    'CACHE_TYPE': 'memcached',
+    'CACHE_DEFAULT_TIMEOUT': 60 * 60 * 12, # 12 hour default (in secs)
+    'CACHE_KEY_PREFIX': 'superset_filter_state',
+    'CACHE_MEMCACHED_SERVERS': ['<%= @filter_state_cache_uri %>'],
+}
+<% end -%>
+<% if @explore_form_data_cache_uri -%>
+CACHE_CONFIG = {
+    'CACHE_TYPE': 'memcached',
+    'CACHE_DEFAULT_TIMEOUT': 60 * 60 * 12, # 12 hour default (in secs)
+    'CACHE_KEY_PREFIX': 'superset_explore_form_data',
+    'CACHE_MEMCACHED_SERVERS': ['<%= @explore_form_data_cache_uri %>'],
+}
+<% end -%>
 
 FEATURE_FLAGS = {
     "ENABLE_TEMPLATE_PROCESSING": True,
