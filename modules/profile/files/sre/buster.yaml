@@ -12,9 +12,11 @@ role::mediawiki::memcached::gutter:
   target-q: TBD
   phab-task: 293216
 role::etcd::v3::kubernetes:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 307943
 role::etcd::v3::kubernetes::staging:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 307943
 role::etcd::v3::ml_etcd:
   target-q: 2023-1
 role::etcd::v3::ml_etcd::staging:
@@ -154,10 +156,8 @@ role::aqs:
   target-q: TBD
   phab-task: 288804
 role::bastionhost:
-  target-q: TBD
-role::elasticsearch::cloudelastic:
-  target-q: TBD
-  phab-task: 289135
+  target-q: 2023-1
+  phab-task: 324974
 role::cache::upload:
   target-q: 2023-1
   phab-task: 321309
