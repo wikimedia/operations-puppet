@@ -49,6 +49,11 @@ control_exchange = trove
 # datastore_registry_ext = mysql:trove.guestagent.datastore.mysql.manager.Manager, percona:trove.guestagent.datastore.mysql.manager.Manager
 
 
+# Allow a good long time to format volumes so that we support big volumes.
+# The default here is 120 seconds which limits us to 30GB volumes.
+volume_format_timeout = 1800
+
+
 # ========== Default Users / DBs Configuration ==========
 
 # Permissions to grant "root" user by default
