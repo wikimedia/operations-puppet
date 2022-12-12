@@ -35,9 +35,6 @@ class profile::backup::filesets(
     bacula::director::fileset { 'var-lib-archiva':
         includes     => [ '/var/lib/archiva' ],
     }
-    bacula::director::fileset { 'var-lib-jenkins-config':
-        includes     => [ '/var/lib/jenkins/config.xml' ],
-    }
     bacula::director::fileset { 'gerrit-repo-data':
         includes => [ '/srv/gerrit/git', '/srv/gerrit/plugins/lfs' ]
     }
