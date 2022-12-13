@@ -20,12 +20,6 @@
 # [*secret_key*]
 #   flask secret key
 #
-# [*password_mapping*]
-#   Hash of sqlalchemy URIs to passwords.  This will be used
-#   for the SQLALCHEMY_CUSTOM_PASSWORD_STORE, to allow for
-#   passwords to external databases to be provided via configuration,
-#   rather than the web UI.
-#
 # [*ldap_proxy_enabled*]
 #   If true, an Apache HTTP proxy will be configured to authenticate users with WMF (labs) LDAP.
 #   Only users in the 'wmf' and 'nda' LDAP groups will be allowed to authenticate.
@@ -44,13 +38,24 @@
 #   Multiple backends are available but only memcached is supported here.
 #
 # [*filter_state_cache_uri*]
-#   This is a key-value endpoint to store dashboard filter state. It was introduced in version 1.5.0
+#   This is a key-value endpoint to store dashboard filter state. It should be specified from version 1.5.0 onwards.
 #   Multiple backends are available but only memcached is supported here.
 #
 # [*explore_form_data_cache_uri*]
-#   If set, this is used to configure the superset data cache with the results of queries.
+#   This is a key value endpoint to store the explore form data. It should be specified from version 1.5.0 onwards.
 #   Multiple backends are available but only memcached is supported here.
 #
+# [*workers*]
+#   Number of gevent workers
+#
+# [*gunicorn_app*]
+#   In Superset 0.36.0+ gunicorn needs a different appname for
+#   Superset. Default is still for older releases, up to 0.35.x
+#   Default: 'superset.app'
+#
+# [*enable_cas*]
+#   Enable authentication via CAS instead of LDAP
+
 class profile::superset (
     Integer $workers                              = lookup('profile::superset::workers', { 'default_value' => 1 }),
     String $database_uri                          = lookup('profile::superset::database_uri', { 'default_value' => 'sqlite:////var/lib/superset/superset.db' }),
@@ -99,17 +104,17 @@ class profile::superset (
         include passwords::mysql::research
         $password_mapping = {
             # MediaWiki analytics slave database.
-            "mysql://${::passwords::mysql::research::user}@analytics-store.eqiad.wmnet" =>
-                $::passwords::mysql::research::pass,
+            "mysql://${passwords::mysql::research::user}@analytics-store.eqiad.wmnet" =>
+                $passwords::mysql::research::pass,
             # EventLogging mysql slave database.
-            "mysql://${::passwords::mysql::research::user}@analytics-slave.eqiad.wmnet/log" =>
-                $::passwords::mysql::research::pass,
+            "mysql://${passwords::mysql::research::user}@analytics-slave.eqiad.wmnet/log" =>
+                $passwords::mysql::research::pass,
             # new cluster, staging
-            "mysql://${::passwords::mysql::research::user}@staging-db-analytics.eqiad.wmnet:3350/staging" =>
-                $::passwords::mysql::research::pass,
+            "mysql://${passwords::mysql::research::user}@staging-db-analytics.eqiad.wmnet:3350/staging" =>
+                $passwords::mysql::research::pass,
             # new cluster, wikishared
-            "mysql://${::passwords::mysql::research::user}@dbstore1005.eqiad.wmnet:3320/wikishared" =>
-                $::passwords::mysql::research::pass,
+            "mysql://${passwords::mysql::research::user}@dbstore1005.eqiad.wmnet:3320/wikishared" =>
+                $passwords::mysql::research::pass,
         }
     }
     else {
@@ -137,7 +142,7 @@ class profile::superset (
 
     monitoring::service { 'superset':
         description   => 'superset',
-        check_command => "check_tcp!${::superset::port}",
+        check_command => "check_tcp!${superset::port}",
         require       => Class['superset'],
         contact_group => 'victorops-analytics',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
