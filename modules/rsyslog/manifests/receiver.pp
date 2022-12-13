@@ -77,7 +77,7 @@ class rsyslog::receiver (
 
     if $acme_cert_name {
         $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
-        $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.crt"
+        $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.alt.chained.crt"
         $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
     } else {
         # SSL configuration
