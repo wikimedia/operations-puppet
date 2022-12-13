@@ -2,7 +2,7 @@
 class role::insetup::data_engineering {
     system::role { 'insetup::data_engineering':
         ensure      => 'present',
-        description => 'Host being setup by Date Engineering SREs',
+        description => 'Host being setup by Data Engineering SREs',
     }
 
     include profile::base::production
