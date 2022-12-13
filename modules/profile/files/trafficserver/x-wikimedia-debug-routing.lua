@@ -56,9 +56,11 @@ function do_remap()
 
     if debug_map[backend] then
         ts.client_request.set_url_host(debug_map[backend])
-        -- Special case: mwdebug on kubernetes listens on port 4444
+        -- Set the port, so this works seamlessly also for things on k8s
         if backend == "k8s-experimental" then
             ts.client_request.set_url_port(4444)
+        else
+            ts.client_request.set_url_port(443)
         end
 
         if string.find(xwd, ' php74') then
