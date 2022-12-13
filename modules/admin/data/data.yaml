@@ -6468,3 +6468,7 @@ ldap_only_users:
     ensure: present
     realname: Muhammad Jaziraly
     email: muhammad.jaziraly@wikimedia.de
+  sbenchagra:
+    ensure: present
+    realname: Sondes Ben Chagra
+    email: sbenchagra@wikimedia.org
