@@ -1,0 +1,8 @@
+profile::ci::jenkins::service_monitor: false
+
+profile::zuul::merger::service_enable: mask
+profile::zuul::merger::service_ensure: stopped
+
+profile::zuul::server::service_enable: mask
+profile::zuul::server::service_ensure: stopped
+
