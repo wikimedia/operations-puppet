@@ -49,6 +49,8 @@ class profile::idp(
     Optional[Integer]                 $u2f_token_expiry_days     = lookup('profile::idp::u2f_token_expiry_days'),
     Boolean                           $envoy_termination         = lookup('profile::idp::envoy_termination'),
     Array[Apereo_cas::Delegate]       $delegated_authenticators  = lookup('profile::idp::delegated_authenticators'),
+    Boolean                           $enable_webauthn           = lookup('profile::idp::enable_webauthn'),
+    Stdlib::Fqdn                      $webauthn_relaying_party   = lookup('profile::idp::webauthn_relaying_party'),
 ){
 
     ensure_packages(['python3-pymysql'])
@@ -137,6 +139,8 @@ class profile::idp(
         cors_allowed_headers        => $cors_allowed_headers,
         cors_allowed_methods        => $cors_allowed_methods,
         delegated_authenticators    => $delegated_authenticators,
+        enable_webauthn             => $enable_webauthn,
+        webauthn_relaying_party     => $webauthn_relaying_party,
     }
 
     systemd::unit{'tomcat9':

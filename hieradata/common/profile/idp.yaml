@@ -43,3 +43,5 @@ profile::idp::ldap_attributes:
   - uid
 profile::idp::envoy_termination: true
 profile::idp::delegated_authenticators: []
+profile::idp::enable_webauthn: false
+profile::idp::webauthn_relaying_party: wikimedia.org

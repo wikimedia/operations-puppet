@@ -70,6 +70,8 @@
 # @param delegated_authenticators list of delegated authenticators
 # @param oidc_issuers_pattern defines the regular expression pattern that is
 #        matched against the calculated issuer from the request.
+# @param enable_webauthn Whether to enable WebAuthN support or not
+# @param webauthn_relaying_party The relying party ID to be used for WebAuthN
 class apereo_cas (
     Array[Stdlib::Fqdn]               $idp_nodes,
     Optional[String[1]]               $tgc_signing_key               = undef,
@@ -143,6 +145,8 @@ class apereo_cas (
     # https://github.com/puppetlabs/puppetlabs-stdlib/pull/1192
     Array[Wmflib::HTTP::Method]       $cors_allowed_methods          = ['GET'],
     Array[Apereo_cas::Delegate]       $delegated_authenticators      = [],
+    Boolean                           $enable_webauthn               = false,
+    Stdlib::Fqdn                      $webauthn_relaying_party       = 'example.org',
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         fail('you must provide either $keystore_source or $keystore_content')
