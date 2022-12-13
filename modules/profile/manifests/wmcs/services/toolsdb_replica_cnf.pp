@@ -164,4 +164,43 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         require => Uwsgi::App['toolsdb-replica-cnf-web'],
         content => template('profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.erb'),
     }
+
+
+    ensure_packages(['bats'])
+    file { '/srv/ops':
+      ensure => 'directory',
+      mode   => '0500',
+    }
+    file { '/srv/ops/replica_cnf_web':
+      ensure => 'directory',
+      mode   => '0500',
+    }
+    $func_tests_dir='/srv/ops/replica_cnf_web/functional_tests'
+    $puppet_path='profile/wmcs/nfs/replica_cnf_web_fullstack_tests'
+    file { $func_tests_dir:
+      ensure => 'directory',
+      mode   => '0500',
+    }
+    file { "${func_tests_dir}/helpers.bash":
+      content => epp(
+        "${puppet_path}/helpers.bash.epp",
+        {
+          'http_user'     => $htuser,
+          'http_password' => $htpassword,
+        }
+      ),
+      mode    => '0400',
+    }
+    file { "${func_tests_dir}/paws_account.bats":
+      source => "puppet:///modules/${puppet_path}/paws_accounts.bats",
+      mode   => '0400',
+    }
+    file { "${func_tests_dir}/user_account.bats":
+      source => "puppet:///modules/${puppet_path}/user_accounts.bats",
+      mode   => '0400',
+    }
+    file { "${func_tests_dir}/tool_account.bats":
+      source => "puppet:///modules/${puppet_path}/tool_accounts.bats",
+      mode   => '0400',
+    }
 }

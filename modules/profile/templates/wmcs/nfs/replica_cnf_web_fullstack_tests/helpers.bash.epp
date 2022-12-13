@@ -1,0 +1,89 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | String $http_user,
+      String $http_password,
+| -%>
+#!/usr/bin/env bats
+PROJECT="$(cat /etc/wmcs-project)"
+TOOL_BASE_PATH=$(grep -E "^TOOL_REPLICA_CNF_PATH *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
+PAWS_BASE_PATH=$(grep -E "^PAWS_REPLICA_CNF_PATH *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
+USER_BASE_PATH=$(grep -E "^USER_REPLICA_CNF_PATH *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
+BASE_URL="http://<%= $http_user %>:<%= $http_password %>@127.0.0.1/v1"
+case $PROJECT in
+    testlabs)
+        TOOL_NAME="toolsbeta.test"
+        ;;
+    toolsbeta)
+        TOOL_NAME="toolsbeta.test"
+        ;;
+    *)
+        TOOL_NAME="tools.test"
+        ;;
+esac
+
+
+do_curl() {
+    local path="${1?}"
+    local data="${2?}"
+    curl \
+        --header "x-forwarded-proto: https" \
+        --silent \
+        "${BASE_URL}/${path}" \
+        -H 'Content-Type: application/json' \
+        -d "$data"
+}
+
+
+is_equal() {
+    local left="${1?}"
+    local right="${2?}"
+    diff <( printf '%s' "$left" ) <( printf "%s" "$right" ) \
+    && return 0
+    echo -e "is_equal failed\nleft: $left\nright: $right" >&2
+    return 1
+}
+
+
+match_regex() {
+    local regex="${1?}"
+    local what="${2?}"
+    [[ "$what" =~ $regex ]] && return 0
+    echo -e "match_regex failed\nregex: '$regex'\nwhat: $what" >&2
+    return 1
+}
+
+
+json_has_equal() {
+    local key="${1?}"
+    local value="${2?}"
+    local data="${3?}"
+
+    local cur_value=$(echo "$data" | jq -r ".$key") \
+    && is_equal "$cur_value" "$value" \
+    && return 0
+
+    echo -e "json_has_equal: key '$key' with value '$value' not found in \n$data" >&2
+    return 1 
+}
+
+
+json_has_match() {
+    local key="${1?}"
+    local match="${2?}"
+    local data="${3?}"
+
+    local cur_value=$(echo "$data" | jq -r ".$key")
+    match_regex "$match" "$cur_value" && return 0
+
+    echo -e "json_has_match: key '$key' value '$gotten_value' does not match '$match'" >&2
+    return 1 
+}
+
+
+exists() {
+    local path="${1?}"
+    [[ -e "$path" ]] || {
+        echo "exists: $path not found"
+        return 1
+    }
+    return 0
+}
