@@ -63,9 +63,6 @@ function do_remap()
             ts.client_request.set_url_port(443)
         end
 
-        if string.find(xwd, ' php74') then
-            add_or_replace_cookie('PHP_ENGINE', '7.4')
-        end
         -- Skip the cache if XWD is valid
         ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
 
