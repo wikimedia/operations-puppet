@@ -47,8 +47,12 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
   - "208.80.153.116"
   # VMs --> cloudcontrol2005-dev.wikimedia.org
   - "208.80.153.40"
+  # VMs --> contint1002.wikimedia.org
+  - "208.80.154.132"
   # VMs --> contint2001.wikimedia.org
   - "208.80.153.15"
+  # VMs --> contint2002.wikimedia.org
+  - "208.80.153.39"
   # VMs --> ldap-ro.eqiad.wikimedia.org
   - "208.80.154.252"
   # VMs --> ldap-ro.codfw.wikimedia.org
