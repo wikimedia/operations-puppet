@@ -1,0 +1,140 @@
+---
+# Matches default main.cf config for Debian Bullseye
+postfix::alias_database:
+  - 'hash:/etc/aliases'
+postfix::alias_maps:
+  - 'hash:/etc/aliases'
+postfix::compatibility_level: '2'
+postfix::default_database_type: 'hash'
+postfix::inet_interfaces:
+  - 'all'
+postfix::inet_protocols:
+  - 'all'
+postfix::mydestination:
+  - '$myhostname'
+  - 'localhost.$mydomain'
+  - 'localhost'
+postfix::smtp_tls_capath: '/etc/ssl/certs'
+postfix::smtp_tls_security_level: 'may'
+postfix::smtp_tls_session_cache_database: 'btree:${data_directory}/smtp_scache'
+postfix::smtpd_tls_cert_file: '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+postfix::smtpd_tls_key_file: '/etc/ssl/private/ssl-cert-snakeoil.key'
+postfix::smtpd_tls_security_level: 'may'
+postfix::biff: false
+postfix::readme_directory: false
+postfix::append_dot_mydomain: false
+postfix::mailbox_size_limit: '0'
+postfix::recipient_delimiter: '+'
+postfix::smtpd_banner: '$myhostname ESMTP $mail_name (Debian/GNU)'
+postfix::smtpd_relay_restrictions:
+  - 'permit_mynetworks'
+  - 'permit_sasl_authenticated'
+  - 'defer_unauth_destination'
+postfix::mynetworks:
+  - '127.0.0.0/8'
+  - '[::ffff:127.0.0.0]/104'
+  - '[::1]/128'
+# Matches default master.cf config for Debian Bullseye with the exception of
+# "Other external delivery methods.", which did not seem worth retaining.
+postfix::services:
+  anvil/unix:
+    chroot: 'y'
+    command: 'anvil'
+    limit: '1'
+  bounce/unix:
+    chroot: 'y'
+    command: 'bounce'
+    limit: '0'
+  cleanup/unix:
+    chroot: 'y'
+    command: 'cleanup'
+    limit: '0'
+    private: 'n'
+  defer/unix:
+    chroot: 'y'
+    command: 'bounce'
+    limit: '0'
+  discard/unix:
+    chroot: 'y'
+    command: 'discard'
+  error/unix:
+    chroot: 'y'
+    command: 'error'
+  flush/unix:
+    chroot: 'y'
+    command: 'flush'
+    limit: '0'
+    private: 'n'
+    wakeup: '1000?'
+  lmtp/unix:
+    chroot: 'y'
+    command: 'lmtp'
+  local/unix:
+    chroot: 'n'
+    command: 'local'
+    unprivileged: 'n'
+  pickup/unix:
+    chroot: 'y'
+    command: 'pickup'
+    limit: '1'
+    private: 'n'
+    wakeup: '60'
+  postlog/unix-dgram:
+    chroot: 'n'
+    command: 'postlogd'
+    limit: '1'
+    private: 'n'
+  proxymap/unix:
+    chroot: 'n'
+    command: 'proxymap'
+  proxywrite/unix:
+    chroot: 'n'
+    command: 'proxymap'
+    limit: '1'
+  qmgr/unix:
+    chroot: 'n'
+    command: 'qmgr'
+    limit: '1'
+    private: 'n'
+    wakeup: '300'
+  relay/unix:
+    chroot: 'y'
+    command: "smtp\n        -o syslog_name=postfix/$service_name"
+  retry/unix:
+    chroot: 'y'
+    command: 'error'
+  rewrite/unix:
+    chroot: 'y'
+    command: 'trivial-rewrite'
+  scache/unix:
+    chroot: 'y'
+    command: 'scache'
+    limit: '1'
+  showq/unix:
+    chroot: 'y'
+    command: 'showq'
+    private: 'n'
+  smtp/inet:
+    chroot: 'y'
+    command: 'smtpd'
+    private: 'n'
+  smtp/unix:
+    chroot: 'y'
+    command: 'smtp'
+  tlsmgr/unix:
+    chroot: 'y'
+    command: 'tlsmgr'
+    limit: '1'
+    wakeup: '1000?'
+  trace/unix:
+    chroot: 'y'
+    command: 'bounce'
+    limit: '0'
+  verify/unix:
+    chroot: 'y'
+    command: 'verify'
+    limit: '1'
+  virtual/unix:
+    chroot: 'n'
+    command: 'virtual'
+    unprivileged: 'n'

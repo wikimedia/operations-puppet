@@ -1,0 +1,102 @@
+# !!! Managed by Puppet !!!
+
+search_base = <%= @search_base %>
+<% if @_server_host -%>
+server_host = <%= @_server_host.join(', ') %>
+<% end -%>
+<% if @server_port -%>
+server_port = <%= @server_port %>
+<% end -%>
+<% if @timeout -%>
+timeout = <%= @timeout %>
+<% end -%>
+<% if @query_filter -%>
+query_filter = <%= @query_filter %>
+<% end -%>
+<% if @result_format -%>
+result_format = <%= @result_format %>
+<% end -%>
+<% if @domain -%>
+domain = <%= @domain.join(', ') %>
+<% end -%>
+<% if @result_attribute -%>
+result_attribute = <%= @result_attribute.join(', ') %>
+<% end -%>
+<% if @special_result_attribute -%>
+special_result_attribute = <%= @special_result_attribute.join(', ') %>
+<% end -%>
+<% if @terminal_result_attribute -%>
+terminal_result_attribute = <%= @terminal_result_attribute.join(', ') %>
+<% end -%>
+<% if @leaf_result_attribute -%>
+leaf_result_attribute = <%= @leaf_result_attribute.join(', ') %>
+<% end -%>
+<% if @scope -%>
+scope = <%= @scope %>
+<% end -%>
+<% unless @bind.nil? -%>
+bind = <%= [true, false].include?(@bind) ? @bind ? 'yes' : 'no' : @bind %>
+<% end -%>
+<% if @bind_dn -%>
+bind_dn = <%= @bind_dn %>
+<% end -%>
+<% if @bind_pw -%>
+bind_pw = <%= @bind_pw %>
+<% end -%>
+<% if @recursion_limit -%>
+recursion_limit = <%= @recursion_limit %>
+<% end -%>
+<% if @expansion_limit -%>
+expansion_limit = <%= @expansion_limit %>
+<% end -%>
+<% if @size_limit -%>
+size_limit = <%= @size_limit %>
+<% end -%>
+<% if @deference -%>
+dereference = <%= @dereference %>
+<% end -%>
+<% unless @chase_referrals.nil? -%>
+chase_referrals = <%= @chase_referrals ? 'yes' : 'no' %>
+<% end -%>
+<% if @version -%>
+version = <%= @version %>
+<% end -%>
+<% if @debuglevel -%>
+debuglevel = <%= @debuglevel %>
+<% end -%>
+<% if @sasl_mechs -%>
+sasl_mechs = <%= @sasl_mechs.join(' ') %>
+<% end -%>
+<% if @sasl_realm -%>
+sasl_realm = <%= @sasl_realm %>
+<% end -%>
+<% if @sasl_authz_id -%>
+sasl_authz_id = <%= @sasl_authz_id %>
+<% end -%>
+<% if @sasl_minssf -%>
+sasl_minssf = <%= @sasl_minssf %>
+<% end -%>
+<% unless @start_tls.nil? -%>
+start_tls = <%= @start_tls ? 'yes' : 'no' %>
+<% end -%>
+<% if @tls_ca_cert_dir -%>
+tls_ca_cert_dir = <%= @tls_ca_cert_dir %>
+<% end -%>
+<% if @tls_ca_cert_file -%>
+tls_ca_cert_file = <%= @tls_ca_cert_file %>
+<% end -%>
+<% if @tls_cert -%>
+tls_cert = <%= @tls_cert %>
+<% end -%>
+<% if @tls_key -%>
+tls_key = <%= @tls_key %>
+<% end -%>
+<% unless @tls_require_cert.nil? -%>
+tls_require_cert = <%= @tls_require_cert ? 'yes' : 'no' %>
+<% end -%>
+<% if @tls_random_file -%>
+tls_random_file = <%= @tls_random_file %>
+<% end -%>
+<% if @tls_cipher_suite -%>
+tls_cipher_suite = <%= @tls_cipher_suite %>
+<% end -%>

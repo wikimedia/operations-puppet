@@ -1,0 +1,11 @@
+---
+vagrant:
+  provisioner: vagrant
+  images:
+    - 'generic/centos6'
+    - 'generic/centos7'
+    - 'generic/centos8'
+docker:
+  provisioner: docker
+  images:
+    - 'litmusimage/debian:11'

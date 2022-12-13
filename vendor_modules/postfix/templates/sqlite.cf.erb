@@ -1,0 +1,13 @@
+# !!! Managed by Puppet !!!
+
+dbpath = <%= @dbpath %>
+query = <%= @query %>
+<% if @result_format -%>
+result_format = <%= @result_format %>
+<% end -%>
+<% if @domain -%>
+domain = <%= @domain.join(', ') %>
+<% end -%>
+<% if @expansion_limit -%>
+expansion_limit = <%= @expansion_limit %>
+<% end -%>

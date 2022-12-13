@@ -1,0 +1,73 @@
+{
+  "name": "bodgit-postfix",
+  "version": "3.1.2",
+  "author": "bodgit",
+  "summary": "Puppet Module for managing Postfix",
+  "license": "Apache-2.0",
+  "source": "https://github.com/bodgit/puppet-postfix",
+  "project_page": "https://github.com/bodgit/puppet-postfix",
+  "issues_url": "https://github.com/bodgit/puppet-postfix/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.13.0 <9.0.0"
+    },
+    {
+      "name": "bodgit/bodgitlib",
+      "version_requirement": ">=1.7.0 <4.0.0"
+    },
+    {
+      "name": "herculesteam/augeasproviders_core",
+      "version_requirement": ">=2.1.0 <3.0.0"
+    },
+    {
+      "name": "camptocamp/augeas",
+      "version_requirement": ">=1.0.0 <2.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=5.5.10 <8.0.0"
+    }
+  ],
+  "tags": [
+    "postfix",
+    "smtp"
+  ],
+  "pdk-version": "2.1.0",
+  "template-url": "https://github.com/bodgit/pdk-templates#bodgit",
+  "template-ref": "remotes/origin/bodgit-0-g022387a"
+}

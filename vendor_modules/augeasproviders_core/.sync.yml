@@ -1,0 +1,17 @@
+---
+.travis.yml:
+  user: "herculesteam"
+  secure: "coX6r+20OFHKTVGYb4E+1lr4AFCG5h1GeqjWY0Esfz5vAs42d/ZbLzwP6j19VXWehBitGRWkBerWU9ZIneIcPUQlRhRRCWt+XCv+6XZREdq2610RIZnva4NsLD/SCzXdC9gSfIWvGnI9fWNAQS/stgC/jkyCkFNn2i0s7qWEvA0="
+  before_install_pre:
+    - "travis_retry ./.travis.sh"
+  global_env:
+    - AUGEAS_LENS_LIB=lib/augeas/lenses:spec/fixtures/augeas/lenses
+Gemfile:
+  required:
+    ':development':
+      - gem: coveralls
+      - gem: ruby-augeas
+#spec/spec_helper.rb:
+#  ap_lib_loadpath: "$LOAD_PATH.unshift(dir, File.join(dir, 'lib'), File.join(dir, '..', 'lib'))"
+#  ap_load_core: false
+

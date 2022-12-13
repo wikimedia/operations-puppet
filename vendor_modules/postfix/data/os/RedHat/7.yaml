@@ -1,0 +1,109 @@
+---
+postfix::compatibility_level: ~
+postfix::meta_directory: ~
+postfix::shlib_directory: ~
+postfix::readme_directory: '/usr/share/doc/postfix-2.10.1/README_FILES'
+postfix::sample_directory: '/usr/share/doc/postfix-2.10.1/samples'
+postfix::services:
+  anvil/unix:
+    chroot: 'n'
+    command: 'anvil'
+    limit: '1'
+  bounce/unix:
+    chroot: 'n'
+    command: 'bounce'
+    limit: '0'
+  cleanup/unix:
+    chroot: 'n'
+    command: 'cleanup'
+    limit: '0'
+    private: 'n'
+  defer/unix:
+    chroot: 'n'
+    command: 'bounce'
+    limit: '0'
+  discard/unix:
+    chroot: 'n'
+    command: 'discard'
+  error/unix:
+    chroot: 'n'
+    command: 'error'
+  flush/unix:
+    chroot: 'n'
+    command: 'flush'
+    limit: '0'
+    private: 'n'
+    wakeup: '1000?'
+  lmtp/unix:
+    chroot: 'n'
+    command: 'lmtp'
+  local/unix:
+    chroot: 'n'
+    command: 'local'
+    unprivileged: 'n'
+  pickup/unix:
+    chroot: 'n'
+    command: 'pickup'
+    limit: '1'
+    private: 'n'
+    wakeup: '60'
+  proxymap/unix:
+    chroot: 'n'
+    command: 'proxymap'
+  proxywrite/unix:
+    chroot: 'n'
+    command: 'proxymap'
+    limit: '1'
+  qmgr/unix:
+    chroot: 'n'
+    command: 'qmgr'
+    limit: '1'
+    private: 'n'
+    wakeup: '300'
+  relay/unix:
+    chroot: 'n'
+    command: 'smtp'
+  retry/unix:
+    chroot: 'n'
+    command: 'error'
+  rewrite/unix:
+    chroot: 'n'
+    command: 'trivial-rewrite'
+  scache/unix:
+    chroot: 'n'
+    command: 'scache'
+    limit: '1'
+  showq/unix:
+    chroot: 'n'
+    command: 'showq'
+    private: 'n'
+  smtp/inet:
+    chroot: 'n'
+    command: 'smtpd'
+    private: 'n'
+  smtp/unix:
+    chroot: 'n'
+    command: 'smtp'
+  tlsmgr/unix:
+    chroot: 'n'
+    command: 'tlsmgr'
+    limit: '1'
+    wakeup: '1000?'
+  trace/unix:
+    chroot: 'n'
+    command: 'bounce'
+    limit: '0'
+  verify/unix:
+    chroot: 'n'
+    command: 'verify'
+    limit: '1'
+  virtual/unix:
+    chroot: 'n'
+    command: 'virtual'
+    unprivileged: 'n'
+postfix::smtp_tls_cafile: ~
+postfix::smtp_tls_capath: ~
+postfix::smtp_tls_security_level: ~
+postfix::smtpd_tls_cert_file: ~
+postfix::smtpd_tls_key_file: ~
+postfix::smtpd_tls_security_level: ~

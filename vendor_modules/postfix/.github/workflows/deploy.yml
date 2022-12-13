@@ -1,0 +1,24 @@
+---
+name: Deploy
+on:
+  release:
+    types:
+      - published
+jobs:
+  deploy:
+    name: Deploy to Forge
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          clean: true
+      - name: PDK build
+        uses: docker://puppet/pdk:nightly
+        with:
+          args: build
+      - name: Push to Forge
+        uses: docker://puppet/pdk:nightly
+        with:
+          args: release publish --forge-token ${{ secrets.FORGE_API_KEY }} --force

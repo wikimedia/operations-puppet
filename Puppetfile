@@ -24,3 +24,18 @@ mod 'puppetdbquery',
 mod 'stdlib',
     :git => 'https://github.com/puppetlabs/puppetlabs-stdlib',
     :ref => 'v8.1.0'
+
+mod 'augeasproviders_core',
+    :git => 'https://github.com/voxpupuli/puppet-augeasproviders_core.git',
+    :ref => '2.7.0'
+
+# NOTE: Forked from upstream, https://github.com/bodgit/puppet-postfix
+#
+# Contains three pull requests
+#
+#  1. Add Debian Bullseye(11) support
+#  2. Fix support for /etc/aliases
+#  3. Debian: don't install Augeas lens for unix-dgram
+mod 'postfix',
+    :git => 'https://github.com/lollipopman/puppet-postfix',
+    :ref => '6fa18a6'

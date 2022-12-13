@@ -1,0 +1,64 @@
+{
+  "name": "herculesteam-augeasproviders_core",
+  "version": "2.7.0",
+  "author": "Raphael Pinson",
+  "summary": "Alternative Augeas-based providers for Puppet",
+  "license": "Apache-2.0",
+  "source": "https://github.com/hercules-team/augeasproviders_core",
+  "project_page": "https://github.com/hercules-team/augeasproviders_core",
+  "issues_url": "https://github.com/hercules-team/augeasproviders_core/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 3.2.0 < 8.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7",
+        "8",
+        "9",
+        "10"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04",
+        "18.04",
+        "18.10"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.0.0 < 7.0.0"
+    }
+  ],
+  "description": "This module provides alternative providers for core Puppet types using the Augeas configuration API library.",
+  "pdk-version": "1.17.0",
+  "template-url": "pdk-default#1.17.0",
+  "template-ref": "tags/1.17.0-0-gd3a4319"
+}

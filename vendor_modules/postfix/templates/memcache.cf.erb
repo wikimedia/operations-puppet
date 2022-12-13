@@ -1,0 +1,35 @@
+# !!! Managed by Puppet !!!
+
+<% if @_memcache -%>
+memcache = <%= @_memcache %>
+<% end -%>
+<% if @backup -%>
+backup = <%= @backup %>
+<% end -%>
+<% if @flags -%>
+flags = <%= @flags %>
+<% end -%>
+<% if @ttl -%>
+ttl = <%= @ttl %>
+<% end -%>
+<% if @key_format -%>
+key_format = <%= @key_format %>
+<% end -%>
+<% if @domain -%>
+domain = <%= @domain.join(', ') %>
+<% end -%>
+<% if @data_size_limit -%>
+data_size_limit = <%= @data_size_limit %>
+<% end -%>
+<% if @line_size_limit -%>
+line_size_limit = <%= @line_size_limit %>
+<% end -%>
+<% if @max_try -%>
+max_try = <%= @max_try %>
+<% end -%>
+<% if @retry_pause -%>
+retry_pause = <%= @retry_pause %>
+<% end -%>
+<% if @timeout -%>
+timeout = <%= @timeout %>
+<% end -%>

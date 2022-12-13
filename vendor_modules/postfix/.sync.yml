@@ -1,0 +1,69 @@
+---
+common:
+  disable_legacy_facts: true
+appveyor.yml:
+  delete: true
+.github/workflows/test.yml:
+  before_ruby:
+    - sudo apt-get update
+    - sudo apt-get install libaugeas-dev
+  simplecov: true
+.gitignore:
+  paths:
+    - '/spec/fixtures/litmus_inventory.yaml'
+.gitlab-ci.yml:
+  delete: true
+.pdkignore:
+  paths:
+    - '/provision.yaml'
+    - '/spec/fixtures/litmus_inventory.yaml'
+.rubocop.yml:
+  default_configs:
+    Layout/HashAlignment:
+      EnforcedHashRocketStyle: table
+      EnforcedColonStyle: table
+  profiles:
+    strict:
+      enabled_cops:
+        Layout/HashAlignment:
+.travis.yml:
+  delete: true
+.vscode/extensions.json:
+  delete: true
+.devcontainer/Dockerfile:
+  delete: true
+.devcontainer/devcontainer.json:
+  delete: true
+Gemfile:
+  required:
+    ':development':
+      - gem: 'puppet-lint-absolute_classname-check'
+      - gem: 'puppet-lint-alias-check'
+      - gem: 'puppet-lint-empty_string-check'
+      - gem: 'puppet-lint-file_ensure-check'
+      - gem: 'puppet-lint-file_source_rights-check'
+      - gem: 'puppet-lint-fileserver-check'
+        git: 'https://github.com/bodgit/puppet-lint-fileserver-check.git'
+        branch: 'puppet-lint-2.x'
+      - gem: 'puppet-lint-leading_zero-check'
+      - gem: 'puppet-lint-spaceship_operator_without_tag-check'
+      - gem: 'puppet-lint-trailing_comma-check'
+      - gem: 'puppet-lint-undef_in_function-check'
+      - gem: 'puppet-lint-unquoted_string-check'
+      - gem: 'puppet-lint-variable_contains_upcase'
+      - gem: 'puppet-lint-version_comparison-check'
+      - gem: 'ruby-augeas'
+  optional:
+    ':development':
+      - gem: 'github_changelog_generator'
+        version: '~> 1.15'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.3.0')"
+    ':system_tests':
+      - gem: 'puppet_litmus'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.5.0')"
+Rakefile:
+  linter_fail_on_warnings: true
+spec/spec_helper.rb:
+  mock_with: ':mocha'
+  coverage_report: true
+  minimum_code_coverage_percentage: 100

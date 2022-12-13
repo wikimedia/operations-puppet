@@ -1,0 +1,87 @@
+---
+name: Test
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v[0-9]*'
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 1 * *'
+jobs:
+  static:
+    name: Static tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Before Ruby
+        run: |
+          sudo apt-get update
+          sudo apt-get install libaugeas-dev
+      - name: Activate Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - name: Run static & syntax tests
+        run: |
+          bundle exec rake check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint
+  spec:
+    name: 'Spec tests (Puppet: ${{ matrix.puppet_gem_version }}, Ruby: ${{ matrix.ruby }})'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - puppet_gem_version: ~> 5.0
+            ruby: 2.4
+          - puppet_gem_version: ~> 6.0
+            ruby: 2.5
+          - puppet_gem_version: ~> 7.0
+            ruby: 2.7
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Before Ruby
+        run: |
+          sudo apt-get update
+          sudo apt-get install libaugeas-dev
+      - name: Activate Ruby
+        uses: ruby/setup-ruby@v1
+        env:
+          PUPPET_GEM_VERSION: ${{ matrix.puppet_gem_version }}
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run parallel_spec tests
+        run: |
+          bundle exec rake parallel_spec
+        env:
+          SIMPLECOV: yes
+  release:
+    name: Create release
+    needs:
+      - static
+      - spec
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          clean: true
+          fetch-depth: 0
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false

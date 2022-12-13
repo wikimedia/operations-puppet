@@ -1,0 +1,16 @@
+# !!! Managed by Puppet !!!
+
+hosts = <%= @_hosts.join(' ') %>
+user = <%= @user %>
+password = <%= @password %>
+dbname = <%= @dbname %>
+query = <%= @query %>
+<% if @result_format -%>
+result_format = <%= @result_format %>
+<% end -%>
+<% if @domain -%>
+domain = <%= @domain.join(', ') %>
+<% end -%>
+<% if @expansion_limit -%>
+expansion_limit = <%= @expansion_limit %>
+<% end -%>

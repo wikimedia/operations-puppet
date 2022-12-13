@@ -1,0 +1,37 @@
+# !!! Managed by Puppet !!!
+
+hosts = <%= @_hosts.join(' ') %>
+user = <%= @user %>
+password = <%= @password %>
+dbname = <%= @dbname %>
+query = <%= @query %>
+<% if @result_format -%>
+result_format = <%= @result_format %>
+<% end -%>
+<% if @domain -%>
+domain = <%= @domain.join(', ') %>
+<% end -%>
+<% if @expansion_limit -%>
+expansion_limit = <%= @expansion_limit %>
+<% end -%>
+<% if @option_file -%>
+option_file = <%= @option_file %>
+<% end -%>
+<% if @option_group -%>
+option_group = <%= @option_group %>
+<% end -%>
+<% if @tls_cert -%>
+tls_cert_file = <%= @tls_cert %>
+<% end -%>
+<% if @tls_key -%>
+tls_key_file = <%= @tls_key %>
+<% end -%>
+<% if @tls_ca_cert_file -%>
+tls_CAfile = <%= @tls_ca_cert_file %>
+<% end -%>
+<% if @tls_ca_cert_dir -%>
+tls_CApath = <%= @tls_ca_cert_dir %>
+<% end -%>
+<% unless @tls_verify_cert.nil? -%>
+tls_verify_cert = <%= @tls_verify_cert ? 'yes' : 'no' %>
+<% end -%>
