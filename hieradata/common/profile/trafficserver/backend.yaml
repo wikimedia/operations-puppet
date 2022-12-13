@@ -352,7 +352,7 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=api-ext-ro.discovery.wmnet' # dest
+          - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
