@@ -13,6 +13,7 @@ class profile::openldap::management(
     Hash    $ldap         = lookup('ldap', Hash, hash, {}),
     Boolean $timer_active = lookup('profile::openldap::management::timer_active'),
 ) {
+    include profile::ldap::bitu
     include profile::openldap::client
     include passwords::phabricator
 
