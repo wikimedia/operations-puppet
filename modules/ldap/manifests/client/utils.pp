@@ -11,21 +11,6 @@ class ldap::client::utils($ldapconfig) {
     }
     ensure_packages(['python3-pycurl', 'python3-pyldap'])
 
-    file { '/usr/local/sbin/add-ldap-group':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/add-ldap-group.py',
-    }
-
-    file { '/usr/local/sbin/ldaplist':
-        ensure => absent
-    }
-
-    file { '/usr/local/bin/ldaplist':
-        ensure => absent
-    }
-
     if $::realm == 'labs' {
         # The 'ssh-key-ldap-lookup' tool is called during login ssh via AuthorizedKeysCommand.  It
         #  returns public keys from ldap for the specified username.

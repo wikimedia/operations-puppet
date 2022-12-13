@@ -9,12 +9,7 @@ class ldap::management(
 ) {
     ensure_packages([
         'ldapvi',
-        'python3-yaml',
     ])
-
-    apt::package_from_component { 'python3-ldap':
-        component => 'component/python-ldap-bpo',
-    }
 
     file { '/etc/ldapvi.conf':
         content => template('ldap/ldapvi.conf.erb'),
@@ -22,6 +17,7 @@ class ldap::management(
         owner   => 'root',
         group   => 'ldap-admins',
     }
+
     file {
         default:
             ensure => file,
@@ -34,9 +30,13 @@ class ldap::management(
             content => file('ldap/modify-ldap-group');
         '/usr/local/bin/modify-mfa':
             content => file('ldap/scripts/modify-mfa.py');
+        '/usr/local/sbin/add-ldap-group':
+            content =>  file('ldap/scripts/add-ldap-group.py');
 
     }
+
     file { '/usr/local/bin/rewrite-group-for-memberof':
+        ensure => absent,
         source => 'puppet:///modules/ldap/rewrite-group-for-memberof.py',
         mode   => '0554',
         owner  => 'root',
