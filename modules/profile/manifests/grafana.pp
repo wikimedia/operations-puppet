@@ -83,6 +83,7 @@ class profile::grafana (
             auto_assign_org_role => 'Editor',
             allow_org_create     => false,
             allow_sign_up        => false,
+            default_theme        => 'light',
         },
 
         # We don't like it when software phones home.
