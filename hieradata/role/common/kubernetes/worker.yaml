@@ -57,6 +57,7 @@ profile::lvs::realserver::pools:
   shellbox-syntaxhighlight: {}
   shellbox-timeline: {}
   similar-users: {}
+  thumbor: {}
   toolhub: {}
   linkrecommendation: {}
   tegola-vector-tiles: {}
