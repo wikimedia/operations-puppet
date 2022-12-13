@@ -104,7 +104,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         ssl: true
     codfw:
       shard01:
-        host: 10.192.0.83   # mc2019
+        host: 10.192.0.191   # mc2038
         port: 11214
         ssl: true
       shard02:
@@ -233,7 +233,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         port: 11211
     codfw:
       shard01:
-        host: 10.192.0.83   # mc2019
+        host: 10.192.0.191   # mc2038
         port: 11211
       shard02:
         host: 10.192.0.22    # mc2039
