@@ -12,6 +12,9 @@ fields:
 codec: "json_lines"
 ignore:
   - "[normalized][dropped]"
+  - "@timestamp"
+  - "tags"
+  - "normalized_message"
 testcases:
   # TODO: fill in kubernetes metadata
   - input:
@@ -27,7 +30,8 @@ testcases:
         message: "Not Found: /favicon.ico"
         normalized:
           message: "not found: /favicon.ico"
-        "@timestamp": "2021-10-04T15:08:24.011Z"
+# Other tests do not pass through a timestamp parser.  Disabled to compensate.
+#        "@timestamp": "2021-10-04T15:08:24.011Z"
         host:
           name: "kubestage1008"
         service:
@@ -61,3 +65,40 @@ testcases:
           id: "4e2aa2ef-eb87-4e0f-b1ac-5627d27e399e"
         ecs:
           version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "log":"{\"timestamp\": \"2022-12-13T16:49:32\", \"RequestTime\": \"93297\", \"Client-IP\": \"0.0.0.0\", \"Handle/Status\": \"proxy:unix:/run/shared/fpm-www.sock|fcgi://localhost/200\", \"ResponseSize\": \"4161\", \"Method\": \"POST\", \"Url\": \"http://test2.wikipedia.org/w/api.php\", \"MimeType\": \"application/json\", \"Referer\": \"-\", \"X-Forwarded-For\": \"127.1.1.1, 127.1.1.2\", \"User-Agent\": \"TaxonBot@TaxonBot@de.wikipedia \u003cbot-owner@wmde\u003e \\xe2\\x80\\x93 MediaWiki Tcl Bot Framework 0.5\", \"Accept-Language\": \"-\", \"X-Analytics\": \"-\", \"User\": \"-\", \"UserHeader\": \"-\", \"Connect-IP\": \"127.0.0.1\", \"X-Request-Id\": \"1f3b83b0-690e-4104-9493-23ef67e30744\", \"X-Client-IP\": \"-\"}\n",
+          "stream":"stdout",
+          "time":"2022-12-13T16:49:32.417300477Z",
+          "rsyslog.timereported": "2022-12-13T16:49:32.041",
+          "tags": [ "es" ]
+        }
+  - expected:
+      - __target_index: "logstash-k8s-1-1.0.0-N-daily"
+        timestamp: "2022-12-13T16:49:32"
+        Accept-Language: "-"
+        Client-IP: "0.0.0.0"
+        Connect-IP: "127.0.0.1"
+        "Handle/Status": "proxy:unix:/run/shared/fpm-www.sock|fcgi://localhost/200"
+        Method: "POST"
+        MimeType: "application/json"
+        Referer: "-"
+        RequestTime: "93297"
+        ResponseSize: "4161"
+        Url: "http://test2.wikipedia.org/w/api.php"
+        User: "-"
+        User-Agent: "TaxonBot@TaxonBot@de.wikipedia \u003cbot-owner@wmde\u003e \u003ce2\u003e\u003c80\u003e\u003c93\u003e MediaWiki Tcl Bot Framework 0.5"
+        UserHeader: "-"
+        X-Analytics: "-"
+        X-Client-IP: "-"
+        X-Forwarded-For: "127.1.1.1, 127.1.1.2"
+        X-Request-Id: "1f3b83b0-690e-4104-9493-23ef67e30744"
+        facility: "local0"
+        host: "kubestage1008"
+        logsource: "kubestage1008"
+        program: "input-file-kubernetes"
+        severity: "NOTICE"
+        stream: "stdout"
+        time: "2022-12-13T16:49:32.417300477Z"
