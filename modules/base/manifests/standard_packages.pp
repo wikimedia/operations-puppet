@@ -4,7 +4,7 @@ class base::standard_packages {
         'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
         'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
-        'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'quickstack', 'screen', 'strace', 'sysstat', 'tcpdump',
+        'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
         'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd',
     ])
@@ -27,6 +27,11 @@ class base::standard_packages {
     # packages only available in buster and later
     if debian::codename::ge('buster') {
         ensure_packages(['python3-wmflib'])
+    }
+
+    # Needs further work to work with Bookworm's binutils, revisit when Bookworm is stable
+    if debian::codename::lt('bookworm') {
+        ensure_packages('quickstack')
     }
 
     # git-fat hasn't been ported to Python 3 yet, T279509
