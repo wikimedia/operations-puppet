@@ -1,0 +1,4 @@
+# db1204
+profile::mariadb::mysql_role: 'master'
+mariadb::shard: 'backup1-eqiad'
+profile::base::notifications: disabled

@@ -1,0 +1,3 @@
+# db1205
+mariadb::shard: 'backup1-eqiad'
+profile::base::notifications: disabled

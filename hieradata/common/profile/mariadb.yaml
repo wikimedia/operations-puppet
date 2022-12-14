@@ -23,6 +23,8 @@ profile::mariadb::section_ports:
   matomo: 3351
   analytics_meta: 3352
   mediabackupstemp: 3353
+  backup1-eqiad: 3360
+  backup1-codfw: 3361
 profile::mariadb::section_params:
   _defaults_:
     writeable_dc: 'mwprimary'
@@ -56,5 +58,11 @@ profile::mariadb::section_params:
     replication_type: 'unidir'
   mediabackupstemp:
     writeable_dc: 'both'
+    replication_type: 'none'
+  backup1-eqiad:
+    writeable_dc: 'eqiad'
+    replication_type: 'none'
+  backup1-codfw:
+    writeable_dc: 'codfw'
     replication_type: 'none'
 profile::mariadb::wikiuser_username: 'wikiuser202206'

@@ -500,11 +500,6 @@ node /^db1(107|118|119|128|132|134|135|163|169|184|186|196|206)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# New db node T313978
-node /^(db1204|db1205)\.eqiad\.wmnet$/ {
-    role(insetup::data_persistence)
-}
-
 # eqiad sanitarium master
 node 'db1106.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
@@ -519,11 +514,6 @@ node /^db2(103|112|116|130|145|146|153|174|176)\.codfw\.wmnet/ {
 # codfw sanitarium master
 node 'db2173.codfw.wmnet' {
     role(mariadb::sanitarium_master)
-}
-
-# codfw new db node T313979
-node /^db218[34]\.codfw\.wmnet/ {
-    role(insetup::data_persistence)
 }
 
 # s2 (large wikis) core production dbs on eqiad
@@ -815,6 +805,15 @@ node 'db1176.eqiad.wmnet' {
     role(mariadb::misc)
 }
 node 'db2151.codfw.wmnet' {
+    role(mariadb::misc)
+}
+
+# backup1-eqiad section (datacenter-specific backup metadata hosts)
+node /^(db1204|db1205)\.eqiad\.wmnet$/ {
+    role(mariadb::misc)
+}
+# backup1-codfw section (datacenter-specific backup metadata hosts)
+node /^db2183|db2184\.codfw\.wmnet/ {
     role(mariadb::misc)
 }
 
