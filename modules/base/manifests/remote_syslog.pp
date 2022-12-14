@@ -48,11 +48,14 @@ class base::remote_syslog (
             # for >= bullseye, available in debian main
             # otherwise through component/rsyslog-openssl (T324623)
             if debian::codename::eq('buster') {
-                apt::package_from_component { 'rsyslog_receiver':
+                # On Buster syslog clients acting as syslog servers,
+                # apt::package_from_component may have been defined
+                # in rsyslog::receiver as well
+                ensure_resource('apt::package_from_component', 'rsyslog-tls', {
                     component => 'component/rsyslog-openssl',
                     packages  => ['rsyslog-openssl', 'rsyslog-kafka', 'rsyslog'],
                     before    => Class['rsyslog'],
-                }
+                })
             } else {
                 ensure_packages('rsyslog-openssl')
             }

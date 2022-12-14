@@ -62,11 +62,14 @@ class rsyslog::receiver (
     }
 
     if debian::codename::eq('buster') {
-        apt::package_from_component { 'rsyslog_receiver':
+        # On Buster syslog servers acting as syslog clients,
+        # apt::package_from_component may have been defined
+        # in base::remote_syslog as well
+        ensure_resource('apt::package_from_component', 'rsyslog-tls', {
             component => $buster_component,
             packages  => [$netstream_package, 'rsyslog-kafka', 'rsyslog'],
             before    => Class['rsyslog'],
-        }
+        })
     } else {
         ensure_packages($netstream_package)
     }
