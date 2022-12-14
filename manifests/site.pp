@@ -1703,7 +1703,7 @@ node /^ldap-replica200[5-6]\.wikimedia\.org$/ {
 }
 
 # Logging data nodes (codfw)
-node /^logstash20(0[123]|2[6789]|3[345])\.codfw\.wmnet$/ {
+node /^logstash20(0[123]|2[6789]|3[34567])\.codfw\.wmnet$/ {
     role(logging::opensearch::data)
 }
 
