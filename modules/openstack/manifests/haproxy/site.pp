@@ -70,18 +70,6 @@ define openstack::haproxy::site(
     Enum['http', 'tcp'] $type = 'http',
     Enum['public', 'internal', 'ignore'] $firewall = 'ignore',
 ) {
-    # If the host's FQDN is in $servers configure FERM to allow peer
-    # connections on the backend service port.
-    if $::fqdn in $servers {
-        # Allow traffic to peers on backend ports
-        $peers = join(delete($servers, $::fqdn), ' ')
-        ferm::service { "${title}_haproxy_backend":
-            proto  => 'tcp',
-            port   => $port_backend,
-            srange => "(@resolve((${peers})) @resolve((${peers}), AAAA))",
-        }
-    }
-
     if $type == 'http' {
         file { "/etc/haproxy/conf.d/${title}.cfg":
             ensure  => $ensure,
