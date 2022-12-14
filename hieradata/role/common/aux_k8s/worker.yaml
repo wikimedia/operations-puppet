@@ -28,6 +28,6 @@ profile::rsyslog::kubernetes::enable: true
 profile::lvs::realserver::use_conftool: false
 # Use istio for ingress
 profile::lvs::realserver::pools:
-  inference: {}
+  aux-k8s-ingress: {}
 
 profile::contacts::role_contacts: ['Infrastructure Foundations']
