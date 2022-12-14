@@ -143,7 +143,7 @@ profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
 profile::gitlab::runner::locked: false
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::run_untagged: true
-profile::gitlab::runner::tags: []
+profile::gitlab::runner::tags: ['wmcs']
 profile::gitlab::runner::environment: {}
 profile::gitlab::runner::user: "root"
 # restricted firewall is used in cloud
