@@ -54,7 +54,7 @@ enwp_trademark = (r'Wikipedia®\sis\sa\sregistered\strademark '
 
 enwb_copyright = (r'Text\sis\savailable\sunder\sthe '
                   r'<a\shref="\/\/creativecommons\.org\/licenses\/by-sa\/3\.0\/">'
-                  r'Creative\sCommons\sAttribution-ShareAlike\sLicense.</a>; '
+                  r'Creative\sCommons\sAttribution-ShareAlike\sLicense.?</a>; '
                   r'additional\sterms\smay\sapply\.')
 
 
