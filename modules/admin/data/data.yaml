@@ -402,7 +402,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako,
-              xcollazo, hokwelum, gmodena, dcausse]
+              xcollazo, hokwelum, gmodena, dcausse, mnz]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
