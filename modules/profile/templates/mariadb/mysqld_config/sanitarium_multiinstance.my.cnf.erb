@@ -19,9 +19,6 @@ wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
 # https://mariadb.com/kb/en/mariadb/gtid/
 gtid_domain_id  = <%= @gtid_domain_id %>
 
-# enable socket authentication
-plugin-load = unix_socket=auth_socket.so
-
 skip-external-locking
 skip-name-resolve
 skip-slave-start
