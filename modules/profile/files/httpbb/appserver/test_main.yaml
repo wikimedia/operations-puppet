@@ -229,3 +229,13 @@ https://donate.wikimedia.org:
   assert_status: 301
   assert_headers:
       Location: https://donate.wikimedia.org/?foo
+
+# Test2wiki, added for MW-on-k8s testing T290536
+https://test2.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://test2.wikipedia.org/wiki/Main_Page
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: This is a test
