@@ -7,6 +7,10 @@ profile::openstack::base::nova::compute_workers: 2
 profile::openstack::base::nova::metadata_listen_port: 18775
 profile::openstack::base::nova::osapi_compute_listen_port: 18774
 
+# A few older cloudvirts override this but this is a good default for
+#  modern ceph-based thinvirts
+profile::openstack::base::nova::instance_dev: 'thinvirt'
+
 # The order of this list directly affects scheduler performance
 # This list is ordered to follow:
 # - Operational state
