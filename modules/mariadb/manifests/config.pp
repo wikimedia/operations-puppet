@@ -33,6 +33,7 @@ class mariadb::config(
     $replication_role        = 'standalone',
     $max_allowed_packet      = '16M',
     $innodb_pool_size        = undef,
+    # Will be deprecated in 10.12 https://jira.mariadb.org/browse/MDEV-29694
     $innodb_change_buffering = 'none',
     $event_scheduler         = 1,
     $sync_binlog             = '1',
