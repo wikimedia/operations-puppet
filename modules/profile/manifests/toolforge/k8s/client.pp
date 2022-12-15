@@ -28,6 +28,12 @@ class profile::toolforge::k8s::client (
         mode   => '0555',
     }
 
+    file { '/etc/toolforge':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
     file { '/etc/toolforge/webservice.yaml':
         ensure  => file,
         owner   => 'root',
