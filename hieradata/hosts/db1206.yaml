@@ -1,2 +1,3 @@
 # db1206 
+# Testing PERC 755 RAID controller
 mariadb::shard: 's1'
