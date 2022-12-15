@@ -33,7 +33,7 @@ class query_service::mount_dumps(
           ensure  => 'mounted',
           device  => "${server}:/",
           fstype  => 'nfs',
-          options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr',
+          options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,nofail',
           atboot  => true,
           require => File["/mnt/nfs/dumps-${server}"],
         }
