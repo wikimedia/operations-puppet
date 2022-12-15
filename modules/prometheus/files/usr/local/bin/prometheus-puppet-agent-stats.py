@@ -16,7 +16,10 @@
 import argparse
 import logging
 import os
+import shlex
 import sys
+
+from subprocess import run
 
 import yaml
 
@@ -26,7 +29,7 @@ from prometheus_client.exposition import generate_latest
 log = logging.getLogger(__name__)
 
 
-def _summary_stats(puppet_state_dir, registry):
+def _summary_stats(registry):
     summary_parse_fail = Gauge('summary_parse_fail', 'Failed to parse summary',
                                namespace='puppet_agent', registry=registry)
     summary_parse_fail.set(0)
@@ -54,7 +57,7 @@ def _summary_stats(puppet_state_dir, registry):
     catalog_version = Info('catalog_version', 'The current commit running on the host',
                            namespace='puppet_agent', registry=registry)
 
-    summary_file = os.path.join(puppet_state_dir, 'last_run_summary.yaml')
+    summary_file = puppet_config('lastrunfile')
     try:
         with open(summary_file) as f:
             log.debug("Parsing %s", summary_file)
@@ -95,17 +98,24 @@ def _summary_stats(puppet_state_dir, registry):
         catalog_version.info({'git_sha': git_sha})
 
 
-def collect_puppet_stats(puppet_state_dir, registry):
+def collect_puppet_stats(registry):
     puppet_enabled = Gauge('enabled', 'Puppet is currently enabled',
                            namespace='puppet_agent', registry=registry)
     puppet_enabled.set(1)
 
-    lock_file = os.path.join(puppet_state_dir, 'agent_disabled.lock')
+    lock_file = puppet_config('agent_disabled_lockfile')
     if os.path.exists(lock_file):
         log.debug("Found %s, puppet disabled", lock_file)
         puppet_enabled.set(0)
 
-    _summary_stats(puppet_state_dir, registry)
+    _summary_stats(registry)
+
+
+def puppet_config(item: str) -> str:
+    """return a puppet config value"""
+    command = shlex.split(f"/usr/bin/puppet config print {item}")
+    result = run(command, capture_output=True, check=True)
+    return result.stdout.strip()
 
 
 def main():
@@ -114,9 +124,6 @@ def main():
                         help='Output file (stdout)')
     parser.add_argument('-d', '--debug', action='store_true', default=False,
                         help='Enable debug logging (%(default)s)')
-    parser.add_argument('--puppet-state-dir', default='/var/lib/puppet/state',
-                        dest='puppet_state_dir',
-                        help='Puppet state directory (%(default)s)')
     args = parser.parse_args()
 
     if args.debug:
@@ -128,7 +135,7 @@ def main():
         parser.error('Output file does not end with .prom')
 
     registry = CollectorRegistry()
-    collect_puppet_stats(args.puppet_state_dir, registry)
+    collect_puppet_stats(registry)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)

@@ -10,6 +10,7 @@
 
 require 'fileutils'
 require 'optparse'
+require 'puppet'
 # safe-yaml has a dependency on time which is not fixed until 1.0.5
 # https://github.com/dtao/safe_yaml/issues/80
 # instead of patching safe_yaml we declare the requirement here
@@ -17,11 +18,12 @@ require 'time'
 require 'safe_yaml'
 
 PRINT_FAILED_RESOURCES_NO = 3 # Number of failed resources to print. Don't set this high
+Puppet.initialize_settings
 
-runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
-adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
-summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
-reportfile = "/var/lib/puppet/state/last_run_report.yaml"
+runlockfile = Puppet.settings[:agent_catalog_run_lockfile]
+adminlockfile = Puppet.settings[:agent_disabled_lockfile]
+summaryfile = Puppet.settings[:lastrunfile]
+reportfile = Puppet.settings[:lastrunreport]
 icingafile = "/var/lib/puppet/state/icinga_puppet_fail.lock"
 enabled = true
 alert_master_fail = false
