@@ -5,9 +5,6 @@
 # @param tcpircbot_port Port to use with the IRC bot.
 # @param http_proxy a http_proxy to use for connections
 # @param netbox_api the url for the netbox api
-# @param redis_shards A hash of Redis shards, with the top level key `sessions`, containing a hash
-#   keyed by data center, and then by shard name, each shard having a host and port
-#   key.
 # @param netbox_token_ro The readonly token for netbox
 # @param netbox_token_rw The read/write token for netbox
 # @param ganeti_user A Ganeti RAPI user name for Spicerack to use.
@@ -21,7 +18,6 @@ class profile::spicerack (
     Stdlib::Port     $tcpircbot_port     = lookup('tcpircbot_port'),
     String           $http_proxy         = lookup('http_proxy'),
     Stdlib::HTTPUrl  $netbox_api         = lookup('netbox_api_url'),
-    Hash             $redis_shards       = lookup('redis::shards'),
     String           $netbox_token_ro    = lookup('profile::netbox::ro_token'),
     String           $netbox_token_rw    = lookup('profile::netbox::rw_token'),
     String           $ganeti_user        = lookup('profile::ganeti::rapi::ro_user'),
@@ -32,7 +28,6 @@ class profile::spicerack (
     Stdlib::Unixpath $firmware_store_dir = lookup('profile::spicerack::firmware_store_dir'),
 ) {
     class { 'service::deploy::common': }
-    include passwords::redis
 
     # Packages required by spicerack cookbooks
     ensure_packages([
@@ -66,12 +61,6 @@ class profile::spicerack (
     }
 
     ### SPICERACK MODULES CONFIGURATION FILES
-
-    # Redis-specific configuration
-    $redis_sessions_data = {
-        'password' => $passwords::redis::main_password,
-        'shards' => $redis_shards['sessions'],
-    }
 
     # Ganeti RAPI configuration
     $ganeti_auth_data = {
@@ -145,7 +134,6 @@ class profile::spicerack (
         'kafka' => { 'config.yaml' => $kafka_config_data },
         'netbox' => { 'config.yaml' => $netbox_config_data },
         'peeringdb' => { 'config.yaml' => $peeringdb_config_data },
-        'redis_cluster' => { 'sessions.yaml' => $redis_sessions_data },
         'service' => { 'service.yaml' => wmflib::service::fetch() },
     }.each | $dir, $file_data | {
         file { "/etc/spicerack/${dir}":
