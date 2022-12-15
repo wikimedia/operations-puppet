@@ -49,7 +49,6 @@ class nginx(
     service { 'nginx':
         ensure     => stdlib::ensure($ensure, 'service'),
         enable     => ($ensure == 'present'),
-        provider   => 'debian',
         hasrestart => true,
     }
 
