@@ -5,194 +5,76 @@
 # @param tcpircbot_port Port to use with the IRC bot.
 # @param http_proxy a http_proxy to use for connections
 # @param netbox_api the url for the netbox api
-# @param netbox_token_ro The readonly token for netbox
-# @param netbox_token_rw The read/write token for netbox
-# @param ganeti_user A Ganeti RAPI user name for Spicerack to use.
-# @param ganeti_password The password for the above user.
-# @param ganeti_timeout timeout parameter when talking to ganeti
-# @param peeringdb_temp_dir a temp directory to use for peeringdb cache
-# @param peeringdb_token_ro The perringdb readonly  token
 # @param firmware_store_dir The location to store firmware images
+# @param cookbooks_repos key value pair of cookbook repos and the directory to install them to
+# @param ganeti_auth_data geneti config data
+# @param netbox_config_data netbox config data
+# @param peeringdb_config_data peeringdb config data
+# @param elasticsearch_config_data elastic config data
+# @param configure_redis if true configure redis
+# @param configure_kafka if true configure kafka
 class profile::spicerack (
-    String           $tcpircbot_host     = lookup('tcpircbot_host'),
-    Stdlib::Port     $tcpircbot_port     = lookup('tcpircbot_port'),
-    String           $http_proxy         = lookup('http_proxy'),
-    Stdlib::HTTPUrl  $netbox_api         = lookup('netbox_api_url'),
-    String           $netbox_token_ro    = lookup('profile::netbox::ro_token'),
-    String           $netbox_token_rw    = lookup('profile::netbox::rw_token'),
-    String           $ganeti_user        = lookup('profile::ganeti::rapi::ro_user'),
-    String           $ganeti_password    = lookup('profile::ganeti::rapi::ro_password'),
-    Integer          $ganeti_timeout     = lookup('profile::spicerack::ganeti_rapi_timeout'),
-    Stdlib::Unixpath $peeringdb_temp_dir = lookup('profile::spicerack::peeringdb_temp_dir'),
-    String           $peeringdb_token_ro = lookup('profile::spicerack::peeringdb_ro_token'),
-    Stdlib::Unixpath $firmware_store_dir = lookup('profile::spicerack::firmware_store_dir'),
-) {
-    class { 'service::deploy::common': }
+    String                         $tcpircbot_host            = lookup('tcpircbot_host'),
+    Stdlib::Port                   $tcpircbot_port            = lookup('tcpircbot_port'),
+    String                         $http_proxy                = lookup('http_proxy'),
+    Stdlib::Unixpath               $firmware_store_dir        = lookup('profile::spicerack::firmware_store_dir'),
+    Hash[String, Stdlib::Unixpath] $cookbooks_repos           = lookup('profile::spicerack::cookbooks_repos'),
+    Hash                           $ganeti_auth_data          = lookup('profile::spicerack::ganeti_auth_data'),
+    Hash                           $netbox_config_data        = lookup('profile::spicerack::netbox_config_data'),
+    Hash                           $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
+    Hash                           $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
+    Boolean                        $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
 
-    # Packages required by spicerack cookbooks
+) {
     ensure_packages([
         'python3-dateutil', 'python3-prettytable', 'python3-requests', 'python3-packaging', 'spicerack',
     ])
 
-    $cookbooks_dir = '/srv/deployment/spicerack'
-
-    # Install the cookbooks
-    git::clone { 'operations/cookbooks':
-        ensure    => 'latest',
-        directory => $cookbooks_dir,
-    }
-
-    # this directory is created by the debian package however we still manage it to force
-    # an auto require on all files under it this directory
-    file { '/etc/spicerack':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0550',
-        require => Package['spicerack'],
-    }
-
-    file { '/etc/spicerack/config.yaml':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => template('profile/spicerack/config.yaml.erb'),
-    }
-
-    ### SPICERACK MODULES CONFIGURATION FILES
-
-    # Ganeti RAPI configuration
-    $ganeti_auth_data = {
-        'username' => $ganeti_user,
-        'password' => $ganeti_password,
-        'timeout'  => $ganeti_timeout,
-    }
-
-    # Netbox backend configuration
-    $netbox_config_data = {
-        'api_url'   => $netbox_api,
-        'api_token_ro' => $netbox_token_ro,
-        'api_token_rw' => $netbox_token_rw,
-    }
-
-    # PeeringDB backend configuration
-    $peeringdb_config_data = {
-        'api_token_ro' => $peeringdb_token_ro,
-        'cachedir'     => $peeringdb_temp_dir,
+    $cookbooks_repos.each |$repo, $dir| {
+        wmflib::dir::mkdir_p($dir.dirname)
+        git::clone { $repo:
+            ensure    => 'latest',
+            directory => $dir,
+        }
     }
 
     # Kafka cluster brokers configuration
-    $kafka_config_data = {
-        'main'   => {
-            'eqiad' => kafka_config('main', 'eqiad'),
-            'codfw' => kafka_config('main', 'codfw'),
+    $kafka_config_data = $configure_kafka ? {
+        true    => {
+          'main'   => {
+              'eqiad' => kafka_config('main', 'eqiad'),
+              'codfw' => kafka_config('main', 'codfw'),
+          },
+          'jumbo' => {
+              'eqiad' => kafka_config('jumbo', 'eqiad'),
+          },
+          'logging' => {
+              'eqiad' => kafka_config('logging', 'eqiad'),
+              'codfw' => kafka_config('logging', 'codfw'),
+          },
         },
-        'jumbo' => {
-            'eqiad' => kafka_config('jumbo', 'eqiad'),
-        },
-        'logging' => {
-            'eqiad' => kafka_config('logging', 'eqiad'),
-            'codfw' => kafka_config('logging', 'codfw'),
-        },
+        default => {},
     }
 
-    # Elasticsearch cluster configuration
-    $elasticsearch_config_data = {
-    'search'                                          => {
-        'search_eqiad' => {
-          'production-search-eqiad' => 'https://search.svc.eqiad.wmnet:9243',
-          'production-search-omega-eqiad' => 'https://search.svc.eqiad.wmnet:9443',
-          'production-search-psi-eqiad' => 'https://search.svc.eqiad.wmnet:9643',
-        },
-        'search_codfw' => {
-          'production-search-codfw' => 'https://search.svc.codfw.wmnet:9243',
-          'production-search-omega-codfw' => 'https://search.svc.codfw.wmnet:9443',
-          'production-search-psi-codfw' => 'https://search.svc.codfw.wmnet:9643',
-        },
-        'relforge' => {
-          'relforge-eqiad' => 'https://relforge1004.eqiad.wmnet:9243',
-          'relforge-eqiad-small-alpha' => 'https://relforge1004.eqiad.wmnet:9443',
-        },
-        'cloudelastic' => {
-          'cloudelastic-chi-https' => 'https://cloudelastic.wikimedia.org:9243',
-          'cloudelastic-omega-https' => 'https://cloudelastic.wikimedia.org:9443',
-          'cloudelastic-psi-https' => 'https://cloudelastic.wikimedia.org:9643',
-        },
-      },
-    'logging'                                         => {
-          'logging-eqiad' => 'http://logstash1010.eqiad.wmnet:9200',
-          'logging-codfw' => 'http://logstash2001.codfw.wmnet:9200',
-      },
-    }
+    # This is not pretty and i apologise but there is a wired bug in puppet
+    # which munges undef when we pass the hash, best demonstrated with the paste below
+    # https://phabricator.wikimedia.org/P42722
+    # TODO: refactor this after we move to puppet >= 6
+    # or possibly after https://gerrit.wikimedia.org/r/c/operations/puppet/+/868739
+    $modules = {
+        'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data.empty.bool2str('', $elasticsearch_config_data.to_yaml) },
+        'ganeti' => { 'config.yaml' => $ganeti_auth_data.empty.bool2str('', $ganeti_auth_data.to_yaml) },
+        'kafka' => { 'config.yaml' => $kafka_config_data.empty.bool2str('', $kafka_config_data.to_yaml) },
+        'netbox' => { 'config.yaml' => $netbox_config_data.empty.bool2str('', $netbox_config_data.to_yaml) },
+        'peeringdb' => { 'config.yaml' => $peeringdb_config_data.empty.bool2str('', $peeringdb_config_data.to_yaml) },
+        'service' => { 'service.yaml' => wmflib::service::fetch().to_yaml },
+    }.filter |$module, $config| { !$config.values[0].empty }
 
-    # Install all configuration files
-    # Semicolon needed for https://tickets.puppetlabs.com/browse/PUP-10782
-    ; {
-        'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data },
-        'ganeti' => { 'config.yaml' => $ganeti_auth_data },
-        'kafka' => { 'config.yaml' => $kafka_config_data },
-        'netbox' => { 'config.yaml' => $netbox_config_data },
-        'peeringdb' => { 'config.yaml' => $peeringdb_config_data },
-        'service' => { 'service.yaml' => wmflib::service::fetch() },
-    }.each | $dir, $file_data | {
-        file { "/etc/spicerack/${dir}":
-            ensure => directory,
-            owner  => 'root',
-            group  => 'ops',
-            mode   => '0550',
-        }
-        $file_data.each | $filename, $content | {
-            file { "/etc/spicerack/${dir}/${filename}":
-                ensure  => file,
-                owner   => 'root',
-                group   => 'ops',
-                mode    => '0440',
-                content => to_yaml($content),
-            }
-        }
-    }
-
-    ### COOKBOOKS CONFIGURATION FILES
-
-    file { '/etc/spicerack/cookbooks':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-    }
-
-    wmflib::dir::mkdir_p($firmware_store_dir, {
-        group => 'datacenter-ops',
-        mode  => '2775',
-    })
-    file { '/etc/spicerack/cookbooks/sre.hardware.upgrade-firmware.yaml':
-        ensure  => file,
-        content => {
-            'firmware_store' => $firmware_store_dir,
-        }.to_yaml,
-    }
-
-    file { '/etc/spicerack/cookbooks/sre.network.cf.yaml':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => secret('spicerack/cookbooks/sre.network.cf.yaml'),
-    }
-
-    # Configuration file for switching services between datacenters
-    # For each discovery record for active-active services, extract the
-    # actual dns from monitoring if available.
-    $discovery_records = wmflib::service::fetch().filter |$label, $record| {
-        $record['discovery'] != undef
-    }
-
-    file { '/etc/spicerack/cookbooks/sre.switchdc.services.yaml':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => template('profile/spicerack/sre.switchdc.services.yaml.erb'),
+    class { 'spicerack':
+        tcpircbot_host => $tcpircbot_host,
+        tcpircbot_port => $tcpircbot_port,
+        http_proxy     => $http_proxy,
+        cookbooks_dirs => $cookbooks_repos.values,
+        modules        => $modules,
     }
 }

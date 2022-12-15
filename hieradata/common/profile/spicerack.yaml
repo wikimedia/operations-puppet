@@ -1,3 +1,13 @@
-profile::spicerack::ganeti_rapi_timeout: 30
-profile::spicerack::peeringdb_temp_dir: /tmp/peeringdb-cache
 profile::spicerack::firmware_store_dir: /srv/firmware
+profile::spicerack::cookbooks_repos: {}
+profile::spicerack::ganeti_auth_data:
+  username: "%{alias('profile::ganeti::rapi::ro_user')}"
+  password: "%{alias('profile::ganeti::rapi::ro_password')}"
+  timeout: 30
+profile::spicerack::netbox_config_data:
+  api_url: "%{alias('netbox_api_url')}"
+  api_token_ro: "%{alias('profile::netbox::ro_token')}"
+  api_token_rw: "%{alias('profile::netbox::rw_token')}"
+profile::spicerack::peeringdb_config_data: {}
+profile::spicerack::elasticsearch_config_data: {}
+profile::spicerack::configure_kafka: false

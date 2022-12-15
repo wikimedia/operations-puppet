@@ -20,6 +20,7 @@ class role::cluster::management {
 
     include profile::spicerack
     include profile::spicerack::reposync
+    include profile::spicerack::cookbooks::production
     include profile::homer
 
     include profile::debdeploy
