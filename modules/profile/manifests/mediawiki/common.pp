@@ -6,11 +6,6 @@ class profile::mediawiki::common(
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
 ){
-    # Nutcracker was removed (T277183), but we need to remove that too
-    profile::auto_restarts::service { 'prometheus-nutcracker-exporter':
-        ensure => absent,
-    }
-
     # Enable the memory cgroup
     require ::profile::base::memory_cgroup
     # Require system users that might be used by scap or other processes
