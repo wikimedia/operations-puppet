@@ -17,7 +17,8 @@
 
 class profile::httpbb (
     Optional[Hash[String, Hash[String, String]]] $plain_basicauth_credentials = lookup('profile::httpbb::basicauth_credentials', {default_value => undef}),
-    Hash[String, Array[String]] $hourly_tests = lookup('profile::httpbb::hourly_tests', {default_value => {}})
+    Hash[String, Array[String]] $hourly_tests = lookup('profile::httpbb::hourly_tests', {default_value => {}}),
+    Boolean $test_kubernetes_hourly = lookup('profile::httpbb::test_kubernetes_hourly', {default_value => false})
 ){
     class {'::httpbb':}
 
@@ -135,6 +136,21 @@ class profile::httpbb (
                 'interval' => '1 hour',
             },
             # This doesn't really need access to anything in www-data, but it definitely doesn't need root.
+            user               => 'www-data',
+            monitoring_enabled => true,
+        }
+    }
+
+    # Add the hourly Kubernetes test separately, since it needs a different --https_port.
+    if $test_kubernetes_hourly {
+        systemd::timer::job { 'httpbb_kubernetes_hourly':
+            ensure             => $ensure,
+            description        => 'Run httpbb appserver tests hourly on Kubernetes.',
+            command            => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450\'',
+            interval           => {
+                'start'    => 'OnUnitActiveSec',
+                'interval' => '1 hour',
+            },
             user               => 'www-data',
             monitoring_enabled => true,
         }
