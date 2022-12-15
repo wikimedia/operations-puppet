@@ -95,9 +95,8 @@ scap::dsh::groups:
       - wdqs1010.eqiad.wmnet
   librenms:
     hosts:
-      - netmon2001.wikimedia.org
-      - netmon2002.wikimedia.org
       - netmon1003.wikimedia.org
+      - netmon2002.wikimedia.org
   logstash:
     conftool:
       - {'cluster': 'logstash', 'service': 'kibana'}
