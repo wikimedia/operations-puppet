@@ -13,11 +13,11 @@ import cumin
 from cumin import query
 
 
-AUDIT_OWNER = 'dtankersley'
+AUDIT_OWNER = 'dtankersley@wikimedia.org'
 MESSAGE_PREFIX = ('This is the list of hosts owned by your team that are ready to be put in '
                   'production but still have an "insetup" Puppet role:\n')
 MESSAGE_SUFFIX = ('For more information or to relay feedback just reply to this email or get in '
-                  f'touch with {AUDIT_OWNER}@wikimedia.org.\n')
+                  f'touch with {AUDIT_OWNER}.\n')
 OWNER_PREFIX = 'Those are the audit reports sent to the various owners.\n\n'
 # Mapping of owner email to Puppet O:insetup::* roles (allow exceptions starting a role with O:)
 MAPPING = {
@@ -40,7 +40,7 @@ def send_mail(mail_to: str, message: str) -> None:
     msg['Subject'] = 'Insetup Server Audit'
     msg['From'] = 'Insetup Server Audit <no-reply@wikimedia.org>'
     msg['To'] = mail_to
-    msg['Reply-To'] = f'{AUDIT_OWNER}@wikimedia.org'
+    msg['Reply-To'] = AUDIT_OWNER
     smtp = smtplib.SMTP("localhost")
     smtp.send_message(msg)
     smtp.quit()
