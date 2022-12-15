@@ -16,6 +16,7 @@ class profile::idm(
     $media_dir = "${base_dir}/media"
     $static_dir = "${base_dir}/static"
     $project = 'bitu'
+    $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
     ferm::service { 'idm_http':
         proto => 'tcp',
@@ -38,6 +39,7 @@ class profile::idm(
         project             => $project,
         base_dir            => $base_dir,
         uwsgi_process_count => $uwsgi_process_count,
+        uwsgi_socket        => $uwsgi_socket,
     }
 
     class {'httpd':

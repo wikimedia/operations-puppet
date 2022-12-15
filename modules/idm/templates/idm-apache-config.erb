@@ -8,7 +8,7 @@
 
   ProxyPass /media !
   ProxyPass /static !
-  ProxyPass / unix:<%= @uwsgi_socket %>|uwsgi://uwsgi-uds-idm/
+  ProxyPass / unix:<%= @uwsgi_socket %>|uwsgi://localhost/
 
   Alias /media <%= @media_dir %>
   Alias /static <%= @static_dir %>

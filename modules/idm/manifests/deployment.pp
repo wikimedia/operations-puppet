@@ -53,7 +53,8 @@ class idm::deployment (
     if($development){
         ensure_packages([
             'python3-redis','python3-django', python3-mysqldb,
-            'python3-memcache', 'python3-ldap3'
+            'python3-memcache', 'python3-ldap3', 'python3-rq',
+            'redis'
         ])
 
         file { $base_dir :

@@ -6,14 +6,14 @@ class idm::uwsgi_processes (
     Stdlib::Unixpath $static_dir          = "${base_dir}/static",
     StdLib::Unixpath $media_dir           = "${base_dir}/media",
     String           $deploy_user         = 'www-data',
+    String           $uwsgi_socket        = '/tmp/uwsgi.sock',
     Integer          $uwsgi_process_count = 4,
 ){
     ensure_packages(['python3-django-uwsgi'])
 
-    $uwsgi_socket = "/run/uwsgi/${project}.sock"
     $project_dir = "${base_dir}/${project}"
 
-    file { [$static_dir, $media_dir] :
+    file { [$static_dir, $media_dir, '/etc/bitu'] :
         ensure => directory,
         owner  => $deploy_user,
         group  => $deploy_user,
@@ -27,10 +27,10 @@ class idm::uwsgi_processes (
                 'uid'          => $deploy_user,
                 'base'         => $project_dir,
                 'env'          => [
-                    "PYTHONPATH=\$PYTHONPATH:/etc/${project}",
-                    'DJANGO_SETTINGS_MODULE=production.settings'
+                    "PYTHONPATH=/etc/${project}:\$PYTHONPATH",
+                    'DJANGO_SETTINGS_MODULE=settings'
                 ],
-                'chdir'        => '%(base)/%(project)',
+                'chdir'        => '%(base)/',
                 'module'       => '%(project).wsgi:application',
                 'master'       => true,
                 'processes'    => $uwsgi_process_count,
