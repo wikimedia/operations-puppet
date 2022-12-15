@@ -13,4 +13,7 @@ define prometheus::elasticsearch_exporter(
       ensure => 'running',
     }
   }
+
+  $service_name = "prometheus-elasticsearch-exporter-${elasticsearch_port}"
+  profile::auto_restarts::service { $service_name: }
 }
