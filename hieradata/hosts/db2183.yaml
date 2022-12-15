@@ -1,4 +1,4 @@
 # db2183
 profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'backup1-codfw'
-profile::base::notifications: disabled
+profile::monitoring::notifications_enabled: false
