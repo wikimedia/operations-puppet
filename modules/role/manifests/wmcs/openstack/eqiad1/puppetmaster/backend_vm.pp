@@ -4,4 +4,5 @@ class role::wmcs::openstack::eqiad1::puppetmaster::backend_vm {
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::eqiad1::puppetmaster::backend
     include ::profile::openstack::base::optional_firewall
+    include ::profile::openstack::base::puppetmaster::safe_dirs
 }
