@@ -7,3 +7,6 @@ profile::nginx::variant: 'light'
 profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::installserver::proxy::structured_logs: true
+profile::installserver::proxy::ssh_allowed_hosts:
+  - 10.64.48.148
+  - 10.192.32.140

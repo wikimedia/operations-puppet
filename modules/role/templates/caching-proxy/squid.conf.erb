@@ -37,6 +37,13 @@ acl wikimedia src <%= net %>
 <%- end -%>
 acl wikimedia src 127.0.0.0/8
 acl wikimedia src ::1/128
+<%- unless @ssh_allowed_hosts.empty? -%>
+acl sshport port 22
+  <%- @ssh_allowed_hosts.each do |host| -%>
+acl ssh_allowed src <%= host %>
+  <%- end -%>
+http_access allow CONNECT ssh_allowed sshport
+<%- end -%>
 http_access allow manager localhost
 http_access deny manager
 http_access allow purge localhost

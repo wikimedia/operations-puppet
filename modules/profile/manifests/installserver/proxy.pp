@@ -4,11 +4,13 @@
 # @param structured_logs use the cee structured logs format
 # @param ssl_ports list of ssl ports
 # @param safe_ports list of safe ports
+# @param ssh_allowed_hosts hosts that are allowed to use the proxy for ssh connections
 class profile::installserver::proxy(
-    Wmflib::Ensure      $ensure          = lookup('profile::installserver::proxy::ensure'),
-    Boolean             $structured_logs = lookup('profile::installserver::proxy::structured_logs'),
-    Array[Stdlib::Port] $ssl_ports       = lookup('profile::installserver::proxy::ssl_ports'),
-    Array[Stdlib::Port] $safe_ports      = lookup('profile::installserver::proxy::safe_ports'),
+    Wmflib::Ensure             $ensure            = lookup('profile::installserver::proxy::ensure'),
+    Boolean                    $structured_logs   = lookup('profile::installserver::proxy::structured_logs'),
+    Array[Stdlib::Port]        $ssl_ports         = lookup('profile::installserver::proxy::ssl_ports'),
+    Array[Stdlib::Port]        $safe_ports        = lookup('profile::installserver::proxy::safe_ports'),
+    Array[Stdlib::IP::Address] $ssh_allowed_hosts = lookup('profile::installserver::proxy::ssh_allowed_hosts')
 ){
     include network::constants
     $prod_networks = $network::constants::production_networks
