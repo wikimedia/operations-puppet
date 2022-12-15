@@ -95,7 +95,6 @@ scap::dsh::groups:
       - wdqs1010.eqiad.wmnet
   librenms:
     hosts:
-      - netmon1002.wikimedia.org
       - netmon2001.wikimedia.org
       - netmon2002.wikimedia.org
       - netmon1003.wikimedia.org
