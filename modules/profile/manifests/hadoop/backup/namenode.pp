@@ -42,9 +42,10 @@ class profile::hadoop::backup::namenode(
         require => File['/srv/backup']
     }
 
+    $backup_file_path_cmd = "${backup_dir}/fsimage_$(/usr/bin/date +%%Y-%%m-%%d)"  # %% is for escaping % in systemd syntax
     kerberos::systemd_timer { 'hadoop-namenode-backup-fetchimage':
         description => 'Downloads the most recent fsimage from the NameNode and saves it in the specified local directory.',
-        command     => "FILE=${backup_dir}/fsimage_\$(date +'%Y-%m-%d') && /usr/bin/hdfs dfsadmin -fetchImage \$FILE && gzip \$FILE",
+        command     => "/usr/bin/bash -c \"/usr/bin/hdfs dfsadmin -fetchImage ${backup_file_path_cmd} && /usr/bin/gzip ${backup_file_path_cmd}\"",
         interval    => '*-*-* 00:00:00',  # everyday at midnight
         user        => 'hdfs',
     }
