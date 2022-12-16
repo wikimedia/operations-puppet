@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytic::cluster::gitconfig
 #
 # Set system level git config properties to be picked up

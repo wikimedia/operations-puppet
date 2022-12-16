@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::cluster::secrets
 #
 # Creates protected files in HDFS that contains

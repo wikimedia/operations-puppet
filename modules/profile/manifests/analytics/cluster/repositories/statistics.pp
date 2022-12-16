@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::cluster::repositories::statistics
 #
 # Specific repositories that should be deployed on analytics statistics

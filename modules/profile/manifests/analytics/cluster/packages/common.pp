@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytics::cluster::packages::common
 #
 # Common other-packages that should be installed on analytics computation

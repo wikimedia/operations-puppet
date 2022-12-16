@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::cluster::druid_deep_storage
 #
 # This file ensures that druid users and groups exist, and that

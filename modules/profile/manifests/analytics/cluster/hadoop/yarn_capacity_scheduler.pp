@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::cluster::hadoop::yarn_capacity_scheduler
 #
 # Capacity scheduler config tailored for the Hadoop Analytics Cluster.

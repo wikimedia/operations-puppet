@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::analytics::cluster::airflow
 #
 # Wrapper profile to include classes needed to

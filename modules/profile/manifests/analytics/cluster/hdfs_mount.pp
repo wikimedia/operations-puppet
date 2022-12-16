@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::analytic::cluster::hdfs_mount
 #
 # Include a FUSE mountpoint under /mnt/hdfs to access HDFS.
