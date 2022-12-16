@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::ncredir(
     Stdlib::Port $http_port = lookup('profile::ncredir::http_port', {default_value => 80}),
     Stdlib::Port $https_port = lookup('profile::ncredir::https_port', {default_value => 443}),

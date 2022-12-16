@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define profile::ncredir::log(
     Stdlib::Port::User $ncredirmtail_port,
     Stdlib::Absolutepath $fifo = "/var/log/nginx/ncredir.${title}.pipe",

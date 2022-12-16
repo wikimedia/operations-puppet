@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::acme_chief::cloud (
     String $active_host = lookup('profile::acme_chief::active'),
     String $passive_host = lookup('profile::acme_chief::passive'),
