@@ -106,6 +106,7 @@ class profile::puppetboard (
     File[$puppetboard::config_file] ~> Service['uwsgi-puppetboard']
     profile::auto_restarts::service { 'uwsgi-puppetboard': }
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     ferm::service { 'apache2-http':
         proto => 'tcp',
