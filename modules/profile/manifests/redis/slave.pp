@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::redis::slave(
     Optional[Hash] $settings = lookup('profile::redis::slave::settings'),
     Hash $instance_overrides = lookup('profile::redis::slave::instance_overrides', {'default_value' => {}}),

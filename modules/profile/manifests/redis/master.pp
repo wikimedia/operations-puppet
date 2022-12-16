@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::redis::master(
     Array[String]       $instances          = lookup('profile::redis::master::instances'),
     Hash                $settings           = lookup('profile::redis::master::settings'),

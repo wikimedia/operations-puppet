@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define profile::redis::instance(
     $port=$title,
     $settings={},
