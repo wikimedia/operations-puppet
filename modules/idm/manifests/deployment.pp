@@ -2,6 +2,7 @@
 
 class idm::deployment (
     String           $project,
+    String           $service_fqdn,
     String           $django_secret_key,
     String           $django_mysql_db_host,
     String           $django_mysql_db_name,

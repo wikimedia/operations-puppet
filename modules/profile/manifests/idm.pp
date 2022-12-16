@@ -25,6 +25,7 @@ class profile::idm(
 
     class { 'idm::deployment':
         project                  => $project,
+        service_fqdn             => $service_fqdn,
         django_secret_key        => $django_secret_key,
         django_mysql_db_name     => $django_mysql_db_name,
         django_mysql_db_host     => $django_mysql_db_host,

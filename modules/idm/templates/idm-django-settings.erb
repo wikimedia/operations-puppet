@@ -9,7 +9,7 @@ SECRET_KEY = '<%= @django_secret_key %>'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = <%- if @development -%>True<%- else -%>False<%- end -%>
 
-ALLOWED_HOSTS = ['<%= @fqdn %>',]
+ALLOWED_HOSTS = ['<%= @service_fqdn %>',]
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
