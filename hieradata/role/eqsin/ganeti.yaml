@@ -1,6 +1,5 @@
 cluster: ganeti
 profile::ganeti::nodes:
-  - ganeti5003.eqsin.wmnet
   - ganeti5004.eqsin.wmnet
   - ganeti5005.eqsin.wmnet
   - ganeti5006.eqsin.wmnet
