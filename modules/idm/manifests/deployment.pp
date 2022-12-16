@@ -39,7 +39,7 @@ class idm::deployment (
     }
 
     # Django configuration
-    file { '/etc/idm/settings.py':
+    file { "/etc/${project}/settings.py":
         ensure  => present,
         content => template('idm/idm-django-settings.erb'),
         owner   => $deploy_user,
