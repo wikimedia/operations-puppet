@@ -13,5 +13,11 @@ class profile::cumin::cloud_target(
             skey    => 'cloud_cumin',
             content => template('profile/cumin/userkey.erb'),
         }
+
+        ferm::service { 'ssh-from-cloudcumin-masters':
+          proto  => 'tcp',
+          port   => '22',
+          srange => "(${cloud_cumin_masters.join(' ')})",
+        }
     }
 }
