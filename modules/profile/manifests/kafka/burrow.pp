@@ -15,14 +15,12 @@ define profile::kafka::burrow(
     $burrow_http_port = $monitoring_config[$title]['burrow_port']
     $prometheus_burrow_http_port = $monitoring_config[$title]['burrow_exporter_port']
     $to_email = $monitoring_config[$title]['to_email']
-    $kafka_api_version = $monitoring_config[$title]['api_version']
 
     burrow { $title:
         zookeeper_hosts    => $config['zookeeper']['hosts'],
         zookeeper_path     => $config['zookeeper']['chroot'],
         kafka_cluster_name => $kafka_cluster_name,
         kafka_brokers      => $config['brokers']['array'],
-        kafka_api_version  => $kafka_api_version,
         smtp_server        => $smtp_server,
         from_email         => "burrow@${::fqdn}",
         to_email           => $to_email,

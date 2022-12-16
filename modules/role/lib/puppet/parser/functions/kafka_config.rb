@@ -104,12 +104,6 @@ module Puppet::Parser::Functions
       }
     }
 
-    if cluster.key?('api_version')
-      config['api_version'] = cluster['api_version']
-    else
-      config['api_version'] = nil
-    end
-
     config
   end
 end

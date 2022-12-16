@@ -9,10 +9,6 @@
 # [*kafka_security_protocol*]
 #   one of "PLAINTEXT", "SSL", "SASL", "SASL_SSL"
 #
-# [*kafka_api_version*]
-#   Only set this if you need to specify the api version.  This should not be needed
-#   Beyond kafka 0.9.
-#
 # [*topics*]
 #   Comma separated list of topics from which statsv should consume. Default: statsv
 #
@@ -25,7 +21,6 @@
 class webperf::statsv(
     String                     $kafka_brokers,
     Optional[String]           $kafka_security_protocol = 'PLAINTEXT',
-    Optional[String]           $kafka_api_version       = undef,
     String                     $topics                  = 'statsv',
     Stdlib::Fqdn               $statsd_host             = 'localhost',
     Integer                    $statsd_port             = 8125,

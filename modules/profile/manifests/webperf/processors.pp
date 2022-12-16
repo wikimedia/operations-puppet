@@ -39,7 +39,6 @@ class profile::webperf::processors(
     class { '::webperf::statsv':
         kafka_brokers           => $kafka_main_brokers,
         kafka_security_protocol => 'SSL',
-        kafka_api_version       => $kafka_main_config['api_version'],
         statsd_host             => '127.0.0.1',  # relay through statsd_exporter
         statsd_port             => 9125,
         kafka_ssl_cafile        => $kafka_ssl_cafile,
