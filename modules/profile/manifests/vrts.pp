@@ -47,6 +47,7 @@ class profile::vrts(
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     # TODO: On purpose here since it references a file not in a module which is
     # used by other classes as well
