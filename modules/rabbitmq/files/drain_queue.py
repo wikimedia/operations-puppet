@@ -150,8 +150,12 @@ def main():
 
             for m in msgs:
                 payload = json.loads(m['payload'])
-                msg = json.loads(payload['oslo.message'])
-                print(json.dumps(msg))
+                if 'oslo.message' in payload:
+                    msg = json.loads(payload['oslo.message'])
+                    print(json.dumps(msg))
+                else:
+                    print("oslo.message not present in this payload:")
+                    print(payload)
 
             if args.requeue:
                 ready = 0  # prevent infinte loops
