@@ -33,6 +33,8 @@ class profile::etherpad(
         srange => '$CACHES',
     }
 
+    profile::auto_restarts::service { 'envoyproxy': }
+
     # Ship etherpad server logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
     # example: [2018-11-30 21:32:43.412]
     rsyslog::input::file { 'etherpad-multiline':
