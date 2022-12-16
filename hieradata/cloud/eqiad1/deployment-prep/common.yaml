@@ -322,7 +322,7 @@ scap::sources:
     repository: mediawiki/services/ores/deploy
 
 prometheus_nodes:
-  - deployment-prometheus02.deployment-prep.eqiad.wmflabs
+  - deployment-prometheus05.deployment-prep.eqiad1.wikimedia.cloud
 
 arclamp_host: deployment-webperf22.deployment-prep.eqiad1.wikimedia.cloud
 
