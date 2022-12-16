@@ -45,7 +45,6 @@ class vrts(
     String $vrts_database_name,
     String $vrts_database_user,
     String $vrts_database_pw,
-    String $vrts_database_port,
     Boolean $vrts_daemon,
     String $exim_database_name,
     String $exim_database_user,
