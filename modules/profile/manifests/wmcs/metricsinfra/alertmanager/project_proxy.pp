@@ -10,6 +10,13 @@ class profile::wmcs::metricsinfra::alertmanager::project_proxy (
     }
 
     httpd::site { 'alertmananger-project-proxy':
-        content => template('profile/wmcs/metricsinfra/alertmanager/project-proxy/vhost.conf.erb'),
+        content => epp(
+          'profile/wmcs/metricsinfra/alertmanager/project-proxy/vhost.conf.epp',
+          {
+            'server_name' => $facts['fqdn'],
+            'domain'      => $facts['domain'],
+            'trusted_ips' => $trusted_ips,
+          }
+        ),
     }
 }

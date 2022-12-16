@@ -17,7 +17,10 @@ class profile::wmcs::metricsinfra::alertmanager::karma (
 
     class { 'alertmanager::karma':
         vhost          => $vhost,
-        config         => template('profile/wmcs/metricsinfra/alertmanager/karma.yml.erb'),
+        config         => epp(
+          'profile/wmcs/metricsinfra/alertmanager/karma.yml.epp',
+          {'prometheus_alertmanager_hosts' => $prometheus_alertmanager_hosts}
+        ),
         listen_address => '0.0.0.0',
         listen_port    => 19194,
         auth_header    => 'X-CAS-uid',

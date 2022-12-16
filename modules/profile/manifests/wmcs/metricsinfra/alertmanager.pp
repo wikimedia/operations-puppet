@@ -15,7 +15,6 @@ class profile::wmcs::metricsinfra::alertmanager (
         refreshonly => true,
     }
 
-    $listen_address = $::ipaddress
     $peers = $alertmanager_hosts.filter |Stdlib::Fqdn $host| {
         $host != $::fqdn
     }.map |Stdlib::Fqdn $host| {
@@ -23,7 +22,14 @@ class profile::wmcs::metricsinfra::alertmanager (
     }
 
     file { '/etc/default/prometheus-alertmanager':
-        content => template('profile/wmcs/metricsinfra/prometheus-alertmanager-defaults.erb'),
+        content => epp(
+          'profile/wmcs/metricsinfra/prometheus-alertmanager-defaults.epp',
+          {
+            'base_path'      => $base_path,
+            'listen_address' => $::ipaddress,
+            'peers'          => $peers,
+          }
+        ),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -41,7 +47,7 @@ class profile::wmcs::metricsinfra::alertmanager (
     # TODO: instead of providing the config base, split into small
     # parts and fit into the base prometheus_configurator.pp config
     file { '/etc/prometheus-configurator/config.d/alertmanager-base.yaml':
-        content => template('profile/wmcs/metricsinfra/alertmanager.yml.erb'),
+        content => epp('profile/wmcs/metricsinfra/alertmanager.yml.epp', {}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

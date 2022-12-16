@@ -1,17 +1,21 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Fqdn $server_name,
+      String $domain,
+      Array[Stdlib::IP::Address] $trusted_ips,
+| -%>
 Listen 8643
 
 <VirtualHost *:8643>
-    ServerName <%= @facts['fqdn'] %>
-    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    ServerName <%= $server_name %>
+    ServerAdmin <%= 'root@' + $domain %>
     # https://httpoxy.org/
     RequestHeader unset Proxy early
 
     <Location />
         Require ip 127.0.0.1
-        <%- @trusted_ips.each do |ip| -%>
-        Require ip <%= ip %>
-        <%- end -%>
+        <%- $trusted_ips.each |$ip| { -%>
+        Require ip <%= $ip %>
+        <%- } -%>
 
         ProxyPreserveHost On
         ProxyPass http://localhost:9093/

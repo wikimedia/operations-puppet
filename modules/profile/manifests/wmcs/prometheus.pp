@@ -242,7 +242,10 @@ class profile::wmcs::prometheus(
 
     httpd::site{ 'prometheus':
         priority => 10,
-        content  => template('profile/wmcs/metricsinfra/prometheus-apache.erb'),
+        content  => epp(
+          'profile/wmcs/metricsinfra/prometheus-apache.epp',
+          { 'server_name' => $facts['fqdn'] }
+        ),
     }
 
     prometheus::web { 'labs':

@@ -1,14 +1,16 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[Stdlib::Fqdn] $prometheus_alertmanager_hosts,
+| -%>
 ---
 alertmanager:
   interval: 30s
   servers:
-<% @prometheus_alertmanager_hosts.each do |host| %>
-    - name: "<%= host %>"
+<% $prometheus_alertmanager_hosts.each |$host| { %>
+    - name: "<%= $host %>"
       cluster: metricsinfra
-      uri: "http://<%= host %>:9093"
+      uri: "http://<%= $host %>:9093"
       proxy: true
-<% end %>
+<% } %>
 
 authentication:
   header:

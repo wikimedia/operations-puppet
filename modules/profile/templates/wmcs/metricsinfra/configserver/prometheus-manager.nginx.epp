@@ -1,4 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | | -%>
 upstream prometheus_manager {
     server unix:/run/uwsgi/prometheus_manager.sock;
 }

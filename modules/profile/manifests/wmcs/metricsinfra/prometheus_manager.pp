@@ -145,7 +145,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
 
     nginx::site { 'prometheus-manager-web-nginx':
         require => Uwsgi::App['prometheus-manager'],
-        content => template('profile/wmcs/metricsinfra/configserver/prometheus-manager.nginx.erb'),
+        content => epp('profile/wmcs/metricsinfra/configserver/prometheus-manager.nginx.epp', {}),
     }
 
     systemd::timer::job { 'metricsinfra-maintain-projects':

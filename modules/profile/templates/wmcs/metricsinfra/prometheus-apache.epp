@@ -1,6 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Fqdn $server_name | -%>
 <VirtualHost *:80>
-    ServerName <%= @fqdn %>
+    ServerName <%= $server_name %>
     ServerAlias prometheus
     ServerAlias prometheus-*.*
 
