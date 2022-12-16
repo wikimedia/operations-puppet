@@ -63,16 +63,15 @@ role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
   target-q: TBD
-role::dumps::generation::worker::dumper:
-  target-q: TBD
-role::dumps::generation::worker::testbed:
-  target-q: TBD
 role::dumps::generation::server::xmldumps:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 325232
 role::dumps::generation::server::misccrons:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 325232
 role::dumps::generation::server::xmlfallback:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 325232
 role::openldap::rw:
   target-q: TBD
 role::parsoid::testing:
@@ -337,7 +336,8 @@ role::eventlogging::analytics:
   target-q: TBD
   phab-task: 288804
 role::dumps::web::htmldumps:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 325232
 role::kafka::monitoring_buster:
   target-q: TBD
   phab-task: 288804
@@ -368,13 +368,17 @@ role::elasticsearch::relforge:
 role::restbase::dev_cluster:
   target-q: TBD
 role::dumps::generation::worker::dumper_monitor:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 325228
 role::dumps::generation::worker::dumper_misc_crons_only:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 325228
 role::dumps::generation::worker::testbed:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 325228
 role::dumps::generation::worker::dumper:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 325228
 role::statistics::explorer:
   target-q: TBD
   phab-task: 288804
@@ -428,7 +432,7 @@ role::durum:
 role::flowspec:
   target-q: TBD
 role::thanos::backend:
-  target-q: 2023-1
+  target-q: 2022-4
   phab-task: 288937
 role::requesttracker:
   target-q: TBD
