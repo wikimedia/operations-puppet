@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up an Etherpad lite server
 class profile::etherpad(
     Stdlib::IP::Address $listen_ip = lookup('profile::etherpad::listen_ip'),

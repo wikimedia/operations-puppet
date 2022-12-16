@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # vim: set ts=4 et sw=4:
 # sets up an instance of the 'Volunteer Response Team System'
 # https://wikitech.wikimedia.org/wiki/VRT_System

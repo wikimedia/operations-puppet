@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # web server hosting https://doc.wikimedia.org
 class profile::doc (
     Stdlib::Fqdn        $active_host  = lookup('profile::doc::active_host'),

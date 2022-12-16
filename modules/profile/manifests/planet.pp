@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # sets up a planet RSS feed aggregator (planet-rawdog aka planet 3.0)
 #
 # $domain_name: domain name used, e.g. wikimedia.org or wmflabs.org
