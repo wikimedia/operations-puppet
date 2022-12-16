@@ -1,3 +1,2 @@
 # db1205
 mariadb::shard: 'backup1-eqiad'
-profile::monitoring::notifications_enabled: false

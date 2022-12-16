@@ -1,3 +1,2 @@
 # db2184
 mariadb::shard: 'backup1-codfw'
-profile::monitoring::notifications_enabled: false
