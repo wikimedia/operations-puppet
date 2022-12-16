@@ -5,7 +5,8 @@ profile::wmcs::cloudlb::haproxy::acme_chief_cert_name: "%{lookup('profile::opens
 profile::wmcs::cloudlb::haproxy::config:
   designate-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29001
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -21,7 +22,8 @@ profile::wmcs::cloudlb::haproxy::config:
   #  tls port as well: 25357 rather than the more expected 225357
   keystone-admin-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 25357
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -34,7 +36,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   keystone-public-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 5000
       - port: 25000
@@ -48,7 +51,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   glance-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29292
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -61,7 +65,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   cinder-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28776
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -74,7 +79,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   trove-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28779
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -87,7 +93,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   heat-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28004
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -100,7 +107,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   magnum-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29511
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -113,7 +121,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   neutron-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29696
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -126,7 +135,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   nova-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28774
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -139,7 +149,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   placement-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28778
         acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
@@ -152,7 +163,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   nova-metadata-api:
     type: http
-    open_firewall: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 8775
     backend:
@@ -164,7 +176,8 @@ profile::wmcs::cloudlb::haproxy::config:
 
   mysql:
     type: tcp
-    open_firewall: false
+    firewall:
+      restricted_to_fqdns: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
     frontends:
       - port: 3306
     backend:

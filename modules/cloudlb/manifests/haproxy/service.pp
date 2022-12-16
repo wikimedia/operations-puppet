@@ -11,6 +11,7 @@ define cloudlb::haproxy::service (
     $healthcheck_options = $service['healthcheck']['options']
     $healthcheck_method = $service['healthcheck']['method']
     $healthcheck_path = $service['healthcheck']['path']
+    $firewall = $service['firewall']
 
     if $type == 'http' {
         file { "/etc/haproxy/conf.d/${title}.cfg":
@@ -37,11 +38,18 @@ define cloudlb::haproxy::service (
     }
 
     $frontends.each | Integer $index, CloudLB::HAProxy::Service::Frontend $frontend | {
-        if $open_firewall {
-            $srange = undef
+        if $firewall['restricted_to_fqdns'] {
+            $ipv4_list = $firewall['restricted_to_fqdns'].map |$host| { ipresolve($host, 4) }
+            $ipv6_list = $firewall['restricted_to_fqdns'].map |$host| { ipresolve($host, 6) }
+            $ips = join(concat($ipv4_list, $ipv6_list), ' ')
+            $srange = "(${ips})"
         } else {
-            $cidrs = join(concat($::network::constants::production_networks, $::network::constants::labs_networks), ' ')
-            $srange = "(${cidrs})"
+            if $firewall['open_to_internet'] {
+                $srange = undef
+            } else {
+                $cidrs = join(concat($::network::constants::production_networks, $::network::constants::labs_networks), ' ')
+                $srange = "(${cidrs})"
+            }
         }
 
         $port = $frontend['port']
