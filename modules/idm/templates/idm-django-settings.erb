@@ -1,6 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 
 from base_settings import *
+from local_settings import * # DEBUG
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '<%= @django_secret_key %>'
@@ -13,13 +14,20 @@ ALLOWED_HOSTS = ['<%= @fqdn %>',]
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': '<%= @django_db_backends_mysql %>',
+#        'NAME': '<%= @django_mysql_db_name %>',
+#        'HOST': '<%= @django_mysql_db_host %>',
+#        'USER': '<%= @django_mysql_db_user %>',
+#        'PASSWORD': '<%= @django_mysql_db_password %>',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': '<%= @django_db_backends_mysql %>',
-        'NAME': '<%= @django_mysql_db_name %>',
-        'HOST': '<%= @django_mysql_db_host %>',
-        'USER': '<%= @django_mysql_db_user %>',
-        'PASSWORD': '<%= @django_mysql_db_password %>',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/srv/idm/db.sqlite3', # noqa
     }
 }
 
@@ -51,3 +59,19 @@ LOGGING = {
         },
     },
 }
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'notification': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    },
+}
+

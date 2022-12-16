@@ -47,6 +47,14 @@ class idm::deployment (
 
     }
 
+    # We need the base configuration from the Bitu
+    # project. This contain non-secret settings that
+    # are generic for all Bitu projects.
+    file { "/etc/${project}/base_settings.py":
+        ensure => link,
+        target => "${base_dir}/${project}/bitu/base_settings.py"
+    }
+
     # For staging and production we want to install
     # from Debian packages, but for the development
     # process the latest git version is deployed.
