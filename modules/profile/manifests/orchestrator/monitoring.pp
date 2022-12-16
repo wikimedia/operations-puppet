@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # monitoring for mysql orchestrator - T266338
 class profile::orchestrator::monitoring(
     Boolean $check_procs = lookup('profile::orchestrator::monitoring::check_procs', {'default_value' => false}),

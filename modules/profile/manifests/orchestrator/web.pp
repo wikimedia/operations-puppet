@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::orchestrator::web {
     class { 'httpd':
         modules => ['headers', 'proxy', 'proxy_http', 'rewrite', 'ssl', 'macro'],

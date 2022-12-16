@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::orchestrator::server (
     String[1] $db_backend = lookup('profile::orchestrator::server::db_backend', {'default_value' => 'mysql'}),
     String[1] $db_topology_password = lookup('profile::orchestrator::server::db_topology_password'),
