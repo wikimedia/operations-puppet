@@ -383,6 +383,7 @@ profile::idp::ldap_attributes:
   - mail
   - uid
 profile::idp::envoy_termination: false
+profile::idp::enable_webauthn: false
 # Service proxy
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
