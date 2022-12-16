@@ -67,6 +67,7 @@ describe 'profile::wmcs::cloudlb::haproxy' do
       let(:node_params) {{'_role' => 'wmcs::cloudlb'}}
       it { is_expected.to compile.with_all_deps }
       it {
+        is_expected.to contain_acme_chief__cert('example.com')
         is_expected.to contain_class('haproxy')
         is_expected.to contain_file('/etc/haproxy/ipblocklist.txt')
         is_expected.to contain_file('/etc/haproxy/agentblocklist.txt')

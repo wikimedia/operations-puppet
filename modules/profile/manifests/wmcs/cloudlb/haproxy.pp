@@ -2,12 +2,10 @@
 
 class profile::wmcs::cloudlb::haproxy (
     CloudLB::HAProxy::Config $cloudlb_haproxy_config = lookup('profile::wmcs::cloudlb::haproxy::config'),
-    Optional[String]         $acme_chief_cert_name   = lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name', {default_value => undef}),
+    String[1]                $acme_chief_cert_name   = lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name'),
 ) {
-    if $acme_chief_cert_name != undef {
-        acme_chief::cert { $acme_chief_cert_name:
-            puppet_svc => 'haproxy',
-        }
+    acme_chief::cert { $acme_chief_cert_name:
+        puppet_svc => 'haproxy',
     }
 
     class { 'haproxy':
