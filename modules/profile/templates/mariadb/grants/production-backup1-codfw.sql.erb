@@ -5,3 +5,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON `mediabackups`.* TO `<%= @mediabackup_us
 -- Grants for '<%= @mediabackup_user %>'@'10.192.48.42'
 GRANT USAGE ON *.* TO `<%= @mediabackup_user %>`@`10.192.48.42` IDENTIFIED BY PASSWORD '<%= @mediabackup_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `mediabackups`.* TO `<%= @mediabackup_user %>`@`10.192.48.42`;
+-- Orchestrator
+GRANT PROCESS, RELOAD, REPLICATION CLIENT, REPLICATION SLAVE, SUPER ON *.* TO `orchestrator`@`208.80.155.103` IDENTIFIED BY PASSWORD '<%= @orchestrator_pass %>';
+GRANT SELECT ON `heartbeat`.* TO `orchestrator`@`208.80.155.103`;
