@@ -1572,7 +1572,6 @@ users:
     realname: Lodewijk Gelauff
     ssh_keys: []
     uid: 16702
-    email: effeietsanders@gmail.com
   esanders:
     ensure: present
     gid: 500
@@ -1691,7 +1690,6 @@ users:
     realname: Matthew Flaschen
     ssh_keys: []
     uid: 2662
-    email: matthew.flaschen@gatech.edu
   marktraceur:
     ensure: present
     gid: 500
@@ -1959,7 +1957,6 @@ users:
     realname: Oliver Keyes
     ssh_keys: []
     uid: 18976
-    email: okeyes@uw.edu
   nuria:
     ensure: present
     gid: 500
@@ -2073,7 +2070,6 @@ users:
     realname: Yuvi Panda
     ssh_keys: []
     uid: 2029
-    email: yuvipanda@gmail.com
   haithams:
     ensure: absent
     gid: 500
@@ -2383,7 +2379,7 @@ users:
     realname: Marko Obrovac
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICts788Fo6r7CdOjtb6uT5YXKtai632piGE5I3t339UF doorman@istria]
     uid: 11187
-    email: mobrovac@wikimedia.org
+    email: marko.obrovac@gmail.com
   zfilipin:
     ensure: absent
     gid: 500
@@ -2536,7 +2532,6 @@ users:
     realname: Moushira Elamrawy
     ssh_keys: []
     uid: 12239
-    email: moushirah@gmail.com
   aklapper:
     ensure: present
     gid: 500
@@ -3169,10 +3164,8 @@ users:
     gid: 500
     name: shrlak
     realname: Shreyas Lakhtakia
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2rhvzjTJt5Ac349bzg1JI3QIKsulc3Fl9PqeuIsLeudgNOY9yUa4aByj03ajLdF25ctlxQQRQaqHSCcMOD02gNls4NNjnzC8DVVu8Cu9NqoD6mAPTQ2BHWqCZV5sAKyctrJbYvb7X1aRPvc5/VgQl/Y9gdYpoX7tX+N0L9NMN42PUnICmSejvNkFA6U9VOQcahEbXAvwiDShgu50nUn5uG8xpXkDBoltUPSi+MQlKiZn5lpuY0gswh9U8JVmC+QRqwbXqCB20hpF25PZXrYB31aHYmjCZogM/8k3eAi83/Uytah7n/QcWLne2sWkrlLCAWrtopfY3p2uZm330Xz1D shreyas@Shreyas-MacBook-Pro.local
+    ssh_keys: []
     uid: 16523
-    email: shreyaslakhtakia@gmail.com
   goransm:
     ensure: present
     gid: 500
@@ -3922,7 +3915,6 @@ users:
   dedcode:
     ensure: absent
     realname: Djellel Difallah
-    email: difallah@gmail.com
     uid: 22235
     gid: 500
     name: dedcode
@@ -4516,7 +4508,6 @@ users:
   eugene-chernov:
     ensure: absent
     realname: Eugene Chernov
-    email: eugene.chernov@speedandfunction.com
     uid: 30039
     gid: 500
     ssh_keys: []
