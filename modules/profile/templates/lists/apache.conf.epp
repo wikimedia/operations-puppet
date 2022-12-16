@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- | Stdlib::Fqdn         $lists_servername,
       String               $acme_chief_cert,
       Hash[String, String] $renamed_lists,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::lists::ferm {
     ferm::service { 'mailman-smtp':
         proto => 'tcp',

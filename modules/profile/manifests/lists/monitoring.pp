@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::lists::monitoring (
     Stdlib::Fqdn $lists_servername = lookup('mailman::lists_servername'),
     Optional[String] $standby_host = lookup('profile::lists::standby_host', {'default_value' => undef})

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @example security_cfgs, an array of Apache config blocks from hiera:
 #   profile::lists::security_cfgs:
 #     - |
