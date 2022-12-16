@@ -167,6 +167,7 @@ Components: main
  thirdparty/postgres96
  thirdparty/pyall
  thirdparty/tekton
+ thirdparty/terraform
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -255,6 +256,7 @@ Components: main
  thirdparty/otelcol-contrib
  thirdparty/routinator
  thirdparty/tekton
+ thirdparty/terraform
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
