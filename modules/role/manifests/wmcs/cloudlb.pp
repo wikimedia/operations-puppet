@@ -8,4 +8,5 @@ class role::wmcs::cloudlb (
     include profile::base::firewall
     include profile::wmcs::cloud_private_subnet
     include profile::wmcs::cloudlb::haproxy
+    include profile::bird::anycast
 }

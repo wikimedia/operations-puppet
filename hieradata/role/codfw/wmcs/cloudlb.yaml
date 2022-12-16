@@ -5,3 +5,12 @@ profile::admin::groups:
 # all cloudlb servers are in the same rack, thus the same vlan
 profile::wmcs::cloud_private_subnet::vlan_id: 2151
 profile::wmcs::cloud_private_subnet::gw: 172.20.5.1/24
+
+profile::bird::advertise_vips:
+  openstack.codfw1dev.wikimediacloud.org:
+    ensure: present
+    service_type: haproxy
+    address: 185.15.57.24
+    # TODO: this check may either be for a TCP port or for a concrete openstack API endpoint.
+    # TODO: (cont) as it is, usually nothing listens to TCP/443 in openstack
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H openstack.codfw1dev.wikimediacloud.org --ssl --sni -I 185.15.57.24 / -t 1"
