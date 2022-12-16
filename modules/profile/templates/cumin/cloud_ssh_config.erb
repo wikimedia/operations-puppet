@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 Host restricted.bastion.wmcloud.org
-    ProxyJump <%= @production_bastion_host %>
+    ProxyCommand nc -X connect -x webproxy:8080 %h %p
     IdentityFile /etc/keyholder.d/cumin_openstack_master
 
 Host *.eqiad1.wmflabs.org *.eqiad1.wmcloud.org *.eqiad1.toolforge.org *.eqiad1.wmflabs *.eqiad1.wikimedia.cloud
