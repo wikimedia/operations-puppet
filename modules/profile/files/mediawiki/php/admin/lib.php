@@ -33,7 +33,7 @@ function apcu_stats(bool $limited = true ): array {
 	return array_merge($cache_info, $sma_info);
 }
 
-// Returns  % of APCu fragmentation
+// Returns % of APCu fragmentation
 // This code is part of https://github.com/krakjoe/apcu/blob/master/apc.php
 function apcu_frag() {
 	global $sma_info;
@@ -44,20 +44,22 @@ function apcu_frag() {
 		$sma_info = [];
 	}
 	$nseg = $freeseg = $fragsize = $freetotal = 0;
-	for($i=0; $i<$sma_info['num_seg']; $i++) {
+	for($i=0; $i < $sma_info['num_seg']; $i++) {
 		$ptr = 0;
 		foreach($sma_info['block_lists'][$i] as $block) {
 			if ($block['offset'] != $ptr) {
 				++$nseg;
 			}
 			$ptr = $block['offset'] + $block['size'];
-			if($block['size']<BLOCK_SIZE) $fragsize+=$block['size'];
-				$freetotal+=$block['size'];
+			if ($block['size'] < BLOCK_SIZE) {
+				$fragsize += $block['size'];
+			}
+			$freetotal += $block['size'];
 		}
 		$freeseg += count($sma_info['block_lists'][$i]);
 	}
 	if ($freeseg > 1) {
-		$frag = $fragsize/$freetotal*100;
+		$frag = $fragsize / $freetotal * 100;
 	} else {
 		$frag = 0;
 	}
@@ -100,7 +102,7 @@ class PrometheusMetric {
 	}
 
 	public function setLabel(string $name, string $value) {
-		$this->labels[] = "$name=\"${value}\"";
+		$this->labels[] = "$name=\"{$value}\"";
 	}
 
 	private function _helpLine(): string {
@@ -110,8 +112,8 @@ class PrometheusMetric {
 			return "";
 		}
 		return sprintf("# HELP %s %s\n# TYPE %s %s\n",
-					$this->key, $this->description,
-					$this->key, $this->type
+			$this->key, $this->description,
+			$this->key, $this->type
 		);
 	}
 
@@ -373,7 +375,7 @@ class RemoteMetrics {
 			if ($response !== false) {
 				$output .= "\n" . $response;
 			} else {
-				error_log("Error fetching ${url}: " . curl_error($ch));
+				error_log("Error fetching {$url}: " . curl_error($ch));
 			}
 			curl_close($ch);
 		}
@@ -388,14 +390,14 @@ class RemoteMetrics {
 function dump_file($name, $contents) {
 	if (is_file($name)) {
 		if (!unlink($name)) {
-			die("Could not remove ${name}.\n");
+			die("Could not remove {$name}.\n");
 		}
 	}
 	file_put_contents(
 		$name,
 		json_encode($contents)
 	);
-	echo "Requested data dumped at ${name}.\n";
+	echo "Requested data dumped at {$name}.\n";
 }
 
 // Views
