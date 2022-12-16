@@ -62,7 +62,7 @@ role::wcqs::public:
 role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
-  target-q: TBD
+  target-q: 2023-2
 role::dumps::generation::server::xmldumps:
   target-q: 2023-1
   phab-task: 325232
@@ -81,9 +81,7 @@ role::parsoid::testreduce:
 role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
-  target-q: TBD
-role::restbase::base:
-  target-q: TBD
+  target-q: 2023-2
 role::ores:
   target-q: 2023-2
 role::orespoolcounter:
@@ -500,3 +498,6 @@ role::apifeatureusage::logstash:
   target-q: TBD
 role::dispatch::backend:
   target-q: TBD
+role::cassandra_dev:
+  target-q: 2023-1
+  phab-task: 313814
