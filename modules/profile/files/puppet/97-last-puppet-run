@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 # Script that reports when Puppet last ran, in bold if more than an hour ago.
 # Also mentions if it has never run yet
 

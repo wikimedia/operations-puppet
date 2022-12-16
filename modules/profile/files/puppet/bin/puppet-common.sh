@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 # Common bash functions and variables to use for scripts
 PUPPET_CONFIG="$(puppet config print)"
 

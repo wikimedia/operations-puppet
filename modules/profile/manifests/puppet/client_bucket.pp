@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # cleans up puppet client bucket (T165885)
 class profile::puppet::client_bucket(
     Wmflib::Ensure   $ensure   = lookup('profile::puppet::client_bucket::ensure'),
