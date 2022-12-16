@@ -40,7 +40,8 @@ define cloudlb::haproxy::service (
         if $open_firewall {
             $srange = undef
         } else {
-            $srange = join(concat($::network::constants::production_networks, $::network::constants::labs_networks), ' ')
+            $cidrs = join(concat($::network::constants::production_networks, $::network::constants::labs_networks), ' ')
+            $srange = "(${cidrs})"
         }
 
         $port = $frontend['port']
