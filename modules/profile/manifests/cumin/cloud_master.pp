@@ -9,6 +9,7 @@ class profile::cumin::cloud_master (
     Array[String] $datacenters             = lookup('datacenters'),
     Stdlib::Host  $kerberos_kadmin_host    = lookup('kerberos_kadmin_server_primary'),
     Stdlib::Host  $production_bastion_host = lookup('profile::cumin::cloud_master::bastion_host'),
+    Stdlib::Port  $puppetdb_port           = lookup('profile::puppetdb::microservice::port'),
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'

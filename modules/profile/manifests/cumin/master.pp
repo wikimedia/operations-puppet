@@ -21,6 +21,7 @@ class profile::cumin::master (
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
     $owners = profile::contacts::get_owners().values.flatten.unique
+    $puppetdb_port = 443
 
     keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],
