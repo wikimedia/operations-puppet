@@ -1,5 +1,0 @@
-[oslo.messaging.notify.drivers]
-wmfkeystonehooks = wmfkeystonehooks.wmfkeystonehooks:KeystoneHooks
-
-[keystone.identity.id_generator]
-nohash = wmfkeystonehooks.nohash:Generator
