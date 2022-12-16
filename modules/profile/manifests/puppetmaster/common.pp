@@ -64,7 +64,7 @@ class profile::puppetmaster::common (
     # Clean up facts for idle hosts. This is just a cache so there's no danger of
     #  premature deletion.
     systemd::timer::job { 'puppet_fact_cleanup':
-        ensure      => present,
+        ensure      => absent,
         description => 'clean up fact cache for absent hosts',
         user        => 'puppet',
         command     => "/usr/bin/find  /var/lib/puppet/yaml -mtime +7 -exec rm {} \\;",
@@ -74,7 +74,7 @@ class profile::puppetmaster::common (
     # Clean up reports for idle hosts. This is just a cache so there's no danger of
     #  premature deletion.
     systemd::timer::job { 'puppet_report_cleanup':
-        ensure      => present,
+        ensure      => absent,
         description => 'clean up puppet reports cache for absent hosts',
         user        => 'puppet',
         command     => "/usr/bin/find  /var/lib/puppet/reports -mtime +14 -exec rm {} \\;",
