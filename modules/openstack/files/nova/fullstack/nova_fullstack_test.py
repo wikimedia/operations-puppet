@@ -735,8 +735,21 @@ def cleanup_leaked_vms(
             "Cleaning up %d VMs to make space for this run.",
             num_to_cleanup,
         )
-        for vm in vms[:num_to_cleanup]:
-            vm.delete()
+        for vm in vms:
+            try:
+                vm.delete()
+                num_to_cleanup -= 1
+                if num_to_cleanup == 0:
+                    break
+            except Exception as error:
+                LOGGER.exception(
+                    "Got error when cleaning up VM %s, skipping: %s",
+                    str(vm),
+                    str(error),
+                )
+
+        if num_to_cleanup > 0:
+            raise Exception("I was unable to cleanup enough VMS!")
 
 
 def verify_vm_ipaddr(vm: Server) -> str:
