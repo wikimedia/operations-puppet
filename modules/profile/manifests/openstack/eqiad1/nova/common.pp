@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::nova::common(
     $version = lookup('profile::openstack::eqiad1::version'),
     $region = lookup('profile::openstack::eqiad1::region'),

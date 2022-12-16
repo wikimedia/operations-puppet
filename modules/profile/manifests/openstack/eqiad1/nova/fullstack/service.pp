@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::nova::fullstack::service(
     $osstackcanary_pass = lookup('profile::openstack::eqiad1::nova::fullstack_pass'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),

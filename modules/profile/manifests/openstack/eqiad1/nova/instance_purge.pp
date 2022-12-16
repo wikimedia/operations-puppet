@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::nova::instance_purge(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Array[Hash]         $purge_projects        = lookup('profile::openstack::eqiad1::purge_projects'),

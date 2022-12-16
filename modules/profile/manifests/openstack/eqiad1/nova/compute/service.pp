@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::nova::compute::service(
     $version = lookup('profile::openstack::eqiad1::version'),
     String[1] $network_flat_interface = lookup('profile::openstack::eqiad1::nova::network_flat_interface'),
