@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- @abuse_networks.each_pair do |net_name, config| -%>
 <%- if config.has_key?('comment') -%>
   <%- config['comment'].split("\n").each do |line| -%>

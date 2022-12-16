@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::cache::haproxy(
     Stdlib::Port $tls_port = lookup('profile::cache::haproxy::tls_port'),
     Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', {'default_value'                                          => 9422}),

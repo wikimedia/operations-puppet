@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 // ACLs defined in puppet, sourced from etcd.
 {{- range gets "/request-ipblocks/abuse/*" }}
   {{- $ipblock := json .Value }}

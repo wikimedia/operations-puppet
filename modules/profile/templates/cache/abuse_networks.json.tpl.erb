@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 {{/* go text/template cannot output proper json arrays, so we are extracting one element to insert at the end of any json list / dictionary **/}}
 {{- define "cidr.list" -}}
 {{- $last := index . (sub (len .) 1) }}

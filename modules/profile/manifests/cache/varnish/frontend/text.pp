@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure varnish frontend text nodes
 # @param esitest_ensure ensureable parameter for esitest
 class profile::cache::varnish::frontend::text (

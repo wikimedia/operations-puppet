@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure frontend varnish cache
 # @param cache_nodes list of all cache nodes
 # @param cache_cluster name of cache cluster e.g. upload or text

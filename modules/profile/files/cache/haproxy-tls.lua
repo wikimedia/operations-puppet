@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 core.register_fetches("xcps", function(txn)
     local ssl_reused = txn.f:ssl_fc_is_resumed()
     local ssl_protocol = txn.f:ssl_fc_protocol()

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 function envoy_on_request(request_handle)
     local connection = request_handle:connection()
     local stream_info = request_handle:streamInfo()

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define profile::cache::haproxy::monitoring(
     Stdlib::Port $port,
     Array[Haproxy::Tlscertificate] $certificates,

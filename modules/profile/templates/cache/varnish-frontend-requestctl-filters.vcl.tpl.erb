@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 {{- $path := "/request-vcl/cache-<%= @cache_cluster %>" -}}
 {{- $global := printf "%s/global" $path }}{{ $local := printf "%s/<%= @site %>" $path }}
 // Actions generated from etcd rules, if any.

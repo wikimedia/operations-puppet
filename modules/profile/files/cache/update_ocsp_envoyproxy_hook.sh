@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 
 # Skip the reload if the service is not active. this happens
 # when update-ocsp-all execution is triggered by ExecStartPre

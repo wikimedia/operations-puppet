@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Describes the websites served by Wikimedia's CDN. The hash key is the FQDN of
 # the site as sent in the Host request header.
 type Profile::Cache::Sites = Hash[String, Struct[{

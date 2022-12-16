@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Profile to manage the daemon for cache invalidation
 
 class profile::cache::purge(
