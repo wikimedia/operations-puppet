@@ -25,9 +25,6 @@ gtid_domain_id  = <%= @gtid_domain_id %>
 read_only       = <%= @read_only %>
 key_buffer_size = 1048576
 
-# enable socket authentication
-plugin-load = unix_socket=auth_socket.so
-
 secure_file_priv   = /dev/null
 max_connections    = 250
 max_allowed_packet = 32M

@@ -23,9 +23,6 @@ read_only          = <%= @read_only %>
 
 gtid_domain_id  = <%= @gtid_domain_id %>
 
-# enable socket authentication
-plugin-load = unix_socket=auth_socket.so
-
 # Disable binary log for faster updates
 #log_bin
 #log_slave_updates
