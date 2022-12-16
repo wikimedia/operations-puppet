@@ -101,6 +101,10 @@ profile::keyholder::server::agents:
     trusted_groups:
       - zuul-deployers
 
+  deploy-jenkins:
+    trusted_groups:
+      - deployment-jenkins
+
   deploy-design:
     trusted_groups:
       - deploy-design
