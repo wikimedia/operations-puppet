@@ -36,8 +36,10 @@ class profile::webperf::arclamp (
     Integer $retain_hourly_logs_hours        = lookup('profile::webperf::arclamp::retain_hourly_logs_hours'),
     Integer $retain_daily_logs_days          = lookup('profile::webperf::arclamp::retain_daily_logs_days'),
     Hash[String, Hash] $swift_accounts       = lookup('profile::swift::accounts'),
-    Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
 ) {
+    # Get the local site's swift credentials
+    $swift_account_keys = $global_swift_account_keys[$::site]
     class { 'arclamp':
         redis_host               => $redis_host,
         redis_port               => $redis_port,

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::swift::proxy (
     Hash $accounts                             = lookup('profile::swift::accounts'),
-    Hash $accounts_keys                        = lookup('profile::swift::accounts_keys'),
+    Hash[String, Hash] $global_account_keys   = lookup('profile::swift::global_account_keys'),
     Hash[String, Hash] $replication_accounts   = lookup('profile::swift::replication_accounts'),
     Hash[String, Hash] $replication_keys       = lookup('profile::swift::replication_keys'),
     String $hash_path_suffix                   = lookup('profile::swift::hash_path_suffix'),
@@ -43,11 +43,13 @@ class profile::swift::proxy (
 
     $stats_ensure = ($stats_reporter_host == $facts['networking']['fqdn']).bool2str('present','absent')
 
+    $account_keys = $global_account_keys[$swift_cluster_label]
+
     class { 'swift::stats_reporter':
         ensure        => $stats_ensure,
         swift_cluster => $swift_cluster_name,
         accounts      => $accounts,
-        credentials   => $accounts_keys,
+        credentials   => $account_keys,
     }
 
     swift::stats::stats_container { 'mw-media':
@@ -64,7 +66,7 @@ class profile::swift::proxy (
         shard_container_list   => $shard_container_list,
         statsd_metric_prefix   => "swift.${swift_cluster_name}.${facts['networking']['hostname']}",
         accounts               => $accounts,
-        credentials            => $accounts_keys,
+        credentials            => $account_keys,
         statsd_host            => $statsd_host,
         statsd_port            => $statsd_port,
         dispersion_account     => $dispersion_account,

@@ -31,11 +31,14 @@
 class profile::analytics::cluster::secrets(
     String $swift_group = lookup('profile::analytics::cluster::secrets::swift_group', {'default_value' => 'analytics-privatedata-users'}),
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
-    Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
     Hash[String, Hash[String, String]] $swift_thanos_accounts = lookup('profile::thanos::swift::accounts'),
     Hash[String, String] $swift_thanos_account_keys = lookup('profile::thanos::swift::accounts_keys'),
 ) {
     require ::profile::hadoop::common
+
+    # Get the local site's swift credentials
+    $swift_account_keys = $global_swift_account_keys[$::site]
 
     $analytics_user = 'analytics'
     $analytics_group = 'analytics'

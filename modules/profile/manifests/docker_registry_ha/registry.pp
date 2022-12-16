@@ -22,7 +22,7 @@ class profile::docker_registry_ha::registry(
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
     Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry_ha::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
-    Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
     Optional[String] $swift_container = lookup('profile::docker_registry_ha::registry::swift_container', { 'default_value' => undef }),
     String $swift_replication_configuration = lookup('profile::docker_registry_ha::registry::swift_replication_configuration'),
     String $swift_replication_key = lookup('profile::docker_registry_ha::registry::swift_replication_key'),
@@ -62,6 +62,8 @@ class profile::docker_registry_ha::registry(
         $use_puppet = true
     }
     $swift_account = $swift_accounts['docker_registry']
+    # Get the local site's swift credentials
+    $swift_account_keys = $global_swift_account_keys[$::site]
     if !$swift_password {
         $password = $swift_account_keys['docker_registry']
     }

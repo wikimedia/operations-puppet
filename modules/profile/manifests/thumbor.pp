@@ -6,7 +6,7 @@ class profile::thumbor(
     Array[String] $swift_private_containers = lookup('profile::swift::proxy::private_container_list', {'merge' => 'unique'}),
     String $thumbor_mediawiki_shared_secret = lookup('thumbor::mediawiki::shared_secret'),
     Stdlib::Port $statsd_port = lookup('statsd_exporter_port'),
-    Hash $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
 ){
     require profile::base::memory_cgroup
     include ::profile::conftool::client
@@ -27,6 +27,8 @@ class profile::thumbor(
         statsd_port   => $statsd_port,
     }
 
+    # Get the local site's swift credentials
+    $swift_account_keys = $global_swift_account_keys[$::site]
     class { '::thumbor::swift':
         swift_key                       => $swift_account_keys['mw_thumbor'],
         swift_private_key               => $swift_account_keys['mw_thumbor-private'],
