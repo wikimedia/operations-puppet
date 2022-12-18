@@ -51,6 +51,10 @@ default: rule:admin_or_projectadmin
 identity:change_password: null
 
 
+identity:get_domain: ''
+identity:get_domain_config: ''
+identity:get_domain_config_default: ''
+identity:get_domain_role: ''
 identity:get_role: ''
 identity:get_role_for_trust: ''
 identity:get_service: ''
