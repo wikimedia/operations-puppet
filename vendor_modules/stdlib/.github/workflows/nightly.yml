@@ -1,6 +1,8 @@
-name: "PR Testing"
+name: "nightly"
 
-on: [pull_request]
+on:
+  schedule:
+    - cron: '0 0 * * *'
 
 env:
   HONEYCOMB_WRITEKEY: 7f3c63a70eecc61d635917de46bea4e6
@@ -51,13 +53,9 @@ jobs:
         echo STEP_ID=Setup-Acceptance-Test-Matrix >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
-    - name: Run validation steps
-      run: |
-        bundle exec rake validate
-      if: ${{ github.repository_owner == 'puppetlabs' }}
-
     - name: Setup Acceptance Test Matrix
       id: get-matrix
+      if: ${{ github.repository_owner == 'puppetlabs' }}
       run: |
         if [ '${{ github.repository_owner }}' == 'puppetlabs' ]; then
           buildevents cmd $TRACE_ID $STEP_ID matrix_from_metadata -- bundle exec matrix_from_metadata_v2
@@ -74,7 +72,6 @@ jobs:
     name: "${{matrix.platforms.label}}, ${{matrix.collection}}"
     needs:
       - setup_matrix
-    if: ${{ needs.setup_matrix.outputs.matrix != '{}' }}
 
     runs-on: ubuntu-20.04
     strategy:
@@ -89,6 +86,7 @@ jobs:
         echo 'platform=${{ matrix.platforms.image }}' >> $BUILDEVENT_FILE
         echo 'collection=${{ matrix.collection }}' >> $BUILDEVENT_FILE
         echo 'label=${{ matrix.platforms.label }}' >> $BUILDEVENT_FILE
+
 
     - name: "Honeycomb: Start recording"
       uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates-v1
@@ -187,3 +185,20 @@ jobs:
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Remove test environment'
+
+  slack-workflow-status:
+    if: always()
+    name: Post Workflow Status To Slack
+    needs:
+      - Acceptance
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Slack Workflow Notification
+        uses: puppetlabs/Gamesight-slack-workflow-status@pdk-templates-v1
+        with:
+          # Required Input
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          # Optional Input
+          channel: '#team-ia-bots'
+          name: 'GABot'
