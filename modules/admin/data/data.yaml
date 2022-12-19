@@ -299,6 +299,10 @@ groups:
     description: users who can perform administrative tasks on the deployment servers related to ci/builds.
     members: *contint_admins_members
     privileges: ['ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release']
+  deployment-jenkins:
+    gid: 838
+    description: users who can deploy jenkins with scap to deployment and releases servers.
+    members: &deployment_jenkins_members [*releng_members, jforrester]
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)

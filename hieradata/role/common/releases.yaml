@@ -8,6 +8,7 @@ profile::admin::groups:
   - releasers-wikidiff2
   - contint-docker
   - contint-roots
+  - deployment-jenkins
 
 profile::ci::kubernetes_config::user: jenkins
 profile::ci::kubernetes_config::namespace: ci

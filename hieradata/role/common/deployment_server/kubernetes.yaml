@@ -20,6 +20,7 @@ profile::admin::groups:
   - gerrit-deployers
   - zuul-deployers
   - deployment-ci-admins
+  - deployment-jenkins
   - deployment-docker
   - research-deployers
   - platform-eng-deployers
