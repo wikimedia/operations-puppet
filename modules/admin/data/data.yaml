@@ -24,7 +24,7 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon, ejoseph]
+              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -364,7 +364,7 @@ groups:
               goransm, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux,
+              niharika29, jgleeson, srishakatux,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
@@ -3686,23 +3686,19 @@ users:
     uid: 20526
     email: jhuneidi@wikimedia.org
   ryanmax:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Ryan Steinberg
     name: ryanmax
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN1rS7OObcft7lDa9+H45kLfkdGHwlJ6rL2Fm2IPsMB
+    ssh_keys: []
     uid: 20482
-    email: ryanmax@stanford.edu
   afandian2:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Joe Wass
     name: afandian2
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHt287L9YmVILW5tSEruECUqJ+Ad0Ja+Q3Dl8Pnncbxc jwass@herring.local
+    ssh_keys: []
     uid: 20561
-    email: joe@afandian.com
   jgleeson:
     ensure: present
     realname: Jack Gleeson
@@ -3713,14 +3709,12 @@ users:
     uid: 18145
     email: jgleeson@wikimedia.org
   toddleroux:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Todd Leroux
     name: toddleroux
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDX2JxzqK7TeBZ2unDfbfyg90oHxAhipobW+Fzg0xwg1BV7xo3VYJXuKRhPhuP1pp6Ju/Z1zfuCCnZ9QhGzU27Y6zigM1Ze7fCAGU2jUdaNJJ1cK5V8N/Zvi6ywOSz3s/jHAHYyDD9EkfVDny53xeI0tq4xS9fWZePyZy8Ga1XxEKx7kngileN89ExYZ7aw/tTvKjfn9KM+frXXI3RfGO7usmlEmBgrC0DQcrP6i/bHvfP8HDjd3Kj29VS2N8FdlZJQq3zO5q1zr9r2rXxf7Ohs+G+qqyGJ3TTxX2ISBuN6UNHpaBusUIhMY+/b1FwT682mkEx0ma9wY5pcod66oCstUEliT9dpekAFxcboh8gNJ4GK4QMLWsfk68HfZJCXEIACTJ2x+ZviMQUWgXQq0K7Gcp0Ypzm+kBjz3cPEIdP0bUK+7T2jDRAiZAk+rfQ7h4ryHwuKY9Ir39xtZHRgs8UNXAh4hF6rEvXtHwlhNkdDy93od4f63Fuf4UjCtNwZFLjvnUTZIajllnzWzjwOizY4Z7Bj/byh7hSPORhuGnqXgW4vz0JWDKMBH2ad5t6jQaE3WkFu01n19SQDickaZKBfUE7dNgQrKfFeVfYiu3rnmk9E8nkGrQOH/WcfzaDGgF6GIdy6SXy1QpbH39wEHJruVX3RQimSjCo+p5hkSdT8NQ== todd.c.leroux@gmail.com
+    ssh_keys: []
     uid: 20623
-    email: todd.c.leroux@gmail.com
   jbond:
     ensure: present
     gid: 500
