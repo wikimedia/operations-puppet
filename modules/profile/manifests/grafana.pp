@@ -22,10 +22,7 @@ class profile::grafana (
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
     Optional[Stdlib::Port] $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
 ) {
-
-    include profile::backup::host
     include passwords::ldap::production
-    include profile::base::firewall
 
     if ($enable_loki) {
         include profile::grafana::loki
@@ -68,7 +65,7 @@ class profile::grafana (
         },
 
         'auth.proxy' => {
-            enabled      => false,
+            enabled => false,
         },
 
         'alerting' => {

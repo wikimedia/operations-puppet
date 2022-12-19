@@ -3,6 +3,7 @@ class role::wmcs::monitoring {
 
     include ::profile::base::production
     include ::profile::grafana
+    include ::profile::backup::host # For Grafana backups
     include ::profile::base::firewall
     include ::profile::base::cloud_production
     include ::profile::tlsproxy::envoy # TLS termination
