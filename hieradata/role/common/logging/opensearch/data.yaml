@@ -96,8 +96,8 @@ profile::opensearch::logstash::curator_actions:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
-        kind: regex
-        value: '^ecs-(1.7.0-\d\d?-test|test-1)-.*$'
+        kind: prefix
+        value: 'ecs-test-1-'
       - filtertype: age
         source: name
         direction: older
