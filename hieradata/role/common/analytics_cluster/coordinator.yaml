@@ -37,7 +37,7 @@ profile::hive::client::hive_metastore_host: 'an-coord1001.eqiad.wmnet'
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
-profile::presto::server::heap_max: 4G
+profile::presto::server::heap_max: 16G
 profile::presto::server::config_properties:
   coordinator: true
   node-scheduler.include-coordinator: false
