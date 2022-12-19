@@ -8,6 +8,7 @@
 # @param execute_alerts boolean enable alert execution engine
 # @param wpt_graphite_proxy_port If set  Configure a local Apache which will serve as
 #        a reverse proxy for WebPageTest's external Graphite instance.
+# @param logo_file_source source of the logo file to use
 class profile::grafana (
     String                 $admin_password          = lookup('profile::grafana::admin_password'),
     Hash                   $config                  = lookup('profile::grafana::config'),
@@ -21,6 +22,7 @@ class profile::grafana (
     Array[Stdlib::Fqdn]    $server_aliases          = lookup('profile::grafana::server_aliases'),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
     Optional[Stdlib::Port] $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
+    Stdlib::Filesource     $logo_file_source        = lookup('profile::grafana::logo_file_source',        { 'default_value' => 'puppet:///modules/profile/grafana/logo/wikimedia-logo.svg' }),
 ) {
     include passwords::ldap::production
 
@@ -119,7 +121,7 @@ class profile::grafana (
     }
 
     file { '/usr/share/grafana/public/img/grafana_icon.svg':
-        source  => 'puppet:///modules/role/grafana/wikimedia-logo.svg',
+        source  => $logo_file_source,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
