@@ -146,8 +146,8 @@ profile::opensearch::logstash::curator_actions:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
-        kind: regex
-        value: '^w3creportingapi-.*$'
+        kind: prefix
+        value: 'w3creportingapi-default-'
       - filtertype: age
         source: name
         direction: older
