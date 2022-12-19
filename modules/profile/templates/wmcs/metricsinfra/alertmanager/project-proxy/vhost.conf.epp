@@ -7,7 +7,7 @@ Listen 8643
 
 <VirtualHost *:8643>
     ServerName <%= $server_name %>
-    ServerAdmin <%= 'root@' + $domain %>
+    ServerAdmin root@<%= $domain %>
     # https://httpoxy.org/
     RequestHeader unset Proxy early
 
