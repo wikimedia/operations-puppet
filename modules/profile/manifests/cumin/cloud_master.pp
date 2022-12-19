@@ -32,6 +32,11 @@ class profile::cumin::cloud_master (
         'python3-dnspython',
         'python3-phabricator',
         'python3-requests',
+        # Explicitely require cumin's suggested packages to enable OpenStack backend, bacause
+        # --install-suggests would recursively install many more unwanted dependencies.
+        'python3-keystoneauth1',
+        'python3-keystoneclient',
+        'python3-novaclient',
     ])
 
     file { $cumin_log_path:
