@@ -12,6 +12,8 @@ profile::opensearch::dc_settings:
     - logstash2033.codfw.wmnet
     - logstash2034.codfw.wmnet
     - logstash2035.codfw.wmnet
+    - logstash2036.codfw.wmnet
+    - logstash2037.codfw.wmnet
   cluster_hosts:
     - logstash2001.codfw.wmnet
     - logstash2002.codfw.wmnet
@@ -29,6 +31,8 @@ profile::opensearch::dc_settings:
     - logstash2033.codfw.wmnet
     - logstash2034.codfw.wmnet
     - logstash2035.codfw.wmnet
+    - logstash2036.codfw.wmnet
+    - logstash2037.codfw.wmnet
 
 profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-codfw'
 profile::logstash::collector::output_public_loki_host: 'grafana2001.codfw.wmnet'
