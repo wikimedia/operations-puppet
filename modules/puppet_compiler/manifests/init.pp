@@ -18,7 +18,10 @@ class puppet_compiler (
 ) {
     $vardir = "${libdir}/puppet"
     $yamldir = "${vardir}/yaml"
-    $yaml_mount = '/mnt/nfs/labstore-secondary-project/yaml'
+    $output_dir = "${workdir}/output"
+    $mount = '/mnt/nfs/labstore-secondary-project'
+    $yaml_mount = "${mount}/yaml"
+    $output_mount = "${mount}/output"
 
     ensure_packages([
         'python3-yaml', 'python3-requests', 'python3-jinja2', 'python3-clustershell',
@@ -46,6 +49,11 @@ class puppet_compiler (
         $yamldir:
             ensure => link,
             target => $yaml_mount;
+    }
+    file { $output_dir:
+        ensure  => link,
+        target  => $output_mount,
+        require => Labstore::Nfs_mount['project-on-labstore-secondary'],
     }
 
     if $ensure == 'present' {
