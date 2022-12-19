@@ -1311,12 +1311,8 @@ node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti400[568]\.ulsfo\.wmnet$/ {
+node /^ganeti400[5678]\.ulsfo\.wmnet$/ {
     role(ganeti)
-}
-
-node 'ganeti4007.ulsfo.wmnet' {
-    role(insetup::infrastructure_foundations)
 }
 
 node /^ganeti500[4567]\.eqsin\.wmnet$/ {
