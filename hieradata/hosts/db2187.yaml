@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 # db2187
 # Future host
 profile::monitoring::notifications_enabled: false
