@@ -52,16 +52,17 @@ class profile::hadoop::backup::namenode(
 
     if $hdfs_backup_dir != undef {
 
-        $backup_manager_script = '/etc/hadoop/hdfs_fsimage_backup_manager.sh'
+        $backup_manager_script = '/etc/hadoop/hdfs_fsimage_backup_manager_script.sh'
         file { $backup_manager_script:
+            ensure => present,
             owner  => 'hdfs',
             group  => 'hdfs',
             mode   => '0750',
-            source => 'puppet:///modules/profile/files/hadoop/hdfs_fsimage_backup_manager.sh'
+            source => 'puppet:///modules/profile/hadoop/hdfs_fsimage_backup_manager.sh'
         }
 
         kerberos::systemd_timer { 'hadoop-namenode-backup-hdfs':
-            description => 'Checks that the local backup has been created, compresses it, and sends it to HDFS.',
+            description => 'Checks that the local backup has been created, and sends it to HDFS.',
             command     => "${backup_manager_script} ${backup_dir} ${hdfs_backup_dir}",
             interval    => 'Mon *-*-* 02:00:00',  #  2am on Monday
             user        => 'hdfs'
