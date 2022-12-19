@@ -59,6 +59,7 @@ class profile::idp(
     if $envoy_termination {
       include profile::tlsproxy::envoy
       $ferm_port = 443
+      profile::auto_restarts::service { 'envoyproxy': }
     } else {
       # In cloud we use the shared wmfcloud proxy for tls termination
       $ferm_port = 8080
