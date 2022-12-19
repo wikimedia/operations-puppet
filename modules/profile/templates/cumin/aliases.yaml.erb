@@ -354,11 +354,10 @@ redis-misc-master: P{O:redis::misc::master}
 redis-misc-slave: P{O:redis::misc::slave}
 releases: P{O:releases}
 relforge: P{O:elasticsearch::relforge}
-restbase: P{O:restbase::production} or A:restbase-dev
+restbase: P{O:restbase::production}
 restbase-canary: P{restbase1016.eqiad.wmnet}
 restbase-codfw: A:restbase and A:codfw
 restbase-eqiad: A:restbase and A:eqiad
-restbase-dev: P{O:restbase::dev_cluster}
 rpki: P{O:rpkivalidator}
 schema: P{O:eventschemas::service}
 schema-eqiad: A:schema and A:eqiad

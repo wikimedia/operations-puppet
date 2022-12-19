@@ -2609,11 +2609,6 @@ node /^restbase20(09|1[0-9]|2[0-7])\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
-# cassandra/restbase dev cluster
-node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
-    role(restbase::dev_cluster)
-}
-
 # New cassandra dev nodes T324113
 node /^cassandra-dev200[1-3]\.codfw\.wmnet$/ {
     role(cassandra_dev)
