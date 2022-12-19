@@ -42,7 +42,7 @@ profile::tlsproxy::envoy::cfssl_label: 'discovery'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - labtesthorizon.wikimedia.org
-    - labtesttooladmin.wikimedia.org
+    - labtesttoolsadmin.wikimedia.org
     - labtestwikitech.wikimedia.org
 profile::tlsproxy::envoy::services:
   - server_names: ['labtesttoolsadmin.wikimedia.org']
