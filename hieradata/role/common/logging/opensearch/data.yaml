@@ -80,8 +80,8 @@ profile::opensearch::logstash::curator_actions:
       ignore_empty_list: true
     filters:
       - filtertype: pattern
-        kind: regex
-        value: '^ecs-(1.7.0-\d\d?-default|default-1)-.*$'
+        kind: prefix
+        value: 'ecs-default-1-'
       - filtertype: age
         source: name
         direction: older
