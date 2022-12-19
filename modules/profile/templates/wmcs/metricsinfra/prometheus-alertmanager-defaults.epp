@@ -4,7 +4,7 @@
       Array[String[1]] $peers,
 | -%>
 # Set the command-line arguments to pass to the server.
-ARGS="--config.file=<%= $base_path %>/alertmanager.yml --cluster.advertise-address=<%= $listen_address %>:9094 <%- $peers.each |$peer| { -%>--cluster.peer <%= $peer %> <%- } -%> --web.listen-address=:9093"
+ARGS="--config.file=<%= $base_path %>/alertmanager.yml --cluster.advertise-address=<%= $listen_address %>:9094 <% $peers.each |$peer| { -%>--cluster.peer <%= $peer %> <%- } %> --web.listen-address=:9093"
 
 # The alert manager supports the following options:
 
