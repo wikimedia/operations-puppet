@@ -4,16 +4,17 @@
 # @param structured_logs use the cee structured logs format
 # @param ssl_ports list of ssl ports
 # @param safe_ports list of safe ports
-# @param ssh_allowed_hosts hosts that are allowed to use the proxy for ssh connections
+# @param ssh_acl An acl listing rles that are allowed to proxy ssh and the destination ips they are allowed to proxy too
 class profile::installserver::proxy(
-    Wmflib::Ensure             $ensure            = lookup('profile::installserver::proxy::ensure'),
-    Boolean                    $structured_logs   = lookup('profile::installserver::proxy::structured_logs'),
-    Array[Stdlib::Port]        $ssl_ports         = lookup('profile::installserver::proxy::ssl_ports'),
-    Array[Stdlib::Port]        $safe_ports        = lookup('profile::installserver::proxy::safe_ports'),
-    Array[Stdlib::IP::Address] $ssh_allowed_hosts = lookup('profile::installserver::proxy::ssh_allowed_hosts')
+    Wmflib::Ensure              $ensure          = lookup('profile::installserver::proxy::ensure'),
+    Boolean                     $structured_logs = lookup('profile::installserver::proxy::structured_logs'),
+    Array[Stdlib::Port]         $ssl_ports       = lookup('profile::installserver::proxy::ssl_ports'),
+    Array[Stdlib::Port]         $safe_ports      = lookup('profile::installserver::proxy::safe_ports'),
+    Hash[String[1], Squid::Acl] $ssh_acls        = lookup('profile::installserver::proxy::ssh_acls')
 ){
     include network::constants
     $prod_networks = $network::constants::production_networks
+    $_ssh_acls = squid::acl::normalise($ssh_acls)
 
     $syslog_facility = 'local0'
     $syslog_priority = 'info'
