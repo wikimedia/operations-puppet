@@ -30,6 +30,7 @@ class profile::mirrors::serve {
     }
 
     class { 'rsync::server': }
+    profile::auto_restarts::service { 'rsync': }
 
     ferm::service { 'mirrors_http':
         proto => 'tcp',
