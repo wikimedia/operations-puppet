@@ -494,7 +494,6 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 
 # s1 (enwiki) core production dbs on eqiad
 # See also db1099 and db1105 below
-# db1206 testing PERC 755 T324181
 node /^db1(107|118|119|128|132|134|135|163|169|184|186|196|206)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
