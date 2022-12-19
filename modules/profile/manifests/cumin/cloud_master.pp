@@ -4,12 +4,20 @@
 # @param datacenters list of datacenters
 # @param kerberos_kadmin_host the host running kerberos kadmin
 class profile::cumin::cloud_master (
-    Stdlib::Host  $puppetdb_host           = lookup('puppetdb_host'),
-    Array[String] $datacenters             = lookup('datacenters'),
-    Stdlib::Host  $kerberos_kadmin_host    = lookup('kerberos_kadmin_server_primary'),
-    Stdlib::Port  $puppetdb_port           = lookup('profile::puppetdb::microservice::port'),
+    Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
+    Array[String] $datacenters          = lookup('datacenters'),
+    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary'),
+    Stdlib::Port  $puppetdb_port        = lookup('profile::puppetdb::microservice::port'),
+    String        $keystone_protocol    = lookup('profile::openstack::base::keystone::auth_protocol'),
+    Stdlib::Host  $keystone_api_fqdn    = lookup('profile::cumin::cloud_master::keystone_api_fqdn'),
+    Stdlib::Port  $keystone_port        = lookup('profile::openstack::base::keystone::public_port'),
+    String        $observer_username    = lookup('profile::openstack::base::observer_user'),
+    String        $observer_password    = lookup('profile::openstack::main::observer_password'),
+    Stdlib::Host  $nova_dhcp_domain     = lookup('profile::cumin::cloud_master::nova_dhcp_domain'),
+    String        $openstack_region     = lookup('profile::cumin::cloud_master::openstack_region'),
 ) {
     include passwords::phabricator
+    $with_openstack = true  # Used in the cumin/config.yaml.erb template
     $cumin_log_path = '/var/log/cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied

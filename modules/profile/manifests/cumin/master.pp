@@ -14,6 +14,7 @@ class profile::cumin::master (
     Integer[0,31] $insetup_role_report_day = lookup('profile::cumin::master::insetup_role_report_day'),
 ) {
     include passwords::phabricator
+    $with_openstack = false  # Used in the cumin/config.yaml.erb template
     $cumin_log_path = '/var/log/cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied

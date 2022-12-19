@@ -12,6 +12,20 @@ puppetdb:
     urllib3_disable_warnings:
       - SubjectAltNameWarning  # Temporary fix for T158757
 
+<%- if @with_openstack -%>
+openstack:
+    auth_url: <%= @keystone_protocol %>://<%= @keystone_api_fqdn %>:<%= @keystone_port %>
+    username: <%= @observer_username %>
+    password: <%= @observer_password %>
+    domain_suffix: <%= @nova_dhcp_domain %>
+    nova_api_version: 2.12
+    timeout: 2
+    <%- if @openstack_region -%>
+    client_params:
+        region_name: <%= @openstack_region %>
+    <%- end -%>
+<%- end -%>
+
 knownhosts:
     files:
         - /etc/ssh/ssh_known_hosts
