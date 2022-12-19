@@ -14,12 +14,14 @@
 # [*objstore_password*] The password to access object storage
 # [*min_time*] Start of time range limit to serve. Can be RFC3339-style
 #              absolute time or relative to now (e.g. -1d)
+# [*base_path*] Base path where the sidecar is hosted (if not passed will use <prometheus_insatnce>)
 
 define thanos::sidecar (
     Stdlib::Port::Unprivileged $prometheus_port,
-    String $prometheus_instance,
+    String[1] $prometheus_instance,
     Stdlib::Port::Unprivileged $http_port,
     Stdlib::Port::Unprivileged $grpc_port,
+    Optional[String] $base_path = undef,
     Optional[Hash[String, String]] $objstore_account = undef,
     Optional[String] $objstore_password = undef,
     Optional[String] $min_time = undef,
@@ -29,7 +31,11 @@ define thanos::sidecar (
     $grpc_address = "0.0.0.0:${grpc_port}"
     $http_address = "0.0.0.0:${http_port}"
     $prometheus_base = "/srv/prometheus/${prometheus_instance}"
-    $prometheus_url = "http://localhost:${prometheus_port}/${prometheus_instance}"
+    $prometheus_url = $base_path ? {
+        undef => "http://localhost:${prometheus_port}/${prometheus_instance}",
+        '' => "http://localhost:${prometheus_port}/",
+        default => "http://localhost:${prometheus_port}${base_path}",
+    }
     $service_name = "thanos-sidecar@${title}"
     $tsdb_path = "${prometheus_base}/metrics"
     $objstore_config_file = "/etc/${service_name}/objstore.yaml"

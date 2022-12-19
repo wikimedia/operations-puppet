@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Define prometheus::web
 #
 # Provision a reverse proxy with apache towards a prometheus instance.
@@ -15,12 +16,16 @@
 #
 # [*homepage*]
 #   Redirect to this instance from the homepage (i.e. /)
+#
+# [*redirect_url*]
+#   The URL relative to '/' that will be redirected from, usually just $title.
 
 define prometheus::web (
     String $proxy_pass,
     Wmflib::Ensure $ensure = present,
     Integer $maxconn = 10,
     Boolean $homepage = false,
+    String $redirect_url = $title,
 ) {
     include ::prometheus
 

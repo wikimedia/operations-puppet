@@ -22,7 +22,7 @@ class profile::wmcs::metricsinfra::prometheus(
     $rules_path = "${base_path}/rules"
 
     $listen_address = '127.0.0.1:9900'
-    $external_url = "https://${$ext_fqdn}/cloud"
+    $external_url = "https://${$ext_fqdn}"
 
     $storage_retention = '730h'
     $min_block_duration = '2h'
@@ -78,8 +78,9 @@ class profile::wmcs::metricsinfra::prometheus(
     }
 
     prometheus::web { 'cloud':
-        proxy_pass => 'http://localhost:9900/cloud',
-        require    => Httpd::Site['prometheus'],
+        proxy_pass   => 'http://localhost:9900',
+        require      => Httpd::Site['prometheus'],
+        redirect_url => '',
     }
 
     profile::wmcs::metricsinfra::prometheus_configurator::output_config { 'prometheus':
@@ -97,5 +98,6 @@ class profile::wmcs::metricsinfra::prometheus(
         prometheus_instance => 'cloud',
         http_port           => 19900,
         grpc_port           => 29900,
+        base_path           => '',
     }
 }
