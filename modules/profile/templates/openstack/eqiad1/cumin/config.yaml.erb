@@ -22,6 +22,7 @@ openstack:
     auth_url: <%= @keystone_protocol %>://<%= @keystone_api_fqdn %>:<%= @keystone_port %>
     username: <%= @observer_username %>
     password: <%= @observer_password %>
+    auth_project: <%= @observer_project %>
     domain_suffix: <%= @nova_dhcp_domain %>
     nova_api_version: 2.12
     timeout: 2

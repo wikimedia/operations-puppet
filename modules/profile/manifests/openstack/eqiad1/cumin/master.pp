@@ -23,6 +23,7 @@ class profile::openstack::eqiad1::cumin::master(
     $keystone_port = lookup('profile::openstack::base::keystone::public_port'),
     $observer_username = lookup('profile::openstack::base::observer_user'),
     $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
+    $observer_project = lookup('profile::openstack::base::observer_project'),
     $nova_dhcp_domain = lookup('profile::openstack::eqiad1::nova::dhcp_domain'),
     Hash $aliases = lookup('profile::openstack::eqiad1::cumin::aliases'),
     $project_ssh_priv_key_path = lookup('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
