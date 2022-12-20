@@ -89,11 +89,11 @@ class profile::idp::standalone (
     include profile::idp::client::httpd
     $vhost = @("VHOST")
     <VirtualHost *:80>
-        ServerName idp-test-login.wmcloud.org
+        ServerName sso-django-login-login.wmcloud.org
         ServerSignature Off
         DocumentRoot /srv/
-        CustomLog /var/log/apache2/idp-test-login.wmcloud.org-access.log wmf
-        ErrorLog /var/log/apache2/idp-test-login.wmcloud.org-error.log
+        CustomLog /var/log/apache2/sso-django-login-login.wmcloud.org-access.log wmf
+        ErrorLog /var/log/apache2/sso-django-login-login.wmcloud.org-error.log
         LogLevel warn
         ProxyPreserveHost On
         ProxyPass / http://localhost:8082/
@@ -103,7 +103,7 @@ class profile::idp::standalone (
     httpd::site {'sso-django-login.wmcloud.org':
         content  => $vhost,
     }
-    ferm::service { 'http-idp-test-login':
+    ferm::service { 'http-sso-django-login-login':
         proto => 'tcp',
         port  => 80,
     }
