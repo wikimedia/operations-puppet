@@ -1,4 +1,4 @@
-# @summery The rsync server. Supports both standard rsync as well as rsync over ssh
+# @summary The rsync server. Supports both standard rsync as well as rsync over ssh
 #
 # @param address the address to listen on can pass an empty string to have it listen on ipv4 and ipv6
 # @param timeout the timeout in seconds
@@ -8,7 +8,6 @@
 # @param wrap_with_stunnel if true rsync will be wrapped in an ssltunnle
 # @param ensure_service the ensure state of the service
 # @param log_file path to the log file to use
-
 class rsync::server(
     Variant[
         Stdlib::IP::Address,
