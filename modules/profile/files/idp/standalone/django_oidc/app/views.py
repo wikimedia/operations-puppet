@@ -32,6 +32,11 @@ def done(request):
     pass
 
 
+@login_required
+def debug(request):
+    return '<br />'.join(['{}={}'.format(k, v) for k, v in request.META.items()])
+
+
 @render_to("home.html")
 def validation_sent(request):
     """Email validation sent confirmation page"""

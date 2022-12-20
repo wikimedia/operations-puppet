@@ -14,5 +14,6 @@ urlpatterns = [
     path("email/", app_views.require_email, name="require_email"),
     path("country/", app_views.require_country, name="require_country"),
     path("city/", app_views.require_city, name="require_city"),
+    path("debug/", app_views.debug),
     path("", include("social_django.urls")),
 ]
