@@ -492,6 +492,11 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
     role(analytics_cluster::datahub::opensearch)
 }
 
+# Hosts to be set up T325210
+node /^db2(185|186|187)\.codfw\.wmnet/ {
+    role(insetup::data_persistence)
+}
+
 # s1 (enwiki) core production dbs on eqiad
 # See also db1099 and db1105 below
 node /^db1(107|118|119|128|132|134|135|163|169|184|186|196|206)\.eqiad\.wmnet/ {
