@@ -10,85 +10,101 @@ class profile::idp::standalone (
     String           $oidc_key          = lookup('profile::idp::standalone::oidc_key'),
     String           $oidc_secret       = lookup('profile::idp::standalone::oidc_secret'),
 ) {
-  ensure_packages(['python3-venv'])
-  # Standard stuff
-  include profile::base::production
-  include profile::base::firewall
+    ensure_packages(['python3-venv'])
+    # Standard stuff
+    include profile::base::production
+    include profile::base::firewall
 
-  # configure database
-  include profile::mariadb::packages_wmf
-  class { 'mariadb::service': }
-  class { 'mariadb::config':
-    basedir => '/usr',
-    config  => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
-    datadir => '/srv/sqldata',
-  }
-  # TODO: configure openldap
-  #  https://wikitech.wikimedia.org/wiki/Standalone-slapd
+    # configure database
+    include profile::mariadb::packages_wmf
+    class { 'mariadb::service': }
+    class { 'mariadb::config':
+        basedir => '/usr',
+        config  => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
+        datadir => '/srv/sqldata',
+    }
+    # TODO: configure openldap
+    #  https://wikitech.wikimedia.org/wiki/Standalone-slapd
 
-  # configure IDP
-  include profile::idp
-  include profile::java
-  # Set up test web application
-  ['idp_test_login', 'django_oidc'].each |$idx, $app| {
-    $wsgi_file = "/srv/${app}/wsgi.py"
-    $venv_path = $wsgi_file.dirname
+    # configure IDP
+    include profile::idp
+    include profile::java
+    # Set up test web application
+    ['idp_test_login', 'django_oidc'].each |$idx, $app| {
+        $wsgi_file = "/srv/${app}/wsgi.py"
+        $venv_path = $wsgi_file.dirname
 
-    file { $venv_path:
-        ensure  => directory,
-        recurse => remote,
-        owner   => 'www-data',
-        source  => "puppet:///modules/profile/idp/standalone/${app}",
+        file { $venv_path:
+            ensure  => directory,
+            recurse => remote,
+            owner   => 'www-data',
+            source  => "puppet:///modules/profile/idp/standalone/${app}",
+        }
+        exec { "create virtual environment ${venv_path}":
+            command => "/usr/bin/python3 -m venv ${venv_path}",
+            creates => "${venv_path}/bin/activate",
+            require => [
+                File[$venv_path],
+                Package['python3-venv'],
+            ],
+        }
+        exec { "install requirements to ${venv_path}":
+            command => "${venv_path}/bin/pip3 install -r ${venv_path}/requirements.txt",
+            creates => "${venv_path}/lib/python3.9/site-packages/social_core/__init__.py",
+            require => Exec["create virtual environment ${venv_path}"],
+        }
+        $port = 8081 + $idx
+        uwsgi::app { $app:
+            settings => {
+                uwsgi => {
+                    'plugins'     => 'python3',
+                    'chdir'       => $venv_path,
+                    'venv'        => $venv_path,
+                    'master'      => true,
+                    'http-socket' => "127.0.0.1:${port}",
+                    'wsgi-file'   => $wsgi_file,
+                    'die-on-term' => true,
+                },
+            },
+        }
     }
-    exec { "create virtual environment ${venv_path}":
-        command => "/usr/bin/python3 -m venv ${venv_path}",
-        creates => "${venv_path}/bin/activate",
-        require => [
-            File[$venv_path],
-            Package['python3-venv'],
-        ],
+    $config = @("CONFIG")
+    ALLOWED_HOSTS = ['localhost', 'sso-django-login.wmcloud.org']
+    SECRET_KEY = "${django_secret_key}"
+    SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = "${oidc_endpoint}"
+    SOCIAL_AUTH_OIDC_KEY = "${oidc_key}"
+    SOCIAL_AUTH_OIDC_SECRET = "${oidc_secret}"
+    | CONFIG
+    file { '/srv/django_oidc/oidc_auth/db.sqlite3':
+        ensure => file,
+        owner  => 'www-data',
     }
-    exec { "install requirements to ${venv_path}":
-        command => "${venv_path}/bin/pip3 install -r ${venv_path}/requirements.txt",
-        creates => "${venv_path}/lib/python3.9/site-packages/social_core/__init__.py",
-        require => Exec["create virtual environment ${venv_path}"],
+    file { '/srv/django_oidc/oidc_auth/local_settings.py':
+        ensure  => file,
+        content => $config,
+        notify  => Service['uwsgi-django_oidc'],
     }
-    $port = 8081 + $idx
-    uwsgi::app { $app:
-        settings => {
-        uwsgi => {
-            'plugins'     => 'python3',
-            'chdir'       => $venv_path,
-            'venv'        => $venv_path,
-            'master'      => true,
-            'http-socket' => "127.0.0.1:${port}",
-            'wsgi-file'   => $wsgi_file,
-            'die-on-term' => true,
-        },
-        },
-    }
-  }
-  $config = @("CONFIG")
-  ALLOWED_HOSTS = ['localhost', 'sso-django-login.wmcloud.org']
-  SECRET_KEY = "${django_secret_key}"
-  SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = "${oidc_endpoint}"
-  SOCIAL_AUTH_OIDC_KEY = "${oidc_key}"
-  SOCIAL_AUTH_OIDC_SECRET = "${oidc_secret}"
-  | CONFIG
-  file { '/srv/django_oidc/oidc_auth/db.sqlite3':
-      ensure => file,
-      owner  => 'www-data',
-  }
-  file { '/srv/django_oidc/oidc_auth/local_settings.py':
-      ensure  => file,
-      content => $config,
-      notify  => Service['uwsgi-django_oidc'],
-  }
 
-  class { 'httpd': modules => ['proxy_http', 'proxy'] }
-  include profile::idp::client::httpd
-  ferm::service { 'http-idp-test-login':
-    proto => 'tcp',
-    port  => 80,
-  }
+    class { 'httpd': modules => ['proxy_http', 'proxy'] }
+    include profile::idp::client::httpd
+    $vhost = @("VHOST")
+    <VirtualHost *:80>
+        ServerName idp-test-login.wmcloud.org
+        ServerSignature Off
+        DocumentRoot /srv/
+        CustomLog /var/log/apache2/idp-test-login.wmcloud.org-access.log wmf
+        ErrorLog /var/log/apache2/idp-test-login.wmcloud.org-error.log
+        LogLevel warn
+        ProxyPreserveHost On
+        ProxyPass / http://localhost:8082/
+        ProxyPassReverse / http://localhost:8082/
+    </VirtualHost>
+    | VHOST
+    httpd::site {'sso-django-login.wmcloud.org':
+        content  => $vhost,
+    }
+    ferm::service { 'http-idp-test-login':
+        proto => 'tcp',
+        port  => 80,
+    }
 }
