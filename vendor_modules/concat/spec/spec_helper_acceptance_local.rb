@@ -26,6 +26,6 @@ def setup_test_directory
       force   => true,
     }
   MANIFEST
-  LitmusHelper.instance.apply_manifest(pp)
+  LitmusHelper.instance.apply_manifest(pp, expect_failures: false)
   basedir
 end

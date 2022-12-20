@@ -24,5 +24,7 @@ spec/spec_helper.rb:
   unmanaged: false
 .github/workflows/release.yml:
   unmanaged: false
+.github/workflows/auto_release.yml:
+  unmanaged: false
 .travis.yml:
   delete: true

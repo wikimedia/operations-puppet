@@ -2,7 +2,62 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v7.0.1](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.0.1) (2021-03-20)
+## [v7.3.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.3.0) (2022-10-03)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v7.2.0...v7.3.0)
+
+### Added
+
+- pdksync - \(GH-cat-11\) Certify Support for Ubuntu 22.04 [\#739](https://github.com/puppetlabs/puppetlabs-concat/pull/739) ([david22swan](https://github.com/david22swan))
+- \(GH-cat-12\) Add Support for Redhat 9 [\#738](https://github.com/puppetlabs/puppetlabs-concat/pull/738) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- \(MAINT\) Drop support for Solaris 10, Windows \(7, 8.1\), Windows Server 2008 R2 and AIX \(5.3, 6.1\) [\#741](https://github.com/puppetlabs/puppetlabs-concat/pull/741) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [v7.2.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.2.0) (2022-05-16)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v7.1.1...v7.2.0)
+
+### Added
+
+- pdksync - \(FM-8922\) - Add Support for Windows 2022 [\#725](https://github.com/puppetlabs/puppetlabs-concat/pull/725) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-1753\) - Add Support for AlmaLinux 8 [\#720](https://github.com/puppetlabs/puppetlabs-concat/pull/720) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-1751\) - Add Support for Rocky 8 [\#719](https://github.com/puppetlabs/puppetlabs-concat/pull/719) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- pdksync - \(GH-iac-334\) Remove Support for Ubuntu 14.04 [\#729](https://github.com/puppetlabs/puppetlabs-concat/pull/729) ([david22swan](https://github.com/david22swan))
+- pdksync - \(GH-iac-334\) Remove Support for Ubuntu 16.04 [\#728](https://github.com/puppetlabs/puppetlabs-concat/pull/728) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-1787\) Remove Support for CentOS 6 [\#723](https://github.com/puppetlabs/puppetlabs-concat/pull/723) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-1598\) - Remove Support for Debian 8 [\#718](https://github.com/puppetlabs/puppetlabs-concat/pull/718) ([david22swan](https://github.com/david22swan))
+
+## [v7.1.1](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.1.1) (2021-08-25)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v7.1.0...v7.1.1)
+
+### Fixed
+
+- \(maint\) Allow stdlib 8.0.0 [\#716](https://github.com/puppetlabs/puppetlabs-concat/pull/716) ([smortex](https://github.com/smortex))
+
+## [v7.1.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.1.0) (2021-08-23)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v7.0.2...v7.1.0)
+
+### Added
+
+- pdksync - \(IAC-1709\) - Add Support for Debian 11 [\#713](https://github.com/puppetlabs/puppetlabs-concat/pull/713) ([david22swan](https://github.com/david22swan))
+
+## [v7.0.2](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.0.2) (2021-06-21)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v7.0.1...v7.0.2)
+
+### Fixed
+
+- fix merge nil hashes [\#708](https://github.com/puppetlabs/puppetlabs-concat/pull/708) ([thde](https://github.com/thde))
+- Do not modify metaparams in place [\#705](https://github.com/puppetlabs/puppetlabs-concat/pull/705) ([ekohl](https://github.com/ekohl))
+
+## [v7.0.1](https://github.com/puppetlabs/puppetlabs-concat/tree/v7.0.1) (2021-03-29)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v7.0.0...v7.0.1)
 
