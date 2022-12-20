@@ -20,12 +20,19 @@ define apereo_cas::service (
     Optional[String[1]]                  $allowed_delegate = undef,
     Optional[String[1]]                  $client_secret    = undef,
 ) {
-    if $service_class == 'OidcRegisteredService' and !$client_secret {
-        fail('$client_secret required when using OidcRegisteredService')
-    }
-    $client_id = $service_class ? {
-        'OidcRegisteredService' => $title,
-        default                 => undef,
+    if $service_class == 'OidcRegisteredService' {
+        if !$client_secret {
+            fail('$client_secret required when using OidcRegisteredService')
+        }
+        $oidc_params = {
+            'clientId'               => $title,
+            'clientSecret'           => $client_secret,
+            'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
+            'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
+            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email' ] ]
+        }
+    } else {
+        $oidc_params = {}
     }
     include apereo_cas
     $delegate = $allowed_delegate ? {
@@ -60,9 +67,7 @@ define apereo_cas::service (
         'attributeReleasePolicy' => { '@class' => "org.apereo.cas.services.${release_policy}" },
         'id'                     => $id,
         'accessStrategy'         => $_access_strategy + $delegate,
-        'clientId'               => $client_id,
-        'clientSecret'           => $client_secret,
-    }.filter |$x| { $x[1] =~ NotUndef }
+    } + $oidc_params
     $data = $properties.empty ? {
         true    => $base_data,
         default => $base_data + { 'properties' => $properties },
