@@ -41,6 +41,7 @@ class ldap::client::utils($ldapconfig) {
     }
 
     file { "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py":
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -49,6 +50,7 @@ class ldap::client::utils($ldapconfig) {
 
     if debian::codename::le('buster') {
         file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
+            ensure => absent,
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
@@ -58,6 +60,7 @@ class ldap::client::utils($ldapconfig) {
 
     if ( $::realm != 'labs' ) {
         file { '/etc/ldap/.ldapscriptrc':
+            ensure  => absent,
             owner   => 'root',
             group   => 'root',
             mode    => '0700',
