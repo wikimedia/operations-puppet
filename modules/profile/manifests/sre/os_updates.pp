@@ -56,12 +56,16 @@ class profile::sre::os_updates (
         content => profile::contacts::get_owners().to_yaml,
     }
 
-    file { '/etc/wikimedia/os-updates/stretch.yaml':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/sre/stretch.yaml',
+    file {
+        default:
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444';
+        '/etc/wikimedia/os-updates/stretch.yaml':
+            source => 'puppet:///modules/profile/sre/stretch.yaml';
+        '/etc/wikimedia/os-updates/buster.yaml':
+            source => 'puppet:///modules/profile/sre/buster.yaml';
     }
 
     # The reports could be run on any Cumin host, but only generate it once
