@@ -27,6 +27,7 @@ define apereo_cas::service (
         $oidc_params = {
             'clientId'               => $title,
             'clientSecret'           => $client_secret,
+            'bypassApprovalPrompt'   => true,
             'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
             'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email' ] ]
