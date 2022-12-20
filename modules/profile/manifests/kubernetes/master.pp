@@ -74,6 +74,9 @@ class profile::kubernetes::master (
         if $pki_intermediate == undef {
             fail('profile::kubernetes::pki::intermediate is mandatory for k8s = 1.16')
         }
+        # The first useable IPv4 IP of the service cluster-cidr is automatically used as ClusterIP for the internal
+        # kubernetes apiserver service (kubernetes.default.cluster.local)
+        $apiserver_clusterip = wmflib::cidr_first_address($service_cluster_cidr['v4'])
         $apiserver_cert = profile::pki::get_cert($pki_intermediate, 'kube-apiserver', {
             'profile'        => 'server',
             'renew_seconds'  => $pki_renew_seconds,
@@ -85,6 +88,7 @@ class profile::kubernetes::master (
                 $facts['fqdn'],
                 $facts['ipaddress'],
                 $facts['ipaddress6'],
+                $apiserver_clusterip,
                 $master_fqdn,
                 'kubernetes',
                 'kubernetes.default',
