@@ -101,7 +101,8 @@ role::lvs::balancer:
   target-q: 2023-1
   phab-task: 321309
 role::spare::system:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 324475
 role::maps::replica:
   target-q: TBD
 role::maps::master:
@@ -249,14 +250,6 @@ role::kafka::main::logging:
   target-q: TBD
 role::kafka::logging:
   target-q: TBD
-role::logstash:
-  target-q: TBD
-role::logstash7:
-  target-q: TBD
-role::logstash::elasticsearch7:
-  target-q: TBD
-role::kibana7_ecs:
-  target-q: TBD
 role::analytics_cluster::hadoop::client:
   target-q: TBD
   phab-task: 288804
@@ -395,10 +388,10 @@ role::dns::auth:
   target-q: 2023-1
   phab-task: 321309
 role::logging::opensearch::data:
-  target-q: TBD
+  target-q: 2022-4
   phab-task: 321410
 role::logging::opensearch::collector:
-  target-q: TBD
+  target-q: 2022-4
   phab-task: 321410
 role::wmcs::ceph::osd:
   target-q: TBD
