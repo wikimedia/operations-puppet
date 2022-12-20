@@ -25,7 +25,7 @@ class prometheus::node_puppet_agent (
     systemd::timer::job { 'prometheus_puppet_agent_stats':
         ensure      => $ensure,
         description => 'Regular job to collect puppet agent stats',
-        user        => 'prometheus',
+        user        => 'root',
         command     => "/usr/local/bin/prometheus-puppet-agent-stats --outfile ${outfile}",
         interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
         require     => File[$outfile.dirname]

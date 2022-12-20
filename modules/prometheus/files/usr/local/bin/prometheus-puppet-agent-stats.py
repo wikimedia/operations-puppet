@@ -1,4 +1,14 @@
 #!/usr/bin/python3
+"""Script used to genrate prometheus statistics.  By default this program
+will use `puppet config print` to find files.  This means that if you run
+as root the script will use the files generated via production puppet runs.
+However id you run as your own user it will look for files in the user
+specific dir.  e.g. /home/jbond/.puppet/cache/state.
+
+You can also explicitly override the state directory and specify any directory.
+The script will expect to find a agent_disabled.lock and last_run_report.yaml
+file in this directory
+"""
 # Copyright 2017 Filippo Giunchedi
 #                Wikimedia Foundation
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +26,10 @@
 import argparse
 import logging
 import os
+import shlex
 import sys
+
+from subprocess import run
 
 import yaml
 
@@ -26,7 +39,13 @@ from prometheus_client.exposition import generate_latest
 log = logging.getLogger(__name__)
 
 
-def _summary_stats(puppet_state_dir, registry):
+class ArgparseFormatter(
+    argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter
+):
+    """Custom argparse formatter class"""
+
+
+def _summary_stats(registry, puppet_state_dir=None):
     summary_parse_fail = Gauge('summary_parse_fail', 'Failed to parse summary',
                                namespace='puppet_agent', registry=registry)
     summary_parse_fail.set(0)
@@ -54,7 +73,11 @@ def _summary_stats(puppet_state_dir, registry):
     catalog_version = Info('catalog_version', 'The current commit running on the host',
                            namespace='puppet_agent', registry=registry)
 
-    summary_file = os.path.join(puppet_state_dir, 'last_run_summary.yaml')
+    if puppet_state_dir is None:
+        summary_file = puppet_config('lastrunfile')
+    else:
+        summary_file = os.path.join(puppet_state_dir, 'last_run_summary.yaml')
+
     try:
         with open(summary_file) as f:
             log.debug("Parsing %s", summary_file)
@@ -95,28 +118,37 @@ def _summary_stats(puppet_state_dir, registry):
         catalog_version.info({'git_sha': git_sha})
 
 
-def collect_puppet_stats(puppet_state_dir, registry):
+def collect_puppet_stats(registry, puppet_state_dir=None):
     puppet_enabled = Gauge('enabled', 'Puppet is currently enabled',
                            namespace='puppet_agent', registry=registry)
     puppet_enabled.set(1)
 
-    lock_file = os.path.join(puppet_state_dir, 'agent_disabled.lock')
+    if puppet_state_dir is None:
+        lock_file = puppet_config('agent_disabled_lockfile')
+    else:
+        lock_file = os.path.join(puppet_state_dir, 'agent_disabled.lock')
     if os.path.exists(lock_file):
         log.debug("Found %s, puppet disabled", lock_file)
         puppet_enabled.set(0)
 
-    _summary_stats(puppet_state_dir, registry)
+    _summary_stats(registry, puppet_state_dir)
+
+
+def puppet_config(item: str) -> str:
+    """return a puppet config value"""
+    command = shlex.split(f"/usr/bin/puppet config print {item}")
+    result = run(command, capture_output=True, check=True)
+    return result.stdout.strip()
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=ArgparseFormatter)
     parser.add_argument('--outfile', metavar='FILE.prom',
                         help='Output file (stdout)')
     parser.add_argument('-d', '--debug', action='store_true', default=False,
                         help='Enable debug logging (%(default)s)')
-    parser.add_argument('--puppet-state-dir', default='/var/lib/puppet/state',
-                        dest='puppet_state_dir',
-                        help='Puppet state directory (%(default)s)')
+    parser.add_argument('--puppet-state-dir', dest='puppet_state_dir',
+                        help='Puppet state directory')
     args = parser.parse_args()
 
     if args.debug:
@@ -128,7 +160,7 @@ def main():
         parser.error('Output file does not end with .prom')
 
     registry = CollectorRegistry()
-    collect_puppet_stats(args.puppet_state_dir, registry)
+    collect_puppet_stats(registry, args.puppet_state_dir)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
