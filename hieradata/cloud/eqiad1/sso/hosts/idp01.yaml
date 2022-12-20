@@ -20,41 +20,21 @@ profile::idp::services:
   cloud:
     id: 1
     service_id: 'https://(.*)\.eqiad1\.wikimedia\.cloud(/.*)?'
-    properties:
-      delegatedAuthenticationPolicy:
-        "@class": "org.apereo.cas.services.DefaultRegisteredServiceDelegatedAuthenticationPolicy"
-        allowedProviders:
-          - java.util.ArrayList
-          - [WMF_test]
+    allowed_delegate: 'WMF_test'
   wmcloud_org:
     id: 2
     service_id: 'https://(.*)\.wmcloud\.org(/.*)?'
-    properties:
-      delegatedAuthenticationPolicy:
-        "@class": "org.apereo.cas.services.DefaultRegisteredServiceDelegatedAuthenticationPolicy"
-        allowedProviders:
-          - java.util.ArrayList
-          - [WMF_test]
+    allowed_delegate: 'WMF_test'
   # Observability stack self-managed zone in wmflabs.org
   o11y_wmflabs_org:
     id: 3
     service_id: 'https://(.*)\.monitoring\.wmflabs\.org(/.*)?'
-    properties:
-      delegatedAuthenticationPolicy:
-        "@class": "org.apereo.cas.services.DefaultRegisteredServiceDelegatedAuthenticationPolicy"
-        allowedProviders:
-          - java.util.ArrayList
-          - [WMF_test]
+    allowed_delegate: 'WMF_test'
   django_oidc:
     id: 4
     service_class: 'OidcRegisteredService'
     service_id: 'https://sso-django-login\.wmcloud\.org(/.*)?'
-    properties:
-      delegatedAuthenticationPolicy:
-        "@class": "org.apereo.cas.services.DefaultRegisteredServiceDelegatedAuthenticationPolicy"
-        allowedProviders:
-          - java.util.ArrayList
-          - [WMF_test]
+    allowed_delegate: 'WMF_test'
 profile::idp::standalone::oidc_key: django_oidc
 profile::idp::delegated_authenticators:
   - provider: cas
