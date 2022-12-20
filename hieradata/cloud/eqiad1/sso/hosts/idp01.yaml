@@ -31,6 +31,7 @@ profile::idp::services:
     id: 4
     service_class: 'OidcRegisteredService'
     service_id: 'https://sso-django-login\.wmcloud\.org(/.*)?'
+profile::idp::standalone::oidc_key: django_oidc
 profile::idp::delegated_authenticators:
   - provider: cas
     login_url: https://idp-test.wikimedia.org/
