@@ -7,7 +7,6 @@
 # @param access_strategy the access strategy to use
 # @param required_groups a list of required ldap groups for the services
 # @param properties a list of addtional properties for the services
-# @param client_id the client_id used for OIDC
 # @param client_secret the client_secret used for OIDC
 define apereo_cas::service (
     Integer                              $id,
@@ -17,11 +16,14 @@ define apereo_cas::service (
     Apereo_cas::Service::Access_strategy $access_strategy = 'DefaultRegisteredServiceAccessStrategy',
     Array[String]                        $required_groups = [],
     Hash                                 $properties      = {},
-    Optional[String[1]]                  $client_id       = undef,
     Optional[String[1]]                  $client_secret   = undef,
 ) {
-    if $service_class == 'OidcRegisteredService' and (!$client_id or !$client_secret) {
-        fail('$client_id and $client_secret required when using OidcRegisteredService')
+    if $service_class == 'OidcRegisteredService' and !$client_secret {
+        fail('$client_secret required when using OidcRegisteredService')
+    }
+    $client_id = $service_class ? {
+        'OidcRegisteredService' => $title,
+        default                 => undef,
     }
     include apereo_cas
     $ldap_root = "${apereo_cas::ldap_group_cn},${apereo_cas::ldap_base_dn}"

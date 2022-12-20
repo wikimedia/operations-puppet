@@ -17,6 +17,8 @@ lookup_options:
     merge: hash
   labsldapconfig:
     merge: hash
+  profile::idp::services:
+    merge: deep
   profile::spicerack::peeringdb_config_data:
     merge: hash
   profile::statograph::api_key:
