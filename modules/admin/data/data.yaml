@@ -388,7 +388,7 @@ groups:
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
-              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, hxi-ctr]
+              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, hxi-ctr, kelhurd]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5636,6 +5636,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFUWDQcPOmfMWpyKXSVXbnN+3Tf8Xy3kYtLDyIi+JQ8 xihua@MacBook-Pro-4
+  kelhurd:
+    ensure: present
+    realname: Kelton Hurd
+    email: khurd@wikimedia.org
+    uid: 42652
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtgHw4rO9V8nK9jQnLxFMi37cal2FVuzL6XDj4hYxOP khurd@wmf3229
 
 ldap_only_users:
   abhas:
@@ -6439,10 +6447,6 @@ ldap_only_users:
     ensure: present
     realname: Giovanna Fontenelle
     email: gfontenelle@wikimedia.org
-  kelhurd:
-    ensure: present
-    realname: Kelton Hurd
-    email: khurd@wikimedia.org
   vwalters:
     ensure: present
     realname: Vaughn Walters
