@@ -26,3 +26,5 @@ db_inventory
 mediabackupstemp
 matomo
 analytics_meta
+backup1-eqiad
+backup1-codfw

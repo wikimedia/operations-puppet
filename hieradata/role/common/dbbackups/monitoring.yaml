@@ -99,6 +99,12 @@ profile::dbbackups::check::backups:
   analytics_meta:
     dump:
     - eqiad
+  backup1-eqiad:
+    dump:
+    - eqiad
+  backup1-codfw:
+    dump:
+    - codfw
 profile::dbbackups::check::freshness:
   dump: 777600
   snapshot: 259200
