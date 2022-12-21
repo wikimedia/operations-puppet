@@ -24,7 +24,7 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2]
+              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -51,7 +51,7 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
+              cdanis, fsero, jbond, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
@@ -3810,14 +3810,12 @@ users:
     email: iflorez@wikimedia.org
     krb: present
   jeh:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jeh
     realname: Jason Hedden
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPjZq2lUicJxSAKeKAsb8KT8rm7RbG8MEF3NCjn5ymw/ jhedden@wikimedia.org
+    ssh_keys: []
     uid: 21436
-    email: jason@latigid.net
   accraze:
     ensure: absent
     gid: 500
