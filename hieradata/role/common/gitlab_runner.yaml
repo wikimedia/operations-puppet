@@ -19,7 +19,7 @@ profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
 profile::gitlab::runner::locked: true
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::run_untagged: false
-profile::gitlab::runner::tags: ['protected', 'trusted']
+profile::gitlab::runner::tags: ['trusted']
 profile::gitlab::runner::environment:
   # environment variables expected by kokkuri when publishing images
   # See https://gitlab.wikimedia.org/repos/releng/kokkuri
