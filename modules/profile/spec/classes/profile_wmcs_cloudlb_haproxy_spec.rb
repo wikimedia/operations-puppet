@@ -15,7 +15,7 @@ describe 'profile::wmcs::cloudlb::haproxy' do
         'cloudlb_haproxy_config' => {
             'testservice1' => {
                 'type' => 'http',
-                'open_firewall' => false,
+                'firewall' => {'open_to_internet' => false},
                 'frontends' => [
                     {
                         'port' => 11_111,
@@ -40,7 +40,7 @@ describe 'profile::wmcs::cloudlb::haproxy' do
             },
             'testservice2' => {
                 'type' => 'tcp',
-                'open_firewall' => true,
+                'firewall' => {'open_to_internet' => true},
                 'frontends' => [
                     {
                         'port' => 33_333,
@@ -75,7 +75,7 @@ describe 'profile::wmcs::cloudlb::haproxy' do
         is_expected.to contain_cloudlb__haproxy__service('testservice1')
             .with_service(
                 'type' => 'http',
-                'open_firewall' => false,
+                'firewall' => { 'open_to_internet' => false },
                 'frontends' => [
                     {
                         'port' => 11_111,
@@ -101,7 +101,7 @@ describe 'profile::wmcs::cloudlb::haproxy' do
         is_expected.to contain_cloudlb__haproxy__service('testservice2')
             .with_service(
                 'type' => 'tcp',
-                'open_firewall' => true,
+                'firewall' => { 'open_to_internet' => true },
                 'frontends' => [
                     {
                         'port' => 33_333,
