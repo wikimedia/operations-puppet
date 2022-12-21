@@ -26,9 +26,7 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
     }
 
     if 'utils' in $ldapincludes {
-        class { '::ldap::client::utils':
-            ldapconfig => $ldapconfig,
-        }
+        class { '::ldap::client::utils': }
     }
 
     if 'sssd' in $ldapincludes {

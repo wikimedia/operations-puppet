@@ -3,12 +3,8 @@
 # Remember though, that including ldap::client::nss will mean users in the
 # ldap database will then be listed as users of the system, so use care.
 
-class ldap::client::utils($ldapconfig) {
+class ldap::client::utils() {
 
-    # No python2 on Bullseye or later
-    if debian::codename::le('buster') {
-        ensure_packages(['python-pycurl', 'python-pyldap'])
-    }
     ensure_packages(['python3-pycurl', 'python3-pyldap'])
 
     if $::realm == 'labs' {
@@ -31,40 +27,6 @@ class ldap::client::utils($ldapconfig) {
             system => true,
             home   => '/nonexistent', # Since things seem to check for $HOME/.whatever unconditionally...
             shell  => '/bin/false',
-        }
-    }
-    $python3_version = debian::codename() ? {
-        'stretch'  => '3.5',
-        'buster'   => '3.7',
-        'bullseye' => '3.9',
-        default    => '3.7',
-    }
-
-    file { "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py":
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
-    }
-
-    if debian::codename::le('buster') {
-        file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
-            ensure => absent,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
-        }
-    }
-
-    if ( $::realm != 'labs' ) {
-        file { '/etc/ldap/.ldapscriptrc':
-            ensure  => absent,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0700',
-            content => template('ldap/ldapscriptrc.erb'),
         }
     }
 }
