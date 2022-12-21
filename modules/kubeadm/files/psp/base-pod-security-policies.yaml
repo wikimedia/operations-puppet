@@ -111,6 +111,7 @@ spec:
     - "emptyDir"
     - "projected"
     - "secret"
+    - "hostPath"
   # Restrict host paths by default
   allowedHostPaths:
     - pathPrefix: "/var/lib/sss/pipes"
