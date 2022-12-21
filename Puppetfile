@@ -1,8 +1,15 @@
 moduledir 'vendor_modules'
 
 mod 'concat',
-    :git => 'https://github.com/puppetlabs/puppetlabs-concat',
-    :ref => 'v7.3.0'
+    # NOTE: Deviates from upstream v7.3.0
+    #
+    # 1. f507466942dbdb0684a1d04ea3d96d62d0ec70fa.:
+    #    This commit is reverted as the Regexp.match? operator is not availabe
+    #    on ruby 2.3, this commit may be reverted, once all our stretch
+    #    hosts are gone.
+    :local => true
+    # :git => 'https://github.com/puppetlabs/puppetlabs-concat',
+    # :ref => 'v7.3.0'
 
 mod 'lvm',
     # NOTE: Deviates from upstream v1.4.0
