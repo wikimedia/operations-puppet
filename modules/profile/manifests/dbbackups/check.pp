@@ -29,6 +29,8 @@
 # * $freshness: For each backup time in $backups (as a key), it lists the max
 #               time (in seconds) a backups will be stale, after which the
 #               alarme will go off.
+# * $min_size: minimum size that all backups should be equal or higher, or it
+#              will alert.
 # * $warn_size_percentage: Percentage (a float from 0 to 100), after which, if
 #                          the latest backup has grown or shrink more than this
 #                          in relation to the previous run, the alerm will go
@@ -47,6 +49,7 @@ class profile::dbbackups::check (
     $enabled              = lookup('profile::dbbackups::check::backups', Boolean, ),
     $backups              = lookup('profile::dbbackups::check::backups', Hash, ),
     $freshness            = lookup('profile::dbbackups::check::freshness', Hash[String, Integer], ),
+    $min_size             = lookup('profile::dbbackups::check::min_size', Integer[0, infinity], ),
     $warn_size_percentage = lookup('profile::dbbackups::check::warn_size_percentage', Float[0.0, 100.0]),
     $crit_size_percentage = lookup('profile::dbbackups::check::crit_size_percentage', Float[0.0, 100.0]),
     $db_host              = lookup('profile::dbbackups::check::db_host', String, ),
@@ -70,6 +73,7 @@ class profile::dbbackups::check (
                         datacenter           => $dc,
                         type                 => $type,
                         freshness            => $freshness[$type],
+                        min_size             => $min_size,
                         warn_size_percentage => $warn_size_percentage,
                         crit_size_percentage => $crit_size_percentage,
                         db_user              => $db_user,
