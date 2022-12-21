@@ -3,4 +3,5 @@
 type Swift::Cluster_info = Struct[{
     cluster_name => String[1],
     ring_manager => Optional[Stdlib::Host],
+    rclone_host  => Optional[Stdlib::Host],
 }]

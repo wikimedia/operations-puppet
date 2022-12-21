@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# See https://rclone.org/filtering/ for syntax
+# Don't use regexes! They stop rclone from using
+# directory filter rules.
++ /wikipedia-commons-local-{public,deleted}.[0-9a-z][0-9a-z]/**
++ /wikipedia-??-local-{public,deleted}.[0-9a-z][0-9a-z]/**
++ /wik*-local-{public,deleted}/**
++ /global-*/**
++ /wik*-timeline-render/**
++ /wik*-transcoded{,.[0-9a-z][0-9a-z]}/**
++ /wikipedia-commons-gwtoolset-metadata/**
+- **

@@ -7,7 +7,6 @@ class profile::swift::storage (
     Hash[String, Hash] $replication_accounts            = lookup('profile::swift::replication_accounts'),
     Hash[String, Hash] $replication_keys                = lookup('profile::swift::replication_keys'),
     String $hash_path_suffix                            = lookup('profile::swift::hash_path_suffix'),
-    String $swift_cluster                               = lookup('profile::swift::cluster'),
     Array[String] $memcached_servers                    = lookup('profile::swift::proxy::memcached_servers'),
     Array[Stdlib::Host] $swift_backends                 = lookup('profile::swift::storagehosts'),
     Array[Stdlib::Host] $swift_frontends                = lookup('profile::swift::proxyhosts'),
@@ -24,6 +23,10 @@ class profile::swift::storage (
     Optional[Integer] $loopback_device_count            = lookup('profile::swift::storage::loopback_device_count'),
     Boolean $disable_fallocate                          = lookup('profile::swift::storage::disable_fallocate'),
     Boolean $disks_by_path                              = lookup('profile::swift::storage::disks_by_path'),
+    Hash[String, Hash] $global_account_keys            = lookup('profile::swift::global_account_keys'),
+    Swift::Clusters $swift_clusters                     = lookup('swift_clusters'),
+    String $swift_cluster_label                         = lookup('profile::swift::cluster_label'),
+
 ){
 
     $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
@@ -32,14 +35,16 @@ class profile::swift::storage (
         hash_path_suffix => $hash_path_suffix,
     }
 
+    $swift_cluster_name = $swift_clusters[$swift_cluster_label]['cluster_name']
+
     class { 'swift::ring':
-        swift_cluster => $swift_cluster,
+        swift_cluster => $swift_cluster_name,
     }
 
     class { 'swift::storage':
         statsd_host                      => $statsd_host,
         statsd_port                      => $statsd_port,
-        statsd_metric_prefix             => "swift.${swift_cluster}.${::hostname}",
+        statsd_metric_prefix             => "swift.${swift_cluster_name}.${::hostname}",
         memcached_servers                => $memcached_servers,
         container_replicator_concurrency => $container_replicator_concurrency,
         object_server_default_workers    => $object_server_default_workers,
@@ -57,6 +62,19 @@ class profile::swift::storage (
     class { 'swift::container_sync':
         accounts => $replication_accounts,
         keys     => $replication_keys,
+    }
+
+    $rclone_ensure = $swift_clusters[$swift_cluster_label]['rclone_host'] ? {
+        $facts['networking']['fqdn'] => 'present',
+        default => 'absent',
+    }
+
+    #We use confctl to know which DC is active, needed for the rclone scripts
+    class { 'conftool::scripts': }
+
+    class { 'swift::rclone':
+        ensure      => $rclone_ensure,
+        credentials => $global_account_keys,
     }
 
     nrpe::monitor_service { 'load_average':

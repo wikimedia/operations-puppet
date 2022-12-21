@@ -1,0 +1,9 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<% ['eqiad', 'codfw'].each do |dc| -%>
+[<%= dc %>]
+type = swift
+env_auth = false
+user = mw:media
+key = <%= @credentials[dc]['mw_media'] %>
+auth = https://ms-fe.svc.<%= dc %>.wmnet/auth/v1.
+<% end -%>
