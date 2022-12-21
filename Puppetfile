@@ -46,3 +46,7 @@ mod 'augeasproviders_core',
 mod 'postfix',
     :git => 'https://github.com/lollipopman/puppet-postfix',
     :ref => '6fa18a6'
+
+mod 'rspamd',
+    :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',
+    :ref => 'v1.3.1'
