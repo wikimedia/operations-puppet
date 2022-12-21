@@ -72,3 +72,7 @@ hieradata/auto.yaml
 /private
 # created by beaker
 /log
+
+# g10k state files, these improve g10k's speed when syncing modules, but that
+# is not a concern at present
+.latest_commit

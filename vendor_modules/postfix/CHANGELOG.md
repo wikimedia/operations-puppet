@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
-### Added 
+### Added
 
 - Add Debian Bullseye(11) support
 
