@@ -6,17 +6,8 @@ class profile::sre::os_updates (
     Stdlib::Host $os_reports_host = lookup('profile::sre::os_reports::host'),
 ) {
 
-    group { 'os-reports':
-        ensure => present,
-    }
-
-    user { 'os-reports':
-        ensure     => 'present',
-        gid        => 'os-reports',
-        shell      => '/bin/bash',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    systemd::sysuser { 'os-reports':
+        shell    => '/bin/bash',
     }
 
     file { '/srv/os-reports':
