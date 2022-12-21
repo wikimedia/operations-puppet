@@ -4,7 +4,9 @@ class profile::kubernetes::mediawiki_runner(
     Optional[Array[String]] $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] })
 ) {
     # For now, assume we can use any node that's not marked as dedicated.
-    $ensure = (/dedicated=.*/ in $kubelet_node_labels).bool2str('absent', 'present')
+    $reserved_node = /dedicated=.*/ in $kubelet_node_labels
+    $ensure  = $reserved_node.bool2str('absent', 'present')
+
     $command = '/usr/local/sbin/mediawiki-image-download'
     file { $command:
         ensure => $ensure,
@@ -45,4 +47,15 @@ class profile::kubernetes::mediawiki_runner(
     class { 'scap::ferm':
         ensure => $ensure,
     }
+
+    unless $reserved_node {
+        ## GeoIP data
+        # Make sure that the GeoIP data is copied locally on the node before starting the kubelet
+        # service so it can be available to the mediawiki pods. T288375
+        class { 'geoip::data::puppet':
+            fetch_ipinfo_dbs => true,
+            before           => Service['kubelet'],
+        }
+    }
+
 }
