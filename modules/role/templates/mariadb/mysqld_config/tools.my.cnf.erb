@@ -20,6 +20,7 @@ read_only  = <%= @read_only %>
 # https://mariadb.com/kb/en/mariadb/gtid/
 gtid_domain_id  = <%= @gtid_domain_id %>
 
+# Not needed after 10.4.3
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
 
