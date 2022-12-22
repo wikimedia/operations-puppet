@@ -177,7 +177,7 @@ def main():
         # Seems that the gsuite data is now also missing a value for the title
         title = 'No title found.'
     msg = f"""
-    Gsuit User:
+    Gsuite User:
     \tPrimary Email:\t{user['primaryEmail']}
     \tAliases:\t{','.join(user.get('aliases', []))}
     \ttitle:\t\t{title}
