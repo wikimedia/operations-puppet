@@ -1,0 +1,16 @@
+This repository contains the Puppet code which operates the servers of the Wikimedia Foundation.
+We encourage people to use, share and distribute (and welcome contributions!).
+
+The majority of the code is licensed under the Apache 2 license. When the repository was
+initially created no license was attached, but SPDX annotations were/are gradually attached
+on per-file basis over time.
+
+- Some code has been incorporated into the repository from existing sources with a license
+  different than Apache-2. In this case the SPDX header uses the original license.
+- A few Puppet modules are vendored in, these are found under vendor_modules and
+  retain their original license
+- hieradata/ does not carry an explicit license. It contains configuration data of limited
+  usefulness outside of the specific setup of the Wikimedia Foundation and it's trivial
+  enough to probably not even be copyrightable at all. If you find it useful, use
+  it for whatever you need it, but we're not attaching a license explicitly.
+
