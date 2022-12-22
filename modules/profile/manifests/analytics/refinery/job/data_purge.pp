@@ -313,4 +313,14 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 02:00:00',
         user        => 'analytics',
     }
+
+    # Drop old data from the image_suggestions data pipeline, which is owned by the analytics-platform-eng user.
+    kerberos::systemd_timer { 'drop-image-suggestions':
+      ensure      => $ensure_timers,
+      description => 'Drop analytics_platform_eng.image_suggestions_.* data from Hive and HDFS after about 45 days.',
+      command     => "${refinery_path}/bin/refinery-drop-older-than --database='analytics_platform_eng' --tables='image_suggestions_.*' --older-than='45' --allowed-interval='15' --execute='bd3b6696f27c9f6c718d78115249eb0d'",
+      environment => $systemd_env,
+      interval    => 'Mon 13:00:00', # Run every monday at 13:00 UTC (8am ET/5am PT)
+      user        => 'analytics-platform-eng',
+    }
 }
