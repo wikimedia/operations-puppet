@@ -10,7 +10,7 @@ User=osmupdater
 Group=osm
 SyslogIdentifier=imposm
 WorkingDirectory=<%= @imposm_cache_dir %>
-ExecStart=/usr/bin/imposm run -config <%= @imposm_config_file %> -expiretiles-zoom <%= @expire_levels %>
+ExecStart=/usr/bin/imposm run -quiet -config <%= @imposm_config_file %> -expiretiles-zoom <%= @expire_levels %>
 Environment="HTTP_PROXY=<%= @proxy_host %>:<%= @proxy_port %>"
 Environment="HTTPS_PROXY=<%= @proxy_host %>:<%= @proxy_port %>"
 [Install]

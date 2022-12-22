@@ -87,6 +87,19 @@ class osm::imposm3 (
         ],
     }
 
+    rsyslog::conf { 'imposm':
+        ensure  => $ensure_replication,
+        content => ":programname, startswith, \"imposm\" /var/log/imposm.log\n& stop",
+    }
+
+    logrotate::rule { 'imposm':
+        ensure    => $ensure_replication,
+        file_glob => '/var/log/imposm.log',
+        frequency => 'daily',
+        compress  => true,
+        rotate    => 5,
+    }
+
     systemd::timer::job { 'send_tile_invalidations':
         ensure      => present,
         description => 'Send events to EventPlatform to invalidate stale tiles',
