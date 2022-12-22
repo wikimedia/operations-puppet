@@ -56,6 +56,14 @@ class profile::sre::os_updates (
         content => profile::contacts::get_owners().to_yaml,
     }
 
+    file { '/etc/wikimedia/os-updates/additional_owners.yaml':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/sre/additional_owners.yaml',
+    }
+
     file {
         default:
             ensure => file,
