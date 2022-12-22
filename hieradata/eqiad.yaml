@@ -43,7 +43,7 @@ mediabackup:
   mw_db_user: 'mediabackup'
   # please note mw_db_password is setup on the secret puppet repo
   dblist: 's4.dblist'
-  db_host: 'db1176.eqiad.wmnet'
+  db_host: 'db1204.eqiad.wmnet'
   db_port: 3306
   db_user: 'mediabackup'
   # please note db_password is setup on the secret puppet repo
