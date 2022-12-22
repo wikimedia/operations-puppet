@@ -47,9 +47,6 @@ innodb_buffer_pool_size        = <%= @innodb_pool_size %>
 query_cache_type        = 1
 query_cache_size        = 16M
 
-# enable socket authentication
-plugin-load = unix_socket=auth_socket.so
-
 # Required for search/airflow installation. This will also
 # be the mariadb default some day, as the old behaviour
 # is deprecated.
