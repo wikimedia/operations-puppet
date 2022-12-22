@@ -23,7 +23,6 @@ m3
 m4
 m5
 db_inventory
-mediabackupstemp
 matomo
 analytics_meta
 backup1-eqiad

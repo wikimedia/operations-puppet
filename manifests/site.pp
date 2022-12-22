@@ -808,14 +808,6 @@ node 'dborch1001.wikimedia.org' {
     role(orchestrator)
 }
 
-# temporary misc hosts for media backups
-node 'db1176.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-node 'db2151.codfw.wmnet' {
-    role(mariadb::misc)
-}
-
 # backup1-eqiad section (datacenter-specific backup metadata hosts)
 node /^(db1204|db1205)\.eqiad\.wmnet$/ {
     role(mariadb::misc)
@@ -892,6 +884,14 @@ node 'db1133.eqiad.wmnet' {
 
 node 'db2102.codfw.wmnet' {
     role(mariadb::core_test)
+}
+
+# spare database hosts
+node 'db1176.eqiad.wmnet' {
+    role(insetup::data_persistence)
+}
+node 'db2151.codfw.wmnet' {
+    role(insetup::data_persistence)
 }
 
 # Analytics production replicas
@@ -1229,12 +1229,6 @@ node /^es202[345]\.codfw\.wmnet/ {
 
 node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
-}
-
-# 9 expansion hosts T273566
-# Set them to spare individually as it will take take to transfer the data
-node /^db11(76)\.eqiad\.wmnet$/ {
-    role(insetup::data_persistence)
 }
 
 # Backup system, see T176505.
