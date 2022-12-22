@@ -156,8 +156,6 @@ class cassandra (
         'dev' => pick($version, '3.11.13')
     }
 
-    # Cassandra 3.x is installed using the newer component convention, (and
-    # from dists/stretch-wikimedia).
     $component = $target_version  ? {
         '2.2' => 'component/cassandra22',
         '3.x' => 'component/cassandra311',
@@ -180,16 +178,9 @@ class cassandra (
       require => Package['cassandra'],
     }
 
-    # Make sure libjemalloc is installed if
-    # we are going to use the JEMallocAllocator.
+    # Make sure libjemalloc is installed if we are going to use the JEMallocAllocator.
     if $memory_allocator == 'JEMallocAllocator' {
-        $libjemalloc = debian::codename::le('stretch') ? {
-            true    => 'libjemalloc1',
-            default => 'libjemalloc2',
-        }
-        package { $libjemalloc:
-            ensure => 'installed',
-        }
+        ensure_packages('libjemalloc2')
     }
 
     # Create non-default cassandra instances if requested.
