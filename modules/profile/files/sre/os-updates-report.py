@@ -314,6 +314,9 @@ def main_function():
 
     owners = parse_yaml(cfg.get('general', 'owners'))
 
+    if 'additional-owners' in cfg.options('general'):
+        owners.update(parse_yaml(cfg.get('general', 'additional-owners')))
+
     for distro in sections:
         if distro == 'general':
             continue
