@@ -15,6 +15,9 @@
 # [*discovery_uri*]
 #   URI to the Presto discovery server.
 #
+# [*enabled*]
+#   Allows selectively disabling nodes within the cluster. Default: true
+#
 # [*node_properties*]
 #   Specific node.properties settings. This profile attempts to use sane defaults.
 #   Only set this if you need to override them.  Note that node.id will be
@@ -54,6 +57,7 @@
 class profile::presto::server(
     String        $cluster_name         = lookup('profile::presto::cluster_name'),
     String        $discovery_uri        = lookup('profile::presto::discovery_uri'),
+    Boolean       $enabled              = lookup('profile::presto::enabled', { 'default_value' => true }),
     Hash          $node_properties      = lookup('profile::presto::server::node_properties', { 'default_value' => {} }),
     Hash          $config_properties    = lookup('profile::presto::server::config_properties', { 'default_value' => {} }),
     Hash          $catalogs             = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
@@ -197,6 +201,7 @@ class profile::presto::server(
     }
 
     class { '::presto::server':
+        enabled           => $enabled,
         node_properties   => $_node_properties,
         config_properties => $_config_properties,
         log_properties    => $log_properties,
