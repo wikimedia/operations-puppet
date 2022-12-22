@@ -108,12 +108,10 @@ class netbox(
     }
     prometheus::redis_exporter { String($local_redis_port): }
 
-    user { 'netbox':
-        ensure  => $ensure,
-        comment => 'This is the global owner for all Netbox things.',
-        system  => true,
-        home    => $home_path,
-        shell   => '/bin/bash',
+    systemd::sysuser { 'netbox':
+        ensure   => $ensure,
+        home_dir => $home_path,
+        shell    => '/bin/bash',
     }
 
     file { '/etc/netbox/configuration.py':
