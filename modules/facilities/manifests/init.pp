@@ -301,6 +301,30 @@ class facilities (
         site  => 'eqiad',
         model => 'sentry4',
     }
+    facilities::monitor_pdu_3phase { 'ps1-f1-eqiad':
+        ip    => '10.65.2.53',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f2-eqiad':
+        ip    => '10.65.2.54',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f3-eqiad':
+        ip    => '10.65.2.55',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f4-eqiad':
+        ip    => '10.65.2.56',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
     facilities::monitor_pdu_3phase { 'ps1-a1-codfw':
         ip    => '10.193.0.25',
         row   => 'a',
