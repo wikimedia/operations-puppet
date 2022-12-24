@@ -16,6 +16,7 @@ frontend http-public
 
     acl is_prometheus_host hdr(host) -i prometheus.wmflabs.org
     acl is_prometheus_host hdr(host) -i prometheus.wmcloud.org
+    acl is_prometheus_host hdr(host) -i prometheus.svc.metricsinfra.eqiad1.wikimedia.cloud
 
     acl is_prometheus_alertmanager_path path -i -m beg /.alertmanager/
 
