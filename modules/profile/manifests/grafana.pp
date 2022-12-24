@@ -111,13 +111,8 @@ class profile::grafana (
         srange => '$CACHES',
     }
 
-    # Override the default home dashboard with something custom.
-    # This will be doable via a preference in the future. See:
-    # <https://groups.io/org/groupsio/grafana/thread/home_dashboard_in_grafana_2_0/43631?threado=120>
     file { '/usr/share/grafana/public/dashboards/home.json':
-        source  => 'puppet:///modules/grafana/home.json',
-        require => Package['grafana'],
-        notify  => Service['grafana-server'],
+        ensure => absent,
     }
 
     file { '/usr/share/grafana/public/img/grafana_icon.svg':
