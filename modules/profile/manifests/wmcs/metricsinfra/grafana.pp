@@ -40,6 +40,10 @@ class profile::wmcs::metricsinfra::grafana (
     logo_file_source => 'puppet:///modules/profile/grafana/logo/wmcs-logo.svg',
   }
 
+  grafana::datasources { 'metricsinfra':
+    source => 'puppet:///modules/profile/wmcs/metricsinfra/grafana/datasources.yaml',
+  }
+
   class { 'grafana::ldap_sync':
     ensure => ($::facts['fqdn'] == $grafana_hosts[0]).bool2str('present', 'absent'),
   }

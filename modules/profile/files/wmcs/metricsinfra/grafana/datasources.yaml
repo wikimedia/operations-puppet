@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: Apache-2.0
+# See https://docs.grafana.org/administration/provisioning/#datasources
+
+apiVersion: 1
+
+datasources:
+ - name: prometheus-metricsinfra
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.metricsinfra.eqiad1.wikimedia.cloud
+   isDefault: true
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: prometheus-tools
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: https://tools-prometheus.wmflabs.org/tools
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: prometheus-toolsbeta
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: https://toolsbeta-prometheus.wmcloud.org/tools
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: prometheus-paws
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: https://prometheus.paws.wmcloud.org/paws
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
