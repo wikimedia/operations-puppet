@@ -161,7 +161,10 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         response = session.delete(
             "{}/prefix/{}".format(enc_url, fqdn),
-            headers={"Accept": "application/json"},
+            headers={
+                "Accept": "application/json",
+                "X-Enc-Edit-Git": "false",
+            },
             raise_exc=False,
         )
         # no prefix, no problem!
