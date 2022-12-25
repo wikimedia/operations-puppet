@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# NOTE: This project hosts the Puppet ENC API. To avoid chicken-and-egg
+# problems, the hiera data required to set up the puppet and enc servers
+# is kept here.
+
+profile::openstack::codfw1dev::puppetmaster::encapi::acme_certname: enc
+profile::openstack::codfw1dev::puppetmaster::encapi::db_host: cloudinfra-db-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
+profile::openstack::codfw1dev::puppetmaster::encapi::db_name: labspuppet
+profile::openstack::codfw1dev::puppetmaster::encapi::db_user: labspuppet
+profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_project: cloudinfra-codfw1dev
+profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_username: cloudinfrakeystonevalidate
