@@ -21,7 +21,7 @@ class profile::openstack::codfw1dev::designate::service(
     $puppet_git_repo_name = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),
-    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
 ) {
 
     class{'::profile::openstack::base::designate::service':
