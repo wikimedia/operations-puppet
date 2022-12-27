@@ -75,6 +75,16 @@ def _preprocess_prefix(prefix):
     return prefix
 
 
+def _format_prefix(prefix: str) -> str:
+    """
+    Does the opposite of _preprocess_prefix so that the API callers
+    have a consistent view.
+    """
+    if prefix == "":
+        return "_"
+    return prefix
+
+
 def dump_with_requested_format(data):
     """Returns the given data in the format specified in the Accept header."""
     accept = request.headers.get("Accept", "")
@@ -477,15 +487,183 @@ def get_prefixes(project):
     cur = g.db.cursor()
     try:
         cur.execute(
-            "SELECT prefix FROM prefix WHERE project = %s",
+            "SELECT id, prefix FROM prefix WHERE project = %s",
             (project,),
         )
-        # Do the inverse of _preprocess_prefix, so callers get a consistent view
-        return dump_with_requested_format(
-            {"prefixes": ["_" if r[0] == b"" or r[0] == "" else r[0] for r in cur.fetchall()]}
-        )
+
+        if "detailed" in request.args:
+            data = {
+                "prefixes": [{"id": r[0], "prefix": _format_prefix(r[1])} for r in cur.fetchall()]
+            }
+        else:
+            data = {"prefixes": [_format_prefix(r[1]) for r in cur.fetchall()]}
+
+        return dump_with_requested_format(data)
     finally:
         cur.close()
+
+
+@app.route("/v1/<string:project>/prefix", methods=["POST"])
+@key.login_required
+def create_prefix(project: str):
+    enforce_policy("prefix:create", project)
+
+    prefix = _preprocess_prefix(request.json["prefix"])
+
+    with g.db.cursor() as cur:
+        g.db.begin()
+
+        try:
+            cur.execute(
+                "INSERT INTO prefix (project, prefix) VALUES (%s, %s)",
+                (project, prefix),
+            )
+        except pymysql.err.IntegrityError:
+            return dump_with_requested_format({"error": "prefix already exists"}), 400
+
+        prefix_id = cur.lastrowid
+
+        g.db.commit()
+
+    return dump_with_requested_format(
+        {
+            "id": prefix_id,
+            "prefix": _format_prefix(prefix),
+            "hiera": {},
+            "roles": [],
+        }
+    )
+
+
+@app.route("/v1/<string:project>/prefix/id/<int:prefix_id>", methods=["GET"])
+@key.login_required
+def get_prefix_by_id(project: str, prefix_id: int):
+    enforce_policy("prefix:view", project)
+
+    with g.db.cursor() as cur:
+        cur.execute(
+            """
+                SELECT prefix.id, prefix.prefix, hieraassignment.hiera_data
+                FROM prefix
+                LEFT JOIN hieraassignment ON hieraassignment.prefix_id = prefix.id
+                WHERE prefix.id = %s AND prefix.project = %s
+            """,
+            (prefix_id, project),
+        )
+
+        result = cur.fetchone()
+
+        if not result:
+            return dump_with_requested_format({"error": "notfound"}), 404
+
+        data = {
+            "id": result[0],
+            "prefix": _format_prefix(result[1]),
+            "hiera": yaml.safe_load(result[2]) if result[2] else {},
+        }
+
+        cur.execute("SELECT role FROM roleassignment WHERE id = %s", (result[0],))
+        data["roles"] = [r[0] for r in cur.fetchall()]
+
+    return dump_with_requested_format(data)
+
+
+@app.route("/v1/<string:project>/prefix/id/<int:prefix_id>", methods=["PUT"])
+@key.login_required
+def update_prefix_by_id(project: str, prefix_id: int):
+    enforce_policy("prefix:update", project)
+
+    with g.db.cursor() as cur:
+        cur.execute(
+            """
+                SELECT prefix.id, prefix.prefix, hieraassignment.hiera_data
+                FROM prefix
+                LEFT JOIN hieraassignment ON hieraassignment.prefix_id = prefix.id
+                WHERE prefix.id = %s AND prefix.project = %s
+            """,
+            (prefix_id, project),
+        )
+
+        result = cur.fetchone()
+
+        if not result:
+            return dump_with_requested_format({"error": "notfound"}), 404
+
+        prefix = result[1]
+
+        cur.execute("SELECT role FROM roleassignment WHERE id = %s", (prefix_id,))
+        current_roles = [r[0] for r in cur.fetchall()]
+
+        g.db.begin()
+
+        git_update = {}
+
+        if "hiera" in request.json:
+            hiera = request.json["hiera"]
+
+            if type(hiera) is not dict:
+                return (
+                    dump_with_requested_format(
+                        {
+                            "error": "Provided YAML should be a dictionary",
+                        }
+                    ),
+                    400,
+                )
+
+            hiera_str = yaml.safe_dump(hiera)
+            cur.execute(
+                """
+                    INSERT INTO hieraassignment (prefix_id, hiera_data) VALUES (%s, %s)
+                    ON DUPLICATE KEY UPDATE hiera_data = %s
+                """,
+                (prefix_id, hiera_str, hiera_str),
+            )
+
+            git_update.update({get_git_path(project, prefix, "yaml"): hiera_str})
+        else:
+            hiera = yaml.safe_load(result[2]) if result[2] else {}
+
+        if "roles" in request.json:
+            roles = request.json["roles"]
+
+            to_remove = set(current_roles) - set(roles)
+            to_add = set(roles) - set(current_roles)
+
+            if len(to_remove) > 0:
+                cur.execute(
+                    "DELETE FROM roleassignment WHERE prefix_id = %s AND role IN %s",
+                    (prefix_id, to_remove),
+                )
+
+            if len(to_add) > 0:
+                cur.executemany(
+                    "INSERT INTO roleassignment (prefix_id, role) VALUES (%s, %s)",
+                    [(prefix_id, role) for role in to_add],
+                )
+
+            git_update.update(
+                {get_git_path(project, prefix, "roles"): yaml.safe_dump(roles) if roles else None}
+            )
+        else:
+            roles = current_roles
+
+        add_git_commit(
+            cursor=cur,
+            files=git_update,
+            message=request.json.get("message", f"Updating {project} {prefix}"),
+        )
+
+        g.db.commit()
+
+        data = {
+            "id": prefix_id,
+            "prefix": _format_prefix(prefix),
+            "hiera": hiera,
+            "roles": roles,
+        }
+
+    return dump_with_requested_format(data)
 
 
 @app.route("/v1/<string:project>/prefix/<string:role>", methods=["GET"])
