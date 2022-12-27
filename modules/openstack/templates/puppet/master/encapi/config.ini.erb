@@ -12,8 +12,6 @@ git_repository_path = <%= @git_repository_path %>
 git_repository_url = <%= @git_repository_url %>
 git_keyholder_key = <%= @git_repository_ssh_key %>
 
-allowed_writers = <%= @allowed_writers.join(',') %>
-
 [keystone_authtoken]
 identity_uri = <%= @keystone_api_url %>
 www_authenticate_uri = <%= @keystone_api_url %>

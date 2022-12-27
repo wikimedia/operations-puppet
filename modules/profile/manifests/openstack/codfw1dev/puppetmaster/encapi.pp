@@ -12,9 +12,6 @@ class profile::openstack::codfw1dev::puppetmaster::encapi(
     String[1] $token_validator_username = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_username'),
     String[1] $token_validator_project = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_project'),
     String[1] $token_validator_password = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::token_validator_password'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
-    Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
 ) {
     class {'::profile::openstack::base::puppetmaster::encapi':
         encapi_db_host           => $encapi_db_host,
@@ -29,9 +26,6 @@ class profile::openstack::codfw1dev::puppetmaster::encapi(
         token_validator_username => $token_validator_username,
         token_validator_password => $token_validator_password,
         token_validator_project  => $token_validator_project,
-        openstack_controllers    => $openstack_controllers,
-        designate_hosts          => $designate_hosts,
-        labweb_hosts             => $labweb_hosts,
     }
 }
 

@@ -1,6 +1,8 @@
 server {
     # TODO: remove after migration
+    listen 8100;
     listen 8101;
+    listen 8143 ssl;
 
     listen 443 ssl;
 
@@ -8,17 +10,8 @@ server {
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
     <%= @ssl_settings.join("\n    ") %>
 
-    # keep in sync with puppet-enc-public until the
-    # two endpoints have been merged together
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/run/uwsgi/puppet-enc.sock;
-
-        allow 127.0.0.0/8;
-        allow ::1;
-<%- @allowed_writers.each do |writer| -%>
-        allow <%= writer %>;
-<%- end -%>
-        deny all;
     }
 }

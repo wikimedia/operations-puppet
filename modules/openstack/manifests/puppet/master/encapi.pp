@@ -1,22 +1,18 @@
 class openstack::puppet::master::encapi (
-    Stdlib::Host                         $mysql_host,
-    String[1]                            $mysql_db,
-    String[1]                            $mysql_username,
-    String[1]                            $mysql_password,
-    String[1]                            $git_repository_url,
-    Stdlib::Unixpath                     $git_repository_path,
-    String[1]                            $git_repository_ssh_key,
-    Boolean                              $git_worker_active,
-    String[1]                            $acme_certname,
-    Stdlib::HTTPSUrl                     $keystone_api_url,
-    String[1]                            $token_validator_username,
-    String[1]                            $token_validator_password,
-    String[1]                            $token_validator_project,
-    Array[Stdlib::Fqdn]                  $labweb_hosts,
-    Array[Stdlib::Fqdn]                  $openstack_controllers,
-    Array[Stdlib::Fqdn]                  $designate_hosts,
-    Array[Stdlib::IP::Address::V4::CIDR] $labs_instance_ranges,
-    Wmflib::Ensure                       $ensure = present,
+    Stdlib::Host     $mysql_host,
+    String[1]        $mysql_db,
+    String[1]        $mysql_username,
+    String[1]        $mysql_password,
+    String[1]        $git_repository_url,
+    Stdlib::Unixpath $git_repository_path,
+    String[1]        $git_repository_ssh_key,
+    Boolean          $git_worker_active,
+    String[1]        $acme_certname,
+    Stdlib::HTTPSUrl $keystone_api_url,
+    String[1]        $token_validator_username,
+    String[1]        $token_validator_password,
+    String[1]        $token_validator_project,
+    Wmflib::Ensure   $ensure = present,
 ) {
     # for new enough python3-keystonemiddleware versions
     debian::codename::require('bullseye', '>=')
@@ -88,15 +84,6 @@ class openstack::puppet::master::encapi (
         replace => false,
     }
 
-    # The app will check that the requesting IP is in  ALLOWED_WRITERS
-    #  before writing or deleting.
-    $allowed_writers = ($labweb_hosts + $designate_hosts + $openstack_controllers).reduce([]) |Array $accumulate, Stdlib::Fqdn $host| {
-        $accumulate + [
-            ipresolve($host, 4),
-            ipresolve($host, 6),
-        ]
-    }
-
     file { '/etc/puppet-enc-api':
         ensure => directory,
         owner  => 'www-data',
@@ -131,24 +118,11 @@ class openstack::puppet::master::encapi (
         require   => File['/var/log/puppet-enc.log'],
     }
 
-    nginx::site { 'default':
-        ensure => absent,
-        before => Nginx::Site['puppet-enc-public'],
-    }
-
     $ssl_settings  = ssl_ciphersuite('nginx', 'strong')
 
     nginx::site { 'puppet-enc':
         ensure  => $ensure,
         content => template('openstack/puppet/master/encapi/nginx-puppet-enc.conf.erb'),
-    }
-
-    # This is a GET-only front end that sits on port 8100.  We can
-    #  open this up to the public even though the actual API has no
-    #  auth protections.
-    nginx::site { 'puppet-enc-public':
-        ensure  => $ensure,
-        content => template('openstack/puppet/master/encapi/nginx-puppet-enc-public.conf.erb'),
     }
 
     systemd::service { 'puppet-enc-git-worker':

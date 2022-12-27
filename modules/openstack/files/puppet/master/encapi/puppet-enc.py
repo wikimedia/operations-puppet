@@ -23,7 +23,6 @@ opts = [
     cfg.StrOpt("git_repository_path"),
     cfg.StrOpt("git_repository_url"),
     cfg.StrOpt("git_keyholder_key"),
-    cfg.StrOpt("allowed_writers"),
 ]
 
 key = FlaskKeystone()
@@ -206,8 +205,6 @@ def before_request():
         charset="utf8",
     )
 
-    g.allowed_writers = [writer.strip() for writer in cfg.CONF.enc.allowed_writers.split(",")]
-
 
 @app.teardown_request
 def teardown_request(exception):
@@ -274,8 +271,6 @@ def get_all_projects():
 @key.login_required
 def set_roles(project, prefix):
     enforce_policy("prefix:update", project)
-    if request.remote_addr not in g.allowed_writers:
-        return dump_with_requested_format({"error": "forbidden"}), 403
 
     prefix = _preprocess_prefix(prefix)
     try:
@@ -364,8 +359,6 @@ def get_hiera(project, prefix):
 @key.login_required
 def set_hiera(project, prefix):
     enforce_policy("prefix:update", project)
-    if request.remote_addr not in g.allowed_writers:
-        return dump_with_requested_format({"error": "forbidden"}), 403
 
     prefix = _preprocess_prefix(prefix)
     try:
@@ -722,8 +715,6 @@ def get_prefixes_for_role(role):
 @key.login_required
 def delete_prefix(project, prefix):
     enforce_policy("prefix:delete", project)
-    if request.remote_addr not in g.allowed_writers:
-        return dump_with_requested_format({"error": "forbidden"}), 403
 
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
