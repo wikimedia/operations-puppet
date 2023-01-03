@@ -1,9 +1,4 @@
 server {
-    # TODO: remove after migration
-    listen 8100;
-    listen 8101;
-    listen 8143 ssl;
-
     listen 443 ssl;
 
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;

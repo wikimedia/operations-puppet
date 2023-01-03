@@ -37,6 +37,6 @@ class profile::openstack::base::puppetmaster::encapi (
 
     ferm::service { 'enc':
         proto => 'tcp',
-        port  => '(443 8100 8101 8143)',
+        port  => '443',
     }
 }
