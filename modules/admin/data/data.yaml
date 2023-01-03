@@ -6259,7 +6259,7 @@ ldap_only_users:
   uzoma:
     ensure: present
     realname: Uzoma Ozurumba
-    email: uozurumba-ctr@wikimedia.org
+    email: uozurumba@wikimedia.org
   lmeintrup:
     ensure: present
     realname: Lena Meintrup
