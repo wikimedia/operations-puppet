@@ -27,6 +27,16 @@ class profile::cumin::target(
         site    => $site,
     }
 
+    # Make sure only managed keys are available in this file.
+    # This will ensure that any hosts that accidentally add the cloud_production
+    # profile will have the cloud-cumin key removed when they no longer use that
+    # profile.
+    file { '/etc/ssh/userkeys/root.d':
+        ensure  => directory,
+        purge   => true,
+        recurse => true,
+    }
+
     $ssh_authorized_sources = join($cumin_masters, ',')
     $cumin_master_pub_key = secret('keyholder/cumin_master.pub')
 
