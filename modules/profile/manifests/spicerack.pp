@@ -62,12 +62,12 @@ class profile::spicerack (
     # TODO: refactor this after we move to puppet >= 6
     # or possibly after https://gerrit.wikimedia.org/r/c/operations/puppet/+/868739
     $modules = {
-        'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data.empty.bool2str('', $elasticsearch_config_data.to_yaml) },
-        'ganeti' => { 'config.yaml' => $ganeti_auth_data.empty.bool2str('', $ganeti_auth_data.to_yaml) },
-        'kafka' => { 'config.yaml' => $kafka_config_data.empty.bool2str('', $kafka_config_data.to_yaml) },
-        'netbox' => { 'config.yaml' => $netbox_config_data.empty.bool2str('', $netbox_config_data.to_yaml) },
-        'peeringdb' => { 'config.yaml' => $peeringdb_config_data.empty.bool2str('', $peeringdb_config_data.to_yaml) },
-        'service' => { 'service.yaml' => wmflib::service::fetch().to_yaml },
+        'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data },
+        'ganeti' => { 'config.yaml' => $ganeti_auth_data },
+        'kafka' => { 'config.yaml' => $kafka_config_data },
+        'netbox' => { 'config.yaml' => $netbox_config_data },
+        'peeringdb' => { 'config.yaml' => $peeringdb_config_data },
+        'service' => { 'service.yaml' => wmflib::service::fetch() },
     }.filter |$module, $config| { !$config.values[0].empty }
 
     class { 'spicerack':

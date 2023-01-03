@@ -49,7 +49,7 @@ class spicerack (
                 owner   => 'root',
                 group   => 'ops',
                 mode    => '0440',
-                content => $content,
+                content => $content.to_yaml,
             }
         }
     }
