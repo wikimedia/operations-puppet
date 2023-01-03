@@ -6471,3 +6471,9 @@ ldap_only_users:
     ensure: present
     realname: Sondes Ben Chagra
     email: sbenchagra@wikimedia.org
+  wangombe:
+    ensure: present
+    realname: Eugene Wang'ombe
+    email: ewangombe-ctr@wikimedia.org
+    expiry_date: 2023-06-30
+    expiry_contact: nlaxstrom@wikimedia.org
