@@ -130,6 +130,9 @@ dse-k8s-worker: P{O:dse_k8s::worker}
 dse-k8s: A:dse-k8s-master or A:dse-k8s-worker
 dumps: P{O:dumps::generation::server:alldumps or O:dumps::generation::server::misccrons or O:dumps::generation::server::xmldumps or O:dumps::generation::server::xmlfallback or O:dumps::web::htmldumps}
 durum: P{O:durum}
+<% @datacenters.each do |dc| -%>
+durum-<%= dc %>: A:durum and A:<%= dc %>
+<% end -%>
 elastic: P{O:elasticsearch::cirrus}
 elastic-canary: P{elastic1102.eqiad.wmnet}
 elastic-codfw: A:elastic and A:codfw
@@ -401,6 +404,9 @@ wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
 wikidough: P{O:wikidough}
+<% @datacenters.each do |dc| -%>
+wikidough-<%= dc %>: A:wikidough and A:<%= dc %>
+<% end -%>
 wikireplicas-all: A:wikireplicas-dedicated or A:wikireplicas-multiinstance
 wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::dedicated::analytics_multiinstance}
 wikireplicas-multiinstance: P{P:wmcs::db::wikireplicas::mariadb_multiinstance}
