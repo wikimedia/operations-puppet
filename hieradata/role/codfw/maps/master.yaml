@@ -16,7 +16,7 @@ profile::redis::master::clients:
 profile::maps::apps::redis_server: 'redis://maps2009.codfw.wmnet'
 
 profile::maps::osm_master::planet_sync_hours: '0/12'
-profile::maps::osm_master::disable_replication_cron: false
+profile::maps::osm_master::disable_replication_cron: true
 profile::maps::osm_master::disable_admin_timer: true
 profile::maps::osm_master::engine: "imposm3"
 # Disable tile generation trigger while testing Tegola in k8s
