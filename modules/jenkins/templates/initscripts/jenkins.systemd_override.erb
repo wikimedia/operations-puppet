@@ -4,7 +4,7 @@ UMask=<%= @umask %>
 LimitNOFILE=<%= @max_open_files %>
 Restart=no
 # CI Jenkins takes longer than the default 90 seconds to start up
-TimeoutStartSec=infinity
+TimeoutStartSec=300
 
 # Empty statement to prevent multiple ExecStart from being defined.
 ExecStart=
