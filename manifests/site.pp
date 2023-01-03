@@ -1759,7 +1759,7 @@ node /^lvs300[567]\.esams\.wmnet$/ {
 }
 
 # ULSFO lvs servers
-node /^lvs40(0[56789]|1[0])\.ulsfo\.wmnet$/ {
+node /^lvs40(0[89]|1[0])\.ulsfo\.wmnet$/ {
     role(lvs::balancer)
 }
 
