@@ -25,11 +25,12 @@ file in this directory
 
 import argparse
 import logging
-import os
 import shlex
 import sys
 
+from pathlib import Path
 from subprocess import run, PIPE
+from typing import Optional
 
 import yaml
 
@@ -45,7 +46,7 @@ class ArgparseFormatter(
     """Custom argparse formatter class"""
 
 
-def _summary_stats(registry, puppet_state_dir=None):
+def _summary_stats(registry: CollectorRegistry, puppet_state_dir: Optional[Path] = None) -> None:
     summary_parse_fail = Gauge('summary_parse_fail', 'Failed to parse summary',
                                namespace='puppet_agent', registry=registry)
     summary_parse_fail.set(0)
@@ -74,14 +75,13 @@ def _summary_stats(registry, puppet_state_dir=None):
                            namespace='puppet_agent', registry=registry)
 
     if puppet_state_dir is None:
-        summary_file = puppet_config('lastrunfile')
+        summary_file = Path(puppet_config('lastrunfile'))
     else:
-        summary_file = os.path.join(puppet_state_dir, 'last_run_summary.yaml')
+        summary_file = puppet_state_dir / 'last_run_summary.yaml'
 
     try:
-        with open(summary_file) as f:
-            log.debug("Parsing %s", summary_file)
-            summary_yaml = yaml.safe_load(f)
+        log.debug("Parsing %s", summary_file)
+        summary_yaml = yaml.safe_load(summary_file.read_text())
     except yaml.YAMLError:
         log.error('Failed to parse yaml', exc_info=True)
         summary_parse_fail.set(1)
@@ -118,16 +118,19 @@ def _summary_stats(registry, puppet_state_dir=None):
         catalog_version.info({'git_sha': git_sha})
 
 
-def collect_puppet_stats(registry, puppet_state_dir=None):
+def collect_puppet_stats(
+    registry: CollectorRegistry, puppet_state_dir: Optional[Path] = None
+) -> None:
+    """parse the last run summary file to gather facts"""
     puppet_enabled = Gauge('enabled', 'Puppet is currently enabled',
                            namespace='puppet_agent', registry=registry)
     puppet_enabled.set(1)
 
     if puppet_state_dir is None:
-        lock_file = puppet_config('agent_disabled_lockfile')
+        lock_file = Path(puppet_config('agent_disabled_lockfile'))
     else:
-        lock_file = os.path.join(puppet_state_dir, 'agent_disabled.lock')
-    if os.path.exists(lock_file):
+        lock_file = puppet_state_dir / 'agent_disabled.lock'
+    if lock_file.exists():
         log.debug("Found %s, puppet disabled", lock_file)
         puppet_enabled.set(0)
 
@@ -141,14 +144,15 @@ def puppet_config(item: str) -> str:
     return result.stdout.decode().strip()
 
 
-def main():
+def main() -> None:
+    """main entry point."""
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=ArgparseFormatter)
     parser.add_argument('--outfile', metavar='FILE.prom',
-                        help='Output file (stdout)')
+                        help='Output file (stdout)', type=Path)
     parser.add_argument('-d', '--debug', action='store_true', default=False,
                         help='Enable debug logging (%(default)s)')
     parser.add_argument('--puppet-state-dir', dest='puppet_state_dir',
-                        help='Puppet state directory')
+                        help='Puppet state directory', type=Path)
     args = parser.parse_args()
 
     if args.debug:
@@ -156,14 +160,17 @@ def main():
     else:
         logging.basicConfig(level=logging.WARNING)
 
-    if args.outfile and not args.outfile.endswith('.prom'):
+    if args.outfile and args.outfile.suffix != '.prom':
         parser.error('Output file does not end with .prom')
 
     registry = CollectorRegistry()
     collect_puppet_stats(registry, args.puppet_state_dir)
 
     if args.outfile:
-        write_to_textfile(args.outfile, registry)
+        # write_to_textfile calls os.rename which doesn't support Path like
+        # objects until python 3.6
+        # TODO: once we drop support for python3.5 drop the str cast
+        write_to_textfile(str(args.outfile), registry)
     else:
         sys.stdout.write(generate_latest(registry).decode('utf-8'))
 
