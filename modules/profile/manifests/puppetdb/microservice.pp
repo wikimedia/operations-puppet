@@ -53,6 +53,15 @@ class profile::puppetdb::microservice (
         },
     }
 
+    if debian::codename::ge('bookworm') {
+        # The microservice is managed via a dedicated systemd unit (uwsgi-puppetdb-microservice),
+        # mask the generic uwsgi unit which gets auto-translated based on the init.d script
+        # shipped in the uwsgi Debian package
+        systemd::mask { 'mask_default_uwsgi_puppetdb':
+            unit => 'uwsgi.service',
+        }
+    }
+
     profile::auto_restarts::service { 'uwsgi-puppetdb-microservice': }
 
     ferm::service { 'puppetdb-microservice':
