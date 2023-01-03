@@ -276,6 +276,23 @@ class DataTest(unittest.TestCase):
                 )
             )
 
+    def test_contractor_has_expiry_date(self):
+        """Ensure that contractors have an expiry_date field set."""
+        all_users = {**self.admins["users"], **self.admins["ldap_only_users"]}
+        no_expiry = {
+            username
+            for username, attrs in all_users.items()
+            if attrs.get("email", "").endswith("-ctr@wikimedia.org") and "expiry_date" not in attrs
+        }
+
+        if no_expiry:
+            raise ValueError(
+                "The following users are contractors (*-ctr@wikimedia.org) without an "
+                "expiry_date: {}".format(
+                    ", ".join(no_expiry)
+                )
+            )
+
     def test_ssh_keys_are_valid(self):
         users_with_invalid_keys = set()
         for username, attrs in self.admins["users"].items():
