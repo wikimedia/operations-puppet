@@ -3863,7 +3863,7 @@ users:
   jclark:
     ensure: present
     realname: John Clark
-    email: jclark-ctr@wikimedia.org
+    email: jclark@wikimedia.org
     uid: 21780
     gid: 500
     name: jclark
