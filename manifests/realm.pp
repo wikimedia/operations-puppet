@@ -191,6 +191,8 @@ $private_tables = [
     'click_tracking',
     'cu_changes',
     'cu_log',
+    'cu_log_event',
+    'cu_private_event',
     'cur',
     'discussiontools_subscription',
     'echo_email_batch',
