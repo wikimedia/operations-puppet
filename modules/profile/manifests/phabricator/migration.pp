@@ -4,13 +4,7 @@ class profile::phabricator::migration (
     Stdlib::Fqdn        $src_host  = lookup('profile::phabricator::migration::src_host'),
     Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::phabricator::migration::dst_hosts'),
 ) {
-
-    systemd::sysuser { 'phd':
-        ensure      => present,
-        id          => '920:920',
-        description => 'Phabricator daemon user',
-        home_dir    => '/var/run/phd',
-    }
+    class { '::phabricator::phd::user': }
 
     if $facts['fqdn'] in $dst_hosts {
 
