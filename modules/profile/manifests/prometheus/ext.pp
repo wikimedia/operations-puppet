@@ -41,6 +41,7 @@ class profile::prometheus::ext (
         {
             'job_name'        => 'webperf_navtiming',
             'scheme'          => 'http',
+            'scrape_timeout'  => '40s', # temp bandaid for long-duration scrapes T326118
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/webperf_navtiming_*.yaml" ]}
             ],
