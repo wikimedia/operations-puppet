@@ -34,7 +34,7 @@ groups:
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
-              cdunn, vyuen, scfc]
+              cdunn, vyuen, scfc, relgu]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5721,7 +5721,7 @@ ldap_only_users:
     ensure: present
     realname: Dani Dwaal
     email: ddwaal-ctr@wikimedia.org
-    expiry_date: 2022-12-31
+    expiry_date: 2023-01-06
     expiry_contact: abaso@wikimedia.org
   debt:
     ensure: present
@@ -6399,11 +6399,8 @@ ldap_only_users:
     ensure: absent
     realname: A. Assaf
   relgu:
-    ensure: present
+    ensure: absent
     realname: Ariel Gutman
-    email: agutman-ctr@wikimedia.org
-    expiry_date: 2022-12-31
-    expiry_contact: abaso@wikimedia.org
   esther-akinloose:
     ensure: present
     realname: Esther Akinloose
