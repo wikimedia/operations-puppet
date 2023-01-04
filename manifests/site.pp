@@ -634,7 +634,7 @@ node 'db1165.eqiad.wmnet' {
 
 # s6 core production dbs on codfw
 # See also db2169 and db2171 below
-node /^db2(114|117|124|129|180)\.codfw\.wmnet/ {
+node /^db2(114|117|124|129|151|180)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -888,9 +888,6 @@ node 'db2102.codfw.wmnet' {
 
 # spare database hosts
 node 'db1176.eqiad.wmnet' {
-    role(insetup::data_persistence)
-}
-node 'db2151.codfw.wmnet' {
     role(insetup::data_persistence)
 }
 
