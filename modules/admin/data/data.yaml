@@ -34,7 +34,7 @@ groups:
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
               tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
-              cdunn, vyuen, scfc, relgu]
+              cdunn, vyuen, scfc, relgu, emedina]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6129,9 +6129,8 @@ ldap_only_users:
     ensure: absent
     realname: Amanda Mooney
   emedina:
-    ensure: present
-    realname: Lauren Dickinson
-    email: emedina-ctr@wikimedia.org
+    ensure: absent
+    realname: Edna M
   whatamidoing:
     ensure: present
     realname: Sherry Snyder
