@@ -17,7 +17,7 @@ acmechief: P{O:acme_chief}
 all-mw: A:mw-api or A:mw or A:mw-jobrunner or A:parsoid
 all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
-all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-etcd
+all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-etcd or A:aux-etcd
 an-conf: P{O:analytics_cluster::zookeeper}
 analytics-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web or A:presto-analytics or A:analytics-launcher
 analytics-airflow: P{O:search::airflow or O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy}
@@ -29,6 +29,9 @@ apt: P{O:apt_repo}
 aqs: P{O:aqs}
 aqs-canary: P{aqs1010.eqiad.wmnet}
 archiva: P{O:archiva}
+aux-etcd: P{O:etcd::v3::aux_k8s_etcd}
+aux-master: P{O:aux_k8s::master}
+aux-worker: P{O:aux_k8s::worker}
 backup: A:bacula or A:db-backups or A:mediabackups or P{O:dbbackups::monitoring}
 bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::production}
 bastion: P{O:bastionhost}
