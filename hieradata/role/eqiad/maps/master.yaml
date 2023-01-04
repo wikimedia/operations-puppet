@@ -19,7 +19,7 @@ profile::maps::apps::tilerator_enable: true
 
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_master::planet_sync_hours: '0/12'
-profile::maps::osm_master::disable_replication_cron: true
+profile::maps::osm_master::disable_replication_cron: false
 profile::maps::osm_master::disable_tile_generation_cron: false
 profile::maps::osm_master::disable_admin_timer: true
 profile::maps::osm_master::replicas:
