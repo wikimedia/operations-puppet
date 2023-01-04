@@ -7,6 +7,7 @@ from pathlib import Path
 import git
 import mwopenstackclients
 import pymysql
+from git.remote import PushInfo
 from oslo_config import cfg
 from oslo_log import log as logging
 
@@ -160,7 +161,12 @@ def main():
             )
 
             push_result = repo.remotes.origin.push()
-            push_result.raise_if_error()
+            # TODO: when a newer python3-git version is available, just use
+            # push_result.raise_if_error()
+            # for now,
+            for row in push_result:
+                if row.flags & (PushInfo.REJECTED | PushInfo.ERROR):
+                    raise Exception(f"Failed to push commit {commit_id}")
 
             logger.info("Commit %s pushed", commit_id)
         else:
