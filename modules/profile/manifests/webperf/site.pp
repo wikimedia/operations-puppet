@@ -83,4 +83,5 @@ class profile::webperf::site (
     ensure_packages(['libapache2-mod-uwsgi'])
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 }
