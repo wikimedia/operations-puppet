@@ -31,7 +31,7 @@ class profile::gerrit::proxy(
     class { 'httpd':
         remove_default_ports => true,
         modules              => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
-
+        wait_network_online  => true,
     }
 
     httpd::site { $tls_host:
