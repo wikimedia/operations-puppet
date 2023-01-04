@@ -1,4 +1,3 @@
-# SPDX-License-Identifier: Apache-2.0
 # NOTE: This project hosts the Puppet ENC API. To avoid chicken-and-egg
 # problems, the hiera data required to set up the puppet and enc servers
 # is kept here.

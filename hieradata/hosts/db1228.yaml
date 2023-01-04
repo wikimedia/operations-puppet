@@ -1,3 +1,2 @@
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
 # db1228
 profile::monitoring::notifications_enabled: false

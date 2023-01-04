@@ -1,4 +1,3 @@
-# SPDX-License-Identifier: Apache-2.0
 profile::cumin::cloud_master::keystone_api_fqdn: "%{alias('profile::openstack::codfw1dev::keystone_api_fqdn')}"
 profile::cumin::cloud_master::nova_dhcp_domain: "%{alias('profile::openstack::codfw1dev::nova::dhcp_domain')}"
 profile::cumin::cloud_master::openstack_region: "%{alias('profile::openstack::codfw1dev::region')}"

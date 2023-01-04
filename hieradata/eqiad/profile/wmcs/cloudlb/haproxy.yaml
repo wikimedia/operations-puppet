@@ -1,5 +1,3 @@
-# SPDX-License-Identifier: Apache-2.0
-
 profile::wmcs::cloudlb::haproxy::acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
 
 profile::wmcs::cloudlb::haproxy::config:
