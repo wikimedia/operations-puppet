@@ -35,5 +35,5 @@ profile::puppetdb::database::users:
     type: 'local'
     method: 'peer'
 profile::puppetdb::master: puppetdb1003.eqiad.wmnet
-profile::puppetdb::slaves: [puppetdb2004.codfw.wmnet]
+profile::puppetdb::slaves: [puppetdb2003.codfw.wmnet]
 profile::puppetdb::clean_stockpile: true
