@@ -17,6 +17,5 @@ class phabricator::phd::user(
         id          => "${uid}:${gid}",
         description => 'Phabricator daemon user',
         home_dir    => $home_dir,
-        require     => File[$home_dir],
     }
 }
