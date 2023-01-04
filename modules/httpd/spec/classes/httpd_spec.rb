@@ -17,6 +17,9 @@ describe 'httpd' do
         }
         it { is_expected.to contain_httpd__mod_conf('filter').with_ensure('present') }
         it { is_expected.to contain_httpd__mod_conf('status').with_ensure('present')}
+        it { is_expected.to contain_systemd__override('apache2-after-network-online-target')
+            .with_ensure('absent')
+        }
       end
       context 'with_no_legacy_compat' do
         let(:params) { {'legacy_compat' => 'absent' }}
@@ -26,6 +29,12 @@ describe 'httpd' do
       context 'with_declared_modules' do
         let(:params) { {'modules' => ['foo', 'bar']} }
         it { is_expected.to contain_httpd__mod_conf('bar').with_ensure('present')}
+      end
+      context 'with_wait_network_online' do
+        let(:params) { {'wait_network_online' => true} }
+        it { is_expected.to contain_systemd__override('apache2-after-network-online-target')
+          .with_ensure('present')
+        }
       end
     end
   end

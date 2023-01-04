@@ -3,4 +3,5 @@ fixtures:
     symlinks:
         httpd: "#{source_dir}"
         stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
         wmflib: "../../../../wmflib"

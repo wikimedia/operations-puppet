@@ -9,6 +9,9 @@
 # @param purge_manual_config remove any unmanaged files in the apache directory
 # @param remove_default_ports if true remove the default port list
 # @param http_only if true only enable to http port
+# @param wait_network_online Set to true to have the service to run after
+#   network-online.target. Can be used when Apache is configured to Listen to
+#   an explicit IP address.
 class httpd(
     Array[String]           $modules              = [],
     Wmflib::Ensure          $legacy_compat        = present,
@@ -19,6 +22,7 @@ class httpd(
     Boolean                 $purge_manual_config  = true,
     Boolean                 $remove_default_ports = false,
     Boolean                 $http_only            = false,
+    Boolean                 $wait_network_online  = false,
 ) {
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
@@ -184,6 +188,16 @@ class httpd(
         onlyif      => '/usr/sbin/apache2ctl configtest',
         before      => Service['apache2'],
         refreshonly => true,
+    }
+
+    # Apache2 has After=network.target which is not sufficient to guarantee
+    # the network IP addresses are available.
+    # https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+    systemd::override { 'apache2-after-network-online-target':
+        ensure  => bool2str($wait_network_online, 'present', 'absent'),
+        unit    => 'apache2',
+        # Note: entries are appended to the existing one
+        content => "[Unit]\nAfter=network-online.target\nWants=network-online.target\n",
     }
 
     # Puppet restarts are reloads in apache, as typically that's enough
