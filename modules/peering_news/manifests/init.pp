@@ -23,12 +23,12 @@ class peering_news(
         ensure => present,
         owner  => 'root',
         group  => 'root',
-        mode   => '0550',
+        mode   => '0555',
         source => 'puppet:///modules/peering_news/pnews.py',
     }
     $config_cmd = $config.then |$x| { "--config ${x}" }
     $proxy_cmd = $proxy.then |$x| { "--proxy ${x}" }
-    $command = "/usr/local/sbin/pnews ${config_cmd} ${proxy_cmd} | mail -E -s 'Peering News' ${emailto}"
+    $command = "/bin/bash -c '/usr/local/sbin/pnews ${config_cmd} ${proxy_cmd} | mail -E -s \"Peering News\" ${emailto}'"
     systemd::timer::job {'peering_news':
         user        => 'root',
         description => 'Weekly Peering News in your inbox',

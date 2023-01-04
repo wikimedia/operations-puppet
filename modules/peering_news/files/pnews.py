@@ -32,11 +32,11 @@ else:
 
 session = http_session('Peering News')
 
-if 'config' in args:
+if args.config:
     config = load_yaml_config(args.config)
     token = config["api_token_ro"]
     session.headers.update({"Authorization": f"Api-Key {token}"})
-if 'proxies' in args:
+if args.proxy:
     session.proxies = {"http": args.proxy, "https": args.proxy}
 
 wikimedia_net_req = session.get('https://www.peeringdb.com/api/net/1365')
@@ -51,7 +51,8 @@ if old_netixlan:
         if router['ix_id'] not in OUR_IXPS or not router['operational']:
             continue
         if router not in old_netixlan['data']:
-            print((f"AS {router['asn']} added a router at {router['name']}",
-                   f" (RS peer: {router['is_rs_peer']})"))
+            print(f"AS {router['asn']} added a router at {router['name']}",
+                  f" (RS peer: {router['is_rs_peer']})",
+                  f" - https://www.peeringdb.com/asn/{router['asn']}")
 
 netixlan_file.write_text(json.dumps(fresh_netixlan))
