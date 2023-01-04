@@ -1613,7 +1613,7 @@ node /^cloudcontrol100[5-7]\.wikimedia\.org$/ {
 
 #new cephosd servers T322760
 node /^cephosd100[12345]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup::data_engineering)
 }
 
 # ceph monitor nodes
