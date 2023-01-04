@@ -21,8 +21,6 @@ class profile::openstack::base::designate::service(
     $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
     $osm_host = lookup('profile::openstack::base::osm_host'),
     $region = lookup('profile::openstack::base::region'),
-    $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
-    $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
@@ -50,8 +48,6 @@ class profile::openstack::base::designate::service(
         rabbit_user                       => $rabbit_user,
         rabbit_pass                       => $rabbit_pass,
         region                            => $region,
-        puppet_git_repo_name              => $puppet_git_repo_name,
-        puppet_git_repo_user              => $puppet_git_repo_user,
     }
     contain '::openstack::designate::service'
 

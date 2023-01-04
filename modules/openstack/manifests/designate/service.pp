@@ -24,8 +24,6 @@ class openstack::designate::service(
     String[1] $rabbit_user,
     String[1] $rabbit_pass,
     $region,
-    $puppet_git_repo_name,
-    $puppet_git_repo_user,
     ) {
 
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
@@ -110,9 +108,6 @@ class openstack::designate::service(
         content   => template("openstack/${version}/designate/pools.yaml.erb"),
         require   => Package['designate-common'];
     }
-
-    # We'll need this key to push to the instance-puppet repo
-    $puppet_git_repo_key_path = '/var/lib/designate/.ssh/instance-puppet-user.priv'
 
     $keystone_auth_username = 'novaadmin'
     $keystone_auth_project = 'admin'
@@ -234,14 +229,8 @@ class openstack::designate::service(
         ],
     }
 
-    # Get ready to host a local git repo of instance puppet config
-    file { $puppet_git_repo_key_path:
-        ensure    => file,
-        owner     => 'designate',
-        group     => 'designate',
-        mode      => '0600',
-        content   => secret('ssh/instance-puppet-user/instance-puppet-user_privkey.pem'),
-        show_diff => false,
+    file { '/var/lib/designate/.ssh/instance-puppet-user.priv':
+        ensure => absent,
     }
 
     rsyslog::conf { 'designate':
