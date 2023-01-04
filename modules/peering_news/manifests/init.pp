@@ -15,7 +15,7 @@
 #   Path to API-KEY.
 #
 class peering_news(
-    Stdlib::Email              $emailto = "root@${facts['netwoprking']['fqdn']}",
+    Stdlib::Email              $emailto = "root@${facts['networking']['fqdn']}",
     Optional[Stdlib::Unixpath] $config  = undef,
     Optional[Stdlib::HTTPUrl]  $proxy   = undef,
 ) {
