@@ -8,7 +8,6 @@ class profile::openstack::eqiad1::horizon::dashboard_source_deploy(
     Stdlib::Fqdn    $webserver_hostname = lookup('profile::openstack::eqiad1::horizon::webserver_hostname'),
     Array[String]   $all_regions = lookup('profile::openstack::eqiad1::all_regions'),
     String          $puppet_git_repo_name = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_name'),
-    String          $puppet_git_repo_user = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_user'),
     Boolean         $maintenance_mode = lookup('profile::openstack::eqiad1::horizon::maintenance_mode'),
     String          $secret_key = lookup('profile::openstack::eqiad1::horizon::secret_key'),
 ) {
@@ -24,7 +23,6 @@ class profile::openstack::eqiad1::horizon::dashboard_source_deploy(
         webserver_hostname   => $webserver_hostname,
         all_regions          => $all_regions,
         puppet_git_repo_name => $puppet_git_repo_name,
-        puppet_git_repo_user => $puppet_git_repo_user,
         maintenance_mode     => $maintenance_mode,
         secret_key           => $secret_key,
     }
