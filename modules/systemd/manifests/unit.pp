@@ -62,12 +62,12 @@ define systemd::unit (
     if ($override) {
         # Define the override dir if not defined.
         $override_dir = "${systemd::override_dir}/${unit_name}.d"
-        file { $override_dir:
+        ensure_resource('file', $override_dir, {
             ensure => stdlib::ensure($ensure, 'directory'),
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
-        }
+        })
 
         $path = $override_filename ? {
             /\.conf$/ => "${override_dir}/${override_filename}",
