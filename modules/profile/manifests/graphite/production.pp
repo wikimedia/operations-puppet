@@ -133,6 +133,7 @@ class profile::graphite::production (
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     backup::set { 'srv-carbon-whisper-coal': }
     # Backup 'daily' metrics, only every week
