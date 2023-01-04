@@ -147,17 +147,24 @@ def main():
                 repo.index.remove([str(file_path)])
                 file_path.unlink()
 
-        keystone = clients.keystoneclient()
-        author = get_author(keystone, next_commit["guqc_author_user"])
-        committer = git.Actor("puppet-enc", "root@wmcloud.org")
+        if repo.index.diff(repo.head.commit):
+            keystone = clients.keystoneclient()
+            author = get_author(keystone, next_commit["guqc_author_user"])
+            committer = git.Actor("puppet-enc", "root@wmcloud.org")
 
-        repo.index.commit(
-            message=next_commit["guqc_commit_message"],
-            author=author,
-            committer=committer,
-            author_date=next_commit["guqc_date"].replace(tzinfo=timezone.utc),
-        )
-        repo.remotes.origin.push()
+            repo.index.commit(
+                message=next_commit["guqc_commit_message"],
+                author=author,
+                committer=committer,
+                author_date=next_commit["guqc_date"].replace(tzinfo=timezone.utc),
+            )
+
+            push_result = repo.remotes.origin.push()
+            push_result.raise_if_error()
+
+            logger.info("Commit %s pushed", commit_id)
+        else:
+            logger.info("Commit %s was empty", commit_id)
 
         database.update(
             """
@@ -166,8 +173,6 @@ def main():
             """,
             [commit_id],
         )
-
-        logger.info("Commit %s pushed", commit_id)
 
 
 if __name__ == "__main__":
