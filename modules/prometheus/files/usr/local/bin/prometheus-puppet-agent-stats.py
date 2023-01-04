@@ -29,7 +29,7 @@ import os
 import shlex
 import sys
 
-from subprocess import run
+from subprocess import run, PIPE
 
 import yaml
 
@@ -136,8 +136,8 @@ def collect_puppet_stats(registry, puppet_state_dir=None):
 
 def puppet_config(item: str) -> str:
     """return a puppet config value"""
-    command = shlex.split(f"/usr/bin/puppet config print {item}")
-    result = run(command, capture_output=True, check=True)
+    command = shlex.split("/usr/bin/puppet config print {}".format(item))
+    result = run(command, stdout=PIPE, check=True)
     return result.stdout.strip()
 
 
