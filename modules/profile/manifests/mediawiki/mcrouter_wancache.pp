@@ -46,6 +46,7 @@ class profile::mediawiki::mcrouter_wancache(
         # allowing >1 arbitrary overrides, then memcached class level by
         # untangling the 2 usages above, then this one should become a 2nd
         # systemd override for memcached
+        # TODO: uses systemd::override
         file { '/etc/systemd/system/memcached.service.d/':
             ensure => directory,
             owner  => 'root',
@@ -58,7 +59,7 @@ class profile::mediawiki::mcrouter_wancache(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            notify  => Exec['systemd daemon-reload for memcached.service']
+            notify  => Exec['systemd daemon-reload for memcached.service (memcached)']
         }
         include ::profile::prometheus::memcached_exporter
     }
@@ -205,7 +206,7 @@ class profile::mediawiki::mcrouter_wancache(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Exec['systemd daemon-reload for mcrouter.service']
+        notify  => Exec['systemd daemon-reload for mcrouter.service (mcrouter)']
     }
 
     ferm::rule { 'skip_mcrouter_wancache_conntrack_out':

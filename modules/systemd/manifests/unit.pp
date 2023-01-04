@@ -62,12 +62,17 @@ define systemd::unit (
     if ($override) {
         # Define the override dir if not defined.
         $override_dir = "${systemd::override_dir}/${unit_name}.d"
-        ensure_resource('file', $override_dir, {
-            ensure => stdlib::ensure($ensure, 'directory'),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-        })
+        if $ensure == 'present' {
+            # Only manage this directory on creation.  This means that we
+            # may end up with some empty directories but that shuoldn't mater
+            # TODO: Add recurs/purge => true
+            ensure_resource('file', $override_dir, {
+                ensure => directory,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555',
+            })
+        }
 
         $path = $override_filename ? {
             /\.conf$/ => "${override_dir}/${override_filename}",
@@ -77,7 +82,7 @@ define systemd::unit (
         $path = "${systemd::base_dir}/${unit_name}"
     }
 
-    $exec_label = "systemd daemon-reload for ${unit_name}"
+    $exec_label = "systemd daemon-reload for ${unit_name} (${title})"
     file { $path:
         ensure  => $ensure,
         content => $content,

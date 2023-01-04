@@ -17,7 +17,7 @@ describe 'systemd::unit' do
         let(:title) { 'foobar' }
         it { is_expected.to compile }
         it do
-          is_expected.to contain_exec('systemd daemon-reload for foobar.service')
+          is_expected.to contain_exec('systemd daemon-reload for foobar.service (foobar)')
                            .that_comes_before('Service[foobar]')
         end
         context 'when managing the service restarts' do
@@ -25,7 +25,7 @@ describe 'systemd::unit' do
 
           it { is_expected.to compile }
           it do
-            is_expected.to contain_exec('systemd daemon-reload for foobar.service')
+            is_expected.to contain_exec('systemd daemon-reload for foobar.service (foobar)')
                              .that_notifies('Service[foobar]')
           end
         end
@@ -39,12 +39,12 @@ describe 'systemd::unit' do
             is_expected.to contain_file('/lib/systemd/system/dummyservice.service')
                              .with_content('dummy')
                              .that_notifies(
-                               "Exec[systemd daemon-reload for dummyservice.service]"
+                               "Exec[systemd daemon-reload for dummyservice.service (dummyservice)]"
                              )
           end
 
           it 'should contain a systemctl-reload exec' do
-            is_expected.to contain_exec('systemd daemon-reload for dummyservice.service')
+            is_expected.to contain_exec('systemd daemon-reload for dummyservice.service (dummyservice)')
                              .with_refreshonly(true)
           end
         end
@@ -70,11 +70,10 @@ describe 'systemd::unit' do
                            .with_group('root')
         end
         it 'should contain a systemctl-reload exec' do
-          is_expected.to contain_exec('systemd daemon-reload for usbstick.device')
+          is_expected.to contain_exec('systemd daemon-reload for usbstick.device (usbstick.device)')
                            .with_refreshonly(true)
         end
       end
-
       context 'when using override filename' do
         let(:params) { super().merge(override: true, override_filename: 'myoverride.conf') }
         let(:title) { 'withcustomoverridefilename.service' }
@@ -106,6 +105,47 @@ describe 'systemd::unit' do
         it { is_expected.to compile }
         it 'appends .conf to the override filename' do
           is_expected.to contain_file('/etc/systemd/system/bar.service.d/foobar.conf')
+        end
+      end
+      context 'supports multiple overrides' do
+        let(:pre_condition) do
+          "systemd::unit { 'first-myservice-override':
+            unit => 'myservice',
+            content => 'dummy_first',
+            override => true,
+            override_filename => 'first.conf',
+          }"
+        end
+        context 'when a second override is requested' do
+          let(:params) { super().merge(
+            override: true, unit: 'myservice', override_filename: 'second.conf')
+          }
+          let(:title) { 'second-myservice-override' }
+          it { is_expected.to compile.with_all_deps }
+          it 'has multiple overrides files' do
+            is_expected.to contain_exec('systemd daemon-reload for myservice.service (first-myservice-override)')
+            is_expected.to contain_exec('systemd daemon-reload for myservice.service (second-myservice-override)')
+            is_expected.to contain_file('/etc/systemd/system/myservice.service.d/first.conf')
+              .with_content('dummy_first')
+              .that_notifies('Exec[systemd daemon-reload for myservice.service (first-myservice-override)]')
+            is_expected.to contain_file('/etc/systemd/system/myservice.service.d/second.conf')
+              .with_content('dummy')
+              .that_notifies('Exec[systemd daemon-reload for myservice.service (second-myservice-override)]')
+          end
+        end
+        context 'when a second override is absented' do
+          let(:params) { super().merge(
+            override: true, unit: 'myservice', override_filename: 'second.conf', ensure: 'absent')
+          }
+          it { is_expected.to compile.with_all_deps }
+          it 'has a single override file' do
+            is_expected.to contain_exec('systemd daemon-reload for myservice.service (first-myservice-override)')
+            is_expected.to contain_file('/etc/systemd/system/myservice.service.d/first.conf')
+              .with_content('dummy_first')
+              .that_notifies('Exec[systemd daemon-reload for myservice.service (first-myservice-override)]')
+            is_expected.to contain_file('/etc/systemd/system/myservice.service.d/second.conf')
+              .with_ensure('absent')
+          end
         end
       end
     end

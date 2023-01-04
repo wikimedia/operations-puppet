@@ -38,12 +38,6 @@ describe 'profile::mediawiki::webserver' do
         let(:facts) { super().merge({'cluster' => 'appserver'}) }
         let(:params) { super().merge({:has_tls => true}) }
         # stub out the required class. We test it elsewhere
-        let(:pre_condition) do
-          super().concat([
-                           'class profile::tlsproxy::envoy { notice("included!")}',
-                           'exec { "systemd daemon-reload for envoyproxy.service": command => "/bin/true" }'
-                         ])
-        end
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::tlsproxy::envoy') }
         context "with lvs" do
