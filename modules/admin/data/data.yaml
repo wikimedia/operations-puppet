@@ -5634,6 +5634,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFUWDQcPOmfMWpyKXSVXbnN+3Tf8Xy3kYtLDyIi+JQ8 xihua@MacBook-Pro-4
+    expiry_date: 2023-05-28
+    expiry_contact: kzimmerman@wikimedia.org
   kelhurd:
     ensure: present
     realname: Kelton Hurd
@@ -6453,6 +6455,8 @@ ldap_only_users:
     ensure: present
     realname: Jennifer Hancock
     email: jhancock-ctr@wikimedia.org
+    expiry_date: 2023-06-30
+    expiry_contact: wpao@wikimedia.org
   sdelbecque:
     ensure: present
     realname: Stephanie Delbecque
