@@ -3,13 +3,12 @@
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 CONFIG_FILE=/etc/gitlab/gitlab.rb
-OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest-data.tar
-NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
-CONFIG_BACKUP=/srv/gitlab-backup/latest/latest-config.tar
+DATA_BACKUP_FILE=$(ls -t /srv/gitlab-backup/*gitlab_backup.tar | head -n1)
+CONFIG_BACKUP_FILE=$(ls -t /srv/gitlab-backup/gitlab_config*.tar | head -n1)
 
 # check if installed GitLab version matches backup version
 installed_version=$(dpkg -l gitlab-ce | grep -Po "\\d*\.\\d*\.\\d*")
-backup_version=$(tar -axf $OLD_BACKUP_FILE backup_information.yml -O | grep gitlab_version  | grep -Po "\\d*\.\\d*\.\\d*")
+backup_version=$(tar -axf $DATA_BACKUP_FILE backup_information.yml -O | grep gitlab_version  | grep -Po "\\d*\.\\d*\.\\d*")
 
 if [ $installed_version != $backup_version ]; then
     /usr/bin/echo "Installed GitLab version $installed_version doesn't match backup GitLab version $backup_version" >> $LOGFILE
@@ -22,38 +21,24 @@ fi
 
 echo "Running Pre-requisites..." >> $LOGFILE
 
-# Create Backup Configuration Files
-
-if [ -f "$CONFIG_FILE" ]; then
-    /usr/bin/echo "Creating backup of $CONFIG_FILE" >> $LOGFILE
-    /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.restore
-else
-    /usr/bin/echo "Configuration File: $CONFIG_FILE Not Found" >> $LOGFILE
+# Check if backup files exist
+if [ ! -f "$CONFIG_BACKUP_FILE" ]; then
+    /usr/bin/echo "Configuration File: $CONFIG_BACKUP_FILE Not Found" >> $LOGFILE
     exit 1
 fi
 
-if [ -f "$OLD_BACKUP_FILE" ]; then
-    echo "Moving $OLD_BACKUP_FILE to $NEW_BACKUP_FILE"  >> $LOGFILE
-    /usr/bin/cp $OLD_BACKUP_FILE $NEW_BACKUP_FILE  >> $LOGFILE
-else
-    echo "Backup File $OLD_BACKUP_FILE Not Found"  >> $LOGFILE
+if [ ! -f "$DATA_BACKUP_FILE" ]; then
+    echo "Backup File $DATA_BACKUP_FILE Not Found"  >> $LOGFILE
     exit 1
 fi
 
 # Change Permissions
 echo "changing access permissions of backups"  >> $LOGFILE
-/usr/bin/chmod 600 $NEW_BACKUP_FILE $CONFIG_BACKUP
-/usr/bin/chown git.git $NEW_BACKUP_FILE $CONFIG_BACKUP
+/usr/bin/chmod 600 $DATA_BACKUP_FILE $CONFIG_BACKUP_FILE
+/usr/bin/chown git.git $DATA_BACKUP_FILE $CONFIG_BACKUP_FILE
 
 # Extract Configuration Backup
-/usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
-if [ -f $CONFIG_FILE.restore ]; then
-    echo "Reverting configuration files to those of the replica..." >> $LOGFILE
-    /usr/bin/cp $CONFIG_FILE.restore $CONFIG_FILE
-else
-    echo "Configuration backup files $CONFIG_FILE.restore not found" >> $LOGFILE
-    exit
-fi
+/usr/bin/tar -xvf $CONFIG_BACKUP_FILE --exclude='/etc/gitlab/gitlab.rb*' --strip-components=2 -C /etc/gitlab/
 
 echo "running gitlab-ctl reconfigure" >> $LOGFILE
 /usr/bin/gitlab-ctl reconfigure >> $LOGFILE
@@ -96,7 +81,7 @@ else
 fi
 
 echo "running gitlab-backup restore"
-BACKUP=latest
+BACKUP=$(basename $DATA_BACKUP_FILE | sed 's/_gitlab_backup.tar//') #GitLab referes to the timestamp, not full file names
 /usr/bin/gitlab-backup restore GITLAB_ASSUME_YES=1 BACKUP=$BACKUP >> $LOGFILE
 if [ $? == 0 ]; then
    echo "Successfully Restored Backup: $BACKUP" >> $LOGFILE

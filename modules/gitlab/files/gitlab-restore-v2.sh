@@ -7,12 +7,13 @@
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 
-DEFAULT_BACKUP="latest-data"
+DEFAULT_BACKUP_FILE=$(ls -t /srv/gitlab-backup/*gitlab_backup.tar | head -n1)
+CONFIG_BACKUP_FILE=$(ls -t /srv/gitlab-backup/gitlab_config*.tar | head -n1)
 KEEP_CONFIG="false"
 REQUESTED_BACKUP=""
 
 usage() {
-  /usr/bin/echo "Usage: $0 [ -f REQUESTED_BACKUP ]" 1>&2
+  /usr/bin/echo "Usage: $0 [ -f REQUESTED_BACKUP ] [ -k KEEP_CONFIG]" 1>&2
 }
 
 exit_error() {
@@ -40,67 +41,28 @@ done
 
 
 if [ -z "$REQUESTED_BACKUP" ]; then
-    BACKUP=$DEFAULT_BACKUP
+    DATA_BACKUP_FILE=$DEFAULT_BACKUP_FILE
 else
-    BACKUP="$REQUESTED_BACKUP"
-fi
-
-/usr/bin/echo "Keeping Config: $KEEP_CONFIG"
-/usr/bin/echo "Restoring Backup: $BACKUP" >> $LOGFILE
-
-/usr/bin/echo "Running Pre-requisites..." >> $LOGFILE
-
-# Create Backup Configuration Files
-CONFIG_FILE=/etc/gitlab/gitlab.rb
-SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
-
-# Run keep_config check here
-if [ $KEEP_CONFIG == "false" ]; then
-    if [ -f "$CONFIG_FILE" ] && [ -f "$SECRETS_FILE" ]; then
-        /usr/bin/echo "Creating backup of $CONFIG_FILE and $SECRETS_FILE" >> $LOGFILE
-        /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.restore
-        /usr/bin/cp $SECRETS_FILE $SECRETS_FILE.restore
-    else
-        /usr/bin/echo "Configuration File: $CONFIG_FILE Not Found" >> $LOGFILE
-        exit 1
-    fi
-else
-    /usr/bin/echo "Keeping Config" >> $LOGFILE
+    DATA_BACKUP_FILE="$REQUESTED_BACKUP"
 fi
 
 # Check If File Exists
-if [ $REQUESTED_BACKUP == "latest" ]; then
-    OLD_BACKUP_FILE=/srv/gitlab-backup/latest/${BACKUP}.tar
-    NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
-    if [ -f "$OLD_BACKUP_FILE" ]; then
-        /usr/bin/echo "Moving $OLD_BACKUP_FILE to $NEW_BACKUP_FILE"  >> $LOGFILE
-        /usr/bin/cp $OLD_BACKUP_FILE $NEW_BACKUP_FILE  >> $LOGFILE
-    else
-        echo "Backup File $OLD_BACKUP_FILE Not Found"  >> $LOGFILE
-        exit 1
-    fi
+if [ ! -f "$DATA_BACKUP_FILE" ]; then
+    echo "Backup File $DATA_BACKUP_FILE Not Found"  >> $LOGFILE
+    exit 1
 fi
-
-CONFIG_BACKUP=/srv/gitlab-backup/latest/latest-config.tar
 
 # Change Permissions
 echo "changing permissions - chmod 600"  >> $LOGFILE
-/usr/bin/chmod 600 $NEW_BACKUP_FILE $CONFIG_BACKUP
+/usr/bin/chmod 600 $DATA_BACKUP_FILE $CONFIG_BACKUP_FILE
 
 # Run keep_config check here
 # Extract Configuration Backup
-if [ $KEEP_CONFIG == "false" ]; then
-    /usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
-    if [ -f $CONFIG_FILE.restore ] && [ -f $SECRETS_FILE.restore ]; then
-        echo "Reverting configuration files to those of the replica..." >> $LOGFILE
-        /usr/bin/cp $CONFIG_FILE.restore $CONFIG_FILE
-        /usr/bin/cp $SECRETS_FILE.restore $SECRETS_FILE
-    else
-        echo "Configuration backup files $CONFIG_FILE.restore $SECRETS_FILE.restore not found" >> $LOGFILE
-        exit
-    fi
-else
+if [ $KEEP_CONFIG ]; then
     /usr/bin/echo "Keeping Config" >> $LOGFILE
+    /usr/bin/tar -xvf $CONFIG_BACKUP_FILE --exclude='/etc/gitlab/gitlab.rb*' --strip-components=2 -C /etc/gitlab/
+else
+    /usr/bin/tar -xvf $CONFIG_BACKUP_FILE --strip-components=2 -C /etc/gitlab/
 fi
 
 echo "running gitlab-ctl reconfigure" >> $LOGFILE
@@ -144,13 +106,7 @@ else
 fi
 
 echo "running gitlab-backup restore"
-if [ -f $REQUESTED_BACKUP ]; then
-    BACKUP=${REQUESTED_BACKUP}
-else
-    echo "Backup File; ${REQUESTED_BACKUP} Not Found. Using Latest"
-    BACKUP="latest"
-fi
-
+BACKUP=$(basename $DATA_BACKUP_FILE | sed 's/_gitlab_backup.tar//') #GitLab referes to the timestamp, not full file names
 /usr/bin/gitlab-backup restore GITLAB_ASSUME_YES=1 BACKUP=$BACKUP >> $LOGFILE
 if [ $? == 0 ]; then
    echo "Successfully Restored Backup: $BACKUP" >> $LOGFILE
@@ -184,7 +140,9 @@ fi
 /usr/bin/gitlab-rake gitlab:check SANITIZE=true >> $LOGFILE
 /usr/bin/gitlab-rake gitlab:doctor:secrets >> $LOGFILE
 
-echo "ApplicationSetting.last.update(home_page_url: 'https://gitlab-replica.wikimedia.org/explore')" | /usr/bin/gitlab-rails console >> $LOGFILE
+for i in {1..10}; do
+    echo "ApplicationSetting.last.update(home_page_url: 'https://gitlab-replica.wikimedia.org/explore')" | /usr/bin/gitlab-rails console >> $LOGFILE && break || sleep 15
+done
 
 /usr/bin/systemctl restart ssh-gitlab
 

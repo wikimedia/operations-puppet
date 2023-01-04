@@ -61,12 +61,4 @@ class gitlab::backup (
         mode   => '0600',
     }
 
-    # make sure only root can access latest backup folders
-    # create folder for latest backup
-    file { ["${backup_dir_data}/latest", "${backup_dir_config}/latest"]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0600',
-    }
 }

@@ -28,7 +28,7 @@ class gitlab::rsync (
     # rsync server module is needed.
     rsync::server::module { 'data-backup':
         ensure         => $ensure_sync,
-        path           => "${backup_dir_data}/latest/",
+        path           => $backup_dir_data,
         read_only      => 'no',
         hosts_allow    => [$active_host],
         auto_ferm      => true,
@@ -40,14 +40,14 @@ class gitlab::rsync (
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab data backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete ${backup_dir_data}/latest/ rsync://${passive_host}/data-backup",
+            command     => "/usr/bin/rsync -avp --delete ${backup_dir_data}/ rsync://${passive_host}/data-backup",
             interval    => $rsync_interval,
         }
         systemd::timer::job { "rsync-config-backup-${passive_host}":
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab config backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete ${backup_dir_config}/latest/ rsync://${passive_host}/data-backup",
+            command     => "/usr/bin/rsync -avp --delete ${backup_dir_config}/ rsync://${passive_host}/data-backup",
             interval    => $rsync_interval,
         }
     }
