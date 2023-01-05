@@ -52,4 +52,6 @@ define prometheus::redis_exporter (
         restart => true,
         require => Package['prometheus-redis-exporter'],
     }
+
+    profile::auto_restarts::service { $service_name: }
 }
