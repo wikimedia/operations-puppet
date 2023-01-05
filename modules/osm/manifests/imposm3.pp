@@ -65,6 +65,8 @@ class osm::imposm3 (
             source => 'puppet:///modules/osm/imposm-removebackup-import';
         '/usr/local/bin/send-tile-expiration-events':
             source => 'puppet:///modules/osm/send-tile-expiration-events.sh';
+        '/usr/local/bin/bootstrap-tile-storage':
+            source => 'puppet:///modules/osm/bootstrap-tile-storage.sh';
         '/etc/imposm/event-template.json':
             source => 'puppet:///modules/osm/event-template.json';
     }
