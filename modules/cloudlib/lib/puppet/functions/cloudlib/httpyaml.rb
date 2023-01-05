@@ -20,6 +20,7 @@ Puppet::Functions.create_function(:'cloudlib::httpyaml') do
         http_handler = context.cached_value('__http_handler')
       else
         http_handler = Net::HTTP.new(uri.host, uri.port)
+        http_handler.use_ssl = uri.scheme == "https"
         context.cache('__http_handler', http_handler)
       end
       request = Net::HTTP::Get.new(path)
