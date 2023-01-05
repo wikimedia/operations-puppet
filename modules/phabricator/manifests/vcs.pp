@@ -93,7 +93,7 @@ class phabricator::vcs (
     if empty($listen_addresses) {
         # Emit a warning but allow listen_address to be empty, this is needed
         # for easier migrations from one server to another
-        notify { 'Warning: phabricator::vcs::listen_address is empty': }
+        # notify { 'Warning: phabricator::vcs::listen_address is empty': }
     } else {
         $drange = $listen_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
 
