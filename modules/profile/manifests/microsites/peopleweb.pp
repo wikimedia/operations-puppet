@@ -97,4 +97,5 @@ class profile::microsites::peopleweb (
         dest_host   => $rsync_dst_host,
         module_path => '/home',
     }
+    profile::auto_restarts::service { 'rsync': }
 }
