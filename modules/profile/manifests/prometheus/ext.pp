@@ -94,6 +94,11 @@ class profile::prometheus::ext (
         proxy_pass => "http://${listen_address}:${listen_port}/${instance_name}",
     }
 
+    prometheus::rule { 'rules_ext.yml':
+        instance => 'ext',
+        source   => 'puppet:///modules/profile/prometheus/rules_ext.yml',
+    }
+
     profile::thanos::sidecar { $instance_name:
         prometheus_port     => $listen_port,
         prometheus_instance => $instance_name,
