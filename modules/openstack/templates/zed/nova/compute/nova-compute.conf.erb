@@ -11,6 +11,9 @@ default_ephemeral_format = ext4
 # Ensure VMs have the same state after a host reboot
 resume_guests_state_on_host_boot = True
 
+# Path to genisoimage, used for config drive
+mkisofs_cmd = /usr/bin/genisoimage
+
 # No plans to use ovs
 # neutron_ovs_bridge=br-int
 

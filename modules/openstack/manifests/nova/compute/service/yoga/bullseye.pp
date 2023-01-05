@@ -23,6 +23,7 @@ class openstack::nova::compute::service::yoga::bullseye() {
         'qemu-utils',
         'nova-compute',
         'nova-compute-kvm',
+        'genisoimage',
     ]
 
     package { $packages:
