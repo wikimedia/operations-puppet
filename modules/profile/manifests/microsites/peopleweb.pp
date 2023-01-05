@@ -34,6 +34,7 @@ class profile::microsites::peopleweb (
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 
     rsyslog::input::file { 'apache2-error':
         path => '/var/log/apache2/*error*.log',
