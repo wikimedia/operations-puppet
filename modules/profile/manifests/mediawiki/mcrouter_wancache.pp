@@ -121,10 +121,7 @@ class profile::mediawiki::mcrouter_wancache(
         # all the mw-wan routes. Broadcasting is thus completely controlled by MediaWiki,
         # but is only allowed for set/delete operations.
         $servers_by_datacenter.map |$dc, $_| {
-            $failover_route = $dc ? {
-                $::site => true,
-                default => false
-            };
+            $failover_route = true;
             {
                 'aliases' => [ "/${dc}/mw-wan/" ],
                 'route'   => {
