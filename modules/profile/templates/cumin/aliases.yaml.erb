@@ -52,6 +52,7 @@ cloudcephosd-codfw: A:cloudcephosd and A:codfw
 cloudcephmon-codfw: A:cloudcephmon and A:codfw
 cloudceph-codfw: A:cloudcephosd-codfw or A:cloudcephmon-codfw
 cloudceph-eqiad1: A:cloudcephmon-eqiad1 or A:cloudcephosd-eqiad1
+clouddumps: P{O:dumps::distribution::server}
 cloudgw: P{O:wmcs::openstack::eqiad1::cloudgw}
 cloudmetrics: P{O:wmcs::monitoring}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
@@ -185,7 +186,6 @@ hadoop-ui: A:hadoop-hue or A:hadoop-yarn
 hadoop-yarn: P{O:analytics_cluster::hadoop::yarn}
 hadoop-hue: P{an-tool1009.eqiad.wmnet}
 hadoop-ui-test: P{O:analytics_test_cluster::hadoop::ui}
-hadoop-dumps-client: P{O:dumps::distribution::server}
 icinga: P{O:alerting_host}
 idp: P{O:idp} or A:idp-test
 idp-test: P{O:idp_test}
