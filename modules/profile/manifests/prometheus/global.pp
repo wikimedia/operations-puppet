@@ -41,8 +41,6 @@ class profile::prometheus::global (
             # Swift container/account stats
             '{__name__=~"^swift_account_stats.*"}',
             '{__name__=~"^swift_container_stats.*"}',
-            # IPsec Status metrics
-            '{__name__="ipsec_status"}',
             # Global authdns metrics
             '{__name__=~"^gdnsd_.*"}',
           ],

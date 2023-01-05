@@ -218,8 +218,4 @@ class profile::prometheus::alerts (
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
     }
 
-    # Perform aggregate ipsec checks per-datacenter (site) to ease downtimes/maintenance
-    $datacenters.each |String $datacenter| {
-        monitoring::alerts::aggregate_ipsec{"aggregate_ipsec_${datacenter}": site => $datacenter }
-    }
 }

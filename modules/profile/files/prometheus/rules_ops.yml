@@ -502,11 +502,6 @@ groups:
   - record: instance_row:pdu_st4InputCordActivePower:sum
     expr: sum by(instance, row) (pdu_st4InputCordActivePower)
 
-- name: ipsec
-  rules:
-  - record: instance_tunnel:ipsec_status:sum
-    expr: sum by (instance, tunnel) (ipsec_status)
-
 - name: mediawiki
   rules:
   - record: cluster_code_method_handler:mediawiki_http_requests_duration:avg2m

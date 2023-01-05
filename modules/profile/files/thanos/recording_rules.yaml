@@ -137,13 +137,6 @@ groups:
 
       - record: exporter:up:avail
         expr: label_replace(
-          sum(ipsec_up) without (instance) / count(ipsec_up) without (instance),
-          "exporter", "ipsec",
-          "", ""
-          )
-
-      - record: exporter:up:avail
-        expr: label_replace(
           sum(elasticsearch_node_stats_up) without (instance) / count(elasticsearch_node_stats_up) without (instance),
           "exporter", "elasticsearch",
           "", ""
