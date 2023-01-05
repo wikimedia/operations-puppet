@@ -143,8 +143,6 @@ zookeeper_clusters:
     hosts:
       "%{::fqdn}": 1
 
-profile::ssh::server::disable_agent_forwarding: false
-
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 
 keystone_public_port: "25000"
