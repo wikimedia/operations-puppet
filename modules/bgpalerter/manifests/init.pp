@@ -33,7 +33,7 @@ class bgpalerter (
     ensure_packages('node-bgpalerter')
     $base_dir = '/etc/bgpalerter'
     $working_dir = '/run/bgpalerter'
-    $bgpalerter_bin = '/usr/local/bin/bgpalerter'
+    $bgpalerter_bin = '/usr/bin/bgpalerter'
     $config_file = "${base_dir}/config.yaml"
     $prefix_file = "${base_dir}/prefixes.yaml"
     $log_dir = $logging['directory'] ? {
