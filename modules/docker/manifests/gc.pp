@@ -20,7 +20,7 @@ class docker::gc(
         gc \
         --state-file /state/state.json \
         --image-filter 'id=~.*' \
-        --volume-filter 'label:com.gitlab.gitlab-runner.type=cache' \
+        --volume-filter 'label:com.gitlab.gitlab-runner.type==cache' \
         --images ${images_high_water_mark}:${images_low_water_mark} \
         --volumes ${volumes_high_water_mark}:${volumes_low_water_mark}"
 
