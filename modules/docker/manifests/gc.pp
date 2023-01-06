@@ -13,9 +13,6 @@ class docker::gc(
         restart => true,
     }
 
-    # To start, I'm not including a volumes filter, so no volumes will
-    # be deleted.  Need to see what volume names and/or labels are
-    # created by Gitlab runners first.
     $command = "/usr/bin/docker run --rm \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -v docker-resource-monitor:/state \
@@ -23,6 +20,7 @@ class docker::gc(
         gc \
         --state-file /state/state.json \
         --image-filter 'id=~.*' \
+        --volume-filter 'label:com.gitlab.gitlab-runner.type=cache' \
         --images ${images_high_water_mark}:${images_low_water_mark} \
         --volumes ${volumes_high_water_mark}:${volumes_low_water_mark}"
 
