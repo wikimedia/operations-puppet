@@ -18,8 +18,10 @@ hosts:
     - thanos-be1001
     - thanos-be1002
     - thanos-be1003
-    - thanos-be1004
+    - thanos-be1004:
+        - drain
     - thanos-be2001
     - thanos-be2002
     - thanos-be2003
-    - thanos-be2004
+    - thanos-be2004:
+        - drain
