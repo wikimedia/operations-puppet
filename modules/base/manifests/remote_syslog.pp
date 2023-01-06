@@ -22,6 +22,16 @@
 #   relevant for mutual authentication. Server verification (e.g. checks on
 #   certificate authority or the Subject Alt Names) is not affected. Defaults to
 #   true.
+# [*tls_server_auth*]
+#   Mode used to verify the authenticity of the leaf certificate presented by
+#   the syslog server. Can be either 'x509/certvalid' (default, cerficate path
+#   validation; a leaf certificate must be signed by the root CA listed in $tls_trusted_ca or
+#   its intermediate certificates is or 'x509/name'. In the latter mode, besides the constraint
+#   implied by 'x509/certvalid', the leaf certificate must contain an entry in its
+#   subjectAltName or common name field that matches StreamDriverPermittedPeers
+#   (defaults to the Target, but with the port number stripped).
+#   Per RFC 5425 § 5.2, 'x509/name' is strongly preferred, but 'x509/certvalid' can be used
+#   for legacy purposes.
 # [*tls_netstream_driver*]
 #   Rsyslog Network Stream driver to use for TLS support. Can be either 'gtls'
 #   (GnuTLS, default) or 'ossl' (OpenSSL).
@@ -30,13 +40,14 @@
 #
 
 class base::remote_syslog (
-    Boolean                         $enable,
-    Array[String]                   $central_hosts_tls = [],
-    Enum['auth-logs', 'standard']   $send_logs = 'standard',
-    Integer                         $queue_size = 10000,
-    Boolean                         $tls_client_auth = true,
-    Enum['gtls', 'ossl']            $tls_netstream_driver = 'gtls',
-    Stdlib::Unixpath                $tls_trusted_ca = '/var/lib/puppet/ssl/certs/ca.pem',
+    Boolean                             $enable,
+    Array[String]                       $central_hosts_tls = [],
+    Enum['auth-logs', 'standard']       $send_logs = 'standard',
+    Integer                             $queue_size = 10000,
+    Boolean                             $tls_client_auth = true,
+    Enum['x509/certvalid', 'x509/name'] $tls_server_auth = 'x509/certvalid',
+    Enum['gtls', 'ossl']                $tls_netstream_driver = 'gtls',
+    Stdlib::Unixpath                    $tls_trusted_ca = '/var/lib/puppet/ssl/certs/ca.pem',
 ) {
     $owner = 'root'
     $group = 'root'
