@@ -22,7 +22,7 @@ class profile::base (
     String                  $core_dump_pattern                  = lookup('profile::base::core_dump_pattern'),
     Boolean                 $unprivileged_userns_clone          = lookup('profile::base::unprivileged_userns_clone'),
     Hash                    $remote_syslog_tls                  = lookup('profile::base::remote_syslog_tls'),
-    Boolean                 $remote_syslog_tls_client_auth      = lookup('profile::base::remote_syslog_client_tls_auth'),
+    Boolean                 $remote_syslog_tls_client_auth      = lookup('profile::base::remote_syslog_tls_client_auth'),
     Enum['gtls', 'ossl']    $remote_syslog_tls_netstream_driver = lookup('profile::base::remote_syslog_tls_netstream_driver', {'default_value' => 'gtls'}),
     Stdlib::Unixpath $remote_syslog_tls_ca                      = lookup('profile::base::remote_syslog_tls_ca', {'default_value' => '/var/lib/puppet/ssl/certs/ca.pem'}),
     Boolean                 $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
