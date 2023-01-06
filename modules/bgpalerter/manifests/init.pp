@@ -30,6 +30,7 @@ class bgpalerter (
     Optional[Bgpalerter::Prefix::Options]         $prefixes_options = undef,
     Hash[Stdlib::IP::Address, Bgpalerter::Prefix] $prefixes         = {},
 ) {
+    ensure_packages('node-bgpalerter')
     $base_dir = '/etc/bgpalerter'
     $working_dir = '/run/bgpalerter'
     $bgpalerter_bin = '/usr/local/bin/bgpalerter'
