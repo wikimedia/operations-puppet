@@ -8,8 +8,8 @@ class statistics::user {
     # We manage service system users in puppet classes, but declare
     # commented placeholders for them in the admin module's data.yaml file
     # to ensure that people don't accidentally add uid/gid conflicts.
-    $stats_uid = 918
-    $stats_gid = 918
+    $stats_uid = assert_type(Admin::UID::System::Global, 918)
+    $stats_gid = assert_type(Admin::UID::System::Global, $stats_uid)
 
     systemd::sysuser { $username:
         id       => "${stats_uid}:${stats_gid}",
