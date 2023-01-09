@@ -24,7 +24,7 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, akhatun]
+              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, akhatun, jhernandez]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -141,7 +141,7 @@ groups:
               urbanecm, awight, jakob, andrew-wmde,
               mstyles, phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, chrisalbon,
-              annet, jgiannelos, kharlan, stran, jhernandez, sihe,
+              annet, jgiannelos, kharlan, stran, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, tsepothoabala, samtar, pfischer, kindrobot,
               mfossati, isaranto
@@ -2328,13 +2328,12 @@ users:
     email: robert.west@epfl.ch
     krb: present
   jhernandez:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jhernandez
     realname: Joaquin Oltra Hernandez
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFay7brSap8ALMkuqdnOQ+nQJefZUCGzNS5dhHzHeNzq joakin@DESKTOP-THEJR4U]
+    ssh_keys: []
     uid: 10733
-    email: jhernandez@wikimedia.org
   smalyshev:
     ensure: present
     gid: 500
