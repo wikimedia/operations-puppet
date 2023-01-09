@@ -31,7 +31,7 @@ class phabricator::vcs (
         allow_login       => true,
         description       => 'Phabricator vcs user',
         home_dir          => "/var/lib/${vcs_user}",
-        additional_groups => ['phd'],
+        additional_groups => ['vcs','phd'],
     }
 
     file { "${basedir}/phabricator/scripts/ssh/":
