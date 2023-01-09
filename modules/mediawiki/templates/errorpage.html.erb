@@ -7,6 +7,10 @@
 -%>
 <!DOCTYPE html>
 <html lang="en">
+<%# Commenting at the top of the page is useful for APIs (See T240794) -%>
+<% if @errorpage['browsersec_comment'] -%>
+<!-- Client security settings are inadequate. Review requirements at https://wikitech.wikimedia.org/wiki/HTTPS -->
+<% end -%>
 <meta charset="utf-8">
 <title><%= @errorpage['title'] %></title>
 <% if @errorpage['favicon'] && @errorpage['favicon'] != :undef -%>
