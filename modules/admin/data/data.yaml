@@ -144,7 +144,7 @@ groups:
               annet, jgiannelos, kharlan, stran, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, tsepothoabala, samtar, pfischer, kindrobot,
-              mfossati, isaranto
+              mfossati, isaranto, zabe,
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap,mwpresync) NOPASSWD: ALL',
@@ -5655,6 +5655,14 @@ users:
     uid: 12807
     gid: 500
     ssh_keys: []
+  zabe:
+    ensure: present
+    realname: Alexander Vorwerk
+    email: zabe@avorwerk.net
+    uid: 29162
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIN7H2VAL+XuBguUzu4xy+Y2nr9prd4ERMxe+jh0fp4h wmf_prod
 
 ldap_only_users:
   abhas:
@@ -6377,10 +6385,6 @@ ldap_only_users:
     ensure: present
     realname: Ollie Shotton
     email: oliver.shotton@wikimedia.de
-  zabe:
-    ensure: present
-    realname: Alexander Vorwerk
-    email: zabe@avorwerk.net
   slopes:
     ensure: present
     realname: Sérgio Lopes
