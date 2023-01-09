@@ -176,8 +176,8 @@ eqiad:
     cp1090.eqiad.wmnet: [cdn, ats-be]
   parsoid:
     # Don't forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
-    # parse1002.eqiad.wmnet: [parsoid-php] - CPU issue T326119
     parse1001.eqiad.wmnet: [parsoid-php, canary]
+    parse1002.eqiad.wmnet: [parsoid-php]
     parse1003.eqiad.wmnet: [parsoid-php,canary]
     parse1004.eqiad.wmnet: [parsoid-php]
     parse1005.eqiad.wmnet: [parsoid-php]
