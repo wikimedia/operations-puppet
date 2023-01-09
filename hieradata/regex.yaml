@@ -225,7 +225,7 @@ labs:
 # Legacy hosts with a single object-server per port
 # https://phabricator.wikimedia.org/T222366
 swift_servers_per_port:
-  __regex: !ruby/regexp /^ms-be[12]0([1-4][0-9]|50)\.(codfw|eqiad)\.wmnet$/
+  __regex: !ruby/regexp /^ms-be(10([1-4][0-9]|50)|20[1-4][0-9])\.(codfw|eqiad)\.wmnet$/
   profile::swift::storage::servers_per_port: 0
 
 # Hosts with 24x HDD https://phabricator.wikimedia.org/T252216
