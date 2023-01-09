@@ -1,3 +1,1 @@
-# SPDX-License-Identifier: Apache-2.0
-# @summary type to validate Linux user ID numbers for system users
-type Admin::UID::System = Integer[100,499]
+type Admin::UID::System = Variant[Admin::UID::System::Global, Admin::UID::System::Local]
