@@ -275,6 +275,13 @@ groups:
     expr: sum by(job, method, status, backend) (rate(varnish_backend_requests_seconds_count[2m]))
   - record: instance_layer_job:varnish_backend_conn:sum
     expr: sum by(instance, layer, job) (varnish_backend_conn)
+  - record: varnish_main_threads_used_percent
+    # label_replace is to join metrics with differing instance port numbers
+    expr: >
+      (
+        label_replace(sum by (instance) (varnish_main_threads), "instance", "$1:0", "instance", "(.*):.*") /
+        label_replace(sum by (instance) (varnish_param_threads_max), "instance", "$1:0", "instance", "(.*):.*")
+      ) * 100
   - record: cluster_status:nginx_http_requests_total:sum
     expr: sum by(cluster, status) (nginx_http_requests_total)
   - record: cluster_status:nginx_http_requests_total:rate5m
