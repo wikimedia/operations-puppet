@@ -472,6 +472,13 @@ host grafana2001 {
     fixed-address grafana2001.codfw.wmnet;
 }
 
+
+host idm-test1001 {
+    hardware ethernet aa:00:00:a9:cc:60;
+    fixed-address idm-test1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host idp1002 {
     hardware ethernet aa:00:00:83:4f:77;
     fixed-address idp1002.wikimedia.org;
