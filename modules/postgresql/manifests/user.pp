@@ -54,6 +54,15 @@ define postgresql::user(
     $user_dbs = "/usr/bin/psql --tuples-only --no-align -c \'SELECT COUNT(*) FROM pg_catalog.pg_database JOIN pg_authid ON pg_catalog.pg_database.datdba = pg_authid.oid WHERE rolname = '${user}';\' | grep -e '^0$'"
     $pass_set = "/usr/bin/psql -c \"ALTER ROLE ${user} WITH ${attrs} PASSWORD '${password}';\""
 
+
+    # Starting with Bookworm passwords are hashed with salted Scram-SHA256. The user is still tested for existance,
+    # but no password changes are supported T326325
+    $password_md5    = md5("${password}${user}")
+    $password_clause = debian::codename::ge('bookworm').bool2str(
+        '', "AND rolpassword IS DISTINCT FROM 'md5${password_md5}'"
+    )
+    $exist_check = "/usr/bin/test -n \"\$(/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' ${password_clause};\")\""
+
     if $ensure == 'present' {
         exec { "create_user-${name}":
             command => "/usr/bin/createuser --no-superuser --no-createdb --no-createrole ${user}",
@@ -63,12 +72,11 @@ define postgresql::user(
 
         # This will not be run on a slave as it is read-only
         if $master and $password {
-            $password_md5 = md5("${password}${user}")
 
             exec { "pass_set-${name}":
                 command   => $pass_set,
                 user      => 'postgres',
-                onlyif    => "/usr/bin/test -n \"\$(/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' AND rolpassword IS DISTINCT FROM 'md5${password_md5}';\")\"",
+                onlyif    => $exist_check,
                 subscribe => Exec["create_user-${name}"],
             }
         }
