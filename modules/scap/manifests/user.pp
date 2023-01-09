@@ -3,9 +3,9 @@
 #
 # Sets up a scap account used by the scap deployment tool to update itself on target hosts via rsync
 class scap::user {
-  $uid = 919
-  $gid = 919
-  $home_dir = '/var/lib/scap'
+  $uid = assert_type(Admin::UID::System::Global, 919)
+  $gid = assert_type(Admin::UID::System::Global, $uid)
+  $home_dir = assert_type(Stdlib::Unixpath, '/var/lib/scap')
 
   file { $home_dir:
     ensure => directory,
