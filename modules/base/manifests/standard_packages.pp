@@ -143,7 +143,7 @@ class base::standard_packages {
         'bullseye': {
             # A dist upgrade to bullseye leaves some old binary packages around, remove those
             $absent_packages = [
-                'libsnmp30', 'libdns-export1104', 'libdns1104', 'libisc-export1100', 'libisc1100',
+                'libsnmp30', 'libdns-export1104', 'libdns1104', 'libisc-export1100', 'libisc1100', 'multiarch-support',
             ]
             $purged_packages = []
         }
