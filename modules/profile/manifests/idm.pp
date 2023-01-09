@@ -9,7 +9,8 @@ class profile::idm(
     String       $django_mysql_db_name      = lookup('profile::idm::server::django_mysql_db_name', {'default_value' => 'idm'}),
     String       $deploy_user               = lookup('profile::idm::deploy_user', {'default_value'                  => 'www-data'}),
     Integer      $uwsgi_process_count       = lookup('profile::idm::uwsgi_process_count', {'default_value'          => 4}),
-    Boolean      $development               = lookup('profile::idm::development',  {'default_value'                 => False}),
+    Boolean      $development               = lookup('profile::idm::development', {'default_value'                  => false}),
+    Boolean      $production                = lookup('profile::idm::production', {'default_value'                   => false}),
 ) {
 
     $base_dir = '/srv/idm'
@@ -34,6 +35,7 @@ class profile::idm(
         base_dir                 => $base_dir,
         deploy_user              => $deploy_user,
         development              => $development,
+        production               => $production,
     }
 
     class { 'idm::uwsgi_processes':

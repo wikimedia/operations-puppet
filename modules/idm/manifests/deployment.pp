@@ -11,6 +11,7 @@ class idm::deployment (
     Stdlib::Unixpath $base_dir,
     String           $deploy_user,
     Boolean          $development,
+    Boolean          $production,
 ){
     # We need django from backports to get latest LTS.
     if debian::codename::eq('bullseye') {
@@ -59,11 +60,11 @@ class idm::deployment (
     # For staging and production we want to install
     # from Debian packages, but for the development
     # process the latest git version is deployed.
-    if($development){
+    if($production == false){
         ensure_packages([
             'python3-redis','python3-django', python3-mysqldb,
             'python3-memcache', 'python3-ldap3', 'python3-rq',
-            'redis'
+            'python3-social-django', 'redis'
         ])
 
         file { $base_dir :

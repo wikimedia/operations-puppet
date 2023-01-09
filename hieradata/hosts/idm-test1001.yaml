@@ -1,0 +1,5 @@
+profile::idm::service_fqdn: 'idm-test1001.wikimedia.org'
+profile::idm::server::django_mysql_db_host: 'm5-master.eqiad.wmnet'
+profile::idm::server::django_mysql_db_user: 'idm_staging'
+profile::idm::server::django_mysql_db_name: 'idm_staging'
+

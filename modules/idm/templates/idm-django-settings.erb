@@ -14,22 +14,24 @@ ALLOWED_HOSTS = ['<%= @service_fqdn %>',]
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': '<%= @django_db_backends_mysql %>',
-#        'NAME': '<%= @django_mysql_db_name %>',
-#        'HOST': '<%= @django_mysql_db_host %>',
-#        'USER': '<%= @django_mysql_db_user %>',
-#        'PASSWORD': '<%= @django_mysql_db_password %>',
-#    }
-#}
-
+<%- if @development -%>
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': '/srv/idm/db.sqlite3', # noqa
     }
 }
+<%- else -%>
+DATABASES = {
+    'default': {
+        'ENGINE': '<%= @django_db_backends_mysql %>',
+        'NAME': '<%= @django_mysql_db_name %>',
+        'HOST': '<%= @django_mysql_db_host %>',
+        'USER': '<%= @django_mysql_db_user %>',
+        'PASSWORD': '<%= @django_mysql_db_password %>',
+    }
+}
+<%- end -%>
 
 LOGGING = {
     'version': 1,

@@ -1427,7 +1427,7 @@ node 'graphite2004.codfw.wmnet' {
 }
 
 node /^idm-test[12]001\.wikimedia\.org$/ {
-    role(insetup::infrastructure_foundations)
+    role(idm)
 }
 
 node /^idp[12]002\.wikimedia\.org$/ {
