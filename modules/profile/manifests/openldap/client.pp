@@ -27,8 +27,6 @@ class profile::openldap::client(
         'ca'               => 'ca-certificates.crt',
     }
 
-    class { 'ldap::client::utils': }
-
     class { 'ldap::client::openldap':
         ldapconfig => $ldapconfig,
     }
