@@ -10,7 +10,7 @@
 #   Path to write the consumable file.
 
 define prometheus::node_varnish_params (
-    Wmflib::Ensure $ensure = 'present',
+    Wmflib::Ensure $ensure = 'absent',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/varnish_params.prom',
 ) {
     file { '/usr/local/bin/prometheus-varnish-params':
