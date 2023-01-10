@@ -2543,11 +2543,6 @@ node 'puppetdb1003.eqiad.wmnet' {
     role(puppetdb)
 }
 
-# Test instance for puppetdb 7
-node 'puppetdb-test2001.codfw.wmnet' {
-    role(test)
-}
-
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[123]\.codfw\.wmnet$/ {
     role(pybaltest)
