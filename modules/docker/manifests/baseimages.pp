@@ -58,7 +58,16 @@ class docker::baseimages(
 
     if ($proxy_address and $proxy_port) {
         $http_proxy = "http://${proxy_address}:${proxy_port}"
-        $env = { 'http_proxy' => $http_proxy, 'https_proxy' => $http_proxy}
+        $env = {
+            'http_proxy'  => $http_proxy,
+            'https_proxy' => $http_proxy,
+            'no_proxy'    => [
+                '127.0.0.1',
+                '::1',
+                '.wikimedia.org',
+                '.wikipedia.org',
+            ].join(',')
+        }
     } else {
         $env = {}
     }
