@@ -38,6 +38,7 @@ ExecReload=/usr/local/sbin/reload-vcl <%= @reload_vcl_opts %>
 # label of separate VCLs, and would otherwise fail to compile if loaded
 # directly with -f.
 ExecStartPost=/usr/local/sbin/reload-vcl <%= @reload_vcl_opts %> --start-child
+# thread_pools * thread_pool_max = maximum number of threads spawned.
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
@@ -48,7 +49,9 @@ ExecStart=/usr/sbin/varnishd \
 <% end -%>
 -T 127.0.0.1:<%= @admin_port -%> \
 -f '' \
--p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \
+-p thread_pool_min=250 \
+-p thread_pool_max=<%= @thread_pool_max -%> \
+-p thread_pool_timeout=120 \
 -p vsl_reclen=2048 \
 -p workspace_backend=128k \
 -p vcc_allow_inline_c=true \

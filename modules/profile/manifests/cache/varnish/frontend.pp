@@ -1,4 +1,4 @@
-# @summary profile to configure frontend varnis cache
+# @summary profile to configure frontend varnish cache
 # @param cache_nodes list of all cache nodes
 # @param cache_cluster name of cache cluster e.g. upload or text
 # @param conftool_prefix the prefix to use for conftool
@@ -21,6 +21,7 @@
 # @param use_etcd_req_filters use confd dynamically generated rules
 # @param do_esitest temporary for testing ESI
 # @param fe_jemalloc_conf jemalloc configuration
+# @param thread_pool_max Maximum threads per pool
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix      = lookup('conftool_prefix'),
@@ -48,6 +49,7 @@ class profile::cache::varnish::frontend (
     Boolean                 $do_esitest           = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
     Boolean                 $enable_monitoring    = lookup('profile::cache::varnish::frontend::enable_monitoring'),
     Optional[String]        $fe_jemalloc_conf     = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
+    Integer[1]              $thread_pool_max      = lookup('profile::cache::varnish::frontend::thread_pool_max'),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -256,5 +258,6 @@ class profile::cache::varnish::frontend (
         uds_group         => $uds_group,
         uds_mode          => $uds_mode,
         enable_monitoring => $enable_monitoring,
+        thread_pool_max   => $thread_pool_max,
     }
 }

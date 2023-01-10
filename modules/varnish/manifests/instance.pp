@@ -1,4 +1,4 @@
-# @summary configuera a varnish instance
+# @summary configure a varnish instance
 # @param vcl_config A hash if vcl config
 # @param ports a list of ports to listen on
 # @param admin_port the port for admin operations
@@ -21,6 +21,7 @@
 # @param uds_group The group of the uds sockets
 # @param uds_mode The mode of the uds sockets
 # @param enable_monitoring enable monitoring
+# @param thread_pool_max Maximum threads per pool
 define varnish::instance(
     Hash                    $vcl_config,
     Array[Stdlib::Port]     $ports,
@@ -46,6 +47,7 @@ define varnish::instance(
     String                  $uds_group         = 'root',
     Stdlib::Filemode        $uds_mode          = '700',
     Boolean                 $enable_monitoring = true,
+    Integer[1]              $thread_pool_max   = 5000,
 ) {
 
     include varnish::common
