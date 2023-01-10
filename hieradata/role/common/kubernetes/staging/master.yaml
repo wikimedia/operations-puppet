@@ -3,7 +3,18 @@ profile::kubernetes::master::cluster_group: main
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer. So by setting "wikikube" here you are required to add
+# the intermediates "wikikube" and "wikikube_front_proxy".
+#
+# FIXME: This should be something like "cluster group/name" while retaining the discrimination
+#        between production and staging as we don't want to share the same intermediate across
+#        that boundary.
 profile::kubernetes::pki::intermediate: 'wikikube_staging'
+# Renew certificates if they are due to expire in 48h
+# wikikube_staging certs have a default expiry of 3 days, to this should ultimately lead
+# to every day renewals.
+profile::kubernetes::pki::renew_seconds: 172800
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::service_node_port_range: "1-65535"
