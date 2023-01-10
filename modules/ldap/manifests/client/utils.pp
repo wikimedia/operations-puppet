@@ -4,10 +4,9 @@
 # ldap database will then be listed as users of the system, so use care.
 
 class ldap::client::utils() {
-
-    ensure_packages(['python3-pycurl', 'python3-pyldap'])
-
     if $::realm == 'labs' {
+        ensure_packages('python3-ldap')
+
         # The 'ssh-key-ldap-lookup' tool is called during login ssh via AuthorizedKeysCommand.  It
         #  returns public keys from ldap for the specified username.
         # It is in /usr/sbin and not /usr/local/sbin because on Debian /usr/local is 0775
@@ -30,4 +29,3 @@ class ldap::client::utils() {
         }
     }
 }
-
