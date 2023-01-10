@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 https://transparency.wikimedia.org:
 - path: /
   assert_status: 302

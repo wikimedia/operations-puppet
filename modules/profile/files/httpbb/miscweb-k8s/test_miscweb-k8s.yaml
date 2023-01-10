@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 https://static-bugzilla.wikimedia.org:
 - path: /
   assert_status: 200

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 https://people.wikimedia.org:
 - path: /~rzl/
   assert_status: 200
