@@ -92,13 +92,13 @@ profile::pki::multirootca::intermediates:
     # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
     ocsp_port: 20020
     # Short expiry for staging
-    default_expiry: '24h'
+    default_expiry: '72h'
     profiles:
       # Keys with this profile are used to sign/verify service account tokens so
       # there is no need for server or client auth.
       service-account-management:
         # Short expiry for staging
-        expiry: '24h'
+        expiry: '72h'
         usages:
           - 'digital signature'
           - 'key encipherment'
@@ -108,7 +108,7 @@ profile::pki::multirootca::intermediates:
     # Kubernetes will only use the default profile for client auth certs
     ocsp_port: 20021
     # Short expiry for staging
-    default_expiry: '24h'
+    default_expiry: '72h'
 
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
