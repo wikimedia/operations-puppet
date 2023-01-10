@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: Apache-2.0
+http://phabricator.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/
+
+https://phabricator.wikimedia.org:
+- path: /
+  assert_status: 200
+
+https://phabricator.wikimedia.org:
+- path: /home/menu/view/3390/
+  assert_status: 200
+  assert_body_contains: Welcome to Wikimedia Phabricator
+
+https://phabricator.wikimedia.org:
+- path: /T2001
+  assert_status: 200
+  assert_body_contains: Our docs are teh suck
+
+https://phabricator.wikimedia.org:
+- path: /diffusion/
+  assert_status: 200
+  assert_body_contains: Create Repository
+
+https://phabricator.wikimedia.org:
+- path: /project/sprint/board/foo
+  assert_status: 301
+  assert_headers:
+    Location: http://phabricator.wikimedia.org/project/board/foo
+
+https://phabricator.wikimedia.org:
+- path: /maniphest/task/create
+  assert_status: 301
+  assert_headers:
+    Location: http://phabricator.wikimedia.org/maniphest/task/edit/form/1/
+
+https://phab.wmfusercontent.org:
+- path: /file/data/dclee3ukwcjrqhl2wlzj/PHID-FILE-rk6i5doc4gmfglpz6tby/preview-Screenshot_from_2022-06-08_16-22-31.png
+  assert_status: 200
+
+https://bugzilla.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://phabricator.wikimedia.org
+
+https://bugs.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://phabricator.wikimedia.org
+
+https://git.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/diffusion
+
+https://git.wikimedia.org:
+- path: /activity
+  assert_status: 301
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/diffusion/query/active/
+
+https://git.wikimedia.org:
+- path: /lucene
+  assert_status: 301
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/diffusion/query/advanced/
+
+https://git.wikimedia.org:
+- path: /blame/mediawiki%2Fcore.git/b3492e41f93f54561a4af8d8127b37e59e157a84/includes%2Fspecials%2FSpecialActiveusers.php
+  assert_status: 301
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/r/p/mediawiki/core;browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e59e157a84
+
+https://phabricator.wikimedia.org:
+- path: /r/p/mediawiki/core;browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e5
+  assert_status: 302
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/diffusion/MW/browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e5
+
+https://phabricator.wikimedia.org:
+- path: /diffusion/MW/browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e5
+  assert_status: 302
+  assert_headers:
+    Location: https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e5

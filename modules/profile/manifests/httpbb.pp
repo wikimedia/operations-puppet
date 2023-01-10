@@ -53,7 +53,8 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/docker-registry',
             '/srv/deployment/httpbb-tests/ores',
             '/srv/deployment/httpbb-tests/query_service',
-            '/srv/deployment/httpbb-tests/jobrunner'
+            '/srv/deployment/httpbb-tests/jobrunner',
+            '/srv/deployment/httpbb-tests/phabricator',
         ]:
             ensure => directory,
             purge  => true
@@ -91,6 +92,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'releases/test_releases.yaml':
         source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
+    }
+    httpbb::test_suite {'phabricator/test_phabricator.yaml':
+        source => 'puppet:///modules/profile/httpbb/phabricator/test_phabricator.yaml'
     }
     httpbb::test_suite {'noc/test_noc.yaml':
         source => 'puppet:///modules/profile/httpbb/noc/test_noc.yaml'
