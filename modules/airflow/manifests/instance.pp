@@ -12,12 +12,21 @@
 # airflow.cfg is rendered directly from the $airflow_config Hash.
 # A few smart airflow configs are set automatically:
 #
-# - core.sql_alchemy_conn
+# - core.sql_alchemy_conn (Deprecated on Airflow >= 2.3.0)
 #   If this is set in $airflow_config, then it may be an ERB template string.
 #   The final sql_alchemy_conn setting will render this template with local variable
 #   context, which allows to include $db_user and $db_password in the sql_alchemy_conn string
 #   without providing it directly in the $airflow_config param.  E.g.
 #   mysql://:<%= @db_user %>:<%= @db_password %>@an-test-coord1001.eqiad.wmnet/airflow_analytics?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+#   Deprecated and replaced with database.sql_alchemy_conn defined below
+#
+# - database.sql_alchemy_conn
+#   If this is set in $airflow_config, then it may be an ERB template string.
+#   The final sql_alchemy_conn setting will render this template with local variable
+#   context, which allows to include $db_user and $db_password in the sql_alchemy_conn string
+#   without providing it directly in the $airflow_config param.  E.g.
+#   postgresql://<%= @db_user %>:<%= @db_password %>@an-db1001.eqiad.wmnet:5432/airflow_data_engineering_dev?sslmode=require&sslrootcert=/etc/ssl/certs/Puppet_Internal_CA.pem
+#   connection also updated to a postgresql db on Airflow >= 2.3.0
 #
 # - kerberos settings
 #   If core.security == 'kerberos', it will be assumed that you are installing kerberos keytabs
@@ -39,6 +48,7 @@
 # NOTE: that airflow::instance will not create any databases or airflow users for you.
 # To do this, see:
 # https://airflow.apache.org/docs/apache-airflow/stable/howto/set-up-database.html#setting-up-a-mysql-database
+# https://airflow.apache.org/docs/apache-airflow/stable/howto/set-up-database.html#setting-up-a-postgresql-database
 #
 # NOTE: This define does not yet support webserver_config.py customization. The webserver_config.py that
 # is installed will grant Admin access to anyone that can access the webserver.  The default
@@ -122,7 +132,9 @@ define airflow::instance(
     Optional[Hash] $scap_targets        = undef,
     Wmflib::Ensure $ensure              = 'present',
 ) {
-    require ::airflow
+    # Require that something include the airflow base class
+    # before using airflow::instance.
+    Class['airflow'] -> Airflow::Instance[$title]
 
     $airflow_prefix = $::airflow::airflow_prefix
 
@@ -140,9 +152,7 @@ define airflow::instance(
         'core' => {
             'dags_folder' => "${airflow_home}/dags",
             'executor' => 'SequentialExecutor',
-            'sql_alchemy_conn' => "sqlite:///${airflow_home}/airflow.db",
             'load_examples' => 'False',
-            'load_default_connections' => 'False',
         },
         'logging' => {
             'base_log_folder' => "${airflow_home}/logs",
@@ -157,11 +167,6 @@ define airflow::instance(
             'expose_hostname' => 'True',
             'expose_stacktrace' => 'True',
         },
-        'api' => {
-            # Since the webservier is only exposed on 127.0.0.1 by default,
-            # allow access to the API.
-            'auth_backend' => 'airflow.api.auth.backend.default',
-        },
         'scheduler' => {
             'parsing_processes' => $::processors['count'],
         },
@@ -175,16 +180,61 @@ define airflow::instance(
         },
     }
 
-    # If $airflow_config specifies sql_alchemy_conn, we want to possibly render
-    # it as an ERB template to apply $db_user and $db_password.
-    if $airflow_config['core'] and $airflow_config['core']['sql_alchemy_conn'] {
+    # Value to be used for sql_alchemy_conn if is not set in provided $airflow_config.
+    $sql_alchemy_conn_default = "sqlite:///${airflow_home}/airflow.db"
+
+    # This logic to be smart about core.sql_alchemy_conn can be removed
+    # Once all airflow instances are upgraded.
+    if $::airflow::version != undef and versioncmp($::airflow::version, '2.3.0') >= 0 {
+        # If airflow version >= 2.3.0 use these new config defaults.
+        $airflow_config_versioned = {
+            'database' => {
+                'load_default_connections' => 'False',
+            },
+            'api' => {
+                # Since the webserver is only exposed on 127.0.0.1 by default,
+                # allow access to the API.
+                'auth_backends' => 'airflow.api.auth.backend.default',
+            },
+        }
+
+        # If $airflow_config specifies sql_alchemy_conn, we want to possibly render
+        # it as an ERB template to apply $db_user and $db_password.
+        $sql_alchemy_conn = 'sql_alchemy_conn' in $airflow_config['database'] ? {
+            true => inline_template($airflow_config['database']['sql_alchemy_conn']),
+            false => $sql_alchemy_conn_default,
+        }
         $airflow_config_sql_alchemy_conn = {
-            'core' => {
-                'sql_alchemy_conn' => inline_template($airflow_config['core']['sql_alchemy_conn'])
+            # sql_alchemy_conn is in database section in airflow >= 2.3.0
+            'database' => {
+                'sql_alchemy_conn' => $sql_alchemy_conn
             }
         }
     } else {
-        $airflow_config_sql_alchemy_conn = {}
+        # Else use the airflow < 2.3.0 config defaults.
+        $airflow_config_versioned = {
+            'core' => {
+                'load_default_connections' => 'False',
+            },
+            'api' => {
+                # Since the webserver is only exposed on 127.0.0.1 by default,
+                # allow access to the API.
+                'auth_backend' => 'airflow.api.auth.backend.default',
+            },
+        }
+
+        # If $airflow_config specifies sql_alchemy_conn, we want to possibly render
+        # it as an ERB template to apply $db_user and $db_password.
+        $sql_alchemy_conn = 'sql_alchemy_conn' in $airflow_config['core'] ? {
+            true => inline_template($airflow_config['core']['sql_alchemy_conn']),
+            false => $sql_alchemy_conn_default,
+        }
+        $airflow_config_sql_alchemy_conn = {
+            # sql_alchemy_conn is in core section in airflow < 2.3.0
+            'core' => {
+                'sql_alchemy_conn' => $sql_alchemy_conn
+            }
+        }
     }
 
     # Default kerberos security settings if airflow security is set to kerberos.
@@ -224,12 +274,19 @@ define airflow::instance(
     }
 
     # Merge all the airflow configs we've got.  This is:
-    # defaults <- kerberos <- secrets config <- provided config <- sql_alchemy_conn config with password
+    # defaults <- kerberos <- secrets config <- provided config <- airflow_config_new_syntax config with password
     $_airflow_config = deep_merge(
         $airflow_config_defaults,
         $airflow_config_kerberos,
         $airflow_config_secrets,
+        $airflow_config_versioned,
         $airflow_config,
+        # Usually, we'd put $airflow_config last,
+        # so it would take precedence over all default configs.
+        # sql_alchemy_conn is a special case, because we've already
+        # considered the $airflow_config provided setting in the above code.
+        # We've rendered the provided sql_alchemy_conn value as a template
+        # into $airflow_config_sql_alchemy_conn.
         $airflow_config_sql_alchemy_conn,
     )
 

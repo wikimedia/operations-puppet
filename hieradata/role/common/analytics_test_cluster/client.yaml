@@ -46,6 +46,11 @@ profile::monitoring::notifications_enabled: false
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 
+# Set the airflow package version that will be installed.
+# This will also be used to vary the airflow.cfg until all instances
+# are upgraded past 2.3.0.
+profile::airflow::airflow_version: '2.5.1-py3.10-20230228'
+
 # Set up airflow instances.
 profile::airflow::instances:
   # airflow@analytics_test instance.
@@ -53,18 +58,28 @@ profile::airflow::instances:
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
     service_group: analytics
-    db_user: airflow_analytics_test
     monitoring_enabled: false
+    airflow_config:
+      datahub:
+        enabled: False
+        conn_id: datahub_kafka_test
+        cluster: test
     connections:
       analytics-test-hive:
         conn_type: hive_metastore
         host: analytics-test-hive.eqiad.wmnet
         port: 9083
-        extra_dejson: {'authMechanism': 'GSSAPI'}
+        # Rename authMechanism to auth_mechanism
+        extra_dejson: {'auth_mechanism': 'GSSAPI'}
+      # Add the following connection
+      datahub_kafka_test:
+        conn_type: datahub_kafka
+        host: kafka-test1006.eqiad.wmnet:9092
 
 
-profile::airflow::database_host_default: an-test-coord1001.eqiad.wmnet
+profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
 profile::contacts::role_contacts: ['Data Engineering']
 
 profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
+

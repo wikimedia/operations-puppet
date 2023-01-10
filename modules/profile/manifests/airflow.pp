@@ -55,12 +55,22 @@
 #   Hostname used in the default sql_alchemy_conn when use_wmf_defaults is true.
 #   Default: an-coord1001.eqiad.wmnet
 #
+# [*airflow_version*]
+#   Airflow version used to separate deprecated config options.
+#   Default: 2.1.4.
+#   (TO DO: Set default to 2.5.0 once we upgrade everywhere.)
+#
 class profile::airflow(
-    Hash    $airflow_instances             = lookup('profile::airflow::instances'),
-    Hash    $airflow_instances_secrets     = lookup('profile::airflow::instances_secrets', { 'default_value' => {} }),
-    Boolean $use_wmf_defaults              = lookup('profile::airflow::use_wmf_defaults', { 'default_value' => true }),
-    String  $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-coord1001.eqiad.wmnet' })
+    Hash $airflow_instances               = lookup('profile::airflow::instances'),
+    Hash $airflow_instances_secrets       = lookup('profile::airflow::instances_secrets', { 'default_value' => {} }),
+    Boolean $use_wmf_defaults             = lookup('profile::airflow::use_wmf_defaults', { 'default_value' => true }),
+    String $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-coord1001.eqiad.wmnet' }),
+    Optional[String] $airflow_version     = lookup('profile::airflow::airflow_version', { 'default_value' => '2.1.4-py3.7-5' }),
 ) {
+
+    class { 'airflow':
+        version => $airflow_version,
+    }
 
     # Need to make sure a few packages exist. Some airflow code
     # (like Hive sensors) depends on these.
@@ -70,7 +80,6 @@ class profile::airflow(
         'libsasl2-dev',
         'libsasl2-modules-gssapi-mit',
     ])
-
     # If use_wmf_defaults, merge in smart per instance wmf defaults.
     $airflow_instances_with_defaults = $use_wmf_defaults ? {
         # Not $use_wmf_defaults, keep $airflow_instances as provided.
@@ -133,12 +142,6 @@ class profile::airflow(
                         'security' => 'kerberos',
                         'executor' => 'LocalExecutor',
 
-                        # NOTE: @db_user and @db_password should be provided via
-                        # $airflow_instances_secrets as the $db_user and $db_password params.
-                        # This ERb template string will be rendered in airflow::instance
-                        # with those values.
-                        'sql_alchemy_conn' => "mysql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem",
-
                         # The amount of parallelism as a setting to the executor. This defines
                         # the max number of task instances that should run simultaneously
                         # on this airflow installation.
@@ -151,17 +154,6 @@ class profile::airflow(
                         # This would be recommanded for intensive
                         # tasks for example.
                         'parallelism' => '64',
-
-                        # The maximum number of task instances allowed to run concurrently in each DAG.
-                        # To calculate the number of tasks that is running concurrently for a DAG, add
-                        # up the number of running tasks for all DAG runs of the DAG.
-                        # This value has been set lower than the default (16). An example scenario when
-                        # this would be useful is when you want to stop a new dag with an early start
-                        # date from stealing all the executor slots in a cluster.
-                        # Currently, dag_concurrency = 2 * max_active_runs_per_dag
-                        # This is configurable at the DAG level with max_active_tasks.
-                        # TODO Rename me max_active_tasks_per_dag after Airflow is upgraded to 2.2.0.
-                        'dag_concurrency' => '6',
 
                         # The maximum number of active DAG runs per DAG. The scheduler will not create
                         # more DAG runs if it reaches the limit. This is configurable at the DAG level
@@ -190,7 +182,7 @@ class profile::airflow(
                 },
                 'environment_extra' => {
                     # data-engineering/airflow-dags has custom airflow hooks that can use
-                    # Skein to launch jobs in yarn. Skein will be default write runtime
+                    # Skein to launch jobs in yarn. Skein will by default write runtime
                     # config files into ~/.skein.  A home dir might not exist for the
                     # user running airflow, so set SKEIN_CONFIG to write into AIRFLOW_HOME/.skein
                     # (/srv/airflow-$instance_name is default airflow home in airflow::instance)
@@ -202,8 +194,50 @@ class profile::airflow(
                 }
             }
 
+            if $airflow_version != undef and versioncmp($airflow_version, '2.3.0') >= 0 {
+                # Set WMF airflow default params for airflow version >= 2.3.0
+                $default_wmf_instance_params_versioned = {
+                    'airflow_config' => {
+                        'core' => {
+                            # The maximum number of task instances allowed to run concurrently in each DAG.
+                            # To calculate the number of tasks that is running concurrently for a DAG, add
+                            # up the number of running tasks for all DAG runs of the DAG.
+                            # This value has been set lower than the default (16). An example scenario when
+                            # this would be useful is when you want to stop a new dag with an early start
+                            # date from stealing all the executor slots in a cluster.
+                            # Currently, dag_concurrency = 2 * max_active_runs_per_dag
+                            # This is configurable at the DAG level with max_active_tasks.
+                            'max_active_tasks_per_dag' => '6',
+
+                        },
+                        'database' => {
+                            # NOTE: @db_user and @db_password should be provided via
+                            # $airflow_instances_secrets as the $db_user and $db_password params.
+                            # This ERb template string will be rendered in airflow::instance
+                            # with those values.
+                            'sql_alchemy_conn' => "postgres://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?sslmode=require&sslrootcert=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                        }
+                    }
+                }
+            } else {
+                # Set WMF airflow default params for airflow version < 2.3.0
+                $default_wmf_instance_params_versioned = {
+                    'airflow_config' => {
+                        'core' => {
+                            # Same as max_active_tasks_per_dag in airflow > 2.3.0
+                            'dag_concurrency' => '6',
+                            # NOTE: @db_user and @db_password should be provided via
+                            # $airflow_instances_secrets as the $db_user and $db_password params.
+                            # This ERb template string will be rendered in airflow::instance
+                            # with those values.
+                            'sql_alchemy_conn' => "mysql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                        }
+                    }
+                }
+            }
+
             # Merge this instance's params with the smart wmf defaults we just constructed.
-            $merged_instance_params = deep_merge($default_wmf_instance_params, $instance_params)
+            $merged_instance_params = deep_merge($default_wmf_instance_params, $default_wmf_instance_params_versioned, $instance_params)
 
             # $instances_accumulator is just the reduce accumulator.
             # Merge it with the instance_name -> params we just created to

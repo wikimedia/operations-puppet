@@ -9,9 +9,37 @@
 # Also installs a check_cmd used for NRPE checks when an airflow::instance
 # has $monitoring_enabled => true.
 #
-class airflow {
+# === Parameters
+# [*ensure*]
+#   Puppet ensure param fo airflow package and other files and services.
+#   Default: installed
+#
+# [*version*]
+#   Version to use when installing airflow package.
+#   If undef, will use 'installed', allowing any version.
+#   Default: undef.
+#
+class airflow(
+    Wmflib::Ensure $ensure = 'present',
+    Optional[String] $version = undef
+) {
+    # If $ensure is absent, then also ensure that
+    # airflow package is absent.  Else
+    # either use 'installed', or the provided $airflow_version.
+    $ensure_airflow_package = $ensure ? {
+        'absent' => 'absent',
+        default  => $version ? {
+            undef   => 'installed',
+            default => $version
+        }
+    }
+
+    package { 'airflow':
+        ensure => $ensure_airflow_package,
+    }
+
     # (mariadb-client needed to run airflow db shell.)
-    ensure_packages(['airflow', 'wmf-mariadb104-client'])
+    ensure_packages(['wmf-mariadb104-client'])
 
     # Path to where airflow conda env is installed
     $airflow_prefix = '/usr/lib/airflow'
@@ -19,7 +47,7 @@ class airflow {
     # Generic nrpe check for running a command and checking its retval.
     # Used for custom Airflow CLI checks.
     file { '/usr/local/bin/check_cmd':
-        ensure => 'present',
+        ensure => $ensure,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
@@ -30,7 +58,7 @@ class airflow {
     # Each airflow::instance can set up a systemd timer to call this script
     # and clean its log files.
     file { '/usr/local/bin/clean_logs':
-        ensure => 'present',
+        ensure => $ensure,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
@@ -38,6 +66,7 @@ class airflow {
     }
 
     systemd::service { 'airflow':
+        ensure  => $ensure,
         content => systemd_template('airflow'),
         restart => true,
     }
