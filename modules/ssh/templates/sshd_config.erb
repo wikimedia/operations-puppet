@@ -111,9 +111,9 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 
 UsePAM yes
 
-<%- if @realm == "labs" then -%>
+<%- if @authorized_keys_command and @authorized_keys_command_user -%>
 AuthorizedKeysCommand <%= @authorized_keys_command %>
-AuthorizedKeysCommandUser ssh-key-ldap-lookup
+AuthorizedKeysCommandUser <%= @authorized_keys_command_user %>
 <%- end -%>
 ##
 ## Anything below this point must start with a match declaration

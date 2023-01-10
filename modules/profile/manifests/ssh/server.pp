@@ -4,7 +4,7 @@
 # @param listen_addresses an array of addresses to listen on
 # @param permit_root if true allow root logins
 # @param authorized_keys_file space seperated list of authorized keys files
-# @param authorized_keys_command command to run for authorized keys
+# @param lookup_keys_from_ldap if true, user keys will be looked up from ldap
 # @param disable_nist_kex Allow uses to temporarily opt out of nist kex disabling
 # @param explicit_macs Allow users to opt out of more secure MACs
 # @param enable_hba enable host based authentication
@@ -22,7 +22,7 @@ class profile::ssh::server (
     Array[Stdlib::IP::Address]   $listen_addresses         = lookup('profile::ssh::server::listen_addresses'),
     Ssh::Config::PermitRootLogin $permit_root              = lookup('profile::ssh::server::permit_root'),
     Array[Stdlib::Unixpath]      $authorized_keys_file     = lookup('profile::ssh::server::authorized_keys_file'),
-    Stdlib::Unixpath             $authorized_keys_command  = lookup('profile::ssh::server::authorized_keys_command'),
+    Boolean                      $lookup_keys_from_ldap    = lookup('profile::ssh::server::lookup_keys_from_ldap'),
     Boolean                      $disable_nist_kex         = lookup('profile::ssh::server::disable_nist_kex'),
     Boolean                      $explicit_macs            = lookup('profile::ssh::server::explicit_macs'),
     Boolean                      $enable_hba               = lookup('profile::ssh::server::enable_hba'),
@@ -36,7 +36,40 @@ class profile::ssh::server (
     Array[Ssh::Match]            $match_config             = lookup('profile::ssh::server::match_config')
 
 ) {
+    if $lookup_keys_from_ldap {
+        ensure_packages(['python3-ldap'])
+
+        # The 'ssh-key-ldap-lookup' tool is called during login ssh via AuthorizedKeysCommand.  It
+        #  returns public keys from ldap for the specified username.
+        # It is in /usr/sbin and not /usr/local/sbin because on Debian /usr/local is 0775
+        # and sshd refuses to use anything under /usr/local because of the permissive group
+        # permission there (and group is set to 'staff', slightly different from root).
+        # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=538392
+        file { '/usr/sbin/ssh-key-ldap-lookup':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/profile/ssh/server/ssh-key-ldap-lookup.py',
+        }
+
+        # For security purposes, sshd will only run ssh-key-ldap-lookup as the 'ssh-key-ldap-lookup' user.
+        user { 'ssh-key-ldap-lookup':
+            ensure => present,
+            system => true,
+            home   => '/nonexistent', # Since things seem to check for $HOME/.whatever unconditionally...
+            shell  => '/bin/false',
+        }
+
+        $authorized_keys_command = '/usr/sbin/ssh-key-ldap-lookup'
+        $authorized_keys_command_user = 'ssh-key-ldap-lookup'
+    } else {
+        $authorized_keys_command = undef
+        $authorized_keys_command_user = undef
+    }
+
     class {'ssh::server':
-        * => wmflib::dump_params(),
+        *                            => wmflib::dump_params(['name', 'lookup_keys_from_ldap']),
+        authorized_keys_command      => $authorized_keys_command,
+        authorized_keys_command_user => $authorized_keys_command_user,
     }
 }

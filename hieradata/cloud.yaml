@@ -692,7 +692,7 @@ profile::ssh::server::permit_root: true
 profile::ssh::server::authorized_keys_file:
   - "/etc/ssh/userkeys/%u"
   - "/etc/ssh/userkeys/%u.d/cumin"
-profile::ssh::server::authorized_keys_command: /usr/sbin/ssh-key-ldap-lookup
+profile::ssh::server::lookup_keys_from_ldap: true
 profile::ssh::server::disable_nist_kex: true
 profile::ssh::server::explicit_macs: true
 profile::ssh::server::enable_hba: false
