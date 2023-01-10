@@ -642,7 +642,7 @@ groups:
   datacenter-ops:
     gid: 765
     description: Group of datacenter ops engineers
-    members: [wpao, jclark, pt1979, robh, cmjohnson]
+    members: [wpao, jclark, pt1979, robh, cmjohnson, jhancock]
     privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
                  'ALL = NOPASSWD: /usr/local/bin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
@@ -5667,7 +5667,16 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIN7H2VAL+XuBguUzu4xy+Y2nr9prd4ERMxe+jh0fp4h wmf_prod
-
+  jhancock:
+    ensure: present
+    realname: Jennifer Hancock
+    email: jhancock-ctr@wikimedia.org
+    expiry_contact: wpao@wikimedia.org
+    expiry_date: 2023-06-30
+    uid: 42729
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8RA5WEBD39qRNv6/910me3BfWfMTxvTq52IA8mq3EkFqX9bYgxtNQngbAg9QvIj2tyP6/WyRRn578limzjDcD7m2oquRKi4prSCZdZAdxd8Sgs/0OaTV54FJ7MFjABoD/wAOjXsE7MRnSf2JY/NCjAsnFbWRXgz+aKGhjF99oPxNegv6orxFng46rz3gq3I9yW334VmQgYRG8PhkMW86W8YO+XmR4DV3/BxcVy8/S3RnJybspj4otjjfPK1NGz7gRabdNhKNFTKUDL0Bmlno9VTn561gRcxSEZ82ZAysf5jtH7oM65v4Wws1Jnx5dAl0PZS7VOwa6Nj/z/sk8Yuwb wmf-production-12-05-2022
 ldap_only_users:
   abhas:
     ensure: present
