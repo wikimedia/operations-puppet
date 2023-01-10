@@ -3,6 +3,7 @@
 
 """
 2015 Chase Pettet
+2023 Jaime Crespo
 
 HTML that needs to exist per T108081/T119456
 
@@ -10,110 +11,284 @@ This is meant to ensure certain legal required
 content is present.  Content assurance is
 case INSENSITIVE.
 
-In the absence of rendering I am doing
-basic html validation here as it should suffice.
+Try to do more robust validation, that would
+still work if the general wording changes, or
+the license's url get moved, without
+frequently alerting sysops: T317169.
 """
 
+
 import argparse
-import re
+import logging
 import sys
-import urllib.request
+from urllib.request import urlopen, Request
+from urllib.error import URLError
+
+from bs4 import BeautifulSoup
 
 
-mobile_copyright = (r'Content\sis\savailable\sunder '
-                    r'<a\sclass=\"external\"\srel=\"nofollow\" '
-                    r'href="(https:)?\/\/creativecommons.org/licenses/by-sa/3\.0/">'
-                    r'CC\sBY-SA\s3\.0</a>\sunless\sotherwise\snoted\.')
-
-mobile_terms = (r'<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">'
-                r'Terms\sof\sUse</a>')
-
-mobile_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy">'
-                  r'Privacy\spolicy</a>')
-
-copyright = (r'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+'
-             r'href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:'
-             r'Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">'
-             r'Creative\sCommons\sAttribution-ShareAlike\sLicense 3.0</a>'
-             r'<a\srel="license"\shref="\/\/creativecommons.org\/licenses\/by-sa\/3\.0/"')
-
-terms = (r'additional\sterms\smay\sapply\.  '
-         r'By\susing\sthis\ssite,\syou\sagree\sto\sthe '
-         r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Terms_of_Use">Terms\sof'
-         r'\sUse</a>')
-
-privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org/wiki/Privacy_policy">'
-           r'Privacy\spolicy</a>')
-
-enwb_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy">'
-                r'Privacy\sPolicy\.<\/a>')
-
-enwp_trademark = (r'Wikipedia®\sis\sa\sregistered\strademark '
-                  r'of\sthe\s<a\shref="\/\/(www\.)?wikimediafoundation\.org/">'
-                  r'Wikimedia\sFoundation,\sInc\.</a>,\sa\snon-profit\sorganization\.')
-
-enwb_copyright = (r'Text\sis\savailable\sunder\sthe '
-                  r'<a\shref="\/\/creativecommons\.org\/licenses\/by-sa\/3\.0\/">'
-                  r'Creative\sCommons\sAttribution-ShareAlike\sLicense.?</a>; '
-                  r'additional\sterms\smay\sapply\.')
+# version of the CC license to check the match with
+LICENSE_VERSION = '3.0'
+# User agent used to retrieve web content, so it is not a generic one
+UA = 'Python/WMF/check_legal_html.py https://wikitech.org'
+# Icinga error constants
+ICINGA_OK = 0
+ICINGA_WARNING = 1
+ICINGA_CRITICAL = 2
+ICINGA_UNKNOWN = 3
 
 
-def log(msg, enabled):
-    if enabled:
-        print(msg)
+def uniformize_url(url):
+    """
+    Make sure provided urls are complete, valid ones, as sometimes
+    humans and browsers use shortcuts. Return the provided one, completed.
+    """
+    if url.startswith('//'):  # for urls like '//foundation.wikimedia.org'
+        url = 'https:' + url
+    elif not url.startswith('http://') and not url.startswith('https://'):
+        # for urls like 'locahost', '127.0.0.1' or 'wikipedia.org'
+        url = 'https://' + url
+    return url
 
 
-def site_html(url):
-    html_content = urllib.request.urlopen(url).readlines()
-    return '\n'.join([line.decode() for line in html_content])
+def download_page(url):
+    """
+    Given a URL with the address of a website, send a GET request
+    to download it and return its html
+    """
+    logging.info('Downloading website: %s', url)
+    url = uniformize_url(url)
+    try:
+        html = urlopen(Request(url, headers={'User-Agent': UA}))
+    except URLError as error:
+        logging.error('Error while downloading %s: %s', url, error)
+        sys.exit(ICINGA_CRITICAL)
+    return html
 
 
-def main():
+def text_contains_all_words(text, words):
+    """
+    Check that the given text contain all words on given list
+    """
+    for word in words:
+        if word not in text:
+            logging.info('Expected word %s is missing!', word)
+            return False
+    return True
 
-    ensure = {
+
+def link_contains_all_words(url, words):
+    """
+    Check that the given url, once downloaded contains every single world in the given list,
+    returns true if that is the case, false in other cases. Produces an error if the page fails
+    to load correctly.
+    """
+    html = download_page(url)
+    text = BeautifulSoup(html, 'html.parser').get_text().lower()
+    return text_contains_all_words(text, words)
+
+
+def link_contains_cc_license(url):
+    """
+    Check that the given url is a link to creative commons or an internal link containing all
+    of the following words "license creative commons share remix attribution share+alike <version>"
+    """
+    # avoid scraping external sites, which have robots.txt and filtering limitations
+    words = ['creativecommons.org', 'license', 'by-sa', LICENSE_VERSION]
+    if text_contains_all_words(url, words):
+        return True
+    words = ['license', 'creative', 'commons', 'share', 'remix', 'attribution',
+             'share alike', LICENSE_VERSION]
+    return link_contains_all_words(url, words)
+
+
+def copyright(footer):
+    """
+    Check that the footer contains a copyright link with the words "creative commons attribution
+    sharealike" or "cc by sa", and the url linked is a valid license. Return true if valid.
+    """
+    copyright_links = [link for link in footer.find_all('a')
+                       if (('creative' in link.get_text().lower()
+                            and 'commons' in link.get_text().lower())
+                           or 'cc' in link.get_text().lower())]
+    for link in copyright_links:
+        text = link.get_text().lower()
+        href = link.get('href')
+        logging.info('Checking text: "%s"', text)
+        if (text_contains_all_words(text, ['attribution', 'sharealike'])
+                or text_contains_all_words(text, ['by', 'sa'])):
+            return link_contains_cc_license(href)
+    logging.info('No link was found on the footer containing references to Creative Commons!')
+    return False
+
+
+def link_contains_wikimedia_terms(url):
+    """
+    Check that the given url is a link to Wikimedia's term of use"
+    """
+    words = ['services', 'privacy policy', 'content', 'activities', 'illegal', 'password',
+             'trademarks', 'licensing', 'dmca', 'third-party', 'management', 'termination',
+             'disclaimers',  'liability', 'modifications']
+    return link_contains_all_words(url, words)
+
+
+def terms(footer):
+    """
+    Check that the footer contains a terms of use link with the text 'terms' & 'use' and it links
+    to a url containing valid terms of use. Return true if valid.
+    """
+    terms_links = [link for link in footer.find_all('a')
+                   if 'terms' in link.get_text().lower()
+                      and 'use' in link.get_text().lower()]
+
+    for link in terms_links:
+        href = link.get('href')
+        text = link.get_text()
+        logging.info('Checking text: "%s"', text)
+        if len(text) > 0:
+            return link_contains_wikimedia_terms(href)
+    logging.info('No link was found on the footer containing references to Terms of use!')
+    return False
+
+
+def link_contains_wikimedia_privacy_policy(url):
+    """
+    Check that the given url is a link to Wikimedia's privacy policy
+    """
+    words = ['wikimedia', 'introduction', 'site', 'personal information', 'third party',
+             'collect', 'contribution', 'metadata', 'information',
+             'sharing', 'protect', 'contact']
+    return link_contains_all_words(url, words)
+
+
+def privacy(footer):
+    """
+    Check that the footer contains a privacy policy link with the text 'privacy' & 'policy' and
+    it links to a url containing a valid privacy policy. Return true if valid.
+    """
+    privacy_policy_links = [link for link in footer.find_all('a')
+                            if 'privacy' in link.get_text().lower()
+                               and 'policy' in link.get_text().lower()]
+
+    for links in privacy_policy_links:
+        href = links.get('href')
+        return link_contains_wikimedia_privacy_policy(href)
+    logging.info('No link was found on the footer containing references to a Privacy policy!')
+    return False
+
+
+def trademark(footer):
+    """
+    Check that the footer contains a trademark link with the text 'trademark' and it links to a
+    url containing a valid trademark description. Return true if valid.
+    """
+    text = footer.get_text().lower()
+    logging.info("Checking Wikipedia® trademark mention...")
+    words = ['wikipedia®', 'registered', 'trademark', 'wikimedia', 'foundation', 'inc']
+    if text_contains_all_words(text, words):
+        return True
+    logging.info('No reference to the Wikipedia trademark was found!')
+    return False
+
+
+def get_checks():
+    """
+    Return the list of functions to check, for each given check: desktop_enwb (English Wikibooks,
+    desktop site), desktop_enwp (English Wikipedia, desktop site) and mobile (wiki mobile site).
+    """
+    return {
         'desktop_enwb': [
-            enwb_copyright,
+            copyright,
             terms,
-            enwb_privacy,
+            privacy,
         ],
         'desktop_enwp': [
             copyright,
             terms,
             privacy,
-            enwp_trademark,
+            trademark,
         ],
         'mobile': [
-            mobile_copyright,
-            mobile_terms,
-            mobile_privacy,
+            copyright,
+            terms,
+            privacy,
         ],
     }
 
-    ap = argparse.ArgumentParser(description='Valid certain legal HTML exists')
-    ap.add_argument('-site', default='localhost')
-    ap.add_argument('-ensure', type=str)
-    ap.add_argument('-v', dest='verbose', action='store_true')
-    ap.set_defaults(verbose=False)
-    args = ap.parse_args()
 
+def site_footer(url):
+    """
+    Request and retrieve the HTML parsed tree of the footer
+    section (area contained within the <footer> html tag) of a given
+    webpage. Return the DOM of the first one found.
+    """
+    html = download_page(url)
+    footers = BeautifulSoup(html, 'html.parser').find_all('footer')
+    if len(footers) == 0:
+        logging.error("Found no footer section on html")
+        sys.exit(ICINGA_CRITICAL)
+    if len(footers) > 1:
+        logging.error("Found more than 1 footer sections")
+        sys.exit(ICINGA_CRITICAL)
+    return footers[0]
+
+
+def handle_args():
+    """
+    Handle the input arguments. Keep compatibility with older execution parameters.
+    """
+    parser = argparse.ArgumentParser(description=(
+        "Validate certain legal HTML exists on the footer of a given webpage, as per "
+        "legal requirement. See https://phabricator.wikimedia.org/T317169 & "
+        "https://phabricator.wikimedia.org/T108081 for more context.")
+    )
+    parser.add_argument('-site', default='localhost', help=(
+        "The url of the website to check"
+        "(e.g. 'https://en.wikipedia.org/wiki/Main_page'). By default it checks 'localhost'.")
+    )
+    parser.add_argument('-ensure', type=str, choices=get_checks().keys(), help=(
+        "Selection of checks to perform (mobile "
+        "site and non-Wikipedias don't have a Wikipedia trademark check).")
+    )
+    parser.add_argument('-v', '--verbose', action='store_true', default=False, help=(
+        "Enable verbose description "
+        "of checks, useful to debug the icinga errors.")
+    )
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    """
+    Main procedure
+    """
+    args = handle_args()
     site = args.site
-    verbose = args.verbose
-    ensures = ensure.get(args.ensure, [])
+    if args.verbose:
+        logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+    else:
+        logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.ERROR)
+    ensures = get_checks().get(args.ensure, [])
     if not ensures:
-        print("no html ensure list")
-        sys.exit(3)
+        logging.error("No valid list of checks found for the given ensure list")
+        sys.exit(ICINGA_UNKNOWN)
 
-    log(site, verbose)
-    html = site_html(site)
-    for match in ensures:
-        log(match, verbose)
-        count = len(re.findall(match, html, re.IGNORECASE))
-        log(count, verbose)
-        if not count:
-            print("%s html not found" % (match,))
-            sys.exit(2)
+    site_version = 'mobile site' if args.ensure == 'mobile' else 'desktop site'
+    check_list = ', '.join([c.__name__ for c in ensures])
 
-    print("all html is present.")
+    logging.info('Checking site: %s', site)
+    footer = site_footer(site)
+
+    for check in ensures:
+        logging.info('Executing check of %s...', check.__name__)
+        found = check(footer)
+        if not found:
+            logging.error('%s html not found for %s (%s).', check.__name__, site, site_version)
+            sys.exit(ICINGA_CRITICAL)
+        logging.info('%s html found correctly', check.__name__)
+
+    print(f'All legal html excerpts are present for {site} ({site_version}): {check_list}')
+    sys.exit(ICINGA_OK)
 
 
 if __name__ == '__main__':
