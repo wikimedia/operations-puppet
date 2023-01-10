@@ -50,7 +50,6 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 #profile::kubernetes::node::kubelet_token:
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
-profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::rsyslog::kubernetes::kubernetes_url: https://ml-staging-ctrl.svc.%{::site}.wmnet:6443
 profile::rsyslog::kubernetes::enable: true
 profile::kubernetes::master_fqdn: ml-staging-ctrl.svc.%{::site}.wmnet
