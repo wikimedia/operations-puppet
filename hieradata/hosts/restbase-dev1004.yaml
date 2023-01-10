@@ -1,2 +1,0 @@
-profile::cassandra::rack: 'rack1'
-profile::cassandra::auto_apply_grants: true
