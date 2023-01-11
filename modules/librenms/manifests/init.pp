@@ -31,9 +31,12 @@ class librenms(
         deploy_user => 'deploy-librenms',
     }
 
+    $librenms_uid = assert_type(Admin::UID::System::Global, 921)
+    $librenms_gid = assert_type(Admin::UID::System::Global, $librenms_uid)
+
     systemd::sysuser { 'librenms':
         ensure            => present,
-        id                => '921:921',
+        id                => "${librenms_uid}:${librenms_gid}",
         description       => 'LibreNMS system user',
         additional_groups => ['deploy-librenms'],
     }
