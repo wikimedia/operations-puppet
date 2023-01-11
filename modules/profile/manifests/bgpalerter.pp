@@ -12,6 +12,7 @@ class profile::bgpalerter(
     Integer[1]                 $asn         = lookup('profile::bgpalerter::asn'),
     String[1]                  $user        = lookup('profile::bgpalerter::user'),
     String[1]                  $group       = lookup('profile::bgpalerter::group'),
+    Bgpalerter::Rpki           $rpki        = lookup('profile::bgpalerter::rpki'),
     Array[Integer[1]]          $upstreams   = lookup('profile::bgpalerter::upstreams'),
     Array[Integer[1]]          $downstreams = lookup('profile::bgpalerter::downstreams'),
     Array[Bgpalerter::Report]  $reports     = lookup('profile::bgpalerter::reports'),
@@ -47,6 +48,7 @@ class profile::bgpalerter(
         before      => Class['bgpalerter'],
     }
     class { 'bgpalerter':
+        rpki             => $rpki,
         reports          => $reports,
         monitors         => $monitors,
         httpProxy        => $http_proxy,
