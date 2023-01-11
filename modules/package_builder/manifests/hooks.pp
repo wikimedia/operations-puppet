@@ -28,4 +28,10 @@ class package_builder::hooks(
         components   => 'main',
         basepath     => $basepath,
     }
+
+    package_builder::pbuilder_hook { 'sid':
+        distribution => 'sid',
+        components   => 'main',
+        basepath     => $basepath,
+    }
 }
