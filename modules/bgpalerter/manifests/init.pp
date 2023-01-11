@@ -55,6 +55,7 @@ class bgpalerter (
         'file'   => 'connectorRIS',
         'name'   => 'ris',
         'params' => {
+            'authorizationHeader' => undef,
             'carefulSubscription' => true,
             'url'                 => 'ws://ris-live.ripe.net/v1/ws/',
             'perMessageDeflate'   => true,
@@ -72,7 +73,6 @@ class bgpalerter (
         'monitoredPrefixesFiles'    => [$prefix_file],
         # Advanced settings (Don't touch here!)
         'alertOnlyOnce'             => false,
-        'authorizationHeader'       => undef,
         'fadeOffSeconds'            => 360,
         'checkFadeOffGroupsSeconds' => 30,
         'pidFile'                   => 'bgpalerter.pid',
