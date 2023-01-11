@@ -1,6 +1,9 @@
 ## NOTE namespaced keys (i.e. with ::) will NOT be looked up here
 ## See also https://phabricator.wikimedia.org/T209265
 lookup_options:
+  # Merge theses arrays with eth defaults that come from the module
+  "^profile::bgpalerter::(reports|monitors)$":
+    merge: unique
   "^profile::pki::(.*)::db_pass$":
     convert_to: 'Sensitive'
   '^profile::mail::mx::[\w_]+_password$':
