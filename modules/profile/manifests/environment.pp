@@ -6,6 +6,10 @@
 # @param custom_skel_bashrc when set, will replace the system skel bashrc with the given template (as a path)
 # @param custom_skel_zshrc when set, will replace the system skel zshrc with the given template (as a path)
 # @param editor choose the default editor, if 'use_default' will use the system's default
+# @param wikimedia_domains List of WMF domains configured on the caching servers (mostly internally hosted)
+# @param no_proxy_domains  List of exceptions to also not use the proxy for (e.g. localhost)
+# @param skip_domains Excludes domains from no_proxy_domains (e.g. if this list comes from a more
+#                     general list, but one of the domains should not skip the proxy after all).
 # @param profile_scripts list of script names to be added to /etc/profile.d and their source
 # @param variables a list of environment variables to set globally
 #
@@ -16,10 +20,23 @@ class profile::environment (
     Optional[String[1]]              $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
     Optional[String[1]]              $custom_skel_zshrc  = lookup('profile::environment::custom_skel_zshrc'),
     Optional[String[1]]              $custom_bashrc      = lookup('profile::environment::custom_bashrc'),
+    Array[Stdlib::Fqdn]              $wikimedia_domains  = lookup('profile::environment::wikimedia_domains'),
+    Array[Stdlib::Host]              $no_proxy_domains   = lookup('profile::environment::no_proxy_domains'),
+    Array[Stdlib::Host]              $skip_domains   = lookup('profile::environment::skip_domains'),
     Hash[String, Stdlib::Filesource] $profile_scripts    = lookup('profile::environment::profile_scripts'),
     Hash[String[1], String[1]]       $variables          = lookup('profile::environment::variables'),
 ) {
     ensure_packages(['vim', 'zsh'])
+    # See the following for some semantics on no_proxy
+    # https://about.gitlab.com/blog/2021/01/27/we-need-to-talk-no-proxy
+    $_no_proxy_domains = $wikimedia_domains + $no_proxy_domains - $skip_domains
+    $_variables = $_no_proxy_domains.empty ? {
+        true    => $variables,
+        default => $variables + {
+            'no_proxy' => $_no_proxy_domains.join(','),
+            'NO_PROXY' => $_no_proxy_domains.join(',')
+        },
+    }
     if $ls_aliases {
         exec { 'uncomment root bash aliases':
             path    => '/bin:/usr/bin',
@@ -124,10 +141,10 @@ class profile::environment (
     }
 
     # Global environment variables
-    unless $variables.empty {
+    unless $_variables.empty {
         systemd::environment { 'base-wmf-environment':
             priority  => 10,
-            variables => $variables,
+            variables => $_variables,
         }
     }
 }
