@@ -1,13 +1,22 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary imanage BGPalerter
 # @url https://github.com/nttgin/BGPalerter/blob/main/docs/configuration.md
+# @param logging logging configuration
+# @param rpki rpki configuration
+# @param rest REST configuration
 # @param monitors array of monitors to configure
 # @param reports array of reports to configure
+# @param persist_status Persist the status of BGPalerter. If the process is restarted, the list of alerts
+# @param notification_interval_seconds Defines the amount of seconds after which an alert can be repeated.
+# @param check_for_updates_at_boot Indicates if at each booth the application should check for updates
+# @param generate_prefix_list_every_days This parameter allows to automatically re-generate the prefix
+#   list after the specified amount of days. Set to 0 to disable it.
+# @param manage_user indicate if we should manage the daemon user
+# @param user the damoen user
+# @param http_proxy optional http proxy server to use
 # @param prefixes The prefixes to monitor.
 #   use ./bgpalerter-linux-x64 generate -a $AS -o prefixes.yaml to generate
-# @param prefixe_options The prefix options.  use the genrate command above to create config
-# @param notification_interval_seconds Defines the amount of seconds after which an alert can be repeated.
-# @param persist_status Persist the status of BGPalerter. If the process is restarted, the list of alerts
+# @param prefixes_options The prefix options.  use the genrate command above to create config
 #   already sent is recovered
 class bgpalerter (
     # defaults loaded from data/common.yaml
@@ -34,8 +43,8 @@ class bgpalerter (
     $base_dir = '/etc/bgpalerter'
     $working_dir = '/run/bgpalerter'
     $bgpalerter_bin = '/usr/bin/bgpalerter'
-    $config_file = "${base_dir}/config.yaml"
-    $prefix_file = "${base_dir}/prefixes.yaml"
+    $config_file = "${base_dir}/config.yml"
+    $prefix_file = "${base_dir}/prefixes.yml"
     $log_dir = $logging['directory'] ? {
         Stdlib::Unixpath => $logging['directory'],
         default          => "${base_dir}/${logging['directory']}"
@@ -54,8 +63,8 @@ class bgpalerter (
                 'type'          => 'UPDATE',
                 'host'          => undef,  # This seems empty in the generate config?
                 'socketOptions' => {'includeRaw' => false},
-            }
-        }
+            },
+        },
     }
     $filter_params = ['name', 'user', 'manage_user', 'prefixes', 'prefixes_options']
     $config = wmflib::dump_params($filter_params) + {
@@ -63,6 +72,7 @@ class bgpalerter (
         'monitoredPrefixesFiles'    => [$prefix_file],
         # Advanced settings (Don't touch here!)
         'alertOnlyOnce'             => false,
+        'authorizationHeader'       => undef,
         'fadeOffSeconds'            => 360,
         'checkFadeOffGroupsSeconds' => 30,
         'pidFile'                   => 'bgpalerter.pid',
@@ -81,12 +91,12 @@ class bgpalerter (
     file { $log_dir:
         ensure => directory,
         owner  => $user,
-        mode   => '0755'
+        mode   => '0755',
     }
     file { $working_dir:
         ensure => directory,
         owner  => $user,
-        mode   => '0750'
+        mode   => '0750',
     }
     file { $config_file:
         ensure  => file,
@@ -104,6 +114,6 @@ class bgpalerter (
     }
     systemd::service { 'bgpalerter':
         content   => template('bgpalerter/bgpalerter.service.erb'),
-        subscribe => File["${base_dir}/config.yaml", "${base_dir}/prefixes.yaml"],
+        subscribe => File[$config_file, $prefix_file],
     }
 }
