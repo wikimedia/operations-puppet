@@ -75,4 +75,40 @@ class openstack::trove::service::zed(
             group  => 'trove',
             mode   => '0644';
     }
+
+    # Apply https://review.opendev.org/c/openstack/trove/+/869511
+    # (Hopefully fixed after Zed)
+    $instance_file_to_patch = '/usr/lib/python3/dist-packages/trove/instance/models.py'
+    $instance_patch_file = "${instance_file_to_patch}.patch"
+    file {$instance_patch_file:
+        source => 'puppet:///modules/openstack/yoga/trove/hacks/instance/models.py.patch',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+    exec { "apply ${instance_patch_file}":
+        command => "/usr/bin/patch --forward ${instance_file_to_patch} ${instance_patch_file}",
+        unless  => "/usr/bin/patch --reverse --dry-run -f ${instance_file_to_patch} ${instance_patch_file}",
+        require => [File[$instance_patch_file], Package['trove-api']],
+        notify  => Service['trove-api', 'trove-taskmanager'],
+    }
+
+    $taskmanager_file_to_patch = '/usr/lib/python3/dist-packages/trove/taskmanager/models.py'
+    $taskmanager_patch_file = "${taskmanager_file_to_patch}.patch"
+    file {$taskmanager_patch_file:
+        source => 'puppet:///modules/openstack/yoga/trove/hacks/taskmanager/models.py.patch',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+    exec { "apply ${taskmanager_patch_file}":
+        command => "/usr/bin/patch --forward ${taskmanager_file_to_patch} ${taskmanager_patch_file}",
+        unless  => "/usr/bin/patch --reverse --dry-run -f ${taskmanager_file_to_patch} ${taskmanager_patch_file}",
+        require => [File[$taskmanager_patch_file], Package['trove-api']],
+        notify  => Service['trove-api', 'trove-taskmanager'],
+    }
+
+
+
+
 }
