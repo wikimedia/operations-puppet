@@ -59,7 +59,7 @@ class bgpalerter (
             'carefulSubscription' => true,
             'url'                 => 'wss://ris-live.ripe.net/v1/ws/',
             'perMessageDeflate'   => true,
-            'subscriptions'       => {
+            'subscription'        => {
                 'moreSpecific'  => true,
                 'type'          => 'UPDATE',
                 'host'          => undef,  # This seems empty in the generate config?
