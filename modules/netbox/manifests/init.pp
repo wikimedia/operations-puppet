@@ -52,8 +52,10 @@ class netbox(
     Stdlib::Unixpath              $directory                   = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath              $extras_path                 = '/srv/deployment/netbox-extras',
     String                        $scap_repo                   = 'netbox/deploy',
-    Stdlib::Port                  $local_redis_port            = 6380,
+    Stdlib::Port                  $redis_port                  = 6380,
     Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
+    Stdlib::Fqdn                  $redis_host                  = 'localhost',
+    String                        $redis_password              = '',
     Integer[0]                    $changelog_retention         = 90,
     Integer[0]                    $jobresult_retention         = 90,
     Boolean                       $prefer_ipv4                 = false,
@@ -86,27 +88,29 @@ class netbox(
         mode   => '0755',
     }
 
-    # Configure REDIS to be memory-only (no persistance) and to only accept local
-    # connections
-    redis::instance { String($local_redis_port):  # cast as int's are not valid titles
-      settings => {
-        # below setting prevents persistance
-        save                     => '""',
-        bind                     => '127.0.0.1 ::1',
-        maxmemory                => $local_redis_maxmem,
-        maxmemory_policy         => 'volatile-lru',
-        maxmemory_samples        => 5,
-        lazyfree-lazy-eviction   => 'yes',
-        lazyfree-lazy-expire     => 'yes',
-        lazyfree-lazy-server-del => 'yes',
-        lua-time-limit           => 5000,
-        databases                => 3,
-        protected-mode           => 'yes',
-        dbfilename               => '""',
-        appendfilename           => '""',
-      },
+    if $redis_host == 'localhost' {
+        # Configure REDIS to be memory-only (no persistance) and to only accept local
+        # connections
+        redis::instance { String($redis_port):  # cast as int's are not valid titles
+        settings => {
+            # below setting prevents persistance
+            save                     => '""',
+            bind                     => '127.0.0.1 ::1',
+            maxmemory                => $local_redis_maxmem,
+            maxmemory_policy         => 'volatile-lru',
+            maxmemory_samples        => 5,
+            lazyfree-lazy-eviction   => 'yes',
+            lazyfree-lazy-expire     => 'yes',
+            lazyfree-lazy-server-del => 'yes',
+            lua-time-limit           => 5000,
+            databases                => 3,
+            protected-mode           => 'yes',
+            dbfilename               => '""',
+            appendfilename           => '""',
+        },
+        }
+        prometheus::redis_exporter { String($redis_port): }
     }
-    prometheus::redis_exporter { String($local_redis_port): }
 
     systemd::sysuser { 'netbox':
         ensure   => $ensure,

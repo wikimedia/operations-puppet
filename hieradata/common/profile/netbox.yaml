@@ -44,6 +44,7 @@ profile::netbox::swift_auth_url: ~
 # netbox::swift_url_key: === private repo ===
 
 # Redis config
+profile::netbox::redis_host: localhost
 profile::netbox::redis_port: 6380
 profile::netbox::redis_maxmem: 1610612736
 

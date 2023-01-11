@@ -201,24 +201,19 @@ RQ_DEFAULT_TIMEOUT = 300
 
 SESSION_COOKIE_NAME = 'sessionid'
 
-WEBHOOKS_ENABLED = True
 REDIS = {
-    'webhooks': {
-        'HOST': 'localhost',
-        'PORT': <%= @local_redis_port %>,
-        'DATABASE': 0,
-        'DEFAULT_TIMEOUT': 300,
+    'tasks': {
+        'HOST': '<%= @redis_host %>',
+        'PORT': <%= @redis_port %>,
+        'PASSWORD': '<%= @redis_password %>',
+        'DATABASE': 0
     },
     'caching': {
-        'HOST': 'localhost',
-        'PORT': <%= @local_redis_port %>,
+        'HOST': '<%= @redis_host %>',
+        'PORT': <%= @redis_port %>,
+        'PASSWORD': '<%= @redis_password %>',
         'DATABASE': 1,
         'DEFAULT_TIMEOUT': 300,
-    },
-    'tasks': {
-        'HOST': 'localhost',
-        'PORT': <%= @local_redis_port %>,
-        'DATABASE': 2
     },
 }
 

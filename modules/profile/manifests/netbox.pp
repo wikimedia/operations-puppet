@@ -109,7 +109,7 @@ class profile::netbox (
     # redis config
     Stdlib::Port               $redis_port                  = lookup('profile::netbox::redis_port'),
     Integer                    $redis_maxmem                = lookup('profile::netbox::redis_maxmem'),
-
+    Stdlib::Fqdn               $redis_host                  = lookup('profile::netbox::redis_host'),
 
     # CAS Config
     Hash[String, String]       $cas_rename_attributes       = lookup('profile::netbox::cas_rename_attributes'),
@@ -136,6 +136,9 @@ class profile::netbox (
     include passwords::ldap::production
     $proxypass = $passwords::ldap::production::proxypass
 
+    include passwords::redis
+    $redis_password = ($redis_host == 'localhost').bool2str('', $passwords::redis::main_password)
+
     # packages required by netbox-extras
     ensure_packages(['python3-git', 'python3-pynetbox', 'python3-requests'])
 
@@ -158,8 +161,10 @@ class profile::netbox (
         swift_url_key               => $swift_url_key,
         ldap_server                 => $ldap_config['ro-server'],
         authentication_provider     => $authentication_provider,
-        local_redis_port            => $redis_port,
+        redis_port                  => $redis_port,
         local_redis_maxmem          => $redis_maxmem,
+        redis_host                  => $redis_host,
+        redis_password              => $redis_password,
         http_proxy                  => $http_proxy,
         changelog_retention         => $changelog_retention,
         jobresult_retention         => $jobresult_retention,
