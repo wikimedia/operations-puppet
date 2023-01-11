@@ -40,8 +40,9 @@ class profile::bgpalerter(
         },
     }
     systemd::sysuser { $user:
-        id          => '916:916',         # https://wikitech.wikimedia.org/wiki/UID
+        id          => '917:917',         # https://wikitech.wikimedia.org/wiki/UID
         description => 'Bgpalerter User',
+        before      => Class['bgpalerter'],
     }
     class { 'bgpalerter':
         reports          => $reports,
