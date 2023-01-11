@@ -126,7 +126,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [*platform_engineering_members, *ops_members, *releng_members,
+    members: &deployment_members [*platform_engineering_members, *ops_members, *releng_members,
               bd808, brion, cscott, ebernhardson,
               gjg, halfak, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
@@ -1036,11 +1036,15 @@ groups:
     gid: 836
     description: Created for deploying airflow-dags/platform_eng
     members: [*analytics_platform_eng_admins_members]
-
   reprepro:
     gid: 901
     system: true
     members: []
+  mwdebuggers:
+    gid: 839
+    description: deployers on mwdebug hosts
+    privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/disable-puppet*, /usr/local/sbin/enable-puppet*']
+    members: [*deployment_members]
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
   # swift:
