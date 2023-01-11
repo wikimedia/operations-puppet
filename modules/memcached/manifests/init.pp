@@ -132,21 +132,19 @@ class memcached(
                 before    => Service['memcached'],
             }
         }
-    } else {
-        if debian::codename::eq('bullseye') and $enable_tls {
-            apt::package_from_component { 'memcached_tls':
-                component => 'component/memcached-tls',
-                packages  => ['memcached'],
-                priority  => 1002,
-                before    => Service['memcached'],
+    } elsif debian::codename::eq('bullseye') and $enable_tls {
+        apt::package_from_component { 'memcached_tls':
+            component => 'component/memcached-tls',
+            packages  => ['memcached'],
+            priority  => 1002,
+            before    => Service['memcached'],
             }
-        } else {
-            package { 'memcached':
-                ensure => $version,
-                before => Service['memcached'],
+    } else {
+        package { 'memcached':
+            ensure => $version,
+            before => Service['memcached'],
             }
         }
-    }
 
     if $enable_tls {
         $override = true
