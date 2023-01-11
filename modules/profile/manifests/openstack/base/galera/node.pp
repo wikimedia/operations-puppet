@@ -33,7 +33,7 @@ class profile::openstack::base::galera::node(
     ferm::service { 'galera-cluster':
         proto  => 'tcp',
         port   => '(4567 4568 4444)',
-        srange => "(${openstack_controllers.join(' ')})",
+        srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
 
     # 9990 for the nodecheck service
