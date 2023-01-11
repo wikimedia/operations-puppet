@@ -81,7 +81,7 @@ class openstack::trove::service::zed(
     $instance_file_to_patch = '/usr/lib/python3/dist-packages/trove/instance/models.py'
     $instance_patch_file = "${instance_file_to_patch}.patch"
     file {$instance_patch_file:
-        source => 'puppet:///modules/openstack/yoga/trove/hacks/instance/models.py.patch',
+        source => 'puppet:///modules/openstack/zed/trove/hacks/instance/models.py.patch',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
@@ -96,7 +96,7 @@ class openstack::trove::service::zed(
     $taskmanager_file_to_patch = '/usr/lib/python3/dist-packages/trove/taskmanager/models.py'
     $taskmanager_patch_file = "${taskmanager_file_to_patch}.patch"
     file {$taskmanager_patch_file:
-        source => 'puppet:///modules/openstack/yoga/trove/hacks/taskmanager/models.py.patch',
+        source => 'puppet:///modules/openstack/zed/trove/hacks/taskmanager/models.py.patch',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
