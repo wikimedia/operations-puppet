@@ -7,10 +7,12 @@ define package_builder::pbuilder_hook(
     Stdlib::Unixpath $basepath='/var/cache/pbuilder',
 ) {
     file { "${basepath}/hooks/${distribution}":
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
     }
 
     file { "${basepath}/hooks/${distribution}/C10shell.wikimedia.org":
