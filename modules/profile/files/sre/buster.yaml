@@ -6,10 +6,10 @@ role::mediawiki::appserver::canary_api:
 role::mediawiki::appserver:
   target-q: TBD
 role::mediawiki::memcached:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 293216
 role::mediawiki::memcached::gutter:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 293216
 role::etcd::v3::kubernetes:
   target-q: 2023-1
@@ -250,6 +250,7 @@ role::kafka::main::logging:
   target-q: TBD
 role::kafka::logging:
   target-q: TBD
+  phab-task: 326420
 role::analytics_cluster::hadoop::client:
   target-q: TBD
   phab-task: 288804
@@ -339,7 +340,7 @@ role::microsites::peopleweb:
 role::prometheus:
   target-q: TBD
 role::prometheus::pop:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 309979
 role::proton:
   target-q: TBD
