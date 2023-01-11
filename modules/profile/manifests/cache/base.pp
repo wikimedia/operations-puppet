@@ -8,6 +8,8 @@
 #
 class profile::cache::base(
     String $cache_cluster                            = lookup('cache::cluster'),
+    Array[Stdlib::Fqdn] $wikimedia_domains           = lookup('wikimedia_domains'),
+    Array[Stdlib::Fqdn] $wmcs_domains                = lookup('wmcs_domains'),
     Optional[Stdlib::Host] $logstash_host            = lookup('logstash_host', {'default_value' => undef}),
     Optional[Stdlib::Port] $logstash_syslog_port     = lookup('logstash_syslog_port', {'default_value' => undef}),
     Optional[Stdlib::Port] $logstash_json_lines_port = lookup('logstash_json_lines_port', {'default_value' => undef}),
@@ -15,8 +17,6 @@ class profile::cache::base(
     Boolean $allow_iptables                          = lookup('profile::cache::base::allow_iptables', {'default_value' => false}),
     Boolean $performance_tweaks                      = lookup('profile::cache::base::performance_tweaks', {'default_value' => true}),
     Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
-    Array[Stdlib::Fqdn] $wikimedia_domains           = lookup('profile::cache::base::wikimedia_domains'),
-    Array[Stdlib::Fqdn] $wmcs_domains                = lookup('profile::cache::base::wmcs_domains'),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
     String $conftool_prefix                          = lookup('conftool_prefix'),
 ){
