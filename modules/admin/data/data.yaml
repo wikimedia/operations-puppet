@@ -6472,12 +6472,6 @@ ldap_only_users:
     ensure: present
     realname: Vaughn Walters
     email: vwalters@wikimedia.org
-  jhancock:
-    ensure: present
-    realname: Jennifer Hancock
-    email: jhancock-ctr@wikimedia.org
-    expiry_date: 2023-06-30
-    expiry_contact: wpao@wikimedia.org
   sdelbecque:
     ensure: present
     realname: Stephanie Delbecque
