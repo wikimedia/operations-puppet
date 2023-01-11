@@ -62,8 +62,8 @@ class idm::deployment (
     # process the latest git version is deployed.
     if($production == false){
         ensure_packages([
-            'python3-redis','python3-django', python3-mysqldb,
-            'python3-memcache', 'python3-ldap3', 'python3-rq',
+            'python3-redis','python3-django', 'python3-django-rq',
+            'python3-mysqldb', 'python3-memcache', 'python3-ldap3',
             'python3-social-django', 'redis'
         ])
 
