@@ -123,16 +123,14 @@ class memcached(
     } else {
         $listen = [$ip] + $notls_listen
     }
-    if $enable_16 {
-        # The component for Buster also provides TLS support
-        if debian::codename::eq('buster') {
+    if debian::codename::eq('buster') and $enable_16 {
             apt::package_from_component { 'memcached_16':
                 component => 'component/memcached16',
                 packages  => ['memcached'],
                 before    => Service['memcached'],
             }
         }
-    } elsif debian::codename::eq('bullseye') and $enable_tls {
+    elsif debian::codename::eq('bullseye') and $enable_tls {
         apt::package_from_component { 'memcached_tls':
             component => 'component/memcached-tls',
             packages  => ['memcached'],
