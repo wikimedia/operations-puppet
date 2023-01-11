@@ -57,7 +57,7 @@ class bgpalerter (
         'params' => {
             'authorizationHeader' => undef,
             'carefulSubscription' => true,
-            'url'                 => 'ws://ris-live.ripe.net/v1/ws/',
+            'url'                 => 'wss://ris-live.ripe.net/v1/ws/',
             'perMessageDeflate'   => true,
             'subscriptions'       => {
                 'moreSpecific'  => true,
