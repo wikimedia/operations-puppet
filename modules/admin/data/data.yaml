@@ -1113,6 +1113,10 @@ groups:
   #   gid: 916
   #   system: true
   #   members: []
+  # bgpalerter:
+  #   gid: 917
+  #   system: true
+  #   members: []
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet in statistics::user
   # stats:
