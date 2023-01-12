@@ -119,9 +119,9 @@ AuthorizedKeysCommandUser ssh-key-ldap-lookup
 ## Anything below this point must start with a match declaration
 ## or will only apply to the previous Matches above.
 ##
-<%- @match_config.each_pair do |match, config| -%>
-Match <%= match %>
-  <%- config.each_pair do |item, value| -%>
+<%- @match_config.each do |match| -%>
+Match <%= match['criteria'] %> <%= match['patterns'].join(',') %>
+  <%- match['config'].each_pair do |item, value| -%>
   <%= item %> <%= value %>
   <%- end -%>
 <%- end -%>

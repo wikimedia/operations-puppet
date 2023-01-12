@@ -703,7 +703,7 @@ profile::ssh::server::max_sessions: ~
 profile::ssh::server::max_startups: ~
 profile::ssh::server::gateway_ports: false
 profile::ssh::server::accept_env: ["LANG", "LC_*"]
-profile::ssh::server::match_config: {}
+profile::ssh::server::match_config: []
 
 profile::ssh::client::manage_ssh_keys: true
 profile::ssh::client::manage_ssh_config: false

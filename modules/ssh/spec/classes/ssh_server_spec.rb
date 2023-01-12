@@ -9,23 +9,42 @@ describe 'ssh::server' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'test match_config' do
-        let(:params) do {
-          match_config: {
-              '*.example.org' => { 'MaxStartups' => '10' },
-              '192.0.2' => { 'MaxStartups' => '10', 'MaxSessions' => '64:30:128' },
-            }
+        let(:params) do
+          {
+            match_config: [
+              {
+                'criteria' => 'Host',
+                'patterns' => ['*.example.org'],
+                'config'   => { 'MaxAuthTries' => '10' },
+              },
+              {
+                'criteria' => 'Address',
+                'patterns' => ['192.0.2'],
+                'config'   => { 'MaxAuthTries' => '10', 'MaxSessions' => '64:30:128' },
+              },
+              {
+                'criteria' => 'User',
+                'patterns' => ['bob', 'fred'],
+                'config'   => { 'MaxAuthTries' => '10', 'MaxSessions' => '64:30:128' },
+              }
+            ]
           }
         end
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/ssh/sshd_config')
             .with_content(/
-              Match\s\*\.example\.org\n
-              \s+MaxStartups\s10\n
+              Match\sHost\s\*\.example\.org\n
+              \s+MaxAuthTries\s10\n
             /x)
             .with_content(/
-              Match\s192\.0\.2\n
-              \s+MaxStartups\s10\n
+              Match\sAddress\s192\.0\.2\n
+              \s+MaxAuthTries\s10\n
+              \s+MaxSessions\s64:30:128\n
+            /x)
+            .with_content(/
+              Match\sUser\sbob,fred
+              \s+MaxAuthTries\s10\n
               \s+MaxSessions\s64:30:128\n
             /x)
         end

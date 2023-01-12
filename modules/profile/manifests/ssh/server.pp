@@ -15,25 +15,25 @@
 # @param max_startups allow users to override the maximum number ops startups
 # @param gateway_ports if true set sshd_config GatewayPorts to yes
 # @param accept_env array of elements for AcceptEnv config
-# @param $match_config a hash of additional configs to apply to specific matches.  The key will be the match
-#                      and the value will be a key value pair of additional config to apply
+# @param match_config a list of additional configs to apply to specific matches.
+#                     see Ssh::Match for the data structure
 class profile::ssh::server (
-    Stdlib::Port                 $listen_port                 = lookup('profile::ssh::server::listen_port'),
-    Array[Stdlib::IP::Address]   $listen_addresses            = lookup('profile::ssh::server::listen_addresses'),
-    Ssh::Config::PermitRootLogin $permit_root                 = lookup('profile::ssh::server::permit_root'),
-    Array[Stdlib::Unixpath]      $authorized_keys_file        = lookup('profile::ssh::server::authorized_keys_file'),
-    Stdlib::Unixpath             $authorized_keys_command     = lookup('profile::ssh::server::authorized_keys_command'),
-    Boolean                      $disable_nist_kex            = lookup('profile::ssh::server::disable_nist_kex'),
-    Boolean                      $explicit_macs               = lookup('profile::ssh::server::explicit_macs'),
-    Boolean                      $enable_hba                  = lookup('profile::ssh::server::enable_hba'),
-    Boolean                      $enable_kerberos             = lookup('profile::ssh::server::enable_kerberos'),
-    Boolean                      $disable_agent_forwarding    = lookup('profile::ssh::server::disable_agent_forwarding'),
-    Boolean                      $challenge_response_auth     = lookup('profile::ssh::server::challenge_response_auth'),
-    Optional[Integer]            $max_sessions                = lookup('profile::ssh::server::max_sessions'),
-    Optional[String[1]]          $max_startups                = lookup('profile::ssh::server::max_startups'),
-    Boolean                      $gateway_ports               = lookup('profile::ssh::server::gateway_ports'),
-    Array[String[1]]             $accept_env                  = lookup('profile::ssh::server::accept_env'),
-    Hash[String[1], Hash[String[1], String[1]]] $match_config = lookup('profile::ssh::server::match_config')
+    Stdlib::Port                 $listen_port              = lookup('profile::ssh::server::listen_port'),
+    Array[Stdlib::IP::Address]   $listen_addresses         = lookup('profile::ssh::server::listen_addresses'),
+    Ssh::Config::PermitRootLogin $permit_root              = lookup('profile::ssh::server::permit_root'),
+    Array[Stdlib::Unixpath]      $authorized_keys_file     = lookup('profile::ssh::server::authorized_keys_file'),
+    Stdlib::Unixpath             $authorized_keys_command  = lookup('profile::ssh::server::authorized_keys_command'),
+    Boolean                      $disable_nist_kex         = lookup('profile::ssh::server::disable_nist_kex'),
+    Boolean                      $explicit_macs            = lookup('profile::ssh::server::explicit_macs'),
+    Boolean                      $enable_hba               = lookup('profile::ssh::server::enable_hba'),
+    Boolean                      $enable_kerberos          = lookup('profile::ssh::server::enable_kerberos'),
+    Boolean                      $disable_agent_forwarding = lookup('profile::ssh::server::disable_agent_forwarding'),
+    Boolean                      $challenge_response_auth  = lookup('profile::ssh::server::challenge_response_auth'),
+    Optional[Integer]            $max_sessions             = lookup('profile::ssh::server::max_sessions'),
+    Optional[String[1]]          $max_startups             = lookup('profile::ssh::server::max_startups'),
+    Boolean                      $gateway_ports            = lookup('profile::ssh::server::gateway_ports'),
+    Array[String[1]]             $accept_env               = lookup('profile::ssh::server::accept_env'),
+    Array[Ssh::Match]            $match_config             = lookup('profile::ssh::server::match_config')
 
 ) {
     class {'ssh::server':
