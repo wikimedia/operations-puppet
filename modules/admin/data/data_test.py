@@ -53,7 +53,7 @@ class DataTest(unittest.TestCase):
         return set(
             username
             for username, val in self.admins["users"].items()
-            if val["ensure"] == "present" and not val.get("system", False)
+            if val["ensure"] == 'present' and not val.get("system", False)
         )
 
     def test_shell_user_is_not_system_user(self):
@@ -143,7 +143,11 @@ class DataTest(unittest.TestCase):
 
     def test_user_uids_are_uniques(self):
         """Ensure no two groups uses the same gid"""
-        uids = [v["uid"] for k, v in self.admins["users"].items() if not v.get('rename', False)]
+        uids = [
+            v["uid"]
+            for k, v in self.admins["users"].items()
+            if not v.get('rename', False)
+        ]
         dupes = [k for k, v in Counter(uids).items() if v > 1]
         self.assertEqual([], dupes, "Duplicate user UIDs: %r" % dupes)
 
@@ -201,9 +205,38 @@ class DataTest(unittest.TestCase):
         self.assertSetEqual(
             absent_members,
             absentees,
-            '\nFirst set indicates useres in the absent gtoup and withour ensure => absent.\n'
-            'Second set indicates useres with ensure => absent but missing from the absent group',
+            '\nFirst set indicates users in the absent group and without ensure => absent.\n'
+            'Second set indicates users with ensure => absent but missing from the absent group',
         )
+
+    def test_absent_ldap_members(self):
+        """Ensure all users in the absent group have ensure => absent and vice versa"""
+        absent_members = set(self.admins["groups"]["absent_ldap"]["members"])
+        absentees = set(
+            username
+            for username, val in self.admins["ldap_only_users"].items()
+            if val["ensure"] == "absent"
+        )
+        self.maxDiff = None
+        self.longMessage = True
+        self.assertSetEqual(
+            absent_members,
+            absentees,
+            '\nFirst set indicates users in the absent_ldap group and without ensure => absent.\n'
+            'Second set indicates users with ensure => absent '
+            'but missing from the absent_ldap group',
+        )
+
+    def test_multiple_absent(self):
+        """Ensure users are only absent in one group"""
+        absent_members = set(self.admins["groups"]["absent"]["members"])
+        absent_ldap_members = set(self.admins["groups"]["absent_ldap"]["members"])
+        duplicates = absent_members.intersection(absent_ldap_members)
+        if duplicates:
+            raise ValueError(
+                "The following users are listed both in the absent and absent_ldap groups: "
+                + ", ".join(duplicates)
+            )
 
     def test_group_members(self):
         """Ensure group members are real users"""
@@ -288,15 +321,14 @@ class DataTest(unittest.TestCase):
         no_expiry = {
             username
             for username, attrs in all_users.items()
-            if attrs.get("email", "").endswith("-ctr@wikimedia.org") and "expiry_date" not in attrs
+            if attrs.get("email", "").endswith("-ctr@wikimedia.org")
+            and "expiry_date" not in attrs
         }
 
         if no_expiry:
             raise ValueError(
                 "The following users are contractors (*-ctr@wikimedia.org) without an "
-                "expiry_date: {}".format(
-                    ", ".join(no_expiry)
-                )
+                "expiry_date: {}".format(", ".join(no_expiry))
             )
 
     def test_ssh_keys_are_valid(self):
@@ -325,6 +357,16 @@ class DataTest(unittest.TestCase):
         if deprecated:
             raise ValueError(
                 f"The following deprecated groups have members: {', '.join(deprecated)}"
+            )
+
+    def test_no_shell_user_has_entry_in_ldap_only(self):
+        ldap_users = set(self.admins["ldap_only_users"].keys())
+        duplicates = ldap_users.intersection(self._human_users())
+
+        if duplicates:
+            raise ValueError(
+                "The following users are listed both in users and ldap_only_users: "
+                + ", ".join(duplicates)
             )
 
 
