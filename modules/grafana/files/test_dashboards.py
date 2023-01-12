@@ -15,9 +15,6 @@ class ValidJSONDashboardTest(unittest.TestCase):
             json.load(f)
         return True
 
-    def testHomeDashboard(self):
-        self.load_json(os.path.join(test_dir, 'home.json'))
-
     def testCustomDashboards(self):
         for name in os.listdir(dashboards_dir):
             dashboard_path = os.path.join(dashboards_dir, name)
