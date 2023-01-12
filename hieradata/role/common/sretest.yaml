@@ -3,11 +3,3 @@ profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
 profile::admin::groups:
   - sretest-roots
-profile::environment::wikimedia_domains: "%{alias('wikimedia_domains')}"
-profile::environment::no_proxy_domains:
-  - 'wmnet'
-  - '127.0.0.1'
-  - '::1'
-profile::environment::skip_domains:
-  - wikimediafoundation.org
-

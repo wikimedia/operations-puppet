@@ -22,7 +22,7 @@ class profile::environment (
     Optional[String[1]]              $custom_bashrc      = lookup('profile::environment::custom_bashrc'),
     Array[Stdlib::Fqdn]              $wikimedia_domains  = lookup('profile::environment::wikimedia_domains'),
     Array[Stdlib::Host]              $no_proxy_domains   = lookup('profile::environment::no_proxy_domains'),
-    Array[Stdlib::Host]              $skip_domains   = lookup('profile::environment::skip_domains'),
+    Array[Stdlib::Host]              $skip_domains       = lookup('profile::environment::skip_domains'),
     Hash[String, Stdlib::Filesource] $profile_scripts    = lookup('profile::environment::profile_scripts'),
     Hash[String[1], String[1]]       $variables          = lookup('profile::environment::variables'),
 ) {
