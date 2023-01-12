@@ -5,6 +5,8 @@ nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
   - analytics-admins
+  # https://phabricator.wikimedia.org/T326827
+  - analytics-platform-eng-admins
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
@@ -38,6 +40,11 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'hdfs'
     filename: 'hdfs.keytab'
     parent_dir_grp: 'hadoop'
+  # https://phabricator.wikimedia.org/T326827
+  - role: 'analytics-platform-eng'
+    owner: 'analytics-platform-eng'
+    group: 'analytics-platform-eng'
+    filename: 'analytics-platform-eng.keytab'
 
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
