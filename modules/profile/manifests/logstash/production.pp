@@ -217,6 +217,34 @@ class profile::logstash::production (
     consumer_threads                      => 3,
   }
 
+  logstash::input::kafka { 'mediawiki-php-fpm-slowlog-eqiad':
+    kafka_cluster_name                    => 'logging-eqiad',
+    topic                                 => 'mediawiki.php-fpm.slowlog',
+    group_id                              => $input_kafka_consumer_group_id,
+    tags                                  => ['input-kafka-mediawiki-php-fpm-slowlog-eqiad', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
+  }
+
+  logstash::input::kafka { 'mediawiki-php-fpm-slowlog-codfw':
+    kafka_cluster_name                    => 'logging-codfw',
+    topic                                 => 'mediawiki.php-fpm.slowlog',
+    group_id                              => $input_kafka_consumer_group_id,
+    tags                                  => ['input-kafka-mediawiki-php-fpm-slowlog-codfw', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
+  }
+
   # Collect all EventGate instance error.validation topics into logstash.
   # Maps logstash::input::kafka title to a kafka cluster and topic to consume.
   $eventgate_validation_error_logstash_inputs = {
