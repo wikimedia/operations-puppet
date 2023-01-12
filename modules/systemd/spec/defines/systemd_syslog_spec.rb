@@ -17,7 +17,7 @@ describe 'systemd::syslog' do
                   .that_comes_before('Service[dummyservice]')
         end
         it 'should configure rsyslog to match programname dummyservice' do
-          is_expected.to contain_file('/etc/rsyslog.d/20-dummyservice.conf')
+          is_expected.to contain_file('/etc/rsyslog.d/40-dummyservice.conf')
                   .with_content(%r%^:programname, startswith, "dummyservice" /var/log/dummyservice/syslog\.log$%)
         end
       end
@@ -35,7 +35,7 @@ describe 'systemd::syslog' do
       context 'when invoked with log_filename=instance01.log' do
         let(:params) { {log_filename: 'instance01.log'} }
         it 'should configure rsyslog to log to instance01.log' do
-          is_expected.to contain_file('/etc/rsyslog.d/20-dummyservice.conf')
+          is_expected.to contain_file('/etc/rsyslog.d/40-dummyservice.conf')
                   .with_content(%r%^:programname, .* /var/log/dummyservice/instance01\.log$%)
         end
       end
