@@ -8,8 +8,6 @@ class role::mediawiki::memcached{
     include ::profile::base::production
     include ::profile::base::firewall
     include profile::memcached::instance
-    if debian::codename::eq('buster') {
-        include profile::memcached::memkeys
-    }
+    include profile::memcached::memkeys
     include profile::memcached::performance
 }
