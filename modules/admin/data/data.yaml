@@ -5759,9 +5759,6 @@ ldap_only_users:
   delphinepro:
     ensure: absent
     realname: Delphine Menard
-  dstrine:
-    ensure: absent
-    realname: David Strine
   dwalden:
     ensure: present
     realname: Dominic Walden
@@ -5778,10 +5775,6 @@ ldap_only_users:
     ensure: present
     realname: Erica Litrenta
     email: elitrenta@wikimedia.org
-  etonkovidova:
-    ensure: present
-    realname: Elena Tonkovidova
-    email: etonkovidova@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
@@ -5859,10 +5852,6 @@ ldap_only_users:
     ensure: present
     realname: Moh'd Abualruz
     email: mabualruz@wikimedia.org
-  manuel-wmde:
-    ensure: present
-    realname: Manuel Merz
-    email: manuel.merz@wikimedia.de
   mattflaschen:
     ensure: present
     realname: Matthew Flaschen
@@ -5890,10 +5879,6 @@ ldap_only_users:
   moushirael:
     ensure: absent
     realname: Moushira Elamrawy
-  lmata:
-    ensure: present
-    realname: Leonardo Mata
-    email: lmata@wikimedia.org
   multichill:
     ensure: present
     realname: Maarten Dammers
@@ -5930,20 +5915,12 @@ ldap_only_users:
   raz-shuty:
     ensure: absent
     realname: Raz Shuty
-  risler:
-    ensure: absent
-    realname: Ramsey Isler
-    email: risler@wikimedia.org
   scfc:
     ensure: absent
     realname: Tim Landscheidt
   schang:
     ensure: absent
     realname: Stella Chang
-  sgimeno:
-    ensure: present
-    realname: Sergio Gimeno
-    email: sgimeno@wikimedia.org
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
@@ -5961,9 +5938,6 @@ ldap_only_users:
     ensure: present
     realname: Wes Moran
     email: westonnh@gmail.com
-  tnegrin:
-    ensure: absent
-    realname: Toby Negrin
   tschumann:
     ensure: absent
     realname: Tobias Schumann
@@ -5978,14 +5952,6 @@ ldap_only_users:
   wikitrent:
     ensure: absent
     realname: Trent Hand
-  wpao:
-    ensure: present
-    realname: Willy Pao
-    email: wpao@wikimedia.org
-  wubwubwub:
-    ensure: present
-    realname: Amanda Bittaker
-    email: abittaker@wikimedia.org
   zacklabs:
     ensure: present
     realname: Zachary McCune
@@ -6031,10 +5997,6 @@ ldap_only_users:
     ensure: present
     realname: Jan Dittrich
     email: jan.dittrich@wikimedia.de
-  tonina:
-    ensure: absent
-    realname: Tonina Zhelyazkova
-    email: tonina.zhelyazkova@wikimedia.de
   tskaff:
     ensure: present
     realname: Thea Skaff
@@ -6052,10 +6014,6 @@ ldap_only_users:
     ensure: present
     realname: Katie Horn
     email: khorn@wikimedia.org
-  bpirkle:
-    ensure: present
-    realname: Bill Pirkle
-    email: bpirkle@wikimedia.org
   ppena:
     ensure: absent
     realname: Pats Pena
@@ -6082,10 +6040,6 @@ ldap_only_users:
     ensure: present
     realname: Kate Chapman
     email: kchapman@wikimedia.org
-  kzeta:
-    ensure: present
-    realname: Kate Zimmerman
-    email: kzimmerman@wikimedia.org
   deskana:
     ensure: present
     realname: Dan Garry
@@ -6118,10 +6072,6 @@ ldap_only_users:
   dz1:
     ensure: absent
     realname: Deb Zierten
-  annet:
-    ensure: present
-    realname: Anne Tomasevich
-    email: atomasevich@wikimedia.org
   ahollender:
     ensure: present
     realname: Alex Hollender
@@ -6204,10 +6154,6 @@ ldap_only_users:
   kuz:
     ensure: absent
     realname: Andrew Kuznetsov
-  demon:
-    ensure: present
-    realname: Chad Horohoe
-    email: chad@wikimedia.org
   cdunn:
     ensure: absent
     realname: Carol Dunn
@@ -6390,10 +6336,6 @@ ldap_only_users:
     ensure: present
     realname: Emanuele Leoni
     email: eleoni@wikimedia.org
-  aminalhazwani:
-    ensure: present
-    realname: Amin Al Hazwani
-    email: aalhazwani@wikimedia.org
   ollieshotton:
     ensure: present
     realname: Ollie Shotton
