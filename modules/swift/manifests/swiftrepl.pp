@@ -62,7 +62,7 @@ class swift::swiftrepl (
     }
 
     systemd::timer::job { 'swiftrepl-mw':
-        ensure          => $ensure,
+        ensure          => absent,
         command         => '/usr/local/bin/swiftrepl-mw repl commons notcommons unsharded global timeline transcoded',
         description     => 'Ensure mediawiki containers are synchronized across sites',
         interval        => {'start' => 'OnCalendar', 'interval' => $timer_interval},
