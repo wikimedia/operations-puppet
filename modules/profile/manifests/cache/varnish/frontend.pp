@@ -225,7 +225,10 @@ class profile::cache::varnish::frontend (
     # Monitor the mmap usage of varnish; Make sure it doesn't exceed the system limits
     class { 'prometheus::node_sysctl': }
 
-    prometheus::node_varnish_params { 'prometheus-varnish-params': }
+    prometheus::node_varnish_params { 'prometheus-varnish-params':
+        param_thread_pool_max => $thread_pool_max,
+        outfile               => '/var/lib/prometheus/node.d/varnish_params.prom',
+    }
 
     # Monitor number of varnish file descriptors. Initially added to track
     # T243634 but generally useful.

@@ -2,27 +2,26 @@
 #
 # = define: prometheus::node_varnish_params
 #
-# Output runtime varnish parameters for consumption by Prometheus' node_exporter
+# Output varnish parameters for consumption by Prometheus' node_exporter
 #
 # = Parameters
+#
+# [*param_thread_pool_max*]
+#   Maximum threads per pool.
 #
 # [*outfile*]
 #   Path to write the consumable file.
 
 define prometheus::node_varnish_params (
-    Wmflib::Ensure $ensure = 'absent',
-    Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/varnish_params.prom',
+    Integer[1] $param_thread_pool_max,
+    Pattern[/\.prom$/] $outfile,
+    Wmflib::Ensure $ensure = 'present',
 ) {
-    file { '/usr/local/bin/prometheus-varnish-params':
-        ensure => absent,
-    }
-
-    systemd::timer::job { 'prometheus_varnish_params':
-        ensure      => $ensure,
-        require     => File['/usr/local/bin/prometheus-varnish-params'],
-        description => 'Collect select Varnish runtime parameters',
-        user        => 'root',
-        command     => "/usr/local/bin/prometheus-varnish-params ${outfile}",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/10'},
+    file { $outfile:
+        ensure  => stdlib::ensure($ensure, 'file'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('prometheus/varnish_params.prom.erb'),
     }
 }

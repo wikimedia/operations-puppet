@@ -1,0 +1,5 @@
+<%# SPDX-License-Identifier: Apache-2.0 -%>
+# HELP varnish_param_threads_max Total maximum number of threads
+# TYPE varnish_param_threads_max gauge
+<%# thread_pools has always been 2 and likely won't change -%>
+varnish_param_threads_max <%= @param_thread_pool_max * 2 %>
