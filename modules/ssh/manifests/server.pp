@@ -60,12 +60,13 @@ class ssh::server (
     }
 
     file { '/etc/ssh/sshd_config':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('ssh/sshd_config.erb'),
-        require => Package['openssh-server'],
+        ensure       => file,
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0444',
+        content      => template('ssh/sshd_config.erb'),
+        validate_cmd => '/usr/sbin/sshd -t -f %',
+        require      => Package['openssh-server'],
     }
 
     # we use the legacy facts here specificaly because we override them in
