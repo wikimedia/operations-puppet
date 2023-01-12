@@ -27,7 +27,9 @@ class profile::bgpalerter(
         'ignore'              => false,
         'group'               => $group,
     }
-    $prefixes = Hash($network::constants::external_networks.map |$net| {
+    $all_external_networks = concat($network::constants::external_networks,
+                                    $network::constants::customers_networks)
+    $prefixes = Hash($all_external_networks.map |$net| {
         [$net, $prefix_config]
     })
     $prefixes_options = {

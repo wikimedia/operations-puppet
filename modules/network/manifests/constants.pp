@@ -9,6 +9,8 @@ class network::constants {
     # they're externally route-able (the ones used for private vlans).
     $external_networks = $network_data['network::external']
 
+    $customers_networks = $network_data['network::customers']
+
     $network_infra = $network_data['network::infrastructure']
 
     $mgmt_networks_bydc = $network_data['network::management']
