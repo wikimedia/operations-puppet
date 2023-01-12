@@ -6,7 +6,12 @@ class icinga::plugins(
     String $icinga_group,
 ){
 
-    ensure_packages(['nagios-nrpe-plugin', 'python3-requests', 'python3-rfc3986'])
+    ensure_packages([
+        'nagios-nrpe-plugin',
+        'python3-requests',
+        'python3-rfc3986',
+        'python3-bs4',  # for check_legal_html.py
+    ])
 
     file { '/usr/lib/nagios':
         ensure => directory,
