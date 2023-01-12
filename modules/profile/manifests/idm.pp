@@ -11,6 +11,7 @@ class profile::idm(
     Integer      $uwsgi_process_count       = lookup('profile::idm::uwsgi_process_count', {'default_value'          => 4}),
     Boolean      $development               = lookup('profile::idm::development', {'default_value'                  => false}),
     Boolean      $production                = lookup('profile::idm::production', {'default_value'                   => false}),
+    Boolean      $envoy_termination         = lookup('profile::idm::envoy_termination', {'default_value'            => false}),
 ) {
 
     $base_dir = '/srv/idm'
@@ -19,9 +20,20 @@ class profile::idm(
     $project = 'bitu'
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
+    include passwords::ldap::production
+    class{ 'sslcert::dhparam': }
+    if $envoy_termination {
+      include profile::tlsproxy::envoy
+      $ferm_port = 443
+      profile::auto_restarts::service { 'envoyproxy': }
+    } else {
+      # In cloud we use the shared wmfcloud proxy for tls termination
+      $ferm_port = 80
+    }
+
     ferm::service { 'idm_http':
         proto => 'tcp',
-        port  => 'http',
+        port  => $ferm_port,
     }
 
     class { 'idm::deployment':

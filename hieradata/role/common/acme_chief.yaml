@@ -91,6 +91,13 @@ profile::acme_chief::certificates:
         authorized_regexes:
         - '^icinga[12]001\.wikimedia\.org$'
         - '^alert[12]001\.wikimedia\.org$'
+    idm-test:
+        CN: 'idm-test.wikimedia.org'
+        SNI:
+        - 'idm-test1001.wikimedia.org'
+        challenge: dns01
+        authorized_hosts:
+        - 'idm-test1001.wikimedia.org'
     idp:
         CN: 'idp.wikimedia.org'
         SNI:
