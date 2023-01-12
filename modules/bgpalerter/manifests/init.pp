@@ -112,8 +112,9 @@ class bgpalerter (
         mode    => '0444',
         content => $_prefixes.to_yaml,
     }
-    systemd::service { 'bgpalerter':
-        content   => template('bgpalerter/bgpalerter.service.erb'),
+    service { 'node-bgpalerter':
+        ensure    => 'running',
+        enable    => true,
         subscribe => File[$config_file, $prefix_file],
     }
 }
