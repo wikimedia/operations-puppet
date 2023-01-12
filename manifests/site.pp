@@ -336,6 +336,10 @@ node 'bast5002.wikimedia.org' {
     role(bastionhost)
 }
 
+node 'bast5003.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
+}
+
 # drmrs/bastion on Ganeti
 node 'bast6001.wikimedia.org' {
     role(bastionhost)

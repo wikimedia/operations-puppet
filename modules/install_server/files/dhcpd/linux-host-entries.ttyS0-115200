@@ -159,6 +159,12 @@ host bast5002 {
     fixed-address bast5002.wikimedia.org;
 }
 
+host bast5003 {
+    hardware ethernet aa:00:00:90:9c:78;
+    fixed-address bast5003.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host bast6001 {
     hardware ethernet AA:00:00:4B:65:48;
     fixed-address bast6001.wikimedia.org;
