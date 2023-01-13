@@ -69,9 +69,6 @@ class profile::swift::storage (
         default => 'absent',
     }
 
-    #We use confctl to know which DC is active, needed for the rclone scripts
-    class { 'conftool::scripts': }
-
     class { 'swift::rclone':
         ensure      => $rclone_ensure,
         credentials => $global_account_keys,
