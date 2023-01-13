@@ -44,8 +44,18 @@ node 'an-coord1002.eqiad.wmnet' {
     role(analytics_cluster::coordinator::replica)
 }
 
+# New an-coord  nodes T321119
+node /^an-coord100[3-4]\.eqiad\.wmnet$/ {
+    role(insetup::data_engineering)
+}
+
 node /^an-db100[1-2]\.eqiad\.wmnet$/ {
     role(analytics_cluster::postgresql)
+}
+
+# New an-mariadb nodes T321119
+node /^an-mariadb100[1-2]\.eqiad\.wmnet$/ {
+    role(insetup::data_engineering)
 }
 
 node 'an-launcher1002.eqiad.wmnet' {
