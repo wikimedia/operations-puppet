@@ -70,9 +70,11 @@ class profile::microsites::peopleweb (
 
     # warn users on servers that are NOT the active backend and source of rsync
     if $::fqdn == $rsync_src_host {
-        $motd_content = "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'"
+      $motd_content = "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'"
+      $rsync_auto_restart_ensure = 'present'
     } else {
-        $motd_content = "#!/bin/sh\necho '\nThis is NOT the active backend for people.wikimedia.org. DO NOT USE THIS. Please go to ${rsync_src_host} instead.\n'"
+      $motd_content = "#!/bin/sh\necho '\nThis is NOT the active backend for people.wikimedia.org. DO NOT USE THIS. Please go to ${rsync_src_host} instead.\n'"
+      $rsync_auto_restart_ensure = 'absent'
     }
 
     motd::script { 'people-motd':
@@ -97,5 +99,8 @@ class profile::microsites::peopleweb (
         dest_host   => $rsync_dst_host,
         module_path => '/home',
     }
-    profile::auto_restarts::service { 'rsync': }
+
+    profile::auto_restarts::service { 'rsync':
+        ensure => $rsync_auto_restart_ensure,
+    }
 }
