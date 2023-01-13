@@ -10,6 +10,8 @@ frontend k8s-ingress-https
     mode http
     option httplog
     timeout client 1h
+    # T326217
+    http-request set-header REFERER http://hub.paws.wmcloud.org/hub/
 
     acl is_public hdr(host) -i public.paws.wmcloud.org
     acl is_blocked_ip hdr_ip(x-forwarded-for,1) -f /etc/haproxy/blocklisted.ips
