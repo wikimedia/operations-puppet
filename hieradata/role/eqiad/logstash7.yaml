@@ -32,4 +32,3 @@ profile::elasticsearch::dc_settings:
         - logstash1034.eqiad.wmnet
         - logstash1035.eqiad.wmnet
 
-profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-eqiad'
