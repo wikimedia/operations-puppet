@@ -236,8 +236,6 @@ profile::elasticsearch::common_settings:
     # Increase the per-node cache for compiled LTR models from default 10MB
     ltr_cache_size: '100mb'
 
-profile::logstash::apifeatureusage::targets:
-  - deployment-elastic09.deployment-prep.eqiad1.wikimedia.cloud
 nfs_mounts:
   project: false
   home: false
