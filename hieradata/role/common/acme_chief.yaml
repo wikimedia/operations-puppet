@@ -95,7 +95,7 @@ profile::acme_chief::certificates:
         CN: 'idm-test.wikimedia.org'
         SNI:
         - 'idm-test1001.wikimedia.org'
-        challenge: dns01
+        challenge: dns-01
         authorized_hosts:
         - 'idm-test1001.wikimedia.org'
     idp:
