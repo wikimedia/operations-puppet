@@ -4,10 +4,6 @@
 # eventlogging services are running.
 #
 class eventlogging::monitoring::jobs($ensure = 'present') {
-    file { '/usr/lib/nagios/plugins/check_eventlogging_jobs':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'check_eventlogging_jobs':
         ensure => $ensure,
         source => 'puppet:///modules/eventlogging/check_eventlogging_jobs.systemd',
