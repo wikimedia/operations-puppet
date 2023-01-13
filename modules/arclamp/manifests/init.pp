@@ -79,7 +79,9 @@ class arclamp(
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 
-    $timer_environment = {'MAILTO' => $errors_mailto}
+    $timer_environment_file = '/etc/arclamp-timer.env'
+    $timer_environment = { 'MAILTO' => $errors_mailto }
+
     if $swift_account_name == undef {
         $swift_timer_environment = {}
     } else {
@@ -100,12 +102,24 @@ class arclamp(
             mode   => '0750',
         }
         file { $account_file:
-            ensure  => $ensure,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0440',
-            content => "export ST_AUTH=${swift_auth_url}/auth/v1.0\nexport ST_USER=${swift_user}\nexport ST_KEY=${swift_key}\n"
+            ensure    => $ensure,
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0440',
+            content   => "export ST_AUTH=${swift_auth_url}/auth/v1.0\nexport ST_USER=${swift_user}\nexport ST_KEY=${swift_key}\n",
+            show_diff => false,
         }
+    }
+
+    # Use an 'EnvironmentFile=' directive for sensitive content.
+    # 'Environment=' settings in unit files are world-readable via 'systemctl show'
+    file { $timer_environment_file:
+        ensure    => $ensure,
+        owner     => 'xenon',
+        group     => 'xenon',
+        mode      => '0440',
+        show_diff => false,
+        content   => (($timer_environment + $swift_timer_environment).map |$k, $v| { "${k}=${v}" } + ['']).join("\n"),
     }
 
     # Generate flamegraphs from raw log data:
@@ -116,7 +130,7 @@ class arclamp(
         monitoring_enabled => false,
         logging_enabled    => false,
         send_mail          => true,
-        environment        => $timer_environment + $swift_timer_environment,
+        environment_file   => $timer_environment_file,
         command            => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs',
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/15:0'},
         require            => Package['performance/arc-lamp']
@@ -130,7 +144,7 @@ class arclamp(
         monitoring_enabled => false,
         logging_enabled    => false,
         send_mail          => true,
-        environment        => $timer_environment + $swift_timer_environment,
+        environment_file   => $timer_environment_file,
         command            => "/srv/deployment/performance/arc-lamp/arclamp-compress-logs ${compress_logs_days}",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:17:0'},
         require            => Package['performance/arc-lamp']
