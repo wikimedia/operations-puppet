@@ -14,11 +14,7 @@ define prometheus::node_varnish_params (
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/varnish_params.prom',
 ) {
     file { '/usr/local/bin/prometheus-varnish-params':
-        ensure => stdlib::ensure($ensure, 'file'),
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-varnish-params',
+        ensure => absent,
     }
 
     systemd::timer::job { 'prometheus_varnish_params':
