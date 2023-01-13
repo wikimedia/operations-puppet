@@ -25,6 +25,10 @@ profile::idp::services:
   idp_cloud_dev:
     id: 2
     service_id: 'https://idp-dev\.wmcloud\.org(/.*)?'
+  idm_dev:
+    id: 3
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://idm-test\.wikimedia\.org/(/.*)?'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
