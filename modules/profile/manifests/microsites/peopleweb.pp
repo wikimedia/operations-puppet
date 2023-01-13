@@ -75,7 +75,9 @@ class profile::microsites::peopleweb (
     } else {
       $motd_content = "#!/bin/sh\necho '\nThis is NOT the active backend for people.wikimedia.org. DO NOT USE THIS. Please go to ${rsync_src_host} instead.\n'"
       $rsync_auto_restart_ensure = 'absent'
+      service { 'rsync': ensure => 'stopped' }
     }
+
 
     motd::script { 'people-motd':
         ensure  => present,
