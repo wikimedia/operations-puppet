@@ -198,7 +198,7 @@ profile::gitlab::runner::allowed_images:
   - "python:*"
   - "ruby:*"
   - "rust:*"
-  - "rustlang/rust:nightly"
+  - "rustlang/rust:*"
   # GitLab upstream - includes security analyzers and terraform images:
   - "registry.gitlab.com/gitlab-org/**/*"
   - "registry.gitlab.com/security-products/**/*"
