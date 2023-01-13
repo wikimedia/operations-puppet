@@ -52,7 +52,7 @@ bgpalerter::monitors:
     channel: path
     name: path-neighbors
     params:
-      thresholdMinPeers: 3
+      thresholdMinPeers: 10
 bgpalerter::reports:
   - file: reportFile
     channels:
