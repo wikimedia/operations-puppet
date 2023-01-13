@@ -30,10 +30,10 @@ groups:
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
-              pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
-              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
-              tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
-              jcarvalho, sthart, dstrine, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
+              pgrass, moushirael, evanp, dz1, aezell, amooney, heather, amy-wmde, criley,
+              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, lzaman,
+              josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
+              jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw]
   wikidev:
     gid: 500
