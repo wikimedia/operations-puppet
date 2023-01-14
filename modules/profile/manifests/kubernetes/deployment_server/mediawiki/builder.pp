@@ -6,7 +6,7 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
 
 ) {
     # Create the mwbuilder user. This is the user that is allowed to run docker-pusher to publish
-    # the images, and that should run the tasks in mediawiki/tools/release.
+    # the images, and that should run the tasks in repos/releng/release.
     require profile::mediawiki::system_users
 
     # provide the docker-pusher wrapper and relative credentials
@@ -16,17 +16,18 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         docker_registry_password => $docker_password,
     }
 
-    # Clone mediawki/tools/release
-    git::clone { 'mediawiki/tools/release':
+    # Clone repos/releng/release
+    git::clone { 'repos/releng/release':
         ensure    => present,
         directory => '/srv/mwbuilder/release',
         owner     => 'mwbuilder',
+        source    => 'gitlab',
     }
     # Make sure "make" is installed
     ensure_packages(['make'])
 
-    # Deployers should be able to execute whatever wrapper we will write for tools/release
-    # as user mwbuilder. And also the wrapper that updates the mediawiki/tools/release repo
+    # Deployers should be able to execute whatever wrapper we will write for repos/releng/release
+    # as user mwbuilder. And also the wrapper that updates the repos/releng/release repo
     sudo::group { 'deploy_build_image':
         group      => 'deployment',
         privileges => [

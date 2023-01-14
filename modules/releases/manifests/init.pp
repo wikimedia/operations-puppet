@@ -20,7 +20,7 @@ class releases (
         require   => File['/srv/mediawiki'],
         bare      => true,
     }
-    git::clone { 'mediawiki/tools/release':
+    git::clone { 'repos/releng/release':
         ensure    => 'latest',
         directory => '/srv/mediawiki/release-tools',
         require   => File['/srv/mediawiki'],
