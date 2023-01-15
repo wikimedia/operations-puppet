@@ -83,11 +83,11 @@ def _summary_stats(registry, puppet_state_dir=None):
             log.debug("Parsing %s", summary_file)
             summary_yaml = yaml.safe_load(f)
     except yaml.YAMLError:
-        log.debug('Failed to parse yaml', exc_info=True)
+        log.error('Failed to parse yaml', exc_info=True)
         summary_parse_fail.set(1)
         return
     except IOError:
-        log.debug('Failed to read run summary', exc_info=True)
+        log.error('Failed to read run summary', exc_info=True)
         collection_error.set(1)
         return
 
@@ -138,7 +138,7 @@ def puppet_config(item: str) -> str:
     """return a puppet config value"""
     command = shlex.split("/usr/bin/puppet config print {}".format(item))
     result = run(command, stdout=PIPE, check=True)
-    return result.stdout.strip()
+    return result.stdout.decode().strip()
 
 
 def main():
