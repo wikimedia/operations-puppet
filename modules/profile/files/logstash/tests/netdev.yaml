@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 fields:
   ecs.version: "1.7.0"
-  host.name: "re0.cr2-eqiad"
   service.type: "netdev"
 codec: "json_lines"
 ignore:
@@ -10,6 +9,7 @@ testcases:
   - input:
       - >
         {
+          "host.name": "re0.cr2-eqiad",
           "log.original": "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)",
           "log.syslog.severity.code": "4",
           "log.syslog.severity.name": "warning",
@@ -63,3 +63,62 @@ testcases:
         normalized:
           dropped:
             no_such_field: [ 'path' ]
+
+  - input:
+      - >
+        {
+          "host.name": "mr1-eqsin",
+          "process.name": "RT_FLOW",
+          "log.original": " RT_FLOW_SESSION_DENY: session denied 1.1.1.1/37127->2.2.2.2/10025 0x0 None 6(0) default-deny(global) untrust untrust UNKNOWN UNKNOWN N/A(N/A) ge-0/0/0.0 No Denied by policy 15504 N/A N/A -1 N/A N/A N/A",
+          "log.syslog.severity.code": "6",
+          "log.syslog.severity.name": "informational",
+          "log.syslog.priority": "190",
+          "log.syslog.facility.code": "23",
+          "log.syslog.facility.name": "local7"
+        }
+    expected:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        log:
+          original: " RT_FLOW_SESSION_DENY: session denied 1.1.1.1/37127->2.2.2.2/10025 0x0 None 6(0) default-deny(global) untrust untrust UNKNOWN UNKNOWN N/A(N/A) ge-0/0/0.0 No Denied by policy 15504 N/A N/A -1 N/A N/A N/A"
+          level: "NOTSET"
+          syslog:
+            facility:
+              code: "23"
+              name: "local7"
+            priority: "190"
+            severity:
+              "code": "6"
+              "name": "informational"
+        service:
+          type: "netdev"
+        event:
+          reason: "Denied by policy"
+        host:
+          name: "mr1-eqsin"
+        ecs:
+          version: "1.7.0"
+        tags:
+          - "firewall"
+        process:
+          name: "RT_FLOW"
+        normalized:
+          dropped:
+            no_such_field: [ 'path' ]
+        rule:
+          name: "default-deny(global)"
+        network:
+          iana_number: "6"
+        source:
+          ip: "1.1.1.1"
+          port: "37127"
+        destination:
+          ip: "2.2.2.2"
+          port: "10025"
+        observer:
+          ingress:
+            zone: "untrust"
+            interface:
+              name: "ge-0/0/0.0"
+          egress:
+            zone: "untrust"
+
