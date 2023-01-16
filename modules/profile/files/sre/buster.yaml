@@ -38,6 +38,7 @@ role::pybaltest:
   phab-task: 321309
 role::ci::master:
   target-q: TBD
+  phab-task: 327068
 role::mw_rc_irc:
   target-q: TBD
 role::vrts:
@@ -112,6 +113,7 @@ role::ping_offload:
   phab-task: 273509
 role::planet:
   target-q: TBD
+  phab-task: 327068
 role::ganeti:
   target-q: 2023-1
   phab-task: 311687,311686
@@ -175,6 +177,7 @@ role::mariadb::core_test:
   target-q: TBD
 role::mariadb::misc::phabricator:
   target-q: TBD
+  phab-task: 327068
 role::mariadb::core_multiinstance:
   target-q: TBD
 role::mariadb::analytics_replica:
@@ -354,6 +357,7 @@ role::docker_registry_ha::registry:
   target-q: TBD
 role::releases:
   target-q: TBD
+  phab-task: 327068
 role::elasticsearch::relforge:
   target-q: TBD
   phab-task: 289135
@@ -428,10 +432,12 @@ role::thanos::backend:
   phab-task: 288937
 role::requesttracker:
   target-q: TBD
+  phab-task: 327068
 role::url_downloader:
   target-q: TBD
 role::gerrit:
   target-q: TBD
+  phab-task: 327068
 role::dragonfly::supernode:
   target-q: TBD
 role::puppetdb:
@@ -465,6 +471,7 @@ role::mw_rc_irc:
   target-q: TBD
 role::aphlict:
   target-q: TBD
+  phab-task: 327068
 role::phabricator:
   target-q: TBD
 role::insetup::search_platform:
