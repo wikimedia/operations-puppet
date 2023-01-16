@@ -329,7 +329,7 @@ node 'bast3005.wikimedia.org' {
 }
 
 node 'bast3006.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 # ulsfo/bastion on Ganeti
@@ -347,7 +347,7 @@ node 'bast5002.wikimedia.org' {
 }
 
 node 'bast5003.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 # drmrs/bastion on Ganeti
@@ -356,7 +356,7 @@ node 'bast6001.wikimedia.org' {
 }
 
 node 'bast6002.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 # Debian package/docker images building host in production
