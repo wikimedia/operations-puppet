@@ -7,3 +7,5 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   ens3f1np1:
     txqlen: 10000
+# Temporary: lvs 2009 can't reach row b where conf2004 is, see T327041
+profile::pybal::config_host: conf2005.codfw.wmnet
