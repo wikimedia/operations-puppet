@@ -3,6 +3,7 @@ profile::admin::groups:
 profile::vrts::database_host: m2-master.eqiad.wmnet
 profile::vrts::database_name: otrs
 profile::vrts::database_user: otrs
+profile::vrts::database_port: '3306'
 profile::vrts::exim_database_name: otrs
 profile::vrts::exim_database_user: exim
 profile::vrts::daemon: true
