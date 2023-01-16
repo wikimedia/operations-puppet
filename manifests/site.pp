@@ -338,7 +338,7 @@ node 'bast4003.wikimedia.org' {
 }
 
 node 'bast4004.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 # eqsin/bastion on Ganeti
