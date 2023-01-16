@@ -236,6 +236,7 @@ Components: main
  component/rsyslog-k8s
  thirdparty/bigtop15
  thirdparty/ceph-octopus
+ thirdparty/ceph-quincy
  thirdparty/ci
  thirdparty/conda
  thirdparty/confluent
@@ -268,6 +269,7 @@ Update:
  node16-bullseye
  routinator
  thirdparty/ceph-octopus-bullseye
+ thirdparty/ceph-quincy
  thirdparty/docker-ci-bullseye
  thirdparty/conda
  thirdparty/gitlab-bullseye
