@@ -928,9 +928,8 @@ node 'dbprov1002.eqiad.wmnet' {
 node 'dbprov1003.eqiad.wmnet' {
     role(dbbackups::metadata)
 }
-# New dbprov node T321122
 node 'dbprov1004.eqiad.wmnet' {
-    role(insetup::data_persistence)
+    role(dbbackups::metadata)
 }
 node 'dbprov2001.codfw.wmnet' {
     role(dbbackups::metadata)
@@ -941,11 +940,10 @@ node 'dbprov2002.codfw.wmnet' {
 node 'dbprov2003.codfw.wmnet' {
     role(dbbackups::metadata)
 }
-
-# New dbprov server T321128
 node 'dbprov2004.codfw.wmnet' {
-    role(insetup::data_persistence)
+    role(dbbackups::metadata)
 }
+
 # Active eqiad proxies for misc databases
 node /^dbproxy10(12|13|14|15|16|17|20|21)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
