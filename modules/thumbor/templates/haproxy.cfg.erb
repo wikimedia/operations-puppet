@@ -48,6 +48,14 @@ listen thumbor
     server server<%= port -%> 127.0.0.1:<%= port -%> maxconn 1 check
     <%- end -%>
 
+    # Add a healthz for haproxy itself - /healthcheck will check
+    # thumbor, which in cases of extreme load or if we're unlucky with
+    # how instances are selected will time out and mark the host as
+    # unhealthy in LVS.
+    acl queue_too_big avg_queue() gt <%= @max_avg_queue %>
+    monitor-uri /healthz
+    monitor fail if queue_too_big
+
 listen stats
     bind 127.0.0.1:<%= @listen_port + 1100 %>
     mode http

@@ -2546,7 +2546,7 @@ service::catalog:
         ProxyFetch:
           timeout: 10
           url:
-            - http://localhost/healthcheck
+            - http://localhost/healthz
       scheduler: wrr
     probes:
       - type: http

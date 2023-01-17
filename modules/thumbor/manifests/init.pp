@@ -32,6 +32,10 @@
 # [*stl_support*]
 #   Whether STL support should be enabled.
 #
+# [*max_avg_queue*]
+#   Limit for *average* number of queued connections across all thumbor workers in haproxy
+#   Used for healthchecking purposes - if exceeded, the haproxy /healthz will fail
+#
 
 class thumbor (
     $listen_port = 8800,
@@ -43,6 +47,7 @@ class thumbor (
     $logstash_host = undef,
     $logstash_port = 11514,
     $stl_support = undef,
+    $max_avg_queue = 10,
 ) {
     ensure_packages([
         'firejail', 'python-logstash',
