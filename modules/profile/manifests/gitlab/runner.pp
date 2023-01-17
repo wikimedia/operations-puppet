@@ -74,6 +74,7 @@ class profile::gitlab::runner (
     Array[String]                               $allowed_images     = lookup('profile::gitlab::runner::allowed_images'),
     Array[String]                               $allowed_docker_services = lookup('profile::gitlab::runner::allowed_docker_services'),
     Stdlib::IP::Address::V4::CIDR               $internal_ip_range  = lookup('profile::gitlab::runner::internal_ip_range'),
+    Optional[Integer]                           $buildkitd_gckeepstorage = lookup('profile::gitlab::runner::buildkitd_gckeepstorage'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -229,12 +230,13 @@ class profile::gitlab::runner (
     }
 
     class { 'buildkitd':
-        ensure      => $ensure_buildkitd,
-        network     => $docker_network,
-        image       => $buildkitd_image,
-        nameservers => $buildkitd_nameservers,
-        environment => $proxy_variables,
-        require     => Docker::Network[$docker_network],
+        ensure        => $ensure_buildkitd,
+        network       => $docker_network,
+        image         => $buildkitd_image,
+        nameservers   => $buildkitd_nameservers,
+        environment   => $proxy_variables,
+        gckeepstorage => $buildkitd_gckeepstorage,
+        require       => Docker::Network[$docker_network],
     }
 
     $ensure_clear_cache = $enable_clear_cache.bool2str('present','absent')

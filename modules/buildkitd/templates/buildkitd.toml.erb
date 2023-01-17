@@ -1,4 +1,12 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+<% if @gckeepstorage > 0 -%>
+[worker.oci]
+gc = true
+# MB units
+gckeepstorage = <%= @gckeepstorage %>
+<% end -%>
+
 [dns]
 # See https://github.com/moby/buildkit/blob/v0.10/cmd/buildkitd/config/config.go#L114
 <%- if @nameservers.any? -%>

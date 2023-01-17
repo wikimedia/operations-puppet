@@ -17,6 +17,7 @@ class buildkitd(
     String                   $image = 'docker-registry.wikimedia.org/buildkitd:latest',
     Array[Stdlib::Host]      $nameservers = [],
     Hash                     $environment = {},
+    Optional[Integer]        $gckeepstorage = 0,
 ){
     group { 'buildkitd':
         ensure => $ensure,
