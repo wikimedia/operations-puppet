@@ -98,6 +98,7 @@ class profile::mediawiki::php(
         'error_reporting'        => 'E_ALL & ~E_STRICT',
         'mysql'                  => { 'connect_timeout' => 3 },
         'default_socket_timeout' => 60,
+        'auto_prepend_file'      => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
     }
 
     # Custom config for php-fpm
