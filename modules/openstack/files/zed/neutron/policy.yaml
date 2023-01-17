@@ -1,10 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"admin_only": "rule:context_is_admin"
 "admin_or_member": "context_is_admin:True or role:projectadmin or role:user"
 "admin_or_projectadmin": "context_is_admin:True or role:projectadmin"
 "shared_firewalls": "field:firewalls:shared=True"
 "shared_firewall_policies": "field:firewall_policies:shared=True"
 "default": "rule:admin_only"
+
+# In this file, 'regular user' means 'anyone with api access'
+#  and is applied to read-only methods
+"regular_user": ""
+
 
 "get_subnet": "rule:regular_user"
 "create_subnetpool": "rule:admin_only"
