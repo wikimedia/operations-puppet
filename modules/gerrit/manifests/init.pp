@@ -120,7 +120,6 @@ class gerrit(
 
     file { [
         '/srv/gerrit',
-        '/srv/gerrit/jvmlogs',
         '/srv/gerrit/git',
         '/srv/gerrit/plugins',
         '/srv/gerrit/plugins/lfs',
