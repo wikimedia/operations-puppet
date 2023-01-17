@@ -28,7 +28,7 @@ profile::idp::services:
   idm_dev:
     id: 3
     service_class: 'OidcRegisteredService'
-    service_id: 'https://idm-test\.wikimedia\.org/(/.*)?'
+    service_id: 'https://idm-test\.wikimedia\.org\/[\w\/]*'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
