@@ -14,7 +14,7 @@
 # 192.168.4.253
 # 192.168.4.254
 #
-profile::ceph::osd::hosts:
+profile::cloudceph::osd::hosts:
   "cloudcephosd1001.eqiad.wmnet":
     public:
       addr: "10.64.20.70"
@@ -292,7 +292,7 @@ profile::ceph::osd::hosts:
       prefix: "24"
       iface: "enp175s0f1np1"
 
-profile::ceph::osd::cluster_networks:
+profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"
   - "192.168.5.0/24"
   - "192.168.6.0/24"

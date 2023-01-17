@@ -9,7 +9,7 @@ class ceph::mgr (
     $client = "mgr.${::hostname}"
 
     if ! defined(Ceph::Auth::Keyring[$client]) {
-        fail("missing ceph::auth::keyring[${client}], check hiera 'profile::ceph::auth::load_all::configuration'")
+        fail("missing ceph::auth::keyring[${client}], check hiera 'profile::cloudceph::auth::load_all::configuration'")
     }
 
     if defined(Ceph::Auth::Keyring['admin']) {

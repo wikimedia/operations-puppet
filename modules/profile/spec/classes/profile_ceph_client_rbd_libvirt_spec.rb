@@ -1,6 +1,6 @@
 require_relative "../../../../rake_modules/spec_helper"
 
-describe "profile::ceph::client::rbd_libvirt" do
+describe "profile::cloudceph::client::rbd_libvirt" do
   let(:pre_condition) {
     'class { "::apt": }
      class { "::prometheus::node_exporter": }'

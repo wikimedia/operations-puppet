@@ -5,12 +5,12 @@
 #
 class profile::wmcs::backup_glance_images(
     String               $cluster_name    = lookup('profile::wmcs::backy2::cluster_name'),
-    Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
-    String               $ceph_image_pool = lookup('profile::ceph::client::rbd::glance::pool'),
+    Stdlib::Unixpath     $data_dir        = lookup('profile::cloudceph::data_dir'),
+    String               $ceph_image_pool = lookup('profile::cloudceph::client::rbd::glance::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::image_backup_time'),
     Boolean              $enabled         = lookup('profile::wmcs::backy2::backup_glance_images::enabled'),
 ) {
-    require profile::ceph::auth::deploy
+    require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::wmcs::backup_glance_images: Admin keyring not defined, things might not work as expected.': }
     }

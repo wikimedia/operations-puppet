@@ -10,9 +10,9 @@ profile::admin::groups:
 profile::monitoring::notifications_enabled: true
 
 profile::contacts::role_contacts: ["WMCS"]
-profile::ceph::auth::deploy::enabled: true
+profile::cloudceph::auth::deploy::enabled: true
 
-profile::ceph::auth::deploy::configuration:
+profile::cloudceph::auth::deploy::configuration:
   eqiad1-cinder:
     owner: cinder
     group: cinder
@@ -21,7 +21,7 @@ profile::ceph::auth::deploy::configuration:
       mon: profile rbd
       osd: profile rbd pool=eqiad1-cinder
 
-profile::ceph::auth::deploy::selected_creds:
+profile::cloudceph::auth::deploy::selected_creds:
   - eqiad1-cinder
 
 profile::openstack::eqiad1::region: eqiad1-r
@@ -39,7 +39,7 @@ profile::openstack::eqiad1::rabbitmq_nodes:
 profile::openstack::eqiad1::cinder::api_bind_port: 18776
 profile::openstack::eqiad1::cinder::ceph_pool: eqiad1-cinder
 profile::openstack::eqiad1::cinder::ceph_rbd_client_name: eqiad1-cinder
-profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: f83e2286-bff1-47bf-bf6d-109c427d63c9
+profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid: f83e2286-bff1-47bf-bf6d-109c427d63c9
 
 profile::openstack::eqiad1::cinder::backup::active: true
 profile::openstack::eqiad1::cinder::backup::path: /srv/cinder-backups/
@@ -53,8 +53,8 @@ profile::openstack::eqiad1::cinder::backup::lvm::lv_name: cinder-backups
 profile::openstack::eqiad1::cinder::backup::lvm::lv_size: 80TB
 profile::openstack::eqiad1::cinder::backup::lvm::lv_format: ext4
 
-profile::ceph::client::rbd::enable_v2_messenger: true
-profile::ceph::mon::hosts:
+profile::cloudceph::client::rbd::enable_v2_messenger: true
+profile::cloudceph::mon::hosts:
   "cloudcephmon1001.eqiad.wmnet":
     public:
       addr: "10.64.20.67"
@@ -65,11 +65,11 @@ profile::ceph::mon::hosts:
     public:
       addr: "10.64.20.69"
 
-profile::ceph::public_networks:
+profile::cloudceph::public_networks:
   - 10.192.20.0/24
   - 10.64.148.0/24
   - 10.64.149.0/24
   - 10.64.150.0/24
   - 10.64.151.0/24
-profile::ceph::data_dir: /var/lib/ceph
-profile::ceph::fsid: 5917e6d9-06a0-4928-827a-f489384975b1
+profile::cloudceph::data_dir: /var/lib/ceph
+profile::cloudceph::fsid: 5917e6d9-06a0-4928-827a-f489384975b1

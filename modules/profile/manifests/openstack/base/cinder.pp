@@ -13,7 +13,7 @@ class profile::openstack::base::cinder(
     String $ceph_pool = lookup('profile::openstack::base::cinder::ceph_pool'),
     String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
-    String $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
+    String $libvirt_rbd_cinder_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid'),
     Hash   $cinder_backup_volumes = lookup('profile::openstack::base::cinder_backup_volumes'),
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
     Stdlib::Unixpath    $backup_path           = lookup('profile::openstack::base::cinder::backup::path'),

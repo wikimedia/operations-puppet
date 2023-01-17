@@ -9,14 +9,14 @@ profile::debdeploy::client::filter_services:
     - '*'
 profile::base::enable_microcode: true
 
-profile::ceph::client::rbd::client_name: 'codfw1dev-compute'
-profile::ceph::client::rbd::cinder_client_name: 'codfw1dev-cinder'
-profile::ceph::client::rbd::pool: 'codfw1dev-compute'
-profile::ceph::client::rbd::enable_v2_messenger: false
+profile::cloudceph::client::rbd::client_name: 'codfw1dev-compute'
+profile::cloudceph::client::rbd::cinder_client_name: 'codfw1dev-cinder'
+profile::cloudceph::client::rbd::pool: 'codfw1dev-compute'
+profile::cloudceph::client::rbd::enable_v2_messenger: false
 # This key is shared across all the libvirt / nova hosts
-profile::ceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a10d'
-profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
-profile::ceph::client::rbd::enable_nova_rbd: true
+profile::cloudceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a10d'
+profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
+profile::cloudceph::client::rbd::enable_nova_rbd: true
 profile::monitoring::notifications_enabled: false
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
@@ -24,6 +24,6 @@ profile::debdeploy::client::filter_services:
 profile::openstack::eqiad1::nova::common::is_control_node: false
 profile::contacts::role_contacts: ['WMCS']
 
-profile::ceph::auth::deploy::enabled: true
-profile::ceph::auth::deploy::selected_creds:
+profile::cloudceph::auth::deploy::enabled: true
+profile::cloudceph::auth::deploy::selected_creds:
 - codfw1dev-compute

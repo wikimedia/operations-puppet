@@ -42,5 +42,5 @@ class role::wmcs::openstack::codfw1dev::control {
 
     include profile::openstack::codfw1dev::nova::fullstack::service
 
-    include profile::ceph::auth::deploy
+    include profile::cloudceph::auth::deploy
 }

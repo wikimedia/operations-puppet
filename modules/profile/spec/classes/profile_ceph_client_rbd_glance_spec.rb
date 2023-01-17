@@ -1,6 +1,6 @@
 require_relative "../../../../rake_modules/spec_helper"
 
-describe "profile::ceph::client::rbd_glance" do
+describe "profile::cloudceph::client::rbd_glance" do
   let(:pre_condition) { 'class { "::apt": }' }
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do

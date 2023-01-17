@@ -1,32 +1,32 @@
 # SPDX-License-Identifier: Apache-2.0
-# Class: profile::ceph::osd
+# Class: profile::cloudceph::osd
 #
 # This profile configures Ceph object storage hosts with the osd daemon
-class profile::ceph::osd(
-    Array[Stdlib::Fqdn]        $openstack_controllers           = lookup('profile::ceph::openstack_controllers'),
-    Hash[String[1],Hash]       $mon_hosts                       = lookup('profile::ceph::mon::hosts'),
-    Hash[String[1],Hash]       $osd_hosts                       = lookup('profile::ceph::osd::hosts'),
-    Array[Stdlib::IP::Address] $cluster_networks                = lookup('profile::ceph::cluster_networks'),
-    Array[Stdlib::IP::Address] $public_networks                 = lookup('profile::ceph::public_networks'),
-    Stdlib::Unixpath           $data_dir                        = lookup('profile::ceph::data_dir'),
-    String[1]                  $fsid                            = lookup('profile::ceph::fsid'),
-    Array[String[1]]           $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
-    Integer                    $num_os_disks                    = lookup('profile::ceph::osd::num_os_disks'),
-    String[1]                  $disks_io_scheduler              = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
-    String[1]                  $ceph_repository_component       = lookup('profile::ceph::ceph_repository_component'),
-    Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::ceph::cinder_backup_nodes'),
+class profile::cloudceph::osd(
+    Array[Stdlib::Fqdn]        $openstack_controllers           = lookup('profile::cloudceph::openstack_controllers'),
+    Hash[String[1],Hash]       $mon_hosts                       = lookup('profile::cloudceph::mon::hosts'),
+    Hash[String[1],Hash]       $osd_hosts                       = lookup('profile::cloudceph::osd::hosts'),
+    Array[Stdlib::IP::Address] $cluster_networks                = lookup('profile::cloudceph::cluster_networks'),
+    Array[Stdlib::IP::Address] $public_networks                 = lookup('profile::cloudceph::public_networks'),
+    Stdlib::Unixpath           $data_dir                        = lookup('profile::cloudceph::data_dir'),
+    String[1]                  $fsid                            = lookup('profile::cloudceph::fsid'),
+    Array[String[1]]           $disk_models_without_write_cache = lookup('profile::cloudceph::osd::disk_models_without_write_cache'),
+    Integer                    $num_os_disks                    = lookup('profile::cloudceph::osd::num_os_disks'),
+    String[1]                  $disks_io_scheduler              = lookup('profile::cloudceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
+    String[1]                  $ceph_repository_component       = lookup('profile::cloudceph::ceph_repository_component'),
+    Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::cloudceph::cinder_backup_nodes'),
 ) {
     $host_conf = $osd_hosts[$facts['fqdn']]
 
     $cluster_iface = $host_conf['cluster']['iface']
     $public_iface = $host_conf['public']['iface']
 
-    require profile::ceph::auth::deploy
+    require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
-        notify{'profile::ceph::osd: Admin keyring not defined, things might not work as expected.': }
+        notify{'profile::cloudceph::osd: Admin keyring not defined, things might not work as expected.': }
     }
     if ! defined(Ceph::Auth::Keyring['bootstrap-osd']) {
-        notify{'profile::ceph::osd: bootstrap-osd keyring not defined, things might not work as expected.': }
+        notify{'profile::cloudceph::osd: bootstrap-osd keyring not defined, things might not work as expected.': }
     }
 
     ensure_packages(['ceph-osd'])

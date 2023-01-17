@@ -1,6 +1,6 @@
 require_relative "../../../../rake_modules/spec_helper"
 
-describe "profile::ceph::mon" do
+describe "profile::cloudceph::mon" do
   let(:pre_condition) do
     [
       'class { "::apt": }',

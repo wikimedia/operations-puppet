@@ -1,4 +1,4 @@
-profile::ceph::mon::hosts:
+profile::cloudceph::mon::hosts:
   "cloudcephmon1001.eqiad.wmnet":
     public:
       addr: "10.64.20.67"

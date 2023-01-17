@@ -1,23 +1,23 @@
 # SPDX-License-Identifier: Apache-2.0
-# Class: profile::ceph::client:rbd_libvirt
+# Class: profile::cloudceph::client:rbd_libvirt
 #
 # This profile will configure clients for connecting to Ceph rados block storage
 # using the native kernel driver or librbd. This includes some extras for integration
 # with nova/libvirt/qemu
-class profile::ceph::client::rbd_libvirt(
-    Boolean                    $enable_v2_messenger       = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
-    Hash[String,Hash]          $mon_hosts                 = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]          $osd_hosts                 = lookup('profile::ceph::osd::hosts'),
-    Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::ceph::cluster_networks'),
-    Array[Stdlib::IP::Address] $public_networks           = lookup('profile::ceph::public_networks'),
-    Stdlib::Unixpath           $data_dir                  = lookup('profile::ceph::data_dir'),
-    String                     $client_name               = lookup('profile::ceph::client::rbd::client_name'),
-    String                     $cinder_client_name        = lookup('profile::ceph::client::rbd::cinder_client_name'),
-    String                     $fsid                      = lookup('profile::ceph::fsid'),
-    String                     $libvirt_rbd_uuid          = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
-    String                     $libvirt_rbd_cinder_uuid   = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
-    String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
-    Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::ceph::auth::deploy::configuration'),
+class profile::cloudceph::client::rbd_libvirt(
+    Boolean                    $enable_v2_messenger       = lookup('profile::cloudceph::client::rbd::enable_v2_messenger'),
+    Hash[String,Hash]          $mon_hosts                 = lookup('profile::cloudceph::mon::hosts'),
+    Hash[String,Hash]          $osd_hosts                 = lookup('profile::cloudceph::osd::hosts'),
+    Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::cloudceph::cluster_networks'),
+    Array[Stdlib::IP::Address] $public_networks           = lookup('profile::cloudceph::public_networks'),
+    Stdlib::Unixpath           $data_dir                  = lookup('profile::cloudceph::data_dir'),
+    String                     $client_name               = lookup('profile::cloudceph::client::rbd::client_name'),
+    String                     $cinder_client_name        = lookup('profile::cloudceph::client::rbd::cinder_client_name'),
+    String                     $fsid                      = lookup('profile::cloudceph::fsid'),
+    String                     $libvirt_rbd_uuid          = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid'),
+    String                     $libvirt_rbd_cinder_uuid   = lookup('profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid'),
+    String                     $ceph_repository_component = lookup('profile::cloudceph::ceph_repository_component'),
+    Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::cloudceph::auth::deploy::configuration'),
 ) {
 
     class { 'ceph::common':

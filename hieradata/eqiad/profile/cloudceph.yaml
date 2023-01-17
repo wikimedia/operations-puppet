@@ -1,22 +1,22 @@
-profile::ceph::fsid: "5917e6d9-06a0-4928-827a-f489384975b1"
-profile::ceph::cluster_networks:
+profile::cloudceph::fsid: "5917e6d9-06a0-4928-827a-f489384975b1"
+profile::cloudceph::cluster_networks:
   - 192.168.4.0/24
   - 192.168.5.0/24
   - 192.168.6.0/24
-profile::ceph::public_networks:
+profile::cloudceph::public_networks:
   - 10.64.20.0/24
   - 10.64.148.0/24
   - 10.64.149.0/24
   - 10.64.150.0/24
   - 10.64.151.0/24
-profile::ceph::ceph_repository_component: "thirdparty/ceph-octopus"
+profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 
-profile::ceph::openstack_controllers:
+profile::cloudceph::openstack_controllers:
   - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
 
 # NOTE: remember, backups nodes for codfw1dev are in the eqiad DC
 # and backup nodes for eqiad1 are in the codfw DC
-profile::ceph::cinder_backup_nodes:
+profile::cloudceph::cinder_backup_nodes:
   - cloudbackup2002.codfw.wmnet

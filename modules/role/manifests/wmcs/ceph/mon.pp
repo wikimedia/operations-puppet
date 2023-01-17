@@ -4,6 +4,6 @@ class role::wmcs::ceph::mon {
     include profile::base::firewall
     include profile::base::cloud_production
     # potential chicken-egg problem with the next two profiles bc the admin keyring:
-    include profile::ceph::auth::load_all
-    include profile::ceph::mon
+    include profile::cloudceph::auth::load_all
+    include profile::cloudceph::mon
 }

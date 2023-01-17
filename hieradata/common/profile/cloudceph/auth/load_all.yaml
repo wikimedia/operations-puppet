@@ -1,7 +1,7 @@
-profile::ceph::auth::load_all::enabled: true
-profile::ceph::auth::load_all::configuration: {}
+profile::cloudceph::auth::load_all::enabled: true
+profile::cloudceph::auth::load_all::configuration: {}
 # Example data structure
-#profile::ceph::auth::load_all::configuration:
+#profile::cloudceph::auth::load_all::configuration:
 #  # this is the client name, without the 'client.' prefix, usually a service using ceph
 #  cinder-backups:
 #    # if no keydata is provided, it will ignore this key (remember that you'll have to provide it in the secret repo)

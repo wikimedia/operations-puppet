@@ -1,6 +1,6 @@
 require_relative "../../../../rake_modules/spec_helper"
 
-describe "profile::ceph::osd" do
+describe "profile::cloudceph::osd" do
   let(:pre_condition) {
     'class { "::apt": }
      class { "::prometheus::node_exporter": }'

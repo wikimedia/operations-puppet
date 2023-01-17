@@ -1,10 +1,10 @@
 class profile::wmcs::backy2(
     String               $cluster_name    = lookup('profile::wmcs::backy2::cluster_name'),
-    Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
-    String               $ceph_vm_pool    = lookup('profile::ceph::client::rbd::pool'),
+    Stdlib::Unixpath     $data_dir        = lookup('profile::cloudceph::data_dir'),
+    String               $ceph_vm_pool    = lookup('profile::cloudceph::client::rbd::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
 ) {
-    require profile::ceph::auth::deploy
+    require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::wmcs::backy2: Admin keyring not defined, things might not work as expected.': }
     }

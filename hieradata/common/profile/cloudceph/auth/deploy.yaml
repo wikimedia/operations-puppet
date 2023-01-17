@@ -1,0 +1,3 @@
+profile::cloudceph::auth::deploy::enabled: false
+profile::cloudceph::auth::deploy::selected_creds: []
+profile::cloudceph::auth::deploy::configuration: "%{alias('profile::cloudceph::auth::load_all::configuration')}"

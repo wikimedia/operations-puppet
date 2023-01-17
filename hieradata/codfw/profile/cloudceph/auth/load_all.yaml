@@ -1,11 +1,11 @@
-profile::ceph::auth::load_all::configuration:
-  eqiad1-compute:
+profile::cloudceph::auth::load_all::configuration:
+  codfw1dev-compute:
     owner: nova
     group: "libvirt-qemu"
     mode: "0440"
     caps:
       mon: profile rbd
-      osd: profile rbd-read-only pool=eqiad1-glance-images, profile rbd pool=eqiad1-compute
+      osd: profile rbd-read-only pool=codfw1dev-glance-images, profile rbd pool=codfw1dev-compute
   admin:
     caps:
       mds: allow *
@@ -21,6 +21,7 @@ profile::ceph::auth::load_all::configuration:
   bootstrap-osd:
     keyring_path: /var/lib/ceph/bootstrap-osd/ceph.keyring
     caps:
+      mgr: allow r
       mon: profile bootstrap-osd
   bootstrap-rbd:
     caps:
@@ -31,67 +32,59 @@ profile::ceph::auth::load_all::configuration:
   bootstrap-rgw:
     caps:
       mon: allow profile bootstrap-rgw
-  eqiad1-cinder:
+  codfw1dev-cinder:
     owner: cinder
     group: cinder
     mode: "0440"
     caps:
       mon: profile rbd
-      osd: profile rbd pool=eqiad1-cinder
-  eqiad1-glance-images:
+      osd: profile rbd pool=codfw1dev-cinder
+  codfw1dev-glance-images:
     owner: glance
     group: glance
     mode: "0440"
     caps:
-      mon: allow r
-      osd: allow class-read object_prefix rbd_children, allow rwx pool=eqiad1-glance-images
-  client.rgw.cloudcontrol1005:
+      mon: profile rbd
+      osd: profile rbd
+  radosgw:
     caps:
       mon: allow rw
       osd: allow rwx
-  client.rgw.cloudcontrol1006:
-    caps:
-      mon: allow rw
-      osd: allow rwx
-  client.rgw.cloudcontrol1007:
-    caps:
-      mon: allow rw
-      osd: allow rwx
-  mon.cloudcephmon1001:
-    keyring_path: /etc/ceph/ceph.mon.cloudcephmon1001.keyring
+  mon.cloudcephmon2004-dev:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2004-dev.keyring
     import_to_ceph: false
     caps:
       mon: allow *
-  mon.cloudcephmon1002:
-    keyring_path: /etc/ceph/ceph.mon.cloudcephmon1002.keyring
+  mon.cloudcephmon2005-dev:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2005-dev.keyring
     import_to_ceph: false
     caps:
       mon: allow *
-  mon.cloudcephmon1003:
-    keyring_path: /etc/ceph/ceph.mon.cloudcephmon1003.keyring
+  mon.cloudcephmon2006-dev:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2006-dev.keyring
     import_to_ceph: false
     caps:
       mon: allow *
-  mgr.cloudcephmon1001:
-    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::ceph::data_dir'
+  mgr.cloudcephmon2004-dev:
+    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
     # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup
-    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon1001/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon2004-dev/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
       mds: allow *
-  mgr.cloudcephmon1002:
-    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::ceph::data_dir'
+  mgr.cloudcephmon2005-dev:
+    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
     # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup
-    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon1002/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon2005-dev/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
       mds: allow *
-  mgr.cloudcephmon1003:
-    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::ceph::data_dir'
+  mgr.cloudcephmon2006-dev:
+    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
     # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup
-    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon1003/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon2006-dev/keyring
     caps:
       mon: allow profile mgr
       osd: allow *

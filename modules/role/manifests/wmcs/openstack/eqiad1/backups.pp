@@ -7,7 +7,7 @@ class role::wmcs::openstack::eqiad1::backups {
     include profile::base::production
     include profile::base::firewall
     include profile::base::cloud_production
-    include profile::ceph::auth::deploy
-    include profile::ceph::client::rbd_cloudbackup
+    include profile::cloudceph::auth::deploy
+    include profile::cloudceph::client::rbd_cloudbackup
     include profile::openstack::eqiad1::cinder::backup
 }

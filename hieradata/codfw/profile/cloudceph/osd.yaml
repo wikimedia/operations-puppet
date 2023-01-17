@@ -14,7 +14,7 @@
 # 192.168.4.253
 # 192.168.4.254
 #
-profile::ceph::osd::hosts:
+profile::cloudceph::osd::hosts:
   "cloudcephosd2001-dev.codfw.wmnet":
     public:
       addr: "10.192.20.15"
@@ -40,5 +40,5 @@ profile::ceph::osd::hosts:
       prefix: "24"
       iface: "eno2"
 
-profile::ceph::osd::cluster_networks:
+profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"

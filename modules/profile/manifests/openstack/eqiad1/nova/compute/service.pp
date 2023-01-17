@@ -7,10 +7,10 @@ class profile::openstack::eqiad1::nova::compute::service(
     $network_flat_name = lookup('profile::openstack::eqiad1::neutron::network_flat_name'),
     $physical_interface_mappings = lookup('profile::openstack::eqiad1::nova::physical_interface_mappings'),
     String $libvirt_cpu_model = lookup('profile::openstack::eqiad1::nova::libvirt_cpu_model'),
-    Optional[Boolean] $enable_nova_rbd = lookup('profile::ceph::client::rbd::enable_nova_rbd', {'default_value' => false}),
-    Optional[String] $ceph_rbd_pool = lookup('profile::ceph::client::rbd::pool', {'default_value' => undef}),
-    Optional[String] $ceph_rbd_client_name = lookup('profile::ceph::client::rbd::client_name', {'default_value' => undef}),
-    Optional[String] $libvirt_rbd_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
+    Optional[Boolean] $enable_nova_rbd = lookup('profile::cloudceph::client::rbd::enable_nova_rbd', {'default_value' => false}),
+    Optional[String] $ceph_rbd_pool = lookup('profile::cloudceph::client::rbd::pool', {'default_value' => undef}),
+    Optional[String] $ceph_rbd_client_name = lookup('profile::cloudceph::client::rbd::client_name', {'default_value' => undef}),
+    Optional[String] $libvirt_rbd_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
     ) {
 
     require ::profile::openstack::eqiad1::neutron::common

@@ -551,10 +551,10 @@ profile::pki::client::tls_remote_ca: "/etc/ssl/localcerts/pki_api_CA.pem"
 profile::pki::client::tls_remote_ca_source: "puppet:///modules/profile/pki/cloud/pki_api_ca.pem"
 profile::pki::client::certs: {}
 
-profile::ceph::osd::disk_models_without_write_cache:
+profile::cloudceph::osd::disk_models_without_write_cache:
   - DISK_MODEL_DEFAULT_PLACEHOLDER
-profile::ceph::osd::disks_io_scheduler: DISKS_IO_SCHEDULER_PLACEHOLDER
-profile::ceph::osd::num_os_disks: 2
+profile::cloudceph::osd::disks_io_scheduler: DISKS_IO_SCHEDULER_PLACEHOLDER
+profile::cloudceph::osd::num_os_disks: 2
 
 # MediaWiki apache configuration. Sites shared by all installations
 mediawiki::common_sites:
@@ -663,12 +663,12 @@ profile::base::production::enable_ip6_mapped: false
 profile::cumin::master::email_alerts: false
 profile::cumin::master::insetup_role_report_day: 0  # disabled
 
-profile::ceph::auth::load_all::enabled: false
-profile::ceph::auth::load_all::configuration: {}
+profile::cloudceph::auth::load_all::enabled: false
+profile::cloudceph::auth::load_all::configuration: {}
 
-profile::ceph::auth::deploy::enabled: false
-profile::ceph::auth::deploy::selected_creds: []
-profile::ceph::auth::deploy::configuration: {}
+profile::cloudceph::auth::deploy::enabled: false
+profile::cloudceph::auth::deploy::selected_creds: []
+profile::cloudceph::auth::deploy::configuration: {}
 
 # Do not build images or generate reports
 profile::docker::builder::rebuild_images: false

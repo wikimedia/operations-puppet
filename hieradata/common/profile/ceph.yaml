@@ -1,1 +1,0 @@
-profile::ceph::data_dir: '/var/lib/ceph'

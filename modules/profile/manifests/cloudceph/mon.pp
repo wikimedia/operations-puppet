@@ -1,20 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
-# Class: profile::ceph::mon
+# Class: profile::cloudceph::mon
 #
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
-class profile::ceph::mon(
-    Array[Stdlib::Fqdn]        $openstack_controllers     = lookup('profile::ceph::openstack_controllers'),
-    Hash[String,Hash]          $mon_hosts                 = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]          $osd_hosts                 = lookup('profile::ceph::osd::hosts'),
-    Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::ceph::cluster_networks'),
-    Array[Stdlib::IP::Address] $public_networks           = lookup('profile::ceph::public_networks'),
-    Stdlib::Unixpath           $data_dir                  = lookup('profile::ceph::data_dir'),
-    String                     $fsid                      = lookup('profile::ceph::fsid'),
-    String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
-    Array[Stdlib::Fqdn]        $cinder_backup_nodes       = lookup('profile::ceph::cinder_backup_nodes'),
-    Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::ceph::auth::load_all::configuration'),
+class profile::cloudceph::mon(
+    Array[Stdlib::Fqdn]        $openstack_controllers     = lookup('profile::cloudceph::openstack_controllers'),
+    Hash[String,Hash]          $mon_hosts                 = lookup('profile::cloudceph::mon::hosts'),
+    Hash[String,Hash]          $osd_hosts                 = lookup('profile::cloudceph::osd::hosts'),
+    Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::cloudceph::cluster_networks'),
+    Array[Stdlib::IP::Address] $public_networks           = lookup('profile::cloudceph::public_networks'),
+    Stdlib::Unixpath           $data_dir                  = lookup('profile::cloudceph::data_dir'),
+    String                     $fsid                      = lookup('profile::cloudceph::fsid'),
+    String                     $ceph_repository_component = lookup('profile::cloudceph::ceph_repository_component'),
+    Array[Stdlib::Fqdn]        $cinder_backup_nodes       = lookup('profile::cloudceph::cinder_backup_nodes'),
+    Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::cloudceph::auth::load_all::configuration'),
 ) {
-    require 'profile::ceph::auth::load_all'
+    require 'profile::cloudceph::auth::load_all'
 
     include network::constants
 

@@ -12,7 +12,7 @@ class profile::openstack::codfw1dev::cinder::backup (
     String[1]               $ceph_pool               = lookup('profile::openstack::codfw1dev::cinder::ceph_pool'),
     String[1]               $ceph_rbd_client_name    = lookup('profile::openstack::codfw1dev::cinder::ceph_rbd_client_name'),
     String[1]               $rabbit_pass             = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
-    String[1]               $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
+    String[1]               $libvirt_rbd_cinder_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid'),
     Boolean                 $active                  = lookup('profile::openstack::codfw1dev::cinder::backup::active'),
     Stdlib::Unixpath        $backup_path             = lookup('profile::openstack::codfw1dev::cinder::backup::path'),
     Array[Stdlib::Unixpath] $lvm_pv_units            = lookup('profile::openstack::codfw1dev::cinder::backup::lvm::pv_units'),

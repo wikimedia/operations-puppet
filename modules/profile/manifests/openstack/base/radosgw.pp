@@ -5,7 +5,7 @@ class profile::openstack::base::radosgw(
     Stdlib::Port        $api_bind_port = lookup('profile::openstack::base::radosgw::api_bind_port'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
-    require profile::ceph::auth::deploy
+    require profile::cloudceph::auth::deploy
 
     class { '::openstack::radosgw::service':
         version => $version,

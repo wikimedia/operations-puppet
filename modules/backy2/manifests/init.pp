@@ -4,7 +4,7 @@
 # Install backy2 and configure for backing up ceph rbd volumes to local storage
 #
 # This class expects to find a ceph config in /etc/ceph/ceph.conf, which
-#  is typically provided by profile::ceph::client::rbd
+#  is typically provided by profile::cloudceph::client::rbd
 #
 # On an initial install, the database can be created with
 #
