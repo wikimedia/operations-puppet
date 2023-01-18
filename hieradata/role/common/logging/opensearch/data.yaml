@@ -123,7 +123,7 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 106
 
   '06':
-    description: 'ecs-alerts-2: delete older than 2 years'
+    description: 'ecs-alerts-2: delete older than 5 years'
     action: delete_indices
     options:
       ignore_empty_list: true
@@ -136,7 +136,9 @@ profile::opensearch::logstash::curator_actions:
         direction: older
         timestring: '%Y'
         unit: years
-        unit_count: 2
+        # count of 6 to inclusively retain the last calendar day minus five years.
+        # ( e.g. 2024(deleted 2030-01-01), 2025, 2026, 2027, 2028, 2029, 2030(current year index) )
+        unit_count: 6
 
   '07':
     description: 'w3creportingapi: delete older than 3 months'
