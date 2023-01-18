@@ -110,7 +110,7 @@ scap::dsh::groups:
       - webperf2003.codfw.wmnet
   arclamp:
     hosts:
-      - webperf1004.eqiad.wmnet
+      - arclamp1001.eqiad.wmnet
       - webperf2004.codfw.wmnet
   maps:
     conftool:
