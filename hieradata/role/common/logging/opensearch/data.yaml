@@ -156,6 +156,22 @@ profile::opensearch::logstash::curator_actions:
         unit: months
         unit_count: 3
 
+  '08':
+    description: 'ecs-probes-1: delete monitoring probes logs older than 10 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'ecs-probes-1-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 10
+
   '20':
     description: 'all: after 31 days set number of replicas to 1'
     action: replicas
