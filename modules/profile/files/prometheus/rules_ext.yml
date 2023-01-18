@@ -8,3 +8,9 @@ groups:
     expr:   histogram_quantile(0.75, sum by (le,job,ua_family,origin_country) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
   - record: job_ua_family_origin_country:webperf_cpubenchmark_seconds:50pct1h
     expr:   histogram_quantile(0.50, sum by (le,job,ua_family,origin_country) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
+  - record: job:webperf_cpubenchmark_seconds:95pct1h
+    expr: histogram_quantile(0.95, sum by (le,job) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
+  - record: job:webperf_cpubenchmark_seconds:75pct1h
+    expr:   histogram_quantile(0.75, sum by (le,job) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
+  - record: job:webperf_cpubenchmark_seconds:50pct1h
+    expr:   histogram_quantile(0.50, sum by (le,job) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
