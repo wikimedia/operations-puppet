@@ -55,8 +55,8 @@ class profile::webperf::arclamp (
 
     rsync::quickdatacopy { 'srv-arclamp':
         ensure              => present,
-        source_host         => 'webperf1004.eqiad.wmnet',
-        dest_host           => ['arclamp1001.eqiad.wmnet', 'arclamp2001.codfw.wmnet'],
+        source_host         => 'arclamp1001.eqiad.wmnet',
+        dest_host           => 'arclamp2001.codfw.wmnet',
         module_path         => '/srv/arclamp',
         server_uses_stunnel => false,
         auto_sync           => false,
