@@ -29,6 +29,7 @@ profile::idp::services:
     id: 3
     service_class: 'OidcRegisteredService'
     service_id: 'https://idm-test\.wikimedia\.org\/[\w\/]*'
+    release_policy: 'OidcEmailScopeAttributeReleasePolicy'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
