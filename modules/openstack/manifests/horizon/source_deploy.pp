@@ -26,7 +26,6 @@ class openstack::horizon::source_deploy(
     String        $secret_key,
     String        $venv_dir           = '/srv/deployment/horizon/venv',
     Stdlib::Fqdn  $webserver_hostname = 'horizon.wikimedia.org',
-    Boolean       $maintenance_mode   = false,
 ) {
     ensure_packages([
         'python-wheel',

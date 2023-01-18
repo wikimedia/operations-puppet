@@ -9,7 +9,6 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     Stdlib::Fqdn    $webserver_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
     Array[String]   $all_regions = lookup('profile::openstack::base::all_regions'),
     String          $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
-    Boolean         $maintenance_mode = lookup('profile::openstack::base::horizon::maintenance_mode'),
     String          $secret_key = lookup('profile::openstack::base::horizon::secret_key'),
 ) {
 
@@ -39,7 +38,6 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         webserver_hostname   => $webserver_hostname,
         all_regions          => $all_regions,
         puppet_git_repo_name => $puppet_git_repo_name,
-        maintenance_mode     => $maintenance_mode,
         secret_key           => $secret_key,
     }
 

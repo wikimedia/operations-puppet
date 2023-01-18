@@ -10,13 +10,13 @@
 
     RewriteEngine on
 
-    <% if @maintenance_mode == true %>
+    <IfFile '/etc/openstack-dashboard/maintenance.mode'>
         # Redirect all pages to the maintenance alert
         ErrorDocument 503 /static/maintenance.html
         RewriteCond %{REQUEST_URI} !=/static/dashboard/img/logo-splash.svg
         RewriteCond %{REQUEST_URI} !=/static/maintenance.html
         RewriteRule ^.*$ - [R=503,L]
-    <% end %>
+    </IfFile>
 
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteCond %{REQUEST_URI} !^/status$
