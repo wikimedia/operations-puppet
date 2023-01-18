@@ -10,9 +10,6 @@ class role::bastionhost{
 
     ensure_packages(['mtr-tiny', 'traceroute', 'mosh'])
 
-    # Used by parsoid deployers
-    include ::profile::scap::dsh
-
     backup::set {'home': }
 
     ferm::service { 'ssh':
