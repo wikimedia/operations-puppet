@@ -17,4 +17,5 @@ class profile::dumps::distribution::rsync(
 
     class {'::vm::higher_min_free_kbytes':}
 
+    profile::auto_restarts::service { 'rsync': }
 }
