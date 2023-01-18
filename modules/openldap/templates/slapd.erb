@@ -72,7 +72,7 @@ access to dn.subtree="cn=monitor"
 	by self write
 	by * none
 
-database            hdb
+database            <%= @storage_backend %>
 suffix              <%= @suffix %>
 directory           <%= @datadir %>
 rootdn              "cn=admin,<%= @suffix %>"

@@ -10,6 +10,7 @@ class profile::openldap (
     $hash_passwords = lookup('profile::openldap::hash_passwords'),
     $read_only = lookup('profile::openldap::read_only'),
     $certname = lookup('profile::openldap::certname'),
+    $storage_backend = lookup('profile::openldap::storage_backend'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Integer             $size_limit = lookup('profile::openldap::size_limit'),
 ){
@@ -22,22 +23,23 @@ class profile::openldap (
     $suffix = 'dc=wikimedia,dc=org'
 
     class { '::openldap':
-        server_id      => $server_id,
-        sync_pass      => $sync_pass,
-        suffix         => $suffix,
-        datadir        => '/var/lib/ldap/labs',
-        ca             => '/etc/ssl/certs/ca-certificates.crt',
-        certificate    => "/etc/acmecerts/${certname}/live/rsa-2048.chained.crt",
-        key            => "/etc/acmecerts/${certname}/live/rsa-2048.key",
-        extra_schemas  => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
-                          'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
-        extra_indices  => 'openldap/main-indices.erb',
-        extra_acls     => template('openldap/main-acls.erb'),
-        mirrormode     => $mirror_mode,
-        master         => $master,
-        hash_passwords => $hash_passwords,
-        read_only      => $read_only,
-        size_limit     => $size_limit,
+        server_id       => $server_id,
+        sync_pass       => $sync_pass,
+        suffix          => $suffix,
+        datadir         => '/var/lib/ldap/labs',
+        ca              => '/etc/ssl/certs/ca-certificates.crt',
+        certificate     => "/etc/acmecerts/${certname}/live/rsa-2048.chained.crt",
+        key             => "/etc/acmecerts/${certname}/live/rsa-2048.key",
+        extra_schemas   => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
+                            'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
+        extra_indices   => 'openldap/main-indices.erb',
+        extra_acls      => template('openldap/main-acls.erb'),
+        mirrormode      => $mirror_mode,
+        master          => $master,
+        hash_passwords  => $hash_passwords,
+        read_only       => $read_only,
+        size_limit      => $size_limit,
+        storage_backend => $storage_backend,
     }
 
     # Ldap services are used all over the place, including within

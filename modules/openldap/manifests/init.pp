@@ -77,6 +77,7 @@ class openldap(
     String                     $logging='sync',
     Openldap::Hashing_scheme   $hash_passwords='SHA',
     Boolean                    $read_only=false,
+    Openldap::Storage_backend  $storage_backend='hdb',
 ) {
 
     ensure_packages(['slapd', 'ldap-utils'])

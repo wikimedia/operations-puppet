@@ -6,6 +6,7 @@ profile::openldap::master: cloudservices2004-dev.wikimedia.org
 profile::openldap::hash_passwords: SHA
 profile::openldap::read_only: false
 profile::openldap::certname: ldap-codfw1dev
+profile::openldap::storage_backend: hdb
 profile::openldap::sync_pass: none
 profile::monitoring::notifications_enabled: false
 profile::admin::groups:

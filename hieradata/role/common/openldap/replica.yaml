@@ -1,4 +1,5 @@
 profile::openldap::certname: ldap
+profile::openldap::storage_backend: hdb
 
 profile::lvs::realserver::pools:
   ldap-ro:
