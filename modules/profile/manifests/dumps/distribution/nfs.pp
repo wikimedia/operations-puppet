@@ -56,4 +56,6 @@ class profile::dumps::distribution::nfs (
         check_command => 'check_tcp!2049',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
+
+    profile::auto_restarts::service { 'rpcbind':}
 }
