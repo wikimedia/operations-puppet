@@ -205,14 +205,6 @@ node /^apt[12]001\.wikimedia\.org/ {
     role(apt_repo)
 }
 
-# New arclamp node T319428
-node 'arclamp2001.codfw.wmnet' {
-    role(insetup::observability)
-}
-# New arclamp node T319433
-node 'arclamp1001.eqiad.wmnet' {
-    role(insetup::observability)
-}
 # Analytics Query Service
 node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet/ {
     role(aqs)
@@ -2858,6 +2850,14 @@ node /^webperf[12]003\.(codfw|eqiad)\.wmnet/ {
 }
 
 node /^webperf[12]004\.(codfw|eqiad)\.wmnet/ {
+    role(webperf::profiling_tools)
+}
+
+node 'arclamp2001.codfw.wmnet' {
+    role(insetup::observability)
+}
+
+node 'arclamp1001.eqiad.wmnet' {
     role(webperf::profiling_tools)
 }
 
