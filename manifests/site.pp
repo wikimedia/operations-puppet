@@ -1724,11 +1724,6 @@ node /^logstash103[67]\.eqiad\.wmnet/ {
     role(insetup::observability)
 }
 
-# New logstash nodes T313848 (codfw)
-node /^logstash203[67]\.codfw\.wmnet/ {
-    role(insetup::observability)
-}
-
 # Logging data nodes (eqiad)
 node /^logstash10(1[012]|2[6789]|3[345])\.eqiad\.wmnet$/ {
     role(logging::opensearch::data)
