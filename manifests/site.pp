@@ -2849,7 +2849,7 @@ node /^webperf[12]004\.(codfw|eqiad)\.wmnet/ {
 }
 
 node 'arclamp2001.codfw.wmnet' {
-    role(insetup::observability)
+    role(webperf::profiling_tools)
 }
 
 node 'arclamp1001.eqiad.wmnet' {
