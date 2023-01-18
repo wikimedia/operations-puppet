@@ -28,8 +28,8 @@ class gerrit(
     Optional[String]                  $scap_key_name     = undef,
 ) {
 
-    $home_dir = "/var/lib/${daemon_user}"
-    $gerrit_site = "${home_dir}/review_site"
+    $daemon_user_dir = "/var/lib/${daemon_user}"
+    $gerrit_site = "${daemon_user_dir}/review_site"
 
     class { 'gerrit::jobs': }
 
@@ -42,18 +42,35 @@ class gerrit(
         ensure     => 'present',
         gid        => $daemon_user,
         shell      => '/bin/bash',
-        home       => $home_dir,
+        home       => $daemon_user_dir,
         system     => true,
         managehome => true,
     }
 
-    file { $home_dir:
+    file { $daemon_user_dir:
         ensure  => directory,
         recurse => 'remote',
         mode    => '0755',
         owner   => $daemon_user,
         group   => $daemon_user,
         source  => 'puppet:///modules/gerrit/homedir',
+    }
+
+    file { "${daemon_user_dir}/.ssh/id_rsa":
+        owner     => $daemon_user,
+        group     => $daemon_user,
+        mode      => '0400',
+        content   => secret('gerrit/id_rsa'),
+        show_diff => false,
+    }
+
+    file { $gerrit_site:
+        ensure  => directory,
+        recurse => 'remote',
+        mode    => '0755',
+        owner   => $daemon_user,
+        group   => $daemon_user,
+        source  => 'puppet:///modules/gerrit/site',
     }
 
     # Private config
@@ -154,14 +171,6 @@ class gerrit(
         owner  => $daemon_user,
         group  => $daemon_user,
         mode   => '0700',
-    }
-
-    file { "${home_dir}/.ssh/id_rsa":
-        owner     => $daemon_user,
-        group     => $daemon_user,
-        mode      => '0400',
-        content   => secret('gerrit/id_rsa'),
-        show_diff => false,
     }
 
     # Created by gerrit init. If we ever use it, it should be a symlink to
