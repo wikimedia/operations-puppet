@@ -60,4 +60,5 @@ class profile::dumps::distribution::nfs (
     profile::auto_restarts::service { 'rpcbind':}
     profile::auto_restarts::service { 'nfs-idmapd':}
     profile::auto_restarts::service { 'nfs-blkmap':}
+    profile::auto_restarts::service { 'nfs-mountd':}
 }
