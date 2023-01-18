@@ -8,7 +8,6 @@ class profile::gerrit::proxy(
     Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
     Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
-    Boolean                           $maint_mode        = lookup('profile::gerrit::maint_mode', {'default_value' => false}),
 ) {
 
     $gerrit_site = "/var/lib/${daemon_user}/review_site"

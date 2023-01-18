@@ -32,13 +32,19 @@
   <body>
     <h1>Wikimedia Code Review</h1>
     <p>
-      <%- if @maint_mode -%>
-      Gerrit is currently down for planned maintenance. Current ETA is <b><%= @maint_mode %></b>.
-      <%- else -%>
-      Gerrit is down. We're working on bringing it back as soon as possible.
-      <br />
-      Please follow along the discussion at #wikimedia-operations on libera.chat as we debug.
-      <%- end -%>
+      Gerrit is currently unavailable. It might be unexpectedly down or has
+      been shutdown for a
+      <a href="https://wikitech.wikimedia.org/wiki/Deployments">planned maintenance</a>.
+    </p>
+    <p>
+      Please follow along the discussion on
+      <a href="ircs://irc.libera.chat:6697/wikimedia-operations">
+      Libera.chat #wikimedia-operations</a>
+    <sup>
+      <a href="https://web.libera.chat/?channel=#wikimedia-operations">
+        <span style="color:green;">connect</span>
+      </a>
+    </sup>
     </p>
     <p>
       Please try again later!
