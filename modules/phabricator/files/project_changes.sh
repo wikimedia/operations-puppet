@@ -333,11 +333,11 @@ result_herald_rules=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_
 END
 )
 
-# echo "result_cookie_licked_tasks"
+# echo "result_cookie_licked_stalled_tasks"
 # see https://phabricator.wikimedia.org/T228575
-result_cookie_licked_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+result_cookie_licked_stalled_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName, from_unixtime(ta.dateModified) AS since
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName, from_unixtime(ta.dateModified) AS assignedSince
     FROM phabricator_maniphest.maniphest_task t
     JOIN phabricator_user.user u
     JOIN phabricator_maniphest.maniphest_transaction ta
@@ -346,7 +346,59 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
     AND u.phid = SUBSTR(ta.newValue, INSTR(ta.newValue, 'PHID-USER-'), 30)
     AND ta.objectPHID = t.phid
     AND t.ownerPHID = u.phid
-    AND (t.status = "open" OR t.status = "stalled")
+    AND t.status = "stalled"
+    AND t.phid NOT IN
+        (SELECT ta.objectPHID FROM phabricator_maniphest.maniphest_transaction ta
+        WHERE (ta.transactionType = "reassign"
+        AND ta.dateModified > (UNIX_TIMESTAMP() - 126144000)))
+    ORDER BY ta.dateModified;
+
+END
+)
+
+# echo "result_cookie_licked_open_tasks_with_patch_for_review"
+# see https://phabricator.wikimedia.org/T228575
+result_cookie_licked_open_tasks_with_patch_for_review=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName, from_unixtime(ta.dateModified) AS assignedSince
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_user.user u
+    JOIN phabricator_maniphest.maniphest_transaction ta
+    WHERE (ta.transactionType = "reassign"
+    AND ta.dateModified < (UNIX_TIMESTAMP() - 126144000))
+    AND u.phid = SUBSTR(ta.newValue, INSTR(ta.newValue, 'PHID-USER-'), 30)
+    AND ta.objectPHID = t.phid
+    AND t.ownerPHID = u.phid
+    AND t.status = "open"
+    AND t.phid IN
+        (SELECT e.src FROM phabricator_maniphest.edge e
+        WHERE e.type = 41 AND e.dst = "PHID-PROJ-onnxucoedheq3jevknyr") 
+    AND t.phid NOT IN
+        (SELECT ta.objectPHID FROM phabricator_maniphest.maniphest_transaction ta
+        WHERE (ta.transactionType = "reassign"
+        AND ta.dateModified > (UNIX_TIMESTAMP() - 126144000)))
+    ORDER BY ta.dateModified;
+
+END
+)
+
+# echo "result_cookie_licked_open_tasks_without_patch_for_review"
+# see https://phabricator.wikimedia.org/T228575
+result_cookie_licked_open_tasks_without_patch_for_review=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName, from_unixtime(ta.dateModified) AS assignedSince
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_user.user u
+    JOIN phabricator_maniphest.maniphest_transaction ta
+    WHERE (ta.transactionType = "reassign"
+    AND ta.dateModified < (UNIX_TIMESTAMP() - 126144000))
+    AND u.phid = SUBSTR(ta.newValue, INSTR(ta.newValue, 'PHID-USER-'), 30)
+    AND ta.objectPHID = t.phid
+    AND t.ownerPHID = u.phid
+    AND t.status = "open"
+    AND t.phid NOT IN
+        (SELECT e.src FROM phabricator_maniphest.edge e
+        WHERE e.type = 41 AND e.dst = "PHID-PROJ-onnxucoedheq3jevknyr") 
     AND t.phid NOT IN
         (SELECT ta.objectPHID FROM phabricator_maniphest.maniphest_transaction ta
         WHERE (ta.transactionType = "reassign"
@@ -442,7 +494,7 @@ DISABLED USER ACCOUNTS WITH OPEN TASKS ASSIGNED:
 ${result_inactive_users_assigned_tasks}
 
 
-USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
+USER ACCOUNTS WHO BECAME AN ASSIGNEE RECENTLY AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
 ${result_new_user_assignees}
 
 
@@ -478,13 +530,25 @@ ACTIVE PERSONAL HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
 ${result_herald_rules}
 
 
-OPEN TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
-${result_cookie_licked_tasks}
+STALLED TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
+${result_cookie_licked_stalled_tasks}
+
+
+OPEN TASKS FROM BUGZILLA TIMES THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
 ${result_cookie_licked_tasks_bz}
+
+
+OPEN TASKS WITH A PATCH FOR REVIEW THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
+${result_cookie_licked_open_tasks_with_patch_for_review}
+
+
+OPEN TASKS WITHOUT A PATCH FOR REVIEW THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
+${result_cookie_licked_open_tasks_without_patch_for_review}
 
 
 STALLED TASKS THAT HAVE BEEN STALLED FOR MORE THAN THREE YEARS:
 ${result_old_stalled_tasks}
+
 
 Yours sincerely,
 Fab Rick Aytor
