@@ -13,7 +13,6 @@ class role::miscweb {
     include profile::tlsproxy::envoy             # TLS termination
 
     include profile::iegreview                   # https://iegreview.wikimedia.org
-    include profile::racktables                  # https://racktables.wikimedia.org
     include profile::microsites::annualreport    # https://annual.wikimedia.org
     include profile::microsites::static_rt       # https://static-rt.wikimedia.org
     include profile::microsites::transparency    # https://transparency.wikimedia.org
