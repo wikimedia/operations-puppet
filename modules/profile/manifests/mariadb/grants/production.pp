@@ -15,7 +15,6 @@ class profile::mariadb::grants::production(
     include passwords::misc::scripts
     include passwords::openstack::keystone
     include passwords::testreduce::mysql
-    include passwords::racktables
     include passwords::prometheus
     include passwords::striker
     include passwords::labsdbaccounts
@@ -42,8 +41,6 @@ class profile::mariadb::grants::production(
         $keystone_pass       = $passwords::openstack::keystone::keystone_db_pass
         $testreduce_pass     = $passwords::testreduce::mysql::db_pass
         $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
-        $racktables_user     = $passwords::racktables::racktables_db_user
-        $racktables_pass     = $passwords::racktables::racktables_db_pass
         $striker_pass        = $passwords::striker::application_db_password
         $striker_admin_pass  = $passwords::striker::admin_db_password
         $labspuppet_pass     = lookup('labspuppetbackend_mysql_password')
