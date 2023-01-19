@@ -6444,3 +6444,7 @@ ldap_only_users:
     ensure: present
     realname: Kimberly Sarabia
     email: ksarabia@wikimedia.org
+  jebe:
+    ensure: present
+    realname: Jennifer Ebe
+    email: jebe@wikimedia.org
