@@ -110,6 +110,7 @@ Components: main
  component/ci
  component/dnsdist
  component/envoy-future
+ component/elastic710
  component/ganeti3
  component/idp-test
  component/iptables185
@@ -221,7 +222,7 @@ Components: main
  component/cassandra311
  component/cassandradev
  component/dnsdist
- component/elastic68
+ component/elastic710
  component/gocql
  component/istio195
  component/istio115
@@ -238,8 +239,6 @@ Components: main
  thirdparty/ci
  thirdparty/conda
  thirdparty/confluent
- thirdparty/elastic65
- thirdparty/elastic68
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
  thirdparty/gitlab-bullseye
@@ -260,8 +259,6 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
- elastic65
- elastic68
  elastic710
  elasticsearch-curator5
  gvisor
