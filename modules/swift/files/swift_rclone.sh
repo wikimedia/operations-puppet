@@ -29,7 +29,11 @@ case "$local_dc" in
         ;;
 esac
 
+#Set retries to 1 and --ignore-errors while we address
+#the problem of missing objects still in container listings
+#cf. T327269
 rclone sync --checkers=64 --transfers=8 \
+       --retries 1 --ignore-errors \
        --filter-from /etc/swift/swiftrepl_filters_nothumbs \
        --config /etc/swift/rclone.conf \
        --no-update-modtime \
