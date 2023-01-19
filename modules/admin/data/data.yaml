@@ -6440,3 +6440,7 @@ ldap_only_users:
     ensure: present
     realname: Stephane Rebai
     email: srebai@wikimedia.org
+  ksarabia:
+    ensure: present
+    realname: Kimberly Sarabia
+    email: ksarabia@wikimedia.org
