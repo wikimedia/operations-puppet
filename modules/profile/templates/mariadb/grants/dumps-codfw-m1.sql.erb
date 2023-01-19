@@ -34,3 +34,16 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `puppet`.* TO `<%= @dump
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `racktables`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `rddmarc`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `rt`.* TO `<%= @dump_user %>`@`10.192.48.161`;
+-- Grants for '<%= @dump_user %>'@'10.192.32.131'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.192.32.131` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `bacula9`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `cas`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `dbbackups`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `etherpadlite`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `librenms`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `pki`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `puppet`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `racktables`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `rddmarc`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `rt`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+

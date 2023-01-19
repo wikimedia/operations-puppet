@@ -25,3 +25,13 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `otrs`.* TO `<%= @dump_u
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `recommendationapi`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `sockpuppet`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `xhgui`.* TO `<%= @dump_user %>`@`10.192.48.161`;
+-- Grants for '<%= @dump_user %>'@'10.192.32.131'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.192.32.131` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `debmonitor`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `iegreview`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mwaddlink`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `otrs`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `recommendationapi`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `sockpuppet`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `xhgui`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+

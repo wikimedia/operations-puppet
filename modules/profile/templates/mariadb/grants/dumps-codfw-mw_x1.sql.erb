@@ -19,3 +19,11 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `centralauth`.* TO `<%= 
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `cognate_wiktionary`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `flowdb`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `wikishared`.* TO `<%= @dump_user %>`@`10.192.48.161`;
+-- Grants for '<%= @dump_user %>'@'10.192.32.131'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.192.32.131` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `%wik%`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `centralauth`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `cognate_wiktionary`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `flowdb`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `wikishared`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+

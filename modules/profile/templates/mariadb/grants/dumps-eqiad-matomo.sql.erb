@@ -7,6 +7,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_
 -- Grants for '<%= @dump_user %>'@'10.64.32.26'
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.64.32.26` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+-- Grants for '<%= @dump_user %>'@'10.64.48.146'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.64.48.146` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_user %>`@`10.64.48.146`;
 -- Grants for '<%= @dump_user %>'@'2620:0:861:101:10:64:0:95'
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95`;
@@ -16,3 +19,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_
 -- Grants for '<%= @dump_user %>'@'2620:0:861:103:10:64:32:26'
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
+-- Grants for '<%= @dump_user %>'@'2620:0:861:107:10:64:48:146'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `piwik`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
+

@@ -19,3 +19,11 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mailman3`.* TO `<%= @du
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mailman3web`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `striker`.* TO `<%= @dump_user %>`@`10.192.48.161`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `toolhub`.* TO `<%= @dump_user %>`@`10.192.48.161`;
+-- Grants for '<%= @dump_pass %>'@'10.192.32.131'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.192.32.131` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labsdbaccounts`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mailman3`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mailman3web`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `striker`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `toolhub`.* TO `<%= @dump_user %>`@`10.192.32.131`;
+
