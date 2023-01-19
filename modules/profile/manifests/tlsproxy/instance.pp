@@ -1,7 +1,6 @@
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
 class profile::tlsproxy::instance(
     Boolean $bootstrap_protection                           = lookup('profile::tlsproxy::instance::bootstrap_protection'),
-    Boolean $nginx_ssl_dyn_rec                              = lookup('profile::tlsproxy::instance::nginx_ssl_dyn_rec'),
     Boolean $nginx_tune_for_media                           = lookup('profile::tlsproxy::instance::nginx_tune_for_media'),
     String $nginx_client_max_body_size                      = lookup('profile::tlsproxy::instance::nginx_client_max_body_size'),
     Enum['full', 'extras', 'light'] $nginx_variant          = lookup('profile::tlsproxy::instance::nginx_variant'),
