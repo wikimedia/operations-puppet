@@ -140,7 +140,10 @@ def main():
 
         for file in files:
             file_path = repo_root / file["guqf_file_path"]
+
             if file["guqf_new_content"] is not None:
+                file_path.parent.mkdir(parents=True, exist_ok=True)
+
                 with file_path.open("w") as f:
                     f.write(file["guqf_new_content"])
                 repo.index.add([str(file_path)])
