@@ -103,4 +103,6 @@ class profile::wmcs::kubeadm::control (
     class { '::kubeadm::admin_scripts': }
 
     class { '::kubeadm::metrics_yaml': }
+
+    class { '::kubeadm::cert_monitoring': }
 }
