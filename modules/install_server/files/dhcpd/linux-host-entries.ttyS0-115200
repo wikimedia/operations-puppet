@@ -1463,19 +1463,9 @@ host webperf1003 {
     fixed-address webperf1003.eqiad.wmnet;
 }
 
-host webperf1004 {
-    hardware ethernet aa:00:00:06:4f:2d;
-    fixed-address webperf1004.eqiad.wmnet;
-}
-
 host webperf2003 {
     hardware ethernet aa:00:00:3d:5e:5f;
     fixed-address webperf2003.codfw.wmnet;
-}
-
-host webperf2004 {
-    hardware ethernet aa:00:00:62:d3:9a;
-    fixed-address webperf2004.codfw.wmnet;
 }
 
 host xhgui1001 {

@@ -2844,10 +2844,6 @@ node /^webperf[12]003\.(codfw|eqiad)\.wmnet/ {
     role(webperf::processors_and_site)
 }
 
-node /^webperf[12]004\.(codfw|eqiad)\.wmnet/ {
-    role(webperf::profiling_tools)
-}
-
 node 'arclamp2001.codfw.wmnet' {
     role(webperf::profiling_tools)
 }
