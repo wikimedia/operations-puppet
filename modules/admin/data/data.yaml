@@ -6448,3 +6448,7 @@ ldap_only_users:
     ensure: present
     realname: Jennifer Ebe
     email: jebe@wikimedia.org
+  kappakayala:
+    ensure: present
+    realname: Kavitha Appakayala
+    email: kappakayala@wikimedia.org
