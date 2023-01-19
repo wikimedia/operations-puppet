@@ -98,6 +98,11 @@ class profile::puppetmaster::frontend(
         }
     }
 
+    class { 'puppetmaster::ca_monitoring':
+        ensure  => $ca.bool2str('present', 'absent'),
+        ca_root => "${facts['puppet_config']['master']['ssldir']}/ca",
+    }
+
     class { 'httpd':
         remove_default_ports => true,
         modules              => ['proxy', 'proxy_http', 'proxy_balancer',

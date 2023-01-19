@@ -109,6 +109,10 @@ class role::puppetmaster::standalone(
         run_every_minutes => $git_sync_minutes,
     }
 
+    class { 'puppetmaster::ca_monitoring':
+        ca_root => "${facts['puppet_config']['master']['ssldir']}/ca",
+    }
+
     ferm::service { 'puppetmaster-standalone':
         proto  => 'tcp',
         port   => 8140,
