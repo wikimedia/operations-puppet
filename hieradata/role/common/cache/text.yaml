@@ -138,8 +138,6 @@ cache::alternate_domains:
     caching: 'pass'
   query.wikidata.org:
     caching: 'normal'
-  racktables.wikimedia.org:
-    caching: 'normal'
   releases.wikimedia.org:
     caching: 'normal'
   releases-jenkins.wikimedia.org:

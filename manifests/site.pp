@@ -1550,7 +1550,6 @@ node /karapace1001\.eqiad\.wmnet/ {
 # replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
 #
 # profile::iegreview                   # https://iegreview.wikimedia.org
-# profile::racktables                  # https://racktables.wikimedia.org
 # profile::microsites::annualreport    # https://annual.wikimedia.org
 # profile::microsites::static_rt       # https://static-rt.wikimedia.org
 # profile::microsites::transparency    # https://transparency.wikimedia.org
