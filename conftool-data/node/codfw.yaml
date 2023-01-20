@@ -366,6 +366,7 @@ codfw:
     logstash2025.codfw.wmnet: [kibana7]
     logstash2030.codfw.wmnet: [kibana7]
     logstash2031.codfw.wmnet: [kibana7]
+    logstash2032.codfw.wmnet: [kibana7]
   docker-registry:
     registry2003.codfw.wmnet: [docker-registry]
     registry2004.codfw.wmnet: [docker-registry]

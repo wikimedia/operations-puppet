@@ -356,6 +356,7 @@ eqiad:
     logstash1025.eqiad.wmnet: [kibana7]
     logstash1030.eqiad.wmnet: [kibana7]
     logstash1031.eqiad.wmnet: [kibana7]
+    logstash1032.eqiad.wmnet: [kibana7]
   ldap-ro:
     ldap-replica1003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
