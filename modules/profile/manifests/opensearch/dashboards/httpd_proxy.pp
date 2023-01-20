@@ -57,7 +57,7 @@ class profile::opensearch::dashboards::httpd_proxy (
         modules => $httpd_modules,
     }
 
-    $apache_auth = template("profile/opensearch/dashboards/httpd_proxy/apache-auth-${auth_type}.erb")
+    $apache_auth = template("profile/opensearch/common/httpd_proxy/apache-auth-${auth_type}.erb")
 
     if $auth_type != 'none' {
       ferm::service { 'opensearch_dashboards_frontend':

@@ -55,6 +55,19 @@ profile::opensearch::common_settings:
   http_port: 9200
   transport_tcp_port: 9300
 
+# API access
+profile::opensearch::api::httpd_proxy::vhost: logs-api.discovery.wmnet
+profile::opensearch::api::httpd_proxy::serveradmin: noc@wikimedia.org
+profile::opensearch::api::httpd_proxy::auth_type: local
+profile::opensearch::api::httpd_proxy::auth_realm: local
+profile::opensearch::api::httpd_proxy::auth_file: '/etc/opensearch-api-htpasswd'
+# The basic auth accounts, an hash of username -> hashed-password. Will
+# be read from private.git
+# To generate a new entry use 'htpasswd' from 'apache2-utils':
+#   htpasswd -n foo
+#profile::opensearch::api::httpd_proxy::accounts:
+#  'foo': '$apr1$HGuvNA0g$L4j7ot6JjhfwPPv8V5uPG1'
+
 # Logstash
 logstash::heap_memory: 1g
 logstash::java_package: openjdk-11-jdk
@@ -73,8 +86,12 @@ profile::opensearch::monitoring::shard_size_critical: 350
 # is fine and should not raise an alert. So threshold needs to be > 1/3.
 profile::opensearch::monitoring::threshold: '>=0.34'
 
-# reusing kibana.discovery.wmnet to squelch PCC missing secret() errors
-profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
+# reusing kibana.discovery.wmnet to squelch PCC missing secret() errors.
+# the kibana-combined cert contains SAN for 'kibana' names and
+# 'logs-api' (for programmatic access)
+profile::tlsproxy::envoy::global_cert_name: "kibana-combined.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: 'yes'
+profile::tlsproxy::envoy::listen_ipv6: true
 
 mtail::logs:
   - /var/log/logstash/logstash-json.log
