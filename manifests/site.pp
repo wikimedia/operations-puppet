@@ -180,7 +180,7 @@ node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(analytics_cluster::zookeeper)
 }
 
-# Analytics Presto nodes. 1001 - 1015 
+# Analytics Presto nodes. 1001 - 1015
 node /^an-presto10(0[1-9]|1[0-5])\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
 }
@@ -356,12 +356,8 @@ node 'build2001.codfw.wmnet' {
     role(builder)
 }
 
-node 'centrallog1001.eqiad.wmnet', 'centrallog2002.codfw.wmnet' {
+node /^centrallog[0-9]{4}\.(eqiad|codfw)\.wmnet$/ {
     role(syslog::centralserver)
-}
-
-node 'centrallog1002.eqiad.wmnet' {
-    role(insetup::observability)
 }
 
 node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
