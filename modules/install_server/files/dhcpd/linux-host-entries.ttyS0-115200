@@ -1178,7 +1178,7 @@ host ping2002 {
 }
 
 host ping2003 {
-    hardware ethernet aa:00:00:07:f7:4;
+    hardware ethernet aa:00:00:07:f7:4f;
     fixed-address ping2003.codfw.wmnet;
 }
 
