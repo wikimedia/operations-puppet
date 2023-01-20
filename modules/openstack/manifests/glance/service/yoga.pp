@@ -54,19 +54,7 @@ class openstack::glance::service::yoga(
             require => Package['glance'];
     }
 
-    group { 'glance':
-        ensure => 'present',
-        name   => 'glance',
-        system => true,
-    }
-
-    user { 'glance':
-        ensure     => 'present',
-        name       => 'glance',
-        comment    => 'glance system user',
-        gid        => 'glance',
-        managehome => true,
-        require    => Package['glance'],
-        system     => true,
+    systemd::sysuser { 'glance':
+        description => 'glance system user',
     }
 }
