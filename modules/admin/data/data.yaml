@@ -6418,7 +6418,7 @@ ldap_only_users:
     ensure: present
     realname: Stephanie Delbecque
     email: sdelbecque@wikimedia.org
-  kofori:
+  kwakuofori:
     ensure: present
     realname: Kwaku Addo Ofori
     email: kofori@wikimedia.org
