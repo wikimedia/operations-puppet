@@ -24,7 +24,7 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, akhatun, jhernandez]
+              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, akhatun, jhernandez, hxi-ctr]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -392,7 +392,7 @@ groups:
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
-              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, hxi-ctr, kelhurd,
+              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, kelhurd,
               eileen, jebe, ollieshotton, muja]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -924,7 +924,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, echetty, hxi-ctr]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, echetty, xihua]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
@@ -5636,7 +5636,7 @@ users:
     uid: 37145
     gid: 500
     ssh_keys: []
-  hxi-ctr:
+  xihua:
     ensure: present
     realname: Hua Xi
     email: hxi-ctr@wikimedia.org
@@ -5646,6 +5646,11 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFUWDQcPOmfMWpyKXSVXbnN+3Tf8Xy3kYtLDyIi+JQ8 xihua@MacBook-Pro-4
     expiry_date: 2023-05-28
     expiry_contact: kzimmerman@wikimedia.org
+  hxi-ctr:
+    ensure: absent
+    uid: 42819
+    gid: 500
+    rename: true  # T325004
   kelhurd:
     ensure: present
     realname: Kelton Hurd
