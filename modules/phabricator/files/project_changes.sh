@@ -315,8 +315,24 @@ SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.primarySlug) AS paren
 END
 )
 
-#echo "result_herald_rules"
-result_herald_rules=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+#echo "result_herald_rules_archived_projects"
+# see https://phabricator.wikimedia.org/T327508
+result_herald_rules_archived_projects=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/H",hr.id) AS heraldRule,
+    CONCAT("https://phabricator.wikimedia.org/project/profile/", p.id) AS archivedProject
+    FROM phabricator_herald.herald_rule hr
+    INNER JOIN phabricator_herald.edge e ON e.src = hr.phid
+    INNER JOIN phabricator_project.project p ON e.dst = p.phid
+    INNER JOIN phabricator_herald.herald_action ha ON ha.ruleID = hr.id
+    WHERE hr.isDisabled = 0
+    AND p.status = 100
+    AND (ha.action = "projects.add" OR ha.action = "projects.remove")
+    AND ha.target LIKE CONCAT('%', p.phid, '%');
+END
+)
+
+#echo "result_herald_rules_inactive_authors"
+result_herald_rules_inactive_authors=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
  SELECT CONCAT("https://phabricator.wikimedia.org/H", h.id) AS heraldRule,
     u.userName AS author
     FROM phabricator_herald.herald_rule h
@@ -509,8 +525,12 @@ ${result_parent_projects_without_desc}
 ${result_sub_projects_without_desc}
 
 
+ACTIVE HERALD RULES USING ARCHIVED PROJECTS IN THEIR ACTIONS:
+${result_herald_rules_archived_projects}
+
+
 ACTIVE PERSONAL HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
-${result_herald_rules}
+${result_herald_rules_inactive_authors}
 
 
 STALLED TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
