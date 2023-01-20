@@ -105,11 +105,13 @@ role::spare::system:
   target-q: 2023-1
   phab-task: 324475
 role::maps::replica:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 327513
 role::maps::master:
-  target-q: TBD
+  target-q: 2023-1
+  phab-task: 327513
 role::ping_offload:
-  target-q: 2022-4
+  target-q: 2023-1
   phab-task: 273509
 role::planet:
   target-q: TBD
@@ -266,7 +268,7 @@ role::wmcs::db::wikireplicas::analytics_multiinstance:
 role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
   target-q: TBD
 role::openldap::corp:
-  target-q: 2022-4
+  target-q: 2023-1
   phab-task: 323820
 role::wmcs::openstack::eqiad1::labweb:
   target-q: TBD
