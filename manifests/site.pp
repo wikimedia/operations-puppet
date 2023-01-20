@@ -1013,6 +1013,10 @@ node /^druid100[4-8]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
+node /^druid10(09|10|11)\.eqiad\.wmnet$/ {
+    role(insetup::data_engineering)
+}
+
 # new dse-k8s-crtl control plane servers T310171
 node /^dse-k8s-ctrl100[12]\.eqiad\.wmnet$/ {
     role(dse_k8s::master)
