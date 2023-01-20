@@ -394,3 +394,313 @@ testcases:
           full: "https://jobrunner.discovery.wmnet/rpc/RunSingleJob.php"
         ecs:
           version: "1.7.0"
+  - input:
+      - >
+        {
+          "timestamp": "2023-01-18T15:41:07.549490+00:00",
+          "host.name": "mediawiki-main-7b957d95c7-gwrnc",
+          "service.type": "php-fpm-slowlog",
+          "log.level": "notice",
+          "log.syslog.severity.name": "notice",
+          "log.syslog.severity.code": 5,
+          "log.syslog.priority": 189,
+          "log.syslog.facility.name": "local7",
+          "log.syslog.facility.code": 23,
+          "orchestrator": {
+            "type": "kubernetes",
+            "namespace": "mw-web",
+            "resource": {
+              "name": "mediawiki-main-7b957d95c7-gwrnc"
+            }
+          },
+          "labels": {
+            "deployment": "mw-web",
+            "release": "main"
+          },
+          "error": {
+            "stack": {
+              "head": "unknown:0:autoload()"
+            },
+            "stack_trace": [
+              {
+                "line": "0",
+                "file": "unknown",
+                "function": "autoload()",
+                "address": "0x00007f2ec2e19900"
+              },
+              {
+                "line": "0",
+                "file": "unknown",
+                "function": "spl_autoload_call()",
+                "address": "0x00007f2ec2e198a0"
+              },
+              {
+                "line": "78",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/lib/includes/Store/FallbackLabelDescriptionLookupFactory.php",
+                "function": "???()",
+                "address": "0x00007fffbdf6cf60"
+              },
+              {
+                "line": "861",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/client/WikibaseClient.ServiceWiring.php",
+                "function": "newLabelDescriptionLookup()",
+                "address": "0x00007f2ec2e197b0"
+              },
+              {
+                "line": "447",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+                "function": "{closure}()",
+                "address": "0x00007f2ec2e19680"
+              },
+              {
+                "line": "411",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+                "function": "createService()",
+                "address": "0x00007f2ec2e195a0"
+              },
+              {
+                "line": "303",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/MediaWikiServices.php",
+                "function": "getService()",
+                "address": "0x00007f2ec2e19520"
+              },
+              {
+                "line": "419",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+                "function": "getService()",
+                "address": "0x00007f2ec2e19490"
+              },
+              {
+                "line": "313",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/client/includes/WikibaseClient.php",
+                "function": "get()",
+                "address": "0x00007f2ec2e19420"
+              },
+              {
+                "line": "597",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/client/WikibaseClient.ServiceWiring.php",
+                "function": "getSidebarLinkBadgeDisplay()",
+                "address": "0x00007f2ec2e193a0"
+              },
+              {
+                "line": "447",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+                "function": "{closure}()",
+                "address": "0x00007f2ec2e192c0"
+              },
+              {
+                "line": "411",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+                "function": "createService()",
+                "address": "0x00007f2ec2e191e0"
+              },
+              {
+                "line": "303",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/MediaWikiServices.php",
+                "function": "getService()",
+                "address": "0x00007f2ec2e19160"
+              },
+              {
+                "line": "419",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+                "function": "getService()",
+                "address": "0x00007f2ec2e190d0"
+              },
+              {
+                "line": "204",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/object-factory/src/ObjectFactory.php",
+                "function": "get()",
+                "address": "0x00007f2ec2e19060"
+              },
+              {
+                "line": "149",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/object-factory/src/ObjectFactory.php",
+                "function": "getObjectFromSpec()",
+                "address": "0x00007f2ec2e18f20"
+              },
+              {
+                "line": "504",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/HookContainer/HookContainer.php",
+                "function": "createObject()",
+                "address": "0x00007f2ec2e18ea0"
+              },
+              {
+                "line": "156",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/HookContainer/HookContainer.php",
+                "function": "getHandlers()",
+                "address": "0x00007f2ec2e18d60"
+              },
+              {
+                "line": "3394",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/HookContainer/HookRunner.php",
+                "function": "run()",
+                "address": "0x00007f2ec2e18bf0"
+              },
+              {
+                "line": "1492",
+                "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/skins/Skin.php",
+                "function": "onSidebarBeforeOutput()",
+                "address": "0x00007f2ec2e18b70"
+              }
+            ]
+          },
+          "process.pid": "11",
+          "log.origin.file.name": "/srv/mediawiki/docroot/wikipedia.org/w/index.php",
+          "ecs.version": "1.11.0"
+        }
+    expected:
+      - "__target_index": "ecs-default-1-1.11.0-N-weekly"
+        log:
+          level: "NOTICE"
+          origin:
+            file:
+              name: "/srv/mediawiki/docroot/wikipedia.org/w/index.php"
+          syslog:
+            facility:
+              code: 23
+              name: "local7"
+            priority: 189
+            severity:
+              code: 5
+              name: "notice"
+        orchestrator:
+          type: "kubernetes"
+          namespace: "mw-web"
+          resource:
+            name: "mediawiki-main-7b957d95c7-gwrnc"
+        labels:
+          deployment: "mw-web"
+          release: "main"
+        host:
+          name: "mediawiki-main-7b957d95c7-gwrnc"
+        process:
+          pid: "11"
+        service:
+          type: "php-fpm-slowlog"
+        error:
+          stack:
+            head: "unknown:0:autoload()"
+          stack_trace: [
+            {
+              "line": "0",
+              "file": "unknown",
+              "function": "autoload()",
+              "address": "0x00007f2ec2e19900"
+            },
+            {
+              "line": "0",
+              "file": "unknown",
+              "function": "spl_autoload_call()",
+              "address": "0x00007f2ec2e198a0"
+            },
+            {
+              "line": "78",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/lib/includes/Store/FallbackLabelDescriptionLookupFactory.php",
+              "function": "???()",
+              "address": "0x00007fffbdf6cf60"
+            },
+            {
+              "line": "861",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/client/WikibaseClient.ServiceWiring.php",
+              "function": "newLabelDescriptionLookup()",
+              "address": "0x00007f2ec2e197b0"
+            },
+            {
+              "line": "447",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+              "function": "{closure}()",
+              "address": "0x00007f2ec2e19680"
+            },
+            {
+              "line": "411",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+              "function": "createService()",
+              "address": "0x00007f2ec2e195a0"
+            },
+            {
+              "line": "303",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/MediaWikiServices.php",
+              "function": "getService()",
+              "address": "0x00007f2ec2e19520"
+            },
+            {
+              "line": "419",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+              "function": "getService()",
+              "address": "0x00007f2ec2e19490"
+            },
+            {
+              "line": "313",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/client/includes/WikibaseClient.php",
+              "function": "get()",
+              "address": "0x00007f2ec2e19420"
+            },
+            {
+              "line": "597",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/extensions/Wikibase/client/WikibaseClient.ServiceWiring.php",
+              "function": "getSidebarLinkBadgeDisplay()",
+              "address": "0x00007f2ec2e193a0"
+            },
+            {
+              "line": "447",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+              "function": "{closure}()",
+              "address": "0x00007f2ec2e192c0"
+            },
+            {
+              "line": "411",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+              "function": "createService()",
+              "address": "0x00007f2ec2e191e0"
+            },
+            {
+              "line": "303",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/MediaWikiServices.php",
+              "function": "getService()",
+              "address": "0x00007f2ec2e19160"
+            },
+            {
+              "line": "419",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/services/src/ServiceContainer.php",
+              "function": "getService()",
+              "address": "0x00007f2ec2e190d0"
+            },
+            {
+              "line": "204",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/object-factory/src/ObjectFactory.php",
+              "function": "get()",
+              "address": "0x00007f2ec2e19060"
+            },
+            {
+              "line": "149",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/vendor/wikimedia/object-factory/src/ObjectFactory.php",
+              "function": "getObjectFromSpec()",
+              "address": "0x00007f2ec2e18f20"
+            },
+            {
+              "line": "504",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/HookContainer/HookContainer.php",
+              "function": "createObject()",
+              "address": "0x00007f2ec2e18ea0"
+            },
+            {
+              "line": "156",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/HookContainer/HookContainer.php",
+              "function": "getHandlers()",
+              "address": "0x00007f2ec2e18d60"
+            },
+            {
+              "line": "3394",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/HookContainer/HookRunner.php",
+              "function": "run()",
+              "address": "0x00007f2ec2e18bf0"
+            },
+            {
+              "line": "1492",
+              "file": "/srv/mediawiki/php-1.40.0-wmf.18/includes/skins/Skin.php",
+              "function": "onSidebarBeforeOutput()",
+              "address": "0x00007f2ec2e18b70"
+            }
+          ]
+        ecs:
+          version: "1.11.0"
