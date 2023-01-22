@@ -211,7 +211,6 @@ class profile::toolforge::grid::exec_environ {
         # Other python package requirements are added
         # using the genpp tool
         # python-flask-oauth is not in Debian
-        'python-mwparserfromhell',     # T65539
         # python-oursql is not in Debian
         'python-socketio-client',      # T86015
         #python-wikitools is apparently not in Debian (at least stretch)

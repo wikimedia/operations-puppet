@@ -42,6 +42,7 @@ environ_packages = {
         "lxml",  # T61083.
         "magic",  # T62211.
         "matplotlib",  # T63445.
+        "mwparserfromhell",  # T65539, T327600
         "mysql.connector",
         "mysqldb",
         "newt",

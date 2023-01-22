@@ -71,6 +71,8 @@ class profile::toolforge::genpp::python_exec_buster {
         'python3-magic',        # 2:0.4.15
         'python-matplotlib',    # 2.2.3
         'python3-matplotlib',   # 3.0.2
+        'python-mwparserfromhell', # 0.5.2
+        'python3-mwparserfromhell', # 0.5.2
         # python-mysql.connector is not available
         # python3-mysql.connector is not available
         'python-mysqldb',       # 1.3.10
