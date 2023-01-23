@@ -6462,3 +6462,7 @@ ldap_only_users:
     ensure: present
     realname: Kavitha Appakayala
     email: kappakayala@wikimedia.org
+  mshilova:
+    ensure: present
+    realname: Mariya Shilova
+    email: mshilova@wikimedia.org
