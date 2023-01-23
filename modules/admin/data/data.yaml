@@ -393,7 +393,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, hxi-ctr, kelhurd,
-              eileen, jebe]
+              eileen, jebe, ollieshotton]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -760,7 +760,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: [addshore, goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, toan, sihe]
+              awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, toan, sihe, ollieshotton]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -5686,6 +5686,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWloU5/2iO6okEbCkuKlLXrNUwCy65Y8xqnfl4SptUo
     krb: present
+  ollieshotton:
+    ensure: present
+    realname: Ollie Shotton
+    email: oliver.shotton@wikimedia.de
+    uid: 35963
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINuFg5jOB9ORSV/yG2rq+ZY/q7HNKGK7vJx2Bz0hB4Wh oliver.shotton@wikimedia.de
+    krb: present
 ldap_only_users:
   abhas:
     ensure: present
@@ -6345,10 +6354,6 @@ ldap_only_users:
     ensure: present
     realname: Emanuele Leoni
     email: eleoni@wikimedia.org
-  ollieshotton:
-    ensure: present
-    realname: Ollie Shotton
-    email: oliver.shotton@wikimedia.de
   slopes:
     ensure: present
     realname: Sérgio Lopes
