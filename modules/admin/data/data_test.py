@@ -149,7 +149,7 @@ class DataTest(unittest.TestCase):
         dupes = [k for k, v in Counter(gids).items() if v > 1]
         self.assertEqual([], dupes, "Duplicate group GIDs: %r" % dupes)
 
-    def test_user_system_gid_range(self):
+    def test_user_system_uid_range(self):
         """Ensure system users UID's are in the correct range"""
         users = [
             "%s (uid: %s)" % (user, config.get("uid"))
@@ -164,14 +164,14 @@ class DataTest(unittest.TestCase):
             % (self.system_uid_min, self.system_uid_max, users),
         )
 
-    def test_user_standard_gid_range(self):
+    def test_user_standard_uid_range(self):
         """Ensure users UID's are in the correct range"""
         users = [
             "%s (uid: %s)" % (user, config.get("uid"))
             for user, config in self.admins["users"].items()
             if not config.get("system")
             and (
-                self.system_gid_min <= config.get("uid") <= self.system_gid_max
+                self.system_uid_min <= config.get("uid") <= self.system_uid_max
                 or config.get("uid") > self.user_uid_max
             )
         ]
@@ -183,7 +183,7 @@ class DataTest(unittest.TestCase):
         )
 
     def test_absent_members(self):
-        """Ensure absent users in the absent group and have ensure => absent"""
+        """Ensure all users in the absent group have ensure => absent and vice versa"""
         absent_members = set(self.admins["groups"]["absent"]["members"])
         absentees = set(
             username
@@ -195,8 +195,8 @@ class DataTest(unittest.TestCase):
         self.assertSetEqual(
             absent_members,
             absentees,
-            'Absent users are both in "absent" group (first set)'
-            'and in marked "ensure: absent" (second set)',
+            '\nFirst set indicates useres in the absent gtoup and withour ensure => absent.\n'
+            'Second set indicates useres with ensure => absent but missing from the absent group',
         )
 
     def test_group_members(self):
