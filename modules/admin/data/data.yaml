@@ -393,7 +393,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, hxi-ctr, kelhurd,
-              eileen]
+              eileen, jebe]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -407,7 +407,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako,
-              xcollazo, hokwelum, gmodena, dcausse, mnz]
+              xcollazo, hokwelum, gmodena, dcausse, mnz, jebe]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
@@ -5677,6 +5677,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8RA5WEBD39qRNv6/910me3BfWfMTxvTq52IA8mq3EkFqX9bYgxtNQngbAg9QvIj2tyP6/WyRRn578limzjDcD7m2oquRKi4prSCZdZAdxd8Sgs/0OaTV54FJ7MFjABoD/wAOjXsE7MRnSf2JY/NCjAsnFbWRXgz+aKGhjF99oPxNegv6orxFng46rz3gq3I9yW334VmQgYRG8PhkMW86W8YO+XmR4DV3/BxcVy8/S3RnJybspj4otjjfPK1NGz7gRabdNhKNFTKUDL0Bmlno9VTn561gRcxSEZ82ZAysf5jtH7oM65v4Wws1Jnx5dAl0PZS7VOwa6Nj/z/sk8Yuwb wmf-production-12-05-2022
+  jebe:
+    ensure: present
+    realname: Jennifer Ebe
+    email: jebe@wikimedia.org
+    uid: 43150
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWloU5/2iO6okEbCkuKlLXrNUwCy65Y8xqnfl4SptUo
+    krb: present
 ldap_only_users:
   abhas:
     ensure: present
@@ -6444,10 +6453,6 @@ ldap_only_users:
     ensure: present
     realname: Kimberly Sarabia
     email: ksarabia@wikimedia.org
-  jebe:
-    ensure: present
-    realname: Jennifer Ebe
-    email: jebe@wikimedia.org
   kappakayala:
     ensure: present
     realname: Kavitha Appakayala
