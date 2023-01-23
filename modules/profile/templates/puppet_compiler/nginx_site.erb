@@ -21,8 +21,9 @@ server {
   location /output {
     alias <%= @output_dir %>;
     autoindex on;
-    location ~ "\.gz$" {
+    location ~ "\.pson\.gz$" {
       add_header content-encoding "gzip";
+      add_header content-type "application/json";
     }
   }
   # Backwards compatible paths
