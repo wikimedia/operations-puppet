@@ -1,11 +1,14 @@
 include "geoip.inc.vcl";
 
 sub cluster_fe_vcl_switch {
-// XXX testing whether this works at all - note this duplicates similar code in text-frontend, as apparently request data is re-set on VCL switching.  If this works, next week we'll want to factor this out a little differently...
     // Rewrite sitemap requests for itwiki into the sitemaps backend.
     // sitemaps is part of alternate_domains, so this rewrite has to happen
     // in the frontend before VCL switching.  We'll update the conditional
     // later if we add more maps for more sites.
+    //
+    // This duplicates similar code in text-frontend, as apparently request
+    // data is re-set on VCL switching. This could be factored out a little
+    // differently.
     if ((req.http.Host == "it.wikipedia.org"
         || req.http.Host == "id.wikipedia.org"
         || req.http.Host == "pt.wikipedia.org"
