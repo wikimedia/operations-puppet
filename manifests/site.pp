@@ -1694,7 +1694,7 @@ node /^cloudbackup100[12]-dev\.eqiad\.wmnet$/ {
 
 # LDAP servers with a replica of OIT's user directory (used by mail servers)
 node /^ldap-corp[1-2]001\.wikimedia\.org$/ {
-    role(openldap::corp)
+    role(insetup::infrastructure_foundations)
 }
 
 # Read-only ldap replicas in eqiad
