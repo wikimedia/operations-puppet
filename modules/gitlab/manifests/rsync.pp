@@ -36,18 +36,20 @@ class gitlab::rsync (
     }
 
     $passive_hosts.each | Stdlib::Fqdn $passive_host | {
+        # rsync data backup and exclude Shell scripts and config backup from sync
         systemd::timer::job { "rsync-data-backup-${passive_host}":
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab data backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete ${backup_dir_data}/ rsync://${passive_host}/data-backup",
+            command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='gitlab_config_*.tar' ${backup_dir_data}/ rsync://${passive_host}/data-backup",
             interval    => $rsync_interval,
         }
+        # rsync config backup and exclude Shell scripts and data backup from sync
         systemd::timer::job { "rsync-config-backup-${passive_host}":
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab config backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete ${backup_dir_config}/ rsync://${passive_host}/data-backup",
+            command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='*_gitlab_backup.tar' ${backup_dir_config}/ rsync://${passive_host}/data-backup",
             interval    => $rsync_interval,
         }
     }
