@@ -276,6 +276,10 @@ profile::kubernetes::deployment_server::services:
         owner: 'root'
         group: 'root'
         mode: '640'
+    rdf-streaming-updater:
+      usernames:
+        - name: rdf-streaming-updater
+        - name: rdf-streaming-updater-deploy
     spark-operator:
       usernames:
         - name: spark-operator
