@@ -1,2 +1,4 @@
 # db1106
+# Old sanitarium master
 mariadb::shard: 's1'
+profile::monitoring::notifications_enabled: false
