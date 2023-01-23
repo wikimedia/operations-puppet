@@ -3307,6 +3307,7 @@ users:
     realname: Hieu Pham
     ssh_keys: []
     uid: 21844
+    rename: true  # T230126
   phamhi:
     ensure: absent
     gid: 500

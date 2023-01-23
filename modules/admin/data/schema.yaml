@@ -77,6 +77,8 @@ definitions:
           maximum: 65535
         system:
           type: boolean
+        rename:
+          type: boolean
       required:
         - ensure
         - uid

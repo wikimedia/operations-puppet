@@ -141,6 +141,12 @@ class DataTest(unittest.TestCase):
             % (self.system_gid_min, self.system_gid_max, groups),
         )
 
+    def test_user_uids_are_uniques(self):
+        """Ensure no two groups uses the same gid"""
+        uids = [v["uid"] for k, v in self.admins["users"].items() if not v.get('rename', False)]
+        dupes = [k for k, v in Counter(uids).items() if v > 1]
+        self.assertEqual([], dupes, "Duplicate user UIDs: %r" % dupes)
+
     def test_group_gids_are_uniques(self):
         """Ensure no two groups uses the same gid"""
         gids = filter(
