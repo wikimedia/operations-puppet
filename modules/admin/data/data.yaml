@@ -4553,7 +4553,9 @@ users:
     email: swalton@wikimedia.org
     uid: 18282
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHRwfKdfKRxIwUG9xj97nfMH4kyfLe5zsRezMzO4jk6 swalton@wikimedia.org
+    krb: present
   apine:
     ensure: present
     realname: Cory Massaro
