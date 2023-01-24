@@ -57,6 +57,9 @@ ExecStart=/usr/sbin/varnishd \
 -p vcc_allow_inline_c=true \
 -S /etc/varnish/secret \
 <%= @storage -%> \
+<% if @facts['os']['distro']['codename'] == 'bullseye' -%>
+-p transit_buffer=1M \
+<% end -%>
 -p thread_pool_stack=131072 \
 -p listen_depth=16384 -p vcc_err_unref=off \
 -p http_req_size=24576 \
