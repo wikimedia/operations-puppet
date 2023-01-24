@@ -144,12 +144,11 @@ class rsyslog::receiver (
     # inactive (ensure => absent, auto_sync => false)  but kept here to be
     # quickly enabled when needed.
     rsync::quickdatacopy { 'centrallog':
-        ensure              => absent,
-        source_host         => 'centrallog2001.codfw.wmnet',
-        dest_host           => 'centrallog2002.codfw.wmnet',
+        ensure              => present,
+        source_host         => 'centrallog1001.eqiad.wmnet',
+        dest_host           => 'centrallog1002.eqiad.wmnet',
         auto_sync           => false,
         module_path         => '/srv',
         server_uses_stunnel => true,
     }
-
 }
