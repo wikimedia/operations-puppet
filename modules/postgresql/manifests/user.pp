@@ -59,7 +59,7 @@ define postgresql::user(
     # but no password changes are supported T326325
     $password_md5    = md5("${password}${user}")
     $password_clause = debian::codename::ge('bookworm').bool2str(
-        '', "AND rolpassword IS DISTINCT FROM 'md5${password_md5}'"
+        '', "AND rolpassword = 'md5${password_md5}'"
     )
     $password_check = "/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' ${password_clause};\" | grep 1"
 
