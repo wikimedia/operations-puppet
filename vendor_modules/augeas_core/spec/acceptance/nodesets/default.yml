@@ -1,0 +1,13 @@
+---
+HOSTS:
+  ubuntu1604-64-1:
+    hypervisor: vmpooler
+    platform: ubuntu-16.04-amd64
+    packaging_platform: ubuntu-16.04-amd64
+    template: ubuntu-1604-x86_64
+    roles:
+    - agent
+    - default
+CONFIG:
+  type: agent
+  pooling_api: http://vmpooler.delivery.puppetlabs.net/

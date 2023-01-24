@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018 Puppet, Inc.
+# This file is distributed under the same license as the puppetlabs-augeas_core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: puppetlabs-augeas_core \n"
+"Report-Msgid-Bugs-To: docs@puppet.com\n"
+"POT-Creation-Date: 2018-09-20 19:58+0000\n"
+"PO-Revision-Date: 2018-09-20 19:58+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../lib/puppet/provider/augeas/augeas.rb:88
+msgid "Unknown command %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:106
+msgid "unmatched ["
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:112
+msgid "missing path argument %{narg} for %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:138
+msgid "missing string argument %{narg} for %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:143
+msgid "invalid comparator for command %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:229 ../lib/puppet/provider/augeas/augeas.rb:260 ../lib/puppet/provider/augeas/augeas.rb:308 ../lib/puppet/provider/augeas/augeas.rb:323
+msgid "Invalid command: %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:270
+msgid "Error trying to get path '%{path}'"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:288 ../lib/puppet/provider/augeas/augeas.rb:296 ../lib/puppet/provider/augeas/augeas.rb:344 ../lib/puppet/provider/augeas/augeas.rb:352
+msgid "Invalid array in command: %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:318
+msgid "Error trying to match path '%{path}'"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:388
+msgid "Loading failed for one or more files, see debug for /augeas//error output"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:430
+msgid "Error sending command '%{command}' with params %{param}/%{message}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:445 ../lib/puppet/provider/augeas/augeas.rb:487
+msgid "Save failed, see debug output for details"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:500
+msgid "invalid command %{cmd}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:508 ../lib/puppet/provider/augeas/augeas.rb:513 ../lib/puppet/provider/augeas/augeas.rb:520 ../lib/puppet/provider/augeas/augeas.rb:524 ../lib/puppet/provider/augeas/augeas.rb:530 ../lib/puppet/provider/augeas/augeas.rb:538 ../lib/puppet/provider/augeas/augeas.rb:551 ../lib/puppet/provider/augeas/augeas.rb:555 ../lib/puppet/provider/augeas/augeas.rb:559 ../lib/puppet/provider/augeas/augeas.rb:563 ../lib/puppet/provider/augeas/augeas.rb:567
+msgid "Error sending command '%{command}' with params %{params}"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:515 ../lib/puppet/provider/augeas/augeas.rb:532
+msgid "command '%{command}' not supported in installed version of ruby-augeas"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:547
+msgid "Invalid value '%{where}' for where param"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:568
+msgid "Command '%{command}' is not supported"
+msgstr ""
+
+#: ../lib/puppet/provider/augeas/augeas.rb:571
+msgid "Error sending command '%{command}' with params %{params}/%{message}"
+msgstr ""
+
+#: ../lib/puppet/type/augeas.rb:165
+msgid "You must specify both the lens and incl parameters, or neither."
+msgstr ""
+
+#: ../lib/puppet/type/augeas.rb:189
+msgid "executed successfully"
+msgstr ""
