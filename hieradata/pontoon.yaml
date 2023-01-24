@@ -56,6 +56,8 @@ bastion_hosts:
 cache_hosts:
   - 172.16.0.0/12
 
+profile::ssh::server::lookup_keys_from_ldap: true
+
 ## Cloud VPS cumin access - T287269
 ## If you run cumin in your stack, make sure to override this variable and _append_ your host(s)
 cumin_masters:
