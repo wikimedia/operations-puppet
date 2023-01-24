@@ -37,7 +37,11 @@ class profile::ssh::server (
 
 ) {
     if $lookup_keys_from_ldap {
-        ensure_packages(['python3-ldap'])
+        if debian::codename::ge('buster') {
+            ensure_packages(['python3-ldap'])
+        } else {
+            ensure_packages(['python3-pyldap'])
+        }
 
         # The 'ssh-key-ldap-lookup' tool is called during login ssh via AuthorizedKeysCommand.  It
         #  returns public keys from ldap for the specified username.
