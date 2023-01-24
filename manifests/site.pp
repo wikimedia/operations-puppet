@@ -522,7 +522,7 @@ node /^db1(207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|2
 
 # s1 (enwiki) core production dbs on eqiad
 # See also db1099 and db1105 below
-node /^db1(107|118|119|128|132|134|135|163|169|184|186|196|206)\.eqiad\.wmnet/ {
+node /^db1(106|107|118|119|128|132|134|135|163|169|184|186|196|206)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
