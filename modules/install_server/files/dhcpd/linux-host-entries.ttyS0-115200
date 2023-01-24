@@ -1160,32 +1160,14 @@ host people2002 {
     fixed-address people2002.codfw.wmnet;
 }
 
-host ping1002 {
-    hardware ethernet aa:00:00:33:b5:65;
-    fixed-address ping1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host ping1003 {
     hardware ethernet aa:00:00:e8:62:5f;
     fixed-address ping1003.eqiad.wmnet;
 }
 
-host ping2002 {
-    hardware ethernet aa:00:00:b2:31:33;
-    fixed-address ping2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host ping2003 {
     hardware ethernet aa:00:00:07:f7:4f;
     fixed-address ping2003.codfw.wmnet;
-}
-
-host ping3002 {
-    hardware ethernet aa:00:00:bb:15:11;
-    fixed-address ping3002.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host ping3003 {
