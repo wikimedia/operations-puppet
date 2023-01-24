@@ -1,4 +1,5 @@
 # db1106
-# Old sanitarium master
+# Testing MariaDB 11, do not pool
 mariadb::shard: 's1'
+mariadb::package: 'wmf-mariadb110'
 profile::monitoring::notifications_enabled: false
