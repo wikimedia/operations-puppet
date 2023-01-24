@@ -276,7 +276,7 @@ class Clients(object):
 
     @retry(
         reraise=True,
-        stop=stop_after_attempt(3),
+        stop=stop_after_attempt(9),
         wait=wait_random(min=5, max=15),
         before_sleep=before_sleep_log(logger, logging.WARNING),
     )
