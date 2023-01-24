@@ -24,25 +24,17 @@ define apereo_cas::service (
         if !$client_secret {
             fail('$client_secret required when using OidcRegisteredService')
         }
+
         $additional_params = {
             'clientId'               => $title,
             'clientSecret'           => $client_secret,
             'bypassApprovalPrompt'   => true,
             'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
-            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email' ] ],
-            'attributeReleasePolicy' => { '@class' => "org.apereo.cas.oidc.claims.${release_policy}",
-                                          'claimMappings' => {
-                                              '@class' => 'java.util.TreeMap',
-                                              'email'  => 'mail'
-                                          }
-                                        }
-        }
-    } else {
-        $additional_params = {
-          'attributeReleasePolicy' => { '@class' => "org.apereo.cas.services.${release_policy}" }
+            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'group' ] ]
         }
     }
+
     include apereo_cas
     $delegate = $allowed_delegate ? {
         undef   => {},
@@ -75,6 +67,7 @@ define apereo_cas::service (
         'serviceId'              => $service_id,
         'id'                     => $id,
         'accessStrategy'         => $_access_strategy + $delegate,
+        'attributeReleasePolicy' => { '@class' => "org.apereo.cas.services.${release_policy}" }
     } + $additional_params
     $data = $properties.empty ? {
         true    => $base_data,

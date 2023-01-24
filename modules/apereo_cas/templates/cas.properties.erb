@@ -180,6 +180,17 @@ cas.authn.pac4j.<%= delegate['provider'] %>[<%= provider_count[delegate['provide
 cas.authn.oidc.core.issuer=<%= @server_name %><%= @server_prefix.sub(/\/$/, '') %>/oidc
 cas.authn.oidc.core.accepted-issuers-pattern=<%= @oidc_issuers_pattern %>
 cas.authn.oidc.id-token.include-id-token-claims=<%= @oidc_id_token_claims %>
+
+# Add custom groups scope.
+cas.authn.oidc.core.claims-map.preferred_username=uid
+cas.authn.oidc.core.claims-map.email=mail
+cas.authn.oidc.core.claims-map.name=cn
+cas.authn.oidc.core.claims-map.family_name=givenName
+cas.authn.oidc.core.claims-map-groups=memberOf
+cas.authn.oidc.discovery.scopes=openid,profile,email,groups
+cas.authn.oidc.discovery.claims=sub,name,groups,email,family_name,preferred_username,profile
+cas.authn.oidc.core.user-defined-scopes.groups=groups
+
 <%- if @enable_webauthn -%>
 cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file %>
 cas.authn.mfa.web-authn.core.relying-party-id=<%= @webauthn_relaying_party %>
