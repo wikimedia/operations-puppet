@@ -1,7 +1,13 @@
 moduledir 'vendor_modules'
 
+mod 'augeasproviders_core',
+    :git => 'https://github.com/voxpupuli/puppet-augeasproviders_core.git',
+    :ref => '2.7.0'
+
 mod 'concat',
     # NOTE: Deviates from upstream v7.3.0
+    # TODO: migrate local fixes to gitlab.w.o and create a tag
+    # also see https://github.com/b4ldr/puppetlabs-concat/tree/puppet5.5 
     #
     # 1. f507466942dbdb0684a1d04ea3d96d62d0ec70fa.:
     #    This commit is reverted as the Regexp.match? operator is not availabe
@@ -13,6 +19,7 @@ mod 'concat',
 
 mod 'lvm',
     # NOTE: Deviates from upstream v1.4.0
+    # TODO: migrate local fixes to gitlab.w.o and create a tag
     #
     # 1. 6d5f32c127099005dcab88dda381b4184e1ff1cd:
     #    Force volume group removal
@@ -24,29 +31,26 @@ mod 'lvm',
     # :git => 'https://github.com/puppetlabs/puppetlabs-lvm',
     # :ref => 'v1.4.0'
 
+mod 'postfix',
+    # NOTE: Forked from upstream, https://github.com/bodgit/puppet-postfix
+    # TODO: migrate local fixes to gitlab.w.o and create a tag
+    #
+    # Contains three pull requests
+    #
+    #  1. Add Debian Bullseye(11) support
+    #  2. Fix support for /etc/aliases
+    #  3. Debian: don't install Augeas lens for unix-dgram
+    :git => 'https://github.com/lollipopman/puppet-postfix',
+    :ref => '6fa18a6'
+
 mod 'puppetdbquery',
     :git => 'https://github.com/dalen/puppet-puppetdbquery.git',
     :ref => '3.0.1'
 
-mod 'stdlib',
-    :git => 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    :ref => 'v8.1.0'
-
-mod 'augeasproviders_core',
-    :git => 'https://github.com/voxpupuli/puppet-augeasproviders_core.git',
-    :ref => '2.7.0'
-
-# NOTE: Forked from upstream, https://github.com/bodgit/puppet-postfix
-#
-# Contains three pull requests
-#
-#  1. Add Debian Bullseye(11) support
-#  2. Fix support for /etc/aliases
-#  3. Debian: don't install Augeas lens for unix-dgram
-mod 'postfix',
-    :git => 'https://github.com/lollipopman/puppet-postfix',
-    :ref => '6fa18a6'
-
 mod 'rspamd',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',
     :ref => 'v1.3.1'
+
+mod 'stdlib',
+    :git => 'https://github.com/puppetlabs/puppetlabs-stdlib',
+    :ref => 'v8.1.0'
