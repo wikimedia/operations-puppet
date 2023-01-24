@@ -25,6 +25,7 @@ class openstack::clientpackages::zed::buster(
         'python3-designateclient',
         'python3-neutronclient',
         'python3-osc-placement',
+        'python3-tenacity',
     ]
 
     package{ $py3packages:
