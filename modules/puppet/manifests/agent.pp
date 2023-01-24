@@ -26,6 +26,10 @@ class puppet::agent (
     # TODO: use puppet-agent package name when everything is on puppet7
     # puppet is a transition package
     ensure_packages(['facter', 'puppet', 'augeas-tools', 'virt-what'])
+    # these where moved out of core in puppet6
+    if versioncmp($facts['puppetversion'], '6') >= 0 {
+        ensure_packages(['puppet-module-puppetlabs-augeas-core'])
+    }
 
     if $manage_ca_file {
         unless $ca_source {
