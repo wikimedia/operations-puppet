@@ -18,7 +18,6 @@
 #    password => 'pass',
 #    cidr     => '127.0.0.1/32',
 #    type     => 'host',
-#    method   => 'trust',
 #    database => 'template1',
 #  }
 #
@@ -29,13 +28,13 @@ define postgresql::user(
     String                 $ensure     = 'present',
     String                 $database   = 'template1',
     String                 $type       = 'host',
-    String                 $method     = 'md5',
     Stdlib::IP::Address    $cidr       = '127.0.0.1/32',
     String                 $attrs      = '',
     Boolean                $master     = true,
     Postgresql::Privileges $privileges = {},
     Optional[String]       $password   = undef,
     Optional[Numeric]      $pgversion  = undef,
+    Optional[String[1]]    $method     = undef,
 ) {
 
     $_pgversion = $pgversion ? {
@@ -47,6 +46,7 @@ define postgresql::user(
         },
         default => $pgversion,
     }
+    $_method = $method.lest || { ($_pgversion >= 15).bool2str('scram-sha-256', 'md5') }
 
     # Check if our user exists and store it
     $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep -P \'^ ${user}$\'"
@@ -94,7 +94,7 @@ define postgresql::user(
         user      => $user,
         database  => $database,
         type      => $type,
-        method    => $method,
+        method    => $_method,
         cidr      => $cidr,
         hba_label => $name,
         pgversion => $_pgversion,
