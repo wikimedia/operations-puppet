@@ -1,9 +1,9 @@
 import json
 import logging
 import os
-import yaml
-
 import requests
+from tenacity import before_sleep_log, retry, stop_after_attempt, wait_random
+import yaml
 
 import glanceclient
 from keystoneauth1.identity.v3 import Password as KeystonePassword
@@ -14,6 +14,8 @@ from designateclient.v2 import client as designateclient
 from cinderclient.v3 import client as cinderclient
 from troveclient.v1 import client as troveclient
 from neutronclient.v2_0 import client as neutronclient
+
+logger = logging.getLogger("mwopenstackclients.DnsManager")
 
 
 class Clients(object):
@@ -117,6 +119,12 @@ class Clients(object):
             self.sessions[project] = keystone_session.Session(auth=auth)
         return self.sessions[project]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def keystoneclient(self, project=None):
         if not project:
             project = self.project
@@ -128,6 +136,12 @@ class Clients(object):
             )
         return self.keystoneclients[project]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def novaclient(self, project=None, region=None):
         if not project:
             project = self.project
@@ -146,6 +160,12 @@ class Clients(object):
 
         return self.novaclients[project][region]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def glanceclient(self, project=None):
         if not project:
             project = self.project
@@ -160,6 +180,12 @@ class Clients(object):
     # In many cases we might be accessing records in one project (e.g. 'noauth-project')
     #  while using a token from a different project (e.g. 'admin').
     # The 'project' arg refers to the project that contains the zones or records of interest.
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def designateclient(self, auth_project=None, project=None):
         if not project:
             project = self.project
@@ -177,6 +203,12 @@ class Clients(object):
             )
         return self.designateclients[project]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def cinderclient(self, project=None):
         if not project:
             project = self.project
@@ -188,6 +220,12 @@ class Clients(object):
             )
         return self.cinderclients[project]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def troveclient(self, project=None):
         if not project:
             project = self.project
@@ -199,6 +237,12 @@ class Clients(object):
             )
         return self.troveclients[project]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def neutronclient(self, project=None):
         if not project:
             project = self.project
@@ -210,14 +254,32 @@ class Clients(object):
             )
         return self.neutronclients[project]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def allprojects(self):
         client = self.keystoneclient()
         return client.projects.list()
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def allregions(self):
         region_recs = self.keystoneclient().regions.list()
         return [region.id for region in region_recs]
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def allinstances(self, projectid=None, allregions=False):
         instances = []
         if projectid:
@@ -239,6 +301,12 @@ class Clients(object):
                     instances.extend(self.novaclient(project.id).servers.list())
         return instances
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def globalimages(self):
         client = self.glanceclient()
         return [i for i in client.images.list()]
@@ -267,7 +335,6 @@ class DnsManager(object):
         session = client.session()
         self.token = session.get_token()
         self.tenant = tenant
-        self.logger = logging.getLogger("mwopenstackclients.DnsManager")
         self.designateclient = client.designateclient(
             auth_project=client.project, project=tenant
         )
@@ -373,7 +440,7 @@ class DnsManager(object):
         """Ensure that a zone exists."""
         r = self.designateclient.zones.list(criterion={"name": name})
         if not r:
-            self.logger.warning("Creating zone %s", name)
+            logger.warning("Creating zone %s", name)
             z = self.designateclient.zones.create(
                 name, email="root@wmflabs.org", ttl=60
             )
@@ -417,12 +484,12 @@ class DnsManager(object):
         records."""
         r = self.designateclient.recordsets.list(zone, criterion={"name": name})
         if not r:
-            self.logger.warning("Creating %s", name)
+            logger.warning("Creating %s", name)
             rs = self.designateclient.recordsets.create(zone, name, type_, records)
         else:
             rs = r[0]
         if rs["records"] != records:
-            self.logger.info("Updating %s", name)
+            logger.info("Updating %s", name)
             rs = self.designateclient.recordsets.update(
                 zone, rs["id"], {"records": records}
             )

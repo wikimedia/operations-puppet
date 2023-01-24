@@ -23,6 +23,7 @@ class openstack::clientpackages::zed::stretch(
         'python3-openstackclient',
         'python3-designateclient',
         'python3-neutronclient',
+        'python3-tenacity',
         'python3-troveclient',
     ]
 
