@@ -61,7 +61,7 @@ define postgresql::user(
     $password_clause = debian::codename::ge('bookworm').bool2str(
         '', "AND rolpassword IS DISTINCT FROM 'md5${password_md5}'"
     )
-    $exist_check = "/usr/bin/test -n \"\$(/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' ${password_clause};\")\""
+    $password_check = "/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' ${password_clause};\" | grep 1"
 
     if $ensure == 'present' {
         exec { "create_user-${name}":
@@ -76,7 +76,7 @@ define postgresql::user(
             exec { "pass_set-${name}":
                 command   => $pass_set,
                 user      => 'postgres',
-                onlyif    => $exist_check,
+                unless    => $password_check,
                 subscribe => Exec["create_user-${name}"],
             }
         }
