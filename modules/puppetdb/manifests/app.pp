@@ -101,6 +101,16 @@ class puppetdb::app(
         recurse => true,
         purge   => true,
     }
+    if debian::codename::ge('bookworm') {
+        file { '/etc/puppetdb/conf.d/auth.conf':
+            ensure => file,
+            owner  => 'puppetdb',
+            group  => 'root',
+            mode   => '0750',
+            source => 'puppet:///modules/puppetdb/auth.conf',
+        }
+    }
+
 
     $postgres_uri = "ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
     $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?${postgres_uri}"
