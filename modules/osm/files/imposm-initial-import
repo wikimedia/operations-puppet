@@ -9,6 +9,7 @@ download_dir="/srv/downloads"
 kartotherian_dir="/srv/deployment/kartotherian/deploy"
 postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/@kartotherian/postgis-vt-util/lib.sql"
 modules_with_sql="@kartotherian/osm-bright-source/sql/helpers"
+geoshapes_sql="/srv/deployment/kartotherian/deploy/src/sql/geoshapes-create-indexes.sql"
 proxy=
 log_file=/var/log/osm-initial-import.log
 dump_date="latest"
@@ -123,6 +124,7 @@ function custom_functions_and_indexes() {
     done
   done
 
+  sudo -u postgres psql -Xd gis -f "${geoshapes_sql}" | ts | tee -a "${log_file}"
   echo "creation of custom functions and indexes completed" | ts | tee -a "${log_file}"
 }
 
