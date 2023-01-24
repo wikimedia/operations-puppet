@@ -1,3 +1,2 @@
 # db1115
 profile::mariadb::mysql_role: 'master'
-profile::monitoring::notifications_enabled: false
