@@ -1,0 +1,3 @@
+motd::messages:
+  'reaper_warning':
+    message: '\e[31mWarning: machines in this project are automatically deleted after 15 days\e[0m'
