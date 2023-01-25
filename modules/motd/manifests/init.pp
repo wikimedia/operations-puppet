@@ -3,7 +3,9 @@
 #
 # Module for customizing MOTD (Message of the Day) banners.
 #
-class motd {
+class motd (
+    Hash[String[1], Hash] $messages = {}
+) {
     # Kill Debian's default copyright/warranty banner
     file { '/etc/motd':
         ensure => absent,
@@ -19,4 +21,9 @@ class motd {
     }
 
     include motd::defaults
+    $messages.each |$title, $params| {
+        motd::message { $title:
+            * => $params,
+        }
+    }
 }
