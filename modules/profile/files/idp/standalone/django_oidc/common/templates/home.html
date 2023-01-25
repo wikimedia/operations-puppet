@@ -25,7 +25,11 @@
     <div class="buttons">
       {% if user.is_authenticated %}
         <div class="user-details">
-          You are logged in as <code>{{ user.username }}</code>!
+          You are logged in as <code>{{ user.username }}</code>! </ br>
+          <code>{{ user.email }}<br />
+          <code>{{ user.attributes }}<br />
+          <code>{{ user.group }}<br />
+          <code>{{ user.memberof }}<br />
         </div>
       {% endif %}
 

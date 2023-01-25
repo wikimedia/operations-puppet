@@ -6,6 +6,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
+from django.template import Template, RequestContext
 from social_core.backends.oauth import BaseOAuth1, BaseOAuth2
 from social_django.utils import load_strategy, psa
 
@@ -34,7 +35,10 @@ def done(request):
 
 @login_required
 def debug(request):
-    return '<br />'.join(['{}={}'.format(k, v) for k, v in request.META.items()])
+    assert False, locals()
+    template = Template('<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
 
 
 @render_to("home.html")

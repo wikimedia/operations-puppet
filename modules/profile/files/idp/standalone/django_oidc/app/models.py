@@ -4,9 +4,10 @@ from social_django.models import USER_MODEL, AbstractUserSocialAuth, DjangoStora
 
 
 class CustomUserSocialAuth(AbstractUserSocialAuth):
-    user = models.ForeignKey(
-        USER_MODEL, related_name="custom_social_auth", on_delete=models.CASCADE
-    )
+    pass
+#    user = models.ForeignKey(
+#        USER_MODEL, related_name="custom_social_auth", on_delete=models.CASCADE
+#    )
 
 
 class CustomDjangoStorage(DjangoStorage):

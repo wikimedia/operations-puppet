@@ -1,7 +1,13 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: BSD-3-Clause
 from social_core.pipeline.partial import partial
+import logging
 
+logger = logging.getLogger('__name__')
+
+
+def save_profile(backend, user, response, *args, **kwargs):
+    logger.error("HERE %s" , response)
 
 @partial
 def require_email(strategy, details, user=None, is_new=False, *args, **kwargs):
