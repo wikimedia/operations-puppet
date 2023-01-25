@@ -176,8 +176,8 @@ service::catalog:
       - 'eqiad'
     state: 'production'
 
-  aux-k8s-ingress:
-    description: "istio-ingresscontroller on aux-k8s. aux-k8s-ingress.svc.%{::site}.wmnet"
+  k8s-ingress-aux:
+    description: "istio-ingresscontroller on aux-k8s. k8s-ingress-aux.svc.%{::site}.wmnet"
     encryption: true
     ip: &k8s-ingress-aux_ips
       eqiad:
@@ -214,7 +214,7 @@ service::catalog:
     state: service_setup
     page: false
     discovery:
-      - dnsdisc: aux-k8s-ingress
+      - dnsdisc: k8s-ingress-aux
         active_active: false
 
   blubberoid:
