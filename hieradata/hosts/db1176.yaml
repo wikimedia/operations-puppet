@@ -1,4 +1,3 @@
 # db1176
 # Future m1 master
 mariadb::shard: 'm1'
-profile::monitoring::notifications_enabled: false
