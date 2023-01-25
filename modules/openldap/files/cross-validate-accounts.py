@@ -317,7 +317,7 @@ def validate_duplicated_ops_permissions(users):
                 # builder-docker is about being able to issue docker commands
                 #    directly and execute scripts issuing docker commands
                 # deployment-ci-admins includes contint-admins
-                # deployment for software deployments
+                # deployment/mwdebuggers for software deployments
                 # datacenter-ops is the DC-Ops group for historical reason some
                 # of theses members are also in ops
                 groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
@@ -325,7 +325,7 @@ def validate_duplicated_ops_permissions(users):
                                           'contint-docker', 'builder-docker',
                                           'deploy-phabricator', 'analytics-search-users',
                                           'deployment-ci-admins', 'deployment-docker',
-                                          'deployment', 'datacenter-ops'])
+                                          'deployment', 'datacenter-ops', 'mwdebuggers'])
                 if len(set(groups)) > 0:
                     log += "Malformed membership for ops user " + i + ", has additional group(s): "
                     log += str(groups) + "\n"
