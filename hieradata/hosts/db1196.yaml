@@ -1,3 +1,4 @@
 #db1196
+# future sanitarium master for s1
 mariadb::shard: 's1'
 profile::monitoring::notifications_enabled: false
