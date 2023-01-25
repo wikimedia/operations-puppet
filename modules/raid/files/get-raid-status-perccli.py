@@ -125,6 +125,13 @@ def general_state(data) -> Tuple[int, str]:
     return exit_code, message
 
 
+def get_topology(controller_id) -> str:
+    """Get the human-readable topology data for a controller"""
+    args = f'/c{controller_id}/dall show'
+    cmd = ['/usr/bin/perccli64', args]
+    return subprocess.check_output(cmd, universal_newlines=True)
+
+
 def physical_device_status(data) -> Tuple[int, str]:
     """Get all physical devices not currently marked as 'online'"""
     devices = lookup_by_key('PD LIST', data)
@@ -198,6 +205,10 @@ def parser_controller_data(controller_ids) -> Tuple[int, str]:
     # Enclosures
     e_state, e_msg = enclosure_state(data)
     messages.append(e_msg)
+
+    if v_state > 0:
+        for controller in controller_ids:
+            messages.append(get_topology(controller))
 
     return max(c_state, g_state, p_state, v_state, b_state, e_state), ' | '.join(messages)
 
