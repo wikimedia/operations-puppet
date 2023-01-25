@@ -26,14 +26,9 @@ class profile::openstack::base::nova::api::service(
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
 
-    # Allow neutron hosts to access the metadata service
-    # TODO: check if this is used by neutron only (as the comment above claims), and if so,
-    # update this firewall rule to only permit traffic from the neutron hosts
-    # TODO: check if the haproxy load balancer is used for this and maybe remove the direct
-    # firewall rules if it is
-    ferm::service { 'nova-metadata-nova-hosts':
+    ferm::service { 'nova-metadata-backend':
         proto  => 'tcp',
-        port   => '8775',
-        srange => "(${nova_hosts_ranges.join(' ')} @resolve((${haproxy_nodes.join(' ')})))",
+        port   => $metadata_bind_port,
+        srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
 }
