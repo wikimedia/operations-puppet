@@ -51,10 +51,8 @@ profile::presto::server::config_properties:
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
   # query.max-memory is the max memory per node x number of nodes 40gb x nodes
-  #query.max-memory for 5 nodes, note to upgrade once number of nodes increases
-  query.max-memory: 200GB
-  query.max-memory-per-node: 20GB
-  query.max-total-memory-per-node: 40GB
+  #query.max-memory for 15 nodes
+  query.max-memory: 600GB
   task.concurrency: 32
   # task.max-worker-threads is the Node vCPUs * 4
   task.max-worker-threads: 192
