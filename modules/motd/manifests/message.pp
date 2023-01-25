@@ -16,7 +16,7 @@ define motd::message (
     }
     $content = @("CONTENT")
     #!/bin/sh
-    printf "%s\n" "${message}"
+    printf "%s\n" "${_message}"
     | CONTENT
     motd::script { $title:
         ensure   => $ensure,
