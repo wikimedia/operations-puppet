@@ -98,9 +98,6 @@ class profile::bird::anycast(
       }
     }
   }
-  profile::contact { $title:
-      contacts => ['ayounsi'],
-  }
 
   class { 'bird::anycast_healthchecker':
       bind_service => $bind_anycast_service,

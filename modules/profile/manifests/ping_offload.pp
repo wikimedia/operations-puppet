@@ -15,7 +15,4 @@ class profile::ping_offload(
       options   => 'label lo:ping_offload'
     }
   }
-  profile::contact { $title:
-      contacts => ['ayounsi']
-  }
 }

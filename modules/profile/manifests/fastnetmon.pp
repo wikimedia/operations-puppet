@@ -44,7 +44,4 @@ class profile::fastnetmon (
         not_if_empty  => true,
         rotate        => 15,
     }
-    profile::contact { $title:
-        contacts => ['ayounsi', 'cdanis']
-    }
 }

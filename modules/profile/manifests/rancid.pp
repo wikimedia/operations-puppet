@@ -22,8 +22,4 @@ class profile::rancid (
             chown               => 'rancid:rancid',
         }
     }
-
-    profile::contact { $title:
-        contacts => ['ayounsi']
-    }
 }

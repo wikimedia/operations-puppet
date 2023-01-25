@@ -6,10 +6,6 @@ class profile::sretest {
         include profile::base::cuminunpriv
     }
 
-    profile::contact { $title:
-        contacts => ['jbond', 'jmm'],
-    }
-
     $cache_nodes = lookup('cache::nodes')  # lint:ignore:wmf_styleguide
     file { '/var/tmp/testing':
         ensure  => directory,
