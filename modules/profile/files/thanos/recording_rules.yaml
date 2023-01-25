@@ -14,18 +14,6 @@ groups:
         expr: 100 * sum by (cluster, site) (increase(etcd_http_failed_total{code=~"5.."}[92d])) /
                     sum by (cluster, site) (increase(etcd_http_received_total[92d]))
 
-      - record: job_site:sli_wdqs_req_success_ratio:increase90d
-        expr: sum by (job, site) (increase(trafficserver_backend_requests_seconds_count{status=~"200|403|429",backend="wdqs.discovery.wmnet"}[90d]))
-          / sum by (job, site) (increase (trafficserver_backend_requests_seconds_count{backend="wdqs.discovery.wmnet"}[90d]))
-
-      - record: job_site:sli_wdqs_req_success_ratio:increase91d
-          expr: sum by (job, site) (increase(trafficserver_backend_requests_seconds_count{status=~"200|403|429",backend="wdqs.discovery.wmnet"}[91d]))
-            / sum by (job, site) (increase (trafficserver_backend_requests_seconds_count{backend="wdqs.discovery.wmnet"}[91d]))
-
-      - record: job_site:sli_wdqs_req_success_ratio:increase92d
-          expr: sum by (job, site) (increase(trafficserver_backend_requests_seconds_count{status=~"200|403|429",backend="wdqs.discovery.wmnet"}[92d]))
-            / sum by (job, site) (increase (trafficserver_backend_requests_seconds_count{backend="wdqs.discovery.wmnet"}[92d]))
-
   - name: service_slo_targets
     rules:
       - record: service:error_slo:percent
