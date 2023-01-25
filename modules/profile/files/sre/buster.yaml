@@ -29,8 +29,9 @@ role::wmcs::nfs::primary:
   target-q: TBD
 role::wmcs::openstack::eqiad1::backy:
   target-q: TBD
-role::installserver::light:
-  target-q: TBD
+role::installserver:
+  target-q: 2023-1
+  phab-task: 327867
 role::webperf::xhgui:
   target-q: TBD
 role::pybaltest:
