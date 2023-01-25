@@ -18,11 +18,18 @@ profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.
+  # query.max-memory is the max memory per node x number of nodes 40gb x nodes
   node-scheduler.network-topology: legacy
-  query.max-memory: 62GB
-  query.max-memory-per-node: 12GB
-  query.max-total-memory-per-node: 24GB
-
+  #query max memory for 5 nodes, note to upgrade once number of nodes increases
+  query.max-memory: 200GB
+  query.max-memory-per-node: 20GB
+  query.max-total-memory-per-node: 40GB
+  task.concurrency: 48
+  # task.max-worker-threads is the Node vCPUs * 4
+  task.max-worker-threads: 192
+  node-scheduler.max-splits-per-node: 500
+  task.http-response-threads: 5000
+  
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::catalog define.  This will render
