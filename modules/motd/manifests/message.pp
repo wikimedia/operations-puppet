@@ -4,11 +4,16 @@
 # @param message the message to add, use title by default
 # @param priority the motd priority
 define motd::message (
-    Wmflib::Ensure $ensure   = present,
-    String[1]      $message  = $title,
-    Integer[0, 99] $priority = 50,
+    Wmflib::Ensure                 $ensure   = present,
+    String[1]                      $message  = $title,
+    Integer[0, 99]                 $priority = 50,
+    Optional[Wmflib::Ansi::Colour] $color    = undef,
 ) {
 
+    $_message = $color ? {
+        undef   => $message,
+        default => wmflib::ansi::fg($message, $color)
+    }
     $content = @("CONTENT")
     #!/bin/sh
     printf "%s\n" "${message}"
