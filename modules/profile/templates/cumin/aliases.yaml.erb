@@ -190,8 +190,7 @@ icinga: P{O:alerting_host}
 idp: P{O:idp} or A:idp-test
 idp-test: P{O:idp_test}
 insetup: P{O:insetup::serviceops or O:insetup::data_engineering or O:insetup::wmcs or O:insetup::unowned or O:insetup::search_platform or O:insetup::observability or O:insetup::infrastructure_foundations or O:insetup::traffic or O:insetup::data_persistence or O:insetup::core_platform or O:insetup::machine_learning  or O:insetup_noferm}
-installserver: P{O:installserver::light or O:apt_repo}
-installserver-light: P{O:installserver::light}
+installserver: P{O:installserver or O:apt_repo}
 irc: P{O:mw_rc_irc}
 kafka-all: A:kafka-main or A:kafka-jumbo or A:kafka-logging or A:kafka-test
 kafka-main: P{O:kafka::main}

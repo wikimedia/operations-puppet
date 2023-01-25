@@ -1,5 +1,5 @@
 # Sets up a DHCP, TFTP and webproxy. No HTTP and APT repo.
-class role::installserver::light {
+class role::installserver {
     system::role { 'installserver-without-apt-repo': }
 
     include profile::base::production

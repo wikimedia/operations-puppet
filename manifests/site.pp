@@ -1461,12 +1461,12 @@ node /^idp-test[12]002\.wikimedia\.org$/ {
 
 # TFTP/DHCP/webproxy but NOT APT repo (T224576)
 node /^install[12]003\.wikimedia\.org$/ {
-    role(installserver::light)
+    role(installserver)
 }
 
 # new install servers in POPs (T254157, T252526, T242602)
 node /^install[3456]001\.wikimedia\.org$/ {
-    role(installserver::light)
+    role(installserver)
 }
 
 # new alert (icinga + alertmanager) systems, replacing icinga[12]001 (T255072, T255070)
