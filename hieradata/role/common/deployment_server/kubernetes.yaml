@@ -117,6 +117,7 @@ profile::keyholder::server::agents:
       - analytics-deployers
       - research-deployers
       - platform-eng-deployers
+      - airflow-search-admins
 
   scap:
     trusted_groups:
@@ -157,6 +158,10 @@ scap::sources:
   airflow-dags/platform_eng:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-platform_eng
+    origin: gitlab
+  airflow-dags/search:
+    repository: data-engineering/airflow-dags
+    scap_repository: data-engineering/airflow-dags-scap-search
     origin: gitlab
 
   analytics/refinery:
