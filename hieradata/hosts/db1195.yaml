@@ -1,5 +1,3 @@
 # db1195
-# m1 master
-profile::mariadb::mysql_role: 'master'
+# old m1 master
 mariadb::shard: 'm1'
-profile::monitoring::is_critical: true
