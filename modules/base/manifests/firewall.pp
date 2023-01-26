@@ -17,6 +17,7 @@ class base::firewall (
     Array[Stdlib::IP::Address] $mysql_root_clients      = [],
     Array[Stdlib::IP::Address] $deployment_hosts        = [],
     Array[Stdlib::Host]        $prometheus_hosts        = [],
+    Boolean                    $block_abuse_nets        = false,
     Boolean                    $default_reject          = false,
     Boolean                    $manage_nf_conntrack     = true,
 ) {
@@ -50,6 +51,14 @@ class base::firewall (
         }
     }
 
+    if $block_abuse_nets {
+        network::parse_abuse_nets('ferm').each |String $net_name, Network::Abuse_net $config| {
+            ferm::rule {"drop-abuse-net-${net_name}":
+                prio => '01',
+                rule => "saddr (${config['networks'].join(' ')}) DROP;",
+            }
+        }
+    }
     ferm::conf { 'main':
         prio   => '02',
         source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
