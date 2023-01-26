@@ -30,9 +30,7 @@ profile::bgpalerter::reports:
       secure: false # If true the connection will use TLS when connecting to server. If false it will be still possible doing connection upgrade via STARTTLS
     notifiedEmails:
       default:
-        - ayounsi@wikimedia.org
-        - cmooney@wikimedia.org
-        - jbond@wikimedia.org
+        - noc@wikimedia.org
     'notifiedEmails.default': noc
 profile::bgpalerter::upstreams: []
 profile::bgpalerter::downstreams:
