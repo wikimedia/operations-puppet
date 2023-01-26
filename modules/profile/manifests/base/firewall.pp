@@ -64,11 +64,12 @@ class profile::base::firewall (
             ensure => 'file',
         }
         confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-            ensure     => 'present',
-            reload     => '/bin/systemctl reload ferm',
-            watch_keys => ['/request-ipblocks/abuse'],
-            content    => file('profile/firewall/defs_requestctl.tpl'),
-            prefix     => $conftool_prefix,
+            ensure          => 'present',
+            reload          => '/bin/systemctl reload ferm',
+            watch_keys      => ['/request-ipblocks/abuse'],
+            content         => file('profile/firewall/defs_requestctl.tpl'),
+            prefix          => $conftool_prefix,
+            relative_prefix => false,
         }
         ferm::rule { 'drop-blocked-nets':
             prio => '01',
