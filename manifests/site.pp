@@ -372,7 +372,7 @@ node /^cloudgw200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::cloudgw)
 }
 
-node 'cloudgw2001-dev.codfw.wmnet' {
+node 'cloudlb2001-dev.codfw.wmnet' {
     role(wmcs::cloudlb)
 }
 
