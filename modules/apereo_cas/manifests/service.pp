@@ -33,6 +33,8 @@ define apereo_cas::service (
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
             'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'group' ] ]
         }
+    } else {
+        $additional_params = {}
     }
 
     include apereo_cas
@@ -65,9 +67,9 @@ define apereo_cas::service (
         '@class'                 => "org.apereo.cas.services.${service_class}",
         'name'                   => $title,
         'serviceId'              => $service_id,
+        'attributeReleasePolicy' => { '@class' => "org.apereo.cas.services.${release_policy}" },
         'id'                     => $id,
         'accessStrategy'         => $_access_strategy + $delegate,
-        'attributeReleasePolicy' => { '@class' => "org.apereo.cas.services.${release_policy}" }
     } + $additional_params
     $data = $properties.empty ? {
         true    => $base_data,
