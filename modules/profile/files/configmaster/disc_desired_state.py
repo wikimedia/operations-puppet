@@ -151,6 +151,7 @@ DESIRED_STATE = [
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=k8s-ingress-wikikube-ro'},  # noqa
     {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=k8s-ingress-wikikube-rw'},  # noqa
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=k8s-ingress-wikikube-rw'},  # noqa
+    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=k8s-ingress-aux'},
 ]
 
 
