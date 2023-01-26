@@ -162,7 +162,8 @@ profile::wmcs::cloudlb::haproxy::config:
   nova-metadata-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
+      # open to internal networks only
+      open_to_internet: false
     frontends:
       - port: 8775
     backend:
