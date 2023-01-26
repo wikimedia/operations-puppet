@@ -428,8 +428,6 @@ role::orchestrator:
 role::durum:
   target-q: 2023-1
   phab-task: 305589
-role::flowspec:
-  target-q: TBD
 role::thanos::backend:
   target-q: 2022-4
   phab-task: 288937

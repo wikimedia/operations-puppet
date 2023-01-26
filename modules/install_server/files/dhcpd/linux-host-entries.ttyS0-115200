@@ -469,12 +469,6 @@ host failoid2002 {
     fixed-address failoid2002.codfw.wmnet;
 }
 
-host flowspec1001 {
-    hardware ethernet aa:00:00:6d:1e:7d;
-    fixed-address flowspec1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host grafana1002 {
     hardware ethernet aa:00:00:52:b7:27;
     fixed-address grafana1002.eqiad.wmnet;
