@@ -840,14 +840,14 @@ define service {
 define service {
     use                      passive-service
     service_description      check_missing_thank_yous
-    host_name                frdb1004
+    host_name                frdb1005
     contact_groups           fr-tech,fr-tech-ops
 }
 
 define service {
     use                      passive-service
     service_description      check_recurring_contrib_processing
-    host_name                frdb1004
+    host_name                frdb1005
     notification_interval    1440
     contact_groups           fr-tech,fr-tech-ops
 }
@@ -855,28 +855,28 @@ define service {
 define service {
     use                      passive-service
     service_description      check_recurring_gc_contribs_missed
-    host_name                frdb1004
+    host_name                frdb1005
     contact_groups           fr-tech,fr-tech-ops
 }
 
 define service {
     use                      passive-service
     service_description      check_recurring_gc_failures_missed
-    host_name                frdb1004
+    host_name                frdb1005
     contact_groups           fr-tech,fr-tech-ops
 }
 
 define service {
     use                      passive-service
     service_description      check_recurring_gc_jobs_required
-    host_name                frdb1004
+    host_name                frdb1005
     contact_groups           fr-tech,fr-tech-ops
 }
 
 define service {
     use                      passive-service
     service_description      check_recurring_gc_schedule_sanity
-    host_name                frdb1004
+    host_name                frdb1005
     contact_groups           fr-tech,fr-tech-ops
 }
 
