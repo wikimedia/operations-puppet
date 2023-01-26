@@ -54,7 +54,7 @@ class profile::dbbackups::transfer (
             command     => '/usr/bin/remote-backup-mariadb all',
             interval    => {
                 'start'    => 'OnCalendar',
-                'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
+                'interval' => 'Mon,Wed,Thu,Sat *-*-* 00:00:00',
             },
             require     => [
                 File['/etc/wmfbackups/remote_backups.cnf'],
