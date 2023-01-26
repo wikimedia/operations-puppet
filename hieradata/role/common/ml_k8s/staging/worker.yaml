@@ -61,3 +61,15 @@ profile::calico::kubernetes::cni_config:
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
+
+# Kubernetes 1.23 related common settings (should go from here to common for the staging-eqiad update)
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer.
+profile::kubernetes::pki::intermediate: 'mlserve_staging'
+# Renew certificates if they are due to expire in 48h
+# wikikube_staging certs have a default expiry of 3 days, to this should ultimately lead
+# to every day renewals.
+profile::kubernetes::pki::renew_seconds: 172800

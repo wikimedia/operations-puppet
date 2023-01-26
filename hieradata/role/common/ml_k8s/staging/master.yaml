@@ -1,5 +1,8 @@
 cluster: ml_staging
 profile::kubernetes::master::cluster_group: ml-serve
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::service_cert: "ml-staging-ctrl.svc.%{::site}.wmnet"
@@ -12,9 +15,20 @@ profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wm
 profile::kubernetes::master::admission_plugins:
   enable:
     - PodSecurityPolicy
+    # v1.23: Enable DenyServiceExternalIPs because we don't use them
+    - DenyServiceExternalIPs
+    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
+    - NodeRestriction
   disable:
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer.
+profile::kubernetes::pki::intermediate: 'mlserve_staging'
+# Renew certificates if they are due to expire in 48h
+# wikikube_staging certs have a default expiry of 3 days, to this should ultimately lead
+# to every day renewals.
+profile::kubernetes::pki::renew_seconds: 172800
 profile::lvs::realserver::pools:
   ml-staging-ctrl:
     services:
