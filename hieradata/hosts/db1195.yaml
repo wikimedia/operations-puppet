@@ -1,3 +1,4 @@
 # db1195
-# old m1 master
-mariadb::shard: 'm1'
+# future m2 master 
+mariadb::shard: 'm2'
+profile::monitoring::notifications_enabled: false
