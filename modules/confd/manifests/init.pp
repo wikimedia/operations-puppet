@@ -34,9 +34,10 @@ class confd(
     Optional[String] $prefix        = undef,
 ) {
 
-    package { ['confd', 'python3-toml']:
+    package { 'confd':
         ensure => $ensure,
     }
+    ensure_packages(['python3-toml'])
 
     if $running {
         $params = { ensure => 'running'}
