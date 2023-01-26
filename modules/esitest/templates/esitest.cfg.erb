@@ -11,7 +11,6 @@ global
     stats socket /run/esitest/esitest.sock mode 600 expose-fd listeners level admin
     # do not keep old processes longer than 5m after a reload
     hard-stop-after 5m
-    nbproc 1
     nbthread <%= num_threads %>
     cpu-map 1/1- <%= cpus %>
     maxconn 200000
