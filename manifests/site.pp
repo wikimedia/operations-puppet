@@ -1409,8 +1409,9 @@ node /^cloudnet200[5-6]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
+# On the way out, T328079
 node 'clouddb2001-dev.codfw.wmnet' {
-    role(wmcs::openstack::codfw1dev::db)
+    role(spare::system)
 }
 
 # New clouddb node T306854
