@@ -1,29 +1,29 @@
 -- wikiadmin 10.%
 
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO 'wikiadmin'@'10.%'
+    ON *.* TO '<%= @wikiadmin_username %>'@'10.%'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
-    ON `%wik%`.* TO 'wikiadmin'@'10.%';
+    ON `%wik%`.* TO '<%= @wikiadmin_username %>'@'10.%';
 
 <% if @shard == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
-    ON `centralauth`.* TO 'wikiadmin'@'10.%';
+    ON `centralauth`.* TO '<%= @wikiadmin_username %>'@'10.%';
 <% end -%>
 <% if @shard == 'x2' %>
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
-    ON `mainstash`.* TO 'wikiadmin'@'10.%';
+    ON `mainstash`.* TO '<%= @wikiadmin_username %>'@'10.%';
 <% end -%>
 
 GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO 'wikiadmin'@'10.%';
+    ON `heartbeat`.`heartbeat` TO '<%= @wikiadmin_username %>'@'10.%';
 
 GRANT SELECT, EXECUTE
-    ON `sys`.* TO 'wikiadmin'@'10.%';
+    ON `sys`.* TO '<%= @wikiadmin_username %>'@'10.%';
 
 GRANT SELECT
-    ON `performance_schema`.* TO 'wikiadmin'@'10.%';
+    ON `performance_schema`.* TO '<%= @wikiadmin_username %>'@'10.%';
 
 -- wikiuser 10.64.%
 
@@ -70,14 +70,14 @@ GRANT SELECT
 <%- if @shard == 's6' -%>
 -- wikiadmin @ 208.80.154.150 (cloudweb1003)
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO 'wikiadmin'@'208.80.154.150'
+    ON *.* TO '<%= @wikiadmin_username %>'@'208.80.154.150'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
-    ON `labswiki`.* TO 'wikiadmin'@'208.80.154.150';
+    ON `labswiki`.* TO '<%= @wikiadmin_username %>'@'208.80.154.150';
 
 GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO 'wikiadmin'@'208.80.154.150';
+    ON `heartbeat`.`heartbeat` TO '<%= @wikiadmin_username %>'@'208.80.154.150';
 
 -- wikiuser @ 208.80.154.150 (cloudweb1003)
 GRANT PROCESS, REPLICATION CLIENT
@@ -103,13 +103,13 @@ GRANT SELECT
 
 -- wikiadmin @ 208.80.155.117 (cloudweb1004)
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO 'wikiadmin'@'208.80.155.117'
+    ON *.* TO '<%= @wikiadmin_username %>'@'208.80.155.117'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
-    ON `labswiki`.* TO 'wikiadmin'@'208.80.155.117';
+    ON `labswiki`.* TO '<%= @wikiadmin_username %>'@'208.80.155.117';
 
 GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO 'wikiadmin'@'208.80.155.117';
+    ON `heartbeat`.`heartbeat` TO '<%= @wikiadmin_username %>'@'208.80.155.117';
 <%- end -%>
 

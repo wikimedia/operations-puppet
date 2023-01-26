@@ -1,6 +1,7 @@
 class profile::mariadb::core_test (
     String $shard             = lookup('mariadb::shard'),
     String $binlog_format     = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
+    String $wikiadmin_username = lookup('profile::mariadb::wikiadmin_username'),
     String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ){
     require profile::mariadb::mysql_role
@@ -49,9 +50,10 @@ class profile::mariadb::core_test (
     }
 
     profile::mariadb::grants::core { $shard:
-        wikiadmin_pass    => $passwords::misc::scripts::wikiadmin_pass,
-        wikiuser_username => $wikiuser_username,
-        wikiuser_pass     => $passwords::misc::scripts::wikiuser_pass,
+        wikiadmin_username => $wikiadmin_username,
+        wikiadmin_pass     => $passwords::misc::scripts::wikiadmin_pass,
+        wikiuser_username  => $wikiuser_username,
+        wikiuser_pass      => $passwords::misc::scripts::wikiuser_pass,
     }
     class { 'profile::mariadb::grants::production':
         shard    => 'core',

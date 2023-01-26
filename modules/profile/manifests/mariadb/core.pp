@@ -3,6 +3,7 @@ class profile::mariadb::core (
     String $binlog_format = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
     String $sync_binlog = lookup('profile::mariadb::config::sync_binlog', {'default_value' => '1'}),
     String $flush_log_at_trx_commit = lookup('profile::mariadb::config::innodb_flush_log_at_trx_commit', {'default_value' => '1'}),
+    String $wikiadmin_username = lookup('profile::mariadb::wikiadmin_username'),
     String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ){
     require profile::mariadb::mysql_role
@@ -47,9 +48,10 @@ class profile::mariadb::core (
     profile::mariadb::section { $shard: }
 
     profile::mariadb::grants::core { $shard:
-        wikiadmin_pass    => $passwords::misc::scripts::wikiadmin_pass,
-        wikiuser_username => $wikiuser_username,
-        wikiuser_pass     => $passwords::misc::scripts::wikiuser_pass,
+        wikiadmin_username => $wikiadmin_username,
+        wikiadmin_pass     => $passwords::misc::scripts::wikiadmin_pass,
+        wikiuser_username  => $wikiuser_username,
+        wikiuser_pass      => $passwords::misc::scripts::wikiuser_pass,
     }
     class { 'profile::mariadb::grants::production':
         shard    => 'core',

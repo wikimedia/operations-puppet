@@ -1,11 +1,11 @@
 -- wikiadmin 10.%
 
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO 'wikiadmin'@'10.%'
+    ON *.* TO '<%= @wikiadmin_username %>'@'10.%'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 GRANT ALL PRIVILEGES
-    ON `parsercache`.* TO 'wikiadmin'@'10.%';
+    ON `parsercache`.* TO '<%= @wikiadmin_username %>'@'10.%';
 
 -- wikiuser 10.64.%
 

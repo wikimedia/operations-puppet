@@ -92,14 +92,14 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'::1' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 GRANT PROXY ON ''@'%' TO 'root'@'localhost' WITH GRANT OPTION;
 -- Grants for 'wikiadmin'@'10.64.16.77'
-GRANT USAGE ON *.* TO 'wikiadmin'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
-GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'10.64.16.77';
+GRANT USAGE ON *.* TO '<%= @wikiadmin_username %>'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
+GRANT ALL PRIVILEGES ON `labtestwiki`.* TO '<%= @wikiadmin_username %>'@'10.64.16.77';
 -- Grants for 'wikiadmin'@'208.80.153.41'
-GRANT USAGE ON *.* TO 'wikiadmin'@'208.80.153.41' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
-GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.41';
+GRANT USAGE ON *.* TO '<%= @wikiadmin_username %>'@'208.80.153.41' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
+GRANT ALL PRIVILEGES ON `labtestwiki`.* TO '<%= @wikiadmin_username %>'@'208.80.153.41';
 -- Grants for 'wikiadmin'@'2620:0:861:102:10:64:16:77'
-GRANT USAGE ON *.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
-GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:77';
+GRANT USAGE ON *.* TO '<%= @wikiadmin_username %>'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
+GRANT ALL PRIVILEGES ON `labtestwiki`.* TO '<%= @wikiadmin_username %>'@'2620:0:861:102:10:64:16:77';
 -- Grants for 'wikiuser'@'10.64.16.77'
 GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'10.64.16.77';

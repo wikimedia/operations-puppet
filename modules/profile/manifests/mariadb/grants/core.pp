@@ -1,5 +1,6 @@
 # wikiadmin, wikiuser
 define profile::mariadb::grants::core(
+    String                          $wikiadmin_username = '',
     String                          $wikiadmin_pass = '',
     String                          $wikiuser_username = '',
     String                          $wikiuser_pass  = '',
