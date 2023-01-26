@@ -393,7 +393,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, kelhurd,
-              eileen, jebe, ollieshotton, muja, taavi]
+              eileen, jebe, ollieshotton, muja, taavi, abhas]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5727,11 +5727,16 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8bGW3V4Wh5U0uUdBVyAaWMf1FBf5WeCf9FnxhJf/vM egaffney@wikimedia.org
     krb: present
-ldap_only_users:
   abhas:
     ensure: present
     realname: Abhas Tripathi
     email: atripathi@wikimedia.org
+    uid: 42530
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/UXerh39d7MLuBg/tSVk/W3FbqxIbSl5VE03IvahKI atripathi@wikimedia.org
+    krb: present
+ldap_only_users:
   adavenport:
     ensure: absent
     realname: Allison Davenport
