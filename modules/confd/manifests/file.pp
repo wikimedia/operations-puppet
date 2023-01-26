@@ -24,6 +24,8 @@
 #
 # [*content*] The actual go text/template used for generating the file
 #
+# [*relative_prefix*] if true prepend the global prefix configured in the confd class
+#
 define confd::file (
     $ensure     = 'present',
     $prefix     = undef,
@@ -34,11 +36,12 @@ define confd::file (
     $reload     = undef,
     $check      = undef,
     $content    = undef,
-
+    Boolean $relative_prefix = true,
 ) {
 
-    include ::confd
+    include confd
 
+    $_prefix = $relative_prefix.bool2str("${confd::prefix}${prefix}", $prefix)
     $safe_name = regsubst($name, '/', '_', 'G')
 
     file { "/etc/confd/templates/${safe_name}.tmpl":
