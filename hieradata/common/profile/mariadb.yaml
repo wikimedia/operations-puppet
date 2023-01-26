@@ -61,4 +61,4 @@ profile::mariadb::section_params:
   backup1-codfw:
     writeable_dc: 'codfw'
     replication_type: 'none'
-profile::mariadb::wikiuser_username: 'wikiuser202206'
+profile::mariadb::wikiuser_username: 'wikiuser2023'

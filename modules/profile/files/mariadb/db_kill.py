@@ -46,7 +46,7 @@ def get_extra_port(port):
     return port + 20
 
 
-def build_command(host, port, dry_run=False, interval=5, time=10, user='wikiuser202206',
+def build_command(host, port, dry_run=False, interval=5, time=10, user='wikiuser2023',
                   log='/var/log/db-kill.log'):
     '''return array with the pt-kill execution and its parameters, based on some
        input arguments:
