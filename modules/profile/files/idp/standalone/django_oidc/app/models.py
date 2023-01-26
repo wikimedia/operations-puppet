@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
-from django.db import models
-from social_django.models import USER_MODEL, AbstractUserSocialAuth, DjangoStorage
+# from django.db import models
+# from social_django.models import USER_MODEL, AbstractUserSocialAuth, DjangoStorage
+from social_django.models import AbstractUserSocialAuth, DjangoStorage
 
 
 class CustomUserSocialAuth(AbstractUserSocialAuth):
