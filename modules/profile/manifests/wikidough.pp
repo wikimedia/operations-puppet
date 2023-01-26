@@ -16,7 +16,7 @@ class profile::wikidough (
     motd::script { 'root-commands-warning':
         ensure   => 'present',
         priority => 1,
-        content  => template('profile/wikidough/motd.erb'),
+        source   => 'puppet:///modules/profile/wikidough/motd.sh',
     }
 
     ferm::service { 'wikidough-doh':
