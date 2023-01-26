@@ -29,20 +29,17 @@ class profile::gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'httpd':
-        remove_default_ports => true,
-        modules              => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
-        wait_network_online  => true,
+        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
+        wait_network_online => true,
     }
 
     httpd::site { $tls_host:
         content => template('profile/gerrit/apache.erb'),
     }
 
-    # Let apache only listen on the service IP
+    # We now listen on any ports and firewall out requests to the host T326125
     httpd::conf{ 'gerrit_listen_service_ip':
-        ensure   => present,
-        priority => 0,
-        content  => template('profile/gerrit/apache.ports.conf.erb')
+        ensure => absent,
     }
 
     $robots = ['User-Agent: *', 'Disallow: /g', 'Disallow: /r/plugins/gitiles', 'Crawl-delay: 1']

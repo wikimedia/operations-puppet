@@ -54,13 +54,15 @@ class profile::gerrit(
     }
 
     ferm::service { 'gerrit_http':
-        proto => 'tcp',
-        port  => 'http',
+        proto  => 'tcp',
+        port   => 'http',
+        drange => "(${ipv4} ${ipv6})",
     }
 
     ferm::service { 'gerrit_https':
-        proto => 'tcp',
-        port  => 'https',
+        proto  => 'tcp',
+        port   => 'https',
+        drange => "(${ipv4} ${ipv6})",
     }
 
     if $backups_enabled and $backup_set != undef {
