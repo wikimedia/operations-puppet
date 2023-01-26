@@ -117,4 +117,6 @@ class bgpalerter (
         enable    => true,
         subscribe => File[$config_file, $prefix_file],
     }
+
+    profile::auto_restarts::service { 'node-bgpalerter':}
 }
