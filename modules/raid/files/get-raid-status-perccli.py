@@ -74,7 +74,7 @@ def get_perccli_data(controller_ids) -> Tuple[bool, str, dict]:
     # The PERCCLI tool always returns an array of controllers, even if we
     # specifically requested just the one. Extract the response data from
     # the array to make things easier to work with.
-    return NAGIOS_OK, 'communication 0 OK', data['Controllers']
+    return NAGIOS_OK, 'communication: 0 OK', data['Controllers']
 
 
 def lookup_by_key(key, data) -> list:
