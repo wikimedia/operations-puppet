@@ -20,10 +20,12 @@ class profile::wmcs::services::toolsdb_apt_pinning (
             priority => -1,
         }
     } elsif debian::codename::eq('bullseye') {
-        apt::pin { 'toolsdb_fixed_mariadb_version':
+        # A pin with priority between 0 and 100 will allow the package to be installed
+        # but will not allow upgrading it (unless manually asked to do so).
+        apt::pin { 'toolsdb_mariadb_104_no_auto_updates':
             package  => 'wmf-mariadb104',
-            pin      => 'version 10.4.25+deb11u1',
-            priority => 1002,
+            pin      => 'version *',
+            priority => 90,
         }
 
         apt::pin { 'toolsdb_no_mariadb_106':
