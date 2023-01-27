@@ -90,7 +90,7 @@ class profile::openstack::base::pdns::recursor::service(
         additional_forward_zones => "${tld}=${pdns_host_ip}, ${legacy_tld}=${pdns_host_ip}, ${reverse_zone_rules}",
         auth_zones               => 'labsdb=/var/zones/labsdb',
         lua_hooks                => $lua_hooks,
-        max_negative_ttl         => 900,
+        max_negative_ttl         => 30,
         max_tcp_per_client       => 10,
         max_cache_entries        => 3000000,
         client_tcp_timeout       => 1,
