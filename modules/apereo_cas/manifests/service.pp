@@ -31,7 +31,7 @@ define apereo_cas::service (
             'bypassApprovalPrompt'   => true,
             'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
-            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'group' ] ]
+            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'groups' ] ]
         }
     } else {
         $additional_params = {}
