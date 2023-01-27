@@ -140,6 +140,12 @@ sub cluster_fe_recv {
         }
 
         // Strip away all query parameters
+        // 2023-01-27: Note that MW now puts timestamps in a query string to
+        // bust client-side caching of outdated uploads.  If we ever consider
+        // removing this [the stripping of query params here] for some reason,
+        // we need to take that into account.
+        // See also:
+        // T38380 -> https://gerrit.wikimedia.org/r/c/mediawiki/core/+/756151
         set req.url = regsub(req.url, "\?.*$", "");
 
         // Replace double slashes
