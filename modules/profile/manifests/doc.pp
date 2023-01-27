@@ -139,8 +139,17 @@ class profile::doc (
                 command     => "/usr/bin/rsync -avp --delete /srv/doc/ rsync://${other_host}/doc-between-nodes",
                 interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
             }
+
+        }
+
+        prometheus::blackbox::check::http { "doc.wikimedia.org-${other_host}":
+            team               => 'serviceops-collab',
+            severity           => 'task',
+            path               => '/',
+            ip_families        => ['ip4'],
+            force_tls          => true,
+            body_regex_matches => ['open-source'],
         }
     }
-
     profile::auto_restarts::service { 'rsync': }
 }
