@@ -26,4 +26,14 @@ class profile::ci::httpd {
     }
 
     profile::auto_restarts::service { 'apache2': }
+
+    prometheus::blackbox::check::http { 'integration.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        body_regex_matches => ['Integration'],
+    }
+
 }
