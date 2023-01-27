@@ -28,6 +28,15 @@ class profile::etherpad(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Etherpad.wikimedia.org',
     }
 
+    prometheus::blackbox::check::http { 'etherpad.wikimedia.org':
+        teamn              => 'serviceops-collab',
+        severity           => 'warning',
+        path               => '/',
+        ip_families        => ['ipv4'],
+        force_tls          => true,
+        body_regex_matches => ['Pad'],
+    }
+
     ferm::service { 'etherpad_service':
         proto  => 'tcp',
         port   => '9001',
