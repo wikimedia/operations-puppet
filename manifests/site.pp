@@ -317,7 +317,7 @@ node 'bast3004.wikimedia.org' {
 
 # esams/bastion on Ganeti
 node 'bast3005.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 node 'bast3006.wikimedia.org' {
@@ -326,7 +326,7 @@ node 'bast3006.wikimedia.org' {
 
 # ulsfo/bastion on Ganeti
 node 'bast4003.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 node 'bast4004.wikimedia.org' {
@@ -335,7 +335,7 @@ node 'bast4004.wikimedia.org' {
 
 # eqsin/bastion on Ganeti
 node 'bast5002.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 node 'bast5003.wikimedia.org' {
@@ -344,7 +344,7 @@ node 'bast5003.wikimedia.org' {
 
 # drmrs/bastion on Ganeti
 node 'bast6001.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 node 'bast6002.wikimedia.org' {
