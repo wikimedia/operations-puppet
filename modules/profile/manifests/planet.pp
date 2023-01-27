@@ -200,4 +200,15 @@ class profile::planet (
         port   => '80',
         srange => "(${::ipaddress} ${::ipaddress6})",
     }
+
+
+    prometheus::blackbox::check::http { 'en.planet.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ipv4'],
+        force_tls          => true,
+        body_regex_matches => ['Planetarium'],
+    }
+
 }
