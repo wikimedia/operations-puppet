@@ -93,4 +93,15 @@ class profile::releases::common(
     }
 
     backup::set { 'srv-org-wikimedia': }
+
+
+    prometheus::blackbox::check::http { 'releases.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'warning',
+        path               => '/',
+        ip_families        => ['ipv4'],
+        force_tls          => true,
+        body_regex_matches => ['Wikimedia'],
+    }
+
 }
