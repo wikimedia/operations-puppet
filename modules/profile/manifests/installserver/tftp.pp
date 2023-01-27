@@ -18,15 +18,11 @@
 # Sample Usage:
 #       include ::profile::installserver::tftp
 
-class profile::installserver::tftp (
-    Enum['stopped', 'running'] $ensure_service = lookup('profile::installserver::tftp::ensure_service'),
-){
+class profile::installserver::tftp () {
 
     ensure_packages('tftp')
 
-    class { '::install_server::tftp_server':
-        ensure_service => $ensure_service,
-    }
+    class { 'install_server::tftp_server': }
 
     ferm::service { 'tftp':
         proto  => 'udp',
@@ -36,13 +32,7 @@ class profile::installserver::tftp (
 
     backup::set { 'srv-tftpboot': }
 
-    $ensure_monitor = $ensure_service ? {
-        'stopped' => 'absent',
-        default   => 'present',
-    }
-
     nrpe::monitor_service { 'atftpd':
-        ensure       => $ensure_monitor,
         description  => 'TFTP service',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody --ereg-argument-array=\'.*/usr/sbin/atftpd .*\'',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/atftpd',
