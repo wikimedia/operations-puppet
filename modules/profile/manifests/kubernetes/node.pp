@@ -269,4 +269,14 @@ class profile::kubernetes::node (
         priority => 1,
         content  => 'if $msg contains "run-docker-runtime\\\\x2drunc-moby-" and $msg contains ".mount: Succeeded." then { stop }',
     }
+
+    # We've seen issues with tailing container logs as kubelet a lot of inotify instances.
+    # Increase the inotify limits (from Debian default 8192, 128). The new values don't have a real meaning,
+    # they've been copied from what we use on prometheus nodes.
+    sysctl::parameters { 'increase_inotify_limits':
+        values => {
+            'fs.inotify.max_user_watches'   => 32768,
+            'fs.inotify.max_user_instances' => 512,
+        },
+    }
 }
