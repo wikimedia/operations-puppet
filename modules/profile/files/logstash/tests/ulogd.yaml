@@ -50,7 +50,9 @@ testcases:
               name: "informational"
         network:
           direction: "in"
+          tcp_flags: [ "RST" ]
           protocol: "TCP"
+          transport: "TCP"
           type: "ipv6"
         observer:
           ingress:
@@ -69,7 +71,7 @@ testcases:
           "rsyslog.timereported": "2020-05-05T10:34:50.333",
           "rsyslog.hostname": "mw1307",
           "timestamp": "2020-05-05T10:34:50.333969+00:00",
-          "message": "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST URGP=0 MARK=0",
+          "message": "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST FIN URGP=0 MARK=0",
           "host": "mw1307",
           "logsource": "mw1307"
         }
@@ -90,7 +92,7 @@ testcases:
           ttl: "63"
         log:
           level: "INFO"
-          original: "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST URGP=0 MARK=0"
+          original: "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST FIN URGP=0 MARK=0"
           syslog:
             facility:
               code: 23
@@ -102,6 +104,8 @@ testcases:
         network:
           direction: "in"
           protocol: "TCP"
+          tcp_flags: [ "RST", "FIN" ]
+          transport: "TCP"
           type: "ipv4"
         observer:
           ingress:
@@ -113,3 +117,55 @@ testcases:
           ip: "127.0.0.1"
           domain: "localhost"
           port: "9243"
+
+  - input:
+      - >
+        {
+          "rsyslog.timereported": "2020-05-05T10:34:50.333",
+          "rsyslog.hostname": "mw1307",
+          "timestamp": "2020-05-05T10:34:50.333969+00:00",
+          "message": "[fw-in-drop] IN=ens5 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=330 TOS=00 PREC=0x00 TTL=63 ID=59689 PROTO=UDP SPT=67 DPT=67 LEN=310 MARK=0",
+          "host": "mw1307",
+          "logsource": "mw1307"
+        }
+    expected:
+      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+        destination:
+          ip: "127.0.0.1"
+          domain: "localhost"
+          port: "67"
+        ecs:
+          version: "1.7.0"
+        event:
+          action: "drop"
+        host:
+          name: "mw1307"
+        labels:
+          len: "330"
+          ttl: "63"
+        log:
+          level: "INFO"
+          original: "[fw-in-drop] IN=ens5 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=330 TOS=00 PREC=0x00 TTL=63 ID=59689 PROTO=UDP SPT=67 DPT=67 LEN=310 MARK=0"
+          syslog:
+            facility:
+              code: 23
+              name: "local7"
+            priority: 190
+            severity:
+              code: 6
+              name: "informational"
+        network:
+          direction: "in"
+          protocol: "UDP"
+          transport: "UDP"
+          type: "ipv4"
+        observer:
+          ingress:
+            interface:
+              name: "ens5"
+        service:
+          type: "ulogd"
+        source:
+          ip: "127.0.0.1"
+          domain: "localhost"
+          port: "67"
