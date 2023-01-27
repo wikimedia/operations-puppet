@@ -134,7 +134,7 @@ class profile::httpbb (
         systemd::timer::job { "httpbb_hourly_${test_dir}":
             ensure             => $ensure,
             description        => "Run httpbb ${test_dir}/ tests hourly on ${joined_hosts}",
-            command            => "/bin/sh -c '/usr/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts}'",
+            command            => "/bin/sh -c '/usr/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts} --retry_on_timeout'",
             interval           => {
                 'start'    => 'OnUnitActiveSec',
                 'interval' => '1 hour',
@@ -150,7 +150,7 @@ class profile::httpbb (
         systemd::timer::job { 'httpbb_kubernetes_hourly':
             ensure             => $ensure,
             description        => 'Run httpbb appserver tests hourly on Kubernetes.',
-            command            => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450\'',
+            command            => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450 --retry_on_timeout\'',
             interval           => {
                 'start'    => 'OnUnitActiveSec',
                 'interval' => '1 hour',
