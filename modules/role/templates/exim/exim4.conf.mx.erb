@@ -33,10 +33,6 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 # re-enabled when Exim is upgraded to 4.96, T307873.
 chunking_advertise_hosts =
 
-# LDAP lookups (Office)
-ldap_default_servers = ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @other_site %>.wikimedia.org
-LDAPPASSWORD=<%= @smtp_ldap_password.unwrap %>
-
 domainlist system_domains = @
 domainlist local_domains = +system_domains : +wikimedia_domains : +verp_domains
 domainlist wikimedia_domains = lsearch,ret=key;CONFDIR/wikimedia_domains
