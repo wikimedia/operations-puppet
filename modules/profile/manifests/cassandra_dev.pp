@@ -7,5 +7,5 @@ class profile::cassandra_dev {
 
     # Temporary; Installed to facilitate ad-hoc testing of Kask
     # containers (see https://phabricator.wikimedia.org/T327954).
-    ensure_packages('docker.io')
+    ensure_packages(['docker.io', 'siege'])
 }
