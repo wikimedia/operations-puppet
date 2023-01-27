@@ -2,9 +2,12 @@
 class phabricator::phd::user(
   String $user_name = 'phd',
   Stdlib::Unixpath $home_dir = "/var/run/${user_name}",
-  Admin::UID::System::Global $uid = 920, # reserved in modules/admin/data/data.yaml
-  Admin::UID::System::Global $gid = $uid, # in our setup normally GID always equals UID
 ) {
+
+    # global UID reserved in modules/admin/data/data.yaml
+    $uid = assert_type(Admin::UID::System::Global, 920)
+    # in our setup normally GID always equals UID
+    $gid = assert_type(Admin::UID::System::Global, $uid)
 
     file { $home_dir:
         ensure => directory,
