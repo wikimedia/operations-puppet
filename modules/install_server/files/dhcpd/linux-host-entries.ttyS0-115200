@@ -777,18 +777,6 @@ host kubernetes2016 {
     fixed-address kubernetes2016.codfw.wmnet;
 }
 
-host ldap-corp1001.wikimedia.org {
-    hardware ethernet aa:00:00:12:a2:94;
-    fixed-address ldap-corp1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
-host ldap-corp2001.wikimedia.org {
-    hardware ethernet aa:00:00:92:e4:22;
-    fixed-address ldap-corp2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host ldap-replica1003.wikimedia.org {
     hardware ethernet aa:00:00:93:f3:f4;
     fixed-address ldap-replica1003.wikimedia.org;
