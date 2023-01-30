@@ -10,11 +10,6 @@ profile::admin::groups:
   - contint-roots
   - deployment-jenkins
 
-profile::ci::kubernetes_config::user: jenkins
-profile::ci::kubernetes_config::namespace: ci
-profile::ci::kubernetes_config::master: kubestagemaster.svc.eqiad.wmnet
-profile::ci::kubernetes_config::owner: jenkins-slave
-profile::ci::kubernetes_config::group: contint-roots
 profile::kubernetes::deployment_server::user_defaults:
   group: wikidev
   mode: "0640"
