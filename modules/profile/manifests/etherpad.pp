@@ -29,7 +29,7 @@ class profile::etherpad(
     }
 
     prometheus::blackbox::check::http { 'etherpad.wikimedia.org':
-        teamn              => 'serviceops-collab',
+        team               => 'serviceops-collab',
         severity           => 'warning',
         path               => '/',
         ip_families        => ['ipv4'],
