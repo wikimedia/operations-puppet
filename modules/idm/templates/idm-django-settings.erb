@@ -1,4 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+from ldap3 import HASHED_SALTED_SHA
 
 from base_settings import *
 from local_settings import * # DEBUG
@@ -7,21 +8,16 @@ from local_settings import * # DEBUG
 SECRET_KEY = '<%= @django_secret_key %>'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = <%- if @development -%>True<%- else -%>False<%- end -%>
+# Never set DEBUG to True in production environment, that includes
+# staging as this WILL leak passwords.
+DEBUG = False
 
 ALLOWED_HOSTS = ['<%= @service_fqdn %>',]
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-<%- if @development -%>
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/srv/idm/db.sqlite3', # noqa
-    }
-}
-<%- else -%>
+<%- if @production -%>
 DATABASES = {
     'default': {
         'ENGINE': '<%= @django_db_backends_mysql %>',
@@ -31,21 +27,40 @@ DATABASES = {
         'PASSWORD': '<%= @django_mysql_db_password %>',
     }
 }
+<%- else -%>
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/srv/idm/db.sqlite3', # noqa
+    }
+}
 <%- end -%>
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'django': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '<%= @idm_log_dir %>/django.log',
+            'filename': '<%= @log_dir %>/django.log',
+            'formatter': 'simple',
         },
         'bitu': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '<%= @idm_log_dir %>/idm.log',
+            'filename': '<%= @log_dir %>/idm.log',
+            'formatter': 'simple',
         },
     },
     'loggers': {
@@ -76,6 +91,60 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 360,
     },
 }
+
+# WikiMedia IDM configuration
+
+LDAP_USER_CONF = {
+    'default_gid': 500,
+}
+
+BITU_LDAP = {
+    'uri': '<%= @ldap_config["ro-server"] %>',
+    'username': '<%= @ldap_config["proxyagent"] %>',
+    'password': '<%= @ldap_config["proxypass"] %>',
+    'readonly': False,
+    'connection_timeout': 5,
+    'users': {
+        'dn': '<%= @ldap_config["users_cn"] %>,<%= @ldap_config["base-dn"] %>,',
+        'object_classes': ['inetOrgPerson'],
+        'auxiliary_classes': ['posixAccount'],
+    }
+}
+
+BITU_SUB_SYSTEMS = {
+    'ldapbackend': {
+        'default_gid': 500,
+        'password_hash': 'ldapbackend.helpers.hash_password',
+        'password_hash_method': HASHED_SALTED_SHA,
+        'default_groups': ['']
+    }
+}
+
+# Social Auth
+# Autheticate users via CAS / OIDC
+
+AUTHENTICATION_BACKENDS = [
+    "social_core.backends.cas.CASOpenIdConnectAuth",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+SOCIAL_AUTH_CAS_OIDC_ENDPOINT = '<%= @oidc["endpoint"] %>'
+SOCIAL_AUTH_CAS_KEY = '<%= @oidc["key"] %>'
+SOCIAL_AUTH_CAS_SECRET = '<%= @oidc["secret"] %>'
+SOCIAL_AUTH_CAS_USERINFO_URL = '<%= @oidc["endpoint"] %>/profile'
+SOCIAL_AUTH_CAS_SCOPE = ['openid', 'profile', 'email', 'groups']
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 
 STATIC_ROOT = '<%= @static_dir %>'
 STATICFILES_DIRS = [
