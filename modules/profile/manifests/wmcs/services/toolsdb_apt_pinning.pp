@@ -8,10 +8,10 @@ class profile::wmcs::services::toolsdb_apt_pinning (
     }
 
     if debian::codename::eq('stretch') {
-        apt::pin { 'toolsdb_fixed_mariadb_version':
+        apt::pin { 'toolsdb_mariadb_101_no_auto_updates':
             package  => 'wmf-mariadb101',
-            pin      => 'version 10.1.39-1',
-            priority => 1002,
+            pin      => 'version *',
+            priority => 90,
         }
 
         apt::pin { 'toolsdb_no_mariadb_103':
