@@ -11,7 +11,7 @@ mod 'augeasproviders_core',
 mod 'concat',
     # NOTE: Deviates from upstream v7.3.0
     # TODO: migrate local fixes to gitlab.w.o and create a tag
-    # also see https://github.com/b4ldr/puppetlabs-concat/tree/puppet5.5 
+    # also see https://github.com/b4ldr/puppetlabs-concat/tree/puppet5.5
     #
     # 1. f507466942dbdb0684a1d04ea3d96d62d0ec70fa.:
     #    This commit is reverted as the Regexp.match? operator is not availabe
