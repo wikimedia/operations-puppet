@@ -736,11 +736,6 @@ node /^db21(42|43|44)\.codfw\.wmnet$/ {
 ## m1 shard
 # See also multiinstance misc hosts db1117, db2160 below
 
-# old m1 master
-node 'db1195.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
 # m1 master
 node 'db1176.eqiad.wmnet' {
     role(mariadb::misc)
@@ -756,6 +751,11 @@ node 'db2132.codfw.wmnet' {
 
 # m2 eqiad master
 node 'db1164.eqiad.wmnet' {
+    role(mariadb::misc)
+}
+
+# Future m2 master
+node 'db1195.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
