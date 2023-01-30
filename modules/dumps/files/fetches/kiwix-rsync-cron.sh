@@ -37,7 +37,7 @@ do_rsync(){
     [[ -e "$destdir" ]] || mkdir -p "$destdir"
 
     # filter out messages of the type
-    #   file has vanished: "/zim/wikipedia/.wikipedia_tg_all_nopic_2016-05.zim.TQH5Zv" (in download.kiwix.org)
+    #   file has vanished: "/zim/wikipedia/.wikipedia_tg_all_nopic_2016-05.zim.TQH5Zv" (in wmf.download.kiwix.org)
     #   rsync warning: some files vanished before they could be transferred (code 24) at main.c(1655) [generator=3.1.1]
     # cat makes the pipeline command never fail
     /usr/bin/rsync \
@@ -64,5 +64,5 @@ if [[ "$1" == "" ]]; then
 fi
 
 for project in "${PROJECTS[@]}"; do
-    do_rsync "download.kiwix.org/zim/${project}/" "kiwix/zim/${project}/" "$1"
+    do_rsync "wmf.download.kiwix.org/zim/${project}/" "kiwix/zim/${project}/" "$1"
 done
