@@ -63,8 +63,8 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 kubernetes_cluster_groups:
   main:
     staging:
-      dc: eqiad
-      master: kubestagemaster.svc.eqiad.wmnet
+      dc: codfw
+      master: kubestagemaster.svc.codfw.wmnet
 
 profile::kubernetes::deployment_server::user_defaults:
   owner: jenkins-slave

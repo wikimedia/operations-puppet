@@ -62,8 +62,8 @@ kubernetes_cluster_groups:
       master: kubemaster.svc.codfw.wmnet
     # active staging cluster.
     staging:
-      dc: eqiad
-      master: kubestagemaster.svc.eqiad.wmnet
+      dc: codfw
+      master: kubestagemaster.svc.codfw.wmnet
     "staging-eqiad":
       dc: eqiad
       master: kubestagemaster.svc.eqiad.wmnet
