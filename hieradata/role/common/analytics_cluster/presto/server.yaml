@@ -20,8 +20,8 @@ profile::presto::server::config_properties:
   # set this to 'flat'.
   # query.max-memory is the max memory per node x number of nodes 40gb x nodes
   node-scheduler.network-topology: legacy
-  #query max memory for 15 nodes
-  query.max-memory: 600GB
+  #query max memory for 5 nodes, note to upgrade once number of nodes increases
+  query.max-memory: 200GB
   query.max-memory-per-node: 20GB
   query.max-total-memory-per-node: 40GB
   task.concurrency: 32
@@ -29,7 +29,7 @@ profile::presto::server::config_properties:
   task.max-worker-threads: 192
   node-scheduler.max-splits-per-node: 500
   task.http-response-threads: 5000
-
+  
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::catalog define.  This will render
