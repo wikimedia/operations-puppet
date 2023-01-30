@@ -174,12 +174,6 @@ host bast5003 {
     fixed-address bast5003.wikimedia.org;
 }
 
-host bast6001 {
-    hardware ethernet AA:00:00:4B:65:48;
-    fixed-address bast6001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host bast6002 {
     hardware ethernet aa:00:00:d7:61:8e;
     fixed-address bast6002.wikimedia.org;

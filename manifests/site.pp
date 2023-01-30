@@ -310,11 +310,6 @@ node 'bast2002.wikimedia.org' {
     role(bastionhost)
 }
 
-# To be repurposed, T257324
-node 'bast3004.wikimedia.org' {
-    role(spare::system)
-}
-
 # esams/bastion on Ganeti
 node 'bast3005.wikimedia.org' {
     role(spare::system)
@@ -335,11 +330,6 @@ node 'bast5002.wikimedia.org' {
 
 node 'bast5003.wikimedia.org' {
     role(bastionhost)
-}
-
-# drmrs/bastion on Ganeti
-node 'bast6001.wikimedia.org' {
-    role(spare::system)
 }
 
 node 'bast6002.wikimedia.org' {
