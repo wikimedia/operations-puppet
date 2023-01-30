@@ -29,4 +29,12 @@ class vrts::web {
     httpd::site { 'ticket.wikimedia.org':
         content => template('vrts/ticket.wikimedia.org.erb'),
     }
+
+    rsyslog::input::file { 'vrts-apache2-error':
+        path => '/var/log/apache2/*error*.log',
+    }
+
+    rsyslog::input::file { 'vrts-apache2-access':
+        path => '/var/log/apache2/*access*.log',
+    }
 }
