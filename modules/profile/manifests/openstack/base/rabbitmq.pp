@@ -36,6 +36,7 @@ class profile::openstack::base::rabbitmq(
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
+    String $version = lookup('profile::openstack::base::version'),
 ){
     if $rabbit_cfssl_label {
         $cert_paths = profile::pki::get_cert(
@@ -75,6 +76,12 @@ class profile::openstack::base::rabbitmq(
     # https://www.rabbitmq.com/management.html
     # Needed for https://www.rabbitmq.com/management-cli.html
     rabbitmq::plugin { 'rabbitmq_management': }
+
+    # This installs some things we don't need but also sets up
+    #  the versioned repo which will get us the latest version-specific
+    #  rabbitmq packages
+    class { "openstack::serverpackages::${version}::${::lsbdistcodename}":
+    }
 
     file { '/etc/rabbitmq/rabbitmq-env.conf':
         owner   => 'rabbitmq',
