@@ -1440,8 +1440,12 @@ node /^install[12]003\.wikimedia\.org$/ {
     role(installserver)
 }
 
-node /^install[12]004\.wikimedia\.org$/ {
+node /^install1004\.wikimedia\.org$/ {
     role(insetup::infrastructure_foundations)
+}
+
+node /^install2004\.wikimedia\.org$/ {
+    role(installserver)
 }
 
 node /^install[3456]001\.wikimedia\.org$/ {
