@@ -33,6 +33,7 @@ class profile::etherpad(
         severity           => 'warning',
         path               => '/',
         ip_families        => ['ip4'],
+        port               => 7443,
         force_tls          => true,
         body_regex_matches => ['Pad'],
     }
