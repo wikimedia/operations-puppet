@@ -7,7 +7,7 @@
 # @param apache_group The group apache runs as
 # @param sites A hash of sites to be used with profile::httpd::client::idp::site
 class profile::idp::client::httpd (
-    Apereo_cas::Urls $apereo_cas       = lookup('apereo_cas', Apereo_cas::Urls, 'deep'),
+    Apereo_cas::Urls $apereo_cas       = lookup('apereo_cas'),
     Stdlib::Unixpath $certificate_path = lookup('profile::idp::client::httpd::certificate_path'),
     Stdlib::Unixpath $cookie_path      = lookup('profile::idp::client::httpd::cookie_path'),
     String[1]        $apache_owner     = lookup('profile::idp::client::httpd::apache_owner'),
