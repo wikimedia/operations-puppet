@@ -21,6 +21,7 @@ DESTINATION_DIR="$2"
 /usr/bin/rsync --archive \
                --delay-updates --delete --delete-delay \
                --compress --new-compress \
+               --timeout=5 --contimeout=2 \
                --exclude=*.swp --exclude=**/__pycache__ \
                "$DEPLOYMENT_SERVER::scap-install-staging/scap/" "$DESTINATION_DIR/scap/"
 
