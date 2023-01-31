@@ -56,7 +56,6 @@ class nagios_common::commands(
     }
 
     nagios_common::check_command { [
-        'check_all_memcached.php',
         'check_bfd.py',
         'check_bgp',
         'check_dsh_groups',
