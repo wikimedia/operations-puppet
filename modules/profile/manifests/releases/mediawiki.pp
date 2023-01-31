@@ -19,13 +19,14 @@ class profile::releases::mediawiki (
     Class['::profile::java'] ~> Class['::jenkins']
 
     class { '::jenkins':
-        http_port       => $http_port,
-        prefix          => $prefix,
-        umask           => '0002',
-        service_ensure  => $jenkins_service_ensure,
-        service_enable  => $jenkins_service_enable,
-        service_monitor => $jenkins_service_monitor,
-        java_home       => $jenkins_java_home,
+        http_port            => $http_port,
+        prefix               => $prefix,
+        umask                => '0002',
+        service_ensure       => $jenkins_service_ensure,
+        service_enable       => $jenkins_service_enable,
+        service_monitor      => $jenkins_service_monitor,
+        java_home            => $jenkins_java_home,
+        use_scap3_deployment => true,
     }
 
     file { [ '/etc/jenkins/secrets', '/etc/jenkins/secrets/releasing' ]:
