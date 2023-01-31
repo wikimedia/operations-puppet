@@ -498,13 +498,13 @@ host idp-test2002 {
 host install1003 {
     hardware ethernet aa:00:00:a0:d3:c0;
     fixed-address install1003.wikimedia.org;
-    next-server 208.80.153.51; # install2003 (tftp server)
+    next-server 208.80.153.105; # install2004 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host install1004 {
     hardware ethernet aa:00:00:22:9f:cc;
-    next-server 208.80.153.51; # install2003 (tftp server)
+    next-server 208.80.153.105; # install2004 (tftp server)
     fixed-address install1004.wikimedia.org;
 }
 
@@ -537,26 +537,26 @@ host install3002 {
 host install4001 {
     hardware ethernet aa:00:00:6d:c7:59;
     fixed-address install4001.wikimedia.org;
-    next-server 208.80.153.51; # install2003 (tftp server)
+    next-server 208.80.153.105; # install2004 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host install4002 {
     hardware ethernet aa:00:00:5e:72:74;
-    next-server 208.80.153.51; # install2003 (tftp server)
+    next-server 208.80.153.105; # install2004 (tftp server)
     fixed-address install4002.wikimedia.org;
 }
 
 host install5001 {
     hardware ethernet aa:00:00:39:f6:0a;
     fixed-address install5001.wikimedia.org;
-    next-server 208.80.153.51; # install2003 (tftp server)
+    next-server 208.80.153.105; # install2004 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host install5002 {
     hardware ethernet aa:00:00:72:46:60;
-    next-server 208.80.153.51; # install2003 (tftp server)
+    next-server 208.80.153.105; # install2004 (tftp server)
     fixed-address install5002.wikimedia.org;
 }
 
