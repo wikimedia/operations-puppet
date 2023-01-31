@@ -56,6 +56,11 @@ bastion_hosts:
 cache_hosts:
   - 172.16.0.0/12
 
+# abuse nets comes from requestctl which in turns comes from etcd/confd.
+# don't try to block those by default since confd/etcd might not be
+# present.
+profile::base::firewall::block_abuse_nets: false
+
 profile::ssh::server::lookup_keys_from_ldap: true
 
 ## Cloud VPS cumin access - T287269
