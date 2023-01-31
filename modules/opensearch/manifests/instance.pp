@@ -312,6 +312,7 @@ define opensearch::instance(
             File["${config_dir}/log4j2.properties"],
             File["${config_dir}/jvm.options"],
             File[$data_dir],
+            Systemd::Tmpfile["opensearch-${cluster_name}"],
         ],
     }
 
