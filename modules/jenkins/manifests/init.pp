@@ -47,6 +47,11 @@
 # Java version.
 # Default: /usr/lib/jvm/java-8-openjdk-amd64/jre
 #
+#
+# [*use_scap3_deployment*]
+# Transitory flag to choose between the old Jenkins installation method and
+# Scap3
+#
 class jenkins(
     String $prefix,
     String $log_group = 'wikidev',
@@ -59,6 +64,7 @@ class jenkins(
     String $builds_dir = "\${ITEM_ROOTDIR}/builds",
     String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace",
     Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+    Boolean $use_scap3_deployment = false
 )
 {
     user { 'jenkins':
@@ -77,11 +83,6 @@ class jenkins(
         allowdupe => false,
     }
 
-    apt::package_from_component { 'jenkins-thirdparty-ci':
-        component => 'thirdparty/ci',
-        packages  => ['jenkins']
-    }
-
     $java_path = "${java_home}/bin/java"
 
     file { '/var/lib/jenkins/.daemonrc':
@@ -94,11 +95,25 @@ class jenkins(
         group  => 'jenkins',
         mode   => '0755',
     }
-    file { '/etc/jenkins/logging.properties':
-        content => template('jenkins/logging.properties.erb'),
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0755',
+
+    if $use_scap3_deployment {
+        apt::repository { 'repository_jenkins-thirdparty-ci':
+          uri        => 'http://apt.wikimedia.org/wikimedia',
+          dist       => "${::lsbdistcodename}-wikimedia",
+          components => 'thirdparty/ci',
+        }
+    } else {
+        apt::package_from_component { 'jenkins-thirdparty-ci':
+          component => 'thirdparty/ci',
+          packages  => ['jenkins']
+        }
+
+        file { '/etc/jenkins/logging.properties':
+          content => template('jenkins/logging.properties.erb'),
+          owner   => 'jenkins',
+          group   => 'jenkins',
+          mode    => '0755',
+        }
     }
 
     systemd::syslog { 'jenkins':
@@ -109,59 +124,102 @@ class jenkins(
         log_filename => 'jenkins.log',
     }
 
-    $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
-    file { '/var/log/jenkins/access.log':
-        ensure  => present,
-        replace => false,
-        owner   => 'jenkins',
-        group   => $log_group,
-        mode    => '0640',
-        before  => Service['jenkins'],
-    }
+    if $use_scap3_deployment {
+        $deploy_dir = 'releng/jenkins-deploy'
 
-    $builds_dir_for_systemd = regsubst( $builds_dir, '\$', '$$', 'G' )
-    $workspaces_dir_for_systemd = regsubst( $workspaces_dir, '\$', '$$', 'G' )
+        file { '/etc/systemd/system/jenkins.service.d/override.conf':
+          ensure => 'link',
+          target => "/srv/deployment/${deploy_dir}/conf/jenkins.service.d/override.conf",
+          owner  => 'root',
+          group  => 'root',
+        }
 
-    $java_args = join([
-        # Allow graphs etc. to work even when an X server is present
-        '-Djava.awt.headless=true',
-        # Make Git plugin verbose which dramatically helps debugging
-        '-Dhudson.plugins.git.GitSCM.verbose=true',
-        # Prevents Jenkins 1.651.2+ from stripping parameters injected by the
-        # Gearman plugin.
-        #
-        # References:
-        #   https://phabricator.wikimedia.org/T133737
-        #   https://jenkins.io/blog/2016/05/11/security-update/
-        #   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
-        '-Dhudson.model.ParametersAction.keepUndefinedParameters=true',
-        '-Djava.util.logging.config.file=/etc/jenkins/logging.properties',
-        # Disable auto discovery T178608
-        '-Dhudson.udp=-1',
-        '-Dhudson.DNSMultiCast.disabled=true',
-        "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}",
-        "-Djenkins.model.Jenkins.workspacesDir=${workspaces_dir_for_systemd}",
-        # T245658 Allow inline CSS and playing MP4 videos of test results.
-        # To accomodate with systemd on Jessie, the whole argument has to be
-        # double quoted to prevent word splitting.
-        "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
-    ], ' ')
+        scap::target { $deploy_dir:
+          deploy_user  => 'deploy-jenkins',
+          service_name => 'jenkins',
+          sudo_rules   => [
+              # Options to the JVM and Jenkins daemon are passed using a systemd override in the deployment repositor
+              # which requires a reload when changed
+              'ALL=(root) NOPASSWD: /usr/bin/systemctl daemon-reload',
+              'ALL=(root) NOPASSWD: /usr/bin/apt-get install -y jenkins',
+              # To allow the installation process to run any required jars in the deployment repository
+              "ALL=(jenkins) NOPASSWD: /usr/bin/java -jar /srv/deployment/${deploy_dir}*",
+          ]
+        }
 
-    systemd::service { 'jenkins':
-        ensure            => 'present',
-        content           => init_template('jenkins', 'systemd_override'),
-        override          => true,
-        # Note Jenkins migrate.sh scrip skips whenever there is an override at:
-        # /etc/systemd/system/jenkins.service.d/override.conf
-        override_filename => 'override.conf',
-        service_params    => {
-            enable => $service_enable,
-            ensure => $service_ensure,
-        },
-        require           => [
-            Systemd::Syslog['jenkins'],
-            File['/etc/default/jenkins'],
-        ],
+        file { '/var/log/jenkins/access.log':
+          ensure  => present,
+          replace => false,
+          owner   => 'jenkins',
+          group   => $log_group,
+          mode    => '0640',
+          before  => Package[$deploy_dir],
+        }
+
+        file { '/etc/default/jenkins':
+          ensure  => absent,
+          require => Package[$deploy_dir],
+        }
+    } else {
+        $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
+        file { '/var/log/jenkins/access.log':
+          ensure  => present,
+          replace => false,
+          owner   => 'jenkins',
+          group   => $log_group,
+          mode    => '0640',
+          before  => Service['jenkins'],
+        }
+
+        $builds_dir_for_systemd = regsubst( $builds_dir, '\$', '$$', 'G' )
+        $workspaces_dir_for_systemd = regsubst( $workspaces_dir, '\$', '$$', 'G' )
+
+        $java_args = join([
+            # Allow graphs etc. to work even when an X server is present
+            '-Djava.awt.headless=true',
+            # Make Git plugin verbose which dramatically helps debugging
+            '-Dhudson.plugins.git.GitSCM.verbose=true',
+            # Prevents Jenkins 1.651.2+ from stripping parameters injected by the
+            # Gearman plugin.
+            #
+            # References:
+            #   https://phabricator.wikimedia.org/T133737
+            #   https://jenkins.io/blog/2016/05/11/security-update/
+            #   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
+            '-Dhudson.model.ParametersAction.keepUndefinedParameters=true',
+            '-Djava.util.logging.config.file=/etc/jenkins/logging.properties',
+            # Disable auto discovery T178608
+            '-Dhudson.udp=-1',
+            '-Dhudson.DNSMultiCast.disabled=true',
+            "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}",
+            "-Djenkins.model.Jenkins.workspacesDir=${workspaces_dir_for_systemd}",
+            # T245658 Allow inline CSS and playing MP4 videos of test results.
+            # To accomodate with systemd on Jessie, the whole argument has to be
+            # double quoted to prevent word splitting.
+            "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
+        ], ' ')
+
+        systemd::service { 'jenkins':
+          ensure            => 'present',
+          content           => init_template('jenkins', 'systemd_override'),
+          override          => true,
+          # Note Jenkins migrate.sh scrip skips whenever there is an override at:
+          # /etc/systemd/system/jenkins.service.d/override.conf
+          override_filename => 'override.conf',
+          service_params    => {
+              enable => $service_enable,
+              ensure => $service_ensure,
+          },
+          require           => [
+              Systemd::Syslog['jenkins'],
+              File['/etc/default/jenkins'],
+          ],
+        }
+
+        file { '/etc/default/jenkins':
+          ensure  => absent,
+          require => Package['jenkins'],
+        }
     }
 
     if $service_monitor {
@@ -214,10 +272,4 @@ class jenkins(
         owner  => 'jenkins',
         group  => 'adm',
     }
-
-    file { '/etc/default/jenkins':
-        ensure  => absent,
-        require => Package['jenkins'],
-    }
-
 }

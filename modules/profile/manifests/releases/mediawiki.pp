@@ -28,6 +28,31 @@ class profile::releases::mediawiki (
         java_home       => $jenkins_java_home,
     }
 
+    file { [ '/etc/jenkins/secrets', '/etc/jenkins/secrets/releasing' ]:
+        ensure  => directory,
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0550',
+        require => Class['::jenkins'],
+    }
+
+    $secrets = [
+        'release_notes_bot_pass', 'integration_registry_pass',
+        'releases_jenkins_rsa_pass', 'releases_jenkins_rsa_key',
+        'trainbranchbot_netrc', 'jenkins_phab_conduit_token'
+    ]
+
+    $secrets.each |$secret| {
+        file { "/etc/jenkins/secrets/releasing/${secret}":
+          ensure  => present,
+          owner   => 'jenkins',
+          group   => 'jenkins',
+          mode    => '0400',
+          content => secret("jenkins/releasing/${secret}"),
+          require => File['/etc/jenkins/secrets/releasing'],
+        }
+    }
+
     $jenkins_restart_ensure = $jenkins_service_enable ? {
         'mask'  => 'absent',
         default => 'present',
