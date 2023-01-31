@@ -95,4 +95,20 @@ class vrts::mail(
         group  => 'www-data',
         mode   => '0775',
     }
+
+    rsyslog::input::file { 'vrts-exim-maillog':
+        path => '/var/log/mail.log',
+    }
+
+    rsyslog::input::file { 'vrts-exim-mailinfo':
+        path => '/var/log/mail.info',
+    }
+
+    rsyslog::input::file { 'vrts-exim-mailwarn':
+        path => '/var/log/mail.warn',
+    }
+
+    rsyslog::input::file { 'vrts-exim-mailerr':
+        path => '/var/log/mail.err',
+    }
 }
