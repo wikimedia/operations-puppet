@@ -1,4 +1,7 @@
 cluster: kubernetes-staging
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 # It is expected that there is a second intermediate suffixed with _front_proxy to be used

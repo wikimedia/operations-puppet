@@ -11,8 +11,3 @@ profile::monitoring::notifications_enabled: false
 profile::kubernetes::cluster_cidr:
   v4: "10.192.75.0/24"
   v6: "2620:0:860:babe::/64"
-
-# Kubernetes 1.23 related common settings (should go from here to common for the staging-eqiad update)
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"

@@ -20,21 +20,3 @@ profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
 profile::kubernetes::cluster_cidr:
   v4: "10.192.75.0/24"
   v6: "2620:0:860:babe::/64"
-
-# Kubernetes 1.23 related common settings (should go from here to common for the staging-eqiad update)
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
-
-# See "kube-apiserver --help" for a list of available admission plugins
-# and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
-profile::kubernetes::master::admission_plugins:
-  enable:
-    - PodSecurityPolicy
-    # v1.23: Enable DenyServiceExternalIPs because we don't use them
-    - DenyServiceExternalIPs
-    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
-    - NodeRestriction
-  disable:
-    - StorageObjectInUseProtection
-    - PersistentVolumeClaimResize

@@ -1,4 +1,7 @@
 cluster: kubernetes-staging
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::kubernetes::master::cluster_group: main
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
@@ -18,14 +21,20 @@ profile::kubernetes::pki::renew_seconds: 172800
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::service_node_port_range: "1-65535"
+
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:
   enable:
     - PodSecurityPolicy
+    # v1.23: Enable DenyServiceExternalIPs because we don't use them
+    - DenyServiceExternalIPs
+    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
+    - NodeRestriction
   disable:
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
+
 # https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/
 profile::kubernetes::master::admission_configuration:
   - name: "ResourceQuota"
