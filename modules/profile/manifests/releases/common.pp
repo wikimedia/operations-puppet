@@ -99,7 +99,7 @@ class profile::releases::common(
         team               => 'serviceops-collab',
         severity           => 'warning',
         path               => '/',
-        ip_families        => ['ipv4'],
+        ip_families        => ['ip4'],
         force_tls          => true,
         body_regex_matches => ['Wikimedia'],
     }
