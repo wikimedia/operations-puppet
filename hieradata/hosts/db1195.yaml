@@ -1,4 +1,4 @@
 # db1195
 # future m2 master 
 mariadb::shard: 'm2'
-profile::monitoring::notifications_enabled: false
+profile::monitoring::is_critical: true
