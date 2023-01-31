@@ -196,9 +196,12 @@ appender.ship_to_logstash.threshold=WARN
 appender.ship_to_logstash.syslogHost="localhost:<%= @logstash_logback_port %>"
 appender.ship_to_logstash.protocol=udp
 appender.ship_to_logstash.facility=LOCAL0
-appender.ship_to_logstash.layout=org.apache.log4j.JsonLayout
+
+appender.ship_to_logstash.layout.type = ESJsonLayout
+appender.ship_to_logstash.layout.type_name = elasticsearch
+
 appender.ship_to_logstash.layout.compact=true
-appender.ship_to_logstash.layout.complete=true
+appender.ship_to_logstash.layout.complete=false
 <% elsif @logstash_transport == 'Gelf' %>
 appender.ship_to_logstash.host = udp:<%= @logstash_host %>
 appender.ship_to_logstash.port = <%= @logstash_gelf_port %>

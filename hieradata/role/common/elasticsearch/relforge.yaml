@@ -70,6 +70,7 @@ profile::elasticsearch::common_settings:
 
     filter_cache_size: '20%'
     script_max_compilations_per_minute: 10000
+    send_logs_to_logstash: true
 
 
 profile::elasticsearch::cirrus::enable_remote_search: false
