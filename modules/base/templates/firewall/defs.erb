@@ -13,6 +13,7 @@ services_kubepods_networks = scope.lookupvar('network::constants::services_kubep
 staging_kubepods_networks = scope.lookupvar('network::constants::staging_kubepods_networks')
 mlserve_kubepods_networks = scope.lookupvar('network::constants::mlserve_kubepods_networks')
 mlstage_kubepods_networks = scope.lookupvar('network::constants::mlstage_kubepods_networks')
+dse_kubepods_networks = scope.lookupvar('network::constants::dse_kubepods_networks')
 -%>
 
 @def $INTERNAL = (10.0.0.0/8 2620:0:860:100::/56 2620:0:861:100::/56 2620:0:862:100::/56 2620:0:863:100::/56);
@@ -37,6 +38,8 @@ mlstage_kubepods_networks = scope.lookupvar('network::constants::mlstage_kubepod
 @def $STAGING_KUBEPODS_NETWORKS  = (<%- staging_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MLSERVE_KUBEPODS_NETWORKS = (<%- mlserve_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MLSTAGE_KUBEPODS_NETWORKS = (<%- mlstage_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
+@def $DSE_KUBEPODS_NETWORKS = (<%- dse_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
+
 
 @def $NETWORK_INFRA = (<%= network_infra.values.reduce('') {|memo, nets| memo += ' ' + nets.join(' ')}.strip %>);
 @def $MGMT_NETWORKS = (<%- mgmt_networks.each do |net| -%><%= net %> <% end -%>);
