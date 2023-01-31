@@ -19,7 +19,6 @@ class profile::releases::mediawiki (
     Class['::profile::java'] ~> Class['::jenkins']
 
     class { '::jenkins':
-        access_log      => true,
         http_port       => $http_port,
         prefix          => $prefix,
         umask           => '0002',

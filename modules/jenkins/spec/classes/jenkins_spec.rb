@@ -51,15 +51,9 @@ describe 'jenkins' do
               .with_content(/ --httpPort=8042 /)
           end
         end
-        context 'when access log is enabled' do
-          let(:params) { {
-            :prefix => '/ci',
-            :access_log => true,
-          } }
-          it 'should set Jenkins access logger' do
-            should contain_file(systemd_override_file)
-              .with_content(/SimpleAccessLogger.+\\$/)
-          end
+        it 'should set Jenkins access logger' do
+          should contain_file(systemd_override_file)
+            .with_content(/SimpleAccessLogger.+\\$/)
         end
         it 'escapes build_dir dollar token for systemd' do
           should contain_file(systemd_override_file)

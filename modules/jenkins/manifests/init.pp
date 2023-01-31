@@ -8,9 +8,6 @@
 # Prefix for web access to use with Apache proxying. Must be the full path with
 # a leading slash. Example: /ci
 #
-# [*access_log*]
-# Whether to enable the web service access.log. Boolean. Default: false
-#
 # [*log_group*]
 # Unix group for the log files under /var/log/jenkins. Default: 'wikidev'
 #
@@ -52,7 +49,6 @@
 #
 class jenkins(
     String $prefix,
-    Boolean $access_log = false,
     String $log_group = 'wikidev',
     Stdlib::Port $http_port = 8080,
     Integer $max_open_files = 8192,
@@ -113,18 +109,14 @@ class jenkins(
         log_filename => 'jenkins.log',
     }
 
-    if $access_log {
-        $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
-        file { '/var/log/jenkins/access.log':
-            ensure  => present,
-            replace => false,
-            owner   => 'jenkins',
-            group   => $log_group,
-            mode    => '0640',
-            before  => Service['jenkins'],
-        }
-    } else {
-        $jenkins_access_log_arg = undef
+    $jenkins_access_log_arg = '--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log'
+    file { '/var/log/jenkins/access.log':
+        ensure  => present,
+        replace => false,
+        owner   => 'jenkins',
+        group   => $log_group,
+        mode    => '0640',
+        before  => Service['jenkins'],
     }
 
     $builds_dir_for_systemd = regsubst( $builds_dir, '\$', '$$', 'G' )
