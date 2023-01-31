@@ -77,6 +77,9 @@ profile::keyholder::server::agents:
   scap:
     trusted_groups:
     - project-%{::wmcs_project}
+  deploy-jenkins:
+    trusted_groups:
+      - project-%{::wmcs_project}
 
 has_lvs: false
 has_tls: false
@@ -130,6 +133,9 @@ scap::sources:
   integration/docroot: {}
   phabricator/deployment:
     repository: phabricator/deployment
+  releng/jenkins-deploy:
+    repository: releng/jenkins-deploy
+    origin: gitlab
 
 mediawiki::sites: []
 

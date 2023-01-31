@@ -237,6 +237,9 @@ scap::sources:
   releng/phatality: {}
   design/style-guide: {}
   search/airflow: {}
+  releng/jenkins-deploy:
+    repository: releng/jenkins-deploy
+    origin: gitlab
 
 # Options for mw-on-k8s deployments for scap
 scap::k8s_deployments:
