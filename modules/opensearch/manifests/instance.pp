@@ -293,7 +293,7 @@ define opensearch::instance(
 
     systemd::tmpfile {"opensearch-${cluster_name}":
       ensure  => present,
-      content => "d    /var/run/opensearch-${cluster_name}  0755 opensearch opensearch - -",
+      content => "d    /run/opensearch-${cluster_name}  0755 opensearch opensearch - -",
     }
 
     # Note that we don't notify the OpenSearch service of changes to its
