@@ -23,6 +23,7 @@ class idm::deployment (
     }
 
     $idm_log_dir = '/var/log/idm'
+    $idm_etc_dir = '/etc/bitu'
 
     # Create log directory
     file { $idm_log_dir:
@@ -33,7 +34,7 @@ class idm::deployment (
     }
 
     # Create configuration dir.
-    file { '/etc/idm':
+    file { $idm_etc_dir:
         ensure => directory,
         owner  => $deploy_user,
         group  => $deploy_user,
@@ -80,6 +81,11 @@ class idm::deployment (
             owner     => $deploy_user,
             group     => $deploy_user,
             source    => 'gerrit',
+        }
+
+        exec { 'collect static assets':
+            command     => "${base_dir}/venv/bin/python ${base_dir}/${project}/manage.py collectstatic  --no-input",
+            environment => ["PYTHONPATH=${idm_etc_dir}", 'DJANGO_SETTINGS_MODULE=settings']
         }
     }
 

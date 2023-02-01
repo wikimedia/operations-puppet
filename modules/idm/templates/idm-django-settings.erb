@@ -77,3 +77,7 @@ RQ_QUEUES = {
     },
 }
 
+STATIC_ROOT = '<%= @static_dir %>'
+STATICFILES_DIRS = [
+  '<%= @base_dir %>/<%= @project %>/static/'
+]

@@ -13,12 +13,6 @@ class idm::uwsgi_processes (
 
     $project_dir = "${base_dir}/${project}"
 
-    file { [$static_dir, $media_dir, '/etc/bitu'] :
-        ensure => directory,
-        owner  => $deploy_user,
-        group  => $deploy_user,
-    }
-
     uwsgi::app{ $project:
         settings => {
             uwsgi => {
