@@ -69,7 +69,7 @@ profile::gitlab::runner::allowed_services:
     host: 'webproxy.codfw.wmnet'
     port: 443
   kubestagemaster:
-    host: 'kubestagemaster.svc.codfw.wmnet'
+    host: 'kubestagemaster.svc.eqiad.wmnet'
     port: 6443
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/repos/releng/buildkit:wmf-v0.10-1
