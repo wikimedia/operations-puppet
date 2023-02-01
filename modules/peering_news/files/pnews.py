@@ -12,12 +12,14 @@ Define it with api_token_ro in YAML file.
 
 import argparse
 import json
+import logging
 
 from pathlib import Path
 
 from wmflib.config import load_yaml_config
 from wmflib.requests import http_session
 
+logging.basicConfig(level=logging.DEBUG)
 parser = argparse.ArgumentParser(description="What's new in our IXPs?")
 parser.add_argument('--config', help='API-KEY file')
 parser.add_argument('--proxy', help='HTTP and HTTPS proxy')
