@@ -1,3 +1,2 @@
 # db2157
 mariadb::shard: 's5'
-profile::monitoring::notifications_enabled: false
