@@ -21,6 +21,11 @@ class dumps::web::fetches::kiwix(
         source => 'puppet:///modules/dumps/fetches/kiwix-rsync-cron.sh',
     }
 
+    # Stagger download crons based on hostname. The kiwix server
+    #  is very touchy about concurrent connections!
+    $last_hostname_digit = inline_template('<%= @hostname.gsub(/\D/,"") %>')
+    $stagger = ($last_hostname_digit % 2) * 4
+
     systemd::timer::job { 'kiwix-mirror-update':
         ensure             => present,
         description        => 'Regular jobs to update kiwix mirror',
@@ -29,7 +34,7 @@ class dumps::web::fetches::kiwix(
         send_mail          => true,
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         command            => "/bin/bash /usr/local/bin/kiwix-rsync-cron.sh ${miscdatasetsdir}",
-        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 0/2:15:0'},
+        interval           => {'start' => 'OnCalendar', 'interval' => "*-*-* ${stagger}/8:15:0"},
         require            => File['/usr/local/bin/kiwix-rsync-cron.sh'],
     }
 }
