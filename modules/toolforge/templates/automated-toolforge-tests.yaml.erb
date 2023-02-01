@@ -21,7 +21,7 @@
     TJF_NORMAL_JOB_NAME: tjf-normaljob
     TJF_SCRIPT_FULLPATH: /data/project/automated-toolforge-tests/tjf-test-script.sh
     TJF_SCRIPT_SHORTPATH: ./tjf-test-script.sh
-    TJF_IMAGE: tf-bullseye-std
+    TJF_IMAGE: bullseye
 <% if @wmcs_project == 'toolsbeta' -%>
     # toolsbeta using special cloudstore VM NFS server
     NFS_PATH: /mnt/nfs/nfs-01-toolsbeta-project/automated-toolforge-tests
@@ -64,9 +64,9 @@
       retcode: 0
       stderr: ""
 
-- name: tjf containers
+- name: tjf images
   tests:
-    - cmd: $SUDO toolforge-jobs containers | grep -q "${TJF_IMAGE} "
+    - cmd: $SUDO toolforge-jobs images | grep -q "${TJF_IMAGE} "
       retcode: 0
       stderr: ""
       stdout: ""
