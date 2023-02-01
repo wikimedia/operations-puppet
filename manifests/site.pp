@@ -300,19 +300,12 @@ node 'backupmon1001.eqiad.wmnet' {
     role(dbbackups::monitoring)
 }
 
-# New bastion in Virginia T276396
 node 'bast1003.wikimedia.org' {
     role(bastionhost)
 }
 
-# Bastion in Texas - (T196665, replaced bast2001)
 node 'bast2002.wikimedia.org' {
     role(bastionhost)
-}
-
-# esams/bastion on Ganeti
-node 'bast3005.wikimedia.org' {
-    role(spare::system)
 }
 
 node 'bast3006.wikimedia.org' {
@@ -321,11 +314,6 @@ node 'bast3006.wikimedia.org' {
 
 node 'bast4004.wikimedia.org' {
     role(bastionhost)
-}
-
-# eqsin/bastion on Ganeti
-node 'bast5002.wikimedia.org' {
-    role(spare::system)
 }
 
 node 'bast5003.wikimedia.org' {

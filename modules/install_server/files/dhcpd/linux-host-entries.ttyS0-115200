@@ -147,12 +147,6 @@ host backupmon1001 {
     fixed-address backupmon1001.eqiad.wmnet;
 }
 
-host bast3005 {
-    hardware ethernet AA:00:00:62:97:9B;
-    fixed-address bast3005.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host bast3006 {
     hardware ethernet aa:00:00:b3:97:98;
     fixed-address bast3006.wikimedia.org;
@@ -161,12 +155,6 @@ host bast3006 {
 host bast4004 {
     hardware ethernet aa:00:00:7c:73:8b;
     fixed-address bast4004.wikimedia.org;
-}
-
-host bast5002 {
-    hardware ethernet AA:00:00:13:81:A2;
-    fixed-address bast5002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host bast5003 {
