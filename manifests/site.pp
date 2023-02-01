@@ -1436,11 +1436,15 @@ node /^idp-test[12]002\.wikimedia\.org$/ {
     role(idp_test)
 }
 
-node /^install[12]003\.wikimedia\.org$/ {
+node /^install1003\.wikimedia\.org$/ {
     role(installserver)
 }
 
 node /^install1004\.wikimedia\.org$/ {
+    role(insetup::infrastructure_foundations)
+}
+
+node /^install2003\.wikimedia\.org$/ {
     role(insetup::infrastructure_foundations)
 }
 
