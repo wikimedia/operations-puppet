@@ -5,5 +5,6 @@
     copytruncate
     missingok
     notifempty
-    rotate 7
+    rotate 14
+    maxsize 1G
 }
