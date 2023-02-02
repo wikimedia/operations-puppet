@@ -119,10 +119,10 @@ class profile::httpbb (
         source => 'puppet:///modules/profile/httpbb/jobrunner/test_endpoint.yaml'
     }
     httpbb::test_suite {'liftwing/test_liftwing_production.yaml':
-        source => 'puppet:///modules/profile/httpbb/ores/test_liftwing_production.yaml'
+        source => 'puppet:///modules/profile/httpbb/liftwing/test_liftwing_production.yaml'
     }
     httpbb::test_suite {'liftwing/test_liftwing_staging.yaml':
-        source => 'puppet:///modules/profile/httpbb/ores/test_liftwing_staging.yaml'
+        source => 'puppet:///modules/profile/httpbb/liftwing/test_liftwing_staging.yaml'
     }
 
     if $basicauth_credentials and $basicauth_credentials['docker-registry'] {
