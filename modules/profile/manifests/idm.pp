@@ -112,4 +112,12 @@ class profile::idm(
         ensure  => present,
         content => template('idm/idm-apache-config.erb'),
     }
+
+    class { 'idm::jobs':
+        base_dir => $base_dir,
+        etc_dir  => $etc_dir,
+        project  => $project,
+        present  => present,
+        venv     => $idm::deployment::venv
+    }
 }

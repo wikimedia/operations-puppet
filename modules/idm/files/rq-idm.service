@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=Redis queue worker for Bitu IDM
+After=network.target
+
+[Service]
+WorkingDirectory=/srv/idm/bitu
+ExecStart=/srv/idm/venv/bin/python /srv/idm/bitu/manage.py rqworker
+
+[Install]
+WantedBy=multi-user.target
