@@ -1,4 +1,4 @@
 # db1164
 # future m3 master
-mariadb::shard: 'm2'
+mariadb::shard: 'm3'
 profile::monitoring::notifications_enabled: false
