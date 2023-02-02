@@ -68,6 +68,7 @@ class profile::idm(
         deploy_user              => $deploy_user,
         etc_dir                  => $etc_dir,
         log_dir                  => $log_dir,
+        static_dir               => $static_dir,
         production               => $production,
         oidc                     => {
             key      => $oidc_key,

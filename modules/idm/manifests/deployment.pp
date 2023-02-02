@@ -11,6 +11,7 @@ class idm::deployment (
     Stdlib::Unixpath $base_dir,
     String           $deploy_user,
     String           $etc_dir,
+    String           $static_dir,
     String           $log_dir,
     Boolean          $production,
     Hash             $oidc,
