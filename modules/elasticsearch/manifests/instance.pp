@@ -315,6 +315,7 @@ define elasticsearch::instance (
             File["${config_dir}/log4j2.properties"],
             File["${config_dir}/jvm.options"],
             File[$data_dir],
+            Systemd::Tmpfile["elasticsearch-${cluster_name}"],
         ],
     }
 }
