@@ -293,7 +293,7 @@ define elasticsearch::instance (
 
     systemd::tmpfile { "elasticsearch-${cluster_name}":
         ensure  => present,
-        content => "d    /var/run/elasticsearch-${cluster_name}  0755 elasticsearch elasticsearch - -",
+        content => "d    /run/elasticsearch-${cluster_name}  0755 elasticsearch elasticsearch - -",
     }
 
     # Note that we don't notify the Elasticsearch service of changes to its
