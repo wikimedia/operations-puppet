@@ -28,7 +28,7 @@ FILE_PATHS = {
     'labsprivate': {
         'repo': '/var/lib/git/labs/private',
         'sha1': '/srv/config-master/labsprivate-sha1.txt',
-    }
+    },
 }
 
 ERROR_MESSAGE = '\033[91m{msg}\033[0m'
@@ -40,18 +40,33 @@ PUPPET_MERGE_NO_MERGE = 99
 def get_args():
     """parse arguments"""
     parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-y', '--yes', action='store_true',
-                        help='Automatic yes to prompts; assume "yes" as answer to all prompts')
+    parser.add_argument(
+        '-y',
+        '--yes',
+        action='store_true',
+        help='Automatic yes to prompts; assume "yes" as answer to all prompts',
+    )
     parser.add_argument('-q', '--quiet', action='store_true', help='Limit output')
-    parser.add_argument('-d', '--diffs', action='store_true',
-                        help='Only produce diffs; do not perform the git merge')
+    parser.add_argument(
+        '-d',
+        '--diffs',
+        action='store_true',
+        help='Only produce diffs; do not perform the git merge',
+    )
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-p', '--labsprivate', action='store_true',
-                       help='work on the labs private repo')
-    group.add_argument('-o', '--ops', action='store_true', help='work on the ops production repo')
-    parser.add_argument('sha1',
-                        help=('the sha1 commit to merge. '
-                              'Must be provided (in a pinch, you can pass FETCH_HEAD).'))
+    group.add_argument(
+        '-p', '--labsprivate', action='store_true', help='work on the labs private repo'
+    )
+    group.add_argument(
+        '-o', '--ops', action='store_true', help='work on the ops production repo'
+    )
+    parser.add_argument(
+        'sha1',
+        help=(
+            'the sha1 commit to merge. '
+            'Must be provided (in a pinch, you can pass FETCH_HEAD).'
+        ),
+    )
     return parser.parse_args()
 
 
@@ -75,7 +90,15 @@ def git(args, repo_dir, stdout=PIPE):
     except CalledProcessError as error:
         raise SystemExit('failed to run `{}`\n{}'.format(' '.join(command), error))
     if isinstance(result.stdout, bytes):
-        return result.stdout.decode()
+        try:
+            return result.stdout.decode()
+        except UnicodeDecodeError:
+            print(
+                '{}: failed to decode output from `git {}` no output will be shown!'.format(
+                    ERROR_MESSAGE.format(msg='WARNING'), args
+                )
+            )
+
     return result.stdout
 
 
@@ -84,8 +107,11 @@ def confirm_merge(committers):
     confirm = ['yes', 'y']
     unique_committers = set(i for i in committers if i and i != 'gerrit@wikimedia.org')
     if len(unique_committers) > 1:
-        print('{}: Revision range includes commits from multiple committers!'.format(
-            ERROR_MESSAGE.format(msg='WARNING')))
+        print(
+            '{}: Revision range includes commits from multiple committers!'.format(
+                ERROR_MESSAGE.format(msg='WARNING')
+            )
+        )
         confirm = ['multiple']
     answer = input('Merge these changes? ({}/no)? '.format(confirm[0]))
     if answer.lower() not in confirm:
@@ -105,11 +131,15 @@ def main():
 
     repo = os.path.basename(config["repo"])
     syslog(f'({repo}) Starting merge for: {config["repo"]}')
-    remote_url = git('config --get remote.origin.url', config['repo']).rstrip(os.linesep)
+    remote_url = git('config --get remote.origin.url', config['repo']).rstrip(
+        os.linesep
+    )
     print('Fetching new commits from: {}'.format(remote_url))
     git('fetch', config['repo'])
     head_sha1_old = git('rev-parse HEAD', config['repo']).rstrip(os.linesep)
-    target_sha1 = git('rev-parse {}'.format(args.sha1), config['repo']).rstrip(os.linesep)
+    target_sha1 = git('rev-parse {}'.format(args.sha1), config['repo']).rstrip(
+        os.linesep
+    )
     if head_sha1_old == target_sha1:
         print('No changes to merge.')
         return PUPPET_MERGE_NO_MERGE
@@ -120,11 +150,17 @@ def main():
         print(target_sha1)
         return 0
     if not args.quiet:
-        git('log HEAD..{} --format="%C(bold magenta)%cn%C(reset): %s (%h)"'.format(
-            target_sha1),
-            config['repo'], None)
+        git(
+            'log HEAD..{} --format="%C(bold magenta)%cn%C(reset): %s (%h)"'.format(
+                target_sha1
+            ),
+            config['repo'],
+            None,
+        )
     if not args.yes:
-        committers = git('log HEAD..{} --format=%ce'.format(target_sha1), config['repo'])
+        committers = git(
+            'log HEAD..{} --format=%ce'.format(target_sha1), config['repo']
+        )
         confirm_merge(committers.split('\n'))
     syslog(f'({repo}) Merging: {head_sha1_old} -> {target_sha1}')
     print('HEAD is currently {}'.format(head_sha1_old))
