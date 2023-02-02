@@ -32,6 +32,17 @@ class package_builder::environments(
         basepath       => $basepath,
         extra_packages => pick_default($extra_packages['bullseye'], [])
     }
+
+    package_builder::pbuilder_base { 'bookworm-amd64':
+        distribution   => 'bookworm',
+        components     => 'main',
+        architecture   => 'amd64',
+        mirror         => 'http://mirrors.wikimedia.org/debian',
+        keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
+        basepath       => $basepath,
+        extra_packages => pick_default($extra_packages['bookworm'], [])
+    }
+
     package_builder::pbuilder_base { 'sid-amd64':
         distribution       => 'sid',
         distribution_alias => 'unstable',
