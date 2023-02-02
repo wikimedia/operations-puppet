@@ -44,6 +44,7 @@ class profile::cache::varnish::frontend::text (
     # provide an initial sub key file
     exec { "${dp_generator_path} ${master_key_path} ${sub_key_path}":
         creates => $sub_key_path,
+        require => Package['python3-nacl'],
     }
 
     $minute = fqdn_rand(30, 'dp-key-refresh')
