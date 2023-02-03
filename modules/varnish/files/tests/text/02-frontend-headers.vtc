@@ -62,8 +62,8 @@ client c1 {
     expect resp.http.X-Analytics == "https=1;nocookies=1"
     expect resp.http.X-Client-IP == "91.198.174.192"
     expect resp.http.Set-Cookie ~ "WMF-Last-Access="
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
@@ -71,8 +71,8 @@ client c1 {
     expect resp.http.X-Analytics == "https=1;nocookies=1"
     expect resp.http.X-Client-IP == "91.198.174.192"
     expect resp.http.Set-Cookie ~ "WMF-Last-Access="
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     # We make exceptions for analytics cookies: We don't want any analytics
     # cookies sent through the API
@@ -96,33 +96,33 @@ client c1 {
 
     txreq -url "/" -hdr "Host: test.wikidata.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: office.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: www.mediawiki.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: www.wikidata.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: commons.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: en.m.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
-    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
     txreq -url "/" -hdr "Host: thisisnotawmfdomain.com" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
