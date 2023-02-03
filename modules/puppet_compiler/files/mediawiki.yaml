@@ -1,5 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-primary_dc: eqiad
-read_only:
-  eqiad: false
-  codfw: true
