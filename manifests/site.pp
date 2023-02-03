@@ -1440,11 +1440,11 @@ node /^install2004\.wikimedia\.org$/ {
     role(installserver)
 }
 
-node /^install[34]001\.wikimedia\.org$/ {
+node /^install[345]001\.wikimedia\.org$/ {
     role(spare::system)
 }
 
-node /^install[56]001\.wikimedia\.org$/ {
+node /^install6001\.wikimedia\.org$/ {
     role(installserver)
 }
 
