@@ -143,7 +143,7 @@ class jenkins(
               'ALL=(root) NOPASSWD: /usr/bin/systemctl daemon-reload',
               'ALL=(root) NOPASSWD: /usr/bin/apt-get install -y jenkins',
               # To allow the installation process to run any required jars in the deployment repository
-              "ALL=(jenkins) NOPASSWD: /usr/bin/java -jar /srv/deployment/${deploy_dir}*",
+              "ALL=(jenkins) NOPASSWD: /usr/bin/java -Dhttps.proxyHost=\"\$HTTP_PROXY\" -Dhttps.proxyPort=\"\$HTTP_PROXY_PORT\" -jar /srv/deployment/${deploy_dir}*",
           ]
         }
 
