@@ -11,7 +11,7 @@ RUN set -e; \
     WIKIMEDIA_REPO="deb http://apt.wikimedia.org/wikimedia ${REPO}"; \
     WIKIMEDIA_REPO_FILE="${REPO_DIR}/wikimedia.list"; \
     SUDOERS_FILE="/etc/sudoers.d/varnish_test_nopasswd"; \
-    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip confd libvmod-querysort libsodium-dev"; \
+    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip confd libvmod-querysort"; \
     apt-get update; \
     apt-get install -y ${BASE_PACKAGES}; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
@@ -31,7 +31,6 @@ USER ${C_USER}
 
 COPY --chown=${C_USER}:${C_USER} public_clouds.json carriers.json trusted_proxies.json /usr/share/varnish/tests/
 COPY --chown=${C_USER}:${C_USER} confd_stub_data.yaml /${C_USER}/
-COPY dp.daily.key /etc/varnish/
 
 WORKDIR /${C_USER}
 
