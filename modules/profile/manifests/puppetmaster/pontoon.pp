@@ -138,7 +138,7 @@ class profile::puppetmaster::pontoon (
     file { '/etc/conftool-state/mediawiki.yaml':
         ensure => present,
         mode   => '0444',
-        source => 'puppet:///modules/puppet_compiler/mediawiki.yaml'
+        source => 'https://config-master.wikimedia.org/mediawiki.yaml',
     }
 
     file { '/etc/pontoon':

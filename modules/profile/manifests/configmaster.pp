@@ -37,10 +37,6 @@ class profile::configmaster(
         content => $abuse_networks.to_yaml,
     }
 
-    file {"${nda_dir}/absue_networks.yaml":
-        ensure => absent,
-    }
-
     # The contents of these files are managed by puppet-merge, but user
     # gitpuppet can't/shouldn't be able to create files under $document_root.
     # So puppet makes sure the file at least exists, and then puppet-merge
@@ -50,6 +46,13 @@ class profile::configmaster(
         owner  => 'gitpuppet',
         group  => 'gitpuppet',
         mode   => '0644',
+    }
+
+    # copy mediawiki conftool-state file to configmaster so we can fetch it
+    # from pcc and pontoon.
+    file { "${document_root}/mediawiki.yaml":
+        ensure => file,
+        source => '/etc/conftool-state/mediawiki.yaml',
     }
 
     file { "${document_root}/labsprivate-sha1.txt":

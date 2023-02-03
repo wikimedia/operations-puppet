@@ -138,7 +138,7 @@ class puppet_compiler (
     file { '/etc/conftool-state/mediawiki.yaml':
         ensure => stdlib::ensure($ensure, 'file'),
         mode   => '0444',
-        source => 'puppet:///modules/puppet_compiler/mediawiki.yaml',
+        source => 'https://config-master.wikimedia.org/mediawiki.yaml',
     }
     file { '/opt/puppetlabs/facter/cache/cached_facts/':
         owner => $user,
