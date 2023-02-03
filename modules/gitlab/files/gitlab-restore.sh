@@ -5,6 +5,7 @@ LOGFILE=/var/log/gitlab-restore-backup.log
 CONFIG_FILE=/etc/gitlab/gitlab.rb
 DATA_BACKUP_FILE=$(ls -t /srv/gitlab-backup/*gitlab_backup.tar | head -n1)
 CONFIG_BACKUP_FILE=$(ls -t /srv/gitlab-backup/gitlab_config*.tar | head -n1)
+GITLAB_URL=$(grep '^external_url ' /etc/gitlab/gitlab.rb | cut -d '"' -f2)
 
 # check if installed GitLab version matches backup version
 installed_version=$(dpkg -l gitlab-ce | grep -Po "\\d*\.\\d*\.\\d*")
@@ -116,7 +117,7 @@ fi
 /usr/bin/gitlab-rake gitlab:doctor:secrets >> $LOGFILE
 
 for i in {1..10}; do
-    echo "ApplicationSetting.last.update(home_page_url: 'https://gitlab-replica.wikimedia.org/explore')" | /usr/bin/gitlab-rails console >> $LOGFILE && break || sleep 15
+    echo "ApplicationSetting.last.update(home_page_url: '${GITLAB_URL}explore')" | /usr/bin/gitlab-rails console >> $LOGFILE && break || sleep 15
 done
 
 /usr/bin/systemctl restart ssh-gitlab
