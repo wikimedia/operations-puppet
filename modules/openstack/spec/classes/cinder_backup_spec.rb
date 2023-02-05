@@ -4,7 +4,7 @@ require 'rspec-puppet/cache'
 describe 'openstack::cinder::backup' do
   on_supported_os(WMFConfig.test_on(11, 11)).each do |os, facts|
     context "On #{os}" do
-      supported_openstacks = ["xena"]
+      supported_openstacks = ["zed"]
       supported_openstacks.each do |openstack_version|
         context "On openstack #{openstack_version}" do
           let(:pre_condition) {
@@ -16,8 +16,8 @@ describe 'openstack::cinder::backup' do
                 db_pass => 'dummy-db-pass',
                 db_name => 'dummy-db-name',
                 db_host => 'dummy.db.host.local',
+                keystone_fqdn => 'dummykeystone.host.local',
                 ldap_user_pass => 'dummy-ldap-user-pass',
-                keystone_admin_uri => 'http://dummy.keystone.local/admin/uri',
                 region => 'dummy-region',
                 ceph_pool => 'dummy-ceph-pool',
                 ceph_rbd_client_name => 'dummy-rdb-client-name',
