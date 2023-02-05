@@ -43,19 +43,10 @@ class mediawiki::users(
     # See <https://wikitech.wikimedia.org/wiki/LVS#SSH_checking>
 
     group { 'pybal-check':
-        ensure => present,
+        ensure => absent,
     }
 
     user { 'pybal-check':
-        ensure     => present,
-        gid        => 'pybal-check',
-        shell      => '/bin/sh',
-        home       => '/var/lib/pybal-check',
-        system     => true,
-        managehome => true,
-    }
-
-    ssh::userkey { 'pybal-check':
-        source  => 'puppet:///modules/mediawiki/pybal_key',
+        ensure => absent,
     }
 }
