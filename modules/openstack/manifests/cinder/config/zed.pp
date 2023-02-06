@@ -17,6 +17,9 @@ class openstack::cinder::config::zed(
     Stdlib::Port        $api_bind_port,
     String[1]           $libvirt_rbd_cinder_uuid,
     Stdlib::Unixpath    $backup_path,
+    Array[String]       $all_backend_types,
+    String[1]           $backend_type,
+    String[1]           $backend_name,
 ) {
     require 'openstack::cinder::user'
 
@@ -33,6 +36,14 @@ class openstack::cinder::config::zed(
     $keystone_auth_project = 'admin'
     file { '/etc/cinder/cinder.conf':
         content   => template('openstack/zed/cinder/cinder.conf.erb'),
+        owner     => 'cinder',
+        group     => 'cinder',
+        mode      => '0440',
+        show_diff => false,
+    }
+
+    file { '/etc/cinder/cinder-volume.conf':
+        content   => template('openstack/zed/cinder/cinder-volume.conf.erb'),
         owner     => 'cinder',
         group     => 'cinder',
         mode      => '0440',

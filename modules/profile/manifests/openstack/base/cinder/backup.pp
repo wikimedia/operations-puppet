@@ -24,6 +24,9 @@ class profile::openstack::base::cinder::backup (
     String[1]               $lvm_lv_format           = lookup('profile::openstack::base::cinder::backup::lvm::lv_format'),
     String[1]               $user                    = lookup('profile::openstack::base::cinder::backup::user'),
     Boolean                 $vg_createonly           = lookup('profile::openstack::base::cinder::backup::vg_createonly'),
+    Array[String]           $all_backend_types       = lookup('profile::openstack::base::cinder::all_backend_types'),
+    String[1]               $backend_type            = lookup('profile::openstack::base::cinder::backend_type'),
+    String[1]               $backend_name            = lookup('profile::openstack::base::cinder::backend_name'),
 ) {
     class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,
@@ -42,6 +45,9 @@ class profile::openstack::base::cinder::backup (
         rabbit_pass             => $rabbit_pass,
         libvirt_rbd_cinder_uuid => $libvirt_rbd_cinder_uuid,
         backup_path             => $backup_path,
+        all_backend_types       => $all_backend_types,
+        backend_type            => $backend_type,
+        backend_name            => $backend_name,
     }
 
     class { 'openstack::cinder::backup':

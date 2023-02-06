@@ -39,6 +39,14 @@ class openstack::cinder::service::zed(
             mode    => '0755',
             notify  => Service['cinder-api'],
             require => Package['cinder-api'];
+        # Override the package init module to specify cinder-volume.conf
+        '/etc/init.d/cinder-volume':
+            source  => 'puppet:///modules/openstack/zed/cinder/cinder-volume',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            notify  => Service['cinder-api'],
+            require => Package['cinder-api'];
         '/etc/cinder/cinder-api-uwsgi.ini':
             source  => 'puppet:///modules/openstack/zed/cinder/cinder-api-uwsgi.ini',
             owner   => 'root',

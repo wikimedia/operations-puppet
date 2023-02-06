@@ -70,7 +70,7 @@ default_volume_type = standard
 auth_strategy = keystone
 
 # A list of backend names to use. These backend names should be backed by a unique [CONFIG] group with its options (list value)
-enabled_backends = rbd
+enabled_backends = <%= @all_backend_types.join(',') %>
 
 # Cinder backups happen across datacenters so we want to give
 #  the backup agents a good long time to respond.
@@ -280,17 +280,3 @@ policy_file = policy.yaml
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
 
-[rbd]
-volume_driver = cinder.volume.drivers.rbd.RBDDriver
-rbd_pool = <%= @ceph_pool %>
-rbd_ceph_conf = /etc/ceph/ceph.conf
-rbd_flatten_volume_from_snapshot = false
-rbd_max_clone_depth = 5
-rbd_store_chunk_size = 4
-rados_connect_timeout = -1
-glance_api_version = 2
-rbd_user = <%= @ceph_rbd_client_name %>
-rbd_secret_uuid = <%= @libvirt_rbd_cinder_uuid %>
-
-[client.volumes]
-keyring = /etc/ceph/ceph.client.<%= @ceph_rbd_client_name %>.keyring
