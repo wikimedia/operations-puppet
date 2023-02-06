@@ -88,14 +88,13 @@ define postgresql::user (
     }
 
     # Host based access configuration for user connections
-    postgresql::user::hba { "Access configuration for ${name}}":
+    postgresql::user::hba { "Access configuration for ${name}":
         ensure    => $ensure,
         user      => $user,
         database  => $database,
         type      => $type,
         method    => $_method,
         cidr      => $cidr,
-        hba_label => $name,
         pgversion => $_pgversion,
     }
 

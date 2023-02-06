@@ -53,7 +53,6 @@ class profile::maps::osm_replica(
                 user      => 'tilerator',
                 database  => 'all',
                 cidr      => $subnet,
-                hba_label => "${subnet}_kubepod",
                 pgversion => $pgversion,
             }
         }

@@ -26,7 +26,6 @@ define postgresql::user::hba(
     String                 $type       = 'host',
     String                 $method     = 'md5',
     Stdlib::IP::Address    $cidr       = '127.0.0.1/32',
-    String                 $hba_label  = undef,
     Numeric                $pgversion  = undef,
 ) {
 
@@ -39,8 +38,6 @@ define postgresql::user::hba(
     else {
         $xpath = "/files${pg_hba_file}/*[type='${type}'][database='${database}'][user='${user}'][address='${cidr}'][method='${method}']"
     }
-
-    $hba_name = "${user}@${hba_label}"
 
     if $ensure == 'present' {
         if $type == 'local' {
@@ -60,7 +57,7 @@ define postgresql::user::hba(
             ]
         }
 
-        augeas { "hba_create-${hba_label}":
+        augeas { "hba_create-${title}":
             context => "/files${pg_hba_file}/",
             changes => $changes,
             onlyif  => "match ${xpath} size == 0",
@@ -68,7 +65,7 @@ define postgresql::user::hba(
         }
     } elsif $ensure == 'absent' {
 
-        augeas { "hba_drop-${hba_label}":
+        augeas { "hba_drop-${title}":
             context => "/files${pg_hba_file}/",
             changes => "rm ${xpath}",
             # only if the user exists
