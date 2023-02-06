@@ -394,7 +394,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, kelhurd,
-              eileen, jebe, ollieshotton, muja, taavi, abhas]
+              eileen, jebe, ollieshotton, muja, taavi, abhas, nfraison]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5739,6 +5739,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/UXerh39d7MLuBg/tSVk/W3FbqxIbSl5VE03IvahKI atripathi@wikimedia.org
+    krb: present
+  nfraison:
+    ensure: present
+    realname: Nicolas Fraison
+    email: nfraison@wikimedia.org
+    uid: 43343
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJpQZ4z1RLVOjDiZ58n5YakzqwGyTBR+CTfxr6EgIxC nfraison@wikimedia.org
     krb: present
 ldap_only_users:
   adavenport:
