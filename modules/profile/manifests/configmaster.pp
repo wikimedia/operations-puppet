@@ -93,14 +93,6 @@ class profile::configmaster(
         srange => '$PRODUCTION_NETWORKS',
     }
 
-    nrpe::plugin { 'disc_desired_state':
-        ensure => absent,
-    }
-
-    nrpe::monitor_service { 'discovery-diffs':
-        ensure => absent,
-    }
-
     class { 'ssh::publish_fingerprints':
         document_root => $document_root,
     }
