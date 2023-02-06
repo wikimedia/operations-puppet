@@ -292,6 +292,7 @@ Name: thirdparty/ceph-quincy
 Method: https://download.ceph.com/debian-quincy
 Components: main>thirdparty/ceph-quincy
 UDebComponents:
+Suite: bullseye
 Architectures: amd64
 VerifyRelease: E84AC2C0460F3994
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
