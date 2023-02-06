@@ -24,7 +24,8 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, akhatun, jhernandez, hxi-ctr]
+              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, akhatun, jhernandez, hxi-ctr,
+              dannyh]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -385,7 +386,7 @@ groups:
               echetty, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
+              tandic, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
@@ -5128,12 +5129,11 @@ users:
     expiry_date: 2023-06-30
     expiry_contact: janstee@wikimedia.org
   dannyh:
-    ensure: present
+    ensure: absent
     uid: 12078
     gid: 500
     realname: Danny Horn
-    email: dhorn@wikimedia.org
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   bwang:
     ensure: present
     realname: Bernard Wang
