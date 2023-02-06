@@ -5,7 +5,20 @@
 # Note this profile creates the backups, but does not send them
 # to bacula or other long-term storage, that is handled by the
 # dbbackups::bacula class.
-class profile::dbbackups::mydumper {
+#
+# Arguments:
+# * enabled: A boolean value that, if false, removes the execution
+#            of the systemd timer (defaulting to true for backwards
+#            compatiblity)
+# * schedule: A string containing the systemd timer's execution
+#             schedule definition (defaulting to
+#             'Tue *-*-* 00:00:00' for backwards compatibility)
+
+class profile::dbbackups::mydumper (
+    Boolean $enabled  = lookup('profile::dbbackups::mydumper::enabled', {default_value => true}),
+    String  $schedule = lookup('profile::dbbackups::mydumper::schedule', {default_value => 'Tue *-*-* 00:00:00'}),
+) {
+
     include ::passwords::mysql::dump
 
     ensure_packages([
@@ -82,12 +95,18 @@ class profile::dbbackups::mydumper {
         mode   => '0740',
     }
 
+    if ($enabled) {
+        $ensure = 'present'
+    } else {
+        $ensure = 'absent'
+    }
+
     systemd::timer::job { 'dumps-sections':
-        ensure        => 'present',
+        ensure        => $ensure,
         description   => 'MariaDB backups',
         command       => '/usr/bin/backup-mariadb --config-file=/etc/wmfbackups/backups.cnf',
         user          => 'dump',
-        interval      => { 'start' => 'OnCalendar', 'interval' => 'Tue *-*-* 00:00:00'},
+        interval      => { 'start' => 'OnCalendar', 'interval' => $schedule},
         # Ignore any errors to avoid triggering Icinga alerts
         # if one or several of the backups fail.
         # Backup status notifications are handled in the backup check script.
