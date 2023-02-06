@@ -735,12 +735,12 @@ node 'db2133.codfw.wmnet' {
 ## m3 shard
 # See also multiinstance misc hosts db1117, db2160 below
 
-# m3 master
+# old m3 master
 node 'db1159.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-# future m3 eqiad master
+# m3 eqiad master
 node 'db1164.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
