@@ -1,17 +1,17 @@
+# @summary This definition provides a way to manage postgresql users.
+# @param user the user to configure
+# @param ensure ensurable parameter
+# @param database the database to configure the user with
+# @param type the type of user access
+# @param cidr the cidr address that hosts are allowed to come from
+# @param attrs additional attributes of the user
+# @param master is this the postgress master
+# @param privileges a list of privileges to configure for the user
+# @param pgversion the postgress version
+# @param password the password to configure
+# @param method the method to use
 #
-# Definition: postgresql::user
-#
-# This definition provides a way to manage postgresql users.
-#
-# Parameters:
-#
-# Actions:
-#   Create/drop user
-#
-# Requires:
-#   Class postgresql::server
-#
-# Sample Usage:
+# @example
 #  postgresql::user { 'test@host.example.com':
 #    ensure   => 'absent',
 #    user     => 'test',
@@ -23,20 +23,19 @@
 #
 # Based upon https://github.com/uggedal/puppet-module-postgresql
 #
-define postgresql::user(
+define postgresql::user (
     String                 $user,
     String                 $ensure     = 'present',
     String                 $database   = 'template1',
     String                 $type       = 'host',
     Stdlib::IP::Address    $cidr       = '127.0.0.1/32',
-    String                 $attrs      = '',
     Boolean                $master     = true,
     Postgresql::Privileges $privileges = {},
+    Optional[String[1]]    $attrs      = undef,
     Optional[String]       $password   = undef,
     Optional[Numeric]      $pgversion  = undef,
     Optional[String[1]]    $method     = undef,
 ) {
-
     $_pgversion = $pgversion ? {
         undef   => $facts['os']['distro']['codename'] ? {
             'bookworm' => 15,
@@ -46,14 +45,15 @@ define postgresql::user(
         },
         default => $pgversion,
     }
+    # lint:ignore:version_comparison
     $_method = $method.lest || { ($_pgversion >= 15).bool2str('scram-sha-256', 'md5') }
+    # lint:endignore
 
     # Check if our user exists and store it
     $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep -P \'^ ${user}$\'"
     # Check if our user doesn't own databases, so we can safely drop
     $user_dbs = "/usr/bin/psql --tuples-only --no-align -c \'SELECT COUNT(*) FROM pg_catalog.pg_database JOIN pg_authid ON pg_catalog.pg_database.datdba = pg_authid.oid WHERE rolname = '${user}';\' | grep -e '^0$'"
     $pass_set = "/usr/bin/psql -c \"ALTER ROLE ${user} WITH ${attrs} PASSWORD '${password}';\""
-
 
     # Starting with Bookworm passwords are hashed with salted Scram-SHA256. The user is still tested for existance,
     # but no password changes are supported T326325
@@ -72,7 +72,6 @@ define postgresql::user(
 
         # This will not be run on a slave as it is read-only
         if $master and $password {
-
             exec { "pass_set-${name}":
                 command   => $pass_set,
                 user      => 'postgres',
@@ -113,7 +112,7 @@ define postgresql::user(
             true    => $privileges['function'],
             default => undef,
         }
-        postgresql::db_grant {"grant access to ${title} on ${database}":
+        postgresql::db_grant { "grant access to ${title} on ${database}":
             db            => $database,
             pg_role       => $user,
             table_priv    => $table_priv,
