@@ -419,7 +419,6 @@ def set_hiera(project, prefix):
 # No @key.login_required, since this one is queried by Puppetmasters
 @app.route("/v1/<string:project>/node/<string:fqdn>", methods=["GET"])
 def get_node_config(project, fqdn):
-
     # If the VM thinks it's under .eqiad.wmflabs, give it
     #  a .eqiad1.wikimedia.cloud config anyway.
     fqdn = re.sub(r"\.eqiad\.wmflabs$", ".eqiad1.wikimedia.cloud", fqdn)
