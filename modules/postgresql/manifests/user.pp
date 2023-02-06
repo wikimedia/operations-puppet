@@ -5,6 +5,7 @@
 # @param type the type of user access
 # @param cidr the cidr address that hosts are allowed to come from
 # @param attrs additional attributes of the user
+# @param allowed_hosts a list of hosts allowed to use this user
 # @param master is this the postgress master
 # @param privileges a list of privileges to configure for the user
 # @param pgversion the postgress version
@@ -24,17 +25,18 @@
 # Based upon https://github.com/uggedal/puppet-module-postgresql
 #
 define postgresql::user (
-    String                 $user,
-    String                 $ensure     = 'present',
-    String                 $database   = 'template1',
-    String                 $type       = 'host',
-    Stdlib::IP::Address    $cidr       = '127.0.0.1/32',
-    Boolean                $master     = true,
-    Postgresql::Privileges $privileges = {},
-    Optional[String[1]]    $attrs      = undef,
-    Optional[String]       $password   = undef,
-    Optional[Numeric]      $pgversion  = undef,
-    Optional[String[1]]    $method     = undef,
+    String                        $user,
+    String                        $ensure        = 'present',
+    String                        $database      = 'template1',
+    String                        $type          = 'host',
+    Boolean                       $master        = true,
+    Postgresql::Privileges        $privileges    = {},
+    Array[Stdlib::Fqdn]           $allowed_hosts = [],
+    Optional[Stdlib::IP::Address] $cidr          = undef,
+    Optional[String[1]]           $attrs         = undef,
+    Optional[String]              $password      = undef,
+    Optional[Numeric]             $pgversion     = undef,
+    Optional[String[1]]           $method        = undef,
 ) {
     $_pgversion = $pgversion ? {
         undef   => $facts['os']['distro']['codename'] ? {
@@ -48,6 +50,21 @@ define postgresql::user (
     # lint:ignore:version_comparison
     $_method = $method.lest || { ($_pgversion >= 15).bool2str('scram-sha-256', 'md5') }
     # lint:endignore
+
+    $cidrs = ($allowed_hosts.map |$_host| {
+        wmflib::dns_lookup($_host).map |$answer| {
+            $answer ? {
+                Stdlib::IP::Address::V4::Nosubnet => "${answer}/32",
+                Stdlib::IP::Address::V6::Nosubnet => "${answer}/64",
+                default                           => fail("unexpected answer (${answer}) for ${_host}"),
+            }
+        }
+    } + $cidr).flatten.unique.sort.filter |$key, $val| { $val =~ NotUndef }
+    # backwards compatibility to default to 127.0.0.1 if nothing else set
+    $_cidrs = $cidrs.empty ? {
+        true    => ['127.0.0.1/32'],
+        default => $cidrs,
+    }
 
     # Check if our user exists and store it
     $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep -P \'^ ${user}$\'"
@@ -88,14 +105,16 @@ define postgresql::user (
     }
 
     # Host based access configuration for user connections
-    postgresql::user::hba { "Access configuration for ${name}":
-        ensure    => $ensure,
-        user      => $user,
-        database  => $database,
-        type      => $type,
-        method    => $_method,
-        cidr      => $cidr,
-        pgversion => $_pgversion,
+    $_cidrs.each |$_cidr| {
+        postgresql::user::hba { "Access configuration for ${name}":
+            ensure    => $ensure,
+            user      => $user,
+            database  => $database,
+            type      => $type,
+            method    => $_method,
+            cidr      => $_cidr,
+            pgversion => $_pgversion,
+        }
     }
 
     unless $privileges.empty or ! $master {
