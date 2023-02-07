@@ -1,6 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0
-
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 ### BEGIN INIT INFO
 # Provides:          cinder-volume
 # Required-Start:    $network $local_fs $remote_fs $syslog
