@@ -1,0 +1,69 @@
+profile::ceph::auth::load_all::configuration:
+  admin:
+    caps:
+      mgr: allow *
+      mon: allow *
+      osd: allow *
+  mon.cephosd1001:
+    caps:
+      mon: allow *
+  mon.cephosd1002:
+    caps:
+      mon: allow *
+  mon.cephosd1003:
+    caps:
+      mon: allow *
+  mon.cephosd1004:
+    caps:
+      mon: allow *
+  mon.cephosd1005:
+    caps:
+      mon: allow *
+  mgr.cephosd1001:
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+  mgr.cephosd1002:
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+  mgr.cephosd1003:
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+  mgr.cephosd1004:
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+  mgr.cephosd1005:
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+
+profile::ceph::ceph_repository_component: 'thirdparty/ceph-quincy'
+
+# Generated with uuidgen
+profile::ceph::fsid: 6d4278e1-ea45-4d29-86fe-85b44c150813
+
+profile::ceph::mon::hosts:
+  "cephosd1001.eqiad.wmnet":
+    public:
+      addr: "10.64.130.13"
+  "cephosd1002.eqiad.wmnet":
+    public:
+      addr: "10.64.131.21"
+  "cephosd1003.eqiad.wmnet":
+    public:
+      addr: "10.64.132.23"
+  "cephosd1004.eqiad.wmnet":
+    public:
+      addr: "10.64.134.12"
+  "cephosd1005.eqiad.wmnet":
+    public:
+      addr: "10.64.135.21"
+
+profile::ceph::osd::hosts: "%{alias('profile::ceph::mon::hosts')}"
+
+profile::ceph::public_networks:
+  - 10.64.0.0/12
+

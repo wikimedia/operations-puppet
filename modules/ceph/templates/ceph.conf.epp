@@ -22,7 +22,9 @@
   # we log to syslog instead
   log file = none
   public network = <%= $public_networks.join(' ') %>
+<% if $cluster_networks.size > 0 {-%>
   cluster network = <%= $cluster_networks.join(' ') %>
+<% } -%>
   log to syslog = true
   err to syslog = true
 
@@ -41,7 +43,9 @@
 [osd.<%= $fqdn.split('[.]')[0] %>]
     host = <%= $fqdn.split('[.]')[0] %>
     public addr = <%= $host_data['public']['addr'] %>
+<% if $cluster_networks.size > 0 {-%>
     cluster addr = <%= $host_data['cluster']['addr'] %>
+<% } -%>
 <% } -%>
 <% if $enable_libvirt_rbd {%>
 [client]

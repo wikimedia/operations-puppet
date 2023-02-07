@@ -33,6 +33,10 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::statograph::page_id:
     convert_to: 'Sensitive'
+  profile::ceph::auth::load_all::configuration:
+    merge: deep
+  profile::ceph::auth::deploy::configuration:
+    merge: deep
   profile::cloudceph::auth::load_all::configuration:
     merge: deep
   profile::cloudceph::auth::deploy::configuration:
