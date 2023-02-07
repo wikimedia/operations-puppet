@@ -18,6 +18,7 @@ class openstack::cinder::volume(
     String[1]           $backend_name,
 ) {
     class { "openstack::cinder::volume::${version}":
+        version                 => $version,
         rabbitmq_nodes          => $rabbitmq_nodes,
         db_user                 => $db_user,
         db_pass                 => $db_pass,

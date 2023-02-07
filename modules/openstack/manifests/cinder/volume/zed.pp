@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::cinder::volume::zed(
+    $version,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String[1]           $db_user,
     String[1]           $db_pass,
