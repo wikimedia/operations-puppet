@@ -80,3 +80,5 @@ iscsi_protocol = iscsi
 iscsi_helper = tgtadm
 
 <%- end -%>
+
+<%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
