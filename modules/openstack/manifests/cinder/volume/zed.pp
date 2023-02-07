@@ -31,8 +31,8 @@ class openstack::cinder::volume::zed(
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
-            notify  => Service['cinder-api'],
-            require => Package['cinder-api'];
+            notify  => Service['cinder-volume'],
+            require => Package['cinder-volume'];
     }
 
     file { '/etc/cinder/cinder-volume.conf':
