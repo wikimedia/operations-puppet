@@ -379,7 +379,7 @@ class profile::logstash::production (
   $ecs_versions = {
     # version => revision
     '1.7.0'  => '5',
-    '1.11.0' => '5'
+    '1.11.0' => '6'
   }
   $ecs_versions.each |String $ecs_version, String $ecs_revision| {
     logstash::output::opensearch { "ecs_${ecs_version}-${ecs_revision}":

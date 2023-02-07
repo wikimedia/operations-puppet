@@ -23,13 +23,13 @@ testcases:
           "logsource": "puppetmaster2001"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         destination:
           ip: "::1"
           domain: "localhost"
           port: "44734"
         ecs:
-          version: "1.7.0"
+          version: "1.11.0"
         event:
           action: "drop"
         host:
@@ -76,13 +76,13 @@ testcases:
           "logsource": "mw1307"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         destination:
           ip: "127.0.0.1"
           domain: "localhost"
           port: "45868"
         ecs:
-          version: "1.7.0"
+          version: "1.11.0"
         event:
           action: "drop"
         host:
@@ -129,13 +129,13 @@ testcases:
           "logsource": "mw1307"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         destination:
           ip: "127.0.0.1"
           domain: "localhost"
           port: "67"
         ecs:
-          version: "1.7.0"
+          version: "1.11.0"
         event:
           action: "drop"
         host:
