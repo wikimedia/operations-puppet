@@ -323,4 +323,5 @@ profile::vrts::https_proxy: ''
 # Phorge
 profile::phorge::server_name: 'phorge.wmcloud.org'
 profile::phorge::install_path: '/srv/phorge'
-profile::phorge::git_origin: 'https://we.phorge.it/source/phorge.git'
+profile::phorge::git_origin_arcanist: 'https://github.com/phacility/arcanist.git'
+profile::phorge::git_origin_phorge: 'https://we.phorge.it/source/phorge.git'
