@@ -10,7 +10,7 @@ class profile::openstack::eqiad1::cinder::volume(
     String $rabbit_pass                 = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
     String $libvirt_rbd_cinder_uuid     = lookup('profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid'),
     String $ceph_rbd_client_name        = lookup('profile::openstack::eqiad1::cinder::ceph_rbd_client_name'),
-    Array[String] $all_backend_types    = lookup('profile::openstack::eqiad1::cinder::all_backend_types'),
+    Array[String] $all_backend_names    = lookup('profile::openstack::eqiad1::cinder::all_backend_names'),
     String[1] $backend_type             = lookup('profile::openstack::eqiad1::cinder::backend_type'),
     String[1] $backend_name             = lookup('profile::openstack::eqiad1::cinder::backend_name'),
     String[1] $lvm_volume_group         = lookup('profile::openstack::eqiad1::cinder::lvm_volume_group'),

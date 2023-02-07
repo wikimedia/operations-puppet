@@ -13,7 +13,7 @@ class openstack::cinder::volume::zed(
     String[1]           $rabbit_user,
     String[1]           $rabbit_pass,
     String[1]           $libvirt_rbd_cinder_uuid,
-    Array[String]       $all_backend_types,
+    Array[String]       $all_backend_names,
     String[1]           $backend_type,
     String[1]           $backend_name,
     String[1]           $lvm_volume_group,

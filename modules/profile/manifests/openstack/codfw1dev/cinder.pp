@@ -14,6 +14,7 @@ class profile::openstack::codfw1dev::cinder(
     Hash   $cinder_backup_volumes = lookup('profile::openstack::codfw1dev::cinder_backup_volumes'),
     String[1]           $ceph_rbd_client_name  = lookup('profile::openstack::codfw1dev::cinder::ceph_rbd_client_name'),
     Array[Stdlib::Fqdn] $haproxy_nodes         = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
+    Array[String] $all_backend_names           = lookup('profile::openstack::codfw1dev::cinder::all_backend_names'),
 ) {
     class {'::profile::openstack::base::cinder':
         version               => $version,
@@ -31,6 +32,7 @@ class profile::openstack::codfw1dev::cinder(
         active                => true,
         cinder_backup_volumes => $cinder_backup_volumes,
         haproxy_nodes         => $haproxy_nodes,
-        cinder_volume_nodes   => wmflib::class::hosts('profile::openstack::codfw1dev::cinder::volume')
+        all_backend_names     => $all_backend_names,
+        cinder_volume_nodes   => wmflib::class::hosts('profile::openstack::codfw1dev::cinder::volume'),
     }
 }

@@ -13,6 +13,7 @@ class profile::openstack::eqiad1::cinder(
     Hash   $cinder_backup_volumes = lookup('profile::openstack::eqiad1::cinder_backup_volumes'),
     String[1]           $ceph_rbd_client_name  = lookup('profile::openstack::eqiad1::cinder::ceph_rbd_client_name'),
     Array[Stdlib::Fqdn] $haproxy_nodes         = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+    Array[String] $all_backend_names           = lookup('profile::openstack::eqiad1::cinder::all_backend_names'),
 ) {
     class {'::profile::openstack::base::cinder':
         version               => $version,
@@ -30,6 +31,7 @@ class profile::openstack::eqiad1::cinder(
         active                => true,
         cinder_backup_volumes => $cinder_backup_volumes,
         haproxy_nodes         => $haproxy_nodes,
+        all_backend_names     => $all_backend_names,
         cinder_volume_nodes   => wmflib::class::hosts('profile::openstack::eqiad1::cinder::volume')
     }
 }

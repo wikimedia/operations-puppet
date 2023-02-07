@@ -70,7 +70,7 @@ default_volume_type = standard
 auth_strategy = keystone
 
 # A list of backend names to use. These backend names should be backed by a unique [CONFIG] group with its options (list value)
-enabled_backends = <%= @all_backend_types.join(',') %>
+enabled_backends = <%= @all_backend_names.join(',') %>
 
 # Cinder backups happen across datacenters so we want to give
 #  the backup agents a good long time to respond.

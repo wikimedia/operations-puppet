@@ -13,7 +13,7 @@ default_volume_type = standard
 <% if @backend_type == 'rbd' -%>
 enabled_backends = rbd
 <% else -%>
-enabled_backends = lvm
+enabled_backends = <%= @backend_name -%>
 <%- end -%>
 
 # ================= Syslog Options ============================

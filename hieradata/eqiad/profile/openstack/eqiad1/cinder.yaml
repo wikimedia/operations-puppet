@@ -2,7 +2,7 @@ profile::openstack::eqiad1::cinder::api_bind_port: 18776
 profile::openstack::eqiad1::cinder::db_host: "openstack.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::cinder::ceph_pool: eqiad1-cinder
 profile::openstack::eqiad1::cinder::ceph_rbd_client_name: eqiad1-cinder
-profile::openstack::eqiad1::cinder::all_backend_types: ['rbd']
+profile::openstack::eqiad1::cinder::all_backend_names: ['rbd']
 profile::openstack::eqiad1::cinder::backend_type: 'rbd'
 profile::openstack::eqiad1::cinder::backend_name: 'rbd'
 profile::openstack::eqiad1::cinder::lvm_volume_group: 'vg0'

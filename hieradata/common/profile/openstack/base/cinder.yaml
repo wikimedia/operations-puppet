@@ -1,6 +1,6 @@
 profile::openstack::base::cinder::db_name: 'cinder'
 profile::openstack::base::cinder::db_user: 'cinder'
-profile::openstack::base::cinder::all_backend_types: ['rbd']
+profile::openstack::base::cinder::all_backend_names: ['rbd']
 profile::openstack::base::cinder::backend_type: 'rbd'
 profile::openstack::base::cinder::backend_name: 'rbd'
 profile::openstack::base::cinder::lvm_volume_group: 'vg0'

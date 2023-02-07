@@ -17,7 +17,7 @@ class openstack::cinder::config::zed(
     Stdlib::Port        $api_bind_port,
     String[1]           $libvirt_rbd_cinder_uuid,
     Stdlib::Unixpath    $backup_path,
-    Array[String]       $all_backend_types,
+    Array[String]       $all_backend_names,
     String[1]           $backend_type,
     String[1]           $backend_name,
 ) {

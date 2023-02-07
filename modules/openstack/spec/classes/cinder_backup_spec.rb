@@ -26,7 +26,7 @@ describe 'openstack::cinder::backup' do
                 api_bind_port => 1234,
                 libvirt_rbd_cinder_uuid => 'dummycinderuuid',
                 backup_path => '/dummy/backup/path',
-                all_backend_types => ['backendone','backendtwo'],
+                all_backend_names => ['backendone','backendtwo'],
                 backend_type => 'backendtype',
                 backend_name =>'backendname'
             }"

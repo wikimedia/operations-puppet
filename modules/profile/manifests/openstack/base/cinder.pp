@@ -19,7 +19,7 @@ class profile::openstack::base::cinder(
     Stdlib::Unixpath    $backup_path           = lookup('profile::openstack::base::cinder::backup::path'),
     String              $ceph_rbd_client_name  = lookup('profile::openstack::base::cinder::ceph_rbd_client_name'),
     Array[Stdlib::Fqdn] $haproxy_nodes         = lookup('profile::openstack::base::haproxy_nodes'),
-    Array[String]       $all_backend_types     = lookup('profile::openstack::base::cinder::all_backend_types'),
+    Array[String]       $all_backend_names     = lookup('profile::openstack::base::cinder::all_backend_names'),
     String[1]           $backend_type          = lookup('profile::openstack::base::cinder::backend_type'),
     String[1]           $backend_name          = lookup('profile::openstack::base::cinder::backend_name'),
     Array[Stdlib::Fqdn] $cinder_volume_nodes   = lookup('profile::openstack::base::cinder_volume_nodes'),
@@ -42,7 +42,7 @@ class profile::openstack::base::cinder(
         rabbit_pass             => $rabbit_pass,
         libvirt_rbd_cinder_uuid => $libvirt_rbd_cinder_uuid,
         backup_path             => $backup_path,
-        all_backend_types       => $all_backend_types,
+        all_backend_names       => $all_backend_names,
         backend_type            => $backend_type,
         backend_name            => $backend_name,
     }
