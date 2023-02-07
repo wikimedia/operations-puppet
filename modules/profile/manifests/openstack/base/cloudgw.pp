@@ -15,6 +15,8 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::base::cloudgw::routing_source_ip',{default_value => '127.0.0.7'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::base::cloudgw::virt_subnet_cidr', {default_value => '127.0.0.8/32'}),
     Array[Stdlib::IP::Address::V4::Nosubnet] $dmz_cidr = lookup('profile::openstack::base::cloudgw::dmz_cidr',    {default_value => ['0.0.0.0']}),
+    Stdlib::IP::Address::V4::CIDR $transport_cidr = lookup('profile::openstack::base::cloudgw::transport_cidr'),
+    Stdlib::IP::Address::V4::Nosubnet $transport_vip = lookup('profile::openstack::base::cloudgw::transport_vip'),
 ) {
     class { '::nftables':
         ensure_package => 'present',
@@ -74,6 +76,8 @@ class profile::openstack::base::cloudgw (
             "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
             # route internal VM network to neutron
             "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+            # select source address for the transport cloudgw <-> neutron subnet
+            "${transport_cidr} table ${rt_table} dev ${nic_virt} scope link src ${transport_vip}",
         ]
 
     if $virt_floating_additional != undef {

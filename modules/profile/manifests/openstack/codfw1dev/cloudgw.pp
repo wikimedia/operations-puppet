@@ -14,6 +14,8 @@ class profile::openstack::codfw1dev::cloudgw (
     Array[String]                 $vrrp_vips      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_vips',        {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address           $vrrp_peer      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_peer',        {default_value => '127.0.0.1'}),
     Hash                          $conntrackd     = lookup('profile::openstack::codfw1dev::cloudgw::conntrackd',       {default_value => {}}),
+    Stdlib::IP::Address::V4::CIDR $transport_cidr = lookup('profile::openstack::codfw1dev::cloudgw::transport_cidr'),
+    Stdlib::IP::Address::V4::Nosubnet $transport_vip = lookup('profile::openstack::codfw1dev::cloudgw::transport_vip'),
 ) {
     class { '::profile::openstack::base::cloudgw':
         dmz_cidr                 => $dmz_cidr,
@@ -31,6 +33,8 @@ class profile::openstack::codfw1dev::cloudgw (
         vrrp_vips                => $vrrp_vips,
         vrrp_peer                => $vrrp_peer,
         conntrackd               => $conntrackd,
+        transport_cidr           => $transport_cidr,
+        transport_vip            => $transport_vip,
     }
     contain '::profile::openstack::base::cloudgw'
 }
