@@ -8,6 +8,7 @@ class profile::openstack::base::galera::node(
     Array[Stdlib::Fqdn]    $labweb_hosts           = lookup('profile::openstack::base::labweb_hosts'),
     Array[Stdlib::Fqdn]    $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Array[Stdlib::Fqdn]    $haproxy_nodes          = lookup('profile::openstack::base::haproxy_nodes'),
+    Array[Stdlib::Fqdn]    $cinder_volume_nodes    = lookup('profile::openstack::base::cinder_volume_nodes'),
 ) {
     $socket = '/var/run/mysqld/mysqld.sock'
     $datadir = '/srv/sqldata'
@@ -48,7 +49,7 @@ class profile::openstack::base::galera::node(
     ferm::service { 'galera-access':
         proto  => 'tcp',
         port   => 3306,
-        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${cinder_backup_nodes.join(' ')} ${labweb_hosts.join(' ')})))",
+        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${cinder_backup_nodes.join(' ')} ${cinder_volume_nodes.join(' ')} ${labweb_hosts.join(' ')})))",
     }
 
     nrpe::monitor_service { 'check_galera_mariadbd_process':

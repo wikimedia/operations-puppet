@@ -20,5 +20,6 @@ class profile::openstack::codfw1dev::galera::node(
         prometheus_db_pass    => $prometheus_db_pass,
         cinder_backup_nodes   => $cinder_backup_nodes,
         haproxy_nodes         => $haproxy_nodes,
+        cinder_volume_nodes   => wmflib::class::hosts('profile::openstack::codfw1dev::cinder::volume')
     }
 }

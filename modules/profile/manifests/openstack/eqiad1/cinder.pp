@@ -30,5 +30,6 @@ class profile::openstack::eqiad1::cinder(
         active                => true,
         cinder_backup_volumes => $cinder_backup_volumes,
         haproxy_nodes         => $haproxy_nodes,
+        cinder_volume_nodes   => wmflib::class::hosts('profile::openstack::eqiad1::cinder::volume')
     }
 }

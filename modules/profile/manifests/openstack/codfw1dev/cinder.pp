@@ -31,5 +31,6 @@ class profile::openstack::codfw1dev::cinder(
         active                => true,
         cinder_backup_volumes => $cinder_backup_volumes,
         haproxy_nodes         => $haproxy_nodes,
+        cinder_volume_nodes   => wmflib::class::hosts('profile::openstack::codfw1dev::cinder::volume')
     }
 }

@@ -22,6 +22,7 @@ class profile::openstack::base::cinder(
     Array[String]       $all_backend_types     = lookup('profile::openstack::base::cinder::all_backend_types'),
     String[1]           $backend_type          = lookup('profile::openstack::base::cinder::backend_type'),
     String[1]           $backend_name          = lookup('profile::openstack::base::cinder::backend_name'),
+    Array[Stdlib::Fqdn] $cinder_volume_nodes   = lookup('profile::openstack::base::cinder_volume_nodes'),
     ) {
 
     class { "::openstack::cinder::config::${version}":
@@ -64,7 +65,7 @@ class profile::openstack::base::cinder(
     }
 
     openstack::db::project_grants { 'cinder':
-        access_hosts => $openstack_controllers,
+        access_hosts => flatten([$openstack_controllers, $cinder_volume_nodes]),
         db_name      => 'cinder',
         db_user      => $db_user,
         db_pass      => $db_pass,
