@@ -14,6 +14,7 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::glance
     include profile::openstack::eqiad1::placement
     include profile::openstack::eqiad1::cinder
+    include profile::openstack::eqiad1::cinder::volume
     include profile::openstack::eqiad1::trove
     include profile::openstack::eqiad1::heat
     include profile::openstack::eqiad1::magnum

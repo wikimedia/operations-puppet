@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 class openstack::cinder::service(
     $active,
     $version,
@@ -20,12 +22,6 @@ class openstack::cinder::service(
     service { 'cinder-api':
         ensure    => $active,
         require   => Package['cinder-api'],
-        subscribe => Class["openstack::cinder::config::${version}"],
-    }
-
-    service { 'cinder-volume':
-        ensure    => $active,
-        require   => Package['cinder-volume'],
         subscribe => Class["openstack::cinder::config::${version}"],
     }
 

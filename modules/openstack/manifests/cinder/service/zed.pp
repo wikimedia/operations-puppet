@@ -15,9 +15,6 @@ class openstack::cinder::service::zed(
     package { 'cinder-scheduler':
         ensure => 'present',
     }
-    package { 'cinder-volume':
-        ensure => 'present',
-    }
 
     file {
         '/etc/cinder/policy.yaml':
@@ -34,14 +31,6 @@ class openstack::cinder::service::zed(
             require => Package['cinder-api'];
         '/etc/init.d/cinder-api':
             content => template('openstack/zed/cinder/cinder-api'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            notify  => Service['cinder-api'],
-            require => Package['cinder-api'];
-        # Override the package init module to specify cinder-volume.conf
-        '/etc/init.d/cinder-volume':
-            source  => 'puppet:///modules/openstack/zed/cinder/cinder-volume',
             owner   => 'root',
             group   => 'root',
             mode    => '0755',

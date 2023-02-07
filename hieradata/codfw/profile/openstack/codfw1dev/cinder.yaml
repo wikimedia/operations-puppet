@@ -3,3 +3,6 @@ profile::openstack::codfw1dev::cinder::db_host: "openstack.codfw1dev.wikimediacl
 # this should likely match profile::cloudceph::client::rbd::client_name
 profile::openstack::codfw1dev::cinder::ceph_pool: codfw1dev-cinder
 profile::openstack::codfw1dev::cinder::ceph_rbd_client_name: codfw1dev-cinder
+profile::openstack::codfw1dev::cinder::all_backend_types: ['rbd']
+profile::openstack::codfw1dev::cinder::backend_type: 'rbd'
+profile::openstack::codfw1dev::cinder::backend_name: 'rbd'
