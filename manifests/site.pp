@@ -2680,11 +2680,6 @@ node /^testvm200[1-9]\.codfw\.wmnet$/ {
     role(test)
 }
 
-# Used for various d-i tests
-node 'theemin.codfw.wmnet' {
-    role(test)
-}
-
 node /^thanos-be100[1234]\.eqiad\.wmnet/ {
     role(thanos::backend)
 }
