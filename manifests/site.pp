@@ -1440,20 +1440,12 @@ node /^install2004\.wikimedia\.org$/ {
     role(installserver)
 }
 
-node /^install[345]001\.wikimedia\.org$/ {
+node /^install[3456]001\.wikimedia\.org$/ {
     role(spare::system)
-}
-
-node /^install6001\.wikimedia\.org$/ {
-    role(installserver)
 }
 
 node /^install[3456]002\.wikimedia\.org$/ {
     role(installserver)
-}
-
-node /^install6002\.wikimedia\.org$/ {
-    role(insetup::infrastructure_foundations)
 }
 
 # new alert (icinga + alertmanager) systems, replacing icinga[12]001 (T255072, T255070)
