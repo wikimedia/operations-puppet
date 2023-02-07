@@ -50,6 +50,7 @@
     {"index" : "input-file-vrts-exim-mailinfo", "value" : "kafka" },
     {"index" : "input-file-vrts-exim-mailwarn", "value" : "kafka" },
     {"index" : "input-file-vrts-exim-mailerr", "value" : "kafka" },
+    {"index" : "otrs.Daemon.pl", "value" : "kafka local"},
     {"index" : "scap", "value" : "kafka" },
     {"index" : "apache2", "value" : "kafka" },
     {"index" : "input-file-api-mw-access", "value" : "kafka" },
