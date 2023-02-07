@@ -6512,3 +6512,7 @@ ldap_only_users:
     ensure: present
     realname: Mariya Shilova
     email: mshilova@wikimedia.org
+  anil:
+    ensure: present
+    realname: Anil Kanji
+    email: akanji@wikimedia.org
