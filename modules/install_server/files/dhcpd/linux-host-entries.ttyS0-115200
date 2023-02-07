@@ -118,6 +118,12 @@ host an-airflow1004 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host an-airflow1005 {
+    hardware ethernet aa:00:00:ca:63:54;
+    fixed-address an-airflow1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host an-test-druid1001 {
     hardware ethernet aa:00:00:3c:aa:38;
     fixed-address an-test-druid1001.eqiad.wmnet;
