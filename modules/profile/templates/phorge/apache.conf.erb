@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# THIS FILE IS MANAGED BY PUPPET
+<VirtualHost *:80>
+  ServerName <%= @server_name %>
+
+  DocumentRoot <%= @document_root %>
+
+  RewriteEngine on
+  RewriteRule ^(.*)$    /index.php?__path__=$1  [B,L,QSA]
+
+</VirtualHost>
+# vim:sw=2 ts=2 sts=2 et ft=apache:

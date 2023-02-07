@@ -319,3 +319,8 @@ profile::vrts::exim_database_user: vrts
 profile::vrts::download_url: 'https://download.znuny.org'
 profile::vrts::http_proxy: ''
 profile::vrts::https_proxy: ''
+
+# Phorge
+profile::phorge::server_name: 'phorge.wmcloud.org'
+profile::phorge::install_path: '/srv/phorge'
+profile::phorge::git_origin: 'https://we.phorge.it/source/phorge.git'
