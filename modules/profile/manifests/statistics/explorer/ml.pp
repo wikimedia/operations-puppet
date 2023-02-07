@@ -9,7 +9,12 @@ class profile::statistics::explorer::ml(
     $swift_s3_secret_key = lookup('profile::statistics::explorer::ml::swift_s3_password'),
     $swift_endpoint      = lookup('profile::statistics::explorer::ml::swift_endpoint', {'default_value' => 'https://thanos-swift.discovery.wmnet'}),
 ) {
-    ensure_packages('s3cmd')
+    ensure_packages([
+      's3cmd',
+      # Packages used by the Content Translation team
+      # to test a replacement of NLLB on AMD GPUs.
+      'ocl-icd-libopencl1',
+      'ocl-icd-opencl-dev'])
 
     file { '/etc/s3cmd':
         ensure => directory,
