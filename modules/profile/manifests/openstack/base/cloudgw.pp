@@ -69,22 +69,20 @@ class profile::openstack::base::cloudgw (
         priority => 50,
     }
 
+    $base_keepalived_routes = [
+            # route floating IPs to neutron
+            "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+            # route internal VM network to neutron
+            "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+        ]
 
     if $virt_floating_additional != undef {
         $keepalived_routes = [
-            # route floating IPs to neutron
-            "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-            "${virt_floating_additional} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-            # route internal VM network to neutron
-            "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-        ]
+            # route additional floatings IPs to neutron
+            "${virt_floating_additional} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink"
+        ] + $base_keepalived_routes
     } else {
-        $keepalived_routes = [
-            # route floating IPs to neutron
-            "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-            # route internal VM network to neutron
-            "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-        ]
+        $keepalived_routes = $base_keepalived_routes
     }
 
     class { 'keepalived':
