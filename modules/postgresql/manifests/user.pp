@@ -59,7 +59,8 @@ define postgresql::user (
                 default                           => fail("unexpected answer (${answer}) for ${_host}"),
             }
         }
-    } + $cidr).flatten.unique.sort.filter |$key, $val| { $val =~ NotUndef }
+    # We have to do sort after the filter as sort cant compare String with :undef
+    } + $cidr).flatten.unique.filter |$x| { $x =~ String }.sort
     # backwards compatibility to default to 127.0.0.1 if nothing else set
     $_cidrs = $cidrs.empty ? {
         true    => ['127.0.0.1/32'],
@@ -106,7 +107,7 @@ define postgresql::user (
 
     # Host based access configuration for user connections
     $_cidrs.each |$_cidr| {
-        postgresql::user::hba { "Access configuration for ${name}":
+        postgresql::user::hba { "Access configuration for ${name} (${_cidr})":
             ensure    => $ensure,
             user      => $user,
             database  => $database,
