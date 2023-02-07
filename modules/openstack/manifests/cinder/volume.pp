@@ -16,6 +16,7 @@ class openstack::cinder::volume(
     Array[String]       $all_backend_types,
     String[1]           $backend_type,
     String[1]           $backend_name,
+    String[1]           $lvm_volume_group,
 ) {
     class { "openstack::cinder::volume::${version}":
         version                 => $version,
@@ -33,6 +34,7 @@ class openstack::cinder::volume(
         all_backend_types       => $all_backend_types,
         backend_type            => $backend_type,
         backend_name            => $backend_name,
+        lvm_volume_group        => $lvm_volume_group,
     }
 
     service { 'cinder-volume':

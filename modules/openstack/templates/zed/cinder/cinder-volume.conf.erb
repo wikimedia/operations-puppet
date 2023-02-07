@@ -73,7 +73,7 @@ keyring = /etc/ceph/ceph.client.<%= @ceph_rbd_client_name %>.keyring
 <% else -%>
 
 [<%= @backend_name -%>]
-volume_group = vg0
+volume_group = <%= @lvm_volume_group %>
 volume_driver=cinder.volume.drivers.lvm.LVMVolumeDriver
 volume_backend_name=<%= @backend_name -%>
 iscsi_protocol = iscsi

@@ -16,6 +16,7 @@ class profile::openstack::base::cinder::volume(
     Array[String] $all_backend_types    = lookup('profile::openstack::base::cinder::all_backend_types'),
     String[1] $backend_type             = lookup('profile::openstack::base::cinder::backend_type'),
     String[1] $backend_name             = lookup('profile::openstack::base::cinder::backend_name'),
+    String[1] $lvm_volume_group         = lookup('profile::openstack::base::cinder::lvm_volume_group'),
     ) {
 
     class { '::openstack::cinder::volume':
@@ -34,5 +35,6 @@ class profile::openstack::base::cinder::volume(
         all_backend_types       => $all_backend_types,
         backend_type            => $backend_type,
         backend_name            => $backend_name,
+        lvm_volume_group        => $lvm_volume_group,
     }
 }

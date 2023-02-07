@@ -16,6 +16,7 @@ class openstack::cinder::volume::zed(
     Array[String]       $all_backend_types,
     String[1]           $backend_type,
     String[1]           $backend_name,
+    String[1]           $lvm_volume_group,
 ) {
     require "openstack::serverpackages::zed::${::lsbdistcodename}"
     require 'openstack::cinder::user'

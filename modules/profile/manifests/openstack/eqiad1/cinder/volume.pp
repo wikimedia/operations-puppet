@@ -13,6 +13,7 @@ class profile::openstack::eqiad1::cinder::volume(
     Array[String] $all_backend_types    = lookup('profile::openstack::eqiad1::cinder::all_backend_types'),
     String[1] $backend_type             = lookup('profile::openstack::eqiad1::cinder::backend_type'),
     String[1] $backend_name             = lookup('profile::openstack::eqiad1::cinder::backend_name'),
+    String[1] $lvm_volume_group         = lookup('profile::openstack::eqiad1::cinder::lvm_volume_group'),
     ) {
 
     class { '::profile::openstack::base::cinder::volume':
@@ -27,5 +28,6 @@ class profile::openstack::eqiad1::cinder::volume(
         libvirt_rbd_cinder_uuid => $libvirt_rbd_cinder_uuid,
         backend_type            => $backend_type,
         backend_name            => $backend_name,
+        lvm_volume_group        => $lvm_volume_group,
     }
 }
