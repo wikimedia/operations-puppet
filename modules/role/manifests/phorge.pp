@@ -12,11 +12,9 @@ class role::phorge {
         description => 'httpd, PHP, mariadb, phorge',
     }
 
-    $apache_modules_common = ['rewrite', 'headers']
-
     ensure_packages(['libapache2-mod-php', 'git'])
 
-    $apache_modules = concat('rewrite', 'headers', 'php7.4')
+    $apache_modules = ['rewrite', 'headers', 'php7.4']
 
     class { 'httpd::mpm':
         mpm    => 'prefork',
