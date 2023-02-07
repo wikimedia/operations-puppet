@@ -1448,8 +1448,7 @@ node /^install6001\.wikimedia\.org$/ {
     role(installserver)
 }
 
-
-node /^install[345]002\.wikimedia\.org$/ {
+node /^install[3456]002\.wikimedia\.org$/ {
     role(installserver)
 }
 
