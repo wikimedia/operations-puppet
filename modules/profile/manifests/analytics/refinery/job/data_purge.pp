@@ -276,9 +276,34 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # drop hourly pageview-actors data (3 datasets) used to compute automated agent-type after 90 days
-    kerberos::systemd_timer { 'drop-features-actor-hourly':
+    # drop hourly webrequest_actor data (3 datasets) used to compute automated agent-type after 90 days
+        kerberos::systemd_timer { 'drop-webrequest-actor-metrics-hourly':
         ensure      => $ensure_timers,
+        description => 'Drop wmf.webrequest_actor_metrics_hourly data from Hive and HDFS after 90 days.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='2981b49bfdfb75e6f664341054a7c6ad'",
+        environment => $systemd_env,
+        interval    => '*-*-* 00/4:40:00',
+        user        => 'analytics',
+    }
+    kerberos::systemd_timer { 'drop-webrequest-actor-metrics-rollup-hourly':
+        ensure      => $ensure_timers,
+        description => 'Drop wmf.webrequest_actor_metrics_rollup_hourly data from Hive and HDFS after 90 days.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_rollup_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/rollup/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='ff84c4df0443e4c1aed0287cea5172b5'",
+        environment => $systemd_env,
+        interval    => '*-*-* 00/4:45:00',
+        user        => 'analytics',
+    }
+    kerberos::systemd_timer { 'drop-webrequest-actor-label-hourly':
+        ensure      => $ensure_timers,
+        description => 'Drop wmf.webrequest_actor_label_hourly data from Hive and HDFS after 90 days.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_label_hourly' --base-path='/wmf/data/wmf/webrequest_actor/label/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='ad7b71960cf4dc53b13c39f901aeb536'",
+        environment => $systemd_env,
+        interval    => '*-*-* 00/4:50:00',
+        user        => 'analytics',
+    }
+    # Absent previous webrequest_actor purge timers to delete them once disabled
+    kerberos::systemd_timer { 'drop-features-actor-hourly':
+        ensure      => absent,
         description => 'Drop features.actor_hourly data from Hive and HDFS after 90 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='features' --tables='actor_hourly' --base-path='/wmf/data/learning/features/actor/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='4b1ceada2150ab3731cc33efe4d840ef'",
         environment => $systemd_env,
@@ -286,7 +311,7 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
     kerberos::systemd_timer { 'drop-features-actor-rollup-hourly':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop features.actor_rollup_hourly data from Hive and HDFS after 90 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='features' --tables='actor_rollup_hourly' --base-path='/wmf/data/learning/features/actor/rollup/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='6b08edc47e7f91c9012ceb11a6e06d6e'",
         environment => $systemd_env,
@@ -294,7 +319,7 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
     kerberos::systemd_timer { 'drop-predictions-actor_label-hourly':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop predictions.actor_label_hourly data from Hive and HDFS after 90 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='predictions' --tables='actor_label_hourly' --base-path='/wmf/data/learning/predictions/actor/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='3db2d5a713715bd4fd5dc8deaab1184a'",
         environment => $systemd_env,
