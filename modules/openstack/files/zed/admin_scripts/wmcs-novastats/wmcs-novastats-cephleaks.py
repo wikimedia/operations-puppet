@@ -23,11 +23,13 @@ import mwopenstackclients
 
 clients = mwopenstackclients.clients()
 
+CEPH_POOL = "eqiad1-compute"
+
 
 def purge_orphan_images(delete=False):
-    rbd_output = subprocess.check_output(["rbd", "--pool", "eqiad1-compute", "ls", "-l"]).decode(
-        "utf8"
-    )
+    rbd_output = subprocess.check_output(
+        ["rbd", "--pool", CEPH_POOL, "ls", "-l"]
+    ).decode("utf8")
     ceph_vm_images = {}
     mystery_images = []
     # First line is column headers
@@ -42,7 +44,10 @@ def purge_orphan_images(delete=False):
         else:
             mystery_images.append(imagename)
 
+    # Do this second so if there are any races we err on the side of
+    #  not deleting things!
     instances = clients.allinstances(allregions=True)
+
     # instancedict = {instance.id: instance for instance in instances}
     all_instance_ids = set([instance.id for instance in instances])
     all_image_ids = set(ceph_vm_images.keys())
@@ -56,8 +61,31 @@ def purge_orphan_images(delete=False):
 
     print("%s images without VMs" % len(leaked_images))
 
+    if delete:
+        for image in leaked_images:
+            if "@" in image:
+                # This is a snapshot. Skip it, it should be handled by 'snap purge'
+                print("snapshot ignored: " + image)
+            elif "_disk" in image:
+                print("Purging snapshots for " + image)
+                subprocess.check_output(
+                    ["rbd", "--pool", CEPH_POOL, "snap", "purge", image]
+                ).decode("utf8")
+                print("Deleting " + image)
+                rm_output = subprocess.check_output(
+                    ["rbd", "--pool", CEPH_POOL, "rm", image]
+                ).decode("utf8")
+                if "done" not in rm_output:
+                    print(rm_output)
+                    break
+            else:
+                # this could be anything, let's skip it
+                print("mystery image ignored: " + image)
 
-parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked dns records.")
+
+parser = argparse.ArgumentParser(
+    description="Find (and, optionally, remove) leaked dns records."
+)
 parser.add_argument(
     "--delete", dest="delete", help="Actually delete leaked images", action="store_true"
 )
