@@ -45,4 +45,6 @@ define arclamp::profiler(
         subscribe => Package['performance/arc-lamp'],
         require   => File['/srv/xenon']
     }
+
+    profile::auto_restarts::service { "${title}-log":}
 }
