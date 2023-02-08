@@ -8,7 +8,13 @@ class profile::phorge(
     Stdlib::HTTPSUrl $git_origin_phorge = lookup('profile::phorge::git_origin_phorge'),
 ){
 
-    ensure_packages(['libapache2-mod-php', 'git'])
+    ensure_packages([
+        'libapache2-mod-php',
+        'git',
+        'php-mbstring',
+        'php-curl',
+        'php-mysql',
+    ])
 
     $httpd_modules = ['rewrite', 'headers', 'php7.4']
 
