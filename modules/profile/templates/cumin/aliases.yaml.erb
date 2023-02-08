@@ -17,7 +17,7 @@ acmechief: P{O:acme_chief}
 all-mw: A:mw-api or A:mw or A:mw-jobrunner or A:parsoid
 all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
-all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-etcd or A:aux-etcd
+all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-serve-etcd or A:ml-staging-etcd or A:aux-etcd
 an-conf: P{O:analytics_cluster::zookeeper}
 analytics-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web or A:presto-analytics or A:analytics-launcher
 analytics-airflow: P{O:search::airflow or O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy}
@@ -274,9 +274,9 @@ miscweb: P{O:miscweb}
 ml-cache: P{O:ml_cache::storage}
 ml-cache-eqiad: A:ml-cache and A:eqiad
 ml-cache-codfw: A:ml-cache and A:codfw
-ml-etcd: P{O:etcd::v3::ml_etcd} or P{O:etcd::v3::ml_etcd::staging}
-ml-etcd-eqiad: A:ml-etcd and A:eqiad
-ml-etcd-codfw: A:ml-etcd and A:codfw
+ml-serve-etcd: P{O:etcd::v3::ml_etcd}
+ml-serve-etcd-eqiad: A:ml-etcd and A:eqiad
+ml-serve-etcd-codfw: A:ml-etcd and A:codfw
 ml-serve-master: P{O:ml_k8s::master}
 ml-serve-worker: P{O:ml_k8s::worker}
 ml-serve-worker-eqiad: A:ml-serve-worker and A:eqiad
@@ -288,6 +288,8 @@ ml-serve-canary: P{ml-serve2001.codfw.wmnet}
 ml-serve-eqiad: A:ml-serve and A:eqiad
 ml-serve-codfw: A:ml-serve and A:codfw
 ml-staging: P{O:ml_k8s::staging::master} or P{O:ml_k8s::staging::worker}
+ml-staging-etcd: P{O:etcd::v3::ml_etcd::staging}
+ml-staging-master: P{O:ml_k8s::staging::master}
 ml-staging-worker: P{O:ml_k8s::staging::worker}
 mw: P{O:mediawiki::appserver}
 mw-app-canary: P{O:mediawiki::canary_appserver}
