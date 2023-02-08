@@ -2236,6 +2236,11 @@ node /^mw2419\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
+# New mw nodes T326362
+node /^mw24(2[0-9]|3[0-5])\.codfw\.wmnet$/ {
+    role(insetup::serviceops)
+}
+
 # Row D
 
 # rack D3
