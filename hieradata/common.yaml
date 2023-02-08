@@ -1111,6 +1111,9 @@ phabricator_server: phab1004.eqiad.wmnet
 
 # Jenkins masters are agents to themselves and to each other. They thus need to
 # allow ssh access from the other masters.
+#
+# We also need WMCS instances to allow inbound ssh connections since they might
+# have ferm rules.
 jenkins_master_hosts:
     - contint1002.wikimedia.org
     - contint2001.wikimedia.org

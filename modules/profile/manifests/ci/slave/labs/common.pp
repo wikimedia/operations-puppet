@@ -10,21 +10,10 @@ class profile::ci::slave::labs::common (
     # needed by the slave agent, eg the java jre.
     include profile::java
 
-    # Jenkins ssh to the instances to attach them.
-    #
     # The `deployment-prep` deployment host has ferm rules injected by
     # production profiles which bring in ferm rule and enable firewalling. The
     # defaulting policy being DROP, we need explicit rules.
-    ferm::service { 'contint1002_ssh_to_slaves':
-        proto  => 'tcp',
-        port   => '22',
-        srange => '@resolve(contint1002.wikimedia.org)',
-    }
-    ferm::service { 'contint2001_ssh_to_slaves':
-        proto  => 'tcp',
-        port   => '22',
-        srange => '@resolve(contint2001.wikimedia.org)',
-    }
+    include ::profile::ci::firewall::jenkinsagent
 
     # Anything that needs publishing to doc.wikimedia.org relies on rsync to
     # fetch files from the agents.

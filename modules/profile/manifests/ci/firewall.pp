@@ -8,7 +8,6 @@
 # [$zuul_merger_hosts] List of zuul-mergers
 #
 class profile::ci::firewall (
-    Array[Stdlib::Fqdn] $jenkins_master_hosts = lookup('jenkins_master_hosts'),
     Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
 ){
     class { '::profile::base::firewall': }
@@ -32,12 +31,7 @@ class profile::ci::firewall (
     }
 
     # Each master is an agent of the other
-    $jenkins_master_hosts_ferm = join($jenkins_master_hosts, ' ')
-    ferm::service { 'jenkins_masters_ssh':
-        proto  => 'tcp',
-        port   => '22',
-        srange => "@resolve((${jenkins_master_hosts_ferm}))",
-    }
+    include ::profile::ci::firewall::jenkinsagent
 
     # Gearman is used between Zuul and the Jenkin master, both on the same
     # server and communicating over localhost.
