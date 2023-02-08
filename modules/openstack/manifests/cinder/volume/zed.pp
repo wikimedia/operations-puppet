@@ -24,6 +24,9 @@ class openstack::cinder::volume::zed(
     package { 'cinder-volume':
         ensure => 'present',
     }
+    package { 'tgt':
+        ensure => 'present',
+    }
 
     file {
         # Override the package init module to specify cinder-volume.conf
