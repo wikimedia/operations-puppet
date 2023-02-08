@@ -420,8 +420,9 @@ mediawiki::sites:
         params:
           server_aliases:
             [
-              "ar.wikimedia.org",
               "am.wikimedia.org",
+              "ar.wikimedia.org",
+              "az.wikimedia.org",
               "bd.wikimedia.org",
               "be.wikimedia.org",
               "br.wikimedia.org",
