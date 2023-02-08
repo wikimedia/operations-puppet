@@ -19,7 +19,7 @@ class profile::grafana::production (
     # Enables rsync'ing /var/lib/grafana from active host to standby host.
     # Set ensure => absent to disable the rsync job.
     rsync::quickdatacopy { 'var-lib-grafana':
-      ensure              => present,
+      ensure              => absent,
       source_host         => $active_host,
       dest_host           => $standby_host,
       module_path         => '/var/lib/grafana',
