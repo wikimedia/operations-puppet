@@ -102,6 +102,7 @@ class profile::gitlab::runner (
     docker::network { $docker_network:
         ensure => $ensure_docker_network,
         subnet => $docker_subnet,
+        before => Class['gitlab_runner::firewall'],
     }
 
     class { 'gitlab_runner::firewall':
