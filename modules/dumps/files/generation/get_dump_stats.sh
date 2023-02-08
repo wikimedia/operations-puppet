@@ -25,20 +25,20 @@ get_wiki_stats() {
 
     cd "${dumpsbasedir}/${wiki}/${date}"
     if [ -e "${wiki}-${date}-pages-articles.xml.bz2" ]; then
-	currentpages=$( bzcat "${wiki}-${date}-pages-articles.xml.bz2" | wc -c )
+	currentpages=$( /usr/bin/lbzip2 -n 2 -c -d "${wiki}-${date}-pages-articles.xml.bz2" | wc -c )
 	currentpages=$( LC_NUMERIC="en_US.UTF-8" printf "%'d" $currentpages )
     else
         currentpages="No info available (no files found)"
     fi
     if [ -e "${wiki}-${date}-pages-meta-current.xml.bz2" ]; then
-	currentall=$( bzcat "${wiki}-${date}-pages-meta-current.xml.bz2" | wc -c )
+	currentall=$( /usr/bin/lbzip2 -n 2 -c -d "${wiki}-${date}-pages-meta-current.xml.bz2" | wc -c )
 	currentall=$( LC_NUMERIC="en_US.UTF-8" printf "%'d" $currentall )
     else
 	currentall="No info available (no files found)"
     fi
     pmhcount=$( ls ${wiki}-${date}-pages-meta-history*.xml*bz2 2>/dev/null | wc -l )
     if [ $pmhcount -gt 0 ]; then
-	fullhistory=$( bzcat ${wiki}-${date}-pages-meta-history*.xml*bz2 | wc -c )
+	fullhistory=$( /usr/bin/lbzip2 -n 2 -c -d ${wiki}-${date}-pages-meta-history*.xml*bz2 | wc -c )
 	fullhistory=$( LC_NUMERIC="en_US.UTF-8" printf "%'d" $fullhistory )
     else
 	fullhistory="No info available (no files found)"

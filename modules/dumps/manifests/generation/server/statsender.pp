@@ -3,7 +3,7 @@ class dumps::generation::server::statsender(
     $sender_address = undef,
     $user           = undef,
 )  {
-    ensure_packages('s-nail')
+    ensure_packages(['s-nail', 'lbzip2'])
 
     file { '/usr/local/bin/get_dump_stats.sh':
         ensure => 'present',
