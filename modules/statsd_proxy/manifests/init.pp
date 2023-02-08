@@ -56,4 +56,17 @@ class statsd_proxy(
             Package['statsd-proxy'],
         ],
     }
+
+    # statsd-proxy lacks native ipv6 support, front it with with a socat v6 to v4 relay
+
+    package { 'socat':
+        ensure => $ensure,
+    }
+
+    systemd::service { 'statsd-proxy-socat-6to4':
+        ensure  => present,
+        content => systemd_template('statsd-proxy-socat-6to4'),
+        restart => true,
+    }
+
 }
