@@ -28,6 +28,14 @@ profile::prometheus::statsd_exporter::mappings:
       type: "$3"
       wiki: "$4"
 
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(datasources_extracted|precache_request|score_processed|score_timed_out|scores_request|precache_score|precache_scoring_error)\\.([a-z]*)\\.([a-z]*)$"
+    name: ores_model_request_duration_seconds
+    match_type: regex
+    labels:
+      type: "$3"
+      wiki: "$4"
+      model: "$5"
+
   - match: "^ores\\.([a-z]*)([0-9]*)\\.(locking_response_time|lock_acquired)\\.([a-z])*$"
     name: ores_locking_response_time_seconds
     match_type: regex
@@ -41,12 +49,19 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       wiki: "$4"
 
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(precache_cache_hit|precache_cache_miss|revision_scored|score_cache_hit|score_cache_miss|score_errored|score_processor_overloaded)\\.([a-z]*)\\.([a-z]*)$"
+    name: "ores_model_${3}_total"
+    match_type: regex
+    labels:
+      wiki: "$4"
+      model: "$5"
+
   - match: "^ores\\.([a-z]*)([0-9]*)\\.(response|response_made).([0-9]*)\\.([a-z]*)$"
     name: ores_response_total
     match_type: regex
     labels:
       status: "$3"
-      wiki: "$4"
+      code: "$4"
 
   - match: ores.*.uwsgi.core.overloaded
     name: ores_uwsgi_core_overloaded_total
