@@ -79,7 +79,7 @@ profile::openstack::eqiad1::cloudgw::vrrp_vips:
   # TODO: this would be more robust if using a custom data type
   # NOTE: use /32 as they are VIPS, see T295774
   - "%{lookup('profile::openstack::eqiad1::cloudgw::transport_vip')}/32 dev vlan%{lookup('profile::openstack::eqiad1::cloudgw::virt_vlan')}"
-  - "185.15.56.244/29 dev vlan%{lookup('profile::openstack::eqiad1::cloudgw::wan_vlan')}"
+  - "185.15.56.244/32 dev vlan%{lookup('profile::openstack::eqiad1::cloudgw::wan_vlan')}"
 
 profile::openstack::eqiad1::cloudgw::conntrackd:
   cloudgw1001:
