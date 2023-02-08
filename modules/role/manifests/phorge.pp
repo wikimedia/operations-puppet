@@ -12,20 +12,6 @@ class role::phorge {
         description => 'httpd, PHP, mariadb, phorge',
     }
 
-    ensure_packages(['libapache2-mod-php', 'git'])
-
-    $apache_modules = ['rewrite', 'headers', 'php7.4']
-
-    class { 'httpd::mpm':
-        mpm    => 'prefork',
-    }
-
-    class { 'httpd':
-        modules             => $apache_modules,
-        purge_manual_config => false,
-        require             => Class['httpd::mpm'],
-    }
-
     include profile::mariadb::generic_server
     include profile::phorge
 }

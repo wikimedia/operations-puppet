@@ -8,6 +8,26 @@ class profile::phorge(
     Stdlib::HTTPSUrl $git_origin_phorge = lookup('profile::phorge::git_origin_phorge'),
 ){
 
+    ensure_packages(['libapache2-mod-php', 'git'])
+
+    $httpd_modules = ['rewrite', 'headers', 'php7.4']
+
+    class { 'httpd::mpm':
+        mpm    => 'prefork',
+    }
+
+    class { 'httpd':
+        modules             => $httpd_modules,
+        purge_manual_config => false,
+        require             => Class['httpd::mpm'],
+    }
+
+    $document_root = "${install_path_phorge}/webroot"
+
+    httpd::site { 'phorge':
+        content => template('profile/phorge/httpd.conf.erb'),
+    }
+
     wmflib::dir::mkdir_p([$install_path_arcanist, $install_path_phorge])
 
     git::clone { 'arcanist':
@@ -22,12 +42,6 @@ class profile::phorge(
         origin    => $git_origin_phorge,
         directory => $install_path_phorge,
         branch    => 'master',
-    }
-
-    $document_root = "${install_path_phorge}/webroot"
-
-    httpd::site { 'phorge':
-        content => template('profile/phorge/apache.conf.erb'),
     }
 
 }
