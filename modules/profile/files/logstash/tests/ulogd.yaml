@@ -51,7 +51,6 @@ testcases:
         network:
           direction: "in"
           tcp_flags: [ "RST" ]
-          protocol: "TCP"
           transport: "TCP"
           type: "ipv6"
         observer:
@@ -103,7 +102,6 @@ testcases:
               name: "informational"
         network:
           direction: "in"
-          protocol: "TCP"
           tcp_flags: [ "RST", "FIN" ]
           transport: "TCP"
           type: "ipv4"
@@ -156,7 +154,6 @@ testcases:
               name: "informational"
         network:
           direction: "in"
-          protocol: "UDP"
           transport: "UDP"
           type: "ipv4"
         observer:
