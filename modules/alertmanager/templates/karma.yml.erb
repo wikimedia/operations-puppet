@@ -74,6 +74,9 @@ history:
     # Fetching history doesn't work on librenms/grafana/icinga alerts.
     - source: 'https://(librenms|grafana|icinga)\..*'
       uri: ''
+    # External to internal production Prometheus - T329294
+    - source: 'https://prometheus-([^.]+).wikimedia.org/(.*)'
+      uri: 'http://prometheus.svc.$1.wmnet/$2'
 
 # Start with 'description' label collapsed
 annotations:
