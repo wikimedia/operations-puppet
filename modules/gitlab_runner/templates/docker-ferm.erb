@@ -16,6 +16,9 @@ domain ip {
 		# Empty chain in our case, just port it
 		chain DOCKER {
 		}
+		# Empty chain, to try fix race with ferm/docker
+		chain DOCKER-ISOLATION-STAGE-1 {
+		}
 		# Mostly empty chain, just port it
 		chain DOCKER-ISOLATION {
 			RETURN;
