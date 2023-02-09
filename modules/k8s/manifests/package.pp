@@ -17,5 +17,7 @@ define k8s::package (
         component => "component/${component_title}",
         packages  => [],
     })
-    ensure_packages("kubernetes-${package}")
+    ensure_packages("kubernetes-${package}", {
+        'require' => Apt::Package_from_component[$component_title],
+    })
 }
