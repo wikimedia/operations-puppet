@@ -18,40 +18,6 @@ class profile::analytics::refinery::job::druid_load(
         refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
     }
 
-    # Load event.EditAttemptStep
-    profile::analytics::refinery::job::eventlogging_to_druid_job { 'editattemptstep':
-        ensure     => absent,
-        job_config => {
-            dimensions    => 'event.is_oversample,event.action,event.editor_interface,event.mw_version,event.platform,event.integration,event.page_ns,event.user_class,event.bucket,useragent.browser_family,useragent.browser_major,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,wiki,webhost',
-        },
-    }
-
-    # Load event.NavigationTiming
-    profile::analytics::refinery::job::eventlogging_to_druid_job { 'navigationtiming':
-        ensure     => absent,
-        job_config => {
-            dimensions    => 'event.action,event.isAnon,event.isOversample,event.mediaWikiVersion,event.mobileMode,event.namespaceId,event.netinfoEffectiveConnectionType,event.originCountry,recvFrom,revision,useragent.browser_family,useragent.browser_major,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,wiki',
-            time_measures => 'event.connectEnd,event.connectStart,event.dnsLookup,event.domComplete,event.domInteractive,event.fetchStart,event.firstPaint,event.loadEventEnd,event.loadEventStart,event.redirecting,event.requestStart,event.responseEnd,event.responseStart,event.secureConnectionStart,event.unload,event.gaps,event.mediaWikiLoadEnd,event.RSI',
-        },
-    }
-
-    # Load event.PageIssues
-    # Deactivated for now until new experiment.
-    profile::analytics::refinery::job::eventlogging_to_druid_job { 'pageissues':
-        ensure     => 'absent',
-        job_config => {
-            dimensions => 'event.action,event.editCountBucket,event.isAnon,event.issuesSeverity,event.issuesVersion,event.namespaceId,event.sectionNumbers,revision,wiki,useragent.browser_family,useragent.browser_major,useragent.browser_minor,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,useragent.os_minor',
-        },
-    }
-
-    # Load event.PrefUpdate
-    profile::analytics::refinery::job::eventlogging_to_druid_job { 'prefupdate':
-        ensure     => absent,
-        job_config => {
-            dimensions => 'event.property,event.isDefault,wiki,useragent.browser_family,useragent.browser_major,useragent.browser_minor,useragent.device_family,useragent.os_family,useragent.os_major,useragent.os_minor'
-        },
-    }
-
     # Load event.netflow
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
