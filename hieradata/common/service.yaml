@@ -2780,6 +2780,7 @@ service::catalog:
           url:
             - http://localhost/readiness-probe
       scheduler: wrr
+    page: false
     port: 80
     sites:
       - eqiad
