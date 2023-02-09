@@ -6521,3 +6521,7 @@ ldap_only_users:
     ensure: present
     realname: Anil Kanji
     email: akanji@wikimedia.org
+  sfaci:
+    ensure: present
+    realname: Santiago Faci
+    email: sfaci@wikimedia.rog
