@@ -142,7 +142,7 @@ testcases:
         mwversion: "1.38.0-wmf.3"
         reqId: "8fabbd5e-184a-47e0-9bb8-514846c8ae2c"
         message_checksum: "4c615270691b88c41beb7266cb1225f3"
-      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+      - __target_index: "ecs-test-1-1.11.0-N-weekly"
         message: "[8fabbd5e-184a-47e0-9bb8-514846c8ae2c] /w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
         log:
           level: "ERROR"
@@ -183,7 +183,7 @@ testcases:
         url:
           full: "https://zh.wikipedia.org/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636"
         ecs:
-          version: "1.7.0"
+          version: "1.11.0"
   - input:
       - >
         {
@@ -259,7 +259,7 @@ testcases:
         wiki: "wikidatawiki"
         mwversion: "1.38.0-wmf.4"
         reqId: "46c86a62-c331-4e29-ac35-a6ab1d19fe47"
-      - __target_index: "ecs-test-1-1.7.0-N-weekly"
+      - __target_index: "ecs-test-1-1.11.0-N-weekly"
         message: "[46c86a62-c331-4e29-ac35-a6ab1d19fe47] /w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013   PHP Notice: A non well formed numeric value encountered"
         log:
           level: "ERROR"
@@ -300,7 +300,7 @@ testcases:
         url:
           full: "https://www.wikidata.org/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013"
         ecs:
-          version: "1.7.0"
+          version: "1.11.0"
   - input:
       - >
         {
@@ -359,7 +359,7 @@ testcases:
         normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
         message_checksum: "6e68b5cd5ffeb7f52a7e2ac1d9594da7"
         reqId: "ede088f4-b120-4615-9523-25c820686a58"
-      - "__target_index": "ecs-test-1-1.7.0-N-weekly"
+      - "__target_index": "ecs-test-1-1.11.0-N-weekly"
         message: "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
         log:
           level: "ERROR"
@@ -393,7 +393,7 @@ testcases:
         url:
           full: "https://jobrunner.discovery.wmnet/rpc/RunSingleJob.php"
         ecs:
-          version: "1.7.0"
+          version: "1.11.0"
   - input:
       - >
         {
