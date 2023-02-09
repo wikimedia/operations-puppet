@@ -72,12 +72,9 @@ def purge_orphan_images(delete=False):
                     ["rbd", "--pool", CEPH_POOL, "snap", "purge", image]
                 ).decode("utf8")
                 print("Deleting " + image)
-                rm_output = subprocess.check_output(
+                subprocess.check_output(
                     ["rbd", "--pool", CEPH_POOL, "rm", image]
                 ).decode("utf8")
-                if "done" not in rm_output:
-                    print(rm_output)
-                    break
             else:
                 # this could be anything, let's skip it
                 print("mystery image ignored: " + image)
