@@ -1,21 +1,23 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
+import json
 import os
+from configparser import ConfigParser
+from configparser import Error as ConfigParserError
 from pathlib import Path
-from configparser import ConfigParser, Error as ConfigParserError
-from flask import current_app
-import pytest
 
+import pytest
+from flask import current_app
 from replica_cnf_api_service.views import (
-    get_replica_path,
-    get_relative_path,
-    get_command_array,
-    mysql_hash,
-    DRY_RUN_USERNAME,
     DRY_RUN_PASSWORD,
+    DRY_RUN_USERNAME,
+    get_command_array,
+    get_relative_path,
+    get_replica_path,
+    mysql_hash,
 )
 
-from .conftest import ACCOUNT_ID, WRONG_ACCOUNT_ID, PASSWORD, UID, USERNAME, TOOLS_PROJECT_PREFIX
+from .conftest import ACCOUNT_ID, PASSWORD, TOOLS_PROJECT_PREFIX, UID, USERNAME, WRONG_ACCOUNT_ID
 
 
 def test_mysql_hash():
@@ -51,11 +53,7 @@ def test_get_command_array(app, script):
             str(Path(ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1:]) / "replica.my.cnf"),
             lambda _app: _app.config["CORRECT_TOOL_PATH"],
         ],
-        [
-            "paws",
-            str(Path(ACCOUNT_ID) / ".my.cnf"),
-            lambda _app: _app.config["CORRECT_PAWS_PATH"],
-        ],
+        ["paws", str(Path(ACCOUNT_ID) / ".my.cnf"), lambda _app: _app.config["CORRECT_PAWS_PATH"]],
         [
             "user",
             str(Path(ACCOUNT_ID) / "replica.my.cnf"),
@@ -80,39 +78,40 @@ def test_get_relative_path(app, account_type, expected_path):
 
 
 def test_fetch_paws_uids_success(client):
-
     response = client.get("/v1/paws-uids")
+    response_data = json.loads(response.data)
     assert response.status_code == 200
-    assert response.json["result"] == "ok"
-    assert type(response.json["detail"]["paws_uids"]) == list
-    assert response.json["detail"]["paws_uids"][0] == ACCOUNT_ID
+    assert response_data["result"] == "ok"
+    assert type(response_data["detail"]["paws_uids"]) == list
+    assert response_data["detail"]["paws_uids"][0] == ACCOUNT_ID
 
 
 class TestWriteReplicaCnf:
     def test_write_replica_cnf_for_tools_success(self, client):
-
         tool_path = current_app.config["CORRECT_TOOL_PATH"]
         account_type = "tool"
 
+        data = {
+            "mysql_username": USERNAME,
+            "password": PASSWORD,
+            "account_id": ACCOUNT_ID,
+            "account_type": account_type,
+            "uid": UID,
+            "dry_run": False,
+        }
+
         response = client.post(
-            "/v1/write-replica-cnf",
-            json={
-                "mysql_username": USERNAME,
-                "password": PASSWORD,
-                "account_id": ACCOUNT_ID,
-                "account_type": account_type,
-                "uid": UID,
-                "dry_run": False,
-            },
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["replica_path"] == tool_path
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["replica_path"] == tool_path
 
         config_parser = ConfigParser()
         try:
-            config_parser.read(response.json["detail"]["replica_path"])
+            config_parser.read(response_data["detail"]["replica_path"])
         except ConfigParserError as err:
             raise AssertionError("The generated replica config file is not parseable") from err
         assert "client" in config_parser.sections()
@@ -120,7 +119,6 @@ class TestWriteReplicaCnf:
         assert config_parser.get("client", "password") == PASSWORD
 
     def test_write_replica_cnf_for_tools_wrong_url_returns_404(self, client):
-
         account_type = "tool"
 
         data = {
@@ -132,11 +130,12 @@ class TestWriteReplicaCnf:
             "dry_run": False,
         }
 
-        response = client.post("/v1/wrong-url", json=data)
+        response = client.post(
+            "/v1/wrong-url", data=json.dumps(data), content_type="application/json"
+        )
         assert response.status_code == 404
 
     def test_write_replica_cnf_for_tools_wrong_data_returns_500(self, client):
-
         wrong_tool_path = current_app.config["WRONG_TOOL_PATH"]
         account_type = "tool"
 
@@ -149,36 +148,40 @@ class TestWriteReplicaCnf:
             "dry_run": False,
         }
 
-        response = client.post("/v1/write-replica-cnf", json=data)
+        response = client.post(
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+        )
+        response_data = json.loads(response.data)
         assert response.status_code == 500
-        assert response.json["result"] == "error"
-        assert "No such file or directory" in response.json["detail"]["reason"]
+        assert response_data["result"] == "error"
+        assert "No such file or directory" in response_data["detail"]["reason"]
         assert not os.path.exists(wrong_tool_path)
 
     def test_write_replica_cnf_for_paws_success(self, client):
-
         paw_path = current_app.config["CORRECT_PAWS_PATH"]
         account_type = "paws"
 
+        data = {
+            "mysql_username": USERNAME,
+            "password": PASSWORD,
+            "account_id": ACCOUNT_ID,
+            "account_type": account_type,
+            "uid": UID,
+            "dry_run": False,
+        }
+
         response = client.post(
-            "/v1/write-replica-cnf",
-            json={
-                "mysql_username": USERNAME,
-                "password": PASSWORD,
-                "account_id": ACCOUNT_ID,
-                "account_type": account_type,
-                "uid": UID,
-                "dry_run": False,
-            },
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["replica_path"] == paw_path
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["replica_path"] == paw_path
 
         config_parser = ConfigParser()
         try:
-            config_parser.read(response.json["detail"]["replica_path"])
+            config_parser.read(response_data["detail"]["replica_path"])
         except ConfigParserError as err:
             raise AssertionError("The generated replica config file is not parseable") from err
         assert "client" in config_parser.sections()
@@ -186,7 +189,6 @@ class TestWriteReplicaCnf:
         assert config_parser.get("client", "password") == PASSWORD
 
     def test_write_replica_cnf_for_paws_wrong_url_returns_404(self, client):
-
         account_type = "paws"
 
         data = {
@@ -198,11 +200,12 @@ class TestWriteReplicaCnf:
             "dry_run": False,
         }
 
-        response = client.post("/v1/wrong-url", json=data)
+        response = client.post(
+            "/v1/wrong-url", data=json.dumps(data), content_type="application/json"
+        )
         assert response.status_code == 404
 
     def test_write_replica_cnf_for_paws_wrong_data_returns_500(self, client):
-
         wrong_paw_path = current_app.config["WRONG_PAWS_PATH"]
         account_type = "paws"
 
@@ -215,36 +218,40 @@ class TestWriteReplicaCnf:
             "dry_run": False,
         }
 
-        response = client.post("/v1/write-replica-cnf", json=data)
+        response = client.post(
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+        )
+        response_data = json.loads(response.data)
         assert response.status_code == 500
-        assert response.json["result"] == "error"
-        assert "No such file or directory" in response.json["detail"]["reason"]
+        assert response_data["result"] == "error"
+        assert "No such file or directory" in response_data["detail"]["reason"]
         assert not os.path.exists(wrong_paw_path)
 
     def test_write_replica_cnf_for_users_success(self, client):
-
         other_path = current_app.config["CORRECT_USER_PATH"]
         account_type = "user"
 
+        data = {
+            "mysql_username": USERNAME,
+            "password": PASSWORD,
+            "account_id": ACCOUNT_ID,
+            "account_type": account_type,
+            "uid": UID,
+            "dry_run": False,
+        }
+
         response = client.post(
-            "/v1/write-replica-cnf",
-            json={
-                "mysql_username": USERNAME,
-                "password": PASSWORD,
-                "account_id": ACCOUNT_ID,
-                "account_type": account_type,
-                "uid": UID,
-                "dry_run": False,
-            },
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["replica_path"] == other_path
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["replica_path"] == other_path
 
         config_parser = ConfigParser()
         try:
-            config_parser.read(response.json["detail"]["replica_path"])
+            config_parser.read(response_data["detail"]["replica_path"])
         except ConfigParserError as err:
             raise AssertionError("The generated replica config file is not parseable") from err
         assert "client" in config_parser.sections()
@@ -252,7 +259,6 @@ class TestWriteReplicaCnf:
         assert config_parser.get("client", "password") == PASSWORD
 
     def test_write_replica_cnf_for_users_wrong_url_returns_404(self, client):
-
         account_type = "user"
 
         data = {
@@ -264,11 +270,12 @@ class TestWriteReplicaCnf:
             "dry_run": False,
         }
 
-        response = client.post("/v1/wrong-url", json=data)
+        response = client.post(
+            "/v1/wrong-url", data=json.dumps(data), content_type="application/json"
+        )
         assert response.status_code == 404
 
     def test_write_replica_cnf_for_users_wrong_data_returns_500(self, client):
-
         wrong_other_path = current_app.config["WRONG_USER_PATH"]
         account_type = "user"
 
@@ -281,110 +288,117 @@ class TestWriteReplicaCnf:
             "dry_run": False,
         }
 
-        response = client.post("/v1/write-replica-cnf", json=data)
+        response = client.post(
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+        )
+        response_data = json.loads(response.data)
         assert response.status_code == 500
-        assert response.json["result"] == "error"
-        assert "No such file or directory" in response.json["detail"]["reason"]
+        assert response_data["result"] == "error"
+        assert "No such file or directory" in response_data["detail"]["reason"]
         assert not os.path.exists(wrong_other_path)
 
     def test_write_replica_cnf_dry_run(self, client):
-
         tool_path = current_app.config["CORRECT_TOOL_PATH"]
         account_type = "tool"
 
+        data = {
+            "mysql_username": USERNAME,
+            "password": PASSWORD,
+            "account_id": ACCOUNT_ID,
+            "account_type": account_type,
+            "uid": UID,
+            "dry_run": True,
+        }
+
         response = client.post(
-            "/v1/write-replica-cnf",
-            json={
-                "mysql_username": USERNAME,
-                "password": PASSWORD,
-                "account_id": ACCOUNT_ID,
-                "account_type": account_type,
-                "uid": UID,
-                "dry_run": True,
-            },
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["replica_path"] == tool_path
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["replica_path"] == tool_path
         assert not os.path.exists(tool_path)
 
 
 class TestReadReplicaCnf:
     def test_read_replica_cnf_success(self, client, create_replica_my_cnf):
+        data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
         response = client.post(
-            "/v1/read-replica-cnf",
-            json={"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": False},
+            "/v1/read-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["user"] == USERNAME
-        assert response.json["detail"]["password"] == mysql_hash(PASSWORD)
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["user"] == USERNAME
+        assert response_data["detail"]["password"] == mysql_hash(PASSWORD)
 
     def test_read_replica_cnf_failure(self, client, create_replica_my_cnf):
+        data = {"account_id": "wrong-accound-id", "account_type": "tool", "dry_run": False}
 
         response = client.post(
-            "/v1/read-replica-cnf",
-            json={"account_id": "wrong-accound-id", "account_type": "tool", "dry_run": False},
+            "/v1/read-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 500
-        assert response.json["result"] == "error"
+        assert response_data["result"] == "error"
 
     def test_read_replica_cnf_dry_run(self, client):
+        data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True}
 
         response = client.post(
-            "/v1/read-replica-cnf",
-            json={"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True},
+            "/v1/read-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["user"] == DRY_RUN_USERNAME
-        assert response.json["detail"]["password"] == mysql_hash(DRY_RUN_PASSWORD)
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["user"] == DRY_RUN_USERNAME
+        assert response_data["detail"]["password"] == mysql_hash(DRY_RUN_PASSWORD)
 
 
 class TestDeleteReplicaCnf:
     def test_delete_replica_cnf_success(self, client, create_replica_my_cnf):
-
         tool_path = current_app.config["CORRECT_TOOL_PATH"]
+        data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
         response = client.post(
-            "/v1/delete-replica-cnf",
-            json={"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": False},
+            "/v1/delete-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["replica_path"] == tool_path
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["replica_path"] == tool_path
         assert not os.path.exists(tool_path)
 
     def test_delete_replica_cnf_failure(self, client, create_replica_my_cnf):
-
         tool_path = current_app.config["CORRECT_TOOL_PATH"]
+        data = {"account_id": WRONG_ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
         response = client.post(
-            "/v1/delete-replica-cnf",
-            json={"account_id": WRONG_ACCOUNT_ID, "account_type": "tool", "dry_run": False},
+            "/v1/delete-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 500
-        assert response.json["result"] == "error"
-        assert "No such file or directory" in response.json["detail"]["reason"]
+        assert response_data["result"] == "error"
+        assert "No such file or directory" in response_data["detail"]["reason"]
         assert os.path.exists(tool_path)
 
     def test_delete_replica_cnf_dry_run(self, client, create_replica_my_cnf):
-
         tool_path = current_app.config["CORRECT_TOOL_PATH"]
+        data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True}
 
         response = client.post(
-            "/v1/delete-replica-cnf",
-            json={"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True},
+            "/v1/delete-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
+        response_data = json.loads(response.data)
 
         assert response.status_code == 200
-        assert response.json["result"] == "ok"
-        assert response.json["detail"]["replica_path"] == tool_path
+        assert response_data["result"] == "ok"
+        assert response_data["detail"]["replica_path"] == tool_path
         assert os.path.exists(tool_path)

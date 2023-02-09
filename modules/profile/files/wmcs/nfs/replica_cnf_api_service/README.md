@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-> **_NOTE:_** This readme is still a work in progress. The purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
+> **_NOTE:_** This readme is outdated and any attempt to follow the instructions in this readme will probably not work out or end up behaving unexpectedly. Having said that, the purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
 #### This REST API service is used to manage toolforge replica.my.cnf.
 #### It decouples the functionality of reading and writing replica.my.cnf files away from this repository and into its server environment.
 
@@ -63,6 +63,5 @@ WantedBy=multi-user.target
 curl -X POST -H 'Content-Type: application/json' -d '{"mysql_username":"Raymond_Ndibe","password":"my_password","file_path":"/test_srv/shared/test_tools/home/test_tool/replica.my.cnf","uid":0}'  http://localhost:8000/v1/write-replica-cnf
 ```
 
-> **_NOTE:_** This readme is still a work in progress. The purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
-
+> **_NOTE:_** This readme is outdated and any attempt to follow the instructions in this readme will probably not work out or end up behaving unexpectedly. Having said that, the purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
 

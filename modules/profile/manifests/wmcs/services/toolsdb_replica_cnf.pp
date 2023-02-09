@@ -26,10 +26,8 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     $htpassword_file                = '/etc/nginx/toolsdb-replica-cnf.htpasswd';
     $htpassword_hash                = htpasswd($htpassword, $htpassword_salt);
 
-    package { 'flask':
+    package { 'python3-flask':
         ensure   => installed,
-        name     => 'Flask>=2.0.0,<2.1.0',
-        provider => 'pip3',
     }
 
     file { $replica_cnf_config_file_path:
@@ -123,7 +121,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     uwsgi::app { 'toolsdb-replica-cnf-web':
         ensure             => 'present',
         subscribe          => [
-            Package['flask'],
+            Package['python3-flask'],
             File[ $api_service_base_path ],
             ],
         settings           => {

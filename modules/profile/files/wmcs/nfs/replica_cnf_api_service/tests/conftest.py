@@ -5,9 +5,9 @@ import io
 import os
 import subprocess
 from pathlib import Path
-from flask import current_app
-import pytest
 
+import pytest
+from flask import current_app
 from replica_cnf_api_service.views import create_app
 
 TOOL_PATH = Path("test_srv/tools/shared/tools/project")
@@ -18,13 +18,12 @@ WRONG_ACCOUNT_ID = "wrong_account_id"
 USERNAME = "test_user"
 PASSWORD = "test_password"
 UID = os.getuid()
-PREV_SCRIPTS_PATH: str = Path(__file__).resolve().parent.parent
+PREV_SCRIPTS_PATH = Path(__file__).resolve().parent.parent
 TOOLS_PROJECT_PREFIX = "tools"
 
 
 @pytest.fixture
 def app(tmp_path):
-
     # use pytest tmp_path so cleanup is automatically handled by pytest
     temp_tool_path = tmp_path / TOOL_PATH
     temp_paws_path = tmp_path / PAWS_PATH
@@ -51,15 +50,17 @@ def app(tmp_path):
     # in production this is handled by puppet
     with open(temp_replica_cnf_config_path, "w+", encoding="utf8") as config:
         config.write(
-            "\n".join([
-                "USE_SUDO: false",
-                'SCRIPTS_PATH: {0}'.format(str(tmp_path)),
-                'TOOLS_PROJECT_PREFIX: {}'.format(TOOLS_PROJECT_PREFIX),
-                'TOOL_REPLICA_CNF_PATH: {0}'.format(str(temp_tool_path)),
-                # mix quoted and unquoted strings for yaml format testing
-                'PAWS_REPLICA_CNF_PATH: "{0}"'.format(str(temp_paws_path)),
-                'USER_REPLICA_CNF_PATH: {0}'.format(str(temp_user_path))
-            ])
+            "\n".join(
+                [
+                    "USE_SUDO: false",
+                    "SCRIPTS_PATH: {0}".format(str(tmp_path)),
+                    "TOOLS_PROJECT_PREFIX: {}".format(TOOLS_PROJECT_PREFIX),
+                    "TOOL_REPLICA_CNF_PATH: {0}".format(str(temp_tool_path)),
+                    # mix quoted and unquoted strings for yaml format testing
+                    'PAWS_REPLICA_CNF_PATH: "{0}"'.format(str(temp_paws_path)),
+                    "USER_REPLICA_CNF_PATH: {0}".format(str(temp_user_path)),
+                ]
+            )
         )
     # this is only for test purpose
     subprocess.check_output(["chmod", "777", str(temp_replica_cnf_config_path)])
@@ -67,7 +68,6 @@ def app(tmp_path):
     scripts = ["write_replica_cnf.sh", "read_replica_cnf.sh", "delete_replica_cnf.sh"]
 
     for script in scripts:
-
         # copy the scripts to pytest tmp directory before editing them
         with open(PREV_SCRIPTS_PATH / script, encoding="utf8") as file1:
             with open(tmp_path / script, "w+", encoding="utf8") as file2:
@@ -82,8 +82,7 @@ def app(tmp_path):
             [
                 "sed",
                 "-i",
-                "s|/etc/replica_cnf_config.yaml|{0}|".format(
-                    str(temp_replica_cnf_config_path)),
+                "s|/etc/replica_cnf_config.yaml|{0}|".format(str(temp_replica_cnf_config_path)),
                 str(tmp_path / script),
             ]
         )
@@ -124,9 +123,9 @@ def create_replica_my_cnf(app):
     """Create replica.my.cnf file before test run"""
     # Setup
 
-    relative_path = Path(
-        ACCOUNT_ID[len(app.config.get("TOOLS_PROJECT_PREFIX")) + 1:]
-    ) / "replica.my.cnf"
+    relative_path = (
+        Path(ACCOUNT_ID[len(app.config.get("TOOLS_PROJECT_PREFIX")) + 1:]) / "replica.my.cnf"
+    )
 
     replica_config = configparser.ConfigParser()
 
@@ -137,7 +136,7 @@ def create_replica_my_cnf(app):
     # don't catch exception. this allows us to know that the test failure is from this setup
     subprocess.check_output(
         [
-            str(Path(current_app.config["SCRIPTS_PATH"]) / 'write_replica_cnf.sh'),
+            str(Path(current_app.config["SCRIPTS_PATH"]) / "write_replica_cnf.sh"),
             str(UID),
             str(relative_path),
             replica_buffer.getvalue().encode("utf-8"),

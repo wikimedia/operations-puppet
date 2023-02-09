@@ -3,27 +3,30 @@
 import configparser
 import io
 import os
-from pathlib import Path
 import subprocess
 from hashlib import sha1
-from types import ModuleType
-from typing import Any, Dict, Optional, Tuple, List
+from pathlib import Path
+
 import yaml
+from flask import Blueprint, Flask, current_app, jsonify, request
 
-from flask import Blueprint, Flask, current_app, request
-
-bp_v1: ModuleType = Blueprint("replica_cnf", __name__, url_prefix="/v1")
-DRY_RUN_USERNAME: str = "dry.run.username"
-DRY_RUN_PASSWORD: str = "dry.run.password"
+bp_v1 = Blueprint("replica_cnf", __name__, url_prefix="/v1")
+DRY_RUN_USERNAME = "dry.run.username"
+DRY_RUN_PASSWORD = "dry.run.password"
 
 
-def create_app(test_config: Optional[Dict] = None) -> ModuleType:
+def create_app(test_config=None):
     # create and configure the app
-    app: ModuleType = Flask(__name__)
+    app = Flask(__name__)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_file("/etc/replica_cnf_config.yaml", load=yaml.safe_load, silent=True)
+        try:
+            with open("/etc/replica_cnf_config.yaml") as file:
+                config = yaml.safe_load(file)
+            app.config.update(**config)
+        except Exception:  # pylint: disable=broad-except
+            pass  # ignore if file doesn't exist so unit tests can pass
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
@@ -33,7 +36,7 @@ def create_app(test_config: Optional[Dict] = None) -> ModuleType:
     return app
 
 
-def get_command_array(script: str) -> List[str]:
+def get_command_array(script):
     full_path = str(Path(current_app.config.get("SCRIPTS_PATH")) / script)
     if current_app.config.get("USE_SUDO", False):
         return ["sudo", full_path]
@@ -41,14 +44,14 @@ def get_command_array(script: str) -> List[str]:
         return [full_path]
 
 
-def mysql_hash(password: str) -> str:
+def mysql_hash(password):
     """
     Hash a password to mimic MySQL's PASSWORD() function
     """
     return "*" + sha1(sha1(password.encode("utf-8")).digest()).hexdigest()
 
 
-def get_relative_path(account_type: str, name: str) -> str:
+def get_relative_path(account_type, name):
     """
     Return relative path to use for replica.my.cnf for a tool or user
     """
@@ -62,7 +65,7 @@ def get_relative_path(account_type: str, name: str) -> str:
         return str(Path(name) / "replica.my.cnf")
 
 
-def get_replica_path(account_type: str, relative_path: str) -> str:
+def get_replica_path(account_type, relative_path):
     if account_type == "tool":
         base_dir = current_app.config.get("TOOL_REPLICA_CNF_PATH")
     elif account_type == "paws":
@@ -74,38 +77,39 @@ def get_replica_path(account_type: str, relative_path: str) -> str:
 
 
 @bp_v1.route("/write-replica-cnf", methods=["POST"])
-def write_replica_cnf() -> Tuple[Dict[str, Any], int]:
+def write_replica_cnf():
     """
     Write a replica.my.cnf file.
     Will also set the 'immutable' attribute on the file, so users
     can not damage their own replica.my.cnf files accidentally.
     """
+    request_data = request.get_json()
+    account_id = request_data["account_id"]
+    account_type = request_data["account_type"]
+    uid = request_data["uid"]
+    mysql_username = request_data["mysql_username"]
+    pwd = request_data["password"]
+    dry_run = request_data["dry_run"]
 
-    request_data: Dict[str, Any] = request.json
-    account_id: str = request_data["account_id"]
-    account_type: str = request_data["account_type"]
-    uid: int = request_data["uid"]
-    mysql_username: str = request_data["mysql_username"]
-    pwd: str = request_data["password"]
-    dry_run: bool = request_data["dry_run"]
-
-    relative_path: str = get_relative_path(account_type, account_id)
-    replica_path: str = get_replica_path(account_type, relative_path)
+    relative_path = get_relative_path(account_type, account_id)
+    replica_path = get_replica_path(account_type, relative_path)
 
     if dry_run:  # do not attempt to write replica.my.cnf file to replica_path if dry_run is True
-        return {"result": "ok", "detail": {"replica_path": replica_path}}, 200
+        return jsonify({"result": "ok", "detail": {"replica_path": replica_path}}), 200
 
     # ignore if path aready exists
     if os.path.exists(replica_path):
         current_app.logger.warning("Configuration file %s already exists", replica_path)
         return (
-            {
-                "result": "ok",
-                "detail": {
-                    "replica_path": replica_path,
-                    "message": "{0} Already exists".format(replica_path),
-                },
-            },
+            jsonify(
+                {
+                    "result": "ok",
+                    "detail": {
+                        "replica_path": replica_path,
+                        "message": "{0} Already exists".format(replica_path),
+                    },
+                }
+            ),
             200,
         )
 
@@ -131,7 +135,7 @@ def write_replica_cnf() -> Tuple[Dict[str, Any], int]:
 
     if res.returncode == 0:
         current_app.logger.info("Created conf file at %s.", replica_path)
-        return {"result": "ok", "detail": {"replica_path": replica_path}}, 200
+        return jsonify({"result": "ok", "detail": {"replica_path": replica_path}}), 200
     else:
         if os.path.exists(replica_path):
             subprocess.check_output(
@@ -139,29 +143,26 @@ def write_replica_cnf() -> Tuple[Dict[str, Any], int]:
             )
 
         current_app.logger.error("Failed to create conf file at %s: %s", replica_path, stderr)
-        return {"result": "error", "detail": {"reason": stderr}}, 500
+        return jsonify({"result": "error", "detail": {"reason": stderr}}), 500
 
 
 @bp_v1.route("/read-replica-cnf", methods=["POST"])
-def read_replica_cnf() -> Tuple[Dict[str, Any], int]:
+def read_replica_cnf():
     """
     Parse a given replica.my.cnf file.
     Returns a tuple of mysql username, password_hash
     """
 
-    request_data: Dict[str, Any] = request.json
-    account_id: str = request_data["account_id"]
-    account_type: str = request_data["account_type"]
-    dry_run: bool = request_data["dry_run"]
+    request_data = request.get_json()
+    account_id = request_data["account_id"]
+    account_type = request_data["account_type"]
+    dry_run = request_data["dry_run"]
 
-    relative_path: str = get_relative_path(account_type, account_id)
+    relative_path = get_relative_path(account_type, account_id)
 
     if dry_run:  # return dummy username and password if dry_run is True
-        detail: Dict[str, str] = {
-            "user": DRY_RUN_USERNAME,
-            "password": mysql_hash(DRY_RUN_PASSWORD),
-        }
-        return {"result": "ok", "detail": detail}, 200
+        detail = {"user": DRY_RUN_USERNAME, "password": mysql_hash(DRY_RUN_PASSWORD)}
+        return jsonify({"result": "ok", "detail": detail}), 200
 
     cp = configparser.ConfigParser()
 
@@ -175,43 +176,44 @@ def read_replica_cnf() -> Tuple[Dict[str, Any], int]:
         if res.returncode == 0:
             cp.read_string(res.stdout.decode("utf-8"))
 
-            detail: Dict[str, str] = {
+            detail = {
                 # sometimes these values have quotes around them
                 "user": cp["client"]["user"].strip("'"),
                 "password": mysql_hash(cp["client"]["password"].strip("'")),
             }
 
-            return {"result": "ok", "detail": detail}, 200
+            return jsonify({"result": "ok", "detail": detail}), 200
         else:
             raise Exception(res.stderr.decode("utf-8"))
 
     except KeyError as err:  # the err variable is not descriptive enough for KeyError.
         # catch KeyError and add more context to the error response.
         return (
-            {
-                "result": "error",
-                "detail": {"reason": "key {0} doesn't exist in ConfigParser".format(str(err))},
-            },
+            jsonify(
+                {
+                    "result": "error",
+                    "detail": {"reason": "key {0} doesn't exist in ConfigParser".format(str(err))},
+                }
+            ),
             500,
         )
 
     except Exception as err:
-        return {"result": "error", "detail": {"reason": str(err)}}, 500
+        return jsonify({"result": "error", "detail": {"reason": str(err)}}), 500
 
 
 @bp_v1.route("/delete-replica-cnf", methods=["POST"])
-def delete_replica_cnf() -> Tuple[Dict[str, Any], int]:
+def delete_replica_cnf():
+    request_data = request.get_json()
+    account_id = request_data["account_id"]
+    account_type = request_data["account_type"]
+    dry_run = request_data["dry_run"]
 
-    request_data: Dict[str, Any] = request.json
-    account_id: str = request_data["account_id"]
-    account_type: str = request_data["account_type"]
-    dry_run: bool = request_data["dry_run"]
-
-    relative_path: str = get_relative_path(account_type, account_id)
-    replica_path: str = get_replica_path(account_type, relative_path)
+    relative_path = get_relative_path(account_type, account_id)
+    replica_path = get_replica_path(account_type, relative_path)
 
     if dry_run:  # do not attempt to delete replica.my.cnf file in replica_path if dry_run is True
-        return {"result": "ok", "detail": {"replica_path": replica_path}}, 200
+        return jsonify({"result": "ok", "detail": {"replica_path": replica_path}}), 200
 
     res = subprocess.run(
         get_command_array(script="delete_replica_cnf.sh") + [relative_path, account_type],
@@ -220,19 +222,24 @@ def delete_replica_cnf() -> Tuple[Dict[str, Any], int]:
     )
 
     if res.returncode == 0:
-        return {"result": "ok", "detail": {"replica_path": res.stdout.decode("utf-8").strip()}}, 200
+        return (
+            jsonify(
+                {"result": "ok", "detail": {"replica_path": res.stdout.decode("utf-8").strip()}}
+            ),
+            200,
+        )
     else:
-        return {"result": "error", "detail": {"reason": res.stderr.decode("utf-8")}}, 500
+        return jsonify({"result": "error", "detail": {"reason": res.stderr.decode("utf-8")}}), 500
 
 
 @bp_v1.route("/paws-uids", methods=["GET"])
-def fetch_paws_uids() -> Tuple[Dict[str, Any], int]:
+def fetch_paws_uids():
     try:
-        path: str = get_replica_path("paws", "")
+        path = get_replica_path("paws", "")
         paws_ids = os.listdir(path)
-        return {"result": "ok", "detail": {"paws_uids": paws_ids}}, 200
+        return jsonify({"result": "ok", "detail": {"paws_uids": paws_ids}}), 200
     except Exception as err:  # pylint: disable=broad-except
-        return {"result": "error", "detail": {"reason": str(err)}}, 500
+        return jsonify({"result": "error", "detail": {"reason": str(err)}}), 500
 
 
-app: ModuleType = create_app()
+app = create_app()
