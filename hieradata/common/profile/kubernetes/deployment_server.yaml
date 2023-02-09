@@ -270,20 +270,14 @@ profile::kubernetes::deployment_server::services:
         group: 'root'
         mode: '640'
   dse-k8s:
-    cfssl-issuer:
-      usernames: []
-      private_files:
-        owner: 'root'
-        group: 'root'
-        mode: '640'
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
         - name: rdf-streaming-updater-deploy
-    spark-operator:
+    spark:
       usernames:
-        - name: spark-operator
-        - name: spark-operator-deploy
+        - name: spark
+        - name: spark-deploy
     stream-enrichment-poc:
       usernames:
         - name: stream-enrichment-poc
