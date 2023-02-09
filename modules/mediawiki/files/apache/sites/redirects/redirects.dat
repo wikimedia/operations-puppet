@@ -191,9 +191,6 @@ rewrite	it.wikimedia.org	https://www.wikimedia.it
 
 funnel	kr.wikimedia.org	https://meta.wikimedia.org/wiki/위키미디어_한국
 
-# pk.wikimedia.org (T56780)
-funnel	pk.wikimedia.org	https://wikimediapakistan.org
-
 rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 
 # Wikimania
