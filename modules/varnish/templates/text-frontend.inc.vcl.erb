@@ -521,7 +521,7 @@ sub cluster_fe_backend_response {
     }
 
 <%- if @vcl_config.fetch('do_esitest', false) -%>
-    if (bereq.url ~ "^/esitest-fa8a495983347898/includer") {
+    if (bereq.url ~ "^/esitest-fa8a495983347898/includer" || bereq.url ~ "^/wiki/") {
         set beresp.do_esi = true;
     }
 <%- end -%>
@@ -562,6 +562,12 @@ sub cluster_fe_deliver {
             }
         }
     }
+<%- unless @vcl_config.fetch('do_esitest', false) -%>
+    // As resp.do_esi defaults to true and ESI data gets cached as part of the object attributes
+    // disabling ESI requires setting resp.do_esi to false or otherwise ESI requests
+    // will still happen in cached objects where beresp.do_esi was set to true
+    set resp.do_esi = false;
+<%- end -%>
 
     // Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
     // by MediaWiki $wgUseCdn, sends purges internally). But pages musn't be cached elsewhere.
