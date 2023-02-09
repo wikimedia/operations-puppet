@@ -6,7 +6,7 @@
 #
 # @param storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
 # @param puppetdb_hosts list of puppetdb hosts
-# @param command_broadcast 
+# @param command_broadcast
 # @param ssl_verify_depth ssl verify depth
 # @param netbox_hiera_enable add the netbox-hiera repo
 # @param reports list of puppet reports

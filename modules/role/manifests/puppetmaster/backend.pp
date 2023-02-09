@@ -5,13 +5,14 @@ class role::puppetmaster::backend {
         description => 'Puppetmaster backend'
     }
 
-    include ::profile::base::production
-    include ::profile::base::firewall
+    include profile::base::production
+    include profile::base::firewall
 
-    include ::profile::puppetmaster::backend
+    include profile::puppetmaster::backend
+    include profile::puppetmaster::production
 
-    require ::profile::conftool::client
+    require profile::conftool::client
     # This profile is needed for puppet to access state stored in etcd
-    require ::profile::conftool::state
+    require profile::conftool::state
 
 }

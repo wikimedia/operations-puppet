@@ -5,33 +5,34 @@ class role::puppetmaster::frontend {
         description => 'Puppetmaster frontend'
     }
 
-    include ::profile::base::production
-    include ::profile::base::firewall
+    include profile::base::production
+    include profile::base::firewall
 
-    include ::profile::backup::host
+    include profile::backup::host
 
-    include ::profile::puppetmaster::frontend
+    include profile::puppetmaster::frontend
+    include profile::puppetmaster::production
 
-    include ::profile::conftool::client
-    include ::profile::conftool::master
-    include ::profile::conftool::requestctl_client
+    include profile::conftool::client
+    include profile::conftool::master
+    include profile::conftool::requestctl_client
     # This profile is needed for puppet to access state stored in etcd
-    require ::profile::conftool::state
+    require profile::conftool::state
 
     # config-master.wikimedia.org
-    include ::profile::configmaster
-    include ::profile::discovery::client
+    include profile::configmaster
+    include profile::discovery::client
 
     # IPMI management
-    include ::profile::ipmi::mgmt
-    include ::profile::access_new_install
+    include profile::ipmi::mgmt
+    include profile::access_new_install
 
     # Installs a script to update the netboot images in volatile with firmware
-    include ::profile::puppetmaster::updatenetboot
+    include profile::puppetmaster::updatenetboot
 
     # Sync swift rings
-    include ::profile::puppetmaster::fetch_swift_rings
+    include profile::puppetmaster::fetch_swift_rings
 
     # Cergen is Java-based
-    include ::profile::java
+    include profile::java
 }
