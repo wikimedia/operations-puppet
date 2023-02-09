@@ -56,7 +56,7 @@ groups:
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, nfraison]
+              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, nfraison, kwakuofori]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -5749,6 +5749,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJpQZ4z1RLVOjDiZ58n5YakzqwGyTBR+CTfxr6EgIxC nfraison@wikimedia.org
     krb: present
+  kwakuofori:
+    ensure: present
+    realname: Kwaku Addo Ofori
+    email: kofori@wikimedia.org
+    uid: 39164
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRI8OoE065ltLVp8Yx5jE6wJBv9L+ndPNL1mYC1ZuYHkAwC/adwn7TzJBaEybgniH4fP8iNqTgP4b4Ju3/fPjN9B+GCCNybEaAu5niknclp2sTE1Y8BYz440+kfwwbPyNRnRn4Fu2AHrLjJpOeONIxkDIVqrpJQ/LsI06uoKpwkMGeA/w2K5qKlcCmmr3r9LjG3CAVjxqZ9xg3WEuTAwQBgrWX3JHMYiIKOl6kc6KuyPi3qQvnK25czwvDvVvZDyrWZWezQ4PFqTV7qh6WnfC5w9k9/NGoKjNe1xn3zw3vD9S27wfwvXcjMaxoqhaL2aBbSjOwh33ELiyIdAnBfh5Q3wlehv/+AOYGpFSqGKQ3/cGFb7IcDCUiGP33ooLS9NUT15m5ZDhlID+c6U3Rhq3jjedqwv114Bd3s6iNxeTVQNFPz8iTwdZjeWcPjIw6IJaSbT7pTKoPC8PvL5E0cSM8hN+riOSOPE0VDhLOZT/j+blyXQtqbemlv/WQPPAh1gjOrFLkwdJC4GHvftOODRK90/ru7vQblEGbXj71GchCXG2iV+ModhOpuMQJpcCn7J4gh3+HoLbyQpRqHsr/hMRYcI2xm5GPkWBe6AiWMBhlqvHOnciJ92il1TxYbrtZuyezBeCBrU5y6pb6FW7jY55lW82wQErT4cml7Ka7qWilkQ== kofori@wmf3127
+
 ldap_only_users:
   adavenport:
     ensure: absent
@@ -6482,10 +6491,6 @@ ldap_only_users:
     ensure: present
     realname: Stephanie Delbecque
     email: sdelbecque@wikimedia.org
-  kwakuofori:
-    ensure: present
-    realname: Kwaku Addo Ofori
-    email: kofori@wikimedia.org
   sbenchagra:
     ensure: present
     realname: Sondes Ben Chagra
