@@ -11,4 +11,4 @@ key    = <%= scope.call_function('puppet_ssldir', []) + "/private_keys/#{@fqdn}.
 verifyChain = yes
 
 exec = /usr/bin/rsync
-execargs = rsync --daemon --config <%= @rsync_conf %>
+execargs = rsync --daemon --config /etc/rsyncd.conf

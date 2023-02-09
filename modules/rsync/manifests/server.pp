@@ -5,7 +5,6 @@
 # @param use_chroot if yes funr rsync in chroot
 # @param rsync_opts An array of rsync options
 # @param rsyncd_conf a hash of additional rsync configuration options
-# @param wrap_with_stunnel if true rsync will be wrapped in an ssltunnle
 # @param ensure_service the ensure state of the service
 # @param log_file path to the log file to use
 class rsync::server(
@@ -17,7 +16,6 @@ class rsync::server(
     Stdlib::Yes_no             $use_chroot        = 'yes',
     Array                      $rsync_opts        = [],
     Hash                       $rsyncd_conf       = {},
-    Boolean                    $wrap_with_stunnel = false,
     Stdlib::Ensure::Service    $ensure_service    = 'running',
     Optional[Stdlib::Unixpath] $log_file          = undef,
 ) {
@@ -36,35 +34,7 @@ class rsync::server(
         content => template('rsync/rsync.default.erb'),
     }
 
-    if $wrap_with_stunnel {
-        ensure_packages(['stunnel4'])
-        file { '/etc/stunnel/rsync.conf':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => template('rsync/stunnel.conf.erb'),
-        }
-        file_line { 'enable_stunnel':
-            ensure   => present,
-            path     => '/etc/default/stunnel4',
-            line     => 'ENABLED=1  # Managed by puppet',
-            match    => '^ENABLED=',
-            multiple => false,
-        }
-        service { 'stunnel4':
-            ensure    => $ensure_service,
-            enable    => true,
-            subscribe => [
-                Exec['compile fragments'],
-                File['/etc/default/rsync', '/etc/stunnel/rsync.conf'],
-                File_line['enable_stunnel'],
-                Package['stunnel4'],
-            ],
-        }
-    }
-
-    # TODO: When we have migrated all rsync usage off of cleartext and to use $wrap_with_stunnel,
+    # TODO: When we have migrated all rsync usage off of cleartext and to use stunnel,
     # we can ensure => stopped this.  https://phabricator.wikimedia.org/T237424
     service { 'rsync':
         ensure    => $ensure_service,

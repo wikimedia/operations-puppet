@@ -33,8 +33,7 @@
 #
 # [*chown*] Optionally set the USER:GROUP mapping.
 #
-# [*server_uses_stunnel*] For TLS-wrapping rsync.  Must be set here, and must be set true on
-#                         rsync::server::wrap_with_stunnel in the server's hiera.
+# [*server_uses_stunnel*] For TLS-wrapping rsync.
 #
 # [*auto_interval*] If $auto_sync is true, the interval to sync at. Defaults to every 10 minutes. See
 #                   systemd::timer::job's $interval parameter and Systemd::Timer::Schedule for more details.
@@ -50,7 +49,7 @@ define rsync::quickdatacopy(
   Optional[Integer] $bwlimit = undef,
   Optional[String] $exclude = undef,
   Optional[Boolean] $delete = false,
-  Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
+  Boolean $server_uses_stunnel = false,
   Boolean $auto_ferm_ipv6 = true,
   Optional[String] $chown = undef,
   Variant[
@@ -71,6 +70,10 @@ define rsync::quickdatacopy(
       if $source_host == $::fqdn {
 
           include rsync::server
+
+          if $server_uses_stunnel {
+              include rsync::server::stunnel
+          }
 
           rsync::server::module { $title:
               ensure         => $ensure,
