@@ -22,6 +22,9 @@ class openstack::neutron::common::zed(
     # Subtemplates of neutron.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
+    # And this, which is in hiera for every other service:
+    $db_name = 'neutron'
+
     $keystone_auth_username = 'novaadmin'
     $keystone_auth_project = 'admin'
     file { '/etc/neutron/neutron.conf':
