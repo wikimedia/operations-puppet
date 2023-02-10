@@ -1,6 +1,5 @@
 class profile::configmaster(
     $conftool_prefix                    = lookup('conftool_prefix'),
-    $abuse_networks                     = lookup('abuse_networks'),
     Stdlib::Host $server_name           = lookup('profile::configmaster::server_name'),
     Array[Stdlib::Host] $server_aliases = lookup('profile::configmaster::server_aliases'),
 ) {
@@ -29,12 +28,16 @@ class profile::configmaster(
 
     # Dump a list of abuse_networks for NDA users to view
     # unfortunately this does not preserve the comments
+    file {"${nda_dir}/abuse_networks.txt":
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => '/etc/ferm/conf.d/00_defs_requestctl',
+    }
+
     file {"${nda_dir}/abuse_networks.yaml":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => $abuse_networks.to_yaml,
+        ensure  => absent,
     }
 
     # The contents of these files are managed by puppet-merge, but user
