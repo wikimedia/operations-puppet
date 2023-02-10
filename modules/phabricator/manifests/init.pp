@@ -69,7 +69,8 @@ class phabricator (
     String                  $deploy_user        = undef,
     String                  $deploy_target      = 'phabricator/deployment',
     Integer                 $opcache_validate   = 0,
-    Enum['running','stopped','masked'] $phd_service_ensure = running,
+    Stdlib::Ensure::Service $phd_service_ensure = running,
+    Boolean                 $phd_service_enable = true,
     Boolean                 $manage_scap_user   = undef,
     Boolean                 $enable_vcs         = undef,
 ) {
@@ -299,6 +300,7 @@ class phabricator (
         require        => Class['::phabricator::phd'],
         service_params => {
             ensure     => $phd_service_ensure,
+            enable     => $phd_service_enable,
             hasrestart => true,
         },
     }

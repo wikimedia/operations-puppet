@@ -1,5 +1,6 @@
 phabricator_logmail: false
-profile::phabricator::main::phd_service_ensure: masked
+profile::phabricator::main::phd_service_ensure: 'stopped'
+profile::phabricator::main::phd_service_enable: false
 profile::phabricator::main::dump_enabled: false
 
 phabricator::mysql::master: "m3-master.codfw.wmnet"
