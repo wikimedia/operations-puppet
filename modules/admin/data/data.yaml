@@ -6525,3 +6525,7 @@ ldap_only_users:
     ensure: present
     realname: Santiago Faci
     email: sfaci@wikimedia.org
+  jon-amar-wmde:
+    ensure: present
+    realname: Jonathan Solomon Giles Blay Amar
+    email: jon.amar@wikimedia.de
