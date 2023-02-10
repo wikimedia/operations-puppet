@@ -335,15 +335,6 @@ Architectures: amd64
 VerifyRelease: 1C0576B1761693CB
 ListShellHook: grep-dctrl -e -S '^python3\.[568]$' || [ $? -eq 1 ]
 
-Name: thirdparty/gitlab
-Method: https://packages.gitlab.com/gitlab/gitlab-ce/debian/
-Components: main>thirdparty/gitlab
-UDebComponents:
-Suite: buster
-Architectures: amd64
-VerifyRelease: 3F01618A51312F3F
-ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 15.8 -a -FVersion --ge 15.7 \) || [ $? -eq 1 ]
-
 Name: thirdparty/gitlab-bullseye
 Method: https://packages.gitlab.com/gitlab/gitlab-ce/debian/
 Components: main>thirdparty/gitlab-bullseye

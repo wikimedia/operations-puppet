@@ -151,7 +151,6 @@ Components: main
  thirdparty/elastic74
  thirdparty/elastic78
  thirdparty/elastic79
- thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/grafana
  thirdparty/gvisor
@@ -192,7 +191,6 @@ Update:
  thirdparty/ceph-octopus
  thirdparty/docker-ci-buster
  thirdparty/conda
- thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/haproxy24
  thirdparty/haproxy26
