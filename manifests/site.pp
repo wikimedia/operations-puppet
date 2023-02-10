@@ -1436,10 +1436,6 @@ node /^install[12]004\.wikimedia\.org$/ {
     role(installserver)
 }
 
-node /^install[3456]001\.wikimedia\.org$/ {
-    role(spare::system)
-}
-
 node /^install[3456]002\.wikimedia\.org$/ {
     role(installserver)
 }
