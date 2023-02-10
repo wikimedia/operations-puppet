@@ -78,12 +78,20 @@ class dnsrecursor (
     # the location of the socket-dir was changed in 4.3.0
     # 4.3.0 also updates the service to run as pdns from the start, instead of starting as root
     # and then dropping access
+    # NOTE: This block should be removed when T321309 is merged.
     if debian::codename::ge('bullseye') or (debian::codename::ge('buster') and $install_from_component) {
         $socket_dir = '/var/run/pdns-recursor/'
         $group = 'pdns'
+        # We use this to determine and maintain compatibility between pdns-rec
+        # in buster and bullseye during a period of transitioning to bullseye.
+        # 4.3+ is the current version of pdns-rec in bullseye but because the
+        # version in component is always going to be the most recent one, this
+        # assumption will be true for that as well.
+        $pdns_43 = true
     } else {
         $socket_dir = '/var/run/'
         $group = 'root'
+        $pdns_43 = false
     }
 
     if $restart_service {
