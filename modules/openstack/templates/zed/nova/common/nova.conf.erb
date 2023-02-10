@@ -81,7 +81,6 @@ vendordata_jsonfile_path = /etc/nova/vendor_data.json
 [api_database]
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
 
-[database]
 # ALERT ALERT ALERT
 #
 # The following setting (connection) is mirrored in the nova api database;
@@ -90,11 +89,7 @@ connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%=
 #  in nova_api_eqiad1.cell_mappings in the 'NULL' cell.
 #
 # ALERT ALERT ALERT
-connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
-max_overflow = 5
-max_pool_size = 5
-pool_timeout = 60
-connection_recycle_time = 1800
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 <% end -%>
 
 [scheduler]

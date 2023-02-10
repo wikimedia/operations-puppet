@@ -73,9 +73,8 @@ log_agent_heartbeats = <%= @log_agent_heartbeats %>
 [cors]
 [cors.subdomain]
 
-[database]
-connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
-max_overflow = 25
+
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 

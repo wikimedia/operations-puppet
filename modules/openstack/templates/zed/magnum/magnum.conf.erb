@@ -457,9 +457,7 @@ workers = 2
 #allow_headers =
 
 
-[database]
-
-connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
 [docker]
 

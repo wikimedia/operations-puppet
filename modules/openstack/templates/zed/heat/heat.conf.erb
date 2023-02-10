@@ -356,13 +356,7 @@ auth_uri = https://<%= @keystone_fqdn %>:25000
 # If set, then the server's certificate will not be verified. (boolean value)
 #insecure = <None>
 
-[database]
-
-#
-# From heat.common.config
-#
-connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
-
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
 [heat_api]
 

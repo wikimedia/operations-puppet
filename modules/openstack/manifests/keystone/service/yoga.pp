@@ -7,7 +7,6 @@ class openstack::keystone::service::yoga(
     $db_user,
     $db_pass,
     $db_host,
-    $db_max_pool_size,
     $public_workers,
     $admin_workers,
     $ldap_hosts,

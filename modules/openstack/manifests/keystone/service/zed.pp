@@ -7,7 +7,6 @@ class openstack::keystone::service::zed(
     $db_user,
     $db_pass,
     $db_host,
-    $db_max_pool_size,
     $public_workers,
     $admin_workers,
     $ldap_hosts,
@@ -51,6 +50,10 @@ class openstack::keystone::service::zed(
     #  at any one time.  Using 9 here instead because it costs us nothing
     #  and provides ample slack.
     $max_active_keys = $controller_hosts.length * 9
+
+
+    # Hint for conf sub-templates
+    $version = 'zed'
 
     file {
         '/etc/logrotate.d/keystone':

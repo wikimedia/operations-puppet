@@ -183,19 +183,7 @@ transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}
 # of '0' means wait forever. (integer value)
 #client_socket_timeout = 900
 
-
-[database]
-
-#
-# From oslo.db
-#
-
-# The SQLAlchemy connection string to use to connect to the database. (string value)
-# Deprecated group/name - [DEFAULT]/sql_connection
-# Deprecated group/name - [DATABASE]/sql_connection
-# Deprecated group/name - [sql]/connection
-connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
-
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
 [healthcheck]
 

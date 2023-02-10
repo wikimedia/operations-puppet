@@ -311,11 +311,7 @@ image_cache_dir = /var/lib/glance/image-cache/
 # as 'keystone'.
 flavor=keystone
 
-[database]
-# SQLAlchemy connection string for the reference implementation
-# registry server. Any valid SQLAlchemy connection string is fine.
-# See: http://www.sqlalchemy.org/docs/05/reference/sqlalchemy/connections.html#sqlalchemy.create_engine
-connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
 [glance_store]
 <% if @glance_backends.include? 'rbd' -%>

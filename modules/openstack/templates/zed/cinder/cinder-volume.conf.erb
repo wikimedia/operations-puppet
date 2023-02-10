@@ -37,14 +37,8 @@ syslog_log_facility = LOG_LOCAL0
 transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
 
 
-[database]
-
-#
-# From oslo.db
-#
-
-# The SQLAlchemy connection string to use to connect to the database. (string value)
-connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+# Common database settings
+<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
 [nova]
 # Name of nova region to use. Useful if keystone manages more than one region. (string value)
