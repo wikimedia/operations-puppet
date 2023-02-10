@@ -2510,7 +2510,7 @@ node 'puppetdb2003.codfw.wmnet' {
 
 # New puppetdb node T317892
 node 'puppetdb1003.eqiad.wmnet' {
-    role(insetup::infrastructure_foundations)
+    role(puppetdb)
 }
 
 # pybal-test200X VMs are used for pybal testing/development
