@@ -97,6 +97,7 @@ class presto::server(
         properties => $default_log_properties + $log_properties,
     }
 
+    $data_dir = $final_node_properties['node.data-dir']
     file { '/etc/presto/jvm.config':
         content => template('presto/jvm.config.erb'),
     }
@@ -109,7 +110,6 @@ class presto::server(
 
 
     # Make sure the $data_dir exists
-    $data_dir = $final_node_properties['node.data-dir']
     if !defined(File[$data_dir]) {
         file { $data_dir:
             ensure  => 'directory',
