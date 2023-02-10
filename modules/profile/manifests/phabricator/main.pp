@@ -77,10 +77,6 @@ class profile::phabricator::main (
                                                       { 'default_value' => 0 }),
     String                      $timezone           = lookup('phabricator_timezone',
                                                       { 'default_value' => 'UTC' }),
-    Stdlib::Ensure::Service     $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure',
-                                                      { 'default_value' => 'running' }),
-    Boolean                     $phd_service_enable = lookup('profile::phabricator::main::phd_service_enable',
-                                                      { 'default_value' => true }),
     Boolean                     $dump_enabled       = lookup('profile::phabricator::main::dump_enabled',
                                                       { 'default_value' => false }),
 
@@ -103,7 +99,8 @@ class profile::phabricator::main (
     include passwords::phabricator
     include passwords::mysql::phabricator
 
-    # dumps are only enabled on the active server set in Hiera
+    # things configured differently if we are on the
+    # active "phabricator_server" defined in Hiera
     if $::fqdn == $active_server {
         $ferm_ensure = 'present'
         if $aphlict_enabled {
@@ -113,11 +110,17 @@ class profile::phabricator::main (
         }
         $mysql_host = $mysql_master
         $mysql_port = $mysql_master_port
+        systemd::unmask { 'phd.service': }
+        $phd_service_ensure = 'running'
+        $phd_service_enable = true
     } else {
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
         $mysql_host = $mysql_slave
         $mysql_port = $mysql_slave_port
+        $phd_service_ensure = 'stopped'
+        $phd_service_enable = false
+        systemd::mask { 'phd.service': }
     }
 
     # in prod we just open port 80 for deployment_hosts for testing, caching layer speaks TLS to envoy
