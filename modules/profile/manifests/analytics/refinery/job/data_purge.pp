@@ -301,31 +301,6 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 00/4:50:00',
         user        => 'analytics',
     }
-    # Absent previous webrequest_actor purge timers to delete them once disabled
-    kerberos::systemd_timer { 'drop-features-actor-hourly':
-        ensure      => absent,
-        description => 'Drop features.actor_hourly data from Hive and HDFS after 90 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='features' --tables='actor_hourly' --base-path='/wmf/data/learning/features/actor/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='4b1ceada2150ab3731cc33efe4d840ef'",
-        environment => $systemd_env,
-        interval    => '*-*-* 00/4:40:00',
-        user        => 'analytics',
-    }
-    kerberos::systemd_timer { 'drop-features-actor-rollup-hourly':
-        ensure      => absent,
-        description => 'Drop features.actor_rollup_hourly data from Hive and HDFS after 90 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='features' --tables='actor_rollup_hourly' --base-path='/wmf/data/learning/features/actor/rollup/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='6b08edc47e7f91c9012ceb11a6e06d6e'",
-        environment => $systemd_env,
-        interval    => '*-*-* 00/4:45:00',
-        user        => 'analytics',
-    }
-    kerberos::systemd_timer { 'drop-predictions-actor_label-hourly':
-        ensure      => absent,
-        description => 'Drop predictions.actor_label_hourly data from Hive and HDFS after 90 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='predictions' --tables='actor_label_hourly' --base-path='/wmf/data/learning/predictions/actor/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='3db2d5a713715bd4fd5dc8deaab1184a'",
-        environment => $systemd_env,
-        interval    => '*-*-* 00/4:50:00',
-        user        => 'analytics',
-    }
 
     # Drop old anomaly detection data. The retention days are set to 182,
     # because the anomaly detection system groups the data in chunks of 7 days
