@@ -124,7 +124,7 @@ def write_replica_cnf():
     res = subprocess.run(
         get_command_array(script="write_replica_cnf.sh")
         + [str(uid), relative_path, replica_buffer.getvalue().encode("utf-8"), account_type],
-        capture_output=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         # subprocess.run without check=True is used here to avoid arguments
         # including username and password from being unintentionally sent back to client on error
         check=False,
@@ -169,7 +169,7 @@ def read_replica_cnf():
     try:
         res = subprocess.run(
             get_command_array(script="read_replica_cnf.sh") + [relative_path, account_type],
-            capture_output=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             check=False,
         )
 
@@ -217,7 +217,7 @@ def delete_replica_cnf():
 
     res = subprocess.run(
         get_command_array(script="delete_replica_cnf.sh") + [relative_path, account_type],
-        capture_output=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         check=False,
     )
 
