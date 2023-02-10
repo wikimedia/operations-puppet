@@ -613,7 +613,7 @@ node 'db2128.codfw.wmnet' {
 }
 
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
-# See also db1098 and db1113 below
+# See also db1113 below
 node /^db1(131|168|173|180|187|201)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -635,7 +635,7 @@ node 'db2158.codfw.wmnet' {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
-# See also db1098, db1101, db1170 below
+# See also db1101, db1170 below
 node /^db1(069|127|136|174|178|181|191|194|202)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -679,7 +679,7 @@ node 'db2164.codfw.wmnet' {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(098|099|101|105|113|144|146|170)\.eqiad\.wmnet/ {
+node /^db1(099|101|105|113|144|146|170)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet/ {
