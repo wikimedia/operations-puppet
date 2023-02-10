@@ -6524,4 +6524,4 @@ ldap_only_users:
   sfaci:
     ensure: present
     realname: Santiago Faci
-    email: sfaci@wikimedia.rog
+    email: sfaci@wikimedia.org
