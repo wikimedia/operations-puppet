@@ -305,6 +305,7 @@ class profile::phabricator::main (
         opcache_validate   => $opcache_validate,
         timezone           => $timezone,
         phd_service_ensure => $phd_service_ensure,
+        phd_service_enable => $phd_service_enable,
         manage_scap_user   => $manage_scap_user,
     }
 
