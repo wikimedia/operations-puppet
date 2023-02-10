@@ -1,6 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 class kubeadm::admin_scripts (
 ) {
+    file { '/root/.kube':
+        ensure => directory,
+    }
+
+    file { '/root/.kube/config':
+        ensure => link,
+        target => '/etc/kubernetes/admin.conf',
+    }
+
     file { '/usr/local/sbin/wmcs-k8s-get-cert':
         ensure => 'present',
         owner  => 'root',
