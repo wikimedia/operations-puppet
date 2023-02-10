@@ -99,7 +99,7 @@ def get_raid_status(host, raid_type):
     try:
         nrpe_command = [CHECK_NRPE_PATH, '-4', '-H', host,
                         '-c', NRPE_REMOTE_COMMAND.format(raid_type)]
-        proc = subprocess.Popen(nrpe_command, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(nrpe_command, stdout=subprocess.PIPE, text=True)
         stdout, stderr = proc.communicate()
         if proc.returncode != 0 or len(stdout) == 0:
             raise RuntimeError(
