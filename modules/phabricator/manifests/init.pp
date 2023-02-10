@@ -69,7 +69,7 @@ class phabricator (
     String                  $deploy_user        = undef,
     String                  $deploy_target      = 'phabricator/deployment',
     Integer                 $opcache_validate   = 0,
-    Stdlib::Ensure::Service $phd_service_ensure = running,
+    Enum['running','stopped','masked'] $phd_service_ensure = running,
     Boolean                 $manage_scap_user   = undef,
     Boolean                 $enable_vcs         = undef,
 ) {

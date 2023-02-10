@@ -77,7 +77,7 @@ class profile::phabricator::main (
                                                       { 'default_value' => 0 }),
     String                      $timezone           = lookup('phabricator_timezone',
                                                       { 'default_value' => 'UTC' }),
-    Stdlib::Ensure::Service     $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure',
+    Enum['running','stopped','masked'] $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure',
                                                       { 'default_value' => 'running' }),
     Boolean                     $dump_enabled       = lookup('profile::phabricator::main::dump_enabled',
                                                       { 'default_value' => false }),

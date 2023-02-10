@@ -3,7 +3,7 @@
 #
 class profile::phabricator::monitoring (
     Stdlib::Fqdn $active_server = lookup('phabricator_server'),
-    Stdlib::Ensure::Service $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure', {'default_value' => 'running'}),
+    Enum['running','stopped','masked'] $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure', {'default_value' => 'running'}),
 ){
 
     # Only monitor PHD if it is actually set to be running in Hiera.
