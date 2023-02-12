@@ -97,16 +97,6 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         source  => $api_service_app_path_in_repo,
         }
 
-    # ensure that auth files folders exist
-    wmflib::dir::mkdir_p([
-        $tool_replica_cnf_path,
-        $paws_replica_cnf_path,
-        $user_replica_cnf_path], {
-            ensure => directory,
-            owner => $user,
-            group => $group
-    })
-
     # Needed for prometheus exporter to share metrics between uwsgi processes
     file { $metrics_dir:
         ensure => 'directory',
