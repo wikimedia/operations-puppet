@@ -2221,7 +2221,7 @@ node /^mw2419\.codfw\.wmnet$/ {
 }
 
 # New mw nodes T326362
-node /^mw24(2[0-9]|3[0-5])\.codfw\.wmnet$/ {
+node /^mw24(2[0-9]|3[0-9]|4[0-9]|5[0-1])\.codfw\.wmnet$/ {
     role(insetup::serviceops)
 }
 
