@@ -28,3 +28,5 @@ private-dev
 
 # Thumbor shouldn't create files bigger than 4GB-1 bytes
 rlimit-fsize 4294967295
+# Increase number of open files to 8192
+rlimit-nofile 8192
