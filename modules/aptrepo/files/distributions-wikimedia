@@ -112,6 +112,7 @@ Components: main
  component/envoy-future
  component/elastic710
  component/ganeti3
+ component/icu67
  component/idp-test
  component/iptables185
  component/jdk8
