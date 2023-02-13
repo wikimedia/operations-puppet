@@ -32,8 +32,9 @@ class peering_news(
     systemd::timer::job {'peering_news':
         user        => 'root',
         description => 'Weekly Peering News in your inbox',
+        splay       => 3600,
         command     => $command,
-        interval    => [{'start' => 'OnCalendar', 'interval' => 'weekly'},
+        interval    => [{'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 09:00:00'},
                         {'start' => 'OnBootSec', 'interval' => '1min'}],
     }
 }
