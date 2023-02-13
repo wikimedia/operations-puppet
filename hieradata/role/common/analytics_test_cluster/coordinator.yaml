@@ -42,8 +42,6 @@ profile::presto::server::config_properties:
   # set this to 'flat'.
   node-scheduler.network-topology: legacy
   query.max-memory: 2GB
-  query.max-memory-per-node: 2GB
-  query.max-total-memory-per-node: 2GB
   http-server.authentication.type: 'KERBEROS'
   http.server.authentication.krb5.service-name: 'presto'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
