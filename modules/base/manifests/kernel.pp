@@ -56,6 +56,7 @@ class base::kernel(
             'v4l2-common',
             'floppy',
             'cdrom',
+            'binder_linux',
         ],
     }
 
