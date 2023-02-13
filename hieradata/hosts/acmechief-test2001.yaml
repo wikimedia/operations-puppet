@@ -3,5 +3,5 @@ profile::acme_chief::accounts:
     regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/7090084"}'
     directory: "https://acme-staging-v02.api.letsencrypt.org/directory"
 profile::acme_chief::active: acmechief-test1001.eqiad.wmnet
-profile::acme_chief::passive: acmechief-test2001.codfw.wmnet
+profile::acme_chief::passive: ['acmechief-test2001.codfw.wmnet']
 profile::monitoring::notifications_enabled: false

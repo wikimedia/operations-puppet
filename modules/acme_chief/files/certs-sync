@@ -28,8 +28,11 @@ fi
 # .rsync.status is touched to let the passive node check that the rsync has been received successfully
 /usr/bin/touch "$CERTS_PATH"/.rsync.status
 
-SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/bin/rsync -e /usr/bin/ssh \
-    -r -p -t -l --safe-links "$CERTS_PATH"/ acme-chief@"$PASSIVE_FQDN":"$CERTS_PATH"/
+for FQDN in $PASSIVE_FQDN
+do
+    SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/bin/rsync -e /usr/bin/ssh \
+        -r -p -t -l --safe-links "$CERTS_PATH"/ acme-chief@"$FQDN":"$CERTS_PATH"/
+done
 
 # .rsync.done is touched to let the active node check that this script has been run succesfully
 /usr/bin/touch "$CERTS_PATH"/.rsync.done

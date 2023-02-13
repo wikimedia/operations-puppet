@@ -38,8 +38,8 @@ class profile::acme_chief (
     Hash[String, Acme_chief::Certificate] $shared_acme_certificates = lookup('shared_acme_certificates', {default_value => {}}),
     Hash[String, Hash[String, Any]] $challenges = lookup('profile::acme_chief::challenges'),
     String $http_proxy = lookup('http_proxy'),
-    String $active_host = lookup('profile::acme_chief::active'),
-    String $passive_host = lookup('profile::acme_chief::passive'),
+    Stdlib::Fqdn $active_host = lookup('profile::acme_chief::active'),
+    Variant[String, Array[Stdlib::Fqdn]] $passive_host = lookup('profile::acme_chief::passive'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Integer $watchdog_sec = lookup('profile::acme_chief::watchdog_sec', {default_value => 600}),
 ) {

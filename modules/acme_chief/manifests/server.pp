@@ -5,12 +5,13 @@ class acme_chief::server (
     Hash[String, Hash[String, Any]] $challenges = {},
     String $http_proxy = '',
     Wmflib::Ensure $http_challenge_support = absent,
-    String $active_host = '',
-    String $passive_host = '',
+    Stdlib::Fqdn $active_host = '',
+    Variant[String, Array[Stdlib::Fqdn]] $passive_host = [],
     Array[Stdlib::Fqdn] $authdns_hosts = [],
     Integer $watchdog_sec = 0,
 ) {
     $is_active = $::fqdn == $active_host
+    $passive_hosts = [$passive_host].flatten()
 
     # For the gdnsd-sync script
     ensure_packages('python3-clustershell')
@@ -257,7 +258,7 @@ class acme_chief::server (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
-    $timer_ensure = ($is_active and $passive_host != '') ? {
+    $timer_ensure = ($is_active and !empty($passive_hosts) and !empty($passive_hosts[0])) ? {
         true  => 'present',
         false => 'absent'
     }
