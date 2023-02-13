@@ -76,10 +76,9 @@ define postgresql::user (
     # Starting with Bookworm passwords are hashed with salted Scram-SHA256. The user is still tested for existance,
     # but no password changes are supported T326325
     $password_md5    = md5("${password}${user}")
-    $password_clause = debian::codename::ge('bookworm').bool2str(
-        '', "AND rolpassword = 'md5${password_md5}'"
-    )
-    $password_check = "/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' ${password_clause};\" | grep 1"
+    # On bookworm we cant check the actual password, best we can do is ensure some SCRAM-SHA-256 password has been set
+    $password_clause = debian::codename::ge('bookworm').bool2str('LIKE "SCRAM-SHA-256$4096:%', "= 'md5${password_md5}'")
+    $password_check = "/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' AND rolpassword ${password_clause};\" | grep 1"
 
     if $ensure == 'present' {
         exec { "create_user-${name}":
