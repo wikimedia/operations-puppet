@@ -6,6 +6,11 @@ phabricator::mysql::master::port: '3306'
 phabricator::mysql::slave: "m3-slave.codfw.wmnet"
 phabricator::mysql::slave::port: '3323'
 
+phabricator_aphlict_enable_ssl: false
+# phabricator_aphlict_cert: "/path/to/cert"
+# phabricator_aphlict_key: "/path/to/key"
+# phabricator_aphlict_chain: "/path/to/chain"
+
 phabricator_cluster_search:
   - type: 'elasticsearch'
     path: '/phabricator'

@@ -199,9 +199,13 @@ node /^apifeatureusage[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(apifeatureusage::logstash)
 }
 
-# notification server for Phabricator (T257617)
+# notification server for Phabricator (T257617 and T322369)
 node 'aphlict1001.eqiad.wmnet' {
     role(aphlict)
+}
+
+node 'aphlict2001.codfw.wmnet' {
+    role(insetup::serviceops)
 }
 
 # new APT repositories (NOT DHCP/TFTP)
