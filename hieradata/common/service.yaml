@@ -3525,3 +3525,43 @@ service::catalog:
     discovery:
       - dnsdisc: netbox
         active_active: false
+
+  logs-api:
+    description: API access to opensearch for logs
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.79
+      eqiad:
+        default: 10.2.2.79
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kibana7
+        service: logs-api
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          http_status: 401
+          url:
+            - https://logs-api.svc.eqiad.wmnet
+      scheduler: sh
+    page: false
+    probes:
+      - type: http
+        # The 'host' here can be handled by codfw and eqiad all the same
+        host: logs-api.svc.eqiad.wmnet
+        valid_status_codes:
+          - 401
+    port: 443
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+    - dnsdisc: logs-api
+      active_active: true

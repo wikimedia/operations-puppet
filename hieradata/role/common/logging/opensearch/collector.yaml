@@ -7,6 +7,9 @@ profile::lvs::realserver::pools:
     services:
       - kibana
       - apache2
+  logs-api:
+    services:
+      - apache2
 
 role::logstash::apifeatureusage::elastic_hosts:
   - search.svc.codfw.wmnet

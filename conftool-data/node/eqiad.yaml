@@ -351,12 +351,12 @@ eqiad:
     wdqs1008.eqiad.wmnet: [wdqs]
     wdqs1011.eqiad.wmnet: [wdqs]
   kibana7:
-    logstash1023.eqiad.wmnet: [kibana7]
-    logstash1024.eqiad.wmnet: [kibana7]
-    logstash1025.eqiad.wmnet: [kibana7]
-    logstash1030.eqiad.wmnet: [kibana7]
-    logstash1031.eqiad.wmnet: [kibana7]
-    logstash1032.eqiad.wmnet: [kibana7]
+    logstash1023.eqiad.wmnet: [kibana7, logs-api]
+    logstash1024.eqiad.wmnet: [kibana7, logs-api]
+    logstash1025.eqiad.wmnet: [kibana7, logs-api]
+    logstash1030.eqiad.wmnet: [kibana7, logs-api]
+    logstash1031.eqiad.wmnet: [kibana7, logs-api]
+    logstash1032.eqiad.wmnet: [kibana7, logs-api]
   ldap-ro:
     ldap-replica1003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
