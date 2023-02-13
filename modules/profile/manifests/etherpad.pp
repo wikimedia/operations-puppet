@@ -30,7 +30,7 @@ class profile::etherpad(
 
     prometheus::blackbox::check::http { 'etherpad.wikimedia.org':
         team               => 'serviceops-collab',
-        severity           => 'warning',
+        severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],
         port               => 7443,

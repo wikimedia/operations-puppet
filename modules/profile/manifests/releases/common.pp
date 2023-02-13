@@ -97,7 +97,7 @@ class profile::releases::common(
 
     prometheus::blackbox::check::http { 'releases.wikimedia.org':
         team               => 'serviceops-collab',
-        severity           => 'warning',
+        severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],
         force_tls          => true,

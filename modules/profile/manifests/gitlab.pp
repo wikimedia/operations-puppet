@@ -43,8 +43,8 @@ class profile::gitlab(
     }
 
     $severity = $active_host ? {
-        $facts['fqdn'] => 'critical',
-        default        => 'warning'
+        $facts['fqdn'] => 'task',
+        default        => 'task'
     }
 
     if $active_host == $facts['fqdn'] {

@@ -98,7 +98,7 @@ class profile::vrts(
 
     prometheus::blackbox::check::http { 'ticket.wikimedia.org':
         team               => 'serviceops-collab',
-        severity           => 'warning',
+        severity           => 'task',
         path               => '/otrs/index.pl',
         port               => 1443,
         ip_families        => ['ip4'],
