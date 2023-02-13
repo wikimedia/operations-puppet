@@ -16,8 +16,8 @@ listen <%= @title %>
     server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 on-marked-up shutdown-backup-sessions inter 2s rise 2 fall 4
 <% end -%>
 <% end -%>
-    timeout  client 90m
-    timeout  server 90m
+    timeout  client 3600s
+    timeout  server 3600s
     acl is-blocked-ip src -f /etc/haproxy/ipblocklist.txt
     tcp-request connection reject if is-blocked-ip
     # log /dev/log local0 debug
