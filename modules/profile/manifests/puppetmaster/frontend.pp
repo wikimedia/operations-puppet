@@ -8,10 +8,7 @@
 # @param ca_source source of the CA file
 # @param manage_ca_file if true manage the CA file
 # @param prevent_cherrypicks disable cherry picks
-# @param monitor_signed_certs if true monitor signed certs for expiry
 # @param extra_auth_rules Addtional auth rules
-# @param signed_certs_warning Warn if agent certs are due to expire within this time
-# @param signed_certs_critical Critical alert if agent certs are due to expire within this time
 # @param canary_hosts list of hosts used for caanary testing
 # @param servers list of puppetmaster backend servers with wieghts
 # @param ssl_ca_revocation_check the type of SSL revocation check to perform
@@ -31,9 +28,6 @@ class profile::puppetmaster::frontend(
     Boolean                       $secure_private          = lookup('profile::puppetmaster::frontend::secure_private'),
     String                        $web_hostname            = lookup('profile::puppetmaster::frontend::web_hostname'),
     Boolean                       $prevent_cherrypicks     = lookup('profile::puppetmaster::frontend::prevent_cherrypicks'),
-    Boolean                       $monitor_signed_certs    = lookup('profile::puppetmaster::frontend::monitor_signed_certs'),
-    Integer                       $signed_certs_warning    = lookup('profile::puppetmaster::frontend::signed_certs_warning'),
-    Integer                       $signed_certs_critical   = lookup('profile::puppetmaster::frontend::signed_certs_critical'),
     Array[Stdlib::Host]           $canary_hosts            = lookup('profile::puppetmaster::frontend::canary_hosts'),
     Enum['chain', 'leaf', 'none'] $ssl_ca_revocation_check = lookup('profile::puppetmaster::frontend::ssl_ca_revocation_check'),
     Optional[String]              $extra_auth_rules        = lookup('profile::puppetmaster::frontend::extra_auth_rules'),
@@ -72,7 +66,9 @@ class profile::puppetmaster::frontend(
         # Ship cassandra-ca-manager (precursor of cergen)
         class { 'cassandra::ca_manager': }
 
-        # Ensure nagios can read the signed certs
+        # TODO: this was set to let an NRPE check read the files
+        # now that it's gone, we should check if a more strict
+        # mode could be used
         $signed_cert_path = "${facts['puppet_config']['master']['ssldir']}/ca/signed"
         file {$signed_cert_path:
             ensure  => directory,
@@ -80,21 +76,6 @@ class profile::puppetmaster::frontend(
             group   => 'puppet',
             mode    => '0644',
             recurse => true,
-        }
-
-        $monitor_ensure = ($monitor_signed_certs and $ca).bool2str('present', 'absent')
-        nrpe::plugin { 'nrpe_check_puppetca_expired_certs':
-            ensure => $monitor_ensure,
-            source => 'puppet:///modules/profile/puppetmaster/nrpe_check_puppetca_expired_certs.sh',
-        }
-
-        nrpe::monitor_service {'puppetca_expired_certs':
-            ensure         => $monitor_ensure,
-            description    => 'Puppet CA expired certs',
-            check_interval => 60,  # minutes
-            timeout        => 60,  # seconds
-            nrpe_command   => "/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs ${signed_cert_path} ${signed_certs_warning} ${signed_certs_critical}",
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Puppet#Renew_agent_certificate',
         }
     }
 
