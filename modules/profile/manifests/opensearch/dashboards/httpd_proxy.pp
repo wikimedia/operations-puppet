@@ -15,6 +15,7 @@
 # - $ldap_authurl: AuthLDAPURL for $auth_type == 'ldap'
 # - $ldap_binddn: AuthLDAPBindDN for $auth_type == 'ldap'
 # - $ldap_groups: List of ldap-group names for $auth_type == 'ldap'
+# - $aliases: List of additional vhosts to answer to
 #
 # filtertags: labs-project-deployment-prep
 class profile::opensearch::dashboards::httpd_proxy (
@@ -27,6 +28,7 @@ class profile::opensearch::dashboards::httpd_proxy (
     Optional[String]            $ldap_authurl = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_authurl', { 'default_value' => undef }),
     Optional[String]            $ldap_binddn  = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_binddn',  { 'default_value' => undef }),
     Optional[Array[String]]     $ldap_groups  = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_groups',  { 'default_value' => [] }),
+    Optional[Array[String]]     $aliases      = lookup('profile::opensearch::dashboards::httpd_proxy::aliases',      { 'default_value' => [] }),
 ) {
     $httpd_base_modules = [
         'proxy_http',

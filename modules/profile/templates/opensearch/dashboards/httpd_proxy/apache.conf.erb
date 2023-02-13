@@ -7,6 +7,9 @@
 <VirtualHost *:80>
   ServerName <%= @vhost %>
   ServerAdmin <%= @serveradmin %>
+<%- @aliases.each do |name| -%>
+  ServerAlias <%= name %>
+<% end -%>
 
   # Should never be seen, but apache needs this set to something
   DocumentRoot /var/www/html

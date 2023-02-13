@@ -18,6 +18,9 @@ profile::admin::groups:
 
 # OpenSearch Dashboards
 profile::opensearch::dashboards::httpd_proxy::vhost: logstash.wikimedia.org
+profile::opensearch::dashboards::httpd_proxy::aliases:
+  - kibana7.svc.eqiad.wmnet
+  - kibana7.svc.codfw.wmnet
 profile::opensearch::dashboards::httpd_proxy::serveradmin: noc@wikimedia.org
 profile::opensearch::dashboards::httpd_proxy::auth_type: ldap
 profile::opensearch::dashboards::httpd_proxy::auth_realm: Developer account (use wiki login name not shell) - nda/ops/wmf
