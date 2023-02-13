@@ -15,22 +15,6 @@
 # 192.168.4.254
 #
 profile::cloudceph::osd::hosts:
-  "cloudcephosd1003.eqiad.wmnet":
-    public:
-      addr: "10.64.20.72"
-      iface: "ens2f0np0"
-    cluster:
-      addr: "192.168.4.3"
-      prefix: "24"
-      iface: "ens2f1np1"
-  "cloudcephosd1004.eqiad.wmnet":
-    public:
-      addr: "10.64.20.55"
-      iface: "ens3f0np0"
-    cluster:
-      addr: "192.168.4.4"
-      prefix: "24"
-      iface: "ens3f1np1"
   "cloudcephosd1005.eqiad.wmnet":
     public:
       addr: "10.64.20.56"
@@ -249,6 +233,14 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.5.7"
       prefix: "24"
       iface: "enp101s0f1np1"
+  "cloudcephosd1003.eqiad.wmnet":
+    public:
+      addr: "10.64.148.16"
+      iface: "enp101s0f0np0"
+    cluster:
+      addr: "192.168.5.8"
+      prefix: "24"
+      iface: "enp101s0f1np1"
 
   # Rack F4
   "cloudcephosd1030.eqiad.wmnet":
@@ -291,6 +283,14 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.6.5"
       prefix: "24"
       iface: "enp175s0f1np1"
+  "cloudcephosd1004.eqiad.wmnet":
+    public:
+      addr: "10.64.149.14"
+      iface: "enp101s0f0np0"
+    cluster:
+      addr: "192.168.6.6"
+      prefix: "24"
+      iface: "enp101s0f1np1"
 
 profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"
