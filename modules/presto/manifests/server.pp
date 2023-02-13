@@ -121,6 +121,18 @@ class presto::server(
         }
     }
 
+    # Ensure log folder is owned by presto user
+    if !defined(File["${data_dir}/var/log"]) {
+        file { "${data_dir}/var/log":
+            ensure  => 'directory',
+            owner   => 'presto',
+            group   => 'presto',
+            mode    => '0755',
+            require => Package['presto-server'],
+            before  => Service['presto-server'],
+        }
+    }
+
     # By default Presto writes its logs out to $data_dir/var/log.
     # Symlink /var/log/presto to this location.
     if !defined(File['/var/log/presto']) {
