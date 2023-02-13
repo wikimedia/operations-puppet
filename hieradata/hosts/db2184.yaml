@@ -1,2 +1,3 @@
 # db2184
 mariadb::shard: 'backup1-codfw'
+mariadb::package: 'wmf-mariadb106'
