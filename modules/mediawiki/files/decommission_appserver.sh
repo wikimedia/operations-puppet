@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Script to decommission appservers once they're switched to role::spare::system
+# Script to decommission appservers once they're switched to role::insetup::serviceops
 # This script will persist the switch of roles and should be used to avoid things
 # to keep running once the system is moved to spares
 set -e

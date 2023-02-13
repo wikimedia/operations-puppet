@@ -111,7 +111,7 @@ class profile::mediawiki::common(
         mode   => '0644',
     }
 
-    # Script to use for decommissioning a machine and move it to role::system::spare
+    # Script to use for decommissioning a machine
     file { '/root/decommission_appserver':
         ensure => present,
         owner  => 'root',

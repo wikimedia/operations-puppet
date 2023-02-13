@@ -1,3 +1,0 @@
-cluster: spare
-profile::monitoring::notifications_enabled: false
-profile::contacts::role_contacts: ['Infrastructure Foundations']
