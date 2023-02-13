@@ -225,6 +225,10 @@ class profile::netbox (
     #
     # FIXME service::uwsgi seems to create the directory /etc/netbox/, counter intuitively.
     #
+    class { 'python_deploy::venv':
+        project_name => 'netbox',
+        deploy_user  => 'netbox',
+    }
 
     git::clone { 'operations/software/netbox-extras':
         ensure    => 'present',

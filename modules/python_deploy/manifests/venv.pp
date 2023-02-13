@@ -14,7 +14,8 @@ class python_deploy::venv (
     String $project_name,
     String $deploy_user,
 ) {
-    systemd::sysuser { $deploy_user: }
+    ensure_resources('systemd::sysuser', {$deploy_user => {}})
+    ensure_packages(['virtualenv', 'make'])
 
     file { "/srv/deployment/${project_name}":
         ensure => directory,

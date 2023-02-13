@@ -9,9 +9,6 @@ class profile::homer (
     Stdlib::HTTPSUrl $nb_api = lookup('netbox_api_url'),
     Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
 ){
-
-    ensure_packages(['virtualenv', 'make'])
-
     class { 'python_deploy::venv':
         project_name => 'homer',
         deploy_user  => 'deploy-homer',
