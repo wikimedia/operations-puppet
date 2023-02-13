@@ -1428,10 +1428,6 @@ node /^idp-test[12]002\.wikimedia\.org$/ {
     role(idp_test)
 }
 
-node /^install[12]003\.wikimedia\.org$/ {
-    role(spare::system)
-}
-
 node /^install[12]004\.wikimedia\.org$/ {
     role(installserver)
 }
