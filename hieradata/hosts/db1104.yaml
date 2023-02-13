@@ -1,4 +1,2 @@
 # db1104
-# candidate master for s8
 mariadb::shard: 's8'
-mariadb::binlog_format: 'STATEMENT'
