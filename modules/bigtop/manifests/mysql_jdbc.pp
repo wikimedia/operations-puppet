@@ -22,10 +22,10 @@ define bigtop::mysql_jdbc (
             }
         }
     } else {
-        # $package_name = 'libmariadb-java'
-        # $jar_path = '/usr/share/java/mariadb-java-client-2.3.0.jar'
-        # See https://phabricator.wikimedia.org/T278424
-        fail('OS not supported, please follow up with the Analytics team. Context: T278424')
+        # See T278424 and T329363#8609591
+        # For the bullseye upgrade we are trying once more to use libmariadb-java with sqoop instead of the forward-ported libmysql-java
+        $package_name = 'libmariadb-java'
+        $jar_path = '/usr/share/java/mariadb-java-client.jar'
     }
 
     ensure_packages($package_name)
