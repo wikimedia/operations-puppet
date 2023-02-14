@@ -31,3 +31,12 @@ profile::lvs::realserver::pools:
   k8s-ingress-aux: {}
 
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+
+# Kubernetes 1.23 related common settings (should go from here to common for the staging-eqiad update)
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
+
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer.
+profile::kubernetes::pki::intermediate: 'aux'
