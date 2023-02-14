@@ -76,5 +76,7 @@ class swift::ring_manager (
         path           => $ring_dir,
     }
 
-    profile::auto_restarts::service { 'rsync':}
+    profile::auto_restarts::service { 'rsync':
+        ensure => $ensure,
+    }
 }
