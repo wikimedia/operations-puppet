@@ -17,8 +17,11 @@ class profile::analytics::cluster::client {
     # interacting with HDFS.
     include ::profile::analytics::cluster::users
 
-    # Spark 2 is manually packaged by us, it is not part of CDH.
-    require ::profile::hadoop::spark2
+    # We want to exclude spark2 from bullseye installs
+    if debian::codename::lt('bullseye') {
+        # Spark 2 is manually packaged by us, it is not part of CDH.
+        require ::profile::hadoop::spark2
+    }
 
     # Install Spark 3 configuration to be used as a trial with
     # the Spark3 installed with Airflow.
