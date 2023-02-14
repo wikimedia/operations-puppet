@@ -58,10 +58,6 @@ class profile::analytics::cluster::packages::common {
         'anaconda-wmf-base',
     ])
 
-    # ores::base for ORES packages
-    class { '::ores::base': }
-    class { '::git::lfs': }
-
     # Include maven and our archiva settings everywhere to make it
     # easier to resolve job dependencies at runtime from archiva.wikimedia.org
     class { '::maven': }
