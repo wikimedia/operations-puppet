@@ -85,9 +85,17 @@ class profile::etcd::v3(
     }
     # This option allows the CFSSL based PKI to be used with the etcd intermediate
     else {
+        # From etcd 3.3+ (bullseye version+) if we use discovery SRV records,
+        # we'll also need to add a SAN with the "domain_name: in "dns:domain_name"
+        # See T329556
+        if debian::codename::ge('bullseye') and $srv_dns != undef {
+            $ssl_hosts = [$facts['networking']['fqdn'], $srv_dns]
+        } else {
+            $ssl_hosts = [$facts['networking']['fqdn']]
+        }
         $trusted_ca  = '/etc/ssl/certs/wmf-ca-certificates.crt'
         $ssl_paths = profile::pki::get_cert('etcd', $certname, {
-            hosts  => [$facts['networking']['fqdn']],
+            hosts  => $ssl_hosts,
             owner  => 'etcd',
             outdir => '/var/lib/etcd/ssl',
             } )
