@@ -361,12 +361,12 @@ codfw:
     ldap-replica2005.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2006.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   kibana7:
-    logstash2023.codfw.wmnet: [kibana7]
-    logstash2024.codfw.wmnet: [kibana7]
-    logstash2025.codfw.wmnet: [kibana7]
-    logstash2030.codfw.wmnet: [kibana7]
-    logstash2031.codfw.wmnet: [kibana7]
-    logstash2032.codfw.wmnet: [kibana7]
+    logstash2023.codfw.wmnet: [kibana7, logs-api]
+    logstash2024.codfw.wmnet: [kibana7, logs-api]
+    logstash2025.codfw.wmnet: [kibana7, logs-api]
+    logstash2030.codfw.wmnet: [kibana7, logs-api]
+    logstash2031.codfw.wmnet: [kibana7, logs-api]
+    logstash2032.codfw.wmnet: [kibana7, logs-api]
   docker-registry:
     registry2003.codfw.wmnet: [docker-registry]
     registry2004.codfw.wmnet: [docker-registry]
