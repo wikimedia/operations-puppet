@@ -122,4 +122,24 @@ class base::kernel(
         retry_interval => 5,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Microcode',
     }
+
+    # Only Debian Bullseye or newer has the autoremove logic
+    if debian::codename::ge('bullseye') {
+        file { '/usr/local/bin/kernel-purge':
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            source => 'puppet:///modules/base/kernel/kernel-purge.sh',
+        }
+
+        systemd::timer::job { 'kernel-purge':
+            ensure      => present,
+            description => 'Purge unused kernels',
+            user        => 'root',
+            # Temporarily only run in list or dry-run mode
+            command     => '/usr/local/bin/kernel-purge -l',
+            interval    => {'start' => 'OnCalendar', 'interval' => 'monthly'},
+        }
+    }
 }
