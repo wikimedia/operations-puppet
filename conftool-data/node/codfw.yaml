@@ -240,7 +240,7 @@ codfw:
     elastic2066.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2067.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2068.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
-    elastic2069.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
+    elastic2069.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2070.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2071.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2072.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
