@@ -2012,7 +2012,6 @@ infra_devices:
     parents:
     - cr1-eqiad
     - cr2-eqiad
-    bfd: false
     site: eqiad
     role: pfw
   mr1-eqiad:
@@ -2212,7 +2211,6 @@ infra_devices:
     parents:
     - cr1-codfw
     - cr2-codfw
-    bfd: false
     site: codfw
     role: pfw
   mr1-codfw:
