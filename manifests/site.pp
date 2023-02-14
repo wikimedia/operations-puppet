@@ -494,7 +494,7 @@ node /^db1(207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|2
 }
 
 # s1 (enwiki) core production dbs on eqiad
-# See also db1099 and db1105 below
+# See also db1105 below
 node /^db1(106|107|118|119|128|132|134|135|163|169|184|186|206)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -657,7 +657,7 @@ node 'db2159.codfw.wmnet' {
 }
 
 # s8 (wikidata) core production dbs on eqiad
-# See also db1099 and db1101 below
+# See also db1101 below
 node /^db1(104|109|111|114|126|172|177|192|193|203)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -679,7 +679,7 @@ node 'db2164.codfw.wmnet' {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(099|101|105|113|144|146|170)\.eqiad\.wmnet/ {
+node /^db1(101|105|113|144|146|170)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet/ {
