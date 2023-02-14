@@ -13,8 +13,8 @@ define bigtop::mysql_jdbc (
         default => '/usr/share/java/mysql-connector-java.jar',
     }
 
-    $package_name = 'libmysql-java'
     if debian::codename::eq('buster') {
+        $package_name = 'libmysql-java'
         if !defined(Apt::Package_from_component['libmysql-java-component']) {
             apt::package_from_component { 'libmysql-java-component':
                 component => 'component/libmysql-java',
