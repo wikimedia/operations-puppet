@@ -3546,7 +3546,6 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
         ProxyFetch:
-          http_status: 401
           url:
             - https://logs-api.svc.eqiad.wmnet
       scheduler: sh
@@ -3555,8 +3554,6 @@ service::catalog:
       - type: http
         # The 'host' here can be handled by codfw and eqiad all the same
         host: logs-api.svc.eqiad.wmnet
-        valid_status_codes:
-          - 401
     port: 443
     sites:
       - eqiad

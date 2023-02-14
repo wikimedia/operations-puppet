@@ -37,4 +37,12 @@
 
   # Tell caches that we are using http authentication
   Header set Vary Authorization
+
+  # Allow GET / exclusively for health checking purposes
+  <LocationMatch "^/$">
+    <RequireAll>
+      Require all granted
+      Require method GET
+    </RequireAll>
+  </LocationMatch>
 </VirtualHost>
