@@ -78,3 +78,6 @@ puppet_ca_server: "%{alias('__master_for_role_puppetmaster__pontoon')}"
 profile::apt::use_proxy: false
 
 profile::base::certificates::trusted_certs: ~
+
+# don't configure benthos instances from prod hieradata
+profile::benthos::instances: {}
