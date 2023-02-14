@@ -345,7 +345,7 @@ class TaskGen < ::Rake::TaskLib
     desc 'Ensure shell files have no errors as detected by shellcheck'
     task 'shellcheck' do
       failures = false
-      result = JSON.parse(` /usr/bin/shellcheck -f json #{shell_files.join(' ')}`)
+      result = JSON.parse(` shellcheck -f json #{shell_files.join(' ')}`)
       current_file = ''
       # uncomment can use the following if info and warning gets to noisy
       # result.select{ |i| i['level'] == 'error'}.each do |issue|
