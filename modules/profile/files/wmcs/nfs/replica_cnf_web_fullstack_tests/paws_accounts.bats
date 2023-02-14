@@ -2,10 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 load helpers
 
+setup() {
+    make_test_dir "${PAWS_BASE_PATH}/${USER_ID}"
+}
+
 
 @test "paws: dry_run read replica cnf" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
             "mysql_user": "dummy_mysql_user",
             "dry_run": true
@@ -22,9 +26,9 @@ load helpers
 
 @test "paws: dry_run write replica cnf" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
-            "uid": "'$(id -u "$TOOL_NAME")'",
+            "uid": "'$USER_ID'",
             "mysql_username": "dummy_mysql_user",
             "password": "dummypass",
             "dry_run": true
@@ -34,13 +38,13 @@ load helpers
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_equal "detail.replica_path" "${PAWS_BASE_PATH}/${TOOL_NAME}/.my.cnf" "$output"
+    json_has_equal "detail.replica_path" "${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" "$output"
 }
 
 
 @test "paws: dry_run delete replica cnf" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
             "dry_run": true
     }'
@@ -49,21 +53,21 @@ load helpers
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_equal "detail.replica_path" "${PAWS_BASE_PATH}/${TOOL_NAME}/.my.cnf" "$output"
+    json_has_equal "detail.replica_path" "${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" "$output"
 }
 
 
 
 @test "paws: write replica cnf works if it's new" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
-            "uid": "'$(id -u "$TOOL_NAME")'",
+            "uid": "'$USER_ID'",
             "mysql_username": "dummy_mysql_user",
             "password": "dummypass",
             "dry_run": false
     }'
-    cnf_path="${PAWS_BASE_PATH}/${TOOL_NAME}/.my.cnf" 
+    cnf_path="${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" 
     [[ -e  "$cnf_path" ]] \
     && {
         sudo chattr -i "$cnf_path"
@@ -82,7 +86,7 @@ password = dummypass'
     is_equal "$(sudo cat "$cnf_path")" "$expected_contents"
 
     run sudo ls -la "$cnf_path"
-    match_regex "^-r--r----- 1 ${TOOL_NAME} ${TOOL_NAME} .*" "$output"
+    match_regex "^-r--r----- 1 ${USER_ID} ${USER_ID} .*" "$output"
 
     run sudo lsattr "$cnf_path"
     match_regex "^----i---------e----.* " "$output"
@@ -91,14 +95,14 @@ password = dummypass'
 
 @test "paws: write replica cnf does not overwrite if it exists already" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
-            "uid": "'$(id -u "$TOOL_NAME")'",
+            "uid": "'$USER_ID'",
             "mysql_username": "new_dummyuser",
             "password": "new_dummypass",
             "dry_run": false
     }'
-    cnf_path="${PAWS_BASE_PATH}/${TOOL_NAME}/.my.cnf" 
+    cnf_path="${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" 
     exists "$cnf_path"
 
     run do_curl write-replica-cnf "$data"
@@ -112,12 +116,12 @@ password = dummypass'
 
 @test "paws: read replica cnf matches the one we created" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
             "mysql_user": "dummy_mysql_user",
             "dry_run": false
     }'
-    cnf_path="${PAWS_BASE_PATH}/${TOOL_NAME}/.my.cnf" 
+    cnf_path="${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" 
 
     run do_curl read-replica-cnf "$data"
 
@@ -129,11 +133,11 @@ password = dummypass'
 
 @test "paws: delete replica cnf deletes it from the filesystem" {
     data='{
-            "account_id": "'$TOOL_NAME'",
+            "account_id": "'$USER_ID'",
             "account_type": "paws",
             "dry_run": false
     }'
-    cnf_path="${PAWS_BASE_PATH}/${TOOL_NAME}/.my.cnf" 
+    cnf_path="${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" 
 
     run do_curl delete-replica-cnf "$data"
 
@@ -143,4 +147,11 @@ password = dummypass'
 
     ! exists "$cnf_path"
 }
+
+# TODO: replace test with teardown_file once we have bats >0.4
+# IT IMPORTANT THAT THIS TEST BE THE LAST TEST IN THIS FILE!
+@test "custom teardown_file function" {
+  delete_test_replica_cnf "${PAWS_BASE_PATH}/${USER_ID}"
+  skip
+} 
 

@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 load helpers
 
+setup() {
+    make_test_dir "${USER_BASE_PATH}/${TOOL_NAME}"
+}
 
 @test "user: dry_run read replica cnf" {
     data='{
@@ -24,7 +27,7 @@ load helpers
     data='{
             "account_id": "'$TOOL_NAME'",
             "account_type": "user",
-            "uid": "'$(id -u "$TOOL_NAME")'",
+            "uid": "'$USER_ID'",
             "mysql_username": "dummy_mysql_user",
             "password": "dummypass",
             "dry_run": true
@@ -58,7 +61,7 @@ load helpers
     data='{
             "account_id": "'$TOOL_NAME'",
             "account_type": "user",
-            "uid": "'$(id -u "$TOOL_NAME")'",
+            "uid": "'$USER_ID'",
             "mysql_username": "dummy_mysql_user",
             "password": "dummypass",
             "dry_run": false
@@ -82,7 +85,7 @@ password = dummypass'
     is_equal "$(sudo cat "$cnf_path")" "$expected_contents"
 
     run sudo ls -la "$cnf_path"
-    match_regex "^-r--r----- 1 ${TOOL_NAME} ${TOOL_NAME} .*" "$output"
+    match_regex "^-r--r----- 1 ${USER_ID} ${USER_ID} .*" "$output"
 
     run sudo lsattr "$cnf_path"
     match_regex "^----i---------e----.* " "$output"
@@ -93,7 +96,7 @@ password = dummypass'
     data='{
             "account_id": "'$TOOL_NAME'",
             "account_type": "user",
-            "uid": "'$(id -u "$TOOL_NAME")'",
+            "uid": "'$USER_ID'",
             "mysql_username": "new_dummyuser",
             "password": "new_dummypass",
             "dry_run": false
@@ -144,3 +147,9 @@ password = dummypass'
     ! exists "$cnf_path"
 }
 
+# TODO: replace test with teardown_file once we have bats >0.4
+# IT IMPORTANT THAT THIS TEST BE THE LAST TEST IN THIS FILE!
+@test "custom teardown_file function" {
+  delete_test_replica_cnf "${USER_BASE_PATH}/${TOOL_NAME}"
+  skip
+} 

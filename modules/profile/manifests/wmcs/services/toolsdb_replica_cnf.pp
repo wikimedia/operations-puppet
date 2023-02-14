@@ -112,7 +112,8 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         ensure             => 'present',
         subscribe          => [
             Package['python3-flask'],
-            File[ $api_service_base_path ],
+            File[ $replica_cnf_config_file_path ],
+            File[ $api_service_app_path ]
             ],
         settings           => {
             uwsgi              => {
