@@ -38,15 +38,4 @@ class mediawiki::users(
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
         ]+$extra_privileges,
     }
-
-    # The pybal-check account is used by PyBal to monitor server health
-    # See <https://wikitech.wikimedia.org/wiki/LVS#SSH_checking>
-
-    group { 'pybal-check':
-        ensure => absent,
-    }
-
-    user { 'pybal-check':
-        ensure => absent,
-    }
 }
