@@ -3,6 +3,7 @@ class gitlab_runner::config (
     Stdlib::Absolutepath     $directory               = '/etc/gitlab-runner',
     Integer                  $concurrent              = 3,
     String                   $docker_image            = 'docker-registry.wikimedia.org/buster:latest',
+    Array[String]            $pull_policy             = ['always'],
     String                   $docker_network          = 'gitlab-runner',
     Wmflib::Ensure           $ensure_buildkitd        = 'present',
     Wmflib::POSIX::Variables $environment             = {},

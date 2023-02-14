@@ -25,6 +25,7 @@ listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>
   [runners.docker]
     # The image to run jobs with.
     image = '<%= @docker_image %>'
+    pull_policy = [<%- @pull_policy.each do |policy| -%>"<%= policy %>",<%- end -%>]
     # Disable to run container in privileged mode, for security reasons.
     privileged = false
 

@@ -5,6 +5,7 @@
 # picks only jobs created on protected branches or protected tags, and ignores other jobs.
 # @param concurrent Number of concurrent jobs allowed by this runner.
 # @param docker_image Default Docker image to use for job execution
+# @param image pull_policy set pull_policy for [runners.docker] setting
 # @param docker_volume Use a separate volume for docker data (for use on WMCS)
 # @param docker_volume_min Minimum size (Gb) of attached volumes considered for the docker mount.
 # @param docker_volume_max Maximum size (Gb) of attached volumes considered for the docker mount.
@@ -42,6 +43,7 @@ class profile::gitlab::runner (
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
     Integer                                     $concurrent         = lookup('profile::gitlab::runner::concurrent'),
     String                                      $docker_image       = lookup('profile::gitlab::runner::docker_image'),
+    Array[String]                               $pull_policy        = lookup('profile::gitlab::runner::pull_policy'),
     Boolean                                     $docker_volume      = lookup('profile::gitlab::runner::docker_volume'),
     Integer                                     $docker_volume_min  = lookup('profile::gitlab::runner::docker_volume_min'),
     Integer                                     $docker_volume_max  = lookup('profile::gitlab::runner::docker_volume_max'),
@@ -211,6 +213,7 @@ class profile::gitlab::runner (
             directory               => $config_dir,
             concurrent              => $concurrent,
             docker_image            => $docker_image,
+            pull_policy             => $pull_policy,
             docker_network          => $docker_network,
             ensure_buildkitd        => $ensure_buildkitd,
             environment             => $environment + $proxy_variables,

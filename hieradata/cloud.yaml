@@ -128,6 +128,10 @@ profile::gitlab::runner::access_level: not_protected
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::description: WMF GitLab runner
 profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/buster:latest
+# Use a local image if pulling fails (T329216)
+profile::gitlab::runner::pull_policy:
+  - "always"
+  - "if-not-present"
 profile::gitlab::runner::docker_volume: false
 profile::gitlab::runner::docker_volume_min: 40
 profile::gitlab::runner::docker_volume_max: 200
