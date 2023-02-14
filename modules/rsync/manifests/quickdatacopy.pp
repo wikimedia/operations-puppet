@@ -33,6 +33,8 @@
 #
 # [*chown*] Optionally set the USER:GROUP mapping.
 #
+# [*progress*] If $progress is true, show progress during transfer
+#
 # [*server_uses_stunnel*] For TLS-wrapping rsync.
 #
 # [*auto_interval*] If $auto_sync is true, the interval to sync at. Defaults to every 10 minutes. See
@@ -52,6 +54,7 @@ define rsync::quickdatacopy(
   Boolean $server_uses_stunnel = false,
   Boolean $auto_ferm_ipv6 = true,
   Optional[String] $chown = undef,
+  Optional[Boolean] $progress = false,
   Variant[
       Systemd::Timer::Schedule,
       Array[Systemd::Timer::Schedule, 1]] $auto_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
@@ -105,6 +108,10 @@ define rsync::quickdatacopy(
           undef   => '',
           default => "--chown=${chown}",
       }
+      $_progress = $progress ? {
+          true    => '--progress',
+          default => ''
+      }
 
       $is_dest_host = $facts['networking']['fqdn'] in $dest_hosts
 
@@ -123,7 +130,7 @@ define rsync::quickdatacopy(
           }
           $quickdatacopy = @("SCRIPT")
           #!/bin/sh
-          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} ${_chown} ${_exclude}rsync://${source_host}/${title} ${module_path}/
+          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} ${_chown} ${_progress} ${_exclude}rsync://${source_host}/${title} ${module_path}/
           | SCRIPT
 
           file { "/usr/local/sbin/sync-${title}":
