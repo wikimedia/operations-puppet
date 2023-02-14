@@ -85,6 +85,8 @@ class profile::phabricator::main (
     Boolean                     $manage_scap_user   = lookup('profile::phabricator::main::manage_scap_user',
                                                       { 'default_value' => true }),
     Array[Stdlib::Fqdn]         $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
+    String                      $gitlab_api_key     = lookup('profile::phabricator::main::gitlab_api_key',
+                                                      { 'default_value' => '' }),
 ) {
 
     $mail_alias = $::realm ? {
@@ -302,6 +304,7 @@ class profile::phabricator::main (
                     'cluster_mailers'           => $mail_config,
                     'database_host'             => $mysql_host,
                     'database_port'             => $mysql_port,
+                    'gitlab_api_key'            => $gitlab_api_key,
                 },
             },
         },
