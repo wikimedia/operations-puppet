@@ -48,7 +48,7 @@ rm -rf "${NEW_DIR}"
 git -C "${PROJECT_DIR}" clone --recursive --reference "${CACHE_DIR}" "${CACHE_DIR}" "${NEW_DIR}"
 
 # Run make
-echo "Running ${PROJECT}'s Makefile.deploy"
+echo "Running ${PROJECT}'s Makefile.deploy deploy"
 DEPLOY_PATH="${NEW_DIR}" VENV="${VENV_DIR}" make -C "${NEW_DIR}" -f Makefile.deploy deploy
 
 # Switch new with current and link the new virtualenv
@@ -70,4 +70,9 @@ ln -sv "${CUR_DIR}" "${DEPLOY_LINK}"  # Fixes the symlink from deploy
 if [[ -n "${OLD_VENV}" ]]; then
     echo "Deleting directory ${OLD_VENV}"
     rm -rf "${OLD_VENV}"
+fi
+
+echo "Running ${PROJECT}'s Makefile.deploy post-deploy"
+if grep -q '^post-deploy:' Makefile.deploy; then
+    DEPLOY_PATH="${NEW_DIR}" VENV="${VENV_DIR}" make -C "${NEW_DIR}" -f Makefile.deploy post-deploy
 fi
