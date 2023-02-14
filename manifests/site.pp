@@ -2665,10 +2665,6 @@ node /^testvm200[1-9]\.codfw\.wmnet$/ {
     role(test)
 }
 
-node 'testvm6001.drmrs.wmnet' {
-    role(test)
-}
-
 node /^thanos-be100[1234]\.eqiad\.wmnet/ {
     role(thanos::backend)
 }
