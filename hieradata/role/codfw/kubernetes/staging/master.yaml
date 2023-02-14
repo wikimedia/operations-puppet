@@ -8,12 +8,10 @@ profile::kubernetes::master::etcd_urls:
  - https://kubestagetcd2003.codfw.wmnet:2379
 
 # Needed to run kubelet on the master node (T290967)
-profile::calico::kubernetes::bgp_peers:
+profile::calico::kubernetes::cluster_nodes:
 - kubestagemaster2001.codfw.wmnet
 - kubestage2001.codfw.wmnet
 - kubestage2002.codfw.wmnet
-- cr1-codfw.wikimedia.org
-- cr2-codfw.wikimedia.org
 profile::kubernetes::master_hosts:
 - kubestagemaster2001.codfw.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"

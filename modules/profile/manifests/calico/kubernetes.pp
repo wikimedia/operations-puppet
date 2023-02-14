@@ -11,7 +11,7 @@ class profile::calico::kubernetes (
     String $calico_cni_username = lookup('profile::calico::kubernetes::calico_cni::username', { default_value => 'calico-cni' }),
     String $calicoctl_username = lookup('profile::calico::kubernetes::calicoctl::username', { default_value => 'calicoctl' }),
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
-    Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
+    Array[Stdlib::Host] $cluster_nodes = lookup('profile::calico::kubernetes::cluster_nodes'),
     Hash $calico_cni_config = lookup('profile::calico::kubernetes::cni_config'),
     String $istio_cni_username = lookup('profile::calico::kubernetes::istio_cni_username', { default_value => 'istio-cni' }),
     String $istio_cni_version = lookup('profile::calico::kubernetes::istio_cni_version', { default_value => '1.15' }),
@@ -80,18 +80,24 @@ class profile::calico::kubernetes (
     }
 
     # TODO: We need to configure BGP peers in calico datastore (helm chart) as well.
-    $bgp_peers_ferm = join($bgp_peers, ' ')
+    # Allow by default all the infra IPs (eg. routers loopback) as well as the server's gateway (eg. ToR)
+    $gateways = $facts['default_routes']['ipv6'] ? {
+        true    => [$facts['default_routes']['ipv4'], $facts['default_routes']['ipv6']],
+        default => [$facts['default_routes']['ipv4']],
+    }
+    $gateways_ferm = join($gateways, ' ')
     ferm::service { 'calico-bird':
         proto  => 'tcp',
         port   => '179', # BGP
-        srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
+        srange => "(\$NETWORK_INFRA ${gateways_ferm})",
     }
     # All nodes need to talk to typha and it runs as hostNetwork pod
     # TODO: If and when we move to a layered BGP hierarchy, revisit the use of
-    # $bgp_peers.
+    # $cluster_nodes.
+    $cluster_nodes_ferm = join($cluster_nodes, ' ')
     ferm::service { 'calico-typha':
         proto  => 'tcp',
         port   => '5473',
-        srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
+        srange => "(@resolve((${cluster_nodes_ferm})) @resolve((${cluster_nodes_ferm}), AAAA))",
     }
 }

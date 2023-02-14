@@ -1,4 +1,4 @@
-profile::calico::kubernetes::bgp_peers:
+profile::calico::kubernetes::cluster_nodes:
 - kubemaster2001.codfw.wmnet
 - kubemaster2002.codfw.wmnet
 - kubernetes2005.codfw.wmnet
@@ -21,8 +21,6 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes2022.codfw.wmnet
 - kubernetes2023.codfw.wmnet
 - kubernetes2024.codfw.wmnet
-- cr1-codfw.wikimedia.org
-- cr2-codfw.wikimedia.org
 profile::kubernetes::master_hosts:
 - kubemaster2001.codfw.wmnet
 - kubemaster2002.codfw.wmnet
