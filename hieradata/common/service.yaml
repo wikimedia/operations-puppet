@@ -3549,7 +3549,6 @@ service::catalog:
           url:
             - https://logs-api.svc.eqiad.wmnet
       scheduler: sh
-    page: false
     probes:
       - type: http
         # The 'host' here can be handled by codfw and eqiad all the same
@@ -3558,7 +3557,4 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
-    discovery:
-    - dnsdisc: logs-api
-      active_active: true
+    state: production
