@@ -200,12 +200,8 @@ node /^apifeatureusage[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 # notification server for Phabricator (T257617 and T322369)
-node 'aphlict1001.eqiad.wmnet' {
+node /^aphlict[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(aphlict)
-}
-
-node 'aphlict2001.codfw.wmnet' {
-    role(insetup::serviceops)
 }
 
 # new APT repositories (NOT DHCP/TFTP)
