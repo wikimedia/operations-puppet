@@ -56,13 +56,22 @@ class alertmanager (
 
     # Custom email template -- adapted from upstream to adjust for "alert dashboard" links.
     file { '/etc/prometheus/alertmanager_templates/email.tmpl':
-        ensure    => present,
-        owner     => 'prometheus',
-        group     => 'root',
-        mode      => '0440',
-        show_diff => false,
-        content   => template('alertmanager/email.tmpl.erb'),
-        notify    => Exec['alertmanager-reload'],
+        ensure  => present,
+        owner   => 'prometheus',
+        group   => 'root',
+        mode    => '0440',
+        content => template('alertmanager/email.tmpl.erb'),
+        notify  => Exec['alertmanager-reload'],
+    }
+
+    # Custom page-related templates
+    file { '/etc/prometheus/alertmanager_templates/page.tmpl':
+        ensure  => present,
+        owner   => 'prometheus',
+        group   => 'root',
+        mode    => '0440',
+        content => template('alertmanager/page.tmpl.erb'),
+        notify  => Exec['alertmanager-reload'],
     }
 
     exec { 'alertmanager-reload':

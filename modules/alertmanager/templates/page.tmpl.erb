@@ -1,0 +1,4 @@
+<%#- SPDX-License-Identifier: MIT -%>
+
+<%#- Shorter page/incident titles https://phabricator.wikimedia.org/T317240 -%>
+{{ define "victorops.default.entity_display_name" }}{{ if gt (len .Alerts.Firing) 1 }}[{{ .Alerts.Firing | len }}x] {{ end }}{{ .GroupLabels.SortedPairs.Values | join " " }} {{ if gt (len .CommonLabels) (len .GroupLabels) }}({{ with .CommonLabels.Remove .GroupLabels.Names }}{{ with .Remove (stringSlice "prometheus" "source" "severity" "team") }}{{ .Values | join " " }}{{ end }}{{ end }}){{ end }}{{ end }}
