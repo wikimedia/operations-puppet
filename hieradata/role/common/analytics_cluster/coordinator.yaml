@@ -56,11 +56,6 @@ profile::presto::server::config_properties:
   # query.max-memory is the max memory per node x number of nodes 40gb x nodes
   #query.max-memory for 5 nodes, note to upgrade once number of nodes increases
   query.max-memory: 200GB
-  task.concurrency: 32
-  # task.max-worker-threads is the Node vCPUs * 4
-  task.max-worker-threads: 192
-  node-scheduler.max-splits-per-node: 500
-  task.http-response-threads: 5000
 
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
