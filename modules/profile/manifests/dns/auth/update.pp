@@ -42,7 +42,7 @@ class profile::dns::auth::update (
     git::systemconfig { 'safe.directory-authdns-git':
         settings => {
             'safe' => {
-                'directory' => '/srv/authdns/git/',
+                'directory' => '/srv/authdns/git',
             }
         },
         before   => Exec['authdns-local-update'],
