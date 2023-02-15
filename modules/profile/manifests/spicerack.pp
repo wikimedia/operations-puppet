@@ -23,6 +23,7 @@ class profile::spicerack (
     Hash                           $netbox_config_data        = lookup('profile::spicerack::netbox_config_data'),
     Hash                           $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
     Hash                           $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
+    Hash                           $authdns_config_data       = lookup('authdns_servers'),
     Boolean                        $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
 
 ) {
@@ -62,12 +63,13 @@ class profile::spicerack (
     # TODO: refactor this after we move to puppet >= 6
     # or possibly after https://gerrit.wikimedia.org/r/c/operations/puppet/+/868739
     $modules = {
-        'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data },
-        'ganeti' => { 'config.yaml' => $ganeti_auth_data },
-        'kafka' => { 'config.yaml' => $kafka_config_data },
-        'netbox' => { 'config.yaml' => $netbox_config_data },
-        'peeringdb' => { 'config.yaml' => $peeringdb_config_data },
-        'service' => { 'service.yaml' => wmflib::service::fetch() },
+        'elasticsearch' => { 'config.yaml'  => $elasticsearch_config_data },
+        'ganeti'        => { 'config.yaml'  => $ganeti_auth_data },
+        'kafka'         => { 'config.yaml'  => $kafka_config_data },
+        'netbox'        => { 'config.yaml'  => $netbox_config_data },
+        'peeringdb'     => { 'config.yaml'  => $peeringdb_config_data },
+        'service'       => { 'service.yaml' => wmflib::service::fetch() },
+        'discovery'     => { 'authdns.yaml' => $authdns_config_data },
     }.filter |$module, $config| { !$config.values[0].empty }
 
     class { 'spicerack':
