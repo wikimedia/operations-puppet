@@ -513,18 +513,19 @@ sub cluster_fe_backend_response_early {
     } else {
         unset bereq.http.Cookie;
     }
-}
 
-sub cluster_fe_backend_response {
-    if (beresp.ttl > 60s && bereq.http.X-Subdomain && (bereq.url ~ "mobileaction=" || bereq.url ~ "useformat=")) {
-        set beresp.ttl = 60 s;
-    }
-
-<%- if @vcl_config.fetch('do_esitest', false) -%>
-    if (bereq.url ~ "^/esitest-fa8a495983347898/includer" || bereq.url ~ "^/wiki/") {
+<%- if @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
+    if (bereq.url ~ "^/esitest-fa8a495983347898/includer" || (bereq.url ~ "^/wiki/" && beresp.http.content-type ~ "^text/html")) {
         set beresp.do_esi = true;
     }
 <%- end -%>
+}
+
+sub cluster_fe_backend_response {
+    // cluster_fe_backend_response won't be called if an HFP is issued on wm_backend_response
+    if (beresp.ttl > 60s && bereq.http.X-Subdomain && (bereq.url ~ "mobileaction=" || bereq.url ~ "useformat=")) {
+        set beresp.ttl = 60 s;
+    }
 
     // set a 607s hit-for-pass object based on response conditions in vcl_backend_response:
     //    Token=1 + Vary:Cookie:
@@ -562,7 +563,7 @@ sub cluster_fe_deliver {
             }
         }
     }
-<%- unless @vcl_config.fetch('do_esitest', false) -%>
+<%- unless @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
     // As resp.do_esi defaults to true and ESI data gets cached as part of the object attributes
     // disabling ESI requires setting resp.do_esi to false or otherwise ESI requests
     // will still happen in cached objects where beresp.do_esi was set to true
