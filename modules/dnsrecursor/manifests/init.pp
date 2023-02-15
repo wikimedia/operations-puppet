@@ -51,6 +51,7 @@ class dnsrecursor (
     Boolean                                                         $do_ipv6                  = false,
     Boolean                                                         $install_from_component   = false, # for Wikidough, enable pdns-recursor from component
     Boolean                                                         $enable_webserver         = false,
+    Optional[Stdlib::Port]                                          $webserver_port           = 8082,
     Boolean                                                         $restart_service          = true,
     Array[Stdlib::IP::Address]                                      $api_allow_from           = [],
 ) {

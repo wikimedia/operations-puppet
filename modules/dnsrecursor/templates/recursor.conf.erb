@@ -140,9 +140,9 @@ query-local-address=0.0.0.0,[::]
 <% end -%>
 <% end -%>
 
-<%- if @enable_webserver -%>
+<%- if @enable_webserver and @pdns_43 -%>
 webserver=yes
-webserver-port=8082
+webserver-port=<%= @webserver_port %>
 webserver-address=<%= @ipaddress %>
 webserver-allow-from=<%= flatten_ips(@api_allow_from).sort.join(" ") %>
 <%- end -%>
