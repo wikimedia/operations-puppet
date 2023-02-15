@@ -49,6 +49,7 @@ profile::presto::server::config_properties:
   http.server.authentication.krb5.service-name: 'presto'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
+  join-distribution-type: AUTOMATIC
 
 profile::presto::server::catalogs:
 

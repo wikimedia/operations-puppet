@@ -27,6 +27,7 @@ profile::presto::server::config_properties:
   query.max-memory: 200GB
   query.max-memory-per-node: 20GB
   query.max-total-memory-per-node: 40GB
+  join-distribution-type: AUTOMATIC
   
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will

@@ -56,6 +56,7 @@ profile::presto::server::config_properties:
   # query.max-memory is the max memory per node x number of nodes 40gb x nodes
   #query.max-memory for 5 nodes, note to upgrade once number of nodes increases
   query.max-memory: 200GB
+  join-distribution-type: AUTOMATIC
 
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
