@@ -1,3 +1,4 @@
 profile::resolving::nameservers:
+  - '198.35.26.8'    # dns4004
   - '208.80.153.111' # dns2002
   - '208.80.153.77'  # dns2001
