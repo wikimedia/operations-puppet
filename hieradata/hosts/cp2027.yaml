@@ -66,6 +66,3 @@ lookup_options:
   profile::cache::haproxy::sticktables:
     merge:
       strategy: unique
-
-
-profile::cache::haproxy::version: haproxy26
