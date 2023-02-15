@@ -22,7 +22,6 @@ class profile::mail::mx (
     String[1]             $alias_file_mail_rcpt     = lookup('profile::mail::mx::alias_file_mail_rcpt'),
     String[1]             $alias_file_mail_subject  = lookup('profile::mail::mx::alias_file_mail_subject'),
     Array[String[1]]      $sender_discards          = lookup('profile::mail::mx::sender_discards', {'default_value' => []}),
-    Sensitive[String[1]]  $smtp_ldap_password       = lookup('profile::mail::mx::smtp_ldap_password'),
     Hash[
         Stdlib::Email,
         String[1]
