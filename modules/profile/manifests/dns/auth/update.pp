@@ -36,6 +36,27 @@ class profile::dns::auth::update (
         before  => Exec['authdns-local-update'],
     }
 
+    # safe.directory directive for the two below directories allows
+    # authdns-local-update to be run without any permission issues.
+    # See CR 888053 for more information.
+    git::systemconfig { 'safe.directory-authdns-git':
+        settings => {
+            'safe' => {
+                'directory' => '/srv/authdns/git/',
+            }
+        },
+        before   => Exec['authdns-local-update'],
+
+    }
+    git::systemconfig { 'safe.directory-netbox-snippets':
+        settings => {
+            'safe' => {
+                'directory' => '/srv/git/netbox_dns_snippets',
+            }
+        },
+        before   => Exec['authdns-local-update'],
+    }
+
     # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
     # other by-hostname without working recdns
     $authdns_servers.each |$s_name,$s_ip| {
