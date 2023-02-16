@@ -44,22 +44,31 @@ class profile::kubernetes::master (
 ) {
     $k8s_le_116 = versioncmp($version, '1.16') <= 0
 
+    # k8s 1.16 clusters use cergen
+    # FIXME: This should be removed after T329826 is resolved
+    sslcert::certificate { $service_cert:
+        ensure       => present,
+        group        => 'kube',
+        skip_private => false,
+        use_cergen   => true,
+    }
+    # FIXME: With k8s 1.23 we still need this one (shared) cergen cert
+    # for service-account token signing, see:
+    # https://phabricator.wikimedia.org/T329826
+    $cergen_sa_cert = {
+        'chained' => $ssl_cert_path,
+        'chain'   => '/nonexistent',
+        'cert'    => $ssl_cert_path,
+        'key'     => $ssl_key_path,
+    }
+
     if $k8s_le_116 {
-        # On k8s 1.16 cluster, use cergen
-        sslcert::certificate { $service_cert:
-            ensure       => present,
-            group        => 'kube',
-            skip_private => false,
-            use_cergen   => true,
-        }
-        $apiserver_cert = {
-            'chained' => $ssl_cert_path,
-            'chain'   => '/nonexistent',
-            'cert'    => $ssl_cert_path,
-            'key'     => $ssl_key_path,
-        }
-        # We use the same certificate for service-account token signing in 1.16
-        $sa_cert = $apiserver_cert
+        # We use the service_cert certificate as service-account certificate in k8s 1.16
+        $sa_cert = $cergen_sa_cert
+        # We use the service_cert certificate as apiserver certificate in k8s 1.16
+        $apiserver_cert = $cergen_sa_cert
+        # In k8s 1.16, no additional certs are required to validate service-account tokens
+        $additional_sa_certs = []
 
         # All other certs are unused with k8s 1.16
         $nonexistent_cert = {
@@ -98,6 +107,7 @@ class profile::kubernetes::master (
             ],
             'notify_service' => 'kube-apiserver'
         })
+
         $sa_cert = profile::pki::get_cert($pki_intermediate, 'sa', {
             'profile'        => 'service-account-management',
             'renew_seconds'  => $pki_renew_seconds,
@@ -105,6 +115,9 @@ class profile::kubernetes::master (
             'outdir'         => '/etc/kubernetes/pki',
             'notify_service' => 'kube-apiserver'
         })
+        # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
+        # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
+        $additional_sa_certs = [$cergen_sa_cert['cert'], $sa_cert['cert']]
 
         # Client certificate used to authenticate against kubelets
         $kubelet_client_cert = profile::pki::get_cert($pki_intermediate, 'kube-apiserver-kubelet-client', {
@@ -162,7 +175,9 @@ class profile::kubernetes::master (
     class { 'k8s::apiserver':
         etcd_servers            => $etcd_servers,
         apiserver_cert          => $apiserver_cert,
-        sa_cert                 => $sa_cert,
+        # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case
+        sa_cert                 => $cergen_sa_cert,
+        additional_sa_certs     => $additional_sa_certs,
         kubelet_client_cert     => $kubelet_client_cert,
         frontproxy_cert         => $frontproxy_cert,
         users                   => $_users,

@@ -17,6 +17,14 @@ daemon_args = [
   "--service-cluster-ip-range=#{@service_cluster_cidr['v4']}",
 ]
 
+if @additional_sa_certs
+  @additional_sa_certs.each do |v|
+    unless v == @sa_cert['cert']
+      daemon_args.push("--service-account-key-file=#{v}")
+    end
+  end
+end
+
 if @service_node_port_range
   daemon_args.push("--service-node-port-range=#{@service_node_port_range}")
 end
