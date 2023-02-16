@@ -178,7 +178,7 @@ define tlsproxy::localssl(
         }
     }
     unless $cfssl_paths.empty {
-        File[$cfssl_paths] ~> Exec['nginx-reload']
+        File[$cfssl_paths.values] ~> Exec['nginx-reload']
     }
 
     # used in localssl.erb to template upstream definition name
