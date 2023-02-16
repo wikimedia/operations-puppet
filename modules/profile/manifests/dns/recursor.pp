@@ -3,7 +3,7 @@
 
 class profile::dns::recursor (
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
-  Optional[String] $bind_service = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
+  Optional[String]                              $bind_service   = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
 ) {
     include ::network::constants
     include ::profile::base::firewall
@@ -30,6 +30,9 @@ class profile::dns::recursor (
         allow_from_listen => false,
         log_common_errors => 'no',
         threads           => $facts['physicalcorecount'],
+        enable_webserver  => debian::codename::ge('bullseye'),
+        webserver_port    => 9199,
+        api_allow_from    => $network::constants::aggregate_networks,
         bind_service      => $bind_service,
     }
 
