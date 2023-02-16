@@ -3,6 +3,26 @@
 lowercaseOutputLabelNames: true
 lowercaseOutputName: false
 rules:
+  - pattern: "com.facebook.presto.execution.executor<name=TaskExecutor><>(.*Splits|Tasks|RunAwaySplitCount|RunnerThreads).*: (.*)"
+    name: "presto_taskexecutor_$1"
+    help: "Presto: TaskExecutor $1"
+    type: GAUGE
+  - pattern: "com.facebook.presto.execution<name=(QueryExecution|RemoteTaskFactory)><>(.*Executor).(.*Count).*: (.*)"
+    name: "presto_$1_$2_$3"
+    help: "Presto: $1 $2 $3"
+    type: COUNTER
+  - pattern: "com.facebook.presto.execution<name=(QueryExecution|RemoteTaskFactory)><>(.*Executor).(.*Size).*: (.*)"
+    name: "presto_$1_$2_$3"
+    help: "Presto: $1 $2 $3"
+    type: GAUGE
+  - pattern: "com.facebook.presto.server<name=(AsyncHttpExecutionMBean|ExchangeExecutionMBean|StatementHttpExecutionMBean)><>(.*Executor).(.*Count).*: (.*)"
+    name: "presto_$1_$2_$3"
+    help: "Presto: $1 $2 $3"
+    type: COUNTER
+  - pattern: "com.facebook.presto.server<name=(AsyncHttpExecutionMBean|ExchangeExecutionMBean|StatementHttpExecutionMBean)><>(.*Executor).(.*Size).*: (.*)"
+    name: "presto_$1_$2_$3"
+    help: "Presto: $1 $2 $3"
+    type: GAUGE
   - pattern: "com.facebook.presto.failureDetector<name=HeartbeatFailureDetector><>ActiveCount: (.*)"
     name: "presto heartbeatdetector_activecount"
     help: "Presto Heartbeat Detector: Active nodes"
