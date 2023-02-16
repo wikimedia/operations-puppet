@@ -289,7 +289,6 @@ profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::websockets: false
 profile::tlsproxy::envoy::upstream_response_timeout: 65.0
-profile::tlsproxy::envoy::floc_opt_out: false
 profile::tlsproxy::envoy::ssl_provider: "sslcert"
 profile::tlsproxy::envoy::cfssl_options: {}
 profile::tlsproxy::envoy::access_log: false

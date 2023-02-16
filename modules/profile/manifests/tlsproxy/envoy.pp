@@ -40,7 +40,6 @@
 # @param upstream_response_timeout timeout on a request in seconds.  Default: 65
 # @param retries If true enable retries. Default: true
 # @param use_remote_address If true append the client address to the x-forwarded-for header
-# @param floc_opt_out add the Permissions-Policy: interest-cohort=() header to opt out of FLoC
 # @param ssl_provider the ssl provider e.g. sslcert, acme_chief
 # TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
 # @param upstream_addr the address of the backend service.  must be a localy configuered ipaddrres,
@@ -63,7 +62,6 @@ class profile::tlsproxy::envoy(
     Boolean                          $access_log                = lookup('profile::tlsproxy::envoy::access_log'),
     Envoyproxy::Headerkeyformat      $header_key_format         = lookup('profile::tlsproxy::envoy::header_key_format'),
     Boolean                          $listen_ipv6               = lookup('profile::tlsproxy::envoy::listen_ipv6'),
-    Boolean                          $floc_opt_out              = lookup('profile::tlsproxy::envoy::floc_opt_out'),
     Enum['sslcert', 'acme', 'cfssl'] $ssl_provider              = lookup('profile::tlsproxy::envoy::ssl_provider'),
     Hash                             $cfssl_options             = lookup('profile::tlsproxy::envoy::cfssl_options'),
     Array[Profile::Tlsproxy::Envoy::Service] $services          = lookup('profile::tlsproxy::envoy::services'),
@@ -204,10 +202,6 @@ class profile::tlsproxy::envoy(
             true    => undef,
             default => {'num_retries' => 0},
         }
-        $response_headers_to_add = $floc_opt_out ? {
-            true    => {'Permissions-Policy' => 'interest-cohort=()'},
-            default => {},
-        }
 
         envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
             upstreams                 => $upstreams,
@@ -222,7 +216,6 @@ class profile::tlsproxy::envoy(
             listen_ipv6               => $listen_ipv6,
             idle_timeout              => $idle_timeout,
             max_requests_per_conn     => $max_requests,
-            response_headers_to_add   => $response_headers_to_add,
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',
