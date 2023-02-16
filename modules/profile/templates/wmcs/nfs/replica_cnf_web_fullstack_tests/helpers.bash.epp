@@ -39,11 +39,13 @@ make_test_dir () {
 delete_test_replica_cnf () {
     local path="${1?}"
     shopt -s dotglob
+    shopt -s nullglob
     for each_file in "$path"/*.my.cnf; do
         chattr -i "$each_file"
         rm "$each_file"
     done
     shopt -u dotglob
+    shopt -u nullglob
 }
 
 do_curl() {
