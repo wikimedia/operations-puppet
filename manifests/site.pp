@@ -1420,6 +1420,10 @@ node 'graphite2004.codfw.wmnet' {
     role(graphite::production)
 }
 
+node /^idm[12]001\.wikimedia\.org$/ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^idm-test[12]001\.wikimedia\.org$/ {
     role(idm_test)
 }
