@@ -206,7 +206,7 @@ class profile::planet (
         team               => 'serviceops-collab',
         severity           => 'task',
         path               => '/',
-        ip_families        => ['ipv4'],
+        ip_families        => ['ip4'],
         force_tls          => true,
         body_regex_matches => ['Planetarium'],
     }
