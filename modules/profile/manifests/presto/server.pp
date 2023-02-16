@@ -121,9 +121,8 @@ class profile::presto::server(
             sslcert::x509_to_pkcs12 { 'presto_keystore' :
                 owner       => 'presto',
                 group       => 'presto',
-                public_key  => $ssl_cert['cert'],
+                public_key  => $ssl_cert['chained'],
                 private_key => $ssl_cert['key'],
-                certfile    => $ssl_cert['ca'],
                 outfile     => $ssl_keystore_path,
                 password    => $keystore_password,
                 require     => Package['presto-server'],
