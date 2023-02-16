@@ -154,8 +154,9 @@ class profile::httpbb (
 
     # Add the hourly Kubernetes test separately, since it needs a different --https_port.
     if $test_kubernetes_hourly {
+        $ensure = $test_kubernetes_hourly.bool2str('present', 'absent')
         systemd::timer::job { 'httpbb_kubernetes_hourly':
-            ensure             => present,
+            ensure             => $ensure,
             description        => 'Run httpbb appserver tests hourly on Kubernetes.',
             command            => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450 --retry_on_timeout\'',
             interval           => {
@@ -164,12 +165,6 @@ class profile::httpbb (
             },
             user               => 'www-data',
             monitoring_enabled => true,
-        }
-    }
-    else
-    {
-        systemd::timer::job { 'httpbb_kubernetes_hourly':
-            ensure             => absent,
         }
     }
 }
