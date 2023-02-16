@@ -222,6 +222,7 @@ profile::elasticsearch::common_settings:
     recover_after_nodes: 3
     bulk_thread_pool_executors: 5
     awareness_attributes: ''
+    certificate_name: "%{::fqdn}"
     unicast_hosts:
       - deployment-elastic09.deployment-prep.eqiad1.wikimedia.cloud
       - deployment-elastic10.deployment-prep.eqiad1.wikimedia.cloud
