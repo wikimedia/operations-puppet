@@ -85,8 +85,12 @@ password = dummypass'
     exists "$cnf_path"
     is_equal "$(sudo cat "$cnf_path")" "$expected_contents"
 
+    USER=$USER_ID
+    if (id -nu "$USER_ID" &> /dev/null);then
+        USER="$TOOL_NAME"
+    fi
     run sudo ls -la "$cnf_path"
-    match_regex "^-r--r----- 1 ${USER_ID} ${USER_ID} .*" "$output"
+    match_regex "^-r--r----- 1 ${USER} ${USER} .*" "$output"
 
     run sudo lsattr "$cnf_path"
     match_regex "^----i---------e----.* " "$output"
