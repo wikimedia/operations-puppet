@@ -8,6 +8,7 @@ class profile::kerberos::client (
     Boolean $skip_wrapper = lookup('profile::kerberos::client::skip_wrapper', { 'default_value' => false }),
     Boolean $show_krb_ticket_info = lookup('profile::kerberos::client::show_krb_ticket_info', { 'default_value' => false }),
     Boolean $enable_autorenew = lookup('profile::kerberos::client::enable_autorenew', { 'default_value' => false }),
+    Boolean $prefer_tcp = lookup('profile::kerberos::client::prefer_tcp', { 'default_value' => false }),
 ) {
 
     class { 'kerberos::wrapper':

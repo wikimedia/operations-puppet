@@ -33,6 +33,9 @@ profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 # Metastore.
 profile::hive::client::hive_metastore_host: 'an-coord1001.eqiad.wmnet'
 
+# Kerberos settings
+profile::kerberos::client::prefer_tcp: true
+
 # Presto (Coordinator) Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto

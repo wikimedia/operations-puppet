@@ -9,6 +9,9 @@ profile::admin::groups:
 # Hadoop settings, presto server needs Hadoop client configs
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
+# Kerberos settings
+profile::kerberos::client::prefer_tcp: true
+
 # Presto (worker) Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto
