@@ -14,7 +14,7 @@ describe 'profile::puppet_compiler' do
       let(:node_params) do
         {
           # 'realm' => 'labs'  # use to test labs specific hiera lookups
-          'role' => 'mediawiki/appserver'  # use to test c$role::mediawiki::appserver
+          '_role' => 'mediawiki/appserver'  # use to test c$role::mediawiki::appserver
         }
       end
       let(:params) do

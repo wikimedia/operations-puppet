@@ -30,7 +30,7 @@ profile::configmaster::server_aliases:
   - 'config-master.ulsfo.wmnet'
   - 'config-master.eqsin.wmnet'
   - 'config-master.drmrs.wmnet'
-
+profile::configmaster::enable_nda: true
 profile::java::java_packages:
   - version: '11'
     variant: 'jre-headless'

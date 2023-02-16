@@ -1,11 +1,13 @@
 <VirtualHost *:80>
     ServerName <%= @virtual_host %>
-    ServerAlias <%= @server_aliases.join(' ') %>
+    ServerAlias <%= @vhost_settings['enable_nda'] ? @server_aliases.join(' ') : @real_server_aliases.join(' ')  %>
 
     DocumentRoot <%= @document_root %>
-<%- @cas_settings.each_pair do |key, setting| -%>
-  <%- unless setting.nil? or setting == :undef -%>
+<%- if @vhost_settings['enable_nda'] -%>
+  <%- @cas_settings.each_pair do |key, setting| -%>
+    <%- unless setting.nil? or setting == :undef -%>
     <%= key %> <%= setting %>
+    <%-end -%>
   <%-end -%>
 <%-end -%>
 
@@ -16,17 +18,19 @@
          AllowOverride None
      </Directory>
 
+<%- if @vhost_settings['enable_nda'] -%>
      <Directory "<%= @document_root %><%= @protected_uri %>">
-<%- @cas_auth_settings.each_pair do |key, setting| -%>
-  <%- if setting.is_a?(Array) -%>
-    <%- setting.each do |_setting| -%>
+  <%- @cas_auth_settings.each_pair do |key, setting| -%>
+    <%- if setting.is_a?(Array) -%>
+      <%- setting.each do |_setting| -%>
       <%= key %> <%= _setting %>
-     <%- end -%>
-  <%- else -%>
+      <%- end -%>
+    <%- else -%>
       <%= key %> <%= setting %>
+    <%- end -%>
   <%- end -%>
-<%- end -%>
      </Directory>
+<%- end -%>
 
      CustomLog ${APACHE_LOG_DIR}/configmaster-access.log wmf
      ErrorLog ${APACHE_LOG_DIR}/configmaster-error.log
