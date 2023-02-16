@@ -1,10 +1,43 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 
-CONFIG_FILE=/etc/gitlab/gitlab.rb
-DATA_BACKUP_FILE=$(ls -t /srv/gitlab-backup/*gitlab_backup.tar | head -n1)
+DEFAULT_BACKUP_FILE=$(ls -t /srv/gitlab-backup/*gitlab_backup.tar | head -n1)
 CONFIG_BACKUP_FILE=$(ls -t /srv/gitlab-backup/gitlab_config*.tar | head -n1)
+REQUESTED_BACKUP=""
 GITLAB_URL=$(grep '^external_url ' /etc/gitlab/gitlab.rb | cut -d '"' -f2)
+
+usage() {
+  /usr/bin/echo "Usage: $0 [ -f REQUESTED_BACKUP ]" 1>&2
+}
+
+exit_error() {
+    usage
+    exit 1
+}
+
+while getopts ":f:k:" options; do
+    case "${options}" in
+         f)
+         REQUESTED_BACKUP=${OPTARG}
+         ;;
+         :)
+         /usr/bin/echo "ERROR -${OPTARG} requires an argument"
+         exit_error
+         ;;
+         *)
+         exit_error
+         ;;
+     esac
+done
+
+# Chose data backup file
+if [ -z "$REQUESTED_BACKUP" ]; then
+    /usr/bin/echo "No REQUESTED_BACKUP provided, using latest backup $DEFAULT_BACKUP_FILE"
+    DATA_BACKUP_FILE=$DEFAULT_BACKUP_FILE
+else
+    /usr/bin/echo "REQUESTED_BACKUP provided, using $REQUESTED_BACKUP"
+    DATA_BACKUP_FILE="$REQUESTED_BACKUP"
+fi
 
 # check if installed GitLab version matches backup version
 installed_version=$(dpkg -l gitlab-ce | grep -Po "\\d*\.\\d*\.\\d*")
@@ -14,10 +47,6 @@ if [ $installed_version != $backup_version ]; then
     /usr/bin/echo "Installed GitLab version $installed_version doesn't match backup GitLab version $backup_version"
     exit 1
 fi
-
-# disable puppet to prevent stopped services from restart
-# during the backup restoration process
-/usr/local/sbin/disable-puppet "Running Backup Restore"
 
 echo "Running Pre-requisites..."
 
@@ -37,7 +66,12 @@ echo "changing access permissions of backups"
 /usr/bin/chmod 600 $DATA_BACKUP_FILE $CONFIG_BACKUP_FILE
 /usr/bin/chown git.git $DATA_BACKUP_FILE $CONFIG_BACKUP_FILE
 
+# disable puppet to prevent stopped services from restart
+# during the backup restoration process
+/usr/local/sbin/disable-puppet "Running Backup Restore"
+
 # Extract Configuration Backup
+/usr/bin/echo "Restore config backup"
 /usr/bin/tar -xvf $CONFIG_BACKUP_FILE --exclude='/etc/gitlab/gitlab.rb*' --strip-components=2 -C /etc/gitlab/
 
 echo "running gitlab-ctl reconfigure"
