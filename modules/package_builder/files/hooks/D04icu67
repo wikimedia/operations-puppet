@@ -1,0 +1,13 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+
+if [ "$ICU67" = "yes" ] && [ "$DIST" = "buster" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-icu67.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/icu67
+    deb-src http://apt.wikimedia.org/wikimedia buster-wikimedia component/icu67
+EOF
+    apt-get update
+fi
