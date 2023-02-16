@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr,
-              dannyh]
+              dannyh, mepps]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -170,7 +170,7 @@ groups:
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
-              daimona, mepps, jabrams, nforrester, katelevan, cmaslak,
+              daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, essexigyan]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
@@ -367,7 +367,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga,
               piccardi, ladsgroup, musikanimal,
               goransm, dsaez, rho, mirrys, slaporte, jk,
-              ayounsi, mepps, mmiller, seddon, tstarling, karen,
+              ayounsi, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
               niharika29, jgleeson, srishakatux,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
@@ -3448,15 +3448,13 @@ users:
     uid: 3205
     email: swilson@wikimedia.org
   mepps:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mepps
     realname: Margaret Epps
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDohDQkFG5FrhN50ZtS1MGd1xiY0D2OO9yzn8Y31xqVq mepps@wmf2679
+    ssh_keys: []
     uid: 16947
-    email: mepps@wikimedia.org
-    krb: present
+    krb: absent
   mmiller:
     ensure: present
     realname: Marshall Miller
