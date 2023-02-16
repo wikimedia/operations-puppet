@@ -1,21 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class idm::deployment (
-    String           $project,
-    String           $service_fqdn,
-    String           $django_secret_key,
-    String           $django_mysql_db_host,
-    String           $django_mysql_db_name,
-    String           $django_mysql_db_user,
-    String           $django_mysql_db_password,
-    Stdlib::Unixpath $base_dir,
-    String           $deploy_user,
-    String           $etc_dir,
-    String           $static_dir,
-    String           $log_dir,
-    Boolean          $production,
-    Hash             $oidc,
-    Hash             $ldap_config,
+    String              $project,
+    Stdlib::Fqdn        $service_fqdn,
+    String              $django_secret_key,
+    String              $django_mysql_db_host,
+    String              $django_mysql_db_name,
+    String              $django_mysql_db_user,
+    String              $django_mysql_db_password,
+    Stdlib::Unixpath    $base_dir,
+    String              $deploy_user,
+    Stdlib::Unixpath    $etc_dir,
+    Stdlib::Unixpath    $static_dir,
+    Stdlib::Unixpath    $log_dir,
+    Boolean             $production,
+    Hash                $oidc,
+    Hash                $ldap_config,
+    Stdlib::Fqdn        $redis_master,
+    Array[Stdlib::Fqdn] $redis_replicas,
+    String              $redis_password,
+    Integer             $redis_port,
+    Integer             $redis_maxmem,
 ){
     # We need django from backports to get latest LTS.
     if debian::codename::eq('bullseye') {
@@ -46,9 +51,8 @@ class idm::deployment (
     # For staging and production we want to install
     # from Debian packages, but for the development
     # process the latest git version is deployed.
-    if($production == false){
-        ensure_packages(['python3-venv', 'redis',])
-
+    unless $production {
+        ensure_packages(['python3-venv'])
         $venv = "${base_dir}/venv"
 
         file { $base_dir :
@@ -81,6 +85,33 @@ class idm::deployment (
             command     => "${base_dir}/venv/bin/python ${base_dir}/${project}/manage.py collectstatic  --no-input",
             environment => ["PYTHONPATH=${etc_dir}", 'DJANGO_SETTINGS_MODULE=settings']
         }
+    }
+
+    ferm::service { 'redis_replication':
+        proto  => 'tcp',
+        port   => $redis_port,
+        srange => join($redis_replicas + $redis_master, ' ')
+    }
+
+    $base_redis_settings =  {
+        bind       => '127.0.0.1 ::1',
+        maxmemory  => $redis_maxmem,
+        port       => $redis_port
+    }
+
+    $replica_redis_settings = {
+        replicaof  => "${$redis_master} ${redis_port}",
+        masterauth => $redis_password
+    }
+
+    if ($facts['networking']['hostname'] != $redis_master){
+        $redis_settings = $base_redis_settings + $replica_redis_settings
+    } else {
+        $redis_settings =  $base_redis_settings
+    }
+
+    redis::instance { String($redis_port):
+        settings => $redis_settings
     }
 
     $logs = ['idm', 'django']

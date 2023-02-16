@@ -1,21 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class profile::idm(
-    Stdlib::Fqdn     $service_fqdn              = lookup('profile::idm::service_fqdn'),
-    String           $django_secret_key         = lookup('profile::idm::server::django_secret_key'),
-    String           $django_mysql_db_host      = lookup('profile::idm::server::django_mysql_db_host'),
-    String           $django_mysql_db_password  = lookup('profile::idm::server::django_mysql_db_password'),
-    String           $django_mysql_db_user      = lookup('profile::idm::server::django_mysql_db_user', {'default_value' => 'idm'}),
-    String           $django_mysql_db_name      = lookup('profile::idm::server::django_mysql_db_name', {'default_value' => 'idm'}),
-    String           $deploy_user               = lookup('profile::idm::deploy_user', {'default_value'                  => 'www-data'}),
-    Integer          $uwsgi_process_count       = lookup('profile::idm::uwsgi_process_count', {'default_value'          => 4}),
-    Boolean          $development               = lookup('profile::idm::development', {'default_value'                  => false}),
-    Boolean          $production                = lookup('profile::idm::production', {'default_value'                   => false}),
-    Boolean          $envoy_termination         = lookup('profile::idm::envoy_termination', {'default_value'            => false}),
-    Apereo_cas::Urls $apereo_cas                = lookup('apereo_cas'),
-    Hash             $ldap_config               = lookup('ldap'),
-    String           $oidc_key                  = lookup('profile::idm::oidc_key'),
-    String           $oidc_secret               = lookup('profile::idm::oidc_secret', {'default_value' => 'secret'}),
+    Stdlib::Fqdn        $service_fqdn              = lookup('profile::idm::service_fqdn'),
+    String              $django_secret_key         = lookup('profile::idm::server::django_secret_key'),
+    String              $django_mysql_db_host      = lookup('profile::idm::server::django_mysql_db_host'),
+    String              $django_mysql_db_password  = lookup('profile::idm::server::django_mysql_db_password'),
+    String              $django_mysql_db_user      = lookup('profile::idm::server::django_mysql_db_user', {'default_value' => 'idm'}),
+    String              $django_mysql_db_name      = lookup('profile::idm::server::django_mysql_db_name', {'default_value' => 'idm'}),
+    String              $deploy_user               = lookup('profile::idm::deploy_user', {'default_value'                  => 'www-data'}),
+    Integer             $uwsgi_process_count       = lookup('profile::idm::uwsgi_process_count', {'default_value'          => 4}),
+    Boolean             $development               = lookup('profile::idm::development', {'default_value'                  => false}),
+    Boolean             $production                = lookup('profile::idm::production', {'default_value'                   => false}),
+    Boolean             $envoy_termination         = lookup('profile::idm::envoy_termination', {'default_value'            => false}),
+    Apereo_cas::Urls    $apereo_cas                = lookup('apereo_cas'),
+    Hash                $ldap_config               = lookup('ldap'),
+    String              $oidc_key                  = lookup('profile::idp::service'),
+    String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
+    Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
+    Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
+    String              $redis_password            = lookup('profile::idm::redis_password', {'default_value'               => 'secret'}),
+    Integer             $redis_port                = lookup('profile::idm::redis_port', {'default_value'                   => 6973}),
+    Integer             $redis_maxmem              = lookup('profile::idm::redis_maxmem', {'default_value'                 => 1610612736 })
 ) {
 
     ensure_packages(['python3-django-uwsgi'])
@@ -49,7 +54,6 @@ class profile::idm(
         port  => $ferm_port,
     }
 
-
     file { [$static_dir, $media_dir, $etc_dir, $log_dir] :
         ensure => directory,
         owner  => $deploy_user,
@@ -70,6 +74,11 @@ class profile::idm(
         log_dir                  => $log_dir,
         static_dir               => $static_dir,
         production               => $production,
+        redis_master             => $redis_master,
+        redis_replicas           => $redis_replicas,
+        redis_password           => $redis_password,
+        redis_port               => $redis_port,
+        redis_maxmem             => $redis_maxmem,
         oidc                     => {
             key      => $oidc_key,
             secret   => $oidc_secret,
@@ -113,11 +122,12 @@ class profile::idm(
         content => template('idm/idm-apache-config.erb'),
     }
 
+    $job_state = ($facts['networking']['hostname'] == $redis_master).bool2str('present', 'absent')
     class { 'idm::jobs':
         base_dir => $base_dir,
         etc_dir  => $etc_dir,
         project  => $project,
-        present  => present,
+        present  => $job_state,
         venv     => $idm::deployment::venv
     }
 }
