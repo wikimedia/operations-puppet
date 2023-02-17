@@ -252,7 +252,8 @@ class profile::kubernetes::master (
         }
     }
     class { 'k8s::controller':
-        service_account_private_key_file => $sa_cert['key'],
+        # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case
+        service_account_private_key_file => $cergen_sa_cert['key'],
         ca_file                          => $sa_cert['chain'],
         kubeconfig                       => $controllermanager_kubeconfig,
         version                          => $version,
