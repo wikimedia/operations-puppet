@@ -1,36 +1,47 @@
 ## Usage
 ```
-$ node warmup.js
+$ python3 warmup.py -h
+usage: warmup.py [-h] file {spread,clone,dry} ...
 
-Usage: node warmup.js FILE MODE [spread_target|clone_cluster] [clone_dc]
- - file          Path to a text file containing a newline-separated list of urls. Entries may use %server or %mobileServer.
- - mode          One of:
-                  "spread": distribute urls via load-balancer
-                  "clone": send each url to each server
-                  "clone-debug": send urls to debug server
+positional arguments:
+  file                Path to a text file containing a newline-separated list
+                      of URLs. Entries may use %server or %mobileServer.
 
-Examples:
- $ node warmup.js urls-cluster.txt spread appservers.svc.codfw.wmnet
- $ node warmup.js urls-server.txt clone-debug
- $ node warmup.js urls-server.txt clone appserver codfw
+optional arguments:
+  -h, --help          show this help message and exit
+
+commands:
+  {spread,clone,dry}
+    spread            distribute URLs via load balancer
+    clone             send each URL to each server
+    dry               print list of URLs to standard out
 ```
+
+### Modes
+
+- `warmup.py file spread [-h] target`
+  - target: target host, e.g. appservers.svc.codfw.wmnet
+
+- `warmup.py file clone [-h] cluster dc`
+  - cluster: target cluster, e.g. appserver
+  - dc: target data center, e.g. codfw
+
+- `warmup.py file dry [-h] [--all]`
+  - --all: dump the full list of URLs
 
 ## Output
 ```
-$ node warmup.js urls-server.txt clone-debug
-...
-[2017-03-01T18:26:57.262Z] Request https://bg.wikibooks.org/w/load.php?debug=false&modules=startup&only=scripts (debug)
-[2017-03-01T18:26:57.347Z] Request https://tet.wikipedia.org/w/load.php?debug=false&modules=jquery%2Cmediawiki&only=scripts (debug)
-[2017-03-01T18:26:57.459Z] Request https://zh.wikibooks.org/w/load.php?debug=false&modules=site%7Csite.styles (debug)
+$ python3 warmup.py urls-cluster.txt spread appservers.svc.eqiad.wmnet
 Statistics:
-	- timing: min = 1.032268135s | max = 14.20442249s | avg = 7.403086658241668s | total = 15s
-	- concurrency: min = 1 | max = 100 | avg = 59
+  Wall time: 860.1 ms
+  Count: 132 requests
+  Fastest: 2.0 ms
+  Average: 81.7 ms
 
-Slowest 5:
- - 2.214s (debug) https://test.wikidata.org/w/load.php?debug=false&modules=startup&only=scripts
- - 2.213s (debug) https://test2.wikipedia.org/w/load.php?debug=false&modules=startup&only=scripts
- - 2.211s (debug) https://test.wikipedia.org/w/load.php?debug=false&modules=startup&only=scripts
- - 1.465s (debug) https://test.wikidata.org/w/load.php?debug=false&modules=jquery%2Cmediawiki&only=scripts
- - 1.417s (debug) https://test2.wikipedia.org/w/load.php?debug=false&modules=jquery%2Cmediawiki&only=scripts
-Done!
+Slowest 5 requests:
+ - 669.2 ms (appservers.svc.eqiad.wmnet) https://sr.wikipedia.org/wiki/Main_Page
+ - 425.4 ms (appservers.svc.eqiad.wmnet) https://ru.wikipedia.org/wiki/Main_Page
+ - 366.6 ms (appservers.svc.eqiad.wmnet) https://fr.wikisource.org/wiki/Main_Page
+ - 285.7 ms (appservers.svc.eqiad.wmnet) https://ru.wikinews.org/wiki/Main_Page
+ - 264.3 ms (appservers.svc.eqiad.wmnet) https://species.wikimedia.org/wiki/Main_Page
 ```

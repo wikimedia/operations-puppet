@@ -4,7 +4,7 @@ class mediawiki::maintenance::cache_warmup( $ensure = present ) {
     # https://phabricator.wikimedia.org/T156922
     # Hopefully this will be obsolete soon enough when we run active-active.
 
-    ensure_packages('nodejs')
+    ensure_packages('python3-requests')
 
     # Ensure all files we have in puppet are present in the directory, but allow
     # users to write files in the directory without purging them.
