@@ -2699,10 +2699,13 @@ node /^deploy[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(deployment_server::kubernetes)
 }
 
-# new url-downloaders (T224551)
 # https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
+}
+
+node /^urldownloader200[34]\.wikimedia\.org/ {
+    role(insetup::infrastructure_foundations)
 }
 
 node 'cloudvirt1017.eqiad.wmnet' {
