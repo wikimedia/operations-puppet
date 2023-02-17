@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::eventschemas::repositories
 #
 # Clones all the provided event schema repositories using the eventschemas::repository define.

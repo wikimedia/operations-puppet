@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::eventlogging::processor
 #
 # Reads raw events, parses and validates them, and then sends

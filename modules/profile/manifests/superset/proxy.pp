@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::superset::proxy
 #
 # Sets up a WMF HTTP LDAP auth proxy.

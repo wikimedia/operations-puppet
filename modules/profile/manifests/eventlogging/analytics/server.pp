@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::eventlogging::analytics::server
 #
 # Common profile class that all other eventlogging analytics profile classes should include.

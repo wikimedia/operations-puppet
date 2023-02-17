@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class profile::eventschemas::service
 #
 # Includes profile::eventschemas::repositories and sets up an HTTP site to serve
