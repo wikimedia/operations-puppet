@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 local json = require 'json'
 local f = io.open('/var/cache/labsaliaser/labs-ip-aliases.json', 'r')
 local f_contents = f:read("*a")

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::neutron::common(
     $version = lookup('profile::openstack::base::version'),
     $region = lookup('profile::openstack::base::region'),

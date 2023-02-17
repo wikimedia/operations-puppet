@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::keystone::service(
     $daemon_active = lookup('profile::openstack::base::keystone::daemon_active'),
     $version = lookup('profile::openstack::base::version'),

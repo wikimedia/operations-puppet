@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::puppetmaster::backend(
     Stdlib::Host $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
     Hash[String, Puppetmaster::Backends] $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),

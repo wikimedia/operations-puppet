@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Configure rbd/ceph for glance and radosgw
 #
 # Both services require config in the same files 

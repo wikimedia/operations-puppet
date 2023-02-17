@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::nova::fullstack::service(
     $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),

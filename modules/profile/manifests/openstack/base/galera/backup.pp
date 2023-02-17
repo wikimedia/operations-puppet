@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::galera::backup(
     String              $back_user             = lookup('profile::openstack::base::galera::backup_user'),
     String              $back_pass             = lookup('profile::openstack::base::galera::backup_password'),

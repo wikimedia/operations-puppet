@@ -1,5 +1,6 @@
 ; THIS FILE IS MANAGED BY PUPPET
 ; modules/profile/files/openstack/base/pdns/recursor/labsdb.zone
+; SPDX-License-Identifier: Apache-2.0
 
 ; Legacy wiki replica hosts (read-only)
 c1	1H	IN	A	10.64.4.11

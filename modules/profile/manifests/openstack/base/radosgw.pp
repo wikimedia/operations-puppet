@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # radosgw packages and service.  The config is combined with glance/ceph config
 #  and defined in profile::openstack::base::rbd_cloudcontrol
 class profile::openstack::base::radosgw(

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::keystone::fernet_keys(
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
     String $cred_key_0 = lookup('profile::openstack::base::keystone::credential_key_0'),

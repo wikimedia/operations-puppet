@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class: profile::openstack::pdns::recursor::service
 #
 # Instances can't communicate directly with other instances

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Class profile::openstack::base::cloudweb_mcrouter
 #
 # Configures a mcrouter cluster which pools all cloudweb hosts

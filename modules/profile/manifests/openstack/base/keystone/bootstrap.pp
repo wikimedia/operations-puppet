@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # This is a transitional class for bootstrapping keystone
 # with the LDAP provider.
 class profile::openstack::base::keystone::bootstrap(

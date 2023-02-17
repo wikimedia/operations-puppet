@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::wikitech::web(
     $osm_host = lookup('profile::openstack::base::wikitech::web::osm_host'),
     $wikidb = lookup('profile::openstack::base::wikitech::db_name'),

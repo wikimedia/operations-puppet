@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::networktests (
     String[1]                     $region                  = lookup('porfile::openstack::base::region'),
     Stdlib::Fqdn                  $sshbastion              = lookup('profile::openstack::base::networktests::sshbastion'),

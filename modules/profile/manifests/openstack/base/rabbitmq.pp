@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Cloud VPS OpenStack RabbitMQ message queue server
 # @param rabbitmq_service_name The name that clients use to connect to this server. Usually in the
 #   form of rabbitmqNN.DEPLOYMENT.wikimediacloud.org.

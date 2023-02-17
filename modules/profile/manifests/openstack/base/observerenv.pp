@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Access credentials for the keystone 'novaobserver' account
 class profile::openstack::base::observerenv(
     String       $region            = lookup('profile::openstack::base::region'),

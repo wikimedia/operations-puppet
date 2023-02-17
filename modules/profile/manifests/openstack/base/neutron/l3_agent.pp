@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::neutron::l3_agent(
     $version = lookup('profile::openstack::base::version'),
     $report_interval = lookup('profile::openstack::base::neutron::report_interval'),

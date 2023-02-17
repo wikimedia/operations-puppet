@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::puppetmaster::encapi (
     Stdlib::Host $encapi_db_host = lookup('profile::openstack::base::puppetmaster::encapi::encapi_db_host'),
     String $encapi_db_name = lookup('profile::openstack::base::puppetmaster::encapi::encapi_db_name'),

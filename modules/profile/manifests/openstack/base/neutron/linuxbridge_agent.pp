@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::neutron::linuxbridge_agent(
     $version = lookup('profile::openstack::base::version'),
     $bridges = lookup('profile::openstack::base::neutron::bridges'),

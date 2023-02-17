@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::puppetmaster::common () {
     include profile::openstack::base::puppetmaster::enc_client
 

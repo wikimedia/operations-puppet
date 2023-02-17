@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::nova::compute::service(
     String $version = lookup('profile::openstack::base::version'),
     String $instance_dev = lookup('profile::openstack::base::nova::instance_dev'),
