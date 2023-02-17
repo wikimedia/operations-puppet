@@ -126,10 +126,9 @@ class gitlab (
     sysctl::parameters {'omnibus-gitlab':
         priority => 90,
         values   => {
-            'kernel.sem'         => '250 32000 32 262',
-            'kernel.shmall'      => 4194304,
-            'kernel.shmmax'      => 17179869184,
-            'net.core.somaxconn' => 1024,
+            'kernel.sem'    => '250 32000 32 262',
+            'kernel.shmall' => 4194304,
+            'kernel.shmmax' => 17179869184,
         },
     }
 
