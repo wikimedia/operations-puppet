@@ -50,7 +50,7 @@ class gitlab (
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = {},
     Array[Stdlib::IP::Address] $monitoring_whitelist    = ['127.0.0.1/32'],
     Boolean          $enable_secondary_sshd             = true,
-    Boolean          $install_restore_script            = false,
+    Boolean          $install_restore_script            = true,
     Boolean          $enable_restore                    = false,
     Stdlib::Unixpath $backup_dir_data                   = '/srv/gitlab-backup',
     Stdlib::Unixpath $backup_dir_config                 = '/etc/gitlab/config_backup',

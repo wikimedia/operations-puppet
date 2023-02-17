@@ -193,7 +193,6 @@ class profile::gitlab(
         enable_backup           => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         ssh_listen_addresses    => $ssh_listen_addresses,
         nginx_listen_addresses  => $nginx_listen_addresses,
-        install_restore_script  => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
         enable_restore          => $enable_restore,
         cert_path               => $cert_path,
         key_path                => $key_path,
