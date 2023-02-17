@@ -115,7 +115,7 @@ class profile::wmcs::paws::prometheus (
             'metrics_path'   => '/hub/metrics',
             'static_configs' => [
                 {
-                    'targets' => ['hub.paws.wmcloud.org'],
+                    'targets' => ['hub-paws.wmcloud.org'],
                 },
             ],
         },
@@ -254,7 +254,7 @@ class profile::wmcs::paws::prometheus (
 
     prometheus::server { 'paws':
         listen_address                 => '127.0.0.1:9903',
-        external_url                   => 'https://prometheus.paws.wmcloud.org/paws',
+        external_url                   => 'https://prometheus-paws.wmcloud.org/paws',
         storage_retention_size         => $storage_retention_size,
         scrape_configs_extra           => $jobs,
         alertmanager_discovery_extra   => $alertmanager_discovery_extra,
