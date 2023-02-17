@@ -167,6 +167,12 @@ profile::services_proxy::envoy::listeners:
     port: 6031
     service: inference
     timeout: "10s"
+  - name: device-analytics
+    port: 6032
+    service: device-analytics
+    timeout: "10s"
+    keepalive: "4s"
+
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -291,3 +297,4 @@ profile::services_proxy::envoy::enabled_listeners:
   - mwapi
   - linkrecommendation
   - image-suggestion
+  - device-analytics

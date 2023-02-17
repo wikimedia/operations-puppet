@@ -1,0 +1,5 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE USER IF NOT EXISTS device_analytics WITH PASSWORD '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT SELECT ON aqs TO 'device_analytics';

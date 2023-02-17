@@ -3565,3 +3565,37 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+
+  device-analytics:
+    description: device-analytics AQS2 service, device-analytics.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.80
+      eqiad:
+        default: 10.2.2.80
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    page: false
+    probes:
+      - type: http
+        path: /healthz
+    port: 4972
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: device-analytics
+        active_active: true

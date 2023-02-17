@@ -179,6 +179,7 @@ profile::cassandra::settings:
     - aqs
     - image_suggestions
     - aqs_testing
+    - device_analytics
 
 profile::cassandra::client_ips:
   # required for image-suggestions and other tools.

@@ -184,6 +184,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: thumbor
         - name: thumbor-deploy
+    device-analytics:
+      usernames:
+        - name: device-analytics
+        - name: device-analytics-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
