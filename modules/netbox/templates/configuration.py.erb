@@ -218,6 +218,15 @@ REDIS = {
     },
 }
 
+<% unless @validators.empty? %>
+CUSTOM_VALIDATORS = {
+  <%- @validators.each_with_index do |validator, index| -%>
+    <%- comma = index == @validators.size - 1 ? '' : ',' -%>
+    '<%= validator %>': ( 'validators.<%= validator %>.Main', )<%= comma %>
+  <%- end -%>
+}
+<%- end -%>
+
 <% if @authentication_provider == 'ldap' %>
 REMOTE_AUTH_BACKEND = 'netbox.authentication.LDAPBackend'
 <% elsif @authentication_provider == 'cas' %>

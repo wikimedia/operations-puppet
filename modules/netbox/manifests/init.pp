@@ -32,6 +32,8 @@
 # @param cas_group_attribute_mapping hash of cas attributes to map
 # @param cas_group_mapping hash of nextbox group mappings
 # @param cas_group_required list of required groups
+# @param validators list of custom validators
+#                   see: https://docs.netbox.dev/en/stable/customization/custom-validation/
 # @param cas_server_url The cas service url
 # @param cas_username_attribute The cas username attribute
 # @param swift_user The user to connect to SWIFT for image storage as.
@@ -74,6 +76,7 @@ class netbox (
     Hash[String, Array]           $cas_group_attribute_mapping = {},
     Hash[String, Array]           $cas_group_mapping           = {},
     Array                         $cas_group_required          = [],
+    Array[String[1]]              $validators                  = [],
     Stdlib::HTTPSUrl              $cas_server_url              = 'https://cas.example.org',
     Optional[String]              $cas_username_attribute      = undef,
     # Swift specific config

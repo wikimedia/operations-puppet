@@ -80,6 +80,7 @@ class profile::netbox (
     Integer[0]                $changelog_retention     = lookup('profile::netbox::changelog_retention'),
     Integer[0]                $jobresult_retention     = lookup('profile::netbox::jobresult_retention'),
     Boolean                   $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
+    Array[String[1]]          $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
 
     #ganeti config
@@ -169,6 +170,7 @@ class profile::netbox (
         changelog_retention         => $changelog_retention,
         jobresult_retention         => $jobresult_retention,
         prefer_ipv4                 => $prefer_ipv4,
+        validators                  => $validators,
         ca_certs                    => $ca_certs,
         cas_server_url              => $cas_server_url,
         cas_rename_attributes       => $cas_rename_attributes,
