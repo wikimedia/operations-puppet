@@ -400,7 +400,7 @@ node /^(contint1002|contint2001)\.wikimedia\.org$/ {
 }
 # New contint and gerrit node T299575
 node /^(contint2002)\.wikimedia\.org$/ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_collab)
 }
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
@@ -1328,7 +1328,7 @@ node 'gitlab2002.wikimedia.org' {
 }
 
 node /^gitlab2003\.wikimedia\.org$/ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_collab)
 }
 
 # gitlab runners - codfw (T3011183)
