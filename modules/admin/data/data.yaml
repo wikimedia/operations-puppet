@@ -87,6 +87,11 @@ groups:
     # ariel, hnowlan, kamila, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
               daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
+    approval:
+      - Mat Nadrofsky
+      - Will Doran
+      - Frantz Joseph
+      - Jean-René Branaa
   release-engineering:
     gid: 837
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
@@ -439,27 +444,30 @@ groups:
     members: [*platform_engineering_members, hoo]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
-      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
+      - Frantz Joseph
+      - Jean-René Branaa
   dumpsdata-admins:
     gid: 825
     description: People who can sudo into the dumpsgen user on dumpsdata hosts.
     members: [*platform_engineering_members]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
-      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
+      - Frantz Joseph
+      - Jean-René Branaa
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts
     members: [hokwelum]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
+      - Frantz Joseph
+      - Jean-René Branaa
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
@@ -823,9 +831,10 @@ groups:
     description: People who have shell access to snapshot hosts and bastions only.
     members: [springle]
     approval:
-      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
+      - Frantz Joseph
+      - Jean-René Branaa
   wdqs-test-roots:
     gid: 803
     description: users with root on WDQS test cluster
