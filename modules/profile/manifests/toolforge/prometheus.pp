@@ -285,6 +285,18 @@ class profile::toolforge::prometheus (
 
     $kubernetes_pod_jobs = [
         {
+            name      => 'k8s-cert-manager',
+            namespace => 'cert-manager',
+            pod_name  => 'cert-manager-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9402,
+        },
+        {
+            name      => 'k8s-cert-manager-reloader',
+            namespace => 'cert-manager',
+            pod_name  => 'reloader-reloader-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9090,
+        },
+        {
             name      => 'k8s-ingress-nginx',
             namespace => 'ingress-nginx-gen2',
             pod_name  => 'ingress-nginx-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
