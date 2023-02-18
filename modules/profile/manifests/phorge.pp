@@ -16,6 +16,8 @@ class profile::phorge(
         'php-mysql',
         'php-zip',
         'php-gd',
+        'php-apcu',
+        'python3-pygments',
     ])
 
     $httpd_modules = ['rewrite', 'headers', 'php7.4']
