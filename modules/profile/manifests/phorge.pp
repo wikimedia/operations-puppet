@@ -14,6 +14,8 @@ class profile::phorge(
         'php-mbstring',
         'php-curl',
         'php-mysql',
+        'php-zip',
+        'php-gd',
     ])
 
     $httpd_modules = ['rewrite', 'headers', 'php7.4']
