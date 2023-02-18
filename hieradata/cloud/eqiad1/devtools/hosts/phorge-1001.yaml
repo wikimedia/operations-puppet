@@ -1,0 +1,1 @@
+profile::mariadb::generic_server::datadir: /var/lib/mysql
