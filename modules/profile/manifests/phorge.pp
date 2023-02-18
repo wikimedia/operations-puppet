@@ -6,6 +6,7 @@ class profile::phorge(
     Stdlib::HTTPSUrl $git_origin_arcanist = lookup('profile::phorge::git_origin_arcanist'),
     Stdlib::Unixpath $install_path_phorge = lookup('profile::phorge::install_path_phorge'),
     Stdlib::HTTPSUrl $git_origin_phorge = lookup('profile::phorge::git_origin_phorge'),
+    Stdlib::Unixpath $repo_path = lookup('profile::phorge::repo_path'),
 ){
 
     ensure_packages([
@@ -38,7 +39,7 @@ class profile::phorge(
         content => template('profile/phorge/httpd.conf.erb'),
     }
 
-    wmflib::dir::mkdir_p([$install_path_arcanist, $install_path_phorge])
+    wmflib::dir::mkdir_p([$install_path_arcanist, $install_path_phorge, $repo_path])
 
     git::clone { 'arcanist':
         ensure    => 'present',
