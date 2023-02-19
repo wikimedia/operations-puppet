@@ -77,6 +77,7 @@ class profile::wmcs::backy2(
         ensure                    => present,
         description               => 'purge old VM backups; allow backy2 to decide what is too old',
         command                   => '/usr/local/sbin/wmcs-purge-backups',
+        after                     => 'backup_vms.service',
         interval                  => {
           'start'    => 'OnCalendar',
           'interval' => '*-*-* 00:05:00', # daily at five past midnight
