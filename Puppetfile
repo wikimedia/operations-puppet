@@ -21,6 +21,10 @@ mod 'concat',
     # :git => 'https://github.com/puppetlabs/puppetlabs-concat',
     # :ref => 'v7.3.0'
 
+mod 'dnsquery',
+    :git => 'https://github.com/voxpupuli/puppet-dnsquery.git',
+    :ref => 'v4.0.0'
+
 mod 'lvm',
     # NOTE: Deviates from upstream v1.4.0
     # TODO: migrate local fixes to gitlab.w.o and create a tag
