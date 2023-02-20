@@ -64,31 +64,29 @@ extendedKeyUsage = serverAuth, clientAuth
 subjectAltName = @alt_names
 [alt_names]
 DNS.1 = ${title}
-DNS.2 = ${title}.${title}
-DNS.3 = ${title}.${title}.svc
 EOF
 
-openssl genrsa -out ${tmpdir}/server-key.pem 2048
-openssl req -new -key ${tmpdir}/server-key.pem -subj "/CN=${title}" -out ${tmpdir}/server.csr -config ${tmpdir}/csr.conf
+openssl genrsa -out ${tmpdir}/k8s-key.pem 2048
+openssl req -new -key ${tmpdir}/k8s-key.pem -subj "/CN=${title}" -out ${tmpdir}/csr -config ${tmpdir}/csr.conf
 
 # clean-up any previously created CSR for our service. Ignore errors if not present.
 kubectl delete csr ${csrName} || true
 
 # create  server cert/key CSR and  send to k8s API
 cat <<EOF | kubectl create -f -
-apiVersion: certificates.k8s.io/v1beta1
+apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
 metadata:
   name: ${csrName}
 spec:
   groups:
-  - system:authenticated
-  request: $(cat ${tmpdir}/server.csr | base64 | tr -d '\n')
+    - system:authenticated
+  request: $(cat ${tmpdir}/csr | base64 | tr -d '\n')
+  signerName: kubernetes.io/kube-apiserver-client
   usages:
-  - digital signature
-  - key encipherment
-  - server auth
-  - client auth
+    - digital signature
+    - key encipherment
+    - client auth
 EOF
 
 # verify CSR has been created
@@ -113,14 +111,14 @@ if [[ ${serverCert} == '' ]]; then
     echo "ERROR: After approving csr ${csrName}, the signed certificate did not appear on the resource. Giving up after 10 attempts." >&2
     exit 1
 fi
-echo ${serverCert} | openssl base64 -d -A -out ${tmpdir}/server-cert.pem
+echo ${serverCert} | openssl base64 -d -A -out ${tmpdir}/k8s-cert.pem
 
 if [ "$verbose" == "-v" ] ; then
     echo
     echo "INFO: your TLS cert files are:"
-    echo "INFO:     ${tmpdir}/server-cert.pem"
-    echo "INFO:     ${tmpdir}/server-key.pem"
+    echo "INFO:     ${tmpdir}/k8s-cert.pem"
+    echo "INFO:     ${tmpdir}/k8s-key.pem"
 else
-    echo "${tmpdir}/server-cert.pem" >&3
-    echo "${tmpdir}/server-key.pem" >&3
+    echo "${tmpdir}/k8s-cert.pem" >&3
+    echo "${tmpdir}/k8s-key.pem" >&3
 fi
