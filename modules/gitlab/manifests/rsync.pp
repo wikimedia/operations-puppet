@@ -30,7 +30,7 @@ class gitlab::rsync (
         ensure         => $ensure_sync,
         path           => $backup_dir_data,
         read_only      => 'no',
-        hosts_allow    => [$active_host],
+        hosts_allow    => $passive_hosts + $active_host,
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
     }
