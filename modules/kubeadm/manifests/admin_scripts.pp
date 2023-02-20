@@ -19,11 +19,7 @@ class kubeadm::admin_scripts (
     }
 
     file { '/usr/local/sbin/wmcs-k8s-secret-for-cert':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/kubeadm/admin_scripts/wmcs-k8s-secret-for-cert.sh',
+        ensure => absent,
     }
 
     file { '/usr/local/sbin/wmcs-k8s-enable-cluster-monitor':
