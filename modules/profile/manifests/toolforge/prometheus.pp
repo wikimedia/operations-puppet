@@ -408,12 +408,20 @@ class profile::toolforge::prometheus (
         },
     ]
 
+    class { 'alerts::deploy::prometheus':
+        git_source => 'gitlab',
+        git_repo   => 'repos/cloud/toolforge/alerts',
+        git_branch => 'main',
+        instances  => ["project-${::wmcs_project}"],
+    }
+
     prometheus::server { 'tools':
         listen_address                 => '127.0.0.1:9902',
         external_url                   => 'https://tools-prometheus.wmflabs.org/tools',
         storage_retention_size         => $storage_retention_size,
         scrape_configs_extra           => $jobs,
         alertmanager_discovery_extra   => $alertmanager_discovery_extra,
+        rule_files_extra               => ["/srv/alerts/project-${::wmcs_project}/*.yaml"],
         alerting_relabel_configs_extra => [
             { 'target_label' => 'project', 'replacement' => $::wmcs_project, 'action' => 'replace' },
         ],
