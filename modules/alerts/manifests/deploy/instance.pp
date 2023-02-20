@@ -10,6 +10,7 @@ define alerts::deploy::instance (
   String $deploy_dir,
   Optional[String] $deploy_tag = undef,
   Optional[Wmflib::Sites] $deploy_site = undef,
+  String[1] $git_repo_name = 'operations/alerts',
 ) {
     if !defined(File[$deploy_dir]) {
         file { $deploy_dir:
@@ -25,7 +26,7 @@ define alerts::deploy::instance (
     systemd::unit { $service_name:
         ensure  => present,
         content => systemd_template('alerts-deploy@'),
-        before  => Git::Clone['operations/alerts'],
+        before  => Git::Clone[$git_repo_name],
     }
 
     exec { "enable ${service_name}":

@@ -1,34 +1,38 @@
 # SPDX-License-Identifier: Apache-2.0
-# Deploy alerts from operations/alerts to $deploy_dir for Prometheus to pick up.
-
-class alerts::deploy::prometheus(
-  Stdlib::Unixpath $deploy_dir = '/srv/alerts',
-  Stdlib::Unixpath $git_dir = '/srv/alerts.git',
-  Array[String] $instances = [],
+# Deploy alerts from $git_repo to $deploy_dir for Prometheus to pick up.
+class alerts::deploy::prometheus (
+    Stdlib::Unixpath $deploy_dir = '/srv/alerts',
+    Stdlib::Unixpath $git_dir    = '/srv/alerts.git',
+    String[1]        $git_repo   = 'operations/alerts',
+    String[1]        $git_source = 'gerrit',
+    String[1]        $git_branch = 'master',
+    Array[String[1]] $instances  = [],
 ) {
     require ::alerts
 
-
     alerts::deploy::instance { 'local':
-        alerts_dir  => $git_dir,
-        deploy_dir  => $deploy_dir,
-        deploy_site => $::site,
+        alerts_dir    => $git_dir,
+        deploy_dir    => $deploy_dir,
+        deploy_site   => $::site,
+        git_repo_name => $git_repo,
     }
 
     # Deploy instance-specific alerts
     $instances.each |$instance| {
         alerts::deploy::instance { $instance:
-            alerts_dir  => $git_dir,
-            deploy_dir  => "${deploy_dir}/${instance}",
-            deploy_tag  => $instance,
-            deploy_site => $::site,
+            alerts_dir    => $git_dir,
+            deploy_dir    => "${deploy_dir}/${instance}",
+            deploy_tag    => $instance,
+            deploy_site   => $::site,
+            git_repo_name => $git_repo,
         }
     }
 
-    git::clone { 'operations/alerts':
+    git::clone { $git_repo:
         ensure    => latest,
         directory => $git_dir,
-        branch    => 'master',
+        source    => $git_source,
+        branch    => $git_branch,
         notify    => Exec['start alerts-deploy'],
     }
 
