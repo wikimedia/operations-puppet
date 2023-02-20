@@ -181,6 +181,8 @@ class apereo_cas (
         mode    => '0600',
         recurse => true,
     }
+    $prometheus_ips = $prometheus_nodes.map |$node| { dnsquery::lookup($node) }.flatten
+    $idp_ips = $idp_nodes.map |$node| { dnsquery::lookup($node) }.flatten
     file { "${config_dir}/cas.properties":
         ensure  => file,
         owner   => $daemon_user,

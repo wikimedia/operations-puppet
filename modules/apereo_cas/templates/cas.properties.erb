@@ -1,21 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-<%-
-def get_addresses(hostnames)
-  answers = []
-  hostnames.each do |hostname|
-    Resolv::DNS.open do |dns|
-      [Resolv::DNS::Resource::IN::A, Resolv::DNS::Resource::IN::AAAA].each do |rrtype|
-        answer = dns.getresources(hostname, rrtype)
-        next if answer.empty?
-        answers << answer.map { |ans| ans.address.to_s }
-      end
-    end
-  end
-  raise Puppet::Error, "#{hostnames.join(',')} do not resolve" if answers.empty?
-  answers.flatten.sort
-end
-cas_version = Gem::Version.new(@facts.fetch('cas_version', '0.a'))
--%>
+<%- cas_version = Gem::Version.new(@facts.fetch('cas_version', '0.a')) -%>
 # Without the following line we seem to have 5-15 sec lag for most requests
 spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration
 <%- if @spring_password -%>
@@ -56,11 +40,11 @@ management.endpoints.web.exposure.include=<%= @actuators.join(',') %>
 management.endpoint.<%= actuator %>.enabled=true
 <% end -%>
 
-<%- if @actuators.include?('prometheus') and !@prometheus_nodes.empty? %>
+<%- if @actuators.include?('prometheus') and !@prometheus_ips.empty? %>
 management.metrics.tags.application=${spring.application.name}
 management.metrics.export.prometheus.enabled=true
 cas.monitor.endpoints.endpoint.prometheus.access[0]=IP_ADDRESS
-cas.monitor.endpoints.endpoint.prometheus.required-ip-addresses[0]=::1,127.0.0.1,<%= get_addresses(@prometheus_nodes).join(',') %>
+cas.monitor.endpoints.endpoint.prometheus.required-ip-addresses[0]=::1,127.0.0.1,<%= @prometheus_ips.join(',') %>
 <%- end -%>
 
 # This only returns a result for a session of an authenticated
@@ -74,7 +58,7 @@ cas.monitor.endpoints.endpoint.sso.access=ANONYMOUS
 
 <%- if @actuators.include?('ssoSessions') -%>
 cas.monitor.endpoints.endpoint.ssoSessions.access[0]=IP_ADDRESS
-cas.monitor.endpoints.endpoint.ssoSessions.required-ip-addresses=::1,127.0.0.1,<%= get_addresses(@idp_nodes).join(',') %>
+cas.monitor.endpoints.endpoint.ssoSessions.required-ip-addresses=::1,127.0.0.1,<%= @idp_ips.join(',') %>
 <%- end -%>
 
 cas.service-registry.json.location=file:<%= @services_dir %>
