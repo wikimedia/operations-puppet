@@ -21,10 +21,15 @@
 #   If monitoring needs to be enabled.
 #   Default: false
 #
+# [*kdc_workers*]
+#   The number of workers to be spawned by the KDC
+#   Default: 1
+#
 class profile::kerberos::kdc (
-    Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
-    Array[Stdlib::Fqdn] $krb_kdc_servers = lookup('kerberos_kdc_servers'),
+    Stdlib::Fqdn $krb_realm_name          = lookup('kerberos_realm_name'),
+    Array[Stdlib::Fqdn] $krb_kdc_servers  = lookup('kerberos_kdc_servers'),
     Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::kdc::monitoring_enabled', { 'default_value' => false }),
+    Integer $kdc_workers                  = lookup('profile::kerberos::kdc::workers', { 'default_value' => 1 }),
 ) {
 
     # Debconf preseed values to automate the deployment of the
@@ -104,6 +109,15 @@ class profile::kerberos::kdc (
         before => Package['krb5-kdc'],
     }
 
+    file { '/etc/default/krb5-kdc':
+        content => template('profile/kerberos/kdc-default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        before  => Package['krb5-kdc'],
+        notify  => Service['krb5-kdc'],
+    }
+
     service { 'krb5-kdc':
         ensure  => running,
         require => Package['krb5-kdc'],
@@ -165,6 +179,14 @@ class profile::kerberos::kdc (
             require       => Service['krb5-kdc'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
         }
+    }
+
+    # Needed to cope with bursty requests T329525
+    sysctl::parameters {'kdc-sysctl':
+        priority => 90,
+        values   => {
+            'net.core.somaxconn' => 16384,
+        },
     }
 
     systemd::timer::job { 'delete-old-backups-kdc-database':

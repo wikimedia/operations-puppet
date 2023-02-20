@@ -1,6 +1,7 @@
 profile::kerberos::kadminserver::enable_replication: true
 profile::kerberos::kadminserver::monitoring_enabled: true
 profile::kerberos::kdc::monitoring_enabled: true
+profile::kerberos::kdc::workers: 8
 profile::kerberos::replication::monitoring_enabled: true
 
 # In T257412 the Analytics team came up with a new setting
