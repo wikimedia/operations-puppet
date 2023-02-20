@@ -18,7 +18,7 @@ function squid::acl::normalise (
     Hash($acl.map |$name, $acl| {
         $src = $acl['src'].map |$role| { wmflib::role::ips($role) }.flatten.sort.unique
         $dst = $acl['dst_type'] ? {
-            'host'  => $acl['dst'].map |$host| { wmflib::dns_lookup($host) }.flatten.sort.unique,
+            'host'  => $acl['dst'].map |$host| { dnsquery::lookup($host) }.flatten.sort.unique,
             default => $acl['dst'],
         }
         [$name, $acl + {'src' => $src, 'dst' => $dst}]

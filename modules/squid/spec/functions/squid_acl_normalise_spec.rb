@@ -24,7 +24,7 @@ describe 'squid::acl::normalise' do
     "function wmflib::role::ips($role) {
       ['192.0.2.1', '2001:db8::1']
     }
-    function wmflib::dns_lookup($host) {
+    function dnsquery::lookup($host) {
       ['198.51.100.1', '198.51.100.2', '2001:db8:1::1', '2001:db8:2::1']
     }"
   end

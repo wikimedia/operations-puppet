@@ -52,7 +52,7 @@ define postgresql::user (
     # lint:endignore
 
     $cidrs = ($allowed_hosts.map |$_host| {
-        wmflib::dns_lookup($_host).map |$answer| {
+        dnsquery::lookup($_host).map |$answer| {
             $answer ? {
                 Stdlib::IP::Address::V4::Nosubnet => "${answer}/32",
                 Stdlib::IP::Address::V6::Nosubnet => "${answer}/64",
