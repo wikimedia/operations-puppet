@@ -245,6 +245,7 @@ profile::nginx::ensure: "present"
 profile::nginx::managed: true
 profile::nginx::variant: "light"
 profile::nginx::tmpfs_size: "1g"
+profile::nginx::modules: []
 
 profile::puppetdb::gc_interval: 20
 profile::puppetdb::node_ttl: "7d"

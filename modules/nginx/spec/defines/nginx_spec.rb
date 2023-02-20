@@ -4,13 +4,18 @@ describe 'nginx', :type => :class do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
+      case facts[:os]['distro']['codename']
+      when 'bookworm'
+        let(:nginx_deb) { 'nginx' }
+      else
+        let(:nginx_deb) { 'nginx-full' }
+      end
 
       context 'with ensure => present' do
         let(:params) { { :ensure => 'present' } }
 
         it 'should install nginx packages' do
-          should contain_package('nginx-common').with({'ensure' => 'present'})
-          should contain_package('nginx-full').with({'ensure' => 'present'})
+          should contain_package(nginx_deb).with({'ensure' => 'installed'})
         end
 
         it 'should ensure that nginx service is started and enabled' do
@@ -28,8 +33,7 @@ describe 'nginx', :type => :class do
         let(:params) { { :ensure => 'absent' } }
 
         it 'should remove nginx packages' do
-          should contain_package('nginx-common').with({'ensure' => 'absent'})
-          should contain_package('nginx-full').with({'ensure' => 'absent'})
+          should contain_package(nginx_deb).with({'ensure' => 'absent'})
         end
 
         it 'should ensure that nginx service is stopped and disabled' do

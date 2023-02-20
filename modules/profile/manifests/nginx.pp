@@ -11,17 +11,23 @@
 #    specific need for a module not present there. This reduces risks since less code needs to be 
 #    loaded (and also fewer libraries, e.g. nginx-extras ships the an image filter which pulls in 
 #    libgd). You can see the list of enabled modules via "apt show nginx-foo
+#    Starting with Bookworm there is a single nginx binary and additional functionality can be
+#    installed via libnginx-mod-http-foo packages. Use "custom" and the profile::nginx::modules
+#    variable to use that scheme.
+# @param modules If using variant=custom (Bookworm and later), install these additional packages
 # @param tmpfs_size The tmpfs_size
 class profile::nginx (
-    Wmflib::Ensure                  $ensure     = lookup('profile::nginx::ensure'),
-    Boolean                         $managed    = lookup('profile::nginx::managed'),
-    Enum['full', 'extras', 'light'] $variant    = lookup('profile::nginx::variant'),
-    String                          $tmpfs_size = lookup('profile::nginx::tmpfs_size'),
+    Wmflib::Ensure                            $ensure     = lookup('profile::nginx::ensure'),
+    Boolean                                   $managed    = lookup('profile::nginx::managed'),
+    Enum['full', 'extras', 'light', 'custom'] $variant    = lookup('profile::nginx::variant'),
+    String                                    $tmpfs_size = lookup('profile::nginx::tmpfs_size'),
+    Array[String]                             $modules    = lookup('profile::nginx::modules'),
 ) {
     class {'nginx':
         ensure     => $ensure,
         managed    => $managed,
         variant    => $variant,
         tmpfs_size => $tmpfs_size,
+        modules    => $modules,
     }
 }

@@ -19,17 +19,36 @@
 # [*variant*]
 #   Which variant of the nginx package to install. Must be one of
 #   'full', 'light' or 'extras', which respectively install one of
-#   'nginx-full', 'nginx-light' or 'nginx-extras' packages.
+#   'nginx-full', 'nginx-light' or 'nginx-extras' packages on Stretch,
+#   Buster and Bullseye. Starting with Bookworm there is a single nginx
+#   and additional functionality can be installed via libnginx-mod-http-foo
+#   packages. Use "custom" and the modules parameter to configure that scheme.
+#
+# [*modules]
+#   When using the "custom" variant, install this list of additional modules.
+#   Only the module name needs to be passed, so e.g. echo to install the
+#   packaged libnginx-mod-http-echo module
 #
 class nginx(
-    Wmflib::Ensure                  $ensure = 'present',
-    Boolean                         $managed = true,
-    Enum['full', 'extras', 'light'] $variant = 'full',
-    String                          $tmpfs_size = '1g',
+    Wmflib::Ensure                            $ensure = 'present',
+    Boolean                                   $managed = true,
+    Enum['full', 'extras', 'light', 'custom'] $variant = 'full',
+    String                                    $tmpfs_size = '1g',
+    Array[String]                             $modules = [],
 ){
 
-    package { [ "nginx-${variant}", 'nginx-common' ]:
-        ensure => $ensure,
+    if $variant == 'custom' {
+        if debian::codename::lt('bookworm') {
+            fail('The custom variant is only available for Bookworm and later')
+        }
+
+        ensure_packages (['nginx'], {'ensure' => $ensure})
+
+        $modules.each |String $module| {
+            ensure_packages (["libnginx-mod-http-${module}"], {'ensure' => $ensure})
+        }
+    } else {
+        ensure_packages (["nginx-${variant}",'nginx-common'], {'ensure' => $ensure})
     }
 
     # In the unmanaged case, this prevents the scenario where after the
