@@ -33,7 +33,7 @@ class profile::ldap::bitu(
         groups   => { auxiliary_classes => ['posixGroup'] },
         users    => {
             dn                => "${ldap['users_cn']},${ldap['base-dn']}",
-            auxiliary_classes => ['posixAccount']
+            auxiliary_classes => ['posixAccount', 'wikimediaPerson']
         },
     }
 
