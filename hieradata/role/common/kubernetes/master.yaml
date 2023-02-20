@@ -3,6 +3,13 @@ profile::kubernetes::master::cluster_group: main
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer. So by setting "wikikube" here you are required to add
+# the intermediates "wikikube" and "wikikube_front_proxy".
+#
+# FIXME: This should be something like "cluster group/name" while retaining the discrimination
+#        between production and staging as we don't want to share the same intermediate across
+#        that boundary.
 profile::kubernetes::pki::intermediate: 'wikikube'
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"

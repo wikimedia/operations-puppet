@@ -250,7 +250,7 @@ network::subnets:
         private1-lvs-codfw:
           ipv4: 10.2.1.0/24
         private1-services-kubepods-codfw:
-          ipv4: 10.192.64.0/21
+          ipv4: 10.194.128.0/18
           ipv6: 2620:0:860:cabe::/64
         private1-services-kubesvc-codfw:
           ipv4: 10.192.72.0/24
