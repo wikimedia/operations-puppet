@@ -73,6 +73,6 @@ if [[ -n "${OLD_VENV}" ]]; then
 fi
 
 echo "Running ${PROJECT}'s Makefile.deploy post-deploy"
-if grep -q '^post-deploy:' Makefile.deploy; then
-    DEPLOY_PATH="${NEW_DIR}" VENV="${VENV_DIR}" make -C "${NEW_DIR}" -f Makefile.deploy post-deploy
+if grep -q '^post-deploy:' "${CUR_DIR}/Makefile.deploy"; then
+    DEPLOY_PATH="${CUR_DIR}" VENV="${VENV_DIR}" make -C "${CUR_DIR}" -f Makefile.deploy post-deploy
 fi
