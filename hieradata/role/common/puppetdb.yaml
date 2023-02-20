@@ -1,5 +1,5 @@
 cluster: puppet
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
 profile::puppetdb::jvm_opts: '-Xmx6g'
 profile::puppetdb::puppetboard_hosts:
   - 'puppetboard1002.eqiad.wmnet'
