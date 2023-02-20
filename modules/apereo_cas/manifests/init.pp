@@ -70,6 +70,7 @@
 # @param delegated_authenticators list of delegated authenticators
 # @param oidc_issuers_pattern defines the regular expression pattern that is
 #        matched against the calculated issuer from the request.
+# @param oidc_id_token_claims weather to support id token claims
 # @param enable_webauthn Whether to enable WebAuthN support or not
 # @param webauthn_relaying_party The relying party ID to be used for WebAuthN
 class apereo_cas (
@@ -161,33 +162,33 @@ class apereo_cas (
 
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {
-        file{$groovy_file:
+        file { $groovy_file:
             source => $groovy_source,
         }
     }
-    file{$config_dir:
+    file { $config_dir:
         ensure => directory,
         owner  => $daemon_user,
     }
-    file{$services_dir:
+    file { $services_dir:
         ensure  => directory,
         recurse => true,
         purge   => true,
     }
-    file{[$base_dir, $log_dir]:
+    file { [$base_dir, $log_dir]:
         ensure  => directory,
         owner   => $daemon_user,
         mode    => '0600',
         recurse => true,
     }
-    file {"${config_dir}/cas.properties":
+    file { "${config_dir}/cas.properties":
         ensure  => file,
         owner   => $daemon_user,
         group   => 'root',
         mode    => '0400',
         content => template('apereo_cas/cas.properties.erb'),
     }
-    file {"${config_dir}/log4j2.xml":
+    file { "${config_dir}/log4j2.xml":
         ensure  => file,
         owner   => $daemon_user,
         group   => 'root',
@@ -198,7 +199,7 @@ class apereo_cas (
         true    => file,
         default => absent,
     }
-    file {$keystore_path:
+    file { $keystore_path:
         ensure  => $keystore_ensure,
         owner   => $daemon_user,
         group   => 'root',
@@ -234,7 +235,7 @@ class apereo_cas (
     }
 
     $services.each |String $service, Hash $config| {
-        apereo_cas::service {$service:
+        apereo_cas::service { $service:
             * => $config,
         }
     }
