@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr,
-              dannyh, mepps]
+              dannyh, mepps, cmacholan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -382,7 +382,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel, swak,
-              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
+              ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               echetty, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
@@ -4854,13 +4854,12 @@ users:
     uid: 21746
     ssh_keys: []
   cmacholan:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Christina Macholan
-    email: cmacholan@wikimedia.org
     uid: 33118
-    krb: present
-    ssh_keys: ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFiinksr9bokRPqdmFwQl8ZDzfk1VLE0WlnqynTAPxXB cmacholan@wikimedia.org"]
+    krb: absent
+    ssh_keys: []
   ldelench:
     ensure: present
     gid: 500
