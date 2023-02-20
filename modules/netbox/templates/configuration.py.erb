@@ -19,11 +19,12 @@ ALLOWED_HOSTS = ['<%= [@service_hostname, @facts['networking']['fqdn'], @facts['
 
 # PostgreSQL database configuration.
 DATABASE = {
-    'NAME': 'netbox',         # Database name
-    'USER': '<%= @db_user %>',               # PostgreSQL username
-    'PASSWORD': '<%= @db_password %>',           # PostgreSQL password
-    'HOST': '<%= @db_host %>',      # Database server
-    'PORT': '<%= @db_port %>',               # Database port (leave blank for default)
+    'NAME': 'netbox',                   # Database name
+    'USER': '<%= @db_user %>',          # PostgreSQL username
+    'PASSWORD': '<%= @db_password %>',  # PostgreSQL password
+    'HOST': '<%= @db_host %>',          # Database server
+    'PORT': '<%= @db_port %>',          # Database port (leave blank for default)
+    'OPTIONS': {'sslmode': 'require'}   # Force database encyption
 }
 <%- if @http_proxy -%>
 HTTP_PROXIES = {
