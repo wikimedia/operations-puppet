@@ -174,7 +174,7 @@ class profile::kerberos::kdc (
     if $monitoring_enabled {
         nrpe::monitor_service { 'krb-kdc':
             description   => 'Kerberos KDC daemon',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/sbin/krb5kdc"',
+            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${kdc_workers}:${kdc_workers} -a '/usr/sbin/krb5kdc'",
             contact_group => 'admins,analytics',
             require       => Service['krb5-kdc'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
