@@ -142,7 +142,9 @@ class profile::doc (
 
         }
 
-        prometheus::blackbox::check::http { "doc.wikimedia.org-${other_host}":
+        prometheus::blackbox::check::http { $other_host:
+            server_name        => 'doc.wikimedia.org',
+            instance_label     => $other_host,
             team               => 'serviceops-collab',
             severity           => 'task',
             path               => '/',
