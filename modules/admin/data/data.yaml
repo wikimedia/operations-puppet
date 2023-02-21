@@ -5934,6 +5934,9 @@ ldap_only_users:
     ensure: present
     realname: Max Semenik
     email: maxsem.wiki@gmail.com
+  marble:
+    ensure: absent
+    realname: Michal Anna Marble
   mhernandez:
     ensure: present
     realname: Megan Hernandez
@@ -6110,6 +6113,9 @@ ldap_only_users:
   marcella:
     ensure: absent
     realname: Marcella L. Florence
+  mmarble:
+    ensure: absent
+    realname: Michal Marble
   kchapman:
     ensure: present
     realname: Kate Chapman
