@@ -90,7 +90,7 @@ class idm::deployment (
     ferm::service { 'redis_replication':
         proto  => 'tcp',
         port   => $redis_port,
-        srange => join($redis_replicas + $redis_master, ',')
+        srange => "@resolve((${redis_master} ${redis_replicas.join(' ')}))"
     }
 
     $base_redis_settings =  {
