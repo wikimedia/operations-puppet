@@ -3,7 +3,6 @@ profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'
 profile::base::unprivileged_userns_clone: false
 profile::base::remote_syslog_tls:
   _default: &default
-  - 'centrallog1001.eqiad.wmnet:6514'
   - 'centrallog1002.eqiad.wmnet:6514'
   - 'centrallog2002.codfw.wmnet:6514'
   codfw: *default
