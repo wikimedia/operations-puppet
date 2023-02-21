@@ -94,9 +94,10 @@ class idm::deployment (
     }
 
     $base_redis_settings =  {
-        bind       => '127.0.0.1 ::1',
-        maxmemory  => $redis_maxmem,
-        port       => $redis_port
+        bind        => '127.0.0.1 ::1',
+        maxmemory   => $redis_maxmem,
+        port        => $redis_port,
+        requirepass => $redis_password
     }
 
     $replica_redis_settings = {
@@ -104,7 +105,7 @@ class idm::deployment (
         masterauth => $redis_password
     }
 
-    if ($facts['networking']['hostname'] != $redis_master){
+    unless $facts['networking']['hostname'] in $redis_master {
         $redis_settings = $base_redis_settings + $replica_redis_settings
     } else {
         $redis_settings =  $base_redis_settings
