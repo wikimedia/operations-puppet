@@ -10,7 +10,8 @@
 class profile::ci::firewall (
     Array[Stdlib::Fqdn] $jenkins_master_hosts = lookup('jenkins_master_hosts'),
     Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
-) {
+    Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts'),
+){
     class { '::profile::base::firewall': }
     include ::network::constants
 
@@ -48,6 +49,14 @@ class profile::ci::firewall (
         proto  => 'tcp',
         port   => '4730',
         srange => "(${zuul_merger_hosts_ferm})",
+    }
+
+    # allow http monitoring
+    $monitoring_hosts_ferm = join($monitoring_hosts, ' ')
+    ferm::service { 'ci_http_monitor':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(${monitoring_hosts_ferm})",
     }
 
     # web access
