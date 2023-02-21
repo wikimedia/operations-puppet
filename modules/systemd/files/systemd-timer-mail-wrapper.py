@@ -8,6 +8,7 @@ import subprocess
 
 from argparse import ArgumentParser, REMAINDER
 from email.message import EmailMessage
+from textwrap import dedent
 from socket import getfqdn
 
 
@@ -20,7 +21,12 @@ def get_args():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-T', '--mail-to', default='root@{}'.format(getfqdn()))
     parser.add_argument(
-        '--only-on-error', action='store_true', help='Only send emails if the job errors',
+        '-s', '--subject', required=True, help="Add this string to the subject line"
+    )
+    parser.add_argument(
+        '--only-on-error',
+        action='store_true',
+        help='Only send emails if the job errors',
     )
     parser.add_argument('cmd', nargs=REMAINDER)
     return parser.parse_args()
@@ -50,6 +56,7 @@ def main():
         return 0
 
     if output:
+        status = 'PASS' if ret == 0 else 'FAIL'
         msg = EmailMessage()
         msg['From'] = 'SYSTEMDTIMER <noreply@{}>'.format(getfqdn())
         # Set an explicit sender for hosts with stricter exim config
@@ -60,8 +67,14 @@ def main():
         else:
             msg['To'] = args.mail_to
         cmd_str = ' '.join(str(i) for i in args.cmd)
-        msg['Subject'] = "Output of systemd timer for '{}'".format(cmd_str)
-        msg.set_content(output)
+        body = """
+        Systemd timer ran the following command:
+            `{}`
+        its return value was {} and emitted the following output:
+        {}
+        """.format(cmd_str, ret, output)
+        msg['Subject'] = "{}: {}".format(status, args.subject)
+        msg.set_content(dedent(body))
         smtp = smtplib.SMTP('localhost')
         smtp.send_message(msg)
         smtp.quit()
