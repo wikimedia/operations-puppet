@@ -348,6 +348,9 @@ sub cluster_fe_deliver {
         }
     }
 
+    // Prevent browsers from content sniffing (T309787).
+    set resp.http.X-Content-Type-Options = "nosniff";
+
     if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
         call add_upload_cors_headers;
 
