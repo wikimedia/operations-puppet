@@ -6,6 +6,8 @@ After=<%= @after %>
 <%- end -%>
 
 [Service]
+Type=oneshot
+RemainAfterExit=yes
 User=<%= @user %>
 <%- if @environment -%>
 <%- @environment.keys.sort.each do |key| -%>
