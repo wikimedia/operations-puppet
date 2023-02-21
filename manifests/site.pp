@@ -1565,9 +1565,10 @@ node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 
-# New kubernetes node T313870
+# New kubernetes node T313870 - merge with the rest when
+# moving 102[34] to their role.
 node /kubernetes202[34]\.codfw\.wmnet/ {
-    role(insetup::serviceops)
+    role(kubernetes::worker)
 }
 
 # New kubernetes node T313873
