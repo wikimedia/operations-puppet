@@ -1121,8 +1121,6 @@ sub deliver_synth_ {
 
     call https_deliver_networkerrorlogging;
 
-    call https_deliver_permissionspolicy;
-
     call analytics_deliver_pre;
     if (!req.http.X-IS-ALT-DOMAIN &&
         req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
