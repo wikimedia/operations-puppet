@@ -94,7 +94,7 @@ class idm::deployment (
     }
 
     $base_redis_settings =  {
-        bind        => '127.0.0.1 ::1',
+        bind        => $facts['networking']['ip'],
         maxmemory   => $redis_maxmem,
         port        => $redis_port,
         requirepass => $redis_password

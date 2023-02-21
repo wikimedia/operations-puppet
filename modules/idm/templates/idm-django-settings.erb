@@ -78,15 +78,15 @@ LOGGING = {
 
 RQ_QUEUES = {
     'default': {
-        'HOST': '127.0.0.1',
-        'PORT': 6379,
+        'HOST': '<%= @redis_master %>',
+        'PORT': <%= @redis_port %>,
         'DB': 0,
         'PASSWORD': '<%= @redis_password %>',
         'DEFAULT_TIMEOUT': 360,
     },
     'notification': {
-        'HOST': '127.0.0.1',
-        'PORT': 6379,
+        'HOST': '<%= @redis_master %>',
+        'PORT': <%= @redis_port %>,
         'DB': 0,
         'PASSWORD': '<%= @redis_password %>',
         'DEFAULT_TIMEOUT': 360,
