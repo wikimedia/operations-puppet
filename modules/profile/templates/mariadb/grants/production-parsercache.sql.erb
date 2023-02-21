@@ -7,21 +7,11 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT ALL PRIVILEGES
     ON `parsercache`.* TO '<%= @wikiadmin_username %>'@'10.%';
 
--- wikiuser 10.64.%
+-- wikiuser 10.%
 
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO '<%= @wikiuser_username %>'@'10.64.%'
+    ON *.* TO '<%= @wikiuser_username %>'@'10.%'
     IDENTIFIED BY '<%= @wikiuser_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `parsercache`.* TO '<%= @wikiuser_username %>'@'10.64.%';
-
--- wikiuser 10.192.%
-
-GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO '<%= @wikiuser_username %>'@'10.192.%'
-    IDENTIFIED BY '<%= @wikiuser_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `parsercache`.* TO '<%= @wikiuser_username %>'@'10.192.%';
-
+    ON `parsercache`.* TO '<%= @wikiuser_username %>'@'10.%';

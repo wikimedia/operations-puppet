@@ -25,47 +25,26 @@ GRANT SELECT, EXECUTE
 GRANT SELECT
     ON `performance_schema`.* TO '<%= @wikiadmin_username %>'@'10.%';
 
--- wikiuser 10.64.%
+-- wikiuser 10.%
 
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO '<%= @wikiuser_username %>'@'10.64.%'
+    ON *.* TO '<%= @wikiuser_username %>'@'10.%'
     IDENTIFIED BY '<%= @wikiuser_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `%wik%`.* TO '<%= @wikiuser_username %>'@'10.64.%';
+    ON `%wik%`.* TO '<%= @wikiuser_username %>'@'10.%';
 
 <% if @shard == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.64.%';
+    ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.%';
 <% end -%>
 <% if @shard == 'x2' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `mainstash`.* TO '<%= @wikiuser_username %>'@'10.64.%';
+    ON `mainstash`.* TO '<%= @wikiuser_username %>'@'10.%';
 <% end -%>
 
 GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.64.%';
-
--- wikiuser 10.192.%
-
-GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO '<%= @wikiuser_username %>'@'10.192.%'
-    IDENTIFIED BY '<%= @wikiuser_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `%wik%`.* TO '<%= @wikiuser_username %>'@'10.192.%';
-
-<% if @shard == 's7' %>
-GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.192.%';
-<% end -%>
-<% if @shard == 'x2' %>
-GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `mainstash`.* TO '<%= @wikiuser_username %>'@'10.192.%';
-<% end -%>
-
-GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.192.%';
+    ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.%';
 
 <%- if @shard == 's6' -%>
 -- wikiadmin @ 208.80.154.150 (cloudweb1003)
