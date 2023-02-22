@@ -199,6 +199,10 @@ profile::idp::services:
     id: 29
     service_class: 'OidcRegisteredService'
     service_id: 'https://idm\.wikimedia\.org\/[\w\/]*'
+  juniper:
+    id: 30
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://apigw\.juniper\.net/css-asset/1\.0'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
