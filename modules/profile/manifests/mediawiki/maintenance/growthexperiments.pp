@@ -59,4 +59,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateIsActiveFlagForMentees.php',
         interval => 'Mon *-*-* 09:42:00',
     }
+
+    # update list of praiseworthy mentees (T322444)
+    profile::mediawiki::periodic_job { 'growthexperiments-refreshPraiseworthyMentees':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshPraiseworthyMentees.php',
+        interval => '*-*-* 08:15:00',
+    }
 }
