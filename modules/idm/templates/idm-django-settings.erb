@@ -134,6 +134,7 @@ SOCIAL_AUTH_CAS_KEY = '<%= @oidc["key"] %>'
 SOCIAL_AUTH_CAS_SECRET = '<%= @oidc["secret"] %>'
 SOCIAL_AUTH_CAS_USERINFO_URL = '<%= @oidc["endpoint"] %>/profile'
 SOCIAL_AUTH_CAS_SCOPE = ['openid', 'profile', 'email', 'groups']
+SOCIAL_AUTH_CAS_ID_KEY = 'username'
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
