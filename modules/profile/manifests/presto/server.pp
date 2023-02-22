@@ -71,8 +71,10 @@ class profile::presto::server(
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
 
+    # node.environment must not contain any -
+    $sanitize_cluster_name = regsubst($cluster_name, '-', '', 'G')
     $default_node_properties = {
-        'node.environment'              => $cluster_name,
+        'node.environment'              => $sanitize_cluster_name,
         'node.data-dir'                => '/srv/presto',
         'node.internal-address-source' => 'FQDN',
     }
