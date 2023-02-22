@@ -23,5 +23,7 @@ class idm::jobs (
         content => file('idm/rq-idm.service'),
     }
 
-    profile::auto_restarts::service {'rq-idm': }
+    profile::auto_restarts::service {'rq-idm':
+        ensure => $present,
+    }
 }
