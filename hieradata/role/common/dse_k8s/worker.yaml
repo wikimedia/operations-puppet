@@ -1,4 +1,8 @@
 cluster: dse_k8s
+# Kubernetes 1.23 related common settings (should go from here to common for the eqiad update)
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::use_cni: true
@@ -63,3 +67,12 @@ profile::admin::groups:
 profile::contacts::role_contacts:
   - 'Data Engineering'
   - 'Machine Learning'
+
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer. So by setting "dse" here you are required to add
+# the intermediates "dse" and "dse_front_proxy".
+#
+# FIXME: This should be something like "cluster group/name" while retaining the discrimination
+#        between production and staging as we don't want to share the same intermediate across
+#        that boundary.
+profile::kubernetes::pki::intermediate: 'dse'

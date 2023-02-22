@@ -1,4 +1,7 @@
 cluster: dse_k8s
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::kubernetes::master::cluster_group: dse-k8s
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::allow_privileged: true
@@ -7,11 +10,25 @@ profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/dse-k8s-ctrl.sv
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/dse-k8s-ctrl.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::service_node_port_range: '1-65535'
 profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-dse"
+
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer. So by setting "dse" here you are required to add
+# the intermediates "dse" and "dse_front_proxy".
+#
+# FIXME: This should be something like "cluster group/name" while retaining the discrimination
+#        between production and staging as we don't want to share the same intermediate across
+#        that boundary.
+profile::kubernetes::pki::intermediate: 'dse'
+
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:
   enable:
     - PodSecurityPolicy
+    # v1.23: Enable DenyServiceExternalIPs because we don't use them
+    - DenyServiceExternalIPs
+    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
+    - NodeRestriction
   disable:
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
