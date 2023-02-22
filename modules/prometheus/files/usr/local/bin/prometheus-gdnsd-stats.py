@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2016 Filippo Giunchedi
 #                Wikimedia Foundation
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,9 +84,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--outfile', metavar='FILE.prom',
                         help='Output file (stdout)')
-    parser.add_argument('--url', metavar='URL',
-                        help='gdnsd-2.x JSON URI (%(default)s)',
-                        default='http://localhost:3506/json')
     parser.add_argument('--ctlpath', metavar='PATH',
                         help='gdnsd-3.x gdnsdctl path (%(default)s)',
                         default='/usr/bin/gdnsdctl')
