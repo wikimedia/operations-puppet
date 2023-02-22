@@ -51,11 +51,11 @@ class profile::ci::firewall (
         srange => "(${zuul_merger_hosts_ferm})",
     }
 
-    # allow http monitoring from prometheus hosts
+    # allow https monitoring from prometheus hosts to envoy proxy
     $prometheus_hosts_ferm = join($prometheus_hosts, ' ')
-    ferm::service { 'ci_http_monitor':
+    ferm::service { 'ci_https_monitor':
         proto  => 'tcp',
-        port   => '80',
+        port   => '1443',
         srange => "@resolve((${prometheus_hosts_ferm}))",
     }
 

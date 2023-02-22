@@ -33,6 +33,7 @@ class profile::ci::httpd {
         path               => '/',
         ip_families        => ['ip4'],
         force_tls          => true,
+        port               => 1443,
         body_regex_matches => ['Integration'],
     }
 
