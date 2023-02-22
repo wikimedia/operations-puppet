@@ -3,7 +3,7 @@ profile::idm::processes: 4
 
 # OIDC
 profile::idp::service: idm
-profile::idm::oidc_endpoint: 'https://idp.wikimedia.org'
+profile::idm::oidc_endpoint: 'https://idp.wikimedia.org/oidc/'
 
 # IDM options
 profile::idm::service_fqdn: 'idm.wikimedia.org'
