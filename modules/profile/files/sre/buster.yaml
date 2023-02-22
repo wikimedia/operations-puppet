@@ -435,7 +435,8 @@ role::requesttracker:
   target-q: TBD
   phab-task: 327068
 role::url_downloader:
-  target-q: TBD
+  phab-task: 329945
+  target-q: 2023-1
 role::gerrit:
   target-q: TBD
   phab-task: 327068
