@@ -61,4 +61,5 @@ class profile::durum (
         ]
     }
 
+    profile::auto_restarts::service { 'nginx':}
 }
