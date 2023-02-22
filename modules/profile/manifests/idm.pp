@@ -15,6 +15,7 @@ class profile::idm(
     Apereo_cas::Urls    $apereo_cas                = lookup('apereo_cas'),
     Hash                $ldap_config               = lookup('ldap'),
     String              $oidc_key                  = lookup('profile::idp::service'),
+    String              $oidc_endpoint             = lookup('profile::idm::oidc_endpoint'),
     String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
     Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
     Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
@@ -32,10 +33,6 @@ class profile::idm(
     $static_dir = "${base_dir}/static"
     $project = 'bitu'
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
-
-
-    $production_str = $production.bool2str('production', 'staging')
-    $oidc_endpoint = $apereo_cas[$production_str]['oidc_endpoint']
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
