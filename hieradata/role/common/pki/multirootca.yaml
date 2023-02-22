@@ -163,6 +163,22 @@ profile::pki::multirootca::intermediates:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
     # Kubernetes will only use the default profile for client auth certs
     ocsp_port: 20051
+  dse:
+    # Main CA for the DSE kubernetes cluster
+    # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
+    ocsp_port: 20061
+    profiles:
+      # Keys with this profile are used to sign/verify service account tokens so
+      # there is no need for server or client auth.
+      service-account-management:
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+  dse_front_proxy:
+    # Separate CA for the front proxy, using the same as for client-auth won't work:
+    # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
+    # Kubernetes will only use the default profile for client auth certs
+    ocsp_port: 20062
 
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
