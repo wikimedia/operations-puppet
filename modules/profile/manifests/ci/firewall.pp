@@ -10,7 +10,6 @@
 class profile::ci::firewall (
     Array[Stdlib::Fqdn] $jenkins_master_hosts = lookup('jenkins_master_hosts'),
     Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
-    Array[Stdlib::Fqdn] $prometheus_hosts = lookup('prometheus_all_nodes'),
 ){
     class { '::profile::base::firewall': }
     include ::network::constants
@@ -49,14 +48,6 @@ class profile::ci::firewall (
         proto  => 'tcp',
         port   => '4730',
         srange => "(${zuul_merger_hosts_ferm})",
-    }
-
-    # allow https monitoring from prometheus hosts to envoy proxy
-    $prometheus_hosts_ferm = join($prometheus_hosts, ' ')
-    ferm::service { 'ci_https_monitor':
-        proto  => 'tcp',
-        port   => '1443',
-        srange => "@resolve((${prometheus_hosts_ferm}))",
     }
 
     # web access
