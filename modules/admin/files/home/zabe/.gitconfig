@@ -1,6 +1,12 @@
+[alias]
+	lg = log -p HEAD..@{u}
+	push-for-review = push origin HEAD:refs/for/master
+	push-and-merge = push origin HEAD:refs/for/master%l=Code-Review+2
 [user]
 	email = zabe@avorwerk.net
 	name = Alexander Vorwerk
 [gitreview]
 	remote = origin
 	username = Zabe
+[url "https://gerrit.wikimedia.org/r/"]
+	insteadOf = ssh://gerrit.wikimedia.org:29418/
