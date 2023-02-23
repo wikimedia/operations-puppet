@@ -71,6 +71,7 @@ profile::lvs::realserver::pools:
   mw-api-int: {}
   mw-web: {}
   device-analytics: {}
+  rest-gateway: {}
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps']

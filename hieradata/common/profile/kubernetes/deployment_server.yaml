@@ -188,6 +188,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: device-analytics
         - name: device-analytics-deploy
+    rest-gateway:
+      usernames:
+        - name: rest-gateway
+        - name: rest-gateway-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:

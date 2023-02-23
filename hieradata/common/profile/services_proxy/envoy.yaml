@@ -172,6 +172,11 @@ profile::services_proxy::envoy::listeners:
     service: device-analytics
     timeout: "10s"
     keepalive: "4s"
+  - name: rest-gateway
+    port: 6033
+    service: rest-gateway
+    timeout: "10s"
+    keepalive: "4s"
 
   # Non-discovery records
   # Eqiad ports are at 61xx
