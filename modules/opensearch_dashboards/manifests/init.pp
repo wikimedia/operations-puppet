@@ -63,14 +63,6 @@ class opensearch_dashboards (
         ],
     }
 
-    # Enforce memory limit to mitigate leaks - T327161
-    systemd::service { 'opensearch-dashboards':
-        ensure   => present,
-        content  => init_template('opensearch-dashboards', 'systemd_override'),
-        override => true,
-        restart  => true,
-    }
-
     if $enable_backups {
         class { '::opensearch_dashboards::backups': }
     } else {

@@ -17,6 +17,9 @@ class role::logging::opensearch::collector {
     include profile::opensearch::dashboards::phatality
     include profile::prometheus::logstash_exporter
 
+    # https://phabricator.wikimedia.org/T327161
+    include toil::opensearch_dashboards_restart # lint:ignore:wmf_styleguide
+
     if $::realm == 'production' {
         include profile::logstash::production
         include profile::tlsproxy::envoy # TLS termination
