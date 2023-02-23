@@ -10,7 +10,7 @@ describe "profile::cloudceph::osd" do
       before(:each) do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| "127.0.0.10" }
       end
-      base_params = {
+      let(:params) {{
         "osd_hosts" => {
           "dummyhost1" => {
             "public" => {
@@ -29,13 +29,12 @@ describe "profile::cloudceph::osd" do
         "disks_io_scheduler" => "dummy_io_scheduler",
         "cinder_backup_nodes" => ["cloudbackupxxxx.example.com"],
         "cluster_networks" => [],
-      }
+      }}
       let(:facts) {
         facts.merge({
           "fqdn" => "dummyhost1",
         })
       }
-      let(:params) { base_params }
       let(:node_params) { { "_role" => "ceph::osd" } }
       it { is_expected.to compile.with_all_deps }
 

@@ -4,7 +4,7 @@ describe "profile::cloudceph::client::rbd_glance" do
   let(:pre_condition) { 'class { "::apt": }' }
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
-      base_params = {
+      let(:params) {{
         "enable_v2_messenger" => true,
         "mon_hosts" => {
           "monhost01.local" => {
@@ -22,9 +22,8 @@ describe "profile::cloudceph::client::rbd_glance" do
         "public_networks" => ["10.192.20.0/24"],
         "data_dir" => "/data/dir",
         "fsid" => "dummyfsid-17bc-44dc-9aeb-1d044c9bba9e",
-      }
+      }}
       let(:facts) { facts }
-      let(:params) { base_params }
 
       context "when no ceph repo passed uses correct default" do
         it { is_expected.to compile.with_all_deps }
@@ -33,7 +32,7 @@ describe "profile::cloudceph::client::rbd_glance" do
 
       context "when ceph repo passed uses the given one" do
         let(:params) {
-          base_params.merge({
+          super().merge({
             "ceph_repository_component" => "dummy/component-repo",
           })
         }
