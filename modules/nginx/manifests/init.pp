@@ -86,9 +86,8 @@ class nginx(
 
     if $variant == 'extras' {
         file { '/etc/nginx/prometheus.lua':
-            ensure  => $ensure,
-            source  => 'puppet:///modules/nginx/prometheus.lua',
-            require => Package["nginx-${variant}"],
+            ensure => $ensure,
+            source => 'puppet:///modules/nginx/prometheus.lua',
         }
     }
 
@@ -118,7 +117,6 @@ class nginx(
             pass    => 0,
             dump    => 0,
             before  => Service['nginx'],
-            require => Package["nginx-${variant}"],
         }
     }
 }
