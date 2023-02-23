@@ -41,3 +41,4 @@ profile::puppetdb::database::users:
     method: 'peer'
 profile::puppetdb::master: puppetdb1003.eqiad.wmnet
 profile::puppetdb::slaves: [puppetdb2003.codfw.wmnet]
+profile::nginx::variant: 'custom'
