@@ -46,6 +46,7 @@ class CEEFormatter(logging.Formatter):
         'asctime',
         'created',
         'exc_info',
+        'levelname',
         'levelno',
         'module',
         'msecs',
