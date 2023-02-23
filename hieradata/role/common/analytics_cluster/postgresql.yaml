@@ -8,4 +8,4 @@ profile::analytics::postgresql::databases:
   - airflow_data_engineering_dev
   - airflow_platform_eng
   - airflow_research
-  - airflow_search_platform
+  - airflow_search
