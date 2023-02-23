@@ -1,7 +1,7 @@
 require_relative "../../../../rake_modules/spec_helper"
 
 describe "ceph::config" do
-  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(10)).each do |os, os_facts|
     context "on #{os}" do
       let(:pre_condition) {
         "class { '::apt': }
@@ -10,7 +10,7 @@ describe "ceph::config" do
           ceph_repository_component => 'dummy/component-repo',
         }"
       }
-      let(:facts) { facts }
+      let(:facts) { os_facts }
       let(:params) {{
           "enable_libvirt_rbd" => true,
           "enable_v2_messenger" => true,
@@ -97,7 +97,9 @@ describe "ceph::config" do
             "enable_libvirt_rbd" => true,
           })
         }
-        it { should contain_package("python-rbd") }
+        context "if buster", if: os.start_with?("debian-10") do
+          it { should contain_package("python-rbd") }
+        end
         it { should contain_package("qemu-block-extra") }
       end
 
@@ -107,7 +109,9 @@ describe "ceph::config" do
             "enable_libvirt_rbd" => false,
           })
         }
-        it { should_not contain_package("python-rbd") }
+        context "if buster", if: os.start_with?("debian-10") do
+          it { should_not contain_package("python-rbd") }
+        end
         it { should_not contain_package("qemu-block-extra") }
       end
     end

@@ -6,7 +6,7 @@ describe "profile::cloudceph::client::rbd_backy" do
     'class { "::apt": }
      class { "::prometheus::node_exporter": }'
   }
-  on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:params) { {
         "enable_v2_messenger" => true,

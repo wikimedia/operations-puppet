@@ -10,13 +10,13 @@ describe "profile::cloudceph::mon" do
       'ceph::auth::keyring { "mgr.dummyhost1": keydata => "dummy", caps => {mon => "allow *" }}',
     ]
   end
-  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "on #{os}" do
       before(:each) do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| "127.0.0.10" }
       end
       let(:facts) {
-        facts.merge({
+        os_facts.merge({
           "fqdn" => "dummyhost1",
         })
       }

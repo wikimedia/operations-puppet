@@ -2,7 +2,7 @@ require_relative "../../../../rake_modules/spec_helper"
 
 describe "profile::cloudceph::client::rbd_glance" do
   let(:pre_condition) { 'class { "::apt": }' }
-  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "on #{os}" do
       let(:params) {{
         "enable_v2_messenger" => true,
@@ -23,7 +23,7 @@ describe "profile::cloudceph::client::rbd_glance" do
         "data_dir" => "/data/dir",
         "fsid" => "dummyfsid-17bc-44dc-9aeb-1d044c9bba9e",
       }}
-      let(:facts) { facts }
+      let(:facts) { os_facts }
 
       context "when no ceph repo passed uses correct default" do
         it { is_expected.to compile.with_all_deps }
