@@ -14,6 +14,7 @@ class role::logging::opensearch::collector {
     include profile::opensearch::monitoring::base_checks
     include profile::opensearch::dashboards
     include profile::opensearch::dashboards::httpd_proxy
+    include profile::opensearch::dashboards::phatality
     include profile::prometheus::logstash_exporter
 
     if $::realm == 'production' {

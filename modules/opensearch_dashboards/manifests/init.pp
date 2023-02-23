@@ -8,7 +8,6 @@
 # - $config_version: OpenSearch Dashboards major version, used to decide which template to use to render /etc/opensearch-dashboards/opensearch_dashboards.yml
 # - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
-# - $enable_phatality: Defaults to true. Adds the phatality package to OpenSearch Dashboards
 # - $enable_backups: Defaults to false. Enables dashboards data backup job
 # - $logging_quiet: Set to true to suppress all logging output other than error messages.
 # - $metrics_enabled: Enable/disable time series visual builder
@@ -29,7 +28,6 @@ class opensearch_dashboards (
     String            $default_app_id           = 'dashboard/default',
     String            $package_name             = 'opensearch-dashboards',
     String            $server_max_payload_bytes = '4194304', # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
-    Boolean           $enable_phatality         = true,
     Boolean           $enable_backups           = false,
     Boolean           $logging_quiet            = false,
     Boolean           $metrics_enabled          = false, # T255863
@@ -73,9 +71,6 @@ class opensearch_dashboards (
         restart  => true,
     }
 
-    if $enable_phatality {
-        class { '::opensearch_dashboards::phatality': }
-    }
     if $enable_backups {
         class { '::opensearch_dashboards::backups': }
     } else {
