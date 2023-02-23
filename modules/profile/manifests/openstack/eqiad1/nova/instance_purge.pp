@@ -30,4 +30,16 @@ class profile::openstack::eqiad1::nova::instance_purge(
             require            => File['/usr/local/sbin/wmcs-instancepurge'],
         }
     }
+
+    systemd::timer::job { 'purge_vm_rbd_images':
+        ensure      => $ensure,
+        description => 'Clean up ceph images for deleted VMs. T289623',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 04:00:00', # Daily at 04:00 UTC
+        },
+        command     => '/usr/local/sbin/wmcs-novastats-cephleaks --delete',
+        user        => 'root',
+        require     => File['/usr/local/sbin/wmcs-novastats-cephleaks'],
+    }
 }

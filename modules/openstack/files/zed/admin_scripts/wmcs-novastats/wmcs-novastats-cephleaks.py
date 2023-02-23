@@ -21,7 +21,7 @@ import subprocess
 
 import mwopenstackclients
 
-clients = mwopenstackclients.clients()
+clients = mwopenstackclients.clients("/etc/novaadmin.yaml")
 
 CEPH_POOL = "eqiad1-compute"
 
@@ -62,7 +62,12 @@ def purge_orphan_images(delete=False):
     print("%s images without VMs" % len(leaked_images))
 
     if delete:
+        delete_limit = 50
+        delete_count = 0
         for image in leaked_images:
+            if delete_count >= delete_limit:
+                print("Deleted 50 images on this run already, stopping.")
+                break
             if "@" in image:
                 # This is a snapshot. Skip it, it should be handled by 'snap purge'
                 print("snapshot ignored: " + image)
@@ -75,6 +80,7 @@ def purge_orphan_images(delete=False):
                 subprocess.check_output(
                     ["rbd", "--pool", CEPH_POOL, "rm", image]
                 ).decode("utf8")
+                delete_count += 1
             else:
                 # this could be anything, let's skip it
                 print("mystery image ignored: " + image)
