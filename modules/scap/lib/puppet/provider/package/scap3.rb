@@ -86,7 +86,10 @@ Puppet::Type.type(:package).provide(
     result = { :ensure => :installed, :name => resource[:name] }
 
     begin
-      sha1 = git('-C', target_path, 'tag', '--points-at', 'HEAD').strip
+      uid = Etc.getpwnam(deploy_user).uid
+
+      sha1 = execute([self.class.command(:git), '-C', target_path, 'tag', '--points-at', 'HEAD'],
+                     :uid => uid, :failonfail => true).strip
       result[:ensure] = sha1 unless sha1.empty?
     rescue Puppet::ExecutionFailure
       result[:ensure] = :absent

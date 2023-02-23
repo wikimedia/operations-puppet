@@ -19,6 +19,9 @@ describe provider_class do
     allow(@provider.class).to receive(:command)
       .with(:scap)
       .and_return('/usr/bin/scap')
+    allow(@provider.class).to receive(:command)
+      .with(:git)
+      .and_return('/usr/bin/git')
   end
   describe '#install' do
     it 'should specify the right repo' do
@@ -33,8 +36,9 @@ describe provider_class do
     subject { @provider.query }
     context 'when the package is installed' do
       before do
-        expect(@provider).to receive(:git)
-          .with('-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD')
+        expect(@provider).to receive(:execute)
+          .with(['/usr/bin/git', '-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD'],
+                uid: 666, failonfail: true)
           .and_return(tag)
       end
       context 'and the tag exists' do
@@ -52,7 +56,7 @@ describe provider_class do
     end
     context 'when the package is not installed' do
       before do
-        expect(@provider).to receive(:git) { raise Puppet::ExecutionFailure, 'fail' }
+        expect(@provider).to receive(:execute) { raise Puppet::ExecutionFailure, 'fail' }
       end
       it 'returns ensure: absent' do
         expect(subject).to eq({ ensure: :absent, name: 'foo/deploy' })
