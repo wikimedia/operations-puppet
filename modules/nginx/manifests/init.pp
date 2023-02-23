@@ -38,17 +38,19 @@ class nginx(
 ){
 
     if $variant == 'custom' {
+        $nginx_package_name = 'nginx'
         if debian::codename::lt('bookworm') {
             fail('The custom variant is only available for Bookworm and later')
         }
 
-        ensure_packages (['nginx'], {'ensure' => $ensure})
+        ensure_packages ([$nginx_package_name], {'ensure' => $ensure})
 
         $modules.each |String $module| {
             ensure_packages (["libnginx-mod-http-${module}"], {'ensure' => $ensure})
         }
     } else {
-        ensure_packages (["nginx-${variant}",'nginx-common'], {'ensure' => $ensure})
+        $nginx_package_name = "nginx-${variant}"
+        ensure_packages ([$nginx_package_name,'nginx-common'], {'ensure' => $ensure})
     }
 
     # In the unmanaged case, this prevents the scenario where after the
@@ -59,7 +61,7 @@ class nginx(
     if ! $managed and ($ensure == 'present') {
         exec { 'stop-default-nginx':
             command     => '/usr/sbin/service nginx stop',
-            subscribe   => Package["nginx-${variant}"],
+            subscribe   => Package[$nginx_package_name],
             refreshonly => true,
             before      => Service['nginx'],
         }
@@ -96,7 +98,7 @@ class nginx(
     #  declared within this module), and set up the
     #  notification for config~>service if $managed.
     # Also set up ssl tag -> service similarly, for certs
-    Package["nginx-${variant}"] -> File <| tag == 'nginx' |>
+    Package[$nginx_package_name] -> File <| tag == 'nginx' |>
     if $managed {
         File <| tag == 'nginx' |> ~> Service['nginx']
         File <| tag == 'ssl' |> ~> Service['nginx']
