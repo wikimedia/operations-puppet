@@ -92,6 +92,9 @@ route:
         - match:
             severity: 'warning'
           receiver: 'serviceops-collab-warning'
+        - match:
+            severity: 'task'
+          receiver: 'serviceops-collab-task'
     - match:
         team: 'dcops'
       receiver: 'dcops-mail'
