@@ -2690,6 +2690,11 @@ node /^thanos-fe200[123]\.codfw\.wmnet/ {
     role(thanos::frontend)
 }
 
+# New thanos-fe node T326848
+node 'thanos-fe2004.codfw.wmnet' {
+    role(insetup::observability)
+}
+
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[1256]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
