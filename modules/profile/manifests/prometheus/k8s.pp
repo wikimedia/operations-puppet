@@ -196,6 +196,15 @@ class profile::prometheus::k8s (
                         'target_label'  => '__scheme__',
                         'regex'         => '(.+)',
                     },
+                    # This instructs prometheus to only scrape a single port for
+                    # a pod instead of the default behavior
+                    #
+                    # By default, the pod role discovers all pods and exposes
+                    # their containers as targets. For each declared port of a
+                    # container, a single target is generated. If a container
+                    # has no specified ports, a port-free target per container
+                    # is created for manually adding a port via relabeling. If
+                    # no relabelling action is taken, port 80 is chosen.
                     {
                         'action'        => 'replace',
                         'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_prometheus_io_port'],
