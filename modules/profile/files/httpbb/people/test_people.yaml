@@ -18,3 +18,7 @@ https://people.wikimedia.org:
 - path: /~dzahn/
   assert_status: 200
   assert_body_contains: "fenari"
+- path: /~cdanis/sremap/
+  assert_status: 302
+  assert_headers:
+    Location: https://idp.wikimedia.org/login?service=https%3a%2f%2fpeople.wikimedia.org%2f%7ecdanis%2fsremap%2f
