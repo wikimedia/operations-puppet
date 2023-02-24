@@ -19,6 +19,11 @@
 # [*config_deploy_vars*]
 #     Variables used by scap3 during config deployment.
 #
+# [*manage_scap_user*]
+#     Specify whether to create a User resource for the $deploy_user.
+#     This should be set to false if you have defined the user elsewhere.
+#     Default: true
+#
 # [*mysql_admin_user*]
 #     Specify to use a different user for schema upgrades and database
 #     maintenance
@@ -28,7 +33,6 @@
 #     Specify to use a different password for schema upgrades and database
 #     maintenance
 #     Requires: mysql_admin_user
-#
 #
 # [*serveraliases*]
 #     Alternative domains on which to respond too
@@ -107,7 +111,6 @@ class phabricator (
         $storage_pass = $mysql_admin_pass
     }
 
-
     # First installs can trip without this
     exec {'apt_update_php':
         command     => '/usr/bin/apt-get update',
@@ -149,63 +152,14 @@ class phabricator (
         require => File['/srv/git.wikimedia.org'],
     }
 
-    $sudo_env_keep = [
-        'SCAP_REVS_DIR',
-        'SCAP_FINAL_PATH',
-        'SCAP_REV_PATH',
-        'SCAP_CURRENT_REV_DIR',
-        'SCAP_DONE_REV_DIR',
-    ].join(' ')
-
-    $sudo_scap_defaults = "Defaults:${deploy_user} env_keep+=\"${sudo_env_keep}\"\n"
-
-    file { '/etc/sudoers.d/scap_sudo_defaults':
-        ensure       => file,
-        mode         => '0440',
-        owner        => 'root',
-        group        => 'root',
-        content      => $sudo_scap_defaults,
-        validate_cmd => '/usr/sbin/visudo -cqf %',
-    }
-
-    $sudo_rules = [
-        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
-        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
-        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
-        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
-        ]
-
-    scap::target { $deploy_target:
-        deploy_user => $deploy_user,
-        key_name    => 'phabricator',
-        manage_user => $manage_scap_user,
-        require     => File['/usr/local/sbin/phab_deploy_finalize'],
-        sudo_rules  => $sudo_rules,
-    }
-
-    # Provide secrets and host-specific configuration that scap3 will use for
-    # its config deploy templates
-    file { '/etc/phabricator':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => $deploy_user,
-        mode   => '0750',
-    }
-
-    file { '/etc/phabricator/config.yaml':
-        ensure  => present,
-        owner   => 'root',
-        group   => $deploy_user,
-        mode    => '0640',
-        content => $config_deploy_vars.to_yaml(),
-    }
-
-    file { '/etc/phabricator/script-vars':
-        ensure  => present,
-        content => template('phabricator/script-vars.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0600',
+    class { '::phabricator::config':
+        phabdir            => $phabdir,
+        deploy_user        => $deploy_user,
+        deploy_target      => $deploy_target,
+        manage_scap_user   => $manage_scap_user,
+        config_deploy_vars => $config_deploy_vars,
+        storage_user       => $storage_user,
+        storage_pass       => $storage_pass,
     }
 
     file { $phabdir:
