@@ -16,9 +16,5 @@ backend k8s-ingress
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 1000 maxqueue 256 weight 100
 <%- @ingress_nodes.each do |server| -%>
-<%- if server.is_a?(String) -%>
     server <%= server %> <%= server %>:<%= @ingress_backend_port %> check
-<%- else -%>
-    server <%= server['host'] %> <%= server['host'] %>:<%= server['port'] or @ingress_backend_port %> check
-<%- end -%>
 <%- end -%>
