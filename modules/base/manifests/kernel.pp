@@ -60,6 +60,13 @@ class base::kernel(
         ],
     }
 
+    # File systems not in use, blacklist as additonal bandaid
+    kmod::blacklist { 'wmf-filesystems':
+        modules => [
+            'f2fs',
+        ],
+    }
+
     if (versioncmp($::kernelversion, '4.4') >= 0) {
         kmod::blacklist { 'linux44':
             modules => [ 'asn1_decoder', 'macsec' ],
