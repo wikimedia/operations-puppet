@@ -24,8 +24,8 @@ groups:
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
-              bscarone, faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr,
-              dannyh, mepps, cmacholan]
+              faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
+              cmacholan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -394,7 +394,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, kelhurd,
-              eileen, jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie]
+              eileen, jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5350,12 +5350,15 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bscarone:
-    ensure: absent
+    ensure: present
     realname: Bruno Scarone
     uid: 39391
     gid: 500
-    ssh_keys: []
-    krb: absent
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J
+    krb: present
+    expiry_date: 2023-06-30
+    expiry_contact: lzia@wikimedia.org
   kstoller:
     ensure: present
     realname: Kirsten Stoller
