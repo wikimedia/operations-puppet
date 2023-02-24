@@ -4,8 +4,8 @@ profile::analytics::postgresql::dump_interval: '*-*-* *:10:00'
 profile::analytics::postgresql::replicas:
   - an-db1002.eqiad.wmnet
 profile::analytics::postgresql::databases:
-  - airflow_data_engineering
-  - airflow_data_engineering_dev
+  - airflow_analytics
+  - airflow_analytics_test
   - airflow_platform_eng
   - airflow_research
   - airflow_search
