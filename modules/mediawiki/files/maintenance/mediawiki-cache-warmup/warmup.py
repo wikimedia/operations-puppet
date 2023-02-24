@@ -51,7 +51,7 @@ class Wiki:
 
 
 @dataclasses.dataclass
-class Request:
+class Task:
     """Represents a single HTTP request to be made to a particular target host."""
 
     target: str
@@ -62,15 +62,15 @@ class Stats:
     """Thread-safe statistics collector."""
 
     def __init__(self) -> None:
-        self._queue = queue.Queue()  # type: queue.Queue[Tuple[Request, float]]
+        self._queue = queue.Queue()  # type: queue.Queue[Tuple[Task, float]]
         self._start_time = datetime.datetime.now()
 
-    def update(self, request: Request, duration_sec: float) -> None:
-        """Update the statistics to indicate that `request` completed in `duration_sec` seconds.
+    def update(self, task: Task, duration_sec: float) -> None:
+        """Update the statistics to indicate that `task` completed in `duration_sec` seconds.
 
         This method may be safely called from multiple threads.
         """
-        self._queue.put((request, duration_sec))
+        self._queue.put((task, duration_sec))
 
     def print(self) -> None:
         """Compile the statistics and print a summary to stdout.
@@ -80,17 +80,17 @@ class Stats:
         """
         wall_seconds = (datetime.datetime.now() - self._start_time).total_seconds()
 
-        request_durations: List[Tuple[Request, float]] = []
+        task_durations: List[Tuple[Task, float]] = []
         while True:
             try:
-                request_durations.append(self._queue.get_nowait())
+                task_durations.append(self._queue.get_nowait())
             except queue.Empty:
                 break
 
-        count = len(request_durations)
-        fastest = min(sec for req, sec in request_durations)
-        average = sum(sec for req, sec in request_durations) / count
-        wall_of_shame = heapq.nlargest(5, request_durations, key=operator.itemgetter(1))
+        count = len(task_durations)
+        fastest = min(sec for req, sec in task_durations)
+        average = sum(sec for req, sec in task_durations) / count
+        wall_of_shame = heapq.nlargest(5, task_durations, key=operator.itemgetter(1))
 
         print("Statistics:")
         print(f"  Wall time: {wall_seconds * 1000:.1f} ms")
@@ -99,8 +99,8 @@ class Stats:
         print(f"  Average: {average * 1000:.1f} ms")
         print()
         print(f"Slowest {len(wall_of_shame)} requests:")
-        for request, duration in wall_of_shame:
-            print(f" - {duration * 1000:.1f} ms ({request.target}) {request.url}")
+        for task, duration in wall_of_shame:
+            print(f" - {duration * 1000:.1f} ms ({task.target}) {task.url}")
 
 
 def get_large_wikis() -> List[Wiki]:
@@ -177,14 +177,14 @@ def do_requests(
     target_semaphores = {target: threading.Semaphore(target_concurrency) for target in targets}
 
     # Assemble all the requests we'll make and place them on a work queue. We build out a list of
-    # requests first, so that we can shuffle them before putting them on the queue.
+    # tasks first, so that we can shuffle them before putting them on the queue.
     #
     # Shuffling serves two purposes: it spreads out the requests evenly across multiple target hosts
     # (limiting contention on each target_semaphore), and it reduces the chance of many target hosts
     # concurrently processing the same URL (limiting contention on shared backend resources).
-    tasks = [Request(target, url) for url in urls for target in targets]
+    tasks = [Task(target, url) for url in urls for target in targets]
     random.shuffle(tasks)
-    work_queue = queue.Queue()  # type: queue.Queue[Request]
+    work_queue = queue.Queue()  # type: queue.Queue[Task]
     for task in tasks:
         work_queue.put(task)
 
@@ -218,7 +218,7 @@ def do_requests(
 
 
 def worker(
-    work_queue: "queue.Queue[Request]",
+    work_queue: "queue.Queue[Task]",
     session: requests.Session,
     target_semaphores: Dict[str, threading.Semaphore],
     stats: Stats,
@@ -226,31 +226,31 @@ def worker(
     """Process the work queue, sending HTTP requests until the queue is empty."""
     while True:
         try:
-            request = work_queue.get_nowait()
+            task = work_queue.get_nowait()
         except queue.Empty:
             return
 
-        if not target_semaphores[request.target].acquire(blocking=False):
+        if not target_semaphores[task.target].acquire(blocking=False):
             # This target is already at max concurrency. Put this task back at the end of the queue
             # and get another. (In case we're near the end of the queue, call put() before
             # task_done(). That way the task count never reaches zero, in which case join() would
             # return prematurely.)
-            work_queue.put(request)
+            work_queue.put(task)
             work_queue.task_done()
             continue
 
-        duration = do_request(request, session)
-        target_semaphores[request.target].release()
-        stats.update(request, duration.total_seconds())
+        duration = do_task(task, session)
+        target_semaphores[task.target].release()
+        stats.update(task, duration.total_seconds())
         work_queue.task_done()
 
 
-def do_request(request: Request, session: requests.Session) -> datetime.timedelta:
+def do_task(task: Task, session: requests.Session) -> datetime.timedelta:
     """Perform an HTTP request, discard the response, and return the amount of time it took."""
-    parsed_url = parse.urlparse(request.url)
+    parsed_url = parse.urlparse(task.url)
     # Move the URL's virtual host into the Host header, and substitute the target hostname.
     vhost = parsed_url.hostname
-    parsed_url = parsed_url._replace(netloc=request.target)
+    parsed_url = parsed_url._replace(netloc=task.target)
     return session.get(parsed_url.geturl(), headers={"Host": vhost}).elapsed
 
 
