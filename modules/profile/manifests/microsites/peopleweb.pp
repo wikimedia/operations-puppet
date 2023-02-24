@@ -91,6 +91,7 @@ class profile::microsites::peopleweb (
 
     # people's entire home dirs (not just public_html) are backed up in Bacula
     backup::set {'home': }
+    backup::set {'srv-org-wikimedia': }
 
     # allow copying /home from one server to another for migrations
     ensure_packages(['rsync'])
