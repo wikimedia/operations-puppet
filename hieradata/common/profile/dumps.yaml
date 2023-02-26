@@ -8,6 +8,8 @@ profile::dumps::rsync_internal_clients:
   - dumpsdata1001.eqiad.wmnet
   - dumpsdata1002.eqiad.wmnet
   - dumpsdata1003.eqiad.wmnet
+  - dumpsdata1004.eqiad.wmnet
+  - dumpsdata1005.eqiad.wmnet
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
   - stat1006.eqiad.wmnet
