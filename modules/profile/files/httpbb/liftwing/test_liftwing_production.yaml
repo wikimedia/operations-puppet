@@ -691,8 +691,16 @@ https://viwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
-https://revert-risk-model.experimental.wikimedia.org:
-- path: /v1/models/revert-risk-model:predict
+https://revertrisk.experimental.wikimedia.org:
+- path: /v1/models/revertrisk:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: score
+  method: POST
+https://revertrisk-multilingual.experimental.wikimedia.org:
+- path: /v1/models/revertrisk-multilingual:predict
   json_body:
     rev_id: 21774755
     lang: en
@@ -704,7 +712,6 @@ https://outlink-topic-model.articletopic-outlink.wikimedia.org:
   json_body:
     lang: en
     page_title: "Victoria_Jubilee_Government_High_School"
-    features_str: "Q15987189 Q6604679 Q57137630 Q902 Q875538 Q13059501 Q4813767 Q4937781 Q19894466 Q25586928 Q13057539 Q2269756 Q7045494 Q6402931 Q2061316 Q25586927 Q22664 Q9610 Q16345577 Q9439 Q4860797 Q14980579 Q6947799 Q5151846 Q7121813"
   assert_status: 200
   assert_body_contains: score
   method: POST
