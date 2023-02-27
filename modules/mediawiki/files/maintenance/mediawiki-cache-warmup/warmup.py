@@ -51,10 +51,19 @@ class Wiki:
 
 
 @dataclasses.dataclass
+class Request:
+    """Represents an HTTP request that could be made to one or more target hosts."""
+
+    method: str
+    url: str
+
+
+@dataclasses.dataclass
 class Task:
     """Represents a single HTTP request to be made to a particular target host."""
 
     target: str
+    method: str
     url: str
 
 
@@ -134,24 +143,32 @@ def get_large_wikis() -> List[Wiki]:
     ]
 
 
-def expand_urls(f: TextIO) -> List[str]:
-    """Read the URL template file and expand it into a full list of URLs for all large wikis."""
+def expand_urls(f: TextIO) -> List[Request]:
+    """Read the URL template file and expand it into a full list of Requests for all large wikis."""
     large_wikis = get_large_wikis()
-    urls = []
-    for line in f.readlines():
+    reqs = []
+    for i, line in enumerate(f.readlines()):
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        if "%server" in line:
+
+        if " " in line:
+            method, url = line.split()
+            if method.upper() not in {"GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"}:
+                raise ValueError(f"Invalid HTTP method '{method}' at line {i + 1} of URLs file")
+        else:
+            method, url = "GET", line
+
+        if "%server" in url:
             for wiki in large_wikis:
-                urls.append(line.replace("%server", wiki.host))
-        elif "%mobileServer" in line:
+                reqs.append(Request(method, url.replace("%server", wiki.host)))
+        elif "%mobileServer" in url:
             for wiki in large_wikis:
                 if wiki.mobile_host:
-                    urls.append(line.replace("%mobileServer", wiki.mobile_host))
+                    reqs.append(Request(method, url.replace("%mobileServer", wiki.mobile_host)))
         else:
-            urls.append(line)
-    return urls
+            reqs.append(Request(method, url))
+    return reqs
 
 
 def get_target_hostnames(data_center: str, cluster: str) -> List[str]:
@@ -165,11 +182,11 @@ def get_target_hostnames(data_center: str, cluster: str) -> List[str]:
 
 def do_requests(
     targets: List[str],
-    urls: List[str],
+    reqs: List[Request],
     global_concurrency: int,
     target_concurrency: int,
 ) -> Stats:
-    """Send each of `urls` to each of `targets` and return the aggregated timing statistics.
+    """Send each of `reqs` to each of `targets` and return the aggregated timing statistics.
 
     No more than `global_concurrency` requests are in flight at any time, and no more than
     `target_concurrency` requests are in flight to any single target host at any time.
@@ -182,7 +199,7 @@ def do_requests(
     # Shuffling serves two purposes: it spreads out the requests evenly across multiple target hosts
     # (limiting contention on each target_semaphore), and it reduces the chance of many target hosts
     # concurrently processing the same URL (limiting contention on shared backend resources).
-    tasks = [Task(target, url) for url in urls for target in targets]
+    tasks = [Task(target, request.method, request.url) for request in reqs for target in targets]
     random.shuffle(tasks)
     work_queue = queue.Queue()  # type: queue.Queue[Task]
     for task in tasks:
@@ -251,7 +268,7 @@ def do_task(task: Task, session: requests.Session) -> datetime.timedelta:
     # Move the URL's virtual host into the Host header, and substitute the target hostname.
     vhost = parsed_url.hostname
     parsed_url = parsed_url._replace(netloc=task.target)
-    return session.get(parsed_url.geturl(), headers={"Host": vhost}).elapsed
+    return session.request(task.method, parsed_url.geturl(), headers={"Host": vhost}).elapsed
 
 
 def main() -> int:
@@ -276,9 +293,9 @@ def main() -> int:
     dry.add_argument("--all", action="store_true", help="dump the full list of URLs")
 
     args = parser.parse_args()
-    urls = expand_urls(args.file)
+    reqs = expand_urls(args.file)
     if args.command == "spread":
-        stats = do_requests([args.target], urls, global_concurrency=1000, target_concurrency=1000)
+        stats = do_requests([args.target], reqs, global_concurrency=1000, target_concurrency=1000)
         stats.print()
         return 0
     elif args.command == "clone":
@@ -287,15 +304,15 @@ def main() -> int:
         # than a load-balanced group like in spread mode. But global_concurrency can eventually be
         # higher than this; see the TODO comment in do_requests. (Until then, target_concurrency has
         # no effect; no more than 50 requests can be in flight anyway!)
-        stats = do_requests(targets, urls, global_concurrency=50, target_concurrency=150)
+        stats = do_requests(targets, reqs, global_concurrency=50, target_concurrency=150)
         stats.print()
         return 0
     elif args.command == "dry":
-        print(f"Would send {len(urls)} URLs:")
-        random.shuffle(urls)
-        for url in urls if args.all else urls[:20]:
-            print(url)
-        if not args.all and len(urls) > 20:
+        print(f"Would send {len(reqs)} URLs:")
+        random.shuffle(reqs)
+        for request in reqs if args.all else reqs[:20]:
+            print(f"{request.method} {request.url}")
+        if not args.all and len(reqs) > 20:
             print("...")
         return 0
     else:

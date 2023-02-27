@@ -7,3 +7,7 @@
 https://%server/w/load.php?lang=en&modules=startup&only=scripts&raw=1&skin=vector
 # Purpose: API-specific MW code in opcache
 https://%server/w/api.php?action=query&meta=siteinfo&siprop=namespaces|specialpagealiases|magicwords|languages|extensiontags&format=json&formatversion=2
+# Purpose: Force reparsing pages to prewarm memcached and APCu for Wikidata. (The reparses are
+# accomplished when we follow the 302s returned by the POSTs.)
+POST https://en.wikipedia.org/wiki/South_Pole_Telescope?action=purge
+POST https://commons.wikimedia.org/wiki/Category:Hubble_Space_Telescope?action=purge
