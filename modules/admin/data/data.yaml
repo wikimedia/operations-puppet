@@ -5352,6 +5352,7 @@ users:
   bscarone:
     ensure: present
     realname: Bruno Scarone
+    email: scarone.b@northeastern.edu
     uid: 39391
     gid: 500
     ssh_keys:
