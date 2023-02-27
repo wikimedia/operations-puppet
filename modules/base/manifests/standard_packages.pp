@@ -95,8 +95,11 @@ class base::standard_packages {
             }
         }
         # rasdaemon replaces mcelog on buster
-        if debian::codename::eq('buster') {
+        if debian::codename::ge('buster') {
             ensure_packages('rasdaemon')
+            service { 'rasdaemon':
+                ensure => 'started'
+            }
             profile::auto_restarts::service { 'rasdaemon': }
         }
 
