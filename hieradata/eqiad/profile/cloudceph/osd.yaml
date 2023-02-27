@@ -286,11 +286,11 @@ profile::cloudceph::osd::hosts:
   "cloudcephosd1004.eqiad.wmnet":
     public:
       addr: "10.64.149.14"
-      iface: "enp101s0f0np0"
+      iface: "enp175s0f0np0"
     cluster:
       addr: "192.168.6.6"
       prefix: "24"
-      iface: "enp101s0f1np1"
+      iface: "enp175s0f1np1"
 
 profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"
