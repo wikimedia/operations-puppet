@@ -122,6 +122,9 @@ IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.37.20'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
+-- labsdbaccounts user running from cloudcontrol1005
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `labsdbaccounts`.* TO `labsdbaccounts`@`208.80.154.85`
+
 -- dbproxy1017
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.48.43'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
