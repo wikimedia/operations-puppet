@@ -23,6 +23,17 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/C10shell.wikimedia.org.erb'),
     }
 
+    # on buster, add a hook for building packages against ICU67-enabled packages
+    if $distribution == 'buster' {
+        file { "${basepath}/hooks/${distribution}/D04icu67":
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/package_builder/hooks/D04icu67',
+        }
+    }
+
     if $distribution != 'sid' {
         file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
             ensure  => present,
