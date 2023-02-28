@@ -1,0 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Service]
+ExecStart=
+ExecStart=/usr/bin/pint --config /etc/prometheus/pint.hcl watch --listen :<%= @listen_port %> <%= @watch_paths.join(' ') %>
