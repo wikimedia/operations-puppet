@@ -53,7 +53,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://debmonitor.discovery.wmnet:7443
     - type: map
       target: http://design.wikimedia.org
-      replacement: https://webserver-misc-apps.discovery.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://docker-registry.wikimedia.org
       replacement: https://docker-registry.discovery.wmnet
