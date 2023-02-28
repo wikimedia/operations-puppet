@@ -46,7 +46,7 @@ class profile::mariadb::check_private_data {
         monitoring_enabled => false,
         logging_enabled    => false,
         command            => '/usr/local/sbin/check_private_data_report',
-        interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 05:00:00'},
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 05:00:00'},
         require            => [
             File['/usr/local/sbin/check_private_data_report'],
             File['/usr/local/sbin/check_private_data.py'],
