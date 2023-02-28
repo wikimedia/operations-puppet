@@ -98,7 +98,7 @@ class base::standard_packages {
         if debian::codename::ge('buster') {
             ensure_packages('rasdaemon')
             service { 'rasdaemon':
-                ensure => 'started'
+                ensure => 'running'
             }
             profile::auto_restarts::service { 'rasdaemon': }
         }
