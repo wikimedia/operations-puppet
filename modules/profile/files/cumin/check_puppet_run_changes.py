@@ -11,10 +11,12 @@ from argparse import ArgumentParser, Namespace
 from collections import defaultdict
 from datetime import datetime, timedelta
 from re import search
+from typing import Set
 
 from cumin import Config
 from cumin.transports import clustershell
 from pypuppetdb import connect
+from pypuppetdb.api import API
 from pypuppetdb.QueryBuilder import ExtractOperator, FunctionOperator, GreaterOperator
 from requests.packages.urllib3 import disable_warnings
 from requests.packages.urllib3.exceptions import SubjectAltNameWarning
@@ -78,6 +80,31 @@ def get_log_level(level: int) -> None:
     }.get(level, logging.DEBUG)
 
 
+def get_inactive_alert_hosts(pdb: API) -> Set:
+    """Return a list of inactive alerting hosts
+
+    Arguments:
+        pql: an pypuppetdb api object
+
+    Returns:
+        set: of inactive alert hosts
+
+    """
+    pql = r"""
+    resources[parameters]  {
+        type = 'Class' and title = 'Profile::Alertmanager' and
+        nodes { certname ~ "alert\\d+\\.wikimedia\\.org" }
+        limit 1
+    }
+    """
+    result = list(pdb.pql(pql))[0]
+    hosts = set(result['parameters']['partners']) - set(
+        result['parameters']['active_host']
+    )
+    logger.debug("passive alert hosts: %s", ",".join(hosts))
+    return hosts
+
+
 def main() -> int:
     """main entry point
 
@@ -88,7 +115,7 @@ def main() -> int:
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
 
-    failed_nodes = []
+    failed_nodes = set()
     cumin_config = Config()
     pdb_config = {
         'host': cumin_config['puppetdb']['host'],
@@ -108,6 +135,7 @@ def main() -> int:
 
     max_age = datetime.utcnow() - timedelta(hours=args.max_age)
 
+    inactive_alert_hosts = get_inactive_alert_hosts(pdb)
     extract = ExtractOperator()
     extract.add_field(['certname', FunctionOperator('count'), 'status'])
     extract.add_group_by(['certname', 'status'])
@@ -123,9 +151,9 @@ def main() -> int:
         nodes[report['certname']][report['status']] = report['count']
 
     if args.dev:
-        failed_nodes = [
+        failed_nodes = {
             fqdn for fqdn, node in nodes.items() if not node.get('unchanged', 0)
-        ]
+        }
     else:
         for fqdn, node in nodes.items():
             # skip hosts with no unchanged reports:
@@ -141,7 +169,7 @@ def main() -> int:
             ):
                 logger.debug('%s: Skipping staging host', fqdn)
                 continue
-            failed_nodes.append(fqdn)
+            failed_nodes.add(fqdn)
 
     if failed_nodes:
         # only run spicerack in verbose if using debug
@@ -155,17 +183,17 @@ def main() -> int:
                 clustershell.sys.stdout = discard_output
                 clustershell.sys.stderr = discard_output
                 icinga = Spicerack(verbose=verbose, dry_run=False).icinga_hosts(
-                    failed_nodes
+                    failed_nodes - inactive_alert_hosts
                 )
                 icinga_status = icinga.get_status()
         finally:
             clustershell.sys.stdout = stdout
             clustershell.sys.stderr = stderr
-        failed_nodes = [
+        failed_nodes -= {
             node.name
             for node in icinga_status.values()
-            if node.notifications_enabled and not node.downtimed
-        ]
+            if node.downtimed and not node.notifications_enabled
+        }
 
     if len(failed_nodes) >= args.critical:
         print(
