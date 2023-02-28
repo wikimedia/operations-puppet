@@ -7,7 +7,7 @@ every puppet agent run
 import logging
 import os
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from collections import defaultdict
 from datetime import datetime, timedelta
 from re import search
@@ -26,8 +26,12 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 disable_warnings(SubjectAltNameWarning)
 
 
-def get_args():
-    """Parse arguments"""
+def get_args() -> Namespace:
+    """Parse arguments
+
+    Returns:
+        Namespace: the parse argparse namspace
+    """
 
     def check_positive(value):
         value = int(value)
@@ -39,7 +43,10 @@ def get_args():
     parser.add_argument('-w', '--warning', default=1, type=check_positive)
     parser.add_argument('-c', '--critical', default=5, type=check_positive)
     parser.add_argument(
-        '--max-age', default=12, type=check_positive, help='the maximum report age in hours'
+        '--max-age',
+        default=12,
+        type=check_positive,
+        help='the maximum report age in hours',
     )
     parser.add_argument(
         '-D', '--dev', action='store_true', help='Also include dev servers in counts'
@@ -49,25 +56,35 @@ def get_args():
     parser.add_argument(
         '--ssl-ca', help='Path to the ssl ca-bundle used to verify the ssl connection'
     )
-    parser.add_argument('-v', '--verbose', action='count')
+    parser.add_argument('-v', '--verbose', action='count', default=0)
     args = parser.parse_args()
     if args.warning >= args.critical:
         parser.error('--warning must be lower then --critical')
     return args
 
 
-def get_log_level(args_level):
-    """Configure logging"""
+def get_log_level(level: int) -> None:
+    """Configure logging
+
+    Arguments:
+        level: The logging level
+
+    """
     return {
-        None: logging.ERROR,
+        0: logging.ERROR,
         1: logging.WARN,
         2: logging.INFO,
         3: logging.DEBUG,
-    }.get(args_level, logging.DEBUG)
+    }.get(level, logging.DEBUG)
 
 
-def main():
-    """main entry point"""
+def main() -> int:
+    """main entry point
+
+    Returns:
+        int: the status code to exit with
+
+    """
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
 
@@ -137,7 +154,9 @@ def main():
             with open(os.devnull, 'w') as discard_output:
                 clustershell.sys.stdout = discard_output
                 clustershell.sys.stderr = discard_output
-                icinga = Spicerack(verbose=verbose, dry_run=False).icinga_hosts(failed_nodes)
+                icinga = Spicerack(verbose=verbose, dry_run=False).icinga_hosts(
+                    failed_nodes
+                )
                 icinga_status = icinga.get_status()
         finally:
             clustershell.sys.stdout = stdout
