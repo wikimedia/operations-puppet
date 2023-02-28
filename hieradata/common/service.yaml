@@ -3449,9 +3449,6 @@ service::catalog:
       - codfw
     port: 80
     state: production
-    discovery:
-      - dnsdisc: apt
-        active_active: false
 
   # puppetboard is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
