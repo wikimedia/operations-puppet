@@ -9,6 +9,7 @@
 class prometheus::blackbox_exporter(
     Optional[Stdlib::HTTPUrl] $http_proxy = undef,
 ) {
+    require prometheus::assemble_config
 
     # Grant permissions to send out ICMP probes
     debconf::set { 'prometheus-blackbox-exporter/want_cap_net_raw':
@@ -30,15 +31,6 @@ class prometheus::blackbox_exporter(
         purge   => true,
     }
 
-    file { '/usr/local/bin/blackbox-exporter-assemble':
-        ensure => present,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/blackbox_exporter/assemble_config.py',
-        before => Exec['assemble blackbox.yml'],
-    }
-
     ['misc', 'common'].each |$frag| {
         prometheus::blackbox::module { $frag:
             content => template("prometheus/blackbox_exporter/${frag}.yml.erb"),
@@ -52,8 +44,8 @@ class prometheus::blackbox_exporter(
     # - the old configuration is silently kept in place until a fragment changes again
 
     exec { 'assemble blackbox.yml':
-        onlyif  => 'blackbox-exporter-assemble --onlyif',
-        command => 'blackbox-exporter-assemble',
+        onlyif  => 'prometheus-assemble-config --onlyif blackbox',
+        command => 'prometheus-assemble-config blackbox',
         notify  => Service['prometheus-blackbox-exporter'],
         path    => '/usr/local/bin',
     }

@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+
+modules:
+  blackbox:
+    validate_cmd: /usr/bin/prometheus-blackbox-exporter --config.check --config.file {}
+    input_glob: /etc/prometheus/blackbox.yml.d/*.yml
+    config_out: /etc/prometheus/blackbox.yml
+
+  pint:
+    validate_cmd: /usr/bin/pint --config {} config
+    input_glob: /etc/prometheus/pint.hcl.d/*.hcl
+    config_out: /etc/prometheus/pint.hcl
