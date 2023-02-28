@@ -484,7 +484,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325210
-node /^db2(185|186|187)\.codfw\.wmnet/ {
+node /^db2(185|187)\.codfw\.wmnet/ {
     role(insetup::data_persistence)
 }
 
@@ -785,7 +785,7 @@ node /^db1(154|155)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-node /^db2(094|095)\.codfw\.wmnet/ {
+node /^db2(094|095|186)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
