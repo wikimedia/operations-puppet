@@ -67,14 +67,15 @@ def main():
         else:
             msg['To'] = args.mail_to
         cmd_str = ' '.join(str(i) for i in args.cmd)
-        body = """
-        Systemd timer ran the following command:
-            `{}`
-        its return value was {} and emitted the following output:
-        {}
-        """.format(cmd_str, ret, output)
+        body = dedent(
+            """\
+            Systemd timer ran the following command:
+                `{}`
+            Its return value was {} and emitted the following output:
+            {}
+            """).format(cmd_str, ret, output)
         msg['Subject'] = "{}: {}".format(status, args.subject)
-        msg.set_content(dedent(body))
+        msg.set_content(body)
         smtp = smtplib.SMTP('localhost')
         smtp.send_message(msg)
         smtp.quit()
