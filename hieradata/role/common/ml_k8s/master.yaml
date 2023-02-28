@@ -7,11 +7,18 @@ profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/ml-ctrl.svc.%{:
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/ml-ctrl.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::service_node_port_range: '1-65535'
 profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-mlserve"
+profile::kubernetes::version: '1.23'
+profile::calico::kubernetes::calico_version: '3.23'
+profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:
   enable:
     - PodSecurityPolicy
+    # v1.23: Enable DenyServiceExternalIPs because we don't use them
+    - DenyServiceExternalIPs
+    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
+    - NodeRestriction
   disable:
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
@@ -19,8 +26,9 @@ profile::lvs::realserver::pools:
   ml-ctrl:
     services:
       - "kube-apiserver"
-profile::admin::groups:
-  - ml-team-admins
+# It is expected that there is a second intermediate suffixed with _front_proxy to be used
+# to configure the aggregation layer.
+profile::kubernetes::pki::intermediate: 'mlserve'
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
@@ -57,4 +65,6 @@ profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
 # profile::rsyslog::kubernetes::token
 prometheus::node_exporter::collectors_extra:
   - processes
+profile::admin::groups:
+  - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
