@@ -2362,4 +2362,8 @@ class profile::prometheus::ops (
             }
         }
     }
+
+    prometheus::pint::source { 'ops':
+        port => $port,
+    }
 }
