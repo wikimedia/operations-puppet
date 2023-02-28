@@ -1555,11 +1555,11 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/v2/scores/
+            - https://localhost/v3/scores/
       scheduler: wrr
     probes:
       - type: http
-        path: /v2/scores/
+        path: /v3/scores/
     port: 443
     sites:
       - eqiad
