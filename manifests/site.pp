@@ -484,7 +484,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325210
-node /^db2(185|187)\.codfw\.wmnet/ {
+node /^db2(187)\.codfw\.wmnet/ {
     role(insetup::data_persistence)
 }
 
@@ -799,6 +799,10 @@ node 'db2093.codfw.wmnet' {
     role(mariadb::misc::db_inventory)
 }
 
+node 'db2185.codfw.wmnet' {
+    role(mariadb::misc::db_inventory)
+}
+
 # Orchestrator central node (VM on ganeti)
 node 'dborch1001.wikimedia.org' {
     role(orchestrator)
@@ -813,7 +817,7 @@ node /^db2183|db2184\.codfw\.wmnet/ {
     role(mariadb::misc)
 }
 # New db nodes T326342
-node /^db2185|db2186|db2187\.codfw\.wmnet/ {
+node 'db2187.codfw.wmnet' {
     role(insetup::data_persistence)
 }
 
