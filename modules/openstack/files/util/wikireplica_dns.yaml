@@ -20,8 +20,6 @@ zones:
   db.svc.eqiad.wmflabs.:
     tools:
       - 172.16.6.37
-    osm:
-      - 172.16.6.105
   analytics.db.svc.wikimedia.cloud.: &analytics
     s1:
       - 172.16.1.6
