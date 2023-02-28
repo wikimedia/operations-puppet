@@ -20,7 +20,6 @@ class profile::gitlab(
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => {}}),
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
-    Boolean $enable_restore = lookup('profile::gitlab::enable_restore', {default_value => false}),
     Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
     String $ferm_drange = lookup('profile::gitlab::ferm_drange'),
     Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
@@ -193,7 +192,7 @@ class profile::gitlab(
         enable_backup           => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         ssh_listen_addresses    => $ssh_listen_addresses,
         nginx_listen_addresses  => $nginx_listen_addresses,
-        enable_restore          => $enable_restore,
+        enable_restore          => $active_host != $facts['fqdn'], # enable restore on replicas
         cert_path               => $cert_path,
         key_path                => $key_path,
         gitlab_domain           => $service_name,

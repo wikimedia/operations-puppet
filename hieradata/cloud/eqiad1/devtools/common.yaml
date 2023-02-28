@@ -260,9 +260,6 @@ profile::gitlab::use_acmechief: false
 profile::gitlab::cert_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/fullchain.pem'
 profile::gitlab::key_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/privkey.pem'
 
-# Disable restore backup sync on cloud test instance
-profile::gitlab::enable_restore: false
-
 profile::contacts::role_contacts: ['ServiceOps']
 
 # service IP for public https and ssh (T276148)
