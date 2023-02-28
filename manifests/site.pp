@@ -1031,12 +1031,8 @@ node /^dumpsdata1004\.eqiad\.wmnet$/ {
 }
 
 # new dumpsdata servers T283290
-node /^dumpsdata1005\.eqiad\.wmnet/ {
+node /^dumpsdata100[567]\.eqiad\.wmnet/ {
     role(dumps::generation::server::spare)
-}
-
-node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
-    role(insetup::core_platform)
 }
 
 node /^elastic104[8-9]\.eqiad\.wmnet/ {
