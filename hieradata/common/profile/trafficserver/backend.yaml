@@ -245,7 +245,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://sitemaps.wikimedia.org
-      replacement: https://webserver-misc-apps.discovery.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
