@@ -11,7 +11,34 @@ describe "profile::toolforge::harbor" do
           "harbor_url" => "dummy.harbor.fqdn",
         }
       }
-      it { is_expected.to compile.with_all_deps }
+      describe 'compiles without errors' do
+        it { is_expected.to compile.with_all_deps }
+      end
+
+      describe 'adds the given robot accounts and cinder_attached if passed' do
+        let(:params) {
+          super().merge({
+            "cinder_attached" => true,
+            "robot_accounts" => {
+              "robot1" => {
+                "password": "robot1pass",
+              },
+              "robot2" => {
+                "password": "robot2pass",
+              },
+            }
+          })
+        }
+
+        it { is_expected.to compile.with_all_deps }
+        it {
+          is_expected.to contain_file('/srv/ops/harbor/harbor.yml')
+          .with_content(/robot1:/)
+          .with_content(/password: "robot1pass"/)
+          .with_content(/robot2:/)
+          .with_content(/password: "robot2pass"/)
+        }
+      end
     end
   end
 end

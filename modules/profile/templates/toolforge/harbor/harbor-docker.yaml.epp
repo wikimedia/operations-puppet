@@ -7,6 +7,7 @@
     String[1] $harbor_db_pwd,
     Stdlib::Host $harbor_db_host,
     Stdlib::Unixpath $data_volume,
+    Profile::Toolforge::Harbor::Robot_accounts $robot_accounts = {},
 | -%>
 # Configuration file of Harbor
 
@@ -211,3 +212,11 @@ metric:
   enabled: true
   port: 9090
   path: /metrics
+
+<%- if $robot_accounts.size > 0 { %>
+robot_accounts:
+<% $robot_accounts.each | String[1] $account_name, Struct[{'password' => String[1]}] $account_data| { -%>
+  <%= $account_name %>:
+      password: "<%= $account_data['password'] %>"
+<% } -%>
+<% } -%>

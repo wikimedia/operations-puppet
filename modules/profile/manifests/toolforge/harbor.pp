@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class profile::toolforge::harbor (
     Stdlib::Unixpath $data_volume = lookup('profile::toolforge::harbor::data_volume', {default_value => '/srv/harbor/data'}),
     String $tlscert = lookup('profile::toolforge::harbor::tlscert', {default_value => 'ec-prime256v1.chained.crt'}),
@@ -8,6 +9,7 @@ class profile::toolforge::harbor (
     String[1] $harbor_db_pwd = lookup('profile::toolforge::harbor::db_harbor_pwd', {default_value => 'dummypass'}),
     Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db_primary', {default_value => 'dummy.db.host'}),
     Stdlib::Fqdn $harbor_url = lookup('profile::toolforge::harbor::url', {default_value => 'dummy.harbor.fqdn'}),
+    Profile::Toolforge::Harbor::Robot_accounts $robot_accounts = lookup('profile::toolforge::harbor::robot_accounts', {default_value => {}}),
 ) {
     ensure_packages(['docker.io'])
     service { 'docker':
@@ -58,6 +60,7 @@ class profile::toolforge::harbor (
                     harbor_db_pwd   => $harbor_db_pwd,
                     harbor_db_host  => $harbor_db_host,
                     data_volume     => $data_volume,
+                    robot_accounts  => $robot_accounts,
                 }
             ),
         } -> file { '/srv/ops/harbor/data':
