@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::services::toolsdb_replica_cnf(
-    String $tool_replica_cnf_path = lookup('profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path'),
-    String $paws_replica_cnf_path = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path'),
-    String $user_replica_cnf_path = lookup('profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path'),
-    String $htuser                = lookup('profile::wmcs::services::toolsdb_replica_cnf::htuser'),
-    String $htpassword            = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword'),
-    String $htpassword_salt       = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
-    String $tools_project_prefix  = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
+    String $tool_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path'),
+    String $paws_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path'),
+    String $user_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path'),
+    String $htuser                   = lookup('profile::wmcs::services::toolsdb_replica_cnf::htuser'),
+    String $htpassword               = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword'),
+    String $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
+    String $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
+    Array[Stdlib::Fqdn]$cloudcontrol = lookup('profile::openstack::eqiad1::openstack_controllers'),
 ) {
-
     $user                           = 'www-data'
     $group                          = 'www-data'
     $modules_uri                    = 'puppet:///modules/'
@@ -191,5 +191,12 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     file { "${func_tests_dir}/tool_account.bats":
       source => "puppet:///modules/${puppet_path}/tool_accounts.bats",
       mode   => '0400',
+    }
+
+    # nginx runs a REST API
+    ferm::service{ 'rest_api_from_cloudcontrol':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(@resolve((${join($cloudcontrol,' ')})))",
     }
 }
