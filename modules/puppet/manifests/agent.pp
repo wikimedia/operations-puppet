@@ -58,7 +58,7 @@ class puppet::agent (
         mode   => '0550',
     }
 
-    file { ['/etc/puppetlabs/','/etc/puppetlabs/facter/']:
+    file { ['/etc/puppetlabs/','/etc/puppetlabs/facter/', '/etc/puppetlabs/facter/facts.d/']:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
