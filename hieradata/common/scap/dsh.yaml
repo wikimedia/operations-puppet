@@ -150,6 +150,5 @@ scap::dsh::groups:
       - contint2001.wikimedia.org
       - contint2002.wikimedia.org
   jenkins-rel:
-    hosts:
-      - releases1002.eqiad.wmnet
-      - releases2002.codfw.wmnet
+    # FIXME profile::releases::mediawiki is poorly named
+    pdb_query: "Scap::Target['releng/jenkins-deploy'] and Class[Profile::Releases::MediaWiki]"
