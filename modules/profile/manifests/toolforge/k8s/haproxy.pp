@@ -4,7 +4,6 @@ class profile::toolforge::k8s::haproxy (
     Stdlib::Port        $ingress_backend_port = lookup('profile::toolforge::k8s::ingress_backend_port',         {default_value => 30002}),
     Array[Stdlib::Fqdn] $control_nodes        = lookup('profile::toolforge::k8s::control_nodes',                {default_value => ['localhost']}),
     Stdlib::Port        $api_port             = lookup('profile::toolforge::k8s::apiserver_port',               {default_value => 6443}),
-    Stdlib::Port        $jobs_port            = lookup('profile::toolforge::jobs_api_port',                     {default_value => 30001}),
     Stdlib::Port        $api_gateway_port     = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',    {default_value => 30003}),
     Array[Stdlib::Fqdn] $keepalived_vips      = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',     {default_value => []}),
     Array[Stdlib::Fqdn] $keepalived_peers     = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',    {default_value => ['localhost']}),
@@ -29,11 +28,8 @@ class profile::toolforge::k8s::haproxy (
     }
 
     file { '/etc/haproxy/conf.d/k8s-ingress-jobs.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('profile/toolforge/k8s/haproxy/k8s-ingress-jobs.cfg.erb'),
-        notify  => Service['haproxy'],
+        ensure => absent,
+        notify => Service['haproxy'],
     }
     file { '/etc/haproxy/conf.d/k8s-ingress-api-gateway.cfg':
         owner   => 'root',
