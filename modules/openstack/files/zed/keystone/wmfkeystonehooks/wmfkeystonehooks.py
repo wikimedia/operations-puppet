@@ -38,7 +38,7 @@ LOG = logging.getLogger('nova.%s' % __name__)
 wmfkeystone_opts = [
     cfg.StrOpt('admin_user',
                default='novaadmin',
-               help='Admin user to add to all new projects'),
+               help='Admin service user for acceessing openstack endpoints'),
     cfg.StrOpt('admin_pass',
                default='',
                help='Admin password, used to authenticate with other services'),
@@ -49,7 +49,7 @@ wmfkeystone_opts = [
                default='',
                help='Keystone URL, used to authenticate with other services'),
     cfg.StrOpt('user_role_name',
-               default='user',
+               default='reader',
                help='Name of simple project user role'),
     cfg.StrOpt('bastion_project_id',
                default='bastion',
@@ -381,25 +381,31 @@ class KeystoneHooks(notifier.Driver):
             self._on_project_create(message['payload']['resource_info'])
 
         if event_type == 'identity.role_assignment.created':
-            project_id = message['payload']['project']
-            role_id = message['payload']['role']
-            self._on_member_update(project_id)
-            if (project_id != CONF.wmfhooks.bastion_project_id and
-                    project_id != CONF.wmfhooks.toolforge_project_id):
-                # If a user is added to a project, they will probably
-                #  want to ssh.  And for that, they will need to belong
-                #  to the bastion project.
-                # So, add them.  Note that this is a one-way trip; we don't
-                #  purge a user from bastion just because they've beeen
-                #  removed from every project.
-                roledict = self._get_role_dict()
+            # Only update ldap for single-project role assignments
+            if not message['payload']['inherited_to_projects']:
+                project_id = message['payload']['project']
+                role_id = message['payload']['role']
+                self._on_member_update(project_id)
+                if (project_id != CONF.wmfhooks.bastion_project_id and
+                        project_id != CONF.wmfhooks.toolforge_project_id):
+                    # If a user is added to a project, they will probably
+                    #  want to ssh.  And for that, they will need to belong
+                    #  to the bastion project.
+                    # So, add them.  Note that this is a one-way trip; we don't
+                    #  purge a user from bastion just because they've beeen
+                    #  removed from every project.
+                    roledict = self._get_role_dict()
 
-                # Only add users to bastion; skip other roles like 'reader'
-                if role_id == roledict[CONF.wmfhooks.user_role_name]:
-                    user_id = message['payload']['user']
-                    self._add_to_bastion(roledict, user_id)
+                    # Only add users to bastion; other roles are
+                    #  either assigned in addition to 'reader' or are
+                    #  service roles that don't require ssh
+                    if role_id == roledict[CONF.wmfhooks.user_role_name]:
+                        user_id = message['payload']['user']
+                        self._add_to_bastion(roledict, user_id)
 
         if event_type == 'identity.role_assignment.deleted':
-            project_id = message['payload']['project']
-            assignments = self._get_current_assignments(project_id)
-            self._on_member_update(project_id, assignments)
+            # Only update ldap for single-project role assignments
+            if not message['payload']['inherited_to_projects']:
+                project_id = message['payload']['project']
+                assignments = self._get_current_assignments(project_id)
+                self._on_member_update(project_id, assignments)

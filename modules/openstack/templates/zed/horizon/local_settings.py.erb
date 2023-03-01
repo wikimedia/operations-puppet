@@ -145,7 +145,7 @@ OPENSTACK_HOST = "<%= @keystone_api_fqdn %>"
 # ]
 
 OPENSTACK_KEYSTONE_URL = "https://%s:25000/v3" % OPENSTACK_HOST
-OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
+OPENSTACK_KEYSTONE_DEFAULT_ROLE = "reader"
 DEFAULT_SERVICE_REGIONS = {
     OPENSTACK_KEYSTONE_URL: 'eqiad'
 }
@@ -533,7 +533,7 @@ LDAP_USER_PASSWORD = "<%= @ldap_user_pass %>"
 LDAP_RW_URI = "ldap://<%= @ldap_rw_host %>"
 
 # A few things for role management:
-MEMBER_ROLE_NAME = "user"
+MEMBER_ROLE_NAME = "reader"
 PROJECTADMIN_ROLE_NAME = "projectadmin"
 
 # 'Special' users are excluded from normal UI interfaces.

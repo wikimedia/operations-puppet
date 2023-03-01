@@ -10,11 +10,11 @@
 #   role assigments in the 'policy-test-project' project:
 #
 #   novaadmin: projectadmin
-#   osscanary: user
+#   osscanary: reader
 #   novaobserver: reader
 #
 #  In general we permit any role to read anything in any project; these
-#   tests are mostly here to make sure that reader or user roles
+#   tests are mostly here to make sure that reader roles
 #   cannot create or destroy things.
 #
 import time
@@ -115,9 +115,9 @@ class TestKeystone:
 
         rolelist = keystoneclient.roles.list()
         for role in rolelist:
-            if role.name == "user":
-                userroleid = role.id
-        keystoneclient.roles.grant(userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT)
+            if role.name == "reader":
+                readerroleid = role.id
+        keystoneclient.roles.grant(readerroleid, user="osstackcanary", project=POLICY_TEST_PROJECT)
 
     def test_keystone_observerclients(self):
         keystoneclient = observerclients.keystoneclient(project=POLICY_TEST_PROJECT)
@@ -132,15 +132,15 @@ class TestKeystone:
 
         rolelist = keystoneclient.roles.list()
         for role in rolelist:
-            if role.name == "user":
-                userroleid = role.id
+            if role.name == "reader":
+                readerroleid = role.id
         with pytest.raises(keystoneauth1.exceptions.http.Forbidden):
             keystoneclient.roles.grant(
-                userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
+                readerroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
             )
         with pytest.raises(keystoneauth1.exceptions.http.Forbidden):
             keystoneclient.roles.revoke(
-                userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
+                readerroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
             )
 
     def test_keystone_canaryclients(self):
@@ -156,15 +156,15 @@ class TestKeystone:
 
         rolelist = keystoneclient.roles.list()
         for role in rolelist:
-            if role.name == "user":
-                userroleid = role.id
+            if role.name == "reader":
+                readerroleid = role.id
         with pytest.raises(keystoneauth1.exceptions.http.Forbidden):
             keystoneclient.roles.grant(
-                userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
+                readerroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
             )
         with pytest.raises(keystoneauth1.exceptions.http.Forbidden):
             keystoneclient.roles.revoke(
-                userroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
+                readerroleid, user="osstackcanary", project=POLICY_TEST_PROJECT
             )
 
 
