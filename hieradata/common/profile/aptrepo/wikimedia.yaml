@@ -1,0 +1,7 @@
+profile::aptrepo::wikimedia::public_basedir: /srv/wikimedia
+profile::aptrepo::wikimedia::private_basedir: /srv/private
+profile::aptrepo::wikimedia::homedir: '/root'
+profile::aptrepo::wikimedia::gpg_user: 'root'
+profile::aptrepo::wikimedia::gpg_pubring: ~
+profile::aptrepo::wikimedia::gpg_secring: ~
+profile::aptrepo::wikimedia::private_port: 8080

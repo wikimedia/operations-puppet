@@ -1094,11 +1094,6 @@ hadoop_clusters:
 
 deployment_server: deploy2002.codfw.wmnet
 
-aptrepo_hostname: apt.wikimedia.org
-aptrepo_server: apt2001.wikimedia.org
-aptrepo_servers_failover:
-    - 'apt1001.wikimedia.org'
-
 netmon_server: netmon1003.wikimedia.org
 netmon_servers_failover:
     - 'netmon2002.wikimedia.org'

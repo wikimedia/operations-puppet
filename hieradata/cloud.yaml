@@ -36,6 +36,14 @@ kubernetes_cluster_groups: {}
 profile::mail::default_mail_relay::enabled: true
 profile::mail::default_mail_relay::template: "profile/mail/default_mail_relay/exim4.minimal.wmcs.erb"
 
+profile::aptrepo::wikimedia::public_basedir: /srv/wikimedia
+profile::aptrepo::wikimedia::private_basedir: /srv/private
+profile::aptrepo::wikimedia::homedir: '/root'
+profile::aptrepo::wikimedia::gpg_user: 'root'
+profile::aptrepo::wikimedia::gpg_pubring: ~
+profile::aptrepo::wikimedia::gpg_secring: ~
+profile::aptrepo::private::port: 8080
+
 profile::admin::managelingering: false
 profile::admin::purge_sudoers_d: false
 profile::admin::groups: []

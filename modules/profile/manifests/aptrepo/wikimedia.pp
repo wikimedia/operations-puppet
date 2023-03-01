@@ -1,50 +1,36 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Define: profile::aptrepo::wikimedia
-# Prove an apt-repository of local or patched Debian
-# packages. Packages placed in this repository must
-# be licensed in that allows Wikimedia to distribute
-# the software. The repository can be access via:
-# https://apt.wikimedia.org/wikimedia/
+# @ summary Prove an apt-repository of local or patched Debian
+#   packages. Packages placed in this repository must
+#   be licensed in that allows Wikimedia to distribute
+#   the software. The repository can be access via:
+#   https://apt.wikimedia.org/wikimedia/
 #
-#
-# [*primary_server*]
-#   The primary server defines that server where packages
-#   are uploaded and served.
-#
-# [*secondary_servers*]
-#   Defines standby servers. Receive packages via rsync.
-#   These are simply standby servers and not in active use,
+# @param primary_server The primary server where packages are uploaded and served.
+# @param secondary_servers The standby servers. Receive packages via rsync.
+#                          These are simply standby servers and not in active use,
 #   unless failover/switch over is performed.
-#
-# [*basedir*]
-#   Directory where reprepro stores configuration and
-#   distribution files.
-#
-# [*homedir*]
-#   Where to store the GPG keys for signing. GPG keys will be
-#   stored in .gnupg relative to this path.
-#
-# [*gpg_user*]
-#   Owner of the GPG keys.
-#
-# [*gpg_pubring*]
-#   The GPG public keyring for reprepro to use. Will be passed to secret().
-#
-# [*gpg_secring*]
-#   The GPG secret keyring for reprepro to use. Will be passed to secret().
+# @param aptrepo_vhost the vhost used by apt
+# @param public_basedir Where public reprepro stores configuration and distribution files.
+# @param private_basedir Where private reprepro stores configuration and distribution files.
+# @param homedir Where to store the GPG keys for signing. GPG keys will be
+#                stored in .gnupg relative to this path.
+# @param gpg_user Owner of the GPG keys.
+# @param gpg_pubring The GPG public keyring for reprepro to use. Will be passed to secret().
+# @param gpg_secring The GPG secret keyring for reprepro to use. Will be passed to secret().
+# @param private_repo_port the port of the private repo web site
 
 class profile::aptrepo::wikimedia (
-    Stdlib::Fqdn        $primary_server    = lookup('aptrepo_server'),
-    Array[Stdlib::Fqdn] $secondary_servers = lookup('aptrepo_servers_failover'),
-    String              $aptrepo_vhost     = lookup('aptrepo_hostname'),
-    Stdlib::Unixpath    $public_basedir    = lookup('profile::aptrepo::wikimedia::basedir'),
-    Stdlib::Unixpath    $private_basedir   = lookup('profile::aptrepo::private::basedir'),
+    Stdlib::Fqdn        $primary_server    = lookup('profile::aptrepo::wikimedia::aptrepo_server'),
+    Array[Stdlib::Fqdn] $secondary_servers = lookup('profile::aptrepo::wikimedia::aptrepo_servers_failover'),
+    String              $aptrepo_vhost     = lookup('profile::aptrepo::wikimedia::aptrepo_hostname'),
+    Stdlib::Unixpath    $public_basedir    = lookup('profile::aptrepo::wikimedia::public_basedir'),
+    Stdlib::Unixpath    $private_basedir   = lookup('profile::aptrepo::wikimedia::private_basedir'),
     Stdlib::Unixpath    $homedir           = lookup('profile::aptrepo::wikimedia::homedir'),
     String              $gpg_user          = lookup('profile::aptrepo::wikimedia::gpg_user'),
-    Optional[String]    $gpg_pubring       = lookup('profile::aptrepo::wikimedia::gpg_pubring', {'default_value' => undef}),
-    Optional[String]    $gpg_secring       = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
-    Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::private::port', {'default_value' => 8080}),
-){
+    Optional[String]    $gpg_pubring       = lookup('profile::aptrepo::wikimedia::gpg_pubring'),
+    Optional[String]    $gpg_secring       = lookup('profile::aptrepo::wikimedia::gpg_secring'),
+    Optional[Integer]   $private_repo_port = lookup('profile::aptrepo::wikimedia::private_port'),
+) {
     ferm::service { 'aptrepos_public_http':
         proto => 'tcp',
         port  => '(http https)',
@@ -83,7 +69,7 @@ class profile::aptrepo::wikimedia (
     REPREPRO_BASE_DIR=${private_basedir} /usr/bin/reprepro "$@"
     |SCRIPT
     file { '/usr/local/sbin/private_reprepro':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0500',
@@ -91,7 +77,7 @@ class profile::aptrepo::wikimedia (
     }
 
     class { 'aptrepo::tftp': }
-    include ::profile::backup::host
+    include profile::backup::host
 
     # The repository data
     backup::set { 'srv-wikimedia': }
@@ -101,7 +87,7 @@ class profile::aptrepo::wikimedia (
         secondary_servers => $secondary_servers,
     }
 
-    if $primary_server == $::fqdn {
+    if $primary_server == $facts['networking']['fqdn'] {
         monitoring::service { 'https':
             description   => 'HTTPS',
             check_command => 'check_ssl_http_letsencrypt_ocsp!apt.wikimedia.org',
