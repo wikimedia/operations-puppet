@@ -2211,6 +2211,23 @@ class profile::prometheus::ops (
         },
     }
 
+    $pint_jobs = [
+      {
+        'job_name'        => 'pint',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pint_*.yaml"] },
+        ],
+      },
+    ]
+
+    file { "${targets_path}/pint_${::site}.yaml":
+        ensure  => present,
+        content => to_yaml([
+          { 'targets' => [ 'localhost:9123' ] }
+        ]),
+    }
+
     $benthos_jobs = [
       {
         'job_name'        => 'benthos',
@@ -2257,6 +2274,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
+            $pint_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
