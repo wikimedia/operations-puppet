@@ -4,8 +4,8 @@ class profile::toolforge::harbor (
     String $tlskey = lookup('profile::toolforge::harbor::tlskey', {default_value => 'ec-prime256v1.key'}),
     Stdlib::Unixpath $tlscertdir = lookup('profile::toolforge::harbor::tlscertdir', {default_value => '/etc/acmecerts/toolforge/live'}),
     Boolean $cinder_attached = lookup('profile::toolforge::harbor::cinder_attached', {default_value => false}),
-    String $harbor_init_pwd = lookup('profile::toolforge::harbor::init_pwd', {default_value => 'insecurityrules'}),
-    String $harbor_db_pwd = lookup('profile::toolforge::harbor::db_harbor_pwd', {default_value => 'dummypass'}),
+    String[1] $harbor_init_pwd = lookup('profile::toolforge::harbor::init_pwd', {default_value => 'insecurityrules'}),
+    String[1] $harbor_db_pwd = lookup('profile::toolforge::harbor::db_harbor_pwd', {default_value => 'dummypass'}),
     Stdlib::Host $harbor_db_host = lookup('profile::toolforge::harbor::db_primary', {default_value => 'dummy.db.host'}),
     Stdlib::Fqdn $harbor_url = lookup('profile::toolforge::harbor::url', {default_value => 'dummy.harbor.fqdn'}),
 ) {
@@ -48,7 +48,18 @@ class profile::toolforge::harbor (
         } -> file { '/srv/ops/harbor/harbor.yml':
             ensure  => present,
             mode    => '0600',
-            content => template('profile/toolforge/harbor/harbor-docker.yaml.erb'),
+            content => epp(
+                'profile/toolforge/harbor/harbor-docker.yaml.epp',
+                {
+                    harbor_url      => $harbor_url,
+                    tlscertfile     => $tlscertfile,
+                    tlskeyfile      => $tlskeyfile,
+                    harbor_init_pwd => $harbor_init_pwd,
+                    harbor_db_pwd   => $harbor_db_pwd,
+                    harbor_db_host  => $harbor_db_host,
+                    data_volume     => $data_volume,
+                }
+            ),
         } -> file { '/srv/ops/harbor/data':
             ensure => directory,
             owner  => 'root',
