@@ -26,7 +26,7 @@ class jenkins::slave(
         require => User[$user],
     }
 
-    # Finally publish the Jenkins master authorized key
+    # Finally publish the Jenkins controller authorized key
     ssh::userkey { $user:
         ensure  => present,
         content => $ssh_key,

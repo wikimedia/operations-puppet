@@ -183,7 +183,7 @@ profile::diffscan::ipranges:
 profile::diffscan::emailto: root@wikimedia.org
 profile::diffscan::groupname: Labs-to-public-v4
 
-# User for jenkins master-slave connections
+# User for Jenkins controllers SSH connections to the agents
 jenkins_agent_username: "jenkins-deploy"
 
 mail_smarthost:

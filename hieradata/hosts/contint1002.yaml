@@ -1,5 +1,5 @@
 # role::ci::master runs at least three services:
-# - Jenkins
+# - Jenkins controller
 # - Zuul merger
 # - Zuul scheduler (zuul server)
 #

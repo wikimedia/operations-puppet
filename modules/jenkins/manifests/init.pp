@@ -1,6 +1,6 @@
 # == Class jenkins
 #
-# Set up a basic Jenkins master instance for CI.
+# Set up a basic Jenkins controller instance for CI.
 #
 # == Parameters:
 #
@@ -38,8 +38,8 @@
 # Default: ${ITEM_ROOTDIR}/builds
 #
 # [*workspaces_dir*]
-# Change location of master node workspaces. This option was formerly set in
-# the jenkins ui, now must be set via system properties
+# Change location of built-in node workspaces. This option was formerly set in
+# the Jenkins UI, now must be set via system properties
 # Default: ${ITEM_ROOTDIR}/workspace
 #
 # [*java_home*]

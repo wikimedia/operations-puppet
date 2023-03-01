@@ -15,7 +15,7 @@ class profile::ci::jenkins(
     include ::profile::java
     Class['::profile::java'] ~> Class['::jenkins']
 
-    # Load the Jenkins module, that setup a Jenkins master
+    # Load the Jenkins module, that setup a Jenkins controller
     class { '::jenkins':
         http_port       => 8080,
         prefix          => $prefix,

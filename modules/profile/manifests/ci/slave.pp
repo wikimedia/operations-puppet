@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # Set up a Jenkins slave on PRODUCTION
 #
-# Most jobs are running on labs instances, but we still have a few runnining
-# directly on the Jenkins master for example to publish publish content under
-# https://doc.wikimedia.org/
+# Most jobs are running on labs instances, but we still have a few running
+# directly on the Jenkins controller for example to publish publish content
+# at https://doc.wikimedia.org/
 #
 # You should look instead at role::ci::labs::slave
 #

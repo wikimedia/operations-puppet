@@ -1116,12 +1116,12 @@ releases_servers_failover:
 # servers in the role specific Hiera.
 phabricator_server: phab1004.eqiad.wmnet
 
-# Jenkins masters are agents to themselves and to each other. They thus need to
-# allow ssh access from the other masters.
+# Jenkins controllers are agents to themselves and to each other. They thus
+# need to allow ssh access from the other controllers.
 #
 # We also need WMCS instances to allow inbound ssh connections since they might
 # have ferm rules.
-jenkins_master_hosts:
+jenkins_controller_hosts:
     - contint1002.wikimedia.org
     - contint2001.wikimedia.org
     - contint2002.wikimedia.org
@@ -1155,7 +1155,7 @@ udp2log_aggregator: "udplog:8420"
 tcpircbot_host: 'icinga.wikimedia.org'
 tcpircbot_port: 9200
 
-# User for jenkins master-slave connections
+# User for Jenkins controllers SSH connections to the agents
 jenkins_agent_username: 'jenkins-slave'
 
 # HTTP proxy.
