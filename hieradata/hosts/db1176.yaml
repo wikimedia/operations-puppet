@@ -1,3 +1,4 @@
 # db1176
-mariadb::shard: 'm1'
+mariadb::shard: 'm5'
+mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false
