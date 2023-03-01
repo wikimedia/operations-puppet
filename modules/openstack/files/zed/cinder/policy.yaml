@@ -7,6 +7,11 @@
 "admin_or_owner": "is_admin:True or role:projectadmin"
 "admin_or_projectadmin": "is_admin:True or role:projectadmin"
 
+# This rule is used widely in the cinder policy code. We override it so that
+# the write actions (normally permitted to members) instead require projectadmin.
+"xena_system_admin_or_project_member": "(role:admin) or (role:projectadmin and project_id:%(project_id)s)"
+
+
 # This seems to be generally unobserved; leaving it here in case some
 #  leftover policies still check default.
 "default": "rule:admin_or_projectadmin"
