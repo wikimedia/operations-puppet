@@ -483,11 +483,6 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
     role(analytics_cluster::datahub::opensearch)
 }
 
-# Hosts to be set up T325210
-node /^db2(187)\.codfw\.wmnet/ {
-    role(insetup::data_persistence)
-}
-
 # Hosts to be set up T325209
 node /^db1(207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225)\.eqiad\.wmnet/ {
     role(insetup::data_persistence)
@@ -785,7 +780,7 @@ node /^db1(154|155)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-node /^db2(094|095|186)\.codfw\.wmnet/ {
+node /^db2(094|095|186|187)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
