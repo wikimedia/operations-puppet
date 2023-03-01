@@ -359,5 +359,9 @@ class profile::prometheus::k8s (
             dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#k8s_cache_not_updating',
         }
+
+        prometheus::pint::source { $k8s_cluster:
+            port => $port,
+        }
     }
 }
