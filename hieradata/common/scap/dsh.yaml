@@ -145,10 +145,7 @@ scap::dsh::groups:
   zuul:
     pdb_query: "Scap::Target['zuul/deploy']"
   jenkins-ci:
-    hosts:
-      - contint1002.wikimedia.org
-      - contint2001.wikimedia.org
-      - contint2002.wikimedia.org
+    pdb_query: "Scap::Target['releng/jenkins-deploy'] and Class[Profile::Ci::Jenkins]"
   jenkins-rel:
     # FIXME profile::releases::mediawiki is poorly named
     pdb_query: "Scap::Target['releng/jenkins-deploy'] and Class[Profile::Releases::MediaWiki]"
