@@ -8,7 +8,7 @@
 # by adding prometheus::pint::source to an existing prometheus instance.
 
 class prometheus::pint (
-    Stdlib::Port $listen_port = 9999,
+    Stdlib::Port $listen_port = 9123,
     Array[Stdlib::Unixpath] $watch_paths = ['/srv/alerts', '/srv/alerts-thanos'],
 ) {
     ensure_packages('pint')
