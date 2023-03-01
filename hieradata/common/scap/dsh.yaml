@@ -141,15 +141,9 @@ scap::dsh::groups:
     hosts:
       - cumin1001.eqiad.wmnet
   ci-docroot:
-    hosts:
-      - contint1002.wikimedia.org
-      - contint2001.wikimedia.org
-      - doc1002.eqiad.wmnet
-      - doc2001.codfw.wmnet
+    pdb_query: "Scap::Target['integration/docroot']"
   zuul:
-    hosts:
-      - contint1002.wikimedia.org
-      - contint2001.wikimedia.org
+    pdb_query: "Scap::Target['zuul/deploy']"
   jenkins-ci:
     hosts:
       - contint1002.wikimedia.org
