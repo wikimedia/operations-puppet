@@ -1019,6 +1019,10 @@ node /^dse-k8s-worker100[1-8]\.eqiad\.wmnet$/ {
 }
 
 
+# to be decommed eventually
+node /^dumpsdata1001\.eqiad\.wmnet$/ {
+    role(dumps::generation::server::spare)
+}
 # nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
 node /^dumpsdata1003\.eqiad\.wmnet$/ {
@@ -1032,11 +1036,12 @@ node /^dumpsdata1002\.eqiad\.wmnet$/ {
 
 # fallback nfs server for dumps generation, also
 # will rsync data to web servers
-node /^dumpsdata1001\.eqiad\.wmnet$/ {
+node /^dumpsdata1004\.eqiad\.wmnet$/ {
     role(dumps::generation::server::xmlfallback)
 }
+
 # new dumpsdata servers T283290
-node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
+node /^dumpsdata1005\.eqiad\.wmnet/ {
     role(dumps::generation::server::spare)
 }
 

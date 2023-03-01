@@ -1,5 +1,5 @@
 profile::dumps::stats_hosts: 'stat1006.eqiad.wmnet stat1007.eqiad.wmnet'
-profile::dumps::peer_hosts: 'dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet dumpsdata1003.eqiad.wmnet clouddumps1001.wikimedia.org clouddumps1002.wikimedia.org'
+profile::dumps::peer_hosts: 'dumpsdata1004.eqiad.wmnet dumpsdata1002.eqiad.wmnet dumpsdata1003.eqiad.wmnet clouddumps1001.wikimedia.org clouddumps1002.wikimedia.org'
 profile::dumps::phab_hosts: 'phab1004.eqiad.wmnet'
 profile::dumps::rsync_internal_clients:
   - mwlog1002.eqiad.wmnet
@@ -28,7 +28,7 @@ profile::dumps::public:
     - clouddumps1001.wikimedia.org
     - clouddumps1002.wikimedia.org
 profile::dumps::internal:
-    - dumpsdata1001.eqiad.wmnet
+    - dumpsdata1004.eqiad.wmnet
 # root of xml/sql dumps tree we want to rsync (public contents only)
 profile::dumps::xmldumpsdir: '/data/xmldatadumps/public'
 # root of misc dumps we want to rsync
