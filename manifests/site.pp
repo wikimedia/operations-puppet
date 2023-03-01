@@ -811,10 +811,6 @@ node /^(db1204|db1205)\.eqiad\.wmnet$/ {
 node /^db2183|db2184\.codfw\.wmnet/ {
     role(mariadb::misc)
 }
-# New db nodes T326342
-node 'db2187.codfw.wmnet' {
-    role(insetup::data_persistence)
-}
 
 # eqiad backup sources
 ## s2, s3 & x1, buster
