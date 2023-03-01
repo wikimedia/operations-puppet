@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::acme_chief::cloud (
     String $active_host = lookup('profile::acme_chief::active'),
-    String $passive_host = lookup('profile::acme_chief::passive'),
+    Variant[String, Array[Stdlib::Fqdn]] $passive_host = lookup('profile::acme_chief::passive'),
     String $designate_sync_auth_url = lookup('profile::acme_chief::cloud::designate_sync_auth_url'),
     String $designate_sync_username = lookup('profile::acme_chief::cloud::designate_sync_username'),
     String $designate_sync_password = lookup('profile::acme_chief::cloud::designate_sync_password'),
@@ -9,7 +9,8 @@ class profile::acme_chief::cloud (
     String $designate_sync_region_name = lookup('profile::acme_chief::cloud::designate_sync_region_name'),
     Boolean $designate_sync_tidyup_enabled = lookup('profile::acme_chief::cloud::designate_sync_tidyup_enabled'),
 ) {
-    if $::fqdn == $passive_host {
+    $passive_hosts = [$passive_host].flatten()
+    if $::fqdn in $passive_hosts {
         $active_host_ip = ipresolve($active_host, 4, $::nameservers[0])
         security::access::config { 'acme-chief':
             content  => "+ : acme-chief : ${active_host_ip}\n",
