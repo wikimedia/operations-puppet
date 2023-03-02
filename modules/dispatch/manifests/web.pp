@@ -1,19 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # Class: dispatch::web
 #
-# Actions:
-#   Setup a Dispatch web frontend
-#
-# Parameters:
-#   $db_hostname      DB to connect to
-#   $db_password      DB password to use
-#   $port             port to listen on
-#   $encryption_key   the session encryption key to use
-#   $version          the dispatch container version to deploy
-#   $env_extra        extra environment variables to set
-#   $scheduler_ensure whether or not to run the scheduler
-#   $vhost            the Apache virtual host to answer on
-#   $log_level        the dispatch log level
+# @summary Setup a Dispatch web frontend
+# @param db_hostname      DB to connect to
+# @param db_password      DB password to use
+# @param port             port to listen on
+# @param encryption_key   the session encryption key to use
+# @param version          the dispatch container version to deploy
+# @param env_extra        extra environment variables to set
+# @param scheduler_ensure whether or not to run the scheduler
+# @param vhost            the Apache virtual host to answer on
+# @param log_level        the dispatch log level
 
 class dispatch::web (
     String[1]                     $db_hostname,
