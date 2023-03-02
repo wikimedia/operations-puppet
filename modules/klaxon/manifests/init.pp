@@ -50,24 +50,18 @@ class klaxon (
 
     profile::auto_restarts::service { 'klaxon': }
 
-    systemd::service { 'vo-escalate.service':
-        ensure    => 'present',
-        content   => systemd_template('vo-escalate'),
-        restart   => true,
-        subscribe => [
-            Exec['git_pull_operations/software/klaxon'],
-            File[$environ_file],
-        ],
-        require   => [
-          User['klaxon'],
-        ],
-    }
-
-    systemd::timer { 'vo-escalate':
-        timer_intervals => [
-            { 'start'    => 'OnCalendar',
-              'interval' => '*:*:00/15', # every 15s
-            }],
-        splay           => 7, # Timer runs on all (two) alerting hosts
+    $command = "/usr/bin/python3 klaxon/victorops.py escalate_unpaged ${escalation_policy_slug}"
+    systemd::timer::job { 'vo-escalate':
+        interval          => [{ 'start' => 'OnCalendar', 'interval' => '*:*:00/15' }], # every 15s
+        description       => 'Escalate VO unpaged incidents',
+        command           => $command,
+        user              => 'klaxon',
+        group             => 'klaxon',
+        private_tmp       => true,
+        timeout_start_sec => 15,
+        environment_file  => $environ_file,
+        environment       => { 'PYTHONPATH' => $install_dir },
+        working_directory => $install_dir,
+        splay             => 7, # Timer runs on all (two) alerting hosts
     }
 }
