@@ -78,7 +78,7 @@ def email_admins(subject, msg):
     )
     roleid = None
     for r in keystoneclient.roles.list():
-        if r.name == "projectadmin":
+        if r.name == "member":
             roleid = r.id
             break
 

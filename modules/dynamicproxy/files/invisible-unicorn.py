@@ -63,14 +63,14 @@ cfg.CONF(default_config_files=['/etc/dynamicproxy-api/config.ini'])
 enforcer = policy.Enforcer(cfg.CONF)
 enforcer.register_defaults([
     policy.RuleDefault('admin', 'role:admin'),
-    policy.RuleDefault('admin_or_projectadmin', 'rule:admin or role:projectadmin'),
+    policy.RuleDefault('admin_or_member', 'rule:admin or role:member'),
     policy.RuleDefault('proxy:zones:index', ''),
     policy.RuleDefault('proxy:zones:use_deprecated', 'rule:admin'),
     policy.RuleDefault('proxy:index', ''),
     policy.RuleDefault('proxy:view', ''),
-    policy.RuleDefault('proxy:create', 'rule:admin_or_projectadmin'),
-    policy.RuleDefault('proxy:update', 'rule:admin_or_projectadmin'),
-    policy.RuleDefault('proxy:delete', 'rule:admin_or_projectadmin'),
+    policy.RuleDefault('proxy:create', 'rule:admin_or_member'),
+    policy.RuleDefault('proxy:update', 'rule:admin_or_member'),
+    policy.RuleDefault('proxy:delete', 'rule:admin_or_member'),
 ])
 
 app = flask.Flask(__name__)

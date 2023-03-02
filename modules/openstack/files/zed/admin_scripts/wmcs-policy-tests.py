@@ -9,7 +9,7 @@
 #  All of these tests are premised on the existence of the following
 #   role assigments in the 'policy-test-project' project:
 #
-#   novaadmin: projectadmin
+#   novaadmin: member
 #   osscanary: reader
 #   novaobserver: reader
 #

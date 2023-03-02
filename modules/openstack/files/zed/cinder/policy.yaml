@@ -4,17 +4,17 @@
 #  project admins.  So, replace this (upstream) rule with the admin_or_owner
 #  rule below
 # "admin_or_owner": "is_admin:True or project_id:%(project_id)s"
-"admin_or_owner": "is_admin:True or role:projectadmin"
-"admin_or_projectadmin": "is_admin:True or role:projectadmin"
+"admin_or_owner": "is_admin:True or role:member"
+"admin_or_member": "is_admin:True or role:member"
 
 # This rule is used widely in the cinder policy code. We override it so that
-# the write actions (normally permitted to members) instead require projectadmin.
-"xena_system_admin_or_project_member": "(role:admin) or (role:projectadmin and project_id:%(project_id)s)"
+# the write actions (normally permitted to members) instead require member.
+"xena_system_admin_or_project_member": "(role:admin) or (role:member and project_id:%(project_id)s)"
 
 
 # This seems to be generally unobserved; leaving it here in case some
 #  leftover policies still check default.
-"default": "rule:admin_or_projectadmin"
+"default": "rule:admin_or_member"
 
 "message:get_all": ""
 "message:get": ""
@@ -47,9 +47,9 @@
 
 # These are inexplicably set to "" in the default policies:
 #
-"volume:create": "rule:admin_or_projectadmin"
-"volume:create_from_image": "rule:admin_or_projectadmin"
-"volume:attachment_create": "rule:admin_or_projectadmin"
-"volume:accept_transfer": "rule:admin_or_projectadmin"
-"group:create": "rule:admin_or_projectadmin"
-"group:create_group_snapshot": "rule:admin_or_projectadmin"
+"volume:create": "rule:admin_or_member"
+"volume:create_from_image": "rule:admin_or_member"
+"volume:attachment_create": "rule:admin_or_member"
+"volume:accept_transfer": "rule:admin_or_member"
+"group:create": "rule:admin_or_member"
+"group:create_group_snapshot": "rule:admin_or_member"

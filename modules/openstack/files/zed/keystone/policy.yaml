@@ -18,8 +18,8 @@
 #  Many of these rule definitions will be judged redundant by
 #  oslopolicy-list-redundant but they're included to provide
 #  context for the policies that follow
-projectadmin_role: role:projectadmin
-admin_or_projectadmin: rule:admin_required or rule:projectadmin_role
+member_role: role:member
+admin_or_member: rule:admin_required or rule:member_role
 
 keystonevalidate_role: role:keystonevalidate
 service_admin_or_keystone_validate_or_token_subject: "rule:service_or_admin or rule:token_subject or rule:keystonevalidate_role"
@@ -28,10 +28,10 @@ service_admin_or_keystone_validate_or_token_subject: "rule:service_or_admin or r
 #  project admins.  So, replace this (upstream) rule with the admin_or_owner
 #  rule below
 # admin_or_owner: is_admin:True or project_id:%(project_id)s
-admin_or_owner: is_admin:True or rule:projectadmin_role
+admin_or_owner: is_admin:True or rule:member_role
 
 # This is largely unused as of Ussuri:
-default: rule:admin_or_projectadmin
+default: rule:admin_or_member
 
 
 #  There are a few reasons why we override default policies:
@@ -39,7 +39,7 @@ default: rule:admin_or_projectadmin
 #   - permissive policies ('') to allow the nova_observer user
 #     to read things
 #
-#   - restrictive and projectadmin policies to distinguish between
+#   - restrictive and member policies to distinguish between
 #     a project member and a project admin (these aren't present in
 #     keystone but are used elsewhere)
 #
@@ -77,6 +77,6 @@ identity:validate_token: rule:service_admin_or_keystone_validate_or_token_subjec
 
 # These are custom rules added by WMF to manage the member
 #  panel in Horizon
-members:grant_membership: rule:admin_or_projectadmin
-members:revoke_membership: rule:admin_or_projectadmin
-members:toggle_projectadmin: rule:admin_or_projectadmin
+members:grant_membership: rule:admin_or_member
+members:revoke_membership: rule:admin_or_member
+members:toggle_member: rule:admin_or_member

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"admin_or_owner": "is_admin:True or role:projectadmin"
-"admin_or_projectadmin": "is_admin:True or role:projectadmin"
-"default": "rule:admin_or_projectadmin"
+"admin_or_owner": "is_admin:True or role:member"
+"admin_or_member": "is_admin:True or role:member"
+"default": "rule:admin_or_member"
 
 # Disable backup features until we have Swift
 "instance:backups": "!"
@@ -58,5 +58,5 @@
 
 # This defaults to rule:admin but it's nice for
 #  users to be able to get their instances unstuck.
-"instance:reset_status": "rule:admin_or_projectadmin"
-"cluster:reset_status": "rule:admin_or_projectadmin"
+"instance:reset_status": "rule:admin_or_member"
+"cluster:reset_status": "rule:admin_or_member"

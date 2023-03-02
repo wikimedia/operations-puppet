@@ -38,12 +38,12 @@ enforcer = policy.Enforcer(cfg.CONF)
 enforcer.register_defaults(
     [
         policy.RuleDefault("admin", "role:admin"),
-        policy.RuleDefault("admin_or_projectadmin", "rule:admin or role:projectadmin"),
+        policy.RuleDefault("admin_or_member", "rule:admin or role:member"),
         policy.RuleDefault("prefix:index", ""),
         policy.RuleDefault("prefix:view", ""),
-        policy.RuleDefault("prefix:create", "rule:admin_or_projectadmin"),
-        policy.RuleDefault("prefix:update", "rule:admin_or_projectadmin"),
-        policy.RuleDefault("prefix:delete", "rule:admin_or_projectadmin"),
+        policy.RuleDefault("prefix:create", "rule:admin_or_member"),
+        policy.RuleDefault("prefix:update", "rule:admin_or_member"),
+        policy.RuleDefault("prefix:delete", "rule:admin_or_member"),
         policy.RuleDefault("project:index", ""),
         policy.RuleDefault("puppetrole:index", ""),
         policy.RuleDefault("puppetrole:view", ""),

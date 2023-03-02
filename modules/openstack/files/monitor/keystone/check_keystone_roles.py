@@ -11,11 +11,11 @@ project being created out-of-band) raise a warning.
 
 If a project has the wrong roles, return critical.  This
 is a possible security issue as a read-only account (novaobserver)
-might have actual user or projectadmin roles.
+might have actual user or member roles.
 
-Example for user 'novaadmin' and roles 'projectadmin' and 'user':
+Example for user 'novaadmin' and roles 'member' and 'reader':
 
-check_keystone_roles novaadmin projectadmin user
+check_keystone_roles novaadmin member user
 
 """
 import argparse
