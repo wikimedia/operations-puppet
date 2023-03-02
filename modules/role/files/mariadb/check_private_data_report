@@ -30,9 +30,9 @@ then
 	done
 fi
 
-# db1155 db2187 and db2095 replicate s2 s4 s6 and s7 in a multi-instance setup
+# db1155 and db2187 replicate s2 s4 s6 and s7 in a multi-instance setup
 
-if [ "$HOSTNAME" == "db2095" ]  || [ "$HOSTNAME" == "db1155" ] || [ "$HOSTNAME" == "db2187" ]
+if [ "$HOSTNAME" == "db2187" ]  || [ "$HOSTNAME" == "db1155" ]
 then
 	for SECTION in s2 s4 s6 s7
 	do
