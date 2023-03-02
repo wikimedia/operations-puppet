@@ -4,10 +4,14 @@
 #
 # Sets up a server to be used as a 'real server' by LVS
 #
-# Parameters:
-#   - $realserver_ips
+# @param realserver_ips
 #       Array or hash (name => ip) of service IPs to answer on
-class lvs::realserver($realserver_ips=[]) {
+class lvs::realserver (
+    Variant[
+        Array[Stdlib::IP::Address,1],
+        Hash[String[1], Stdlib::IP::Address,1]
+    ] $realserver_ips
+) {
 
     package { 'wikimedia-lvs-realserver':
         ensure  => present,
