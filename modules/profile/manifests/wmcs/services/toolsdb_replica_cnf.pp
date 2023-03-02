@@ -8,6 +8,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     String $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
     String $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
     Array[Stdlib::Fqdn]$cloudcontrol = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Boolean $redirect_to_https       = lookup('profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https'),
 ) {
     $user                           = 'www-data'
     $group                          = 'www-data'
@@ -151,7 +152,12 @@ class profile::wmcs::services::toolsdb_replica_cnf(
 
     nginx::site { 'toolsdb-replica-cnf-web-nginx':
         require => Uwsgi::App['toolsdb-replica-cnf-web'],
-        content => template('profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.erb'),
+        content => epp(
+          'profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp',
+          {
+            'redirect_to_https' => $redirect_to_https,
+          }
+        ),
     }
 
 
