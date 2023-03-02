@@ -9,11 +9,17 @@
 #
 
 class profile::wmcs::nfs::maintain_dbusers (
-    Hash                    $ldapconfig             = lookup('labsldapconfig', {'merge' => hash}),
-    Hash                    $production_ldap_config = lookup('ldap', {'merge' => hash}),
-    Stdlib::IP::Address::V4 $cluster_ip             = lookup('profile::wmcs::nfs::primary::cluster_ip'),
-    Hash[String,Stdlib::Port] $section_ports        = lookup('profile::mariadb::section_ports'),
-    Hash[String,Integer]    $variances              = lookup('profile::wmcs::nfs::primary::mysql_variances'),
+    Hash                      $ldapconfig                 = lookup('labsldapconfig', {'merge' => hash}),
+    Hash                      $production_ldap_config     = lookup('ldap', {'merge' => hash}),
+    Stdlib::IP::Address::V4   $cluster_ip                 = lookup('profile::wmcs::nfs::primary::cluster_ip'),
+    Hash[String,Stdlib::Port] $section_ports              = lookup('profile::mariadb::section_ports'),
+    Hash[String,Integer]      $variances                  = lookup('profile::wmcs::nfs::primary::mysql_variances'),
+    String                    $paws_replica_cnf_user      = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_user'),
+    String                    $paws_replica_cnf_password  = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_htpassword'),
+    String                    $paws_replica_cnf_root_url  = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_root_url'),
+    String                    $tools_replica_cnf_user     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_user'),
+    String                    $tools_replica_cnf_password = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_htpassword'),
+    String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_root_url'),
 ){
     package { [
         'python3-ldap3',
@@ -81,6 +87,18 @@ class profile::wmcs::nfs::maintain_dbusers (
             'host' => 'm5-master.eqiad.wmnet',
             'username' => $::passwords::labsdbaccounts::db_user,
             'password' => $::passwords::labsdbaccounts::db_password,
+        },
+        'replica_cnf' => {
+            'paws'  => {
+                'root_url' => $paws_replica_cnf_root_url,
+                'username' => $paws_replica_cnf_user,
+                'password' => $paws_replica_cnf_password,
+            },
+            'tools' => {
+                'root_url' => $tools_replica_cnf_root_url,
+                'username' => $tools_replica_cnf_user,
+                'password' => $tools_replica_cnf_password,
+            },
         },
         'nfs-cluster-ip'   => $cluster_ip,
         'variances'        => $variances,
