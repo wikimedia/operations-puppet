@@ -105,4 +105,8 @@ class profile::prometheus::ext (
         enable_upload       => $enable_thanos_upload,
         min_time            => $thanos_min_time,
     }
+
+    prometheus::pint::source { 'ext':
+        port => $listen_port,
+    }
 }

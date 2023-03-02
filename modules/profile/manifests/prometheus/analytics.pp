@@ -14,6 +14,7 @@ class profile::prometheus::analytics (
 ){
 
     $targets_path = '/srv/prometheus/analytics/targets'
+    $port = 9905
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -230,7 +231,7 @@ class profile::prometheus::analytics (
     }
 
     prometheus::server { 'analytics':
-        listen_address        => '127.0.0.1:9905',
+        listen_address        => "127.0.0.1:${port}",
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
@@ -242,11 +243,11 @@ class profile::prometheus::analytics (
     }
 
     prometheus::web { 'analytics':
-        proxy_pass => 'http://localhost:9905/analytics',
+        proxy_pass => "http://localhost:${port}/analytics",
     }
 
     profile::thanos::sidecar { 'analytics':
-        prometheus_port     => 9905,
+        prometheus_port     => $port,
         prometheus_instance => 'analytics',
         enable_upload       => $enable_thanos_upload,
         min_time            => $thanos_min_time,
@@ -255,5 +256,9 @@ class profile::prometheus::analytics (
     prometheus::rule { 'rules_analytics.yml':
         instance => 'analytics',
         source   => 'puppet:///modules/profile/prometheus/rules_analytics.yml',
+    }
+
+    prometheus::pint::source { 'analytics':
+        port => $port,
     }
 }

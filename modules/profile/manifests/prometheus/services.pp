@@ -15,6 +15,7 @@ class profile::prometheus::services (
 ){
 
     $targets_path = '/srv/prometheus/services/targets'
+    $port = 9903
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -69,7 +70,7 @@ class profile::prometheus::services (
     }
 
     prometheus::server { 'services':
-        listen_address                 => '127.0.0.1:9903',
+        listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         max_chunks_to_persist          => $max_chunks_to_persist,
         memory_chunks                  => $memory_chunks,
@@ -82,11 +83,11 @@ class profile::prometheus::services (
     }
 
     prometheus::web { 'services':
-        proxy_pass => 'http://localhost:9903/services',
+        proxy_pass => "http://localhost:${port}/services",
     }
 
     profile::thanos::sidecar { 'services':
-        prometheus_port     => 9903,
+        prometheus_port     => $port,
         prometheus_instance => 'services',
         enable_upload       => $enable_thanos_upload,
         min_time            => $thanos_min_time,
@@ -95,5 +96,9 @@ class profile::prometheus::services (
     prometheus::rule { 'rules_services.yml':
         instance => 'services',
         source   => 'puppet:///modules/profile/prometheus/rules_services.yml',
+    }
+
+    prometheus::pint::source { 'services':
+        port => $port,
     }
 }
