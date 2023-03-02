@@ -1,0 +1,3 @@
+# Set the airflow package version as this node run a different version from other nodes
+# will be migrated with bump to 2.5.1
+profile::airflow::airflow_version: '2.1.4-py3.7-4'
