@@ -11,6 +11,10 @@
 #   Several intervals can be provided as Array[See Systemd::Timer::Schedule]
 # @param splay
 #   Passed to systemd::timer. See RandomizedDelaySec in systemd.timer(5)
+# @param timeout_start_sec
+#   Configures the time to wait for start-up. If a daemon service does not
+#   signal start-up completion within the configured time, the service will be
+#   considered failed
 # @param user
 #   User that runs the Systemd unit.
 # @param ensure
@@ -36,6 +40,8 @@
 #   set this to true to ensure that a failed timer wont show up in systemctl status --failed
 # @param send_mail_only_on_error
 #   set this to true to send an email for any output to stdout, similar to cron
+# @param private_tmp
+#   use a private temporary directory
 # @param logfile_basedir
 #   Base directory for log files, to which /$title will be appended.
 #   Logs will be saved at $logfile_basedir/$title/$logfile_name
@@ -90,7 +96,8 @@
 # @param after
 #   String containing another service name used in 'After=' in the Systemd unit.
 #   Setting the value allows to run a timer job after another service.
-#
+# @param group
+#   The unix group to run the service unit as
 define systemd::timer::job (
     Variant[
         Systemd::Timer::Schedule,
@@ -114,7 +121,10 @@ define systemd::timer::job (
     String                                  $send_mail_to              = "root@${facts['networking']['fqdn']}",
     Boolean                                 $ignore_errors             = false,
     Boolean                                 $send_mail_only_on_error   = true,
+    Boolean                                 $private_tmp               = false,
     Optional[Integer]                       $splay                     = undef,
+    # TODO: set some sane default otherwise its infinite T324466
+    Optional[Integer]                       $timeout_start_sec         = undef,
     Optional[String]                        $logfile_owner             = undef,
     Optional[String]                        $syslog_identifier         = undef,
     Optional[Integer]                       $max_runtime_seconds       = undef,
@@ -126,6 +136,7 @@ define systemd::timer::job (
     Optional[Stdlib::Unixpath]              $working_directory         = undef,
     Optional[Systemd::Command]              $exec_start_pre            = undef,
     Optional[String]                        $after                     = undef,
+    Optional[String]                        $group                     = undef,
 ) {
     # Systemd doesn't play well with spaces in unit names, so check for that
     if $title =~ /\s/ {

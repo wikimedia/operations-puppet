@@ -8,6 +8,12 @@ After=<%= @after %>
 [Service]
 Type=oneshot
 User=<%= @user %>
+<%- if @group %>
+Group=<%= @group %>
+<%- end -%>
+<%- if @private_tmp %>
+PrivateTmp=true
+<%- end -%>
 <%- if @environment -%>
 <%- @environment.keys.sort.each do |key| -%>
 Environment="<%= key -%>=<%= @environment[key] %>"
@@ -21,6 +27,9 @@ SyslogIdentifier=<%= @syslog_identifier %>
 <%- end -%>
 <%- if @slice -%>
 Slice=<%= @slice %>
+<%- end -%>
+<%- if @timeout_start_sec -%>
+TimeoutStartSec=<%= @timeout_start_sec %>
 <%- end -%>
 <%- if @send_mail -%>
 SyslogIdentifier=<%= @command.split(' ')[0].split('/')[-1] %>
