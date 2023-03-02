@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# This profile installs and configures the ceph monitor (MON) daemons.
 class ceph::mon (
     Stdlib::Unixpath       $data_dir,
     String                 $fsid,

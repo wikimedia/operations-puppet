@@ -107,3 +107,8 @@ profile::ceph::osd::hosts: "%{alias('profile::ceph::mon::hosts')}"
 profile::ceph::public_networks:
   - 10.64.0.0/12
 
+profile::ceph::osd::discrete_bluestore_device: true
+profile::ceph::osd::bluestore_device_name: /dev/nvme0n1
+profile::ceph::osd::excluded_slots:
+  - 'c0/e23/s24'
+  - 'c0/e23/s25'

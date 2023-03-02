@@ -1,0 +1,207 @@
+# SPDX-License-Identifier: Apache-2.0
+disk_type:
+  nvme0c0n1: ssd
+  nvme0n1: ssd
+  sda: ssd
+  sdb: ssd
+  sdc: ssd
+  sdd: ssd
+  sde: ssd
+  sdf: ssd
+  sdg: ssd
+  sdh: ssd
+  sdi: ssd
+  sdj: ssd
+  sdk: hdd
+  sdl: hdd
+  sdm: hdd
+  sdn: hdd
+  sdo: hdd
+  sdp: hdd
+  sdq: hdd
+  sdr: hdd
+  sds: hdd
+  sdt: hdd
+  sdu: hdd
+  sdv: hdd
+ceph_disks:
+  5f4ee0803cba8e00:
+    status: Success
+    model: Dell HBA330 Mini
+    disks:
+      c0/e23/s0:
+        controller: "0"
+        enclosure: "23"
+        slot: "0"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB2BB4
+        serial: ZR5BQ14S
+      c0/e23/s1:
+        controller: "0"
+        enclosure: "23"
+        slot: "1"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9B553C4
+        serial: ZR5BNHDF
+      c0/e23/s2:
+        controller: "0"
+        enclosure: "23"
+        slot: "2"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB85D8
+        serial: ZR5BPZ8Q
+      c0/e23/s3:
+        controller: "0"
+        enclosure: "23"
+        slot: "3"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB1044
+        serial: ZR5BNZ5V
+      c0/e23/s4:
+        controller: "0"
+        enclosure: "23"
+        slot: "4"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB4918
+        serial: ZR5BQ0K4
+      c0/e23/s5:
+        controller: "0"
+        enclosure: "23"
+        slot: "5"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB1C20
+        serial: ZR5BPR9R
+      c0/e23/s6:
+        controller: "0"
+        enclosure: "23"
+        slot: "6"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB3FDC
+        serial: ZR5BP8E5
+      c0/e23/s7:
+        controller: "0"
+        enclosure: "23"
+        slot: "7"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB3140
+        serial: ZR5BP8R4
+      c0/e23/s8:
+        controller: "0"
+        enclosure: "23"
+        slot: "8"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB3FA4
+        serial: ZR5BP8E6
+      c0/e23/s9:
+        controller: "0"
+        enclosure: "23"
+        slot: "9"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9B58AF8
+        serial: ZR5BNQQM
+      c0/e23/s10:
+        controller: "0"
+        enclosure: "23"
+        slot: "10"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9B560B8
+        serial: ZR5BNH1N
+      c0/e23/s11:
+        controller: "0"
+        enclosure: "23"
+        slot: "11"
+        medium: HDD
+        interface: SAS
+        wwn: 5000C500D9BB2F68
+        serial: ZR5BQ13E
+      c0/e23/s16:
+        controller: "0"
+        enclosure: "23"
+        slot: "16"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21F3C50C
+        serial: 3250A0ATTPA8
+      c0/e23/s17:
+        controller: "0"
+        enclosure: "23"
+        slot: "17"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21F3C518
+        serial: 3250A0AVTPA8
+      c0/e23/s18:
+        controller: "0"
+        enclosure: "23"
+        slot: "18"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21EDCD8C
+        serial: 22K0A13ATPA8
+      c0/e23/s19:
+        controller: "0"
+        enclosure: "23"
+        slot: "19"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21F6A9B0
+        serial: 32B0A01XTPA8
+      c0/e23/s20:
+        controller: "0"
+        enclosure: "23"
+        slot: "20"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21F6A9DC
+        serial: 32B0A028TPA8
+      c0/e23/s21:
+        controller: "0"
+        enclosure: "23"
+        slot: "21"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21EDCD68
+        serial: 22K0A131TPA8
+      c0/e23/s22:
+        controller: "0"
+        enclosure: "23"
+        slot: "22"
+        medium: SSD
+        interface: SATA
+        wwn: 58CE38EE21EDCD78
+        serial: 22K0A135TPA8
+      c0/e23/s23:
+        controller: "0"
+        enclosure: "23"
+        slot: "23"
+        medium: SSD
+        interface: SAS
+        wwn: 58CE38EE21EDCD40
+        serial: 22K0A12RTPA8
+      c0/e23/s24:
+        controller: "0"
+        enclosure: "23"
+        slot: "24"
+        medium: SSD
+        interface: SATA
+        wwn: 5ACE42E0254CA5B5
+        serial: ENB3N6461I2103U45
+      c0/e23/s25:
+        controller: "0"
+        enclosure: "23"
+        slot: "25"
+        medium: SSD
+        interface: SATA
+        wwn: 5ACE42E0254CA5B9
+        serial: ENB3N6461I2103U49
