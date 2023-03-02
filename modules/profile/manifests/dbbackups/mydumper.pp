@@ -40,6 +40,23 @@ class profile::dbbackups::mydumper (
         managehome => false,
     }
 
+    # provisional hack to allow for recovery of 10.6 data
+    file { '/usr/bin/load_file.sh':
+        ensure => present,
+        group  => 'root',
+        owner  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/profile/dbbackups/load_file.sh',
+    }
+
+    file { '/usr/bin/mini_loader.sh':
+        ensure => present,
+        group  => 'root',
+        owner  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/profile/dbbackups/mini_loader.sh',
+    }
+
     file { '/srv/backups':
         ensure => directory,
         owner  => 'dump',
