@@ -104,4 +104,12 @@ class profile::releases::common(
         body_regex_matches => ['Wikimedia'],
     }
 
+    prometheus::blackbox::check::http { 'releases-jenkins.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        body_regex_matches => ['Welcome to Jenkins'],
+    }
 }
