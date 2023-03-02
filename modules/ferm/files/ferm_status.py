@@ -50,7 +50,9 @@ class Table:
         self._chains = {}
 
     def __eq__(self, obj):
-        return self.name == obj.name and self.chains == obj.chains
+        return (
+            self.name == obj.name and sorted(self.chains) == sorted(obj.chains)
+        )
 
     def __str__(self):
         lines = ['*{}'.format(self.name)]
