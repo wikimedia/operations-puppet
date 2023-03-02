@@ -53,9 +53,14 @@ class profile::kerberos::client (
         purge   => true,
     }
 
-    motd::script { 'kerberos-client-info':
-        priority => 1,
-        source   => 'puppet:///modules/profile/kerberos/client/motd.sh',
+    motd::message { '01_kerberos-client-info':
+        priority => 90,  # We set this high so it appears at the end
+        message  => 'This host is capable of Kerberos authentication in the WIKIMEDIA realm.',
+        color    => 'yellow',
+    }
+    motd::message { '02_kerberos-addtional-info':
+        priority => 90,  # We set this high so it appears at the end
+        message  => 'For more info: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos/UserGuide',
     }
 
     # Use original ticket info script only if not automatically renewing
