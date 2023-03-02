@@ -7,10 +7,17 @@ class releases (
     String $server_admin = 'noc@wikimedia.org',
     Stdlib::Unixpath $prefix = '/',
     Stdlib::Port $http_port = '8080',
+    String $patches_owner = 'jenkins',
+    String $patches_group = '705',
 ) {
 
     ensure_resource('file', '/srv/mediawiki', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/patches', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/patches', {
+        'ensure'   => 'directory',
+        'owner'    => $patches_owner,
+        'group'    => $patches_group,
+        }
+    )
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/releases', {'ensure' => 'directory' })

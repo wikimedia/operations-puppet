@@ -75,6 +75,8 @@ class profile::releases::mediawiki (
         sitename_jenkins => $sitename_jenkins,
         http_port        => $http_port,
         prefix           => $prefix,
+        patches_owner    => 'jenkins',
+        patches_group    => '705',
     }
 
     httpd::site { $sitename_jenkins:
