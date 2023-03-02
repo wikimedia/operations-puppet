@@ -70,14 +70,13 @@ define service::docker(
     $fqin = "${image_full_name}:${version}"
 
     # The config file will be mounted as a read-only volume inside the container
-    if !defined(File["/etc/${title}"]) {
-        file { "/etc/${title}":
-            ensure => stdlib::ensure($ensure, 'directory'),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-    }
+    ensure_resource('file', "/etc/${title}", {
+        ensure => stdlib::ensure($ensure, 'directory'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        force  => true,
+    })
 
     if $volume == false {
         file { "/etc/${title}/config.yaml":
