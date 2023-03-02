@@ -98,9 +98,11 @@ def get_inactive_alert_hosts(pdb: API) -> Set:
     }
     """
     result = list(pdb.pql(pql))[0]
-    hosts = set(result['parameters']['partners']) - set(
-        result['parameters']['active_host']
-    )
+    hosts = {
+        host.split('.')[0] for host in
+        result['parameters']['partners']
+        + [result['parameters']['active_host']]
+    }
     logger.debug("passive alert hosts: %s", ",".join(hosts))
     return hosts
 
@@ -126,7 +128,8 @@ def get_node_status(pdb: API, max_age: datetime) -> Dict:
     reports = pdb.pql(pql)
 
     for report in reports:
-        nodes[report['certname']][report['status']] = report['count']
+        hostname = report['certname'].split('.')[0]
+        nodes[hostname][report['status']] = report['count']
 
     return nodes
 
@@ -173,16 +176,19 @@ def filter_icinga_nodes(nodes: Set, skip_icinga: Set, verbose: bool) -> Set:
             icinga = Spicerack(verbose=verbose, dry_run=False).icinga_hosts(
                 nodes - skip_icinga
             )
-            icinga_status = icinga.get_status()
+            icinga_status = icinga.get_status('puppet last run')
     finally:
         clustershell.sys.stdout = stdout
         clustershell.sys.stderr = stderr
 
-    return nodes - {
+    ignored_nodes = {
         node.name
         for node in icinga_status.values()
-        if node.downtimed and not node.notifications_enabled
+        if node.downtimed
+        or not node.notifications_enabled
+        or node.services[0].acked
     }
+    return nodes - ignored_nodes
 
 
 def icinga_exit(nodes: Set, critical: int, warning: int) -> int:
