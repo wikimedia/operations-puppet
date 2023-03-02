@@ -26,6 +26,11 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 from ClusterShell.NodeSet import NodeSet, RESOLVER_NOGROUP
 
 
+def to_bool(val: str):
+    """As we deal with strings we need to first cast to int then bool"""
+    return bool(int(val))
+
+
 class IcingaStatusParseError(Exception):
     """Raised when we fail to parse the status.dat file correctly"""
 
@@ -38,14 +43,19 @@ class Service:
     CASTS = {
         'current_state': int,
         'scheduled_downtime_depth': int,
-        'notifications_enabled': bool,
+        'notifications_enabled': to_bool,
     }
 
     def __init__(self, data: Dict[str, str]):
         self.name = data['service_description']
         self.host = data['host_name']
         for key, func in Service.CASTS.items():
-            data[key] = func(data[key])
+            try:
+                data[key] = func(data[key])
+            except ValueError as error:
+                raise IcingaStatusParseError(
+                    f'Unable to cast value for {key}: {data[key]}'
+                ) from error
         self.status = cast(Dict[str, Any], data)
 
     def __str__(self) -> str:
@@ -85,7 +95,7 @@ class Host:
     CASTS = {
         'current_state': int,
         'scheduled_downtime_depth': int,
-        'notifications_enabled': bool,
+        'notifications_enabled': to_bool,
     }
 
     def __init__(self, data: Dict[str, str]):
@@ -98,10 +108,11 @@ class Host:
 
     def __str__(self) -> str:
         return '{s.name}: state={s.state}, optimal={s.optimal}, downtime={s.downtimed}'.format(
-            s=self)
+            s=self
+        )
 
     def __json__(
-            self, service_pattern: Optional[re.Pattern] = None
+        self, service_pattern: Optional[re.Pattern] = None
     ) -> Dict[str, Union[str, bool, List[Service]]]:
         """Return a json representation of the service"""
         result: Dict[str, Union[str, bool, List[Service]]] = {
@@ -112,8 +123,11 @@ class Host:
             'notifications_enabled': self.notifications_enabled,
         }
         if service_pattern is not None:
-            result['services'] = [service for name, service in self.services.items()
-                                  if service_pattern.fullmatch(name)]
+            result['services'] = [
+                service
+                for name, service in self.services.items()
+                if service_pattern.fullmatch(name)
+            ]
         else:
             result['failed_services'] = self.failed_services
         return result
@@ -128,8 +142,10 @@ class Host:
     @property
     def optimal(self) -> bool:
         """Return True if the host and all its services are in the optimal state."""
-        return (sum(service.status['current_state'] for service in self.services.values())
-                + self.status['current_state']) == 0
+        return (
+            sum(service.status['current_state'] for service in self.services.values())
+            + self.status['current_state']
+        ) == 0
 
     @property
     def failed_services(self) -> List[Service]:
@@ -157,7 +173,9 @@ class Host:
         if service.host != self.name:
             raise RuntimeError(
                 'Service {name} for host {host} do not match current hostname {hostname}'.format(
-                    name=service.name, host=service.host, hostname=self.name))
+                    name=service.name, host=service.host, hostname=self.name
+                )
+            )
 
         self.services[service.name] = service
 
@@ -172,8 +190,9 @@ class IcingaStatus:
             # characters, for example if the output gets truncated by NRPE.
             status_text = status_path.read_text(encoding='utf-8', errors='replace')
         except (OSError, UnicodeDecodeError) as error:
-            raise IcingaStatusParseError('corrupt status.dat: Failed to open file: {}'.format(
-                error))
+            raise IcingaStatusParseError(
+                'corrupt status.dat: Failed to open file: {}'.format(error)
+            )
 
         self.hosts: Dict[str, Host] = {}
         self._target_hostnames = target_hostnames
@@ -193,7 +212,11 @@ class IcingaStatus:
 
     def get_service(self, name: str) -> List[Service]:
         """Return all Service objects matching `name`"""
-        return [host.services[name] for host in self.hosts.values() if host.has_service(name)]
+        return [
+            host.services[name]
+            for host in self.hosts.values()
+            if host.has_service(name)
+        ]
 
     def get_hosts_with_service(self, name: str) -> List[Host]:
         """Return all Host objects with a Service matching `name`"""
@@ -224,7 +247,9 @@ class IcingaStatus:
                 service = Service(data)
                 self.hosts[service.host].add_service(service)
         # If we get to this point we have found no downtime and likely read a corrupt file
-        raise IcingaStatusParseError('corrupt status.dat: Failed to find downtime object')
+        raise IcingaStatusParseError(
+            'corrupt status.dat: Failed to find downtime object'
+        )
 
     def _parse_block(self, block: str) -> Tuple[str, Optional[Dict[str, str]]]:
         name = None
@@ -254,21 +279,34 @@ def get_args() -> argparse.Namespace:
     """Argument handler"""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('hosts', help="Hosts selection query")
-    parser.add_argument('-s', '--status-file', type=Path,
-                        default=Path('/var/icinga-tmpfs/status.dat'))
+    parser.add_argument(
+        '-s', '--status-file', type=Path, default=Path('/var/icinga-tmpfs/status.dat')
+    )
     parser.add_argument('-v', '--verbose', action='count')
-    parser.add_argument('-p', '--pretty-print', action='store_true',
-                        help='pretty print json output.  Implies `--json`')
-    parser.add_argument('-j', '--json', action='store_true',
-                        help='print json output')
-    parser.add_argument('--verbatim-hosts', action='store_true',
-                        help=('Treat the hosts parameter as verbatim Icinga hostnames, without '
-                              'extracting the hostname from the FQDN.'))
-    parser.add_argument('--services',
-                        help=('select the service names to include in json output; full-match '
-                              'regex to include matching services regardless of status, or leave '
-                              'this flag unset to include all failed services regardless of name. '
-                              'To include ALL services, set this flag to ".*"'))
+    parser.add_argument(
+        '-p',
+        '--pretty-print',
+        action='store_true',
+        help='pretty print json output.  Implies `--json`',
+    )
+    parser.add_argument('-j', '--json', action='store_true', help='print json output')
+    parser.add_argument(
+        '--verbatim-hosts',
+        action='store_true',
+        help=(
+            'Treat the hosts parameter as verbatim Icinga hostnames, without '
+            'extracting the hostname from the FQDN.'
+        ),
+    )
+    parser.add_argument(
+        '--services',
+        help=(
+            'select the service names to include in json output; full-match '
+            'regex to include matching services regardless of status, or leave '
+            'this flag unset to include all failed services regardless of name. '
+            'To include ALL services, set this flag to ".*"'
+        ),
+    )
     return parser.parse_args()
 
 
