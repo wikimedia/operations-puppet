@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: klaxon
-#
-# Install and configure klaxon, a simple webapp for users to page SRE.
-class klaxon(
+# @summary Install and configure klaxon, a simple webapp for users to page SRE.
+# @param config the klaxon config
+# @param escalation_policy_slug The slug for the escalation policy
+# @param install_dir where to install klaxon
+# @param port the port klaxon runs on
+class klaxon (
     Klaxon::Klaxon_config $config,
     String $escalation_policy_slug,
     Stdlib::Unixpath $install_dir = '/srv/klaxon',
