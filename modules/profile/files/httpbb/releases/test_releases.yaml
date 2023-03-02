@@ -21,6 +21,6 @@ https://releases.wikimedia.org:
 - path: /mobile/android/
   assert_status: 200
   assert_body_contains: Wiktionary-v1.0.1.apk
-- path: /debian/pool/main/p/parsoid/
+- path: /mwcli/
   assert_status: 200
-  assert_body_contains: parsoid_0.11.0all_all.deb
+  assert_body_contains: latest.txt
