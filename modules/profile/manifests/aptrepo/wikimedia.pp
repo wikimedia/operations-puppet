@@ -98,9 +98,16 @@ class profile::aptrepo::wikimedia (
         $motd_ensure = 'present'
     }
 
-    motd::script { 'inactive_warning':
+    motd::message { '01_inactive_warning':
         ensure   => $motd_ensure,
-        priority => 1,
-        content  => template('profile/install_server/inactive.motd.erb'),
+        priority => 99,  # Use hi priority to ensure this is the last message
+        color    => 'red',
+        message  => '*** This is not the active server DO Not USE ***'
+    }
+    motd::message { '02_inactive_warning':
+        ensure   => $motd_ensure,
+        priority => 99,  # Use hi priority to ensure this is the last message
+        color    => 'red',
+        message  => "Please use ${primary_server} instead. It will rsync to ${facts['networking']['hostname']}"
     }
 }
