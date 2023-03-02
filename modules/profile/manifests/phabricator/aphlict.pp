@@ -39,6 +39,14 @@ class profile::phabricator::aphlict (
         port   => $client_port,
     }
 
+    git::systemconfig { 'disable_safe_directory':
+        settings => {
+            'safe' => {
+                'directory' => $deploy_root,
+            }
+        }
+    }
+
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
