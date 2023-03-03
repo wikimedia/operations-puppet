@@ -10,7 +10,7 @@ restrict default ignore
 restrict source notrap nomodify noquery
 
 <% @peers.each do |val| -%>
-peer <%= val %> xleave
+peer <%= val %>
 <% end -%>
 
 <% @servers.each do |val| -%>
