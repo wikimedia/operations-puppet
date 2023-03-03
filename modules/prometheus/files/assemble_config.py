@@ -30,14 +30,19 @@
 import argparse
 import filecmp
 import glob
+import logging
 import os
 import shlex
 import subprocess
 import sys
 import tempfile
+import time
 import shutil
 
 import yaml
+
+
+logger = logging.getLogger(__name__)
 
 
 class Module(object):
@@ -60,7 +65,12 @@ class Module(object):
 
         config_mtime = os.stat(self.config_out).st_mtime
         for frag in self.input_paths:
-            if os.stat(frag).st_mtime > config_mtime:
+            frag_mtime = os.stat(frag).st_mtime
+            if frag_mtime > config_mtime:
+                logger.debug(
+                    f"Needs update: {frag} is newer ({frag_mtime}) "
+                    f"then {self.config_out} ({config_mtime})"
+                )
                 return True
         return False
 
@@ -75,12 +85,19 @@ class Module(object):
             self._write(config, f)
             f.flush()
             if not self.validate(f.name):
+                logger.warning("Failed to validate config")
                 return 2
-            if not os.path.exists(self.config_out) or not filecmp.cmp(
-                f.name, self.config_out
-            ):
-                shutil.copy(f.name, self.config_out)
-                os.chmod(self.config_out, int(str(self.config_mode), 8))
+            if os.path.exists(self.config_out) and filecmp.cmp(f.name, self.config_out):
+                logger.warning(
+                    f"Update not required: {self.config_out} already matches the assembled config."
+                    f"\n touching {self.config_out} to refresh mtime"
+                )
+                # TODO: Path(self.config_out).touch()
+                now = time.time()
+                os.utime(self.config_out, (now, now))
+                return 0
+            shutil.copy(f.name, self.config_out)
+            os.chmod(self.config_out, int(str(self.config_mode), 8))
             return 0
 
     def validate(self, path):
@@ -149,6 +166,23 @@ class Blackbox(Module):
 MODULES = {"blackbox": Blackbox, "pint": Pint}
 
 
+def get_log_level(args_level: int) -> int:
+    """Convert an integer to a logging log level.
+
+    Arguments:
+        args_level (int): The log level as an integer
+
+    Returns:
+        int: the logging loglevel
+    """
+    return {
+        0: logging.ERROR,
+        1: logging.WARN,
+        2: logging.INFO,
+        3: logging.DEBUG,
+    }.get(args_level, logging.DEBUG)
+
+
 def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
@@ -167,12 +201,14 @@ def main():
         default="/etc/prometheus/assemble-config.yaml",
         help="read config from PATH",
     )
+    parser.add_argument("-v", "--verbose", action="count", default=0)
     parser.add_argument(
         "module",
         metavar="MODULE",
         help="use MODULE from config to validate",
     )
     args = parser.parse_args()
+    logging.basicConfig(level=get_log_level(args.verbose))
 
     with open(args.config) as f:
         config = yaml.safe_load(f)
