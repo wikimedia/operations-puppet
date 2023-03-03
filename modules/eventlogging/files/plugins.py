@@ -28,7 +28,6 @@ eventlogging_schemas_disabled = (
     'SpecialInvestigate',
     'SearchSatisfaction',
     'SuggestedTagsAction',
-    'SpecialMuteSubmit',
     'TemplateWizard',
     'Test',
     'UniversalLanguageSelector',

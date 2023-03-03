@@ -148,7 +148,6 @@ class profile::analytics::refinery::job::refine(
         'QuickSurveysResponses',
         'SearchSatisfaction',
         'SpecialInvestigate',
-        'SpecialMuteSubmit',
         'SuggestedTagsAction',
         'TemplateWizard',
         'Test',
