@@ -163,6 +163,10 @@ profile::services_proxy::envoy::listeners:
     timeout: "10s"
     keepalive: "4s"
     uses_ingress: true
+  - name: inference
+    port: 6031
+    service: inference
+    timeout: "10s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
