@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
-              cmacholan, echetty, kelhurd, toan]
+              cmacholan, echetty, kelhurd, toan, jk]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -367,7 +367,7 @@ groups:
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga,
               piccardi, ladsgroup, musikanimal,
-              goransm, dsaez, rho, mirrys, slaporte, jk,
+              goransm, dsaez, rho, mirrys, slaporte,
               ayounsi, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
               niharika29, jgleeson, srishakatux,
@@ -3343,14 +3343,12 @@ users:
     email: cparle@wikimedia.org
     krb: present
   jk:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jk
     realname: Jonas Kress
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7lA+/vYOVDy1Vbd4/gxs1jCDxvK3M0usqq9FdbbE/Y Jonas.Kress@wikimedia.de
+    ssh_keys: []
     uid: 12454
-    email: jonas.kress@wikimedia.de
   groovier:
     ensure: absent
     gid: 500
