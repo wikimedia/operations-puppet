@@ -129,6 +129,8 @@ service::catalog:
     description: Analytics Query Service, aqs.svc.%{::site}.wmnet
     encryption: false
     ip:
+      codfw:
+        default: 10.2.1.12
       eqiad:
         default: 10.2.2.12
     lvs:
@@ -150,6 +152,7 @@ service::catalog:
       - type: http
     port: 7232
     sites:
+      - codfw
       - eqiad
     state: production
 
