@@ -4,3 +4,6 @@ profile::gitlab::runner::docker_settings:
 profile::gitlab::runner::docker_volume: true
 # puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
 # uses similar config as WMCS runners from hieradata/cloud.yaml
+profile::gitlab::runner::enable_registry_proxy: true
+profile::gitlab::runner::registry_proxy_environment:
+  REGISTRY_PROXY_REMOTEURL: 'https://registry-1.docker.io'

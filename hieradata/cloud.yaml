@@ -195,6 +195,10 @@ profile::gitlab::runner::clear_interval:
   start: "OnCalendar"
   interval: "*-*-* 05,17:00:00"
 profile::gitlab::runner::enable_clear_cache: true
+profile::gitlab::runner::enable_registry_proxy: false
+profile::gitlab::runner::registry_proxy_environment: {}
+# use dockerhub in WMCS until registry is imported to wmf registry - T329679
+profile::gitlab::runner::registry_proxy_image: 'docker.io/registry:2'
 profile::gitlab::runner::enable_webproxy: false
 profile::gitlab::runner::http_proxy: ~
 profile::gitlab::runner::https_proxy: ~

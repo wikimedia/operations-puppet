@@ -82,6 +82,9 @@ profile::gitlab::runner::clear_interval:
 profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true
 profile::base::unprivileged_userns_clone: true
+profile::gitlab::runner::enable_registry_proxy: false
+profile::gitlab::runner::registry_proxy_environment: {}
+profile::gitlab::runner::registry_proxy_image: 'docker-registry.wikimedia.org/registry:2'
 profile::gitlab::runner::enable_webproxy: true
 profile::gitlab::runner::http_proxy: 'http://webproxy:8080'
 profile::gitlab::runner::https_proxy: 'http://webproxy:8080'

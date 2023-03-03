@@ -1,0 +1,19 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=registry
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm -f registry
+ExecStart=/usr/bin/docker run --name registry \
+    --volume <%= @registry_volume %>:/var/lib/registry \
+    --env-file /etc/default/registry \
+    <%= @image %> \
+    --port <%= @port %>:5000 \
+ExecStop=/usr/bin/docker stop registry
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

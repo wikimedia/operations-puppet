@@ -38,6 +38,9 @@
 # @param allowed_docker_services Images which are allowed to be executed as services
 #   parallel to CI jobs
 # @param internal_ip_range IPv4 range which is blocked when restrict_firewall=true
+# @param enable_registry_proxy run a dedicated docker registry to act as a image proxy
+# @param registry_proxy_config config which is passed to docker registry
+# @param registry_proxy_image image to execute as the registry
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -79,6 +82,9 @@ class profile::gitlab::runner (
     Array[String]                               $allowed_docker_services = lookup('profile::gitlab::runner::allowed_docker_services'),
     Stdlib::IP::Address::V4::CIDR               $internal_ip_range  = lookup('profile::gitlab::runner::internal_ip_range'),
     Optional[Integer]                           $buildkitd_gckeepstorage = lookup('profile::gitlab::runner::buildkitd_gckeepstorage'),
+    Boolean                                     $enable_registry_proxy = lookup('profile::gitlab::runner::enable_registry_proxy'),
+    Hash                                        $registry_proxy_environment = lookup('profile::gitlab::runner::registry_proxy_environment'),
+    String                                      $registry_proxy_image = lookup('profile::gitlab::runner::registry_proxy_image'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -113,6 +119,15 @@ class profile::gitlab::runner (
         allowed_services  => $allowed_services,
         internal_ip_range => $internal_ip_range,
     }
+
+    # install docker registry to mirror images locally
+    $ensure_registry_proxy = $enable_registry_proxy.bool2str('present','absent')
+    class { 'gitlab_runner::registry':
+        ensure      => $ensure_registry_proxy,
+        require     => Class['docker'],
+        environment => $registry_proxy_environment,
+        image       => $registry_proxy_image,
+  }
 
     if $gitlab_runner_user != 'root' {
 
