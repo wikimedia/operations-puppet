@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
-              cmacholan, echetty, kelhurd]
+              cmacholan, echetty, kelhurd, toan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -217,7 +217,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [addshore, hoo, tarrow, wmde-leszek, toan, dang, rosalie-wmde]
+    members: [addshore, hoo, tarrow, wmde-leszek, dang, rosalie-wmde]
     approval:
       - Leszek Manicki
       - Tobias Andersson
@@ -377,7 +377,7 @@ groups:
               itamar, phedenskog, aaron, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, mttp,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
@@ -762,7 +762,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: [addshore, goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, toan, sihe, ollieshotton,
+              awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, sihe, ollieshotton,
               muja]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
@@ -4410,14 +4410,12 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDww6LwxZbh9bX4srcYZ911tFdXmUpXUD4tpIDnSQ3BTti8uDxcUfJ5Z2FSEYpolOYareiTOAcsk7QUVMxVm3oS6ineVLBTSvVtjaaR+4Me4BGba/GmNhwaw6V/bKaYHNmDZRlOJzKQOgOQN4MZogA0Pc2H2GPFWpwZ+FEZH8ljTI2A7M2O2cE5I8iwYk4PLaihkqVud8SFe8dzW7BMfLj0RPxek4u7y2/HpLw4gIygcvWDKIl6MTOPdO63ZQuLYxtVReoq1PayKUce4jR8dYzl+Wq09/O8RguhRw7MD/86AfG3YkIguXwAKZvYaZbk3DGLNArKPJUhZ9CiqDIh6w7yyWSTS/gNUBtN7HwjMsAcF8D8xed1Al10v7paX9iO3kasAEUYXJPt1jvcnV7feFZe2Wx04SD5RG3jLyW98VjjFy9fCujZ7HwWFiyqo8+lwLFkpFLDEp2az68aB3Z04fIKKGwjOQe6n63QUcUF08Eg6GrAhe/vRq1xF/qnMpWNb90=
     krb: present
   toan:
-    ensure: present
+    ensure: absent
     realname: Tobias Andersson
-    email: tobias.andersson@wikimedia.de
     uid: 24354
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnJucB0FLTr5RIaUfy/oFP95U7afCiTXJWTVTvH5kRF toan@C342
-    krb: present
+    ssh_keys: []
+    krb: absent
   stran:
     ensure: present
     realname: Tran
