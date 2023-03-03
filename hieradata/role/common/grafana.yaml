@@ -85,8 +85,8 @@ profile::idp::client::httpd::sites:
     vhost_settings:
       ro_vhost: "grafana-next.%{lookup('public_domain')}"
 
-profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
-profile::grafana::standby_host: 'grafana2001.codfw.wmnet'
+profile::grafana::active_host: 'grafana2001.codfw.wmnet'
+profile::grafana::standby_host: 'grafana1002.eqiad.wmnet'
 profile::grafana::enable_loki: true
 profile::grafana::loki::config:
   auth_enabled: false
