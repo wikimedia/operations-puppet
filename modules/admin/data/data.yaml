@@ -35,7 +35,7 @@ groups:
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, lzaman,
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
-              cdunn, vyuen, scfc, relgu, emedina, ddw]
+              cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6291,9 +6291,8 @@ ldap_only_users:
     realname: Kassia Echavarri-Queen
     email: kechavarriqueen@wikimedia.org
   tobias-schumann-wmde-ext:
-    ensure: present
+    ensure: absent
     realname: Tobias Schumann
-    email: tobias.schumann_ext@wikimedia.de
   gengh:
     ensure: present
     realname: Genoveva Galarza
