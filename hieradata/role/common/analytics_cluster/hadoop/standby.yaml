@@ -66,7 +66,6 @@ profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $D
 
 profile::hadoop::master::standby::excluded_hosts:
   - an-worker1132.eqiad.wmnet
-  - an-worker1132
 
 profile::hadoop::common::config_override:
   hadoop_var_directory: '/srv/hadoop'

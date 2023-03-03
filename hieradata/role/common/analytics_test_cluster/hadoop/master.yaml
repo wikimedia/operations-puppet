@@ -37,7 +37,6 @@ profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $D
 
 profile::hadoop::master::excluded_hosts:
   - an-test-worker1001.eqiad.wmnet
-  - an-test-worker1001
 
 profile::analytics::cluster::hadoop::yarn_capacity_scheduler::extra_settings:
   # Due to how little the test cluster is compared to prod, we need a higher value

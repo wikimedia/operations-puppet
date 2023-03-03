@@ -17,7 +17,9 @@ class bigtop::hadoop::master(
         excluded_hosts => $excluded_hosts,
     }
 
-    class { 'bigtop::hadoop::resourcemanager': }
+    class { 'bigtop::hadoop::resourcemanager':
+        excluded_hosts => $excluded_hosts,
+    }
 
     class { 'bigtop::hadoop::historyserver': }
 

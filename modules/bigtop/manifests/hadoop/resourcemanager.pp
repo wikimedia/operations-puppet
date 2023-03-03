@@ -3,9 +3,17 @@
 # Installs and configures Hadoop YARN ResourceManager.
 # This will create YARN HDFS directories.
 #
-class bigtop::hadoop::resourcemanager {
+class bigtop::hadoop::resourcemanager(
+    $excluded_hosts = [],
+) {
 
     Class['bigtop::hadoop'] -> Class['bigtop::hadoop::resourcemanager']
+
+    file { "${::bigtop::hadoop::config_directory}/yarn-hosts.exclude":
+        ensure  => present,
+        content => template('bigtop/hadoop/hosts.exclude.erb'),
+        notify  => Exec['hadoop-yarn-refresh-nodes'],
+    }
 
     # In an HA YARN ResourceManager setup, this class will be included on multiple nodes.
     # In order to have this directory check performed by only one resourcemanager,
@@ -56,5 +64,12 @@ class bigtop::hadoop::resourcemanager {
         hasrestart => true,
         alias      => 'resourcemanager',
         require    => Package['hadoop-yarn-resourcemanager'],
+    }
+
+    kerberos::exec { 'hadoop-yarn-refresh-nodes':
+        command     => '/usr/bin/yarn rmadmin -refreshNodes',
+        user        => 'yarn',
+        refreshonly => true,
+        require     => Service['hadoop-yarn-resourcemanager'],
     }
 }

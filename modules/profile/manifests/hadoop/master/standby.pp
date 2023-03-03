@@ -54,6 +54,8 @@ class profile::hadoop::master::standby(
         }
     }
 
-    class { '::bigtop::hadoop::resourcemanager': }
+    class { '::bigtop::hadoop::resourcemanager':
+        excluded_hosts => $excluded_hosts,
+    }
 
 }

@@ -19,6 +19,7 @@ class bigtop::hadoop::namenode(
     file { "${::bigtop::hadoop::config_directory}/hosts.exclude":
         ensure  => present,
         content => template('bigtop/hadoop/hosts.exclude.erb'),
+        notify  => Exec['hadoop-namenode-refresh-nodes'],
     }
 
     # install namenode daemon package
@@ -75,6 +76,13 @@ class bigtop::hadoop::namenode(
         hasrestart => true,
         alias      => 'namenode',
         require    => Exec['hadoop-namenode-format'],
+    }
+
+    kerberos::exec { 'hadoop-namenode-refresh-nodes':
+        command     => "/usr/bin/hdfs dfsadmin -fs hdfs://${::fqdn}:8020 -refreshNodes",
+        user        => 'hdfs',
+        refreshonly => true,
+        require     => Service['hadoop-hdfs-namenode'],
     }
 
     if ($::bigtop::hadoop::ha_enabled and $::bigtop::hadoop::zookeeper_hosts) {
