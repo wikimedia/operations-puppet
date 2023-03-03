@@ -28,17 +28,8 @@ class libraryupgrader(
         }
     }
 
-    group { 'libup':
-        ensure => present,
-        name   => 'libup',
-        system => true,
-    }
-
-    user { 'libup':
-        ensure  => present,
-        system  => true,
-        groups  => 'docker',
-        require => Package['docker-ce'],
+    systemd::sysuser { 'libup':
+        additional_groups => ['docker'],
     }
 
     file { $data_dir:
