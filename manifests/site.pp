@@ -1581,7 +1581,7 @@ node /kubestage200[12]\.codfw\.wmnet/ {
 }
 
 node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
-    role(wmcs::openstack::codfw1dev::virt_ceph_local_cinder)
+    role(wmcs::openstack::codfw1dev::virt_ceph)
 }
 
 # WMCS Graphite and StatsD hosts
