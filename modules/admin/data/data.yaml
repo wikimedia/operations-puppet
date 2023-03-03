@@ -6544,3 +6544,7 @@ ldap_only_users:
     ensure: present
     realname: Jonathan Solomon Giles Blay Amar
     email: jon.amar@wikimedia.de
+  kelhurd:
+    ensure: present
+    realname: Kelton Hurd
+    email: khurd@wikimedia.org
