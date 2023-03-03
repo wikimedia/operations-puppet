@@ -1548,6 +1548,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'pdnsrec',
         'scheme'          => 'http',
+        'metrics_path'    => '/metrics',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/pdnsrec_*.yaml" ]}
         ],
