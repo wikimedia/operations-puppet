@@ -1,8 +1,8 @@
 ---
 # SPDX-License-Identifier: Apache-2.0
-profile::wmcs::services::toolsdb_replica_cnf::paws_user: xxxx
-profile::wmcs::services::toolsdb_replica_cnf::paws_htpassword: dummy-password-from-ops-puppet
-profile::wmcs::services::toolsdb_replica_cnf::paws_root_url: yyyy
-profile::wmcs::services::toolsdb_replica_cnf::tools_user: xxxx
-profile::wmcs::services::toolsdb_replica_cnf::tools_htpassword: dummy-password-from-ops-puppet
-profile::wmcs::services::toolsdb_replica_cnf::tools_root_url: yyyy
+profile::wmcs::services::toolsdb_replica_cnf::paws_user: tools-db-replica-cnf
+profile::wmcs::services::toolsdb_replica_cnf::paws_htpassword: test-password
+profile::wmcs::services::toolsdb_replica_cnf::paws_root_url: https://nfs-paws.wmcloud.org/v1
+profile::wmcs::services::toolsdb_replica_cnf::tools_user: tools-db-replica-cnf
+profile::wmcs::services::toolsdb_replica_cnf::tools_htpassword: test-password
+profile::wmcs::services::toolsdb_replica_cnf::tools_root_url: http://10.64.37.19/v1
