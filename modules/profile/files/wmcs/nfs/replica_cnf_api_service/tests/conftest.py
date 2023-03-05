@@ -11,7 +11,7 @@ from flask import current_app
 from replica_cnf_api_service.views import create_app
 
 TOOL_PATH = Path("test_srv/tools/shared/tools/project")
-PAWS_PATH = Path("test_srv/misc/shared/paws/project/paws/userhomes")
+PAWS_PATH = Path("test_srv/paws/project/userhomes")
 USER_PATH = Path("test_srv/tools/shared/tools/home")
 ACCOUNT_ID = "test_tool"
 WRONG_ACCOUNT_ID = "wrong_account_id"
