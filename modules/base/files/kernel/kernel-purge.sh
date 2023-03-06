@@ -174,16 +174,16 @@ function main {
 		done
 	fi
 
-	declare -a purged=()
 	if [[ $purge == 'true' ]]; then
-		for kernel in "${!kernels_to_purge[@]}"; do
-			apt-get purge -y "${kernel}"
-			purged+=("${kernel}")
-		done
-		printf "Purged kernels:\n"
-		for kernel in "${purged[@]}"; do
-			printf '  %s\n' "$kernel"
-		done
+		if apt-get purge -y "${!kernels_to_purge[@]}"; then
+			printf "Purged kernels:\n"
+			for kernel in "${!kernels_to_purge[@]}"; do
+				printf '  %s\n' "$kernel"
+			done
+		else
+			printf 'Error: problem purging kernels!\n' 1>&2
+			return 1
+		fi
 	fi
 }
 
