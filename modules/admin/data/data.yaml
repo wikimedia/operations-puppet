@@ -5985,6 +5985,10 @@ ldap_only_users:
   nirzar:
     ensure: absent
     realname: Nirzar Pangarkar
+  nosc:
+    ensure: present
+    realname: Norman Schwirz
+    email: norman.schwirz@wikimedia.de
   parent5446:
     ensure: present
     realname: Tyler Romeo
