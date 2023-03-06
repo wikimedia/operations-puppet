@@ -779,7 +779,7 @@ node /^db1(154|155)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-node /^db2(094|095|186|187)\.codfw\.wmnet/ {
+node /^db2(095|186|187)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
