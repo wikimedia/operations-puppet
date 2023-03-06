@@ -89,6 +89,7 @@ annotations:
 filters:
   default:
     - "@state=active"
+    - "@cluster=<%= @facts['domain'] %>"
 
 karma:
   name: "Alerts for <%= @facts['domain'] %>"
