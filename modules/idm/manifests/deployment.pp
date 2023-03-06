@@ -13,7 +13,7 @@ class idm::deployment (
     Stdlib::Unixpath    $etc_dir,
     Stdlib::Unixpath    $static_dir,
     Stdlib::Unixpath    $log_dir,
-    Boolean             $production,
+    Boolean             $install_via_git,
     Hash                $oidc,
     Hash                $ldap_config,
     Stdlib::Fqdn        $redis_master,
@@ -48,10 +48,9 @@ class idm::deployment (
         target => "${base_dir}/${project}/bitu/base_settings.py"
     }
 
-    # For staging and production we want to install
-    # from Debian packages, but for the development
-    # process the latest git version is deployed.
-    unless $production {
+    # During development we want to install Bitu and packages
+    # in a virtual environment.
+    if $install_via_git {
         ensure_packages(['python3-venv'])
         $venv = "${base_dir}/venv"
 
@@ -68,6 +67,7 @@ class idm::deployment (
             owner     => $deploy_user,
             group     => $deploy_user,
             source    => 'gerrit',
+            notify    => Exec['collect static assets', "install requirements to ${venv}"],
         }
 
         exec { "create virtual environment ${venv}":
@@ -76,33 +76,40 @@ class idm::deployment (
         }
 
         exec { "install requirements to ${venv}":
-            command => "${venv}/bin/pip3 install -r ${base_dir}/${project}/requirements.txt",
-            creates => "${venv}/bin/django-admin",
-            require => Exec["create virtual environment ${venv}"],
+            command     => "${venv}/bin/pip3 install -r ${base_dir}/${project}/requirements.txt",
+            creates     => "${venv}/bin/django-admin",
+            require     => Exec["create virtual environment ${venv}"],
+            refreshonly => true,
         }
 
         exec { 'collect static assets':
             command     => "${base_dir}/venv/bin/python ${base_dir}/${project}/manage.py collectstatic  --no-input",
-            environment => ["PYTHONPATH=${etc_dir}", 'DJANGO_SETTINGS_MODULE=settings']
+            environment => ["PYTHONPATH=${etc_dir}", 'DJANGO_SETTINGS_MODULE=settings'],
+            require     => Exec["create virtual environment ${venv}"],
+            refreshonly => true,
         }
+
+    } else {
+        # For future use.
+        ensure_packages('python3-bitu-idm')
     }
 
     ferm::service { 'redis_replication':
         proto  => 'tcp',
         port   => $redis_port,
-        srange => "@resolve((${redis_master} ${redis_replicas.join(' ')}))"
+        srange => "@resolve((${redis_master} ${redis_replicas.join(' ')}))",
     }
 
     $base_redis_settings =  {
         bind        => $facts['networking']['ip'],
         maxmemory   => $redis_maxmem,
         port        => $redis_port,
-        requirepass => $redis_password
+        requirepass => $redis_password,
     }
 
     $replica_redis_settings = {
         replicaof  => "${$redis_master} ${redis_port}",
-        masterauth => $redis_password
+        masterauth => $redis_password,
     }
 
     unless $facts['networking']['hostname'] in $redis_master {
@@ -112,7 +119,7 @@ class idm::deployment (
     }
 
     redis::instance { String($redis_port):
-        settings => $redis_settings
+        settings => $redis_settings,
     }
 
     $logs = ['idm', 'django']

@@ -9,13 +9,12 @@ class profile::idm(
     String              $django_mysql_db_name      = lookup('profile::idm::server::django_mysql_db_name', {'default_value' => 'idm'}),
     String              $deploy_user               = lookup('profile::idm::deploy_user', {'default_value'                  => 'www-data'}),
     Integer             $uwsgi_process_count       = lookup('profile::idm::uwsgi_process_count', {'default_value'          => 4}),
-    Boolean             $development               = lookup('profile::idm::development', {'default_value'                  => false}),
+    Boolean             $install_via_git           = lookup('profile::idm::install_via_git', {'default_value'              => false}),
     Boolean             $production                = lookup('profile::idm::production', {'default_value'                   => false}),
     Boolean             $envoy_termination         = lookup('profile::idm::envoy_termination', {'default_value'            => false}),
     Apereo_cas::Urls    $apereo_cas                = lookup('apereo_cas'),
     Hash                $ldap_config               = lookup('ldap'),
     String              $oidc_key                  = lookup('profile::idp::service'),
-    String              $oidc_endpoint             = lookup('profile::idm::oidc_endpoint'),
     String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
     Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
     Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
@@ -33,6 +32,9 @@ class profile::idm(
     $static_dir = "${base_dir}/static"
     $project = 'bitu'
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
+
+    $production_str = $production.bool2str('production', 'staging')
+    $oidc_endpoint = $apereo_cas[$production_str]['oidc_endpoint']
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
@@ -71,6 +73,7 @@ class profile::idm(
         log_dir                  => $log_dir,
         static_dir               => $static_dir,
         production               => $production,
+        install_via_git          => $install_via_git,
         redis_master             => $redis_master,
         redis_replicas           => $redis_replicas,
         redis_password           => $redis_password,
