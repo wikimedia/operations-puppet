@@ -12,8 +12,14 @@
 #   You should set this in your role hiera to a versioned gobblin-wmf jar.
 #   Usually this is deployed alongside of analytics/refinery artifacts.
 #
+# [*ensure_timers*]
+#   This parameter can be used to disable gobblin test jobs, effectively pausing
+#   ingestion to Hadoop. This might be necessary for short periods, such as
+#   during HDFS maintenance work
+#
 class profile::analytics::refinery::job::test::gobblin(
     Stdlib::Unixpath $gobblin_jar_file = lookup('profile::analytics::refinery::job::test::gobblin_jar_file'),
+    String $ensure_timers = lookup('profile::analytics::refinery::job::test::gobblin::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
