@@ -331,9 +331,11 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
-    # Map test2wiki to mw on k8s. T290536#8434995
-    - type: map
-      target: 'http://test2.wikipedia.org/w/rest.php'
+    # mw-on-k8s mapping
+    # test2wiki T290536#8434995
+    # testwikidata T331268
+    - type: regex_map
+      target: 'http://(test2\.wikipedia|test\.wikidata)\.org/w/rest\.php'
       replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -353,8 +355,8 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
-    - type: map
-      target: 'http://test2.wikipedia.org/w/api.php'
+    - type: regex_map
+      target: 'http://(test2\.wikipedia|test\.wikidata)\.org/w/api\.php'
       replacement: https://mw-api-ext.discovery.wmnet:4447/w/api.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -368,8 +370,8 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
-    - type: map
-      target: 'http://test2.wikipedia.org/'
+    - type: regex_map
+      target: 'http://(test2\.wikipedia|test\.wikidata)\.org/'
       replacement: https://mw-web.discovery.wmnet:4450
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
