@@ -39,17 +39,10 @@ class profile::phabricator::aphlict (
         port   => $client_port,
     }
 
-    git::systemconfig { 'disable_safe_directory.deploy_root':
+    git::systemconfig { 'disable_safe_directory':
         settings => {
             'safe' => {
                 'directory' => $deploy_root,
-            }
-        }
-    }
-    git::systemconfig { 'disable_safe_directory.deploy_cache':
-        settings => {
-            'safe' => {
-                'directory' => "${deploy_root}-cache/cache",
             }
         }
     }
