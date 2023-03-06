@@ -137,8 +137,7 @@ class base::kernel(
             ensure      => present,
             description => 'Purge unused kernels',
             user        => 'root',
-            # Temporarily only run in list or dry-run mode
-            command     => '/usr/local/bin/kernel-purge -l',
+            command     => '/usr/local/bin/kernel-purge -p',
             interval    => {'start' => 'OnCalendar', 'interval' => 'monthly'},
         }
     }
