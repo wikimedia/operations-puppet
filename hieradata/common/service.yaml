@@ -1101,6 +1101,7 @@ service::catalog:
     probes:
       - type: http
         expect_redirect: true
+    page: false
     port: 7443
     sites:
       - eqiad
