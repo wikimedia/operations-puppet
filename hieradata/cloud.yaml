@@ -587,6 +587,7 @@ mediawiki::common_sites:
     priority: 1
     template: mediawiki/apache/sites/wwwportals.conf.erb
 
+profile::rsyslog::logrotate_source: 'puppet:///profile/rsyslog/logrotate.conf'
 profile::rsyslog::kafka_shipper::enable: false
 profile::rsyslog::kafka_queue_enabled_sites: []
 profile::rsyslog::kafka_shipper::kafka_brokers:

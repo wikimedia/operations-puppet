@@ -65,7 +65,7 @@ class profile::base (
     include profile::mail::default_mail_relay
 
     include profile::prometheus::node_exporter
-    class { 'rsyslog': }
+    include profile::rsyslog
     include profile::prometheus::rsyslog_exporter
 
     $remote_syslog_tls_servers = $remote_syslog_tls[$::site]
