@@ -50,6 +50,16 @@ class profile::microsites::peopleweb (
         group   => 'root',
     }
 
+    # ensure each user automatically gets a public_html dir inside their home dir
+    admin::unique_users(['all-users']).each |String $user| {
+        file { "/home/${user}/public_html":
+            ensure => 'directory',
+            owner  => $user,
+            group  => 'wikidev',
+            mode   => '0755',
+        }
+    }
+
     # Wikimedia single sign-on portal (idp.wikimedia.org)
     # allows users to password protect files
     include profile::idp::client::httpd
@@ -82,11 +92,6 @@ class profile::microsites::peopleweb (
     motd::script { 'people-motd':
         ensure  => present,
         content => $motd_content,
-    }
-
-    # ensure each user home automatically gets a public_html dir (when useradd runs)
-    file { '/etc/skel/public_html':
-        ensure => directory,
     }
 
     # people's entire home dirs (not just public_html) are backed up in Bacula
