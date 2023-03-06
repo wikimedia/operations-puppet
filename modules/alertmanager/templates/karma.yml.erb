@@ -9,6 +9,7 @@ alertmanager:
     - name: "wmcloud.org"
       uri: "https://prometheus.wmcloud.org/.alertmanager"
       proxy: true
+      readonly: true
 
 <% if @auth_header %>
 # Auto-fill silence dialog with the authenticated user
