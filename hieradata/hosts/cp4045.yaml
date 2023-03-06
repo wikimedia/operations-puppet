@@ -1,0 +1,1 @@
+profile::cache::haproxy::do_systemd_hardening: true
