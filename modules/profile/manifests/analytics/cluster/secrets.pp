@@ -58,6 +58,14 @@ class profile::analytics::cluster::secrets(
         user    => 'hdfs',
     }
 
+    $search_research_path = '/user/analytics-search/mysql-analytics-research-client-pw.txt'
+
+    kerberos::exec { 'hdfs_put_mysql-analytics-search-research-client-pw.txt':
+      command => "/bin/echo -ne '${research_user}\n${research_pass}' | /usr/bin/hdfs dfs -put - ${search_research_path} && /usr/bin/hdfs dfs -chmod 600 ${search_research_path} && /usr/bin/hdfs dfs -chown analytics-search:analytics-search ${search_research_path}",
+      unless  => "/usr/bin/hdfs dfs -test -e ${search_research_path}",
+      user    => 'hdfs',
+    }
+
     # mysql clouddb1021 analytics user creds
     include ::passwords::mysql::analytics_labsdb
     $labsdb_user = $::passwords::mysql::analytics_labsdb::user
