@@ -32,8 +32,3 @@ profile::kubernetes::cluster_cidr:
   v6: "2620:0:860:cabe::/64"
 # Define in the private repo
 # profile::rsyslog::kubernetes::token
-
-# Kubernetes 1.23 related common settings (should go from here to common for the eqiad update)
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
