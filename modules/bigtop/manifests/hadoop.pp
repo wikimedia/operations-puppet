@@ -372,7 +372,7 @@ class bigtop::hadoop(
     $yarn_nodemanager_resource_memory_mb         = undef,
     $yarn_nodemanager_resource_cpu_vcores        = max($::processorcount - 1, 1 + 0),
     $yarn_nodemanager_nofiles_ulimit             = 65536,
-    $yarn_log_aggregation_retain_seconds         = 3456000,
+    $yarn_log_aggregation_retain_seconds         = 1209600,
     $yarn_log_aggregation_retain_check_interval_seconds = 86400,
     $yarn_scheduler_minimum_allocation_mb        = undef,
     $yarn_scheduler_maximum_allocation_mb        = undef,
