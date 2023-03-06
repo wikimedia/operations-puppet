@@ -4,9 +4,6 @@ class profile::toolforge::k8s::control (
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::toolforge::k8s::etcd_nodes',     {default_value => ['localhost']}),
     Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::toolforge::k8s::node_token',     {default_value => 'example.token'}),
-    String              $calico_version = lookup('profile::toolforge::k8s::calico_version', {default_value => 'v3.21.0'}),
-    Boolean             $typha_enabled = lookup('profile::toolforge::k8s::typha_enabled', {default_value => false}),
-    Integer             $typha_replicas = lookup('profile::toolforge::k8s::typha_replicas', {default_value => 3}),
     Optional[String]    $encryption_key = lookup('profile::toolforge::k8s::encryption_key', {default_value => undef}),
     String              $kubernetes_version = lookup('profile::toolforge::k8s::kubernetes_version', {default_value => '1.15.5'}),
 ) {
@@ -14,9 +11,6 @@ class profile::toolforge::k8s::control (
         etcd_hosts         => $etcd_hosts,
         apiserver          => $apiserver,
         node_token         => $node_token,
-        calico_version     => $calico_version,
-        typha_enabled      => $typha_enabled,
-        typha_replicas     => $typha_replicas,
         encryption_key     => $encryption_key,
         kubernetes_version => $kubernetes_version,
     }

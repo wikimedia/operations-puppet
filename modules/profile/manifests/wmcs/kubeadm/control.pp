@@ -7,9 +7,6 @@ class profile::wmcs::kubeadm::control (
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
     String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version', {default_value => '1.21.8'}),
-    String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.21.0'}),
-    Boolean             $typha_enabled = lookup('profile::wmcs::kubeadm::typha_enabled', {default_value => false}),
-    Integer             $typha_replicas = lookup('profile::wmcs::kubeadm::typha_replicas', {default_value => 3}),
     Optional[String]    $encryption_key = lookup('profile::wmcs::kubeadm::encryption_key', {default_value => undef}),
     Optional[Integer]   $etcd_heartbeat_interval = lookup('profile::wmcs::kubeadm::etcd_heartbeat_interval', {default_value => undef}),
     Optional[Integer]   $etcd_election_timeout = lookup('profile::wmcs::kubeadm::etcd_election_timeout', {default_value => undef}),
@@ -91,13 +88,6 @@ class profile::wmcs::kubeadm::control (
         etcd_election_timeout            => $etcd_election_timeout,
         etcd_snapshot_ct                 => $etcd_snapshot_ct,
         apiserver_cert_alternative_names => $apiserver_cert_alternative_names,
-    }
-
-    class { '::kubeadm::calico_yaml':
-        pod_subnet     => $pod_subnet,
-        calico_version => $calico_version,
-        typha_enabled  => $typha_enabled,
-        typha_replicas => $typha_replicas,
     }
 
     class { '::kubeadm::admin_scripts': }
