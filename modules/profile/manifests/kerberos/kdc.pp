@@ -209,4 +209,13 @@ class profile::kerberos::kdc (
             File['/srv/backup'],
         ],
     }
+
+    # Override default /etc/logrotate.d/rsyslog shipped in the rsyslog package
+    # to rotate auth.log hourly and also apply nodelaycompress
+    # The Presto nodes currently issue a lot of TGS requests and there's currently
+    # no known way to reduce them T330119
+    logrotate::conf { 'rsyslog':
+        ensure => present,
+        source => 'puppet:///modules/profile/kerberos/kdc-logrotate.conf',
+    }
 }
