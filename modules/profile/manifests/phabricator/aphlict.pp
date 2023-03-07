@@ -16,6 +16,7 @@ class profile::phabricator::aphlict (
     Optional[Stdlib::IP::Address] $client_listen = lookup('profile::phabricator::aphlict::client_listen', { 'default_value' => undef }),
     Optional[Stdlib::Port] $admin_port = lookup('profile::phabricator::aphlict::admin_port', { 'default_value' => undef }),
     Optional[Stdlib::IP::Address] $admin_listen = lookup('profile::phabricator::aphlict::admin_listen', { 'default_value' => undef }),
+    Boolean $puppet_managed_config = lookup('profile::phabricator::aphlict::puppet_controlled_phabricator_config', { 'default_value' => false }),
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"
@@ -33,21 +34,31 @@ class profile::phabricator::aphlict (
         admin_listen  => $admin_listen,
     }
 
+
+    if $puppet_managed_config {
+        class { '::phabricator::config':
+            manage_scap_user => $manage_scap_user,
+            deploy_user      => $deploy_user,
+            deploy_root      => $deploy_root,
+        }
+    } else {
+        # This is managed in the phabricator::config class, so we can elide this if we're including that class
+        scap::target { $deploy_target:
+            deploy_user => $deploy_user,
+            key_name    => 'phabricator',
+            manage_user => $manage_scap_user,
+            sudo_rules  => [
+                'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
+                'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
+                'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
+            ],
+        }
+    }
+
     ferm::service { 'notification_server':
         ensure => present,
         proto  => 'tcp',
         port   => $client_port,
-    }
-
-    scap::target { $deploy_target:
-        deploy_user => $deploy_user,
-        key_name    => 'phabricator',
-        manage_user => $manage_scap_user,
-        sudo_rules  => [
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
-            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
-        ],
     }
 
     file { $base_dir:

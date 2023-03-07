@@ -154,60 +154,13 @@ class phabricator (
 
     class { '::phabricator::config':
         phabdir            => $phabdir,
+        deploy_root        => $deploy_root,
         deploy_user        => $deploy_user,
         deploy_target      => $deploy_target,
         manage_scap_user   => $manage_scap_user,
         config_deploy_vars => $config_deploy_vars,
         storage_user       => $storage_user,
         storage_pass       => $storage_pass,
-    }
-
-    file { $phabdir:
-        ensure  => 'link',
-        target  => $deploy_root,
-        require => Package[$deploy_target],
-    }
-
-    file { "${phabdir}/phabricator/scripts/":
-        owner   => $deploy_user,
-        group   => $deploy_user,
-        mode    => '0754',
-        recurse => true,
-        require => $base_requirements,
-    }
-
-    file { "${phabdir}/phabricator/scripts/mail/":
-        mode    => '0755',
-        recurse => true,
-        require => $base_requirements,
-    }
-
-    file { '/usr/local/sbin/phab_deploy_config_deploy':
-        content => file('phabricator/phab_deploy_config_deploy.sh'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
-    }
-
-    file { '/usr/local/sbin/phab_deploy_promote':
-        content => file('phabricator/phab_deploy_promote.sh'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
-    }
-
-    file { '/usr/local/sbin/phab_deploy_finalize':
-        content => file('phabricator/phab_deploy_finalize.sh'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
-    }
-
-    file { '/usr/local/sbin/phab_deploy_rollback':
-        content => file('phabricator/phab_deploy_rollback.sh'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
     }
 
     #default location for phabricator tracked repositories

@@ -36,6 +36,7 @@
 
 class phabricator::config (
     Stdlib::Unixpath $phabdir            = '/srv/phab',
+    String           $deploy_root        = undef,
     String           $deploy_user        = undef,
     String           $deploy_target      = 'phabricator/deployment',
     String           $storage_user       = '',
@@ -43,6 +44,8 @@ class phabricator::config (
     Boolean          $manage_scap_user   = undef,
     Hash             $config_deploy_vars = {},
 ) {
+    $base_requirements = [Package[$deploy_target]]
+
     $sudo_env_keep = [
         'SCAP_REVS_DIR',
         'SCAP_FINAL_PATH',
@@ -101,4 +104,53 @@ class phabricator::config (
         group   => 'root',
         mode    => '0600',
     }
+
+    file { $phabdir:
+        ensure  => 'link',
+        target  => $deploy_root,
+        require => Package[$deploy_target],
+    }
+
+    file { "${phabdir}/phabricator/scripts/":
+        owner   => $deploy_user,
+        group   => $deploy_user,
+        mode    => '0754',
+        recurse => true,
+        require => $base_requirements,
+    }
+
+    file { "${phabdir}/phabricator/scripts/mail/":
+        mode    => '0755',
+        recurse => true,
+        require => $base_requirements,
+    }
+
+    file { '/usr/local/sbin/phab_deploy_config_deploy':
+        content => file('phabricator/phab_deploy_config_deploy.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_promote':
+        content => file('phabricator/phab_deploy_promote.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_finalize':
+        content => file('phabricator/phab_deploy_finalize.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_rollback':
+        content => file('phabricator/phab_deploy_rollback.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
 }
