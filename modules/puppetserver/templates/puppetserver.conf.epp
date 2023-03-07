@@ -1,0 +1,34 @@
+<%- | Stdlib::Unixpath $ruby_load_path,
+      Stdlib::Unixpath $config_dir,
+      Stdlib::Unixpath $code_dir,
+      Integer[1] $max_active_instances
+| -%>
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# configuration for the JRuby interpreters
+jruby-puppet: {
+    ruby-load-path: [<%= $ruby_load_path %>]
+    gem-home: /var/lib/puppetserver/jruby-gems
+    gem-path: [${jruby-puppet.gem-home}, "/usr/lib/puppetserver/vendored-jruby-gems"]
+    server-conf-dir: <%= $config_dir %>
+    server-code-dir: <%= $code_dir %>
+    server-var-dir: /var/lib/puppetserver
+    server-run-dir: /run/puppetserver
+    server-log-dir: /var/log/puppetserver
+    max-active-instances: <%= $max_active_instances %>
+    # (optional) Whether or not to track lookups during compilation; turning
+    # this on will send that information to puppetdb
+    # track-lookups: true
+}
+
+# settings related to HTTPS client requests made by Puppet Server
+http-client: {
+    ssl-protocols: [TLSv1.3, TLSv1.2]
+    metrics-enabled: true
+}
+
+profiler: {
+    enabled: true
+}
+dropsond: {
+    enabled: true
+}

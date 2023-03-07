@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+webserver: {
+    access-log-config: /etc/puppet/puppetserver/request-logging.xml
+    # TODO: should this be require?
+    client-auth: want
+    ssl-host: <%= $facts['networking']['ip'] %>
+    ssl-port: 8140
+}

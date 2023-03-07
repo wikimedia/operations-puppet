@@ -1,0 +1,24 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Datasize $java_start_mem,
+      Stdlib::Datasize $java_max_mem,
+      Stdlib::Unixpath $config_d_dir,
+      Stdlib::Unixpath $bootstap_config_dir,
+| -%>
+###########################################
+# Init settings for puppetserver
+###########################################
+
+# Modify this if you'd like to change the memory allocation, enable JMX, etc
+JAVA_ARGS="-Xms<%= $java_max_mem %> -Xmx<%= $java_max_mem %> -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
+
+# Modify this as you would JAVA_ARGS but for non-service related subcommands
+JAVA_ARGS_CLI="${JAVA_ARGS_CLI:-}"
+
+# Modify this if you'd like TrapperKeeper specific arguments
+TK_ARGS=""
+
+# These normally shouldn't need to be edited
+INSTALL_DIR="/usr/share/puppetserver"
+CONFIG="<%= $config_d_dir %>"
+BOOTSTRAP_CONFIG="<%= $bootstap_config_dir %>"
+

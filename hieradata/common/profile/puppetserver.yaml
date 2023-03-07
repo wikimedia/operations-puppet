@@ -1,0 +1,5 @@
+profile::puppetserver::enc: ~
+profile::puppetserver::reports: ['store']
+profile::puppetserver::puppetdb_urls: []
+profile::puppetserver::code_dir: '/srv/puppet_code'
+profile::puppetserver::hiera_source: puppet:///modules/profile/puppetserver/hiera/production.yaml

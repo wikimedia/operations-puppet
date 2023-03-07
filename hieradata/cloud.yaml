@@ -366,6 +366,60 @@ profile::puppetmaster::common::disable_env_config: false
 profile::puppetmaster::common::reports:
   - puppetdb
 
+profile::puppetserver::enc: ~
+profile::puppetserver::reports: ['store']
+profile::puppetserver::puppetdb_urls: []
+profile::puppetserver::code_dir: '/srv/puppet_code'
+profile::puppetserver::hiera_data_dir: "%{lookup('profile::puppetserver::code_dir')}/environments/%{literal('%')}{::environment}/hieradata"
+profile::puppetserver::hierarchy:
+  - name: 'Http Yaml'
+    data_hash: cloudlib::httpyaml
+    uri: "http://puppet-enc.cloudinfra.wmcloud.org:8100/v1/%{literal('%')}{::wmcs_project}/node/%{literal('%')}{facts.networking.fqdn}"
+  - name: "cloud hierarchy"
+    paths:
+      - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/hosts/%{literal('%')}{facts.networking.hostname}.yaml"
+      - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/common.yaml"
+      - "cloud/%{literal('%')}{::wmcs_deployment}.yaml"
+      - "cloud.yaml"
+  - name: "Secret hierarchy"
+    paths:
+      - "hosts/%{literal('%')}{trusted.certname}.yaml"
+      - "%{literal('%')}{::wmcs_project}.yaml"
+    datadir: "/etc/puppet/secret/hieradata"
+  - name: "Private hierarchy"
+    paths:
+      - "labs/%{literal('%')}{::wmcs_project}/common.yaml"
+      - "%{literal('%')}{::wmcs_project}.yaml"
+      - "labs.yaml"
+    datadir: "/etc/puppet/private/hieradata"
+  - name: "Common hierarchy"
+    path: "common.yaml"
+  - name: "Secret Common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/secret/hieradata"
+  - name: "Private Common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/private/hieradata"
+profile::puppetserver::git::ensure: 'present'
+profile::puppetserver::git::basedir: '/srv/git'
+profile::puppetserver::git::user: 'gitpuppet'
+profile::puppetserver::git::group: 'gitpuppet'
+profile::puppetserver::git::control_repo: 'operations/puppet'
+profile::puppetserver::git::repos:
+  'operations/puppet':
+    branch: 'production'
+    hooks:
+      'pre-commit': 'puppet:///modules/puppetmaster/git/pre-commit'
+      'pre-merge': 'puppet:///modules/puppetmaster/git/pre-merge'
+      'pre-rebase': 'puppet:///modules/puppetmaster/git/pre-rebase'
+  'labs/private':
+    branch: 'master'
+    hooks:
+      'pre-commit': 'puppet:///modules/puppetmaster/git/private/pre-commit'
+      'pre-merge': 'puppet:///modules/puppetmaster/git/private/pre-merge'
+      'pre-rebase': 'puppet:///modules/puppetmaster/git/private/pre-rebase'
+    link: '/etc/puppet/private'
+
 profile::base::firewall::block_abuse_nets: false
 profile::base::firewall::default_reject: false
 

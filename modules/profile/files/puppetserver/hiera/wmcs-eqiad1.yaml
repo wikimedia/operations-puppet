@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: Apache-2.0
+version: 5
+defaults:
+  datadir: "/etc/puppet/code/environments/%{::environment}/hieradata"
+  data_hash: yaml_data
+hierarchy:
+  - name: 'Http Yaml'
+    data_hash: cloudlib::httpyaml
+    uri: "https://puppet-enc.cloudinfra.wmcloud.org/v1/%{::wmcs_project}/node/%{facts.fqdn}"
+  - name: "cloud hierarchy"
+    paths:
+      - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/hosts/%{::hostname}.yaml"
+      - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/common.yaml"
+      - "cloud/%{::wmcs_deployment}.yaml"
+      - "cloud.yaml"
+  - name: "Secret hierarchy"
+    paths:
+      - "hosts/%{::trusted.certname}.yaml"
+      - "%{::wmcs_project}.yaml"
+    datadir: "/etc/puppet/secret/hieradata"
+  - name: "Private hierarchy"
+    paths:
+      - "labs/%{::wmcs_project}/common.yaml"
+      - "%{::wmcs_project}.yaml"
+      - "labs.yaml"
+    datadir: "/etc/puppet/private/hieradata"
+  - name: "Common hierarchy"
+    path: "common.yaml"
+  - name: "Secret Common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/secret/hieradata"
+  - name: "Private Common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/private/hieradata"

@@ -15,7 +15,8 @@ class profile::openstack::base::puppetmaster::enc_client (
         }),
     }
 
-    file { '/usr/local/bin/puppet-enc':
+    $enc_path = '/usr/local/bin/puppet-enc'
+    file { $enc_path:
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

@@ -32,6 +32,7 @@ class puppetmaster::gitsync (
         --git-user ${git_user} \
         ${private_arg}
         |- COMMAND
+
     systemd::timer::job { 'puppet-git-sync-upstream':
         ensure      => 'present',
         user        => 'root',

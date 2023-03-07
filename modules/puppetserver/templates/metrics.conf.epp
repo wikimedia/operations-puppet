@@ -1,0 +1,29 @@
+<%- | Stdlib::Fqdn $server_id | -%>
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+metrics: {
+    server-id: <%= $server_id %>
+    registries: {
+        puppetserver: {
+            #metrics-allowed: ["compiler.compile.production"]
+            reporters: {
+                jmx: {
+                    enabled: true
+                }
+            }
+        }
+    }
+    reporters: {
+    }
+    metrics-webservice: {
+        jolokia: {
+            enabled: true
+            # Configure any of the settings listed at:
+            #   https://jolokia.org/reference/html/agents.html#war-agent-installation
+            servlet-init-params: {
+                # Specify a custom security policy:
+                #  https://jolokia.org/reference/html/security.html
+                # policyLocation: "file:///etc/puppetlabs/puppetserver/jolokia-access.xml"
+            }
+        }
+    }
+}
