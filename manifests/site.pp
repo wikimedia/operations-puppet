@@ -1606,6 +1606,11 @@ node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
+# new ceph storage nodes T324998
+node /^cloudcephosd10(3[5-9]|4[0])\.eqiad\.wmnet$/ {
+    role(insetup::nofirm)
+}
+
 # ceph storage nodes
 node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-4])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
