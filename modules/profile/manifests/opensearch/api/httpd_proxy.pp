@@ -49,4 +49,12 @@ class profile::opensearch::api::httpd_proxy (
     httpd::site { $vhost:
         content => template('profile/opensearch/api/httpd_proxy/apache.conf.erb'),
     }
+
+    # apache2-htcacheclean is a service which gets shipped by the apache2 package. It's not
+    # enabled by default, but only enabled in the postinst if the selection of Apache mods
+    # needs it. While this is the case for the OpenSearch API proxy, the service isn't
+    # actually needed, so make sure it's stopped
+    service { 'apache2-htcacheclean':
+        ensure  => stopped,
+    }
 }
