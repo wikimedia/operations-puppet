@@ -23,6 +23,15 @@ class smart (
         profile::auto_restarts::service { 'smartd': }
     }
 
+    # Make systemd be a little more patient about waiting for smartd to
+    # start up - on some nodes with a lot of disks it takes ~2 minutes,
+    # more than the default systemd timeout of 90s.
+    systemd::override { 'systemd-wait-longer-for-smartd':
+        ensure  => $ensure,
+        unit    => 'smartmontools',
+        content => "[Service]\nTimeoutSec=300\n",
+    }
+
     # Make sure we send smart alerts from smartd via syslog and not email.
     file { '/etc/smartmontools/run.d/10mail':
         ensure  => absent,
