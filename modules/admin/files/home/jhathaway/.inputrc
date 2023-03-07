@@ -1,1 +1,3 @@
 $include ~/.bash-rsi/inputrc
+# Don't echo ^C when hitting Ctrl-C
+set echo-control-characters Off

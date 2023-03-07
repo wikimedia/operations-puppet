@@ -136,6 +136,11 @@ fi
 git_ps1() {
 	# preserve exit status for other other PS1 functions
 	local exit_status=$?
+	# TODO: Create a better structure to conditionally enable prompt
+	# components?
+	if ! declare -F __git_ps1 >/dev/null; then
+		return $exit_status
+	fi
 	# only display git prompt if current repo is not our dotfiles repo
 	if [[ $(git rev-parse --absolute-git-dir 2>/dev/null) != ~/.git ]]; then
 		__git_ps1 "${@}"
@@ -163,17 +168,21 @@ function ncdu() {
 	NO_COLOR=true command ncdu "$@"
 }
 
-function clock() {
-	TZ=US/Pacific date \
-		'+San Francisco : %R'
+# World Clock
+function wclock() {
+	local fmt='%R %l:%M%p'
+	TZ=America/Los_Angeles date \
+		'+Los Angeles : '"$fmt"
 	TZ=America/Chicago date \
-		'+Chicago       : %R'
-	TZ=US/Eastern date \
-		'+New York      : %R'
+		'+Chicago     : '"$fmt"
+	TZ=America/New_York date \
+		'+New York    : '"$fmt"
 	TZ=Europe/Madrid date \
-		'+Madrid        : %R'
+		'+Madrid      : '"$fmt"
+	TZ=Europe/Berlin date \
+		'+Berlin      : '"$fmt"
 	TZ=Etc/UTC date \
-		'+UTC           : %R'
+		'+UTC         : '"$fmt"
 }
 
 # Beep the terminal when you read a line from input
@@ -181,6 +190,16 @@ function line-beeper {
 	while IFS= read -r line; do
 		printf '%s\a\n' "$line"
 	done
+}
+
+# Beep the terminal
+function beep {
+	tput bel
+}
+
+# Print last command
+function lc {
+	fc -n -l -1 "$@"
 }
 
 function wmif-weekly-meeting {
@@ -208,12 +227,28 @@ function wmf-gerrit-link {
 # Disposable debian container
 function bubble-up {
 	local distro=${1:-debian:latest}
-	podman run --rm -it "$distro" bash
+	podman run --rm -it -v .:/root -w /root "$distro" bash
+}
+
+# Kubernetes functions
+function k8s-rm-completed-pods {
+	kubectl delete pod --field-selector=status.phase==Succeeded
+}
+
+# Git functions
+function git-root {
+	declare -g gr
+	export gr
+	gr="$(git rev-parse --show-toplevel 2>/dev/null)"
 }
 
 # Convert to phabricators remarkup language
 function md-to-phab {
-	pandoc -t remarkup.lua "$1"
+	cmd=(pandoc -t remarkup.lua -f markdown)
+	if [[ -v '1' ]]; then
+		cmd+=("$1")
+	fi
+	"${cmd[@]}"
 }
 
 # Display the Wikimedia datacenter name
@@ -226,14 +261,19 @@ wmf-site() {
 	return $exit_status
 }
 
-wmf-dotfiles-sync() {
+# sync my most used dotfiles, somewhere?
+# e.g.
+#   sync-dotfiles ~/src/wmf/puppet/modules/admin/files/home/jhathaway/
+#   sync-dotfiles butter.com:
+# NOTE: rsync must be present on the remote side
+sync-dotfiles() {
 	rsync --exclude '.git' -a \
 		~/.profile \
 		~/.bash-rsi \
 		~/.inputrc \
 		~/.bashrc \
 		~/.tmux.conf \
-		~/src/wmf/puppet/modules/admin/files/home/jhathaway/
+		"$1"
 }
 
 # set umask
@@ -242,47 +282,43 @@ umask u=rwx,g=rwx,o=rx
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-shopt -s cmdhist
-shopt -s lithist
 # extended globbing, including negating
 shopt -s extglob
 shopt -s globstar
 # List outstanding jobs rather than exiting
 shopt -s checkjobs
+# Ensure PROMPT_COMMAND is an array
+PROMPT_COMMAND=()
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-		. /etc/bash_completion
-	fi
-fi
-
-# Kubernetes
-if command -v kubectl >/dev/null; then
-	# shellcheck disable=SC1090
-	source <(kubectl completion bash)
-fi
+# History
+# Save multiline commands verbatim to the history file
+shopt -s cmdhist
+shopt -s lithist
+HISTCONTROL=erasedups:ignorespace:ignoredups
+HISTIGNORE="&:ls:[bf]g:exit"
+HISTFILESIZE=400000000
+HISTSIZE=10000
+# Append to history file
+PROMPT_COMMAND+=('history -a')
+PROMPT_COMMAND+=('git-root')
 
 # Exports
-export HISTIGNORE="&:ls:[bf]g:exit"
-export LESS='--LONG-PROMPT --ignore-case --tabs=4 --RAW-CONTROL-CHARS --mouse'
+export LESS='--LONG-PROMPT --ignore-case --tabs=4 --RAW-CONTROL-CHARS --mouse --quit-if-one-screen'
 export EDITOR=vi
 export LIBVIRT_DEFAULT_URI='qemu:///system'
 export RMADISON_ARCHITECTURE='amd64'
 export DEBFULLNAME='Jesse Hathaway'
 export DEBEMAIL='jesse@mbuki-mvuki.org'
+export WATCH_INTERVAL=1 # 2secs just seems wierd!
 # Makes manual pages more readable
 export MANWIDTH=80
 # Allows less to know the total line length via stdin, by going to the EOF,
 # this then allows it to generate a percentage in the status line.
 export MANPAGER='less +Gg'
 # Don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=erasedups:ignorespace:ignoredups
-export HISTFILESIZE=2000
+
+shopt -s histappend
+
 # podman docker compat
 export DOCKER_HOST="unix:///run/user/${UID}/podman/podman.sock"
 
@@ -298,6 +334,7 @@ pathmunge /sbin after
 pathmunge /usr/sbin after
 # personal scripts
 pathmunge ~/bin after
+pathmunge ~/.local/bin after
 # haskell
 pathmunge ~/.cabal/bin
 # nodejs
@@ -306,6 +343,26 @@ pathmunge ~/node_modules/.bin after
 pathmunge ~/.cargo/bin after
 # puppet
 pathmunge /opt/puppetlabs/bin after
+# go
+pathmunge ~/go/bin after
+
+# Completion
+if ! shopt -oq posix; then
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
+fi
+
+# Completion for the Kubernetes 🧅!
+k8s_cmds=(kubectl minikube helm helmfile)
+for cmd in "${k8s_cmds[@]}"; do
+	if command -v "$cmd" >/dev/null; then
+		# shellcheck disable=SC1090
+		source <($cmd completion bash)
+	fi
+done
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
@@ -321,6 +378,7 @@ alias xclip="xclip -selection clipboard"
 alias lsblk='lsblk -o NAME,SIZE,TYPE,FSTYPE,MODEL,MOUNTPOINT,LABEL'
 alias o="xdg-open"
 alias ls='ls -T4 -w80 -p'
+alias v='view'
 
 export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_SHOWDIRTYSTATE=1
