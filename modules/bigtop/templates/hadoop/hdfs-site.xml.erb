@@ -124,6 +124,16 @@ end
 <% end -%>
 
   <property>
+    <!--
+     The number of concurrent threads to be used in quota initialization. The
+     speed of quota initialization also affects the namenode fail-over latency.
+     If the size of name space is big, try increasing this.
+    -->
+    <name>dfs.namenode.quota.init-threads</name>
+    <value><%= max(4,@facts['processors']['count']/2) %></value>
+  </property>
+
+  <property>
    <!--
     Deprecated in CDH5. Replaced by dfs.blocksize.
     We keep it around for a bit nonetheless, in case some application
