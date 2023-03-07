@@ -22,6 +22,11 @@ class profile::analytics::cluster::airflow {
         require ::profile::hadoop::spark2
     }
 
+    # Install Spark 3 configuration to be used as a trial with
+    # the Spark3 installed with Airflow.
+    # Note: this installs conda-analytics package.
+    require ::profile::hadoop::spark3
+
     # Include the configured Airflow instance(s)
     include ::profile::airflow
 }
