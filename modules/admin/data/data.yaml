@@ -395,7 +395,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
-              jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap]
+              jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap, nickifeajika]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5773,6 +5773,17 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEwEOsCJll6xPBlcACRHbdvKWUtn97AVvEGvDK9A9SkL aprum@wikimedia.org
+  nickifeajika:
+    ensure: present
+    realname: Nick Ifeajika
+    email: nifeajika-ctr@wikimedia.org
+    expiry_contact: mredi@wikimedia.org
+    expiry_date: 2023-06-30
+    uid: 43623
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICd+b9kgn5LvOPSCTQjxKorKfyqxTRSVQJczx+Gd+eBq nifeajika-ctr@wikimedia.org
 
 ldap_only_users:
   adavenport:
