@@ -5,9 +5,11 @@ DEFAULT_BACKUP_FILE=$(ls -t /srv/gitlab-backup/*gitlab_backup.tar | head -n1)
 CONFIG_BACKUP_FILE=$(ls -t /srv/gitlab-backup/gitlab_config*.tar | head -n1)
 REQUESTED_BACKUP=""
 GITLAB_URL=$(grep '^external_url ' /etc/gitlab/gitlab.rb | cut -d '"' -f2)
+# prevent restore on production by default
+FORCE_RESTORE=false
 
 usage() {
-  /usr/bin/echo "Usage: $0 [ -f REQUESTED_BACKUP ]" 1>&2
+  /usr/bin/echo "Usage: $0 [ -f REQUESTED_BACKUP -F <force restore on non-replicas> ]" 1>&2
 }
 
 exit_error() {
@@ -15,10 +17,13 @@ exit_error() {
     exit 1
 }
 
-while getopts ":f:k:" options; do
+while getopts ":fF" options; do
     case "${options}" in
          f)
          REQUESTED_BACKUP=${OPTARG}
+         ;;
+         F)
+         FORCE_RESTORE=true
          ;;
          :)
          /usr/bin/echo "ERROR -${OPTARG} requires an argument"
@@ -29,6 +34,17 @@ while getopts ":f:k:" options; do
          ;;
      esac
 done
+
+# Check if host is production
+if [[ $GITLAB_URL != *"replica"* ]] && [[ $GITLAB_URL != *"wmcloud"* ]]; then
+  # production needs additional force flag -F
+  if [ $FORCE_RESTORE == true ] ; then
+    /usr/bin/echo "Force flag -F provided, restoring production instance"
+  else
+    /usr/bin/echo "Please use force flag -F to restore production instance"
+    exit 1
+  fi
+fi
 
 # Chose data backup file
 if [ -z "$REQUESTED_BACKUP" ]; then
