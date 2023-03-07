@@ -119,6 +119,8 @@ class profile::idm(
         content => template('idm/idm-apache-config.erb'),
     }
 
+    profile::auto_restarts::service { 'apache2':}
+
     $job_state = ($facts['networking']['hostname'] == $redis_master).bool2str('present', 'absent')
     class { 'idm::jobs':
         base_dir => $base_dir,
