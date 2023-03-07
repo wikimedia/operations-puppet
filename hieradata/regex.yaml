@@ -257,6 +257,11 @@ swift_24_drives:
     - '/dev/sdy'
     - '/dev/sdz'
 
+# hosts using the new storage schema (JBOD not RAID) cf T308677
+swift_new_storage:
+  __regex: !ruby/regexp /^ms-be(107[2-5]|2050|207[0-9])\.(codfw|eqiad)\.wmnet$/
+  profile::swift::storage::disks_by_path: true
+
 labtest:
   __regex: !ruby/regexp /^labtest/
   cluster: labtest
