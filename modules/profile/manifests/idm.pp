@@ -72,7 +72,6 @@ class profile::idm(
         etc_dir                  => $etc_dir,
         log_dir                  => $log_dir,
         static_dir               => $static_dir,
-        production               => $production,
         install_via_git          => $install_via_git,
         redis_master             => $redis_master,
         redis_replicas           => $redis_replicas,
