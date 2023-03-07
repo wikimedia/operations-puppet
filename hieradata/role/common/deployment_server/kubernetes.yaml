@@ -11,6 +11,7 @@ profile::admin::groups:
   - deploy-ml-service
   - parsoid-admin
   - wdqs-admins
+  - airflow-search-admins
   - eventlogging-admins
   - aqs-admins
   - deploy-aqs
