@@ -192,4 +192,14 @@ class vrts(
         interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
     }
 
+    rsync::quickdatacopy { 'vrts':
+        ensure              => present,
+        source_host         => 'otrs1001.eqiad.wmnet',
+        dest_host           => 'vrts2001.codfw.wmnet',
+        auto_sync           => false,
+        module_path         => '/opt',
+        server_uses_stunnel => true,
+        progress            => true,
+    }
+
 }
