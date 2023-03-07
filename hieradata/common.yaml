@@ -1165,6 +1165,7 @@ http_proxy: "http://%{lookup('http_proxy_host')}:%{lookup('http_proxy_port')}"
 authdns_servers:
   'authdns1001.wikimedia.org': 208.80.154.134
   'authdns2001.wikimedia.org': 208.80.153.17
+  'dns1001.wikimedia.org': 208.80.154.10
   'dns1002.wikimedia.org': 208.80.155.108
   'dns2001.wikimedia.org': 208.80.153.77
   'dns2002.wikimedia.org': 208.80.153.111
