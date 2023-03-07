@@ -7,6 +7,8 @@ profile::admin::groups:
   - analytics-admins
   - airflow-search-admins
 
+profile::airflow::airflow_version: '2.5.1-py3.10-20230228'
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::hive::client::hive_service_name: 'analytics-hive'
 
@@ -39,7 +41,7 @@ profile::airflow::instances:
         conn_type: hive_metastore
         host: analytics-hive.eqiad.wmnet
         port: 9083
-        extra_dejson: {'authMechanism': 'GSSAPI'}
+        extra_dejson: {'auth_mechanism': 'GSSAPI'}
 
 
-profile::airflow::database_host_default: an-coord1001.eqiad.wmnet
+profile::airflow::database_host_default: an-db1001.eqiad.wmnet
