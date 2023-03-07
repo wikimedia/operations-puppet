@@ -12,7 +12,6 @@
 # @param helm_data the helm data directory (HELM_DATA_HOME)
 
 class profile::kubernetes::deployment_server (
-    K8s::KubernetesVersion $version                                    = lookup('profile::kubernetes::version', { default_value => '1.16' }),
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
     Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { default_value => {} }),
@@ -28,9 +27,6 @@ class profile::kubernetes::deployment_server (
         helm_home       => $helm_home,
         helm_data       => $helm_data,
         helm_cache      => $helm_cache,
-    }
-    class { 'k8s::client':
-        version => $version,
     }
 
     ensure_packages('istioctl')

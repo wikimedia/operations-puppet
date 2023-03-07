@@ -37,6 +37,7 @@ class role::releases {
     include profile::releases::mediawiki
     include profile::docker::ferm
     include profile::kubernetes::deployment_server
+    include profile::kubernetes::client
     include profile::releases::mediawiki::private
     include profile::releases::mediawiki::security
     include profile::releases::mwcli
