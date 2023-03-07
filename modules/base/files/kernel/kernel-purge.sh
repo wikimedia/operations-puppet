@@ -6,6 +6,7 @@ USAGE=$(
 		  not in use,
 		  not the Debian default kernel,
 		  not manually installed.
+		  not the previous version
 
 		Usage: kernel-purge
 		  -h this message (default when no args)
@@ -21,6 +22,24 @@ shopt -s lastpipe
 
 function usage {
 	printf "%s\n" "$USAGE"
+}
+
+# Return the previous kernel before the latest version or an empty string if
+# there is none
+function previous_kernel_version {
+	declare -a installed_kernels=()
+	dpkg-query --showformat='${Status}\t${Package}\n' --show 'linux-image-[1-9]*' |
+		sort --version-sort |
+		while IFS=$'\t' read -r status pkg; do
+			if [[ $status == 'install ok installed' ]]; then
+				installed_kernels+=("$pkg")
+			fi
+		done
+	declare -i len=${#installed_kernels[@]}
+	if ((len >= 2)); then
+		printf '%s\n' "${installed_kernels[len - 2]}"
+	fi
+	return 0
 }
 
 function main {
@@ -84,7 +103,11 @@ function main {
 	running_kernel="linux-image-$(uname -r)"
 	dpkg_status=$(dpkg-query --showformat='${Status}' --show "$running_kernel")
 	if [[ $dpkg_status == 'install ok installed' ]]; then
-		kernels_to_keep[$running_kernel]='Running kernel'
+		if [[ -v kernels_to_keep[$running_kernel] ]]; then
+			kernels_to_keep[$running_kernel]+=', Running kernel'
+		else
+			kernels_to_keep[$running_kernel]='Running kernel'
+		fi
 	else
 		printf 'Unable to find the deb for the running kernel: %s\n' "$running_kernel" 1>&2
 		return 1
@@ -97,13 +120,32 @@ function main {
 	arch=$(dpkg --print-architecture)
 	if def_kernel=$(dpkg-query --showformat='${Depends}\n' --show 'linux-image-'"$arch"); then
 		read -r default_kernel_dep _ <<<"$def_kernel"
-		kernels_to_keep[$default_kernel_dep]='Default kernel'
+		if [[ -v kernels_to_keep[$default_kernel_dep] ]]; then
+			kernels_to_keep[$default_kernel_dep]+=', Default kernel'
+		else
+			kernels_to_keep[$default_kernel_dep]='Default kernel'
+		fi
+	fi
+
+	# Keep previously installed kernel version, if any
+	local previous_version
+	if previous_version=$(previous_kernel_version); then
+		if [[ $previous_version != '' ]]; then
+			if [[ -v kernels_to_keep[$previous_version] ]]; then
+				kernels_to_keep[$previous_version]+=', Previous kernel'
+			else
+				kernels_to_keep[$previous_version]='Previous kernel'
+			fi
+		fi
+	else
+		printf 'Unable to find the previous kernel version\n' 1>&2
+		return 1
 	fi
 
 	declare -a auto_removed_kernels=()
 	apt-get autoremove --dry-run |
 		while read -r action deb _; do
-			if [[ $action == 'Remv' && $deb =~ ^linux-image-[1-9]* ]]; then
+			if [[ $action == 'Remv' && $deb =~ ^linux-image-[1-9].* ]]; then
 				auto_removed_kernels+=("$deb")
 			fi
 		done
