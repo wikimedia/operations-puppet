@@ -4,8 +4,9 @@ contactgroups: 'admins,analytics,team-discovery'
 nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
-  - analytics-admins
   - airflow-search-admins
+  - analytics-search-users
+  - analytics-admins
 
 profile::airflow::airflow_version: '2.5.1-py3.10-20230228'
 
