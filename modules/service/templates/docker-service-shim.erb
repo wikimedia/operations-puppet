@@ -9,7 +9,7 @@ end
 [Unit]
 Description=Systemd runner for <%= @title %>
 After=docker.service
-Requires=docker.service
+BindsTo=docker.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker stop %n
