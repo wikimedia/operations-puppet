@@ -23,7 +23,6 @@ GROUP_ROLES = [
     {"group": "wmf", "role": "Member"},
     {"group": "nda", "role": "Member"},
 ]
-RETRY_METHODS = ("PUT", "POST", "DELETE")
 
 
 class WikimediaLDAP(object):
@@ -69,7 +68,6 @@ class DispatchAPI(object):
             timeout=timeout,
             tries=tries,
             backoff=backoff,
-            retry_methods=RETRY_METHODS,
         )
         self.session.headers = {"x-cas-mail": user}
         self.version = "v1"

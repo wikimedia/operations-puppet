@@ -13,7 +13,7 @@ import sys
 import uuid
 
 import ldap
-from wmflib.requests import http_session
+from wmflib.requests import http_session, DEFAULT_RETRY_METHODS
 
 LOG = logging.getLogger(__name__)
 GRAFANA_ORG = 1
@@ -27,7 +27,7 @@ GROUP_ROLES = [
     {"group": "wmf", "role": "Editor"},
     {"group": "nda", "role": "Editor"},
 ]
-RETRY_METHODS = ("PUT", "POST", "PATCH", "DELETE")
+RETRY_METHODS = DEFAULT_RETRY_METHODS + ("POST", "PATCH")
 
 
 class WikimediaLDAP(object):
