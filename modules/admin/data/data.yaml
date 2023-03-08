@@ -6569,3 +6569,9 @@ ldap_only_users:
     ensure: present
     realname: Kelton Hurd
     email: khurd@wikimedia.org
+  lwatson:
+    ensure: present
+    realname: Lauralyn Watson
+    email: lwatson-ctr@wikimedia.org
+    expiry_contact: NHillard@wikimedia.org
+    expiry_date: 2023-06-30
