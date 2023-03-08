@@ -50,13 +50,13 @@ LOGGING = {
     },
     'handlers': {
         'django': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': '<%= @log_dir %>/django.log',
             'formatter': 'simple',
         },
         'bitu': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': '<%= @log_dir %>/idm.log',
             'formatter': 'simple',
@@ -65,14 +65,19 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['django'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
         'bitu': {
             'handlers': ['bitu'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
+        'social': {
+            'handlers': ['bitu'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     },
 }
 
@@ -148,6 +153,9 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
     'bitu.social_pipeline.add_user_to_groups',
 )
+
+LOGIN_URL = 'wikimedia:login'
+LOGOUT_REDIRECT_URL = LOGIN_URL
 
 STATIC_ROOT = '<%= @static_dir %>'
 STATICFILES_DIRS = [
