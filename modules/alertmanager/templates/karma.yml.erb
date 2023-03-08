@@ -34,10 +34,13 @@ labels:
     - 'alertname'
   color:
     custom:
-      # Highlight 'instance' (host) label for better visibility
+      # Highlight 'instance' (host) and 'source' labels for better visibility
       instance:
         - value_re: '.*'
           color: '#696969'
+      source:
+        - value_re: '.*'
+          color: '#999966'
 
       # Match Icinga background colors for 'severity'
       severity:
