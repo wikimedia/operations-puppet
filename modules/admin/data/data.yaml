@@ -6575,3 +6575,9 @@ ldap_only_users:
     email: lwatson-ctr@wikimedia.org
     expiry_contact: NHillard@wikimedia.org
     expiry_date: 2023-06-30
+  s-mukuti:
+    ensure: present
+    realname: Sarah Mukuti
+    email: smukuti-ctr@wikimedia.org
+    expiry_contact: ksiebert@wikimedia.org
+    expiry_date: 2023-06-30
