@@ -97,6 +97,29 @@ def write_replica_cnf():
     if dry_run:  # do not attempt to write replica.my.cnf file to replica_path if dry_run is True
         return jsonify({"result": "ok", "detail": {"replica_path": replica_path}}), 200
 
+    # if a homedir for this account does not exist yet, just ignore
+    # it home directory creation (for tools) is currently handled by
+    # maintain-kubeusers, and we do not want to race. Tool accounts
+    # that get passed over like this will be picked up on the next
+    # round
+    if account_type == "tool" and not Path(replica_path).parent.exists():
+        return (
+            jsonify(
+                {
+                    "result": "skip",
+                    "detail": {
+                        "replica_path": replica_path,
+                        "message": (
+                            "Parent directory ({0}) does not exist yet, this might happen if "
+                            "maintain-kubeusers has not yet created it, skipping to retry in the "
+                            "next run"
+                        ).format(str(Path(replica_path).parent)),
+                    }
+                }
+            ),
+            200,
+        )
+
     # ignore if path aready exists
     if os.path.exists(replica_path):
         current_app.logger.warning("Configuration file %s already exists", replica_path)

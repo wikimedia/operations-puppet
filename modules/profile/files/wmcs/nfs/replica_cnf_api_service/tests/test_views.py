@@ -320,6 +320,31 @@ class TestWriteReplicaCnf:
         assert response_data["detail"]["replica_path"] == tool_path
         assert not os.path.exists(tool_path)
 
+    def test_write_replica_cnf_for_tool_returns_skip_when_home_dir_not_there(self, client):
+        account_id = "idontexist"
+        other_path = Path(
+            current_app.config["CORRECT_TOOL_PATH"]
+        ).parent.parent / account_id / "replica.my.cnf"
+        account_type = "tool"
+
+        data = {
+            "mysql_username": USERNAME,
+            "password": PASSWORD,
+            "account_id": account_id,
+            "account_type": account_type,
+            "uid": UID,
+            "dry_run": False,
+        }
+
+        response = client.post(
+            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+        )
+        response_data = json.loads(response.data)
+
+        assert response.status_code == 200
+        assert response_data["result"] == "skip"
+        assert response_data["detail"]["replica_path"] == other_path
+
 
 class TestReadReplicaCnf:
     def test_read_replica_cnf_success(self, client, create_replica_my_cnf):
