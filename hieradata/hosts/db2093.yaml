@@ -1,5 +1,0 @@
-# db2093
-profile::mariadb::mysql_role: 'master'
-profile::monitoring::is_critical: false
-mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false

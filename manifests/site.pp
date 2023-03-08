@@ -792,10 +792,6 @@ node 'db1115.eqiad.wmnet' {
 }
 
 # zarcillo slave
-node 'db2093.codfw.wmnet' {
-    role(mariadb::misc::db_inventory)
-}
-
 node 'db2185.codfw.wmnet' {
     role(mariadb::misc::db_inventory)
 }
