@@ -4,7 +4,7 @@
 # @param ensure ensurable parameter
 # @param intermediate CN of the intermidiate
 # @param vhost vhost to check
-define profile::pki::multirootca::monitoring(
+define profile::pki::multirootca::monitoring (
     Stdlib::Unixpath $ca_file,
     Wmflib::Ensure   $ensure       = 'present',
     String           $intermediate = $title,
@@ -33,11 +33,19 @@ define profile::pki::multirootca::monitoring(
         "{\\\\\"label\\\\\":\\\\\"${intermediate}\\\\\"}",
         '\\\\"success\\\\":true',
     ].join('!')
-    monitoring::service {"https_pki_signer_${intermediate}":
+    monitoring::service { "https_pki_signer_${intermediate}":
         ensure        => $ensure,
         critical      => true,
         check_command => $check_command,
         description   => "Check to ensure the cfssl signer is working CA: ${intermediate}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
+    }
+    prometheus::blackbox::check::http { $title:
+        server_name        => $vhost,
+        use_client_auth    => true,
+        path               => '/api/v1/cfssl/info',
+        method             => 'POST',
+        body               => { 'label' => $intermediate },
+        body_regex_matches => ['"success":true'],
     }
 }
