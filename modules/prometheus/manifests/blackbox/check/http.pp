@@ -12,8 +12,12 @@
 # @param certificate_expiry_days - alert when the certificate will expire sooner than days
 # @param timeout - probe timeout
 # @param use_client_auth - use client authentication
-# @param client_auth_cert - path to the client auth certificate to use
-# @param client_auth_key - path to the client auth key to use
+# @param client_auth_cert - path to the client auth certificate to use. Please
+#                           note this file must exist on the monitoring server
+#                           not the server been monitored
+# @param client_auth_key - path to the client auth key to use. Please note this
+#                          file must exist on the monitoring server not the
+#                          server been monitored
 # @param header_matches - list of regular expressions to match against the response headers. if any of those does not match the probe will fail.
 # @param header_not_matches - list of regular expressions to match against the response headers. if any of those does match the probe will fail.
 # @param body_regex_matches - list of regular expressions to match against the body's response. if any of those does not match the probe will fail.
@@ -42,8 +46,9 @@ define prometheus::blackbox::check::http (
     Integer[1,120]                          $certificate_expiry_days = 10,
     Pattern[/\d+[ms]/]                      $timeout                 = '3s',
     Boolean                                 $use_client_auth         = false,
-    Stdlib::Unixpath                        $client_auth_cert        = $facts['puppet_config']['hostcert'],
-    Stdlib::Unixpath                        $client_auth_key         = $facts['puppet_config']['hostprivkey'],
+    # puppet agent certs exported in profile::prometheus::blackbox_exporter
+    Stdlib::Unixpath                        $client_auth_cert        = '/etc/prometheus/ssl/cert.pem',
+    Stdlib::Unixpath                        $client_auth_key         = '/etc/prometheus/ssl/server.key',
     Array[Prometheus::Blackbox::HeaderSpec] $header_matches          = [],
     Array[Prometheus::Blackbox::HeaderSpec] $header_not_matches      = [],
     Array[String[1]]                        $body_regex_matches      = [],
