@@ -13,8 +13,10 @@ class acme_chief::server (
     $is_active = $::fqdn == $active_host
     $passive_hosts = [$passive_host].flatten()
 
-    # For the gdnsd-sync script
-    ensure_packages('python3-clustershell')
+    ensure_packages([
+        'python3-clustershell', # For the gdnsd-sync script
+        'rsync', # For certificate syncing
+    ])
 
     systemd::sysuser { 'acme-chief':
         shell    => '/bin/bash',
