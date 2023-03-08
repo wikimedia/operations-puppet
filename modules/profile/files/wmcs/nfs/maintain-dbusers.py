@@ -738,7 +738,7 @@ def populate_new_accounts(
                 deleted_accts = []  # Need to check the logic for this on PAWS
 
             logging.debug(
-                "Found %s new %s accounts: %s and %s removed %s accounts: %s",
+                "Found %s new %s accounts (%s) and %s removed %s accounts (%s)",
                 len(new_accounts),
                 account_type,
                 ", ".join([t[0] for t in new_accounts]),
@@ -1105,12 +1105,16 @@ def main():
     # really needed for testing
     from systemd import journal, daemon  # pylint: disable=import-error,import-outside-toplevel
 
+    log_format = "%(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
+    if args.dry_run:
+        log_format = "DRY_RUN:%s" % log_format
+
     if daemon.booted():
         logging.basicConfig(
-            format="%(message)s", level=log_lvl, handlers=[journal.JournalHandler()]
+            format=log_format, level=log_lvl, handlers=[journal.JournalHandler()]
         )
     else:
-        logging.basicConfig(format="%(message)s", level=log_lvl)
+        logging.basicConfig(format=log_format, level=log_lvl)
 
     with open(args.config, encoding="utf8") as f:
         config = yaml.safe_load(f)
