@@ -2,7 +2,7 @@
 [Unit]
 Description=codesearch-frontend
 After=docker.service
-Requires=docker.service
+BindsTo=docker.service
 
 [Service]
 User=codesearch

@@ -2,7 +2,7 @@
 [Unit]
 Description=hound-<%= @name %>
 After=docker.service hound_proxy.service
-Requires=docker.service hound_proxy.service
+BindsTo=docker.service hound_proxy.service
 
 [Service]
 User=codesearch
