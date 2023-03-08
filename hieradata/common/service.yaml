@@ -3599,3 +3599,31 @@ service::catalog:
     discovery:
       - dnsdisc: device-analytics
         active_active: true
+
+  # Services has no LVS
+  pki:
+    description: PKI service
+    # This service does have encryption with mutual auth.
+    # however the probe is over http (T332149)
+    encryption: false
+    ip:
+      codfw:
+        # pki2002
+        default: 10.192.16.172
+      eqiad:
+        # pki1001
+        default: 10.64.0.10
+    probes:
+      - type: http
+        path: /metrics
+        must_contain_regexp: 'signer="discovery"'
+    sites:
+      - eqiad
+      - codfw
+    # This service uses 443. however the probe is over port 80 (T332149)
+    port: 80
+    state: production
+    page: false
+    discovery:
+      - dnsdisc: pki
+        active_active: true
