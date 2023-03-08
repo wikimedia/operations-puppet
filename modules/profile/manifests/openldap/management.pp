@@ -10,7 +10,7 @@
 # [*timer_active*] Whether to activate the daily account consistency check or not.
 #
 class profile::openldap::management(
-    Hash    $ldap         = lookup('ldap', Hash, hash, {}),
+    Hash    $ldap         = lookup('ldap'),
     Boolean $timer_active = lookup('profile::openldap::management::timer_active'),
 ) {
     include profile::ldap::bitu

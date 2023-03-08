@@ -59,7 +59,7 @@
 # @param cas_username_attribute cas attribute to use as a username
 # @param cas_server_url the location of the cas server
 class profile::netbox (
-    Hash                      $ldap_config             = lookup('ldap', Hash, hash, {}),
+    Hash                      $ldap_config             = lookup('ldap'),
     Stdlib::Fqdn              $active_server           = lookup('profile::netbox::active_server'),
     Stdlib::Fqdn              $service_hostname        = lookup('profile::netbox::service_hostname'),
     Stdlib::Fqdn              $discovery_name          = lookup('profile::netbox::discovery_name'),

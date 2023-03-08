@@ -27,7 +27,7 @@ class profile::graphite::base(
     $uwsgi_max_request_duration_seconds = undef,  # lint:ignore:wmf_styleguide
     $uwsgi_max_request_rss_megabytes = undef,     # lint:ignore:wmf_styleguide
     $provide_vhost    = true,                     # lint:ignore:wmf_styleguide
-    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config = lookup('ldap'),
 ) {
     include ::passwords::graphite
 

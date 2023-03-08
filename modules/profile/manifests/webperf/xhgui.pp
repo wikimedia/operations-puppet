@@ -8,7 +8,7 @@
 # to expose the service at <https://performance.wikimedia.org/xhgui/>.
 #
 class profile::webperf::xhgui (
-    Hash $ldap_config            = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config            = lookup('ldap'),
     Stdlib::Fqdn $mysql_host     = lookup('profile::webperf::xhgui::mysql_host'),
     String $mysql_db             = lookup('profile::webperf::xhgui::mysql_db'),
     String $mysql_user           = lookup('profile::webperf::xhgui::mysql_user'),

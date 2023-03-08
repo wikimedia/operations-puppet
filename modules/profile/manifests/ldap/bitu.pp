@@ -13,7 +13,7 @@
 # [*ldap*] Hash containing LDAP connection info.
 # 
 class profile::ldap::bitu(
-    Hash $ldap = lookup('ldap', Hash, hash, {})
+    Hash $ldap = lookup('ldap'),
 ) {
 
     if debian::codename::eq('buster') {

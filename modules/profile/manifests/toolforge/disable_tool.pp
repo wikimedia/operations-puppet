@@ -1,5 +1,5 @@
 class profile::toolforge::disable_tool (
-    Hash   $ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash   $ldap_config = lookup('ldap'),
     String $novaadmin_bind_dn = lookup('profile::openstack::base::ldap_user_dn'),
     String $novaadmin_bind_pass = lookup('profile::openstack::eqiad1::ldap_user_pass')
 

@@ -1,7 +1,7 @@
 # modules/profile/manifests/gerrit/server.pp
 #
 class profile::gerrit(
-    Hash                              $ldap_config       = lookup('ldap', Hash, hash, {}),
+    Hash                              $ldap_config       = lookup('ldap'),
     Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
     Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
     Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),

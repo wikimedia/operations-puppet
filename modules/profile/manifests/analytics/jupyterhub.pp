@@ -32,7 +32,7 @@ class profile::analytics::jupyterhub(
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ]
     ),
-    Hash $ldap_config                   = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config                   = lookup('ldap'),
     Array[String] $admin_posix_groups   = lookup('profile::analytics::jupyterhub::admin_posix_groups', default_value => ['ops']),
     Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
     Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),

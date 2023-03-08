@@ -20,7 +20,7 @@ class profile::librenms (
     Stdlib::Fqdn        $db_host         = lookup('profile::librenms::dbhost'),
     String              $db_name         = lookup('profile::librenms::dbname'),
 
-    Hash                $ldap_config     = lookup('ldap', Hash, hash, {}),
+    Hash                $ldap_config     = lookup('ldap'),
     Enum['ldap','sso']  $auth_mechanism  = lookup('profile::librenms::auth_mechanism')
 ){
 

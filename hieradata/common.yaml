@@ -3,6 +3,8 @@
 lookup_options:
   apereo_cas:
     merge: deep
+  ldap:
+    merge: hash
   "^profile::bgpalerter::(reports|monitors)$":
     merge: unique
   "^profile::pki::(.*)::db_pass$":

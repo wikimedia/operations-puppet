@@ -4,7 +4,7 @@
 # Sets up a yarn ldap auth http proxy to the Hadoop ResourceManager web interface.
 #
 class profile::hadoop::yarn_proxy_testcluster (
-    Hash $ldap_config        = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config        = lookup('ldap'),
 ) {
     require profile::hadoop::httpd
     require ::profile::analytics::httpd::utils

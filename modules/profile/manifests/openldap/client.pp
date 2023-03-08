@@ -12,7 +12,7 @@
 # /etc/ldap/wmf-ldap.conf instead
 #
 class profile::openldap::client(
-    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config = lookup('ldap'),
 ){
 
     $ldapconfig = {

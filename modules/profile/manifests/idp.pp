@@ -3,7 +3,7 @@
 # @param ldap_config a hash containing the ldap configeration
 class profile::idp(
     Array[Stdlib::Host]               $prometheus_nodes            = lookup('prometheus_nodes'),
-    Hash                              $ldap_config                 = lookup('ldap', Hash, hash, {}),
+    Hash                              $ldap_config                 = lookup('ldap'),
     Wmflib::Syslog::Level::Log4j      $log_level                   = lookup('profile::idp::log_level'),
     Enum['ldaps', 'ldap']             $ldap_schema                 = lookup('profile::idp::ldap_schema'),
     Boolean                           $enable_ldap                 = lookup('profile::idp::enable_ldap'),
