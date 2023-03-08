@@ -3655,8 +3655,7 @@ users:
     realname: Scott Bassett
     name: sbassett
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINIaYgTnjLh+L3DJojLALH+H1XcQa62waUWbd2kGI/Eu sbassett@wikimedia.org
+    ssh_keys: []
     uid: 20088
     email: sbassett@wikimedia.org
     krb: present
