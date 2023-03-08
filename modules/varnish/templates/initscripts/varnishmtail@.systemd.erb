@@ -1,7 +1,7 @@
 [Unit]
 Description="Varnish mtail %i instance"
 After=varnish-frontend.service
-Requires=varnish-frontend.service
+BindsTo=varnish-frontend.service
 
 [Service]
 SyslogIdentifier=varnishmtail-%i
