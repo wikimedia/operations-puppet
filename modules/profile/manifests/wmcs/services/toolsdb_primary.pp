@@ -4,6 +4,7 @@ class profile::wmcs::services::toolsdb_primary (
     Boolean $rebuild = lookup('profile::wmcs::services::toolsdb::rebuild', {default_value => false}),
     Optional[Stdlib::Fqdn] $primary_server = lookup('profile::wmcs::services::toolsdb::rebuild_primary'),
     Optional[Stdlib::Fqdn] $secondary_server = lookup('profile::wmcs::services::toolsdb::rebuild_secondary'),
+    Boolean $legacy_config = lookup('profile::wmcs::services::toolsdb::legacy_config', {default_value => true}),
 ) {
     require profile::wmcs::services::toolsdb_apt_pinning
 
@@ -32,8 +33,14 @@ class profile::wmcs::services::toolsdb_primary (
         group  => 'mysql',
     }
 
+    if $legacy_config {
+      $config_file_template = 'role/mariadb/mysqld_config/tools_legacy.my.cnf.erb'
+    } else {
+      $config_file_template = 'role/mariadb/mysqld_config/tools.my.cnf.erb'
+    }
+
     class { 'mariadb::config':
-        config        => 'role/mariadb/mysqld_config/tools.my.cnf.erb',
+        config        => $config_file_template,
         datadir       => '/srv/labsdb/data',
         basedir       => $profile::mariadb::packages_wmf::basedir,
         tmpdir        => '/srv/labsdb/tmp',

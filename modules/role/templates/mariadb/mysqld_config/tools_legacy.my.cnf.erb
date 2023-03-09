@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 [client]
 port   = 3306
 socket = <%= @socket %>
@@ -55,8 +56,12 @@ binlog_format                  = <%= @binlog_format %>
 expire_logs_days               = 14
 slave_transaction_retries      = 4294967295
 # remember it is one table/wildcard per line
-replicate_wild_ignore_table    = s51230__linkwatcher.%
+replicate_wild_ignore_table    = s51412\_\_data.%
+replicate_wild_ignore_table    = s51071\_\_templatetiger\_p.%
+replicate_wild_ignore_table    = s52721\_\_pagecount\_stats\_p.%
+replicate_wild_ignore_table    = s51290\_\_dpl\_p.%
 replicate_wild_ignore_table    = s54518\_\_mw.%
+replicate_wild_ignore_table    = s52481\_\_stats_global.requests
 
 table_open_cache               = 5000
 table_definition_cache         = 4000
@@ -65,7 +70,7 @@ default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.5).round %>G
 innodb_log_file_size           = 128M
-innodb_flush_log_at_trx_commit = 2 # Slightly less safe, but more performant
+innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
 innodb_io_capacity             = 1000
 innodb_stats_method            = nulls_unequal
