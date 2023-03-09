@@ -52,8 +52,7 @@ hosts:
     - ms-be1063
     - ms-be1064
     - ms-be1065
-    - ms-be1066:
-      - sdr1: failed
+    - ms-be1066
     - ms-be1067
     - ms-be1068
     - ms-be1069
