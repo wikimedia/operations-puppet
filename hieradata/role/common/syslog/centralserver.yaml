@@ -14,7 +14,7 @@ profile::bird::advertise_vips:
     check_fail: 2  # Sometime the check_cmd timeout, adding a retry workarounds the issue
 
 
-profile::profile::kafkatee::webrequest::ops::active_host: 'centrallog1001.eqiad.wmnet'
+profile::profile::kafkatee::webrequest::ops::active_host: 'centrallog1002.eqiad.wmnet'
 
 mtail::group: 'ops'
 
