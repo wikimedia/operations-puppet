@@ -179,6 +179,7 @@ testcases:
           id: "8fabbd5e-184a-47e0-9bb8-514846c8ae2c"
         http:
           request:
+            method: "GET"
             referrer: null
         url:
           full: "https://zh.wikipedia.org/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636"
@@ -296,6 +297,7 @@ testcases:
           id: "46c86a62-c331-4e29-ac35-a6ab1d19fe47"
         http:
           request:
+            method: "GET"
             referrer: "https://www.wikidata.org/"
         url:
           full: "https://www.wikidata.org/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013"
@@ -385,6 +387,9 @@ testcases:
           normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
         service:
           type: "php7.4-fpm"
+        http:
+          request:
+            method: "POST"
         error:
           message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
           stack_trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."
