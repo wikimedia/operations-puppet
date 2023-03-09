@@ -2,7 +2,6 @@ cluster: 'aux-k8s'
 profile::kubernetes::master::cluster_group: 'aux-k8s'
 profile::kubernetes::version: '1.23'
 profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::kubernetes::master::accessible_to: 'all'
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'

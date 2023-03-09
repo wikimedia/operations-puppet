@@ -46,7 +46,6 @@ profile::lvs::realserver::pools:
 # Kubernetes 1.23 related common settings
 profile::kubernetes::version: '1.23'
 profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:

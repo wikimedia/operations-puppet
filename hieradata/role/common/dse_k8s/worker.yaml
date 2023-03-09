@@ -2,7 +2,6 @@ cluster: dse_k8s
 # Kubernetes 1.23 related common settings (should go from here to common for the eqiad update)
 profile::kubernetes::version: '1.23'
 profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::use_cni: true

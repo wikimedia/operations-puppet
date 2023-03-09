@@ -9,7 +9,6 @@ profile::kubernetes::master::service_node_port_range: '1-65535'
 profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-mlserve"
 profile::kubernetes::version: '1.23'
 profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:

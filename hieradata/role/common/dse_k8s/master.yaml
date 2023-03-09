@@ -1,7 +1,6 @@
 cluster: dse_k8s
 profile::kubernetes::version: '1.23'
 profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 profile::kubernetes::master::cluster_group: dse-k8s
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::allow_privileged: true

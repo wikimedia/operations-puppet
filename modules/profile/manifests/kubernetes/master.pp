@@ -3,7 +3,7 @@
 #   This class sets up a kubernetes master (apiserver)
 #
 class profile::kubernetes::master (
-    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
+    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.23' }),
     String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[String] $etcd_urls=lookup('profile::kubernetes::master::etcd_urls'),

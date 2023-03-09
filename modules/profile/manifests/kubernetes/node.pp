@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::node (
-    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.16' }),
+    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.23' }),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
-    String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause:k8s_116' }),
+    String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause:3.6-1' }),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
     Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', { default_value => "http://prometheus.svc.${::site }.wmnet/k8s" }),
     String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', { default_value => 'cluster.local' }),
