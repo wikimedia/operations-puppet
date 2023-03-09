@@ -1208,9 +1208,11 @@ ntp_peers:
     eqiad:
     - 'dns1001.wikimedia.org'
     - 'dns1002.wikimedia.org'
+    - 'dns1003.wikimedia.org'
     codfw:
     - 'dns2001.wikimedia.org'
     - 'dns2002.wikimedia.org'
+    - 'dns2003.wikimedia.org'
     esams:
     - 'dns3001.wikimedia.org'
     - 'dns3002.wikimedia.org'
