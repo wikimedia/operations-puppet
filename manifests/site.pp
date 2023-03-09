@@ -2702,7 +2702,7 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
-node /^urldownloader200[34]\.wikimedia\.org/ {
+node /^urldownloader[12]00[34]\.wikimedia\.org/ {
     role(insetup::infrastructure_foundations)
 }
 
