@@ -126,7 +126,7 @@ def write_replica_cnf():
         return (
             jsonify(
                 {
-                    "result": "ok",
+                    "result": "skip",
                     "detail": {
                         "replica_path": replica_path,
                         "message": "{0} Already exists".format(replica_path),
