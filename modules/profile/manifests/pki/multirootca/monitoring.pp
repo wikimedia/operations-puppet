@@ -45,7 +45,7 @@ define profile::pki::multirootca::monitoring (
         use_client_auth    => true,
         path               => '/api/v1/cfssl/info',
         method             => 'POST',
-        body               => { 'label' => $intermediate },
+        body_raw           => { 'label' => $intermediate }.to_json,
         body_regex_matches => ['"success":true'],
     }
 }
