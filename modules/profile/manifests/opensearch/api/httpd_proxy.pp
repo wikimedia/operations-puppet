@@ -54,7 +54,7 @@ class profile::opensearch::api::httpd_proxy (
     # enabled by default, but only enabled in the postinst if the selection of Apache mods
     # needs it. While this is the case for the OpenSearch API proxy, the service isn't
     # actually needed, so make sure it's stopped
-    service { 'apache2-htcacheclean':
+    service { 'apache-htcacheclean':
         ensure  => stopped,
     }
 }
