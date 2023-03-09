@@ -224,9 +224,10 @@ node 'archiva1002.wikimedia.org' {
     role(archiva)
 }
 
-node /^authdns[12]001\.wikimedia\.org$/ {
-    role(dns::auth)
-}
+# Deprecated, preserved for posterity: T330670
+#node /^authdns[12]001\.wikimedia\.org$/ {
+#    role(dns::auth)
+#}
 
 # etcd cluster for aux kubernetes cluster
 node /^aux-k8s-etcd100[1-3]\.eqiad\.wmnet$/ {

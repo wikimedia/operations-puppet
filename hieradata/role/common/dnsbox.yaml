@@ -27,3 +27,8 @@ profile::bird::bind_anycast_service: 'pdns-recursor.service'
 
 profile::systemd::timesyncd::ensure: absent
 profile::contacts::role_contacts: ['Traffic']
+
+# Copied over from dns::auth T330670.
+profile::admin::groups:
+ - dns-admins
+ - fr-tech-admins
