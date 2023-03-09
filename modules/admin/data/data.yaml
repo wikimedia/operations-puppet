@@ -395,7 +395,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
-              jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap, nickifeajika]
+              jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5783,6 +5783,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICd+b9kgn5LvOPSCTQjxKorKfyqxTRSVQJczx+Gd+eBq nifeajika-ctr@wikimedia.org
+  dmartin:
+    ensure: present
+    realname: David Martin
+    email: dmartin@wikimedia.org
+    uid: 35429
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM1Qf6popZxXwLuBlDJfIeBlAHJDl2Y1hqUKV1VoU1IP dmartin@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -6436,10 +6445,6 @@ ldap_only_users:
   jcarvalho:
     ensure: absent
     realname: João Carvalho
-  dmartin:
-    ensure: present
-    realname: David Martin
-    email: dmartin@wikimedia.org
   jsn:
     ensure: present
     realname: Jason Sherman
