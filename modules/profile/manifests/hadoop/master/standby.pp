@@ -45,6 +45,7 @@ class profile::hadoop::master::standby(
         # image is more than 90 minutes old and is critical of the image is more than 2 hours old
         # See T309649 for more information.
         nrpe::monitor_service { 'hadoop-hdfs-namenode-fsimage-age':
+            ensure        => absent,
             description   => 'Hadoop HDFS Namenode FSImage Age',
             nrpe_command  => '/usr/lib/nagios/plugins/check_file_age -w 5400 -c 7200 -f /srv/hadoop/name/current/VERSION',
             sudo_user     => 'hdfs',
