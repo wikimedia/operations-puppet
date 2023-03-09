@@ -25,10 +25,12 @@
 # @param status_matches - list of regular expressions to match against the http status code. if any of those does not match the probe will fail.
 # @param bearer_token - bearer token to use
 # @param path - path to check
-# @param body - body to send in requests
+# @param body - A hash of form parameters to send in the body
+# @param body_raw - The raw body string, usefull for sending json payloads
 # @param method - http method to use
 # @param follow_redirects - whether the check should honour redirects. without this a 301 would be considered a failure.
 # @param site - site to perform the check from
+# @param proxy_url - The proxy_url
 # @param auth_username - username used for basic auth
 # @param auth_password - password used for basic auth
 # @param useragent - user agent to use
@@ -60,12 +62,17 @@ define prometheus::blackbox::check::http (
     Wmflib::HTTP::Method                    $method                  = 'GET',
     Boolean                                 $follow_redirects        = false,
     Wmflib::Sites                           $site                    = $::site,  # lint:ignore:top_scope_facts
+    String[1]                               $prometheus_instance     = 'ops',
+    Optional[String[1]]                     $body_raw                = undef,
     Optional[String[1]]                     $auth_username           = undef,
     Optional[String[1]]                     $auth_password           = undef,
     Optional[String[1]]                     $useragent               = undef,
-    String[1]                               $prometheus_instance     = 'ops',
     Optional[String[1]]                     $proxy_url               = undef,
 ) {
+    if !$body.empty and !$body_raw.empty {
+        fail('can not set both body and body_raw')
+    }
+    $_body = $body_raw.empty.bool2str(wmflib::encode_www_form($body), $body_raw)
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
     $module_title = $safe_title
@@ -105,7 +112,7 @@ define prometheus::blackbox::check::http (
         'basic_auth'                      => $basic_auth,
         'bearer_token'                    => $bearer_token,
         'proxy_url'                       => $proxy_url,
-        'body'                            => wmflib::encode_www_form($body),
+        'body'                            => $_body,
     }.filter |$key, $value| { $value =~ Boolean or ($value =~ NotUndef and !$value.empty) }
     $module_config = {
         'modules' => Hash($ip_families.map |$family| {
