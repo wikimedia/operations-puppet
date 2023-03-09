@@ -43,6 +43,14 @@ class profile::prometheus::ops (
     }
 
     class{ '::prometheus::swagger_exporter': }
+    # We need a deterministic location for client certificates to use for exported
+    # blackbox checks e.g. prometheus::blackbox::check::{http,tcp} with use_client_auth
+    puppet::expose_agent_certs { '/etc/prometheus':
+        ensure          => 'present',
+        user            => 'prometheus',
+        provide_private => true,
+    }
+
     class{ '::prometheus::blackbox_exporter':
         http_proxy => $http_proxy,
     }
