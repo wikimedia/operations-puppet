@@ -5,7 +5,6 @@ profile::kubernetes::infra_pod: "docker-registry.discovery.wmnet/pause:3.6-1"
 # It is expected that there is a second intermediate suffixed with _front_proxy to be used
 # to configure the aggregation layer.
 profile::kubernetes::pki::intermediate: 'mlserve'
-profile::calico::kubernetes::istio_cni_version: '1.15'
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::kubernetes::use_cni: true

@@ -33,7 +33,6 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference: {}
 
-profile::calico::kubernetes::istio_cni_version: '1.15'
 profile::calico::kubernetes::cni_config:
   name: "k8s-pod-network"
   cniVersion: "0.3.1"

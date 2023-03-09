@@ -17,7 +17,7 @@ class profile::calico::kubernetes (
     Hash $calico_cni_config = lookup('profile::calico::kubernetes::cni_config'),
     String $istio_cni_username = lookup('profile::calico::kubernetes::istio_cni_username', { default_value => 'istio-cni' }),
     Optional[String] $istio_cni_token = lookup('profile::calico::kubernetes::istio_cni_token', { default_value => undef }),
-    String $istio_cni_version = lookup('profile::calico::kubernetes::istio_cni_version', { default_value => '1.9.5' }),
+    String $istio_cni_version = lookup('profile::calico::kubernetes::istio_cni_version', { default_value => '1.15' }),
     Wmflib::Ensure $ensure_istio_cni = lookup('profile::calico::kubernetes::ensure_istio_cni', { default_value => 'present' }),
 ) {
     class { 'calico':
