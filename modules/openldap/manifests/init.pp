@@ -82,6 +82,10 @@ class openldap(
 
     ensure_packages(['slapd', 'ldap-utils'])
 
+    if $storage_backend == 'mdb' {
+        ensure_packages('lmdb-utils')
+    }
+
     service { 'slapd':
         ensure     => running,
         hasstatus  => true,

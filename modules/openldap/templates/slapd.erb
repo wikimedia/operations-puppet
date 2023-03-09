@@ -30,7 +30,7 @@ loglevel        <%= @logging %>
 
 # Where the dynamically loaded modules are stored
 modulepath  /usr/lib/ldap
-moduleload  back_hdb
+moduleload  back_<%= @storage_backend %>
 moduleload  back_monitor
 moduleload  memberof
 moduleload  syncprov
