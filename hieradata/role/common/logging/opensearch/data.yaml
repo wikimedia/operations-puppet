@@ -171,6 +171,22 @@ profile::opensearch::logstash::curator_actions:
         unit: days
         unit_count: 10
 
+  '09':
+    description: 'ecs-mediawiki policy rev 1: delete older than 12 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'ecs-mediawiki-1-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 12
+
   '20':
     description: 'all: after 31 days set number of replicas to 1'
     action: replicas
