@@ -2152,8 +2152,17 @@ node /^mw240[6-9]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-node /^mw241[0-1]\.codfw\.wmnet$/ {
+node /^mw241[01]\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
+}
+
+# rack A5 (T331609)
+node /^mw242[23]\.codfw\.wmnet/ {
+    role(mediawiki::appserver::api)
+}
+
+node /^mw242[01]\.codfw\.wmnet/ {
+    role(mediawiki::appserver)
 }
 
 # rack A6
@@ -2161,10 +2170,22 @@ node /^mw230[13579]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# rack A6 (T331609)
+node /^mw2424\.codfw\.wmnet/ {
+    role(mediawiki::appserver::api)
+}
+
+node /^mw2425\.codfw\.wmnet/ {
+    role(mediawiki::appserver)
+}
+
+node /^mw242[67]\.codfw\.wmnet/ {
+    role(mediawiki::jobrunner)
+}
 # Row B
 
 # rack B3
-node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
+node /^mw22(6[89]|70)\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -2183,6 +2204,27 @@ node /^mw23(2[579]|3[13])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# rack B6 (T331609)
+
+node /^mw24(2[89]|30)\.codfw\.wmnet/ {
+    role(mediawiki::jobrunner)
+}
+
+node /^mw2431\.codfw\.wmnet/ {
+    role(mediawiki::appserver)
+}
+
+# rack B8 (T331609)
+node /^mw243[23]\.codfw\.wmnet/ {
+    role(mediawiki::appserver)
+}
+
+node /^mw243[45]\.codfw\.wmnet/ {
+    role(mediawiki::appserver::api)
+}
+
+# Row C
+
 # rack C6
 node /^mw23(59|6[135])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
@@ -2192,8 +2234,6 @@ node /^mw23(59|6[135])\.codfw\.wmnet$/ {
 node /^mw23(5[1357])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
-
-# Row C
 
 # rack C3
 node /^mw23(3[5-9])\.codfw\.wmnet$/ {
@@ -2212,9 +2252,22 @@ node /^mw2419\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# New mw nodes T326362
-node /^mw24(2[0-9]|3[0-9]|4[0-9]|5[0-1])\.codfw\.wmnet$/ {
-    role(insetup::serviceops)
+# rack C1 (T331609)
+node /^mw243[67]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+node /^mw243[89]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# rack C5 (T331609)
+node /^mw244(0|[23])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+node /^mw2441\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # Row D
@@ -2227,6 +2280,24 @@ node /^mw2(27[12])\.codfw\.wmnet$/ {
 # rack D3
 node /^mw2(27[3-7]|36[79]|37[135])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
+}
+
+# rack D5 (T331609)
+node /^mw244[4-6]\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+node /^mw2447\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# rack D6 (T331609)
+node /^mw244[89]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+node /^mw245[01]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
 }
 
 # API
