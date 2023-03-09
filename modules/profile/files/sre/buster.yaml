@@ -419,7 +419,8 @@ role::analytics_cluster::zookeeper:
 role::zookeeper::test:
   target-q: TBD
 role::apt_repo:
-  target-q: TBD
+  target-q: 2023-2
+  target-q: 331613
 role::poolcounter::server:
   target-q: TBD
 role::orchestrator:
@@ -443,13 +444,14 @@ role::gerrit:
 role::dragonfly::supernode:
   target-q: TBD
 role::puppetdb:
-  target-q: 2023-1
+  target-q: 2023-2
+  phab-task: 330490
 role::puppetmaster::frontend:
-  target-q: TBD
-  phab-task: 285086
+  target-q: 2023-2
+  phab-task: 330490
 role::puppetmaster::backend:
-  target-q: TBD
-  phab-task: 285086
+  target-q: 2023-2
+  phab-task: 330490
 role::sretest:
   target-q: 2023-3
 role::wikidough:
