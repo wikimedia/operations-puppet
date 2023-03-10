@@ -5,9 +5,8 @@ MEDIAWIKI_STAGING_DIR="<%= @mediawiki_staging_dir %>"
 MEDIAWIKI_WEB_USER="<%= @mediawiki_web_user %>"
 
 # Members of the wikidev group are deployers, keep the things they do
-# group readable/writable. Do the same for l10nupdate, which calls
-# into scap.
+# group readable/writable.
 
-if groups | grep -Pqw '(wikidev|l10nupdate)'; then
+if groups | grep -Pqw 'wikidev'; then
   umask 0002
 fi

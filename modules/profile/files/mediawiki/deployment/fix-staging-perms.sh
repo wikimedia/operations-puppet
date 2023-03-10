@@ -12,8 +12,8 @@ set -o pipefail
 chmod -R g+w /srv/mediawiki-staging
 chmod -R g+w /srv/patches
 
-# Files and directories in the staging dir should have group ownership of either wikidev or l10nupdate.
-find /srv/mediawiki-staging -not -group l10nupdate -and -not -group wikidev -print0 | xargs -0 -r chgrp wikidev
+# Files and directories in the staging dir should have group ownership of wikidev.
+find /srv/mediawiki-staging -not -group wikidev -print0 | xargs -0 -r chgrp wikidev
 
 # Files and directories in the patches repository should have group ownership of wikidev
 find /srv/patches -not group wikidev -print0 | xargs -0 -r chgrp wikidev

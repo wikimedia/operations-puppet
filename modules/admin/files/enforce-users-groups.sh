@@ -23,7 +23,6 @@ LAST_USER_UID=49999
 
 ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
-         "l10nupdate" \
          "mwdeploy" \   # eventlog*
          "releases" \   # deployment.eqiad.wmnet
          "reprepro");   # apt1001/2001, releases1002/2002

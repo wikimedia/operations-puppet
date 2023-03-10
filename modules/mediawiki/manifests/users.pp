@@ -29,11 +29,11 @@ class mediawiki::users(
         content => secret('keyholder/mwdeploy.pub'),
     }
 
-    # Grant mwdeploy sudo rights to run anything as itself, apache and the
-    # l10nupdate user. This allows MediaWiki deployers to deploy as mwdeploy.
+    # Grant mwdeploy sudo rights to run anything as itself and the apache user.
+    # This allows MediaWiki deployers to deploy as mwdeploy.
     sudo::user { 'mwdeploy':
         privileges => [
-            "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",
+            "ALL = (${web},mwdeploy) NOPASSWD: ALL",
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
         ]+$extra_privileges,

@@ -96,10 +96,7 @@ class scap::master(
         hosts_allow => $deployment_hosts
     }
 
-    class { 'scap::l10nupdate':
-        deployment_group => $deployment_group,
-        run_l10nupdate   => false,
-    }
+    class { 'scap::l10nupdate': }
 
     file { '/usr/local/bin/scap-master-sync':
         ensure => present,
