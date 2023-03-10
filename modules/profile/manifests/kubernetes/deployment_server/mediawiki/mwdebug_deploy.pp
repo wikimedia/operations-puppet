@@ -11,30 +11,17 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
 
     # Install docker-report in order to be able to list tags remotely
     package { 'python3-docker-report':
-        ensure => present,
+        ensure => absent,
     }
 
-    # Now install the credentials for the kubernetes docker user so that we can list tags
-    # in the restricted namespace. This is ok since the credentials will be guarded by
-    # being ran as mwbuilder, and that is the user that builds the images in the first
-    # place.
-    docker::credentials { '/srv/mwbuilder/.docker/config.json':
-        owner             => 'mwbuilder',
-        group             => 'mwbuilder',
-        registry          => $docker_registry,
-        registry_username => 'kubernetes',
-        registry_password => $docker_password,
-        allow_group       => false,
+    file { '/srv/mwbuilder/.docker/config.json':
+        ensure => absent,
     }
-    # TODO: remove once T305729 is resolved.
-    docker::credentials { '/root/.docker/config.json':
-        owner             => 'root',
-        group             => 'root',
-        registry          => $docker_registry,
-        registry_username => 'kubernetes',
-        registry_password => $docker_password,
-        allow_group       => false,
+
+    file { '/root/.docker/config.json':
+        ensure => absent,
     }
+
     # Directory where the file lock and error file are stored.
     file { '/var/lib/deploy-mwdebug':
         ensure  => absent,
