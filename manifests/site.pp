@@ -1455,13 +1455,13 @@ node 'phab2002.codfw.wmnet' {
 }
 
 # PKI server
-node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
+node 'pki1001.eqiad.wmnet' {
     role(pki::multirootca)
 }
 
-# New pki node # T305489
-node 'pki2002.codfw.wmnet' {
-    role(insetup::infrastructure_foundations)
+# PKI server
+node /pki200[12]\.codfw\.wmnet/ {
+    role(pki::multirootca)
 }
 
 # pki-root server T276625
