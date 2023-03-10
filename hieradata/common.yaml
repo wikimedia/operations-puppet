@@ -2264,6 +2264,14 @@ infra_devices:
     - pfw3-codfw
     site: codfw
     role: l2sw
+  cloudsw1-b1-codfw:
+    ipv4: 10.192.255.255
+    ipv6: 2620:0:860:13f::1
+    parents:
+    - cr1-codfw
+    - cr2-codfw
+    site: codfw
+    role: l3sw
   ripe-atlas-codfw:
     ipv4: 208.80.152.244
     ipv6: 2620:0:860:201:208:80:152:244
