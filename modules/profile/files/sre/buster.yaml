@@ -23,6 +23,7 @@ role::etcd::v3::ml_etcd::staging:
   target-q: 2023-1
 role::lists:
   target-q: TBD
+  phab-task: 331706
 role::configcluster:
   target-q: TBD
 role::wmcs::nfs::primary:
@@ -42,6 +43,7 @@ role::ci::master:
   phab-task: 327068
 role::mw_rc_irc:
   target-q: TBD
+  phab-task: 331702
 role::vrts:
   target-q: TBD
   phab-task: 295416
@@ -65,6 +67,7 @@ role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
   target-q: 2023-2
+  phab-task: 331714
 role::dumps::generation::server::xmldumps:
   target-q: 2023-1
   phab-task: 325232
@@ -75,7 +78,8 @@ role::dumps::generation::server::xmlfallback:
   target-q: 2023-1
   phab-task: 325232
 role::openldap::rw:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 331699
 role::parsoid::testing:
   target-q: TBD
 role::parsoid::testreduce:
@@ -84,10 +88,13 @@ role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
   target-q: 2023-2
+  phab-task: 331713
 role::ores:
   target-q: 2023-2
+  phab-task: 312518
 role::orespoolcounter:
   target-q: 2023-2
+  phab-task: 312518
 role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:
@@ -202,7 +209,8 @@ role::mariadb::proxy::master:
 role::mariadb::proxy::replicas:
   target-q: TBD
 role::debmonitor::server:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 241049
 role::doc:
   target-q: TBD
   phab-task: 319477
@@ -252,6 +260,7 @@ role::kafka::main:
   target-q: TBD
 role::kafka::test::broker:
   target-q: TBD
+  phab-task: 331710
 role::kafka::main::logging:
   target-q: TBD
 role::kafka::logging:
@@ -261,7 +270,8 @@ role::analytics_cluster::hadoop::client:
   target-q: TBD
   phab-task: 288804
 role::cluster::unprivmanagement:
-  target-q: 2023-1
+  target-q: 2023-2
+  phab-task: 331700
 role::wmcs::db::wikireplicas::web_multiinstance:
   target-q: TBD
 role::wmcs::db::wikireplicas::analytics_multiinstance:
@@ -458,11 +468,14 @@ role::wikidough:
   target-q: 2023-1
   phab-task: 305589
 role::kerberos::kdc:
-  target-q: TBD
+  target-q: 2023-2
+  phab-task: 331695
 role::pki::multirootca:
   target-q: TBD
+  phab-task: 331696
 role::pki::root:
   target-q: TBD
+  phab-task: 331696
 role::search::loader:
   target-q: TBD
   phab-task: 323921
