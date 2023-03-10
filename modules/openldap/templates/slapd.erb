@@ -74,6 +74,9 @@ access to dn.subtree="cn=monitor"
 
 database            <%= @storage_backend %>
 suffix              <%= @suffix %>
+<% if @storage_backend == "mdb" -%>
+maxsize 1073741824
+<% end %>
 directory           <%= @datadir %>
 rootdn              "cn=admin,<%= @suffix %>"
 readonly            <%= @read_only %>
