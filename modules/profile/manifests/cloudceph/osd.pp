@@ -192,4 +192,18 @@ class profile::cloudceph::osd(
             path    => ['/usr/sbin', '/usr/bin'],
         }
     }
+
+    # Using netbox to know where we are situated in the datacenter
+    require profile::netbox::host
+    $location = $profile::netbox::host::location
+    unless $location {
+        warning("${facts['networking']['fqdn']}: no Netbox location found")
+    } else {
+        file {'/etc/rack':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => $location['rack'],
+        }
+    }
 }

@@ -196,6 +196,22 @@ describe "profile::cloudceph::osd" do
         }
         it { is_expected.not_to contain_interface__route("route_to_192_168_4_0") }
       end
+
+      context "when the location is defined, it sets the rack file" do
+        let(:pre_condition) {
+          'class { "::apt": }
+          class { "::prometheus::node_exporter": }
+          class { "profile::netbox::host":
+            location => {
+              "rack" => "E7",
+              "site" => "eqiad",
+              "row" => "E7",
+            }
+          }'
+        }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file("/etc/rack").with_content("E7") }
+      end
     end
   end
 end
