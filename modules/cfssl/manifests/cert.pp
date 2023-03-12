@@ -202,27 +202,35 @@ define cfssl::cert (
             source => "${cfssl::client::bundles_source}/${label}.pem",
         }
 
-        $test_chained = @("TEST_CHAINED"/L)
-            /usr/bin/test \
-            "$(/bin/cat ${cert_path} ${cert_chain_path} | sha512sum)" == \
-            "$(/bin/cat ${cert_chained_path} | sha512sum)"
-            | TEST_CHAINED
-        # TODO: use sslcert::chained
-        $subscribe = $auto_renew ? {
-            true    => [Exec["renew certificate - ${title}"], File[$cert_chain_path, $cert_path]],
-            default => File[$cert_chain_path, $cert_path],
+        if $ensure == 'present' {
+            $test_chained = @("TEST_CHAINED"/L)
+                /usr/bin/test \
+                "$(/bin/cat ${cert_path} ${cert_chain_path} | sha512sum)" == \
+                "$(/bin/cat ${cert_chained_path} | sha512sum)"
+                | TEST_CHAINED
+            # TODO: use sslcert::chained
+            $subscribe = $auto_renew ? {
+                true    => [Exec["renew certificate - ${title}"], File[$cert_chain_path, $cert_path]],
+                default => File[$cert_chain_path, $cert_path],
+            }
+            exec { "create chained cert ${cert_chain_path}":
+                command   => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
+                unless    => $test_chained,
+                notify    => $_notify_service,
+                subscribe => $subscribe,
+            }
         }
-        exec { "create chained cert ${cert_chain_path}":
-            command   => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
-            unless    => $test_chained,
-            notify    => $_notify_service,
-            subscribe => $subscribe,
+        # create chained cert is not/no longer defined in case ensure==absent
+        # so don't define it as requirement in that case.
+        $_require = $ensure ? {
+            'present' => Exec["create chained cert ${cert_chain_path}"],
+            'absent'  => undef
         }
         file { $cert_chained_path:
             ensure  => stdlib::ensure($ensure, 'file'),
             owner   => $owner,
             group   => $group,
-            require => Exec["create chained cert ${cert_chain_path}"],
+            require => $_require,
         }
     }
 }
