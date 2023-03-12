@@ -3,10 +3,10 @@
 #
 # Installs calico-cni and calicoctl
 class calico (
-    Stdlib::Host            $master_fqdn,
-    String                  $calicoctl_username,
-    String                  $calicoctl_token,
-    Calico::CalicoVersion   $calico_version     = '3.17',
+    Stdlib::Host                   $master_fqdn,
+    String                         $calicoctl_username,
+    Hash[String, Stdlib::Unixpath] $auth_cert,
+    Calico::CalicoVersion          $calico_version     = '3.17',
 ) {
     file { '/etc/calico':
         ensure => directory,
@@ -26,7 +26,7 @@ class calico (
     k8s::kubeconfig { $kubeconfig:
         master_host => $master_fqdn,
         username    => $calicoctl_username,
-        token       => $calicoctl_token,
+        auth_cert   => $auth_cert,
     }
 
     file { '/etc/calico/calicoctl.cfg':

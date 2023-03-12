@@ -9,9 +9,7 @@
 class profile::calico::kubernetes (
     Calico::CalicoVersion $calico_version = lookup('profile::calico::kubernetes::calico_version', { default_value => '3.17' }),
     String $calico_cni_username = lookup('profile::calico::kubernetes::calico_cni::username', { default_value => 'calico-cni' }),
-    String $calico_cni_token = lookup('profile::calico::kubernetes::calico_cni::token'),
     String $calicoctl_username = lookup('profile::calico::kubernetes::calicoctl::username', { default_value => 'calicoctl' }),
-    String $calicoctl_token = lookup('profile::calico::kubernetes::calicoctl::token'),
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
     Hash $calico_cni_config = lookup('profile::calico::kubernetes::cni_config'),
@@ -32,10 +30,14 @@ class profile::calico::kubernetes (
     # 11 days + 30 minutes to capture the puppet run schedule.
     Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 })
 ) {
+    $calicoctl_client_cert = profile::pki::get_cert($pki_intermediate, $calicoctl_username, {
+        'renew_seconds'  => $pki_renew_seconds,
+        'outdir'         => '/etc/kubernetes/pki',
+    })
     class { 'calico':
         master_fqdn        => $master_fqdn,
         calicoctl_username => $calicoctl_username,
-        calicoctl_token    => $calicoctl_token,
+        auth_cert          => $calicoctl_client_cert,
         calico_version     => $calico_version,
     }
 
@@ -44,10 +46,14 @@ class profile::calico::kubernetes (
         config   => $calico_cni_config,
     }
 
+    $calico_cni_client_cert = profile::pki::get_cert($pki_intermediate, $calico_cni_username, {
+        'renew_seconds'  => $pki_renew_seconds,
+        'outdir'         => '/etc/kubernetes/pki',
+    })
     k8s::kubeconfig { '/etc/cni/net.d/calico-kubeconfig':
         master_host => $master_fqdn,
         username    => $calico_cni_username,
-        token       => $calico_cni_token,
+        auth_cert   => $calico_cni_client_cert,
         require     => File['/etc/cni/net.d'],
     }
 
