@@ -77,6 +77,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '$WIKIKUBE_KUBEPODS_NETWORKS'
   - '$STAGING_KUBEPODS_NETWORKS'
   - '$DSE_KUBEPODS_NETWORKS'
+  - '(@resolve((centrallog1001.eqiad.wmnet)) @resolve((centrallog1001.eqiad.wmnet), AAAA))'
   - '(@resolve((centrallog1002.eqiad.wmnet)) @resolve((centrallog1002.eqiad.wmnet), AAAA))'
   - '(@resolve((centrallog2002.codfw.wmnet)) @resolve((centrallog2002.codfw.wmnet), AAAA))'
   - '(@resolve((search-loader1001.eqiad.wmnet)) @resolve((search-loader1001.eqiad.wmnet), AAAA))'
