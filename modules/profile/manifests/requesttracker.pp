@@ -42,4 +42,12 @@ class profile::requesttracker {
         read_only   => 'no',
         hosts_allow => 'ununpentium.wikimedia.org',
     }
+
+    prometheus::blackbox::check::http { 'rt.wikimedia.org':
+        team             => 'serviceops-collab',
+        severity         => 'task',
+        path             => '/',
+        status_matches   => 302, # Ensure we redirect to IDP
+        follow_redirects => false,
+    }
 }
