@@ -1469,7 +1469,8 @@ node 'pki1001.eqiad.wmnet' {
 }
 
 # PKI server
-node /pki200[12]\.codfw\.wmnet/ {
+# make sure this is stricter enough to exclude rpki
+node /^pki200[12]\.codfw\.wmnet$/ {
     role(pki::multirootca)
 }
 
