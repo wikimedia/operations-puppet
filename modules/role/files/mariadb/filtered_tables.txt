@@ -494,12 +494,6 @@ page_restrictions,pr_id,K
 pagelinks,pl_from,K
 pagelinks,pl_namespace,K
 pagelinks,pl_title,K
-pagetriage_log,ptrl_id,K
-pagetriage_log,ptrl_page_id,K
-pagetriage_log,ptrl_user_id,K
-pagetriage_log,ptrl_reviewed,K
-pagetriage_log,ptrl_comment,K
-pagetriage_log,ptrl_timestamp,K
 pagetriage_page,ptrp_page_id,K
 pagetriage_page,ptrp_reviewed,K
 pagetriage_page,ptrp_deleted,K
