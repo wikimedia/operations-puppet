@@ -104,7 +104,7 @@ node 'an-test-presto1001.eqiad.wmnet' {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /analytics10(5[89]|6[0-9]|7[0-7]).eqiad.wmnet/ {
+node /^analytics10(5[89]|6[0-9]|7[0-7]).eqiad.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
@@ -112,7 +112,7 @@ node /analytics10(5[89]|6[0-9]|7[0-7]).eqiad.wmnet/ {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /an-worker10(7[89]|8[0-9]|9[0-9]).eqiad.wmnet/ {
+node /^an-worker10(7[89]|8[0-9]|9[0-9]).eqiad.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
@@ -180,7 +180,7 @@ node 'an-airflow1005.eqiad.wmnet' {
 }
 
 # Analytics Zookepeer cluster
-node /an-conf100[1-3]\.eqiad\.wmnet/ {
+node /^an-conf100[1-3]\.eqiad\.wmnet$/ {
     role(analytics_cluster::zookeeper)
 }
 
@@ -205,16 +205,16 @@ node /^aphlict[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 # new APT repositories (NOT DHCP/TFTP)
-node /^apt[12]001\.wikimedia\.org/ {
+node /^apt[12]001\.wikimedia\.org$/ {
     role(apt_repo)
 }
 
 # Analytics Query Service
-node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet/ {
+node /^aqs10(1[0-9]|2[0-1])\.eqiad\.wmnet$/ {
     role(aqs)
 }
 
-node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet/ {
+node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet$/ {
     role(aqs)
 }
 
@@ -358,7 +358,7 @@ node /^cloudlb200[23]-dev\.codfw\.wmnet$/ {
     role(insetup::wmcs)
 }
 
-node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
+node /^cloudcephosd200[123]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
 
@@ -371,7 +371,7 @@ node /^cloudcephmon200[4-6]-dev\.codfw\.wmnet$/ {
 # host needs a kerberos keytab generated,
 # according to the details outlined in the
 # role's hiera configuration.
-node /^clouddumps100[12]\.wikimedia\.org/ {
+node /^clouddumps100[12]\.wikimedia\.org$/ {
     role(dumps::distribution::server)
 }
 
@@ -395,7 +395,7 @@ node 'zookeeper-test1002.eqiad.wmnet' {
 }
 
 # Test kafka cluster
-node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet/ {
+node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet$/ {
     role(kafka::test::broker)
 }
 
@@ -489,18 +489,18 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225)\.eqiad\.wmnet/ {
+node /^db1(207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
 # Hosts to be set up T326346
-node /^dbproxy10(22|23|24|25|26|27)\.eqiad\.wmnet/ {
+node /^dbproxy10(22|23|24|25|26|27)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
 # s1 (enwiki) core production dbs on eqiad
 # See also db1105 below
-node /^db1(107|118|119|128|132|134|135|163|169|184|186|206)\.eqiad\.wmnet/ {
+node /^db1(107|118|119|128|132|134|135|163|169|184|186|206)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -511,7 +511,7 @@ node 'db1196.eqiad.wmnet' {
 
 # s1 (enwiki) core production dbs on codfw
 # See also db2167 and db2170 below
-node /^db2(103|112|116|130|145|146|153|174|176)\.codfw\.wmnet/ {
+node /^db2(103|112|116|130|145|146|153|174|176)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -522,7 +522,7 @@ node 'db2173.codfw.wmnet' {
 
 # s2 (large wikis) core production dbs on eqiad
 # See also db1105, db1146, db1170 below
-node /^db1(122|129|162|182|188|197)\.eqiad\.wmnet/ {
+node /^db1(122|129|162|182|188|197)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -533,7 +533,7 @@ node 'db1156.eqiad.wmnet' {
 
 # s2 (large wikis) core production dbs on codfw
 # See also db2170 and db2138 below
-node /^db2(104|107|125|148|175)\.codfw\.wmnet/ {
+node /^db2(104|107|125|148|175)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -543,7 +543,7 @@ node 'db2126.codfw.wmnet' {
 }
 
 # s3 core production dbs on eqiad
-node /^db1(123|157|166|175|179|189|198)\.eqiad\.wmnet/ {
+node /^db1(123|157|166|175|179|189|198)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -553,7 +553,7 @@ node 'db1112.eqiad.wmnet' {
 }
 
 # s3 core production dbs on codfw
-node /^db2(105|109|127|149|177)\.codfw\.wmnet/ {
+node /^db2(105|109|127|149|177)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -564,7 +564,7 @@ node 'db2156.codfw.wmnet' {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1144 and db1146 below
-node /^db1(138|141|142|143|147|148|149|160|190|199)\.eqiad\.wmnet/ {
+node /^db1(138|141|142|143|147|148|149|160|190|199)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -586,7 +586,7 @@ node 'db1125.eqiad.wmnet' {
 
 # s4 (commons) core production dbs on codfw
 # See also db2137 and db2138 below
-node /^db2(106|110|119|136|140|147|172|179)\.codfw\.wmnet/ {
+node /^db2(106|110|119|136|140|147|172|179)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -597,7 +597,7 @@ node 'db2155.codfw.wmnet' {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1113 and db1144 below
-node /^db1(100|110|130|185|200)\.eqiad\.wmnet/ {
+node /^db1(100|110|130|185|200)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -608,7 +608,7 @@ node 'db1161.eqiad.wmnet' {
 
 # s5 (default, dewiki and others) core production dbs on codfw
 # See also db2171 and db2137 below
-node /^db2(111|113|123|157|178)\.codfw\.wmnet/ {
+node /^db2(111|113|123|157|178)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -619,7 +619,7 @@ node 'db2128.codfw.wmnet' {
 
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
 # See also db1113 below
-node /^db1(131|168|173|180|187|201)\.eqiad\.wmnet/ {
+node /^db1(131|168|173|180|187|201)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -630,7 +630,7 @@ node 'db1165.eqiad.wmnet' {
 
 # s6 core production dbs on codfw
 # See also db2169 and db2171 below
-node /^db2(114|117|124|129|151|180)\.codfw\.wmnet/ {
+node /^db2(114|117|124|129|151|180)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -641,7 +641,7 @@ node 'db2158.codfw.wmnet' {
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # See also db1170 below
-node /^db1(069|127|136|174|178|181|191|194|202)\.eqiad\.wmnet/ {
+node /^db1(069|127|136|174|178|181|191|194|202)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -652,7 +652,7 @@ node 'db1158.eqiad.wmnet' {
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # See also db2168 and db2169 below
-node /^db2(108|118|120|121|122|150|182)\.codfw\.wmnet/ {
+node /^db2(108|118|120|121|122|150|182)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -662,7 +662,7 @@ node 'db2159.codfw.wmnet' {
 }
 
 # s8 (wikidata) core production dbs on eqiad
-node /^db1(104|109|111|114|126|172|177|192|193|203)\.eqiad\.wmnet/ {
+node /^db1(104|109|111|114|126|172|177|192|193|203)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -673,7 +673,7 @@ node 'db1167.eqiad.wmnet' {
 
 # s8 (wikidata) core production dbs on codfw
 # See also db2167 db2168 below
-node /^db2(152|154|161|162|163|165|166|181)\.codfw\.wmnet/ {
+node /^db2(152|154|161|162|163|165|166|181)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -683,25 +683,23 @@ node 'db2164.codfw.wmnet' {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(105|113|144|146|170)\.eqiad\.wmnet/ {
+node /^db1(105|113|144|146|170)\.eqiad\.wmnet$/ {
     role(mariadb::core_multiinstance)
 }
-node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet/ {
+node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet$/ {
     role(mariadb::core_multiinstance)
 }
 
 ## x1 shard
 # eqiad
-node /^db1(103|120|137)\.eqiad\.wmnet/ {
+node /^db1(103|120|137)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
 # codfw
-node /^db2(096|115|131)\.codfw\.wmnet/ {
+node /^db2(096|115|131)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
-
-
 
 # x2 shard
 # eqiad
@@ -794,11 +792,11 @@ node 'db2160.codfw.wmnet' {
 }
 
 # sanitarium hosts
-node /^db1(154|155)\.eqiad\.wmnet/ {
+node /^db1(154|155)\.eqiad\.wmnet$/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-node /^db2(186|187)\.codfw\.wmnet/ {
+node /^db2(186|187)\.codfw\.wmnet$/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
@@ -822,7 +820,7 @@ node /^(db1204|db1205)\.eqiad\.wmnet$/ {
     role(mariadb::misc)
 }
 # backup1-codfw section (datacenter-specific backup metadata hosts)
-node /^db2183|db2184\.codfw\.wmnet/ {
+node /^db2183|db2184\.codfw\.wmnet$/ {
     role(mariadb::misc)
 }
 
@@ -937,7 +935,6 @@ node /^dbproxy20(01|02|03|04)\.codfw\.wmnet$/ {
     role(mariadb::proxy::master)
 }
 
-
 # clouddb proxies (controling replica service dbs)
 # analytics proxy
 node 'dbproxy1018.eqiad.wmnet' {
@@ -1023,7 +1020,6 @@ node /^dse-k8s-worker100[1-8]\.eqiad\.wmnet$/ {
     role(dse_k8s::worker)
 }
 
-
 # to be decommed eventually
 node /^dumpsdata1001\.eqiad\.wmnet$/ {
     role(dumps::generation::server::spare)
@@ -1046,19 +1042,19 @@ node /^dumpsdata1004\.eqiad\.wmnet$/ {
 }
 
 # new dumpsdata servers T283290
-node /^dumpsdata100[567]\.eqiad\.wmnet/ {
+node /^dumpsdata100[567]\.eqiad\.wmnet$/ {
     role(dumps::generation::server::spare)
 }
 
-node /^elastic104[8-9]\.eqiad\.wmnet/ {
+node /^elastic104[8-9]\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic105[0-9]\.eqiad\.wmnet/ {
+node /^elastic105[0-9]\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic106[0-7]\.eqiad\.wmnet/ {
+node /^elastic106[0-7]\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
@@ -1072,15 +1068,15 @@ node /^(elastic108[4-9]|elastic109[0-9]|elastic110[0-2])\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic203[7-9]\.codfw\.wmnet/ {
+node /^elastic203[7-9]\.codfw\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic204[0-8]\.codfw\.wmnet/ {
+node /^elastic204[0-8]\.codfw\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic205[0-9]\.codfw\.wmnet/ {
+node /^elastic205[0-9]\.codfw\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
@@ -1133,7 +1129,6 @@ node 'es2030.codfw.wmnet' {
 node 'es2032.codfw.wmnet' {
     role(mariadb::core)
 }
-
 
 # External Storage, Shard 2 (es2) databases
 
@@ -1215,19 +1210,19 @@ node 'es2020.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^es202[12]\.codfw\.wmnet/ {
+node /^es202[12]\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
 # External Storage, Shard 5 (es5) databases
 ## eqiad servers
-node /^es102[345]\.eqiad\.wmnet/ {
+node /^es102[345]\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
 ## codfw servers
 
-node /^es202[345]\.codfw\.wmnet/ {
+node /^es202[345]\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -1272,7 +1267,6 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
 }
 
-
 # Etherpad on bullseye (virtual machine) (T300568)
 node 'etherpad1003.eqiad.wmnet' {
     role(etherpad)
@@ -1297,7 +1291,7 @@ node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti-test200[123]\.codfw\.wmnet/ {
+node /^ganeti-test200[123]\.codfw\.wmnet$/ {
     role(ganeti_test)
 }
 
@@ -1330,7 +1324,6 @@ node 'gitlab1004.wikimedia.org' {
 node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
     role(gitlab_runner)
 }
-
 
 # gitlab servers - codfw (T301183, T285867)
 node 'gitlab2002.wikimedia.org' {
@@ -1405,12 +1398,12 @@ node 'clouddb2002-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
-node /^cloudcontrol200[145]-dev\.wikimedia\.org/ {
+node /^cloudcontrol200[145]-dev\.wikimedia\.org$/ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
 # cloudrabbit servers T304888
-node /^cloudrabbit100[123]\.wikimedia\.org/ {
+node /^cloudrabbit100[123]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::rabbitmq)
 }
 
@@ -1421,8 +1414,8 @@ node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
 # Primary graphite host
 node 'graphite1005.eqiad.wmnet' {
     role(graphite::production)
-    include ::role::graphite::alerts # lint:ignore:wmf_styleguide
-    include ::role::elasticsearch::alerts # lint:ignore:wmf_styleguide
+    include role::graphite::alerts # lint:ignore:wmf_styleguide
+    include role::elasticsearch::alerts # lint:ignore:wmf_styleguide
 }
 
 # Standby graphite host
@@ -1485,24 +1478,24 @@ node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
 }
 
-node /kafka-logging100[123]\.eqiad\.wmnet/ {
+node /^kafka-logging100[123]\.eqiad\.wmnet$/ {
     role(kafka::logging)
 }
 
 # New kafka node T313960
-node /^kafka-logging100[45]\.eqiad\.wmnet/ {
+node /^kafka-logging100[45]\.eqiad\.wmnet$/ {
     role(insetup::observability)
 }
 
-node /^kafka-logging200[1-5]\.codfw\.wmnet/ {
+node /^kafka-logging200[1-5]\.codfw\.wmnet$/ {
     role(kafka::logging)
 }
 
-node /kafka-main100[1-5]\.eqiad\.wmnet/ {
+node /^kafka-main100[1-5]\.eqiad\.wmnet$/ {
     role(kafka::main)
 }
 
-node /kafka-main200[1-5]\.codfw\.wmnet/ {
+node /^kafka-main200[1-5]\.codfw\.wmnet$/ {
     role(kafka::main)
 }
 
@@ -1518,22 +1511,22 @@ node /^kafka-jumbo101[0-5]\.eqiad\.wmnet$/ {
 }
 
 # Kafka Burrow Consumer lag monitoring (T187901, T187805)
-node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
+node /^kafkamon[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(kafka::monitoring_buster)
 }
 
 # New Kafka nodes T314156
-node /kafka-stretch100[12]\.eqiad\.wmnet/ {
+node /^kafka-stretch100[12]\.eqiad\.wmnet$/ {
     role(insetup::data_engineering)
 }
 
 # New Kafka nodes T314160
-node /kafka-stretch200[12]\.codfw\.wmnet/ {
+node /^kafka-stretch200[12]\.codfw\.wmnet$/ {
     role(insetup::data_engineering)
 }
 
 # Karapace VM in support of DataHub
-node /karapace1001\.eqiad\.wmnet/ {
+node /^karapace1001\.eqiad\.wmnet$/ {
     role(karapace)
 }
 
@@ -1572,25 +1565,25 @@ node 'krb2002.codfw.wmnet' {
     role(insetup::infrastructure_foundations)
 }
 
-node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-4])\.(codfw|eqiad)\.wmnet/ {
+node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-4])\.(codfw|eqiad)\.wmnet$/ {
     role(kubernetes::worker)
 }
 
-node /kubestage100[34]\.eqiad\.wmnet/ {
+node /^kubestage100[34]\.eqiad\.wmnet$/ {
     role(kubernetes::staging::worker)
 }
 
 # codfw new kubernetes staging nodes T252185
-node /kubestage200[12]\.codfw\.wmnet/ {
+node /^kubestage200[12]\.codfw\.wmnet$/ {
     role(kubernetes::staging::worker)
 }
 
-node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
+node /^cloudvirt200[1-3]\-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
 
 # WMCS Graphite and StatsD hosts
-node /cloudmetrics100[34]\.eqiad\.wmnet/ {
+node /^cloudmetrics100[34]\.eqiad\.wmnet$/ {
     role(wmcs::monitoring)
 }
 
@@ -1599,7 +1592,7 @@ node /^cloudcontrol100[5-7]\.wikimedia\.org$/ {
 }
 
 #new cephosd servers T322760
-node /^cephosd100[12345]\.eqiad\.wmnet/ {
+node /^cephosd100[12345]\.eqiad\.wmnet$/ {
     role(insetup::data_engineering)
 }
 
@@ -1640,13 +1633,13 @@ node 'clouddb1021.eqiad.wmnet' {
     role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
 }
 
-node /labstore100[45]\.eqiad\.wmnet/ {
+node /^labstore100[45]\.eqiad\.wmnet$/ {
     role(wmcs::nfs::primary)
     # Do not enable yet
     # include ::profile::base::firewall
 }
 
-node /cloudbackup100[34]\.eqiad\.wmnet/ {
+node /^cloudbackup100[34]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::backy)
 }
 
@@ -1665,7 +1658,7 @@ node 'cloudbackup2002.codfw.wmnet' {
 
     # Transitional: once we've fully moved to NFS-on-cinder
     #  this role can be removed.
-    include ::role::wmcs::nfs::primary_backup::misc
+    include role::wmcs::nfs::primary_backup::misc  # lint:ignore:wmf_styleguide
 }
 
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
@@ -1715,7 +1708,7 @@ node /^lvs101[3456].eqiad.wmnet$/ {
 }
 
 # codfw lvs
-node /lvs200[789]\.codfw\.wmnet/ {
+node /^lvs200[789]\.codfw\.wmnet$/ {
     role(lvs::balancer)
 }
 
@@ -1743,7 +1736,7 @@ node /^lvs600[123]\.drmrs\.wmnet$/ {
     role(lvs::balancer)
 }
 
-node /^maps10(0[5-8]|1[0])\.eqiad\.wmnet/ {
+node /^maps10(0[5-8]|1[0])\.eqiad\.wmnet$/ {
     role(maps::replica)
 }
 
@@ -1752,7 +1745,7 @@ node 'maps1009.eqiad.wmnet' {
     role(maps::master)
 }
 
-node /^maps20(0[5-8]|10)\.codfw\.wmnet/ {
+node /^maps20(0[5-8]|10)\.codfw\.wmnet$/ {
     role(maps::replica)
 }
 
@@ -1761,82 +1754,81 @@ node 'maps2009.codfw.wmnet' {
     role(maps::master)
 }
 
-
 # Buster replacement for matomo1001 - T252740
 node 'matomo1002.eqiad.wmnet' {
     role(piwik)
 }
 
-node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\.wmnet/ {
+node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\.wmnet$/ {
     role(mediawiki::memcached)
 }
 
-node /^mc20(3[8-9]|4[0-9]|5[0-5])\.codfw\.wmnet/ {
+node /^mc20(3[8-9]|4[0-9]|5[0-5])\.codfw\.wmnet$/ {
     role(mediawiki::memcached)
 }
 
-node /^mc-gp100[1-3]\.eqiad\.wmnet/ {
+node /^mc-gp100[1-3]\.eqiad\.wmnet$/ {
     role(mediawiki::memcached::gutter)
 }
 
-node /^mc-gp200[1-3]\.codfw\.wmnet/ {
+node /^mc-gp200[1-3]\.codfw\.wmnet$/ {
     role(mediawiki::memcached::gutter)
 }
 
 # new mc-wf nodes T313963
-node /^mc-wf100[12]\.eqiad\.wmnet/ {
+node /^mc-wf100[12]\.eqiad\.wmnet$/ {
     role(insetup::serviceops)
 }
 
 # New mc-wf nodes T313966
-node /^mc-wf200[1-2]\.codfw\.wmnet/ {
+node /^mc-wf200[1-2]\.codfw\.wmnet$/ {
     role(memcached)
 }
 
-node /^ml-cache100[123]\.eqiad\.wmnet/ {
+node /^ml-cache100[123]\.eqiad\.wmnet$/ {
     role(ml_cache::storage)
 }
 
-node /^ml-cache200[123]\.codfw\.wmnet/ {
+node /^ml-cache200[123]\.codfw\.wmnet$/ {
     role(ml_cache::storage)
 }
 
-node /^ml-etcd100[123]\.eqiad\.wmnet/ {
+node /^ml-etcd100[123]\.eqiad\.wmnet$/ {
     role(etcd::v3::ml_etcd)
 }
 
-node /^ml-etcd200[123]\.codfw\.wmnet/ {
+node /^ml-etcd200[123]\.codfw\.wmnet$/ {
     role(etcd::v3::ml_etcd)
 }
 
-node /^ml-serve-ctrl100[12]\.eqiad\.wmnet/ {
+node /^ml-serve-ctrl100[12]\.eqiad\.wmnet$/ {
     role(ml_k8s::master)
 }
 
-node /^ml-serve-ctrl200[12]\.codfw\.wmnet/ {
+node /^ml-serve-ctrl200[12]\.codfw\.wmnet$/ {
     role(ml_k8s::master)
 }
 
-node /^ml-serve200[1-8]\.codfw\.wmnet/ {
+node /^ml-serve200[1-8]\.codfw\.wmnet$/ {
     role(ml_k8s::worker)
 }
 
-node /^ml-serve100[1-8]\.eqiad\.wmnet/ {
+node /^ml-serve100[1-8]\.eqiad\.wmnet$/ {
     role(ml_k8s::worker)
 }
 
 # New ml-staging etcd T302503
-node /^ml-staging-etcd200[123]\.codfw.wmnet/ {
+node /^ml-staging-etcd200[123]\.codfw.wmnet$/ {
     role(etcd::v3::ml_etcd::staging)
 }
 
 # New ml-staging ctrl T302503
-node /^ml-staging-ctrl200[12]\.codfw.wmnet/ {
+node /^ml-staging-ctrl200[12]\.codfw.wmnet$/ {
     role(ml_k8s::staging::master)
 }
 
 # New ml-staging nodes T294946
-node /^ml-staging200[12]\.codfw\.wmnet/ {
+node /^ml-staging200[12]\.codfw\.wmnet$/ {
     role(ml_k8s::staging::worker)
 }
 
@@ -1845,46 +1837,46 @@ node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
 }
 
-node /^moss-fe1002\.eqiad\.wmnet/ {
+node /^moss-fe1002\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
-node /^moss-fe1001\.eqiad\.wmnet/ {
+node /^moss-fe1001\.eqiad\.wmnet$/ {
     role(swift::proxy)
-    include ::lvs::realserver # lint:ignore:wmf_styleguide
+    include lvs::realserver # lint:ignore:wmf_styleguide
 }
 
 # New moss-be nodes T276637
-node /^moss-be100[12]\.eqiad\.wmnet/ {
+node /^moss-be100[12]\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
 # New moss-be nodes T276642
-node /^moss-be200[12]\.codfw\.wmnet/ {
+node /^moss-be200[12]\.codfw\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
 # New moss-fe nodes T275513
-node /^moss-fe2001\.codfw\.wmnet/ {
+node /^moss-fe2001\.codfw\.wmnet$/ {
     role(swift::proxy)
-    include ::lvs::realserver # lint:ignore:wmf_styleguide
+    include lvs::realserver # lint:ignore:wmf_styleguide
 }
 
-node /^moss-fe2002\.codfw\.wmnet/ {
+node /^moss-fe2002\.codfw\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
-node /^ms-backup100[12]\.eqiad\.wmnet/ {
+node /^ms-backup100[12]\.eqiad\.wmnet$/ {
     role(mediabackup::worker)
 }
 
-node /^ms-backup200[12]\.codfw\.wmnet/ {
+node /^ms-backup200[12]\.codfw\.wmnet$/ {
     role(mediabackup::worker)
 }
 
 node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
-    include ::lvs::realserver
+    include lvs::realserver  # lint:ignore:wmf_styleguide
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
@@ -1894,7 +1886,7 @@ node /^ms-be1\d\d\d\.eqiad\.wmnet$/ {
 
 node /^ms-fe2\d\d\d\.codfw\.wmnet$/ {
     role(swift::proxy)
-    include ::lvs::realserver
+    include lvs::realserver  # lint:ignore:wmf_styleguide
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
@@ -1974,7 +1966,6 @@ node /^mw140[57]\.eqiad\.wmnet$/ {
 node /^mw14(3[4-6])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
-
 
 # rack C8
 node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
@@ -2058,7 +2049,6 @@ node /^mw146[2-5]\.eqiad\.wmnet$/ {
 
 # Row B
 
-
 # rack B3 and B5
 node /^mw1(39[468]|40[024])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
@@ -2102,7 +2092,6 @@ node /^mw14(89|9[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
 # mwmaint2002 replaced mwmaint2001 (T274170, T275905)
@@ -2141,7 +2130,6 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-
 # Appservers
 
 # Row A
@@ -2149,7 +2137,7 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 # New mw server hardware 2021 (T274171)
 
 # rack A3 (T278396)
-node /^mw23(8[1-2]|9[4-5])\.codfw\.wmnet/ {
+node /^mw23(8[1-2]|9[4-5])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
@@ -2157,24 +2145,24 @@ node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw23(7[7-9]|80|8[3-9]|9[0-3])\.codfw\.wmnet/ {
+node /^mw23(7[7-9]|80|8[3-9]|9[0-3])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-node /^mw2(39[6-9]|40[0-2])\.codfw\.wmnet/ {
+node /^mw2(39[6-9]|40[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
 # rack A5 (T279599)
-node /^mw240[3-5]\.codfw\.wmnet/ {
+node /^mw240[3-5]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw240[6-9]\.codfw\.wmnet/ {
+node /^mw240[6-9]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-node /^mw241[0-1]\.codfw\.wmnet/ {
+node /^mw241[0-1]\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
@@ -2341,7 +2329,7 @@ node 'mwlog2002.codfw.wmnet' {
 node 'mx1001.wikimedia.org' {
     role(mail::mx)
 
-    interface::alias { 'wiki-mail-eqiad.wikimedia.org':
+    interface::alias { 'wiki-mail-eqiad.wikimedia.org':  # lint:ignore:wmf_styleguide
         ipv4 => '208.80.154.91',
         ipv6 => '2620:0:861:3:208:80:154:91',
     }
@@ -2350,7 +2338,7 @@ node 'mx1001.wikimedia.org' {
 node 'mx2001.wikimedia.org' {
     role(mail::mx)
 
-    interface::alias { 'wiki-mail-codfw.wikimedia.org':
+    interface::alias { 'wiki-mail-codfw.wikimedia.org':  # lint:ignore:wmf_styleguide
         ipv4 => '208.80.153.46',
         ipv6 => '2620:0:860:2:208:80:153:46',
     }
@@ -2406,7 +2394,7 @@ node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
     role(ores)
 }
 
-node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
+node /^orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet$/ {
     role(orespoolcounter)
 }
 
@@ -2471,7 +2459,7 @@ node /^planet[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(planet)
 }
 
-node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
+node /^poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet$/ {
     role(poolcounter::server)
 }
 
@@ -2555,7 +2543,7 @@ node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
 }
 
 # New relforge servers T241791 (provision), T262211 (service impl.)
-node /^relforge100[3-4]\.eqiad\.wmnet/ {
+node /^relforge100[3-4]\.eqiad\.wmnet$/ {
     role(elasticsearch::relforge)
 }
 
@@ -2592,18 +2580,17 @@ node 'scandium.eqiad.wmnet' {
     role(parsoid::testing)
 }
 
-node /schema[12]00[3-4].(eqiad|codfw).wmnet/ {
+node /^schema[12]00[3-4].(eqiad|codfw).wmnet$/ {
     role(eventschemas::service)
 }
 
 # See T258189
-node /search-loader[12]001.(eqiad|codfw).wmnet/ {
+node /^search-loader[12]001.(eqiad|codfw).wmnet$/ {
     role(search::loader)
 }
 
-
 # new sessionstore servers via T209393 & T209389
-node /sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet/ {
+node /^sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet$/ {
     role(sessionstore)
 }
 
@@ -2618,12 +2605,12 @@ node 'mirror1001.wikimedia.org' {
 
 # The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
-node /^stat100[4-8]\.eqiad\.wmnet/ {
+node /^stat100[4-8]\.eqiad\.wmnet$/ {
     role(statistics::explorer)
 }
 
 # New stat nodes T299466 and T307399
-node /^stat10(0[9]|1[0])\.eqiad\.wmnet/ {
+node /^stat10(0[9]|1[0])\.eqiad\.wmnet$/ {
     role(insetup::data_engineering)
 }
 
@@ -2633,23 +2620,23 @@ node /^stat10(0[9]|1[0])\.eqiad\.wmnet/ {
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
 # They should also be added to the dumps/scap repo in dumps_targets,
 # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
-node /^snapshot1008\.eqiad\.wmnet/ {
+node /^snapshot1008\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
-node /^snapshot1010\.eqiad\.wmnet/ {
+node /^snapshot1010\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::dumper_monitor)
 }
-node /^snapshot1009\.eqiad\.wmnet/ {
+node /^snapshot1009\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::testbed)
 }
-node /^snapshot101[1-2]\.eqiad\.wmnet/ {
+node /^snapshot101[1-2]\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::dumper)
 }
-node /^snapshot1013\.eqiad\.wmnet/ {
+node /^snapshot1013\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::dumper)
 }
 
-node /^snapshot101[45]\.eqiad\.wmnet/ {
+node /^snapshot101[45]\.eqiad\.wmnet$/ {
     role(insetup::core_platform)
 }
 
@@ -2679,19 +2666,19 @@ node /^testvm200[1-9]\.codfw\.wmnet$/ {
     role(test)
 }
 
-node /^thanos-be100[1234]\.eqiad\.wmnet/ {
+node /^thanos-be100[1234]\.eqiad\.wmnet$/ {
     role(thanos::backend)
 }
 
-node /^thanos-be200[1234]\.codfw\.wmnet/ {
+node /^thanos-be200[1234]\.codfw\.wmnet$/ {
     role(thanos::backend)
 }
 
-node /^thanos-fe100[123]\.eqiad\.wmnet/ {
+node /^thanos-fe100[123]\.eqiad\.wmnet$/ {
     role(thanos::frontend)
 }
 
-node /^thanos-fe200[123]\.codfw\.wmnet/ {
+node /^thanos-fe200[123]\.codfw\.wmnet$/ {
     role(thanos::frontend)
 }
 
@@ -2701,11 +2688,11 @@ node 'thanos-fe2004.codfw.wmnet' {
 }
 
 # Thumbor servers for MediaWiki image scaling
-node /^thumbor100[1256]\.eqiad\.wmnet/ {
+node /^thumbor100[1256]\.eqiad\.wmnet$/ {
     role(thumbor::mediawiki)
 }
 
-node /^thumbor200[3456]\.codfw\.wmnet/ {
+node /^thumbor200[3456]\.codfw\.wmnet$/ {
     role(thumbor::mediawiki)
 }
 
@@ -2715,11 +2702,11 @@ node /^deploy[12]002\.(eqiad|codfw)\.wmnet$/ {
 }
 
 # https://wikitech.wikimedia.org/wiki/Url-downloader
-node /^urldownloader[12]00[12]\.wikimedia\.org/ {
+node /^urldownloader[12]00[12]\.wikimedia\.org$/ {
     role(url_downloader)
 }
 
-node /^urldownloader[12]003\.wikimedia\.org/ {
+node /^urldownloader[12]003\.wikimedia\.org$/ {
     role(insetup::infrastructure_foundations)
 }
 
@@ -2768,7 +2755,7 @@ node /^cloudvirt103[0-9]\.eqiad\.wmnet$/ {
 }
 
 # new cloudvirt servers T305194 and T299574
-node /^cloudvirt10(4[0-9]|5[0-9]|6[0-1])\.eqiad\.wmnet/ {
+node /^cloudvirt10(4[0-9]|5[0-9]|6[0-1])\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
@@ -2778,12 +2765,12 @@ node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
 }
 
 # New wcqs node T276644
-node /^wcqs100[123]\.eqiad\.wmnet/ {
+node /^wcqs100[123]\.eqiad\.wmnet$/ {
     role(wcqs::public)
 }
 
 # New wcqs node T276647
-node /^wcqs200[123]\.codfw\.wmnet/ {
+node /^wcqs200[123]\.codfw\.wmnet$/ {
     role(wcqs::public)
 }
 
@@ -2830,7 +2817,7 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 
-node /^webperf[12]003\.(codfw|eqiad)\.wmnet/ {
+node /^webperf[12]003\.(codfw|eqiad)\.wmnet$/ {
     role(webperf::processors_and_site)
 }
 
@@ -2852,6 +2839,6 @@ node default {
     } else {
         # Require instead of include so we get NFS and other
         # base things setup properly
-        require ::role::wmcs::instance
+        require role::wmcs::instance  # lint:ignore:wmf_styleguide
     }
 }
