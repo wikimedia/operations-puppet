@@ -23,24 +23,7 @@ define profile::pki::multirootca::monitoring (
         sudo_user    => 'root',
     }
 
-    $check_command = [
-        'check_https_client_auth_puppet_post',
-        $vhost,
-        '/api/v1/cfssl/info',
-        # Triple escape.  We have to first escape for puppet so the nagios command definition
-        # escapes the forward slash.  i.e. the command definitions should be
-        # {\\"label\\":\\"$intermediate}\\"
-        "{\\\\\"label\\\\\":\\\\\"${intermediate}\\\\\"}",
-        '\\\\"success\\\\":true',
-    ].join('!')
-    monitoring::service { "https_pki_signer_${intermediate}":
-        ensure        => $ensure,
-        critical      => true,
-        check_command => $check_command,
-        description   => "Check to ensure the cfssl signer is working CA: ${intermediate}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
-    }
-    prometheus::blackbox::check::http { $title:
+    prometheus::blackbox::check::http { "PKI_${title}":
         server_name        => $vhost,
         use_client_auth    => true,
         path               => '/api/v1/cfssl/info',
