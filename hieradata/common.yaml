@@ -2496,10 +2496,6 @@ blackbox_smoke_hosts:
     realm: production
     site: eqiad
     rack: B8
-  authdns1001.wikimedia.org:
-    realm: production
-    site: eqiad
-    rack: B1
 
   frbast-codfw.wikimedia.org:
     realm: frack
@@ -2509,10 +2505,6 @@ blackbox_smoke_hosts:
     realm: frack
     site: codfw
     rack: C8
-  authdns2001.wikimedia.org:
-    realm: production
-    site: codfw
-    rack: A2
   bast2002.wikimedia.org:
     realm: production
     site: codfw
