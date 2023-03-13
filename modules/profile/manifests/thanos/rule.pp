@@ -40,7 +40,19 @@ class profile::thanos::rule (
     }
 
     if $::fqdn in $thanos_rule_hosts {
+        # placeholder class to be able to fetch thanos-rule hosts
+        # as Prometheus job targets
         class { 'thanos::rule::prometheus': }
+
+        prometheus::pint::source { 'thanos-rule':
+            port       => 16902, # thanos query-frontend
+            url_path   => '',
+            all_alerts => true,
+        }
+    } else {
+        class { 'prometheus::pint':
+            ensure => absent,
+        }
     }
 
     # Allow access from query hosts

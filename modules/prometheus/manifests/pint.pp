@@ -8,6 +8,7 @@
 # by adding prometheus::pint::source to an existing prometheus instance.
 
 class prometheus::pint (
+    Wmflib::Ensure $ensure = present,
     Stdlib::Port $listen_port = 9123,
     Array[Stdlib::Unixpath] $watch_paths = ['/srv/alerts', '/srv/alerts-thanos'],
 ) {
@@ -32,11 +33,13 @@ class prometheus::pint (
     }
 
     systemd::service { 'pint':
-        ensure   => present,
+        ensure   => $ensure,
         content  => init_template('pint', 'systemd_override'),
         override => true,
         restart  => true,
     }
 
-    profile::auto_restarts::service { 'pint': }
+    profile::auto_restarts::service { 'pint':
+        ensure => $ensure,
+    }
 }

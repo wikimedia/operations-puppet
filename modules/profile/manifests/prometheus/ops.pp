@@ -2237,6 +2237,12 @@ class profile::prometheus::ops (
         ]),
     }
 
+    prometheus::class_config{ "pint-thanos_${::site}":
+        dest       => "${targets_path}/pint_thanos-rule-${::site}.yaml",
+        class_name => 'thanos::rule::prometheus',
+        port       => 9123,
+    }
+
     $benthos_jobs = [
       {
         'job_name'        => 'benthos',

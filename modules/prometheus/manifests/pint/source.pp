@@ -6,6 +6,8 @@ define prometheus::pint::source (
     Stdlib::Port $port,
     Wmflib::Ensure $ensure = 'present',
     String $instance = $title,
+    String $url_path = $instance,
+    Boolean $all_alerts = false,
 ) {
     include prometheus::pint
 
