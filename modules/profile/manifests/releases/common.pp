@@ -65,7 +65,6 @@ class profile::releases::common(
             severity       => 'task',
             path           => '/',
             port           => 8080,
-            force_tls      => true,
             status_matches => [401,403],
         }
 
