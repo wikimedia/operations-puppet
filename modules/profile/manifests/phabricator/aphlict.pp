@@ -34,12 +34,55 @@ class profile::phabricator::aphlict (
         admin_listen  => $admin_listen,
     }
 
+    $dummy_phab_config_deploy_vars = {
+        'phabricator' => {
+            'www'       => {
+                'database_username' => '',
+                'database_password' => '',
+            },
+            'mail'      => {
+                'database_username' => '',
+                'database_password' => '',
+            },
+            'phd'       => {
+                'database_username' => '',
+                'database_password' => '',
+            },
+            'vcs'       => {
+                'database_username' => '',
+                'database_password' => '',
+            },
+            'redirects' => {
+                'database_username' => '',
+                'database_password' => '',
+                'database_host'     => '',
+                'field_index'       => '',
+            },
+            'local'     => {
+                'base_uri'                  => '',
+                'alternate_file_domain'     => '',
+                'mail_default_address'      => '',
+                'mail_reply_handler_domain' => '',
+                'phd_taskmasters'           => '',
+                'ssh_host'                  => '',
+                'notification_servers'      => '',
+                'cluster_search'            => '',
+                'cluster_mailers'           => '',
+                'database_host'             => '',
+                'database_port'             => '',
+                'gitlab_api_key'            => '',
+            },
+        },
+    }
 
     if $puppet_managed_config {
         class { '::phabricator::config':
-            manage_scap_user => $manage_scap_user,
-            deploy_user      => $deploy_user,
-            deploy_root      => $deploy_root,
+            manage_scap_user   => $manage_scap_user,
+            deploy_user        => $deploy_user,
+            deploy_root        => $deploy_root,
+            storage_user       => 'dummy_user',
+            storage_pass       => 'dummy_pass',
+            config_deploy_vars => $dummy_phab_config_deploy_vars,
         }
     } else {
         # This is managed in the phabricator::config class, so we can elide this if we're including that class
