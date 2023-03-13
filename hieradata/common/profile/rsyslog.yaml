@@ -1,4 +1,4 @@
-profile::rsyslog::logrotate_source: 'puppet:///profile/rsyslog/logrotate.conf'
+profile::rsyslog::logrotate_source: 'puppet:///modules/profile/rsyslog/logrotate.conf'
 profile::rsyslog::kafka_queue_enabled_sites:
   - 'ulsfo'
   - 'esams'
