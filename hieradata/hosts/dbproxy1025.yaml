@@ -1,0 +1,2 @@
+# dbproxy1025 in setup
+profile::monitoring::notifications_enabled: false
