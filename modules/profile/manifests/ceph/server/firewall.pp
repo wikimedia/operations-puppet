@@ -37,19 +37,19 @@ class profile::ceph::server::firewall (
     ferm::service { 'ceph_daemons':
         proto  => 'tcp',
         port   => '6800:7300',
-        srange => $ferm_srange,
+        srange => "(${ferm_srange})",
         before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_v1':
       proto  => 'tcp',
       port   => 6789,
-      srange => $ferm_srange,
+      srange => "(${ferm_srange})",
       before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_v2':
       proto  => 'tcp',
       port   => 3300,
-      srange => $ferm_srange,
+      srange => "(${ferm_srange})",
       before => Class['ceph::common'],
     }
 }
