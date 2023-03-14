@@ -176,3 +176,13 @@ profile::dumps::distribution::mirrors:
     addedby: 'hokwelum'
     addeddate: 'Aug 17, 2022'
     active: 'yes'
+  - url: 'https://wikidata.aerotechnet.com/'
+    hostname: 'wikisync.aerotechnet.com'
+    ipv4: ['wikisync.aerotechnet.com']
+    ipv6: ['wikisync.aerotechnet.com']
+    contactname: 'Ryan Malecki'
+    contactaddy: 'ryan.c.malecki@gmail.com'
+    institution: 'none'
+    addedby: 'hokwelum'
+    addeddate: 'Mar 14, 2023'
+    active: 'yes'
