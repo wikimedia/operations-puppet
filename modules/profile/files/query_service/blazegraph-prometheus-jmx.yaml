@@ -7,3 +7,4 @@ whitelistObjectNames:
   - 'metrics:name=*'
   - 'wdqs-blazegraph:name=*'
   - 'org.wikidata.query.rdf.blazegraph.throttling.ThrottlingFilter:*'
+  - 'org.wikidata.query.rdf.blazegraph.filters.QueryEventSenderFilter:*'
