@@ -120,6 +120,24 @@ def write_replica_cnf():
             200,
         )
 
+    if account_type == "user" and not Path(replica_path).parent.exists():
+        return (
+            jsonify(
+                {
+                    "result": "skip",
+                    "detail": {
+                        "replica_path": replica_path,
+                        "reason": (
+                            "Skipping Account {0}: Parent directory ({1}) does not exist yet, "
+                            "this might happen if the user has not logged in yet, "
+                            "skipping to retry in the next run"
+                        ).format(account_id, str(Path(replica_path).parent)),
+                    }
+                }
+            ),
+            200,
+        )
+
     # ignore if path aready exists
     if os.path.exists(replica_path):
         current_app.logger.warning("Configuration file %s already exists", replica_path)

@@ -275,7 +275,7 @@ class TestWriteReplicaCnf:
         )
         assert response.status_code == 404
 
-    def test_write_replica_cnf_for_users_non_existing_parent_dir_returns_500(self, client):
+    def test_write_replica_cnf_for_users_non_existing_parent_dir_returns_skip(self, client):
         wrong_other_path = current_app.config["WRONG_USER_PATH"]
         account_type = "user"
 
@@ -292,9 +292,9 @@ class TestWriteReplicaCnf:
             "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
         )
         response_data = json.loads(response.data)
-        assert response.status_code == 500
-        assert response_data["result"] == "error"
-        assert "No such file or directory" in response_data["detail"]["reason"]
+        assert response.status_code == 200
+        assert response_data["result"] == "skip"
+        assert response_data["detail"]["replica_path"] == wrong_other_path
         assert not os.path.exists(wrong_other_path)
 
     def test_write_replica_cnf_dry_run(self, client):
