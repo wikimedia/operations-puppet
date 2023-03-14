@@ -56,18 +56,6 @@ class profile::kafka::broker::monitoring (
     # Prometheus labels for this Kafka Broker instance
     $prometheus_labels = "kafka_cluster=\"${kafka_cluster}\",instance=\"${::hostname}:${prometheus_jmx_exporter_port}\""
 
-    # Alert if there are consistent under replicated partitions in the last 10 minutes.
-    monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
-        description     => 'Kafka Broker Under Replicated Partitions',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000027/kafka?orgId=1&viewPanel=29&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
-        query           => "scalar(min_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[10m]))",
-        warning         => 1,
-        critical        => 10,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
-    }
-
-
     # Alert if replica lag is increasing (positive slope) for multiple after multiple retries.
     monitoring::check_prometheus { 'kafka_broker_replica_lag_increasing':
         description     => 'Kafka Broker Replica Max Lag is increasing',
