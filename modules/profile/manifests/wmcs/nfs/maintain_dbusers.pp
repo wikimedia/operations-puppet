@@ -22,12 +22,10 @@ class profile::wmcs::nfs::maintain_dbusers (
     String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::nfs::maintain_dbusers::tools_root_url'),
     String                    $maintain_dbusers_primary   = lookup('profile::wmcs::nfs::maintain_dbusers::maintain_dbusers_primary'),
 ){
-    package { [
+    ensure_packages([
         'python3-ldap3',
         'python3-systemd',
-    ]:
-        ensure => present,
-    }
+    ])
 
     include passwords::mysql::labsdb
     include passwords::labsdbaccounts

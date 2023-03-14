@@ -61,3 +61,9 @@ profile::wmcs::nfs::maintain_dbusers::tools_user: tools-db-replica-cnf
 profile::wmcs::nfs::maintain_dbusers::tools_htpassword: test-password
 profile::wmcs::nfs::maintain_dbusers::tools_root_url: http://10.64.37.19/v1
 profile::wmcs::nfs::maintain_dbusers::maintain_dbusers_primary: cloudcontrol1005.wikimedia.org
+profile::wmcs::nfs::primary::mysql_variances:
+  s52788: 48 # Quarry T180141
+  u12903: 15 # wikiscan T227462
+  s51156: 40 # petscan T255730
+# To be removed after puppet code cleanup
+profile::wmcs::nfs::primary::cluster_ip: 127.0.0.1

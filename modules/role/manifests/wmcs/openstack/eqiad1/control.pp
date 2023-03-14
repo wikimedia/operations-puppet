@@ -36,4 +36,5 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::toolforge::mark_tool
     include profile::openstack::eqiad1::networktests
     include profile::cloudceph::auth::deploy
+    include ::profile::wmcs::nfs::maintain_dbusers
 }

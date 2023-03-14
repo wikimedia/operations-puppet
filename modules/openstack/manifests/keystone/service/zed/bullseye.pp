@@ -16,9 +16,7 @@ class openstack::keystone::service::zed::bullseye(
         'python3-mwclient',
     ]
 
-    package { $packages:
-        ensure  => 'present',
-    }
+    ensure_packages($packages)
 
     # Temporary (?) time-out for apache + mod_wsgi which don't work with Keystone
     # on bullseye

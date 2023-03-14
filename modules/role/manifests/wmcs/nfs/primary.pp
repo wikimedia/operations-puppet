@@ -9,6 +9,5 @@ class role::wmcs::nfs::primary {
     include ::profile::base::cloud_production
     include ::profile::wmcs::nfs::ferm
     include ::profile::wmcs::nfs::primary
-    include ::profile::wmcs::nfs::maintain_dbusers
     include ::profile::wmcs::services::toolsdb_replica_cnf
 }
