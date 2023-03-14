@@ -47,7 +47,7 @@ class profile::requesttracker {
         team             => 'serviceops-collab',
         severity         => 'task',
         path             => '/',
-        status_matches   => 302, # Ensure we redirect to IDP
+        status_matches   => [302], # Ensure we redirect to IDP
         follow_redirects => false,
     }
 }
