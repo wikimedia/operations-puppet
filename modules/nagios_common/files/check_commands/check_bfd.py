@@ -15,6 +15,7 @@ import sys
 
 from snimpy.manager import Manager
 from snimpy.manager import load
+from snimpy.snmp import SNMPException
 
 
 def main():
@@ -28,13 +29,19 @@ def main():
 
     snimpyManager = Manager(options.host[0], options.community[0], 2, cache=True)
 
+    try:
+        bfd_session_idx = list(snimpyManager.bfdSessState)
+    except SNMPException as e:
+        print(f"SNMP exception polling device - {e}")
+        sys.exit(3)
+
     return_code = 0
     return_message = []
     up_count = 0
     down_count = 0
     adminDown_count = 0
 
-    for index in snimpyManager.bfdSessState:
+    for index in bfd_session_idx:
         if snimpyManager.bfdSessAddrType[index] == 1:  # v4 session
             peerIP = ipaddress.IPv4Address(snimpyManager.bfdSessAddr[index])
         elif snimpyManager.bfdSessAddrType[index] == 2:  # v6 session
@@ -44,18 +51,16 @@ def main():
         if state == 2 or state == 3:
             down_count += 1
             return_code = 2
-            return_message.append("BFD neighbor {} down".format(peerIP))
+            return_message.append(f"BFD neighbor {peerIP} down")
         elif state == 4:
             up_count += 1
         elif state == 1:
             adminDown_count += 1
 
     if return_code == 0:
-        print('OK:' + ' UP: ' + str(up_count) + ' AdminDown: '
-              + str(adminDown_count) + ' Down: ' + str(down_count))
-        print("OK: UP: {} AdminDown: {} Down: {}".format(up_count, adminDown_count, down_count))
+        print(f"UP: {up_count} AdminDown: {adminDown_count} Down: {down_count}")
     else:
-        print("CRIT: Down: {}".format(down_count))
+        print(f"Down: {down_count}")
         print('\n'.join(return_message))
 
     sys.exit(return_code)
