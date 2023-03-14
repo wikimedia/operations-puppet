@@ -4,7 +4,7 @@ set -e
 set -x
 
 # Install the public root ssh key
-mkdir /target/root/.ssh
+mkdir -p /target/root/.ssh # Use -p, since on bookworm, the dir exists
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
 
