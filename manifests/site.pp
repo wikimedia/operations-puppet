@@ -350,12 +350,8 @@ node /^cloudgw200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::cloudgw)
 }
 
-node 'cloudlb2001-dev.codfw.wmnet' {
+node /^cloudlb200[123]-dev\.codfw\.wmnet$/ {
     role(wmcs::cloudlb)
-}
-
-node /^cloudlb200[23]-dev\.codfw\.wmnet$/ {
-    role(insetup::wmcs)
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet$/ {
