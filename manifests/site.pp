@@ -1464,7 +1464,7 @@ node 'pki1001.eqiad.wmnet' {
 }
 
 node 'pki2001.codfw.wmnet' {
-    role(spare::system)
+    role(insetup::infrastructure_foundations)
 }
 
 # PKI server
