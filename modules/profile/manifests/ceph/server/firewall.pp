@@ -32,7 +32,7 @@ class profile::ceph::server::firewall (
     # During this bootstrapping phase we will therefore only allow server traffic from within the cluster
     # and will return to the configuration mechanism for RBD client networks, such as the dse-k8s cluster
     # pod ranges.
-    $ferm_srange = join(concat($ceph_server_addrs, ' '))
+    $ferm_srange = join($ceph_server_addrs, ' ')
 
     ferm::service { 'ceph_daemons':
         proto  => 'tcp',
