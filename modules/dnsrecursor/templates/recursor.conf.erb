@@ -61,8 +61,6 @@ forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
 <% if @install_from_component or @pdns_43 -%>
 # https://doc.powerdns.com/recursor/upgrade.html#x-to-4-5-1
 edns-subnet-allow-list=<%= @wmf_authdns.join(', ') %>
-# also allow any client source IP that can reach us (already restricted) to be used in ECS data
-ecs-add-for: 0.0.0.0/0, ::/0
 <%- else -%>
 edns-subnet-whitelist=<%= @wmf_authdns.join(', ') %>
 <%- end -%>
