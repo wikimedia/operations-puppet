@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::toolforge::harbor (
-    Stdlib::Unixpath $data_volume = lookup('profile::toolforge::harbor::data_volume', {default_value => '/srv/harbor/data'}),
+    Stdlib::Unixpath $data_volume = lookup('profile::toolforge::harbor::data_volume', {default_value => '/srv/ops/harbor/data'}),
     String $tlscert = lookup('profile::toolforge::harbor::tlscert', {default_value => 'ec-prime256v1.chained.crt'}),
     String $tlskey = lookup('profile::toolforge::harbor::tlskey', {default_value => 'ec-prime256v1.key'}),
     Stdlib::Unixpath $tlscertdir = lookup('profile::toolforge::harbor::tlscertdir', {default_value => '/etc/acmecerts/toolforge/live'}),
@@ -96,14 +96,14 @@ class profile::toolforge::harbor (
         # relying on the installer, we can adjust the symlinks and volumes of the
         # proxy service so that the file resources aren't needed and the docker-compose
         # exec can be on the acmechief::cert resource.
-        file { '/srv/harbor/data/secret/cert/server.crt':
+        file { '/srv/ops/harbor/data/secret/cert/server.crt':
             ensure  => present,
             mode    => '0600',
             owner   => 10000,
             group   => 10000,
             source  => $tlscertfile,
             require => File['/srv/ops/harbor/data/secret/cert'],
-        } -> file { '/srv/harbor/data/secret/cert/server.key':
+        } -> file { '/srv/ops/harbor/data/secret/cert/server.key':
             ensure    => present,
             mode      => '0600',
             owner     => 10000,
@@ -118,7 +118,7 @@ class profile::toolforge::harbor (
         # Reload the nginx container if certs change.
         exec {'reload-nginx-on-tls-update':
             command     => "/usr/bin/docker-compose -f ${composefile} exec -T proxy nginx -s reload",
-            subscribe   => File['/srv/harbor/data/secret/cert/server.key'],
+            subscribe   => File['/srv/ops/harbor/data/secret/cert/server.key'],
             refreshonly => true,
         }
 
@@ -136,7 +136,7 @@ class profile::toolforge::harbor (
         exec {'ensure-compose-started':
             command => "/usr/bin/docker-compose -f ${composefile} up -d",
             onlyif  => $check_script,
-            require => File['/srv/harbor/data/secret/cert/server.key'],
+            require => File['/srv/ops/harbor/data/secret/cert/server.key'],
             path    => ['/usr/bin'],
         }
     }
