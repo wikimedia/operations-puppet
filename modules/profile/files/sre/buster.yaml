@@ -26,6 +26,7 @@ role::lists:
   phab-task: 331706
 role::configcluster:
   target-q: TBD
+  phab-task: 332010
 role::wmcs::nfs::primary:
   target-q: TBD
 role::wmcs::openstack::eqiad1::backy:
@@ -258,6 +259,7 @@ role::kafka::jumbo::broker:
   phab-task: 288804
 role::kafka::main:
   target-q: TBD
+  phab-task: 332013
 role::kafka::test::broker:
   target-q: TBD
   phab-task: 331710
@@ -368,6 +370,7 @@ role::redis::misc::slave:
   target-q: TBD
 role::docker_registry_ha::registry:
   target-q: TBD
+  phab-task: 332016
 role::releases:
   target-q: TBD
   phab-task: 327068
@@ -433,6 +436,7 @@ role::apt_repo:
   target-q: 331613
 role::poolcounter::server:
   target-q: TBD
+  phab-task: 332015
 role::orchestrator:
   target-q: TBD
   phab-task: 298959
@@ -453,6 +457,7 @@ role::gerrit:
   phab-task: 327068
 role::dragonfly::supernode:
   target-q: TBD
+  phab-task: 332011
 role::puppetdb:
   target-q: 2023-2
   phab-task: 330490
@@ -471,16 +476,17 @@ role::kerberos::kdc:
   target-q: 2023-2
   phab-task: 331695
 role::pki::multirootca:
-  target-q: TBD
+  target-q: 2023-2
   phab-task: 331696
 role::pki::root:
-  target-q: TBD
+  target-q: 2023-2
   phab-task: 331696
 role::search::loader:
   target-q: TBD
   phab-task: 323921
 role::chartmuseum:
   target-q: TBD
+  phab-task: 331969
 role::acme_chief:
   target-q: 2023-1
   phab-task: 321309
