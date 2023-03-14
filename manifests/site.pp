@@ -1463,10 +1463,6 @@ node 'pki1001.eqiad.wmnet' {
     role(pki::multirootca)
 }
 
-node 'pki2001.codfw.wmnet' {
-    role(insetup::infrastructure_foundations)
-}
-
 # PKI server
 # make sure this is stricter enough to exclude rpki
 node 'pki2002.codfw.wmnet' {
