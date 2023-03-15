@@ -246,7 +246,7 @@ role::wmcs::openstack::eqiad1::net:
   target-q: TBD
 role::miscweb:
   target-q: TBD
-  phab-task: 300171
+  phab-task: 331896
 role::archiva:
   target-q: TBD
   phab-task: 288804
@@ -476,10 +476,10 @@ role::kerberos::kdc:
   target-q: 2023-2
   phab-task: 331695
 role::pki::multirootca:
-  target-q: 2023-2
+  target-q: 2023-1
   phab-task: 331696
 role::pki::root:
-  target-q: 2023-2
+  target-q: 2023-1
   phab-task: 331696
 role::search::loader:
   target-q: TBD
