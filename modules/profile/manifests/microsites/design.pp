@@ -46,4 +46,13 @@ class profile::microsites::design(
         target  => '/srv/deployment/design/style-guide',
         require => Scap::Target['design/style-guide'],
     }
+
+    prometheus::blackbox::check::http { 'design.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        force_tls          => true,
+        body_regex_matches => ['Foundation Design'],
+    }
+
 }
