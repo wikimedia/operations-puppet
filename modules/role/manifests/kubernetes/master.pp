@@ -5,8 +5,6 @@ class role::kubernetes::master {
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master
-    include profile::kubernetes::client
-
     include profile::docker::engine
     include profile::kubernetes::node
     include profile::calico::kubernetes

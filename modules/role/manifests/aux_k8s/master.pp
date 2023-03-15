@@ -10,8 +10,6 @@ class role::aux_k8s::master {
 
     # setup as a kubernetes master
     include profile::kubernetes::master
-    # setup kubectl
-    include profile::kubernetes::client
     # setup docker on the machine
     include profile::docker::engine
     # kubernete's masters are also regular nodes

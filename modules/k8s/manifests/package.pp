@@ -5,7 +5,7 @@
 #
 define k8s::package (
     Enum['master', 'node', 'client'] $package,
-    K8s::KubernetesVersion           $version         = '1.16',
+    K8s::KubernetesVersion           $version,
     String                           $distro          = "${::lsbdistcodename}-wikimedia",
     Stdlib::HTTPUrl                  $uri             = 'http://apt.wikimedia.org/wikimedia',
     Integer                          $priority        = 1001,

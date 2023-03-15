@@ -6,7 +6,7 @@ class calico (
     Stdlib::Host                   $master_fqdn,
     String                         $calicoctl_username,
     Hash[String, Stdlib::Unixpath] $auth_cert,
-    Calico::CalicoVersion          $calico_version     = '3.17',
+    Calico::CalicoVersion          $calico_version,
 ) {
     file { '/etc/calico':
         ensure => directory,

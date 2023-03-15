@@ -3,7 +3,7 @@
 #   This class sets up a kubernetes master (apiserver)
 #
 class profile::kubernetes::master (
-    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version', { default_value => '1.23' }),
+    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version'),
     String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
     Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[String] $etcd_urls=lookup('profile::kubernetes::master::etcd_urls'),
@@ -42,6 +42,12 @@ class profile::kubernetes::master (
     # 11 days + 30 minutes to capture the puppet run schedule.
     Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 })
 ) {
+    # Install kubectl matching the masters kubernetes version
+    # (that's why we don't use profile::kubernetes::client)
+    class { 'k8s::client':
+        version => $version,
+    }
+
     $k8s_le_116 = versioncmp($version, '1.16') <= 0
 
     # k8s 1.16 clusters use cergen

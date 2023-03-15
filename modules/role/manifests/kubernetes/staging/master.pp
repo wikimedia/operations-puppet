@@ -5,7 +5,6 @@ class role::kubernetes::staging::master {
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master
-    include profile::kubernetes::client
 
     include profile::docker::engine
     include profile::kubernetes::node

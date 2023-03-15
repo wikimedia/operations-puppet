@@ -4,7 +4,6 @@ class role::ml_k8s::master {
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master
-    include profile::kubernetes::client
 
     # Needed to schedule containers like bird, used by calico.
     # More info: T285927

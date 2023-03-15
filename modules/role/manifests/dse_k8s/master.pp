@@ -5,7 +5,6 @@ class role::dse_k8s::master {
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master
-    include profile::kubernetes::client
 
     # Sets up docker on the machine
     include profile::docker::engine

@@ -7,7 +7,7 @@
 # suggests to use a chained config with Calico.
 
 class profile::calico::kubernetes (
-    Calico::CalicoVersion $calico_version = lookup('profile::calico::kubernetes::calico_version', { default_value => '3.17' }),
+    Calico::CalicoVersion $calico_version = lookup('profile::calico::kubernetes::calico_version'),
     String $calico_cni_username = lookup('profile::calico::kubernetes::calico_cni::username', { default_value => 'calico-cni' }),
     String $calicoctl_username = lookup('profile::calico::kubernetes::calicoctl::username', { default_value => 'calicoctl' }),
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
