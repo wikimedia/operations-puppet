@@ -27,8 +27,6 @@ class profile::analytics::cluster::packages::statistics {
             package  => 'golang',
             priority => 1001
         }
-    } else {
-      ensure_packages(['golang'])
     }
 
     ensure_packages([
@@ -56,7 +54,7 @@ class profile::analytics::cluster::packages::statistics {
         'php-mysql',
         'libfontconfig1-dev',     # For {systemfonts} R pkg dep of {hrbrthemes} pkg for dataviz (T254278)
         'libcairo2-dev',          # ^
-
+        'golang',
         # For embedded configurable-http-proxy
         'nodejs',
         'npm',
