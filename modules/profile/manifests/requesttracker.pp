@@ -49,5 +49,6 @@ class profile::requesttracker {
         path             => '/',
         status_matches   => [302], # Ensure we redirect to IDP
         follow_redirects => false,
+        ip_families      => [ip4],
     }
 }
