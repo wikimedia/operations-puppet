@@ -44,10 +44,20 @@ class profile::thanos::rule (
         # as Prometheus job targets
         class { 'thanos::rule::prometheus': }
 
-        prometheus::pint::source { 'thanos-rule':
-            port       => 16902, # thanos query-frontend
+        prometheus::pint::source { 'thanos-query-frontend':
+            port       => 16902,
             url_path   => '',
             all_alerts => true,
+        }
+
+        # promql/rate needs to read Prometheus config via
+        # /api/v1/status/config which Thanos doesn't expose or proxy
+        prometheus::pint::config { 'disable-checks':
+            content => @(CONFIG)
+                checks {
+                    disabled = ["promql/rate"]
+                }
+                |- CONFIG
         }
     } else {
         class { 'prometheus::pint':
