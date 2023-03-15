@@ -764,12 +764,12 @@ node 'db1183.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# m5 master
+# m5 old master
 node 'db1176.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# Future temporarily master
+# Future temporarily master T331877
 node 'db1106.eqiad.wmnet' {
     role(mariadb::misc)
 }
