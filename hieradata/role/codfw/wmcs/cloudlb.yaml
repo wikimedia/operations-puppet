@@ -1,3 +1,6 @@
 profile::admin::groups:
   - wmcs-roots
   - labtest-roots
+
+# all cloudlb servers are in the same rack, thus the same vlan
+profile::wmcs::cloud_private_subnet::vlan_id: 2151

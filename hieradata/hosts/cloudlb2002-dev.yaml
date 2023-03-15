@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+---
+
+# see also https://netbox.wikimedia.org/ipam/vlans/198/
+# this IP is manually allocated here, this file is the source of truth
+profile::wmcs::cloud_private_subnet::address: 172.20.5.3/24

@@ -6,5 +6,6 @@ class role::wmcs::cloudlb (
 
     include profile::base::production
     include profile::base::firewall
+    include profile::wmcs::cloud_private_subnet
     include profile::wmcs::cloudlb::haproxy
 }
