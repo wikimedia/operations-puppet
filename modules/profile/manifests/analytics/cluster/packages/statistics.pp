@@ -22,9 +22,9 @@ class profile::analytics::cluster::packages::statistics {
     ensure_packages(['libasound2-dev', 'libjack-dev', 'portaudio19-dev'])
 
     if debian::codename::eq('buster') {
-        apt::pin { 'golang':
+        apt::pin { 'golang-go':
             pin      => 'release a=buster-backports',
-            package  => 'golang',
+            package  => 'golang-go',
             priority => 1001
         }
     }
@@ -54,7 +54,7 @@ class profile::analytics::cluster::packages::statistics {
         'php-mysql',
         'libfontconfig1-dev',     # For {systemfonts} R pkg dep of {hrbrthemes} pkg for dataviz (T254278)
         'libcairo2-dev',          # ^
-        'golang',
+        'golang-go',
         # For embedded configurable-http-proxy
         'nodejs',
         'npm',
