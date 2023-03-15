@@ -26,7 +26,7 @@ class profile::kubernetes::node (
     #        between production and staging as we don't want to share the same intermediate across
     #        that boundary.
     # FIXME: This is *not* optional for k8s versions > 1.16, make it mandatory after 1.23 migration
-    Optional[Cfssl::Ca_name] $pki_intermediate = lookup('profile::kubernetes::pki::intermediate', { default_value => undef }),
+    Cfssl::Ca_name $pki_intermediate = lookup('profile::kubernetes::pki::intermediate'),
     # 952200 seconds is the default from cfssl::cert:
     # the default https checks go warning after 10 full days i.e. anywhere
     # from 864000 to 950399 seconds before the certificate expires.  As such set this to
