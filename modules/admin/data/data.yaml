@@ -395,7 +395,7 @@ groups:
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia]
+              ksarabia, jgiannelos]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4243,6 +4243,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIfuJZj4eqixGEpDYKwR6sJtEVrWXAAtpogfhPISfcPt nemo@nemoworld-wmf-macbook.local
     uid: 24346
     email: jgiannelos@wikimedia.org
+    krb: present
   nahidunlimited:
     ensure: present
     gid: 500
