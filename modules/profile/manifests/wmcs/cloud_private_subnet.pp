@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
-    Integer                       $vlan_id = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
-    Stdlib::IP::Address::V4::Cidr $address = lookup('profile::wmcs::cloud_private_subnet::address'),
+    Integer                       $vlan_id  = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
+    Stdlib::IP::Address::V4::Cidr $address  = lookup('profile::wmcs::cloud_private_subnet::address'),
+    Stdlib::IP::Address::V4::Cidr $gw       = lookup('profile::wmcs::cloud_private_subnet::gw'),
+    Stdlib::IP::Address::V4::Cidr $supernet = lookup('profile::wmcs::cloud_private_subnet::supernet'),
 ) {
     interface::tagged { 'cloud_private_subnet_iface':
         base_interface     => $facts['interface_primary'],
@@ -12,12 +14,16 @@ class profile::wmcs::cloud_private_subnet (
         legacy_vlan_naming => false,
     }
 
-    $ip = split($address, '/')[0]
-    $netmask = split($address, '/')[1]
-
     interface::ip { 'cloud_private_subnet_ip':
         interface => "vlan${vlan_id}",
-        address   => $ip,
-        prefixlen => $netmask,
+        address   => split($address, '/')[0],
+        prefixlen => split($address, '/')[1],
+    }
+
+    interface::route { 'cloud_private_subnet_route':
+        address   => split($supernet, '/')[0],
+        prefixlen => split($supernet, '/')[1],
+        nexthop   => $gw,
+        interface => "vlan${vlan_id}",
     }
 }

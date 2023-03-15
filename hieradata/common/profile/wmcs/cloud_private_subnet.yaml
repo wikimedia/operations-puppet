@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: Apache-2.0
+---
+profile::wmcs::cloud_private_subnet::supernet: 172.20.0.0/16
