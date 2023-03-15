@@ -1030,6 +1030,9 @@ groups:
       'ALL = NOPASSWD: /bin/journalctl *'
     ]
     system_members: [analytics-platform-eng]
+    approval:
+      - Olja Dimitrjevic
+      - Andrew Otto
   research-deployers:
     gid: 835
     description: Created for deploying airflow-dags/research
