@@ -6,18 +6,17 @@ describe "profile::wmcs::services::maintain_dbusers" do
     context "on #{os}" do
       let(:node_params) {{'_role' => 'wmcs::openstack::eqiad1::control'}}
       let(:params) {{
-        "cluster_ip" => "127.0.0.1",
         "section_ports" => {
           "s1" => 3312,
         },
-        "variances" => {
+        "mysql_variances" => {
           "s12345" => 45,
         },
         "paws_replica_cnf_user" => "paws_user",
-        "paws_replica_cnf_password" => "paws_pass",
+        "paws_replica_cnf_htpassword" => "paws_pass",
         "paws_replica_cnf_root_url" => "paws_url",
         "tools_replica_cnf_user" => "tools_user",
-        "tools_replica_cnf_password" => "tools_pass",
+        "tools_replica_cnf_htpassword" => "tools_pass",
         "tools_replica_cnf_root_url" => "tools_url",
         "maintain_dbusers_primary" => "im.the.primary",
       }}

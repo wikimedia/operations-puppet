@@ -9,18 +9,17 @@
 #
 
 class profile::wmcs::services::maintain_dbusers (
-    Hash                      $ldapconfig                 = lookup('labsldapconfig', {'merge' => hash}),
-    Hash                      $production_ldap_config     = lookup('ldap', {'merge' => hash}),
-    Stdlib::IP::Address::V4   $cluster_ip                 = lookup('profile::wmcs::nfs::primary::cluster_ip'),
-    Hash[String,Stdlib::Port] $section_ports              = lookup('profile::mariadb::section_ports'),
-    Hash[String,Integer]      $variances                  = lookup('profile::wmcs::services::maintain_dbusers::mysql_variances'),
-    String                    $paws_replica_cnf_user      = lookup('profile::wmcs::services::maintain_dbusers::paws_user'),
-    String                    $paws_replica_cnf_password  = lookup('profile::wmcs::services::maintain_dbusers::paws_htpassword'),
-    String                    $paws_replica_cnf_root_url  = lookup('profile::wmcs::services::maintain_dbusers::paws_root_url'),
-    String                    $tools_replica_cnf_user     = lookup('profile::wmcs::services::maintain_dbusers::tools_user'),
-    String                    $tools_replica_cnf_password = lookup('profile::wmcs::services::maintain_dbusers::tools_htpassword'),
-    String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::services::maintain_dbusers::tools_root_url'),
-    String                    $maintain_dbusers_primary   = lookup('profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary'),
+    Hash                      $labsldapconfig               = lookup('labsldapconfig', {'merge' => hash}),
+    Hash                      $ldap                         = lookup('ldap', {'merge' => hash}),
+    Hash[String,Stdlib::Port] $section_ports                = lookup('profile::mariadb::section_ports'),
+    Hash[String,Integer]      $mysql_variances              = lookup('profile::wmcs::services::maintain_dbusers::mysql_variances'),
+    String                    $paws_replica_cnf_user        = lookup('profile::wmcs::services::maintain_dbusers::paws_replica_cnf_user'),
+    String                    $paws_replica_cnf_htpassword  = lookup('profile::wmcs::services::maintain_dbusers::paws_replica_cnf_htpassword'),
+    String                    $paws_replica_cnf_root_url    = lookup('profile::wmcs::services::maintain_dbusers::paws_replica_cnf_root_url'),
+    String                    $tools_replica_cnf_user       = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_user'),
+    String                    $tools_replica_cnf_htpassword = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_htpassword'),
+    String                    $tools_replica_cnf_root_url   = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url'),
+    String                    $maintain_dbusers_primary     = lookup('profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary'),
 ){
     ensure_packages([
         'python3-ldap3',
@@ -71,11 +70,11 @@ class profile::wmcs::services::maintain_dbusers (
     $creds = {
         'ldap' => {
             'hosts'    => [
-                $production_ldap_config['ro-server'],
-                $production_ldap_config['ro-server-fallback'],
+                $ldap['ro-server'],
+                $ldap['ro-server-fallback'],
             ],
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-            'password' => $ldapconfig['proxypass'],
+            'password' => $labsldapconfig['proxypass'],
         },
         'labsdbs' => {
             'hosts'    => $all_hosts,
@@ -91,16 +90,15 @@ class profile::wmcs::services::maintain_dbusers (
             'paws'  => {
                 'root_url' => $paws_replica_cnf_root_url,
                 'username' => $paws_replica_cnf_user,
-                'password' => $paws_replica_cnf_password,
+                'password' => $paws_replica_cnf_htpassword,
             },
             'tools' => {
                 'root_url' => $tools_replica_cnf_root_url,
                 'username' => $tools_replica_cnf_user,
-                'password' => $tools_replica_cnf_password,
+                'password' => $tools_replica_cnf_htpassword,
             },
         },
-        'nfs-cluster-ip'   => $cluster_ip,
-        'variances'        => $variances,
+        'variances'        => $mysql_variances,
     }
 
     file { '/etc/dbusers.yaml':
