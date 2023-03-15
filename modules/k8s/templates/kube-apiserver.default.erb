@@ -45,36 +45,27 @@ if @admission_configuration
   daemon_args.push("--admission-control-config-file=#{@admission_configuration_file}")
 end
 
-if scope.call_function('versioncmp', [@version, '1.16']) <= 0
-  daemon_args.push("--authorization-mode=RBAC")
-  # disable the unprotected API port that used to be open on 127.0.0.1:8080
-  # will be removed with >= 1.24
-  daemon_args.push("--insecure-port=0")
-  # has been deprecated, will be removed in a future release
-  daemon_args.push("--logtostderr=#{@logtostderr}")
-elsif scope.call_function('versioncmp', [@version, '1.23']) >= 0
-  # Enable node authorizer for k8s >= 1.23
-  daemon_args.push("--authorization-mode=Node,RBAC")
+# Enable node authorizer
+daemon_args.push("--authorization-mode=Node,RBAC")
 
-  # From 1.20 changelog:
-  # TokenRequest and TokenRequestProjection are now GA features. The following flags are required by the API server:
-  #  --service-account-issuer, should be set to a URL identifying the API server that will be stable over the cluster lifetime.
-  #  --service-account-key-file, set to one or more files containing one or more public keys used to verify tokens.
-  #  --service-account-signing-key-file, set to a file containing a private key to use to sign service account tokens. Can be the same file given to kube-controller-manager with --service-account-private-key-file.
-  daemon_args.push("--service-account-issuer=#{@service_account_issuer}")
-  daemon_args.push("--service-account-signing-key-file=#{@sa_cert['key']}")
-  daemon_args.push("--client-ca-file=#{@apiserver_cert['chain']}")
-  daemon_args.push("--kubelet-client-key=#{@kubelet_client_cert['key']}")
-  daemon_args.push("--kubelet-client-certificate=#{@kubelet_client_cert['cert']}")
+# From 1.20 changelog:
+# TokenRequest and TokenRequestProjection are now GA features. The following flags are required by the API server:
+#  --service-account-issuer, should be set to a URL identifying the API server that will be stable over the cluster lifetime.
+#  --service-account-key-file, set to one or more files containing one or more public keys used to verify tokens.
+#  --service-account-signing-key-file, set to a file containing a private key to use to sign service account tokens. Can be the same file given to kube-controller-manager with --service-account-private-key-file.
+daemon_args.push("--service-account-issuer=#{@service_account_issuer}")
+daemon_args.push("--service-account-signing-key-file=#{@sa_cert['key']}")
+daemon_args.push("--client-ca-file=#{@apiserver_cert['chain']}")
+daemon_args.push("--kubelet-client-key=#{@kubelet_client_cert['key']}")
+daemon_args.push("--kubelet-client-certificate=#{@kubelet_client_cert['cert']}")
 
-  # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer
-  daemon_args.push("--requestheader-username-headers=X-Remote-User")
-  daemon_args.push("--requestheader-group-headers=X-Remote-Group")
-  daemon_args.push("--requestheader-extra-headers-prefix=X-Remote-Extra-")
-  daemon_args.push("--requestheader-client-ca-file=#{@frontproxy_cert['chain']}")
-  daemon_args.push("--requestheader-allowed-names=front-proxy-client")
-  daemon_args.push("--proxy-client-cert-file=#{@frontproxy_cert['cert']}")
-  daemon_args.push("--proxy-client-key-file=#{@frontproxy_cert['key']}")
-end
+# https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer
+daemon_args.push("--requestheader-username-headers=X-Remote-User")
+daemon_args.push("--requestheader-group-headers=X-Remote-Group")
+daemon_args.push("--requestheader-extra-headers-prefix=X-Remote-Extra-")
+daemon_args.push("--requestheader-client-ca-file=#{@frontproxy_cert['chain']}")
+daemon_args.push("--requestheader-allowed-names=front-proxy-client")
+daemon_args.push("--proxy-client-cert-file=#{@frontproxy_cert['cert']}")
+daemon_args.push("--proxy-client-key-file=#{@frontproxy_cert['key']}")
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

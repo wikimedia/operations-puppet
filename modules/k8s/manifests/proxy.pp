@@ -6,7 +6,6 @@ class k8s::proxy (
     K8s::ClusterCIDR $cluster_cidr,
     Boolean $ipv6dualstack = false,
     Enum['iptables', 'ipvs'] $proxy_mode = 'iptables',
-    Boolean $logtostderr = true,
     Integer $v_log_level = 0,
 ) {
     k8s::package { 'proxy':
