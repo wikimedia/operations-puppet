@@ -8,14 +8,14 @@
 
 module(load="imudp")
 
-# https://phabricator.wikimedia.org/T330205#8699489
-if $msg contains 'SQLPlatform::isWriteQuery fallback to regex' then stop
-
 template(name="udp_localhost_topic" type="string" string="udp_localhost-%syslogseverity-text:::lowercase%")
 
 # Use a separate (in memory) queue to limit message processing to this ruleset only.
 ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
   action(type="mmjsonparse" name="mmjsonparse_udp_localhost")
+
+  # https://phabricator.wikimedia.org/T330205#8699489
+  if $msg contains 'SQLPlatform::isWriteQuery fallback to regex' then stop
 
   action(type="omkafka"
          broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
