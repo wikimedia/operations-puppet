@@ -71,11 +71,12 @@ def main():
     if counters['v3_up'] < counters['v3_p2pif']:
         return_code = ICINGA_CRITICAL
 
-    output_messages.append("OSPFv3: {up}/{tot} UP".format(up=counters['v3_up'],
-                                                          tot=counters['v3_p2pif']))
+    if counters['v3_p2pif'] > 0:
+        output_messages.append("OSPFv3: {up}/{tot} UP".format(up=counters['v3_up'],
+                                                              tot=counters['v3_p2pif']))
 
-    # Ensure we have as many OSPFv2 as OSPFv3 neighbors
-    if counters['v3_p2pif'] != counters['p2pif']:
+    # If OSPFv3 interfaces configured ensure we've the same number as OSPFv2
+    if counters['v3_p2pif'] > 0 and counters['v3_p2pif'] != counters['p2pif']:
         return_code = ICINGA_CRITICAL
         output_messages.append("{} v2 P2P interfaces vs. {} v3 P2P interfaces".format(
             counters['p2pif'], counters['v3_p2pif']))
