@@ -21,13 +21,16 @@ class profile::analytics::cluster::packages::statistics {
     # TBD: do we want to keep them permanently?
     ensure_packages(['libasound2-dev', 'libjack-dev', 'portaudio19-dev'])
 
-    if debian::codename::eq('buster') {
-        apt::pin { 'golang-go':
-            pin      => 'release a=buster-backports',
-            package  => 'golang-go',
-            priority => 1001
-        }
-    }
+      apt::pin { 'golang-go':
+          pin      => "release a=${debian::codename()}-backports",
+          package  => 'golang-go',
+          priority => 1001
+      }
+      apt::pin { 'golang-src':
+          pin      => "release a=${debian::codename()}-backports",
+          package  => 'golang-src',
+          priority => 1001
+      }
 
     ensure_packages([
         'time',
