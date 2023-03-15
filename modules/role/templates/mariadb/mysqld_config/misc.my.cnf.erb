@@ -41,6 +41,13 @@ thread_stack                   = 192K
 thread_cache_size              = 100
 interactive_timeout            = 28800
 wait_timeout                   = 3600
+<% if Float(@memorysize.split[0]) > 200.0 -%>
+thread_pool_size               = 64
+<% elsif @processorcount <= 32 -%>
+thread_pool_size               = 32
+<% else -%>
+thread_pool_size               = <%= @processorcount %>
+<% end -%>
 
 sync_binlog                    = 1
 binlog_cache_size              = 1M
