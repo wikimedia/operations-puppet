@@ -394,7 +394,8 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
-              jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin]
+              jebe, ollieshotton, muja, taavi, abhas, nfraison, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
+              ksarabia]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5792,6 +5793,14 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM1Qf6popZxXwLuBlDJfIeBlAHJDl2Y1hqUKV1VoU1IP dmartin@wikimedia.org
+  ksarabia:
+    ensure: present
+    realname: Kimberly Sarabia
+    email: ksarabia@wikimedia.org
+    uid: 43160
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDah66UzrujSoTNuG5rRS3Ot1oa3pMWLkNU9jTsrbFyBBQ2Bzr7Nh4PoZKndvUAyeIc5+9S6s3rKG4b7BY2Bup4BKwHzoXKtbcphRQsWcWI4Xo+qlg6IOVWvxBoVbB8hdHq851MxUJDi+WZc9d+pW2MKaE6zGH7zXpQVwkPRF2b69pi5NmpvCh6bmJo0fU9ose9OmGnf0SwnFsW7HKpAZWlXkynFL6Pgv1rc348QXuRS7UY1afyv07lnvSGClFTfv4+56TOE8WDAIM0b/4p8UC2xtnVR7APQ8EAHoIw62ddexAtn76l//yzD0Ba/oWA6Y87O6Bqm1m0aRNAqbaNq9Xxsx7rAUOVpKdybVFb6NAqwhf9VH/TwYTyq6V12UwY4Q7bT+9/VK+WDcdxSiWnUBFJx5LLu4h/7lKxtmWKo0UaEGEoUCAA7ipJAIlwDJ5txSv2BGnkAVCtKImntmVilA1XtTrClZeDG7zvC4DDVnoXrYzYDp8cidNR9hRYHrSzGSDWlkiSAbNjq6lKHxjaqqmC2n0kU91a7LYNHV4Eje6s0TijYpanND5JytvRX+St3l07zZ/IbMTfsOmXLdrh0zZjnp+Kj+oPqdWJwNUyIUQeFMRNiV81vWYKBkpSX/qV59oJ3/X8klc46xNVxlFIj/Mkc0xwU45s+iPmiXlkWl257Q== ksarabia@wmf3281
 
 ldap_only_users:
   adavenport:
@@ -6544,10 +6553,6 @@ ldap_only_users:
     ensure: present
     realname: Stephane Rebai
     email: srebai@wikimedia.org
-  ksarabia:
-    ensure: present
-    realname: Kimberly Sarabia
-    email: ksarabia@wikimedia.org
   kappakayala:
     ensure: present
     realname: Kavitha Appakayala
