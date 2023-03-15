@@ -1,3 +1,11 @@
+---
+
+# TODO: override here the list of openstack controllers so HAproxy in cloudlb
+# can contact the backends using the cloud-private subnet. Once all cloudcontrol servers are
+# in the same network setup, this override here can be deleted, because it should be set elsewhere.
+profile::openstack::codfw1dev::openstack_controllers:
+  - cloudcontrol2001-dev.codfw.wmnet
+
 profile::wmcs::cloudlb::haproxy::acme_chief_cert_name: "%{lookup('profile::openstack::codfw1dev::haproxy::acme_chief_cert_name')}"
 
 profile::wmcs::cloudlb::haproxy::config:

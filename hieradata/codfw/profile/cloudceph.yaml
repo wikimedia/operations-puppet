@@ -5,7 +5,11 @@ profile::cloudceph::public_networks:
   - 10.192.20.0/24
 profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 
+# TODO: we may not use here the private.codfw.wikimedia.cloud domain
+# TODO: because ceph nodes themselves are not in that subnet
+# TODO: so traffic can't circulate using the cloud-private subnet (yet)
 profile::cloudceph::openstack_controllers:
+  - cloudcontrol2001-dev.codfw.wmnet
   - cloudcontrol2004-dev.wikimedia.org
   - cloudcontrol2005-dev.wikimedia.org
 
