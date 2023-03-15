@@ -129,8 +129,4 @@ class profile::wmcs::nfs::maintain_dbusers (
         content => systemd_template('wmcs/nfs/maintain-dbusers'),
         restart => true,
     }
-
-    nrpe::monitor_systemd_unit_state { 'maintain-dbusers':
-        description => 'Ensure mysql credential creation for tools users is running',
-    }
 }
