@@ -8,6 +8,9 @@
 
 module(load="imudp")
 
+# https://phabricator.wikimedia.org/T330205#8699489
+if $msg contains 'SQLPlatform::isWriteQuery fallback to regex' then stop
+
 template(name="udp_localhost_topic" type="string" string="udp_localhost-%syslogseverity-text:::lowercase%")
 
 # Use a separate (in memory) queue to limit message processing to this ruleset only.
