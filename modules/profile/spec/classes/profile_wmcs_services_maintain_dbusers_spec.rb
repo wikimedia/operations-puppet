@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 require_relative "../../../../rake_modules/spec_helper"
 
-describe "profile::wmcs::nfs::maintain_dbusers" do
+describe "profile::wmcs::services::maintain_dbusers" do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:node_params) {{'_role' => 'wmcs::openstack::eqiad1::control'}}

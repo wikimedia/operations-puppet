@@ -8,19 +8,19 @@
 #   - MySQL replica / toolsdb accounts
 #
 
-class profile::wmcs::nfs::maintain_dbusers (
+class profile::wmcs::services::maintain_dbusers (
     Hash                      $ldapconfig                 = lookup('labsldapconfig', {'merge' => hash}),
     Hash                      $production_ldap_config     = lookup('ldap', {'merge' => hash}),
     Stdlib::IP::Address::V4   $cluster_ip                 = lookup('profile::wmcs::nfs::primary::cluster_ip'),
     Hash[String,Stdlib::Port] $section_ports              = lookup('profile::mariadb::section_ports'),
-    Hash[String,Integer]      $variances                  = lookup('profile::wmcs::nfs::primary::mysql_variances'),
-    String                    $paws_replica_cnf_user      = lookup('profile::wmcs::nfs::maintain_dbusers::paws_user'),
-    String                    $paws_replica_cnf_password  = lookup('profile::wmcs::nfs::maintain_dbusers::paws_htpassword'),
-    String                    $paws_replica_cnf_root_url  = lookup('profile::wmcs::nfs::maintain_dbusers::paws_root_url'),
-    String                    $tools_replica_cnf_user     = lookup('profile::wmcs::nfs::maintain_dbusers::tools_user'),
-    String                    $tools_replica_cnf_password = lookup('profile::wmcs::nfs::maintain_dbusers::tools_htpassword'),
-    String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::nfs::maintain_dbusers::tools_root_url'),
-    String                    $maintain_dbusers_primary   = lookup('profile::wmcs::nfs::maintain_dbusers::maintain_dbusers_primary'),
+    Hash[String,Integer]      $variances                  = lookup('profile::wmcs::services::maintain_dbusers::mysql_variances'),
+    String                    $paws_replica_cnf_user      = lookup('profile::wmcs::services::maintain_dbusers::paws_user'),
+    String                    $paws_replica_cnf_password  = lookup('profile::wmcs::services::maintain_dbusers::paws_htpassword'),
+    String                    $paws_replica_cnf_root_url  = lookup('profile::wmcs::services::maintain_dbusers::paws_root_url'),
+    String                    $tools_replica_cnf_user     = lookup('profile::wmcs::services::maintain_dbusers::tools_user'),
+    String                    $tools_replica_cnf_password = lookup('profile::wmcs::services::maintain_dbusers::tools_htpassword'),
+    String                    $tools_replica_cnf_root_url = lookup('profile::wmcs::services::maintain_dbusers::tools_root_url'),
+    String                    $maintain_dbusers_primary   = lookup('profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary'),
 ){
     ensure_packages([
         'python3-ldap3',
