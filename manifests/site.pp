@@ -1538,6 +1538,10 @@ node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
     role(miscweb)
 }
 
+node 'miscweb1003.eqiad.wmnet', 'miscweb2003.codfw.wmnet' {
+    role(insetup::serviceops_collab)
+}
+
 # This node will eventually replace kerberos1001
 # It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb1001.eqiad.wmnet' {
