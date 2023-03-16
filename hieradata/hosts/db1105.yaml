@@ -1,6 +1,0 @@
-# db1105
-# Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s1: 185G
-  s2: 185G
-profile::monitoring::notifications_enabled: false
