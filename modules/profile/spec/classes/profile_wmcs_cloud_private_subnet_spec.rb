@@ -32,7 +32,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
         is_expected.to contain_interface__route("cloud_private_subnet_route")
               .with_address("172.20.0.0")
               .with_prefixlen("16")
-              .with_nexthop("172.20.5.1/24")
+              .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
       }
     end

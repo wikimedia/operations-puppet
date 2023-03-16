@@ -23,7 +23,7 @@ class profile::wmcs::cloud_private_subnet (
     interface::route { 'cloud_private_subnet_route':
         address   => split($supernet, '/')[0],
         prefixlen => split($supernet, '/')[1],
-        nexthop   => $gw,
+        nexthop   => split($gw, '/')[0],
         interface => "vlan${vlan_id}",
     }
 }
