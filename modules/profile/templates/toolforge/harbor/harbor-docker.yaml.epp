@@ -1,8 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- |
     Stdlib::Fqdn $harbor_url,
-    Stdlib::Unixpath $tlscertfile,
-    Stdlib::Unixpath $tlskeyfile,
     String[1] $harbor_admin_pwd,
     String[1] $harbor_db_pwd,
     Stdlib::Host $harbor_db_host,
@@ -21,12 +19,12 @@ http:
   port: 80
 
 # https related config
-https:
-  # https port for harbor, default is 443
-  port: 443
-  # The path of cert and key files for nginx
-  certificate: <%= $tlscertfile %>
-  private_key: <%= $tlskeyfile %>
+#https:
+#  # https port for harbor, default is 443
+#  port: 443
+#  # The path of cert and key files for nginx
+#  certificate: <%= $tlscertfile %>
+#  private_key: <%= $tlskeyfile %>
 
 # # Uncomment following will enable tls communication between all harbor components
 # internal_tls:
