@@ -6,11 +6,12 @@ Requires=docker.service
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm -f docker-resource-monitor
 ExecStart=/usr/bin/docker run \
+  --user root \
   --name docker-resource-monitor \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v docker-resource-monitor:/state \
-  docker-registry.wikimedia.org/docker-gc:1.0.0 \
-  resource-monitor --state-file /state/state.json
+  <%= @image_repo_path %>/resource-monitor:<%= @gc_version %> \
+  --state-file /state/state.json
 ExecStop=/usr/bin/docker stop docker-resource-monitor
 Restart=on-failure
 

@@ -1,28 +1,46 @@
 class docker::gc(
     Wmflib::Ensure            $ensure                  = 'present',
+    String                    $image_filter            = 'id=~.*',
+    String                    $volume_filter           = 'id=~.*',
+    Boolean                   $use_creation_dates      = false,
     Systemd::Timer::Interval  $interval                = '5m',
     String                    $images_high_water_mark  = '20gb',
     String                    $images_low_water_mark   = '10gb',
     String                    $volumes_high_water_mark = '20gb',
     String                    $volumes_low_water_mark  = '10gb',
 ){
-
-    systemd::service { 'docker-resource-monitor':
-        ensure  => $ensure,
-        content => file('docker/docker-resource-monitor.service'),
-        restart => true,
+    $gc_version      = '1.1.1'
+    $image_repo_path = 'docker-registry.wikimedia.org/repos/releng/docker-gc'
+    $ensure_monitor = $use_creation_dates ? {
+        true    => absent,
+        default => present,
     }
 
-    $command = "/usr/bin/docker run --rm \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -v docker-resource-monitor:/state \
-        docker-registry.wikimedia.org/docker-gc:1.0.0 \
-        gc \
-        --state-file /state/state.json \
-        --image-filter 'id=~.*' \
-        --volume-filter 'label:com.gitlab.gitlab-runner.type==cache' \
+    systemd::service { 'docker-resource-monitor':
+      ensure  => $ensure_monitor,
+      content => template('docker/docker-resource-monitor.service.erb'),
+      restart => true,
+    }
+
+    $common_docker_opts = "/usr/bin/docker run --rm \
+        --user root \
+        -v /var/run/docker.sock:/var/run/docker.sock"
+    $common_gc_opts = "${$image_repo_path}/docker-gc:${gc_version} \
+        --image-filter '${image_filter}' \
+        --volume-filter '${volume_filter}' \
         --images ${images_high_water_mark}:${images_low_water_mark} \
         --volumes ${volumes_high_water_mark}:${volumes_low_water_mark}"
+
+    if $use_creation_dates {
+        $command = "${common_docker_opts} \
+        ${common_gc_opts} \
+        --use-creation-dates"
+    } else {
+        $command = "${common_docker_opts} \
+        -v docker-resource-monitor:/state \
+        ${common_gc_opts} \
+        --state-file /state/state.json"
+    }
 
     systemd::timer::job { 'docker-gc':
         ensure      => $ensure,
