@@ -1,4 +1,5 @@
 # db1176
 mariadb::shard: 'm5'
+profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb106'
