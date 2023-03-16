@@ -4,6 +4,12 @@ service::configuration::logstash_host: localhost
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 
 # Netbox
+profile::netbox::validators:
+  - ipam.ipaddress
+  - dcim.cable
+  - dcim.device
+  - dcim.interface
+  - dcim.site
 profile::netbox::ssl_provider: cfssl
 profile::netbox::http_proxy: "%{alias('http_proxy')}"
 profile::netbox::discovery_name: netbox.discovery.wmnet
