@@ -1864,6 +1864,15 @@ node /^ms-backup200[12]\.codfw\.wmnet$/ {
     role(mediabackup::worker)
 }
 
+#new ms-fe servers and thanos-fe server T326846
+node /^ms-fe101[34]\.eqiad\.wmnet$/ {
+    role(insetup::serviceops)
+}
+
+node /^thanos-fe1004\.eqiad\.wmnet$/ {
+    role(nsetup::serviceops)
+}
+
 node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include lvs::realserver  # lint:ignore:wmf_styleguide
