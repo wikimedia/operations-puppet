@@ -16,7 +16,12 @@
 # @param extras_path The path which the extras repository will be cloned to
 # @param scap_repo The repo to use for scap deploys
 # @param ensure installs/removes config files
-# @param local_redis_port The port (as a string) that the required local Redis instance should listen on
+# @param redis_port The port (as a string) that the required Redis instance should listen on
+# @param redis_host the redis host to use
+# @param redis_password the redis password to use
+# @param changelog_retention how many days to keep the changelog
+# @param jobresult_retention how many days to keep the changelog
+# @param prefer_ipv4 prefer IPv4 over IPV6
 # @param local_redis_maxmem The amount of memory in bytes that the local Redis instance should use
 # @param ldap_server The LDAP server to specify in the configuration
 # @param enable_ldap Enable/disable LDAP authentication
@@ -35,7 +40,7 @@
 # @param swift_url_key The swift url key
 # @param ca_certs The path to the CA certificates that signs internal certs.
 #
-class netbox(
+class netbox (
     Stdlib::Fqdn                  $service_hostname,
     String                        $secret_key,
     String                        $ldap_password,
@@ -157,7 +162,7 @@ class netbox(
         creates => '/etc/systemd/system/uwsgi.service',
     }
 
-  $uwsgi_environ=[
+  $uwsgi_environ = [
       'LANG=C.UTF-8',
       'PYTHONENCODING=utf-8',
       "REQUESTS_CA_BUNDLE=${ca_certs}",
@@ -188,7 +193,6 @@ class netbox(
           'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox start',
           'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox status',
           'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox stop',
-
       ],
       core_limit      => '30G',
   }
@@ -200,5 +204,4 @@ class netbox(
 
   profile::auto_restarts::service { 'uwsgi-netbox': }
   profile::auto_restarts::service { 'rq-netbox': }
-
 }
