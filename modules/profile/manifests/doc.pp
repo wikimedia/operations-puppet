@@ -14,11 +14,12 @@ class profile::doc (
         deploy_user => $deploy_user,
     }
 
-    $php = debian::codename() ? {
-        'buster'   => 'php7.3',
-        'bullseye' => 'php7.4',
+    $php_version = debian::codename() ? {
+        'buster'   => '7.3',
+        'bullseye' => '7.4',
         default    => fail("${module_name} not supported by ${debian::codename()}")
     }
+    $php = "php${php_version}"
 
     ensure_packages(["${php}-fpm", "${php}-xml"])
 
@@ -154,4 +155,13 @@ class profile::doc (
         }
     }
     profile::auto_restarts::service { 'rsync': }
+
+    # We want to _include_ the E_DEPRECATED php logs, T325245
+    file { 'php-logging-confd':
+        ensure  => present,
+        path    => "/etc/php/${php_version}/fpm/conf.d/99-logging-levels",
+        owner   => 'root',
+        mode    => '0644',
+        content => 'error_reporting = E_ALL & ~E_STRICT',
+    }
 }
