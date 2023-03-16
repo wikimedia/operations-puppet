@@ -1473,12 +1473,12 @@ node /^kafka-logging1001\.eqiad\.wmnet$/ {
     role(insetup::observability)
 }
 
-node /^kafka-logging100[23]\.eqiad\.wmnet$/ {
+node /^kafka-logging100[234]\.eqiad\.wmnet$/ {
     role(kafka::logging)
 }
 
 # New kafka node T313960
-node /^kafka-logging100[45]\.eqiad\.wmnet$/ {
+node /^kafka-logging1005\.eqiad\.wmnet$/ {
     role(insetup::observability)
 }
 
