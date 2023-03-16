@@ -45,8 +45,4 @@ class profile::grafana::production (
     grafana::dashboard { 'varnish-aggregate-client-status-codes':
         source => 'puppet:///modules/grafana/dashboards/varnish-aggregate-client-status-codes',
     }
-
-    grafana::dashboard { 'swift':
-        source => 'puppet:///modules/grafana/dashboards/swift',
-    }
 }
