@@ -27,12 +27,6 @@ class auditd (
 
     ensure_packages(['auditd'])
 
-    # Till we have buster hosts, since the location of syslog.conf changed in bullseye.
-    $audisp_syslog = debian::codename() ? {
-      'bullseye' => '/etc/audit/plugins.d/syslog.conf',
-      'buster'   => '/etc/audisp/plugins.d/syslog.conf',
-    }
-
     file {
         default:
             ensure  => 'file',
@@ -45,7 +39,7 @@ class auditd (
             content => template('auditd/auditd.conf.erb');
         '/etc/audit/rules.d/audit.rules':
             content => template('auditd/audit.rules.erb');
-        $audisp_syslog:
+        '/etc/audit/plugins.d/syslog.conf':
             content => template('auditd/audisp-syslog.conf.erb');
     }
 
