@@ -18,7 +18,7 @@
 
 from snimpy.manager import Manager
 from snimpy.manager import load
-from snimpy.snmp import SNMPNoSuchObject
+from snimpy.snmp import SNMPNoSuchObject, SNMPException
 import sys
 import argparse
 
@@ -31,13 +31,19 @@ load('JUNIPER-VIRTUALCHASSIS-MIB')
 
 snimpyManager = Manager(options.host[0], options.community[0], 2, cache=True)
 
+try:
+    vc_port_status_idx = list(snimpyManager.jnxVirtualChassisPortAdminStatus)
+except SNMPException as e:
+    print(f"SNMP exception polling device - {e}")
+    sys.exit(3)
+
 return_code = 0
 return_message = []
 up_count = 0
 down_count = 0
 unknown_count = 0
 
-for index in snimpyManager.jnxVirtualChassisPortAdminStatus:
+for index in vc_port_status_idx:
     adminStatus = snimpyManager.jnxVirtualChassisPortAdminStatus[index]
     operStatus = snimpyManager.jnxVirtualChassisPortOperStatus[index]
     try:

@@ -17,6 +17,8 @@ import argparse
 import logging
 import nagiosplugin
 from snimpy import manager as snmp
+from snimpy.snmp import SNMPException
+import sys
 
 logger = logging.getLogger("nagiosplugin")  # pylint: disable=invalid-name
 
@@ -115,12 +117,8 @@ def main():
 
     snmp.load("IF-MIB")
     snmp.load("VRRP-MIB")
-    snmp_mgr1 = snmp.Manager(
-        host=args.left_host, community=args.community, version=args.version, cache=True
-    )
-    snmp_mgr2 = snmp.Manager(
-        host=args.right_host, community=args.community, version=args.version, cache=True
-    )
+    snmp_mgr1 = get_snmp_mgr(args.left_host, args.community, args.version)
+    snmp_mgr2 = get_snmp_mgr(args.right_host, args.community, args.version)
 
     fmt = "{value} {name} interfaces"
     check = nagiosplugin.Check(
@@ -130,6 +128,19 @@ def main():
         AllSummary(),
     )
     check.main(verbose=args.verbose)
+
+
+def get_snmp_mgr(host, community, snmp_ver):
+    snimpy_manager = snmp.Manager(host=host, community=community,
+                                  version=snmp_ver, timeout=15, retries=2, cache=True)
+    try:
+        # Make request for IF-MIB::ifNumber to validate connection works
+        snimpy_manager.ifNumber
+    except SNMPException as e:
+        print(f"Error connecting to {host} using SNMP: {e}")
+        sys.exit(3)
+
+    return snimpy_manager
 
 
 if __name__ == "__main__":
