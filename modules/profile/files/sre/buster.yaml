@@ -245,7 +245,7 @@ role::wmcs::openstack::codfw1dev::net:
 role::wmcs::openstack::eqiad1::net:
   target-q: TBD
 role::miscweb:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 331896
 role::archiva:
   target-q: TBD
