@@ -137,8 +137,8 @@ class netops::monitoring(
         alarms         => true,
         bgp            => true,
         bfd            => true,  # Will report as OK if no BFD is in use
+        ospf           => true,  # Will report as OK if no OSPF in use
         os             => 'Junos',
-
     }
     $l3_switches_mgmt = {
         # eqiad cloud
