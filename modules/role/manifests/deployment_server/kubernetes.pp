@@ -13,4 +13,5 @@ class role::deployment_server::kubernetes {
     include profile::imagecatalog
     include profile::docker::engine
     include profile::docker::ferm
+    include profile::docker::prune_old_images
 }
