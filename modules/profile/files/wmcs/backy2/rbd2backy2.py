@@ -146,6 +146,10 @@ class BackupEntry:
             tags,
             expire,
         ) = ls_line.split("|")
+        logging.info(
+            "The expire string for this record is: '%s'",
+            expire,
+        )
         return cls(
             date=datetime.datetime.strptime(date_ts, "%Y-%m-%d %H:%M:%S"),
             name=name,
