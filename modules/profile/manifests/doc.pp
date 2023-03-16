@@ -164,4 +164,17 @@ class profile::doc (
         mode    => '0644',
         content => 'error_reporting = E_ALL & ~E_STRICT',
     }
+
+    rsyslog::input::file { 'doc-apache2-error':
+        path => '/var/log/apache2/*error*.log',
+    }
+
+    rsyslog::input::file { 'doc-apache2-access':
+        path => '/var/log/apache2/*access*.log',
+    }
+
+    rsyslog::input::file { 'doc-phpfpm-error':
+        path => '/var/log/php*-fpm.log',
+    }
+
 }
