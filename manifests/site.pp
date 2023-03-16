@@ -496,7 +496,7 @@ node /^dbproxy10(22|23|24|25|26|27)\.eqiad\.wmnet$/ {
 
 # s1 (enwiki) core production dbs on eqiad
 # See also db1105 below
-node /^db1(107|118|119|128|132|134|135|163|169|184|186|206)\.eqiad\.wmnet$/ {
+node /^db1(106|107|118|119|128|132|134|135|163|169|184|186|206)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -766,11 +766,6 @@ node 'db1183.eqiad.wmnet' {
 
 # m5 master
 node 'db1176.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
-# Future temporarily master
-node 'db1106.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
