@@ -28,4 +28,4 @@ INSTALL_USER="${USER:-scap}"
                "$DESTINATION_DIR"
 
 cd "$DESTINATION_DIR"
-scap/bin/install_local_version.sh -u "$INSTALL_USER"
+./install_local_version.sh -u "$INSTALL_USER"
