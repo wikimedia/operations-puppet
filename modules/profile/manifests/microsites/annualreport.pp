@@ -20,12 +20,12 @@ class profile::microsites::annualreport {
     }
 
     prometheus::blackbox::check::http { 'annual.wikimedia.org':
-        team               => 'serviceops-collab',
-        severity           => 'task',
-        path               => '/',
-        ip_families        => ['ip4'],
-        force_tls          => true,
-        body_regex_matches => ['Annual Report'],
+        team           => 'serviceops-collab',
+        severity       => 'task',
+        path           => '/2017/',
+        ip_families    => ['ip4'],
+        force_tls      => true,
+        status_matches => [200],
     }
 }
 
