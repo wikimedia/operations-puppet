@@ -1469,7 +1469,11 @@ node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
 }
 
-node /^kafka-logging100[123]\.eqiad\.wmnet$/ {
+node /^kafka-logging1001\.eqiad\.wmnet$/ {
+    role(insetup::observabililty)
+}
+
+node /^kafka-logging100[23]\.eqiad\.wmnet$/ {
     role(kafka::logging)
 }
 
