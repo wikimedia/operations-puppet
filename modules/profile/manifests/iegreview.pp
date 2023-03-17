@@ -27,7 +27,7 @@ class profile::iegreview (
         ip_families        => ['ip4'],
         force_tls          => true,
         status_matches     => [200],
-        body_regex_matches => 'Grants review',
+        body_regex_matches => ['Grants review'],
     }
 }
 # vim:sw=4 ts=4 sts=4 et:
