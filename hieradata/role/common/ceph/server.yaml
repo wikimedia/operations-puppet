@@ -5,52 +5,52 @@ profile::ceph::auth::load_all::configuration:
       mon: allow *
       osd: allow *
   mon.cephosd1001:
-    keyring_path: /var/lib/ceph/mon/ceph-cephmon1001/keyring
+    keyring_path: /var/lib/ceph/mon/ceph-cephosd1001/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1002:
-    keyring_path: /var/lib/ceph/mon/ceph-cephmon1002/keyring
+    keyring_path: /var/lib/ceph/mon/ceph-cephosd1002/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1003:
-    keyring_path: /var/lib/ceph/mon/ceph-cephmon1003/keyring
+    keyring_path: /var/lib/ceph/mon/ceph-cephosd1003/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1004:
-    keyring_path: /var/lib/ceph/mon/ceph-cephmon1004/keyring
+    keyring_path: /var/lib/ceph/mon/ceph-cephosd1004/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1005:
-    keyring_path: /var/lib/ceph/mon/ceph-cephmon1005/keyring
+    keyring_path: /var/lib/ceph/mon/ceph-cephosd1005/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mgr.cephosd1001:
-    keyring_path: /var/lib/ceph/mgr/ceph-cephmon1001/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd1001/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
   mgr.cephosd1002:
-    keyring_path: /var/lib/ceph/mgr/ceph-cephmon1002/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd1002/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
   mgr.cephosd1003:
-    keyring_path: /var/lib/ceph/mgr/ceph-cephmon1003/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd1003/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
   mgr.cephosd1004:
-    keyring_path: /var/lib/ceph/mgr/ceph-cephmon1004/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd1004/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
   mgr.cephosd1005:
-    keyring_path: /var/lib/ceph/mgr/ceph-cephmon1005/keyring
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd1005/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
