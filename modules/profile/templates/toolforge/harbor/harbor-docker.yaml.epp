@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- |
-    Stdlib::Fqdn $harbor_url,
+    Stdlib::Fqdn $harbor_fqdn,
     String[1] $harbor_admin_pwd,
     String[1] $harbor_db_pwd,
     Stdlib::Host $harbor_db_host,
@@ -11,7 +11,7 @@
 
 # The IP address or hostname to access admin UI and registry service.
 # DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
-hostname: <%= $harbor_url %>
+hostname: <%= $harbor_fqdn %>
 
 # http related config
 http:
@@ -35,7 +35,7 @@ http:
 
 # Uncomment external_url if you want to enable external proxy
 # And when it enabled the hostname will no longer used
-# external_url: https://harbor.toolsbeta.wmflabs.org
+external_url: https://<%= $harbor_fqdn %>
 
 # The password of the "admin" user
 harbor_admin_password: <%= $harbor_admin_pwd %>
@@ -142,7 +142,7 @@ _version: 2.2.0
 external_database:
   harbor:
     host: <%= $harbor_db_host %>
-    port: 
+    port: 5432
     db_name: harbor
     username: harbor
     password: <%= $harbor_db_pwd %>

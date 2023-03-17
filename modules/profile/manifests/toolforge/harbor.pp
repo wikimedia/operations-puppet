@@ -46,7 +46,7 @@ class profile::toolforge::harbor (
             content => epp(
                 'profile/toolforge/harbor/harbor-docker.yaml.epp',
                 {
-                    harbor_url       => $harbor_url,
+                    harbor_fqdn      => $harbor_url,
                     harbor_admin_pwd => $harbor_admin_pwd,
                     harbor_db_pwd    => $harbor_db_pwd,
                     harbor_db_host   => $harbor_db_host,
