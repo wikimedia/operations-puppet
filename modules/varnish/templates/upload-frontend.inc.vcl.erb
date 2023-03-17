@@ -71,7 +71,8 @@ sub cluster_fe_recv {
 
     // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
     if (req.http.Host != "<%= @vcl_config.fetch('upload_domain') %>"
-        && req.http.Host != "<%= @vcl_config.fetch('maps_domain') %>") {
+        && req.http.Host != "<%= @vcl_config.fetch('maps_domain') %>"
+        && req.http.Host !~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
         return (synth(421, "Misdirected Request"));
     }
 
@@ -84,6 +85,15 @@ sub cluster_fe_recv {
         // Homepage redirect to commons
         if (req.url == "/") {
             return (synth(301, "Commons Redirect"));
+        }
+    }
+
+    // GeoIP Mappings (T332028)
+    if (req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
+        if (req.url == "/measure") {
+            return (synth(200, "OK"));
+        } else {
+            return (synth(404, "Not Found"));
         }
     }
 
@@ -438,6 +448,11 @@ sub cluster_fe_err_synth {
             set resp.http.Connection = "keep-alive";
             set resp.http.Content-Length = "0";
         }
+    }
+
+    // GeoIP Mappings (T332028)
+    if (req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
+        set resp.http.Cache-Control = "no-store";
     }
 }
 # vim: set expandtab tabstop=4 shiftwidth=4:

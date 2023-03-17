@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "Test GeoIP Mappings HTTP Endpoints (T332028)"
+
+server s1 {
+    loop 11 {
+        rxreq
+        txresp
+    }
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    # root path
+    txreq -url "/" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqiad.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 404
+
+    # random path
+    txreq -url "/random-abcdef" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqiad.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 404
+
+    # eqiad data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqiad.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # codfw data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-codfw.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # esams data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-esams.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # ulsfo data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-ulsfo.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # eqsin data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqsin.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # drmrs data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-drmrs.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # invalid data center
+    txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-jkhan.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 421
+} -run
