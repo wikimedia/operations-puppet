@@ -157,7 +157,6 @@ class profile::gitlab::runner (
 
     class { 'docker::gc':
         ensure                  => $ensure,
-        volume_filter           => 'label:com.gitlab.gitlab-runner.type==cache',
         interval                => $docker_gc_interval,
         images_high_water_mark  => $docker_gc_images_high_water_mark,
         images_low_water_mark   => $docker_gc_images_low_water_mark,
