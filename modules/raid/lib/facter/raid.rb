@@ -12,6 +12,7 @@ Facter.add('raid_mgmt_tools') do
                               # Broadcom / LSI MegaRAID SAS-3 3108 [Invader]
     '100000cf' => 'megaraid', # Broadcom / LSI MegaRAID SAS-3 3324 [Intruder] (rev 01)
     '10000016' => 'megaraid', # Broadcom / LSI MegaRAID Tri-Mode SAS3508
+    '10000014' => 'megaraid', # LSI Logic / Symbios Logic MegaRAID Tri-Mode SAS3516
 
   }
   setcode do
