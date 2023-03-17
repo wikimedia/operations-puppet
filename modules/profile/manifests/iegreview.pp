@@ -19,5 +19,15 @@ class profile::iegreview (
     }
 
     ensure_packages('mariadb-client')
+
+    prometheus::blackbox::check::http { 'iegreview.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/campaigns',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        status_matches     => [200],
+        body_regex_matches => 'Grants review',
+    }
 }
 # vim:sw=4 ts=4 sts=4 et:
