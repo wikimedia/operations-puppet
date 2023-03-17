@@ -901,17 +901,17 @@ groups:
     gid: 816
     description: administrators of the Apache Airflow service
     members: [ebernhardson, dcausse, bearloga, chelsyx, tjones, mfossati, pfischer]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
-                 'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
-                 'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos *',
-                 'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler',
-                 'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler',
-                 'ALL = NOPASSWD: /bin/systemctl start airflow-webserver',
-                 'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver',
-                 'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos',
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver@search *',
+                 'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@search *',
+                 'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@search *',
+                 'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@search',
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@search',
+                 'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@search',
+                 'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@search',
+                 'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@search',
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@search',
+                 'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@search',
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@search',
                  'ALL = NOPASSWD: /bin/journalctl *']
   dns-admins:
     gid: 817
