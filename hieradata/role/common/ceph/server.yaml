@@ -5,27 +5,22 @@ profile::ceph::auth::load_all::configuration:
       mon: allow *
       osd: allow *
   mon.cephosd1001:
-    keyring_path: /var/lib/ceph/mon/ceph-cephosd1001/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1002:
-    keyring_path: /var/lib/ceph/mon/ceph-cephosd1002/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1003:
-    keyring_path: /var/lib/ceph/mon/ceph-cephosd1003/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1004:
-    keyring_path: /var/lib/ceph/mon/ceph-cephosd1004/keyring
     import_to_ceph: false
     caps:
       mon: allow *
   mon.cephosd1005:
-    keyring_path: /var/lib/ceph/mon/ceph-cephosd1005/keyring
     import_to_ceph: false
     caps:
       mon: allow *
