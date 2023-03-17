@@ -144,6 +144,11 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/multi-dc.lua.conf',
     }
 
+    trafficserver::lua_script { 'mw-on-k8s':
+        source    => 'puppet:///modules/profile/trafficserver/mw-on-k8s.lua',
+        unit_test => 'puppet:///modules/profile/trafficserver/mw-on-k8s_test.lua',
+    }
+
     if $monitor_enable {
         # Monitoring
         profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
