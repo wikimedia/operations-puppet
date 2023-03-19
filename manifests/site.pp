@@ -1016,7 +1016,7 @@ node /^dumpsdata1001\.eqiad\.wmnet$/ {
 }
 # nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
-node /^dumpsdata1003\.eqiad\.wmnet$/ {
+node /^dumpsdata1005\.eqiad\.wmnet$/ {
     role(dumps::generation::server::xmldumps)
 }
 
@@ -1032,7 +1032,7 @@ node /^dumpsdata1004\.eqiad\.wmnet$/ {
 }
 
 # new dumpsdata servers T283290
-node /^dumpsdata100[567]\.eqiad\.wmnet$/ {
+node /^dumpsdata100[3567]\.eqiad\.wmnet$/ {
     role(dumps::generation::server::spare)
 }
 
