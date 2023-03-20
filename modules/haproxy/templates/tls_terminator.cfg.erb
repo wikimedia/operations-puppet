@@ -110,9 +110,11 @@ listen tls
 
 <%- @backends.each_with_index do |backend, backend_index| -%>
 <%- if backend['prefix'] == 'unix' -%>
-    server backend_server_<%= backend_index %> unix@<%= backend['address'] %>
+    server backend_server_<%= backend_index %> unix@<%= backend['address'] %><%- if backend['maxconn'] -%> maxconn <%= backend['maxconn'] %><%- end -%>
+
 <%- else -%>
-    server backend_server_<%= backend_index %> <%= backend['prefix'] %>@<%= backend['address'] %>:<%= backend['port'] %>
+    server backend_server_<%= backend_index %> <%= backend['prefix'] %>@<%= backend['address'] %>:<%= backend['port'] %><%- if backend['maxconn'] -%> maxconn <%= backend['maxconn'] %><%- end -%>
+
 <%- end -%>
 <%- end -%>
     option forwardfor
