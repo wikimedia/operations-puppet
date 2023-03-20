@@ -4,7 +4,7 @@ profile::trafficserver::backend::monitor_enable: true
 profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://15.wikipedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-sites.discovery.wmnet
     - type: map
       target: http://analytics.wikimedia.org
       replacement: https://analytics-web.discovery.wmnet:8443
