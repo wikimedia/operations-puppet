@@ -123,7 +123,7 @@ class profile::kerberos::kdc (
     if debian::codename::ge('bullseye') {
         systemd::override { 'kdc-allow-logfile-directory':
             unit    => 'krb5-kdc',
-            content => "[Service]\nReadWritePaths=/var/log/kerberos/krb5kdc.log\n",
+            content => "[Service]\nReadWritePaths=/var/log/kerberos/\n",
         }
     }
 
