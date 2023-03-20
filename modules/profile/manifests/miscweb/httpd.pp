@@ -24,6 +24,10 @@ class profile::miscweb::httpd (
         mpm    => 'prefork',
     }
 
+    httpd::mod_conf { 'authnz_ldap':
+        ensure => present,
+    }
+
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
