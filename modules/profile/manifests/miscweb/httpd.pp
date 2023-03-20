@@ -14,6 +14,11 @@ class profile::miscweb::httpd (
         modules => $apache_modules,
     }
 
+    class { '::httpd::mpm':
+        mpm    => 'prefork',
+        source => 'puppet:///modules/vrts/mpm_prefork.conf',
+    }
+
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
