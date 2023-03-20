@@ -7,11 +7,13 @@
 # - profile::analytics::cluster::packages::statistics
 #
 class profile::analytics::cluster::packages::common {
-    # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
-    # and: https://phabricator.wikimedia.org/T229347
-    # python3.7 will assist with a Spark & Buster upgrade.
-    require profile::python37
-
+    # We will not be adding Python 3.7 to bullseye hosts.
+    if debian::codename::lt('bullseye') {
+        # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
+        # and: https://phabricator.wikimedia.org/T229347
+        # python3.7 will assist with a Spark & Buster upgrade.
+        require profile::python37
+    }
     # Install MaxMind databases for geocoding UDFs
     class { '::geoip': }
 
