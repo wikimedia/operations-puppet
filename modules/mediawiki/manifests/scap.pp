@@ -24,9 +24,9 @@ class mediawiki::scap {
     }
 
 
-    # /etc/profile.d/mediawiki.sh declares the MEDIAWIKI_DEPLOYMENT_DIR
-    # and MEDIAWIKI_STAGING_DIR environment variables and adds scap to
-    # $PATH for users in the wikidev group.
+    # /etc/profile.d/mediawiki.sh declares the MEDIAWIKI_DEPLOYMENT_DIR,
+    # MEDIAWIKI_STAGING_DIR, and MEDIAWIKI_WEB_USER environment variables and
+    # sets umask to 002 for users in the wikidev or l10nupdate groups.
 
     file { '/etc/profile.d/mediawiki.sh':
         content => template('mediawiki/mediawiki.sh.erb'),
