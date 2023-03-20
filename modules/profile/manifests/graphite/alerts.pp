@@ -51,4 +51,19 @@ class profile::graphite::alerts(
         percentage      => 30,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
+
+    # Monitor MediaWiki account creation errors are below 99%. T146090
+    $account_failures = 'MediaWiki.authmanager.accountcreation.*.failure.*.sum'
+    $account_success = 'MediaWiki.authmanager.accountcreation.*.success.sum'
+    monitoring::graphite_threshold { 'mediawiki_accountcreation_errors':
+        description     => 'MediaWiki account creation errors',
+        graphite_url    => $graphite_url,
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-exceptions-alerts?orgId=1&forceLogin&viewPanel=23'],
+        metric          => "asPercent( sumSeries(${account_failures}), sumSeries(${account_success}, ${account_failures}) )",
+        warning         => 90,
+        critical        => 100,
+        from            => '15min',
+        percentage      => 30,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+    }
 }
