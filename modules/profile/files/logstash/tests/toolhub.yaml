@@ -55,5 +55,7 @@ testcases:
             type: "toolhub"
         trace:
             id: "none"
+        tags:
+          - "k8s_docker_log_field_parsed"
         ecs:
           version: "1.7.0"
