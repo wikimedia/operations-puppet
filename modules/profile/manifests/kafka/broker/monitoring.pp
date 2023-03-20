@@ -53,27 +53,6 @@ class profile::kafka::broker::monitoring (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
-    # Prometheus labels for this Kafka Broker instance
-    $prometheus_labels = "kafka_cluster=\"${kafka_cluster}\",instance=\"${::hostname}:${prometheus_jmx_exporter_port}\""
-
-    # Alert if replica lag is increasing (positive slope) for multiple after multiple retries.
-    monitoring::check_prometheus { 'kafka_broker_replica_lag_increasing':
-        description     => 'Kafka Broker Replica Max Lag is increasing',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000027/kafka?orgId=1&viewPanel=16&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
-        query           => "scalar(deriv(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[5m]))",
-        # I really just want an alert if lag slope is positive over a time range, but
-        # check_prometheus_metric.py requires that critical is > warning if method is 'gt'.
-        warning         => 0.0,
-        critical        => 0.1,
-        method          => 'gt',
-        # We only want to alert if lag is steadily increasing.  6 retries over 5 minutes should
-        # alert if is increasing (positive slope) for at least 30 minutes.
-        retries         => 6,
-        retry_interval  => 5,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
-    }
-
     if $should_monitor_tls {
         $kafka_ssl_port = $config['brokers']['hash'][$::fqdn]['ssl_port']
         monitoring::service { 'kafka-broker-tls':
