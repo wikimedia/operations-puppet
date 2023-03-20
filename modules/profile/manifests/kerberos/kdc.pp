@@ -118,6 +118,15 @@ class profile::kerberos::kdc (
         notify  => Service['krb5-kdc'],
     }
 
+    # Starting with bullseye the KDC systemd unit restricts write paths, but for
+    # some reason /var/log/kerberos/krb5kdc.log isn't in there
+    if debian::codename::ge('bullseye') {
+        systemd::override { 'kdc-allow-logfile-directory':
+            unit    => 'krb5-kdc',
+            content => "[Service]\nReadWritePaths=/var/log/kerberos/krb5kdc.log\n",
+        }
+    }
+
     service { 'krb5-kdc':
         ensure  => running,
         require => Package['krb5-kdc'],
