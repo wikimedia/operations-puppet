@@ -15,6 +15,7 @@ define benthos::instance(
     $config_path = "/etc/benthos/${title}.yaml"
     $env_config_path = "/etc/benthos/${title}.env"
     $exec_path = '/usr/bin/benthos'
+    $service_name = "benthos@${title}"
 
     file { $config_path:
         ensure       => stdlib::ensure($ensure, 'file'),
@@ -32,18 +33,14 @@ define benthos::instance(
             group   => 'benthos',
             mode    => '0755',
             content => template('benthos/env_variables.erb'),
+            notify  => Service[$service_name],
         }
     }
 
-    systemd::service { "benthos@${title}":
+    systemd::service { $service_name:
         ensure  => present,
         content => systemd_template('benthos@'),
         restart => true,
         require => File[$config_path],
-    }
-
-    systemd::service { "benthos@-${title}":
-        ensure  => absent,
-        content => systemd_template('benthos@'),
     }
 }
