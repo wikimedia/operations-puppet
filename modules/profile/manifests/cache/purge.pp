@@ -67,7 +67,7 @@ class profile::cache::purge(
             before  => Service['purged']
         }
         $tls_settings = {
-            'ca_location' => '/etc/ssl/certs/Puppet_Internal_CA.pem',
+            'ca_location' => '/etc/ssl/certs/wmf-ca-certificates.crt',
             'key_location' => $tls_key,
             'key_password' => $tls_key_password,
             'certificate_location' => $tls_cert,
