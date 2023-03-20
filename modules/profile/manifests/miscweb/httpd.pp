@@ -5,7 +5,13 @@ class profile::miscweb::httpd (
 ){
 
     $apache_modules_common = ['rewrite', 'headers', 'proxy', 'proxy_http']
-    $apache_php_module = 'php7.3'
+
+    if (debian::codename::ge('bullseye')) {
+        $apache_php_module = 'php7.4'
+    } else {
+        $apache_php_module = 'php7.3'
+    }
+
     $apache_modules = concat($apache_modules_common, $apache_php_module)
 
     ensure_packages('libapache2-mod-php')
