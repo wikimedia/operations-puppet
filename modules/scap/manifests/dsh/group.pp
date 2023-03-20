@@ -4,7 +4,7 @@
 # Manages a scap dsh group.
 #
 # Group entries can be defined either by explicitly providing a
-# host list, or defining scap::dsh::group::$title in hiera. Also,
+# host list, or defining scap::dsh::groups::$title in hiera. Also,
 # this can gather all non-inactive nodes from one or more conftool
 # pools.
 define scap::dsh::group(
