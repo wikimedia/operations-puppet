@@ -1534,12 +1534,8 @@ node /^karapace1001\.eqiad\.wmnet$/ {
 # profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
 # profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
 # profile::microsites::static_tendril  # https://tendril.wikimedia.org and https://dbtree.wikimedia.org (T297605)
-node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet', 'miscweb1003.eqiad.wmnet' {
+node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet', 'miscweb1003.eqiad.wmnet', 'miscweb2003.codfw.wmnet' {
     role(miscweb)
-}
-
-node 'miscweb2003.codfw.wmnet' {
-    role(insetup::serviceops_collab)
 }
 
 # This node will eventually replace kerberos1001
