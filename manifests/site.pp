@@ -1554,9 +1554,8 @@ node 'krb2001.codfw.wmnet' {
     role(kerberos::kdc)
 }
 
-# New pki node # T305488
 node 'krb2002.codfw.wmnet' {
-    role(insetup::infrastructure_foundations)
+    role(kerberos::kdc)
 }
 
 node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-4])\.(codfw|eqiad)\.wmnet$/ {
