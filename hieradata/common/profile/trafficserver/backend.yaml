@@ -242,7 +242,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://schema.discovery.wmnet
     - type: map
       target: http://security.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-sites.discovery.wmnet
     - type: map
       target: http://sitemaps.wikimedia.org
       replacement: https://webserver-misc-static.discovery.wmnet
