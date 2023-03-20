@@ -14,9 +14,6 @@ template(name="udp_localhost_topic" type="string" string="udp_localhost-%syslogs
 ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
   action(type="mmjsonparse" name="mmjsonparse_udp_localhost")
 
-  # https://phabricator.wikimedia.org/T330205#8699489
-  if $msg contains 'SQLPlatform::isWriteQuery fallback to regex' then stop
-
   action(type="omkafka"
          broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
          topic="udp_localhost_topic"
