@@ -31,6 +31,7 @@ role::wmcs::nfs::primary:
   target-q: TBD
 role::wmcs::openstack::eqiad1::backy:
   target-q: TBD
+  phab-task: 332400
 role::installserver:
   target-q: 2023-1
   phab-task: 327867
@@ -234,8 +235,6 @@ role::wmcs::openstack::eqiad1::virt_ceph_and_backy:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::virt_ceph:
   target-q: TBD
-role::wmcs::openstack::codfw1dev::cloudweb:
-  target-q: TBD
 role::configcluster_stretch:
   target-q: TBD
 role::deployment_server::kubernetes:
@@ -285,6 +284,7 @@ role::openldap::corp:
   phab-task: 323820
 role::wmcs::openstack::eqiad1::labweb:
   target-q: TBD
+  phab-task: 332400
 role::piwik:
   target-q: TBD
   phab-task: 288804
@@ -340,6 +340,7 @@ role::wmcs::openstack::codfw1dev::services:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: TBD
+  phab-task: 332400
 role::wmcs::openstack::codfw1dev::cloudgw:
   target-q: TBD
 role::eventlogging::analytics:
@@ -422,6 +423,7 @@ role::wmcs::ceph::mon:
   phab-task: 309789
 role::wmcs::monitoring:
   target-q: TBD
+  phab-task: 332400
 role::dnsbox:
   target-q: 2023-1
   phab-task: 321309
