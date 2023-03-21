@@ -15,10 +15,25 @@ class profile::contacts (
     concat { $contacts_file:
         ensure => present,
     }
-    $role_fixup = "role::${::_role.regsubst('/', '::', 'G')}"
+    $role_fixup = $::_role.regsubst('/', '::', 'G')
+    $role_fixup_prefixed = "role::${role_fixup}"
     concat::fragment { 'main contacts':
         target  => $contacts_file,
         order   => '01',
-        content => { $role_fixup => $role_contacts }.to_yaml,
+        content => { $role_fixup_prefixed => $role_contacts }.to_yaml,
+    }
+
+    # TODO: update the below when we move to Strings for role owner
+    # Currently role_contacts is an array, We plan to make this a String at some
+    # point and disallow multiple owners for now we just pick the first owner
+    $_role_contact = $role_contacts[0].regsubst('\W', '-', 'G').downcase
+    $role_owner_metric = @("METRIC")
+    # HELP role_owner The team owner of the server role
+    # TYPE role_owner gauge
+    role_owner{team="${_role_contact}",role="${role_fixup}"} 1.0
+    | METRIC
+    file { '/var/lib/prometheus/node.d/role_owner.prom':
+        ensure  => file,
+        content => $role_owner_metric,
     }
 }
