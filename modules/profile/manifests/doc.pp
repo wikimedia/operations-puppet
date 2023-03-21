@@ -14,15 +14,25 @@ class profile::doc (
         deploy_user => $deploy_user,
     }
 
+    if debian::codename::eq('buster') {
+        apt::repository { 'wikimedia-php74':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php74',
+        }
+    }
+
     $php_version = debian::codename() ? {
-        'buster'   => '7.3',
-        'bullseye' => '7.4',
+        'buster'   => '7.4',
+        'bullseye' => '7.4',  # provided above by component/php74
         default    => fail("${module_name} not supported by ${debian::codename()}")
     }
     $php = "php${php_version}"
 
     ensure_packages(["${php}-fpm", "${php}-xml"])
 
+    # The Debian package does not provide a `php-fpm` service and we need scap
+    # to be able to restart the service without relying on a version number.
     $restart_cmd = "/bin/systemctl restart ${php}-fpm"
 
     # scap deployment swap symlink which confuses PHP opcache. On promote
