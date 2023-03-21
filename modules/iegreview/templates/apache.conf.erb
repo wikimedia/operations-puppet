@@ -5,6 +5,10 @@
 
   DocumentRoot <%= @deploy_dir %>/public
 
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @hostname %>.error.log
+  CustomLog /var/log/apache2/<%= @hostname %>.access.log wmf
+
   <Directory />
     Options FollowSymLinks
     AllowOverride None
