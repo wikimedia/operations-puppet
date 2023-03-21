@@ -70,8 +70,11 @@ def main():
         body = dedent(
             """\
             Systemd timer ran the following command:
-                `{}`
+
+                {}
+
             Its return value was {} and emitted the following output:
+
             {}
             """).format(cmd_str, ret, output)
         msg['Subject'] = "{}: {}".format(status, args.subject)
