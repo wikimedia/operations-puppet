@@ -27,7 +27,7 @@ profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 profile::hive::server::monitoring_enabled: true
 profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::metastore::monitoring_enabled: true
-profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::hive::metastore::ferm_srange: '(($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))'
 
 # Override to force the Hive Server 2 on an-coord1001 to use its local
 # Metastore.
