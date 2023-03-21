@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: prometheus::ipmi_exporter
-#
-# Prometheus exporter for mcrouter server metrics.
-# Works only on bullseye+ as the package isn't around in buster-
-#
-# = Parameters
-#
+# @summary Prometheus exporter for mcrouter server metrics.
+#          Works only on bullseye+ as the package isn't around in buster
+# @param config_file location of the ipmi exporter config file
+# @param collectors the collectors to export
+# @param exclude_sensor_ids list of sensor ID's to exclude
 class prometheus::ipmi_exporter (
+    Stdlib::Unixpath                            $config_file        = '/etc/prometheus/ipmi_exporter.yml',
+    Array[Integer[1,255]]                       $exclude_sensor_ids = [],
+    Array[Prometheus::Ipmi_exporter::Collector] $collectors         = ['bmc', 'ipmi', 'chassis', 'dcmi', 'sel'],
 ) {
     # prometheus-ipmi-exporter depends already on freeipmi-tools package, no
     # need to care for it specifically
@@ -40,13 +41,17 @@ class prometheus::ipmi_exporter (
         require => Sudo::User['prometheus_ipmi_exporter'],
     }
     # Instruct the exporter to use our wrapper for freeipmi utilities
-    $listen_address = "${facts['networking']['ip']}:9290"
+    $args = {
+        'web.listen-address' => "${facts['networking']['ip']}:9290",
+        'freeipmi.path'      => $prometheus_home,
+        'config.file'        => $config_file,
+    }.wmflib::argparse('', '=')
     file { '/etc/default/prometheus-ipmi-exporter':
         ensure  => file,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"--web.listen-address=${listen_address} --freeipmi.path=${prometheus_home}\"",
+        content => "ARGS=\"${args}\"",
         notify  => Service['prometheus-ipmi-exporter'],
     }
     # Create symlinks for our wrapper for every tool
@@ -64,6 +69,18 @@ class prometheus::ipmi_exporter (
         target => "${prometheus_home}/ipmi_sudo_wrapper.sh",
     }
 
+    $config = {
+        'modules' => {
+            'default'            => $collectors,
+            'exclude_sensor_ids' => $exclude_sensor_ids,
+        },
+    }
+    file { $config_file:
+        ensure  => file,
+        mode    => '0444',
+        content => $config.to_yaml,
+        notify  => Service['prometheus-ipmi-exporter'],
+    }
     # NOTE: We can't use this file before we upgrade to 1.4.0, but add it anyway
     # to not reinvent it later on
     file { '/etc/prometheus/ipmi_sudo.yml':
