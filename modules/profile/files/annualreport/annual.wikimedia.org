@@ -7,9 +7,9 @@
 
     DocumentRoot /srv/org/wikimedia/annualreport
 
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/annual.wikimedia.org.error.log
     LogLevel warn
-    CustomLog /var/log/apache2/access.log wmf
+    CustomLog /var/log/apache2/annual.wikimedia.org.access.log wmf
 
     Header always append X-Frame-Options DENY
     # Reports will be hosted to wikimediafoundation.org - T226066
