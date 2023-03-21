@@ -71,3 +71,6 @@ profile::hadoop::worker::check_mountpoints_disk_space: false
 profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true
+
+# We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
+profile::base::remove_python2_on_bullseye: false

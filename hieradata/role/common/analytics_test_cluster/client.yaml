@@ -83,3 +83,5 @@ profile::contacts::role_contacts: ['Data Engineering']
 
 profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
 
+# We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
+profile::base::remove_python2_on_bullseye: false
