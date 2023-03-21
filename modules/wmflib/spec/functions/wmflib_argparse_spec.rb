@@ -17,6 +17,10 @@ describe 'wmflib::argparse' do
       .and_return('/foo --hostname foo.example.org --port 8080 --ssl')
   end
   it do
+    is_expected.to run.with_params(args1, '/foo', '=')
+      .and_return('/foo --hostname=foo.example.org --port=8080 --ssl')
+  end
+  it do
     is_expected.to run.with_params(args1.merge('array_arg' => ['foo', 'bar']))
       .and_return('--hostname foo.example.org --port 8080 --ssl --array_arg foo,bar')
   end
