@@ -25,7 +25,8 @@ class zuul::merger (
     $git_email      = "zuul-merger@${::hostname}",
     $git_name       = 'Wikimedia Zuul Merger',
     $zuul_url       = $::fqdn,
-    Enum['stopped', 'running', 'masked'] $ensure_service = 'running',
+    Wmflib::Enable_Service  $service_enable     = true,
+    Stdlib::Ensure::Service $service_ensure     = 'running',
 ) {
 
     require ::zuul
@@ -136,20 +137,14 @@ class zuul::merger (
         source => 'puppet:///modules/zuul/merger-logging.conf',
     }
 
-    if $ensure_service == 'masked' {
-        systemd::mask { 'zuul-merge.service':  }
-        $real_ensure_service = 'stopped'
-    } else {
-        $real_ensure_service = $ensure_service
-    }
-
     systemd::service { 'zuul-merger':
         ensure         => 'present',
         content        => systemd_template('zuul-merger'),
         restart        => false,
         subscribe      => File['/etc/zuul/zuul-merger.conf'],
         service_params => {
-                ensure => $real_ensure_service,
+            enable => $service_enable,
+            ensure => $service_ensure,
         },
         require        => [
             File['/etc/default/zuul-merger'],

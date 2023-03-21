@@ -11,5 +11,5 @@
 profile::ci::jenkins::service_monitor: false
 
 # Zuul server is running/enabled in role::ci::master
-profile::zuul::server::service_enable: false
+profile::zuul::server::service_enable: mask
 profile::zuul::server::service_ensure: stopped

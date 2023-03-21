@@ -2,14 +2,15 @@
 class profile::zuul::server(
     Hash $conf_common = lookup('zuul::common'),
     Hash $conf_server = lookup('profile::zuul::server::conf'),
-    Variant[Enum['mask', 'manual'], Boolean] $service_enable = lookup('profile::zuul::server::service_enable', {default_value => true}),
-    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = lookup('profile::zuul::server::service_ensure', {default_value => 'running'}),
+    Wmflib::Enable_Service $service_enable = lookup('profile::zuul::server::service_enable'),
+    Stdlib::Ensure::Service $service_ensure = lookup('profile::zuul::server::service_ensure'),
     Stdlib::Fqdn $email_server = lookup('profile::zuul::server::email_server'),
 ) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
     $monitoring_active = $service_enable ? {
         false   => 'absent',
+        'mask'  => 'absent',
         default => 'present',
     }
     class { 'zuul::monitoring::server':
@@ -21,10 +22,6 @@ class profile::zuul::server(
       logs => ['/var/log/zuul/error.log'],
     }
 
-    $service_enable_real = $service_enable ? {
-        false   => 'mask',
-        default => true,
-    }
     class { 'zuul::server':
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
@@ -36,7 +33,7 @@ class profile::zuul::server(
         url_pattern          => $conf_server['url_pattern'],
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
-        service_enable       => $service_enable_real,
+        service_enable       => $service_enable,
         service_ensure       => $service_ensure,
 
         # Enable email configuration

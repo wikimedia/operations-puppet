@@ -20,14 +20,14 @@
 # [*statsd_host*] IP/hostname of a statsd daemon to send metrics to. If unset
 # (the default), nothing is ported.
 #
+# [*service_enable*]
+#
+# Passed to Service['zuul'] as 'enable'. Default: true.
+#
 # [*service_ensure*]
 #
 # Passed to systemd::service. either 'running' or 'stopped'.
 # Default: 'running'.
-#
-# [*service_enable*]
-#
-# Passed to Service['zuul'] as 'enable'. Default: true.
 #
 class zuul::server (
     Stdlib::Host            $gerrit_server,
@@ -35,8 +35,8 @@ class zuul::server (
     Stdlib::Host            $gearman_server,
     Boolean                 $gearman_server_start,
     String                  $url_pattern,
-    Stdlib::Ensure::Service $service_ensure     = 'running',
     Wmflib::Enable_Service  $service_enable     = true,
+    Stdlib::Ensure::Service $service_ensure     = 'running',
     Optional[Stdlib::Host]  $statsd_host        = undef,
     Stdlib::HTTPUrl         $gerrit_baseurl     = 'https://gerrit.wikimedia.org/r',
     Integer                 $gerrit_event_delay = 5,

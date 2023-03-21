@@ -25,8 +25,10 @@ profile::java::java_packages:
   - version: "11"
     variant: "jdk"
 
-profile::zuul::server::service_ensure: running
-profile::zuul::server::service_enable: true
+# Zuul merger
+
+profile::zuul::merger::service_enable: true
+profile::zuul::merger::service_ensure: running
 
 profile::zuul::merger::conf:
   gearman_server: "208.80.153.15" # contint2001.wikimedia.org
@@ -36,6 +38,16 @@ profile::zuul::merger::conf:
   git_name: "Wikimedia Zuul Merger"
   zuul_url: "git://%{::fqdn}"
 
+profile::zuul::merger::ferm_srange: >-
+  (($LABS_NETWORKS
+  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), A)
+  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), AAAA)))
+
+# Zuul server
+
+profile::zuul::server::service_enable: true
+profile::zuul::server::service_ensure: running
+
 profile::zuul::server::conf:
   # ferm defaults to ACCEPT on loopback:
   gearman_server: 127.0.0.1
@@ -44,11 +56,6 @@ profile::zuul::server::conf:
   statsd_host: localhost
   url_pattern: "https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console"
   status_url: "https://integration.wikimedia.org/zuul/"
-
-profile::zuul::merger::ferm_srange: >-
-  (($LABS_NETWORKS
-  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), A)
-  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), AAAA)))
 
 profile::zuul::server::email_server: localhost
 
@@ -90,8 +97,6 @@ profile::ci::migration::rsync_data_dirs:
   - "/var/lib/jenkins/"
   - "/var/lib/zuul/"
   - "/srv/"
-
-profile::zuul::merger::ensure_service: "running"
 
 # Docker requires the overlay / overlayFS kernel module
 profile::base::overlayfs: true
