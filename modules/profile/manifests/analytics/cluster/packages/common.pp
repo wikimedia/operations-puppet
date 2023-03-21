@@ -48,17 +48,14 @@ class profile::analytics::cluster::packages::common {
         # compatible with openssl 1.1.0
         'libssl1.1',
         'libssl-dev',
-
-        # We hope to eventually replace all python packages installed for use by users
-        # with this one.  It is easier to maintain this single anaconda
-        # based package than many different python debian packages.
-        # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Anaconda
-        # anaconda-wmf-base contains the /usr/lib/anaconda-wmf conda env,
-        # but does not contain conda pkgs dir or the conda-create-stacked script.
-        # anaconda-wmf-base should be installed on all worker nodes.
-        # anaconda-wmf is installed only on client nodes (AKA stat boxes).
-        'anaconda-wmf-base',
     ])
+    if debian::codename::lt('bullseye') {
+        # We continue to support anaconda-wmf until the end of March 2023, by which time
+        # all of their functionality should be provided by conda-analytics instead.
+        # See https://wikitech.wikimedia.org/wiki/Data_Engineering/Systems/Conda for more details
+        # The anaconda-wmf-base package is therefore to be omitted from bullseye onwards.
+        ensure_packages('anaconda-wmf-base')
+    }
 
     # Include maven and our archiva settings everywhere to make it
     # easier to resolve job dependencies at runtime from archiva.wikimedia.org
