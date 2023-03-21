@@ -6,21 +6,42 @@
 # MediaWiki, and that the MediaWiki deployment directory exists and
 # contains a copy of MediaWiki.
 #
-class mediawiki::scap {
+class mediawiki::scap (
+    Boolean $is_master                            = false,
+    Boolean $deployment_dir_linked_to_staging_dir = false,
+) {
     include ::mediawiki::users
 
+    # /srv/mediawiki is the root path of the MediaWiki deployment tree.
     $mediawiki_deployment_dir = '/srv/mediawiki'
     $mediawiki_staging_dir = '/srv/mediawiki-staging'
     $scap_bin_dir = '/usr/bin'
     $mediawiki_web_user = $::mediawiki::users::web
 
-    # /srv/mediawiki is the root path of the MediaWiki deployment tree.
+    if $is_master and $deployment_dir_linked_to_staging_dir {
+        file { $mediawiki_deployment_dir:
+            ensure => link,
+            target => $mediawiki_staging_dir,
+        }
+    } else {
+        file { $mediawiki_deployment_dir:
+            ensure => directory,
+            owner  => 'mwdeploy',
+            group  => 'mwdeploy',
+            mode   => '0775',
+        }
 
-    file { $mediawiki_deployment_dir:
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
+        # If this is a new install, populate /srv/mediawiki by retrieving
+        # the current MediaWiki deployment tree from the deployment server.
+
+        exec { 'fetch_mediawiki':
+            command => "${scap_bin_dir}/scap pull",
+            creates => "${mediawiki_deployment_dir}/docroot",
+            require => [ File[$mediawiki_deployment_dir], Sudo::User['mwdeploy'] ],
+            timeout => 30 * 60,  # 30 minutes
+            user    => 'mwdeploy',
+            group   => 'mwdeploy',
+        }
     }
 
 
@@ -33,18 +54,5 @@ class mediawiki::scap {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-    }
-
-
-    # If this is a new install, populate /srv/mediawiki by retrieving
-    # the current MediaWiki deployment tree from the deployment server.
-
-    exec { 'fetch_mediawiki':
-        command => "${scap_bin_dir}/scap pull",
-        creates => "${mediawiki_deployment_dir}/docroot",
-        require => [ File[$mediawiki_deployment_dir], Sudo::User['mwdeploy'] ],
-        timeout => 30 * 60,  # 30 minutes
-        user    => 'mwdeploy',
-        group   => 'mwdeploy',
     }
 }

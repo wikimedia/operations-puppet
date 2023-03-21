@@ -2,10 +2,11 @@
 # Everything needed to configure a scap2 client for MediaWiki
 # @param is_master indicates if the server is a scap::master
 class profile::mediawiki::scap_client(
-    $deployment_server = lookup('scap::deployment_server', Stdlib::Host),
-    $wmflabs_master = lookup('scap::wmflabs_master', Optional[Stdlib::Host], 'first', undef),
-    Stdlib::Fqdn $cloud_statsd = lookup('profile::wmcs::monitoring::statsd_master', {default_value => 'cloudmetrics1004.eqiad.wmnet'}),
-    Boolean      $is_master    = lookup('profile::mediawiki::scap_client::is_master')
+    $deployment_server                                 = lookup('scap::deployment_server', Stdlib::Host),
+    $wmflabs_master                                    = lookup('scap::wmflabs_master', Optional[Stdlib::Host], 'first', undef),
+    Stdlib::Fqdn $cloud_statsd                         = lookup('profile::wmcs::monitoring::statsd_master', {default_value => 'cloudmetrics1004.eqiad.wmnet'}),
+    Boolean      $is_master                            = lookup('profile::mediawiki::scap_client::is_master'),
+    Boolean      $deployment_dir_linked_to_staging_dir = lookup('profile::mediawiki::scap_client::deployment_dir_linked_to_staging_dir', {default_value => false}),
 ) {
 
     # TODO: rewrite the logic around $wmflabs_master
@@ -19,6 +20,9 @@ class profile::mediawiki::scap_client(
         is_master         => $is_master,
     }
 
-    class { '::mediawiki::scap': }
+    class { '::mediawiki::scap':
+        is_master                            => $is_master,
+        deployment_dir_linked_to_staging_dir => $deployment_dir_linked_to_staging_dir,
+    }
     class { '::scap::ferm': }
 }
