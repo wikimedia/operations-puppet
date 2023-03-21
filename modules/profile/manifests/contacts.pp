@@ -11,14 +11,14 @@ class profile::contacts (
     }
 
     $contacts_file = '/etc/wikimedia/contacts.yaml'
-    ensure_resource('file', $contacts_file.dirname, {'ensure' => 'directory'})
-    concat {$contacts_file:
+    ensure_resource('file', $contacts_file.dirname, { 'ensure' => 'directory' })
+    concat { $contacts_file:
         ensure => present,
     }
-    $role_fixup = "role::${::_role.regsubst('/', '::')}"
-    concat::fragment {'main contacts':
+    $role_fixup = "role::${::_role.regsubst('/', '::', 'G')}"
+    concat::fragment { 'main contacts':
         target  => $contacts_file,
         order   => '01',
-        content => {$role_fixup => $role_contacts}.to_yaml
+        content => { $role_fixup => $role_contacts }.to_yaml,
     }
 }
