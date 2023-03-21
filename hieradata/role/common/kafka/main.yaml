@@ -8,6 +8,7 @@ profile::kafka::broker::kafka_cluster_name: main
 # the expected location in ops/puppet/private.
 profile::kafka::broker::ssl_enabled: true
 profile::base::certificates::include_bundle_jks: true
+profile::kafka::broker:use_pki_migration_settings: true
 
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277
