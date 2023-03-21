@@ -71,8 +71,10 @@ class prometheus::ipmi_exporter (
 
     $config = {
         'modules' => {
-            'default'            => $collectors,
-            'exclude_sensor_ids' => $exclude_sensor_ids,
+            'default'            => {
+                'collectors' => $collectors,
+                'exclude_sensor_ids' => $exclude_sensor_ids,
+            }
         },
     }
     file { $config_file:
