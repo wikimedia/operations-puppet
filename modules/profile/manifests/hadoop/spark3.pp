@@ -9,7 +9,6 @@
 # will be done.
 #
 # [*install_yarn_shuffle_jar*]
-#   TODO: implement
 #   If true, any Spark 1 or 2 yarn shuffle jars in /usr/lib/hadoop-yarn/lib
 #   will be replaced with the Spark 3 one, causing YARN NodeManagers to run
 #   the Spark 3 shuffle service.
@@ -71,7 +70,7 @@
 #   will be used.
 #
 class profile::hadoop::spark3(
-    # Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', {'default_value' => true}),
+    Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', {'default_value' => false}),
     # Boolean $install_assembly                  = lookup('profile::hadoop::spark3::install_assembly', {'default_value' => false}),
     Hash[String, Any] $extra_settings          = lookup('profile::hadoop::spark3::extra_settings', {'default_value' => {}}),
     Stdlib::Port $driver_port                  = lookup('profile::hadoop::spark3::driver_port', {'default_value' => 12000}),
@@ -148,24 +147,24 @@ class profile::hadoop::spark3(
     }
 
     # If we want to override any Spark 1 yarn shuffle service to run Spark 2 instead.
-    # if $install_yarn_shuffle_jar {
-    #     # Add Spark 3 spark-yarn-shuffle.jar to the Hadoop Yarn NodeManager classpath.
-    #     file { '/usr/local/bin/spark3_yarn_shuffle_jar_install':
-    #         source => 'puppet:///modules/profile/hadoop/spark3/spark3_yarn_shuffle_jar_install.sh',
-    #         mode   => '0744',
-    #     }
-    #     exec { 'spark3_yarn_shuffle_jar_install':
-    #         command => '/usr/local/bin/spark3_yarn_shuffle_jar_install',
-    #         user    => 'root',
-    #         # spark3_yarn_shuffle_jar_install will exit 0 if the current installed
-    #         # version of spark3 has a yarn shuffle jar installed already.
-    #         unless  => '/usr/local/bin/spark3_yarn_shuffle_jar_install',
-    #         require => [
-    #             File['/usr/local/bin/spark3_yarn_shuffle_jar_install'],
-    #             Package['hadoop-client'],
-    #         ],
-    #     }
-    # }
+    if $install_yarn_shuffle_jar {
+        # Add Spark 3 spark-yarn-shuffle.jar to the Hadoop Yarn NodeManager classpath.
+        file { '/usr/local/bin/spark3_yarn_shuffle_jar_install':
+            source => 'puppet:///modules/profile/hadoop/spark3/spark3_yarn_shuffle_jar_install.sh',
+            mode   => '0744',
+        }
+        exec { 'spark3_yarn_shuffle_jar_install':
+            command => '/usr/local/bin/spark3_yarn_shuffle_jar_install',
+            user    => 'root',
+            # spark3_yarn_shuffle_jar_install will exit 0 if the current installed
+            # version of spark3 has a yarn shuffle jar installed already.
+            unless  => '/usr/local/bin/spark3_yarn_shuffle_jar_install',
+            require => [
+                File['/usr/local/bin/spark3_yarn_shuffle_jar_install'],
+                Package['hadoop-client'],
+            ],
+        }
+    }
 
     # if $install_assembly {
     #     file { '/usr/local/bin/spark3_upload_assembly.sh':
