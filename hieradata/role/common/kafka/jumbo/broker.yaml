@@ -11,6 +11,7 @@ profile::kafka::broker::kafka_cluster_name: jumbo
 # profile::kafka::broker::ssl_password, are committed in
 # the expected location in ops/puppet/private.
 profile::kafka::broker::ssl_enabled: true
+profile::base::certificates::include_bundle_jks: true
 
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277
