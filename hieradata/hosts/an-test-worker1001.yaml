@@ -1,0 +1,1 @@
+profile::base::remove_python2_on_bullseye: false

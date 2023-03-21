@@ -1,4 +1,9 @@
-class base::standard_packages {
+# @param remove_python2: In Bullseye the python2 packages are unsupported (they are only included
+#                        to build a few packages, but not run them). As such we deinstall them by
+#                        default. For select corner cases it will be needed to skip that.
+class base::standard_packages (
+    Boolean $remove_python2 = true,
+)   {
 
     ensure_packages ([
         'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
@@ -66,7 +71,7 @@ class base::standard_packages {
     # (like Chromium and Pypy). Absent it to ensure that they get pruned on dist-upgrades
     # and to ensure that roles get fixed to strip Python 2 dependencies when moving to
     # Bullseye
-    if debian::codename::eq('bullseye') {
+    if debian::codename::eq('bullseye') and $remove_python2 {
         package { [
             'libpython2.7', 'libpython2.7-dev', 'libpython2.7-minimal', 'python2.7',
             'libpython2.7-stdlib', 'python2.7-dev', 'python2.7-minimal', 'python2.7-dbg',

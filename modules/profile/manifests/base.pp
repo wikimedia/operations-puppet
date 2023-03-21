@@ -28,6 +28,7 @@ class profile::base (
     Enum['gtls', 'ossl']                $remote_syslog_tls_netstream_driver = lookup('profile::base::remote_syslog_tls_netstream_driver', {'default_value' => 'gtls'}),
     Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca', {'default_value' => '/var/lib/puppet/ssl/certs/ca.pem'}),
     Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
+    Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -87,7 +88,10 @@ class profile::base (
         unprivileged_userns_clone => $unprivileged_userns_clone,
     }
     class { 'motd': }
-    class { 'base::standard_packages': }
+    class { 'base::standard_packages':
+        remove_python2 => $remove_python2_on_bullseye,
+    }
+
     Class['profile::apt'] -> Class['base::standard_packages']
     include profile::environment
     class { 'base::sysctl::core_dumps':
