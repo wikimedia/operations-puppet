@@ -39,8 +39,6 @@ scap::dsh::groups:
       - {'cluster': 'parsoid', 'service': 'parsoid-php'}
     hosts:
       - cloudweb2002-dev.wikimedia.org
-      - deploy1002.eqiad.wmnet
-      - deploy2002.codfw.wmnet
       - cloudweb1003.wikimedia.org
       - cloudweb1004.wikimedia.org
       - mwmaint1002.eqiad.wmnet
