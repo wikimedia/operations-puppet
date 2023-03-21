@@ -992,7 +992,7 @@ groups:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
-      *platform_engineering_members, lbowmaker, cparle, mfossati, mlitn, fab
+      *platform_engineering_members, lbowmaker, cparle, mfossati, mlitn, fab, htriedman
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
