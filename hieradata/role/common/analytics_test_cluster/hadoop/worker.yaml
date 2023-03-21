@@ -32,7 +32,7 @@ profile::hadoop::common::ensure_ssl_config: true
 
 profile::hadoop::worker::monitoring_enabled: true
 
-profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS $DSE_KUBEPODS_NETWORKS))'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hadoop'
