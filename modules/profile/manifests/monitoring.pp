@@ -15,18 +15,23 @@
 #
 # @param hardware_monitoring indicate if we should monitor HW
 # @param contact_group Nagios contact_group to use for notifications.
-# @param notifications_enabled inticate if we should send notifications
+# @param cluster the cluster to ack on
 # @param is_critical indicate this host is critical
 # @param monitor_systemd indicate if we should monitor systemd
-# @param monitor_screens indicate if we should monitor screens
-# @param puppet_interval interval for puppet checks
 # @param nrpe_check_disk_options Default options for checking disks.  Defaults to checking
 #   all disks and warning at < 6% and critical at < 3% free.
-# @param check_raid indicate if we should check raid
+# @param raid_check indicate if we should check raid
 # @param nrpe_check_disk_critical Make disk space alerts paging, defaults to not paging
-# @parma raid_check_interval check interval for raid checks
-# @parma raid_retry_interval retry interval for raid retrys
-class profile::monitoring(
+# @param raid_check_interval check interval for raid checks
+# @param raid_retry_interval retry interval for raid retries
+# @param notifications_enabled indicate if we should send notifications
+# @param do_paging if true send pages
+# @param nagios_group The nagios group to use for notifications
+# @param services A hash of services to monitor on all servers
+# @param hosts The hosts to monitor
+# @param monitoring_hosts The monitoring hosts used in FW rules
+# @param raid_write_cache_policy The raid policy to use for checks
+class profile::monitoring (
     Wmflib::Ensure      $hardware_monitoring        = lookup('profile::monitoring::hardware_monitoring'),
     # TODO: make this an array
     String              $contact_group              = lookup('profile::monitoring::contact_group'),
@@ -51,7 +56,7 @@ class profile::monitoring(
     include profile::puppet::agent
     $puppet_interval = $profile::puppet::agent::interval
 
-    if $raid_check and $hardware_monitoring == 'present'{
+    if $raid_check and $hardware_monitoring == 'present' {
         # RAID checks
         class { 'raid':
             write_cache_policy => $raid_write_cache_policy,
@@ -172,8 +177,7 @@ class profile::monitoring(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
     }
 
-    if $facts['productname'] == 'PowerEdge R320' {
-
+    if $facts['dmi']['name'] == 'PowerEdge R320' {
         nrpe::plugin { 'check_cpufreq':
             source => 'puppet:///modules/profile/monitoring/check_cpufreq',
         }
@@ -185,11 +189,10 @@ class profile::monitoring(
         }
     }
 
-
     if ! $facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
         class { 'prometheus::node_nic_firmware': }
-        if $::processor0 !~ /AMD/ {
+        if $facts['processors']['models'][0] !~ /AMD/ {
             class { 'prometheus::node_intel_microcode': }
         }
     }
