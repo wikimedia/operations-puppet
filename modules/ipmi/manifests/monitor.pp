@@ -11,13 +11,25 @@ class ipmi::monitor (
         ensure => absent,
     }
 
-    # ensure service only on buster as other OS versions are conigured properly by the package
-    if debian::codename::eq('buster') {
-        service { 'ipmiseld':
-            ensure  => running,
-            enable  => true,
-            require => Package['freeipmi-ipmiseld'],
-        }
+    $ipmiseld_config = @(IPMISELDCONFIG)
+        # THIS FILE IS MANAGED BY PUPPET
+        interpret-oem-data ENABLE
+        entity-sensor-names ENABLE
+        | IPMISELDCONFIG
+
+    file { '/etc/freeipmi/ipmiseld.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => $ipmiseld_config,
+        notify  => Service['ipmiseld'],
+    }
+
+    service { 'ipmiseld':
+        ensure  => running,
+        enable  => true,
+        require => Package['freeipmi-ipmiseld'],
     }
 
     file { '/var/cache/ipmiseld':
