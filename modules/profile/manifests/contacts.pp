@@ -26,7 +26,12 @@ class profile::contacts (
     # TODO: update the below when we move to Strings for role owner
     # Currently role_contacts is an array, We plan to make this a String at some
     # point and disallow multiple owners for now we just pick the first owner
-    $_role_contact = $role_contacts[0].regsubst('\W', '-', 'G').downcase
+    # NOTE: we don't use bool2str as the false argument would is still evaluated
+    # when true which fails
+    $_role_contact = $role_contacts.empty ? {
+        true    => 'Unknown',
+        default => $role_contacts[0].regsubst('\W', '-', 'G').downcase,
+    }
     $role_owner_metric = @("METRIC")
     # HELP role_owner The team owner of the server role
     # TYPE role_owner gauge
