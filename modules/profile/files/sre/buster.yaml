@@ -133,7 +133,7 @@ role::alerting_host:
   target-q: TBD
 role::analytics_cluster::launcher:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332580
 role::analytics_cluster::ui::staging:
   target-q: TBD
   phab-task: 288804
@@ -144,11 +144,11 @@ role::analytics_cluster::ui::superset::staging:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::presto::server:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-1
+  phab-task: 329361
 role::analytics_cluster::hadoop::worker:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332570
 role::analytics_cluster::turnilo:
   target-q: TBD
   phab-task: 288804
@@ -221,7 +221,7 @@ role::druid::analytics::worker:
   phab-task: 288804
 role::druid::public::worker:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332589
 role::elasticsearch::cirrus:
   target-q: TBD
   phab-task: 289135
@@ -296,16 +296,16 @@ role::netmon:
   target-q: TBD
 role::analytics_cluster::coordinator:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332572
 role::analytics_cluster::coordinator::replica:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::hadoop::master:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332573
 role::analytics_cluster::hadoop::standby:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332578
 role::analytics_test_cluster::client:
   target-q: TBD
   phab-task: 288804
@@ -329,7 +329,7 @@ role::analytics_test_cluster::presto::server:
   phab-task: 288804
 role::druid::test_analytics::worker:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 332584
 role::wmcs::openstack::codfw1dev::db:
   target-q: TBD
 role::wmcs::openstack::eqiad1::services:
@@ -394,7 +394,7 @@ role::dumps::generation::worker::dumper:
   phab-task: 325228
 role::statistics::explorer:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 329360
 role::analytics_cluster::webserver:
   target-q: TBD
   phab-task: 288804
@@ -431,6 +431,7 @@ role::grafana:
   target-q: TBD
 role::analytics_cluster::zookeeper:
   target-q: TBD
+  phab-task: 329362
 role::zookeeper::test:
   target-q: TBD
 role::apt_repo:
