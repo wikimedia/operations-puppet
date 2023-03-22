@@ -1,0 +1,148 @@
+# SPDX-License-Identifier: Apache-2.0
+fields:
+  "rsyslog.hostname": "grafana0000"
+  "rsyslog.programname": "grafana-server"
+  "rsyslog.severity": "INFO"
+  "rsyslog.facility": "user"
+  program: "grafana-server"
+  host: "grafana0000"
+  logsource: "grafana0000"
+  facility: "user"
+  severity: "INFO"
+  tags: [ "es" ]
+codec: "json_lines"
+ignore:
+  - "normalized"
+  - "normalized_message"
+  - "tags"
+  - '@timestamp'
+testcases:
+  - input:
+    - >
+      {
+        "message": "logger=context userId=0 orgId=1 uname= t=2023-03-22T20:51:22.060326985Z level=info msg=\"Request Completed\" method=GET path=/api/live/ws status=400 remote_addr=0.0.0.0 time_ms=6 duration=6.683093ms size=12 referer= handler=/api/live/ws"
+      }
+    expected:
+      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+#        '@timestamp': "2023-03-22T20:51:22.060Z"
+        message: "Request Completed"
+        host:
+          name: "grafana0000"
+        client:
+          ip: "0.0.0.0"
+        labels:
+          duration: "6.683093ms"
+          handler: "/api/live/ws"
+          orgId: 1
+          size: 12
+          time_ms: 6
+          userId: 0
+          uname: true
+          referer: true
+        log:
+          logger: "context"
+          level: "INFO"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            priority: 14
+            severity:
+              code: 6
+              name: "informational"
+        http:
+          request:
+            method: "GET"
+            status_code: 400
+        url:
+          path: "/api/live/ws"
+        service:
+          type: "grafana"
+        ecs:
+          version: "1.11.0"
+
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        message: "logger=context userId=0 orgId=1 uname= t=2023-03-22T20:51:22.060326985Z level=info msg=\"Request Completed\" method=GET path=/api/live/ws status=400 remote_addr=0.0.0.0 time_ms=6 duration=6.683093ms size=12 referer= handler=/api/live/ws"
+        facility: "user"
+        host: "grafana0000"
+        logsource: "grafana0000"
+        program: "grafana-server"
+        severity: "INFO"
+  - input:
+    - >
+      {
+        "message": "logger=ngalert.sender.router rule_uid=mp0FSj14z org_id=1 t=2023-03-22T20:52:09.260520522Z level=info msg=\"Sending alerts to local notifier\" count=1"
+      }
+    expected:
+      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+#        '@timestamp': "2023-03-22T20:52:09.260Z"
+        message: "Sending alerts to local notifier"
+        host:
+          name: "grafana0000"
+        labels:
+          count: 1
+          org_id: 1
+          rule_uid: "mp0FSj14z"
+        log:
+          logger: "ngalert.sender.router"
+          level: "INFO"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            priority: 14
+            severity:
+              code: 6
+              name: "informational"
+        service:
+          type: "grafana"
+        ecs:
+          version: "1.11.0"
+
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        message: "logger=ngalert.sender.router rule_uid=mp0FSj14z org_id=1 t=2023-03-22T20:52:09.260520522Z level=info msg=\"Sending alerts to local notifier\" count=1"
+        facility: "user"
+        host: "grafana0000"
+        logsource: "grafana0000"
+        program: "grafana-server"
+        severity: "INFO"
+  - input:
+    - >
+      {
+        "message": "logger=alertmanager org=1 t=2023-03-22T21:10:09.725088848Z level=error component=dispatcher msg=\"Notify for alerts failed\" num_alerts=1 err=\"cxserver/email[0]: notify retry canceled due to unrecoverable error after 1 attempts: SMTP not configured, check your grafana.ini config file's [smtp] section\""
+      }
+    expected:
+      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+#        '@timestamp': "2023-03-22T21:10:09.725Z"
+        message: "Notify for alerts failed"
+        error:
+          message: "cxserver/email[0]: notify retry canceled due to unrecoverable error after 1 attempts: SMTP not configured, check your grafana.ini config file's [smtp] section"
+        host:
+          name: "grafana0000"
+        labels:
+          component: "dispatcher"
+          num_alerts: 1
+          org: 1
+        log:
+          logger: "alertmanager"
+          level: "ERROR"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            priority: 11
+            severity:
+              code: 3
+              name: "error"
+        service:
+          type: "grafana"
+        ecs:
+          version: "1.11.0"
+
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        message: "logger=alertmanager org=1 t=2023-03-22T21:10:09.725088848Z level=error component=dispatcher msg=\"Notify for alerts failed\" num_alerts=1 err=\"cxserver/email[0]: notify retry canceled due to unrecoverable error after 1 attempts: SMTP not configured, check your grafana.ini config file's [smtp] section\""
+        facility: "user"
+        host: "grafana0000"
+        logsource: "grafana0000"
+        program: "grafana-server"
+        severity: "INFO"
