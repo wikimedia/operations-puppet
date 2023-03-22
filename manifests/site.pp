@@ -1835,7 +1835,6 @@ node /^ml-staging200[12]\.codfw\.wmnet$/ {
     role(ml_k8s::staging::worker)
 }
 
-# RT, replaced ununpentium
 node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
 }

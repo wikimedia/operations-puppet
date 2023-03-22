@@ -29,20 +29,6 @@ class profile::requesttracker {
         srange => '$CACHES',
     }
 
-    ferm::service { 'rt-migration-rsync':
-        proto  => 'tcp',
-        port   => '873',
-        srange => '@resolve(ununpentium.wikimedia.org)',
-    }
-
-    class { '::rsync::server': }
-
-    rsync::server::module { 'rt-srv':
-        path        => '/srv',
-        read_only   => 'no',
-        hosts_allow => 'ununpentium.wikimedia.org',
-    }
-
     prometheus::blackbox::check::http { 'rt.wikimedia.org':
         team             => 'serviceops-collab',
         severity         => 'task',
