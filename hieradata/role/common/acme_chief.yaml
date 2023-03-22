@@ -212,11 +212,9 @@ profile::acme_chief::certificates:
         SNI:
         - 'orchestrator.wikimedia.org'
         - 'dborch1001.wikimedia.org'
-        - 'dborch1002.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'dborch1001.wikimedia.org'
-        - 'dborch1002.wikimedia.org'
     unified:
         CN: '*.wikipedia.org'
         SNI:
