@@ -5,6 +5,10 @@
     ServerName transparency-archive.wikimedia.org
     DocumentRoot <%= @docroot %>
 
+    ErrorLog /var/log/apache2/transparency-archive.wikimedia.org.error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/transparency-archive.wikimedia.org.access.log wmf
+
     <Directory <%= @docroot %>>
         Require all granted
     </Directory>
