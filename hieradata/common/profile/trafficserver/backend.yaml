@@ -140,7 +140,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://mwmaint.discovery.wmnet
     - type: map
       target: http://os-reports.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-sites.discovery.wmnet
     - type: map
       target: http://ores.wikimedia.org
       replacement: https://ores.discovery.wmnet
