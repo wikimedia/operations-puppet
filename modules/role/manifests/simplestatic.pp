@@ -17,6 +17,6 @@ class role::simplestatic (
 
     httpd::site { 'simplestatic':
         ensure  => present,
-        content => template('role/apache/sites/simplestatic.erb'),
+        content => template('profile/microsites/simplestatic.erb'),
     }
 }
