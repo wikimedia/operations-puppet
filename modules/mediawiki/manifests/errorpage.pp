@@ -83,6 +83,8 @@ define mediawiki::errorpage(
     String $logo_alt = 'Wikimedia',
     Optional[String] $content = undef,
     Optional[String] $footer = undef,
+    Optional[String] $margin = undef,
+    Optional[String] $margin_top = undef,
 ) {
     $errorpage = {
         favicon     => $favicon,
@@ -96,6 +98,8 @@ define mediawiki::errorpage(
         logo_alt    => $logo_alt,
         content     => $content,
         footer      => $footer,
+        margin      => $margin,
+        margin_top  => $margin_top,
     }
     file { $filepath:
         owner   => $owner,
