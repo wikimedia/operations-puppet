@@ -5,8 +5,14 @@ class mw_rc_irc::irc_echo(
     Stdlib::Port $metrics_port,
 ) {
 
-    ensure_packages(['python-irc'])
-    ensure_packages(['python-prometheus-client'])
+    if debian::codename::eq('buster') {
+        ensure_packages(['python-irc'])
+        ensure_packages(['python-prometheus-client'])
+        $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho.py'
+    } else {
+        ensure_packages(['python3-irc', 'python3-prometheus-client'])
+        $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho-py3.py'
+    }
 
     file { '/etc/udpmxircecho-config.json':
         content => to_json_pretty({
@@ -24,25 +30,22 @@ class mw_rc_irc::irc_echo(
     }
 
     file { '/usr/local/bin/udpmxircecho.py':
-        source  => 'puppet:///modules/mw_rc_irc/udpmxircecho.py',
-        mode    => '0555',
-        owner   => 'irc',
-        group   => 'irc',
-        require => File['/etc/udpmxircecho-config.json']
+        source => $echo_source,
+        mode   => '0555',
+        owner  => 'irc',
+        group  => 'irc',
     }
 
     file { '/etc/systemd/system/ircecho.service':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/mw_rc_irc/systemd/ircecho.service',
-        require => File['/usr/local/bin/udpmxircecho.py'],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/mw_rc_irc/systemd/ircecho.service',
     }
 
     service { 'ircecho':
         ensure   => running,
         provider => 'systemd',
-        require  => File['/etc/systemd/system/ircecho.service'],
     }
 
     # icinga check if bot process is running
