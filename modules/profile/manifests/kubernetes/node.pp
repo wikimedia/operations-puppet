@@ -38,6 +38,9 @@ class profile::kubernetes::node (
     require profile::netbox::host
     $k8s_le_116 = versioncmp($version, '1.16') <= 0
 
+    # Enable performance governor for hardware nodes
+    class { 'cpufrequtils': }
+
     rsyslog::input::file { 'kubernetes-json':
         path               => '/var/log/containers/*.log',
         reopen_on_truncate => 'on',
