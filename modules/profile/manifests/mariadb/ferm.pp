@@ -27,7 +27,7 @@ define profile::mariadb::ferm (
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => '@resolve((dborch1001.wikimedia.org dborch1002.wikimedia.org))',
+        srange  => '@resolve((dborch1001.wikimedia.org))',
     }
 
     # auxiliary port
