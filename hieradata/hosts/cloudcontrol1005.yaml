@@ -57,11 +57,6 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - wikidumpparse-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
-  wmde-templates-alpha:
-    volumes:
-      - wmde-templates-alpha-nfs
-    FULL_FREQUENCY: 7
-    PURGE_AFTER: 30
   maps:
     volumes:
       - maps
