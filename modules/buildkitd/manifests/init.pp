@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary Provisions rootless mode buildkitd within a Docker network
+# @summary Provisions buildkitd within a Docker network
 #
 # @param ensure Whether to have buildkitd present or absent
 # @param network Docker network name on which to run the buildkitd container
@@ -8,16 +8,18 @@
 # @param image Ref to the buildkitd image to run
 # @param nameservers DNS nameservers to configure for OCI worker containers.
 # @param environment Environment variables to set for the buildkitd container.
+# @param cni_pool_size Size of the preallocated pool of CNI network namespaces.
 #
 class buildkitd(
     Wmflib::Ensure           $ensure,
     String                   $network,
     Stdlib::IP::Address      $address = '0.0.0.0',
     Stdlib::Port             $port = 1234,
-    String                   $image = 'docker-registry.wikimedia.org/buildkitd:latest',
+    String                   $image = 'docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.11-6',
     Array[Stdlib::Host]      $nameservers = [],
     Wmflib::POSIX::Variables $environment = {},
     Optional[Integer]        $gckeepstorage = 0,
+    Integer                  $cni_pool_size = 20,
 ){
     group { 'buildkitd':
         ensure => $ensure,

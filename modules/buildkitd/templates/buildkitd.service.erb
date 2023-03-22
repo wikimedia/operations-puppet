@@ -9,7 +9,7 @@ User=buildkitd
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm -f buildkitd
 ExecStart=/usr/bin/docker run --name buildkitd \
-    --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
+    --privileged \
     --volume /etc/buildkitd.toml:/etc/buildkit/buildkitd.toml \
     --network <%= @network %> \
     --env-file /etc/default/buildkitd \

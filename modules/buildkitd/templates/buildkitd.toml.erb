@@ -1,11 +1,22 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 
-<% if @gckeepstorage > 0 -%>
 [worker.oci]
+enabled = true
 gc = true
+
+<% if @gckeepstorage > 0 -%>
 # MB units
 gckeepstorage = <%= @gckeepstorage %>
 <% end -%>
+
+# Use CNI to isolate each build container network namespace
+networkMode = "cni"
+
+# Pre-allocate a pool of network namespaces
+cniPoolSize = <%= @cni_pool_size %>
+
+[worker.containerd]
+enabled = false
 
 [dns]
 # See https://github.com/moby/buildkit/blob/v0.10/cmd/buildkitd/config/config.go#L114
