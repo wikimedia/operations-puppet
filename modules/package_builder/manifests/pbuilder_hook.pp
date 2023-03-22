@@ -34,6 +34,17 @@ define package_builder::pbuilder_hook(
         }
     }
 
+    if $distribution == 'bullseye' {
+        # add a hook for building packages against backported pybal stack
+        file { "${basepath}/hooks/${distribution}/D04pybal":
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/package_builder/hooks/D04pybal',
+        }
+    }
+
     if $distribution != 'sid' {
         file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
             ensure  => present,
