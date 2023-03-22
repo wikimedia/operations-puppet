@@ -233,7 +233,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://releases.discovery.wmnet
     - type: map
       target: http://research.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-sites.discovery.wmnet
     - type: map
       target: http://rt.wikimedia.org
       replacement: https://rt.discovery.wmnet
