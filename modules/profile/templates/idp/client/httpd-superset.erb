@@ -47,6 +47,10 @@
         RequestHeader set X-Forwarded-Proto "<%= @vhost_settings['x-forwarded-proto'] %>"
     </Location>
 
+    <Location /requestctl-generator>
+        Alias /var/www/requestctl-generator.html
+    </Location>
+
     <Location /health_check>
         Require all granted
         Alias /var/www/health_check
@@ -62,6 +66,7 @@
     ProxyPreserveHost on
 
     ProxyPass /health_check !
+    ProxyPass /requestctl-generator !
     ProxyPass / http://localhost:9080/
     ProxyPassReverse / http://localhost:9080/
 </VirtualHost>

@@ -24,6 +24,14 @@ class profile::superset::proxy (
     }
 
     if $enable_cas {
+        file { '/var/www/requestctl-generator.html':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/profiles/superset/requestctl-generator.html',
+        }
+
         profile::idp::client::httpd::site { $server_name:
             vhost_content    => 'profile/idp/client/httpd-superset.erb',
             proxied_as_https => true,
