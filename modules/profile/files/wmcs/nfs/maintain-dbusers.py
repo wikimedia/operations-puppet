@@ -49,23 +49,23 @@ In normal usage, just a continuous process running `populate_new_accounts` and
 TODO:
   - Support for maintaining per-tool restrictions (number of connections + time)
 """
+from __future__ import annotations
 
 import argparse
-from hashlib import sha1
-from functools import wraps
 import logging
 import random
 import re
 import string
 import sys
 import time
-from typing import Any, Dict, List, Tuple
-import yaml
+from functools import wraps
+from hashlib import sha1
+from typing import Any
 
 import ldap3
 import pymysql
 import requests
-
+import yaml
 
 PROJECT = "tools"
 PAWS_RUNTIME_UID = 52771
@@ -88,8 +88,6 @@ ACCOUNT_CREATION_SQL = {
         r"GRANT ALL PRIVILEGES ON `{username}\_\_%`.* TO '{username}'@'%';",
     ],
 }
-Account = Tuple[str, int]
-Config = Dict[str, Any]
 USER_AGENT = (
     "WMCS Maintain-DBUsers/1.0 "
     "(https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/"
@@ -100,13 +98,14 @@ USER_AGENT = (
 
 
 class APIError(Exception):
-    """ Simple custom error class for replica_cnf endpoints api errors"""
+    """Simple custom error class for replica_cnf endpoints api errors"""
 
     pass
 
 
 class SkipAccount(Exception):
     """Raised when an account has to be skipped."""
+
     pass
 
 
@@ -120,7 +119,7 @@ def get_headers():
     return headers
 
 
-def should_execute_for_user(username: str, only_users: List[str] = []) -> bool:
+def should_execute_for_user(username: str, only_users: list[str] = []) -> bool:
     """
     returns True if only_users is empty array or if username is in only_users,
     else returns False.
@@ -189,7 +188,7 @@ def write_replica_cnf(
     mysql_username: str,
     password: str,
     dry_run: bool,
-    config: Config,
+    config: dict[str, Any],
 ) -> None:
     """
     Create a replica.my.cnf file in the necessary account_type directory on the api server
@@ -243,8 +242,8 @@ def write_replica_cnf(
 
 @with_replica_cnf_api_logs()
 def read_replica_cnf(
-    account_id: str, account_type: str, dry_run: bool, config: Config
-) -> Tuple[str]:
+    account_id: str, account_type: str, dry_run: bool, config: dict[str, Any]
+) -> tuple[str, str]:
     """
     Read the contents of a replica.my.cnf file on the api server
     """
@@ -285,7 +284,9 @@ def read_replica_cnf(
 
 
 @with_replica_cnf_api_logs()
-def delete_replica_cnf(account_id: str, account_type: str, dry_run: bool, config: Config) -> str:
+def delete_replica_cnf(
+    account_id: str, account_type: str, dry_run: bool, config: dict[str, Any]
+) -> str:
     """
     Delete a replica.my.cnf file on the api server
     """
@@ -326,7 +327,7 @@ def delete_replica_cnf(account_id: str, account_type: str, dry_run: bool, config
 
 
 @with_replica_cnf_api_logs()
-def fetch_paws_uids(config: Config) -> List[int]:
+def fetch_paws_uids(config: dict[str, Any]) -> list[int]:
     api_url = config["replica_cnf"]["paws"]["root_url"] + "/paws-uids"
     auth = (
         config["replica_cnf"]["paws"]["username"],
@@ -357,7 +358,7 @@ def fetch_paws_uids(config: Config) -> List[int]:
     return paws_uids
 
 
-def find_tools(config: Config) -> List[Account]:
+def find_tools(config: dict[str, Any]) -> list[tuple[str, int]]:
     """
     Return list of tools, from canonical LDAP source
 
@@ -397,7 +398,7 @@ def find_tools(config: Config) -> List[Account]:
     return users
 
 
-def find_tools_users(config: Config) -> List[Account]:
+def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int]]:
     """
     Return list of tools project users, from LDAP
 
@@ -430,7 +431,7 @@ def find_tools_users(config: Config) -> List[Account]:
         return users
 
 
-def get_global_wiki_user(uid: str) -> Dict[str, Any]:
+def get_global_wiki_user(uid: str) -> dict[str, Any]:
     api_url = (
         "https://meta.wikimedia.org/w/api.php?action=query&format=json&"
         "meta=globaluserinfo&guiid="
@@ -440,14 +441,14 @@ def get_global_wiki_user(uid: str) -> Dict[str, Any]:
     return response.json()
 
 
-def find_paws_users(config: Config) -> List[Account]:
+def find_paws_users(config: dict[str, Any]) -> list[tuple[str, int]]:
     """
     Return list of PAWS users, from their userhomes
 
     Return a list of tuples of username, uid
     """
     user_ids = fetch_paws_uids(config=config)
-    paws_users = []
+    paws_users: list[tuple[str, int]] = []
 
     if not user_ids:
         return paws_users
@@ -466,7 +467,7 @@ def find_paws_users(config: Config) -> List[Account]:
     return paws_users
 
 
-def get_ldap_conn(config: Config):
+def get_ldap_conn(config: dict[str, Any]):
     """
     Return a ldap connection
 
@@ -483,12 +484,12 @@ def get_ldap_conn(config: Config):
         servers,
         read_only=True,
         user=config["ldap"]["username"],
-        auto_bind=True,
+        auto_bind="DEFAULT",
         password=config["ldap"]["password"],
     )
 
 
-def get_accounts_db_conn(config: Config):
+def get_accounts_db_conn(config: dict[str, Any]):
     """
     Return a pymysql connection to the accounts database
     """
@@ -506,7 +507,7 @@ account_finder = {"user": find_tools_users, "tool": find_tools, "paws": find_paw
 
 
 def harvest_cnf_files(
-    dry_run: bool, only_users: List[str], config: Config, account_type: str = "tool"
+    dry_run: bool, only_users: list[str], config: dict[str, Any], account_type: str = "tool"
 ):
     accounts_to_create = account_finder[account_type](config=config)
     try:
@@ -528,7 +529,9 @@ def harvest_cnf_files(
 
                     if mysql_user and pwd_hash:
                         logging.info(
-                            "read harvested replica.my.cnf for %s %s", account_type, account_name
+                            "read harvested replica.my.cnf for %s %s",
+                            account_type,
+                            account_name,
                         )
 
                     create_acct_sql_str = (
@@ -561,7 +564,7 @@ def harvest_cnf_files(
         acct_db.close()
 
 
-def harvest_replica_accounts(dry_run: bool, only_users: List[str], config: Config):
+def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[str, Any]):
     labsdbs = []
     try:
         acct_db = get_accounts_db_conn(config=config)
@@ -651,7 +654,7 @@ def _populate_new_account(
     new_account: str,
     new_account_id: int,
     dry_run: bool,
-    config: Config,
+    config: dict[str, Any],
 ) -> None:
     password = generate_new_pw()
     prefix = {"tool": "s", "paws": "p", "user": "u"}
@@ -711,7 +714,7 @@ def _populate_new_account(
 
 
 def populate_new_accounts(
-    dry_run: bool, only_users: List[str], config: Config, account_type: str = "tool"
+    dry_run: bool, only_users: list[str], config: dict[str, Any], account_type: str = "tool"
 ):
     """
     Populate new tools/users into meta db
@@ -799,7 +802,7 @@ def populate_new_accounts(
         acct_db.close()
 
 
-def create_accounts(dry_run: bool, only_users: List[str], config: Config):
+def create_accounts(dry_run: bool, only_users: list[str], config: dict[str, Any]):
     """
     Find hosts with accounts in absent state, and creates them.
     """
@@ -949,7 +952,7 @@ def create_accounts(dry_run: bool, only_users: List[str], config: Config):
         acct_db.close()
 
 
-def delete_account(account: str, dry_run: bool, config: Config, account_type: str = "tool"):
+def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_type: str = "tool"):
     """
     Deletes a mysql user account
 
@@ -984,7 +987,7 @@ def delete_account(account: str, dry_run: bool, config: Config, account_type: st
                 host=hostname,
                 user=config["labsdbs"]["username"],
                 password=config["labsdbs"]["password"],
-                port=port
+                port=port,
             )
             with acct_db.cursor() as cur:
                 select_acct_sql_str = (
@@ -1038,7 +1041,10 @@ def delete_account(account: str, dry_run: bool, config: Config, account_type: st
             else:
                 account_id = uid
             replica_file_path = delete_replica_cnf(
-                account_id=account_id, account_type=account_type, dry_run=dry_run, config=config
+                account_id=account_id,
+                account_type=account_type,
+                dry_run=dry_run,
+                config=config,
             )
 
             if replica_file_path:
@@ -1145,16 +1151,14 @@ def main():
     log_lvl = logging.DEBUG if (args.debug or args.dry_run or args.only_users) else logging.INFO
     # this is here as the systemd dependency is not available on most dev environments, and not
     # really needed for testing
-    from systemd import journal, daemon  # pylint: disable=import-error,import-outside-toplevel
+    from systemd import daemon, journal  # pylint: disable=import-error,import-outside-toplevel
 
     log_format = "%(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
     if args.dry_run:
         log_format = "DRY_RUN:%s" % log_format
 
     if daemon.booted():
-        logging.basicConfig(
-            format=log_format, level=log_lvl, handlers=[journal.JournalHandler()]
-        )
+        logging.basicConfig(format=log_format, level=log_lvl, handlers=[journal.JournalHandler()])
     else:
         logging.basicConfig(format=log_format, level=log_lvl)
 

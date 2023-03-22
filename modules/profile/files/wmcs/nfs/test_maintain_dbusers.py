@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 # pylint: disable=missing-class-docstring,missing-function-docstring
-from typing import Any, Dict, List
+from __future__ import annotations
+
+from typing import Any
 import unittest
 from unittest import mock
 import pymysql
@@ -13,7 +15,7 @@ maintain_dbusers = __import__(
 
 
 class MockResponse:
-    def __init__(self, json_data: Dict[str, Any], status_code: int = 200):
+    def __init__(self, json_data: dict[str, Any], status_code: int = 200):
         self.json_data = json_data
         self.status_code = status_code
 
@@ -22,17 +24,17 @@ class MockResponse:
 
 
 class StubLdapConnection:
-    def __init__(self, mocked_response_pages: List[List[Dict[str, Any]]]):
+    def __init__(self, mocked_response_pages: list[list[dict[str, Any]]]):
         self._cur_response = 0
         self._responses = mocked_response_pages
         self._initialized = False
 
     @property
-    def response(self) -> List[Dict[str, Any]]:
+    def response(self) -> list[dict[str, Any]]:
         return self._responses[self._cur_response]
 
     @property
-    def result(self) -> Dict[str, Any]:
+    def result(self) -> dict[str, Any]:
         return {
             "controls": {
                 "1.2.840.113556.1.4.319": {"value": {"cookie": None if self._finished else "12345"}}
