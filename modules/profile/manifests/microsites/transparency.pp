@@ -13,10 +13,10 @@ class profile::microsites::transparency {
     }
 
     httpd::site { 'transparency.wikimedia.org':
-        content => template('role/apache/sites/transparency.wikimedia.org.erb'),
+        content => template('profile/microsites/transparency.wikimedia.org.erb'),
     }
 
     httpd::site { 'transparency-archive.wikimedia.org':
-        content => template('role/apache/sites/transparency-archive.wikimedia.org.erb'),
+        content => template('profile//microsites/transparency-archive.wikimedia.org.erb'),
     }
 }
