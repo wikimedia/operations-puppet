@@ -135,6 +135,8 @@
 #     According to envoy documentation this must be configured in presence of untrusted downstreams.
 # @param http2_options
 #     Set HTTP/2 protocol options for downstream connections
+# @param error_html
+#     Set the override html format for the error page if not empty
 define envoyproxy::tls_terminator(
     Array[Envoyproxy::Tlsconfig]       $upstreams                 = [],
     Boolean                            $access_log                = false,
@@ -165,6 +167,7 @@ define envoyproxy::tls_terminator(
     Optional[String]                   $lua_script                = undef,
     Optional[Integer]                  $connection_buffer_limit   = undef,
     Optional[Envoyproxy::Http2options] $http2_options             = undef,
+    Boolean                            $has_error_page            = false,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.

@@ -319,6 +319,7 @@ profile::tlsproxy::envoy::idle_timeout: ~
 profile::tlsproxy::envoy::ferm_srange: ~
 profile::tlsproxy::envoy::max_requests: ~
 profile::tlsproxy::envoy::cfssl_label: ~
+profile::tlsproxy::envoy::error_page: false
 
 # Firewall logging
 profile::base::firewall::enable_logging: true

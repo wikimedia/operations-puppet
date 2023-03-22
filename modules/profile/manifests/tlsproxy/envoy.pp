@@ -52,6 +52,7 @@
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
 #                     It should match the idle timeout of the upstream service.
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
+# @param error_page  boolean true if an error page should be added; false by default.
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni    $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                     $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -71,6 +72,7 @@ class profile::tlsproxy::envoy(
     Optional[String]                 $ferm_srange               = lookup('profile::tlsproxy::envoy::ferm_srange'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
+    Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page')
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -203,6 +205,16 @@ class profile::tlsproxy::envoy(
             default => {'num_retries' => 0},
         }
 
+        if $error_page {
+            # TODO: add ensure to mediawiki::errorpage
+            mediawiki::errorpage { '/etc/envoy/error_page.html':
+                owner  => 'envoy',
+                group  => 'envoy',
+                footer => '<p>Original error: %LOCAL_REPLY_BODY% </p>',
+                before => Service['envoyproxy.service']
+            }
+        }
+
         envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
             upstreams                 => $upstreams,
             access_log                => $access_log,
@@ -216,6 +228,7 @@ class profile::tlsproxy::envoy(
             listen_ipv6               => $listen_ipv6,
             idle_timeout              => $idle_timeout,
             max_requests_per_conn     => $max_requests,
+            has_error_page            => $error_page
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',

@@ -112,6 +112,23 @@ filter_chains:
       generate_request_id: false
 <%- end -%>
       stat_prefix: ingress_http
+<%- if @has_error_page -%>
+      local_reply_config:
+        mappers:
+          - filter:
+              # We only intercept pages with
+              # status code 502 or higher.
+              status_code_filter:
+                comparison:
+                  op: "GE"
+                  value:
+                    default_value: 502
+                    runtime_key: errorpage_min_code
+            body_format_override:
+              text_format_source:
+                filename: /etc/envoy/error_page.html
+              content_type: "text/html; charset=UTF-8"
+<%- end -%>
 <%- if @access_log -%>
       access_log:
       - name: envoy.file_access_log
@@ -220,6 +237,23 @@ filter_chains:
       generate_request_id: false
 <%- end -%>
       stat_prefix: ingress_http
+<%- if @has_error_page -%>
+      local_reply_config:
+        mappers:
+          - filter:
+              # We only intercept pages with
+              # status code 502 or higher.
+              status_code_filter:
+                comparison:
+                  op: "GE"
+                  value:
+                    default_value: 502
+                    runtime_key: errorpage_min_code
+            body_format_override:
+              text_format_source:
+                filename: /etc/envoy/error_page.html
+              content_type: "text/html; charset=UTF-8"
+<%- end -%>
 <%- if @use_remote_address -%>
       use_remote_address: true
       skip_xff_append: false
