@@ -111,6 +111,7 @@
     {"index" : "squid", "value" : "kafka local" },
     {"index" : "docker-striker", "value" : "kafka" },
     {"index" : "tcpircbot-logmsgbot", "value" : "kafka" },
-    {"index" : "thanos-query", "value" : "kafka local" }
+    {"index" : "thanos-query", "value" : "kafka local" },
+    {"index" : "ipmiseld", "value": "kafka local" }
   ]
 }
