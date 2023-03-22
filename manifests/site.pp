@@ -809,11 +809,6 @@ node 'dborch1001.wikimedia.org' {
     role(orchestrator)
 }
 
-# Bullseye upgrade test host
-node 'dborch1002.wikimedia.org' {
-    role(orchestrator)
-}
-
 # backup1-eqiad section (datacenter-specific backup metadata hosts)
 node /^(db1204|db1205)\.eqiad\.wmnet$/ {
     role(mariadb::misc)
