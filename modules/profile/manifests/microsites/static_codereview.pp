@@ -11,7 +11,7 @@ class profile::microsites::static_codereview {
         ip_families        => ['ip4'],
         force_tls          => true,
         status_matches     => [200],
-        body_regex_matches => ['SVN CodeReview'],
+        body_regex_matches => ['Code Review'],
     }
 
     wmflib::dir::mkdir_p('/srv/org/wikimedia/static-codereview')
