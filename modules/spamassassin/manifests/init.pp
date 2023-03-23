@@ -60,18 +60,20 @@ class spamassassin(
     $debug_logging = '',
     $proxy=undef,
 ) {
-    package { 'spamassassin':
-        ensure => present,
+    if debian::codename::ge('bookworm') {
+        $sa_daemon='spamd'
+    } else {
+        $sa_daemon='spamassassin'
     }
 
-    ensure_packages(['libmail-spf-perl', 'libmail-dkim-perl'])
+    ensure_packages([$sa_daemon, 'libmail-spf-perl', 'libmail-dkim-perl'])
 
     file { '/etc/spamassassin/local.cf':
         content => template('spamassassin/local.cf'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['spamassassin'],
+        require => Package[$sa_daemon],
     }
 
     file { '/etc/default/spamassassin':
@@ -79,15 +81,15 @@ class spamassassin(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['spamassassin'],
+        require => Package[$sa_daemon],
     }
 
-    service { 'spamassassin':
+    service { $sa_daemon:
         ensure    => running,
         require   => [
             File['/etc/default/spamassassin'],
             File['/etc/spamassassin/local.cf'],
-            Package['spamassassin'],
+            Package[$sa_daemon],
         ],
         subscribe => [
             File['/etc/default/spamassassin'],
