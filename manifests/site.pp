@@ -1357,15 +1357,16 @@ node 'htmldumper1001.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
 
-# irc.w.o failover host in eqiad
 node 'irc1001.wikimedia.org' {
     role(mw_rc_irc)
 }
 
-# Replacement of irc.wikimedia.org
-# see T232483
 node 'irc2001.wikimedia.org' {
     role(mw_rc_irc)
+}
+
+node 'irc2002.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
 }
 
 # Cloud cumin hosts
