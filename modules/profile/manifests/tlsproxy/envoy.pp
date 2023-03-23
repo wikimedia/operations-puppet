@@ -212,8 +212,8 @@ class profile::tlsproxy::envoy(
                 group      => 'envoy',
                 footer     => '<p>Original error: %LOCAL_REPLY_BODY% </p>',
                 before     => Service['envoyproxy.service'],
-                margin     => '15px', # Envoy can't accept % signs in its string formats AFAICS
-                margin_top => '30px'
+                margin     => '7vh auto 0 auto', # Envoy can't accept % signs in its string formats AFAICS
+                margin_top => '14vh'
             }
         }
 
