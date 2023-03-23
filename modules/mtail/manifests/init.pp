@@ -25,8 +25,9 @@ class mtail (
     Boolean $from_component         = false,
     String $additional_args         = ''
 ) {
-    # On bullseye simply use the default mtail package (3.0.0-rc43)
-    if debian::codename::eq('bullseye') {
+    # On bullseye or newer versions simply use the default mtail package
+    # since they include the patches we need.
+    if debian::codename::ge('bullseye') {
         ensure_packages('mtail')
     } else {
 
