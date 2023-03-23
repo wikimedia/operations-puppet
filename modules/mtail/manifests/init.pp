@@ -53,13 +53,19 @@ class mtail (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('mtail/default.erb'),
+        content => debian::codename::ge('bookworm') ? {
+            true  => template('mtail/default-bookworm.erb'),
+            false => template('mtail/default.erb'),
+        },
         notify  => Service['mtail'],
     }
 
     systemd::service { 'mtail':
         ensure   => $service_ensure,
-        content  => init_template('mtail', 'systemd_override'),
+        content  => debian::codename::ge('bookworm') ? {
+            true  => init_template('mtail', 'systemd_override_bookworm'),
+            false => init_template('mtail', 'systemd_override'),
+        },
         override => true,
         restart  => true,
     }
