@@ -301,6 +301,30 @@ class facilities (
         site  => 'eqiad',
         model => 'sentry4',
     }
+    facilities::monitor_pdu_3phase { 'ps1-e5-eqiad':
+        ip    => '10.65.2.49',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e6-eqiad':
+        ip    => '10.65.2.50',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e7-eqiad':
+        ip    => '10.65.2.51',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e8-eqiad':
+        ip    => '10.65.2.52',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
     facilities::monitor_pdu_3phase { 'ps1-f1-eqiad':
         ip    => '10.65.2.53',
         row   => 'f',
@@ -321,6 +345,30 @@ class facilities (
     }
     facilities::monitor_pdu_3phase { 'ps1-f4-eqiad':
         ip    => '10.65.2.56',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f5-eqiad':
+        ip    => '10.65.2.57',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f6-eqiad':
+        ip    => '10.65.2.58',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f7-eqiad':
+        ip    => '10.65.2.59',
+        row   => 'f',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-f8-eqiad':
+        ip    => '10.65.2.60',
         row   => 'f',
         site  => 'eqiad',
         model => 'sentry4',
