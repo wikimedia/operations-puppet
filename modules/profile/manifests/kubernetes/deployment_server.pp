@@ -12,7 +12,6 @@
 class profile::kubernetes::deployment_server (
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
     Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { default_value => {} }),
-    Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', { default_value => {} }),
     Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', { default_value => false }),
     String $helm_user_group                                            = lookup('profile::kubernetes::helm_user_group'),
     Stdlib::Unixpath $helm_home                                        = lookup('profile::kubernetes::helm_home', { default_value => '/etc/helm' }),
@@ -29,45 +28,68 @@ class profile::kubernetes::deployment_server (
     ensure_packages('istioctl')
 
     $kubernetes_clusters = k8s::fetch_clusters()
-    # For each cluster we gather the list of services and the corresponding tokens.
-    # Then we build the kubernetes configs for all of them.
+    # For each cluster we gather the list of services and build kubernetes configs for all of them.
     $kubernetes_clusters.map | String $cluster_name, K8s::ClusterConfig $cluster_config | {
-        $_tokens = $tokens[$cluster_config['cluster_group']]
         # Get all services installed on this cluster (group)
         $_services = pick($services[$cluster_config['cluster_group']], {})
         # Generate kubeconfig files for all services
-        $_services.each |$srv, $data| {
+        $_services.each |$service, $service_data| {
             # If the namespace is undefined, use the service name.
-            $namespace = $data['namespace'] ? {
-                undef   => $srv,
-                default => $data['namespace']
+            $namespace = $service_data['namespace'] ? {
+                undef   => $service,
+                default => $service_data['namespace']
             }
-            $service_ensure = $data['ensure'] ? {
+            $service_ensure = $service_data['ensure'] ? {
                 undef   => present,
-                default => $data['ensure'],
+                default => $service_data['ensure'],
             }
-            $data['usernames'].each |$usr_raw| {
-                $usr = $user_defaults.merge($usr_raw)
-                $token = $_tokens[$usr['name']]
-                # Allow overriding the kubeconfig name
-                $kubeconfig_name = $usr['kubeconfig'] ? {
-                    undef => $usr['name'],
-                    default => $usr['kubeconfig']
-                }
 
+            # FIXME: Can we get rid of defining usernames in hiera for most of the services?
+            # * There are cases where user details (owner and group) derive from default.
+            #   Operators may define users in that case (with deriving defaults)
+            # * There are cases where we don't populate users for a service (kubeflow and knative).
+            #   I suspect it's kind of a hack to have private data populated, the kubeconfig files are
+            #   most likely not used.
+
+            # Create a kubeconfig for all usernames of this service
+            $service_data['usernames'].each | $user_raw | {
+                $user = $user_defaults.merge($user_raw)
+                # Allow overriding the kubeconfig name
+                $kubeconfig_name = $user['kubeconfig'] ? {
+                    undef   => $user['name'],
+                    default => $user['kubeconfig']
+                }
                 $kubeconfig_path = "/etc/kubernetes/${kubeconfig_name}-${cluster_name}.config"
-                # TODO: separate username data from the services structure?
-                if ($token and !defined(K8s::Kubeconfig[$kubeconfig_path])) {
-                    k8s::kubeconfig { $kubeconfig_path:
-                        ensure      => $service_ensure,
-                        master_host => $cluster_config['master'],
-                        username    => $usr['name'],
-                        token       => $token['token'],
-                        owner       => $usr['owner'],
-                        group       => $usr['group'],
-                        mode        => $usr['mode'],
-                        namespace   => $namespace,
-                    }
+
+                # Add "deploy" group to -deploy users
+                # FIXME: Remove ci user snowflake here
+                if ($user['name'].stdlib::end_with('-deploy') or $user['name'] == 'ci') {
+                    $names = [{ 'organisation' => 'view' }, { 'organisation' => 'deploy' }]
+                } else {
+                    $names = [{ 'organisation' => 'view' }]
+                }
+                $auth_cert = profile::pki::get_cert($cluster_config['pki_intermediate_base'], $user['name'], {
+                    'renew_seconds'  => $cluster_config['pki_renew_seconds'],
+                    'names'          => $names,
+                    'outdir'         => '/etc/kubernetes/pki',
+                    owner            => $user['owner'],
+                    group            => $user['group'],
+                    # FIXME: Mode is not supported by get_cert/cfssl::cert? Certs will always be 0440
+                    #        This is not really an issue currently but it could become one if users
+                    #        requests something special as cert and key need to have the same permissions
+                    #        (at least read wise) as the kubeconfig.
+                    # mode             => $user['mode'],
+                })
+
+                k8s::kubeconfig { $kubeconfig_path:
+                    ensure      => $service_ensure,
+                    master_host => $cluster_config['master'],
+                    username    => $user['name'],
+                    auth_cert   => $auth_cert,
+                    owner       => $user['owner'],
+                    group       => $user['group'],
+                    mode        => $user['mode'],
+                    namespace   => $namespace,
                 }
             }
         }
