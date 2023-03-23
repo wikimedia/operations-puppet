@@ -1366,7 +1366,7 @@ node 'irc2001.wikimedia.org' {
 }
 
 node 'irc2002.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
+    role(mw_rc_irc)
 }
 
 # Cloud cumin hosts
