@@ -1365,7 +1365,7 @@ node 'irc2001.wikimedia.org' {
     role(mw_rc_irc)
 }
 
-node 'irc2002.wikimedia.org' {
+node /^irc[12]002\.wikimedia\.org$/ {
     role(mw_rc_irc)
 }
 
