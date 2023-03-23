@@ -9,7 +9,7 @@ class profile::microsites::wikiworkshop {
     prometheus::blackbox::check::http { 'wikiworkshop.org':
         team               => 'serviceops-collab',
         severity           => 'task',
-        path               => '/',
+        path               => '/2023/',
         ip_families        => ['ip4'],
         force_tls          => true,
         status_matches     => [200],
