@@ -150,6 +150,12 @@ route:
     - match:
         team: 'releng'
       receiver: 'releng-ircmail'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
+          continue: true
+        - receiver: 'releng-ircmail'
     - match:
         team: 'rweb'
       receiver: 'rweb-mail'
@@ -165,6 +171,10 @@ route:
         - match:
             severity: task
           receiver: 'search-platform-task'
+        - match:
+            severity: page
+          receiver: 'sre-page'
+          continue: true
         - receiver: 'search-platform-ircmail'
     - match:
         team: 'wmcs'
