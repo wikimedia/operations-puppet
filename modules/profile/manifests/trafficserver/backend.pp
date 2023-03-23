@@ -70,15 +70,8 @@ class profile::trafficserver::backend (
         }
     }
 
+    # Options to override the defaults in mediawiki::errorpage_content
     $errorpage = {
-        title       => 'Wikimedia Error',
-        pagetitle   => 'Error',
-        logo_link   => 'https://www.wikimedia.org',
-        logo_src    => 'https://www.wikimedia.org/static/images/wmf-logo.png',
-        logo_srcset => 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
-        logo_width  => '135',
-        logo_height => '101',
-        logo_alt    => 'Wikimedia',
         # An explanation for these (and more) fields is available here:
         # https://docs.trafficserver.apache.org/en/latest/admin-guide/logging/formatting.en.html
         # Rendered example:
@@ -115,7 +108,7 @@ class profile::trafficserver::backend (
         log_formats             => $log_formats,
         log_filters             => $log_filters,
         logs                    => $logs,
-        error_page              => template('mediawiki/errorpage.html.erb'),
+        error_page              => mediawiki::errorpage_content($errorpage),
         systemd_hardening       => $systemd_hardening,
         cache_volumes           => $cache_volumes,
     }

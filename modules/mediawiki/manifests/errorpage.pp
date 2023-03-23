@@ -105,6 +105,6 @@ define mediawiki::errorpage(
         owner   => $owner,
         group   => $group,
         mode    => $mode,
-        content => template('mediawiki/errorpage.html.erb'),
+        content => mediawiki::errorpage_content($errorpage),
     }
 }
