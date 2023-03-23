@@ -4,10 +4,14 @@ class profile::microsites::static_codereview {
 
     backup::set { 'static-codereview' : }
 
-    monitoring::service { 'static-codereview-http':
-        description   => 'Static CodeReview archive HTTP',
-        check_command => 'check_http_url!static-codereview.wikimedia.org!/MediaWiki/1.html',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Static-codereview.wikimedia.org',
+    prometheus::blackbox::check::http { 'static-codereview.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/MediaWiki/1.html',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        status_matches     => [200],
+        body_regex_matches => ['SVN CodeReview'],
     }
 
     wmflib::dir::mkdir_p('/srv/org/wikimedia/static-codereview')
