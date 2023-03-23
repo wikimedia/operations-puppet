@@ -146,12 +146,4 @@ class profile::mediawiki::maintenance (
         priority => 1,
         content  => template('profile/mediawiki/maintenance/inactive.motd.erb'),
     }
-
-    rsync::quickdatacopy { 'mwmaint-miscweb':
-        ensure      => present,
-        auto_sync   => false,
-        source_host => 'mwmaint1002.eqiad.wmnet',
-        dest_host   => 'miscweb2002.codfw.wmnet',
-        module_path => '/home',
-    }
 }
