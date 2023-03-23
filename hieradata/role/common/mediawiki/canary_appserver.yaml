@@ -62,3 +62,5 @@ profile::mediawiki::php::absented_php_versions:
 profile::mediawiki::common::fetch_ipinfo_dbs: true
 
 profile::contacts::role_contacts: ["ServiceOps"]
+# Add a proper error page to 502-504s from envoy (T287983)
+profile::tlsproxy::envoy::error_page: true

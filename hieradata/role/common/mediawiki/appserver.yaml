@@ -57,3 +57,6 @@ profile::contacts::role_contacts: ["ServiceOps"]
 
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
+
+# Add a proper error page to 502-504s from envoy (T287983)
+profile::tlsproxy::envoy::error_page: true
