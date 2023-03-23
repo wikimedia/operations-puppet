@@ -28,7 +28,7 @@ class mw_rc_irc::ircserver {
     }
 
     exec {'reload ircd-motd':
-        command     => '/usr/bin/systemctl kill --signalt=SIGUSR1 ircd',
+        command     => '/usr/bin/systemctl kill --signal=SIGUSR1 ircd',
         refreshonly => true,
     }
 
