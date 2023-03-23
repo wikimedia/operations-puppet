@@ -168,4 +168,12 @@ class apt(
             source => 'puppet:///modules/apt/apt_audit_installed.py',
         }
     }
+
+    file { '/usr/local/sbin/dist-upgrade':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/apt/dist-upgrade.sh',
+    }
 }
