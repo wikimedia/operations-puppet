@@ -121,6 +121,10 @@ class phabricator::aphlict(
         require     => File['/var/log/aphlict'],
     }
 
+    # Disable the builtin daily logrotate timer in favour of the hourly job above.
+    # This will make sure we don't accidentally run logrotate twice.
+    systemd::mask{ 'logrotate.timer': }
+
     # accounts
     group { $group:
         ensure => 'present',
