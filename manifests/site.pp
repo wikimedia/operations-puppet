@@ -958,12 +958,8 @@ node /^dns[123456]00[1234]\.wikimedia\.org$/ {
 }
 
 # backends for https://doc.wikimedia.org (T211974) on buster (T247653)
-node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
+node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet', 'doc1003.eqiad.wmnet' {
     role(doc)
-}
-
-node 'doc1003.eqiad.wmnet' {
-    role(insetup::observability)
 }
 
 # Wikidough (T252132)
