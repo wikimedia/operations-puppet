@@ -9,9 +9,11 @@ class mw_rc_irc::irc_echo(
         ensure_packages(['python-irc'])
         ensure_packages(['python-prometheus-client'])
         $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho.py'
+        $py_interpreter = 'python'
     } else {
         ensure_packages(['python3-irc', 'python3-prometheus-client'])
         $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho-py3.py'
+        $py_interpreter = 'python3'
     }
 
     file { '/etc/udpmxircecho-config.json':
@@ -51,7 +53,7 @@ class mw_rc_irc::irc_echo(
     # icinga check if bot process is running
     nrpe::monitor_service { 'ircecho-process':
         description  => 'ircecho bot process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C python --ereg-argument-array '/usr/local/bin/udpmxircecho.py'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C ${py_interpreter} --ereg-argument-array '/usr/local/bin/udpmxircecho.py'",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Ircecho',
     }
 
