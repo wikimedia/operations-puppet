@@ -1283,7 +1283,7 @@ node 'lists1001.wikimedia.org' {
 
 # New lists server T331706
 node 'lists1003.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
+    role(lists)
 }
 
 node /^ganeti10(09|1[0-9]|2[0-9]|3[0-4])\.eqiad\.wmnet$/ {
