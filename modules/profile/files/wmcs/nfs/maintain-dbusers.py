@@ -917,6 +917,7 @@ def _create_accounts_on_host(
     hostname: str,
     port: int,
     acct_db: pymysql.Connection,
+    only_type: str,
 ):
     # This is needed so it's not undefined in the finally clause if an exception happens
     cloud_db: pymysql.Connection | None = None
@@ -938,6 +939,18 @@ def _create_accounts_on_host(
                 """
             cur.execute(select_acct_sql_str)
             for row in cur:
+                if only_type != "all" and only_type != row["type"]:
+                    logging.debug(
+                        (
+                            "Skipping user %s as it's account is of type %s but we only care "
+                            "about type %s"
+                        ),
+                        row["username"],
+                        row["type"],
+                        only_type,
+                    )
+                    continue
+
                 if should_execute_for_user(username=row["username"], only_users=only_users):
                     _create_user_on_cloud_db(
                         password_hash=row["password_hash"].decode("utf-8"),
@@ -982,7 +995,9 @@ def _create_accounts_on_host(
             logging.warning("Could not close connection to %s:%d: %s", hostname, port, err)
 
 
-def create_accounts_from_accountsdb(dry_run: bool, only_users: list[str], config: dict[str, Any]):
+def create_accounts_from_accountsdb(
+    dry_run: bool, only_users: list[str], config: dict[str, Any], only_type: str
+):
     """
     Find hosts with accounts in absent state, and creates them.
     """
@@ -1003,6 +1018,7 @@ def create_accounts_from_accountsdb(dry_run: bool, only_users: list[str], config
                 hostname=hostname,
                 port=port,
                 acct_db=acct_db,
+                only_type=only_type,
             )
     finally:
         acct_db.close()
@@ -1131,10 +1147,10 @@ def main():
         "--account-type",
         choices=["tool", "user", "paws"],
         help="""
-        Type of accounts to harvest|delete, not useful for maintain
-        default - tool
+        Type of accounts to harvest|delete|maintain
+        default - all
         """,
-        default="tool",
+        default="all",
     )
 
     argparser.add_argument(
@@ -1225,26 +1241,32 @@ def main():
         harvest_replica_accounts(dry_run=args.dry_run, only_users=args.only_users, config=config)
     elif args.action == "maintain":
         while True:
-            populate_accountsdb(
-                account_type="tool",
-                dry_run=args.dry_run,
-                only_users=args.only_users,
-                config=config,
-            )
-            populate_accountsdb(
-                account_type="user",
-                dry_run=args.dry_run,
-                only_users=args.only_users,
-                config=config,
-            )
-            populate_accountsdb(
-                account_type="paws",
-                dry_run=args.dry_run,
-                only_users=args.only_users,
-                config=config,
-            )
+            if args.account_type in ("tool", "all"):
+                populate_accountsdb(
+                    account_type="tool",
+                    dry_run=args.dry_run,
+                    only_users=args.only_users,
+                    config=config,
+                )
+            if args.account_type in ("user", "all"):
+                populate_accountsdb(
+                    account_type="user",
+                    dry_run=args.dry_run,
+                    only_users=args.only_users,
+                    config=config,
+                )
+            if args.account_type in ("paws", "all"):
+                populate_accountsdb(
+                    account_type="paws",
+                    dry_run=args.dry_run,
+                    only_users=args.only_users,
+                    config=config,
+                )
             create_accounts_from_accountsdb(
-                dry_run=args.dry_run, only_users=args.only_users, config=config
+                dry_run=args.dry_run,
+                only_users=args.only_users,
+                config=config,
+                only_type=args.account_type,
             )
             time.sleep(60)
     elif args.action == "delete":
