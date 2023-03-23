@@ -962,6 +962,10 @@ node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet', 'doc1003.eqiad.wmnet' {
     role(doc)
 }
 
+node 'doc2002.codfw.wmnet' {
+    role(insetup::observability)
+}
+
 # Wikidough (T252132)
 node /^(doh[123456]00[12])\.wikimedia\.org$/ {
     role(wikidough)
