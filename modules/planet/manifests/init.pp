@@ -14,12 +14,12 @@
 # $meta_link - https:// link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
 # $https_proxy - set proxy to be used for downloading feeds
-#   example: https://url-downloader.${::site}.wikimedia.org:8080
+#   example: http://url-downloader.${::site}.wikimedia.org:8080
 class planet (
     Stdlib::Fqdn $domain_name,
     Hash $languages,
     Stdlib::Httpsurl $meta_link,
-    Stdlib::Httpsurl $https_proxy,
+    Stdlib::Httpurl $https_proxy,
 ) {
 
     # things done once for all planet per languages

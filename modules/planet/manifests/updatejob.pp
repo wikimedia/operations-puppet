@@ -2,7 +2,7 @@
 # per default all feed updates run hourly but at a random minute
 # for each language where the language prefix is the seed
 define planet::updatejob (
-    Stdlib::Httpsurl $https_proxy,
+    Stdlib::Httpurl $https_proxy,
     Stdlib::Unixpath $planet_bin = '/usr/bin/rawdog',
     String $planet_conf_dir = '/etc/rawdog',
     String $planet_options = '-v -u -w',

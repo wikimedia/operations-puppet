@@ -14,7 +14,7 @@
 class profile::planet (
     String $domain_name = lookup('profile::planet::domain_name'),
     Stdlib::HTTPUrl $meta_link = lookup('profile::planet::meta_link'),
-    Stdlib::HTTPSUrl $https_proxy = lookup('profile::planet::https_proxy'),
+    Stdlib::HTTPUrl $https_proxy = lookup('profile::planet::https_proxy'),
     Hash $languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
