@@ -18,6 +18,11 @@ https://static-codereview.wikimedia.org:
   assert_status: 200
   assert_body_contains: MediaWiki SVN CodeReview archive
 
+https://static-codereview.wikimedia.org:
+- path: /MediaWiki/1.html
+  assert_status: 200
+  assert_body_contains: 'r1 MediaWiki'
+
 https://static-tendril.wikimedia.org:
 - path: /
   assert_status: 200
