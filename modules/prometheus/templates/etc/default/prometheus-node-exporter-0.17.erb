@@ -19,4 +19,7 @@
 <%- @collectors_enabled.each do |collector| -%>
   <%- arguments << "--collector.#{collector}" -%>
 <%- end -%>
+<%- if @collect_systemd_restart_count -%>
+  <%- arguments << "--collector.systemd.enable-restarts-metrics" -%>
+<%- end -%>
 ARGS='<%= arguments.sort.join(' ') %>'

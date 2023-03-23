@@ -48,6 +48,12 @@ class prometheus::node_exporter (
     }
 
     $collectors_enabled = concat($collectors_default, $collectors_extra)
+    if debian::codename::ge('bullseye') {
+      $collect_systemd_restart_count = true
+    } else {
+      $collect_systemd_restart_count = false
+    }
+
 
     file { '/etc/default/prometheus-node-exporter':
         ensure  => present,
