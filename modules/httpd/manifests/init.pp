@@ -200,13 +200,24 @@ class httpd(
         content => "[Unit]\nAfter=network-online.target\nWants=network-online.target\n",
     }
 
-    # Puppet restarts are reloads in apache, as typically that's enough
-    service { 'apache2':
-        ensure     => running,
-        enable     => true,
-        provider   => 'debian',
-        hasrestart => true,
-        restart    => '/usr/sbin/service apache2 reload',
-        require    => Package['apache2'],
+    # Puppet restarts are reloads in apache, as typically that's enough.
+    # Use systemd provider on bookworm, as the sysvinit provider is unusable
+    if debian::codename::ge('bookworm') {
+        service { 'apache2':
+            ensure     => running,
+            enable     => true,
+            hasrestart => true,
+            restart    => 'systemctl reload apache2',
+            require    => Package['apache2'],
+        }
+    } else {
+        service { 'apache2':
+            ensure     => running,
+            enable     => true,
+            provider   => 'debian',
+            hasrestart => true,
+            restart    => '/usr/sbin/service apache2 reload',
+            require    => Package['apache2'],
+        }
     }
 }
