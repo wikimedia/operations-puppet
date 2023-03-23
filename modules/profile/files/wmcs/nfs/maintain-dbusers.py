@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 """
-This script keeps canonical source of mysql clouddb accounts in a
-database, and ensures that it is kept up to date with reality.
+This script keeps canonical source of mysql clouddb (currently wikireplicas
+and toolsdb) accounts in a database, and ensures that it is kept up to date
+with reality.
 
-The code pattern here is that you have a central data store (the db),
+The code pattern here is that you have a central data store (the accountsdb),
 that is then read/written to by various independent functions. These
 functions are not 'pure' - they could even be separate scripts. They
 mutate the DB in some way. They are also supposed to be idempotent -
@@ -25,7 +26,7 @@ Some of the functions are one-time only. These are:
 Most of these functions should be run in a continuous loop, maintaining
 mysql accounts for new tool/user accounts as they appear.
 
-## populate_new_accounts ##
+## populate_accountsdb ##
 
  - Find list of tools/users (From LDAP) that aren't in the `accounts` table
  - Create a replica.my.cnf for each of these tools/users
@@ -33,7 +34,7 @@ mysql accounts for new tool/user accounts as they appear.
  - Make entries in `account_host` for each of these tools/users, marking them as
    absent
 
-## create_accounts ##
+## create_accounts_from_accountsdb ##
 
  - Look through `account_host` table for accounts that are marked as 'absent'
  - Create those accounts, and mark them as present.
@@ -41,10 +42,10 @@ mysql accounts for new tool/user accounts as they appear.
 If we need to add a new clouddb, we can do so the following way:
  - Add it to the config file
  - Insert entries into `account_host` for each tool/user with the new host.
- - Run `create_accounts`
+ - Run `create_accounts_from_accountsdb`
 
-In normal usage, just a continuous process running `populate_new_accounts` and
-`create_accounts` in a loop will suffice.
+In normal usage, just a continuous process running `populate_accountsdb` and
+`create_accounts_from_accountsdb` in a loop will suffice.
 
 TODO:
   - Support for maintaining per-tool restrictions (number of connections + time)
@@ -95,6 +96,8 @@ USER_AGENT = (
     " cloudservices@wikimedia.org) "
     "python-requests/2.12"
 )
+MYSQL_USERNAME_RE = re.compile("^[su][0-9]")
+PAWS_ACCOUNT_RE = re.compile("^p[0-9]")
 
 
 class APIError(Exception):
@@ -489,7 +492,7 @@ def get_ldap_conn(config: dict[str, Any]):
     )
 
 
-def get_accounts_db_conn(config: dict[str, Any]):
+def get_accounts_db_conn(config: dict[str, Any]) -> pymysql.Connection:
     """
     Return a pymysql connection to the accounts database
     """
@@ -565,7 +568,7 @@ def harvest_cnf_files(
 
 
 def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[str, Any]):
-    labsdbs = []
+    cloud_dbs = []
     try:
         acct_db = get_accounts_db_conn(config=config)
         for host in config["labsdbs"]["hosts"]:
@@ -576,7 +579,7 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
                 hostname = host
                 port = 3306
 
-            labsdbs.append(
+            cloud_dbs.append(
                 pymysql.connect(
                     host=hostname,
                     user=config["labsdbs"]["username"],
@@ -592,19 +595,19 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
                 """
             read_cur.execute(select_from_acct_sql_str)
             for row in read_cur:
-                for labsdb in labsdbs:
-                    sqlhost = labsdb.host
-                    if labsdb.port != 3306:
-                        sqlhost = "{}:{}".format(labsdb.host, labsdb.port)
-                    with labsdb.cursor() as labsdb_cur:
+                for cloud_db in cloud_dbs:
+                    sqlhost = cloud_db.host
+                    if cloud_db.port != 3306:
+                        sqlhost = "{}:{}".format(cloud_db.host, cloud_db.port)
+                    with cloud_db.cursor() as cloud_db_cur:
                         try:
                             show_grants_sql_str = (
                                 """
                                 SHOW GRANTS FOR '{mysql_username}'@'%%';
                                 """
                             ).format(mysql_username=row["mysql_username"])
-                            labsdb_cur.execute(show_grants_sql_str)
-                            labsdb_cur.fetchone()
+                            cloud_db_cur.execute(show_grants_sql_str)
+                            cloud_db_cur.fetchone()
                             status = "present"
                         except pymysql.err.InternalError as err:
                             # Error code for when no grants exist for user
@@ -643,8 +646,8 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
         logging.info("Successfully executed  harvest_replica_accounts")
     finally:
         acct_db.close()
-        for ldb in labsdbs:
-            ldb.close()
+        for cloud_db in cloud_dbs:
+            cloud_db.close()
 
 
 def _populate_new_account(
@@ -713,7 +716,7 @@ def _populate_new_account(
     logging.info("Wrote replica.my.cnf for %s %s", account_type, new_account)
 
 
-def populate_new_accounts(
+def populate_accountsdb(
     dry_run: bool, only_users: list[str], config: dict[str, Any], account_type: str = "tool"
 ):
     """
@@ -802,15 +805,189 @@ def populate_new_accounts(
         acct_db.close()
 
 
-def create_accounts(dry_run: bool, only_users: list[str], config: dict[str, Any]):
+def _create_account(
+    grant_type: str,
+    mysql_username: str,
+    password_hash: str,
+    max_connections: int,
+    dry_run: bool,
+    cloud_db_cur: pymysql.cursors.Cursor,
+):
+    for statement in ACCOUNT_CREATION_SQL[grant_type]:
+        create_acct_sql_str = statement.format(
+            username=mysql_username,
+            max_connections=max_connections,
+            password_hash=password_hash,
+        )
+        # the norm is to pass dry_run to commit_to_db and let
+        # it decide whether to commit or rollback sql queries.
+        # For some sql statements that causes implicit commit
+        # such as this one, only way to stop them from commiting
+        # is not to execute them at all if dry_run is True.
+        if not dry_run:
+            cloud_db_cur.execute(create_acct_sql_str)
+
+
+def _drop_user(dry_run: bool, cloud_db_cur: pymysql.cursors.Cursor, username: str):
+    drop_user_sql_str = (
+        """
+        DROP USER '{mysql_username}'@'%';
+        """
+    ).format(mysql_username=username)
+    # the norm is to pass dry_run to commit_to_db and let
+    # it decide whether to commit or rollback sql queries.
+    # For some sql statements that causes implicit commit
+    # such as this one, only way to stop them from commiting
+    # is not to execute them at all if dry_run is True.
+    if not dry_run:
+        cloud_db_cur.execute(drop_user_sql_str)
+
+
+def _create_user_on_cloud_db(
+    grant_type: str,
+    mysql_username: str,
+    password_hash: str,
+    cloud_db: pymysql.Connection,
+    dry_run: bool,
+    config: dict[str, Any],
+):
+    max_connections = DEFAULT_MAX_CONNECTIONS
+    if mysql_username in config["variances"]:
+        # Leaving open the idea that there could be other
+        # variances in the future
+        max_connections = config["variances"][mysql_username].get(
+            "max_connections", DEFAULT_MAX_CONNECTIONS
+        )
+
+    if PAWS_ACCOUNT_RE.match(mysql_username) and grant_type == "legacy":
+        # Skip toolsdb account creation for PAWS
+        return
+
+    with cloud_db.cursor() as cloud_db_cur:
+        try:
+            _create_account(
+                grant_type=grant_type,
+                mysql_username=mysql_username,
+                max_connections=max_connections,
+                password_hash=password_hash,
+                dry_run=dry_run,
+                cloud_db_cur=cloud_db_cur,
+            )
+        except pymysql.err.InternalError as err:
+            # When on a "legacy" server, it is possible
+            # there is an old account that will need cleanup
+            # before we create it anew.
+            if (
+                err.args[0] == 1396
+                and grant_type == "legacy"
+                and MYSQL_USERNAME_RE.match(mysql_username)
+            ):
+                _drop_user(dry_run=dry_run, cloud_db_cur=cloud_db_cur, username=mysql_username)
+                _create_account(
+                    grant_type=grant_type,
+                    mysql_username=mysql_username,
+                    max_connections=max_connections,
+                    password_hash=password_hash,
+                    dry_run=dry_run,
+                    cloud_db_cur=cloud_db_cur,
+                )
+            else:
+                raise
+
+            commit_to_db(db=cloud_db, dry_run=dry_run)
+
+
+def _set_as_present_on_accountsdb(acct_db: pymysql.Connection, dry_run: bool, account_host_id: str):
+    with acct_db.cursor() as write_cur:
+        update_acct_host_sql_str = (
+            """
+            UPDATE account_host
+            SET status='present'
+            WHERE id = '{acct_host_id}';
+            """
+        ).format(acct_host_id=account_host_id)
+        write_cur.execute(update_acct_host_sql_str)
+        commit_to_db(db=acct_db, dry_run=dry_run)
+
+
+def _create_accounts_on_host(
+    dry_run: bool,
+    only_users: list[str],
+    config: dict[str, Any],
+    hostname: str,
+    port: int,
+    acct_db: pymysql.Connection,
+):
+    # This is needed so it's not undefined in the finally clause if an exception happens
+    cloud_db: pymysql.Connection | None = None
+    try:
+        cloud_db = pymysql.connect(
+            host=hostname,
+            user=config["labsdbs"]["username"],
+            password=config["labsdbs"]["password"],
+            port=port,
+        )
+
+        grant_type = config["labsdbs"]["hosts"][f"{hostname}:{port}"]["grant-type"]
+        with acct_db.cursor() as cur:
+            select_acct_sql_str = f"""
+                SELECT mysql_username, password_hash, username, hostname, type,
+                account_host.id as account_host_id
+                FROM account JOIN account_host on account.id = account_host.account_id
+                WHERE hostname = '{hostname}:{port}' AND status = 'absent';
+                """
+            cur.execute(select_acct_sql_str)
+            for row in cur:
+                if should_execute_for_user(username=row["username"], only_users=only_users):
+                    _create_user_on_cloud_db(
+                        password_hash=row["password_hash"].decode("utf-8"),
+                        grant_type=grant_type,
+                        dry_run=dry_run,
+                        mysql_username=row["mysql_user"],
+                        config=config,
+                        cloud_db=cloud_db,
+                    )
+                    _set_as_present_on_accountsdb(
+                        acct_db=acct_db,
+                        account_host_id=row["account_host_id"],
+                        dry_run=dry_run,
+                    )
+                    logging.info(
+                        "Created account in %s:%d for %s %s",
+                        hostname,
+                        port,
+                        row["type"],
+                        row["username"],
+                    )
+                else:
+                    logging.info(
+                        """
+                        create_accounts: skipping user %s with account_type %s.
+                        for test purposes, this user wasn't included in the list of target
+                        users
+                        """,
+                        row["username"],
+                        row["type"],
+                    )
+
+    except pymysql.err.OperationalError as exc:
+        logging.warning("Could not connect to %s:%d due to %s.  Skipping.", hostname, port, exc)
+        return
+
+    finally:
+        try:
+            if cloud_db:
+                cloud_db.close()
+        except pymysql.err.Error as err:
+            logging.warning("Could not close connection to %s:%d: %s", hostname, port, err)
+
+
+def create_accounts_from_accountsdb(dry_run: bool, only_users: list[str], config: dict[str, Any]):
     """
     Find hosts with accounts in absent state, and creates them.
     """
-    labsdb = None
     try:
         acct_db = get_accounts_db_conn(config=config)
-        mysql_username_re = re.compile("^[su][0-9]")
-        paws_account_re = re.compile("^p[0-9]")
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
                 hostname = host.split(":")[0]
@@ -818,136 +995,15 @@ def create_accounts(dry_run: bool, only_users: list[str], config: dict[str, Any]
             else:
                 hostname = host
                 port = 3306
-            try:
-                labsdb = pymysql.connect(
-                    host=hostname,
-                    user=config["labsdbs"]["username"],
-                    password=config["labsdbs"]["password"],
-                    port=port,
-                )
 
-                grant_type = config["labsdbs"]["hosts"][host]["grant-type"]
-                with acct_db.cursor() as cur:
-                    select_acct_sql_str = (
-                        """
-                        SELECT mysql_username, password_hash, username, hostname, type,
-                        account_host.id as account_host_id
-                        FROM account JOIN account_host on account.id = account_host.account_id
-                        WHERE hostname = '{host}' AND status = 'absent';
-                        """
-                    ).format(host=host)
-                    cur.execute(select_acct_sql_str)
-                    for row in cur:
-                        mysql_username = row["mysql_username"]
-                        max_connections = DEFAULT_MAX_CONNECTIONS
-                        if mysql_username in config["variances"]:
-                            # Leaving open the idea that there could be other
-                            # variances in the future
-                            max_connections = config["variances"][mysql_username].get(
-                                "max_connections", DEFAULT_MAX_CONNECTIONS
-                            )
-
-                        if paws_account_re.match(mysql_username) and grant_type == "legacy":
-                            # Skip toolsdb account creation for PAWS
-                            continue
-
-                        if should_execute_for_user(username=row["username"], only_users=only_users):
-                            with labsdb.cursor() as labsdb_cur:
-                                drop_user_and_retry = False
-                                for statement in ACCOUNT_CREATION_SQL[grant_type]:
-                                    create_acct_sql_str = statement.format(
-                                        username=mysql_username,
-                                        max_connections=max_connections,
-                                        password_hash=row["password_hash"].decode("utf-8"),
-                                    )
-                                    try:
-                                        # the norm is to pass dry_run to commit_to_db and let
-                                        # it decide whether to commit or rollback sql queries.
-                                        # For some sql statements that causes implicit commit
-                                        # such as this one, only way to stop them from commiting
-                                        # is not to execute them at all if dry_run is True.
-                                        if not dry_run:
-                                            labsdb_cur.execute(create_acct_sql_str)
-                                    except pymysql.err.InternalError as err:
-                                        # When on a "legacy" server, it is possible
-                                        # there is an old account that will need cleanup
-                                        # before we create it anew.
-                                        if (
-                                            err.args[0] == 1396
-                                            and grant_type == "legacy"
-                                            and mysql_username_re.match(row["mysql_username"])
-                                        ):
-                                            drop_user_and_retry = True
-                                            break
-                                        else:
-                                            raise
-
-                                if drop_user_and_retry:
-                                    drop_user_sql_str = (
-                                        """
-                                        DROP USER '{mysql_username}'@'%';
-                                        """
-                                    ).format(mysql_username=row["mysql_username"])
-                                    # the norm is to pass dry_run to commit_to_db and let
-                                    # it decide whether to commit or rollback sql queries.
-                                    # For some sql statements that causes implicit commit
-                                    # such as this one, only way to stop them from commiting
-                                    # is not to execute them at all if dry_run is True.
-                                    if not dry_run:
-                                        labsdb_cur.execute(drop_user_sql_str)
-
-                                    for statement in ACCOUNT_CREATION_SQL[grant_type]:
-                                        create_acct_sql_str = statement.format(
-                                            username=mysql_username,
-                                            max_connections=max_connections,
-                                            password_hash=row["password_hash"].decode("utf-8"),
-                                        )
-                                        # the norm is to pass dry_run to commit_to_db and let
-                                        # it decide whether to commit or rollback sql queries.
-                                        # For some sql statements that causes implicit commit
-                                        # such as this one, only way to stop them from commiting
-                                        # is not to execute them at all if dry_run is True.
-                                        if not dry_run:
-                                            labsdb_cur.execute(create_acct_sql_str)
-
-                                    commit_to_db(db=labsdb, dry_run=dry_run)
-
-                            with acct_db.cursor() as write_cur:
-                                update_acct_host_sql_str = (
-                                    """
-                                    UPDATE account_host
-                                    SET status='present'
-                                    WHERE id = '{acct_host_id}';
-                                    """
-                                ).format(acct_host_id=row["account_host_id"])
-                                write_cur.execute(update_acct_host_sql_str)
-                                commit_to_db(db=acct_db, dry_run=dry_run)
-                                logging.info(
-                                    "Created account in %s for %s %s",
-                                    host,
-                                    row["type"],
-                                    row["username"],
-                                )
-                        else:
-                            logging.info(
-                                """
-                                create_accounts: skipping user %s with account_type %s.
-                                for test purposes, this user wasn't included in the list of target
-                                users
-                                """,
-                                row["username"],
-                                row["type"],
-                            )
-
-            except pymysql.err.OperationalError as exc:
-                logging.warning("Could not connect to %s due to %s.  Skipping.", host, exc)
-                continue
-            finally:
-                try:
-                    if labsdb:
-                        labsdb.close()
-                except pymysql.err.Error as err:
-                    logging.warning("Could not close connection to %s: %s", host, err)
+            _create_accounts_on_host(
+                config=config,
+                dry_run=dry_run,
+                only_users=only_users,
+                hostname=hostname,
+                port=port,
+                acct_db=acct_db,
+            )
     finally:
         acct_db.close()
 
@@ -983,46 +1039,38 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
             else:
                 hostname = host
                 port = 3306
-            labsdb = pymysql.connect(
+            cloud_db = pymysql.connect(
                 host=hostname,
                 user=config["labsdbs"]["username"],
                 password=config["labsdbs"]["password"],
                 port=port,
             )
             with acct_db.cursor() as cur:
-                select_acct_sql_str = (
-                    """
+                select_acct_sql_str = f"""
                     SELECT mysql_username, password_hash, username, hostname, type,
                     account_host.id as account_host_id
                     FROM account JOIN account_host on account.id = account_host.account_id
-                    WHERE hostname = '{host}' AND username = '{username}' AND
+                    WHERE hostname = '{host}' AND username = '{account}' AND
                     type = '{account_type}' AND status = 'present';
                     """
-                ).format(host=host, username=account, account_type=account_type)
                 cur.execute(select_acct_sql_str)
                 for row in cur:
                     try:
-                        with labsdb.cursor() as labsdb_cur:
-                            drop_user_sql_str = (
-                                """
-                                DROP USER '{mysql_username}';
-                                """
-                            ).format(mysql_username=row["mysql_username"])
+                        with cloud_db.cursor() as cloud_db_cur:
+                            drop_user_sql_str = f" DROP USER '{row['mysql_username']}';"
                             # the norm is to pass dry_run to commit_to_db and let
                             # it decide whether to commit or rollback sql queries.
                             # For some sql statements that causes implicit commit
                             # such as this one, only way to stop them from commiting
                             # is not to execute them at all if dry_run is True.
                             if not dry_run:
-                                labsdb_cur.execute(drop_user_sql_str)
+                                cloud_db_cur.execute(drop_user_sql_str)
 
                         with acct_db.cursor() as write_cur:
-                            del_acct_host_sql_str = (
-                                """
+                            del_acct_host_sql_str = f"""
                                 DELETE FROM account_host
-                                WHERE id = '{acct_host_id}';
+                                WHERE id = '{row['account_host_id']}';
                                 """
-                            ).format(acct_host_id=row["account_host_id"])
                             write_cur.execute(del_acct_host_sql_str)
                             commit_to_db(db=acct_db, dry_run=dry_run)
                             logging.info(
@@ -1032,7 +1080,7 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
                                 row["username"],
                             )
                     finally:
-                        labsdb.close()
+                        cloud_db.close()
 
         # Now we get rid of the file
         try:
@@ -1110,7 +1158,7 @@ def main():
         maintain:
 
         Runs as a daemon that watches for new tools and tool users being created,
-        creates accounts for them in all the labsdbs, maintains state in the
+        creates accounts for them in all the destination dbs, maintains state in the
         account database, and writes out replica.my.cnf files.
 
         delete:
@@ -1177,25 +1225,27 @@ def main():
         harvest_replica_accounts(dry_run=args.dry_run, only_users=args.only_users, config=config)
     elif args.action == "maintain":
         while True:
-            populate_new_accounts(
+            populate_accountsdb(
                 account_type="tool",
                 dry_run=args.dry_run,
                 only_users=args.only_users,
                 config=config,
             )
-            populate_new_accounts(
+            populate_accountsdb(
                 account_type="user",
                 dry_run=args.dry_run,
                 only_users=args.only_users,
                 config=config,
             )
-            populate_new_accounts(
+            populate_accountsdb(
                 account_type="paws",
                 dry_run=args.dry_run,
                 only_users=args.only_users,
                 config=config,
             )
-            create_accounts(dry_run=args.dry_run, only_users=args.only_users, config=config)
+            create_accounts_from_accountsdb(
+                dry_run=args.dry_run, only_users=args.only_users, config=config
+            )
             time.sleep(60)
     elif args.action == "delete":
         if args.extra_args is None:
