@@ -85,6 +85,7 @@ route:
           receiver: 'data-persistence-irc'
     - match:
         team: 'infrastructure-foundations'
+      routes:
         # Send pages as normal
         - match:
             severity: 'page'
@@ -96,9 +97,9 @@ route:
           receiver: 'sre-irc'
           continue: true
         # send everything to #w-infrastructure-foundations
-      - match_re:
-          instance: '.'
-        receiver: 'infrastructure-foundations-irc'
+        - match_re:
+            instance: '.'
+          receiver: 'infrastructure-foundations-irc'
     - match:
         team: 'serviceops-collab'
       routes:
