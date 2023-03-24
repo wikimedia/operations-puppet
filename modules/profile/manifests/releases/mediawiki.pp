@@ -84,10 +84,13 @@ class profile::releases::mediawiki (
     }
 
     if $jenkins_service_monitor {
-        monitoring::service { 'http_releases_jenkins':
-            description   => "HTTP ${sitename_jenkins}",
-            check_command => "check_http_url!${sitename_jenkins}!/login",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org#Jenkins',
+        prometheus::blackbox::check::http { $sitename_jenkins:
+            team               => 'serviceops-collab',
+            severity           => 'task',
+            path               => '/login',
+            ip_families        => ['ip4'],
+            force_tls          => true,
+            body_regex_matches => ['Jenkins'],
         }
     }
 }
