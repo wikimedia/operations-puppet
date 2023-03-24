@@ -22,19 +22,25 @@ class profile::etherpad(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Etherpad.wikimedia.org',
     }
 
-    monitoring::service { 'etherpad-lite-http':
-        description   => 'etherpad.wikimedia.org HTTP',
-        check_command => 'check_http_port_url!9001!/',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Etherpad.wikimedia.org',
-    }
-
-    prometheus::blackbox::check::http { 'etherpad.wikimedia.org':
+    prometheus::blackbox::check::http { 'etherpad-envoy':
+        server_name        => 'etherpad.wikimedia.org',
         team               => 'serviceops-collab',
         severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],
         port               => 7443,
         force_tls          => true,
+        body_regex_matches => ['Pad'],
+    }
+
+    prometheus::blackbox::check::http { 'etherpad-nodejs':
+        server_name        => 'etherpad.wikimedia.org',
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ip6'],
+        port               => 9001,
+        force_tls          => false,
         body_regex_matches => ['Pad'],
     }
 
