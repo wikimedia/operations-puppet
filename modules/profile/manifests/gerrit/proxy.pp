@@ -25,6 +25,17 @@ class profile::gerrit::proxy(
             contact_group => 'admins,gerrit',
             notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
         }
+
+        prometheus::blackbox::check::http { 'gerrit-tls':
+            server_name        => $tls_host,
+            team               => 'serviceops-collab-releng',
+            severity           => 'critical',
+            path               => '/',
+            ip_families        => ['ip4','ip6'],
+            port               => 443,
+            force_tls          => true,
+            body_regex_matches => ['Gerrit Code Review'],
+        }
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
