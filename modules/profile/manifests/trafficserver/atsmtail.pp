@@ -2,7 +2,7 @@ define profile::trafficserver::atsmtail(
     String $instance_name,
     Stdlib::Absolutepath $atsmtail_progs,
     Stdlib::Port::User $atsmtail_port,
-    Systemd::Servicename $wanted_by,
+    Systemd::Service::Name $wanted_by,
     String $mtail_args = '',
 ) {
     systemd::service { "atsmtail@${instance_name}":

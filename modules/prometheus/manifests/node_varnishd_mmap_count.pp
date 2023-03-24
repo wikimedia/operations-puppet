@@ -6,7 +6,7 @@
 class prometheus::node_varnishd_mmap_count (
     Wmflib::Ensure $ensure = 'present',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/varnishd_mmap_count.prom',
-    Systemd::Servicename $service = 'varnish.service',
+    Systemd::Service::Name $service = 'varnish.service',
 ) {
     file { '/usr/local/bin/prometheus-varnishd_mmap_count':
         ensure => file,

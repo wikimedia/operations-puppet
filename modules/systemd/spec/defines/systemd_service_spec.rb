@@ -9,7 +9,7 @@ describe 'systemd::service' do
       context 'when using an invalid unit type' do
         let(:params) { super().merge(unit_type: 'invalid') }
         it {
-          is_expected.to compile.and_raise_error(/parameter 'unit_type' expects a match for Systemd::Unit_type/)
+          is_expected.to compile.and_raise_error(/parameter 'unit_type' expects a match for Systemd::Unit::Type/)
         }
       end
       context 'when using defaults' do

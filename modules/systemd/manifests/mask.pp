@@ -1,9 +1,9 @@
 # == systemd::mask ===
 #
-# Use 'systemctl mask $title' to link the service unit file to /dev/null so
-# that the service cannot be started.
+# @summary Use 'systemctl mask $title' to link the service unit file to /dev/null so
+#          that the service cannot be started.
 #
-# Example:
+# @ Example:
 #  systemd::mask { 'trafficserver-backend.service': }
 #
 # Note that systemd::mask and systemd::unmask can be used to ensure that
@@ -21,11 +21,12 @@
 #  }
 #
 #  systemd::unmask { 'mtail': }
-#
+# @param unit the unit name
+# @param unless and unless clause to use
 define systemd::mask (
-    Systemd::Servicename $unit = $title,
-    Optional[String] $unless = undef,
-){
+    Systemd::Unit::Name $unit   = $title,
+    Optional[String]    $unless = undef,
+) {
     exec { "mask_${unit}":
         command => "/bin/systemctl mask ${unit}",
         creates => "/etc/systemd/system/${unit}",

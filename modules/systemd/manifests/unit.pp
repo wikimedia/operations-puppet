@@ -1,33 +1,18 @@
-# == systemd::unit ==
-#
-# This define creates a file on the filesystem at $path,
-# schedules a daemon-reload of systemd and, if requested,
-# schedules a subsequent refresh of the service.
-#
-# === Parameters ===
-# The resource title is assumed to be the corresponding full unit
-# name. If no valid unit suffix is present, 'service' will be assumed.
-#
-# [*content*]
-#   The content of the file. Required.
-# [*ensure*]
-#   The usual meta-parameter, defaults to present. Valid values are
-#   'absent' and 'present'
-# [*unit*]
-#   The name of the unit by default use the title
-# [*restart*]
-#   Whether to handle restarting the service when the file changes.
-# [*override*]
-#   If the are creating an override to system-provided units or not.
-#   Defaults to false
-# [*override_filename*]
-#   When creating an override, filename to use for the override. The given
+# @summary This define creates a file on the filesystem at $path,
+#   schedules a daemon-reload of systemd and, if requested,
+#   schedules a subsequent refresh of the service.
+# @param title The resource title is assumed to be the corresponding full unit
+#   name. If no valid unit suffix is present, 'service' will be assumed.
+# @param content The content of the file. Required.
+# @param ensure The usual meta-parameter, defaults to present.
+# @param unit The name of the unit by default use the title
+# @param restart Whether to handle restarting the service when the file changes.
+# @param override If the are creating an override to system-provided units or not.
+# @param override_filename When creating an override, filename to use for the override. The given
 #   filename would have the `.conf` extension added if missing.
 #   Defaults to undef (use `puppet-override.conf`)
 #
-# === Examples ===
-#
-# A systemd override for the hhvm.service unit
+# @example A systemd override for the hhvm.service unit
 #
 # systemd::unit { 'hhvm':
 #     ensure   => present,
@@ -53,7 +38,7 @@ define systemd::unit (
 ) {
     require systemd
 
-    if ($unit =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type) {
+    if ($unit =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit::Type) {
         $unit_name = $unit
     } else {
         $unit_name = "${unit}.service"
