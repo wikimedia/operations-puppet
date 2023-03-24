@@ -257,7 +257,7 @@ def check_ssh_keys(yamldata):
     ldap_conn.protocol_version = ldap.VERSION3
 
     # These users use hardware-based key storage and are using the restricted bastion, whitelist
-    whitelisted_users = ['bblack', 'tstarling', 'bstorm', 'dpifke']
+    whitelisted_users = ['bblack', 'tstarling', 'bstorm', 'kamila']
 
     for username, userdata in yamldata['users'].items():
         ssh = userdata.get('ssh_keys', False)
