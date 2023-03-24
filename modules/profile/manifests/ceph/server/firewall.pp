@@ -15,8 +15,10 @@ class profile::ceph::server::firewall (
     $osd_public_addrs  = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
     # OSD nodes may or may not have a separate cluster network.
-    if length($osd_hosts.filter | $key, $value | { has_key($value,cluster) }) > 0 {
-      $osd_cluster_addrs = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
+    $osd_cluster_addrs = $osd_hosts.filter | $key, $value | {
+      has_key($value,cluster)
+    }.map | $key, $value | {
+      $value['cluster']['addr']
     }
 
     # Remove duplicates for co-located mon and osd nodes
