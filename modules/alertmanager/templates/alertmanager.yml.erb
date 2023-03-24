@@ -84,6 +84,20 @@ route:
             severity: 'warning'
           receiver: 'data-persistence-irc'
     - match:
+        team: 'infrastructure-foundations'
+        # Send pages as normal
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
+          continue: true
+        # Ensure criticals go toi #w-operations
+        - match:
+            severity: 'critical'
+          receiver: 'sre-irc'
+          continue: true
+        # send everything to #w-infrastructure-foundations
+        - receiver: 'infrastructure-foundations-irc'
+    - match:
         team: 'serviceops-collab'
       routes:
         - match:
@@ -242,6 +256,10 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
   email_configs:
     - to: 'sre-data-persistence@<%= @facts["networking"]["domain"] %>'
+
+- name: 'infrastructure-foundations-irc'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-sre-foundations'
 
 - name: 'noc-ircmail'
   webhook_configs:
