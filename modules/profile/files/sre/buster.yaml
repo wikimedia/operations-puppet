@@ -22,7 +22,7 @@ role::etcd::v3::ml_etcd:
 role::etcd::v3::ml_etcd::staging:
   target-q: 2023-1
 role::lists:
-  target-q: TBD
+  target-q: 2023-2
   phab-task: 331706
 role::configcluster:
   target-q: TBD
@@ -44,7 +44,7 @@ role::ci::master:
   target-q: TBD
   phab-task: 327068
 role::mw_rc_irc:
-  target-q: TBD
+  target-q: 2023-2
   phab-task: 331702
 role::vrts:
   target-q: TBD
@@ -109,7 +109,7 @@ role::mediawiki::appserver::api:
 role::swift::proxy:
   target-q: TBD
 role::lvs::balancer:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 321309
 role::spare::system:
   target-q: 2023-1
@@ -450,7 +450,7 @@ role::thanos::backend:
   target-q: 2022-4
   phab-task: 288937
 role::requesttracker:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 327068
 role::url_downloader:
   phab-task: 329945
