@@ -49,6 +49,36 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow profile mgr
       osd: allow *
+  bootstrap-osd:
+    keyring_path: /var/lib/ceph/bootstrap-osd/ceph.keyring
+    caps:
+      mgr: allow r
+      mon: profile bootstrap-osd
+  osd.cephosd1001:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  osd.cephosd1002:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  osd.cephosd1003:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  osd.cephosd1004:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  osd.cephosd1005:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
 
 profile::ceph::ceph_repository_component: 'thirdparty/ceph-quincy'
 
