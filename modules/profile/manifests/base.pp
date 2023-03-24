@@ -14,6 +14,7 @@
 # @param core_dump_pattern the core dump pattern
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
 # @param use_linux510_on_buster whether to setup kernel 5.10 on buster hosts
+# @param additional_purged_packages A list of additional packages to purge
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
@@ -29,6 +30,7 @@ class profile::base (
     Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca', {'default_value' => '/var/lib/puppet/ssl/certs/ca.pem'}),
     Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
+    Array[String[1]]                    $additional_purged_packages          = lookup('profile::base::additional_purged_packages'),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -90,7 +92,8 @@ class profile::base (
     }
     class { 'motd': }
     class { 'base::standard_packages':
-        remove_python2 => $remove_python2_on_bullseye,
+        remove_python2             => $remove_python2_on_bullseye,
+        additional_purged_packages => $additional_purged_packages,
     }
 
     Class['profile::apt'] -> Class['base::standard_packages']

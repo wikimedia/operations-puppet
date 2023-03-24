@@ -1,9 +1,11 @@
-# @param remove_python2: In Bullseye the python2 packages are unsupported (they are only included
-#                        to build a few packages, but not run them). As such we deinstall them by
-#                        default. For select corner cases it will be needed to skip that.
+# @param remove_python2 In Bullseye the python2 packages are unsupported (they are only included
+#                       to build a few packages, but not run them). As such we deinstall them by
+#                       default. For select corner cases it will be needed to skip that.
+# @param additional_purged_packages A list of additional packages to purge
 class base::standard_packages (
-    Boolean $remove_python2 = true,
-)   {
+    Boolean $remove_python2                     = true,
+    Array[String[1]] $additional_purged_packages = []
+)  {
 
     ensure_packages ([
         'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
@@ -54,8 +56,8 @@ class base::standard_packages (
 
     # uninstall these packages
     package { [
-        'apport', 'command-not-found', 'command-not-found-data',
-        'ecryptfs-utils', 'mlocate', 'os-prober', 'python3-apport', 'wpasupplicant']:
+        'apport', 'command-not-found', 'command-not-found-data', 'ecryptfs-utils',
+        'mlocate', 'os-prober', 'python3-apport', 'wpasupplicant']:
             ensure => absent,
     }
 
@@ -63,7 +65,7 @@ class base::standard_packages (
     # atop causes severe performance degradation T192551 debian:896767
     package { [
             'atop', 'apt-listchanges',
-        ]:
+        ] + $additional_purged_packages:
         ensure => purged,
     }
 

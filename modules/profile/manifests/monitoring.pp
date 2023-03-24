@@ -158,12 +158,6 @@ class profile::monitoring (
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
         check_interval => 30,
     }
-    nrpe::monitor_service { 'check_dhclient':
-        description    => 'dhclient process',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dhclient',
-        check_interval => 30,
-    }
 
     $ensure_monitor_systemd = $monitor_systemd.bool2str('present','absent')
 
