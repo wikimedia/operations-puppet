@@ -96,7 +96,9 @@ route:
           receiver: 'sre-irc'
           continue: true
         # send everything to #w-infrastructure-foundations
-        - receiver: 'infrastructure-foundations-irc'
+      - match_re:
+          instance: '.'
+        receiver: 'infrastructure-foundations-irc'
     - match:
         team: 'serviceops-collab'
       routes:
