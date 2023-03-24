@@ -26,9 +26,13 @@ class profile::microsites::static_rt(
         priority => 20,
     }
 
-    #monitoring::service { 'static-rt-https':
-    #    description   => 'Static RT HTTPS',
-    #    check_command => 'check_https_url!static-rt.wikimedia.org!/',
-    #    notes_url     => 'https://wikitech.wikimedia.org/wiki/RT',
+    # TODO: enable once service is up
+    #prometheus::blackbox::check::http { 'static-rt.wikimedia.org':
+    #    team               => 'sre-collab',
+    #    severity           => 'task',
+    #    path               => '/',
+    #    ip_families        => ['ip4'],
+    #    force_tls          => true,
+    #    body_regex_matches => ['RT'],
     #}
 }
