@@ -2,6 +2,7 @@
 # @summary class for managing contact meta data
 # @param role_contacts the default contact for this role, most often this is a Team
 class profile::contacts (
+    String[1]        $cluster       = lookup('cluster'),
     Array[String[3]] $role_contacts = lookup('profile::contacts::role_contacts'),
 ) {
     # We shouldn't use role unless we have to, in this profile it make sense
@@ -35,7 +36,7 @@ class profile::contacts (
     $role_owner_metric = @("METRIC")
     # HELP role_owner The team owner of the server role
     # TYPE role_owner gauge
-    role_owner{team="${_role_contact}",role="${role_fixup}"} 1.0
+    role_owner{team="${_role_contact}",role="${role_fixup}", cluster="${cluster}"} 1.0
     | METRIC
     file { '/var/lib/prometheus/node.d/role_owner.prom':
         ensure  => file,
