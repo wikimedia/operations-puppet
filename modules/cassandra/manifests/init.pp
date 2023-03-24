@@ -137,14 +137,10 @@ class cassandra (
     Boolean                          $auto_apply_grants       = false,
 ) {
 
-    # Tools packages
-    package { 'cassandra-tools-wmf':
-        ensure  => 'installed',
-        require => Package['cassandra'],
-    }
+    ensure_packages(['cassandra-tools-wmf', 'jvm-tools'])
 
-    package { 'jvm-tools':
-        ensure => 'installed',
+    if debian::codename::eq('bullseye') {
+        ensure_packages('python-is-python2')
     }
 
     # We pin the version to a specific one
