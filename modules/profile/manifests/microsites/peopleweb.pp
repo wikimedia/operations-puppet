@@ -64,18 +64,14 @@ class profile::microsites::peopleweb (
     # allows users to password protect files
     include profile::idp::client::httpd
 
-    # Icinga alerting, crit but not paging
-    # TODO: only do this ONCE and not for each node using this
-    monitoring::service { 'https-peopleweb':
-        description   => 'HTTPS-peopleweb',
-        check_command => "check_https_url!${sitename}!https://${sitename}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
-    }
-
-    monitoring::service { 'https-peopleweb-expiry':
-        description   => 'HTTPS-peopleweb SSL expiry',
-        check_command => "check_https_expiry!${sitename}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
+    # Monitoring
+    prometheus::blackbox::check::http { $sitename:
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        body_regex_matches => ['Welcome to people'],
     }
 
     # warn users on servers that are NOT the active backend and source of rsync
