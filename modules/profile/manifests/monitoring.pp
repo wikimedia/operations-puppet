@@ -238,10 +238,11 @@ class profile::monitoring (
     if $facts['has_ipmi'] {
         class { 'ipmi::monitor': ensure => $hardware_monitoring }
     }
+
     # This is responsible for ~75%+ of all recdns queries...
     # https://phabricator.wikimedia.org/T239862
     host { 'statsd.eqiad.wmnet':
-        ip           => '10.64.16.81', # graphite1005
+        ip           => '10.192.16.37', # graphite2004
         host_aliases => 'statsd',
     }
 }
