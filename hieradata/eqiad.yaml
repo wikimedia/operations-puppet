@@ -9,9 +9,6 @@ puppetdb_host: puppetdb1002.eqiad.wmnet
 # These are the up-and-coming, better dns servers:
 # used in manifests/realm.pp
 labsdnsconfig:
-  host: 'ns0.openstack.eqiad1.wikimediacloud.org'
-  host_secondary: 'ns1.openstack.eqiad1.wikimediacloud.org'
-  dbserver: 'localhost'
   recursor: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
   recursor_secondary: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
 

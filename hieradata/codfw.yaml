@@ -7,9 +7,6 @@
 puppetdb_host: puppetdb2002.codfw.wmnet
 
 labsdnsconfig:
-  host: 'ns0.openstack.codfw1dev.wikimediacloud.org'
-  host_secondary: 'ns1.openstack.codfw1dev.wikimediacloud.org'
-  dbserver: 'm5-master.eqiad.wmnet'
   recursor: 'ns-recursor0.openstack.codfw1dev.wikimediacloud.org'
   recursor_secondary: 'ns-recursor1.openstack.codfw1dev.wikimediacloud.org'
 
