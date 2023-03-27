@@ -3,33 +3,35 @@
 #
 # Installs docker
 
-class profile::docker::engine(
+class profile::docker::engine (
     # We want to get settings across the hierarchy, some per host, some fleet
     # wide. So use hash merge behavior to merge keys across the hierarchy
-    Hash $settings = lookup('profile::docker::engine::settings', { 'default_value' => {}} ),
+    Hash $settings = lookup('profile::docker::engine::settings', { 'default_value' => {} }),
     # Override the default docker engine package name, defaults to the current name for the docker package.
     Optional[String] $packagename = lookup('profile::docker::engine::packagename', { 'default_value' => 'docker.io' }),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
     Boolean $declare_service = lookup('profile::docker::engine::declare_service', { 'default_value' => true }),
 ) {
-
     if debian::codename::le('buster') {
         # See https://docs.docker.com/engine/install/linux-postinstall/#your-kernel-does-not-support-cgroup-swap-limit-capabilities
         # This seems not needed on Bullseye since Docker is provided.
-        require ::profile::base::memory_cgroup
+        require profile::base::memory_cgroup
     }
 
     # Docker config
-    # This will pick the storage setup that is default with docker, which
-    # on servers >= buster means overlay2 if available, else the devicemapper-on-disk
-    # driver that is highly discouraged
-    if (defined(Class['profile::base']) and $profile::base::overlayfs == false) {
-        warning('Using the default configuration of docker without enabling overlayfs, this is discouraged. Please ensure you declare profile::base::overlayfs: true in hiera.')
+    # We enforce overlay2 storage driver as default and ensure docker does not fall back
+    # to devicemapper in case of problems (e.g. unable to load the overlay module).
+    $storage_driver = 'storage_driver' in $settings ? {
+        true  => $settings['storage_driver'],
+        false => 'overlay2',
+    }
+    if ( $storage_driver == 'overlay2' and defined(Class['profile::base']) and $profile::base::overlayfs == false) {
+        fail('Please ensure you declare profile::base::overlayfs: true in hiera.')
     }
 
     class { 'docker::configuration':
-        settings => $settings,
+        settings => merge($settings, { 'storage_driver' => $storage_driver }),
     }
 
     # Install docker, we should remove the "version" parameter when everything
