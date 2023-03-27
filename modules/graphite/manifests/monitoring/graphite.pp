@@ -39,7 +39,7 @@ class graphite::monitoring::graphite (
         'carbon-cache_write_error':
             description     => 'carbon-cache write error',
             dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=30'],
-            metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1005-*.errors))',
+            metric          => 'secondYAxis(sumSeries(carbon.agents.graphite2004-*.errors))',
             from            => '10minutes',
             warning         => 1,
             critical        => 8;
@@ -47,7 +47,7 @@ class graphite::monitoring::graphite (
         'carbon-cache_overflow':
             description     => 'carbon-cache queues overflow',
             dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=8'],
-            metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1005-*.cache.overflow))',
+            metric          => 'secondYAxis(sumSeries(carbon.agents.graphite2004-*.cache.overflow))',
             from            => '10minutes',
             warning         => 1,
             critical        => 8;
@@ -55,7 +55,7 @@ class graphite::monitoring::graphite (
         'carbon-cache_many_creates':
             description     => 'carbon-cache too many creates',
             dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=9'],
-            metric          => 'sumSeries(carbon.agents.graphite1005-*.creates)',
+            metric          => 'sumSeries(carbon.agents.graphite2004-*.creates)',
             from            => '30min',
             warning         => 500,
             critical        => 1000;
