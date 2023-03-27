@@ -1406,7 +1406,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    page: false
+    page: false  # TODO: Switch to true when we serve some real production traffic
     probes:
       - type: http
         path: /wiki/Special:BlankPage
@@ -1443,7 +1443,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    page: false
+    page: false  # TODO: Switch to true when we serve some real production traffic
     probes:
       - type: http
         path: /wiki/Special:BlankPage
@@ -1457,6 +1457,43 @@ service::catalog:
       - dnsdisc: mw-api-ext
         active_active: false
       - dnsdisc: mw-api-ext-ro
+        active_active: true
+
+  mw-api-int:
+    description: mw-api-int, mw-api-int.svc.discovery.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.81
+      eqiad:
+        default: 10.2.2.81
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    page: false  # TODO: Switch to true when we serve some real production traffic
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
+    port: 4446
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: mw-api-int
+        active_active: false
+      - dnsdisc: mw-api-int-ro
         active_active: true
 
   ncredir:
