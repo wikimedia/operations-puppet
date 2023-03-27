@@ -686,14 +686,14 @@ groups:
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
-    members: [ssastry, sbailey, arlolra, cscott, ihurbain]
+    members: [ssastry, sbailey, arlolra, cscott, ihurbain, mbsantos, jgiannelos]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Subramanya Sastry
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
-    members: [mbsantos, jgiannelos]
+    members: []
     approval:
       - Subramanya Sastry
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
