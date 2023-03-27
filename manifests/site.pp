@@ -2796,8 +2796,9 @@ node 'urldownloader2004.wikimedia.org' {
     role(url_downloader)
 }
 
+# out of service T333169
 node 'cloudvirt1017.eqiad.wmnet' {
-    role(wmcs::openstack::eqiad1::virt_ceph)
+    role(spare::system)
 }
 
 # cloudvirt1018 doesn't exist.
@@ -2811,9 +2812,14 @@ node 'cloudvirt1020.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
+# out of service T333169
+node /^cloudvirt102[1-2]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
-node /^cloudvirt102[1-7]\.eqiad\.wmnet$/ {
+node /^cloudvirt102[3-7]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
