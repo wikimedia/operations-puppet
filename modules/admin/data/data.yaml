@@ -1135,6 +1135,13 @@ groups:
   #   gid: 921
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in profile::doc::user
+  # The 'doc' configuration requires rsync. More info in T319477.
+  # doc-uploader:
+  #   gid: 922
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -1273,6 +1280,16 @@ users:
   #   system: true
   #   uid: 921
   #   gid: 921
+  #   home_dir: none
+  #   shell: /bin/false
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # The 'doc' configuration requires rsync. More info in T319477.
+  # doc-uploader:
+  #   ensure: present
+  #   system: true
+  #   uid: 922
+  #   gid: 922
   #   home_dir: none
   #   shell: /bin/false
   rush:

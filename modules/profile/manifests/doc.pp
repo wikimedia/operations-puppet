@@ -74,10 +74,10 @@ class profile::doc (
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
-    user { 'doc-uploader':
-        ensure => present,
-        shell  => '/bin/false',
-        system => true,
+    systemd::sysuser { 'doc-uploader':
+      ensure      => present,
+      id          => '922:922',
+      description => 'doc-uploader system user',
     }
 
     file { '/srv/doc':
