@@ -22,8 +22,8 @@ class profile::docker::engine (
     # Docker config
     # We enforce overlay2 storage driver as default and ensure docker does not fall back
     # to devicemapper in case of problems (e.g. unable to load the overlay module).
-    $storage_driver = 'storage_driver' in $settings ? {
-        true  => $settings['storage_driver'],
+    $storage_driver = 'storage-driver' in $settings ? {
+        true  => $settings['storage-driver'],
         false => 'overlay2',
     }
     if ( $storage_driver == 'overlay2' and defined(Class['profile::base']) and $profile::base::overlayfs == false) {
@@ -31,7 +31,7 @@ class profile::docker::engine (
     }
 
     class { 'docker::configuration':
-        settings => merge($settings, { 'storage_driver' => $storage_driver }),
+        settings => merge($settings, { 'storage-driver' => $storage_driver }),
     }
 
     # Install docker, we should remove the "version" parameter when everything
