@@ -379,10 +379,11 @@ receivers:
 
 - name: 'serviceops-collab-task'
   webhook_configs:
-    # #serviceops-collab task-only
+    # #serviceops-collab task & IRC
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb'
       send_resolved: false
-    - url: 'http://<%= @active_host %>:19190/wikimedia-serviceops-test'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
 - name: 'dcops-task'
   webhook_configs:
