@@ -208,6 +208,10 @@ node /^aphlict[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(aphlict)
 }
 
+node 'aphlict1002.eqiad.wmnet' {
+    role(insetup::serviceops_collab)
+}
+
 # new APT repositories (NOT DHCP/TFTP)
 node /^apt[12]001\.wikimedia\.org$/ {
     role(apt_repo)
