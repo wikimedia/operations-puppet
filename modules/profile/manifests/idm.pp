@@ -122,7 +122,6 @@ class profile::idm(
     }
 
     profile::auto_restarts::service { 'apache2':}
-    profile::auto_restarts::service { 'apache-htcacheclean':}
 
     $job_state = ($facts['networking']['hostname'] == $redis_master).bool2str('present', 'absent')
     class { 'idm::jobs':
