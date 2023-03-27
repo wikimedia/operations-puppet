@@ -10,6 +10,14 @@ acl google_cloud_nets {
     "2600:1900::0"/28;
 }
 
+<%- if @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
+backend esi_backend {
+    .host = "127.0.0.1";
+    .port = "4321";
+    .connect_timeout = 1s;
+    .first_byte_timeout = 1s;
+}
+<%- end -%>
 /******************************************************************************
  * For MediaWiki's purposes, building on the RFC explanation in
  * normalize_path_encoding(), all of the 16 characters in the Customizable Set
@@ -348,6 +356,12 @@ sub pass_authorization {
 }
 
 sub cluster_fe_recv {
+<%- if @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
+    // Bypass the backend caching layer for ESI requests
+    if (req.url == "/esitest-fa8a495983347898/content") {
+        set req.backend_hint = esi_backend;
+    }
+<%- end -%>
     // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
     if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
         || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
