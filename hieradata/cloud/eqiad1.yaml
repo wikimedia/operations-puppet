@@ -5,8 +5,8 @@ datacenters: [eqiad]
 has_nrpe: false
 # dns
 labsdnsconfig:
-  recursor: "ns-recursor0.openstack.eqiad1.wikimediacloud.org"
-  recursor_secondary: "ns-recursor1.openstack.eqiad1.wikimediacloud.org"
+  recursor: "ns-recursor1.openstack.eqiad1.wikimediacloud.org"
+  recursor_secondary: "ns-recursor0.openstack.eqiad1.wikimediacloud.org"
 
 ldap:
   ro-server: ldap-ro.eqiad.wikimedia.org
