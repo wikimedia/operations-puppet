@@ -6599,3 +6599,9 @@ ldap_only_users:
     email: smukuti-ctr@wikimedia.org
     expiry_contact: ksiebert@wikimedia.org
     expiry_date: 2023-06-30
+  babiola:
+    ensure: present
+    realname: Barakat Ajadi
+    email: babiola-ctr@wikimedia.org
+    expiry_contact: lgaulia@wikimedia.org
+    expiry_date: 2023-06-30
