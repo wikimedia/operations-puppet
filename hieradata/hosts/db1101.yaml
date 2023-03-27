@@ -3,3 +3,4 @@
 mariadb::shard: 'm1'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: true
+profile::mariadb::mysql_role: 'master'
