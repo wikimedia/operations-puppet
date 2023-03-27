@@ -542,7 +542,7 @@ node 'db2126.codfw.wmnet' {
 }
 
 # s3 core production dbs on eqiad
-node /^db1(123|157|166|175|179|189|198)\.eqiad\.wmnet$/ {
+node /^db1(123|157|166|175|189|198)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -691,7 +691,7 @@ node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet$/ {
 
 ## x1 shard
 # eqiad
-node /^db1(103|120|137)\.eqiad\.wmnet$/ {
+node /^db1(103|120|137|179)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
