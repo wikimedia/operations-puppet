@@ -436,7 +436,7 @@ role::zookeeper::test:
   target-q: TBD
 role::apt_repo:
   target-q: 2023-2
-  target-q: 331613
+  phab-task: 331613
 role::poolcounter::server:
   target-q: TBD
   phab-task: 332015
