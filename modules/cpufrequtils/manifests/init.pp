@@ -32,7 +32,7 @@ class cpufrequtils(
         # cpufrequtils will be reloaded if this is not the governor we are looking for
         exec { 'cpufrequtils_reload':
             unless  => "/usr/bin/cpufreq-info -p | /bin/grep -wq ${governor}",
-            command => '/usr/bin/systemd reload cpufrequtils',
+            command => '/usr/bin/systemctl reload cpufrequtils',
             require => File['/etc/default/cpufrequtils']
         }
 
