@@ -35,6 +35,11 @@ route:
         source: 'icinga'
       receiver: 'irc-spam'
 
+    - match:
+        severity: 'warning'
+      repeat_interval: 72h
+      continue: true
+
     # Fundraising pingthing alerts are routed to irc #wm-operations and fr-tech@wm.o
     - match:
         instance: 'https://donate.wikimedia.org/'
