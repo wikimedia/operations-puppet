@@ -169,7 +169,6 @@ def validate_common_ops_group(yamldata):
     yml_ops = set(
         yamldata['groups']['ops']['members']
         + yamldata['groups']['datacenter-ops']['members']
-        + yamldata['groups']['sre-admins']['members']
         + yamldata['groups']['fr-tech-admins']['members']
     )
     if ldap_ops != yml_ops:
