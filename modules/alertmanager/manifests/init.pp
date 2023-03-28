@@ -3,6 +3,7 @@ class alertmanager (
     Stdlib::Host        $active_host,
     Array[Stdlib::Host] $partners,
     String $irc_channel,
+    String $data_retention_time = '30d',
     Optional[String] $victorops_api_key = undef,
     Optional[String] $vhost = undef,
 ) {
@@ -15,6 +16,9 @@ class alertmanager (
     service { 'alertmanager-webhook-logger':
         ensure => running,
     }
+
+    # Specify a retention time to keep silence history for longer
+    $base_args = "--data.retention=${data_retention_time}"
 
     # Build cluster peers argv with all non-local hostnames
     $all_hosts = $partners + $active_host
@@ -29,10 +33,12 @@ class alertmanager (
     }
 
     if (empty($cluster_opts)) {
-        $args = ''
+        $cluster_args = ''
     } else {
-        $args = join($cluster_opts, ' ')
+        $cluster_args = join($cluster_opts, ' ')
     }
+
+    $args="${base_args} ${cluster_args}"
 
     file { '/etc/default/prometheus-alertmanager':
         ensure  => present,
