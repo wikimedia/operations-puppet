@@ -50,7 +50,7 @@
   "PromotionIgnoreHostnameFilters": [
     "^clouddb",
     "^db115[45]\\.",
-    "^db209[45]\\.",
+    "^db218[67]\\.",
     "^dbstore"
    ],
    "ReplicationLagQuery": "SELECT ROUND(GREATEST(0, TIME_TO_SEC(TIMEDIFF(UTC_TIMESTAMP(6) - 0.5, ts)))) FROM heartbeat.heartbeat WHERE ts>0 ORDER BY ts ASC LIMIT 1",
