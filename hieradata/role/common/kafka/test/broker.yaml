@@ -46,3 +46,5 @@ profile::kafka::mirror::producer_ssl_enabled: true
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
+
+profile::contacts::role_contacts: ['Data Engineering']
