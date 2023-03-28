@@ -55,16 +55,12 @@ class noc {
     }
 
     # Monitoring
-    monitoring::service { 'https-noc':
-        description   => 'HTTPS-noc',
-        check_command => 'check_https_url!noc.wikimedia.org!https://noc.wikimedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Noc.wikimedia.org',
-    }
-
-    monitoring::service { 'https-noc-ssl-expiry':
-        description   => 'HTTPS-noc SSL Expiry',
-        check_command => 'check_https_expiry!noc.wikimedia.org!443',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Noc.wikimedia.org',
+    prometheus::blackbox::check::http { 'noc.wikimedia.org':
+        team        => 'noc',
+        severity    => 'ircmail',
+        path        => '/',
+        ip_families => ['ip4'],
+        force_tls   => true,
     }
 
     profile::auto_restarts::service { 'apache2': }
