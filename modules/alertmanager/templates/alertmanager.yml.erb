@@ -21,7 +21,7 @@ templates:
 
 route:
   receiver: default
-  group_by: ['alertname', 'cluster', 'scope']
+  group_by: ['alertname', 'cluster', 'scope', 'team']
   routes:
     # Log all notifications
     - receiver: 'logger'
