@@ -113,7 +113,7 @@ class phabricator::aphlict(
     }
 
     systemd::timer::job { 'aphlict_logrotate':
-        ensure      => present,
+        ensure      => $ensure,
         user        => 'root',
         command     => '/usr/sbin/logrotate /etc/logrotate.conf',
         description => 'Runs logrotate hourly',
@@ -121,9 +121,14 @@ class phabricator::aphlict(
         require     => File['/var/log/aphlict'],
     }
 
-    # Disable the builtin daily logrotate timer in favour of the hourly job above.
-    # This will make sure we don't accidentally run logrotate twice.
-    systemd::mask{ 'logrotate.timer': }
+    if $ensure == 'present' {
+        # Disable the builtin daily logrotate timer in favour of the hourly job above.
+        # This will make sure we don't accidentally run logrotate twice.
+        systemd::mask{ 'logrotate.timer': }
+    } else {
+        # use default logrotate timer
+        systemd::unmask{ 'logrotate.timer': }
+    }
 
     # accounts
     group { $group:
