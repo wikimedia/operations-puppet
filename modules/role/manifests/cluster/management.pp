@@ -18,6 +18,7 @@ class role::cluster::management {
     include profile::conftool::client
     include profile::conftool::dbctl_client
 
+    include profile::ldap::bitu
     include profile::spicerack
     include profile::spicerack::reposync
     include profile::spicerack::cookbooks::production
