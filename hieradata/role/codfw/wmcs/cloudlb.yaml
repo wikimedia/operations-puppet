@@ -2,10 +2,6 @@ profile::admin::groups:
   - wmcs-roots
   - labtest-roots
 
-# all cloudlb servers are in the same rack, thus the same vlan
-profile::wmcs::cloud_private_subnet::vlan_id: 2151
-profile::wmcs::cloud_private_subnet::gw: 172.20.5.1/24
-
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
     ensure: present
