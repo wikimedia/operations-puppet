@@ -31,7 +31,11 @@ class role::analytics_cluster::coordinator {
     include ::profile::presto::server
 
     # The Hadoop job scheduler
-    include ::profile::oozie::server
+    # We want to exclude oozie from bullseye installs
+    if debian::codename::lt('bullseye') {
+        # oozie is no longer in use and deprecated on bullseye.
+        require ::profile::oozie::server
+    }
 
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::repositories::statistics

@@ -10,17 +10,18 @@ class profile::analytics::cluster::client {
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::common
     require ::profile::hive::client
-    require ::profile::oozie::client
 
     # This is a Hadoop client, and should
     # have any service system users it needs to
     # interacting with HDFS.
     include ::profile::analytics::cluster::users
 
-    # We want to exclude spark2 from bullseye installs
+    # We want to exclude spark2 and oozie from bullseye installs
     if debian::codename::lt('bullseye') {
         # Spark 2 is manually packaged by us, it is not part of CDH.
         require ::profile::hadoop::spark2
+        # oozie is no longer in use and deprecated on bullseye.
+        require ::profile::oozie::client
     }
 
     # Install Spark 3 configuration to be used as a trial with

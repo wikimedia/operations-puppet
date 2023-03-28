@@ -29,6 +29,11 @@ class role::analytics_test_cluster::client {
         include ::profile::airflow
     }
 
+    if debian::codename::lt('bullseye'){
+        # oozie is no longer in use and is deprecated on bullseye.
+        require ::profile::oozie::client
+    }
+
     include ::profile::presto::client
 
     # Need refinery to test Refine jobs
