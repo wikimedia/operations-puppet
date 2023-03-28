@@ -6027,6 +6027,10 @@ ldap_only_users:
     ensure: present
     realname: Norman Schwirz
     email: norman.schwirz@wikimedia.de
+  oleksandrtsyba-wmde:
+    ensure: present
+    realname: Oleksandr Tsyba
+    email: oleksandr.tsyba@wikimedia.de
   parent5446:
     ensure: present
     realname: Tyler Romeo
