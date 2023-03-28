@@ -12,17 +12,15 @@ class profile::kubernetes::master (
     String $accessible_to=lookup('profile::kubernetes::master::accessible_to'),
     K8s::ClusterCIDR $service_cluster_cidr=lookup('profile::kubernetes::service_cluster_cidr'),
     Optional[String] $service_node_port_range=lookup('profile::kubernetes::master::service_node_port_range', { 'default_value' => undef }),
-    # TODO: Remove service_cert after all clusters are 1.23
+    # TODO: Remove service_cert after T329826 is resolved
     Stdlib::Fqdn $service_cert=lookup('profile::kubernetes::master::service_cert'),
-    # TODO: Remove ssl_cert_path after all clusters are 1.23
+    # TODO: Remove ssl_cert_path after T329826 is resolved
     Stdlib::Unixpath $ssl_cert_path=lookup('profile::kubernetes::master::ssl_cert_path'),
-    # TODO: Remove ssl_key_path after all clusters are 1.23
+    # TODO: Remove ssl_key_path after T329826 is resolved
     Stdlib::Unixpath $ssl_key_path=lookup('profile::kubernetes::master::ssl_key_path'),
     Stdlib::Httpurl $prometheus_url=lookup('profile::kubernetes::master::prometheus_url', { 'default_value' => "http://prometheus.svc.${::site}.wmnet/k8s" }),
     Optional[String] $runtime_config=lookup('profile::kubernetes::master::runtime_config', { 'default_value' => undef }),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', { default_value => false }),
-    String $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token'),
-    String $scheduler_token = lookup('profile::kubernetes::master::scheduler_token'),
     Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', { default_value => undef }),
     Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', { default_value => undef }),
@@ -47,9 +45,6 @@ class profile::kubernetes::master (
         version => $version,
     }
 
-    $k8s_le_116 = versioncmp($version, '1.16') <= 0
-
-    # k8s 1.16 clusters use cergen
     # FIXME: This should be removed after T329826 is resolved
     sslcert::certificate { $service_cert:
         ensure       => present,
@@ -67,97 +62,75 @@ class profile::kubernetes::master (
         'key'     => $ssl_key_path,
     }
 
-    if $k8s_le_116 {
-        # We use the service_cert certificate as service-account certificate in k8s 1.16
-        $sa_cert = $cergen_sa_cert
-        # We use the service_cert certificate as apiserver certificate in k8s 1.16
-        $apiserver_cert = $cergen_sa_cert
-        # In k8s 1.16, no additional certs are required to validate service-account tokens
-        $additional_sa_certs = []
+    # The first useable IPv4 IP of the service cluster-cidr is automatically used as ClusterIP for the internal
+    # kubernetes apiserver service (kubernetes.default.cluster.local)
+    $apiserver_clusterip = wmflib::cidr_first_address($service_cluster_cidr['v4'])
+    $apiserver_cert = profile::pki::get_cert($pki_intermediate, 'kube-apiserver', {
+        'profile'        => 'server',
+        'renew_seconds'  => $pki_renew_seconds,
+        'owner'          => 'kube',
+        'outdir'         => '/etc/kubernetes/pki',
+        # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
+        'hosts'          => [
+            $facts['hostname'],
+            $facts['fqdn'],
+            $facts['ipaddress'],
+            $facts['ipaddress6'],
+            $apiserver_clusterip,
+            $master_fqdn,
+            'kubernetes',
+            'kubernetes.default',
+            'kubernetes.default.svc',
+            'kubernetes.default.svc.cluster',
+            'kubernetes.default.svc.cluster.local',
+        ],
+        'notify_service' => 'kube-apiserver'
+    })
 
-        # All other certs are unused with k8s 1.16
-        $nonexistent_cert = {
-            'chained' => '/nonexistent',
-            'chain'   => '/nonexistent',
-            'cert'    => '/nonexistent',
-            'key'     => '/nonexistent',
-        }
-        $kubelet_client_cert = $nonexistent_cert
-        $frontproxy_cert = $nonexistent_cert
-    } else {
-        if $pki_intermediate == undef {
-            fail('profile::kubernetes::pki::intermediate is mandatory for k8s = 1.16')
-        }
-        # The first useable IPv4 IP of the service cluster-cidr is automatically used as ClusterIP for the internal
-        # kubernetes apiserver service (kubernetes.default.cluster.local)
-        $apiserver_clusterip = wmflib::cidr_first_address($service_cluster_cidr['v4'])
-        $apiserver_cert = profile::pki::get_cert($pki_intermediate, 'kube-apiserver', {
-            'profile'        => 'server',
-            'renew_seconds'  => $pki_renew_seconds,
-            'owner'          => 'kube',
-            'outdir'         => '/etc/kubernetes/pki',
-            # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
-            'hosts'          => [
-                $facts['hostname'],
-                $facts['fqdn'],
-                $facts['ipaddress'],
-                $facts['ipaddress6'],
-                $apiserver_clusterip,
-                $master_fqdn,
-                'kubernetes',
-                'kubernetes.default',
-                'kubernetes.default.svc',
-                'kubernetes.default.svc.cluster',
-                'kubernetes.default.svc.cluster.local',
-            ],
-            'notify_service' => 'kube-apiserver'
-        })
+    $sa_cert = profile::pki::get_cert($pki_intermediate, 'sa', {
+        'profile'        => 'service-account-management',
+        'renew_seconds'  => $pki_renew_seconds,
+        'owner'          => 'kube',
+        'outdir'         => '/etc/kubernetes/pki',
+        'notify_service' => 'kube-apiserver'
+    })
+    # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
+    # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
+    $additional_sa_certs = [$cergen_sa_cert['cert'], $sa_cert['cert']]
 
-        $sa_cert = profile::pki::get_cert($pki_intermediate, 'sa', {
-            'profile'        => 'service-account-management',
-            'renew_seconds'  => $pki_renew_seconds,
-            'owner'          => 'kube',
-            'outdir'         => '/etc/kubernetes/pki',
-            'notify_service' => 'kube-apiserver'
-        })
-        # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
-        # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
-        $additional_sa_certs = [$cergen_sa_cert['cert'], $sa_cert['cert']]
+    # Client certificate used to authenticate against kubelets
+    $kubelet_client_cert = profile::pki::get_cert($pki_intermediate, 'kube-apiserver-kubelet-client', {
+        'renew_seconds'  => $pki_renew_seconds,
+        'names'          => [{ 'organisation' => 'system:masters' }],
+        'owner'          => 'kube',
+        'outdir'         => '/etc/kubernetes/pki',
+        'notify_service' => 'kube-apiserver'
+    })
 
-        # Client certificate used to authenticate against kubelets
-        $kubelet_client_cert = profile::pki::get_cert($pki_intermediate, 'kube-apiserver-kubelet-client', {
-            'renew_seconds'  => $pki_renew_seconds,
-            'names'          => [{ 'organisation' => 'system:masters' }],
-            'owner'          => 'kube',
-            'outdir'         => '/etc/kubernetes/pki',
-            'notify_service' => 'kube-apiserver'
-        })
+    # Client cert for the front proxy (this uses a separate intermediate then everything else)
+    # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/
+    $frontproxy_cert = profile::pki::get_cert("${pki_intermediate}_front_proxy", 'front-proxy-client', {
+        'renew_seconds'  => $pki_renew_seconds,
+        'owner'          => 'kube',
+        'outdir'         => '/etc/kubernetes/pki',
+        'notify_service' => 'kube-apiserver'
+    })
 
-        # Client cert for the front proxy (this uses a separate intermediate then everything else)
-        # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/
-        $frontproxy_cert = profile::pki::get_cert("${pki_intermediate}_front_proxy", 'front-proxy-client', {
-            'renew_seconds'  => $pki_renew_seconds,
-            'owner'          => 'kube',
-            'outdir'         => '/etc/kubernetes/pki',
-            'notify_service' => 'kube-apiserver'
-        })
-
-        # FIXME: superuser kubeconfig is not actually needed on masters
-        # Fetch a client cert with kubernetes-admin permission
-        $default_admin = profile::pki::get_cert($pki_intermediate, 'kubernetes-admin', {
-            'renew_seconds'  => $pki_renew_seconds,
-            'names'           => [{ 'organisation' => 'system:masters' }],
-            'owner'           => 'kube',
-            'outdir'          => '/etc/kubernetes/pki',
-        })
-        # Create a supersuer kubeconfig
-        k8s::kubeconfig { '/etc/kubernetes/admin.conf':
-            master_host => $master_fqdn,
-            username    => 'default-admin',
-            auth_cert   => $default_admin,
-            owner       => 'kube',
-            group       => 'kube',
-        }
+    # FIXME: superuser kubeconfig is not actually needed on masters
+    # Fetch a client cert with kubernetes-admin permission
+    $default_admin = profile::pki::get_cert($pki_intermediate, 'kubernetes-admin', {
+        'renew_seconds'  => $pki_renew_seconds,
+        'names'           => [{ 'organisation' => 'system:masters' }],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
+    })
+    # Create a supersuer kubeconfig
+    k8s::kubeconfig { '/etc/kubernetes/admin.conf':
+        master_host => $master_fqdn,
+        username    => 'default-admin',
+        auth_cert   => $default_admin,
+        owner       => 'kube',
+        group       => 'kube',
     }
 
     $etcd_servers = join($etcd_urls, ',')
@@ -198,31 +171,20 @@ class profile::kubernetes::master (
     }
 
     # Setup kube-scheduler
-    if $k8s_le_116 {
-        $scheduler_kubeconfig = '/etc/kubernetes/scheduler_config'
-        k8s::kubeconfig { $scheduler_kubeconfig:
-            master_host => $master_fqdn,
-            username    => 'system:kube-scheduler',
-            token       => $scheduler_token,
-            owner       => 'kube',
-            group       => 'kube',
-        }
-    } else {
-        $default_scheduler = profile::pki::get_cert($pki_intermediate, 'system:kube-scheduler', {
-            'renew_seconds'  => $pki_renew_seconds,
-            'names'          => [{ 'organisation' => 'system:kube-scheduler' }],
-            'owner'          => 'kube',
-            'outdir'         => '/etc/kubernetes/pki',
-            'notify_service' => 'kube-scheduler',
-        })
-        $scheduler_kubeconfig = '/etc/kubernetes/scheduler.conf'
-        k8s::kubeconfig { $scheduler_kubeconfig:
-            master_host => $master_fqdn,
-            username    => 'default-scheduler',
-            auth_cert   => $default_scheduler,
-            owner       => 'kube',
-            group       => 'kube',
-        }
+    $default_scheduler = profile::pki::get_cert($pki_intermediate, 'system:kube-scheduler', {
+        'renew_seconds'  => $pki_renew_seconds,
+        'names'          => [{ 'organisation' => 'system:kube-scheduler' }],
+        'owner'          => 'kube',
+        'outdir'         => '/etc/kubernetes/pki',
+        'notify_service' => 'kube-scheduler',
+    })
+    $scheduler_kubeconfig = '/etc/kubernetes/scheduler.conf'
+    k8s::kubeconfig { $scheduler_kubeconfig:
+        master_host => $master_fqdn,
+        username    => 'default-scheduler',
+        auth_cert   => $default_scheduler,
+        owner       => 'kube',
+        group       => 'kube',
     }
     class { 'k8s::scheduler':
         version    => $version,
@@ -230,31 +192,20 @@ class profile::kubernetes::master (
     }
 
     # Setup kube-controller-manager
-    if $k8s_le_116 {
-        $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager_config'
-        k8s::kubeconfig { $controllermanager_kubeconfig:
-            master_host => $master_fqdn,
-            username    => 'system:kube-controller-manager',
-            token       => $controllermanager_token,
-            owner       => 'kube',
-            group       => 'kube',
-        }
-    } else {
-        $default_controller_manager = profile::pki::get_cert($pki_intermediate, 'system:kube-controller-manager', {
-            'renew_seconds'  => $pki_renew_seconds,
-            'names'          => [{ 'organisation' => 'system:kube-controller-manager' }],
-            'owner'          => 'kube',
-            'outdir'         => '/etc/kubernetes/pki',
-            'notify_service' => 'kube-controller-manager',
-        })
-        $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager.conf'
-        k8s::kubeconfig { $controllermanager_kubeconfig:
-            master_host => $master_fqdn,
-            username    => 'default-controller-manager',
-            auth_cert   => $default_controller_manager,
-            owner       => 'kube',
-            group       => 'kube',
-        }
+    $default_controller_manager = profile::pki::get_cert($pki_intermediate, 'system:kube-controller-manager', {
+        'renew_seconds'  => $pki_renew_seconds,
+        'names'          => [{ 'organisation' => 'system:kube-controller-manager' }],
+        'owner'          => 'kube',
+        'outdir'         => '/etc/kubernetes/pki',
+        'notify_service' => 'kube-controller-manager',
+    })
+    $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager.conf'
+    k8s::kubeconfig { $controllermanager_kubeconfig:
+        master_host => $master_fqdn,
+        username    => 'default-controller-manager',
+        auth_cert   => $default_controller_manager,
+        owner       => 'kube',
+        group       => 'kube',
     }
     class { 'k8s::controller':
         # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case

@@ -6,7 +6,6 @@ class k8s::proxy (
     K8s::ClusterCIDR $cluster_cidr,
     Boolean $ipv6dualstack = false,
     Enum['iptables', 'ipvs'] $proxy_mode = 'iptables',
-    Boolean $logtostderr = true,
     Integer $v_log_level = 0,
 ) {
     k8s::package { 'proxy':
@@ -14,13 +13,7 @@ class k8s::proxy (
         version => $version,
     }
 
-    # IPv6 is an alpha feature on 1.16 and needs a variety of tunables
-    # (https://kubernetes.io/docs/concepts/services-networking/dual-stack/) to
-    # fully work.
-    # We are on purpose NOT adding support for IPv6 feature gate for kube-proxy as
-    # the feature is alpha grade and not deemed stable yet on our version.
-    # We DO currently only enable it for kubelet, see I54a042731f60dc02494907022cb8115fae052c50
-    $_clustercidr = ($ipv6dualstack and versioncmp($version, '1.23') >= 0) ? {
+    $_clustercidr = $ipv6dualstack ? {
         true  => "${cluster_cidr['v4']},${cluster_cidr['v6']}",
         false => $cluster_cidr['v4'],
     }

@@ -25,7 +25,6 @@ class k8s::apiserver (
     Hash[String, Any] $users,
     K8s::ClusterCIDR $service_cluster_cidr,
     Boolean $allow_privileged = false,
-    Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $ipv6dualstack = false,
     Optional[String] $service_node_port_range = undef,
@@ -77,10 +76,7 @@ class k8s::apiserver (
     # .to_yaml in erb templates always adds a document separator so it's
     # not possible to join yaml in the template with .to_yaml from a variable.
     $admission_configuration_content = {
-        apiVersion         => versioncmp($version, '1.16') <= 0 ? {
-            true  => 'apiserver.k8s.io/v1alpha1',
-            false => 'apiserver.config.k8s.io/v1',
-        },
+        apiVersion => 'apiserver.config.k8s.io/v1',
         kind       => 'AdmissionConfiguration',
         plugins    => $admission_configuration,
     }
