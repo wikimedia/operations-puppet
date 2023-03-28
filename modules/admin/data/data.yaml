@@ -5479,8 +5479,7 @@ users:
     uid: 29436
     gid: 500
     krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB8/dfbAQjsOu3EzPIosLsY0Dxz0LOMtW2dKPndAqDnh trokhymovych.mykola@gmail.com
+    ssh_keys: []
     expiry_date: 2023-06-30
     expiry_contact: diego@wikimedia.org
   siko:
