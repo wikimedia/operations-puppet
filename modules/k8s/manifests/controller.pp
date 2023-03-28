@@ -16,6 +16,7 @@ class k8s::controller (
     Stdlib::Unixpath $service_account_private_key_file,
     Stdlib::Unixpath $ca_file,
     Stdlib::Unixpath $kubeconfig,
+    Boolean $logtostderr = true,
     Integer $v_log_level = 0,
 ) {
     k8s::package { 'controller':

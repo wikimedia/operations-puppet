@@ -5,10 +5,11 @@ class k8s::kubelet (
     String $kubeconfig,
     Boolean $cni,
     Hash[String, Stdlib::Unixpath] $kubelet_cert,
-    String $pod_infra_container_image,
+    String $pod_infra_container_image = 'docker-registry.discovery.wmnet/pause',
     Stdlib::Fqdn $cluster_domain = 'cluster.local',
     Stdlib::Unixpath $cni_bin_dir = '/opt/cni/bin',
     Stdlib::Unixpath $cni_conf_dir = '/etc/cni/net.d',
+    Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $ipv6dualstack = false,
     Optional[Stdlib::IP::Address] $listen_address = undef,
@@ -18,6 +19,7 @@ class k8s::kubelet (
     Optional[Array[K8s::Core::V1Taint]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
 ) {
+    $k8s_le_116 = versioncmp($version, '1.16') <= 0
     k8s::package { 'kubelet':
         package => 'node',
         version => $version,
@@ -27,14 +29,20 @@ class k8s::kubelet (
     # socat is needed on k8s nodes for kubectl proxying to work
     ensure_packages('socat')
 
-    # With k8s 1.23 we have aggregation layer support and can enable authentication/authorization
-    # of requests against kubelet. Webhook mode uses the SubjectAccessReview API to determine authorization.
-    $authentication = {
-        anonymous => { enabled => false },
-        webhook => { enabled => true },
-        x509 => { clientCAFile => $kubelet_cert['chain'] },
+    if $k8s_le_116 {
+        # Without k8s 1.16, fall back to AlwaysAllow and anonymous access
+        $authentication = { anonymous => { enabled => true } }
+        $authorization = { mode => 'AlwaysAllow' }
+    } else {
+        # With k8s 1.23 we have aggregation layer support and can enable authentication/authorization
+        # of requests against kubelet. Webhook mode uses the SubjectAccessReview API to determine authorization.
+        $authentication = {
+            anonymous => { enabled => false },
+            webhook => { enabled => true },
+            x509 => { clientCAFile => $kubelet_cert['chain'] },
+        }
+        $authorization = { mode => 'Webhook' }
     }
-    $authorization = { mode => 'Webhook' }
 
     # Create the KubeletConfiguration YAML
     $config_yaml = {
@@ -46,7 +54,7 @@ class k8s::kubelet (
         clusterDomain      => $cluster_domain,
         clusterDNS         => [$cluster_dns],
         # IPv6DualStack is GA and enabled by default in k8s >=1.22
-        featureGates       => unless $ipv6dualstack {{ 'IPv6DualStack' => false } },
+        featureGates       => if $ipv6dualstack and versioncmp($version, '1.22') < 0 { { 'IPv6DualStack' => true } },
         # FIXME: Do we really need anonymous read only access to kubelets enabled?
         #
         # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).
@@ -55,9 +63,9 @@ class k8s::kubelet (
         readOnlyPort       => 10255,
         authentication     => $authentication,
         authorization      => $authorization,
-        registerWithTaints => $node_taints,
-        # Use systemd cgroup driver
-        cgroupDriver       => 'systemd',
+        registerWithTaints => unless $k8s_le_116 { $node_taints },
+        # Use systemd cgroup driver with k8s >= 1.23
+        cgroupDriver       => unless $k8s_le_116 { 'systemd' },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     file { $config_file:
