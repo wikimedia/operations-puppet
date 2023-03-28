@@ -20,13 +20,21 @@ class cpufrequtils(
         file { '/etc/default/cpufrequtils':
             content => "GOVERNOR=${governor}\n",
             require => Package['cpufrequtils'],
-            notify  => Service['cpufrequtils'],
         }
 
         service { 'cpufrequtils':
             ensure => 'running',
             enable => true,
-            status => "/usr/bin/cpufreq-info -p | /bin/grep -wq ${governor}",
         }
+        # cpufrequtils is a systemd generator where RemainAfterExit=yes is set.
+        # When the service resource was trying to "start" it, systemd would
+        # find it as already running, thus not changing the governor.
+        # cpufrequtils will be reloaded if this is not the governor we are looking for
+        exec { 'cpufrequtils_reload':
+            unless  => "/usr/bin/cpufreq-info -p | /bin/grep -wq ${governor}",
+            command => '/usr/bin/systemd reload cpufrequtils',
+            require => File['/etc/default/cpufrequtils']
+        }
+
     }
 }
