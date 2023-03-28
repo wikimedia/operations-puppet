@@ -408,6 +408,21 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
+- name: 'sre-collab-releng-critical'
+  webhook_configs:
+    # sre-collab x releng - task, IRC, (mail) for both teams
+    # single URL, multiple phids = one ticket with multiple tags.
+    # multiple URLs = multiple tickets
+    # PHID-PROJ-pjhy3ymh5pitgp2jflcb = https://phabricator.wikimedia.org/tag/serviceops-collab/
+    # PHID-PROJ-uier7rukzszoewbhj7ja = https://phabricator.wikimedia.org/tag/release-engineering-team/
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb&phid=PHID-PROJ-uier7rukzszoewbhj7ja'
+      send_resolved: false
+    - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-releng'
+  email_configs:
+    - to: 'releng@lists.wikimedia.org'
+
 - name: 'dcops-task'
   webhook_configs:
     # #dcops
