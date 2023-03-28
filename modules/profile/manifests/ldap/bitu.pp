@@ -25,7 +25,10 @@ class profile::ldap::bitu (
         uri      => ["ldaps://${ldap['rw-server']}:636"],
         username => $ldap['script_user_dn'],
         password => $ldap['script_user_pass'],
-        groups   => { auxiliary_classes => ['posixGroup'] },
+        groups   => {
+            dn                => "${ldap['groups_cn']},${ldap['base-dn']}",
+            auxiliary_classes => ['posixGroup'],
+        },
         users    => {
             dn                => "${ldap['users_cn']},${ldap['base-dn']}",
             auxiliary_classes => ['posixAccount', 'wikimediaPerson'],
