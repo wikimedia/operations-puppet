@@ -31,4 +31,8 @@ class role::deployment_server {
 
     # proxy for connection to other servers
     include profile::services_proxy::envoy
+
+    # Scap relies on pulling Docker images in order to self-update
+    include profile::docker::engine
+    include profile::docker::prune_old_images
 }
