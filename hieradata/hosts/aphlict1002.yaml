@@ -1,0 +1,2 @@
+profile::phabricator::aphlict::puppet_controlled_phabricator_config: true
+profile::phabricator::aphlict::ensure: absent
