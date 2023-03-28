@@ -9,7 +9,7 @@ class idm::jobs (
 ){
 
     systemd::timer::job { 'idm-sync-permissions':
-        ensure          => $present,
+        ensure          => absent,
         description     => 'Syncronize permissions from backend to IDM',
         command         => "${venv}/bin/python ${base_dir}/${project}/manage.py systems_sync",
         logging_enabled => true,
