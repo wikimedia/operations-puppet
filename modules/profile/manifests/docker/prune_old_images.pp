@@ -7,7 +7,7 @@
 #    Specifies the minimum age for an image to be a candidate for pruning. In days.
 class profile::docker::prune_old_images(
     Wmflib::Ensure $ensure = lookup('docker::prune_old_images::ensure', { default_value => 'present' }),
-    String $older_than     = lookup('docker::prune_old_images::older_than', { default_value => '14' }),
+    Integer[1] $older_than = lookup('docker::prune_old_images::older_than', { default_value => 14 }),
 ) {
     systemd::timer::job { 'docker-image-prune-old':
         ensure      => $ensure,
