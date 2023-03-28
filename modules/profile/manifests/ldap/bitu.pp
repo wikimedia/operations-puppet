@@ -1,21 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
-# === Class profile::ldap::bitu
+# @summary
+#   Install and configure python3-bitu-ldap. This library is designed to make
+#   interaction with LDAP from Python script easier. This profile provides a
+#   default configuration which ensure that a users can automatically connect
+#   and manage LDAP users and groups.
+# @param ldap Hash containing LDAP connection info.
+# @param group The group to use for sensitive files
 #
-# Install and configure python3-bitu-ldap.
-# This library is designed to make interaction
-# with LDAP from Python script easier. This
-# profile provides a default configuration
-# which ensure that a users can automatically
-# connect and manage LDAP users and groups.
-#
-# === Parameters
-#
-# [*ldap*] Hash containing LDAP connection info.
-# 
-class profile::ldap::bitu(
-    Hash $ldap = lookup('ldap'),
+class profile::ldap::bitu (
+    Hash      $ldap = lookup('ldap'),
+    String[0] $group = lookup('profile::ldap::bitu::group'),
 ) {
-
     if debian::codename::eq('buster') {
         apt::package_from_component { 'python3-ldap3':
         component => 'component/python3-ldap3',
@@ -23,7 +18,7 @@ class profile::ldap::bitu(
     }
 
     ensure_packages([
-        'python3-bitu-ldap'
+        'python3-bitu-ldap',
     ])
 
     $bitu_config = {
@@ -33,20 +28,20 @@ class profile::ldap::bitu(
         groups   => { auxiliary_classes => ['posixGroup'] },
         users    => {
             dn                => "${ldap['users_cn']},${ldap['base-dn']}",
-            auxiliary_classes => ['posixAccount', 'wikimediaPerson']
+            auxiliary_classes => ['posixAccount', 'wikimediaPerson'],
         },
     }
 
     file { '/etc/bitu/':
         ensure => directory,
         owner  => 'root',
-        group  => 'ldap-admins',
+        group  => $group,
         mode   => '0770',
     }
 
     file { '/etc/bitu/ldap.json':
         owner   => 'root',
-        group   => 'ldap-admins',
+        group   => $group,
         mode    => '0550',
         content => $bitu_config.to_json_pretty,
     }
