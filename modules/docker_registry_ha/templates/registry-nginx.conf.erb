@@ -310,7 +310,18 @@ server {
 
       <%- if @nginx_cache %>
       # Blobs and manifests by digest are immutable, so we can cache them
-      location ~ ^/v2/(.*)/(blobs|manifests)/sha256:(.*) {
+      location ~ ^/v2/(.*/(?:blobs|manifests)/sha256:.*) {
+        # Nginx applies only _some_ of the parent location block directives
+        # to nested locations, but this does _not_ include the `set
+        # $auth_request_path` above. We must duplicate the directive here so
+        # as not to lose the original request path during JWT auth (see
+        # location = /auth/jwt). See T322453
+        #
+        # TODO refactor nested locations as server level locations and move
+        # common directives to includes to make the configuration easier to
+        # understand
+        set $auth_request_path $1;
+
         proxy_pass http://registry;
         include /etc/nginx/registry-nginx-cache.conf;
       }
