@@ -10,9 +10,14 @@ class pybal::monitoring(
     require ::pybal::configuration
 
     # To be removed once we upgrade all PyBal hosts to bullseye.
-    $python_prometheus = debian::codename() ? {
-      'bullseye' => 'python3-prometheus-client',
-      'buster'   => 'python-prometheus-client',
+    if debian::codename::eq('bullseye') {
+        apt::package_from_component { 'python-prometheus-client':
+            component => 'component/pybal',
+        }
+    } else {
+        package { ['python-prometheus-client']:
+            ensure => installed,
+        }
     }
 
     $python_requests = debian::codename() ? {
@@ -23,7 +28,6 @@ class pybal::monitoring(
     ensure_packages([
         'libmonitoring-plugin-perl',
         'libwww-perl',
-        $python_prometheus,
         $python_requests,
     ])
 
