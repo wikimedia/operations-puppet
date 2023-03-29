@@ -112,12 +112,7 @@ class profile::kubernetes::node (
             },
     }
 
-    # FIXME: Keep the deprecated failure-domain.beta.* labels around for now.
-    # We have charts that depend on them and we don't want couple them
-    # to a particular cluster version in such a way.
     $topology_labels = [
-        "failure-domain.beta.kubernetes.io/region=${downcase($region)}",
-        "failure-domain.beta.kubernetes.io/zone=${downcase($zone)}",
         "topology.kubernetes.io/region=${downcase($region)}",
         "topology.kubernetes.io/zone=${downcase($zone)}",
     ]
