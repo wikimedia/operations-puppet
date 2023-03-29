@@ -220,4 +220,13 @@ class httpd(
             require    => Package['apache2'],
         }
     }
+
+    $enable_htcacheclean = 'cache_disk' in $modules
+    profile::auto_restarts::service { 'apache-htcacheclean':
+        ensure  => $enable_htcacheclean.bool2str('present', 'absent')
+    }
+    service { 'apache-htcacheclean':
+        ensure => stdlib::ensure($enable_htcacheclean, 'service'),
+        enable => $enable_htcacheclean
+    }
 }
