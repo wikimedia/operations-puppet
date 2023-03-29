@@ -18,5 +18,13 @@ class profile::microsites::sitemaps(
         mode    => '2774',
         recurse => true,
     }
+
+    prometheus::blackbox::check::http { 'sitemaps.wikimedia.org':
+        team        => 'serviceops-collab',
+        severity    => 'task',
+        path        => '/',
+        force_tls   => true,
+        ip_families => [ip4],
+    }
 }
 
