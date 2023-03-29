@@ -79,10 +79,10 @@ class profile::vrts(
         srange => "@resolve((${smtp_ferm}))",
     }
 
-    monitoring::service { 'smtp':
-        description   => 'OTRS SMTP',
-        check_command => 'check_smtp',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/OTRS#Troubleshooting',
+    prometheus::blackbox::check::tcp { 'vrts-smtp':
+        team     => 'serviceops-collab',
+        severity => 'task',
+        port     => 25,
     }
 
     nrpe::monitor_service{ 'clamd':
