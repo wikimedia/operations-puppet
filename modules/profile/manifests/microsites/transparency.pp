@@ -16,7 +16,26 @@ class profile::microsites::transparency {
         content => template('profile/microsites/transparency.wikimedia.org.erb'),
     }
 
+    prometheus::blackbox::check::http { 'transparency.wikimedia.org':
+        team             => 'serviceops-collab',
+        severity         => 'task',
+        path             => '/',
+        force_tls        => true,
+        ip_families      => [ip4],
+        status_matches   => [301],
+        follow_redirects => false,
+    }
+
     httpd::site { 'transparency-archive.wikimedia.org':
         content => template('profile//microsites/transparency-archive.wikimedia.org.erb'),
+    }
+
+    prometheus::blackbox::check::http { 'transparency-archive.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        force_tls          => true,
+        ip_families        => [ip4],
+        body_regex_matches => ['Transparency'],
     }
 }
