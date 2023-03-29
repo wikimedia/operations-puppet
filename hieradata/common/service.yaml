@@ -1406,7 +1406,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    page: false  # TODO: Switch to true when we serve some real production traffic
+    page: true
     probes:
       - type: http
         path: /wiki/Special:BlankPage
@@ -1443,7 +1443,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    page: false  # TODO: Switch to true when we serve some real production traffic
+    page: true
     probes:
       - type: http
         path: /wiki/Special:BlankPage
@@ -1480,7 +1480,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    page: false  # TODO: Switch to true when we serve some real production traffic
+    page: true
     probes:
       - type: http
         path: /wiki/Special:BlankPage
