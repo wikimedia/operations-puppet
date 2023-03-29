@@ -1,6 +1,16 @@
 class pybal {
-    package { [ 'ipvsadm', 'pybal' ]:
-        ensure => installed,
+
+    ensure_packages(['ipvsadm'])
+
+    # In bullseye, we install Pybal from component.
+    if debian::codename::eq('bullseye') {
+        apt::package_from_component { 'pybal':
+            component => 'component/pybal',
+        }
+    } else {
+        package { [ 'pybal' ]:
+            ensure => installed,
+        }
     }
 
     file { '/etc/default/pybal':
