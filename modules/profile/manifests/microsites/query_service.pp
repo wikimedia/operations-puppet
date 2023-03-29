@@ -31,4 +31,22 @@ class profile::microsites::query_service {
         directory => '/srv/org/wikidata/query-builder',
         branch    => 'production',
     }
+
+    prometheus::blackbox::check::http { 'commons-query.wikimedia.org':
+        team             => 'serviceops-collab',
+        severity         => 'task',
+        path             => '/',
+        force_tls        => true,
+        ip_families      => [ip4],
+        status_matches   => [301],
+        follow_redirects => false,
+    }
+
+    prometheus::blackbox::check::http { 'query.wikidata.org':
+        team        => 'serviceops-collab',
+        severity    => 'task',
+        path        => '/',
+        force_tls   => true,
+        ip_families => [ip4],
+    }
 }
