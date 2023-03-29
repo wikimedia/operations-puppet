@@ -127,7 +127,10 @@ class phabricator::aphlict(
         systemd::mask{ 'logrotate.timer': }
     } else {
         # use default logrotate timer
-        systemd::unmask{ 'logrotate.timer': }
+        systemd::unmask{ 'logrotate.timer':
+            # run unmask always
+            refreshonly => false,
+        }
     }
 
     # accounts
