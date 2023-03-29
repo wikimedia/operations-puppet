@@ -29,7 +29,6 @@ profile::lvs::realserver::pools:
 # to configure the aggregation layer.
 profile::kubernetes::pki::intermediate: 'mlserve'
 # Define in the private repo
-# profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
 
 # Configuration to add the Kubelet to Master nodes for limited use cases
@@ -50,13 +49,6 @@ profile::docker::engine::settings:
     max-size: 100m
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
-# Tokens for the calico kubernetes users in private repo at:
-#profile::calico::kubernetes::calico_cni::token
-#profile::calico::kubernetes::calicoctl::token
-# Defined in the private repo
-#profile::kubernetes::node::kubelet_token:
-# Defined in the private repo
-#profile::kubernetes::node::kubeproxy_token:
 profile::rsyslog::kubernetes::kubernetes_url: https://ml-ctrl.svc.%{::site}.wmnet:6443
 profile::rsyslog::kubernetes::enable: true
 profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet

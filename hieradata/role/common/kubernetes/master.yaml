@@ -59,7 +59,6 @@ profile::kubernetes::master::admission_plugins:
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
 # Define in the private repo
-# profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
 profile::contacts::role_contacts: ['ServiceOps']
 
@@ -84,13 +83,6 @@ profile::docker::engine::settings:
     max-size: 100m
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
-# Tokens for the calico kubernetes users in private repo at:
-#profile::calico::kubernetes::calico_cni::token
-#profile::calico::kubernetes::calicoctl::token
-# Defined in the private repo
-#profile::kubernetes::node::kubelet_token:
-# Defined in the private repo
-#profile::kubernetes::node::kubeproxy_token:
 profile::rsyslog::kubernetes::enable: true
 # Define in the private repo
 # profile::rsyslog::kubernetes::token
