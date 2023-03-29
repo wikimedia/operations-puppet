@@ -8,11 +8,23 @@ class pybal::monitoring(
     Hash[String, Wmflib::Service] $services,
 ) {
     require ::pybal::configuration
+
+    # To be removed once we upgrade all PyBal hosts to bullseye.
+    $python_prometheus = debian::codename() ? {
+      'bullseye' => 'python3-prometheus-client',
+      'buster'   => 'python-prometheus-client',
+    }
+
+    $python_requests = debian::codename() ? {
+      'bullseye' => 'python3-requests',
+      'buster'   => 'python-requests',
+    }
+
     ensure_packages([
         'libmonitoring-plugin-perl',
         'libwww-perl',
-        'python-prometheus-client',
-        'python-requests',
+        $python_prometheus,
+        $python_requests,
     ])
 
     nrpe::plugin { 'check_pybal':
