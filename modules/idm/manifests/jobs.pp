@@ -20,7 +20,7 @@ class idm::jobs (
 
     systemd::service { 'rq-idm':
         ensure  => $present,
-        content => file('idm/rq-idm.service'),
+        content => file('idm/rq-idm.service')
     }
 
     profile::auto_restarts::service {'rq-idm':
