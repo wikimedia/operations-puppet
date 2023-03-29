@@ -498,10 +498,10 @@ class profile::phabricator::main (
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x}, AAAA)" }.join(" ") %>)'),
     }
 
-    monitoring::service { 'smtp':
-        description   => 'Phabricator SMTP',
-        check_command => 'check_smtp',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
+    prometheus::blackbox::check::tcp { 'phabricator-smtp':
+        team     => 'serviceops-collab',
+        severity => 'task',
+        port     => 25,
     }
 
     # ssh between phabricator servers for clustering support
