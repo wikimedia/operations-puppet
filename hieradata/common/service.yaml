@@ -1416,7 +1416,7 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-    discovery: &mw-web-disc
+    discovery:
       - dnsdisc: mw-web
         active_active: false
       - dnsdisc: mw-web-ro
@@ -1453,7 +1453,7 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-    discovery: &mw-api-ext-disc
+    discovery:
       - dnsdisc: mw-api-ext
         active_active: false
       - dnsdisc: mw-api-ext-ro
