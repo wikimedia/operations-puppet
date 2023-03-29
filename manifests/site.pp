@@ -403,10 +403,6 @@ node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet$/ {
 node /^(contint1002|contint2001|contint2002)\.wikimedia\.org$/ {
     role(ci::master)
 }
-# New contint and gerrit node T299575
-node /^(contint2002)\.wikimedia\.org$/ {
-    role(insetup::serviceops_collab)
-}
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
     role(cache::text)
