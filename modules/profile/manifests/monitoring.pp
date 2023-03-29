@@ -197,47 +197,10 @@ class profile::monitoring (
         }
     }
 
-    # Did an host register an increase in correctable errors over the last 4d? Might indicate faulty
-    # memory
-    monitoring::check_prometheus { 'edac_correctable_errors':
-        ensure          => $hardware_monitoring,
-        description     => 'Memory correctable errors (EDAC)',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
-        contact_group   => $contact_group,
-        query           => "sum(increase(node_edac_correctable_errors_total{instance=\"${facts['hostname']}:9100\"}[4d]))",
-        warning         => 2,
-        critical        => 4,
-        check_interval  => 30,
-        retry_interval  => 5,
-        retries         => 3,
-        method          => 'ge',
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Memory#Memory_correctable_errors_-EDAC-',
-    }
-
-    # Did an host log kernel messages from the EDAC subsystem over the last 4d? Might indicate faulty
-    # memory.
-    # Some of these events are not being caught through the usual node_edac_correctable_errors mechanism:
-    # https://phabricator.wikimedia.org/T214529
-    monitoring::check_prometheus { 'edac_syslog_events':
-        ensure          => $hardware_monitoring,
-        description     => 'EDAC syslog messages',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
-        contact_group   => $contact_group,
-        query           => "sum(increase(edac_events{hostname=\"${facts['hostname']}\"}[4d]))",
-        warning         => 2,
-        critical        => 4,
-        check_interval  => 30,
-        retry_interval  => 5,
-        retries         => 3,
-        method          => 'ge',
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Memory#Memory_correctable_errors_-EDAC-'
-    }
-
     if $facts['has_ipmi'] {
         class { 'ipmi::monitor': ensure => $hardware_monitoring }
     }
+
     # This is responsible for ~75%+ of all recdns queries...
     # https://phabricator.wikimedia.org/T239862
     host { 'statsd.eqiad.wmnet':
