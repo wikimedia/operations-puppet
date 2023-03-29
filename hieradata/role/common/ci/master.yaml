@@ -15,6 +15,8 @@ profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
 profile::ci::jenkins::service_ensure: "stopped"
 profile::ci::jenkins::service_enable: "mask"
 
+profile::ci::httpd::monitoring_enabled: true
+
 profile::ci::jenkins::java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
 
 profile::ci::docker::settings:

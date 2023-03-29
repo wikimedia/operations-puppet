@@ -1,4 +1,5 @@
 profile::ci::jenkins::service_monitor: false
+profile::ci::httpd::monitoring_enabled: false
 
 profile::zuul::merger::service_enable: mask
 profile::zuul::merger::service_ensure: stopped
