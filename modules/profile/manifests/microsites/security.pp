@@ -18,5 +18,13 @@ class profile::microsites::security(
         branch    => 'master',
     }
 
+    prometheus::blackbox::check::http { 'security.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        force_tls          => true,
+        ip_families        => [ip4],
+        body_regex_matches => ['Wikimedia Security'],
+    }
 }
 
