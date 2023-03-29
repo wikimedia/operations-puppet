@@ -116,6 +116,7 @@ agent_call_high_timeout = 150
 # Allow a good long time to format volumes so that we support big volumes.
 # The default here is 120 seconds which limits us to 30GB volumes.
 volume_format_timeout = 7200
+usage_timeout = 7200
 
 # Reboot time out for instances
 reboot_time_out = 60
@@ -205,7 +206,6 @@ device_path = /dev/sdb
 # Users to ignore for user create/list/delete operations
 ignore_users = os_admin, root
 ignore_dbs = mysql, information_schema, performance_schema
-usage_timeout = 7200
 
 [mariadb]
 root_on_create = False
