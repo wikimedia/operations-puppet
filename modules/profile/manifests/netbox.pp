@@ -232,6 +232,14 @@ class profile::netbox (
         deploy_user  => 'netbox',
     }
 
+    git::systemconfig { 'safe.directory-netbox-src':
+        settings => {
+            'safe' => {
+                'directory' => '/srv/deployment/netbox/current/src',
+            }
+        }
+    }
+
     git::clone { 'operations/software/netbox-extras':
         ensure    => 'present',
         directory => $extras_path,
