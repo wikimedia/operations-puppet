@@ -72,9 +72,9 @@ clean_egress
 /sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 172.16.2.104 flowid 1:4
 
-# nfs-tools-project service ip
+# tools-nfs.svc.tools.eqiad1.wikimedia.cloud
 /sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
-      match ip dst 10.64.37.18 flowid 1:5
+      match ip dst 172.16.7.14 flowid 1:5
 
 # clouddumps1001
 /sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
@@ -125,9 +125,9 @@ fi
 /sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 172.16.2.104 flowid 1:4
 
-# nfs-tools-project service ip
+# tools-nfs.svc.tools.eqiad1.wikimedia.cloud
 /sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
-      match ip src 10.64.37.18 flowid 1:5
+      match ip src 172.16.7.14 flowid 1:5
 
 # clouddumps1001
 /sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
