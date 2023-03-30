@@ -40,6 +40,10 @@ private:
       home: dumps-nfs.svc.dumps.eqiad1.wikimedia.cloud:/srv/dumps/home
       project: dumps-nfs.svc.dumps.eqiad1.wikimedia.cloud:/srv/dumps/project
       scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
+  dump-references-processor:
+    gid: 55368
+    mounts:
+      dumps: true  # T333549
   puppet-diffs:
     gid: 53809
     mounts:
