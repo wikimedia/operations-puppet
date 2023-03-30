@@ -78,7 +78,7 @@ profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/repos/
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
 profile::gitlab::runner::clear_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 05:00:00'
+  interval: 'hourly'
 profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true
 profile::base::unprivileged_userns_clone: true
