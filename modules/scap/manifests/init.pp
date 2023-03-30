@@ -56,6 +56,9 @@ class scap (
     $k8s_releases_dir = pick($k8s_deployments['releases_dir'], '/etc/mediawiki/releases')
     $k8s_clusters = $k8s_deployments['clusters']
     $k8s_deployments_file = $k8s_deployments['file']
+
+    # Disable Scap on the inactive deployment server
+    $block_scap_execution = $is_master and $::fqdn != $deployment_server
     file { '/etc/scap.cfg':
         content => template('scap/scap.cfg.erb'),
         owner   => 'root',
