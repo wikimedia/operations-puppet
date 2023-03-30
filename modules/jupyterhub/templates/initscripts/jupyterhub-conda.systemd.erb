@@ -7,6 +7,9 @@ Restart=always
 RestartSec=2s
 # wait 60 seconds for a graceful restart before killing
 TimeoutStopSec=60
+<%- if @facts['os']['release']['major'].to_i >= 11 -%>
+InaccessiblePaths=-/mnt
+<% end -%>
 
 WorkingDirectory=<%= @base_path %>
 

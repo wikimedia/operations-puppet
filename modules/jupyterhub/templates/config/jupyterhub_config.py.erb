@@ -268,8 +268,14 @@ c.SystemdSpawner.isolate_tmp = False
 # to gain root
 c.SystemdSpawner.disable_user_sudo = True
 
-# Only allow specific directories to be written to
+# The readonly_paths feaure is incompatible with our HDFS-FUSE configuration after bullseye.
+# See #T333511 for details
+<%- if @facts['os']['release']['major'].to_i < 11 -%>
 c.SystemdSpawner.readonly_paths = ['/']
+<%- else -%>
+c.SystemdSpawner.readonly_paths = None
+<%- end -%>
+# We always specify readwrite_paths, irrespective of whether ot not readonly_paths is set
 c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user', '/tmp', '/srv/spark-tmp']
 
 # Create discrete log files for each user's notebook
