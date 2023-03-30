@@ -37,6 +37,7 @@ class profile::microsites::query_service {
         severity         => 'task',
         path             => '/',
         force_tls        => false,
+        port             => 80,
         ip_families      => [ip4],
         status_matches   => [301],
         follow_redirects => false,
