@@ -396,7 +396,7 @@ groups:
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia, jgiannelos]
+              ksarabia, jgiannelos, sfaci]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5812,6 +5812,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC30UWfMgQcNFR4U2pGEqfcOQm2holD6kPjTLxYKevYOldtm4h5tSJCRfhCn7e0Bi0uTCQBJNLu+JWrje8OK8SKQypnXoKmcJqp8mN2v3w6iyX2xB9cFNP9F7zV8vdrWXPJB1NRMvunTmo2GwoNGASe5+ysBvfW2hIBuUN+8HrS9ZftRJFfoAlnaJFo6mnmLyCCo601xhQnSvoIib29GyPQ56qOeVVvXMEM3KU/eaZ0RP3TkEDSBMVEtak54yAx83u3SXE4Eopd5d0Ycn+t3jxWk7XMYzIytHXYrPtTAfTYCy+GnmoBE3kaDvs/zc+y3+WjfUMhcUXD3P8HbARvmMOv kamila/yk4nano-cardno:000610303896
+  sfaci:
+    ensure: present
+    realname: Santiago Faci
+    email: sfaci@wikimedia.org
+    uid: 43355
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEy0EFQ3FSF50aVZpBr8T3JAcTtrHBwXy5nuEx8g25X/ santi@WMF3277
 
 ldap_only_users:
   adavenport:
@@ -6580,10 +6588,6 @@ ldap_only_users:
     ensure: present
     realname: Anil Kanji
     email: akanji@wikimedia.org
-  sfaci:
-    ensure: present
-    realname: Santiago Faci
-    email: sfaci@wikimedia.org
   jon-amar-wmde:
     ensure: present
     realname: Jonathan Solomon Giles Blay Amar
