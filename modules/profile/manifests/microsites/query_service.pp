@@ -36,7 +36,7 @@ class profile::microsites::query_service {
         team             => 'serviceops-collab',
         severity         => 'task',
         path             => '/',
-        force_tls        => true,
+        force_tls        => false,
         ip_families      => [ip4],
         status_matches   => [301],
         follow_redirects => false,
