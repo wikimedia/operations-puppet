@@ -48,6 +48,7 @@
 #     repository, and contains the instance specific dags_folder inside
 #     at $title/dags.
 #   - dags_folder will default to /srv/deployment/airflow-dags/$title/$title/dags
+#   - plugins_folder will default to /srv/deployment/airflow-dags/$title/wmf_airflow_common/plugins
 #   - Ferm will default to only allowing $ANALYTICS_NETWORKS to the airflow instance services.
 #   - Common Airflow connections are configured.
 #
@@ -139,6 +140,7 @@ class profile::airflow(
                 'airflow_config' => {
                     'core' => {
                         'dags_folder' => "/srv/deployment/airflow-dags/${instance_name}/${instance_name}/dags",
+                        'plugins_folder' => "/srv/deployment/airflow-dags/${instance_name}/wmf_airflow_common/plugins",
                         'security' => 'kerberos',
                         'executor' => 'LocalExecutor',
 
