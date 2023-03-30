@@ -56,7 +56,7 @@ groups:
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori]
+              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -84,7 +84,7 @@ groups:
   platform-engineering:
     description: People in the Platform Engineering team.
     gid: 824
-    # ariel, hnowlan, tstarling not included because of ops membership
+    # ariel, hnowlan, kamila, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
               daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
   release-engineering:
