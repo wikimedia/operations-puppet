@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 # Note: This file is managed by Puppet.
 MINIO_VOLUMES="<%= @storage_path %>"
-MINIO_OPTS="--address <%= @facts['networking']['ip'] %>:<%= @port %>"
+MINIO_OPTS="--address <%= @facts['networking']['ip'] %>:<%= @port %> --console-address <%= @facts['networking']['ip'] %>:<%= @console_port %>"
 MINIO_ROOT_USER="<%= @root_user %>"
 MINIO_ROOT_PASSWORD="<%= @root_password %>"
 MINIO_REGION_NAME="<%= @site %>"

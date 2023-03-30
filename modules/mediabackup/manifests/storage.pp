@@ -5,6 +5,11 @@
 # * storage_path: the absolute path for the directory that will be
 #                 used for storage of files, as configured by minio
 # * port: the TCP port number where minio will be listening from
+# * console_port: the TCP port number where the built-in browser-based
+#                 web interface will be listening from. Useful for
+#                 human friendly debugging (see:
+# https://wikitech.wikimedia.org/wiki/Media_storage/Backups#How_to_access_the_web_UI_of_minio
+# )
 # * root_user: the string containing the admin user name
 # * root_password: the string containing the admin authentication
 #                  string.
@@ -13,6 +18,7 @@
 class mediabackup::storage (
     Stdlib::Unixpath $storage_path,
     Stdlib::Port $port,
+    Stdlib::Port $console_port,
     String $root_user,
     String $root_password,
     Optional[Stdlib::Unixpath] $cert_path,

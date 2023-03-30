@@ -16,6 +16,7 @@ class profile::mediabackup::storage (
     class { 'mediabackup::storage':
         storage_path  => $mediabackup_config['storage_path'],
         port          => $mediabackup_config['storage_port'],
+        console_port  => $mediabackup_config['console_port'],
         root_user     => $mediabackup_config['storage_root_user'],
         root_password => $mediabackup_config['storage_root_password'],
         cert_path     => $tls_paths['chained'],
@@ -39,6 +40,12 @@ class profile::mediabackup::storage (
             port    => $mediabackup_config['storage_port'],
             notrack => true,
             srange  => $srange_workers,
+        }
+        # console port
+        ferm::service { 'minio-console-mediabackup-workers':
+            proto  => 'tcp',
+            port   => $mediabackup_config['console_port'],
+            srange => $srange_workers,
         }
     }
 }

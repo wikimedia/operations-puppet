@@ -1997,6 +1997,7 @@ mediabackup:
   batchsize: 1000
   storage_path: '/srv/objectstorage'
   storage_port: 9000
+  console_port: 9001
 
 # The hash of hostname -> data for infrastructure (e.g. not running Puppet) devices.
 
