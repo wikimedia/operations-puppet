@@ -82,7 +82,7 @@ route:
           receiver: 'data-persistence-ircmail'
         - match:
             severity: 'warning'
-          receiver: 'data-persistence-irc'
+          receiver: 'data-persistence-irc-feed'
     - match:
         team: 'infrastructure-foundations'
       routes:
@@ -251,6 +251,10 @@ receivers:
 - name: 'data-persistence-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
+
+- name: 'data-persistence-irc-feed'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence-feed'
 
 - name: 'data-persistence-ircmail'
   webhook_configs:
