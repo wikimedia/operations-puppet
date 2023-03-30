@@ -19,8 +19,6 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 profile::rsyslog::kubernetes::kubernetes_url: https://ml-ctrl.svc.%{::site}.wmnet:6443
 profile::rsyslog::kubernetes::enable: true
 profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
-# Define in the private repo
-# profile::rsyslog::kubernetes::token
 prometheus::node_exporter::collectors_extra:
   - processes
 # We don't need conftool safe restart scripts on k8s.

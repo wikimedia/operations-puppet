@@ -25,8 +25,6 @@ profile::docker::engine::settings:
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
 profile::rsyslog::kubernetes::enable: true
-# Define in the private repo
-# profile::rsyslog::kubernetes::token
 # With k8s 1.16, this will enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50
 profile::kubernetes::ipv6dualstack: true
 profile::contacts::role_contacts: ['ServiceOps']

@@ -75,7 +75,5 @@ profile::docker::engine::settings:
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
 profile::rsyslog::kubernetes::enable: true
-# Define in the private repo
-# profile::rsyslog::kubernetes::token
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.%{::site}.wmnet:6443
 profile::kubernetes::master_fqdn: kubestagemaster.svc.%{::site}.wmnet

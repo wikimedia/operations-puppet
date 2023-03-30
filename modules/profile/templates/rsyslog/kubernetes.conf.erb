@@ -1,7 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 module(load="mmkubernetes"
         KubernetesURL="<%= @kubernetes_url %>"
-        token="<%= @token %>")
+        tls.mycert="<%= @client_auth['cert'] %>"
+        tls.mykey="<%= @client_auth['key'] %>")
 action(type="mmkubernetes"
        name="mmkubernetes"
        action.resumeRetryCount="-1"
