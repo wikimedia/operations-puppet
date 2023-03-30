@@ -22,7 +22,7 @@ class profile::microsites::transparency {
         path             => '/',
         force_tls        => true,
         ip_families      => [ip4],
-        status_matches   => [301],
+        status_matches   => [302],
         follow_redirects => false,
     }
 
