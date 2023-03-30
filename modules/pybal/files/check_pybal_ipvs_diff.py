@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 """
 Nagios plugin alerting if the hosts known to PyBal differ from those pooled in
@@ -15,8 +15,7 @@ Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
 import argparse
 import socket
 import sys
-
-import requests
+import urllib2
 
 from ConfigParser import SafeConfigParser
 from prometheus_client.parser import text_fd_to_metric_families
@@ -44,12 +43,14 @@ class PyBalIPVSDiff(object):
         self.args = ap.parse_args(argument_list)
 
     def get_url(self, url):
-        req = requests.get(url, timeout=self.args.req_timeout)
-        if req.status_code != 200:
-            raise requests.exceptions.RequestException(
-                "Status code %s returned while getting %s" % (req.status_code, url))
+        try:
+            req = urllib2.urlopen(url, timeout=self.args.req_timeout)
+        except urllib2.HTTPError as e:
+            print("UNKNOWN: Status code %s returned while getting %s"
+                  % (e.getcode(), url))
+            return 3
         else:
-            return req
+            return req.read()
 
     def get_remote_hosts_ipvs(self):
         """Return the set of hostnames known to IPVS by querying
@@ -59,7 +60,7 @@ class PyBalIPVSDiff(object):
 
         hosts = set()
 
-        for metric in text_fd_to_metric_families(req.iter_lines()):
+        for metric in text_fd_to_metric_families(req.splitlines()):
             if metric.name == "node_ipvs_backend_weight":
                 for sample in metric.samples:
                     address = sample[1]['remote_address']
@@ -70,12 +71,12 @@ class PyBalIPVSDiff(object):
 
     def get_pools_pybal(self):
         req = self.get_url(self.args.pybal_url)
-        return req.iter_lines()
+        return req.splitlines()
 
     def get_hosts_pybal(self, pool):
         url = "%s/%s" % (self.args.pybal_url, pool)
         req = self.get_url(url)
-        for line in req.iter_lines():
+        for line in req.splitlines():
             if line.endswith('/pooled'):
                 yield line.split(':')[0]
 
@@ -109,7 +110,7 @@ class PyBalIPVSDiff(object):
         req = self.get_url(self.args.prometheus_url)
         services = set()
 
-        for metric in text_fd_to_metric_families(req.iter_lines()):
+        for metric in text_fd_to_metric_families(req.splitlines()):
             if metric.name == "node_ipvs_backend_weight":
                 for sample in metric.samples:
                     address = sample[1]['local_address']
@@ -124,7 +125,7 @@ class PyBalIPVSDiff(object):
             ipvs_hosts = self.get_remote_hosts_ipvs()
             ipvs_services = self.get_services_ipvs()
             pybal_services = self.get_services_pybal()
-        except requests.exceptions.RequestException as err:
+        except urllib2.HTTPError as err:
             print("UNKNOWN: %s" % err)
             return 3
 
