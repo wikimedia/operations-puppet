@@ -10,7 +10,6 @@
   "client.id":                "purged",
   "bootstrap.servers":        "<%= @brokers.join ',' %>",
   "statistics.interval.ms":   <%= @stats_interval_ms %>,
-  "compression.codec":        "<%= @compression_codec %>",
   "group.id":                 "<%= @group_id %>",
   "go.events.channel.enable": true
 }
