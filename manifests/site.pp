@@ -380,6 +380,11 @@ node 'gerrit1001.wikimedia.org', 'gerrit2002.wikimedia.org' {
     role(gerrit)
 }
 
+# New gerrit server T326366
+node 'gerrit1003.wikimedia.org' {
+    role(insetup::serviceops)
+}
+
 # Zookeeper and Etcd discovery service nodes
 node /^conf200[456]\.codfw\.wmnet$/ {
     role(configcluster)
