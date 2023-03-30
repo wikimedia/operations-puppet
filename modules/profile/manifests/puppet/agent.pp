@@ -6,6 +6,7 @@
 # @param manage_ca_file if true manage the puppet ca file
 # @param interval the, in minutes, interval to perform puppet runs
 # @param enable_puppet7 install th component that configures puppet7
+# @param timer_seed Add ability to seed the systemd timer.  usefull if jobs happen to collide
 # @param environment the agent environment
 # @param serialization_format the serilasation format of catalogs
 # @param dns_alt_names a list of dns alt names
@@ -17,6 +18,7 @@ class profile::puppet::agent (
     Boolean                         $manage_ca_file         = lookup('manage_puppet_ca_file'),
     Integer[1,59]                   $interval               = lookup('profile::puppet::agent::interval'),
     Boolean                         $enable_puppet7         = lookup('profile::puppet::agent::enable_puppet7'),
+    Optional[String[1]]             $timer_seed             = lookup('profile::puppet::agent::timer_seed'),
     Optional[String[1]]             $environment            = lookup('profile::puppet::agent::environment'),
     Enum['pson', 'json', 'msgpack'] $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
     Array[Stdlib::Fqdn]             $dns_alt_names          = lookup('profile::puppet::agent::dns_alt_names'),
@@ -82,7 +84,8 @@ class profile::puppet::agent (
             mode   => '0550',
             source => 'puppet:///modules/profile/puppet/bin/run-no-puppet';
     }
-    $timer_interval = "*:${interval.fqdn_rand}/${interval}:00"
+    $min = $interval.fqdn_rand($timer_seed)
+    $timer_interval = "*:${min}/${interval}:00"
 
     systemd::timer::job { 'puppet-agent-timer':
         ensure        => present,
