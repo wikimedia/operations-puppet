@@ -5731,7 +5731,6 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8bGW3V4Wh5U0uUdBVyAaWMf1FBf5WeCf9FnxhJf/vM egaffney@wikimedia.org
-    krb: present
   abhas:
     ensure: present
     realname: Abhas Tripathi
