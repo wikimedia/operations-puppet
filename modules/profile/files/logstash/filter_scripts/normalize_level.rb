@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # normalize_level.rb
 # Logstash Ruby script to populate `log.level` and `log.syslog` based on indicators in other fields
-# @version 1.0.4
+# @version 1.0.5
 
 def register(*)
   # RFC5424 severity to supported level field mapping
@@ -20,7 +20,7 @@ def register(*)
       :code => 2
     },
     "error" => {
-      :aliases => ["err"],
+      :aliases => ["err", "eror"],
       :code => 3
     },
     "warning" => {
