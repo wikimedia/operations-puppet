@@ -29,7 +29,7 @@ class profile::superset::proxy (
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
-            source => 'puppet:///modules/profiles/superset/requestctl-generator.html',
+            source => 'puppet:///modules/profile/superset/requestctl-generator.html',
         }
 
         profile::idp::client::httpd::site { $server_name:
