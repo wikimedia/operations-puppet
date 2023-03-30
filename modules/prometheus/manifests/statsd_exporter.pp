@@ -16,8 +16,16 @@
 #
 # [*arguments*]
 #   Additional command line arguments for prometheus-statsd-exporter.
-
+#
+# [*timer_type*]
+#   summary or histogram
+#
+# [*histogram_buckets*]
+#   Buckets for the histogram. An array of floats. Defaults to what upstream
+#   defaults to
 class prometheus::statsd_exporter (
+    Enum['summary', 'histogram'] $timer_type,
+    Array[Variant[Integer, Float]] $histogram_buckets,
     Array[Hash] $mappings = [],
     String $relay_address = '',
     String $listen_address = ':9112',
@@ -28,7 +36,8 @@ class prometheus::statsd_exporter (
     $basedir = '/etc/prometheus'
     $config = "${basedir}/statsd_exporter.conf"
     $defaults = {
-      'timer_type' => 'summary',
+      'timer_type' => $timer_type,
+      'buckets'    => $histogram_buckets,
       'quantiles'  => [
         { 'quantile' => 0.99,
           'error'    => 0.001  },

@@ -3,6 +3,20 @@ profile::admin::groups:
 
 cluster: thumbor
 
+profile::prometheus::statsd_exporter::timer_type: histogram
+profile::prometheus::statsd_exporter::histogram_buckets:
+  - 0.02
+  - 0.1
+  - 0.5
+  - 1
+  - 2
+  - 5
+  - 10
+  - 30
+  - 60
+  - 120
+  - 240
+
 profile::prometheus::statsd_exporter::mappings:
     - match: thumbor.*.result_storage.incoming_time
       name: thumbor_result_storage_receive_seconds
