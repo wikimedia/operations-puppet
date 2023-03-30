@@ -17,7 +17,6 @@ profile::tlsproxy::envoy::global_cert_name: "webserver-misc-apps.discovery.wmnet
 profile::miscweb::rsync::src_host: 'miscweb1002.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
   - 'miscweb1003.eqiad.wmnet'
-  - 'miscweb2002.codfw.wmnet'
   - 'miscweb2003.codfw.wmnet'
 
 profile::sre::os_reports::host: cumin2002.codfw.wmnet
