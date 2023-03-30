@@ -34,36 +34,54 @@ client c1 {
     rxresp
 
     expect resp.status == 200
+    expect resp.http.Cache-Control == "no-store"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Content-Length == 0
 
     # codfw data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-codfw.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
 
     expect resp.status == 200
+    expect resp.http.Cache-Control == "no-store"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Content-Length == 0
 
     # esams data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-esams.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
 
     expect resp.status == 200
+    expect resp.http.Cache-Control == "no-store"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Content-Length == 0
 
     # ulsfo data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-ulsfo.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
 
     expect resp.status == 200
+    expect resp.http.Cache-Control == "no-store"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Content-Length == 0
 
     # eqsin data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqsin.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
 
     expect resp.status == 200
+    expect resp.http.Cache-Control == "no-store"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Content-Length == 0
 
     # drmrs data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-drmrs.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
 
     expect resp.status == 200
+    expect resp.http.Cache-Control == "no-store"
+    expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.Content-Length == 0
 
     # invalid data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-jkhan.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"

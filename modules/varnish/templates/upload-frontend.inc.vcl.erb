@@ -453,6 +453,7 @@ sub cluster_fe_err_synth {
     // GeoIP Mappings (T332028)
     if (req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
         set resp.http.Cache-Control = "no-store";
+        set resp.http.Access-Control-Allow-Origin = "*";
     }
 }
 # vim: set expandtab tabstop=4 shiftwidth=4:
