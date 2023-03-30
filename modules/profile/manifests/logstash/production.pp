@@ -323,7 +323,7 @@ class profile::logstash::production (
   logstash::output::opensearch { 'logstash':
     host            => '127.0.0.1',
     guard_condition => '[@metadata][output] == "logstash"',
-    index           => 'logstash-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-7.0.0-1-%{[@metadata][datestamp_format]}',
+    index           => 'logstash-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-7.0.0-2-%{[@metadata][datestamp_format]}',
     priority        => 90,
     template        => '/etc/logstash/templates/logstash_7.0-1.json',
     require         => File['/etc/logstash/templates'],
