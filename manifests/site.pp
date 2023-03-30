@@ -1638,9 +1638,10 @@ node 'clouddb1021.eqiad.wmnet' {
 }
 
 node /^labstore100[45]\.eqiad\.wmnet$/ {
-    role(wmcs::nfs::primary)
-    # Do not enable yet
-    # include ::profile::base::firewall
+    # We want to keep this data around for a while, but
+    #  stop running nfs-exportd so that things
+    #  stay read-only
+    role(insetup::wmcs)
 }
 
 node /^cloudbackup100[34]\.eqiad\.wmnet$/ {
