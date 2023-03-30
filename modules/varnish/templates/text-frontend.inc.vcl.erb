@@ -499,6 +499,14 @@ sub cluster_fe_miss {
 }
 
 sub cluster_fe_pass {
+<%- if @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
+    // Bypass the backend caching layer for ESI requests
+    // This needs to exist cause wikimedia-frontend VCL overrides
+    // the backend hint for pass requests when pass_random = true
+    if (req.url == "/esitest-fa8a495983347898/content") {
+        set req.backend_hint = esi_backend;
+    }
+<%- end -%>
     call cluster_fe_ratelimit;
 }
 
