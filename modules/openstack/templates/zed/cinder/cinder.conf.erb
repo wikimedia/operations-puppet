@@ -22,7 +22,7 @@ storage_availability_zone = nova
 backup_compression_algorithm = zstd
 
 backup_driver = cinder.backup.drivers.posix.PosixBackupDriver
-backup_workers = 2
+backup_workers = 6
 # this is for ceilometer, but we don't use it
 backup_enable_progress_timer = False
 # where to store backups
