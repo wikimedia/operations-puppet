@@ -30,11 +30,10 @@ class profile::gerrit(
     }
 
     if !$is_replica and $enable_monitoring {
-        monitoring::service { 'gerrit_ssh':
-            description   => 'SSH access',
-            check_command => "check_ssh_port_ip!29418!${ipv4}",
-            contact_group => 'admins,gerrit',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Gerrit',
+        prometheus::blackbox::check::tcp { 'gerrit-ssh':
+            team     => 'sre-collab-releng',
+            severity => 'critical',
+            port     => 29418,
         }
     }
 
