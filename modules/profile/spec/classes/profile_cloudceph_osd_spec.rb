@@ -212,6 +212,22 @@ describe "profile::cloudceph::osd" do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_file("/etc/rack").with_content("E7") }
       end
+
+      context "when the location is defined, creates the location hook" do
+        let(:pre_condition) {
+          'class { "::apt": }
+          class { "::prometheus::node_exporter": }
+          class { "profile::netbox::host":
+            location => {
+              "rack" => "E7",
+              "site" => "eqiad",
+              "row" => "E7",
+            }
+          }'
+        }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/usr/bin/custom-crush-location-hook').with_mode('0555') }
+      end
     end
   end
 end

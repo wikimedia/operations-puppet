@@ -24,6 +24,8 @@
 #        Project for radosgw service user (probably 'service'). Only used if radosgw_port is set.
 #    - $radosgw_service_user_password [Optional]
 #        Password for radosgw service user. Only used if radosgw_port is set.
+#    - $with_location_hook
+#        If set, will add the custom location hook to the config, note that it will not create the hook script.
 #
 class ceph::config (
     Boolean                     $enable_libvirt_rbd,
@@ -38,6 +40,7 @@ class ceph::config (
     Optional[String]            $radosgw_service_user = '',
     Optional[String]            $radosgw_service_user_project = '',
     Optional[String]            $radosgw_service_user_pass = '',
+    Boolean                     $with_location_hook = false,
 ) {
 
     Class['ceph::common'] -> Class['ceph::config']
@@ -49,18 +52,19 @@ class ceph::config (
         owner   => 'root',
         group   => 'root',
         content => epp('ceph/ceph.conf.epp', {
-            enable_libvirt_rbd           =>$enable_libvirt_rbd,
-            enable_v2_messenger          =>$enable_v2_messenger,
-            mon_hosts                    =>$mon_hosts,
-            cluster_networks             =>$cluster_networks,
-            public_networks              =>$public_networks,
-            fsid                         =>$fsid,
-            osd_hosts                    =>$osd_hosts,
-            radosgw_port                 =>$radosgw_port,
-            keystone_internal_uri        =>$keystone_internal_uri,
-            radosgw_service_user         =>$radosgw_service_user,
-            radosgw_service_user_project =>$radosgw_service_user_project,
-            radosgw_service_user_pass    =>$radosgw_service_user_pass,
+            enable_libvirt_rbd           => $enable_libvirt_rbd,
+            enable_v2_messenger          => $enable_v2_messenger,
+            mon_hosts                    => $mon_hosts,
+            cluster_networks             => $cluster_networks,
+            public_networks              => $public_networks,
+            fsid                         => $fsid,
+            osd_hosts                    => $osd_hosts,
+            radosgw_port                 => $radosgw_port,
+            keystone_internal_uri        => $keystone_internal_uri,
+            radosgw_service_user         => $radosgw_service_user,
+            radosgw_service_user_project => $radosgw_service_user_project,
+            radosgw_service_user_pass    => $radosgw_service_user_pass,
+            with_location_hook           => $with_location_hook,
         }),
         require => Package['ceph-common'],
     }

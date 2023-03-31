@@ -583,6 +583,7 @@ profile::cloudceph::osd::disk_models_without_write_cache:
   - DISK_MODEL_DEFAULT_PLACEHOLDER
 profile::cloudceph::osd::disks_io_scheduler: DISKS_IO_SCHEDULER_PLACEHOLDER
 profile::cloudceph::osd::num_os_disks: 2
+profile::cloudceph::osd::with_location_hook: false
 
 # MediaWiki apache configuration. Sites shared by all installations
 mediawiki::common_sites:

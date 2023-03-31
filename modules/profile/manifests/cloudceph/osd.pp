@@ -15,6 +15,7 @@ class profile::cloudceph::osd(
     String[1]                  $disks_io_scheduler              = lookup('profile::cloudceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
     String[1]                  $ceph_repository_component       = lookup('profile::cloudceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::cloudceph::cinder_backup_nodes'),
+    Boolean                    $with_location_hook              = lookup('profile::cloudceph::osd::with_location_hook'),
 ) {
     $host_conf = $osd_hosts[$facts['fqdn']]
 
@@ -152,6 +153,7 @@ class profile::cloudceph::osd(
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
         public_networks     => $public_networks,
+        with_location_hook  => $with_location_hook
     }
 
     $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {
@@ -199,6 +201,16 @@ class profile::cloudceph::osd(
     unless $location {
         warning("${facts['networking']['fqdn']}: no Netbox location found")
     } else {
+        # see https://docs.ceph.com/en/latest/rados/operations/crush-map/#custom-location-hooks
+        file {'/usr/bin/custom-crush-location-hook':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => @(EOS/L)
+                #!/bin/sh
+                echo "host=$(hostname -s) rack=$(cat /etc/rack) root=default"
+            | EOS
+        }
         file {'/etc/rack':
             owner   => 'root',
             group   => 'root',

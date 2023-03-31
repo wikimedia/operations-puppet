@@ -6,6 +6,7 @@
       Hash[String,Hash]          $osd_hosts = {},
       Boolean                    $enable_libvirt_rbd,
       Boolean                    $enable_v2_messenger,
+      Boolean                    $with_location_hook = false,
       Stdlib::Port               $radosgw_port = 0,
       Optional[String]           $keystone_internal_uri = '',
       Optional[String]           $radosgw_service_user = '',
@@ -45,6 +46,9 @@
     public addr = <%= $host_data['public']['addr'] %>
 <% if $cluster_networks.size > 0 {-%>
     cluster addr = <%= $host_data['cluster']['addr'] %>
+<% } -%>
+<% if $with_location_hook {-%>
+    crush_location_hook = /usr/bin/custom-location-hook
 <% } -%>
 <% } -%>
 <% if $enable_libvirt_rbd {%>

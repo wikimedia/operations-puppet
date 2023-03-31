@@ -114,6 +114,29 @@ describe "ceph::config" do
         end
         it { should_not contain_package("qemu-block-extra") }
       end
+
+      describe "if with_location_hook is false none is specified" do
+        let(:params) {
+          super().merge({
+            "with_location_hook" => false,
+          })
+        }
+        it {
+          should contain_file("/etc/ceph/ceph.conf")
+          should_not contain_file("/etc/ceph/ceph.conf").with_content(/crush_location_hook/)
+        }
+      end
+
+      describe "if with_location_hook is true one is set" do
+        let(:params) {
+          super().merge({
+            "with_location_hook" => true,
+          })
+        }
+        it {
+          should contain_file("/etc/ceph/ceph.conf").with_content(/crush_location_hook/)
+        }
+      end
     end
   end
 end
