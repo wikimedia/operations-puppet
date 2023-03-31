@@ -132,6 +132,8 @@ class profile::monitoring (
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_dpkg',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
         check_interval => 30,
+        # Write access to /var/lib/prometheus/node.d required
+        sudo_user      => 'prometheus',
     }
 
     # Calculate freshness interval in seconds (hence *60)
