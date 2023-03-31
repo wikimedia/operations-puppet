@@ -28,4 +28,15 @@ class profile::microsites::os_reports (
         command         => "/usr/bin/rsync -tr rsync://${os_reports_host}/osreports/ ${docroot}",
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 03:00:00'},
     }
+
+    prometheus::blackbox::check::http { 'os-reports.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        status_matches     => [200],
+        body_regex_matches => ['OS deprecation'],
+    }
+
 }
