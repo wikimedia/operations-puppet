@@ -18,6 +18,46 @@ ignore:
   - '@timestamp'
 testcases:
   - input:
+      - >
+        {
+          "message": "logger=context traceID=00000000000000000000000000000000 userId=0 orgId=1 uname= t=2023-03-31T21:43:35.45+0000 lvl=eror msg=\"Could not find plugin definition for data source\" datasource_type=datasource-plugin-genericdatasource"
+        }
+    expected:
+      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+#        '@timestamp': "2023-03-31T21:43:35.450Z"
+        message: "Could not find plugin definition for data source"
+        host:
+          name: "grafana0000"
+        labels:
+          traceID: 0
+          userId: 0
+          orgId: 1
+          uname: true
+          datasource_type: "datasource-plugin-genericdatasource"
+        log:
+          logger: "context"
+          level: "EROR"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            priority: 11
+            severity:
+              code: 3
+              name: "error"
+        service:
+          type: "grafana"
+        ecs:
+          version: "1.11.0"
+
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        message: "logger=context traceID=00000000000000000000000000000000 userId=0 orgId=1 uname= t=2023-03-31T21:43:35.45+0000 lvl=eror msg=\"Could not find plugin definition for data source\" datasource_type=datasource-plugin-genericdatasource"
+        facility: "user"
+        host: "grafana0000"
+        logsource: "grafana0000"
+        program: "grafana-server"
+        severity: "INFO"
+  - input:
     - >
       {
         "message": "logger=context userId=0 orgId=1 uname= t=2023-03-22T20:51:22.060326985Z level=info msg=\"Request Completed\" method=GET path=/api/live/ws status=400 remote_addr=0.0.0.0 time_ms=6 duration=6.683093ms size=12 referer= handler=/api/live/ws"
