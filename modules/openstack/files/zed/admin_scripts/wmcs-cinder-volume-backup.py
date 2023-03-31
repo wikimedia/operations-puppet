@@ -20,6 +20,7 @@ import sys
 import time
 from tenacity import retry, stop_after_attempt, wait_random
 
+import cinderclient.exceptions
 import mwopenstackclients
 import novaclient.exceptions
 
@@ -100,7 +101,14 @@ class CinderBackup(object):
 
     @retry(reraise=True, stop=stop_after_attempt(9), wait=wait_random(min=5, max=15))
     def delete_backup(self, backup_id, force=False):
-        self.cinderclient.backups.delete(backup_id, force=force)
+        try:
+            self.cinderclient.backups.delete(backup_id, force=force)
+        except cinderclient.exceptions.BadRequest:
+            logging.warning(
+                "Failed to backup %s due to unexpected dependencies" % backup_id
+            )
+            return
+
         logging.info("Deleted backup %s" % backup_id)
         self.backup_id = None
         # Give delete time to process
