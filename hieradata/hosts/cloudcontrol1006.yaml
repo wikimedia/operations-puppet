@@ -1,1 +1,8 @@
 profile::openstack::eqiad1::galera::server_id: 4
+
+profile::openstack::eqiad1::cinder_backup_volumes:
+  tools:
+    volumes:
+      - ALL
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 14
