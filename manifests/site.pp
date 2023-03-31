@@ -845,7 +845,7 @@ node 'db1140.eqiad.wmnet' {
 node 'db1145.eqiad.wmnet' {
     role(mariadb::backup_source)
 }
-## s4 & s5, buster
+## s4 & s3, buster
 node 'db1150.eqiad.wmnet' {
     role(mariadb::backup_source)
 }
