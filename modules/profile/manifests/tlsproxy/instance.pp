@@ -43,7 +43,9 @@ class profile::tlsproxy::instance(
         unless => "/usr/bin/dpkg -s nginx-${nginx_variant} | /bin/grep -q '^Status: install ok installed$'",
     }
 
-    systemd::unmask { 'nginx.service': }
+    systemd::unmask { 'nginx.service':
+        refreshonly => true,
+    }
 
     # Ensure systemctl mask happens before the package is installed, and that
     # package installation triggers service unmask

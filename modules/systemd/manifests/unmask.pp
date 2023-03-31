@@ -9,7 +9,7 @@
 # @param refreshonly set refreshonly value
 define systemd::unmask (
     Systemd::Unit::Name $unit        = $title,
-    Boolean             $refreshonly = true,
+    Boolean             $refreshonly = false,
 ) {
     exec { "unmask_${unit}":
         command     => "/bin/systemctl unmask ${unit}",

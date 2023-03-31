@@ -279,7 +279,9 @@ define trafficserver::instance(
         $service_override = false
     } else {
         Package[$trafficserver::packages] ~> Systemd::Unmask['trafficserver.service']
-        systemd::unmask { 'trafficserver.service': }
+        systemd::unmask { 'trafficserver.service':
+            refreshonly => true,
+        }
         $config_requires = Package['trafficserver']
         $service_name = 'trafficserver'
         $service_override = true

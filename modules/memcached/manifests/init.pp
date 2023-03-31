@@ -165,7 +165,9 @@ class memcached(
         unless => "/usr/bin/dpkg -s memcached | /bin/grep -q '^Status: install ok installed$'",
     }
 
-    systemd::unmask{ 'memcached.service': }
+    systemd::unmask{ 'memcached.service':
+        refreshonly => true,
+    }
 
     # Ensure systemctl mask happens before the package is installed, and that
     # package installation triggers service unmask
