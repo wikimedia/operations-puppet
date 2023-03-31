@@ -87,14 +87,6 @@ class profile::gitlab(
 
     # open ports in firewall - T276144
 
-    # world -> service IP, HTTP
-    # http traffic is handled different on WMCS floating IPs
-    ferm::service { 'gitlab-http-public':
-        proto  => 'tcp',
-        port   => 80,
-        drange => $ferm_drange,
-    }
-
     # world -> service IP, HTTPS
     ferm::service { 'gitlab-https-public':
         proto  => 'tcp',
