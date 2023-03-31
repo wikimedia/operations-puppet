@@ -2558,7 +2558,7 @@ node /^prometheus[3456]001\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
     role(prometheus::pop)
 }
 
-node 'prometheus3002.esams.wmnet' {
+node /^prometheus[3456]002\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
   role(insetup::observability)
 }
 
