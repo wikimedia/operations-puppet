@@ -1883,7 +1883,7 @@ node /^ms-fe101[34]\.eqiad\.wmnet$/ {
 }
 
 node 'thanos-fe1004.eqiad.wmnet' {
-    role(nsetup::serviceops)
+    role(insetup::serviceops)
 }
 
 node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
