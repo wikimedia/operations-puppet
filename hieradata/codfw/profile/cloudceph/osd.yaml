@@ -42,3 +42,4 @@ profile::cloudceph::osd::hosts:
 
 profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"
+profile::cloudceph::osd::with_location_hook: true
