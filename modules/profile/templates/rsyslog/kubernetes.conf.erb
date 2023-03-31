@@ -2,7 +2,7 @@
 module(load="mmkubernetes"
         KubernetesURL="<%= @kubernetes_url %>"
         tls.mycert="<%= @client_auth['cert'] %>"
-        tls.mykey="<%= @client_auth['key'] %>")
+        tls.myprivkey="<%= @client_auth['key'] %>")
 action(type="mmkubernetes"
        name="mmkubernetes"
        action.resumeRetryCount="-1"
