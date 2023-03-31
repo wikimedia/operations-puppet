@@ -1,1 +1,0 @@
-profile::pybal::override_bgp_med: 101   # testing bullseye on lvs4010 with bgp-med 100 T321309
