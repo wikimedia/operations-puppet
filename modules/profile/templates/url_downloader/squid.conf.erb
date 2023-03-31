@@ -11,10 +11,7 @@ cache deny everything
 acl apache rep_header Server ^Apache
 maximum_object_size 1010 MB
 cache_replacement_policy heap LFUDA
-
-logformat cee_ecs_170 @cee: { "ecs.version": "1.7.0", "event.category": ["network", "web"], "event.dataset": "squid.access", "event.duration": "%<tt", "event.kind": "event", "event.outcome": "unknown", "event.type": ["access", "connection"], "host.name": "<%= @facts['networking']['hostname'] %>", "host.domain": "<%= @facts['networking']['domain'] %>", "host.hostname": "<%= @facts['networking']['fqdn'] %>", "host.ip": "<%= @facts['networking']['ip'] %>", "client.ip": "%>a", "timestamp": "%{%FT%T%z}tg", "http.request.method": "%rm", "url.full": "%ru", "url.path": "%rp", "url.domain": "%>rd", "http.response.status_code": %>Hs, "http.response.bytes": %<st, "http.version": "%rv", "http.request.referrer": "%{Referer}>h", "user_agent.original": "%{User-Agent}>h", "labels.request_status": "%Ss", "labels.hierarchy_status": "%Sh", "source.ip": "%>a", "service.type": "squid"}
-access_log syslog:<%= @syslog_facility %>.<%= @syslog_priority %> logformat=cee_ecs_170
-
+access_log /var/log/squid/access.log squid
 coredump_dir /var/spool/squid
 log_mime_hdrs on
 hosts_file /etc/hosts
