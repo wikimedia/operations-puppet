@@ -49,7 +49,7 @@ function match_route6()
 <% end -%>
 
 filter vips_filter {
-    if ( net.len = 32 && ( net ~ 10.3.0.0/24 || net ~ 198.35.27.0/24 || net ~ 185.71.138.0/24 ) && match_route() ) then {
+    if ( net.len = 32 && net !~ 203.0.113.1/32 && match_route() ) then {
         accept;
     }
     else {
@@ -58,7 +58,7 @@ filter vips_filter {
 }
 <% if @do_ipv6 -%>
 filter vips6_filter {
-    if ( net.len = 128 && ( net ~ 2001:67c:930::/48 ) && match_route6() ) then {
+    if ( net.len = 128 && net !~ 2001:db8::1/128 && match_route6() ) then {
         accept;
     }
     else {
