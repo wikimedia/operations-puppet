@@ -105,7 +105,8 @@ class CinderBackup(object):
             self.cinderclient.backups.delete(backup_id, force=force)
         except cinderclient.exceptions.BadRequest:
             logging.warning(
-                "Failed to backup %s due to unexpected dependencies" % backup_id
+                "Failed to delete old backup %s due to unexpected dependencies"
+                % backup_id
             )
             return
 
