@@ -167,8 +167,8 @@ class profile::wmcs::nfsclient(
                 project     => $::wmcs_project,
                 options     => ['rw', $home_mode],
                 mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
-                server      => 'nfs-tools-project.svc.eqiad.wmnet',
-                share_path  => '/srv/tools/shared/tools/project',
+                server      => 'tools-nfs.svc.tools.eqiad1.wikimedia.cloud',
+                share_path  => '/srv/tools/project',
                 nfs_version => $nfs_version,
             }
 
@@ -185,8 +185,8 @@ class profile::wmcs::nfsclient(
                 project     => $::wmcs_project,
                 options     => ['rw', $mode],
                 mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
-                server      => 'nfs-tools-project.svc.eqiad.wmnet',
-                share_path  => '/srv/tools/shared/tools/home',
+                server      => 'tools-nfs.svc.tools.eqiad1.wikimedia.cloud',
+                share_path  => '/srv/tools/home',
                 nfs_version => $nfs_version,
             }
 
