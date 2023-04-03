@@ -3,7 +3,7 @@ class alertmanager (
     Stdlib::Host        $active_host,
     Array[Stdlib::Host] $partners,
     String $irc_channel,
-    String $data_retention_time = '30d',
+    String $data_retention_time = '730h', #30 days
     Optional[String] $victorops_api_key = undef,
     Optional[String] $vhost = undef,
 ) {
