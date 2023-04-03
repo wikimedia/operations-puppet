@@ -1,1 +1,2 @@
 profile::cache::varnish::frontend::single_backend: true
+profile::cache::varnish::frontend::do_esitest: true
