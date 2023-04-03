@@ -10,17 +10,17 @@ ldap:
   groups_cn: ou=groups
 apereo_cas:
   production:
-    base_url: 'https://idp.wmcloud.org/'
-    login_url: 'https://idp.wmcloud.org/login'
-    validate_url: 'https://idp.wmcloud.org/serviceValidate'
-    validate_url_saml: 'https://idp.wmcloud.org/samlValidate'
-    oidc_endpoint: 'https://idp.wmcloud.org/oidc'
+    base_url: "https://idp.wmcloud.org/"
+    login_url: "https://idp.wmcloud.org/login"
+    validate_url: "https://idp.wmcloud.org/serviceValidate"
+    validate_url_saml: "https://idp.wmcloud.org/samlValidate"
+    oidc_endpoint: "https://idp.wmcloud.org/oidc"
   staging:
-    base_url: 'https://idp.wmcloud.org/'
-    login_url: 'https://idp.wmcloud.org/login'
-    validate_url: 'https://idp.wmcloud.org/serviceValidate'
-    validate_url_saml: 'https://idp.wmcloud.org/samlValidate'
-    oidc_endpoint: 'https://idp.wmcloud.org/oidc'
+    base_url: "https://idp.wmcloud.org/"
+    login_url: "https://idp.wmcloud.org/login"
+    validate_url: "https://idp.wmcloud.org/serviceValidate"
+    validate_url_saml: "https://idp.wmcloud.org/samlValidate"
+    oidc_endpoint: "https://idp.wmcloud.org/oidc"
 etcd::autogen_pwd_seed: "seed"
 profile::contacts::role_contacts: []
 
@@ -38,8 +38,8 @@ profile::mail::default_mail_relay::template: "profile/mail/default_mail_relay/ex
 
 profile::aptrepo::wikimedia::public_basedir: /srv/wikimedia
 profile::aptrepo::wikimedia::private_basedir: /srv/private
-profile::aptrepo::wikimedia::homedir: '/root'
-profile::aptrepo::wikimedia::gpg_user: 'root'
+profile::aptrepo::wikimedia::homedir: "/root"
+profile::aptrepo::wikimedia::gpg_user: "root"
 profile::aptrepo::wikimedia::gpg_pubring: ~
 profile::aptrepo::wikimedia::gpg_secring: ~
 profile::aptrepo::private::port: 8080
@@ -99,7 +99,7 @@ profile::puppet::client_bucket::max_size: 100M
 profile::puppet_compiler::puppetdb_host: ~
 profile::puppet_compiler::puppetdb_port: ~
 profile::puppet_compiler::puppetdb_proxy: false
-profile::puppet_compiler::puppetdb::output_dir: '/mnt/nfs/labstore-secondary-project/output'
+profile::puppet_compiler::puppetdb::output_dir: "/mnt/nfs/labstore-secondary-project/output"
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
 profile::base::core_dump_pattern: "/var/tmp/core/core.%h.%e.%p.%t"
@@ -116,7 +116,7 @@ profile::base::labs::unattended_distro: "present"
 profile::ci::slave::labs::common::manage_srv: true
 profile::ci::package_builder::extra_packages: []
 
-profile::ci::docker::docker_version: '5:20.10.12~3-0~debian'
+profile::ci::docker::docker_version: "5:20.10.12~3-0~debian"
 
 profile::debmonitor::client::ensure: "absent"
 profile::debmonitor::client::ssl_ca: "puppet"
@@ -160,33 +160,33 @@ profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
 profile::gitlab::runner::locked: false
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::run_untagged: true
-profile::gitlab::runner::tags: ['wmcs']
+profile::gitlab::runner::tags: ["wmcs"]
 profile::gitlab::runner::environment: {}
 profile::gitlab::runner::user: "root"
 # restricted firewall is used in cloud
 profile::gitlab::runner::restrict_firewall: true
-profile::gitlab::runner::internal_ip_range: '172.16.0.0/21'
+profile::gitlab::runner::internal_ip_range: "172.16.0.0/21"
 profile::gitlab::runner::allowed_services:
   dns:
-    host: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
+    host: "ns-recursor0.openstack.eqiad1.wikimediacloud.org"
     port: 53
     proto: udp
   dns-1:
-    host: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
+    host: "ns-recursor1.openstack.eqiad1.wikimediacloud.org"
     port: 53
     proto: udp
   docker-internal-dns:
-    host: '127.0.0.11'
+    host: "127.0.0.11"
     port: 53
     proto: udp
   gitlab-https:
-    host: 'gitlab.wikimedia.org'
+    host: "gitlab.wikimedia.org"
     port: 443
   gitlab-replica-https: # for failover between instances without restarting ferm on runners
-    host: 'gitlab-replica.wikimedia.org'
+    host: "gitlab-replica.wikimedia.org"
     port: 443
   gitlab-test:
-    host: 'gitlab.devtools.wmcloud.org'
+    host: "gitlab.devtools.wmcloud.org"
     port: 443
     proto: tcp
 profile::gitlab::runner::ensure_buildkitd: present
@@ -199,7 +199,7 @@ profile::gitlab::runner::enable_clear_cache: true
 profile::gitlab::runner::enable_registry_proxy: false
 profile::gitlab::runner::registry_proxy_environment: {}
 # use dockerhub in WMCS until registry is imported to wmf registry - T329679
-profile::gitlab::runner::registry_proxy_image: 'docker.io/registry:2'
+profile::gitlab::runner::registry_proxy_image: "docker.io/registry:2"
 profile::gitlab::runner::enable_webproxy: false
 profile::gitlab::runner::http_proxy: ~
 profile::gitlab::runner::https_proxy: ~
@@ -352,7 +352,7 @@ puppetmaster::servers: {}
 profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::canary_hosts: []
 profile::puppetmaster::frontend::mcrouter_ca_secret: ~
-profile::puppetmaster::common::storeconfigs: 'none'
+profile::puppetmaster::common::storeconfigs: "none"
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::ssl_verify_depth: 1
@@ -437,7 +437,7 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad: {}
 profile::mediawiki::scap_client::is_master: false
 profile::mediawiki::php::php_versions:
- - "7.4"
+  - "7.4"
 profile::java::java_packages: []
 profile::java::extra_args: {}
 profile::java::hardened_tls: false
@@ -448,7 +448,7 @@ profile::thanos::httpd::query_port: 16902
 profile::thanos::httpd::maxconn: 10
 profile::icinga::logs_keep_days: 780
 profile::icinga::mgmt_parents:
-  eqiad: msw1-eqiad  # FIXME: eqiad expansion uses msw2, connected to msw1
+  eqiad: msw1-eqiad # FIXME: eqiad expansion uses msw2, connected to msw1
   codfw: msw1-codfw
   ulsfo: mr1-ulsfo
   esams: mr1-esams
@@ -592,14 +592,14 @@ mediawiki::common_sites:
     priority: 1
     template: mediawiki/apache/sites/wwwportals.conf.erb
 
-profile::rsyslog::logrotate_source: 'puppet:///modules/profile/rsyslog/logrotate.conf'
+profile::rsyslog::logrotate_source: "puppet:///modules/profile/rsyslog/logrotate.conf"
 profile::rsyslog::kafka_shipper::enable: false
 profile::rsyslog::kafka_queue_enabled_sites: []
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - localhost:9093
 
 profile::syslog::centralserver::log_retention_days: 90
-profile::syslog::centralserver::file_template_property: 'hostname'
+profile::syslog::centralserver::file_template_property: "hostname"
 
 profile::openstack::base::radosgw::service_user: "swift"
 profile::openstack::base::radosgw::service_user_project: "swift"
@@ -609,11 +609,11 @@ profile::openstack::base::cinder::backup::path: /dev/null
 profile::openstack::base::cinder::backup::user: nobody
 
 # The puppet linter demands these, though they are not used anywhere:
-profile::openstack::base::cinder::db_name: 'cinder'
-profile::openstack::base::cinder::db_user: 'cinder'
-profile::openstack::base::cinder::all_backend_names: ['rbd']
-profile::openstack::base::cinder::backend_type: 'rbd'
-profile::openstack::base::cinder::backend_name: 'rbd'
+profile::openstack::base::cinder::db_name: "cinder"
+profile::openstack::base::cinder::db_user: "cinder"
+profile::openstack::base::cinder::all_backend_names: ["rbd"]
+profile::openstack::base::cinder::backend_type: "rbd"
+profile::openstack::base::cinder::backend_name: "rbd"
 
 # To be overridden in Pontoon stacks
 public_domain: "%{::wmcs_project}.wmcloud.org"
@@ -643,7 +643,10 @@ profile::monitoring::hardware_monitoring: "present"
 profile::monitoring::contact_group: "%{alias('contactgroups')}"
 # the -A -i ... part is a gross hack to workaround Varnish partitions
 # that are purposefully at 99%. Better ideas are welcome.
-profile::monitoring::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'
+profile::monitoring::nrpe_check_disk_options:
+  '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i
+  "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs
+  --exclude-type=tracefs'
 profile::monitoring::nrpe_check_disk_critical: false
 profile::monitoring::raid_check_interval: 10
 profile::monitoring::raid_retry_interval: 10
@@ -695,7 +698,7 @@ profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
 
 profile::cumin::master::email_alerts: false
-profile::cumin::master::insetup_role_report_day: 0  # disabled
+profile::cumin::master::insetup_role_report_day: 0 # disabled
 
 profile::cloudceph::auth::load_all::enabled: false
 profile::cloudceph::auth::load_all::configuration: {}
@@ -764,9 +767,9 @@ profile::kubernetes::deployment_server::helm_user_group: deployment
 
 # Needed only for toolsdb_replica_cnf running on bare metal, will be removed once we migrate to VMs
 profile::openstack::eqiad1::openstack_controllers: []
-profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path: /srv/tools/shared/tools/home
+profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path: /srv/tools/home
 profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path: /srv/paws/project/paws/userhomes
-profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path: /srv/tools/shared/tools/project
+profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path: /srv/tools/project
 profile::wmcs::services::toolsdb_replica_cnf::htuser: tools-db-replica-cnf
 profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix: tools
 profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https: true
