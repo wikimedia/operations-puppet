@@ -57,7 +57,7 @@ class noc {
     # Monitoring
     prometheus::blackbox::check::http { 'noc.wikimedia.org':
         team        => 'noc',
-        severity    => 'ircmail',
+        severity    => 'critical',
         path        => '/',
         ip_families => ['ip4'],
         force_tls   => true,
