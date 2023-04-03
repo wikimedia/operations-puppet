@@ -517,6 +517,8 @@ profile::memcached::ssl_key: ~
 
 profile::ldap::bitu::group: root
 
+profile::logrotate::hourly: false
+
 # Only added to make CI happy. cloud has no LVS
 profile::lvs::realserver::poolcounter_backends: ~
 profile::lvs::realserver::use_conftool: false

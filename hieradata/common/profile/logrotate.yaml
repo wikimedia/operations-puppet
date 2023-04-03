@@ -1,0 +1,1 @@
+profile::logrotate::hourly: false

@@ -65,6 +65,7 @@ class profile::base (
     include profile::resolving
     include profile::mail::default_mail_relay
 
+    include profile::logrotate
     include profile::prometheus::node_exporter
     include profile::rsyslog
     include profile::prometheus::rsyslog_exporter
