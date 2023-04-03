@@ -98,7 +98,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", p.id) AS url
     AND p.phid = edg.dst
     AND p.status = 100
     AND t.phid = edg.src
-    AND (t.status = "open" OR t.status = "stalled")
+    AND (t.status = "open" OR t.status = "progress" OR t.status = "stalled")
     AND edg.src NOT IN
     (SELECT edg2.src
     FROM phabricator_maniphest.edge edg2
@@ -110,7 +110,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", p.id) AS url
     AND p2.phid = edg2.dst
     AND p2.status = 0
     AND t2.phid = edg2.src
-    AND (t2.status = "open" OR t2.status = "stalled"))
+    AND (t.status = "open" OR t.status = "progress" OR t.status = "stalled"))
     GROUP BY p.name
     ORDER BY n DESC;
 
@@ -143,7 +143,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName, e
     JOIN phabricator_maniphest.edge e
     WHERE u.isDisabled = 1
     AND t.ownerPHID = u.phid
-    AND (t.status = "open" OR t.status = "stalled")
+    AND (t.status = "open" OR t.status = "progress" OR t.status = "stalled")
     AND e.src = t.phid
     AND e.dst LIKE "PHID-PROJ-%"
     ORDER BY u.userName, taskPHID;
@@ -161,7 +161,7 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
     FROM phabricator_maniphest.maniphest_task t
     JOIN phabricator_user.user u ON u.userName = t.ownerOrdering
     WHERE t.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 6 WEEK))
-    AND (t.status = "open" OR t.status = "stalled")
+    AND (t.status = "open" OR t.status = "progress" OR t.status = "stalled")
     AND u.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 8 WEEK))
     AND u.isDisabled = 0
     AND t.ownerOrdering IS NOT NULL
@@ -273,7 +273,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS Task, FROM_UNIXTIM
     WHERE cfs.fieldIndex = "GGorRQHBaRdo"
     AND FROM_UNIXTIME(cfs.fieldValue) < (NOW() - INTERVAL 1 MONTH)
     AND t.phid = cfs.objectPHID
-    AND (t.status = "open" OR t.status = "stalled")
+    AND (t.status = "open" OR t.status = "progress" OR t.status = "stalled")
     ORDER BY cfs.fieldValue;
 END
 )
@@ -385,7 +385,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
     AND u.phid = SUBSTR(ta.newValue, INSTR(ta.newValue, 'PHID-USER-'), 30)
     AND ta.objectPHID = t.phid
     AND t.ownerPHID = u.phid
-    AND t.status = "open"
+    AND (t.status = "open" OR t.status = "progress")
     AND t.phid IN
         (SELECT e.src FROM phabricator_maniphest.edge e
         WHERE e.type = 41 AND e.dst = "PHID-PROJ-onnxucoedheq3jevknyr") 
@@ -411,7 +411,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
     AND u.phid = SUBSTR(ta.newValue, INSTR(ta.newValue, 'PHID-USER-'), 30)
     AND ta.objectPHID = t.phid
     AND t.ownerPHID = u.phid
-    AND t.status = "open"
+    AND (t.status = "open" OR t.status = "progress")
     AND t.phid NOT IN
         (SELECT e.src FROM phabricator_maniphest.edge e
         WHERE e.type = 41 AND e.dst = "PHID-PROJ-onnxucoedheq3jevknyr") 
