@@ -14,6 +14,8 @@ class openstack::magnum::service::zed(
     String $rabbit_user,
     String $rabbit_pass,
     String $domain_admin_pass,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
 ) {
     require "openstack::serverpackages::zed::${::lsbdistcodename}"
 

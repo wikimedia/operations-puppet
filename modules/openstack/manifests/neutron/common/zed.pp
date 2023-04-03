@@ -15,6 +15,8 @@ class openstack::neutron::common::zed(
     $log_agent_heartbeats,
     $agent_down_time,
     Stdlib::Port $bind_port,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
     ) {
 
     class { "openstack::neutron::common::zed::${::lsbdistcodename}": }

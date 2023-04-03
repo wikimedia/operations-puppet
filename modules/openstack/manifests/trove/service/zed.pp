@@ -24,6 +24,8 @@ class openstack::trove::service::zed(
     String              $designate_internal_uri,
     String              $trove_dns_zone,
     String              $trove_dns_zone_id,
+    Boolean             $enforce_policy_scope,
+    Boolean             $enforce_new_policy_defaults,
 ) {
     require "openstack::serverpackages::zed::${::lsbdistcodename}"
 

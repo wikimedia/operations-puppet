@@ -258,6 +258,8 @@ topics = notifications
 backend_url = memcached://localhost:11213
 
 [oslo_policy]
+enforce_scope = <%= @enforce_policy_scope %>
+enforce_new_defaults = <%= @enforce_new_policy_defaults %>
 policy_file = policy.yaml
 
 [service:worker]

@@ -12,6 +12,8 @@ class openstack::glance::service::zed(
     Array[String] $glance_backends,
     String $ceph_pool,
     Array[Stdlib::Fqdn] $openstack_controllers,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
 ) {
     require "openstack::serverpackages::zed::${::lsbdistcodename}"
 

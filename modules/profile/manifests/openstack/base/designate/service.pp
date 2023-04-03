@@ -19,6 +19,8 @@ class profile::openstack::base::designate::service(
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
+    Boolean $enforce_policy_scope = lookup('profile::openstack::base::keystone::enforce_policy_scope'),
+    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::base::keystone::enforce_new_policy_defaults'),
     $osm_host = lookup('profile::openstack::base::osm_host'),
     $region = lookup('profile::openstack::base::region'),
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
@@ -48,6 +50,8 @@ class profile::openstack::base::designate::service(
         rabbit_user                       => $rabbit_user,
         rabbit_pass                       => $rabbit_pass,
         region                            => $region,
+        enforce_policy_scope              => $enforce_policy_scope,
+        enforce_new_policy_defaults       => $enforce_new_policy_defaults,
     }
     contain '::openstack::designate::service'
 

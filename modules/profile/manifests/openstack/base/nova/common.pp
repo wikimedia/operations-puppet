@@ -15,6 +15,8 @@ class profile::openstack::base::nova::common(
     $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = lookup('profile::openstack::base::rabbit_pass'),
+    Boolean $enforce_policy_scope = lookup('profile::openstack::base::keystone::enforce_policy_scope'),
+    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::base::keystone::enforce_new_policy_defaults'),
     $metadata_proxy_shared_secret = lookup('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
     Stdlib::Port $metadata_listen_port = lookup('profile::openstack::base::nova::metadata_listen_port'),
     Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::base::nova::osapi_compute_listen_port'),
@@ -41,6 +43,8 @@ class profile::openstack::base::nova::common(
         metadata_listen_port         => $metadata_listen_port,
         osapi_compute_listen_port    => $osapi_compute_listen_port,
         is_control_node              => $is_control_node,
+        enforce_policy_scope         => $enforce_policy_scope,
+        enforce_new_policy_defaults  => $enforce_new_policy_defaults,
     }
     contain '::openstack::nova::common'
 

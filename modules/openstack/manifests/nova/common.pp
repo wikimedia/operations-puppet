@@ -17,6 +17,8 @@ class openstack::nova::common(
     $compute_workers,
     Stdlib::Port $metadata_listen_port,
     Stdlib::Port $osapi_compute_listen_port,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
     Boolean $is_control_node,
 ) {
 

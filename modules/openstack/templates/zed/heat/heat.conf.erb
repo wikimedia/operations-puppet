@@ -445,6 +445,8 @@ workers = 2
 <%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
 
 [oslo_policy]
+enforce_scope = <%= @enforce_policy_scope %>
+enforce_new_defaults = <%= @enforce_new_policy_defaults %>
 policy_file = policy.yaml
 
 [volumes]

@@ -24,6 +24,8 @@ class openstack::designate::service(
     String[1] $rabbit_user,
     String[1] $rabbit_pass,
     $region,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
     ) {
 
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }

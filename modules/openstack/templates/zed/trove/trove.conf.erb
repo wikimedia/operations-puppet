@@ -325,6 +325,8 @@ api_strategy = trove.common.strategies.cluster.experimental.vertica.api.VerticaA
 
 
 [oslo_policy]
+enforce_scope = <%= @enforce_policy_scope %>
+enforce_new_defaults = <%= @enforce_new_policy_defaults %>
 policy_file = policy.yaml
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>

@@ -20,6 +20,8 @@ class profile::openstack::codfw1dev::designate::service(
     $region = lookup('profile::openstack::codfw1dev::region'),
     Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
+    Boolean $enforce_policy_scope = lookup('profile::openstack::codfw1dev::keystone::enforce_policy_scope'),
+    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
 ) {
 
     class{'::profile::openstack::base::designate::service':
@@ -43,6 +45,8 @@ class profile::openstack::codfw1dev::designate::service(
         region                            => $region,
         mcrouter_port                     => $mcrouter_port,
         haproxy_nodes                     => $haproxy_nodes,
+        enforce_policy_scope              => $enforce_policy_scope,
+        enforce_new_policy_defaults       => $enforce_new_policy_defaults,
     }
     contain '::profile::openstack::base::designate::service'
 }

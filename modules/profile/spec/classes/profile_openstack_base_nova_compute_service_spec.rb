@@ -24,6 +24,8 @@ describe 'profile::openstack::base::nova::compute::service' do
           metadata_listen_port => 4242,
           osapi_compute_listen_port => 4242,
           is_control_node => false,
+          enforce_policy_scope => true,
+          enforce_new_policy_defaults => true,
       }',
       'class { \'prometheus::node_exporter\': }',
     ]

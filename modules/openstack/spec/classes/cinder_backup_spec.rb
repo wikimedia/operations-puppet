@@ -28,7 +28,9 @@ describe 'openstack::cinder::backup' do
                 backup_path => '/dummy/backup/path',
                 all_backend_names => ['backendone','backendtwo'],
                 backend_type => 'backendtype',
-                backend_name =>'backendname'
+                backend_name =>'backendname',
+                enforce_policy_scope => true,
+                enforce_new_policy_defaults => true,
             }"
           }
           before(:each) do

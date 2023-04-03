@@ -16,6 +16,8 @@ class profile::openstack::codfw1dev::nova::common(
     $metadata_proxy_shared_secret = lookup('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
     Stdlib::Port $metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
     Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
+    Boolean $enforce_policy_scope = lookup('profile::openstack::codfw1dev::keystone::enforce_policy_scope'),
+    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
     ) {
 
     class {'::profile::openstack::base::nova::common':
@@ -35,6 +37,8 @@ class profile::openstack::codfw1dev::nova::common(
         metadata_listen_port         => $metadata_listen_port,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
         osapi_compute_listen_port    => $osapi_compute_listen_port,
+        enforce_policy_scope         => $enforce_policy_scope,
+        enforce_new_policy_defaults  => $enforce_new_policy_defaults,
     }
     contain '::profile::openstack::base::nova::common'
 }

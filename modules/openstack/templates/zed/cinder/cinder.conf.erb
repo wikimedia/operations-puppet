@@ -264,6 +264,8 @@ region_name = <%= @region %>
 lock_path = /var/lock/cinder
 
 [oslo_policy]
+enforce_scope = <%= @enforce_policy_scope %>
+enforce_new_defaults = <%= @enforce_new_policy_defaults %>
 policy_file = policy.yaml
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
