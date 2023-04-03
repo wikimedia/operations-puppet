@@ -139,7 +139,6 @@ scap::dsh::groups:
             - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
@@ -333,6 +332,9 @@ profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
 
 profile::maps::apps::wikidata_query_service: https://query.wikidata.org/bigdata/namespace/wdq/sparql
+
+# T329857
+profile::mediawiki::scap_client::deployment_dir_linked_to_staging_dir: true
 
 # MediaWiki web setup: beta has:
 # - no tls
