@@ -147,6 +147,7 @@ class profile::hue (
                 'cn=nda,ou=groups,dc=wikimedia,dc=org',
             ]
         }
+        profile::auto_restarts::service { 'envoyproxy': }
     } else {
         httpd::site { $server_name:
             content => template('profile/hue/hue.vhost.erb'),
@@ -156,5 +157,4 @@ class profile::hue (
 
     profile::auto_restarts::service { 'hue': }
     profile::auto_restarts::service { 'apache2': }
-    profile::auto_restarts::service { 'envoyproxy': }
 }
