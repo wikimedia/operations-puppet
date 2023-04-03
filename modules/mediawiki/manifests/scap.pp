@@ -30,20 +30,23 @@ class mediawiki::scap (
             group  => 'mwdeploy',
             mode   => '0775',
         }
-
-        # If this is a new install, populate /srv/mediawiki by retrieving
-        # the current MediaWiki deployment tree from the deployment server.
-
-        exec { 'fetch_mediawiki':
-            command => "${scap_bin_dir}/scap pull",
-            creates => "${mediawiki_deployment_dir}/docroot",
-            require => [ File[$mediawiki_deployment_dir], Sudo::User['mwdeploy'] ],
-            timeout => 30 * 60,  # 30 minutes
-            user    => 'mwdeploy',
-            group   => 'mwdeploy',
-        }
     }
 
+    # If this is a new install, populate /srv/mediawiki by retrieving
+    # the current MediaWiki deployment tree from the deployment server.
+    $fetch_mediawiki_command = ( $is_master and $deployment_dir_linked_to_staging_dir ) ? {
+        true => '/bin/true',
+        default => "${scap_bin_dir}/scap pull",
+    }
+
+    exec { 'fetch_mediawiki':
+        command => $fetch_mediawiki_command,
+        creates => "${mediawiki_deployment_dir}/docroot",
+        require => [ File[$mediawiki_deployment_dir], Sudo::User['mwdeploy'] ],
+        timeout => 30 * 60,  # 30 minutes
+        user    => 'mwdeploy',
+        group   => 'mwdeploy',
+    }
 
     # /etc/profile.d/mediawiki.sh declares the MEDIAWIKI_DEPLOYMENT_DIR,
     # MEDIAWIKI_STAGING_DIR, and MEDIAWIKI_WEB_USER environment variables and
