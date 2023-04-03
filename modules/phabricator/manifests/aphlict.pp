@@ -41,7 +41,7 @@
 # [*admin_listen*]
 #   IP address to listen on for the aphlict admin interface (default: 127.0.0.1)
 #
-class phabricator::aphlict(
+class phabricator::aphlict (
     Wmflib::Ensure $ensure,
     String $user = 'aphlict',
     String $group = 'aphlict',
@@ -112,6 +112,7 @@ class phabricator::aphlict(
         require => File['/var/log/aphlict/'],
     }
 
+    # TODO: remove this after puppet has ran on all hosts
     systemd::timer::job { 'aphlict_logrotate':
         ensure      => $ensure,
         user        => 'root',
@@ -119,15 +120,6 @@ class phabricator::aphlict(
         description => 'Runs logrotate hourly',
         interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
         require     => File['/var/log/aphlict'],
-    }
-
-    if $ensure == 'present' {
-        # Disable the builtin daily logrotate timer in favour of the hourly job above.
-        # This will make sure we don't accidentally run logrotate twice.
-        systemd::mask{ 'logrotate.timer': }
-    } else {
-        # use default logrotate timer
-        systemd::unmask{ 'logrotate.timer': }
     }
 
     # accounts

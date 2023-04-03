@@ -1,5 +1,6 @@
 profile::admin::groups:
   - phabricator-roots
+profile::logrotate::hourly: true
 profile::phabricator::aphlict::ensure: present
 profile::phabricator::aphlict::client_listen: "%{::ipaddress6}"
 profile::phabricator::aphlict::client_port: 22280
