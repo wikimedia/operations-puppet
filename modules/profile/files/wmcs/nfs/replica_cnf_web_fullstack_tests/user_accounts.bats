@@ -111,7 +111,7 @@ password = dummypass'
     run do_curl write-replica-cnf "$data"
 
     is_equal "$status" "0"
-    json_has_equal "result" "ok" "$output"
+    json_has_equal "result" "skip" "$output"
     json_has_equal "detail.replica_path" "$cnf_path" "$output"
     json_has_match "detail.message" ".*Already exists.*" "$output"
 }
