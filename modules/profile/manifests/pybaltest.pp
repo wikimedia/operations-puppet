@@ -23,6 +23,13 @@ class profile::pybaltest (
         },
     }
 
+    # In bullseye, we install Pybal from component.
+    if debian::codename::eq('bullseye') {
+        apt::package_from_component { 'pybal':
+            component => 'component/pybal',
+        }
+    }
+
     # Install conftool-master for conftool testing
     class  { 'puppetmaster::base_repo':
         gitdir   => '/var/lib/git',
