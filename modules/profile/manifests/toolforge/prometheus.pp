@@ -297,6 +297,12 @@ class profile::toolforge::prometheus (
             port      => 9090,
         },
         {
+            name      => 'k8s-coredns',
+            namespace => 'kube-system',
+            pod_name  => 'coredns-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9153,
+        },
+        {
             name      => 'k8s-ingress-nginx',
             namespace => 'ingress-nginx-gen2',
             pod_name  => 'ingress-nginx-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
