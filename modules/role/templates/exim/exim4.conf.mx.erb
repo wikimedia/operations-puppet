@@ -349,7 +349,7 @@ otrs:
 	domains = +local_domains
 	require_files = <%= @vrts_aliases_file %>
 	condition = ${lookup{$local_part@$domain}lsearch*{<%= @vrts_aliases_file %>}}
-	route_list = *  otrs1001.eqiad.wmnet  byname
+	route_list = * ticket.discovery.wmnet  byname
 	transport = remote_smtp
 
 # Gsuite accounts
