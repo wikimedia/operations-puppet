@@ -7,6 +7,8 @@
 	name = Antoine Musso
 [alias]
 	lg  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+    pending = lg HEAD..HEAD@{u}
+    amend = commit --allow-empty --amend
 # We lack write access over https
 [url "ssh://hashar@gerrit.wikimedia.org:29418"]
 	pushInsteadOf = https://gerrit.wikimedia.org/r
