@@ -44,8 +44,12 @@ define logrotate::rule (
     Optional[String[1]]            $create         = undef,
     Optional[Stdlib::Unixpath]     $old_dir        = undef,
 ) {
+    include logrotate
     $actual_size = $size.then |$s| {
         ($frequency =~ Undef).bool2str("size ${s}", "maxsize ${s}")
+    }
+    if $frequency == 'hourly' and !$logrotate::hourly {
+        fail('If using a frequency of hourly then you must also configure `logrotate::hourly: true`')
     }
 
     logrotate::conf { $title:
