@@ -66,8 +66,10 @@ class profile::url_downloader (
 
     $config_content = template('profile/url_downloader/squid.conf.erb')
 
+    include profile::logrotate
     class { 'squid':
-        config_content => $config_content,
+        config_content      => $config_content,
+        logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
     }
 
     ferm::service { 'url_downloader':

@@ -13,14 +13,16 @@ class profile::installserver::proxy(
     Hash[String[1], Squid::Acl] $ssh_acls        = lookup('profile::installserver::proxy::ssh_acls')
 ){
     include network::constants
+    include profile::logrotate
     $prod_networks = $network::constants::production_networks
     $_ssh_acls = squid::acl::normalise($ssh_acls)
 
     $syslog_facility = 'local0'
     $syslog_priority = 'info'
     class { 'squid':
-        ensure         => $ensure,
-        config_content => template('role/caching-proxy/squid.conf.erb'),
+        ensure              => $ensure,
+        config_content      => template('role/caching-proxy/squid.conf.erb'),
+        logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
     }
 
     profile::auto_restarts::service { 'squid': }
