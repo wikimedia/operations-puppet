@@ -10,7 +10,7 @@ class gitlab (
     Stdlib::Unixpath $data_dir                          = '/var/opt/gitlab/git-data',
     Stdlib::Unixpath $cert_path                         = "${config_dir}/ssl/${gitlab_domain}.pem",
     Stdlib::Unixpath $key_path                          = "${config_dir}/ssl/${gitlab_domain}.key",
-    Boolean          $listent_https                     = true,
+    Boolean          $listen_https                      = true,
     Boolean          $enable_backup                     = true,
     Integer[1]       $backup_keep_time                  = 604800,
     Boolean          $gitlab_can_create_group           = false,
