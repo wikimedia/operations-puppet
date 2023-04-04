@@ -5817,6 +5817,7 @@ users:
     email: sfaci@wikimedia.org
     uid: 43355
     gid: 500
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEy0EFQ3FSF50aVZpBr8T3JAcTtrHBwXy5nuEx8g25X/ santi@WMF3277
 
