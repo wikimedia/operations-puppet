@@ -53,7 +53,7 @@ class profile::wmcs::services::maintain_dbusers (
 
     $legacy_hosts = {
         # floating IP on clouddb-services to clouddb1001 VM
-        '185.15.56.15' => {
+        '185.15.56.15:3306' => {
             'grant-type' => 'legacy',
         },
     }
