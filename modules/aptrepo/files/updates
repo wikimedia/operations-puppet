@@ -5,7 +5,7 @@ Suite: binary
 Flat: thirdparty/ci
 GetInRelease: no
 Architectures: all>amd64
-VerifyRelease: FCEF32E745F2C3D5
+VerifyRelease: 5BA31D57EF5975CA
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 Name: hwraid-stretch
