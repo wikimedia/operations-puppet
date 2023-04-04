@@ -33,9 +33,15 @@ class squid (
             notify  => Service['squid'];
     }
 
-    logrotate::conf { 'squid':
-        ensure => $ensure,
-        source => 'puppet:///modules/squid/squid-logrotate',
+    logrotate::rule { 'squid':
+        ensure      => $ensure,
+        file_glob   => '/var/log/squid/*.log',
+        frequency   => 'daily',
+        rotate      => 2,
+        missing_ok  => true,
+        size        => '300M',
+        no_create   => true,
+        post_rotate => 'test ! -e /var/run/squid.pid || /usr/sbin/squid -k rotate',
     }
 
     systemd::unit { 'squid':
