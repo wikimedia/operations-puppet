@@ -257,7 +257,7 @@ role::kafka::jumbo::broker:
   target-q: TBD
   phab-task: 288804
 role::kafka::main:
-  target-q: TBD
+  target-q: 2023-1
   phab-task: 332013
 role::kafka::test::broker:
   target-q: TBD
@@ -307,20 +307,20 @@ role::analytics_cluster::hadoop::standby:
   target-q: TBD
   phab-task: 332578
 role::analytics_test_cluster::client:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-2
+  phab-task: 329363
 role::analytics_cluster::hadoop::ui:
   target-q: TBD
   phab-task: 288804
 role::analytics_test_cluster::hadoop::master:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-2
+  phab-task: 329363
 role::analytics_test_cluster::hadoop::standby:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-2
+  phab-task: 329363
 role::analytics_test_cluster::coordinator:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-2
+  phab-task: 329363
 role::analytics_test_cluster::hadoop::ui:
   target-q: TBD
   phab-task: 288804
@@ -399,8 +399,8 @@ role::analytics_cluster::webserver:
   target-q: TBD
   phab-task: 288804
 role::analytics_test_cluster::hadoop::worker:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-2
+  phab-task: 329363
 role::analytics_cluster::hadoop::yarn:
   target-q: TBD
   phab-task: 288804
