@@ -38,7 +38,9 @@ class ldap::client::nss(
     }
 
     # So scripts don't have to parse the ldap.conf format
-    include ::ldap::yamlcreds
+    class { 'ldap::yamlcreds':
+        ldapconfig => $ldapconfig,
+    }
 
     # Allow labs projects to give people custom shells
     $shell_override = lookup('user_login_shell', {'default_value' => false})

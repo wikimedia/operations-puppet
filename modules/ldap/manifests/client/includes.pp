@@ -1,11 +1,4 @@
 class ldap::client::includes($ldapincludes, $ldapconfig) {
-    if 'openldap' in $ldapincludes {
-        class { '::ldap::client::openldap':
-            ldapconfig   => $ldapconfig,
-            ldapincludes => $ldapincludes,
-        }
-    }
-
     if 'pam' in $ldapincludes {
         class { '::ldap::client::pam':
             ldapconfig => $ldapconfig,

@@ -160,7 +160,7 @@ class openldap(
 
     # Mostly here to avoid unencrypted user initiated connections, in Cloud VPS
     # instances a WMCS-wide ldap.conf available, which is used instead
-    if !defined(Class['ldap::client::openldap']) {
+    if !defined(Class['ldap::client::config']) {
         file { '/etc/ldap/ldap.conf':
             ensure  => present,
             owner   => 'root',

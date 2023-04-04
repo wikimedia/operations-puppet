@@ -14,21 +14,12 @@
 class profile::openldap::client(
     Hash $ldap_config = lookup('ldap'),
 ){
+    ensure_packages(['ldap-utils'])
 
-    $ldapconfig = {
-        'servernames'      => [$ldap_config['ro-server'], $ldap_config['ro-server-fallback']],
-        'servernames_rw'   => [$ldap_config['rw-server'], $ldap_config['rw-server-fallback']],
-        'users_cn'         => $ldap_config['users_cn'],
-        'basedn'           => $ldap_config['base-dn'],
-        'proxyagent'       => $ldap_config['proxyagent'],
-        'proxypass'        => $ldap_config['proxypass'],
-        'script_user_dn'   => $ldap_config['script_user_dn'],
-        'script_user_pass' => $ldap_config['script_user_pass'],
-        'ca'               => 'ca-certificates.crt',
-    }
-
-    class { 'ldap::client::openldap':
-        ldapconfig => $ldapconfig,
+    class { 'ldap::client::config':
+        servers    => [$ldap_config['ro-server'], $ldap_config['ro-server-fallback']],
+        base_dn    => $ldap_config['base-dn'],
+        proxy_pass => $ldap_config['proxypass'],
     }
 
     file { '/etc/ldap/wmf-ldap.conf':

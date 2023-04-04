@@ -25,7 +25,7 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::nova::api::service
     include profile::openstack::eqiad1::haproxy
     include profile::prometheus::haproxy_exporter
-    include profile::ldap::client::labs
+    include profile::ldap::client::utils
     include profile::openstack::eqiad1::pdns::dns_floating_ip_updater
     include profile::openstack::eqiad1::nova::fullstack::service
     include profile::memcached::instance

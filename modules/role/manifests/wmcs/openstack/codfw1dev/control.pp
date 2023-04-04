@@ -32,7 +32,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::neutron::service
     include profile::openstack::codfw1dev::haproxy
     include profile::prometheus::haproxy_exporter
-    include profile::ldap::client::labs
+    include profile::ldap::client::utils
     include profile::memcached::instance
     # include profile::openstack::codfw1dev::neutron::metadata_agent
     # include profile::openstack::codfw1dev::pdns::dns_floating_ip_updater

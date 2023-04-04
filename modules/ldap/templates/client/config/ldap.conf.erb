@@ -1,0 +1,15 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+BASE            <%= @base_dn %>
+URI             <%= @servers.map {|server| "ldap://#{server}:389" }.join(' ') %>
+# The next settings are not honored by OpenLDAP but are honored by sudo-ldap and /etc/sudo-ldap.conf is a symlink to /etc/ldap/ldap.conf
+BINDDN          cn=proxyagent,ou=profile,<%= @base_dn %>
+BINDPW          <%= @proxy_pass %>
+<% if @sudo_base_dn %>SUDOERS_BASE    <%= @sudo_base_dn %><% end -%>
+
+SSL             start_tls
+TLS_CHECKPEER   yes
+TLS_REQCERT     demand
+TLS_CACERTDIR   /etc/ssl/certs
+TLS_CACERTFILE  /etc/ssl/certs/ca-certificates.crt
+TLS_CACERT      /etc/ssl/certs/ca-certificates.crt

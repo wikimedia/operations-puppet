@@ -8,7 +8,9 @@ class ldap::client::sssd(
     # this provides the /etc/ldap.yaml file, which is used to
     # lookup for sshkeys. We could switch at some point to a native
     # sssd mechanism for that, but meanwhile...
-    include ::ldap::yamlcreds
+    class { 'ldap::yamlcreds':
+        ldapconfig => $ldapconfig,
+    }
 
     $packages_present = [
         'libpam-sss',

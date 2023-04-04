@@ -1,16 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::ldap::client::labs(
-    Array[String]           $ldapincludes    = lookup('profile::ldap::client::labs::ldapincludes',    {default_value => ['openldap']}),
+    Array[String]           $ldapincludes    = lookup('profile::ldap::client::labs::ldapincludes',    {default_value => []}),
     Optional[Array[String]] $restricted_to   = lookup('profile::ldap::client::labs::restricted_to',   {default_value => undef}),
     Optional[Array[String]] $restricted_from = lookup('profile::ldap::client::labs::restricted_from', {default_value => undef}),
-){
-
-    class { '::ldap::config::labs': }
+) {
+    include profile::ldap::client::utils
 
     if $::realm == 'labs' {
         $includes = debian::codename() ? {
-            'stretch' => ['openldap', 'pam', 'nss', 'sudoldap', 'nosssd'],
-            default   => ['openldap', 'sssd'],
+            'stretch' => ['pam', 'nss', 'sudoldap', 'nosssd'],
+            default   => ['sssd'],
         }
 
         # bypass pam_access restrictions for local commands
@@ -61,6 +60,6 @@ class profile::ldap::client::labs(
 
     class{ '::ldap::client::includes':
         ldapincludes => $includes,
-        ldapconfig   => $ldap::config::labs::ldapconfig,
+        ldapconfig   => $::profile::ldap::client::utils::ldapconfig,
     }
 }

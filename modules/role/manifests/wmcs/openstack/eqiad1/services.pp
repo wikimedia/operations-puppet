@@ -8,5 +8,5 @@ class role::wmcs::openstack::eqiad1::services {
     include ::profile::openstack::eqiad1::pdns::recursor::service
     include ::profile::openstack::eqiad1::designate::service
 
-    include ::profile::ldap::client::labs
+    include ::profile::ldap::client::utils
 }
