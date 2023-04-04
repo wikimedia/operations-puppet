@@ -14,3 +14,6 @@ profile::cloudceph::client::rbd::enable_v2_messenger: true
 profile::cloudceph::auth::deploy::enabled: true
 profile::cloudceph::auth::deploy::selected_creds:
 - eqiad1-cinder
+
+profile::openstack::eqiad1::keystone::enforce_policy_scope: false
+profile::openstack::eqiad1::keystone::enforce_new_policy_defaults: false
