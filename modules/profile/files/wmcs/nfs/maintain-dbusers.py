@@ -73,6 +73,7 @@ PAWS_RUNTIME_UID = 52771
 PASSWORD_LENGTH = 16
 PASSWORD_CHARS = string.ascii_letters + string.digits
 DEFAULT_MAX_CONNECTIONS = 10
+DEFAULT_MYSQL_PORT = 3306
 ACCOUNT_CREATION_SQL = {
     # For some reason newer versions don't like multistatements, so we split them
     "role": [
@@ -577,7 +578,7 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
                 port = int(host.split(":")[1])
             else:
                 hostname = host
-                port = 3306
+                port = DEFAULT_MYSQL_PORT
 
             cloud_dbs.append(
                 pymysql.connect(
@@ -596,9 +597,7 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
             read_cur.execute(select_from_acct_sql_str)
             for row in read_cur:
                 for cloud_db in cloud_dbs:
-                    sqlhost = cloud_db.host
-                    if cloud_db.port != 3306:
-                        sqlhost = "{}:{}".format(cloud_db.host, cloud_db.port)
+                    sqlhost = "{}:{}".format(cloud_db.host, cloud_db.port)
                     with cloud_db.cursor() as cloud_db_cur:
                         try:
                             show_grants_sql_str = (
@@ -921,6 +920,7 @@ def _create_accounts_on_host(
 ):
     # This is needed so it's not undefined in the finally clause if an exception happens
     cloud_db: pymysql.Connection | None = None
+    host_key = f"{hostname}:{port}"
     try:
         cloud_db = pymysql.connect(
             host=hostname,
@@ -929,13 +929,13 @@ def _create_accounts_on_host(
             port=port,
         )
 
-        grant_type = config["labsdbs"]["hosts"][f"{hostname}:{port}"]["grant-type"]
+        grant_type = config["labsdbs"]["hosts"][host_key]["grant-type"]
         with acct_db.cursor() as cur:
             select_acct_sql_str = f"""
                 SELECT mysql_username, password_hash, username, hostname, type,
                 account_host.id as account_host_id
                 FROM account JOIN account_host on account.id = account_host.account_id
-                WHERE hostname = '{hostname}:{port}' AND status = 'absent';
+                WHERE hostname = '{host_key}' AND status = 'absent';
                 """
             cur.execute(select_acct_sql_str)
             for row in cur:
@@ -1009,7 +1009,7 @@ def create_accounts_from_accountsdb(
                 port = int(host.split(":")[1])
             else:
                 hostname = host
-                port = 3306
+                port = DEFAULT_MYSQL_PORT
 
             _create_accounts_on_host(
                 config=config,
@@ -1054,7 +1054,7 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
                 port = int(host.split(":")[1])
             else:
                 hostname = host
-                port = 3306
+                port = DEFAULT_MYSQL_PORT
             cloud_db = pymysql.connect(
                 host=hostname,
                 user=config["labsdbs"]["username"],
