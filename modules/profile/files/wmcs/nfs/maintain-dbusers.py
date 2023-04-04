@@ -73,7 +73,6 @@ PAWS_RUNTIME_UID = 52771
 PASSWORD_LENGTH = 16
 PASSWORD_CHARS = string.ascii_letters + string.digits
 DEFAULT_MAX_CONNECTIONS = 10
-DEFAULT_MYSQL_PORT = 3306
 ACCOUNT_CREATION_SQL = {
     # For some reason newer versions don't like multistatements, so we split them
     "role": [
@@ -573,12 +572,8 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
     try:
         acct_db = get_accounts_db_conn(config=config)
         for host in config["labsdbs"]["hosts"]:
-            if ":" in host:
-                hostname = host.split(":")[0]
-                port = int(host.split(":")[1])
-            else:
-                hostname = host
-                port = DEFAULT_MYSQL_PORT
+            hostname = host.split(":")[0]
+            port = int(host.split(":")[1])
 
             cloud_dbs.append(
                 pymysql.connect(
@@ -1004,12 +999,8 @@ def create_accounts_from_accountsdb(
     try:
         acct_db = get_accounts_db_conn(config=config)
         for host in config["labsdbs"]["hosts"]:
-            if ":" in host:
-                hostname = host.split(":")[0]
-                port = int(host.split(":")[1])
-            else:
-                hostname = host
-                port = DEFAULT_MYSQL_PORT
+            hostname = host.split(":")[0]
+            port = int(host.split(":")[1])
 
             _create_accounts_on_host(
                 config=config,
@@ -1049,12 +1040,8 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
     try:
         acct_db = get_accounts_db_conn(config=config)
         for host in config["labsdbs"]["hosts"]:
-            if ":" in host:
-                hostname = host.split(":")[0]
-                port = int(host.split(":")[1])
-            else:
-                hostname = host
-                port = DEFAULT_MYSQL_PORT
+            hostname = host.split(":")[0]
+            port = int(host.split(":")[1])
             cloud_db = pymysql.connect(
                 host=hostname,
                 user=config["labsdbs"]["username"],
