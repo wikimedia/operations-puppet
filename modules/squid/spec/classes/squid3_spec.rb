@@ -5,13 +5,14 @@ describe 'squid', :type => :class do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
+      let(:params) {{ config_content: 'foobar' }}
 
       it { is_expected.to contain_package('squid').with_ensure('present') }
       it { is_expected.to contain_service('squid').with_ensure('running') }
 
       it do
         is_expected.to contain_file("/etc/squid/squid.conf").with(
-          ensure: 'present',
+          ensure: 'file',
             mode: '0444',
             owner: 'root',
             group: 'root'
