@@ -36,6 +36,7 @@ class squid (
     logrotate::rule { 'squid':
         ensure      => $ensure,
         file_glob   => '/var/log/squid/*.log',
+        compress    => true,
         frequency   => 'daily',
         rotate      => 2,
         missing_ok  => true,
