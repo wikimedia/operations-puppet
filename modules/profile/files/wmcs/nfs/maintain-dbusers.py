@@ -956,7 +956,7 @@ def _create_accounts_on_host(
                         password_hash=row["password_hash"].decode("utf-8"),
                         grant_type=grant_type,
                         dry_run=dry_run,
-                        mysql_username=row["mysql_user"],
+                        mysql_username=row["mysql_username"],
                         config=config,
                         cloud_db=cloud_db,
                     )
