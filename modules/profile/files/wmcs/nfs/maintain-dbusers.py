@@ -947,26 +947,36 @@ def _create_accounts_on_host(
                     continue
 
                 if should_execute_for_user(username=row["username"], only_users=only_users):
-                    _create_user_on_cloud_db(
-                        password_hash=row["password_hash"].decode("utf-8"),
-                        grant_type=grant_type,
-                        dry_run=dry_run,
-                        mysql_username=row["mysql_username"],
-                        config=config,
-                        cloud_db=cloud_db,
-                    )
-                    _set_as_present_on_accountsdb(
-                        acct_db=acct_db,
-                        account_host_id=row["account_host_id"],
-                        dry_run=dry_run,
-                    )
-                    logging.info(
-                        "Created account in %s:%d for %s %s",
-                        hostname,
-                        port,
-                        row["type"],
-                        row["username"],
-                    )
+                    try:
+                        _create_user_on_cloud_db(
+                            password_hash=row["password_hash"].decode("utf-8"),
+                            grant_type=grant_type,
+                            dry_run=dry_run,
+                            mysql_username=row["mysql_username"],
+                            config=config,
+                            cloud_db=cloud_db,
+                        )
+                        _set_as_present_on_accountsdb(
+                            acct_db=acct_db,
+                            account_host_id=row["account_host_id"],
+                            dry_run=dry_run,
+                        )
+                        logging.info(
+                            "Created account in %s:%d for %s %s",
+                            hostname,
+                            port,
+                            row["type"],
+                            row["username"],
+                        )
+                    except Exception as err:
+                        logging.exception(
+                            "Unable to create user %s on %s:%d, got exception: %s",
+                            row["username"],
+                            hostname,
+                            port,
+                            str(err),
+                        )
+                        continue
                 else:
                     logging.info(
                         """
