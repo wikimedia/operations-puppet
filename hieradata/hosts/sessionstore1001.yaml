@@ -1,1 +1,4 @@
 profile::cassandra::rack: 'a'
+cassandra::native_transport_port: 9043
+cassandra::default_instance_params:
+  start_native_transport: false
