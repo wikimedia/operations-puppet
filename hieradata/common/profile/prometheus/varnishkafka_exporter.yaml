@@ -37,12 +37,12 @@
         'description': 'Internal tracking of legacy vs new consumer API state'
         'labels': ['client_id']
       'time':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'rdkafka_producer_time'
         'description': 'Wall clock time in seconds since the epoch'
         'labels': ['client_id']
       'ts':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'rdkafka_producer_ts'
         'description': 'librdkafkas internal monotonic clock (micro seconds)'
         'labels': ['client_id']
@@ -136,22 +136,22 @@
           'description': 'Number of messages awaiting transmission to broker'
           'labels':  ['client_id', 'broker=name']
         'req_timeouts':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_req_timeouts'
           'description': 'Total number of requests timed out'
           'labels':  ['client_id', 'broker=name']
         'rx':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_rx'
           'description': 'Total number of responses received'
           'labels':  ['client_id', 'broker=name']
         'rxbytes':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_rxbytes'
           'description': 'Total number of bytes received'
           'labels':  ['client_id', 'broker=name']
         'rxerrs':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_rxerrs'
           'description': 'Total number of receive errors'
           'labels':  ['client_id', 'broker=name']
@@ -161,7 +161,7 @@
           'description': 'Total number of unmatched correlation ids in response (typically for timed out requests)'
           'labels':  ['client_id', 'broker=name']
         'rxpartial':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_rxpartial'
           'description': 'Total number of partial MessageSets received. The broker may return partial responses if the full MessageSet could not fit in remaining Fetch response size.'
           'labels':  ['client_id', 'broker=name']
@@ -171,22 +171,22 @@
           'description': 'Time since last broker state change (microseconds)'
           'labels':  ['client_id', 'broker=name']
         'tx':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_tx'
           'description': 'Total number of requests sent'
           'labels':  ['client_id', 'broker=name']
         'txbytes':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_txbytes'
           'description': 'Total number of bytes sent'
           'labels':  ['client_id', 'broker=name']
         'txerrs':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_txerrs'
           'description': 'Total number of transmission errors'
           'labels':  ['client_id', 'broker=name']
         'txretries':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_txretries'
           'description': 'Total number of request retries'
           'labels':  ['client_id', 'broker=name']
@@ -201,7 +201,7 @@
           'description': 'Number of messages in-flight to broker awaiting response'
           'labels':  ['client_id', 'broker=name']
         'wakeups':
-          'type': 'GaugeMetricFamily'
+          'type': 'CounterMetricFamily'
           'name': 'rdkafka_producer_broker_wakeups'
           'description': 'Broker thread poll wakeups'
           'labels':  ['client_id', 'broker=name']
@@ -268,7 +268,7 @@
             'description': 'Number of messages waiting to be produced in first-level queue'
             'labels':  ['client_id', 'topic', 'partition']
           'msgs':
-            'type': 'GaugeMetricFamily'
+            'type': 'CounterMetricFamily'
             'name': 'rdkafka_producer_topic_partition_msgs'
             'description': 'Total number of messages received (consumer, same as rxmsgs}, or total number of messages produced (possibly not yet transmitted) (producer).'
             'labels':  ['client_id', 'topic', 'partition']
@@ -293,12 +293,12 @@
             'description': 'Offset to be committed'
             'labels':  ['client_id', 'topic', 'partition']
           'txbytes':
-            'type': 'GaugeMetricFamily'
+            'type': 'CounterMetricFamily'
             'name': 'rdkafka_producer_topic_partition_txbytes'
             'description': 'Total number of bytes transmitted for txmsgs'
             'labels':  ['client_id', 'topic', 'partition']
           'txmsgs':
-            'type': 'GaugeMetricFamily'
+            'type': 'CounterMetricFamily'
             'name': 'rdkafka_producer_topic_partition_txmsgs'
             'description': 'Total number of messages transmitted (produced)'
             'labels':  ['client_id', 'topic', 'partition']
@@ -314,15 +314,15 @@
             'labels':  ['client_id', 'topic', 'partition']
     varnishkafka:
       'kafka_drerr':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'varnishkafka_delivery_errors_total'
         'description': 'Kafka message delivery errors'
       'seq':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'varnishkafka_seq_number'
         'description': 'Configured sequence number or time() at startup'
       'time':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'varnishkafka_time_seconds'
         'description': 'time() as of stats generation'
       'trunc':
@@ -330,10 +330,10 @@
         'name': 'varnishkafka_tags_truncated_total'
         'description': 'Truncated tags'
       'tx':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'varnishkafka_transmit_lines_total'
         'description': 'Printed/Transmitted lines'
       'txerr':
-        'type': 'GaugeMetricFamily'
+        'type': 'CounterMetricFamily'
         'name': 'varnishkafka_transmit_errors_total'
         'description': 'Transmit failures'
