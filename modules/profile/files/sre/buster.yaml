@@ -38,7 +38,7 @@ role::installserver:
 role::webperf::xhgui:
   target-q: TBD
 role::pybaltest:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 321309
 role::ci::master:
   target-q: TBD
@@ -184,7 +184,7 @@ role::mariadb::misc:
   target-q: TBD
 role::mariadb::misc::analytics::backup:
   target-q: TBD
-  phab-task: 304492
+  phab-task: 334055
 role::mariadb::core_test:
   target-q: TBD
 role::mariadb::misc::phabricator:
@@ -260,7 +260,7 @@ role::kafka::main:
   target-q: 2023-1
   phab-task: 332013
 role::kafka::test::broker:
-  target-q: TBD
+  target-q: 2023-2
   phab-task: 331710
 role::kafka::main::logging:
   target-q: TBD
