@@ -1887,9 +1887,9 @@ node /^ms-backup200[12]\.codfw\.wmnet$/ {
     role(mediabackup::worker)
 }
 
-# thanos-fe server T326846
+# T326846
 node 'thanos-fe1004.eqiad.wmnet' {
-    role(insetup::serviceops)
+    role(insetup::data_persistence)
 }
 
 node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
