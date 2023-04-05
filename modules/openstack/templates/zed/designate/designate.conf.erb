@@ -258,8 +258,13 @@ topics = notifications
 backend_url = memcached://localhost:11213
 
 [oslo_policy]
-enforce_scope = <%= @enforce_policy_scope %>
-enforce_new_defaults = <%= @enforce_new_policy_defaults %>
+
+# Designate isn't ready to adopt upstream default policies yet. Review this
+#  again in B
+#enforce_scope = <%= @enforce_policy_scope %>
+enforce_scope = false
+#enforce_new_defaults = <%= @enforce_new_policy_defaults %>
+enforce_new_defaults = false
 policy_file = policy.yaml
 
 [service:worker]
