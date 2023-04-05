@@ -6,13 +6,11 @@ profile::admin::groups:
 
 profile::kafka::broker::kafka_cluster_name: logging
 
-# Enable SSL/TLS for Kafka with a certificate issued by the Kafka PKI
-# intermediate CA.
-# profile::kafka::broker::ssl_password is needed, committed in
+# Enable SSL/TLS for Kafka. When using PKI (default), this requires
+# only profile::kafka::broker::ssl_password committed in
 # the expected location in ops/puppet/private.
 profile::kafka::broker::ssl_enabled: true
-# More info in https://phabricator.wikimedia.org/T300130
-profile::kafka::broker::ssl_generate_certificates: true
+profile::base::certificates::include_bundle_jks: true
 
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277

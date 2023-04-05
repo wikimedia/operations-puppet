@@ -9,8 +9,14 @@
 #
 # == SSL Configuration
 #
-# To configure SSL for Kafka brokers, you need the following files distributable by our Puppet
-# secret() function.
+# To configure SSL for Kafka brokers, you have two options:
+# 1) PKI TLS certificates (default and preferred way)
+# In this case you just need to populate the $ssl_password field in the private
+# repository, and make sure that the role's config includes
+# "profile::base::certificates::include_bundle_jks" set to true to have
+# the right truststore CA bundle deployed on all nodes.
+# 2) Puppet TLS certificates (discouraged, mainly kept for backward compatibility)
+# You need the following files distributable by our Puppet secret() function:
 #
 # - A keystore.jks file   - Contains the key and certificate for this kafka cluster's brokers.
 # - A truststore.jks file - Contains the CA certificate that signed the cluster certificate
@@ -68,6 +74,9 @@
 #   Hiera: profile::kafka::broker::ssl_password  This expects
 #   that all keystore, truststores, and keys use the same password.
 #   Default: undef
+#
+# [*use_pki_settings*]
+#  If true, the TLS certificates will be generated using PKI. Default: true
 #
 # [*inter_broker_ssl_enabled*]
 #   Vary security.inter.broker.protocol based on this and $ssl_enabled.
@@ -159,9 +168,8 @@ class profile::kafka::broker(
 
     Boolean $ssl_enabled                                         = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false}),
     Optional[String] $ssl_password                               = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
-    Boolean $ssl_generate_certificates                           = lookup('profile::kafka::broker::ssl_generate_certificates', {'default_value' => false}),
     Optional[Boolean] $inter_broker_ssl_enabled                  = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
-    Boolean $use_pki_migration_settings                          = lookup('profile::kafka::broker:use_pki_migration_settings', {'default_value' => false}),
+    Boolean $use_pki_settings                                    = lookup('profile::kafka::broker:use_pki_settings', {'default_value' => true}),
     Array[Stdlib::Unixpath] $log_dirs                            = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
     Boolean $auto_leader_rebalance_enable                        = lookup('profile::kafka::broker::auto_leader_rebalance_enable', {'default_value' => true}),
     Integer $log_retention_hours                                 = lookup('profile::kafka::broker::log_retention_hours', {'default_value' => 168}),
@@ -273,37 +281,10 @@ class profile::kafka::broker(
             "User:CN=${hostname}"
         }
 
-        if $use_pki_migration_settings {
-            $super_users = $super_users_brokers + ["User:CN=kafka_${cluster_name}_broker"]
+        if $use_pki_settings {
+            $super_users = $super_users_brokers
             $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
             $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
-        } else {
-            if $ssl_generate_certificates {
-                $super_users = $super_users_brokers
-                $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
-                $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
-            } else {
-                $super_users = ["User:CN=kafka_${cluster_name}_broker"]
-                $ssl_truststore_location = "${ssl_location}/truststore.jks"
-                $ssl_truststore_password = $ssl_password
-                $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
-                if !defined(File[$ssl_truststore_location]) {
-                    file { $ssl_truststore_location:
-                        content => secret($ssl_truststore_secrets_path),
-                        owner   => 'kafka',
-                        group   => 'kafka',
-                        mode    => '0444',
-                        before  => Class['::confluent::kafka::broker'],
-                    }
-                }
-            }
-        }
-
-        # Context in T291905
-        # We are moving from a single cergen TLS certificate, shared among all
-        # the brokers, to hostname-based TLS certificates issued by the PKI kafka
-        # intermediate CA.
-        if $ssl_generate_certificates {
             $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
                 'outdir'  => $ssl_location,
                 'owner'   => 'kafka',
@@ -325,6 +306,19 @@ class profile::kafka::broker(
                 require     => Class['::confluent::kafka::common'],
             }
         } else {
+            $super_users = ["User:CN=kafka_${cluster_name}_broker"]
+            $ssl_truststore_location = "${ssl_location}/truststore.jks"
+            $ssl_truststore_password = $ssl_password
+            $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
+            if !defined(File[$ssl_truststore_location]) {
+                file { $ssl_truststore_location:
+                    content => secret($ssl_truststore_secrets_path),
+                    owner   => 'kafka',
+                    group   => 'kafka',
+                    mode    => '0444',
+                    before  => Class['::confluent::kafka::broker'],
+                }
+            }
             $ssl_keystore_location       = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
             $ssl_keystore_secrets_path   = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
 

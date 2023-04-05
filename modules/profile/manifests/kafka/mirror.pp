@@ -97,7 +97,7 @@ class profile::kafka::mirror(
     Stdlib::Port $jmx_base_port           = lookup('profile::kafka:mirror:jmx_base_port', {'default_value' => 9900}),
     Stdlib::Port $jmx_exporter_base_port  = lookup('profile::kafka::mirror:jmx_exporter_base_port', {'default_value' => 7900}),
     Integer $message_max_bytes            = lookup('kafka_message_max_bytes'),
-    Boolean $use_pki_migration_settings   = lookup('profile::kafka::mirror:use_pki_migration_settings', {'default_value' => true}),
+    Boolean $use_pki_settings             = lookup('profile::kafka::mirror:use_pki_settings', {'default_value' => true}),
 ) {
     $source_config            = kafka_config($source_cluster_name)
     $destination_config       = kafka_config($destination_cluster_name)
@@ -114,7 +114,7 @@ class profile::kafka::mirror(
 
     # Consumer and Producer use the same SSL properties.
     if $consumer_ssl_enabled or $producer_ssl_enabled {
-        if $use_pki_migration_settings {
+        if $use_pki_settings {
             $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
             $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
         } else {
@@ -148,7 +148,7 @@ class profile::kafka::mirror(
         }
         File[$ssl_keystore_location] -> Confluent::Kafka::Mirror::Instance <| |>
 
-        if !$use_pki_migration_settings {
+        if !$use_pki_settings {
             if !defined(File[$ssl_truststore_location]) {
                 file { $ssl_truststore_location:
                     content => secret($ssl_truststore_secrets_path),
@@ -157,9 +157,8 @@ class profile::kafka::mirror(
                     mode    => '0444',
                 }
             }
+            File[$ssl_truststore_location] -> Confluent::Kafka::Mirror::Instance <| |>
         }
-        File[$ssl_truststore_location] -> Confluent::Kafka::Mirror::Instance <| |>
-
 
         # These will be used for consumer and/or producer properties.
         $ssl_properties = {

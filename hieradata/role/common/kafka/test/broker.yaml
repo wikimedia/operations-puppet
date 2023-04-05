@@ -5,9 +5,10 @@ cluster: kafka_test
 
 profile::kafka::broker::kafka_cluster_name: test-eqiad
 
+# Enable SSL/TLS for Kafka. When using PKI (default), this requires
+# only profile::kafka::broker::ssl_password committed in
+# the expected location in ops/puppet/private.
 profile::kafka::broker::ssl_enabled: true
-profile::kafka::broker:use_pki_migration_settings: true
-profile::kafka::broker::ssl_generate_certificates: true
 profile::base::certificates::include_bundle_jks: true
 
 profile::kafka::broker::auth_acls_enabled: true
