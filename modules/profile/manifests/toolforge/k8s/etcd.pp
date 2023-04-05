@@ -6,9 +6,14 @@ class profile::toolforge::k8s::etcd (
 ) {
     class { '::profile::wmcs::kubeadm::etcd':
         peer_hosts    => $peer_hosts,
-        checker_hosts => $checker_hosts,
         control_nodes => $control_nodes,
         bootstrap     => $bootstrap,
     }
     contain '::profile::wmcs::kubeadm::etcd'
+
+    ferm::service {  'etcd_checker':
+        proto  => 'tcp',
+        port   => 2379,
+        srange => "@resolve((${checker_hosts.join(' ')}))",
+    }
 }
