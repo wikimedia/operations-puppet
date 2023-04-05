@@ -22,6 +22,7 @@ class mediawiki::scap (
         file { $mediawiki_deployment_dir:
             ensure => link,
             target => $mediawiki_staging_dir,
+            force  => true,
         }
     } else {
         file { $mediawiki_deployment_dir:
