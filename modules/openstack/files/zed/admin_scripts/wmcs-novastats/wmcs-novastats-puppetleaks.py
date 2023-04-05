@@ -83,30 +83,38 @@ def delete_prefix(project, prefix):
     time.sleep(1)
 
 
+def delete_project(project):
+    """Deletes an entire project."""
+    base_url, session = get_enc_client("admin", base_url=True)
+    print(f"Deleting project {project}")
+    session.delete(
+        f"{base_url}/admin/project/{project}",
+        headers={"Accept": "application/json"},
+    )
+
+    time.sleep(1)
+
+
 def purge_duplicates(delete=False):
     keystone_projects = [project.id for project in clients.allprojects()]
     for project in all_projects():
         if project not in keystone_projects:
             print(("Project %s has puppet prefixes but is not in keystone." % project))
-
-            # TODO: what to do here? can't get a Keystone session since
-            # there is no project, and the ENC API enforces that the
-            # session is for the project that's being interacted with
-            continue
-
-            for prefix in all_prefixes(project):
-                print(("stray prefix: %s" % prefix))
-                if delete:
-                    delete_prefix(project, prefix)
+            if delete:
+                delete_project(project)
             continue
 
         prefixes = all_prefixes(project)
         instances = clients.allinstances(project, allregions=True)
 
-        all_nova_instances = [
-            "%s.%s.eqiad1.wikimedia.cloud" % (instance.name.lower(), instance.tenant_id)
-            for instance in instances
-        ]
+        all_nova_instances = []
+        for instance in instances:
+            # TODO: figure out the current domain instead of looping through them all?
+            for deployment in ["eqiad1", "codfw1dev"]:
+                all_nova_instances.append(
+                    f"{instance.name.lower()}.{instance.tenant_id}."
+                    f"{deployment}.wikimedia.cloud"
+                )
 
         for prefix in prefixes:
             if not prefix.endswith("wikimedia.cloud"):
