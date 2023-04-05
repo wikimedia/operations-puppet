@@ -8,9 +8,11 @@ class cinderutils {
         mode   => '0755',
     }
 
-    # compat
-    file { '/usr/local/sbin/prepare_cinder_volume':
-        ensure => link,
-        target => '/usr/local/sbin/wmcs-prepare-cinder-volume',
+    if debian::codename::lt('bookworm') {
+        # compat
+        file { '/usr/local/sbin/prepare_cinder_volume':
+            ensure => link,
+            target => '/usr/local/sbin/wmcs-prepare-cinder-volume',
+        }
     }
 }
