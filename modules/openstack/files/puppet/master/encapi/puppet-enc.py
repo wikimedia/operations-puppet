@@ -44,6 +44,7 @@ enforcer.register_defaults(
         policy.RuleDefault("prefix:update", "rule:admin_or_member"),
         policy.RuleDefault("prefix:delete", "rule:admin_or_member"),
         policy.RuleDefault("project:index", ""),
+        policy.RuleDefault("project:delete", "rule:admin"),
         policy.RuleDefault("puppetrole:index", ""),
         policy.RuleDefault("puppetrole:view", ""),
     ]
@@ -751,6 +752,26 @@ def delete_prefix(project, prefix):
         return dump_with_requested_format({"status": "ok"})
     finally:
         cur.close()
+
+
+@app.route("/v1/admin/project/<string:project>", methods=["DELETE"])
+def delete_project(project):
+    enforce_policy("project:delete", "admin")
+
+    with g.db.cursor() as cur:
+        g.db.begin()
+
+        cur.execute("DELETE FROM prefix WHERE project = %s", (project,))
+
+        add_git_commit(
+            cursor=cur,
+            files={project: None},
+            message=f"Delete project {project}",
+        )
+
+        g.db.commit()
+
+    return dump_with_requested_format({"status": "ok"})
 
 
 @app.route("/v1/healthz")

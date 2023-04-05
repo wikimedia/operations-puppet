@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
+import shutil
 import time
 from datetime import timezone
 from pathlib import Path
@@ -148,8 +149,13 @@ def main():
                     f.write(file["guqf_new_content"])
                 repo.index.add([str(file_path)])
             elif file_path.exists():
-                repo.index.remove([str(file_path)])
-                file_path.unlink()
+                recursive_arg = {"r": True} if file_path.is_dir() else {}
+                repo.index.remove([str(file_path)], **recursive_arg)
+
+                if file_path.is_dir():
+                    shutil.rmtree(file_path)
+                else:
+                    file_path.unlink()
 
         if repo.index.diff(repo.head.commit):
             keystone = clients.keystoneclient()
