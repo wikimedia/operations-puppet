@@ -1,0 +1,17 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+-- See: T334099
+CREATE ROLE IF NOT EXISTS fgoodwin
+    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT SELECT ON KEYSPACE "local_group_default_T_pageviews_per_project_v2"   to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_mediarequest_top_files"     to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_lgc_pagecounts_per_project" to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_mediarequest_per_file"      to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_top_percountry"             to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_editors_bycountry"          to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_top_pageviews"              to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_mediarequest_per_referer"   to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_unique_devices"             to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_top_bycountry"              to fgoodwin;
+GRANT SELECT ON KEYSPACE "local_group_default_T_pageviews_per_article_flat" to fgoodwin;
