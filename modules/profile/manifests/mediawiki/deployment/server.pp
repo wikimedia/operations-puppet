@@ -161,6 +161,16 @@ class profile::mediawiki::deployment::server(
         content  => template('role/deployment/inactive.motd.erb'),
     }
 
+    if $secondary_deploy_ensure == 'present' {
+        # Lock the passive servers, leave untouched the active one.
+        file { '/var/lock/scap-global-lock':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            content => "Not the active deployment server, use ${main_deployment_server}",
+        }
+    }
+
     if $enable_auto_deploy {
         systemd::timer::job { 'train-presync':
             ensure                  => $primary_deploy_ensure,
