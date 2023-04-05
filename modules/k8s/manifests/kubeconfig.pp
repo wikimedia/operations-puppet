@@ -23,6 +23,7 @@
 #   A optional default kubernetes namespace
 
 define k8s::kubeconfig (
+    # TODO: This should actually consume master_url instead of master_host
     Stdlib::Fqdn $master_host,
     String $username,
     Optional[String] $token = undef,

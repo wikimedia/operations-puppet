@@ -1,44 +1,34 @@
+# This is the conftool cluster name, don't be confused
 cluster: 'aux-k8s'
-profile::kubernetes::master::cluster_group: 'aux-k8s'
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::master::accessible_to: 'all'
-profile::kubernetes::master::allow_privileged: true
-profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
-profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/aux-k8s-ctrl.svc.%{::site}.wmnet.crt"
-profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/aux-k8s-ctrl.svc.%{::site}.wmnet.key"
-profile::kubernetes::master::service_node_port_range: '1-65535'
-profile::kubernetes::master::admission_plugins:
-  enable:
-    - 'PodSecurityPolicy'
-    # v1.23: Enable DenyServiceExternalIPs because we don't use them
-    - DenyServiceExternalIPs
-    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
-    - NodeRestriction
-  disable:
-    - 'StorageObjectInUseProtection'
-    - 'PersistentVolumeClaimResize'
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "aux-k8s-%{::site}"
 
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer.
-profile::kubernetes::pki::intermediate: 'aux'
+# TODO: Remove service_cert after T329826 is resolved
+profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
+# TODO: Remove ssl_cert_path after T329826 is resolved
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/aux-k8s-ctrl.svc.%{::site}.wmnet.crt"
+# TODO: Remove ssl_key_path after T329826 is resolved
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/aux-k8s-ctrl.svc.%{::site}.wmnet.key"
 
 profile::lvs::realserver::pools:
   aux-k8s-ctrl:
     services:
       - 'kubemaster'
 
-# Taint to force kubernetes to consider these nodes not usable to schedule pods
-# onto.
+# Define in the private repo
+# profile::kubernetes::master::infrastructure_users:
+
+profile::contacts::role_contacts: ['Infrastructure Foundations']
+
+# Configuration to add the Kubelet to Master nodes for limited use cases
+# (like running bird for Calico, see T285927)
+# The nodes are also tainted to force kubernetes to consider these nodes not
+# usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
   - key: node-role.kubernetes.io/master
     effect: NoSchedule
-profile::kubernetes::use_cni: true
-profile::kubernetes::master_fqdn: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
 
-# Enable overlayfs, needed by docker
 profile::base::overlayfs: true
-
 profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
   bridge: none
@@ -50,10 +40,5 @@ profile::docker::engine::settings:
 
 profile::monitoring::nrpe_check_disk_options: "-w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs"
 
-profile::rsyslog::kubernetes::kubernetes_url: 'https://aux-k8s-ctrl.svc.%{::site}.wmnet:6443'
-profile::rsyslog::kubernetes::enable: true
-
 prometheus::node_exporter::collectors_extra:
   - 'processes'
-
-profile::contacts::role_contacts: ['Infrastructure Foundations']

@@ -17,11 +17,30 @@ profile::kubernetes::deployment_server::user_defaults:
 # Kubernetes configuration.
 # It gives access only to the staging cluster, and the "ci" namespace specifically.
 # kubernetes clusters by group.
-kubernetes_cluster_groups:
+kubernetes::clusters:
   main:
     staging:
       dc: eqiad
       master: kubestagemaster.svc.eqiad.wmnet
+      pki_intermediate_base: wikikube_staging
+      pki_renew_seconds: 172800
+      # The following are dummy values to satisfy type checks.
+      # We don't want ci/release servers to have credentials to k8s clusters
+      # apart from staging, so we re-declare kubernetes::clusters here.
+      # A bit of context is at: https://phabricator.wikimedia.org/T288629
+      control_plane_nodes: [dummy.x.y]
+      cluster_dns: ["0.0.0.0"]
+      service_cluster_cidr:
+        v4: "127.0.0.0/8"
+        v6: "::1/128"
+      cluster_cidr:
+        v4: "127.0.0.0/8"
+        v6: "::1/128"
+      etcd_urls:
+        - https://dummy.x.y
+        - https://dummy.x.y
+        - https://dummy.x.y
+      cluster_nodes: [dummy.x.y]
 profile::kubernetes::deployment_server::services:
   main:
     mw-debug:

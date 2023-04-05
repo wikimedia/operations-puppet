@@ -13,7 +13,7 @@ class k8s::kubelet (
     Boolean $ipv6dualstack = false,
     Optional[Stdlib::IP::Address] $listen_address = undef,
     Optional[String] $docker_kubernetes_user_password = undef,
-    Optional[Stdlib::IP::Address] $cluster_dns = undef, #FIXME: This should be an array of V4 addresses
+    Optional[Array[Stdlib::IP::Address,1]] $cluster_dns = undef,
     Optional[Array[String]] $node_labels = [],
     Optional[Array[K8s::Core::V1Taint]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
@@ -44,7 +44,7 @@ class k8s::kubelet (
         tlsPrivateKeyFile  => $kubelet_cert['key'],
         tlsCertFile        => $kubelet_cert['cert'],
         clusterDomain      => $cluster_domain,
-        clusterDNS         => [$cluster_dns],
+        clusterDNS         => $cluster_dns,
         # FIXME: Do we really need anonymous read only access to kubelets enabled?
         #
         # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).

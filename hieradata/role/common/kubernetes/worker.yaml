@@ -1,19 +1,10 @@
+# This is the conftool cluster name, don't be confused
 cluster: kubernetes
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "%{::site}"
+
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer. So by setting "wikikube" here you are required to add
-# the intermediates "wikikube" and "wikikube_front_proxy".
-#
-# FIXME: This should be something like "cluster group/name" while retaining the discrimination
-#        between production and staging as we don't want to share the same intermediate across
-#        that boundary.
-profile::kubernetes::pki::intermediate: 'wikikube'
-profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
-profile::kubernetes::use_cni: true
-# With k8s 1.16, this will enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50
-profile::kubernetes::ipv6dualstack: true
 profile::docker::engine::settings:
   bridge: none
   iptables: false
@@ -21,15 +12,10 @@ profile::docker::engine::settings:
   log-opts:
     max-size: 100m
   live-restore: true
-# Kubernetes 1.23 related common settings
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
-profile::rsyslog::kubernetes::enable: true
-profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.%{::site}.wmnet:6443
 profile::dragonfly::dfdaemon::ensure: present
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
@@ -72,6 +58,7 @@ profile::lvs::realserver::pools:
   mw-web: {}
   device-analytics: {}
   rest-gateway: {}
+
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps']

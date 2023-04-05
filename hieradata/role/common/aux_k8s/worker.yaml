@@ -1,8 +1,9 @@
+# This is the conftool cluster name, don't be confused
 cluster: 'aux-k8s-workers'
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "aux-k8s-%{::site}"
 
-# Enable overlayfs, needed by docker
 profile::base::overlayfs: true
-
 profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
   bridge: 'none'
@@ -11,18 +12,7 @@ profile::docker::engine::settings:
   log-opts:
     max-size: '100m'
   live-restore: true
-
-# kubernetes node
-profile::kubernetes::master_fqdn: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
-profile::kubernetes::use_cni: true
-
 profile::monitoring::nrpe_check_disk_options: "-w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs"
-
-prometheus::node_exporter::collectors_extra:
-  - 'processes'
-
-profile::rsyslog::kubernetes::kubernetes_url: 'https://aux-k8s-ctrl.svc.%{::site}.wmnet:6443'
-profile::rsyslog::kubernetes::enable: true
 
 # We don't need conftool's safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
@@ -30,12 +20,6 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   k8s-ingress-aux: {}
 
+prometheus::node_exporter::collectors_extra:
+  - 'processes'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
-
-# Kubernetes 1.23 related common settings (should go from here to common for the staging-eqiad update)
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer.
-profile::kubernetes::pki::intermediate: 'aux'

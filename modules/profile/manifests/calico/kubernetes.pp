@@ -7,29 +7,21 @@
 # suggests to use a chained config with Calico.
 
 class profile::calico::kubernetes (
-    Calico::CalicoVersion $calico_version = lookup('profile::calico::kubernetes::calico_version'),
-    String $calico_cni_username = lookup('profile::calico::kubernetes::calico_cni::username', { default_value => 'calico-cni' }),
-    String $calicoctl_username = lookup('profile::calico::kubernetes::calicoctl::username', { default_value => 'calicoctl' }),
-    Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
-    Array[Stdlib::Host] $cluster_nodes = lookup('profile::calico::kubernetes::cluster_nodes'),
-    Hash $calico_cni_config = lookup('profile::calico::kubernetes::cni_config'),
-    String $istio_cni_username = lookup('profile::calico::kubernetes::istio_cni_username', { default_value => 'istio-cni' }),
-    String $istio_cni_version = lookup('profile::calico::kubernetes::istio_cni_version', { default_value => '1.15' }),
-    # It is expected that there is a second intermediate suffixed with _front_proxy to be used
-    # to configure the aggregation layer. So by setting "wikikube" here you are required to add
-    # the intermediates "wikikube" and "wikikube_front_proxy".
-    #
-    # FIXME: This should be something like "cluster group/name" while retaining the discrimination
-    #        between production and staging as we don't want to share the same intermediate across
-    #        that boundary.
-    Cfssl::Ca_name $pki_intermediate = lookup('profile::kubernetes::pki::intermediate'),
-    # 952200 seconds is the default from cfssl::cert:
-    # the default https checks go warning after 10 full days i.e. anywhere
-    # from 864000 to 950399 seconds before the certificate expires.  As such set this to
-    # 11 days + 30 minutes to capture the puppet run schedule.
-    Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 })
+    String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
 ) {
-    $calicoctl_client_cert = profile::pki::get_cert($pki_intermediate, $calicoctl_username, {
+    $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
+    $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
+    $pki_renew_seconds = $kubernetes_cluster_config['pki_renew_seconds']
+    $master_fqdn = $kubernetes_cluster_config['master']
+    $cluster_nodes = $kubernetes_cluster_config['cluster_nodes']
+    $calico_version = $kubernetes_cluster_config['calico_version']
+    $istio_cni_version = $kubernetes_cluster_config['istio_cni_version']
+
+    $calico_cni_username = 'calico-cni'
+    $calicoctl_username = 'calicoctl'
+    $istio_cni_username = 'istio-cni'
+
+    $calicoctl_client_cert = profile::pki::get_cert($pki_intermediate_base, $calicoctl_username, {
         'renew_seconds'  => $pki_renew_seconds,
         'outdir'         => '/etc/kubernetes/pki',
     })
@@ -40,12 +32,29 @@ class profile::calico::kubernetes (
         calico_version     => $calico_version,
     }
 
-    k8s::kubelet::cni { 'calico':
-        priority => 10,
-        config   => $calico_cni_config,
+    # We don't install istio-cni on control-planes as they should not
+    # run any workload that needs access to it's service mesh.
+    # So drop the istio-cni plugin from the list of configured plugins.
+    if $::fqdn in $kubernetes_cluster_config['control_plane_nodes'] {
+        $cni_config = $kubernetes_cluster_config['cni_config'].reduce({}) | $memo, $value | {
+            $k = $value[0]
+            if $k == 'plugins' {
+                $v = $value[1].filter | $plugin | {
+                    $plugin['type'] != 'istio-cni'
+                }
+            }
+            $memo + { $k => pick($v, $value[1]) }
+        }
+    } else {
+        $cni_config = $kubernetes_cluster_config['cni_config']
     }
 
-    $calico_cni_client_cert = profile::pki::get_cert($pki_intermediate, $calico_cni_username, {
+    k8s::kubelet::cni { 'calico':
+        priority => 10,
+        config   => $cni_config,
+    }
+
+    $calico_cni_client_cert = profile::pki::get_cert($pki_intermediate_base, $calico_cni_username, {
         'renew_seconds'  => $pki_renew_seconds,
         'outdir'         => '/etc/kubernetes/pki',
     })
@@ -58,7 +67,7 @@ class profile::calico::kubernetes (
 
     # Install istio-cni package and provide a kubeconfig for it in case
     # a cni plugin of type "istio-cni" is configured.
-    $ensure_istio_cni = pick($calico_cni_config['plugins'], []).filter | $plugin | {
+    $ensure_istio_cni = pick($cni_config['plugins'], []).filter | $plugin | {
         $plugin['type'] == 'istio-cni'
     }.empty.bool2str('absent', 'present')
     $istio_cni_version_safe = regsubst($istio_cni_version, '\.', '', 'G')
@@ -66,7 +75,7 @@ class profile::calico::kubernetes (
         component => "component/istio${istio_cni_version_safe}",
         packages  => { 'istio-cni' => $ensure_istio_cni },
     }
-    $istio_cni = profile::pki::get_cert($pki_intermediate, $istio_cni_username, {
+    $istio_cni = profile::pki::get_cert($pki_intermediate_base, $istio_cni_username, {
         ensure           => $ensure_istio_cni,
         'renew_seconds'  => $pki_renew_seconds,
         'outdir'         => '/etc/kubernetes/pki',

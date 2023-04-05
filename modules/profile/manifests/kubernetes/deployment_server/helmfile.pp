@@ -2,26 +2,25 @@
 # Installs helmfile and helmfile-diff, plus
 # all the puppet-provided defaults and secrets for each service.
 #
-class profile::kubernetes::deployment_server::helmfile(
-    Hash[String, Hash] $cluster_groups = lookup('kubernetes_cluster_groups'),
-    Profile::Kubernetes::User_defaults $user_defaults = lookup('profile::kubernetes::deployment_server::user_defaults'),
-    Hash[String, Hash[String, Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', {'default_value' => {}}),
-    Hash[String, Any] $services_secrets = lookup('profile::kubernetes::deployment_server_secrets::services', {'default_value' => {}}),
-    Hash[String, Any] $default_secrets = lookup('profile::kubernetes::deployment_server_secrets::defaults', {'default_value' => {}}),
-    String $helm_user_group = lookup('profile::kubernetes::deployment_server::helm_user_group'),
-){
+class profile::kubernetes::deployment_server::helmfile (
+    Profile::Kubernetes::User_defaults $user_defaults                   = lookup('profile::kubernetes::deployment_server::user_defaults'),
+    Hash[String, Hash[String, Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { 'default_value' => {} }),
+    Hash[String, Any] $services_secrets                                 = lookup('profile::kubernetes::deployment_server_secrets::services', { 'default_value' => {} }),
+    Hash[String, Any] $default_secrets                                  = lookup('profile::kubernetes::deployment_server_secrets::defaults', { 'default_value' => {} }),
+    String $helm_user_group                                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
+) {
     # Add the global configuration for all deployments.
-    require ::profile::kubernetes::deployment_server::global_config
+    require profile::kubernetes::deployment_server::global_config
 
     # Install helmfile and the repository containing helmfile deployments.
     class { 'helmfile': }
     class { 'helmfile::repository':
         repository => 'operations/deployment-charts',
-        srcdir     => '/srv/deployment-charts'
+        srcdir     => '/srv/deployment-charts',
     }
 
     # Install the private values for each deployment.
-    $general_private_dir = "${::profile::kubernetes::deployment_server::global_config::general_dir}/private"
+    $general_private_dir = "${profile::kubernetes::deployment_server::global_config::general_dir}/private"
 
     # "service_group" holds a value for each k8s cluster group that we run (main, ml-serve, etc..).
     $services.each |String $service_group, Hash $service_data| {
@@ -43,9 +42,9 @@ class profile::kubernetes::deployment_server::helmfile(
                 default => $data['private_files']
             }
             $service_dir_ensure = $data['ensure'] ? {
-                undef   => directory,
-                present => directory,
-                default => $data['ensure'],
+                undef     => directory,
+                'present' => directory,
+                default   => $data['ensure'],
             }
             file { "${private_dir}/${svcname}":
                 ensure  => $service_dir_ensure,
@@ -56,7 +55,7 @@ class profile::kubernetes::deployment_server::helmfile(
                 recurse => true,
             }
         }
-        $cluster_groups[$service_group].each |String $environment, Hash $_| {
+        k8s::fetch_cluster_groups()[$service_group].each | String $cluster_name, K8s::ClusterConfig $_| {
             $merged_services.map |String $svcname, Hash $data| {
                 # Permission and file presence setup
                 if $data['private_files'] {
@@ -68,7 +67,7 @@ class profile::kubernetes::deployment_server::helmfile(
                     undef   => present,
                     default => $data['ensure'],
                 }
-                $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
+                $raw_data = deep_merge($default_secrets[$cluster_name], $data[$cluster_name])
                 # write private section only if there is any secret defined.
                 unless $raw_data.empty {
                     # Substitute the value of any key in the form <somekey>: secret__<somevalue>
@@ -76,7 +75,7 @@ class profile::kubernetes::deployment_server::helmfile(
                     # This allows to avoid having to copy/paste certs inside of yaml files directly,
                     # for example.
                     $secret_data = wmflib::inject_secret($raw_data)
-                    file { "${private_dir}/${svcname}/${environment}.yaml":
+                    file { "${private_dir}/${svcname}/${cluster_name}.yaml":
                         ensure  => $service_ensure,
                         owner   => $permissions['owner'],
                         group   => $permissions['group'],
@@ -86,6 +85,6 @@ class profile::kubernetes::deployment_server::helmfile(
                     }
                 }
             }
-        } # end clusters
-    } # end cluster_directories
+        } # end k8s::fetch_cluster_groups
+    } # end services
 }

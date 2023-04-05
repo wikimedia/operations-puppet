@@ -1,12 +1,10 @@
+# This is the conftool cluster name, don't be confused
 cluster: ml_serve
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer.
-profile::kubernetes::pki::intermediate: 'mlserve'
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "ml-serve-%{::site}"
+
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none
   iptables: false
@@ -15,47 +13,15 @@ profile::docker::engine::settings:
     max-size: 100m
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
-# Tokens for the calico kubernetes users in private repo at:
-profile::rsyslog::kubernetes::kubernetes_url: https://ml-ctrl.svc.%{::site}.wmnet:6443
-profile::rsyslog::kubernetes::enable: true
-profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
-prometheus::node_exporter::collectors_extra:
-  - processes
+
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference: {}
   k8s-ingress-ml-serve: {}
 
-profile::calico::kubernetes::cni_config:
-  name: "k8s-pod-network"
-  cniVersion: "0.3.1"
-  plugins:
-  - type: "calico"
-    log_level: "info"
-    datastore_type: "kubernetes"
-    mtu: 1500
-    ipam:
-      type: "calico-ipam"
-      assign_ipv4: "true"
-      assign_ipv6: "true"
-    policy:
-      type: "k8s"
-    kubernetes:
-      kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
-  - name: "istio-cni"
-    type: "istio-cni"
-    log_level: "info"
-    kubernetes:
-      kubeconfig: "/etc/cni/net.d/istio-kubeconfig"
-      cni_bin_dir: "/opt/cni/bin"
-      exclude_namespaces:
-      - istio-system
-      - kube-system
-      - knative-serving
-      - cert-manager
-      - kserve
-
+prometheus::node_exporter::collectors_extra:
+  - processes
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']

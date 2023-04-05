@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 class profile::rsyslog::kubernetes (
-    Boolean $enable = lookup('profile::rsyslog::kubernetes::enable', { 'default_value' => false }),
-    Cfssl::Ca_name $pki_intermediate = lookup('profile::kubernetes::pki::intermediate'),
-    Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 }),
-    Optional[Stdlib::HTTPSUrl] $kubernetes_url = lookup('profile::rsyslog::kubernetes::kubernetes_url', { 'default_value' => undef }),
+    Boolean $enable                  = lookup('profile::rsyslog::kubernetes::enable', { 'default_value' => true }),
+    String $kubernetes_cluster_name  = lookup('profile::kubernetes::cluster_name'),
 ) {
     include profile::rsyslog::shellbox
+
+    $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
+    $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
+    $pki_renew_seconds = $kubernetes_cluster_config['pki_renew_seconds']
+    $kubernetes_url = $kubernetes_cluster_config['master_url']
 
     apt::package_from_component { 'rsyslog_kubernetes':
         component => 'component/rsyslog-k8s',
@@ -18,7 +21,7 @@ class profile::rsyslog::kubernetes (
       default => absent,
     }
 
-    $client_auth = profile::pki::get_cert($pki_intermediate, 'rsyslog', {
+    $client_auth = profile::pki::get_cert($pki_intermediate_base, 'rsyslog', {
         'ensure'         => $ensure,
         'renew_seconds'  => $pki_renew_seconds,
         'names'          => [{ 'organisation' => 'view' }],

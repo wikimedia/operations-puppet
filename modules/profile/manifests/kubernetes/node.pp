@@ -1,36 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::node (
-    K8s::KubernetesVersion $version = lookup('profile::kubernetes::version'),
-    Stdlib::Fqdn $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
-    Array[Stdlib::Host] $master_hosts = lookup('profile::kubernetes::master_hosts'),
-    String $infra_pod = lookup('profile::kubernetes::infra_pod', { default_value => 'docker-registry.discovery.wmnet/pause:3.6-1' }),
-    Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
-    Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', { default_value => "http://prometheus.svc.${::site }.wmnet/k8s" }),
-    String $kubelet_cluster_domain = lookup('profile::kubernetes::node::kubelet_cluster_domain', { default_value => 'cluster.local' }),
-    Optional[Stdlib::IP::Address] $kubelet_cluster_dns = lookup('profile::kubernetes::node::kubelet_cluster_dns', { default_value => undef }),
-    Optional[Array[String]] $kubelet_extra_params = lookup('profile::kubernetes::node::kubelet_extra_params', { default_value => undef }),
-    Optional[Array[String]] $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
+    String $kubernetes_cluster_name                          = lookup('profile::kubernetes::cluster_name'),
+    Optional[Array[String]] $kubelet_node_labels             = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
+    Optional[Array[String]] $kubelet_extra_params            = lookup('profile::kubernetes::node::kubelet_extra_params', { default_value => undef }),
     Optional[Array[K8s::Core::V1Taint]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
-    Boolean $ipv6dualstack = lookup('profile::kubernetes::ipv6dualstack', { default_value => false }),
-    Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
-    K8s::ClusterCIDR $cluster_cidr = lookup('profile::kubernetes::cluster_cidr'),
-    # It is expected that there is a second intermediate suffixed with _front_proxy to be used
-    # to configure the aggregation layer. So by setting "wikikube" here you are required to add
-    # the intermediates "wikikube" and "wikikube_front_proxy".
-    #
-    # FIXME: This should be something like "cluster group/name" while retaining the discrimination
-    #        between production and staging as we don't want to share the same intermediate across
-    #        that boundary.
-    Cfssl::Ca_name $pki_intermediate = lookup('profile::kubernetes::pki::intermediate'),
-    # 952200 seconds is the default from cfssl::cert:
-    # the default https checks go warning after 10 full days i.e. anywhere
-    # from 864000 to 950399 seconds before the certificate expires.  As such set this to
-    # 11 days + 30 minutes to capture the puppet run schedule.
-    Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 })
+    Optional[String] $docker_kubernetes_user_password        = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
 ) {
     require profile::rsyslog::kubernetes
     # Using netbox to know where we are situated in the datacenter
     require profile::netbox::host
+
+    $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
+    $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
+    $pki_renew_seconds = $kubernetes_cluster_config['pki_renew_seconds']
+    $master_fqdn = $kubernetes_cluster_config['master']
+    $version = $kubernetes_cluster_config['version']
+    $control_plane_nodes = $kubernetes_cluster_config['control_plane_nodes']
+    $infra_pod = $kubernetes_cluster_config['infra_pod']
+    $use_cni = $kubernetes_cluster_config['use_cni']
+    $cluster_dns = $kubernetes_cluster_config['cluster_dns']
+    $ipv6dualstack = $kubernetes_cluster_config['ipv6dualstack']
+    $cluster_cidr = $kubernetes_cluster_config['cluster_cidr']
 
     # Enable performance governor for hardware nodes
     class { 'cpufrequtils': }
@@ -44,7 +34,7 @@ class profile::kubernetes::node (
         priority           => 8,
     }
 
-    $kubelet_cert = profile::pki::get_cert($pki_intermediate, 'kubelet', {
+    $kubelet_cert = profile::pki::get_cert($pki_intermediate_base, 'kubelet', {
         'profile'        => 'server',
         'renew_seconds'  => $pki_renew_seconds,
         'owner'          => 'kube',
@@ -76,7 +66,7 @@ class profile::kubernetes::node (
 
     # Setup kubelet
     $kubelet_kubeconfig = '/etc/kubernetes/kubelet.conf'
-    $default_auth = profile::pki::get_cert($pki_intermediate, "system:node:${facts['fqdn']}", {
+    $default_auth = profile::pki::get_cert($pki_intermediate_base, "system:node:${facts['fqdn']}", {
         'renew_seconds'  => $pki_renew_seconds,
         'names'          => [{ 'organisation' => 'system:nodes' }],
         'owner'          => 'kube',
@@ -119,8 +109,7 @@ class profile::kubernetes::node (
     $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { 'k8s::kubelet':
         cni                             => $use_cni,
-        cluster_domain                  => $kubelet_cluster_domain,
-        cluster_dns                     => $kubelet_cluster_dns,
+        cluster_dns                     => $cluster_dns,
         pod_infra_container_image       => $infra_pod,
         kubelet_cert                    => $kubelet_cert,
         kubeconfig                      => $kubelet_kubeconfig,
@@ -134,7 +123,7 @@ class profile::kubernetes::node (
 
     # Setup kube-proxy
     $kubeproxy_kubeconfig = '/etc/kubernetes/proxy.conf'
-    $default_proxy = profile::pki::get_cert($pki_intermediate, 'system:kube-proxy', {
+    $default_proxy = profile::pki::get_cert($pki_intermediate_base, 'system:kube-proxy', {
         'renew_seconds'  => $pki_renew_seconds,
         'names'          => [{ 'organisation' => 'system:node-proxier' }],
         'owner'          => 'kube',
@@ -171,11 +160,11 @@ class profile::kubernetes::node (
     # lint:endignore
 
     $kubelet_default_port = 10250
-    $master_hosts_ferm = join($master_hosts, ' ')
+    $control_plane_nodes_ferm = join($control_plane_nodes, ' ')
     ferm::service { 'kubelet-http':
         proto  => 'tcp',
         port   => $kubelet_default_port,
-        srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
+        srange => "(@resolve((${control_plane_nodes_ferm})) @resolve((${control_plane_nodes_ferm}), AAAA))",
     }
 
     # kube-proxy on startup sets the following. However sysctl values may be

@@ -1,35 +1,24 @@
+# This is the conftool cluster name, don't be confused
 cluster: ml_serve
-profile::kubernetes::master::cluster_group: ml-serve
-profile::kubernetes::master::accessible_to: all
-profile::kubernetes::master::allow_privileged: true
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "ml-serve-%{::site}"
+
+# TODO: Remove service_cert after T329826 is resolved
 profile::kubernetes::master::service_cert: "ml-ctrl.svc.%{::site}.wmnet"
+# TODO: Remove ssl_cert_path after T329826 is resolved
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/ml-ctrl.svc.%{::site}.wmnet.crt"
+# TODO: Remove ssl_key_path after T329826 is resolved
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/ml-ctrl.svc.%{::site}.wmnet.key"
-profile::kubernetes::master::service_node_port_range: '1-65535'
-profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-mlserve"
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-# See "kube-apiserver --help" for a list of available admission plugins
-# and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
-profile::kubernetes::master::admission_plugins:
-  enable:
-    - PodSecurityPolicy
-    # v1.23: Enable DenyServiceExternalIPs because we don't use them
-    - DenyServiceExternalIPs
-    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
-    - NodeRestriction
-  disable:
-    - StorageObjectInUseProtection
-    - PersistentVolumeClaimResize
+
 profile::lvs::realserver::pools:
   ml-ctrl:
     services:
       - "kube-apiserver"
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer.
-profile::kubernetes::pki::intermediate: 'mlserve'
+
 # Define in the private repo
 # profile::kubernetes::master::infrastructure_users:
+
+profile::contacts::role_contacts: ['Machine Learning']
 
 # Configuration to add the Kubelet to Master nodes for limited use cases
 # (like running bird for Calico, see T285927)
@@ -38,9 +27,9 @@ profile::kubernetes::pki::intermediate: 'mlserve'
 profile::kubernetes::node::kubelet_node_taints:
   - key: node-role.kubernetes.io/master
     effect: NoSchedule
+
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none
   iptables: false
@@ -49,11 +38,8 @@ profile::docker::engine::settings:
     max-size: 100m
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
-profile::rsyslog::kubernetes::kubernetes_url: https://ml-ctrl.svc.%{::site}.wmnet:6443
-profile::rsyslog::kubernetes::enable: true
-profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
+
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::admin::groups:
   - ml-team-admins
-profile::contacts::role_contacts: ['Machine Learning']

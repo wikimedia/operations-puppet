@@ -1,56 +1,18 @@
+# This is the conftool cluster name, don't be confused
 cluster: kubernetes-staging
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
-profile::kubernetes::master::cluster_group: main
-profile::kubernetes::master::allow_privileged: true
-profile::kubernetes::master::accessible_to: all
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "staging-%{::site}"
+
+# TODO: Remove service_cert after T329826 is resolved
 profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer. So by setting "wikikube" here you are required to add
-# the intermediates "wikikube" and "wikikube_front_proxy".
-#
-# FIXME: This should be something like "cluster group/name" while retaining the discrimination
-#        between production and staging as we don't want to share the same intermediate across
-#        that boundary.
-profile::kubernetes::pki::intermediate: 'wikikube_staging'
-# Renew certificates if they are due to expire in 48h
-# wikikube_staging certs have a default expiry of 3 days, to this should ultimately lead
-# to every day renewals.
-profile::kubernetes::pki::renew_seconds: 172800
+# TODO: Remove ssl_cert_path after T329826 is resolved
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
+# TODO: Remove ssl_key_path after T329826 is resolved
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
-profile::kubernetes::master::service_node_port_range: "1-65535"
 
-# See "kube-apiserver --help" for a list of available admission plugins
-# and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
-profile::kubernetes::master::admission_plugins:
-  enable:
-    - PodSecurityPolicy
-    # v1.23: Enable DenyServiceExternalIPs because we don't use them
-    - DenyServiceExternalIPs
-    # v1.23: Limit the access scope of kubelets to only relevant Node and Pod objects
-    - NodeRestriction
-  disable:
-    - StorageObjectInUseProtection
-    - PersistentVolumeClaimResize
-
-# https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/
-profile::kubernetes::master::admission_configuration:
-  - name: "ResourceQuota"
-    configuration:
-      apiVersion: resourcequota.admission.k8s.io/v1beta1
-      kind: Configuration
-      limitedResources:
-      - resource: pods
-        matchScopes:
-        - scopeName: PriorityClass
-          operator: In
-          values:
-            - system-cluster-critical
-            - system-node-critical
-profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-staging"
 # Define in the private repo
 # profile::kubernetes::master::infrastructure_users:
+
 profile::contacts::role_contacts: ['ServiceOps']
 
 # Configuration to add the Kubelet to Master nodes for limited use cases
@@ -60,10 +22,7 @@ profile::contacts::role_contacts: ['ServiceOps']
 profile::kubernetes::node::kubelet_node_taints:
   - key: node-role.kubernetes.io/master
     effect: NoSchedule
-# With k8s 1.16, this will enable the IPv6DualStack feature gate for kubelet only, see I54a042731f60dc02494907022cb8115fae052c50
-profile::kubernetes::ipv6dualstack: true
-profile::kubernetes::use_cni: true
-# We use docker with overlayfs here
+
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
@@ -74,6 +33,3 @@ profile::docker::engine::settings:
     max-size: 100m
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
-profile::rsyslog::kubernetes::enable: true
-profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.%{::site}.wmnet:6443
-profile::kubernetes::master_fqdn: kubestagemaster.svc.%{::site}.wmnet

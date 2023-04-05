@@ -1,10 +1,10 @@
+# This is the conftool cluster name, don't be confused
 cluster: dse_k8s
-# Kubernetes 1.23 related common settings (should go from here to common for the eqiad update)
-profile::kubernetes::version: '1.23'
-profile::calico::kubernetes::calico_version: '3.23'
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "dse-k8s-%{::site}"
+
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
-profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
   bridge: none
   iptables: false
@@ -13,59 +13,19 @@ profile::docker::engine::settings:
     max-size: 100m
   live-restore: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
-profile::rsyslog::kubernetes::kubernetes_url: https://dse-k8s-ctrl.svc.%{::site}.wmnet:6443
-profile::rsyslog::kubernetes::enable: true
-profile::kubernetes::master_fqdn: dse-k8s-ctrl.svc.%{::site}.wmnet
-prometheus::node_exporter::collectors_extra:
-  - processes
+
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference: {}
 
-profile::calico::kubernetes::cni_config:
-  name: "k8s-pod-network"
-  cniVersion: "0.3.1"
-  plugins:
-  - type: "calico"
-    log_level: "info"
-    datastore_type: "kubernetes"
-    mtu: 1500
-    ipam:
-      type: "calico-ipam"
-      assign_ipv4: "true"
-      assign_ipv6: "true"
-    policy:
-      type: "k8s"
-    kubernetes:
-      kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
-  - name: "istio-cni"
-    type: "istio-cni"
-    log_level: "info"
-    kubernetes:
-      kubeconfig: "/etc/cni/net.d/istio-kubeconfig"
-      cni_bin_dir: "/opt/cni/bin"
-      exclude_namespaces:
-      - istio-system
-      - kube-system
-      - knative-serving
-      - cert-manager
-      - kserve
-
 profile::admin::groups:
   - ml-team-admins
+prometheus::node_exporter::collectors_extra:
+  - processes
 profile::contacts::role_contacts:
   - 'Data Engineering'
   - 'Machine Learning'
-
-# It is expected that there is a second intermediate suffixed with _front_proxy to be used
-# to configure the aggregation layer. So by setting "dse" here you are required to add
-# the intermediates "dse" and "dse_front_proxy".
-#
-# FIXME: This should be something like "cluster group/name" while retaining the discrimination
-#        between production and staging as we don't want to share the same intermediate across
-#        that boundary.
-profile::kubernetes::pki::intermediate: 'dse'
 
 profile::amd_gpu::allow_gpu_broader_access: true
 profile::amd_gpu::is_kubernetes_node: true

@@ -66,48 +66,6 @@ datacenters:
 
 public_domain: 'wikimedia.org'
 
-# kubernetes clusters by group.
-kubernetes_cluster_groups:
-  main:
-    eqiad:
-      dc: eqiad
-      master: kubemaster.svc.eqiad.wmnet
-    codfw:
-      dc: codfw
-      master: kubemaster.svc.codfw.wmnet
-    # active staging cluster.
-    staging:
-      dc: eqiad
-      master: kubestagemaster.svc.eqiad.wmnet
-    "staging-eqiad":
-      dc: eqiad
-      master: kubestagemaster.svc.eqiad.wmnet
-      add_private: false
-      imagecatalog: true
-    "staging-codfw":
-      dc: codfw
-      master: kubestagemaster.svc.codfw.wmnet
-      add_private: false
-      imagecatalog: true
-  "ml-serve":
-    "ml-serve-eqiad":
-      dc: eqiad
-      master: ml-ctrl.svc.eqiad.wmnet
-    "ml-serve-codfw":
-      dc: codfw
-      master: ml-ctrl.svc.codfw.wmnet
-    "ml-staging-codfw":
-      dc: codfw
-      master: ml-staging-ctrl.svc.codfw.wmnet
-  "dse-k8s":
-    "dse-k8s-eqiad":
-      dc: eqiad
-      master: dse-k8s-ctrl.svc.eqiad.wmnet
-  aux-k8s:
-    aux-k8s-eqiad:
-      dc: eqiad
-      master: aux-k8s-ctrl.svc.eqiad.wmnet
-
 # Swift cluster metadata
 # The keys here are called "cluster_label" in puppet code
 # This is an instance of the Swift::Clusters type

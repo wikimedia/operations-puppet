@@ -26,7 +26,7 @@ if @additional_sa_certs
 end
 
 if @service_node_port_range
-  daemon_args.push("--service-node-port-range=#{@service_node_port_range}")
+  daemon_args.push("--service-node-port-range=#{@service_node_port_range.join('-')}")
 end
 
 if @admission_plugins
@@ -35,10 +35,6 @@ if @admission_plugins
       daemon_args.push("--#{k}-admission-plugins=#{v.sort.join(',')}")
     end
   end
-end
-
-if @runtime_config
-  daemon_args.push("--runtime-config=#{@runtime_config}")
 end
 
 if @admission_configuration
