@@ -815,10 +815,6 @@ node 'dborch1001.wikimedia.org' {
 node /^(db1204|db1205)\.eqiad\.wmnet$/ {
     role(mariadb::misc)
 }
-# New db node T326661
-node /^db12(0[7-9]|1[0-9]|2[0-5])\.eqiad\.wmnet$/ {
-    role(insetup::data_persistence)
-}
 # backup1-codfw section (datacenter-specific backup metadata hosts)
 node /^db2183|db2184\.codfw\.wmnet$/ {
     role(mariadb::misc)
