@@ -28,7 +28,8 @@ class profile::spicerack (
 
 ) {
     ensure_packages([
-        'python3-dateutil', 'python3-prettytable', 'python3-requests', 'python3-packaging', 'spicerack', 'python3-gitlab', 'transferpy',
+        'python3-dateutil', 'python3-prettytable', 'python3-requests', 'python3-packaging',
+        'spicerack', 'python3-gitlab', 'transferpy', 'python3-aiohttp',
     ])
 
     $cookbooks_repos.each |$repo, $dir| {
