@@ -8,13 +8,15 @@ CREATE UNIQUE INDEX project_prefix ON prefix(project, prefix);
 CREATE TABLE roleassignment(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     prefix_id INT UNSIGNED NOT NULL,
-    role VARCHAR(255) NOT NULL
+    role VARCHAR(255) NOT NULL,
+    FOREIGN KEY f_roleassignment_prefix_id (prefix_id) REFERENCES prefix (id) ON DELETE CASCADE
 ) CHARSET=utf8mb4;
 
 CREATE TABLE hieraassignment(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     prefix_id INT UNSIGNED NOT NULL,
-    hiera_data TEXT NOT NULL
+    hiera_data TEXT NOT NULL,
+    FOREIGN KEY f_hieraassignment_prefix_id (prefix_id) REFERENCES prefix (id) ON DELETE CASCADE
 ) CHARSET=utf8mb4;
 CREATE UNIQUE INDEX hiera_prefix ON hieraassignment(prefix_id);
 
