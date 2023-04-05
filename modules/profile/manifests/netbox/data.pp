@@ -2,6 +2,5 @@
 # @summary profile to load and access common netbox data
 # @param mgmt hash of managment hosts
 class profile::netbox::data (
-    Hash[Stdlib::Host, Netbox::Host::Location::BareMetal] $mgmt = lookup('profile::netbox::data::mgmt')
+    Hash[Stdlib::Host, Netbox::Device::Location::BareMetal] $mgmt = lookup('profile::netbox::data::mgmt')
 ) {}
-

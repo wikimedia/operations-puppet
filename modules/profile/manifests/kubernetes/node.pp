@@ -96,9 +96,9 @@ class profile::kubernetes::node (
     $region = $location['site']
     $zone = $location ? {
         # Ganeti instances will have their ganeti cluster and group as zone, like "ganeti-eqiad-a"
-        Netbox::Host::Location::Virtual   => "ganeti-${location['ganeti_cluster']}-${location['ganeti_group']}",
+        Netbox::Device::Location::Virtual   => "ganeti-${location['ganeti_cluster']}-${location['ganeti_group']}",
         # The zone of metal instances depends on the layout of the row they are in
-        Netbox::Host::Location::BareMetal => if $location['rack'] =~ /^[A-D]\d$/ {
+        Netbox::Device::Location::BareMetal => if $location['rack'] =~ /^[A-D]\d$/ {
                 # The old row setup follows a per row redundancy model, therefore we
                 # expect zone to include the row without rack number, like "row-a".
                 regsubst($location['row'], "${region}-", '')
