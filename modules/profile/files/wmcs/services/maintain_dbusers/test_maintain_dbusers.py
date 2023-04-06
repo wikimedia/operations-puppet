@@ -9,9 +9,7 @@ from unittest import mock
 import pymysql
 import pytest
 
-maintain_dbusers = __import__(
-    "maintain-dbusers"
-)  # ideally, maintain-dbusers.py should be renamed to maintain_dbusers, to adhere to pep8 standard
+import maintain_dbusers
 
 
 class MockResponse:
@@ -194,9 +192,9 @@ class MysqlHashTestCase(unittest.TestCase):
 
 
 class FindToolsTestCase(unittest.TestCase):
-    @mock.patch("maintain-dbusers.ldap3")
+    @mock.patch("maintain_dbusers.ldap3")
     @mock.patch(
-        "maintain-dbusers.get_ldap_conn",
+        "maintain_dbusers.get_ldap_conn",
         return_value=StubLdapConnection(
             mocked_response_pages=[[get_dummy_ldap_user(user_id=1), get_dummy_ldap_user(user_id=2)]]
         ),
@@ -206,9 +204,9 @@ class FindToolsTestCase(unittest.TestCase):
         result = maintain_dbusers.find_tools(get_dummy_ldap_config())
         self.assertEqual(result, expected_tools)
 
-    @mock.patch("maintain-dbusers.ldap3")
+    @mock.patch("maintain_dbusers.ldap3")
     @mock.patch(
-        "maintain-dbusers.get_ldap_conn",
+        "maintain_dbusers.get_ldap_conn",
         return_value=StubLdapConnection(
             mocked_response_pages=[
                 [get_dummy_ldap_user(user_id=1)],
@@ -225,9 +223,9 @@ class FindToolsTestCase(unittest.TestCase):
 
 
 class FindToolsUsersTestCase(unittest.TestCase):
-    @mock.patch("maintain-dbusers.ldap3")
+    @mock.patch("maintain_dbusers.ldap3")
     @mock.patch(
-        "maintain-dbusers.get_ldap_conn",
+        "maintain_dbusers.get_ldap_conn",
         return_value=StubLdapConnection(
             mocked_response_pages=[[get_dummy_ldap_user(user_id=1), get_dummy_ldap_user(user_id=2)]]
         ),
@@ -247,7 +245,7 @@ class FindToolsUsersTestCase(unittest.TestCase):
 
 
 class GetGlobalWikiUserTestCase(unittest.TestCase):
-    @mock.patch("maintain-dbusers.requests.get", return_value=MockResponse({}))
+    @mock.patch("maintain_dbusers.requests.get", return_value=MockResponse({}))
     def test_request_get_should_be_called_with_correct_user_agent(self, mocked_requests_get):
         expected_uid = "33455"
 
@@ -258,7 +256,7 @@ class GetGlobalWikiUserTestCase(unittest.TestCase):
 
         self.assertEqual(maintain_dbusers.USER_AGENT, call_headers.get("User-Agent", None))
 
-    @mock.patch("maintain-dbusers.requests.get", return_value=MockResponse({}))
+    @mock.patch("maintain_dbusers.requests.get", return_value=MockResponse({}))
     def test_request_get_should_be_called_with_correct_uid(self, mocked_requests_get):
         expected_uid = "33455"
 
@@ -269,7 +267,7 @@ class GetGlobalWikiUserTestCase(unittest.TestCase):
 
         self.assertTrue(call_url.endswith(expected_uid))
 
-    @mock.patch("maintain-dbusers.requests.get")
+    @mock.patch("maintain_dbusers.requests.get")
     def test_should_function_returns_right_value(self, mocked_requests_get):
         expected_result = {"some": "result"}
         mocked_requests_get.return_value = MockResponse(expected_result)
@@ -323,15 +321,15 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
         params.update(kwargs)
         return params
 
-    @mock.patch("maintain-dbusers.requests.post")
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post")
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_raise_key_error_if_function_is_called_with_wrong_config_keys(self, _1, _2):
         with pytest.raises(KeyError):
             maintain_dbusers.write_replica_cnf(
                 "right", "number", "of", "args", "where", "passed", {"but wrong config keys": ""}
             )
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_request_post_should_be_called_with_correct_user_agent(self, mocked_requests_post):
         maintain_dbusers.write_replica_cnf(**self.get_dummy_params())
 
@@ -340,7 +338,7 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
         gotten_call_headers = mocked_requests_post.call_args[-1].get("headers", {})
         self.assertEqual(maintain_dbusers.USER_AGENT, gotten_call_headers.get("User-Agent", None))
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_request_post_should_be_called_with_correct_url(self, mocked_requests_post):
         kwargs = self.get_dummy_params()
         maintain_dbusers.write_replica_cnf(**kwargs)
@@ -358,8 +356,8 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
         url = mocked_requests_post.call_args[-1].get("url", "")
         self.assertTrue(url.startswith(kwargs["config"]["replica_cnf"]["paws"]["root_url"]))
 
-    @mock.patch("maintain-dbusers.requests.post", side_effect=Exception)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", side_effect=Exception)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_when_post_raises_exception(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -369,8 +367,8 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_ERROR_REPLY)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_ERROR_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_when_server_returns_error(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -381,8 +379,8 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_SKIP_REPLY)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_SKIP_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_when_server_returns_skip(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -427,14 +425,14 @@ class ReadReplicaCnfTestCase(unittest.TestCase):
         params.update(kwargs)
         return params
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_ERROR_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_ERROR_REPLY)
     def test_should_raise_key_error_if_function_is_called_with_wrong_config_keys(self, _):
         with pytest.raises(KeyError):
             maintain_dbusers.read_replica_cnf(
                 "right", "args", "passed", {"but wrong config keys": ""}
             )
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_request_post_should_be_called_with_correct_kwargs(self, mocked_requests_post):
         maintain_dbusers.read_replica_cnf(**self.get_dummy_params())
 
@@ -443,7 +441,7 @@ class ReadReplicaCnfTestCase(unittest.TestCase):
         call_headers = mocked_requests_post.call_args[-1].get("headers", {})
         self.assertEqual(maintain_dbusers.USER_AGENT, call_headers.get("User-Agent", None))
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_request_post_should_be_called_with_correct_url(self, mocked_requests_post):
         kwargs = self.get_dummy_params()
         maintain_dbusers.read_replica_cnf(**kwargs)
@@ -461,8 +459,8 @@ class ReadReplicaCnfTestCase(unittest.TestCase):
         url = mocked_requests_post.call_args[-1].get("url", "")
         self.assertTrue(url.startswith(kwargs["config"]["replica_cnf"]["paws"]["root_url"]))
 
-    @mock.patch("maintain-dbusers.requests.post", side_effect=Exception)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", side_effect=Exception)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_when_post_raises(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -472,8 +470,8 @@ class ReadReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", side_effect=SERVER_ERROR_REPLY)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", side_effect=SERVER_ERROR_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_when_server_replies_error(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -483,7 +481,7 @@ class ReadReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_should_return_user_and_path_when_server_returns_ok(self, mocked_requests_post):
         expected_result = ("test-user", "test-password")
 
@@ -526,7 +524,7 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         params.update(kwargs)
         return params
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_should_raise_key_error_if_function_is_called_with_wrong_config_keys(self, _):
 
         with pytest.raises(KeyError):
@@ -534,7 +532,7 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
                 "right", "args", "passed", {"but wrong config keys": ""}
             )
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_request_post_sets_the_user_agent_header(self, mocked_requests_post):
         maintain_dbusers.delete_replica_cnf(**self.get_dummy_params())
 
@@ -543,7 +541,7 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         call_headers = mocked_requests_post.call_args[-1].get("headers", {})
         self.assertEqual(maintain_dbusers.USER_AGENT, call_headers.get("User-Agent", None))
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_request_post_should_be_called_with_correct_url(self, mocked_requests_post):
         kwargs = self.get_dummy_params()
         maintain_dbusers.delete_replica_cnf(**kwargs)
@@ -561,8 +559,8 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         url = mocked_requests_post.call_args[-1].get("url", "")
         self.assertTrue(url.startswith(kwargs["config"]["replica_cnf"]["paws"]["root_url"]))
 
-    @mock.patch("maintain-dbusers.requests.post", side_effect=Exception)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", side_effect=Exception)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_if_post_raises(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -572,8 +570,8 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", side_effect=SERVER_ERROR_REPLY)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.post", side_effect=SERVER_ERROR_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_if_server_returns_error(
         self, mocked_logging_log, mocked_requests_post
     ):
@@ -583,7 +581,7 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_post.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.post", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_should_return_string(self, mocked_requests_post):
         expected_result = "/this/is/a/path"
 
@@ -624,7 +622,7 @@ class FetchPawsUidsTestCase(unittest.TestCase):
         params.update(kwargs)
         return params
 
-    @mock.patch("maintain-dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
     def test_should_raise_key_error_if_function_is_called_with_wrong_config_keys(self, _):
 
         with pytest.raises(KeyError):
@@ -632,7 +630,7 @@ class FetchPawsUidsTestCase(unittest.TestCase):
                 {"right number of function args but wrong config keys": ""}
             )
 
-    @mock.patch("maintain-dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
     def test_request_get_sends_correct_user_agent(self, mocked_requests_get):
         maintain_dbusers.fetch_paws_uids(**self.get_dummy_params())
 
@@ -641,8 +639,8 @@ class FetchPawsUidsTestCase(unittest.TestCase):
         call_headers = mocked_requests_get.call_args[-1].get("headers", {})
         self.assertEqual(maintain_dbusers.USER_AGENT, call_headers.get("User-Agent", None))
 
-    @mock.patch("maintain-dbusers.requests.get", side_effect=Exception)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.get", side_effect=Exception)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_if_get_raises(
         self, mocked_logging_log, mocked_requests_get
     ):
@@ -652,8 +650,8 @@ class FetchPawsUidsTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_get.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.get", side_effect=SERVER_ERROR_REPLY)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.get", side_effect=SERVER_ERROR_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_if_server_returns_error(
         self, mocked_logging_log, mocked_requests_get
     ):
@@ -663,8 +661,8 @@ class FetchPawsUidsTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_get.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.get", return_value=SERVER_BADUID_REPLY)
-    @mock.patch("maintain-dbusers.logging.log")
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_BADUID_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
     def test_should_log_error_and_raise_exception_when_server_returns_nonnumeric_uids(
         self, mocked_logging_log, mocked_requests_get
     ):
@@ -674,7 +672,7 @@ class FetchPawsUidsTestCase(unittest.TestCase):
         self.assertTrue(mocked_requests_get.called)
         self.assertTrue(mocked_logging_log.called)
 
-    @mock.patch("maintain-dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
     def test_should_return_string(self, mocked_requests_get):
         expected_result = [1, 2]
 
@@ -705,7 +703,7 @@ class FindPawsUsersTestCase(unittest.TestCase):
         params.update(kwargs)
         return params
 
-    @mock.patch("maintain-dbusers.fetch_paws_uids", side_effect=Exception("Dummy error"))
+    @mock.patch("maintain_dbusers.fetch_paws_uids", side_effect=Exception("Dummy error"))
     def test_should_re_raise_if_fetch_paws_uids_raises(self, mocked_fetch_paws_uids):
 
         with pytest.raises(Exception, match="Dummy error"):
@@ -713,8 +711,8 @@ class FindPawsUsersTestCase(unittest.TestCase):
 
         self.assertTrue(mocked_fetch_paws_uids.called)
 
-    @mock.patch("maintain-dbusers.fetch_paws_uids", return_value=None)
-    @mock.patch("maintain-dbusers.get_global_wiki_user")
+    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=None)
+    @mock.patch("maintain_dbusers.get_global_wiki_user")
     def test_should_return_empty_list_if_fetch_paws_uids_returns_none(
         self, mocked_get_global_wiki_user, mocked_fetch_paws_uids
     ):
@@ -725,8 +723,8 @@ class FindPawsUsersTestCase(unittest.TestCase):
         self.assertTrue(mocked_fetch_paws_uids.called)
         self.assertFalse(mocked_get_global_wiki_user.called)
 
-    @mock.patch("maintain-dbusers.fetch_paws_uids", return_value=[])
-    @mock.patch("maintain-dbusers.get_global_wiki_user")
+    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[])
+    @mock.patch("maintain_dbusers.get_global_wiki_user")
     def test_should_return_empty_list_if_fetch_paws_uids_returns_empty_list(
         self, mocked_get_global_wiki_user, mocked_fetch_paws_uids
     ):
@@ -737,9 +735,9 @@ class FindPawsUsersTestCase(unittest.TestCase):
         self.assertTrue(mocked_fetch_paws_uids.called)
         self.assertFalse(mocked_get_global_wiki_user.called)
 
-    @mock.patch("maintain-dbusers.fetch_paws_uids", return_value=[1, 2])
+    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
     @mock.patch(
-        "maintain-dbusers.get_global_wiki_user",
+        "maintain_dbusers.get_global_wiki_user",
         side_effect=[Exception, get_dummy_wiki_user("global-user2")],
     )
     def test_should_skip_uid_if_get_global_wiki_user_raises(
@@ -753,9 +751,9 @@ class FindPawsUsersTestCase(unittest.TestCase):
         self.assertTrue(mocked_fetch_paws_uids.called)
         self.assertTrue(mocked_get_global_wiki_user.called)
 
-    @mock.patch("maintain-dbusers.fetch_paws_uids", return_value=[1, 2])
+    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
     @mock.patch(
-        "maintain-dbusers.get_global_wiki_user",
+        "maintain_dbusers.get_global_wiki_user",
         side_effect=[{"malformed": "reply"}, get_dummy_wiki_user("global-user2")],
     )
     def test_should_skip_uid_if_get_global_wiki_user_returns_malformed_reply(
@@ -769,9 +767,9 @@ class FindPawsUsersTestCase(unittest.TestCase):
         self.assertTrue(mocked_fetch_paws_uids.called)
         self.assertTrue(mocked_get_global_wiki_user.called)
 
-    @mock.patch("maintain-dbusers.fetch_paws_uids", return_value=[1, 2])
+    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
     @mock.patch(
-        "maintain-dbusers.get_global_wiki_user",
+        "maintain_dbusers.get_global_wiki_user",
         side_effect=[get_dummy_wiki_user("global-user1"), get_dummy_wiki_user("global-user2")],
     )
     def test_should_return_happy_path(self, mocked_get_global_wiki_user, mocked_fetch_paws_uids):

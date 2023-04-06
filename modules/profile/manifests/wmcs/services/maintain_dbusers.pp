@@ -1,11 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Provides account services for labs user accounts,
-# currently in the labstore module because we put these
-# on the user's homedirs on NFS.
-#
-# Currently provides:
-#   - MySQL replica / toolsdb accounts
+# Provides account services for tools/paws user accounts.
+# This is the client side working from cloudcontrols, it needs a server side on each NFS server to
+# create the credentials in the user homes.
 #
 
 class profile::wmcs::services::maintain_dbusers (
@@ -109,7 +106,7 @@ class profile::wmcs::services::maintain_dbusers (
     }
 
     file { '/usr/local/sbin/maintain-dbusers':
-        source  => 'puppet:///modules/profile/wmcs/nfs/maintain-dbusers.py',
+        source  => 'puppet:///modules/profile/wmcs/services/maintain_dbusers/maintain_dbusers.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -124,7 +121,7 @@ class profile::wmcs::services::maintain_dbusers (
     }
     systemd::service { 'maintain-dbusers':
         ensure  => $enable_service,
-        content => systemd_template('wmcs/nfs/maintain-dbusers'),
+        content => systemd_template('wmcs/services/maintain-dbusers'),
         restart => true,
     }
 }
