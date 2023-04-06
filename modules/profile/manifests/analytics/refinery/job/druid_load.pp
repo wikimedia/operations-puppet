@@ -22,6 +22,7 @@ class profile::analytics::refinery::job::druid_load(
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow':
+        ensure            => 'absent',
         job_config        => {
             database         => 'event',
             druid_datasource => 'wmf_netflow',
@@ -38,6 +39,7 @@ class profile::analytics::refinery::job::druid_load(
     # This second round serves as sanitization, after 90 days of data loading.
     # Note that some dimensions are not present, thus nullifying their values.
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow-sanitization':
+        ensure           => 'absent',
         ensure_hourly    => 'absent',
         daily_days_since => 61,
         daily_days_until => 60,
@@ -56,6 +58,7 @@ class profile::analytics::refinery::job::druid_load(
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_flows_internal':
+        ensure            => 'absent',
         job_config        => {
             database         => 'event',
             druid_datasource => 'network_flows_internal',
