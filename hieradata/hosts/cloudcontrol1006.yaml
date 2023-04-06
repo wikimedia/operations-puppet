@@ -7,3 +7,4 @@ profile::openstack::eqiad1::cinder_backup_volumes:
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
     FULL_FREQUENCY_OFFSET: 4
+    FREQUENCY: 2
