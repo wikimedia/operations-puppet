@@ -7,7 +7,14 @@ class profile::zuul::merger(
     Stdlib::Ensure::Service $service_ensure = lookup('profile::zuul::merger::service_ensure')
 ) {
 
-    include ::zuul::monitoring::merger
+    $monitoring_active = $service_enable ? {
+        false   => 'absent',
+        'mask'  => 'absent',
+        default => 'present',
+    }
+    class { 'zuul::monitoring::merger':
+        ensure => $monitoring_active,
+    }
 
     $sshkey = 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ=='
 
