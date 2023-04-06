@@ -4,5 +4,5 @@ profile::lvs::tagged_subnets:
   - public1-eqsin
 
 profile::lvs::interface_tweaks:
-  ens1f0np0:
+  enp94s0f0np0:
     txqlen: 10000
