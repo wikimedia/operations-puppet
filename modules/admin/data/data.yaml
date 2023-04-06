@@ -5838,6 +5838,13 @@ users:
     uid: 43670
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  trizek:
+    ensure: present
+    realname: Benoît Evellin
+    email: bevellin@wikimedia.org
+    uid: 15270
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6412,10 +6419,6 @@ ldap_only_users:
     ensure: present
     realname: Haley Nordeen
     email: hnordeen@wikimedia.org
-  trizek:
-    ensure: present
-    realname: Benoît Evellin
-    email: bevellin@wikimedia.org
   keegan:
     ensure: present
     realname: Keegan Peterzell
