@@ -200,14 +200,14 @@ lvs::interfaces::vlan_data:
     iface:
       lvs6001: 'ens3f0np0:185.15.58.8'
       lvs6002: 'ens3f1np1:185.15.58.9'
-      lvs6003: 'ens3f0np0:185.15.58.10'
+      lvs6003: 'enp175s0f0np0:185.15.58.10'
   public1-b13-drmrs:
     id: "612"
     netmask: '255.255.255.224'
     iface:
       lvs6001: 'ens3f1np1:185.15.58.38'
       lvs6002: 'ens3f0np0:185.15.58.39'
-      lvs6003: 'ens3f1np1:185.15.58.40'
+      lvs6003: 'enp175s0f1np1:185.15.58.40'
   private1-b12-drmrs:
     id: "621"
     netmask: '255.255.255.0'
@@ -218,4 +218,4 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.255.0'
     iface:
       lvs6001: 'ens3f1np1:10.136.1.19'
-      lvs6003: 'ens3f1np1:10.136.1.20'
+      lvs6003: 'enp175s0f1np1:10.136.1.20'
