@@ -26,7 +26,7 @@ profile::prometheus::kubernetes::clusters:
     port: 9910
     class_name: role::dse_k8s::worker
     controller_class_name: role::dse_k8s::master
-  aux-k8s:
+  k8s-aux:
     enabled: true
     master_host: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
     port: 9911
