@@ -153,14 +153,12 @@ class zuul::merger (
         ],
     }
 
-    if $service_enable {
-        $auto_restart_enable = present
+    if ($service_enable == 'mask') {
+        profile::auto_restarts::service { 'zuul-merger':
+            ensure => absent,
+        }
     } else {
-        $auto_restart_enable = absent
-    }
-
-    profile::auto_restarts::service { 'zuul-merger':
-        ensure => $auto_restart_enable,
+        profile::auto_restarts::service { 'zuul-merger': }
     }
 
     systemd::timer::job { 'zuul_repack':
