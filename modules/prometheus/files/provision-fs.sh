@@ -3,6 +3,7 @@
 # Provision logical volumes and filesystems for Prometheus eqiad/codfw
 # Ideally we'd have Puppet manage these resources https://phabricator.wikimedia.org/T163692
 
+set -u
 set -x
 
 create_fs() {
@@ -56,5 +57,6 @@ provision k8s 500g
 provision k8s-dse 50g
 provision k8s-mlserve 50g
 provision k8s-staging 50g
+provision k8s-aux 50g
 provision ops 1.7t
 provision services 150g
