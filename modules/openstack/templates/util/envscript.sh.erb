@@ -41,5 +41,9 @@ else
     values=`parse_yaml clobber`
 fi
 for entry in $values; do
-    export $entry
+    if [[ $entry == *UNSET ]]; then
+        unset ${entry%=*}
+    else
+        export $entry
+    fi
 done
