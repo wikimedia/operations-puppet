@@ -3,5 +3,5 @@ profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - public1-ulsfo
 profile::lvs::interface_tweaks:
-  ens3f0np0:
+  enp175s0f0np0:
     txqlen: 10000
