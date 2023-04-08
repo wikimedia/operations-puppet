@@ -9,6 +9,8 @@ class profile::openstack::base::envscripts(
     $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
     ) {
 
+    # Specify the novaadmin user in the 'admin' project. This gets us
+    #  a project-scoped token
     openstack::util::envscript { 'novaadmin':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,
@@ -20,6 +22,40 @@ class profile::openstack::base::envscripts(
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/novaenv.sh',
         yaml_mode              => '0440',
+    }
+
+    # If we specify a domain but not a project, we should
+    #  get a domain-scoped token.
+    # Note that domain is already assumed to be set to 'default'
+    #  by openstack::util::envscript
+    openstack::util::envscript { 'keystoneadmin':
+        region                 => $region,
+        keystone_api_fqdn      => $keystone_api_fqdn,
+        keystone_api_port      => 25357,
+        keystone_api_interface => 'admin',
+        os_user                => 'novaadmin',
+        os_password            => $ldap_user_pass,
+        os_project             => 'UNDEF',
+        os_db_password         => $nova_db_pass,
+        scriptpath             => '/root/novaenv.sh',
+        yaml_mode              => '0440',
+    }
+
+    # If we don't specify a project or a domain we should get
+    #  a system-scoped token.
+    openstack::util::envscript { 'ossystemadmin':
+        region                 => $region,
+        keystone_api_fqdn      => $keystone_api_fqdn,
+        keystone_api_port      => 25357,
+        keystone_api_interface => 'admin',
+        os_user                => 'novaadmin',
+        os_password            => $ldap_user_pass,
+        os_project             => 'UNSET',
+        os_db_password         => $nova_db_pass,
+        scriptpath             => '/root/novaenv.sh',
+        yaml_mode              => '0440',
+        os_project_domain_id   => 'UNSET',
+        os_user_domain_id      => 'UNSET',
     }
 
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
