@@ -10,6 +10,8 @@ define openstack::util::envscript(
     String       $scriptpath = undef,
     String       $os_db_password = '',
     String       $yaml_mode = '0440',
+    String       $os_project_domain_id = 'default',
+    String       $os_user_domain_id = 'default',
   ) {
 
     file { "/etc/${title}.yaml":
