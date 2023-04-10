@@ -32,21 +32,20 @@ class profile::toolforge::checker {
     $etcd_cert_ca     = "${install_dir}/etcd/ca.pem"
 
     $checks = {
-        'cron'                            => '/cron',
-        'db_toolsdb'                      => '/db/toolsdb',
-        'dns_private'                     => '/dns/private',
-        'etcd_kubernetes'                 => '/etcd/k8s',
-        'grid_continuous_buster'          => '/grid/continuous/buster',
-        'grid_start_buster'               => '/grid/start/buster',
-        'kubernetes_nodes_ready'          => '/k8s/nodes/ready',
-        'ldap'                            => '/ldap',
-        'nfs_dumps'                       => '/nfs/dumps',
-        'nfs_home'                        => '/nfs/home',
-        'nfs_secondary_cluster_showmount' => '/nfs/secondary_cluster_showmount',
-        'redis'                           => '/redis',
-        'self'                            => '/self',
-        'webservice_gridengine'           => '/webservice/gridengine',
-        'webservice_kubernetes'           => '/webservice/kubernetes',
+        'cron'                   => '/cron',
+        'db_toolsdb'             => '/db/toolsdb',
+        'dns_private'            => '/dns/private',
+        'etcd_kubernetes'        => '/etcd/k8s',
+        'grid_continuous_buster' => '/grid/continuous/buster',
+        'grid_start_buster'      => '/grid/start/buster',
+        'kubernetes_nodes_ready' => '/k8s/nodes/ready',
+        'ldap'                   => '/ldap',
+        'nfs_dumps'              => '/nfs/dumps',
+        'nfs_home'               => '/nfs/home',
+        'redis'                  => '/redis',
+        'self'                   => '/self',
+        'webservice_gridengine'  => '/webservice/gridengine',
+        'webservice_kubernetes'  => '/webservice/kubernetes',
     }
 
     $check_names = keys($checks).map |$name| { "toolschecker_${name}" }

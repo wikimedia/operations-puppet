@@ -357,19 +357,6 @@ def nfs_home_check():
         os.remove(path)
 
 
-@check("/nfs/secondary_cluster_showmount")
-def showmount_check():
-    try:
-        with open(os.devnull, "w") as devnull:
-            subprocess.check_call(
-                ["/sbin/showmount", "-e", "nfs-tools-project.svc.eqiad.wmnet"],
-                stderr=devnull,
-            )
-        return True
-    except subprocess.CalledProcessError:
-        return False
-
-
 @check("/redis")
 def redis_check():
     """Verify that we can write, read, and delete a Redis key."""
