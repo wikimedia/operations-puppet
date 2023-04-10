@@ -1,4 +1,2 @@
 # db1100
-# candidate master for s5
 mariadb::shard: 's5'
-mariadb::binlog_format: 'STATEMENT'
