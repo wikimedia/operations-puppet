@@ -1,0 +1,3 @@
+profile::netbox::data::mgmt: {}
+profile::netbox::data::network_devices: {}
+profile::netbox::data::prefixes: {}
