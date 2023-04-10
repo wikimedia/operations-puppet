@@ -597,7 +597,7 @@ node 'db2155.codfw.wmnet' {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1113 and db1144 below
-node /^db1(100|110|130|185|200)\.eqiad\.wmnet$/ {
+node /^db1(100|110|130|183|185|200)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -763,11 +763,6 @@ node 'db1108.eqiad.wmnet' {
 
 ## m5 shard
 # See also multiinstance misc hosts db1117, db2160 below
-
-# m5 eqiad old master T301654
-node 'db1183.eqiad.wmnet' {
-    role(mariadb::misc)
-}
 
 # m5 master
 node 'db1176.eqiad.wmnet' {

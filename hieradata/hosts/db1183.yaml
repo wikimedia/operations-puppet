@@ -1,6 +1,5 @@
 # db1183
-mariadb::shard: 'm5'
-mariadb::binlog_format: 'ROW'
-#profile::monitoring::is_critical: true
-mariadb::package: 'wmf-mariadb106'
+# candidate master for s5
+mariadb::shard: 's5'
+mariadb::binlog_format: 'STATEMENT'
 profile::monitoring::notifications_enabled: false
