@@ -87,14 +87,6 @@ https://design.wikimedia.org:
   # 404, served on a subpath of the git root
   assert_status: 404
 
-https://iegreview.wikimedia.org:
-- path: /
-  assert_status: 302
-  assert_headers:
-    Location: /campaigns
-- path: /campaigns
-  assert_status: 200
-
 https://security.wikimedia.org:
 - path: /
   assert_status: 200
