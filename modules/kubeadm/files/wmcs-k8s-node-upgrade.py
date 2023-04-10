@@ -399,8 +399,10 @@ def stage_upgrade():
     if ctx.skip is True:
         return
 
-    cmd = "sudo systemctl restart docker.service kubelet.service"
-    ssh(ctx.current_node_fqdn, cmd)
+    # doing the next only makes sense if the node is not rebooting after the upgrade
+    if not ctx.args.reboot:
+        cmd = "sudo systemctl restart docker.service kubelet.service"
+        ssh(ctx.current_node_fqdn, cmd)
 
 
 def stage_postchecks():
@@ -461,9 +463,9 @@ def main():
         stage_refresh()
         stage_prechecks()
         stage_drain()
+        stage_upgrade()
         if args.reboot:
             stage_reboot()
-        stage_upgrade()
         stage_postchecks()
         stage_uncordon()
         stage_pause()
