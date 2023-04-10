@@ -1,3 +1,1 @@
 profile::cassandra::rack: 'c'
-profile::sessionstore::arp_ignore: 1
-profile::sessionstore::arp_announce: 2
