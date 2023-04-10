@@ -768,15 +768,15 @@ kafka_clusters:
   logging-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
-      kafka-logging1004.eqiad.wmnet:
-        id: 1004
-        rack: E
-      kafka-logging1002.eqiad.wmnet:
-        id: 1005
-        rack: C
       kafka-logging1003.eqiad.wmnet:
         id: 1006
         rack: D
+      kafka-logging1004.eqiad.wmnet:
+        id: 1004
+        rack: E
+      kafka-logging1005.eqiad.wmnet:
+        id: 1005
+        rack: F
 
   logging-codfw:
     zookeeper_cluster_name: main-codfw
