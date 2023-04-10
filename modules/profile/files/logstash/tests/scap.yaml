@@ -41,7 +41,7 @@ testcases:
       "process": 157222
       }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Started rsync common"
         normalized:
           message: "started rsync common"
@@ -97,7 +97,7 @@ testcases:
         "process": 10857
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)"
         normalized:
           message: "finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)"

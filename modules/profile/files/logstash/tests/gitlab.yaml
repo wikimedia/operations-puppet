@@ -43,7 +43,7 @@ testcases:
       }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         "@timestamp": "2022-01-18T16:38:42.735Z"
         message: "cache miss for InfoRefsUploadPack response"
         labels:
@@ -115,7 +115,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "finished unary call with code NotFound"
         error:
           message: "rpc error: code = NotFound desc = GetRepoPath: not a git repository: \"/var/opt/gitlab/git-data/repositories/wmf-gitlab-tools.git\""
@@ -201,7 +201,7 @@ testcases:
           "time": "2021-06-10T18:58:58.414Z"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "finished unary call with code OK"
         "@timestamp": "2021-06-10T18:58:58.414Z"
         host:
@@ -302,7 +302,7 @@ testcases:
           "duration_s": 1.07051
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         "@timestamp": "2021-06-10T05:20:17.905Z"
         host:
           name: "gitlab1004"
@@ -396,7 +396,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         "@timestamp": "2021-06-10T00:11:00.056Z"
         host:
           name: "gitlab1004"
@@ -450,7 +450,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Cannot obtain an exclusive lease. There must be another instance already in execution."
         "@timestamp": "2021-06-10T21:45:50.561Z"
         host:
@@ -503,7 +503,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "access"
         "@timestamp": "2021-06-10T22:00:52.000Z"
         host:
@@ -558,7 +558,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Enqueuing scheduled jobs: done"
         "@timestamp": "2021-11-15T22:39:46.304Z"
         host:
@@ -610,7 +610,7 @@ testcases:
           "ecs.version":"1.7.0"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         '@timestamp': "2021-07-21T20:24:48.000Z"
         log:
           level: "NOTICE"
@@ -668,7 +668,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         '@timestamp': "2021-07-15T05:24:22.000Z"
         message: 'SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:443'
         host:
@@ -716,7 +716,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         '@timestamp': "2021-07-15T15:16:51.110Z"
         message: 'Background saving terminated with success'
         service:

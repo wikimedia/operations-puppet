@@ -26,7 +26,7 @@ testcases:
           "rsyslog.timereported": "2021-10-04T15:08:24.011"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Not Found: /favicon.ico"
         normalized:
           message: "not found: /favicon.ico"

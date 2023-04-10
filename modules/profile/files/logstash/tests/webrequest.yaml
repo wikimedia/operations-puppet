@@ -45,7 +45,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         host:
           name: "cp3058.esams.wmnet"
         labels:

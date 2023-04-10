@@ -19,7 +19,7 @@ testcases:
           "type": "syslog"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         labels:
           console: "re0"
         observer:
@@ -77,7 +77,7 @@ testcases:
           "log.syslog.facility.name": "local7"
         }
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         log:
           original: " RT_FLOW_SESSION_DENY: session denied 1.1.1.1/37127->2.2.2.2/10025 0x0 None 6(0) default-deny(global) untrust untrust UNKNOWN UNKNOWN N/A(N/A) ge-0/0/0.0 No Denied by policy 15504 N/A N/A -1 N/A N/A N/A"
           level: "NOTSET"

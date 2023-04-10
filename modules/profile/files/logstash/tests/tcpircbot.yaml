@@ -31,7 +31,7 @@ testcases:
           "timestamp": "2022-08-17T16:55:44.093993"
         }
   - expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         "@timestamp": "2022-08-17T16:55:44.093Z"
         host:
           name: "alert1001"
@@ -81,7 +81,7 @@ testcases:
           "user.name": "logmsgbot"
         }
   - expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         "@timestamp": "2022-08-23T17:39:55.442Z"
         host:
           name: "alert1001"

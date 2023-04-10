@@ -95,7 +95,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Could not index event to Elasticsearch."
         normalized:
           message: "could not index event to elasticsearch."
@@ -126,7 +126,7 @@ testcases:
           message: 'object mapping for [status] tried to parse field [status] as object, but found a concrete value'
         ecs:
           version: "1.7.0"
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Error parsing json"
         normalized:
           message: "error parsing json"
@@ -153,7 +153,7 @@ testcases:
           message: "Unexpected character (D (code 68)): was expecting comma to separate Object entries\n at ..."
         ecs:
           version: "1.7.0"
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Attempting to install template"
         normalized:
           message: "attempting to install template"

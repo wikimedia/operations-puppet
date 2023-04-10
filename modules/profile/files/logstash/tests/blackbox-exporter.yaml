@@ -20,7 +20,7 @@ testcases:
           "message": "ts=2022-02-28T10:25:49.203643345Z caller=main.go:169 module=icmp_librenms_ip4 target=208.80.153.9 level=debug msg=\"Creating socket\""
         }
     expected:
-      - __target_index: "ecs-probes-1-1.7.0-N-daily"
+      - __target_index: "ecs-probes-1-1.11.0-N-daily"
         ecs:
           version: "1.7.0"
         service:

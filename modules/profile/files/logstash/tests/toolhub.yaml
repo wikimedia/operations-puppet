@@ -22,7 +22,7 @@ testcases:
           "time": "2022-08-04T21:07:48.434706969Z"
         }
   - expected:
-      - __target_index: "ecs-default-1-1.7.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         "@timestamp": "2022-08-04T21:07:48.433Z"
         host:
             name: "kubestage1008"
