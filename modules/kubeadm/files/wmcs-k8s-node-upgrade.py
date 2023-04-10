@@ -13,8 +13,8 @@ from datetime import datetime, timedelta
 
 import yaml
 
-DEFAULT_SRC_VERSION = "1.16.10"
-DEFAULT_DST_VERSION = "1.17.13"
+DEFAULT_SRC_VERSION = "1.21.8"
+DEFAULT_DST_VERSION = "1.22.17"
 
 
 class Context:
