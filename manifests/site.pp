@@ -1470,7 +1470,7 @@ node 'pki-root1001.eqiad.wmnet' {
 }
 
 node /^kafka-logging1001\.eqiad\.wmnet$/ {
-    role(insetup::observabililty)
+    role(insetup::observability)
 }
 
 node /^kafka-logging100[23]\.eqiad\.wmnet$/ {
