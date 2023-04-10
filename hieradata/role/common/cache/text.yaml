@@ -73,8 +73,6 @@ cache::alternate_domains:
     caching: 'normal'
   hue.wikimedia.org:
     caching: 'normal'
-  iegreview.wikimedia.org:
-    caching: 'normal'
   intake-logging.wikimedia.org:
     caching: 'normal'
   intake-analytics.wikimedia.org:
