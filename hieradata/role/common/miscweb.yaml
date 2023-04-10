@@ -14,9 +14,8 @@ profile::microsites::security::server_admin: 'noc@wikimedia.org'
 # cert_name is omitted in the service definition so that we only
 # configure the non-sni version.
 profile::tlsproxy::envoy::global_cert_name: "webserver-misc-apps.discovery.wmnet"
-profile::miscweb::rsync::src_host: 'miscweb1002.eqiad.wmnet'
+profile::miscweb::rsync::src_host: 'miscweb1003.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
-  - 'miscweb1003.eqiad.wmnet'
   - 'miscweb2003.codfw.wmnet'
 
 profile::sre::os_reports::host: cumin2002.codfw.wmnet
