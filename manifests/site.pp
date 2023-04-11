@@ -2557,16 +2557,12 @@ node /^prometheus[3456]001\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
     role(prometheus::pop)
 }
 
-node /^prometheus[56]002\.(eqsin|drmrs)\.wmnet$/ {
-  role(insetup::observability)
+node /^prometheus[346]002\.(esams|ulsfo|drmrs)\.wmnet$/ {
+    role(prometheus::pop)
 }
 
-node 'prometheus3002.esams.wmnet' {
-  role(prometheus::pop)
-}
-
-node 'prometheus4002.ulsfo.wmnet' {
-  role(prometheus::pop)
+node 'prometheus5002.eqsin.wmnet' {
+    role(insetup::observability)
 }
 
 # new puppetmaster servers T291963
