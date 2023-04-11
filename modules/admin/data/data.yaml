@@ -401,7 +401,7 @@ groups:
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek]
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5844,6 +5844,13 @@ users:
     uid: 15270
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  kmorgan:
+    ensure: present
+    realname: Kayla Morgan
+    email: kmorgan@wikimedia.org
+    uid: 42439
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -5989,10 +5996,6 @@ ldap_only_users:
     ensure: present
     realname: Jorge Vargas
     email: jvargas@wikimedia.org
-  kmorgan:
-    ensure: present
-    realname: Kayla Morgan
-    email: kmorgan@wikimedia.org
   krli:
     ensure: present
     realname: Kris Litson
