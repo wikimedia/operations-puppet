@@ -27,3 +27,13 @@ hostname_substring=labstore
 ldap_uri=<%= @ldap_uri %>
 ldap_bind_dn=<%= @novaadmin_bind_dn %>
 ldap_bind_pass=<%= @novaadmin_bind_pass %>
+
+
+# This database is owned by the 'admin' tool. It maintains
+#  the state of tools that are in the process of disabling or
+#  deleting.
+[database]
+db_host=<%= @tools_db_host %>
+db_username=s51051
+db_password=<%= @tools_db_password %>
+db_name=s51051__disable_tool
