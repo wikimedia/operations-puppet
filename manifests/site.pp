@@ -2791,6 +2791,15 @@ node 'urldownloader2004.wikimedia.org' {
     role(url_downloader)
 }
 
+
+# These are hypervisors that use local storage for their VMs
+#  rather than ceph. This is necessary for low-latency workloads
+#  like etcd.
+node /^cloudvirtlocal101[1-3]\.eqiad\.wmnet$/ {
+    role(insetup::wmcs)
+}
+
+
 # Cloudvirt1019 and 1020 are special hypervisors;
 #  they host giant database servers using local storage.
 node 'cloudvirt1019.eqiad.wmnet' {
