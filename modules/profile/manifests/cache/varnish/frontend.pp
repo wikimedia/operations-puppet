@@ -25,33 +25,34 @@
 # @param vsl_size Size of the space for VSL records (varnish default is 80M)
 class profile::cache::varnish::frontend (
     # Globals
-    String                  $conftool_prefix      = lookup('conftool_prefix'),
-    Boolean                 $has_lvs              = lookup('has_lvs', {'default_value'                                             => true}),
+    String                  $conftool_prefix         = lookup('conftool_prefix'),
+    Boolean                 $has_lvs                 = lookup('has_lvs', {'default_value'                                                    => true}),
     # TODO: fix theses so they re under the profile namespace
-    Hash[String, Hash]      $cache_nodes          = lookup('cache::nodes'),
-    String                  $cache_cluster        = lookup('cache::cluster'),
-    Profile::Cache::Sites   $req_handling         = lookup('cache::req_handling'),
-    Profile::Cache::Sites   $alternate_domains    = lookup('cache::alternate_domains', {'default_value'                            => {}}),
-    Boolean                 $single_backend       = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'   => false}),
+    Hash[String, Hash]      $cache_nodes             = lookup('cache::nodes'),
+    String                  $cache_cluster           = lookup('cache::cluster'),
+    Profile::Cache::Sites   $req_handling            = lookup('cache::req_handling'),
+    Profile::Cache::Sites   $alternate_domains       = lookup('cache::alternate_domains', {'default_value'                                   => {}}),
+    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'          => false}),
     # locals
-    Hash[String, Any]       $fe_vcl_config        = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
-    Hash[String, Any]       $fe_cache_be_opts     = lookup('profile::cache::varnish::frontend::cache_be_opts'),
-    Boolean                 $backends_in_etcd     = lookup('profile::cache::varnish::frontend::backends_in_etcd'),
-    Array[String]           $fe_extra_vcl         = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
-    Array[String]           $runtime_params       = lookup('profile::cache::varnish::frontend::runtime_params'),
-    String                  $packages_component   = lookup('profile::cache::varnish::frontend::packages_component'),
-    Array[String]           $separate_vcl         = lookup('profile::cache::varnish::frontend::separate_vcl'),
-    Integer                 $fe_transient_gb      = lookup('profile::cache::varnish::frontend::transient_gb'),
-    Array[Stdlib::Unixpath] $listen_uds           = lookup('profile::cache::varnish::frontend::listen_uds'),
-    String                  $uds_owner            = lookup('profile::cache::varnish::frontend::uds_owner'),
-    String                  $uds_group            = lookup('profile::cache::varnish::frontend::uds_group'),
-    Stdlib::Filemode        $uds_mode             = lookup('profile::cache::varnish::frontend::uds_mode'),
-    Boolean                 $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
-    Boolean                 $do_esitest           = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
-    Boolean                 $enable_monitoring    = lookup('profile::cache::varnish::frontend::enable_monitoring'),
-    Optional[String]        $fe_jemalloc_conf     = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
-    Integer[1]              $thread_pool_max      = lookup('profile::cache::varnish::frontend::thread_pool_max'),
-    Optional[String]        $vsl_size             = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
+    Hash[String, Any]       $fe_vcl_config           = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
+    Hash[String, Any]       $fe_cache_be_opts        = lookup('profile::cache::varnish::frontend::cache_be_opts'),
+    Boolean                 $backends_in_etcd        = lookup('profile::cache::varnish::frontend::backends_in_etcd'),
+    Array[String]           $fe_extra_vcl            = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
+    Array[String]           $runtime_params          = lookup('profile::cache::varnish::frontend::runtime_params'),
+    String                  $packages_component      = lookup('profile::cache::varnish::frontend::packages_component'),
+    Array[String]           $separate_vcl            = lookup('profile::cache::varnish::frontend::separate_vcl'),
+    Integer                 $fe_transient_gb         = lookup('profile::cache::varnish::frontend::transient_gb'),
+    Array[Stdlib::Unixpath] $listen_uds              = lookup('profile::cache::varnish::frontend::listen_uds'),
+    String                  $uds_owner               = lookup('profile::cache::varnish::frontend::uds_owner'),
+    String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
+    Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
+    Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
+    Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
+    Boolean                 $enable_monitoring       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
+    Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
+    Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
+    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
+    Boolean                 $enable_http_redirection = lookup('profile::cache::varnish::frontend::enable_http_redirection', {'default_value' => true}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -240,12 +241,19 @@ class profile::cache::varnish::frontend (
         metric  => 'node_varnish_filedescriptors_total',
     }
 
+    if $enable_http_redirection {
+        $ports = [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ]
+    } else {
+        $ports = [ 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ]
+    }
+
+
     varnish::instance { "${cache_cluster}-frontend":
         instance_name     => 'frontend',
         vcl               => "${cache_cluster}-frontend",
         separate_vcl      => $separate_vcl_frontend,
         extra_vcl         => $fe_extra_vcl,
-        ports             => [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ],
+        ports             => $ports,
         admin_port        => 6082,
         runtime_params    => join(prefix($runtime_params, '-p '), ' '),
         storage           => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
