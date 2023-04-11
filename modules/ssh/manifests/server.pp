@@ -18,6 +18,7 @@
 # @param match_config a list of additional configs to apply to specific matches.
 #                     see Ssh::Match for the data structure
 # @param enabled_key_types server key types to enable
+# @param use_ca_signed_host_keys if true, ca signed host keys will be made available
 class ssh::server (
     Stdlib::Port                 $listen_port                  = 22,
     Array[Stdlib::IP::Address]   $listen_addresses             = [],
@@ -37,6 +38,7 @@ class ssh::server (
     Array[String[1]]             $accept_env                   = ['LANG', 'LC_*'],
     Array[Ssh::Match]            $match_config                 = [],
     Array[Ssh::KeyType]          $enabled_key_types            = ['rsa', 'ecdsa', 'ed25519'],
+    Boolean                      $use_ca_signed_host_keys      = false,
 ) {
     $_permit_root = $permit_root ? {
         String  => $permit_root,
@@ -84,6 +86,16 @@ class ssh::server (
         $facts['ipaddress'],
         $facts['ipaddress6'],
     ].filter |$x| { $x =~ NotUndef }
+
+    if $use_ca_signed_host_keys {
+        $enabled_key_types.each |Ssh::KeyType $type| {
+            ssh::server::ca_signed_hostkey { "/etc/ssh/ssh_host_${type}_key-cert.pub":
+                hosts  => [$facts['networking']['fqdn']] + $aliases,
+                type   => $type,
+                notify => Service['ssh'],
+            }
+        }
+    }
 
     @@sshkey { $facts['networking']['fqdn']:
         ensure       => present,

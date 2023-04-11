@@ -50,6 +50,11 @@ class profile::puppet::agent (
     class { 'prometheus::node_puppet_agent': }
     include profile::puppet::client_bucket
 
+    ensure_packages([
+        # needed for the ssh_ca_host_certificate custom fact
+        'ruby-net-ssh',
+    ])
+
     # Mode 0751 to make sure non-root users can access
     # /var/lib/puppet/state/agent_disabled.lock to check if puppet is enabled
     file { '/var/lib/puppet':

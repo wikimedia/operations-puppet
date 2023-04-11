@@ -17,6 +17,9 @@ Protocol 2
 # HostKeys for protocol version 2
 <%- @enabled_key_types.each do |type| -%>
 HostKey /etc/ssh/ssh_host_<%= type %>_key
+<% if @use_ca_signed_host_keys -%>
+HostCertificate /etc/ssh/ssh_host_<%= type %>_key-cert.pub
+<%- end -%>
 <%- end -%>
 
 <%- if @disable_nist_kex -%>

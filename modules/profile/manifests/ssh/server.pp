@@ -18,6 +18,7 @@
 # @param match_config a list of additional configs to apply to specific matches.
 #                     see Ssh::Match for the data structure
 # @param enabled_key_types server key types to enable
+# @param use_ca_signed_host_keys if true, ca signed host keys will be made available
 class profile::ssh::server (
     Stdlib::Port                 $listen_port              = lookup('profile::ssh::server::listen_port'),
     Array[Stdlib::IP::Address]   $listen_addresses         = lookup('profile::ssh::server::listen_addresses'),
@@ -36,6 +37,7 @@ class profile::ssh::server (
     Array[String[1]]             $accept_env               = lookup('profile::ssh::server::accept_env'),
     Array[Ssh::Match]            $match_config             = lookup('profile::ssh::server::match_config'),
     Array[Ssh::KeyType]          $enabled_key_types        = lookup('profile::ssh::server::enabled_key_types'),
+    Boolean                      $use_ca_signed_host_keys  = lookup('profile::ssh::server::use_ca_signed_host_keys'),
 
 ) {
     if $lookup_keys_from_ldap {

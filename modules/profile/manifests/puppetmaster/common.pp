@@ -80,4 +80,6 @@ class profile::puppetmaster::common (
         command     => "/usr/bin/find  /var/lib/puppet/reports -mtime +14 -exec rm {} \\;",
         interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
+
+    include profile::ssh::ca
 }
