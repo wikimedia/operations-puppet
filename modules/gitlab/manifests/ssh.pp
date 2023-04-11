@@ -19,30 +19,53 @@ class gitlab::ssh (
     Array[String]              $sshd_options         = [],
     Array[String]              $ciphers              = [
         'chacha20-poly1305@openssh.com', 'aes256-gcm@openssh.com', 'aes128-gcm@openssh.com',
-        'aes256-ctr', 'aes192-ctr', 'aes128-ctr'
+        'aes256-ctr', 'aes192-ctr', 'aes128-ctr',
     ],
     Array[String]              $macs                 = [
         'hmac-sha2-512-etm@openssh.com', 'hmac-sha2-256-etm@openssh.com', 'umac-128-etm@openssh.com',
-        'hmac-sha2-512', 'hmac-sha2-256', 'umac-128@openssh.com'
+        'hmac-sha2-512', 'hmac-sha2-256', 'umac-128@openssh.com',
     ],
+    Boolean                    $manage_host_keys     = false,
 ) {
     $config_file = "${base_dir}/sshd_gitlab"
 
-    if $ensure == 'present' {
-        wmflib::dir::mkdir_p($base_dir)
+    file { $base_dir:
+        ensure  => stdlib::ensure($ensure, 'directory'),
+        recurse => true,
+        force   => true,
+        owner   => root,
+        mode    => '0755',
+    }
+
+    if $manage_host_keys {
+        $host_key_algos.each |$type| {
+            ['public', 'private'].each |$privacy| {
+                if $privacy == 'public' {
+                    $ext = '.pub'
+                    $mode = '0644'
+                } else {
+                    $ext = ''
+                    $mode = '0600'
+                }
+                $filename = "ssh_host_${type}_key${ext}"
+                file { "${base_dir}/${filename}" :
+                    ensure  => stdlib::ensure($ensure, 'file'),
+                    owner   => root,
+                    group   => root,
+                    mode    => $mode,
+                    content => secret("gitlab/${filename}"),
+                    notify  => Service['ssh-gitlab'],
+                }
+            }
+        }
+    } elsif $ensure == 'present' {
         $host_key_algos.each |$algo| {
             $host_key_file = "${base_dir}/ssh_host_${algo}_key"
-            exec {"generate gitlab ssh host key(${algo})":
+            exec { "generate gitlab ssh host key(${algo})":
                 command => "/usr/bin/ssh-keygen -q -N '' -t ${algo} -f ${host_key_file}",
                 creates => $host_key_file,
                 require => File[$base_dir],
             }
-        }
-    } else {
-        file { $base_dir:
-            ensure  => absent,
-            recurse => true,
-            force   => true,
         }
     }
 
@@ -63,10 +86,10 @@ class gitlab::ssh (
         notify       => Service['ssh-gitlab'],
     }
 
-    systemd::service{ 'ssh-gitlab':
+    systemd::service { 'ssh-gitlab':
         ensure         => $ensure,
         content        => template('gitlab/sshd.service.erb'),
-        service_params => {'restart' => 'systemctl reload sshd-gitlab'},
+        service_params => { 'restart' => 'systemctl reload sshd-gitlab' },
     }
 
     profile::auto_restarts::service { 'ssh-gitlab': }

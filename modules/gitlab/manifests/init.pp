@@ -58,6 +58,7 @@ class gitlab (
     Systemd::Timer::Schedule $config_backup_interval    = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     Systemd::Timer::Schedule $partial_backup_interval   = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     Systemd::Timer::Schedule $restore_interval          = {'start' => 'OnCalendar', 'interval' => '*-*-* 01:30:00'},
+    Boolean $manage_host_keys                           = false,
 ) {
 
     systemd::sysuser { 'git':
@@ -137,6 +138,7 @@ class gitlab (
     class { 'gitlab::ssh' :
         ensure               => $ensure_sshd,
         ssh_listen_addresses => $ssh_listen_addresses,
+        manage_host_keys     => $manage_host_keys,
     }
 
     # enable automated restore from backup (for replica)

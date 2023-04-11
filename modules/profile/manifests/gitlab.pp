@@ -29,6 +29,7 @@ class profile::gitlab(
     Systemd::Timer::Schedule $config_backup_interval = lookup('profile::gitlab::config_backup_interval'),
     Systemd::Timer::Schedule $restore_interval = lookup('profile::gitlab::restore_interval:'),
     Systemd::Timer::Schedule $rsync_interval = lookup('profile::gitlab::rsync_interval:'),
+    Boolean $manage_host_keys = lookup('profile::ssh::server::manage_host_keys', {default_value => false}),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -193,5 +194,6 @@ class profile::gitlab(
         config_backup_interval  => $config_backup_interval,
         restore_interval        => $restore_interval,
         email_enable            => $active_host == $facts['fqdn'], # enable emails on active GitLab server
+        manage_host_keys        => $manage_host_keys,
     }
 }
