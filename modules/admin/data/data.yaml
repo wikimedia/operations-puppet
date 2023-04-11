@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
-              cmacholan, echetty, kelhurd, toan, jk, nfraison]
+              cmacholan, echetty, kelhurd, toan, jk, nfraison, swak]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -387,7 +387,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak, abban, mikeraish, saisuman, gehel, swak,
+              katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
@@ -4843,10 +4843,9 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQxRR4Wt7HJsEYRiWrHGwBPK4L8xbFC6IDy4dOPFahk
   swak:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Shari Wakiyama
-    email: swakiyama@wikimedia.org
     uid: 34598
     ssh_keys: []
   rhuang-ctr:
