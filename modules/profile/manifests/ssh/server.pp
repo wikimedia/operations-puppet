@@ -17,6 +17,7 @@
 # @param accept_env array of elements for AcceptEnv config
 # @param match_config a list of additional configs to apply to specific matches.
 #                     see Ssh::Match for the data structure
+# @param enabled_key_types server key types to enable
 class profile::ssh::server (
     Stdlib::Port                 $listen_port              = lookup('profile::ssh::server::listen_port'),
     Array[Stdlib::IP::Address]   $listen_addresses         = lookup('profile::ssh::server::listen_addresses'),
@@ -33,7 +34,8 @@ class profile::ssh::server (
     Optional[String[1]]          $max_startups             = lookup('profile::ssh::server::max_startups'),
     Boolean                      $gateway_ports            = lookup('profile::ssh::server::gateway_ports'),
     Array[String[1]]             $accept_env               = lookup('profile::ssh::server::accept_env'),
-    Array[Ssh::Match]            $match_config             = lookup('profile::ssh::server::match_config')
+    Array[Ssh::Match]            $match_config             = lookup('profile::ssh::server::match_config'),
+    Array[Ssh::KeyType]          $enabled_key_types        = lookup('profile::ssh::server::enabled_key_types'),
 
 ) {
     if $lookup_keys_from_ldap {

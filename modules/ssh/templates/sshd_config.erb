@@ -15,12 +15,9 @@ ListenAddress <%= listen %>
 <%- end -%>
 Protocol 2
 # HostKeys for protocol version 2
-HostKey /etc/ssh/ssh_host_rsa_key
-<%- if @realm == "labs" then -%>
-HostKey /etc/ssh/ssh_host_dsa_key
+<%- @enabled_key_types.each do |type| -%>
+HostKey /etc/ssh/ssh_host_<%= type %>_key
 <%- end -%>
-HostKey /etc/ssh/ssh_host_ecdsa_key
-HostKey /etc/ssh/ssh_host_ed25519_key
 
 <%- if @disable_nist_kex -%>
 KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256

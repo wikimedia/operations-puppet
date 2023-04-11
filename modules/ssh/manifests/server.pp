@@ -17,6 +17,7 @@
 # @param accept_env array of elements for AcceptEnv config
 # @param match_config a list of additional configs to apply to specific matches.
 #                     see Ssh::Match for the data structure
+# @param enabled_key_types server key types to enable
 class ssh::server (
     Stdlib::Port                 $listen_port                  = 22,
     Array[Stdlib::IP::Address]   $listen_addresses             = [],
@@ -35,6 +36,7 @@ class ssh::server (
     Boolean                      $gateway_ports                = false,
     Array[String[1]]             $accept_env                   = ['LANG', 'LC_*'],
     Array[Ssh::Match]            $match_config                 = [],
+    Array[Ssh::KeyType]          $enabled_key_types            = ['rsa', 'ecdsa', 'ed25519'],
 ) {
     $_permit_root = $permit_root ? {
         String  => $permit_root,

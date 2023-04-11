@@ -19,3 +19,4 @@ profile::ssh::server::max_startups: ~
 profile::ssh::server::gateway_ports: false
 profile::ssh::server::accept_env: []
 profile::ssh::server::match_config: []
+profile::ssh::server::enabled_key_types: ['rsa', 'ecdsa', 'ed25519']
