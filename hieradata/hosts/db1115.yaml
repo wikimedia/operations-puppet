@@ -1,3 +1,4 @@
 # db1115
+# zarcillo / db_inventory
 profile::mariadb::mysql_role: 'master'
 mariadb::package: 'wmf-mariadb106'

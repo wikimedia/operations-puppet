@@ -1,4 +1,5 @@
 # db2185
+# zarcillo / db_inventory
 profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: false
 mariadb::package: 'wmf-mariadb106'
