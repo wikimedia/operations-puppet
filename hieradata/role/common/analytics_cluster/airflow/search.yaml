@@ -8,6 +8,8 @@ profile::admin::groups:
   - analytics-search-users
   - analytics-admins
 
+profile::contacts::role_contacts: ['Data Engineering']
+
 profile::airflow::airflow_version: '2.5.1-py3.10-20230228'
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'

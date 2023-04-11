@@ -3,7 +3,7 @@ profile::admin::groups:
  - analytics-search-users
  - analytics-admins
 
-profile::contacts::role_contacts: ['Search Platform']
+profile::contacts::role_contacts: ['Data Engineering']
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::oozie::client::oozie_service: 'analytics-oozie'
