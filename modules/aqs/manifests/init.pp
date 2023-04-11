@@ -52,10 +52,6 @@
 # [*druid_uri_pattern*]
 #   druid broker uri pattern for hyperswitch acceptance. Default: undef
 #
-# [*use_nodejs10*]
-#   Deploy an apt component for nodejs 10 for hosts running Debian Stretch.
-#   Default: false
-#
 # [*git_deploy*]
 #   Avoid scap and use git to deploy the repository. This is useful when dealing
 #   with testing environments like cloud where it is not easy to bootstrap
@@ -78,7 +74,6 @@ class aqs(
     $druid_properties              = undef,
     $druid_datasources             = undef,
     $druid_uri_pattern             = undef,
-    $use_nodejs10                  = false,
     $contact_groups                = 'admins,analytics',
     Boolean $git_deploy            = false,
 ) {
@@ -100,7 +95,6 @@ class aqs(
         auto_refresh    => false,
         init_restart    => false,
         deployment      => $deployment,
-        use_nodejs10    => $use_nodejs10,
         contact_groups  => $contact_groups,
     }
 

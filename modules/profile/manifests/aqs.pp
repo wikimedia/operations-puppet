@@ -14,7 +14,6 @@ class profile::aqs (
         String $cassandra_default_consistency          = lookup('profile::aqs::cassandra_default_consistency'),
         String $cassandra_local_dc                     = lookup('profile::aqs::cassandra_local_dc'),
         Optional[Stdlib::Host] $statsd_host            = lookup('profile::aqs::statsd_host', { 'default_value' => undef }),
-        Boolean $use_nodejs10                          = lookup('profile::aqs::use_nodejs10', { 'default_value' => false }),
         Boolean $git_deploy                            = lookup('profile::aqs::git_deploy', { 'default_value' => false }),
 ){
 
@@ -29,7 +28,6 @@ class profile::aqs (
         cassandra_local_dc            => $cassandra_local_dc,
         statsd_host                   => $statsd_host,
         rsyslog_port                  => $rsyslog_port,
-        use_nodejs10                  => $use_nodejs10,
         git_deploy                    => $git_deploy,
     }
 
