@@ -1,4 +1,4 @@
-# role::ci::master runs at least three services:
+# role::ci runs at least three services:
 # - Jenkins controller
 # - Zuul merger
 # - Zuul scheduler (zuul server)
@@ -7,9 +7,9 @@
 # for a host being provisionned we need to disabled those
 # services.
 
-# Jenkins is masked/stopped in role::ci::master
+# Jenkins is masked/stopped in role::ci
 profile::ci::jenkins::service_monitor: false
 
-# Zuul server is running/enabled in role::ci::master
+# Zuul server is running/enabled in role::ci
 profile::zuul::server::service_enable: mask
 profile::zuul::server::service_ensure: stopped

@@ -40,7 +40,7 @@ role::webperf::xhgui:
 role::pybaltest:
   target-q: 2023-2
   phab-task: 321309
-role::ci::master:
+role::ci:
   target-q: TBD
   phab-task: 327068
 role::mw_rc_irc:

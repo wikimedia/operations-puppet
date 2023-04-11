@@ -404,9 +404,9 @@ node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet$/ {
     role(kafka::test::broker)
 }
 
-# CI master / CI standby (switch in Hiera)
+# CI
 node /^(contint1002|contint2001|contint2002)\.wikimedia\.org$/ {
-    role(ci::master)
+    role(ci)
 }
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {

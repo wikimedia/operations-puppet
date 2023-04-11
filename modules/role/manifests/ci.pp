@@ -1,11 +1,11 @@
 # vim: set et ts=4 sw=4:
 
-# role::ci::master
+# role::ci
 #
 # Setup the CI server with a Jenkins controller and Zuul server/merger.
-class role::ci::master {
+class role::ci {
 
-    system::role { 'ci::master': description => 'CI server' }
+    system::role { 'ci': description => 'CI server' }
 
     include ::profile::base::production
     include ::profile::ci::backup

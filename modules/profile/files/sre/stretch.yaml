@@ -33,7 +33,7 @@ role::backup::offsite:
 role::pybaltest:
   target-q: TBD
   phab-task: 297187
-role::ci::master:
+role::ci:
   target-q: 2020-2
 role::mw_rc_irc:
   target-q: 2020-2

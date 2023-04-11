@@ -766,10 +766,10 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
-    # Special config for Apache on CI master
+    # Special config for Apache on CI servers
     prometheus::class_config{ "apache_ci_${::site}":
-        dest       => "${targets_path}/apache_ci_master_${::site}.yaml",
-        class_name => 'role::ci::master',
+        dest       => "${targets_path}/apache_ci_${::site}.yaml",
+        class_name => 'role::ci',
         port       => 9117,
     }
 
