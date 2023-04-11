@@ -183,9 +183,6 @@ scap::sources:
     repository: operations/software/gerrit
   gervert/deploy:
     repository: operations/software/gerrit/tools/gervert/deploy
-  iegreview/iegreview:
-    repository: iegreview
-    origin: phabricator
   integration/docroot: {}
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
