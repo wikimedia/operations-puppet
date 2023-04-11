@@ -35,12 +35,12 @@ hierarchy:
   - name: "expand_path site"
     path: "%{::site}"
     lookup_key: 'wmflib::expand_path'
-  - name: "common"
-    lookup_key: 'wmflib::expand_path'
-    path: "common"
   - name: "netbox common hierarchy"
     path: "common.yaml"
     datadir: "/etc/puppet/netbox"
+  - name: "common"
+    lookup_key: 'wmflib::expand_path'
+    path: "common"
   - name: "private common"
     lookup_key: 'wmflib::expand_path'
     datadir: "/etc/puppet/private/hieradata"
