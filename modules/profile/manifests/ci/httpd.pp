@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # A webserver configured for a CI master, as proxy
-class profile::ci::httpd (
-    Boolean $monitoring_enabled = lookup('profile::ci::httpd::monitoring_enabled'),
-){
+class profile::ci::httpd {
+    include profile::ci
 
     $php_version = debian::codename::eq('buster') ? {
         true    => '7.3',
@@ -29,7 +28,7 @@ class profile::ci::httpd (
 
     profile::auto_restarts::service { 'apache2': }
 
-    if $monitoring_enabled {
+    if $profile::ci::manager {
         prometheus::blackbox::check::http { 'integration.wikimedia.org':
             team               => 'serviceops-collab',
             severity           => 'task',

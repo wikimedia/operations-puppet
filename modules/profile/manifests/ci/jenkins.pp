@@ -5,24 +5,26 @@
 #
 class profile::ci::jenkins(
     Stdlib::Unixpath $prefix = lookup('profile::ci::jenkins::prefix'),
-    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = lookup('profile::ci::jenkins::service_ensure'),
-    Variant[Enum['mask', 'manual'], Boolean] $service_enable = lookup('profile::ci::jenkins::service_enable'),
-    Boolean $service_monitor = lookup('profile::ci::jenkins::service_monitor'),
     Stdlib::Unixpath $builds_dir = lookup('profile::ci::jenkins::builds_dir'),
     Stdlib::Unixpath $workspaces_dir = lookup('profile::ci::jenkins::workspaces_dir'),
     Stdlib::Unixpath $java_home = lookup('profile::ci::jenkins::java_home'),
 ) {
+    include profile::ci
     include ::profile::java
     Class['::profile::java'] ~> Class['::jenkins']
 
     # Load the Jenkins module, that setup a Jenkins controller
+    $service_enable = $profile::ci::manager ? {
+        false   => 'mask',
+        default => $profile::ci::manager,
+    }
     class { '::jenkins':
         http_port       => 8080,
         prefix          => $prefix,
         umask           => '0002',
-        service_ensure  => $service_ensure,
+        service_ensure  => stdlib::ensure($profile::ci::manager, 'service'),
         service_enable  => $service_enable,
-        service_monitor => $service_monitor,
+        service_monitor => $profile::ci::manager,
         builds_dir      => $builds_dir,
         workspaces_dir  => $workspaces_dir,
         java_home       => $java_home,

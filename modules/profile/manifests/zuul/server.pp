@@ -2,17 +2,18 @@
 class profile::zuul::server(
     Hash $conf_common = lookup('zuul::common'),
     Hash $conf_server = lookup('profile::zuul::server::conf'),
-    Wmflib::Enable_Service $service_enable = lookup('profile::zuul::server::service_enable'),
-    Stdlib::Ensure::Service $service_ensure = lookup('profile::zuul::server::service_ensure'),
     Stdlib::Fqdn $email_server = lookup('profile::zuul::server::email_server'),
 ) {
-    system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
-    $monitoring_active = $service_enable ? {
-        false   => 'absent',
-        'mask'  => 'absent',
-        default => 'present',
+    include profile::ci
+    if $profile::ci::manager {
+        $monitoring_active = 'present'
+        $service_enable = true
+    } else {
+        $monitoring_active = 'absent'
+        $service_enable = 'mask'
     }
+
     class { 'zuul::monitoring::server':
         ensure => $monitoring_active,
     }
@@ -34,7 +35,7 @@ class profile::zuul::server(
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
         service_enable       => $service_enable,
-        service_ensure       => $service_ensure,
+        service_ensure       => stdlib::ensure($profile::ci::manager, 'service'),
 
         # Enable email configuration
         email_server         => $email_server,

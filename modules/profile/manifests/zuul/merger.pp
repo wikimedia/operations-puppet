@@ -1,17 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::zuul::merger(
+    Boolean $enable = lookup('profile::zuul::merger::enable'),
     Hash $conf_common = lookup('zuul::common'),
     Hash $conf_merger = lookup('profile::zuul::merger::conf'),
     String $ferm_srange = lookup('profile::zuul::merger::ferm_srange'),
-    Wmflib::Enable_Service $service_enable = lookup('profile::zuul::merger::service_enable'),
-    Stdlib::Ensure::Service $service_ensure = lookup('profile::zuul::merger::service_ensure')
 ) {
+    include profile::ci
 
-    $monitoring_active = $service_enable ? {
-        false   => 'absent',
-        'mask'  => 'absent',
-        default => 'present',
+    if $enable {
+        $monitoring_active = 'present'
+        $service_enable    = true
+    } else {
+        $monitoring_active = 'absent'
+        $service_enable    = 'mask'
     }
+
     class { 'zuul::monitoring::merger':
         ensure => $monitoring_active,
     }
@@ -40,7 +43,7 @@ class profile::zuul::merger(
         git_name            => $conf_merger['git_name'],
         zuul_url            => $conf_merger['zuul_url'],
         service_enable      => $service_enable,
-        service_ensure      => $service_ensure,
+        service_ensure      => stdlib::ensure($enable, 'service'),
     }
 
     # Serves Zuul git repositories

@@ -1,11 +1,9 @@
-# vim: set et ts=4 sw=4:
-
+# SPDX-License-Identifier: Apache-2.0
+#
 # role::ci
 #
-# Setup the CI server with a Jenkins controller and Zuul server/merger.
 class role::ci {
-
-    system::role { 'ci': description => 'CI server' }
+    system::role { 'ci_server': description => 'CI server' }
 
     include ::profile::base::production
     include ::profile::ci::backup

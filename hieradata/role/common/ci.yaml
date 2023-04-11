@@ -7,15 +7,13 @@ profile::admin::groups:
 cluster: ci
 contactgroups: "admins,contint"
 
+profile::ci::manager_host: contint2001.wikimedia.org
+
 profile::ci::jenkins::prefix: "/ci"
 profile::ci::proxy_jenkins::http_port: 8080
 profile::ci::proxy_jenkins::prefix: "/ci"
 profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
 profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
-profile::ci::jenkins::service_ensure: "stopped"
-profile::ci::jenkins::service_enable: "mask"
-
-profile::ci::httpd::monitoring_enabled: true
 
 profile::ci::jenkins::java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
 
@@ -28,9 +26,6 @@ profile::java::java_packages:
     variant: "jdk"
 
 # Zuul merger
-
-profile::zuul::merger::service_enable: true
-profile::zuul::merger::service_ensure: running
 
 profile::zuul::merger::conf:
   gearman_server: "208.80.153.15" # contint2001.wikimedia.org
@@ -46,9 +41,6 @@ profile::zuul::merger::ferm_srange: >-
   @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), AAAA)))
 
 # Zuul server
-
-profile::zuul::server::service_enable: true
-profile::zuul::server::service_ensure: running
 
 profile::zuul::server::conf:
   # ferm defaults to ACCEPT on loopback:

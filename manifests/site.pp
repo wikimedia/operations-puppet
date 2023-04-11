@@ -404,7 +404,6 @@ node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet$/ {
     role(kafka::test::broker)
 }
 
-# CI
 node /^(contint1002|contint2001|contint2002)\.wikimedia\.org$/ {
     role(ci)
 }
