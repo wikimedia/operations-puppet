@@ -7,6 +7,8 @@ class profile::mariadb::packages_wmf (
         $mariadb_package = 'wmf-mariadb104'
     } elsif debian::codename::eq('buster') {
         $mariadb_package = 'wmf-mariadb104'
+    } elsif debian::codename::eq('stretch') {
+        $mariadb_package = 'wmf-mariadb101'
     } else {
         fail("Debian release ${facts['os']['distro']['codename']} is not supported")
     }
