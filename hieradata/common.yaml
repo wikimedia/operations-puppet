@@ -132,6 +132,7 @@ prometheus_all_nodes:
   - prometheus3001.esams.wmnet
   - prometheus3002.esams.wmnet
   - prometheus4001.ulsfo.wmnet
+  - prometheus4002.ulsfo.wmnet
   - prometheus5001.eqsin.wmnet
   - prometheus6001.drmrs.wmnet
   - prometheus1005.eqiad.wmnet
