@@ -490,7 +490,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(208|210|212|213|214|215|216|217|219|221|223|225)\.eqiad\.wmnet$/ {
+node /^db1(208|210|212|213|214|216|217|219|221|223|225)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
@@ -788,6 +788,11 @@ node /^db2(186|187)\.codfw\.wmnet$/ {
 
 # zarcillo master
 node 'db1115.eqiad.wmnet' {
+    role(mariadb::misc::db_inventory)
+}
+
+# future zarcillo master
+node 'db1215.eqiad.wmnet' {
     role(mariadb::misc::db_inventory)
 }
 
