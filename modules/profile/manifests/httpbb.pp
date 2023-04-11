@@ -18,7 +18,7 @@
 class profile::httpbb (
     Optional[Hash[String, Hash[String, String]]] $plain_basicauth_credentials = lookup('profile::httpbb::basicauth_credentials', {default_value => undef}),
     Hash[String, Array[String]] $hourly_tests = lookup('profile::httpbb::hourly_tests', {default_value => {}}),
-    Boolean $test_kubernetes_hourly = lookup('profile::httpbb::test_kubernetes_hourly', {default_value => false})
+    Boolean $test_kubernetes_hourly = lookup('profile::httpbb::test_kubernetes_hourly', {default_value => false}),
 ){
     class {'::httpbb':}
 
@@ -155,16 +155,34 @@ class profile::httpbb (
     # Add the hourly Kubernetes test separately, since it needs a different --https_port.
     if $test_kubernetes_hourly {
         $ensure = $test_kubernetes_hourly.bool2str('present', 'absent')
+        $kubernetes_services = wmflib::service::fetch().filter |$name, $config| {
+            $config.has_key('httpbb_dir')
+        }
+        $kubernetes_services.each |String $svc_name, Hash $svc| {
+            $svc_port       = $svc['port']
+            $svc_httpbb_dir = $svc['httpbb_dir']
+            systemd::timer::job { "httpbb_kubernetes_${svc_name}_hourly":
+                ensure             => $ensure,
+                description        => "Run httpbb ${svc_httpbb_dir} tests hourly on Kubernetes ${svc_name}.",
+                command            => "/bin/sh -c \'/usr/bin/httpbb /srv/service/httpbb-tests/${svc_httpbb_dir}/*.yaml --host ${svc_name}.discovery.wmnet --https_port ${svc_port} --retry_on_timeout\'",
+                interval           => {
+                    'start'    => 'OnUnitActiveSec',
+                    'interval' => '1 hour',
+                },
+                user               => 'www-data',
+                monitoring_enabled => true,
+            }
+        }
+        # TODO: Remove generic resource
         systemd::timer::job { 'httpbb_kubernetes_hourly':
-            ensure             => $ensure,
-            description        => 'Run httpbb appserver tests hourly on Kubernetes.',
-            command            => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450 --retry_on_timeout\'',
-            interval           => {
+            ensure      => absent,
+            description => 'Run httpbb appserver tests hourly on Kubernetes.',
+            command     => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450 --retry_on_timeout\'',
+            interval    => {
                 'start'    => 'OnUnitActiveSec',
                 'interval' => '1 hour',
             },
-            user               => 'www-data',
-            monitoring_enabled => true,
+            user        => 'www-data',
         }
     }
 }

@@ -1406,6 +1406,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    httpbb_dir: appserver
     page: true
     probes:
       - type: http
@@ -1443,6 +1444,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    httpbb_dir: appserver
     page: true
     probes:
       - type: http
@@ -1480,6 +1482,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    httpbb_dir: appserver
     page: true
     probes:
       - type: http

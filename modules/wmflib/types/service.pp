@@ -41,6 +41,8 @@
 #     legacy names still referenced by configurations.
 # @param Optional[Array[String]] public_aliases
 #     A list of aliases for public names of the service. See also 'public_domain'.
+# @param Optional[String] httpbb_dir
+#     The httpbb test suite directory to use (for mw-on-k8s only for now).
 #
 type Wmflib::Service = Struct[
     {
@@ -58,5 +60,6 @@ type Wmflib::Service = Struct[
     'public_endpoint' => Optional[String[1]],
     'aliases'         => Optional[Array[String[1]]],
     'public_aliases'  => Optional[Array[String[1]]],
+    'httpbb_dir'      => Optional[String[1]],
     }
 ]
