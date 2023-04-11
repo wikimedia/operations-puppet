@@ -173,16 +173,5 @@ class profile::httpbb (
                 monitoring_enabled => true,
             }
         }
-        # TODO: Remove generic resource
-        systemd::timer::job { 'httpbb_kubernetes_hourly':
-            ensure      => absent,
-            description => 'Run httpbb appserver tests hourly on Kubernetes.',
-            command     => '/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/appserver/*.yaml --host mw-web.discovery.wmnet --https_port 4450 --retry_on_timeout\'',
-            interval    => {
-                'start'    => 'OnUnitActiveSec',
-                'interval' => '1 hour',
-            },
-            user        => 'www-data',
-        }
     }
 }
