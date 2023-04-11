@@ -6,7 +6,7 @@ profile::lvs::tagged_subnets:
   - public1-b12-drmrs
   - public1-b13-drmrs
 profile::lvs::interface_tweaks:
-  ens3f0np0:
+  enp175s0f0np0:
     txqlen: 10000
-  ens3f1np1:
+  enp175s0f1np1:
     txqlen: 10000
