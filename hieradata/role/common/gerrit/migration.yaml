@@ -2,10 +2,3 @@ profile::admin::groups:
   - gerrit-root
   - gerrit-admin
 contactgroups: 'admins,gerrit'
-
-profile::gerrit::migration::src_host: 'gerrit1001.wikimedia.org'
-profile::gerrit::migration::dst_hosts:
-  - 'gerrit2002.wikimedia.org'
-
-profile::gerrit::migration::data_dir: '/srv/gerrit'
-profile::gerrit::migration::user_name: 'gerrit2'

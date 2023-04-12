@@ -4,7 +4,7 @@ class profile::gerrit::migration (
     Stdlib::Fqdn        $src_host    = lookup('profile::gerrit::migration::src_host'),
     Array[Stdlib::Fqdn] $dst_hosts   = lookup('profile::gerrit::migration::dst_hosts'),
     Stdlib::Unixpath    $data_dir    = lookup('profile::gerrit::migration::data_dir'),
-    String              $daemon_user = lookup('profile::gerrit::daemon_user'),
+    String              $daemon_user = lookup('profile::gerrit::migration::daemon_user'),
 ) {
 
     $gerrit_site = "/var/lib/${daemon_user}/review_site"

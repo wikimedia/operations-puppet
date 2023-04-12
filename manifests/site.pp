@@ -382,7 +382,7 @@ node 'gerrit1001.wikimedia.org', 'gerrit2002.wikimedia.org' {
 
 # New gerrit server T326366
 node 'gerrit1003.wikimedia.org' {
-    role(insetup::serviceops)
+    role(gerrit::migration)
 }
 
 # Zookeeper and Etcd discovery service nodes

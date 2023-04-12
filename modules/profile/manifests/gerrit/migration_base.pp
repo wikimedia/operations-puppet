@@ -2,19 +2,18 @@
 # data on a new Gerrit host before it has the main role class
 class profile::gerrit::migration_base (
     Stdlib::Unixpath $data_dir = lookup('profile::gerrit::migration::data_dir'),
-    String $user_name          = lookup('profile::gerrit::migration::user_name'),
-    String $daemon_user        = lookup('profile::gerrit::daemon_user'),
+    String $daemon_user        = lookup('profile::gerrit::migration::daemon_user'),
 ){
 
-    group { $user_name:
+    group { $daemon_user:
         ensure => present,
     }
 
-    user { $user_name:
+    user { $daemon_user:
         ensure     => 'present',
-        gid        => $user_name,
+        gid        => $daemon_user,
         shell      => '/bin/bash',
-        home       => "/var/lib/${user_name}",
+        home       => "/var/lib/${daemon_user}",
         system     => true,
         managehome => true,
     }
