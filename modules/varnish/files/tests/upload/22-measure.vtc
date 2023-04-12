@@ -39,6 +39,9 @@ client c1 {
     expect resp.http.Timing-Allow-Origin == "*"
     expect resp.http.Content-Length == 0
 
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 1.0}"
+
     # codfw data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-codfw.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
@@ -48,6 +51,9 @@ client c1 {
     expect resp.http.Access-Control-Allow-Origin == "*"
     expect resp.http.Timing-Allow-Origin == "*"
     expect resp.http.Content-Length == 0
+
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 1.0}"
 
     # esams data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-esams.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
@@ -59,6 +65,9 @@ client c1 {
     expect resp.http.Timing-Allow-Origin == "*"
     expect resp.http.Content-Length == 0
 
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 1.0}"
+
     # ulsfo data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-ulsfo.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
@@ -68,6 +77,9 @@ client c1 {
     expect resp.http.Access-Control-Allow-Origin == "*"
     expect resp.http.Timing-Allow-Origin == "*"
     expect resp.http.Content-Length == 0
+
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 1.0}"
 
     # eqsin data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqsin.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
@@ -79,6 +91,9 @@ client c1 {
     expect resp.http.Timing-Allow-Origin == "*"
     expect resp.http.Content-Length == 0
 
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 1.0}"
+
     # drmrs data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-drmrs.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
@@ -88,6 +103,9 @@ client c1 {
     expect resp.http.Access-Control-Allow-Origin == "*"
     expect resp.http.Timing-Allow-Origin == "*"
     expect resp.http.Content-Length == 0
+
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 1.0}"
 
     # invalid data center
     txreq -url "/measure" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-jkhan.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"

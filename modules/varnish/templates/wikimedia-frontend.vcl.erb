@@ -199,7 +199,14 @@ sub https_deliver_networkerrorlogging {
             //     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }').replace('"', '\\"'))
             set resp.http.Report-To = {"{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }"};
             //     nel=dict(report_to='wm_nel', max_age=604800, failure_fraction=0.05, success_fraction=0.0)
-            set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}"};
+            if (req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
+                // Set 'success_fraction' to 1.0 for measurement domains
+                // See https://phabricator.wikimedia.org/T334608
+                set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 1.0}"};
+            } else {
+                // Set 'success_fraction' to 0.0 for all other domains
+                set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}"};
+            }
             // The failure_fraction was guesstimated based on group0's reporting ratio: https://phabricator.wikimedia.org/T257527#6489683
         }
     }
