@@ -19,6 +19,8 @@ lookup_options:
     merge: deep
   profile::cache::varnish::frontend::fe_vcl_config:
     merge: hash
+  profile::cache::varnish::frontend::cache_be_opts:
+    merge: hash
   profile::docker::engine::settings:
     merge: hash
   profile::debdeploy::client::filter_services:
