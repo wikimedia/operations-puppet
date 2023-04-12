@@ -121,10 +121,6 @@
 #   Default: lookup('contactgroups', {default_value => 'admins'}), - use 'contactgroups'
 #            hiera variable with a fallback to 'admins' if 'contactgroups' isn't set.
 #
-# [*use_nodejs10*]
-#   Deploy an apt component for nodejs 10 for hosts running Debian Stretch.
-#   Default: false
-#
 # === Examples
 #
 # To set up a service named myservice on port 8520 and with a templated
@@ -182,7 +178,6 @@ define service::node(
     String                             $deployment_user   = 'deploy-service',
     Boolean                            $deployment_config = false,
     Hash                               $deployment_vars   = {},
-    Boolean                            $use_nodejs10      = false,
     # lint:ignore:wmf_styleguide
     String                             $contact_groups    = lookup('contactgroups',
                                                                   {'default_value' => 'admins'}),
@@ -222,22 +217,6 @@ define service::node(
     # the local log directory
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
-
-
-    if $use_nodejs10 {
-        if debian::codename::eq('stretch') {
-            if !defined(Apt::Repository['wikimedia-node10']) {
-                apt::repository { 'wikimedia-node10':
-                    uri        => 'http://apt.wikimedia.org/wikimedia',
-                    dist       => 'stretch-wikimedia',
-                    components => 'component/node10',
-                    before     => Package['nodejs'],
-                }
-            }
-        } else {
-            fail('The use_nodejs10 parameter is only usable on Debian Stretch.')
-        }
-    }
 
     # Software and the deployed code, firejail for containment
     if !defined(Package['nodejs']) {
