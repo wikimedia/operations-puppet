@@ -54,5 +54,7 @@ class ircecho (
     }
 
 
-    profile::auto_restarts::service { 'ircecho': }
+    profile::auto_restarts::service { 'ircecho':
+        ensure => $ensure,
+    }
 }

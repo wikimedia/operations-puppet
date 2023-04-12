@@ -44,7 +44,9 @@ class prometheus::icinga_exporter(
     restart  => true,
   }
 
-  profile::auto_restarts::service { 'prometheus-icinga-am': }
+  profile::auto_restarts::service { 'prometheus-icinga-am':
+    ensure => $icinga_am_ensure,
+  }
 
   $label_teams_yaml_config = $label_teams_config ? {
     undef   => '',
