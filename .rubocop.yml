@@ -15,6 +15,7 @@ AllCops:
     - 'vendor/**/*'
     - '**/Vagrantfile'
     - 'modules/profile/files/ci/lintian-junit-report'
+    - 'modules/opensearch_dashboards/**/*'
 
 # Uncomment when lines are 100 characters or less
 # Metrics/LineLength:

@@ -5,3 +5,4 @@
 -I modules/wmflib/lib
 -I modules/postgresql/lib
 -I modules/scap/lib
+-I modules/opensearch_dashboards/lib

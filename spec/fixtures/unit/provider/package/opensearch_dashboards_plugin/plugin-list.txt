@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+alertingDashboards@2.6.0.0
+anomalyDetectionDashboards@2.6.0.0
+customImportMapDashboards@2.6.0.0
+ganttChartDashboards@2.6.0.0
+indexManagementDashboards@2.6.0.0
+mlCommonsDashboards@2.6.0.0
+notificationsDashboards@2.6.0.0
+observabilityDashboards@2.6.0.0
+queryWorkbenchDashboards@2.6.0.0
+reportsDashboards@2.6.0.0
+searchRelevanceDashboards@2.6.0.0
+securityAnalyticsDashboards@2.6.0.0
+securityDashboards@2.6.0.0
