@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018 Puppet, Inc.
+# This file is distributed under the same license as the puppetlabs-mount_core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# 
+# Translators:
+# Erwin Hom <erwin.hom@puppet.com>, 2018
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: puppetlabs-mount_core 1.0.1-1-g8e5c940\n"
+"\n"
+"Report-Msgid-Bugs-To: docs@puppet.com\n"
+"POT-Creation-Date: 2018-08-20 11:47-0700\n"
+"PO-Revision-Date: 2018-10-23 22:52+0000\n"
+"Last-Translator: Erwin Hom <erwin.hom@puppet.com>, 2018\n"
+"Language-Team: Japanese (Japan) (https://www.transifex.com/puppet/teams/41915/ja_JP/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. TRANSLATORS refers to remounting a file system
+#: ../lib/puppet/provider/mount.rb:28
+msgid "Remounting"
+msgstr "再マウント"
+
+#. TRANSLATORS "prefetch" is a program name and should not be translated
+#: ../lib/puppet/provider/mount/parsed.rb:131
+msgid "Prefetch: Mount[%{name}]: Field 'device' is missing"
+msgstr "Prefetch: マウント[%{name}]: フィールド'device'が見つかりません。"
+
+#. TRANSLATORS "prefetch" is a program name and should not be translated
+#: ../lib/puppet/provider/mount/parsed.rb:136
+msgid "Prefetch: Mount[%{name}]: Field 'fstype' is missing"
+msgstr "Prefetch: マウント[%{name}]: フィールド'fstype'が見つかりません。"
+
+#: ../lib/puppet/provider/mount/parsed.rb:148
+msgid ""
+"Mount[%{name}]: Field 'device' must be in the format of <absolute path> or "
+"<host>:<absolute path>"
+msgstr ""
+"マウント[%{name}]: フィールド'device'は<absolute path> または <host>:<absolute "
+"path>のフォーマットでなければなりません。"
+
+#: ../lib/puppet/provider/mount/parsed.rb:156
+#: ../lib/puppet/provider/mount/parsed.rb:163
+msgid "Mount[%{name}]: Field 'device' is required"
+msgstr "マウント[%{name}]: フィールド'device'が必要です。"
+
+#: ../lib/puppet/provider/mount/parsed.rb:194
+msgid "Mount[%{name}]: Field 'options' is required"
+msgstr "マウント[%{name}]: フィールド'options'が必要です。"
+
+#: ../lib/puppet/provider/mount/parsed.rb:198
+msgid "Mount[%{name}]: Field 'fstype' is required"
+msgstr "マウント[%{name}]: フィールド'fstype'が必要です。"
+
+#: ../lib/puppet/provider/mount/parsed.rb:276
+msgid "Could not understand line %{line} from mount output"
+msgstr "マウントアウトプットの行%{line}を認識できませんでした。"
+
+#: ../lib/puppet/type/mount.rb:67
+msgid "Unexpected change from %{current} to unmounted"
+msgstr "%{current}からの予期せぬ変更によりマウントが解除されました。"
+
+#: ../lib/puppet/type/mount.rb:114
+msgid ""
+"Parent has property %{name} but it doesn't appear in the current values"
+msgstr "親のプロパティは%{name}ですが、現在の値には表示されません。"
+
+#: ../lib/puppet/type/mount.rb:133
+msgid "device must not contain whitespace: %{value}"
+msgstr "デバイスに空白を含めることはできません: %{value}"
+
+#: ../lib/puppet/type/mount.rb:159
+msgid "blockdevice must not contain whitespace: %{value}"
+msgstr "ブロックデバイスに空白を含めることはできません: %{value}"
+
+#: ../lib/puppet/type/mount.rb:168
+msgid "fstype must not contain whitespace: %{value}"
+msgstr "fstypeに空白を含めることはできません: %{value}"
+
+#: ../lib/puppet/type/mount.rb:169
+msgid "fstype must not be an empty string"
+msgstr "fstypeタイプを空文字列にすることはできません。"
+
+#: ../lib/puppet/type/mount.rb:183
+msgid "options must not contain whitespace: %{value}"
+msgstr "オプションに空白を含めることはできません: %{value}"
+
+#: ../lib/puppet/type/mount.rb:184
+msgid "options must not be an empty string"
+msgstr "オプションを空文字列にすることはできません。"
+
+#: ../lib/puppet/type/mount.rb:250
+msgid "name must not contain whitespace: %{value}"
+msgstr "名前に空白を含めることはできません: %{value}"

@@ -38,6 +38,7 @@ RSpec.configure do |c|
   c.module_path = [
     File.join(__dir__, '..', 'modules'),
     File.join(__dir__, '..', 'vendor_modules'),
+    File.join(__dir__, '..', 'core_modules'),
     File.join(private_modules_path, 'modules')
   ].join(':')
   c.hiera_config = File.join(__dir__, 'hiera.yaml')

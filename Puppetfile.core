@@ -1,0 +1,17 @@
+# TODO: merge this with the main Puppetfile and move everything under vendor_modules
+# once everything is migrated to puppet7
+moduledir 'core_modules'
+
+mod 'nagios_core',
+    :git => 'https://github.com/puppetlabs-toy-chest/puppetlabs-nagios_core',
+    :ref => '1.0.3'
+
+mod 'mount_core',
+    :git => 'https://github.com/puppetlabs/puppetlabs-mount_core',
+    :ref => 'v1.2.0'
+
+mod 'sshkeys_core',
+    :git => 'https://github.com/puppetlabs/puppetlabs-sshkeys_core',
+    :ref => 'v2.4.0'
+
+# vim: set filetype=ruby:

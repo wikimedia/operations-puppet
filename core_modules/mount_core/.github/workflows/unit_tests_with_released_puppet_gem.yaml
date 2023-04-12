@@ -1,0 +1,50 @@
+---
+name: Unit Tests with released Puppet gem
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  unit_tests_with_released_puppet_gem:
+    name: ${{ matrix.os_type }} / Puppet${{ matrix.puppet_version }} gem / Ruby ${{ matrix.ruby }}
+    strategy:
+      matrix:
+        os: [ 'ubuntu-20.04', 'macos-latest', 'windows-2019' ]
+        puppet_version: [ 6, 7 ]
+        include:
+          - puppet_version: 6
+            ruby: 2.5
+          - puppet_version: 7
+            ruby: 2.7
+
+          - os: 'ubuntu-20.04'
+            os_type: 'Linux'
+          - os: 'macos-latest'
+            os_type: 'macOS'
+          - os: 'windows-2019'
+            os_type: 'Windows'
+
+    runs-on: ${{ matrix.os }}
+    env:
+      PUPPET_GEM_VERSION: ~> ${{ matrix.puppet_version }}.0
+    steps:
+      - name: Checkout current PR code
+        uses: actions/checkout@v3
+
+      - name: Install ruby version ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Prepare testing environment with bundler
+        run: |
+          git config --global core.longpaths true
+          bundle config set system 'true'
+          bundle config set --local without 'release'
+          bundle update --jobs 4 --retry 3
+
+      - name: Run unit tests
+        run: bundle exec rake parallel_spec

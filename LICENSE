@@ -7,8 +7,8 @@ on per-file basis over time.
 
 - Some code has been incorporated into the repository from existing sources with a license
   different than Apache-2. In this case the SPDX header uses the original license.
-- A few Puppet modules are vendored in, these are found under vendor_modules and
-  retain their original license
+- A few Puppet modules are vendored in, these are found under vendor_modules or core_modules
+  and retain their original license
 - hieradata/ does not carry an explicit license. It contains configuration data of limited
   usefulness outside of the specific setup of the Wikimedia Foundation and it's trivial
   enough to probably not even be copyrightable at all. If you find it useful, use

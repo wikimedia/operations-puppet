@@ -39,7 +39,7 @@ class TaskGen < ::Rake::TaskLib
     ]
     @git = GitOps.new(path)
     @changed_files_with_vendored = @git.changes_in_head
-    vendor_paths = ['vendor/**/*', 'vendor_modules/**/*']
+    vendor_paths = ['vendor/**/*', 'vendor_modules/**/*', 'core_modules/**/*']
     @changed_files = FileList[@changed_files_with_vendored].exclude(vendor_paths).to_a
     PuppetSyntax.exclude_paths = vendor_paths
     @tasks = setup_tasks + setup_spdx(@git)

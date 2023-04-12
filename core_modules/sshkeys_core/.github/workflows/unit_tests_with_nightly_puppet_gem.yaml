@@ -1,0 +1,69 @@
+---
+name: Unit Tests with nightly Puppet gem
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  unit_tests_with_nightly_puppet_gem:
+    name: ${{ matrix.os_type }} / Puppet${{ matrix.puppet_version }} gem / Ruby ${{ matrix.ruby }}
+    strategy:
+      matrix:
+        os: [ 'ubuntu-20.04', 'macos-latest', 'windows-2019' ]
+        puppet_version: [ 6, 7 ]
+        include:
+          - puppet_version: 6
+            ruby: 2.5
+          - puppet_version: 7
+            ruby: 2.7
+
+          - os: 'ubuntu-20.04'
+            os_type: 'Linux'
+            env_set_cmd: 'export '
+            gem_file: 'puppet-latest.gem'
+          - os: 'macos-latest'
+            os_type: 'macOS'
+            env_set_cmd: 'export '
+            gem_file: 'puppet-latest-universal-darwin.gem'
+          - os: 'windows-2019'
+            os_type: 'Windows'
+            env_set_cmd: '$env:'
+            gem_file: 'puppet-latest-x64-mingw32.gem'
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout current PR code
+        uses: actions/checkout@v3
+
+      - name: Install ruby version ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Install the latest nightly build of puppet${{ matrix.puppet_version }} gem
+        run: |
+          sleep_time=0
+          until [ $sleep_time -ge 15 ]
+          do
+            curl --location http://nightlies.puppet.com/downloads/gems/puppet${{ matrix.puppet_version }}-nightly/${{ matrix.gem_file }} --output puppet.gem
+            gem install puppet.gem -N && break
+
+            sleep_time=$((sleep_time*2+1))
+            echo "Retrying download and install of gem in $sleep_time seconds..."
+            sleep $sleep_time
+          done
+        shell: bash
+
+      - name: Prepare testing environment with bundler
+        run: |
+          git config --global core.longpaths true
+          bundle config set system 'true'
+          bundle config set --local without 'release'
+          ${{ matrix.env_set_cmd }}PUPPET_GEM_VERSION=$(ruby -e 'puts /puppet\s+\((.+)\)/.match(`gem list -eld puppet`)[1]')
+          bundle update --jobs 4 --retry 3
+
+      - name: Run unit tests
+        run: bundle exec rake parallel_spec

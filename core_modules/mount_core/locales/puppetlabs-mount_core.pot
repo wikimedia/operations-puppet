@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018 Puppet, Inc.
+# This file is distributed under the same license as the puppetlabs-mount_core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: puppetlabs-mount_core 1.0.1-1-g8e5c940\n"
+"\n"
+"Report-Msgid-Bugs-To: docs@puppet.com\n"
+"POT-Creation-Date: 2018-08-20 11:47-0700\n"
+"PO-Revision-Date: 2018-08-20 11:47-0700\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#. TRANSLATORS refers to remounting a file system
+#: ../lib/puppet/provider/mount.rb:28
+msgid "Remounting"
+msgstr ""
+
+#. TRANSLATORS "prefetch" is a program name and should not be translated
+#: ../lib/puppet/provider/mount/parsed.rb:131
+msgid "Prefetch: Mount[%{name}]: Field 'device' is missing"
+msgstr ""
+
+#. TRANSLATORS "prefetch" is a program name and should not be translated
+#: ../lib/puppet/provider/mount/parsed.rb:136
+msgid "Prefetch: Mount[%{name}]: Field 'fstype' is missing"
+msgstr ""
+
+#: ../lib/puppet/provider/mount/parsed.rb:148
+msgid "Mount[%{name}]: Field 'device' must be in the format of <absolute path> or <host>:<absolute path>"
+msgstr ""
+
+#: ../lib/puppet/provider/mount/parsed.rb:156 ../lib/puppet/provider/mount/parsed.rb:163
+msgid "Mount[%{name}]: Field 'device' is required"
+msgstr ""
+
+#: ../lib/puppet/provider/mount/parsed.rb:194
+msgid "Mount[%{name}]: Field 'options' is required"
+msgstr ""
+
+#: ../lib/puppet/provider/mount/parsed.rb:198
+msgid "Mount[%{name}]: Field 'fstype' is required"
+msgstr ""
+
+#: ../lib/puppet/provider/mount/parsed.rb:276
+msgid "Could not understand line %{line} from mount output"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:67
+msgid "Unexpected change from %{current} to unmounted"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:114
+msgid "Parent has property %{name} but it doesn't appear in the current values"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:133
+msgid "device must not contain whitespace: %{value}"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:159
+msgid "blockdevice must not contain whitespace: %{value}"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:168
+msgid "fstype must not contain whitespace: %{value}"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:169
+msgid "fstype must not be an empty string"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:183
+msgid "options must not contain whitespace: %{value}"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:184
+msgid "options must not be an empty string"
+msgstr ""
+
+#: ../lib/puppet/type/mount.rb:250
+msgid "name must not contain whitespace: %{value}"
+msgstr ""

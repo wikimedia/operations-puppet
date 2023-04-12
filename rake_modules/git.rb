@@ -24,6 +24,7 @@ class GitOps
       # Ignore upstream modules
       next unless ignored_modules.select { |m| %r'^modules/#{m}/' =~ diff.path }.empty?
       next if diff.path.start_with?('vendor_modules/')
+      next if diff.path.start_with?('core_modules/')
       name_status = diffs.name_status[diff.path]
       case name_status
       when 'A'

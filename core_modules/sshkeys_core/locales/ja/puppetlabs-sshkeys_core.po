@@ -1,0 +1,56 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018 Puppet, Inc.
+# This file is distributed under the same license as the puppetlabs-sshkeys_core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# 
+# Translators:
+# Erwin Hom <erwin.hom@puppet.com>, 2018
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: puppetlabs-sshkeys_core 1.0.0-8-g39a613b\n"
+"\n"
+"Report-Msgid-Bugs-To: docs@puppet.com\n"
+"POT-Creation-Date: 2018-08-17 15:12-0700\n"
+"PO-Revision-Date: 2018-10-24 00:48+0000\n"
+"Last-Translator: Erwin Hom <erwin.hom@puppet.com>, 2018\n"
+"Language-Team: Japanese (Japan) (https://www.transifex.com/puppet/teams/41915/ja_JP/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../lib/puppet/type/ssh_authorized_key.rb:73
+msgid "Key must not contain whitespace: %{value}"
+msgstr "キーに空白を含めることはできません: %{value}"
+
+#: ../lib/puppet/type/ssh_authorized_key.rb:118
+msgid ""
+"Option %{value} is not valid. A single option must either be of the form "
+"'option' or 'option=\"value\". Multiple options must be provided as an array"
+msgstr ""
+"オプション%{value}は有効ではありません。単一オプションの場合は、'option'または'option=\"value\"のいずれかの形にする必要があります。複数オプションの場合は、配列として指定する必要があります。"
+
+#: ../lib/puppet/type/ssh_authorized_key.rb:136
+msgid "Attribute 'user' or 'target' is mandatory"
+msgstr "属性'user'または'target'は必須です。"
+
+#: ../lib/puppet/type/sshkey.rb:53
+msgid "Aliases cannot include whitespace"
+msgstr "別名に空白を含めることはできません。"
+
+#: ../lib/puppet/type/sshkey.rb:56
+msgid "Aliases must be provided as an array, not a comma-separated list"
+msgstr "別名はカンマ区切りリストではなく、配列として指定する必要があります。"
+
+#: ../lib/puppet/type/sshkey.rb:67
+msgid "Resourcename cannot include whitespaces"
+msgstr "リソース名に空白を含めることはできません。"
+
+#: ../lib/puppet/type/sshkey.rb:68
+msgid ""
+"No comma in resourcename allowed. If you want to specify aliases use the "
+"host_aliases property"
+msgstr "リソース名にカンマは使えません。別名を指定したい場合は、host_aliasesプロパティを使用してください。"

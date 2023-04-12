@@ -1,0 +1,60 @@
+{
+  "name": "puppetlabs-sshkeys_core",
+  "version": "2.4.0",
+  "author": "puppetlabs",
+  "summary": "Manage SSH authorized keys, and known hosts.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-sshkeys_core",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-sshkeys_core",
+  "issues_url": "https://tickets.puppetlabs.com/project/MODULES",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS"
+    },
+    {
+      "operatingsystem": "OracleLinux"
+    },
+    {
+      "operatingsystem": "RedHat"
+    },
+    {
+      "operatingsystem": "Scientific"
+    },
+    {
+      "operatingsystem": "Debian"
+    },
+    {
+      "operatingsystem": "Ubuntu"
+    },
+    {
+      "operatingsystem": "Fedora"
+    },
+    {
+      "operatingsystem": "Darwin"
+    },
+    {
+      "operatingsystem": "SLES"
+    },
+    {
+      "operatingsystem": "Solaris"
+    },
+    {
+      "operatingsystem": "Rocky"
+    },
+    {
+      "operatingsystem": "AlmaLinux"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 6.0.0 < 9.0.0"
+    }
+  ],
+  "pdk-version": "2.6.1",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#2.7.1",
+  "template-ref": "tags/2.7.1-0-g9a16c87"
+}

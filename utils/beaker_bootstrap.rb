@@ -65,6 +65,7 @@ def sync_puppet_dirs(prod_source, private_source = '/etc/puppet/private')
   Dir[
     "#{prod_source}/modules/*",
     "#{prod_source}/vendor_modules/*",
+    "#{prod_source}/core_modules/*",
     "#{private_source}/modules/*"
   ].each do |mod|
     File.symlink(mod, File.join(modules_dir, File.basename(mod)))

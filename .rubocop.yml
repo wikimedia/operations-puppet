@@ -9,6 +9,8 @@ AllCops:
   StyleGuideCopsOnly: true
   DisplayCopNames: true
   Exclude:
+    # core modules
+    - 'core_modules/**/*'
     # third party modules
     - 'vendor_modules/**/*'
     # bundler installation files

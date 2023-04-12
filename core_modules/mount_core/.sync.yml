@@ -1,0 +1,56 @@
+.rubocop.yml:
+  default_configs:
+    Layout/HeredocIndentation:
+      Enabled: false
+    Style/DoubleNegation:
+      Enabled: false
+    Style/GuardClause:
+      Enabled: false
+    Style/MultilineBlockChain:
+      Enabled: false
+    RSpec/FilePath:
+      Enabled: false
+    RSpec/InstanceVariable:
+      Exclude: ['spec/integration/provider/mount_spec.rb']
+    RSpec/AnyInstance:
+      Exclude: ['spec/integration/provider/mount_spec.rb']
+    RSpec/ExpectInHook:
+      Exclude: ['spec/integration/provider/mount_spec.rb']
+Gemfile:
+  optional:
+    ":development":
+      - gem: beaker
+        version: '~> 4.30'
+        from_env: BEAKER_VERSION
+      - gem: beaker-abs
+        from_env: BEAKER_ABS_VERSION
+        version: '~> 0.9'
+      - gem: beaker-pe
+      - gem: beaker-hostgenerator
+        from_env: BEAKER_HOSTGENERATOR_VERSION
+      - gem: beaker-rspec
+        from_env: BEAKER_RSPEC_VERSION
+      - gem: beaker-puppet
+        from_env: BEAKER_PUPPET_VERSION
+        version: '~> 1.22'
+      - gem: github_changelog_generator
+        version: '= 1.16.4'
+      - gem: concurrent-ruby
+        version: '= 1.1.10'
+      # We can unpin async when we move to Ruby 3
+      - gem: async
+        version: '~> 1'
+      - gem: beaker-module_install_helper
+      - gem: beaker-puppet_install_helper
+      - gem: nokogiri
+
+appveyor.yml:
+  delete: true
+.travis.yml:
+  delete: true
+.github/workflows/auto_release.yml:
+  unmanaged: false
+.github/workflows/release.yml:
+  unmanaged: false
+.gitlab-ci.yml:
+  delete: true

@@ -1,0 +1,147 @@
+---
+name: '[Dispatched] Unit Tests with nightly Puppet gem'
+
+on:
+  workflow_dispatch:
+    inputs:
+      pa_ref:
+        description: 'Puppet Agent SHA to use in this run'
+        required: true
+
+jobs:
+  set_output_data:
+    name: 'Prepare input and output data'
+    runs-on: 'ubuntu-latest'
+    outputs:
+      puppet_sha: ${{ steps.setup_world.outputs.puppet_sha }}
+      ruby_version: ${{ steps.setup_world.outputs.ruby_version }}
+      puppet_version: ${{ steps.setup_world.outputs.puppet_version }}
+      puppet_short_commit: ${{ steps.setup_world.outputs.puppet_short_commit }}
+
+    steps:
+      - name: Gather and set data
+        id: setup_world
+        run: |
+          pa_ref=${{ github.event.inputs.pa_ref }}
+          res=$(curl -s https://raw.githubusercontent.com/puppetlabs/puppet-agent/${pa_ref}/configs/components/puppet.json)
+
+          puppet_remote=$(echo $res | cut -d '"' -f 4)
+          puppet_sha=$(echo $res | cut -d '"' -f 8)
+
+          mkdir puppet
+          pushd puppet
+            git init
+            git remote add origin ${puppet_remote}
+            git fetch
+            puppet_short_commit=$(git describe ${puppet_sha} | sed -r 's/-/./g' | rev | cut -c 4- | rev)
+            puppet_version=${puppet_short_commit:0:1}
+          popd
+          rm -rf puppet
+          
+          case $puppet_version in
+            6)
+              ruby_version='2.5'
+              ;;
+            7)
+              ruby_version='2.7'
+              ;;
+          esac
+
+          echo "::set-output name=puppet_sha::$puppet_sha"
+          echo "::set-output name=ruby_version::$ruby_version"
+          echo "::set-output name=puppet_version::$puppet_version"
+          echo "::set-output name=puppet_short_commit::$puppet_short_commit"
+
+      - name: "Puppet Agent SHA: ${{ github.event.inputs.pa_ref }}"
+        run: "echo ${{ github.event.inputs.pa_ref }}"
+
+      - name: "Puppet SHA: ${{ steps.setup_world.outputs.puppet_sha }}"
+        run: "echo ${{ steps.setup_world.outputs.puppet_sha }}"
+      
+      - name: "Puppet Short Commit: ${{ steps.setup_world.outputs.puppet_short_commit }}"
+        run: "echo ${{ steps.setup_world.outputs.puppet_short_commit }}"
+      
+      - name: "Puppet Version: ${{ steps.setup_world.outputs.puppet_version }}"
+        run: "echo ${{ steps.setup_world.outputs.puppet_version }}"
+      
+      - name: "Ruby Version: ${{ steps.setup_world.outputs.ruby_version }}"
+        run: "echo ${{ steps.setup_world.outputs.ruby_version }}"
+
+  unit_tests_with_nightly_puppet_gem:
+    name: ${{ matrix.os_type }} / Puppet${{ needs.set_output_data.outputs.puppet_version }} gem / Ruby${{ needs.set_output_data.outputs.ruby_version }}
+    needs: set_output_data
+    env:
+      puppet_version: ${{ needs.set_output_data.outputs.puppet_version }}
+      ruby_version: ${{ needs.set_output_data.outputs.ruby_version }}
+    
+    strategy:
+      matrix:
+        os: [ 'ubuntu-20.04', 'macos-latest', 'windows-2019' ]
+        include:
+          - os: 'ubuntu-20.04'
+            os_type: 'Linux'
+            env_set_cmd: 'export '
+            gem_file_postfix: '.gem'
+          - os: 'macos-latest'
+            os_type: 'macOS'
+            env_set_cmd: 'export '
+            gem_file_postfix: '-universal-darwin.gem'
+          - os: 'windows-2019'
+            os_type: 'Windows'
+            env_set_cmd: '$env:'
+            gem_file_postfix: '-x64-mingw32.gem'
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ruby version ${{ env.ruby_version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.ruby_version }}
+
+      - name: Install the latest nightly build of puppet${{ env.puppet_version }} gem
+        run: |
+          sleep_time=0
+          until [ $sleep_time -ge 15 ]
+          do
+            curl --location http://nightlies.puppet.com/downloads/gems/puppet${{ env.puppet_version }}-nightly/puppet-${{ needs.set_output_data.outputs.puppet_short_commit }}${{ matrix.gem_file_postfix }} --output puppet.gem
+            gem install puppet.gem -N && break
+
+            sleep_time=$((sleep_time*2+1))
+            echo "Retrying download and install of gem in $sleep_time seconds..."
+            sleep $sleep_time
+          done
+        shell: bash
+
+      - name: Prepare testing environment with bundler
+        run: |
+          git config --global core.longpaths true
+          bundle config set system 'true'
+          bundle config set --local without 'release'
+
+          ${{ matrix.env_set_cmd }}PUPPET_GEM_VERSION=${{ needs.set_output_data.outputs.puppet_short_commit }}
+          bundle update --jobs 4 --retry 3
+
+      - name: Run unit tests
+        run: bundle exec rake parallel_spec
+
+  notify-via-slack:
+    name: Notify workflow conclusion via Slack
+    if: ${{ always() }}
+    needs: [set_output_data, unit_tests_with_nightly_puppet_gem]
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: luchihoratiu/notify-via-slack@v1.0.0
+        with:
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          NOTIFY_ONLY_ON_CONCLUSION_CHANGE: 'true'
+          EXTRA_INFORMATION: ':github_actions: Run number: ${{ github.run_id }} \n
+                              :puppet: Puppet Agent SHA: ${{ github.event.inputs.pa_ref }} \n
+                              :puppet: Puppet SHA: ${{ needs.set_output_data.outputs.puppet_sha }} \n
+                              :puppet: Puppet Short Commit: ${{ needs.set_output_data.outputs.puppet_short_commit }} \n
+                              :puppet: Puppet Version: ${{ needs.set_output_data.outputs.puppet_version }} \n
+                              :ruby: Ruby Version: ${{ needs.set_output_data.outputs.ruby_version }} \n'
+
