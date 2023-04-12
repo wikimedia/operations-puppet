@@ -15,13 +15,13 @@ hostname_substring=sgecron
 all_projects_on_server=tools, toolsbeta
 
 # We need to define base_dir_* and archive_dir_* for each project listed above
-base_dir_tools = /srv/tools/shared/tools/project/
+base_dir_tools = /srv/tools/project
 archive_dir_tools = /srv/tools/archivedtools/
 
-base_dir_toolsbeta = /srv/misc/shared/toolsbeta/project/
-archive_dir_toolsbeta = /srv/misc/shared/toolsbeta/archivedtools/
+base_dir_toolsbeta = /srv/toolsbeta/project/
+archive_dir_toolsbeta = /srv/toolsbeta/archivedtools/
 
-hostname_substring=labstore
+hostname_substring=tools-nfs
 
 # Creds with the power to delete entries:
 ldap_uri=<%= @ldap_uri %>
