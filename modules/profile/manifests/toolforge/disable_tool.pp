@@ -6,6 +6,9 @@ class profile::toolforge::disable_tool (
     String $tools_db_password = lookup('profile::toolforge::disable_tool::disable_tool_db_password'),
 ) {
     $ldap_uri = "ldap://${ldap_config['rw-server']}:389"
+
+    ensure_packages(['python3-pymysql'])
+
     file { '/etc/disable_tool.conf':
         ensure  => file,
         owner   => 'root',
@@ -13,7 +16,6 @@ class profile::toolforge::disable_tool (
         mode    => '0500',
         content => template('profile/toolforge/disable_tool.conf.erb'),
     }
-
     git::clone { 'cloud/toolforge/disable-tool':
         ensure    => latest,
         directory => '/srv/disable-tool',
