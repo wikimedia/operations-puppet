@@ -1,3 +1,0 @@
-profile::lvs::interface_tweaks:
-  enp175s0f0np0:
-    txqlen: 10000
