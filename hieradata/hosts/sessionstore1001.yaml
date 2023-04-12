@@ -1,1 +1,2 @@
 profile::cassandra::rack: 'a'
+cassandra::native_transport_port: 9043
