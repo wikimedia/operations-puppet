@@ -215,8 +215,6 @@ class profile::toolforge::grid::exec_environ {
         'python-socketio-client',      # T86015
         #python-wikitools is apparently not in Debian (at least stretch)
         'python-mwclient',             # T218242
-        'python-pymysql',              # T189052
-        'python3-pymysql',             # T189052
 
         # Fonts for vCat tool.
         'fonts-indic',        # Many Indic languages.
@@ -333,6 +331,9 @@ class profile::toolforge::grid::exec_environ {
 
     # T65000
     ensure_packages(['imagemagick', 'webp'])
+
+    # T189052
+    ensure_packages(['python-pymysql', 'python3-pymysql'])
 
     file { '/etc/ImageMagick-6/policy.xml':
         ensure  => present,
