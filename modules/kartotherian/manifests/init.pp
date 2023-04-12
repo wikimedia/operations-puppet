@@ -49,6 +49,5 @@ class kartotherian(
         has_spec          => true,
         healthcheck_url   => '',
         contact_groups    => $contact_groups,
-        use_nodejs10      => false,
     }
 }
