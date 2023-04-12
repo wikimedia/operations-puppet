@@ -490,7 +490,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(208|212|213|214|216|217|219|223|225)\.eqiad\.wmnet$/ {
+node /^db1(208|212|213|214|216|217|219|225)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
@@ -543,7 +543,7 @@ node 'db2126.codfw.wmnet' {
 }
 
 # s3 core production dbs on eqiad
-node /^db1(123|157|166|175|189|198)\.eqiad\.wmnet$/ {
+node /^db1(123|157|166|175|189|198|223)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
