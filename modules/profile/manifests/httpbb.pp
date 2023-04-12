@@ -164,7 +164,7 @@ class profile::httpbb (
             systemd::timer::job { "httpbb_kubernetes_${svc_name}_hourly":
                 ensure             => $ensure,
                 description        => "Run httpbb ${svc_httpbb_dir} tests hourly on Kubernetes ${svc_name}.",
-                command            => "/bin/sh -c \'/usr/bin/httpbb /srv/service/httpbb-tests/${svc_httpbb_dir}/*.yaml --host ${svc_name}.discovery.wmnet --https_port ${svc_port} --retry_on_timeout\'",
+                command            => "/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/${svc_httpbb_dir}/*.yaml --host ${svc_name}.discovery.wmnet --https_port ${svc_port} --retry_on_timeout\'",
                 interval           => {
                     'start'    => 'OnUnitActiveSec',
                     'interval' => '1 hour',
