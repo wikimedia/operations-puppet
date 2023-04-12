@@ -260,6 +260,7 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
+ amd-rocm54
  elastic710
  elasticsearch-curator5
  gvisor
@@ -268,7 +269,6 @@ Update:
  node14-bullseye
  node16-bullseye
  routinator
- thirdparty/amd-rocm54
  thirdparty/ceph-octopus-bullseye
  thirdparty/ceph-quincy
  thirdparty/docker-ci-bullseye
