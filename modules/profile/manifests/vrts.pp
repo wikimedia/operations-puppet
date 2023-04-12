@@ -16,12 +16,15 @@ class profile::vrts(
     String $http_proxy               = lookup('profile::vrts::http_proxy'),
     String $https_proxy              = lookup('profile::vrts::https_proxy'),
     Boolean $local_database          = lookup('profile::vrts::local_database', {default_value => false}),
+    Stdlib::Unixpath $db_datadir     = lookup('profile::vrts::db_datadir', {default_value => '/var/lib/mysql'}),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
 
     if $local_database {
-        include ::profile::mariadb::generic_server
+        class { 'profile::mariadb::generic_server':
+            datadir => $db_datadir,
+        }
     }
 
     $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
