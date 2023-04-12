@@ -155,6 +155,7 @@ Components: main
  thirdparty/haproxy26
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-22
+ thirdparty/kubeadm-k8s-1-23
  thirdparty/matomo
  thirdparty/opensearch1
  thirdparty/opensearch2
@@ -192,6 +193,7 @@ Update:
  thirdparty/haproxy26
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-22
+ thirdparty/kubeadm-k8s-kubernetes.io-1-23
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
  thirdparty/tekton
