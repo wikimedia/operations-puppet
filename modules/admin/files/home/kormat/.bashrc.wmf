@@ -10,7 +10,7 @@ set_proxies() {
 # Stolen from ~jynus/.bashrc
 alias mysqlbinlog='sudo mysqlbinlog -vv --base64-output=DECODE-ROWS --skip-ssl'
 alias skip-slave-start='sudo systemctl set-environment MYSQLD_OPTS="--skip-slave-start"'
-alias zarcillo='sudo -H mysql.py -h db1115 -A zarcillo'
+alias zarcillo='sudo -H mysql.py -h db1215 -A zarcillo'
 
 function my() {
     local instance="${1}"
