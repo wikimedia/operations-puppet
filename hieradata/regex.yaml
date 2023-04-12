@@ -311,6 +311,6 @@ stat_gpu_hosts:
   profile::amd_gpu::rocm_version: '42'
   profile::base::use_linux510_on_buster: true
 
-  dse_gpu_hosts:
-    __regex: !ruby/regexp /^dse-k8s-worker100[12]\.eqiad\.wmnet$/
-    profile::amd_gpu::rocm_version: '54'
+dse_gpu_hosts:
+  __regex: !ruby/regexp /^dse-k8s-worker100[1-2]\.eqiad\.wmnet$/
+  profile::amd_gpu::rocm_version: '54'
