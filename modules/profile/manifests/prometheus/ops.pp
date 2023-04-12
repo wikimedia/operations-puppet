@@ -907,7 +907,7 @@ class profile::prometheus::ops (
 
     prometheus::class_config{ "cadvisor_${::site}":
         dest       => "${targets_path}/cadvisor_${::site}.yaml",
-        class_name => 'profile::prometheus::cadvisor_exporter',
+        class_name => 'profile::prometheus::cadvisor',
         port       => 4194,
         labels     => {}
     }

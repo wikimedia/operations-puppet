@@ -1,4 +1,5 @@
-class prometheus::cadvisor_exporter(
+# SPDX-License-Identifier: Apache-2.0
+class prometheus::cadvisor(
     Wmflib::Ensure $ensure,
     Stdlib::Port $port,
 ) {

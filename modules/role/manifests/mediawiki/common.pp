@@ -9,5 +9,5 @@ class role::mediawiki::common {
     include profile::services_proxy::envoy
 
     # Gather cpu/mem/network statistics per systemd.service
-    include profile::prometheus::cadvisor_exporter
+    include profile::prometheus::cadvisor
 }
