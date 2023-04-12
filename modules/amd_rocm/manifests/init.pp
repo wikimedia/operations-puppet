@@ -24,7 +24,7 @@ class amd_rocm (
     Optional[String] $kfd_access_group = undef,
 ) {
 
-    $supported_versions = ['42', '431', '45']
+    $supported_versions = ['42', '431', '45', '54']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
