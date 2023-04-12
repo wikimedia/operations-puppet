@@ -17,10 +17,20 @@ if [ "${LSB_RELEASE}" = "stretch" ]; then
   in-target systemctl mask puppet.service
 fi
 
-# openssh-server: to make the machine accessible
-# puppet: because we'll need it soon anyway
-# lldpd: announce the machine on the network
-apt-install openssh-server puppet lldpd
+# On Bookworm install a Puppet 5 agent backport, otherwise we can't renew the host cert
+# https://phabricator.wikimedia.org/T330495
+if printf $LSB_RELEASE | grep -qv bookworm
+then
+  BASE_REPO="http://apt.wikimedia.org/wikimedia bookworm-wikimedia component"
+  printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
+  in-target apt-get update
+  apt-install openssh-server puppet=5.5.22-2+deb12u1 lldpd
+else
+  # openssh-server: to make the machine accessible
+  # puppet: because we'll need it soon anyway
+  # lldpd: announce the machine on the network
+  apt-install openssh-server puppet lldpd
+fi
 
 # nvme-cli: on machines with NVMe drives, this allows late_command to change
 # LBA format below

@@ -25,7 +25,19 @@ class puppet::agent (
     # facter needs virt-what for proper "virtual"/"is_virtual" resolution
     # TODO: use puppet-agent package name when everything is on puppet7
     # puppet is a transition package
-    ensure_packages(['facter', 'puppet', 'augeas-tools', 'virt-what'])
+    ensure_packages(['facter', 'augeas-tools', 'virt-what'])
+
+    # On Bookworm we're forcing a 5.5 backport until we have migrated to Puppet 7
+    # T330495
+    if debian::codename::eq('bookworm') {
+        apt::package_from_component { 'puppet':
+            component => 'component/puppet5',
+            priority  => 1002,
+        }
+    } else {
+        ensure_packages('puppet')
+    }
+
     # these where moved out of core in puppet6
     if versioncmp($facts['puppetversion'], '6') >= 0 {
         ensure_packages(['puppet-module-puppetlabs-augeas-core'])
