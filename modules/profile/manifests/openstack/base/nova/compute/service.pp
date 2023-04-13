@@ -39,23 +39,34 @@ class profile::openstack::base::nova::compute::service(
         }
     }
 
-    # The special value 'thinvirt' indicates that there's no local instance
-    #  storage on this host. Ultimately all cloudvirts will be like this,
-    #  at which point we won't need this hack.
-    if $instance_dev != 'thinvirt' {
+    if $instance_dev == 'srvlink' {
+        # The special value 'srvlink' means that /srv was already created
+        #  by partman (probably with lvm) and we just link to it.
         file { '/var/lib/nova/instances':
-            ensure  => 'directory',
-            owner   => 'nova',
-            group   => 'nova',
-            recurse =>  true,
+            ensure => 'link',
+            owner  => 'nova',
+            group  => 'nova',
+            target => '/srv',
         }
+    } else {
+        if $instance_dev != 'thinvirt' {
+            # The special value 'thinvirt' indicates that there's no local instance
+            #  storage on this host. Ultimately all cloudvirts will be like this,
+            #  at which point we won't need this hack.
+            file { '/var/lib/nova/instances':
+                ensure  => 'directory',
+                owner   => 'nova',
+                group   => 'nova',
+                recurse =>  true,
+            }
 
-        mount { '/var/lib/nova/instances':
-            ensure  => mounted,
-            device  => $instance_dev,
-            fstype  => 'xfs',
-            options => 'defaults',
-            require => File['/var/lib/nova/instances'],
+            mount { '/var/lib/nova/instances':
+                ensure  => mounted,
+                device  => $instance_dev,
+                fstype  => 'xfs',
+                options => 'defaults',
+                require => File['/var/lib/nova/instances'],
+            }
         }
     }
 

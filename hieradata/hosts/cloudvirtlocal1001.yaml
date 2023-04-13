@@ -1,1 +1,1 @@
-profile::openstack::base::nova::instance_dev: '/dev/mapper/vg0-srv'
+profile::openstack::base::nova::instance_dev: 'srvlink'
