@@ -119,7 +119,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs2007': 'enp59s0f0np0:208.80.153.18'
       'lvs2008': 'enp59s0f1np1:208.80.153.19'
-      'lvs2009': 'ens2f1np1:208.80.153.20'
+      'lvs2009': 'enp59s0f1np1:208.80.153.20'
       'lvs2010': 'enp59s0f1np1:208.80.153.21'
   public1-b-codfw:
     id: "2002"
@@ -127,7 +127,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs2007': 'enp59s0f1np1:208.80.153.55'
       'lvs2008': 'enp59s0f0np0:208.80.153.56'
-      'lvs2009': 'ens3f0np0:208.80.153.57'
+      'lvs2009': 'enp175s0f0np0:208.80.153.57'
       'lvs2010': 'enp175s0f0np0:208.80.153.58'
   public1-c-codfw:
     id: "2003"
@@ -135,7 +135,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs2007': 'enp175s0f0np0:208.80.153.79'
       'lvs2008': 'enp175s0f0np0:208.80.153.80'
-      'lvs2009': 'ens2f0np0:208.80.153.81'
+      'lvs2009': 'enp59s0f0np0:208.80.153.81'
       'lvs2010': 'enp175s0f1np1:208.80.153.82'
   public1-d-codfw:
     id: "2004"
@@ -143,21 +143,21 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs2007': 'enp175s0f1np1:208.80.153.112'
       'lvs2008': 'enp175s0f1np1:208.80.153.113'
-      'lvs2009': 'ens3f1np1:208.80.153.114'
+      'lvs2009': 'enp175s0f1np1:208.80.153.114'
       'lvs2010': 'enp59s0f0np0:208.80.153.115'
   private1-a-codfw:
     id: "2017"
     netmask: '255.255.252.0'
     iface:
       'lvs2008': 'enp59s0f1np1:10.192.1.8'
-      'lvs2009': 'ens2f1np1:10.192.1.9'
+      'lvs2009': 'enp59s0f1np1:10.192.1.9'
       'lvs2010': 'enp59s0f1np1:10.192.1.13'
   private1-b-codfw:
     id: "2018"
     netmask: '255.255.252.0'
     iface:
       'lvs2007': 'enp59s0f1np1:10.192.17.8'
-      'lvs2009': 'ens3f0np0:10.192.17.9'
+      'lvs2009': 'enp175s0f0np0:10.192.17.9'
       'lvs2010': 'enp175s0f0np0:10.192.17.10'
   private1-c-codfw:
     id: "2019"
@@ -172,7 +172,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs2007': 'enp175s0f1np1:10.192.49.8'
       'lvs2008': 'enp175s0f1np1:10.192.49.9'
-      'lvs2009': 'ens3f1np1:10.192.49.10'
+      'lvs2009': 'enp175s0f1np1:10.192.49.10'
   public1-esams:
     id: "100"
     netmask: '255.255.255.128'
