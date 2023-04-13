@@ -168,7 +168,6 @@ class profile::analytics::refinery::job::refine(
 
         # NavigationTiming extension legacy schemas
         'CpuBenchmark',
-        'FeaturePolicyViolation',
         'NavigationTiming',
         'PaintTiming',
         'SaveTiming',

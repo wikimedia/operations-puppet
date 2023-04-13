@@ -47,7 +47,6 @@ eventlogging_schemas_disabled = (
 
     # NavigationTiming extension legacy schemas
     'CpuBenchmark',
-    'FeaturePolicyViolation',
     'NavigationTiming',
     'PaintTiming',
     'SaveTiming',
