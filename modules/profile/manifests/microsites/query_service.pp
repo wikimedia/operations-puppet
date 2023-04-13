@@ -6,11 +6,6 @@ class profile::microsites::query_service {
         domain_name => 'query.wikidata.org',
     }
 
-    profile::microsites::query_service::site { 'wdqs-preview':
-        domain_name => 'query-preview.wikidata.org',
-        deploy_name => 'wdqs',
-    }
-
     profile::microsites::query_service::site { 'wcqs':
         domain_name => 'commons-query.wikimedia.org',
     }

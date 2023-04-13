@@ -10,8 +10,6 @@ class role::wdqs::test {
     require profile::nginx
     require profile::query_service::categories
     require profile::query_service::wikidata
-    # T266470
-    include profile::tlsproxy::envoy
 
     system::role { 'wdqs::test':
         ensure      => 'present',
