@@ -489,7 +489,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(208|212|213|216|219|225)\.eqiad\.wmnet$/ {
+node /^db1(208|212|213|216|219)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
@@ -852,6 +852,10 @@ node 'db1150.eqiad.wmnet' {
 }
 ## s7 & s8, buster
 node 'db1171.eqiad.wmnet' {
+    role(mariadb::backup_source)
+}
+## s2, s3 & x1, buster
+node 'db1225.eqiad.wmnet' {
     role(mariadb::backup_source)
 }
 
