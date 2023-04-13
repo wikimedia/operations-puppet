@@ -6634,3 +6634,7 @@ ldap_only_users:
     email: babiola-ctr@wikimedia.org
     expiry_contact: lgaulia@wikimedia.org
     expiry_date: 2023-06-30
+  maurelio:
+    ensure: present
+    realname: (known to Legal)
+    email: maurelio.wikitech@gmail.com
