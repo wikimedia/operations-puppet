@@ -306,6 +306,7 @@ role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
   target-q: 2020-4
 role::microsites::peopleweb:
   target-q: 2020-2
+  phab-task: 247649
 role::prometheus:
   target-q: 2022-1
   phab-task: 296199
@@ -321,7 +322,8 @@ role::docker_registry_ha::registry:
   target-q: TBD
   phab-task: 245272
 role::releases:
-  target-q: TBD
+  target-q: 2020-3
+  phab-task: 247652
 role::elasticsearch::relforge:
   target-q: 2022-1
   phab-task: 289135
@@ -362,6 +364,3 @@ role::mariadb::misc::db_inventory:
   target-q: TBD
 role::dbbackups::metadata:
   target-q: TBD
-role::doc:
-  target-q: TBD
-  phab-task: 247653

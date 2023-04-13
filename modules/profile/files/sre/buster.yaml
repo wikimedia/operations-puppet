@@ -41,13 +41,13 @@ role::pybaltest:
   target-q: 2023-2
   phab-task: 321309
 role::ci:
-  target-q: TBD
+  target-q: 2023-3
   phab-task: 327068
 role::mw_rc_irc:
   target-q: 2023-2
   phab-task: 331702
 role::vrts:
-  target-q: TBD
+  target-q: 2023-3
   phab-task: 295416
 role::logging::mediawiki::udp2log:
   target-q: TBD
@@ -124,8 +124,8 @@ role::ping_offload:
   target-q: 2023-1
   phab-task: 273509
 role::planet:
-  target-q: TBD
-  phab-task: 327068
+  target-q: 2023-4
+  phab-task: 281219
 role::ganeti:
   target-q: 2023-2
   phab-task: 311687,311686
@@ -214,7 +214,7 @@ role::debmonitor::server:
   target-q: 2023-2
   phab-task: 241049
 role::doc:
-  target-q: TBD
+  target-q: 2023-2
   phab-task: 319477
 role::druid::analytics::worker:
   target-q: TBD
@@ -355,7 +355,8 @@ role::kafka::monitoring_buster:
 role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
   target-q: TBD
 role::microsites::peopleweb:
-  target-q: TBD
+  target-q: 2023-4
+  phab-task: 280989
 role::prometheus:
   target-q: TBD
 role::prometheus::pop:
@@ -373,8 +374,8 @@ role::docker_registry_ha::registry:
   target-q: TBD
   phab-task: 332016
 role::releases:
-  target-q: TBD
-  phab-task: 327068
+  target-q: 2023-3
+  phab-task: 334435
 role::elasticsearch::relforge:
   target-q: TBD
   phab-task: 289135
@@ -456,8 +457,8 @@ role::url_downloader:
   phab-task: 329945
   target-q: 2023-2
 role::gerrit:
-  target-q: TBD
-  phab-task: 327068
+  target-q: 2023-2
+  phab-task: 334521
 role::dragonfly::supernode:
   target-q: TBD
   phab-task: 332011
@@ -496,10 +497,11 @@ role::acme_chief:
 role::mw_rc_irc:
   target-q: TBD
 role::aphlict:
-  target-q: TBD
-  phab-task: 327068
+  target-q: 2023-2
+  phab-task: 333452
 role::phabricator:
   target-q: 2023-4
+  phab-task: 334519
 role::insetup::search_platform:
   target-q: 2023-2
 role::insetup::core_platform:
