@@ -16,6 +16,7 @@ describe 'gerrit' do
             'base-dn':   'dc=example,dc=org',
           },
           daemon_user:   'gerrit2',
+          gerrit_site:   '/var/lib/gerrit2/review_site',
           scap_user:     'gerrit-deployer',
           scap_key_name: 'gerrit-ssh-key',
         }

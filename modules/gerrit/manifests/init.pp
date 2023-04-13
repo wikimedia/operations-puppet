@@ -9,6 +9,7 @@ class gerrit(
     Hash                              $ldap_config,
     String                            $daemon_user,
     String                            $scap_user,
+    Stdlib::Unixpath                  $gerrit_site,
 
     String                            $config            = 'gerrit.config.erb',
     Boolean                           $enable_monitoring = true,
@@ -30,7 +31,6 @@ class gerrit(
 ) {
 
     $daemon_user_dir = "/var/lib/${daemon_user}"
-    $gerrit_site = "${daemon_user_dir}/review_site"
 
     class { 'gerrit::jobs': }
 

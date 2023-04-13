@@ -3,14 +3,13 @@ class profile::gerrit::proxy(
     Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
     Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
     Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
-    String                            $daemon_user       = lookup('profile::gerrit::daemon_user'),
     Boolean                           $is_replica        = lookup('profile::gerrit::is_replica'),
     Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
     Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
+    Stdlib::Unixpath                  $gerrit_site       = lookup('profile::gerrit::gerrit_site'),
 ) {
 
-    $gerrit_site = "/var/lib/${daemon_user}/review_site"
 
     if $is_replica {
         $tls_host = $replica_hosts[0]

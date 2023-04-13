@@ -29,6 +29,7 @@ profile::gerrit::use_acmechief: true
 
 ## Deployment
 profile::gerrit::daemon_user: 'gerrit2'
+profile::gerrit::gerrit_site: "/var/lib/gerrit2/review_site"
 profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::manage_scap_user: false
 profile::gerrit::scap_key_name: 'gerrit'
