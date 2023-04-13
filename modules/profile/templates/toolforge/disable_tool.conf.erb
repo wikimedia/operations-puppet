@@ -5,6 +5,14 @@ projectname=<%= @wmcs_project -%>
 [archivedbs]
 hostname_substring=sgecron
 
+[deleteldap]
+hostname_substring=cloudcontrol
+
+# Creds with the power to delete entries:
+ldap_uri=<%= @ldap_uri %>
+ldap_bind_dn=<%= @novaadmin_bind_dn %>
+ldap_bind_pass=<%= @novaadmin_bind_pass %>
+
 [gridengine]
 hostname_substring=sgegrid-master
 
@@ -22,12 +30,6 @@ base_dir_toolsbeta = /srv/toolsbeta/project/
 archive_dir_toolsbeta = /srv/toolsbeta/archivedtools/
 
 hostname_substring=tools-nfs
-
-# Creds with the power to delete entries:
-ldap_uri=<%= @ldap_uri %>
-ldap_bind_dn=<%= @novaadmin_bind_dn %>
-ldap_bind_pass=<%= @novaadmin_bind_pass %>
-
 
 # This database is owned by the 'admin' tool. It maintains
 #  the state of tools that are in the process of disabling or

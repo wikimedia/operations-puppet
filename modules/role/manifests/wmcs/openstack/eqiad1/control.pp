@@ -37,4 +37,5 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::networktests
     include profile::cloudceph::auth::deploy
     include profile::wmcs::services::maintain_dbusers
+    include profile::wmcs::services::ldap_disable_tool
 }
