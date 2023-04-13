@@ -128,11 +128,6 @@ https://query.wikidata.org:
   assert_status: 200
   assert_body_contains: Wikidata Query Builder
 
-https://query-preview.wikidata.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: SPARQL
-
 https://os-reports.wikimedia.org:
 - path: /
   assert_status: 200
