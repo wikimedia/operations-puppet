@@ -866,6 +866,13 @@ groups:
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow ops team to be in the docker group for builder. No gid on purpose
     members: *ops_members
+  ml-team-admins:
+    gid: 823
+    description: Group of users that have access to ML Team's machines
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto]
+    privileges: []
+    approval:
+      - Chris Albon
   gpu-testers:
     description: People with access to Analytics hosts with GPUs (deprecated since 2020-12).
     gid: 810
@@ -873,7 +880,7 @@ groups:
     deprecated: true
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
-    members: [*analytics_admins_members, *ops_members, *analytics_privatedata_users]
+    members: [*analytics_admins_members, *ops_members, *analytics_privatedata_users, *ml-team-admins]
     posix_name: render
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop']
   sessionstore-roots:
@@ -924,13 +931,6 @@ groups:
     approval:
       - Kate Zimmerman
       - Mikhail Popov
-  ml-team-admins:
-    gid: 823
-    description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto]
-    privileges: []
-    approval:
-      - Chris Albon
   ores-admin:
     description: ORES admins
     gid: 782
