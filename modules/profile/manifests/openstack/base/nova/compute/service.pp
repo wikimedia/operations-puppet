@@ -42,11 +42,18 @@ class profile::openstack::base::nova::compute::service(
     if $instance_dev == 'srvlink' {
         # The special value 'srvlink' means that /srv was already created
         #  by partman (probably with lvm) and we just link to it.
+        file { '/srv/instances':
+            ensure  => 'directory',
+            owner   => 'nova',
+            group   => 'nova',
+            recurse =>  true,
+        }
+
         file { '/var/lib/nova/instances':
             ensure => 'link',
             owner  => 'nova',
             group  => 'nova',
-            target => '/srv',
+            target => '/srv/instances',
         }
     } else {
         if $instance_dev != 'thinvirt' {
