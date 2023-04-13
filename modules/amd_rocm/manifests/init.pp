@@ -30,6 +30,10 @@ class amd_rocm (
         fail('The version of ROCm requested is not supported or misspelled.')
     }
 
+    if debian::codename::ge('bullseye') and ! ($version == '54') {
+        fail('Please use ROCm 5.4 with Bullseye, other versions are not supported.')
+    }
+
     if $kfd_access_group {
         file { '/etc/udev/rules.d/70-kfd.rules':
             group   => 'root',
@@ -62,7 +66,7 @@ class amd_rocm (
     # [..]
     # trying to overwrite '/opt/rocm/miopen/bin/MIOpenDriver',
     # which is also in package miopen-hip 2.0.0-7a8f787
-    $basepkgs = [
+    $_basepkgs = [
         'hsakmt-roct',
         'hsa-rocr-dev',
         'miopen-hip',
@@ -82,6 +86,18 @@ class amd_rocm (
         'rocm-smi-lib',
         'migraphx'
     ]
+
+    # See workarounds outlined in https://github.com/RadeonOpenCompute/ROCm/issues/1125#issuecomment-925362329
+    if debian::codename::ge('bullseye') {
+        $basepkgs = $_basepkgs + [
+          'fake-libgcc-7-dev',
+          'fake-libpython3.8',
+          'libstdc++-10-dev',
+          'libgcc-10-dev'
+        ]
+    } else {
+        $basepkgs = $_basepkgs
+    }
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",
