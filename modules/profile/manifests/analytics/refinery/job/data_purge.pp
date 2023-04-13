@@ -69,6 +69,19 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
+    # Webrequest data loss path format in HDFS, i.e.:
+    #   - base_path/webrequest_source/Y/M/D/H/level (time parts are not padded)
+    #   - /wmf/data/raw/webrequests_data_loss/test_text/2023/4/13/8/WARNING
+    $hive_webrequest_data_loss_path_format = '((upload|text|test_text)(/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+)(/(WARNING|ERROR))?)?)?)?)?)?'
+    kerberos::systemd_timer { 'refinery-drop-webrequest-dataloss-reports':
+      ensure      => $ensure_timers,
+      description => 'Drop Webrequest dataloss reports (hourly) from HDFS to prevent small-files number to grow.',
+      command     => "${refinery_path}/bin/refinery-drop-older-than --older-than='${webrequest_sequence_stats_retention_days}' --allowed-interval='9999' --skip-trash --execute='f3177d27cf2e183cb5da2191c6974280' --base-path='/wmf/data/raw/webrequests_data_loss' --path-format='${hive_webrequest_data_loss_path_format}'",
+      interval    => '*-*-* 00:40:00',  # daily at 00:40
+      environment => $systemd_env,
+      user        => 'analytics',
+    }
+
     kerberos::systemd_timer { 'refinery-drop-pageview-actor-hourly-partitions':
         ensure      => $ensure_timers,
         description => 'Drop pageview_actor_hourly data from HDFS following data retention policies.',
