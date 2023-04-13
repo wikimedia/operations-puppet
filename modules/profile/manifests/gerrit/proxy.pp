@@ -52,11 +52,6 @@ class profile::gerrit::proxy(
         content => template('profile/gerrit/apache.erb'),
     }
 
-    # We now listen on any ports and firewall out requests to the host T326125
-    httpd::conf{ 'gerrit_listen_service_ip':
-        ensure => absent,
-    }
-
     $robots = ['User-Agent: *', 'Disallow: /g', 'Disallow: /r/plugins/gitiles', 'Crawl-delay: 1']
     file { '/var/www/robots.txt':
         ensure  => present,
