@@ -199,15 +199,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://puppetboard-samltest.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
-      target: http://query-preview.wikidata.org/bigdata
-      replacement: https://wdqs1009.eqiad.wmnet/bigdata
-    - type: map
-      target: http://query-preview.wikidata.org/sparql
-      replacement: https://wdqs1009.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-preview.wikidata.org
-      replacement: https://webserver-misc-sites.discovery.wmnet
-    - type: map
       target: http://query.wikidata.org/bigdata/ldf
       replacement: https://wdqs1005.eqiad.wmnet/bigdata/ldf
     - type: map
