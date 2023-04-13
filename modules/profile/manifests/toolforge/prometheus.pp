@@ -133,6 +133,11 @@ class profile::toolforge::prometheus (
                 tls_config => $k8s_tls_config,
             },
         },
+        {
+            name            => 'harbor',
+            port            => 9090,
+            instance_filter => "${instance_prefix}-harbor-\\d+",
+        },
     ].map |Hash $job| {
         if $job['instance_filter'] {
             $relabel_configs = [
