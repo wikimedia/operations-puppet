@@ -29,6 +29,7 @@ class profile::cache::haproxy(
     Boolean $monitoring_enabled = lookup('profile::cache::haproxy::monitoring_enabled'),
     Haproxy::Version $haproxy_version = lookup('profile::cache::haproxy::version', {'default_value'                                              => 'haproxy24'}),
     Boolean $do_systemd_hardening = lookup('profile::cache::haproxy::do_systemd_hardening', {'default_value'                                     => false}),
+    Boolean $enable_coredumps = lookup('profile::cache::haproxy::enable_coredumps', {'default_value'                                             => false}),
 ) {
     class { 'sslcert::dhparam':
     }
