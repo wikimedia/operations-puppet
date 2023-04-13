@@ -2808,7 +2808,7 @@ node 'urldownloader2004.wikimedia.org' {
 # These are hypervisors that use local storage for their VMs
 #  rather than ceph. This is necessary for low-latency workloads
 #  like etcd.
-node /^cloudvirtlocal101[1-3]\.eqiad\.wmnet$/ {
+node /^cloudvirtlocal100[1-3]\.eqiad\.wmnet$/ {
     role(insetup::wmcs)
 }
 
