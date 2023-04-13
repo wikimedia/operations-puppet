@@ -64,4 +64,4 @@ profile::wmcs::services::maintain_dbusers::mysql_variances:
   u12903: 15 # wikiscan T227462
   s51156: 40 # petscan T255730
 
-profile::toolforge::disable_tool::disable_tool_db_host: '185.15.56.15:3306'
+profile::toolforge::disable_tool::disable_tool_db_host: '185.15.56.15'
