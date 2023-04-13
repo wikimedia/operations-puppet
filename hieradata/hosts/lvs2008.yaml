@@ -7,4 +7,3 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   enp175s0f1np1:
     txqlen: 10000
-profile::pybal::override_bgp_med: 101
