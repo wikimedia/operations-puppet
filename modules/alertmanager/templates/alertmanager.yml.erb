@@ -37,7 +37,7 @@ route:
 
     # Alerts for test/dev hosts are routed to the 'sink' channel
     - match_re:
-        instance: '.+-(dev|test)[0-9]+.*'
+        instance: '.+-(dev|test)([0-9]+.*)?'
       receiver: 'irc-spam'
 
     - match:
