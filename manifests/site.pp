@@ -490,7 +490,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(208|212|213|216|217|219|225)\.eqiad\.wmnet$/ {
+node /^db1(208|212|213|216|219|225)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
@@ -778,6 +778,12 @@ node 'db2135.codfw.wmnet' {
 node 'db1117.eqiad.wmnet' {
     role(mariadb::misc::multiinstance)
 }
+
+# future misc multiinstance
+node 'db1217.eqiad.wmnet' {
+    role(mariadb::misc::multiinstance)
+}
+
 node 'db2160.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
 }
