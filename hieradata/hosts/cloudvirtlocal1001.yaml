@@ -1,1 +1,1 @@
-profile::openstack::base::nova::instance_dev: '/dev/mapper/tank-data'
+profile::openstack::base::nova::instance_dev: '/dev/mapper/vg0-srv'
