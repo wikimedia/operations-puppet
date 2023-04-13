@@ -2809,7 +2809,7 @@ node 'urldownloader2004.wikimedia.org' {
 #  rather than ceph. This is necessary for low-latency workloads
 #  like etcd.
 node /^cloudvirtlocal100[1-3]\.eqiad\.wmnet$/ {
-    role(insetup::wmcs)
+    role(wmcs::openstack::eqiad1::virt)
 }
 
 
