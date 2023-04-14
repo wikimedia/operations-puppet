@@ -23,7 +23,8 @@ if [ "${LSB_RELEASE}" = "bookworm" ]; then
   BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia bookworm-wikimedia component"
   printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
   in-target apt-get update
-  apt-install openssh-server puppet=5.5.22-2+deb12u1 lldpd
+  apt-install -y --force-yes puppet=5.5.22-2+deb12u1
+  apt-install openssh-server lldpd
 else
   # openssh-server: to make the machine accessible
   # puppet: because we'll need it soon anyway
