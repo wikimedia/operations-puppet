@@ -10,11 +10,11 @@ profile::lvs::tagged_subnets:
   - public1-c-codfw
   - public1-d-codfw
 profile::lvs::interface_tweaks:
-  eno1:
+  enp59s0f0np0:
     txqlen: 10000
-  eno2:
+  enp59s0f1np1:
     txqlen: 10000
-  ens1f0:
+  enp175s0f0np0:
     txqlen: 10000
-  ens1f1:
+  enp175s0f1np1:
     txqlen: 10000

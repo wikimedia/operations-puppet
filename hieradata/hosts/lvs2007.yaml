@@ -1,9 +1,0 @@
-profile::lvs::interface_tweaks:
-  enp59s0f0np0:
-      txqlen: 10000
-  enp59s0f1np1:
-      txqlen: 10000
-  enp175s0f0np0:
-      txqlen: 10000
-  enp175s0f1np1:
-      txqlen: 10000
