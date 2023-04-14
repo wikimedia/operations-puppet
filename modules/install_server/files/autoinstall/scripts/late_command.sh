@@ -20,7 +20,7 @@ fi
 # On Bookworm install a Puppet 5 agent backport, otherwise we can't renew the host cert
 # https://phabricator.wikimedia.org/T330495
 if [ "${LSB_RELEASE}" = "bookworm" ]; then
-  BASE_REPO="http://apt.wikimedia.org/wikimedia bookworm-wikimedia component"
+  BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia bookworm-wikimedia component"
   printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
   in-target apt-get update
   apt-install openssh-server puppet=5.5.22-2+deb12u1 lldpd
