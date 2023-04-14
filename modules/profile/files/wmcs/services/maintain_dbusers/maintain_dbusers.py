@@ -59,6 +59,7 @@ import re
 import string
 import sys
 import time
+from enum import Enum
 from functools import wraps
 from hashlib import sha1
 from typing import Any
@@ -67,6 +68,7 @@ import ldap3
 import pymysql
 import requests
 import yaml
+from prometheus_client import Counter, start_http_server
 
 PROJECT = "tools"
 PAWS_RUNTIME_UID = 52771
@@ -110,6 +112,13 @@ class SkipAccount(Exception):
     """Raised when an account has to be skipped."""
 
     pass
+
+
+class AccountState(Enum):
+    CREATED = "created"
+    DELETED = "deleted"
+    SKIPPED = "skipped"
+    ERRORED = "errored"
 
 
 def get_headers():
@@ -698,7 +707,11 @@ def _populate_new_account(
 
 
 def populate_accountsdb(
-    dry_run: bool, only_users: list[str], config: dict[str, Any], account_type: str = "tool"
+    dry_run: bool,
+    only_users: list[str],
+    config: dict[str, Any],
+    stats: Counter,
+    account_type: str = "tool",
 ):
     """
     Populate new tools/users into meta db
@@ -752,8 +765,18 @@ def populate_accountsdb(
                             dry_run=dry_run,
                             config=config,
                         )
+                        stats.labels(
+                            account_type=account_type,
+                            status=AccountState.CREATED.value,
+                            account=new_account,
+                        ).inc()
                     except Exception as err:  # pylint: disable=broad-except
                         logging.error("problem populating new account: %s", str(err))
+                        stats.labels(
+                            account_type=account_type,
+                            status=AccountState.ERRORED.value,
+                            account=new_account,
+                        ).inc()
                 else:
                     logging.info(
                         """
@@ -763,17 +786,39 @@ def populate_accountsdb(
                         new_account,
                         account_type,
                     )
+                    stats.labels(
+                        account_type=account_type,
+                        status=AccountState.SKIPPED.value,
+                        account=new_account,
+                    ).inc()
 
             for del_account in deleted_accts:
                 if account_type != "paws":  # TODO: consider PAWS
                     if should_execute_for_user(username=del_account, only_users=only_users):
-                        delete_account(
-                            account=del_account,
-                            account_type=account_type,
-                            dry_run=dry_run,
-                            config=config,
-                        )
-                        logging.info("Deleted account %s %s", account_type, del_account)
+                        try:
+                            delete_account(
+                                account=del_account,
+                                account_type=account_type,
+                                dry_run=dry_run,
+                                config=config,
+                            )
+                            logging.info("Deleted account %s %s", account_type, del_account)
+                            stats.labels(
+                                account_type=account_type,
+                                status=AccountState.DELETED.value,
+                                account=new_account,
+                            ).inc()
+                        except Exception:
+                            logging.exception(
+                                "Unable to delete account %s (type %s)",
+                                del_account,
+                                account_type,
+                            )
+                            stats.labels(
+                                account_type=account_type,
+                                status=AccountState.ERRORED.value,
+                                account=new_account,
+                            ).inc()
                     else:
                         logging.info(
                             """
@@ -783,6 +828,11 @@ def populate_accountsdb(
                             del_account,
                             account_type,
                         )
+                        stats.labels(
+                            account_type=account_type,
+                            status=AccountState.SKIPPED.value,
+                            account=new_account,
+                        ).inc()
 
     finally:
         acct_db.close()
@@ -901,6 +951,8 @@ def _create_accounts_on_host(
     port: int,
     acct_db: pymysql.Connection,
     only_type: str,
+    stats: Counter,
+    host_stats: Counter,
 ):
     # This is needed so it's not undefined in the finally clause if an exception happens
     cloud_db: pymysql.Connection | None = None
@@ -957,6 +1009,12 @@ def _create_accounts_on_host(
                             row["type"],
                             row["username"],
                         )
+                        stats.labels(
+                            account_type=row["type"],
+                            status=AccountState.CREATED.value,
+                            host=host_key,
+                            account=row["username"],
+                        ).inc()
                     except Exception as err:
                         logging.exception(
                             "Unable to create user %s on %s:%d, got exception: %s",
@@ -965,6 +1023,12 @@ def _create_accounts_on_host(
                             port,
                             str(err),
                         )
+                        stats.labels(
+                            account_type=row["type"],
+                            status=AccountState.ERRORED.value,
+                            host=host_key,
+                            account=row["username"],
+                        ).inc()
                         continue
                 else:
                     logging.info(
@@ -976,9 +1040,16 @@ def _create_accounts_on_host(
                         row["username"],
                         row["type"],
                     )
+                    stats.labels(
+                        account_type=row["type"],
+                        status=AccountState.SKIPPED.value,
+                        host=host_key,
+                        account=row["username"],
+                    ).inc()
 
     except pymysql.err.OperationalError as exc:
         logging.warning("Could not connect to %s:%d due to %s.  Skipping.", hostname, port, exc)
+        host_stats.labels(host=host_key).inc()
         return
 
     finally:
@@ -990,7 +1061,12 @@ def _create_accounts_on_host(
 
 
 def create_accounts_from_accountsdb(
-    dry_run: bool, only_users: list[str], config: dict[str, Any], only_type: str
+    dry_run: bool,
+    only_users: list[str],
+    config: dict[str, Any],
+    only_type: str,
+    stats: Counter,
+    host_stats: Counter,
 ):
     """
     Find hosts with accounts in absent state, and creates them.
@@ -1009,6 +1085,8 @@ def create_accounts_from_accountsdb(
                 port=port,
                 acct_db=acct_db,
                 only_type=only_type,
+                stats=stats,
+                host_stats=host_stats,
             )
     finally:
         acct_db.close()
@@ -1117,7 +1195,7 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
         acct_db.close()
 
 
-def main():
+def main() -> None:
     argparser = argparse.ArgumentParser()
 
     argparser.add_argument(
@@ -1219,6 +1297,33 @@ def main():
     elif args.action == "harvest-replicas":
         harvest_replica_accounts(dry_run=args.dry_run, only_users=args.only_users, config=config)
     elif args.action == "maintain":
+        all_stats: dict[str, Counter] = {
+            "populate": Counter(
+                name="maintain_dbusers_populate",
+                documentation=(
+                    "Number of accounts added/deleted to the accountsdb database of the "
+                    "maintain_dbusers process"
+                ),
+                labelnames=["account_type", "status", "account"],
+            ),
+            "create": Counter(
+                name="maintain_dbusers_create",
+                documentation=(
+                    "Number of accounts added/deleted from the different clouddb databases "
+                    "(replicas, toolsdb, ...) by the maintain_dbusers process"
+                ),
+                labelnames=["account_type", "status", "host", "account"],
+            ),
+            "clouddb_issues": Counter(
+                name="maintain_dbusers_create_connection_errors",
+                documentation=(
+                    "Number of connection issues to the different clouddb databases "
+                    "(replicas, tooldb, ...) by the maintain_dbusers process"
+                ),
+                labelnames=["host"],
+            ),
+        }
+        start_http_server(port=config.get("metrics_port", 9090))
         while True:
             if args.account_type in ("tool", "all"):
                 populate_accountsdb(
@@ -1226,6 +1331,7 @@ def main():
                     dry_run=args.dry_run,
                     only_users=args.only_users,
                     config=config,
+                    stats=all_stats["populate"],
                 )
             if args.account_type in ("user", "all"):
                 populate_accountsdb(
@@ -1233,6 +1339,7 @@ def main():
                     dry_run=args.dry_run,
                     only_users=args.only_users,
                     config=config,
+                    stats=all_stats["populate"],
                 )
             if args.account_type in ("paws", "all"):
                 populate_accountsdb(
@@ -1240,12 +1347,15 @@ def main():
                     dry_run=args.dry_run,
                     only_users=args.only_users,
                     config=config,
+                    stats=all_stats["populate"],
                 )
             create_accounts_from_accountsdb(
                 dry_run=args.dry_run,
                 only_users=args.only_users,
                 config=config,
                 only_type=args.account_type,
+                stats=all_stats["create"],
+                host_stats=all_stats["clouddb_issues"],
             )
             time.sleep(60)
     elif args.action == "delete":
