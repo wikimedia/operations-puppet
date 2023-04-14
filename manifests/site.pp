@@ -717,7 +717,7 @@ node /^db21(42|43|44)\.codfw\.wmnet$/ {
 }
 
 ## m1 shard
-# See also multiinstance misc hosts db1117, db2160 below
+# See also multiinstance misc hosts db1117, db1217, db2160 below
 
 # m1 master
 node 'db1164.eqiad.wmnet' {
@@ -730,7 +730,7 @@ node 'db2132.codfw.wmnet' {
 }
 
 ## m2 shard
-# See also multiinstance misc hosts db1117, db2160 below
+# See also multiinstance misc hosts db1117, db1217, db2160 below
 
 # m2 master
 node 'db1195.eqiad.wmnet' {
@@ -743,7 +743,7 @@ node 'db2133.codfw.wmnet' {
 }
 
 ## m3 shard
-# See also multiinstance misc hosts db1117, db2160 below
+# See also multiinstance misc hosts db1117, db1217, db2160 below
 
 # m3 master
 node 'db1159.eqiad.wmnet' {
@@ -761,7 +761,7 @@ node 'db1108.eqiad.wmnet' {
 }
 
 ## m5 shard
-# See also multiinstance misc hosts db1117, db2160 below
+# See also multiinstance misc hosts db1117, db1217, db2160 below
 
 # m5 master
 node 'db1176.eqiad.wmnet' {
