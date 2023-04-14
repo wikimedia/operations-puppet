@@ -364,7 +364,8 @@ sub cluster_fe_recv {
 <%- end -%>
     // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
     if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
-        || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
+        || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>"
+        || req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
         return (synth(421, "Misdirected Request"));
     }
 
