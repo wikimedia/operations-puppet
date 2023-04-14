@@ -696,7 +696,7 @@ node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet$/ {
 
 ## x1 shard
 # eqiad
-node /^db1(120|137|179|220)\.eqiad\.wmnet$/ {
+node /^db1(137|179|220)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
