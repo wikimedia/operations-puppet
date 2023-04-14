@@ -25,6 +25,7 @@ if [ "${LSB_RELEASE}" = "bookworm" ]; then
   in-target apt-get update
   apt-install -y --force-yes puppet=5.5.22-2+deb12u1
   apt-install openssh-server lldpd
+  apt-install -y ruby-sorted-set
 else
   # openssh-server: to make the machine accessible
   # puppet: because we'll need it soon anyway

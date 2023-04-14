@@ -36,6 +36,12 @@ class base::standard_packages (
         ensure_packages(['python3-wmflib'])
     }
 
+    # Starting with Ruby 3 (which is the default in bookworm), SortedSet is no longer part
+    # of the set implementation in the standard library, so needs to be installed separately
+    if debian::codename::ge('bookworm') {
+        ensure_packages(['ruby-sorted-set'])
+    }
+
     # Needs further work to work with Bookworm's binutils, revisit when Bookworm is stable
     if debian::codename::lt('bookworm') {
         ensure_packages('quickstack')
