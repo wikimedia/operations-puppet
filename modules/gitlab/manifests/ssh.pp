@@ -31,7 +31,7 @@ class gitlab::ssh (
 
     file { $base_dir:
         ensure  => stdlib::ensure($ensure, 'directory'),
-        recurse => true,
+        recurse => $ensure == 'absent',
         force   => true,
         owner   => root,
         mode    => '0755',
