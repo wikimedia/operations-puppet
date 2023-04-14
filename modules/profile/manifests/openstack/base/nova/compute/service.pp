@@ -49,11 +49,15 @@ class profile::openstack::base::nova::compute::service(
             recurse =>  true,
         }
 
+        # The nova package will create an empty directory here, 
+        #  replace with a link
         file { '/var/lib/nova/instances':
-            ensure => 'link',
-            owner  => 'nova',
-            group  => 'nova',
-            target => '/srv/instances',
+            ensure  => 'link',
+            owner   => 'nova',
+            group   => 'nova',
+            replace => true,
+            force   => true,
+            target  => '/srv/instances',
         }
     } else {
         if $instance_dev != 'thinvirt' {
