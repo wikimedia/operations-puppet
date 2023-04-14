@@ -17,6 +17,7 @@ class mailman3::web (
     String $api_password,
     String $secret,
     String $archiver_key,
+    Integer $uwsgi_processes,
     String $service_ensure = 'running',
     Optional[String] $memcached,
 ) {
@@ -55,11 +56,24 @@ class mailman3::web (
         content => template('mailman3/mailman-hyperkitty.cfg.erb'),
     }
 
+    file { '/etc/mailman3/uwsgi.ini':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => epp(
+            'mailman3/uwsgi.ini.epp',
+            { processes => $uwsgi_processes },
+        ),
+    }
+
     service { 'mailman3-web':
         ensure    => $service_ensure,
         hasstatus => false,
         pattern   => 'mailmanctl',
-        subscribe => File['/etc/mailman3/mailman-web.py'],
+        subscribe => [
+            File['/etc/mailman3/mailman-web.py'],
+            File['/etc/mailman3/uwsgi.ini'],
+        ]
     }
 
     file { '/etc/logrotate.d/mailman3-web':

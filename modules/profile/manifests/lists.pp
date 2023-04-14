@@ -8,6 +8,7 @@
 #       RewriteCond %{REQUEST_METHOD} POST
 #       RewriteRule ^/bar/.*/foo$ - [F]
 # @param security_cfgs additional apache config blocks to include
+# @param uwsgi_processes number of uwsgi worker processes to handle requests
 class profile::lists (
     Stdlib::Fqdn $lists_servername            = lookup('mailman::lists_servername'),
     Optional[String] $primary_host            = lookup('profile::lists::primary_host', {'default_value' => undef}),
@@ -26,6 +27,7 @@ class profile::lists (
     Optional[String] $web_secret              = lookup('profile::lists::web::secret', {'default_value' => undef}),
     Optional[String] $archiver_key            = lookup('profile::lists::archiver_key', {'default_value' => undef}),
     Optional[String] $memcached               = lookup('profile::lists::memcached', {'default_value' => undef}),
+    Integer $uwsgi_processes                  = lookup('profile::lists::uwsgi_processes', {'default_value' => 4}),
     Hash[String, String] $renamed_lists       = lookup('profile::lists::renamed_lists'),
     # Conditions to deny access to the lists web interface. Found in the private repository if needed.
     Array[String] $web_deny_conditions        = lookup('profile::lists::web_deny_conditions', {'default_value' => []}),
@@ -41,18 +43,19 @@ class profile::lists (
     }
 
     class { '::mailman3':
-        host           => $lists_servername,
-        db_host        => $db_host,
-        db_name        => $db_name,
-        db_user        => $db_user,
-        db_password    => $db_password,
-        webdb_name     => $webdb_name,
-        webdb_user     => $webdb_user,
-        webdb_password => $webdb_password,
-        api_password   => $api_password,
-        archiver_key   => $archiver_key,
-        web_secret     => $web_secret,
-        memcached      => $memcached,
+        host            => $lists_servername,
+        db_host         => $db_host,
+        db_name         => $db_name,
+        db_user         => $db_user,
+        db_password     => $db_password,
+        webdb_name      => $webdb_name,
+        webdb_user      => $webdb_user,
+        webdb_password  => $webdb_password,
+        api_password    => $api_password,
+        archiver_key    => $archiver_key,
+        uwsgi_processes => $uwsgi_processes,
+        web_secret      => $web_secret,
+        memcached       => $memcached,
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)

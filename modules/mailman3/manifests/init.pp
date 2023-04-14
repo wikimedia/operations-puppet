@@ -15,6 +15,7 @@ class mailman3 (
     String $api_password,
     String $web_secret,
     String $archiver_key,
+    Integer $uwsgi_processes,
     String $service_ensure = 'running',
     Optional[String] $memcached = undef,
 ) {
@@ -41,15 +42,16 @@ class mailman3 (
     }
 
     class { '::mailman3::web':
-        host           => $host,
-        service_ensure => $service_ensure,
-        db_host        => $db_host,
-        db_name        => $webdb_name,
-        db_user        => $webdb_user,
-        db_password    => $webdb_password,
-        api_password   => $api_password,
-        secret         => $web_secret,
-        archiver_key   => $archiver_key,
-        memcached      => $memcached,
+        host            => $host,
+        service_ensure  => $service_ensure,
+        db_host         => $db_host,
+        db_name         => $webdb_name,
+        db_user         => $webdb_user,
+        db_password     => $webdb_password,
+        api_password    => $api_password,
+        secret          => $web_secret,
+        archiver_key    => $archiver_key,
+        uwsgi_processes => $uwsgi_processes,
+        memcached       => $memcached,
     }
 }
