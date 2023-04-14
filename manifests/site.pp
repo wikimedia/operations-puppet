@@ -499,7 +499,7 @@ node /^dbproxy10(22|23|24|25|26|27)\.eqiad\.wmnet$/ {
 }
 
 # s1 (enwiki) core production dbs on eqiad
-node /^db1(106|107|118|119|128|132|134|135|163|169|184|186|206|207|218)\.eqiad\.wmnet$/ {
+node /^db1(106|118|119|128|132|134|135|163|169|184|186|206|207|218)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
