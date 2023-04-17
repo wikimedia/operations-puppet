@@ -131,6 +131,9 @@ profile::keyholder::server::agents:
       - deployment
 
 profile::mediawiki::scap_client::is_master: true
+# T329857
+profile::mediawiki::scap_client::deployment_dir_linked_to_staging_dir: true
+
 # scap::source declarations.  These are created
 # by the profile::mediawiki::deployment::server class.
 # Each source listed here will be cloned on the scap deploy server.
