@@ -166,7 +166,7 @@ class graphite(
         missing_ok     => true,
         no_create      => true,
         compress       => true,
-        post_rotate    => 'service rsyslog rotate >/dev/null 2>&1 || true',
+        post_rotate    => ['service rsyslog rotate >/dev/null 2>&1 || true'],
     }
 
     systemd::unit { 'carbon-cache@.service':

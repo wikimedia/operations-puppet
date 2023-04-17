@@ -107,7 +107,7 @@ class profile::puppet::agent (
         missing_ok   => true,
         not_if_empty => true,
         rotate       => 7,
-        post_rotate  => '/usr/lib/rsyslog/rsyslog-rotate',
+        post_rotate  => ['/usr/lib/rsyslog/rsyslog-rotate'],
     }
 
     rsyslog::conf { 'puppet-agent':

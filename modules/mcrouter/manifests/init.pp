@@ -124,7 +124,7 @@ class mcrouter(
         missing_ok   => true,
         not_if_empty => true,
         rotate       => 7,
-        post_rotate  => 'service rsyslog rotate >/dev/null 2>&1 || true'
+        post_rotate  => ['service rsyslog rotate >/dev/null 2>&1 || true']
     }
     rsyslog::conf { 'mcrouter':
         source   => 'puppet:///modules/mcrouter/mcrouter.rsyslog.conf',

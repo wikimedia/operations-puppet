@@ -177,7 +177,7 @@ class graphite::web(
         size        => '100M',
         rotate      => 3,
         missing_ok  => true,
-        post_rotate => '/usr/sbin/service uwsgi-graphite-web restart > /dev/null',
+        post_rotate => ['/usr/sbin/service uwsgi-graphite-web restart > /dev/null'],
     }
 
 }

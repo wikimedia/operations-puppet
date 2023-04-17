@@ -59,7 +59,7 @@ class profile::mediawiki::mwlog (
         date_ext     => true,
         compress     => true,
         missing_ok   => true,
-        post_rotate  => 'service kafkatee-mwlog reload',
+        post_rotate  => ['service kafkatee-mwlog reload'],
     }
 
     if $primary_host and $standby_host {

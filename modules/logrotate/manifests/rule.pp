@@ -39,7 +39,7 @@ define logrotate::rule (
     Boolean                        $missing_ok     = false,
     Optional[Stdlib::Datasize]     $size           = undef,
     Boolean                        $no_create      = false,
-    Optional[String[1]]            $post_rotate    = undef,
+    Array[String[1]]               $post_rotate    = [],
     Optional[String[1]]            $su             = undef,
     Optional[String[1]]            $create         = undef,
     Optional[Stdlib::Unixpath]     $old_dir        = undef,

@@ -43,10 +43,12 @@
 <% if @su -%>
     su <%= @su %>
 <% end -%>
-<% if @post_rotate -%>
+<% unless @post_rotate.empty? -%>
     sharedscripts
     postrotate
-        <%= @post_rotate %>
+    <%- @post_rotate.each do |line| -%>
+        <%= line %>
+    <%- end -%>
     endscript
 <% end -%>
 <% if @old_dir -%>
