@@ -63,7 +63,7 @@ class openstack::cinder::service(
     $manager_file_to_patch = '/usr/lib/python3/dist-packages/cinder/scheduler/manager.py'
     $manager_patch_file = "${manager_file_to_patch}.patch"
     file {$manager_patch_file:
-        source => "puppet:///modules/openstack/${version}/cinder/hacks/manager.py.patch",
+        source => "puppet:///modules/openstack/${version}/cinder/hacks/manager/manager.py.patch",
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
