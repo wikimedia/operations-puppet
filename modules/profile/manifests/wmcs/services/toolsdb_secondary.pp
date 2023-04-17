@@ -54,6 +54,7 @@ class profile::wmcs::services::toolsdb_secondary (
     class { 'mariadb::heartbeat':
         datacenter => $::site,
         enabled    => false,
+        shard      => 'toolsdb',
     }
 
     class { 'profile::mariadb::monitor::prometheus':

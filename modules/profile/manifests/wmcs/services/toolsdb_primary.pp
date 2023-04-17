@@ -53,6 +53,7 @@ class profile::wmcs::services::toolsdb_primary (
     class { 'mariadb::heartbeat':
         datacenter => $::site,
         enabled    => true,
+        shard      => 'toolsdb',
     }
 
     if $rebuild {
