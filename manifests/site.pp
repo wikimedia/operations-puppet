@@ -489,7 +489,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(208|212|213|216|219)\.eqiad\.wmnet$/ {
+node /^db1(208|213|216|219)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
@@ -548,6 +548,11 @@ node /^db1(123|157|166|175|189|198|223)\.eqiad\.wmnet$/ {
 
 # eqiad sanitarium master
 node 'db1112.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
+}
+
+# future eqiad sanitarium master
+node 'db1212.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
