@@ -35,7 +35,7 @@ class profile::openstack::base::envscripts(
         keystone_api_interface => 'admin',
         os_user                => 'novaadmin',
         os_password            => $ldap_user_pass,
-        os_project             => 'UNDEF',
+        os_project             => 'UNSET',
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/keystoneenv.sh',
         yaml_mode              => '0440',
