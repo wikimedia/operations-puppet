@@ -64,12 +64,11 @@ class profile::url_downloader (
     }
     $towikimedia = $wikimedia
 
+    $syslog_facility = 'local0'
+    $syslog_priority = 'info'
     $config_content = template('profile/url_downloader/squid.conf.erb')
 
     include profile::logrotate
-
-    $syslog_facility = 'local0'
-    $syslog_priority = 'info'
 
     $rsyslog_content = @("CONF"/L$)
     # Send squid access logs
