@@ -5,7 +5,10 @@
 # @param ca_source to source of the CA file
 # @param manage_ca_file if true manage the puppet ca file
 # @param interval the, in minutes, interval to perform puppet runs
-# @param enable_puppet7 install th component that configures puppet7
+# @param force_puppet7 on bullseye hosts this enables an experimental puppet7
+#   backport.  however this is known to have some issues with puppetmaster5
+#   specifically related to certificate provisioning.  On bookworm this flag
+#   disables the puppet5 forward-port so systems use the default Debian package
 # @param timer_seed Add ability to seed the systemd timer.  usefull if jobs happen to collide
 # @param environment the agent environment
 # @param serialization_format the serilasation format of catalogs
@@ -17,20 +20,30 @@ class profile::puppet::agent (
     Stdlib::Filesource              $ca_source              = lookup('puppet_ca_source'),
     Boolean                         $manage_ca_file         = lookup('manage_puppet_ca_file'),
     Integer[1,59]                   $interval               = lookup('profile::puppet::agent::interval'),
-    Boolean                         $enable_puppet7         = lookup('profile::puppet::agent::enable_puppet7'),
+    Boolean                         $force_puppet7         = lookup('profile::puppet::agent::force_puppet7'),
     Optional[String[1]]             $timer_seed             = lookup('profile::puppet::agent::timer_seed'),
     Optional[String[1]]             $environment            = lookup('profile::puppet::agent::environment'),
     Enum['pson', 'json', 'msgpack'] $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
     Array[Stdlib::Fqdn]             $dns_alt_names          = lookup('profile::puppet::agent::dns_alt_names'),
     Optional[Enum['chain', 'leaf']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
 ) {
-    if $enable_puppet7 {
+    if $force_puppet7 {
         if debian::codename::lt('bullseye') {
             # We only have packages for bullseye currently
             fail('puppet7 is only avalible for bullseye')
         }
+        # puppet7 is available in bookworm
+        if debian::codename::eq('bullseye') {
+            apt::package_from_component { 'puppet':
+                component => 'component/puppet7',
+                priority  => 1002,
+            }
+        }
+    } elsif debian::codename::eq('bookworm') {
+        # On Bookworm we're forcing a 5.5 backport until we have migrated to Puppet 7
+        # T330495
         apt::package_from_component { 'puppet':
-            component => 'component/puppet7',
+            component => 'component/puppet5',
             priority  => 1002,
         }
     }
