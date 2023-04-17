@@ -28,7 +28,9 @@ LimitCORE=infinity
 # haproxy systemd hardening.
 NoNewPrivileges=true
 PrivateDevices=true
+<%- unless @enable_coredumps -%>
 PrivateTmp=true
+<%- end -%>
 ProtectHome=true
 ProtectSystem=strict
 ProtectKernelTunables=true
@@ -47,6 +49,9 @@ ReadWritePaths=/var/lib/haproxy
 <% if @do_ocsp -%>
 ReadWritePaths=/var/cache/ocsp
 <% end -%>
+<%- if @enable_coredumps -%>
+ReadWritePaths=/var/tmp/core
+<%- end -%>
 <% end -%>
 
 [Install]
