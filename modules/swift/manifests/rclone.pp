@@ -40,7 +40,7 @@ class swift::rclone (
     systemd::timer::job { 'swift_rclone_sync':
         ensure      => $ensure,
         command     => '/usr/local/bin/swift-rclone-sync',
-        interval    => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 08:00:00' },
+        interval    => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 03:00:00' },
         user        => 'root',
         description => 'Swift rclone-based sync',
     }
