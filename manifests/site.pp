@@ -124,14 +124,10 @@ node /^an-worker10(7[89]|8[0-9]|9[0-9]).eqiad.wmnet$/ {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-1]|3[3-9]|4[0-8])\.eqiad\.wmnet$/ {
+node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-8])\.eqiad\.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
-# Temporarily put an-worker1132 back into insetup role to fix RAID: T333091
-node 'an-worker1132.eqiad.wmnet' {
-    role(insetup::data_engineering)
-}
 # Staging environment of Superset and Turnilo
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
