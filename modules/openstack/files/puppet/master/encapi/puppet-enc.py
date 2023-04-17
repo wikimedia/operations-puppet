@@ -556,14 +556,15 @@ def get_prefix_by_id(project: str, prefix_id: int):
         if not result:
             return dump_with_requested_format({"error": "notfound"}), 404
 
+        cur.execute("SELECT role FROM roleassignment WHERE prefix_id = %s", (prefix_id,))
+        roles = [r[0] for r in cur.fetchall()]
+
         data = {
             "id": result[0],
             "prefix": _format_prefix(result[1]),
             "hiera": yaml.safe_load(result[2]) if result[2] else {},
+            "roles": sorted(roles),
         }
-
-        cur.execute("SELECT role FROM roleassignment WHERE id = %s", (result[0],))
-        data["roles"] = [r[0] for r in cur.fetchall()]
 
     return dump_with_requested_format(data)
 
@@ -591,7 +592,7 @@ def update_prefix_by_id(project: str, prefix_id: int):
 
         prefix = result[1]
 
-        cur.execute("SELECT role FROM roleassignment WHERE id = %s", (prefix_id,))
+        cur.execute("SELECT role FROM roleassignment WHERE prefix_id = %s", (prefix_id,))
         current_roles = [r[0] for r in cur.fetchall()]
 
         g.db.begin()
@@ -660,7 +661,7 @@ def update_prefix_by_id(project: str, prefix_id: int):
             "id": prefix_id,
             "prefix": _format_prefix(prefix),
             "hiera": hiera,
-            "roles": roles,
+            "roles": sorted(roles),
         }
 
     return dump_with_requested_format(data)
