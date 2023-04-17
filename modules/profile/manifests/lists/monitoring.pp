@@ -52,7 +52,7 @@ class profile::lists::monitoring (
         # uwsgi powering mailman3
         nrpe::monitor_service { 'procs_mailman3_web':
             description  => 'mailman3-web',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 2:2 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 5:5 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
         nrpe::monitor_service { 'mailman3_queue':
