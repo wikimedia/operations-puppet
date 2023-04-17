@@ -50,7 +50,10 @@ class squid (
         missing_ok  => true,
         size        => '300M',
         no_create   => true,
-        post_rotate => ['test ! -e /var/run/squid.pid || /usr/sbin/squid -k rotate'],
+        post_rotate => [
+            'test ! -e /var/run/squid.pid || /usr/sbin/squid -k rotate',
+            '/usr/lib/rsyslog/rsyslog-rotate',
+        ],
     }
 
     systemd::unit { 'squid':
