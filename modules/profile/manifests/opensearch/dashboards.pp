@@ -9,21 +9,30 @@ class profile::opensearch::dashboards (
   Optional[String]  $index              = lookup('profile::opensearch::dashboards::index',              { 'default_value' => undef }),
   Optional[Boolean] $enable_warnings    = lookup('profile::opensearch::dashboards::enable_warnings',    { 'default_value' => undef }),
 ) {
-    class { 'opensearch_dashboards':
-      config_version     => $config_version,
-      package_name       => $package_name,
-      enable_backups     => $enable_backups,
-      tile_map_enabled   => $tile_map_enabled,
-      region_map_enabled => $region_map_enabled,
-      index              => $index,
-      enable_warnings    => $enable_warnings,
-    }
+  class { 'opensearch_dashboards':
+    config_version     => $config_version,
+    package_name       => $package_name,
+    enable_backups     => $enable_backups,
+    tile_map_enabled   => $tile_map_enabled,
+    region_map_enabled => $region_map_enabled,
+    index              => $index,
+    enable_warnings    => $enable_warnings,
+  }
 
-    if ($enable_backups) {
-      include profile::backup::host
+  package { [
+    'securityDashboards',
+    'notificationDashboards',
+    'indexManagementDashboards'
+  ]:
+    ensure   => 'absent',
+    provider => 'opensearch_dashboards_plugin',
+  }
 
-      backup::set { 'opensearch-dashboards':
-        jobdefaults => 'Daily-productionEqiad', # full backups every day
-      }
+  if ($enable_backups) {
+    include profile::backup::host
+
+    backup::set { 'opensearch-dashboards':
+      jobdefaults => 'Daily-productionEqiad', # full backups every day
     }
+  }
 }
