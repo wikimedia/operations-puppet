@@ -1,3 +1,2 @@
 # db1151
 mariadb::shard: 'x2'
-profile::mariadb::mysql_role: 'master'
