@@ -259,6 +259,18 @@ region_name = <%= @region %>
 # Config Section from which to load plugin specific options (string value)
 #auth_section = <None>
 
+[rbd]
+volume_driver = cinder.volume.drivers.rbd.RBDDriver
+rbd_pool = <%= @ceph_pool %>
+rbd_ceph_conf = /etc/ceph/ceph.conf
+rbd_flatten_volume_from_snapshot = false
+rbd_max_clone_depth = 5
+rbd_store_chunk_size = 4
+rados_connect_timeout = -1
+glance_api_version = 2
+rbd_user = <%= @ceph_rbd_client_name %>
+rbd_secret_uuid = <%= @libvirt_rbd_cinder_uuid %>
+
 
 [oslo_concurrency]
 lock_path = /var/lock/cinder
