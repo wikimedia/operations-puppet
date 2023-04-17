@@ -35,6 +35,12 @@ class profile::gerrit::migration (
             ensure => 'directory',
         }
 
+        if !defined(File[$gerrit_site]) {
+            file { $gerrit_site:
+                ensure => 'directory',
+            }
+        }
+
         rsync::server::module { 'gerrit-home':
             path        => "/srv/home-${src_host}",
             read_only   => 'no',
