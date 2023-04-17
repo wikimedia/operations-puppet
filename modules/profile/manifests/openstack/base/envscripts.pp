@@ -37,7 +37,7 @@ class profile::openstack::base::envscripts(
         os_password            => $ldap_user_pass,
         os_project             => 'UNDEF',
         os_db_password         => $nova_db_pass,
-        scriptpath             => '/root/novaenv.sh',
+        scriptpath             => '/root/keystoneenv.sh',
         yaml_mode              => '0440',
     }
 
@@ -52,7 +52,7 @@ class profile::openstack::base::envscripts(
         os_password            => $ldap_user_pass,
         os_project             => 'UNSET',
         os_db_password         => $nova_db_pass,
-        scriptpath             => '/root/novaenv.sh',
+        scriptpath             => '/root/ossystemenv.sh',
         yaml_mode              => '0440',
         os_project_domain_id   => 'UNSET',
         os_user_domain_id      => 'UNSET',
