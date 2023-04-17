@@ -67,6 +67,23 @@ class profile::url_downloader (
     $config_content = template('profile/url_downloader/squid.conf.erb')
 
     include profile::logrotate
+
+    $syslog_facility = 'local0'
+    $syslog_priority = 'info'
+
+    $rsyslog_content = @("CONF"/L$)
+    # Send squid access logs
+    if \$programname startswith 'squid' \
+    and  \$syslogfacility-text == '${syslog_facility}' \
+    and \$syslogpriority-text == '${syslog_priority}' \
+    then /var/log/squid/access.log
+    &~
+    | CONF
+
+    rsyslog::conf { 'squid-access':
+        content => $rsyslog_content,
+    }
+
     class { 'squid':
         config_content      => $config_content,
         logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
