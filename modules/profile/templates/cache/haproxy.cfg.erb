@@ -7,6 +7,7 @@ global
     log /var/lib/haproxy/dev/log local0 info
     # do not keep old processes longer than 5m after a reload
     hard-stop-after 5m
+    set-dumpable
 
 
 defaults
