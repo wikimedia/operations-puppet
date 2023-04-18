@@ -3,6 +3,9 @@
 # Every entry in the hash must have a label (the service name) and its body must adhere to the
 # Wmflib::Service type. Refer to the documentation of that type, and all the sub-types, for details.
 #
+# When adding a new field, it needs to be added to spicerack as well, see for example
+# https://gerrit.wikimedia.org/r/c/operations/software/spicerack/+/909299
+#
 # Please keep entries separated by an empty line to allow for easy navigation of the file.
 
 service::catalog:
