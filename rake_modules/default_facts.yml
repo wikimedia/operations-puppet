@@ -39,6 +39,7 @@ raid:
   - megaraid
   - ssacli
   - perccli
+  - perccli_hba
 kernel_details:
   sysctl_settings:
     net.ipv4.tcp_min_snd_mss: true
