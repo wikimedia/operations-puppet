@@ -23,7 +23,7 @@ if [ "${LSB_RELEASE}" = "bookworm" ]; then
   BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia bookworm-wikimedia component"
   printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
   in-target apt-get update
-  apt-install -y --force-yes puppet=5.5.22-2+deb12u1
+  apt-install -y --force-yes puppet=5.5.22-2+deb12u2
   apt-install openssh-server lldpd
   apt-install -y ruby-sorted-set
 else
