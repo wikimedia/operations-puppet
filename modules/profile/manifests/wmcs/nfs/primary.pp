@@ -160,27 +160,6 @@ class profile::wmcs::nfs::primary(
         group   => 'root',
     }
 
-    class {'labstore::monitoring::exports':
-        drbd_role => $drbd_actual_role,
-    }
-    class {'labstore::monitoring::volumes':
-        server_vols => [
-            '/srv/tools',
-            '/srv/misc'
-        ],
-        drbd_role   => $drbd_actual_role,
-    }
-    class {'labstore::monitoring::ldap': }
-    class {'labstore::monitoring::interfaces':
-        monitor_iface => $monitor_iface,
-    }
-
-    class { 'labstore::monitoring::primary':
-        drbd_role     => $drbd_expected_role,
-        cluster_iface => $monitor_iface,
-        cluster_ip    => $cluster_ip,
-    }
-
     file {'/usr/local/sbin/logcleanup':
         source => 'puppet:///modules/labstore/logcleanup.py',
         mode   => '0744',
