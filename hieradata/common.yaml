@@ -1188,6 +1188,7 @@ http_proxy: "http://%{lookup('http_proxy_host')}:%{lookup('http_proxy_port')}"
 # recdns issues.
 authdns_servers:
   'dns1001.wikimedia.org': 208.80.154.10
+  'dns1002.wikimedia.org': 208.80.155.108
   'dns1003.wikimedia.org': 208.80.154.134
   'dns2001.wikimedia.org': 208.80.153.77
   'dns2002.wikimedia.org': 208.80.153.111
