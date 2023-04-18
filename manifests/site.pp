@@ -831,14 +831,6 @@ node /^db2183|db2184\.codfw\.wmnet$/ {
 }
 
 # eqiad backup sources
-## s2, s3 & x1, buster
-node 'db1102.eqiad.wmnet' {
-    role(mariadb::backup_source)
-}
-## s8 & x1, buster
-node 'db1116.eqiad.wmnet' {
-    role(mariadb::backup_source)
-}
 ## s1 & s2, buster
 node 'db1139.eqiad.wmnet' {
     role(mariadb::backup_source)
@@ -897,6 +889,15 @@ node 'db2139.codfw.wmnet' {
 node 'db2141.codfw.wmnet' {
     role(mariadb::backup_source)
 }
+
+## decommed backup sources
+node 'db1116.eqiad.wmnet' {
+    role(spare::system)
+}
+node 'db1102.eqiad.wmnet' {
+    role(spare::system)
+}
+
 
 # backup testing hosts
 node 'db1133.eqiad.wmnet' {
