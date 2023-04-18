@@ -6641,3 +6641,7 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: maurelio.wikitech@gmail.com
+  kbach:
+    ensure: present
+    realname: Kamil Bach
+    email: kbach@wikimedia.org
