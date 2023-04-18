@@ -13,7 +13,6 @@ profile::ssh::server::authorized_keys_file:
   - "/etc/ssh/userkeys/%u"
   - "/etc/ssh/userkeys/%u.d/cumin"
   - "/etc/ssh/userkeys/%u.d/cloud_cumin"
-  - "/etc/ssh/userkeys/%u.d/labstore"
 
 # Anything we specifically want to monitor already pages, so this is annoying
 profile::monitoring::monitor_systemd: false

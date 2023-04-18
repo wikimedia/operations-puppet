@@ -74,8 +74,6 @@ class profile::wmcs::nfs::primary(
         'bdsync',
     ])
 
-    class {'labstore::backup_keys': }
-
     sysctl::parameters { 'cloudstore base':
         values   => {
             # Increase TCP max buffer size
