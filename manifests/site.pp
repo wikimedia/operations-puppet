@@ -2794,15 +2794,11 @@ node 'urldownloader2004.wikimedia.org' {
     role(url_downloader)
 }
 
-# Still diagnosing new arrival issues T334696
-node 'cloudvirtlocal1001.eqiad.wmnet' {
-    role(insetup::wmcs)
-}
 
 # These are hypervisors that use local storage for their VMs
 #  rather than ceph. This is necessary for low-latency workloads
 #  like etcd.
-node /^cloudvirtlocal100[2-3]\.eqiad\.wmnet$/ {
+node /^cloudvirtlocal100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
