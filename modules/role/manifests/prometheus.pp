@@ -24,5 +24,4 @@ class role::prometheus {
     include profile::prometheus::web
 
     include profile::prometheus::web_idp
-
 }

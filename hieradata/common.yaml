@@ -142,6 +142,24 @@ prometheus_all_nodes:
   - prometheus2005.codfw.wmnet
   - prometheus2006.codfw.wmnet
 
+prometheus_migrations:
+  esams:
+    ensure: present
+    src_host: 'prometheus3001.esams.wmnet'
+    dst_host: 'prometheus3002.esams.wmnet'
+  ulsfo:
+    ensure: present
+    src_host: 'prometheus4001.ulsfo.wmnet'
+    dst_host: 'prometheus4002.ulsfo.wmnet'
+  eqsin:
+    ensure: present
+    src_host: 'prometheus5001.eqsin.wmnet'
+    dst_host: 'prometheus5002.eqsin.wmnet'
+  drmrs:
+    ensure: present
+    src_host: 'prometheus6001.drmrs.wmnet'
+    dst_host: 'prometheus6002.drmrs.wmnet'
+
 alertmanagers:
   - alert1001.wikimedia.org
   - alert2001.wikimedia.org

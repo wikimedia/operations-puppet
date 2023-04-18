@@ -14,4 +14,6 @@ class role::prometheus::pop {
     include profile::prometheus::web
 
     include profile::prometheus::web_idp
+
+    include profile::prometheus::migration
 }
