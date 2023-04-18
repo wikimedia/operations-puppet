@@ -305,6 +305,11 @@ node 'backup2009.codfw.wmnet' {
     role(backup::production)
 }
 
+# New backup node for codfw T326965
+node /^backup201[0-1]\.codfw\.wmnet$/ {
+    role(insetup::data_persistence)
+}
+
 node 'backupmon1001.eqiad.wmnet' {
     role(dbbackups::monitoring)
 }
