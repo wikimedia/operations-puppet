@@ -1,4 +1,2 @@
-profile::wmcs::nfs::primary_backup::tools::backup_interval: 'Thu *-*-* 20:00:00'
-
 profile::openstack::eqiad1::keystone::enforce_policy_scope: false
 profile::openstack::eqiad1::keystone::enforce_new_policy_defaults: false

@@ -42,7 +42,7 @@ bastion-canary: P{bast4004.wikimedia.org}
 centrallog: P{O:syslog::centralserver}
 chartmuseum: P{O:chartmuseum}
 cloudelastic: P{O:elasticsearch::cloudelastic}
-cloudbackup: P{O:wmcs::nfs::primary_backup::tools or O:wmcs::openstack::eqiad1::backy}
+cloudbackup: P{O:wmcs::openstack::eqiad1::backy}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
 cloudcontrol-eqiad1: P{O:wmcs::openstack::eqiad1::control}
 cloudcephmon: P{O:wmcs::ceph::mon}
@@ -234,7 +234,7 @@ wikikube-staging-master-<%= dc %>: A:wikikube-staging-master and A:<%= dc %>
 wikikube-staging-worker-<%= dc %>: A:wikikube-staging-worker and A:<%= dc %>
 <% end -%>
 cloudmetrics: P{O:wmcs::monitoring}
-wmcs-nfs: P{O:wmcs::nfs::primary or O:dumps::distribution::server or O:wmcs::nfs::primary_backup::tools}
+wmcs-nfs: P{O:wmcs::nfs::primary or O:dumps::distribution::server}
 ldap-replicas: P{O:openldap::replica}
 ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
 ldap-replicas-codfw: A:ldap-replicas and A:codfw
