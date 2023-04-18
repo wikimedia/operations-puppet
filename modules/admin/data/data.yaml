@@ -401,7 +401,7 @@ groups:
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan]
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5849,6 +5849,15 @@ users:
     uid: 42439
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  atieno:
+    ensure: present
+    realname: Atieno Njira
+    email: pnjira@wikimedia.org
+    uid: 39918
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHrO506SNq26zDI6oPuneSQ7D0qHTv1zTrgQOXXcu7fG pnjira@wikimedia.org
 
 ldap_only_users:
   adavenport:
