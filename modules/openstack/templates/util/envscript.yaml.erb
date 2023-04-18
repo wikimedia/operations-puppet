@@ -11,6 +11,7 @@ OS_INTERFACE: <%= @keystone_api_interface %>
 PYTHONIOENCODING: utf-8
 OS_PROJECT_NAME: "<%= @os_project %>"
 OS_PROJECT_ID: "<%= @os_project %>"
+OS_DOMAIN_ID: <%= @os_project_domain_id %>
 <% if defined?(@os_db_password) && ! @os_db_password.empty? %>
 NOVA_MYSQL_PASS: "<%= @os_db_password %>"
 <% end %>
