@@ -890,15 +890,6 @@ node 'db2141.codfw.wmnet' {
     role(mariadb::backup_source)
 }
 
-## decommed backup sources
-node 'db1116.eqiad.wmnet' {
-    role(spare::system)
-}
-node 'db1102.eqiad.wmnet' {
-    role(spare::system)
-}
-
-
 # backup testing hosts
 node 'db1133.eqiad.wmnet' {
     role(mariadb::core_test)
