@@ -20,7 +20,11 @@ class profile::ssh::ca (
     content => $ca_key_id,
   }
 
-  $ca_content = ($ensure == 'present').bool2str(secret($ca_key_secret), '')
+  $ca_content = $ensure ? {
+    present => secret($ca_key_secret),
+    default => undef,
+  }
+
   file { '/etc/ssh/ca':
     ensure    => stdlib::ensure($ensure, 'file'),
     owner     => 'puppet',
