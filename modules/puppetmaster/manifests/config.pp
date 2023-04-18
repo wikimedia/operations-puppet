@@ -7,8 +7,9 @@ class puppetmaster::config(
     Puppetmaster::Server_type $server_type,
 ){
 
-    puppet::config { 'master':
-        prio    => 20,
+    concat::fragment { 'master':
+        target  => '/etc/puppet/puppet.conf',
+        order   => '20',
         content => template('puppetmaster/master.conf.erb'),
     }
 

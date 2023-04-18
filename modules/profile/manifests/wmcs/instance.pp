@@ -19,11 +19,7 @@ class profile::wmcs::instance(
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
     }
 
-    class { 'profile::ldap::client::labs':
-        # Puppet requires ldap, so we need to update ldap before anything
-        #  happens to puppet.
-        before => File['/etc/puppet/puppet.conf'],
-    }
+    class { 'profile::ldap::client::labs': }
 
     # make common logs readable
     class { 'base::syslogs':

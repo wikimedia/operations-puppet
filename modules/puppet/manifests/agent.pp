@@ -55,20 +55,6 @@ class puppet::agent (
             source => $ca_source,
         }
     }
-    file { '/etc/puppet/puppet.conf':
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Exec['compile puppet.conf'],
-    }
-
-    file { '/etc/puppet/puppet.conf.d/':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
 
     file { ['/etc/puppetlabs/','/etc/puppetlabs/facter/', '/etc/puppetlabs/facter/facts.d/']:
         ensure => directory,
@@ -85,16 +71,16 @@ class puppet::agent (
         source => 'puppet:///modules/puppet/facter.conf',
     }
 
-    puppet::config { 'main':
-        prio    => 10,
-        content => template('puppet/main.conf.erb'),
+    concat { '/etc/puppet/puppet.conf':
+        owner => 'root',
+        group => 'root',
+        mode  => '0444',
     }
 
-    # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
-    exec { 'compile puppet.conf':
-        path        => '/usr/bin:/bin',
-        command     => 'cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf',
-        refreshonly => true,
+    concat::fragment { 'main':
+        target  => '/etc/puppet/puppet.conf',
+        order   => '10',
+        content => template('puppet/main.conf.erb'),
     }
 
     ## do not use puppet agent, use a cron-based puppet-run instead
