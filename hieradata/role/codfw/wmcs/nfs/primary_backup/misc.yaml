@@ -1,4 +1,0 @@
-profile::admin::groups:
-  - wmcs-roots
-# this should match profile::openstack::codfw1dev::cinder::ceph_pool
-profile::cloudceph::client::rbd::client_name: 'codfw1dev-cinder'
