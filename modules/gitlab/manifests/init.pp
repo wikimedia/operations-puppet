@@ -150,4 +150,21 @@ class gitlab (
         restore_dir_data      => $backup_dir_data,
         restore_interval      => $restore_interval,
     }
+
+    # Install configuration file for gitlab backup partition layout.
+    file {'/opt/gitlab-backup-raid.cfg':
+        mode   => '0744' ,
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab/gitlab-backup-raid.cfg';
+    }
+
+    # Install scipt to configure backup partition layout and raid.
+    # This script is executed manually while provisioning a new GitLab instance.
+    file {'/opt/provision-backup-fs.sh':
+        mode   => '0744' ,
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab/provision-backup-fs.sh';
+    }
 }
