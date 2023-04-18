@@ -217,6 +217,7 @@ class cassandra (
             hints_directory        => '/var/lib/cassandra/data/hints',
             heapdump_directory     => '/var/lib/cassandra/',
             saved_caches_directory => '/var/lib/cassandra/saved_caches',
+            nodetool_path          => '/usr/bin/nodetool',
         }
         $actual_defaults = merge(
             $default_common,

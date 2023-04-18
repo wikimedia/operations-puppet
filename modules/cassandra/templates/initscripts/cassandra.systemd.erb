@@ -14,3 +14,10 @@ Environment="CASSANDRA_INCLUDE=/etc/cassandra.in.sh"
 Environment="CASSANDRA_CONF=<%= @config_directory %>"
 Environment="CASSANDRA_INSTANCE=<%= @instance_id %>"
 ExecStart=/usr/sbin/cassandra -p <%= @pid_file %>
+
+# Deinit on shutdown (see: https://phabricator.wikimedia.org/T327954)
+ExecStop=-<%= @nodetool_path %> disablethrift
+ExecStop=-<%= @nodetool_path %> disablebinary
+ExecStop=-<%= @nodetool_path %> disablegossip
+ExecStop=-<%= @nodetool_path %> drain
+ExecStop=<%= @nodetool_path %> stopdaemon

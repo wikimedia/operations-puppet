@@ -193,6 +193,10 @@
 #   Toggle whether changes to grants files are applied automatically
 #   Default: false
 #
+# [*nodetool_path*]
+#   Complete path to nodetool command.
+#   Default: /usr/bin/nodetool
+#
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
     Optional[String]                 $cluster_name          = undef,
@@ -229,6 +233,7 @@ define cassandra::instance(
     Stdlib::Unixpath        $saved_caches_directory = "/srv/cassandra-${title}/saved_caches",
     Array[String]           $users                  = [],
     Hash[String, String]    $cassandra_passwords    = {},
+    Stdlib::Unixpath        $nodetool_path          = "/usr/local/bin/nodetool-${title}",
 
     # the following parameters have defaults that are sane both for single-
     # and multi-instances
@@ -450,7 +455,7 @@ define cassandra::instance(
     }
 
     if $instance_name != 'default' {
-        file { "/usr/local/bin/nodetool-${instance_name}":
+        file { $nodetool_path:
             ensure  => link,
             target  => '/usr/local/bin/nodetool-instance',
             require => File['/usr/local/bin/nodetool-instance'],
