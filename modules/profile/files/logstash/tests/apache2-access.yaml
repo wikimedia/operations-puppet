@@ -29,7 +29,7 @@ testcases:
           "http.response.status_code": "200",
           "labels.handler": "proxy-server",
           "labels.httpd_server_name": "gerrit.wikimedia.org",
-          "server.ip": "208.80.154.137",
+          "server.ip": "208.80.154.151",
           "service.type": "apache2",
           "source.ip": "127.0.0.1",
           "timestamp": "2021-03-17T21:26:57",
@@ -39,7 +39,7 @@ testcases:
           "url.query": "?service=git-upload-pack",
           "user.name": "-",
           "user_agent.original": "git/2.29.2",
-          "host": "gerrit1001"
+          "host": "gerrit1003"
         }
     expected:
       - __target_index: "ecs-default-1-1.11.0-N-weekly"
@@ -81,7 +81,7 @@ testcases:
           handler: "proxy-server"
           httpd_server_name: "gerrit.wikimedia.org"
         server:
-          ip: "208.80.154.137"
+          ip: "208.80.154.151"
         service:
           type: "apache2"
         source:

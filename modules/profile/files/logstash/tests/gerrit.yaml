@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 fields:
-  "rsyslog.hostname": "gerrit1001"
+  "rsyslog.hostname": "gerrit1003"
   "rsyslog.programname": "input-file-gerrit-json"
   "rsyslog.severity": "NOTICE"
   "rsyslog.facility": "local0"
   program: "input-file-gerrit-json"
-  host: "gerrit1001"
-  logsource: "gerrit1001"
+  host: "gerrit1003"
+  logsource: "gerrit1003"
   facility: "local0"
   severity: "NOTICE"
 codec: "json_lines"
@@ -43,7 +43,7 @@ testcases:
       - >
         {
           "@timestamp": "2021-02-12T17:35:04.423+0000",
-          "source_host": "208.80.154.136",
+          "source_host": "208.80.154.135",
           "message": "Internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git",
           "file": "ContextHandler.java",
           "line_number": "2372",
@@ -75,7 +75,7 @@ testcases:
         service:
           type: "gerrit"
         host:
-          name: "gerrit1001"
+          name: "gerrit1003"
         log:
           level: "NOTICE"
           syslog:
@@ -94,11 +94,11 @@ testcases:
           message: "internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git"
         # "@timestamp": "2021-02-12T17:35:04.423Z"
         server:
-          ip: "208.80.154.136"
+          ip: "208.80.154.135"
         service:
           type: "gerrit"
         host:
-          name: "gerrit1001"
+          name: "gerrit1003"
         log:
           level: "WARN"
           syslog:
