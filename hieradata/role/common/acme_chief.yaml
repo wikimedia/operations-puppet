@@ -56,11 +56,13 @@ profile::acme_chief::certificates:
         CN: 'gerrit.wikimedia.org'
         SNI:
         - 'gerrit.wikimedia.org'
+        - 'gerrit-new.wikimedia.org'
         - 'gerrit-replica.wikimedia.org'
         - 'gerrit-replica-new.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'gerrit1001.wikimedia.org'
+        - 'gerrit1003.wikimedia.org'
         - 'gerrit2002.wikimedia.org'
     gitlab:
         CN: 'gitlab.wikimedia.org'
