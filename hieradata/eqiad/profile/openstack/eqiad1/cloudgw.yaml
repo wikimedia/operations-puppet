@@ -32,7 +32,7 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
   # VMs --> ns-recursor0.openstack.codfw1dev.wikimediacloud.org
   - "208.80.153.78"
   # VMs --> gerrit-replica.wikimedia.org
-  - "208.80.153.107"
+  - "208.80.153.104"
   # VMs --> gerrit.wikimedia.org
   - "208.80.154.137"
   # VMs --> cloudcontrol1005.wikimedia.org
