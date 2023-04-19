@@ -94,11 +94,13 @@ def process_tar(tar_file: Path, config: ControllerConfig, realm: str) -> bool:
         r'^yaml(\/facts(\/[a-z-\d\.]+\.(wmnet|wikimedia.(cloud|org)|wmflabs)\.yaml)?)?$',
         re.IGNORECASE,
     )
-    for name in tar.getnames():
-        logging.debug('checking: %s', name)
-        if not matcher.match(name):
-            logging.error('%s: tar file contains invalid files', tar_file)
-            return False
+    valid_members = []
+    for member in tar.getmembers():
+        logging.debug('checking: %s', member.name)
+        if not matcher.match(member.name):
+            logging.warning('%s: skipping invalid fact file (%s)', tar_file, member.name)
+            continue
+        valid_members.append(member)
     # TODO: Make the following less racy
     if facts_dir.is_dir():
         logging.debug('%s: remove', facts_dir)
@@ -106,7 +108,7 @@ def process_tar(tar_file: Path, config: ControllerConfig, realm: str) -> bool:
     logging.debug('%s: create', facts_dir)
     facts_dir.mkdir()
     logging.debug('%s: extract', tar)
-    tar.extractall(facts_dir)
+    tar.extractall(facts_dir, members=valid_members)
     update_puppetdb(facts_dir, config)
     return True
 
