@@ -6,8 +6,11 @@
 import argparse
 import datetime
 import logging
+import pwd
 import os
 import shutil
+
+from pathlib import Path
 
 import requests
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
@@ -55,7 +58,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     latest_merged_commit = repo.git.merge_base(latest_upstream_commit, "HEAD")
 
     if latest_upstream_commit == latest_merged_commit:
-        logger.info("Up-to-date: %s" % repo_path)
+        logger.info("Up-to-date: %s", repo_path)
         prometheus_gauge.labels(repo_path).set(1)
         return True
     try:
@@ -122,7 +125,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     # For the sake of future rollbacks, tag the repo in the state we've just
     # set up
     repo.create_tag(tagname)
-    logger.info("Tagged as %s" % tagname)
+    logger.info("Tagged as %s", tagname)
 
     logger.info("Local hacks:")
     repo.git.log("--color", "--pretty=oneline", "--abbrev-commit", "origin/HEAD..HEAD")
@@ -135,6 +138,8 @@ parser = argparse.ArgumentParser(description="Sync local puppet repo with upstre
 parser.add_argument(
     "--private-only", dest="private", action="store_true", help="Only sync the /labs/private repo"
 )
+parser.add_argument("--base-dir", default=Path("/var/lib/git"), type=Path)
+parser.add_argument("--git-user", default="root")
 parser.add_argument(
     "--prometheus-file",
     dest="prometheus_file",
@@ -159,24 +164,36 @@ gauge_is_up_to_date = Gauge(
     labelnames=["repository"],
     registry=prometheus_registry,
 )
+if args.git_user != 'root':
+    # Switch to git user for git operations
+    os.seteuid(pwd.getpwnam(args.git_user).pw_uid)
 
 if args.private:
     resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
     assert resp.status_code == 200
     rebase_repo(
-        "/var/lib/git/labs/private", resp.content.decode("ascii").strip(), gauge_is_up_to_date
+        str(args.base_dir / "labs/private"),
+        resp.content.decode("ascii").strip(),
+        gauge_is_up_to_date
     )
 else:
     resp = requests.get("https://config-master.wikimedia.org/puppet-sha1.txt")
     assert resp.status_code == 200
     if rebase_repo(
-        "/var/lib/git/operations/puppet", resp.content.decode("ascii").strip(), gauge_is_up_to_date
+        str(args.base_dir / "operations/puppet"),
+        resp.content.decode("ascii").strip(),
+        gauge_is_up_to_date
     ):
         resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
         assert resp.status_code == 200
         rebase_repo(
-            "/var/lib/git/labs/private", resp.content.decode("ascii").strip(), gauge_is_up_to_date
+            str(args.base_dir / "labs/private"),
+            resp.content.decode("ascii").strip(),
+            gauge_is_up_to_date
         )
+if os.geteuid != 0:
+    # Switch back to root
+    os.seteuid(0)
 
 if args.prometheus_file is not None:
     write_to_textfile(args.prometheus_file, prometheus_registry)
