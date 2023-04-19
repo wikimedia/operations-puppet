@@ -390,13 +390,8 @@ node /^clouddumps100[12]\.wikimedia\.org$/ {
 }
 
 # All gerrit servers (swap master status in hiera)
-node 'gerrit1001.wikimedia.org', 'gerrit2002.wikimedia.org' {
+node 'gerrit1001.wikimedia.org', 'gerrit1003.wikimedia.org', 'gerrit2002.wikimedia.org' {
     role(gerrit)
-}
-
-# New gerrit server T326366
-node 'gerrit1003.wikimedia.org' {
-    role(gerrit::migration)
 }
 
 # Zookeeper and Etcd discovery service nodes
