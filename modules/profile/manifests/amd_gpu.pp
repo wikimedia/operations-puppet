@@ -2,8 +2,8 @@
 # == Class profile::amd_gpu
 #
 class profile::amd_gpu (
-    $rocm_version = lookup('profile::amd_gpu::rocm_version', { 'default_value' => undef }),
-    $kfd_access_group = lookup('profile::amd_gpu::kfd_access_group', { 'default_value' => undef }),
+    Optional[String] $rocm_version = lookup('profile::amd_gpu::rocm_version', { 'default_value' => undef }),
+    Boolean $allow_gpu_broader_access = lookup('profile::amd_gpu::allow_gpu_broader_access', { 'default_value' => false }),
 ) {
 
     if $rocm_version {
@@ -15,8 +15,8 @@ class profile::amd_gpu (
         require profile::python38
 
         class { 'amd_rocm':
-            version          => $rocm_version,
-            kfd_access_group => $kfd_access_group,
+            version                  => $rocm_version,
+            allow_gpu_broader_access => $allow_gpu_broader_access,
         }
 
         class { 'prometheus::node_amd_rocm':

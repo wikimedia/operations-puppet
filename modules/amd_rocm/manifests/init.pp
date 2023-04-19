@@ -12,16 +12,17 @@
 #  so please check the supported versions before setting it.
 #  Default: "42"
 #
-# [*kfd_access_group*]
-#  Add a udev rule for the kfd device to allow access to users
-#  of a specific group. This is usually not needed since the kfd
-#  device should be readable by the 'render' group.
-#  Default: undef
+# [*allow_gpu_broader_access*]
+#  Add udev custom rules to allow access to the GPU devices (kfd, renderXXXX)
+#  by "others" in order to bypass any group restriction (for example, by the render
+#  group). This should be enabled only on nodes without shared/multi-user setup
+#  (for example, k8s nodes but not stat100x nodes).
+#  Default: false
 #
 #
 class amd_rocm (
     String $version = '42',
-    Optional[String] $kfd_access_group = undef,
+    Boolean $allow_gpu_broader_access = false,
 ) {
 
     $supported_versions = ['42', '431', '45', '54']
@@ -34,13 +35,25 @@ class amd_rocm (
         fail('Please use ROCm 5.4 with Bullseye, other versions are not supported.')
     }
 
-    if $kfd_access_group {
+    # In most cases, like the stat100x nodes, we are able to control all the users
+    # and add them to the 'render' group, needed to access the various devices
+    # exposed by ROCm to the OS. In cases like k8s, we delegate the GPU
+    # to a device plugin that then exposes the GPU to the Kubelet, and it gets
+    # complicated to respect the 'render' posix group access restriction
+    # (see https://github.com/RadeonOpenCompute/k8s-device-plugin/issues/39 for
+    # more info).
+    if $allow_gpu_broader_access {
         file { '/etc/udev/rules.d/70-kfd.rules':
             group   => 'root',
             owner   => 'root',
             mode    => '0544',
-            content => "SUBSYSTEM==\"kfd\", KERNEL==\"kfd\", TAG+=\"uaccess\", GROUP=\"${kfd_access_group}\"",
-            require => Group[$kfd_access_group],
+            content => "SUBSYSTEM==\"kfd\", KERNEL==\"kfd\", MODE=\"0666\"",
+        }
+        file { '/etc/udev/rules.d/70-render.rules':
+            group   => 'root',
+            owner   => 'root',
+            mode    => '0544',
+            content => "SUBSYSTEM==\"drm\", KERNEL==\"renderD*\", MODE=\"0666\"",
         }
     }
 
