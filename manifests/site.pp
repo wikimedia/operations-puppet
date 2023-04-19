@@ -697,7 +697,7 @@ node 'db2164.codfw.wmnet' {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(113|144|146|170|db213)\.eqiad\.wmnet$/ {
+node /^db1(113|144|146|170|213)\.eqiad\.wmnet$/ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171)\.codfw\.wmnet$/ {
