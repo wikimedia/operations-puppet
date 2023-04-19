@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
-              cmacholan, echetty, kelhurd, toan, jk, nfraison, swak]
+              cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -172,7 +172,7 @@ groups:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
-    members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
+    members: [bearloga, tjones, cparle, pearley,
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
@@ -365,7 +365,7 @@ groups:
               nuria, otto, jgreen, sguebo, zxane,
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, akosiaris, pearley, ktsouroupidou,
+              joal, akosiaris, pearley,
               andyrussg, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -3563,14 +3563,12 @@ users:
     email: sguebo@wikimedia.org
     krb: present
   ktsouroupidou:
-    ensure: present
+    ensure: absent
     realname: Kalliope Tsouroupidou
     name: ktsouroupidou
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZngauhpFPS3juUnzfOylOOCSebKHoN975P54IfBmDKImYU4XMbg9nD1ACDkWcIv3erUu4WMWNhS8K22gk6kMkTOTSOQ0ZVF6fAd1EFZTqost1iu7LPO7DkAMcYoHF+LlfFjVnK6ueK5Yt+TNqZA08r+b7mMTjf9AA+/GzPhfC9NkSMAxZ4B17IOPCAKgV6tQWV2JndzirQcl11bu5pqXvIQFhWD0vqa2RvUwg6bySXqwLmUxLs6Vp1tRXiIFtTgy5CTT0OAM9FirEA45cambO7FYCsTuiD3CQysfCxQNZaU0LTGZ+Shy1WdMqJN+hvZRmjM1plM22o+RIr8iu586Os7sjxeWS1ERQ58Bk2l4z/lz/GV3MqUFPUI5GjvVAAx5BGyPUOMyuGW+f82SsudFpY4nFDtYp6w+cTZo6UGWhX/LMLjc2uxG62nATwnF2JxLt5wEq8X9rGp2NIbBzZDP8rCrr2q+/gUjwbc1Aw80RvO5dJ/c7aO9jifQZm6DWyGm/5rAE9cZoWqw6pvs2BAyw9hZiPMdIE/9c1Kydao4968Db9Y72gFjBs+Kp1bNQCL9YHbOCVhZ9pwgqr7uBCyxco8IdmFlNZBu63KidXFZ/rpSxP1lTXUo6Wwe/lr+x35y/sdj1a0NA9p+TpXR7qkEX+KCvsppMGhCIf+AsDXACZQ== ktsouroupidou@ktsouroupidouwmf1632
+    ssh_keys: []
     uid: 19971
-    email: ktsouroupidou@wikimedia.org
   wmde-fisch:
     ensure: present
     realname: Christoph Jauera
