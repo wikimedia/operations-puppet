@@ -66,3 +66,5 @@ profile::contacts::role_contacts:
 #        between production and staging as we don't want to share the same intermediate across
 #        that boundary.
 profile::kubernetes::pki::intermediate: 'dse'
+
+profile::amd_gpu::allow_gpu_broader_access: true
