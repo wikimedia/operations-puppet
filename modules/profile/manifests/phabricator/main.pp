@@ -87,6 +87,8 @@ class profile::phabricator::main (
     Array[Stdlib::Fqdn]         $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
     String                      $gitlab_api_key     = lookup('profile::phabricator::main::gitlab_api_key',
                                                       { 'default_value' => '' }),
+    Stdlib::Unixpath            $database_datadir   = lookup('profile::phabricator::main::database_datadir',
+                                                      {default_value => '/var/lib/mysql'}),
 ) {
 
     $mail_alias = $::realm ? {
@@ -96,6 +98,13 @@ class profile::phabricator::main (
 
     mailalias { 'root':
         recipient => "root@${mail_alias}",
+    }
+
+    # in cloud, use a local db server
+    if $::realm == 'labs' {
+        class { 'profile::mariadb::generic_server':
+            datadir => $database_datadir,
+        }
     }
 
     include passwords::phabricator

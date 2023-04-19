@@ -16,9 +16,4 @@ class role::phabricator {
     include ::profile::prometheus::apache_exporter
     include ::profile::tlsproxy::envoy # TLS termination
     include ::rsync::server # copy repo data between servers
-
-    # in cloud, use a local db server
-    if $::realm == 'labs' {
-        include ::profile::mariadb::generic_server
-    }
 }
