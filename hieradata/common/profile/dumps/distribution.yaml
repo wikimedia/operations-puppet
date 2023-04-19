@@ -186,3 +186,13 @@ profile::dumps::distribution::mirrors:
     addedby: 'hokwelum'
     addeddate: 'Mar 14, 2023'
     active: 'yes'
+  - url: 'https://datasets.scatter.red/wikimedia/'
+    hostname: 'orb1.de1.scatter.red'
+    ipv4: ['orb1.de1.scatter.red']
+    ipv6: ['orb1.de1.scatter.red']
+    contactname: 'James Hare'
+    contactaddy: 'james@scatter.red'
+    institution: 'none'
+    addedby: 'hokwelum'
+    addeddate: 'Apr 19, 2023'
+    active: 'yes'
