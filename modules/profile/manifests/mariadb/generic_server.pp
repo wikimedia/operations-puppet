@@ -4,7 +4,7 @@
 #
 class profile::mariadb::generic_server (
     Stdlib::Unixpath $basedir = lookup(profile::mariadb::generic_server::basedir, {'default_value' => '/usr'}),
-    Stdlib::Unixpath $datadir = lookup(profile::mariadb::generic_server::datadir, {'default_value' => '/srv/sqldata'}),
+    Stdlib::Unixpath $datadir = lookup(profile::mariadb::generic_server::datadir, {'default_value' => '/var/lib/mysql'}),
 ){
 
     class { '::mariadb::packages': }
