@@ -53,6 +53,7 @@ testcases:
           range: "-"
           tls: "vers=TLSv1.3;keyx=X00000;auth=ECDSA;ciph=AES-256-GCM-SHA256;prot=h2;sess=new"
           cache_status: "int-front"
+          backend: "Varnish"
         metrics:
           ttfb:
             seconds: 59.975095
@@ -91,8 +92,8 @@ testcases:
         client:
           ip: "127.0.0.1"
         service:
-          type: "varnish"
-          name: "varnish-webrequest"
+          type: "webrequest"
+          name: "varnishkafka-webrequest"
         user_agent:
           original: "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
         ecs:
@@ -129,3 +130,115 @@ testcases:
         type: "webrequest"
         uri_path_decoded: "/v1/new"
         uri_query_decoded: "?key=value"
+  - input:
+      - >
+        {
+          "hostname":"cp0000.eqiad.wmnet",
+          "sequence":14608368068,
+          "dt":"2023-04-19T22:19:22Z",
+          "time_firstbyte":0.000308,
+          "ip":"127.0.0.1",
+          "cache_status":"hit-front",
+          "http_status":"200",
+          "response_size":670,
+          "http_method":"GET",
+          "uri_host":"es.wikipedia.org",
+          "uri_path":"/api/rest_v1/page/summary/a_page",
+          "uri_query":"",
+          "content_type":"application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.5.0\"",
+          "referer":"https://es.wikipedia.org/wiki/Logstash",
+          "user_agent":"Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36",
+          "accept_language":"es",
+          "x_analytics":"WMF-Last-Access=19-Apr-2023;WMF-Last-Access-Global=19-Apr-2023;https=1;client_port=000000",
+          "range":"-",
+          "x_cache":"cp1077 hit, cp1075 hit/1",
+          "accept":"application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.2.0\"",
+          "backend":"restbase1030",
+          "tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new"
+        }
+    expected:
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
+        host:
+          name: "cp0000.eqiad.wmnet"
+        labels:
+          channel: "webrequest"
+          range: "-"
+          tls: "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new"
+          cache_status: "hit-front"
+          backend: "restbase1030"
+        metrics:
+          ttfb:
+            seconds: 0.000308
+        event:
+          sequence: 14608368068
+        log:
+          level: "NOTICE"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            severity:
+              code: 5
+              name: "notice"
+            priority: 13
+        url:
+          scheme: "https"
+          domain: "es.wikipedia.org"
+          path: "/api/rest_v1/page/summary/a_page"
+          query: ""
+          original: "https://es.wikipedia.org/api/rest_v1/page/summary/a_page"
+        http:
+          request:
+            method: "GET"
+            headers:
+              accept: "application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.2.0\""
+              accept-language: "es"
+              referer: "https://es.wikipedia.org/wiki/Logstash"
+          response:
+            status_code: "200"
+            bytes: 670
+            headers:
+              content-type: "application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.5.0\""
+              x-analytics: "WMF-Last-Access=19-Apr-2023;WMF-Last-Access-Global=19-Apr-2023;https=1;client_port=000000"
+              x-cache: "cp1077 hit, cp1075 hit/1"
+        client:
+          ip: "127.0.0.1"
+        service:
+          type: "webrequest"
+          name: "varnishkafka-webrequest"
+        user_agent:
+          original: "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
+        ecs:
+          version: "1.7.0"
+
+      - __target_index: "logstash-default-1-1.0.0-N-daily"
+        host: "cp0000.eqiad.wmnet"
+        sequence: 14608368068
+        dt: "2023-04-19T22:19:22Z"
+        time_firstbyte: 0.000308
+        ip: "127.0.0.1"
+        cache_status: "hit-front"
+        http_status: "200"
+        response_size: 670
+        http_method: "GET"
+        uri_host: "es.wikipedia.org"
+        uri_path: "/api/rest_v1/page/summary/a_page"
+        uri_query: ""
+        content_type: "application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.5.0\""
+        referer: "https://es.wikipedia.org/wiki/Logstash"
+        user_agent: "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
+        accept_language: "es"
+        x_analytics: "WMF-Last-Access=19-Apr-2023;WMF-Last-Access-Global=19-Apr-2023;https=1;client_port=000000"
+        range: "-"
+        x_cache: "cp1077 hit, cp1075 hit/1"
+        accept: "application/json; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/Summary/1.2.0\""
+        backend: "restbase1030"
+        tls: "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new"
+        facility: "user"
+        http_request: "GET https://es.wikipedia.org/api/rest_v1/page/summary/a_page"
+        level: "NOTICE"
+        logsource: "centrallog1002"
+        program: "webrequest"
+        type: "webrequest"
+        uri_path_decoded: "/api/rest_v1/page/summary/a_page"
+        uri_query_decoded: ""
