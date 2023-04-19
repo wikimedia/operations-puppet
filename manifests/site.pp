@@ -494,7 +494,7 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T325209
-node /^db1(208|213)\.eqiad\.wmnet$/ {
+node /^db1(208)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
