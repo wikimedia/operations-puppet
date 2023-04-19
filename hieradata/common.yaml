@@ -1589,6 +1589,7 @@ mysql_root_clients:
 # ipv6 interfaces are not yet allowed due to mysql grants
 # do not put dns names or hostnames here, only ipv4
 - 10.64.0.122    # db1115.eqiad.wmnet
+- 10.64.16.90    # db1215.eqiad.wmnet
 - 10.192.16.191  # db2185.codfw.wmnet
 - 10.64.32.25    # cumin1001.eqiad.wmnet
 - 10.192.32.49   # cumin2002.codfw.wmnet
