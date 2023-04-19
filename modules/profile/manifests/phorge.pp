@@ -7,6 +7,8 @@ class profile::phorge(
     Stdlib::Unixpath $install_path_phorge = lookup('profile::phorge::install_path_phorge'),
     Stdlib::HTTPSUrl $git_origin_phorge = lookup('profile::phorge::git_origin_phorge'),
     Stdlib::Unixpath $repo_path = lookup('profile::phorge::repo_path'),
+    Boolean $local_db_server = lookup('profile::phorge::local_db_server', {default_value => true}),
+    Stdlib::Unixpath $database_datadir = lookup('profile::phorge::database_datadir', {default_value => '/var/lib/mysql'}),
 ){
 
     ensure_packages([
@@ -55,4 +57,9 @@ class profile::phorge(
         branch    => 'master',
     }
 
+    if $local_db_server {
+        class { 'profile::mariadb::generic_server':
+            datadir => $database_datadir,
+        }
+    }
 }

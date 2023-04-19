@@ -12,6 +12,5 @@ class role::phorge {
         description => 'httpd, PHP, mariadb, phorge',
     }
 
-    include profile::mariadb::generic_server
     include profile::phorge
 }
