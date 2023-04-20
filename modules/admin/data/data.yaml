@@ -401,7 +401,7 @@ groups:
               damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia, jgiannelos, sfaci, trizek, kmorgan, atieno]
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5826,6 +5826,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEy0EFQ3FSF50aVZpBr8T3JAcTtrHBwXy5nuEx8g25X/ santi@WMF3277
+  fnavas-foundation:
+    ensure: present
+    realname: Francisco Navas
+    email: fnavas-ctr@wikimedia.org
+    expiry_contact: Naïké Nembetwa Nzali
+    expiry_date: 2023-06-30
+    uid: 43670
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   trizek:
     ensure: present
     realname: Benoît Evellin
@@ -6643,12 +6652,6 @@ ldap_only_users:
     ensure: present
     realname: Kamil Bach
     email: kbach@wikimedia.org
-  fnavas-foundation:
-    ensure: present
-    realname: Francisco Navas
-    email: fnavas-ctr@wikimedia.org
-    expiry_contact: Naïké Nembetwa Nzali
-    expiry_date: 2023-06-30
   andrewtavis-wmde:
     ensure: present
     realname: Andrew McAllister
