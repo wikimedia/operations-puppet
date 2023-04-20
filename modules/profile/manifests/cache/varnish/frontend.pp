@@ -22,6 +22,7 @@
 # @param do_esitest temporary for testing ESI
 # @param fe_jemalloc_conf jemalloc configuration
 # @param thread_pool_max Maximum threads per pool
+# @param vsl_size Size of the space for VSL records (varnish default is 80M)
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix      = lookup('conftool_prefix'),
@@ -50,6 +51,7 @@ class profile::cache::varnish::frontend (
     Boolean                 $enable_monitoring    = lookup('profile::cache::varnish::frontend::enable_monitoring'),
     Optional[String]        $fe_jemalloc_conf     = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
     Integer[1]              $thread_pool_max      = lookup('profile::cache::varnish::frontend::thread_pool_max'),
+    Optional[String]        $vsl_size             = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -262,5 +264,6 @@ class profile::cache::varnish::frontend (
         uds_mode          => $uds_mode,
         enable_monitoring => $enable_monitoring,
         thread_pool_max   => $thread_pool_max,
+        vsl_size          => $vsl_size,
     }
 }

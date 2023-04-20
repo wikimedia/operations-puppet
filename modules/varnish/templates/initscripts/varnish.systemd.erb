@@ -68,6 +68,9 @@ ExecStart=/usr/sbin/varnishd \
 <%= @runtime_params -%> \
 <%= @instance_opt -%> \
 -p cc_command=${CC_COMMAND}
+<% if @vsl_size -%>
+-l <%= @vsl_size %>
+<% end -%>
 
 [Install]
 WantedBy=multi-user.target

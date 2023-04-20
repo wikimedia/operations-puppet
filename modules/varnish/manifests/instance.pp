@@ -22,6 +22,7 @@
 # @param uds_mode The mode of the uds sockets
 # @param enable_monitoring enable monitoring
 # @param thread_pool_max Maximum threads per pool
+# @param vsl_size Size of the space for VSL records (varnish default is 80M)
 define varnish::instance(
     Hash                    $vcl_config,
     Array[Stdlib::Port]     $ports,
@@ -48,6 +49,7 @@ define varnish::instance(
     Stdlib::Filemode        $uds_mode          = '700',
     Boolean                 $enable_monitoring = true,
     Integer[1]              $thread_pool_max   = 5000,
+    Optional[String]        $vsl_size          = undef,
 ) {
 
     include varnish::common
