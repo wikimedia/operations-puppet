@@ -3,7 +3,7 @@
 
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/labstore/archive-project-volumes
+# puppet:///modules/cloudnfs/archive-project-volumes
 #####################################################################
 """
  Sometimes labs projects are deleted.  When this happens,
