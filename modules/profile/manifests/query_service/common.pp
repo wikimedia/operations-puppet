@@ -19,7 +19,7 @@ class profile::query_service::common(
     $deploy_user = 'deploy-service'
 
 
-  if $::distribution == 'bullseye' {
+  if debian::codename::eq('bullseye') {
     require ::profile::java
   } else {
     require ::profile::java::java_8
