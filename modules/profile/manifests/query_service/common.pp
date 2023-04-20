@@ -18,7 +18,12 @@ class profile::query_service::common(
 ) {
     $deploy_user = 'deploy-service'
 
+
+  if $::distribution == 'bullseye' {
+    require ::profile::java
+  } else {
     require ::profile::java::java_8
+  }
 
     if $forward_rsyslog_host {
         # This is necessary for instances in WMCS. Those instances can't migrate to
