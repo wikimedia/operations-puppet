@@ -234,7 +234,7 @@ wikikube-staging-master-<%= dc %>: A:wikikube-staging-master and A:<%= dc %>
 wikikube-staging-worker-<%= dc %>: A:wikikube-staging-worker and A:<%= dc %>
 <% end -%>
 cloudmetrics: P{O:wmcs::monitoring}
-wmcs-nfs: P{O:wmcs::nfs::primary or O:dumps::distribution::server}
+wmcs-nfs: P{O:dumps::distribution::server}
 ldap-replicas: P{O:openldap::replica}
 ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
 ldap-replicas-codfw: A:ldap-replicas and A:codfw

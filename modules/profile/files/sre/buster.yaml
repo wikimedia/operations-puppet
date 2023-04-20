@@ -27,8 +27,6 @@ role::lists:
 role::configcluster:
   target-q: TBD
   phab-task: 332010
-role::wmcs::nfs::primary:
-  target-q: TBD
 role::wmcs::openstack::eqiad1::backy:
   target-q: TBD
   phab-task: 332400
