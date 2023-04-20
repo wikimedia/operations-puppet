@@ -6649,3 +6649,7 @@ ldap_only_users:
     email: fnavas-ctr@wikimedia.org
     expiry_contact: Naïké Nembetwa Nzali
     expiry_date: 2023-06-30
+  andrewtavis-wmde:
+    ensure: present
+    realname: Andrew McAllister
+    email: andrew.mcallister@wikimedia.de
