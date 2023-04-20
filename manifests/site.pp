@@ -327,6 +327,10 @@ node 'bast2002.wikimedia.org' {
     role(bastionhost)
 }
 
+node 'bast2003.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
+}
+
 node 'bast3006.wikimedia.org' {
     role(bastionhost)
 }
