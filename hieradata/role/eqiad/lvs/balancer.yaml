@@ -17,7 +17,13 @@ profile::lvs::tagged_subnets:
   - public1-c-eqiad
   - public1-d-eqiad
 profile::lvs::interface_tweaks:
-  eth0: {}
-  eth1: {}
-  eth2: {}
-  eth3: {}
+  eno1np0:
+    txqlen: 10000
+  eno2np1:
+    txqlen: 10000
+  enp59s0f0np0:
+    txqlen: 10000
+  enp59s0f1np1:
+    txqlen: 10000
+  enp94s0f0np0:
+    txqlen: 10000
