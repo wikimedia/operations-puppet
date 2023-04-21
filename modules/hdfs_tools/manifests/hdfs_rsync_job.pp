@@ -1,7 +1,10 @@
-# == Define dumps::web::fetches::analytics::job
+# == Define hdfs_tools::hdfs_rsync_job
 #
 # Regularly copies files from $hdfs_source to $local_destination.
 # Uses hdfs-rsync, systemd timers and Kerberos.
+#
+# Note: Usage of this job installs ::hdfs_tools which requires java
+#       and a hadoop configuration on the running host.
 #
 # == Parameters
 #
@@ -26,7 +29,7 @@
 # [*ensure*]
 #   Ensure status of systemd timer.
 #
-define dumps::web::fetches::analytics::job(
+define hdfs_tools::hdfs_rsync_job(
     String $hdfs_source,
     String $local_destination,
     String $interval,
@@ -36,6 +39,9 @@ define dumps::web::fetches::analytics::job(
     Wmflib::Ensure $ensure = present,
     Optional[String] $exclude = undef,
 ) {
+
+    require ::hdfs_tools
+
     if !defined(File[$local_destination]) {
         file { $local_destination:
             ensure => 'directory',

@@ -5,10 +5,6 @@ class role::dumps::distribution::server {
     include profile::base::firewall
     include profile::wmcs::nfs::ferm
     include profile::nginx
-    # For downloading public datasets from HDFS analytics-hadoop.
-    include profile::java
-    include profile::hadoop::common
-    include profile::analytics::cluster::hdfs_mount
 
     include profile::dumps::distribution::server
     include profile::dumps::distribution::nfs
@@ -24,8 +20,15 @@ class role::dumps::distribution::server {
 
     include profile::dumps::distribution::mirrors::rsync_config
 
-    # Deploy some Analytics tools to ease pulling data from Hadoop
-    include profile::analytics::hdfs_tools
+    # For downloading public datasets from HDFS analytics-hadoop.
+    include profile::analytics::cluster::hdfs_mount
+
+    # Install java, hadoop configuration and kerberos client and keytabs
+    # for hdfs_tools to function (needed to pull data from HDFS)
+    include profile::java
+    include profile::hadoop::common
+    include profile::kerberos::client
+    include profile::kerberos::keytabs
 
     # Kerberos client and credentials to fetch data from
     # the Analytics Hadoop cluster.

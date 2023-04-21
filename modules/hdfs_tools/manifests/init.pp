@@ -1,10 +1,16 @@
-# Class: profile::analytics::hdfs_tools
+# SPDX-License-Identifier: Apache-2.0
+# == Class profile::analytics::hdfs_tools
 #
-# Installs the analytics/hdfs-tools/deploy repository.
+# Includes configuration and resources needed for deploying
+# the analytics/hdfs_tools/deploy repository.
 # This gets us some handy standalone tools for working with
 # HDFS, including a custom hdfs rsync command.
 #
-class profile::analytics::hdfs_tools {
+# Note: This needs java and a hadoop configuration to be
+#       installed on the host
+#
+class hdfs_tools {
+
     # The analytics/hdfs-tools/deploy repo will deployed to this node via Scap3.
     # The analytics user/groups are deployed/managed by Scap.
     # The analytics_deploy SSH keypair files are stored in the private repo,

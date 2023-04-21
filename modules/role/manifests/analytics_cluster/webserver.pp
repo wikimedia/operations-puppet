@@ -13,4 +13,11 @@ class role::analytics_cluster::webserver {
 
     include ::profile::base::firewall
     include ::profile::base::production
+
+    # Install java, hadoop configuration and kerberos client and keytabs
+    # for hdfs_tools to function (needed to pull data from HDFS)
+    include profile::java
+    include profile::hadoop::common
+    include profile::kerberos::client
+    include profile::kerberos::keytabs
 }
