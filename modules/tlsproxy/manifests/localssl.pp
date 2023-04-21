@@ -179,6 +179,12 @@ define tlsproxy::localssl(
     }
     unless $cfssl_paths.empty {
         File[$cfssl_paths.values] ~> Exec['nginx-reload']
+
+        # the certificate renewal does not trigger any of the File
+        # resources to get refreshed, so ensure we pick up the new
+        # certs whenever the chain gets updated
+        $chain_path = $cfssl_paths['chain']
+        Exec["create chained cert ${chain_path}"] ~> Exec['nginx-reload']
     }
 
     # used in localssl.erb to template upstream definition name
