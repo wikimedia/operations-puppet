@@ -5,6 +5,7 @@
     ServerName <%= @server_name %>
 
     DocumentRoot /srv/org/wikimedia/performance/public_html
+    Alias /excimer /srv/org/wikimedia/performance/excimer/index.php
 
     <Location /coal>
         Order allow,deny
@@ -12,6 +13,16 @@
         uWSGIForceWSGIScheme https
         uWSGIsocket /run/uwsgi/coal.sock
         SetHandler uwsgi-handler
+    </Location>
+
+    <Location /excimer>
+        Order allow,deny
+        Allow from all
+
+        # Only MediaWiki servers may submit data to the /excimer/ingest endpoint
+        <LimitExcept GET HEAD>
+            Allow from <%= @excimer_trusted %>
+        </LimitExcept>
     </Location>
 
     <Directory />
@@ -22,6 +33,12 @@
         <IfModule mod_headers.c>
             Header set Cache-Control "s-maxage=600, max-age=600, public, must-revalidate"
         </IfModule>
+        Require all granted
+    </Directory>
+
+    <Directory /srv/org/wikimedia/performance/excimer>
+        AllowOverride None
+        php_admin_flag engine on
         Require all granted
     </Directory>
 

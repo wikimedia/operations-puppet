@@ -5,6 +5,13 @@ profile::admin::groups:
 
 profile::webperf::site::server_name: performance.wikimedia.org
 profile::webperf::site::xhgui_host: xhgui1001.eqiad.wmnet
+profile::webperf::site::excimer_mysql_host: m2-master.eqiad.wmnet
+profile::webperf::site::excimer_mysql_db: excimer
+profile::webperf::site::excimer_mysql_user: excimer-ui-server
+# profile::webperf::site::excimer_mysql_password: in private repo
+profile::webperf::site::excimer_trusted: '10.0.0.0/8'
+
+
 profile::tlsproxy::envoy::global_cert_name: "performance.discovery.wmnet"
 
 profile::prometheus::statsd_exporter::mappings:

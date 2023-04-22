@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class: profile::webperf::site
 #
-# This profile provisions <https://performance.wikimedia.org>,
-# a static site with web performance dashboards.
+# This profile provisions the <https://performance.wikimedia.org> website.
 #
 # === Parameters
 #
@@ -20,13 +19,20 @@
 #   Optional. If undefined, the "/xhgui" path is not proxied.
 #
 class profile::webperf::site (
-    Stdlib::Fqdn $server_name          = lookup('profile::webperf::site::server_name'),
-    Stdlib::Fqdn $arclamp_host         = lookup('arclamp_host'),
-    Stdlib::Fqdn $xhgui_host           = lookup('profile::webperf::site::xhgui_host'),
-    Hash[String, Hash] $swift_accounts = lookup('profile::swift::accounts'),
+    Stdlib::Fqdn $server_name                      = lookup('profile::webperf::site::server_name'),
+    Stdlib::Fqdn $arclamp_host                     = lookup('arclamp_host'),
+    Stdlib::Fqdn $xhgui_host                       = lookup('profile::webperf::site::xhgui_host'),
+    Stdlib::Fqdn $excimer_mysql_host               = lookup('profile::webperf::site::excimer_mysql_host'),
+    String $excimer_mysql_db                       = lookup('profile::webperf::site::excimer_mysql_db'),
+    String $excimer_mysql_user                     = lookup('profile::webperf::site::excimer_mysql_user'),
+    String $excimer_mysql_password                 = lookup('profile::webperf::site::excimer_mysql_password'),
+    Stdlib::IP::Address::V4::CIDR $excimer_trusted = lookup('profile::webperf::site::excimer_trusted'),
+    Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
 
     require ::profile::webperf::coal_web
+
+    ensure_packages(['libapache2-mod-uwsgi', 'libapache2-mod-php7.4', 'php7.4-mysql', 'mariadb-client'])
 
     file { '/srv/org':
         ensure => directory,
@@ -64,6 +70,33 @@ class profile::webperf::site (
         content => file('profile/webperf/site/no-robots.txt'),
     }
 
+    $excimer_baseurl = "https://${server_name}/excimer/";
+    file { '/etc/excimer-ui-server':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+    $excimer_config = {
+        'url' => $excimer_baseurl,
+        'dsn' => "mysql:host=${excimer_mysql_host};dbname=${excimer_mysql_db};charset=utf8",
+        'dbUser' => $excimer_mysql_user,
+        'dbPassword' => $excimer_mysql_password,
+    }
+    file { '/etc/excimer-ui-server/config.json':
+        ensure    => file,
+        show_diff => false,
+        content   => Sensitive($excimer_config.to_json_pretty()),
+        owner     => 'www-data',
+        group     => 'www-data',
+        mode      => '0600',
+        require   => File['/etc/excimer-ui-server']
+    }
+
+    httpd::conf { 'excimer_config':
+        content => "SetEnv EXCIMER_CONFIG_PATH /etc/excimer-ui-server/config.json\n"
+    }
+
     $swift_auth_url = $swift_accounts['performance_arclamp']['auth']
     $swift_account_name = $swift_accounts['performance_arclamp']['account_name']
 
@@ -79,8 +112,6 @@ class profile::webperf::site (
         command     => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/30:00'},
     }
-
-    ensure_packages(['libapache2-mod-uwsgi'])
 
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
