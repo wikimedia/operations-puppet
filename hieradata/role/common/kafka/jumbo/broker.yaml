@@ -68,7 +68,7 @@ profile::kafka::broker::max_heap_size: '2g'
 #   (via egress filtering, so not all the pods can contact Jumbo with the following settings)
 # - search-loader[12]001 - mjolnir (Search team)
 # - kafkamon hosts
-# - webperf hosts (due to coal's processors)
+# - webperf hosts (navtiming processor)
 profile::kafka::broker::custom_ferm_srange_components:
   - '$ANALYTICS_NETWORKS'
   - '$KAFKA_BROKERS_JUMBO'

@@ -295,8 +295,6 @@ scap::sources:
   # webperf
   statsv/statsv:
     repository: analytics/statsv
-  performance/coal:
-    repository: performance/coal
   performance/navtiming:
     repository: performance/navtiming
 

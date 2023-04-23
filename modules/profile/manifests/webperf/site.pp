@@ -29,9 +29,6 @@ class profile::webperf::site (
     Stdlib::IP::Address::V4::CIDR $excimer_trusted = lookup('profile::webperf::site::excimer_trusted'),
     Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
-
-    require ::profile::webperf::coal_web
-
     ensure_packages(['libapache2-mod-uwsgi', 'libapache2-mod-php7.4', 'php7.4-mysql', 'mariadb-client'])
 
     file { '/srv/org':
@@ -105,8 +102,9 @@ class profile::webperf::site (
         require => Git::Clone['performance/docroot'],
     }
 
+    # Decom https://phabricator.wikimedia.org/T335242
     systemd::timer::job { 'warm_up_coal_cache':
-        ensure      => present,
+        ensure      => absent,
         description => 'Regular jobs to keep coal cache warm',
         user        => 'nobody',
         command     => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",

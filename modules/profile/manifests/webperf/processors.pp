@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class: profile::webperf::processors
 #
-# Provision the webperf data processors. Consumes from Kafka (incl. EventLogging),
-# and produces to StatsD and Graphite.
+# Provision the webperf data processors. Consumes from EventLogging (via Kafka),
+# and produces to Prometheus, and Graphite (via StatsD).
 #
 # Contact: Performance Team
 # See also: <https://wikitech.wikimedia.org/wiki/Webperf>
@@ -11,7 +11,6 @@
 #
 # - statsv
 # - navtiming
-# - coal
 #
 class profile::webperf::processors(
     String       $statsd        = lookup('statsd'),
@@ -69,14 +68,5 @@ class profile::webperf::processors(
             port   => '9230',
             srange => '$LABS_NETWORKS',
         }
-    }
-
-    # Make a valid target for coal, and set up what's needed for the consumer
-    # Consumes from the jumbo-eqiad cluster, just like navtiming
-    class { '::coal::processor':
-        kafka_brokers           => $kafka_brokers,
-        kafka_security_protocol => 'SSL',
-        graphite_host           => $graphite_host,
-        kafka_ssl_cafile        => $kafka_ssl_cafile,
     }
 }

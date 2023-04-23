@@ -4,7 +4,6 @@ class role::webperf::processors_and_site {
     include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::webperf::processors
-    include ::profile::webperf::coal_web
     include ::profile::webperf::site
     include ::profile::tlsproxy::envoy # TLS termination
 

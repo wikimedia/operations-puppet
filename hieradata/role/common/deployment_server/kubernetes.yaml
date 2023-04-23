@@ -236,7 +236,6 @@ scap::sources:
     repository: analytics/statsv
   performance/arc-lamp: {}
   performance/asoranking: {}
-  performance/coal: {}
   performance/navtiming: {}
   docker-pkg/deploy:
     repository: operations/docker-images/docker-pkg/deploy

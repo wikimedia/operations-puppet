@@ -7,14 +7,6 @@
     DocumentRoot /srv/org/wikimedia/performance/public_html
     Alias /excimer /srv/org/wikimedia/performance/excimer/index.php
 
-    <Location /coal>
-        Order allow,deny
-        Allow from all
-        uWSGIForceWSGIScheme https
-        uWSGIsocket /run/uwsgi/coal.sock
-        SetHandler uwsgi-handler
-    </Location>
-
     <Location /excimer>
         Order allow,deny
         Allow from all
