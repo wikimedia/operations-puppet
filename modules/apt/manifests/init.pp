@@ -44,7 +44,9 @@ class apt(
         # in the past)
         if debian::codename::ge('bullseye') {
             $apt_template    = 'apt/base-apt-conf-new.erb'
-        } else {
+        } elsif debian::codename::eq('stretch') {
+            $apt_template    = 'apt/base-apt-conf-stretch.erb'
+        } elsif debian::codename::eq('buster') {
             $apt_template    = 'apt/base-apt-conf.erb'
         }
 
