@@ -11,7 +11,17 @@ schemes:
       objects: 4000
       accounts: &acw 100
       containers: *acw
-      ssds: 311
+      ssds: &ssdw 311
+  prod24_ng:
+    objects: [objects0, objects1, objects2, objects3, objects4, objects5, objects6, objects7, objects8, objects9, objects10, objects11, objects12, objects13, objects14, objects15, objects16, objects17, objects18, objects19, objects20, objects21, objects22, objects23]
+    accounts: &accounts [accounts0, accounts1]
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: *ssdw
   prod24:
     objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1, sdo1, sdp1, sdq1, sdr1, sds1, sdt1, sdu1, sdv1, sdw1, sdx1, sdy1, sdz1]
     accounts: *ap
@@ -21,7 +31,7 @@ schemes:
       objects: 8000
       accounts: *acw
       containers: *acw
-      ssds: 311
+      ssds: *ssdw
 
 hosts:
   prod:
