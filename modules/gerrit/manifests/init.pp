@@ -137,6 +137,8 @@ class gerrit(
 
     file { [
         '/srv/gerrit',
+        '/srv/gerrit/data',
+        '/srv/gerrit/data/lfs',
         '/srv/gerrit/git',
         '/srv/gerrit/plugins',
         '/srv/gerrit/plugins/lfs',
