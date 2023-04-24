@@ -112,7 +112,7 @@ BITU_LDAP = {
     'readonly': False,
     'connection_timeout': 5,
     'users': {
-        'dn': '<%= @ldap_config["users_cn"] %>,<%= @ldap_config["base-dn"] %>,',
+        'dn': '<%= @ldap_config["users_cn"] %>,<%= @ldap_config["base-dn"] %>',
         'object_classes': ['inetOrgPerson'],
         'auxiliary_classes': ['posixAccount'],
     }
