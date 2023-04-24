@@ -1,6 +1,6 @@
 # Definition pbuilder_hook
 define package_builder::pbuilder_hook(
-    String $distribution='stretch',
+    String $distribution='bullseye',
     String $components='main',
     Stdlib::Httpurl $mirror='http://apt.wikimedia.org/wikimedia',
     Stdlib::Httpurl $upstream_mirror='http://mirrors.wikimedia.org/debian',

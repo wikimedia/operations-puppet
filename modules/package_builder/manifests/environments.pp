@@ -5,15 +5,6 @@ class package_builder::environments(
     Stdlib::Unixpath                      $basepath       = '/var/cache/pbuilder',
     Hash[Debian::Codename, Array[String]] $extra_packages = {}
 ) {
-    package_builder::pbuilder_base { 'stretch-amd64':
-        distribution   => 'stretch',
-        components     => 'main',
-        architecture   => 'amd64',
-        mirror         => 'http://mirrors.wikimedia.org/debian',
-        keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath       => $basepath,
-        extra_packages => pick_default($extra_packages['stretch'], [])
-    }
     package_builder::pbuilder_base { 'buster-amd64':
         distribution   => 'buster',
         components     => 'main',

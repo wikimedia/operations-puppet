@@ -11,11 +11,11 @@ describe 'package_builder::pbuilder_base' do
       describe 'test with default settings' do
         it { is_expected.to compile.with_all_deps }
         it do
-          is_expected.to contain_exec('cowbuilder_init_stretch-amd64')
+          is_expected.to contain_exec('cowbuilder_init_bullseye-amd64')
             .with_command(/(?!--extrapackages)/)
         end
         it do
-          is_expected.to contain_systemd__timer__job('cowbuilder_update_stretch-amd64')
+          is_expected.to contain_systemd__timer__job('cowbuilder_update_bullseye-amd64')
             .with_command(/(?!--extrapackages)/)
         end
       end
@@ -25,11 +25,11 @@ describe 'package_builder::pbuilder_base' do
 
           it { is_expected.to compile.with_all_deps }
           it do
-            is_expected.to contain_exec('cowbuilder_init_stretch-amd64')
+            is_expected.to contain_exec('cowbuilder_init_bullseye-amd64')
               .with_command(/--extrapackages "foo bar"/)
           end
           it do
-            is_expected.to contain_systemd__timer__job('cowbuilder_update_stretch-amd64')
+            is_expected.to contain_systemd__timer__job('cowbuilder_update_bullseye-amd64')
               .with_command(/--extrapackages/)
           end
         end

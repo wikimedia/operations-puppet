@@ -39,7 +39,7 @@
 # Default: []
 define package_builder::pbuilder_base(
     Stdlib::Httpurl            $mirror             = 'http://mirrors.wikimedia.org/debian',
-    String                     $distribution       = 'stretch',
+    String                     $distribution       = 'bullseye',
     Optional[String]           $distribution_alias = undef,
     String                     $components         = 'main',
     String                     $architecture       = 'amd64',

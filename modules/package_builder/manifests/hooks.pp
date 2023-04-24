@@ -11,12 +11,6 @@ class package_builder::hooks(
         mode   => '0755',
     }
 
-    package_builder::pbuilder_hook { 'stretch':
-        distribution => 'stretch',
-        components   => 'main',
-        basepath     => $basepath,
-    }
-
     package_builder::pbuilder_hook { 'buster':
         distribution => 'buster',
         components   => 'main',
