@@ -217,6 +217,7 @@ profile::gitlab::runner::allowed_images:
   - "ubuntu:*"
   # Language-specific:
   - "golang:*"
+  - "node:*"
   - "python:*"
   - "ruby:*"
   - "rust:*"
