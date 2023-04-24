@@ -16,7 +16,6 @@ with that class
 After puppet is done you will have a number of pristine cowbuilder environments. Those
 would be:
 
- * stretch-amd64
  * buster-amd64
  * bullseye-amd64
  * sid-amd64
@@ -27,14 +26,14 @@ Building packages
 You just either download a ready package:
 
     dget http://http.debian.net/debian/pool/main/d/dh-virtualenv/dh-virtualenv_0.10-1.dsc
-    export DIST=stretch
+    export DIST=bullseye
     sudo -E cowbuilder --build dh-virtualenv_0.10-1.dsc
 
 or if you are developing a package and are in the package directory:
 
-    DIST=stretch pdebuild
+    DIST=bullseye pdebuild
 
-Feel free to change stretch for the distribution of your choice from the ones above
+Feel free to change bullseye for the distribution of your choice from the ones above
 
 Architectures
 =============
@@ -80,8 +79,8 @@ building you can use WIKIMEDIA=yes. There is also the approach of appending
 
 Examples:
 
-    DIST=stretch-wikimedia pdebuild
-    WIKIMEDIA=yes DIST=stretch pdebuild
+    DIST=bullseye-wikimedia pdebuild
+    WIKIMEDIA=yes DIST=bullseye pdebuild
 
 The commands above are equivalent and will both build a package for the
 stretch distribution using the Wikimedia apt repository.
@@ -93,8 +92,8 @@ Packages from the Debian backports repositories can be used to satisfy
 dependencies as well. To use the backports repository for the distribution
 selected (e.g. stretch-backports), use either of:
 
-    DIST=stretch BACKPORTS=yes pdebuild
-    DIST=stretch-backports pdebuild
+    DIST=bullseye BACKPORTS=yes pdebuild
+    DIST=bullseye-backports pdebuild
 
 Archived suites
 ===============
@@ -112,13 +111,13 @@ Combining Wikimedia and Backports repos
 
 Set both WIKIMEDIA and BACKPORTS:
 
-    DIST=stretch BACKPORTS=yes WIKIMEDIA=yes pdebuild
+    DIST=bullseye BACKPORTS=yes WIKIMEDIA=yes pdebuild
 
 When using a distribution suffix, the other repo must be enabled via an
 environment variable. The following examples are equivalent:
 
-  DIST=stretch-backports WIKIMEDIA=yes pdebuild
-  DIST=stretch-wikimedia BACKPORTS=yes pdebuild
+  DIST=bullseye-backports WIKIMEDIA=yes pdebuild
+  DIST=bullseye-wikimedia BACKPORTS=yes pdebuild
 
 git-buildpackage
 ================
@@ -126,7 +125,7 @@ git-buildpackage
 git-pbuilder can be used by git-buildpackage to leverage all of the above but
 instead of DIST and ARCH you need to use --git-dist=$DIST and --git-arch=$ARCH.
 
-    WIKIMEDIA=yes gbp buildpackage -sa -us -uc --git-pbuilder --git-no-pbuilder-autoconf --git-dist=stretch
+    WIKIMEDIA=yes gbp buildpackage -sa -us -uc --git-pbuilder --git-no-pbuilder-autoconf --git-dist=bullseye
 
 -sa is being used to enforce the original tarball to be included in the
 .changes file which is a requirement for Wikimedia reprepro.
@@ -150,7 +149,7 @@ Results
 
 The resulting deb files should be in /var/cache/pbuilder/result/${DIST}-${ARCH} like:
 
-    /var/cache/pbuilder/result/stretch-amd64/
+    /var/cache/pbuilder/result/bullseye-amd64/
 
 Notes
 =====
