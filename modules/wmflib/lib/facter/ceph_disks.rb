@@ -27,6 +27,7 @@ Facter.add(:ceph_disks) do
           disks: Hash.new { |h, k| h[k] = {} }
         }
         next unless result[id][:status] == 'Success'
+        next unless controller['Response Data'].key?('Physical Device Information')
 
         controller['Response Data']['Physical Device Information'].each_pair do |drive_key, drive_config|
           next unless %r{Drive\s/(c\d+/e\d+/s\d+)} =~ drive_key
