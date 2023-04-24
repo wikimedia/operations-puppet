@@ -9,3 +9,4 @@ profile::analytics::postgresql::databases:
   - airflow_platform_eng
   - airflow_research
   - airflow_search
+  - airflow_analytics_product
