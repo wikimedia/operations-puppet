@@ -10,8 +10,8 @@ require 'json'
 Facter.add(:ceph_disks) do
   confine :kernel => 'Linux'
   confine do
-    Facter::Core::Execution.which('perccli64')
-    Facter::Util::Resolution.which('dpkg-query')
+    Facter::Core::Execution.which('perccli64') &&
+    Facter::Util::Resolution.which('dpkg-query') &&
     Facter::Util::Resolution.exec("dpkg-query -W --showformat='${Status}' ceph-osd") == "install ok installed"
   end
   setcode do
