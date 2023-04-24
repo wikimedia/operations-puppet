@@ -25,7 +25,8 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
-              cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou]
+              cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath, hghani,
+              ilooremeta]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -398,7 +399,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, appledora, hshaath, hghani, ilooremeta, isaranto,
+              damilare, appledora, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno]
@@ -5563,38 +5564,26 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDl3CP/l+yFwQqG5ifShJgIgmp1x/krK8slFXTIRYuFOj1imPrZJRoWp144UPZsQ279ulIpaVJol4vNULqIFuG1nE1TCH9ICnIUquoZEjqRrm+1U0jXFrrye1U4SjUnq2bdFli1rkNkLI9MT/ZcPBBcN9kwASfwYAHQOnUtlHgvGdGvtSeQzV0G3lqwYCqyZzEQi6N+DR/s5tfQo2osnufEGZZpf2jRWrm6D6AK7LDODyzj/LmNvCgH3yme024kn3KvGjzs2B5+nQqIFa1cA21ETKbq3jS6HwqHaOYGR/aAfGFBaAn3G89ppTlAMqXKdfRAfqb7O7bQKxxfWnXxJLYEwkKBKc/XEq6Zyil3WJd0/Z5Bhaglopp2TLcGHhO//kM4P+IlAowp/YNwEpZnIu4zojW0cd3u7hH+84yfjqonKt9j2BPodZArdJDavNUS2ZmPXm/Ddql4qnGQmYK21XVrAswNeEI/y6PlYVmxTiV4rTaZMHaP6IU6ay3ko9zYO35xQcsHv/yXALh4K/myxP0QLHFz3dBXIFdVZt5n6y90+mINsI3zy9r9RigjPX52iaccAI0vyJo/hGUk1vlt8nmB0/CiVKlDHSrGAT20Jcp004ezkASNP77RE1H8wqfIB6Iew4UnW6+wJ/PCGRhMW3CyWWSQzOGABHna52yfFQhbdw== appledora@pop-os
   hshaath:
-    ensure: present
-    krb: present
+    ensure: absent
+    krb: absent
     realname: Hiba Sha'ath
-    email: hshaath-ctr@wikimedia.org
     uid: 42380
     gid: 500
-    expiry_date: 2023-04-21
-    expiry_contact: cmacholan@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII/DXyJu2isoAtF0gq8kBYqrYQXHW+WeGLYgqfDRP3Y5 hshaath-ctr@wikimedia.org
+    ssh_keys: []
   hghani:
-    ensure: present
-    krb: present
+    ensure: absent
+    krb: absent
     realname: Hghani
-    email: hghani-ctr@wikimedia.org
     uid: 42383
     gid: 500
-    expiry_date: 2023-04-21
-    expiry_contact: cmacholan@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE9YrjjXUnDX0d8mk62yYBR6Pcflz/1pw/tkoMTeSrM0 hghani-ctr@wikimedia.org
+    ssh_keys: []
   ilooremeta:
-    ensure: present
-    krb: present
+    ensure: absent
+    krb: absent
     realname: Isaac Looremeta
-    email: ilooremeta-ctr@wikimedia.org
     uid: 42384
     gid: 500
-    expiry_date: 2023-04-21
-    expiry_contact: cmacholan@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN/8v9W+7UsdvRkDd+UjLrHpok4pbnVqckw1r6UXWov1 ilooremeta-ctr@wikimedia.org
+    ssh_keys: []
   isaranto:
     ensure: present
     realname: Ilias Sarantopoulos
