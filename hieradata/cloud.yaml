@@ -462,6 +462,7 @@ profile::thanos::swift::cluster_label: ~
 
 profile::gerrit::ipv6: ~
 profile::gerrit::enable_monitoring: true
+profile::gerrit::lfs_dir: '/srv/gerrit/plugins/lfs'
 
 profile::alertmanager::irc::host: "example.net"
 profile::alertmanager::irc::port: 6697

@@ -1,2 +1,3 @@
 profile::gerrit::ipv6: ~
 profile::gerrit::enable_monitoring: true
+profile::gerrit::lfs_dir: '/srv/gerrit/plugins/lfs'

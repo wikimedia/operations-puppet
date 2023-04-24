@@ -2,3 +2,4 @@ profile::gerrit::ipv4: '208.80.154.151'
 profile::gerrit::ipv6: '2620:0:861:2:208:80:154:51'
 
 profile::gerrit::is_replica: false
+profile::gerrit::lfs_dir: '/srv/gerrit/data/lfs'
