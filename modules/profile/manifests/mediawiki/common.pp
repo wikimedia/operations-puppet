@@ -5,6 +5,7 @@ class profile::mediawiki::common(
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
+    Optional[Boolean] $is_scap_master = lookup('profile::mediawiki::scap_client::is_master', {'default_value' => false}),
 ){
     # Enable the memory cgroup
     require ::profile::base::memory_cgroup
@@ -130,11 +131,13 @@ class profile::mediawiki::common(
     # Go faster (T315398)
     class { 'cpufrequtils': }
 
-    monitoring::service { 'mediawiki-installation DSH group':
-        description    => 'mediawiki-installation DSH group',
-        check_command  => 'check_dsh_groups!mediawiki-installation',
-        check_interval => 60,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dsh_groups',
+    unless $is_scap_master {
+        monitoring::service { 'mediawiki-installation DSH group':
+            description    => 'mediawiki-installation DSH group',
+            check_command  => 'check_dsh_groups!mediawiki-installation',
+            check_interval => 60,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dsh_groups',
+        }
     }
 
 }
