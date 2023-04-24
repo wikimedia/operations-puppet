@@ -20,11 +20,11 @@ profile::tcpircbot::irc::port: 6697
 
 # NOTE: update the senders whitelist on our paging infrastructure (AQL as of 20190211) when modifying Icinga hostnames
 profile::icinga::virtual_host: ldap-icinga.wikimedia.org
-profile::icinga::active_host: alert2001.wikimedia.org
+profile::icinga::active_host: alert1001.wikimedia.org
 profile::icinga::partners:
-  - 'alert1001.wikimedia.org'
+  - 'alert2001.wikimedia.org'
 
-profile::alertmanager::active_host: alert2001.wikimedia.org
+profile::alertmanager::active_host: alert1001.wikimedia.org
 profile::alertmanager::partners:
   - 'alert1001.wikimedia.org'
   - 'alert2001.wikimedia.org'
