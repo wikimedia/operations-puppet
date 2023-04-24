@@ -6645,3 +6645,7 @@ ldap_only_users:
     ensure: present
     realname: Andrew McAllister
     email: andrew.mcallister@wikimedia.de
+  ccoxwell:
+    ensure: present
+    realname: Carrie Coxwell
+    email: ccoxwell@wikimedia.org
