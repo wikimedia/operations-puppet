@@ -7,6 +7,44 @@
 require 'facter'
 require 'json'
 
+def parse_pd_list(data)
+  disks = Hash.new { |h, k| h[k] = {} }
+  data.each do |disk|
+    disks[disk['EID:Slt']] = {
+      enclosure: disk['EID:Slt'].split[0],
+      slot: disk['DID'],
+      medium: disk['Med'],
+      interface: disk['Intf'],
+    }
+  end
+  disks
+end
+
+def parse_device_info(data)
+  # Parse the Physical Device Information section and return a hash of disks
+  disks = Hash.new { |h, k| h[k] = {} }
+  data.each_pair do |drive_key, drive_config|
+    next unless %r{Drive\s/(c\d+/e\d+/s\d+)} =~ drive_key
+    if %r{^Drive\s/(c\d+/e\d+/s\d+)$} =~ drive_key
+      drive_id = Regexp.last_match(1)
+      controller, enclosure, slot = drive_id.tr('ces', '').split('/')
+      disks[drive_id]['controller'] = controller
+      disks[drive_id]['enclosure'] = enclosure
+      disks[drive_id]['slot'] = slot
+      disks[drive_id]['medium'] = drive_config[0]['Med']
+      disks[drive_id]['interface'] = drive_config[0]['Intf']
+    end
+
+    next unless drive_key.end_with?('- Detailed Information')
+    drive_config.each_pair do |section_key, section_config|
+      next unless %r{Drive\s/(c\d+/e\d+/s\d+)\sDevice\sattributes} =~ section_key
+      drive_id = Regexp.last_match(1)
+      disks[drive_id]['wwn'] = section_config['WWN']
+      disks[drive_id]['serial'] = section_config['SN']
+    end
+  end
+  disks
+end
 Facter.add(:ceph_disks) do
   confine :kernel => 'Linux'
   confine do
@@ -24,30 +62,12 @@ Facter.add(:ceph_disks) do
         result[id] = {
           status: controller['Command Status']['Status'],
           model: controller['Response Data']['Basics']['Model'],
-          disks: Hash.new { |h, k| h[k] = {} }
         }
         next unless result[id][:status] == 'Success'
-        next unless controller['Response Data'].key?('Physical Device Information')
-
-        controller['Response Data']['Physical Device Information'].each_pair do |drive_key, drive_config|
-          next unless %r{Drive\s/(c\d+/e\d+/s\d+)} =~ drive_key
-          if %r{^Drive\s/(c\d+/e\d+/s\d+)$} =~ drive_key
-            drive_id = Regexp.last_match(1)
-            controller, enclosure, slot = drive_id.tr('ces', '').split('/')
-            result[id][:disks][drive_id]['controller'] = controller
-            result[id][:disks][drive_id]['enclosure'] = enclosure
-            result[id][:disks][drive_id]['slot'] = slot
-            result[id][:disks][drive_id]['medium'] = drive_config[0]['Med']
-            result[id][:disks][drive_id]['interface'] = drive_config[0]['Intf']
-          end
-
-          next unless drive_key.end_with?('- Detailed Information')
-          drive_config.each_pair do |section_key, section_config|
-            next unless %r{Drive\s/(c\d+/e\d+/s\d+)\sDevice\sattributes} =~ section_key
-            drive_id = Regexp.last_match(1)
-            result[id][:disks][drive_id]['wwn'] = section_config['WWN']
-            result[id][:disks][drive_id]['serial'] = section_config['SN']
-          end
+        if controller['Response Data'].key?('Physical Device Information')
+          result[id][:disks] = parse_device_info(controller['Response Data']['Physical Device Information'])
+        elsif controller['Response Data'].key?('PD LIST')
+          result[id][:disks] = parse_pd_list(controller['Response Data']['PD LIST'])
         end
       end
     end
