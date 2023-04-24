@@ -37,7 +37,7 @@ class profile::docker::builder(
         docker_registry => $registry,
         proxy_address   => $proxy_address,
         proxy_port      => $proxy_port,
-        distributions   => ['bullseye', 'buster', 'stretch'],
+        distributions   => ['bullseye', 'buster'],
     }
 
     ensure_packages(['python3-virtualenv', 'virtualenv'])
