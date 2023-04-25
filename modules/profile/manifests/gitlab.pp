@@ -71,12 +71,20 @@ class profile::gitlab(
         }
     } else {
         ensure_packages('certbot')
+        # Mask the default certbot timer
+        systemd::mask { 'certbot.timer': }
         systemd::timer::job { 'certbot-renew':
             ensure      => present,
             user        => 'root',
             description => 'renew TLS certificate using certbot',
             command     => "/usr/bin/certbot -q renew --post-hook \"/usr/bin/gitlab-ctl hup nginx\"",
             interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 05:05:00'},
+        }
+        # Certbot has to be reached over port 80
+        ferm::service { 'gitlab-http-certbot':
+          proto  => 'tcp',
+          port   => 80,
+          drange => $ferm_drange,
         }
     }
 
