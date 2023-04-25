@@ -139,10 +139,10 @@ class AuthManager():
         headers = {'user-agent': USERAGENT, "Accept": "application/json"}
 
         try:
-            response = requests.get(refresh_url,
-                                    data={'username': self.creds['user'],
-                                          'refresh_token': self.creds['refresh']},
-                                    headers=headers, timeout=TIMEOUT)
+            response = requests.post(refresh_url,
+                                     data={'username': self.creds['user'],
+                                           'refresh_token': self.auth_tokens['refresh']},
+                                     headers=headers, timeout=TIMEOUT)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             LOG.error(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
@@ -846,8 +846,8 @@ def read_settings(filepath):
     if they are not in the file
     '''
     settings = {
-        'authurl': "https://auth.enterprisewikimedia.com/v1/login",
-        'refreshauthurl': "https://auth.enterprisewikimedia.com/v1/token-refresh",
+        'authurl': "https://auth.enterprise.wikimedia.com/v1/login",
+        'refreshauthurl': "https://auth.enterprise.wikimedia.com/v1/token-refresh",
         'namespacesurl': "https://api.enterprise.wikimedia.com/v1/namespaces",
         'wikilisturl': "https://api.enterprise.wikimedia.com/v1/exports/meta",
         'basedumpurl': "https://api.enterprise.wikimedia.com/v1/exports/download",
