@@ -126,6 +126,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: shellbox-timeline
         - name: shellbox-timeline-deploy
+    machinetranslation:
+      usernames:
+        - name: machinetranslation
+        - name: machinetranslation-deploy
     miscweb:
       usernames:
         - name: miscweb
@@ -146,12 +150,12 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-jobrunner
         - name: mw-jobrunner-deploy
-# Commented out until discussion of videoscaler on kubernetes is done
-# https://phabricator.wikimedia.org/T321899
-#    mw-videoscaler:
-#      usernames:
-#        - name: mw-videoscaler
-#        - name: mw-videoscaler-deploy
+    # Commented out until discussion of videoscaler on kubernetes is done
+    # https://phabricator.wikimedia.org/T321899
+    #    mw-videoscaler:
+    #      usernames:
+    #        - name: mw-videoscaler
+    #        - name: mw-videoscaler-deploy
     mw-web:
       usernames:
         - name: mw-web
