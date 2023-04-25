@@ -123,7 +123,7 @@ class profile::idm(
 
     profile::auto_restarts::service { 'apache2':}
 
-    $job_state = ($facts['networking']['hostname'] == $redis_master).bool2str('present', 'absent')
+    $job_state = ($facts['networking']['fqdn'] == $redis_master).bool2str('present', 'absent')
     class { 'idm::jobs':
         base_dir => $base_dir,
         etc_dir  => $etc_dir,
