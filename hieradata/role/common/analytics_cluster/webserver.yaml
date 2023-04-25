@@ -23,11 +23,13 @@ profile::contacts::role_contacts: ['Data Engineering']
 
 # Hadoop and Kerberos properties to pull data from HDFS
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
 profile::kerberos::keytabs::keytabs_metadata:
-  - role: 'stats'
-    owner: 'stats'
-    group: 'wikidev'
-    filename: 'stats.keytab'
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics.keytab'
+
 # Needed by Analytics java-based tools
 profile::java::java_packages:
   - version: "8"

@@ -28,13 +28,12 @@ class statistics::published(
     require statistics::user
 
     # Pull $hdfs_rsync_source onto $hdfs_rsync_destination
-    hdfs_tools::hdfs_rsync_job { 'hdfs_analytics_hadoop_published':
+    hdfs_tools::hdfs_rsync_job { 'analytics_hadoop_published':
         hdfs_source       => $hdfs_rsync_source,
         local_destination => $hdfs_rsync_destination,
         interval          => '*:0/15',
-        user              => $::statistics::user::username,
-        # Don't delete files in destination if they're not present in source
-        delete            => false
+        # Requires that the analytics user exists and has a keytab on this host.
+        user              => 'analytics',
     }
 
     # Use hardsync script to hardlink merge files from various host 'published'

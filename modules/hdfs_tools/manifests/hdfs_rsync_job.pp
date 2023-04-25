@@ -71,7 +71,9 @@ define hdfs_tools::hdfs_rsync_job(
         true    => "${head}hdfs dfs -ls -d hdfs://${hdfs_source} > /dev/null 2>&1 && ${rsync_command} || echo ${ignore_msg}",
         default => "${head}${rsync_command}"
     }
-    file { "/usr/local/bin/rsync-analytics-${title}":
+
+    $script_file = "/usr/local/bin/hdfs_rsync_${title}"
+    file { $script_file:
         ensure  => $ensure,
         content => $script_content,
         mode    => '0550',
@@ -79,11 +81,11 @@ define hdfs_tools::hdfs_rsync_job(
         group   => 'root',
     }
 
-    kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
+    kerberos::systemd_timer { "hdfs_rsync_${title}":
         description => "Copy ${title} files from Hadoop HDFS.",
-        command     => "/usr/local/bin/rsync-analytics-${title}",
+        command     => $script_file,
         interval    => $interval,
         user        => $user,
-        require     => File["/usr/local/bin/rsync-analytics-${title}"],
+        require     => File[$script_file],
     }
 }
