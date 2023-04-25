@@ -1,3 +1,74 @@
 profile::gerrit::ipv6: ~
 profile::gerrit::enable_monitoring: true
+
+profile::gerrit::host: 'gerrit.wikimedia.org'
+profile::gerrit::config: 'gerrit.config.erb'
+
+# When promoting a master set this to false
+# in the corresponding hosts yaml file.
+profile::gerrit::is_replica: true
+profile::gerrit::replica_hosts:
+    - 'gerrit-replica.wikimedia.org'
+    - 'gerrit-replica-new.wikimedia.org'
+
+# Settings for rsyncing app data for migration or reinstalls
+profile::gerrit::migration::src_host: 'gerrit1001.wikimedia.org'
+profile::gerrit::migration::dst_hosts:
+  - 'gerrit1003.wikimedia.org'
+  - 'gerrit2002.wikimedia.org'
+
+profile::gerrit::migration::data_dir: '/srv/gerrit'
+
+# External backups
+profile::gerrit::backups_enabled: true
+profile::gerrit::backup_set: 'gerrit-repo-data'
+
+# SSL/TLS certs
+profile::gerrit::use_acmechief: true
+
+## Deployment
+profile::gerrit::daemon_user: 'gerrit2'
+profile::gerrit::scap_user: 'gerrit2'
+profile::gerrit::manage_scap_user: false
+profile::gerrit::scap_key_name: 'gerrit'
+
+# List of gerrit servers used in firewall rules.
+profile::gerrit::ssh_allowed_hosts:
+ - gerrit1001.wikimedia.org
+ - gerrit1003.wikimedia.org
+ - gerrit2002.wikimedia.org
+
+# Assume all production nodes are slaves
+profile::gerrit::git_dir: '/srv/gerrit/git'
 profile::gerrit::lfs_dir: '/srv/gerrit/plugins/lfs'
+profile::gerrit::ssh_host_key: 'ssh_host_key'
+profile::gerrit::replication:
+    github:
+        url: 'git@github.com:wikimedia/${name}'
+        authGroup: 'mediawiki-replication'
+        remoteNameStyle: 'dash'
+        mirror: false
+        push:
+            - '+refs/heads/*:refs/heads/*'
+            - '+refs/tags/*:refs/tags/*'
+        createMissingRepositories: false
+        threads: 2
+        maxRetries: 50
+        rescheduleDelay: 15
+        replicatePermissions: false
+        # Double escape backslashes:
+        # once for regex, once for gitconfig formatting
+        projects:
+            - '^(?:(?!apps\\/ios\\/).)*$'
+            - '^(?:(?!apps\\/android\\/).)*$'
+    replica_codfw:
+        url: "%{lookup('profile::gerrit::daemon_user')}@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git"
+        mirror: true
+        replicateProjectDeletions: true
+        replicateHiddenProjects: true
+        defaultForceUpdate: true
+        threads: 4
+        replicationDelay: 5
+        rescheduleDelay: 5
+
+profile::gerrit::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
