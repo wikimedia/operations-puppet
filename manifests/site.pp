@@ -1787,7 +1787,7 @@ node /^mc-gp200[1-3]\.codfw\.wmnet$/ {
 
 # new mc-wf nodes T313963
 node /^mc-wf100[12]\.eqiad\.wmnet$/ {
-    role(insetup::serviceops)
+    role(memcached)
 }
 
 # New mc-wf nodes T313966
