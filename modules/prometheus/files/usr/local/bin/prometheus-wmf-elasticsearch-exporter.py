@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import argparse
+from datetime import timedelta
+import functools
 import logging
 import sys
 import time
@@ -61,12 +63,12 @@ class Connection:
         aliases = self.request('/_cat/aliases/' + ','.join(indices))
         return {alias['index']: alias['alias'] for alias in aliases}
 
-    def request(self, path):
+    def request(self, path, **kwargs):
         url = self.base_url + path
         try:
             response = requests.get(url, headers={
                 'Accept': 'application/json',
-            })
+            }, **kwargs)
         except requests.exceptions.RequestException as e:
             log.error('Encountered %s communicating with elasticsearch at %s', e, url)
             raise
@@ -85,6 +87,71 @@ def days_since(timestamp_ms):
     """Returns the number of days since the millisecond precision unix timestamp"""
     sec_ago = time.time() - (timestamp_ms / 1000)
     return sec_ago / (24 * 60 * 60)
+
+
+def ttl_cache(cache_duration):
+    def wrapper(fn):
+        cache = [0, None]
+
+        @functools.wraps(fn)
+        def wrapped(*args):
+            now = time.monotonic()
+            expire_at, cached_value = cache
+            if now > expire_at:
+                cached_value = fn(*args)
+                cache[0] = now + cache_duration.total_seconds()
+                cache[1] = cached_value
+            return cached_value
+        return wrapped
+    return wrapper
+
+
+@ttl_cache(timedelta(hours=1))
+def oldest_titlesuggest_batch_id(conn):
+    """Report the lowest titlesuggest batch_id on the cluster
+
+    The batch_id of a titlesuggest index marks when it was last updated.
+    Aggregate to find the lowest batch_id across the cluster.
+    If the difference between this value and the current time
+    grows beyond a day, it indicates that the update process is failing somewhere.
+
+    Cached for an hour because this value is a little expensive to calculate
+    and doesn't change quickly. We are not alerting on minute-to-minute
+    changes, but rather a multi-day failure trend.
+
+    Note that caching ignores the conn parameter; all invocations are
+    equivalent. This is needed as a new conn is created for each data
+    collection.
+    """
+    res = conn.request('/*_titlesuggest/_search', json={
+        'size': 0,
+        'aggs': {
+            'by_index': {
+                'terms': {
+                    'field': '_index',
+                    'order': {
+                        'max_batch_id': 'asc',
+                    },
+                },
+                'aggs': {
+                    'max_batch_id': {
+                        'max': {
+                            'field': 'batch_id',
+                        },
+                    },
+                },
+            },
+        },
+    })
+
+    if res['_shards']['total'] == 0:
+        # No indices matched the *_titlesuggest pattern, nothing exists. This
+        # shouldn't happen in prod, how to notify?
+        return None
+
+    buckets = res['aggregations']['by_index']['buckets']
+    oldest = buckets[0]
+    return int(oldest['max_batch_id']['value'])
 
 
 class PrometheusWMFElasticsearchExporter(object):
@@ -136,6 +203,14 @@ class PrometheusWMFElasticsearchExporter(object):
         # Source data metrics will be derived from
         index_stats = conn.request(self.index_stats_path)['indices']
         index_settings = conn.request(self.index_settings_path)
+        # bit of a hack. inject *_titlesuggest to be picked up by age_days.
+        # The batch_id is a unix timestamp marking when the index data was
+        # built. Note that this only works because age_days is the only
+        # metric sourced from index_settings.
+        batch_id = oldest_titlesuggest_batch_id(conn)
+        if batch_id is not None:
+            index_settings['*_titlesuggest'] = \
+                {'settings': {'index': {'creation_date': batch_id * 1000}}}
 
         # Mapping from index name to the alias we record metrics against
         aliases = conn.alias_map(self.indices)
