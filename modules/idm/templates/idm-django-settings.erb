@@ -170,6 +170,10 @@ SOCIAL_AUTH_CAS_USERINFO_URL = '<%= @oidc["endpoint"] %>/profile'
 SOCIAL_AUTH_CAS_SCOPE = ['openid', 'profile', 'email', 'groups']
 SOCIAL_AUTH_CAS_ID_KEY = 'username'
 
+SOCIAL_AUTH_MEDIAWIKI_KEY = '<%= @mediawiki["key"] %>'
+SOCIAL_AUTH_MEDIAWIKI_SECRET = '<%= @mediawiki["secret"] %>'
+SOCIAL_AUTH_MEDIAWIKI_CALLBACK = 'https://idm.wikimedia.org/complete/mediawiki'
+
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',

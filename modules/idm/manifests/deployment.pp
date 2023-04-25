@@ -15,6 +15,7 @@ class idm::deployment (
     Stdlib::Unixpath    $log_dir,
     Boolean             $install_via_git,
     Hash                $oidc,
+    Hash                $mediawiki,
     Hash                $ldap_config,
     Stdlib::Fqdn        $redis_master,
     Array[Stdlib::Fqdn] $redis_replicas,
