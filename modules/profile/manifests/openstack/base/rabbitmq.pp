@@ -126,6 +126,22 @@ class profile::openstack::base::rabbitmq(
 
     rabbitmq::plugin { 'rabbitmq_prometheus': }
 
+    # One more rabbit metric that isn't provided by the standard plugin
+    file { '/usr/local/sbin/detect_rabbit_partition':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/profile/openstack/base/rabbitmq/detect_rabbit_partition.py',
+    }
+
+    systemd::timer::job { 'rabbitmq_detect_partition':
+        ensure      => present,
+        description => 'Update prometheus metric about rabbit network partition',
+        command     => '/usr/local/sbin/detect_rabbit_partition',
+        user        => 'root',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/2'}
+    }
+
     ferm::service { 'rabbitmq-internals':
         proto  => 'tcp',
         port   => '(4369 5671 5672 25672)',
