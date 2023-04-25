@@ -200,33 +200,20 @@ class httpd(
         content => "[Unit]\nAfter=network-online.target\nWants=network-online.target\n",
     }
 
-    # Puppet restarts are reloads in apache, as typically that's enough.
-    # Use systemd provider on bookworm, as the sysvinit provider is unusable
-    if debian::codename::ge('bookworm') {
-        service { 'apache2':
-            ensure     => running,
-            enable     => true,
-            hasrestart => true,
-            restart    => 'systemctl reload apache2',
-            require    => Package['apache2'],
-        }
-    } else {
-        service { 'apache2':
-            ensure     => running,
-            enable     => true,
-            provider   => 'debian',
-            hasrestart => true,
-            restart    => '/usr/sbin/service apache2 reload',
-            require    => Package['apache2'],
-        }
+    service { 'apache2':
+        ensure     => running,
+        enable     => true,
+        hasrestart => true,
+        restart    => 'systemctl reload apache2',
+        require    => Package['apache2'],
     }
 
     $enable_htcacheclean = 'cache_disk' in $modules
     profile::auto_restarts::service { 'apache-htcacheclean':
-        ensure  => $enable_htcacheclean.bool2str('present', 'absent')
+        ensure  => $enable_htcacheclean.bool2str('present', 'absent'),
     }
     service { 'apache-htcacheclean':
         ensure => stdlib::ensure($enable_htcacheclean, 'service'),
-        enable => $enable_htcacheclean
+        enable => $enable_htcacheclean,
     }
 }
