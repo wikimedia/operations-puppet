@@ -1107,7 +1107,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://logstash.wikimedia.org/api/status
-      scheduler: sh
+      scheduler: mh
     probes:
       - type: http
         path: /api/status
@@ -2481,7 +2481,7 @@ service::catalog:
       # selection from varnish -> ATS is always random for pass traffic
       # therefore even with this we need at most one thanos-fe host
       # pooled at a time (per site).
-      scheduler: sh
+      scheduler: mh
     # Skip paging for thanos-web for the following reasons:
     # - only one host pooled at a time per site (see above)
     # - not a huge deal if thanos.w.o is down temporarily
@@ -2622,7 +2622,7 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: sh
+      scheduler: mh
     probes:
       - type: http
         host: en.wikipedia.org
@@ -2662,7 +2662,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://healthcheck.wikimedia.org/varnish-fe
-      scheduler: sh
+      scheduler: mh
     probes:
       - type: http
         host: en.wikipedia.org
@@ -2778,7 +2778,7 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: sh
+      scheduler: mh
     probes:
       - type: http
         host: upload.wikimedia.org
@@ -2818,7 +2818,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://healthcheck.wikimedia.org/varnish-fe
-      scheduler: sh
+      scheduler: mh
     probes:
       - type: http
         host: upload.wikimedia.org
@@ -3728,7 +3728,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://logs-api.svc.eqiad.wmnet
-      scheduler: sh
+      scheduler: mh
     probes:
       - type: http
         # The 'host' here can be handled by codfw and eqiad all the same
