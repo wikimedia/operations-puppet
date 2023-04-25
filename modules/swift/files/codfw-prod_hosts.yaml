@@ -46,11 +46,20 @@ schemes:
 hosts:
   prod_ng:
     - ms-be2050
+  prod24_ng:
+    - ms-be2070
+    - ms-be2071
+    - ms-be2072
+    - ms-be2073
   prod:
-    - ms-be2040
-    - ms-be2041
-    - ms-be2042
-    - ms-be2043
+    - ms-be2040:
+        - drain
+    - ms-be2041:
+        - drain
+    - ms-be2042:
+        - drain
+    - ms-be2043:
+        - drain
     - ms-be2044
     - ms-be2045
     - ms-be2046
