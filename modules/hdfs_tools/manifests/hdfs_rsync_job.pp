@@ -89,21 +89,4 @@ define hdfs_tools::hdfs_rsync_job(
         require     => File[$script_file],
     }
 
-
-    file { "/usr/local/bin/rsync-analytics-${title}":
-        ensure  => 'absent',
-        content => $script_content,
-        mode    => '0550',
-        owner   => $user,
-        group   => 'root',
-    }
-
-    kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
-        ensure      => 'absent',
-        description => "Copy ${title} files from Hadoop HDFS.",
-        command     => "/usr/local/bin/rsync-analytics-${title}",
-        interval    => $interval,
-        user        => $user,
-        require     => File["/usr/local/bin/rsync-analytics-${title}"],
-    }
 }
