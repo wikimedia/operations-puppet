@@ -5847,6 +5847,16 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHrO506SNq26zDI6oPuneSQ7D0qHTv1zTrgQOXXcu7fG pnjira@wikimedia.org
+  ppenloglou:
+    ensure: present
+    realname: Panagiotis Penloglou
+    email: ppenloglou-ctr@wikimedia.org
+    expiry_contact: dbu@wikimedia.org
+    expiry_date: 2023-06-30
+    uid: 42507
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBf4B0qbsjMS/bbYiDVoYhrnRRe1y30/JOvjpo4cZqix ppenloglou-ctr@wikimedia.org
 
 ldap_only_users:
   adavenport:
