@@ -61,6 +61,8 @@ class WikimediaLDAP(object):
             ldap.SCOPE_SUBTREE,
             f"(&(objectclass=organizationalPerson)(uid={uid}))",
         )
+        if not result:
+            raise RuntimeError(f'Could not fetch metadata for uid={uid}.')
         return result[0][1]
 
 
