@@ -180,6 +180,7 @@ SOCIAL_AUTH_CAS_ID_KEY = 'username'
 
 SOCIAL_AUTH_MEDIAWIKI_KEY = '<%= @mediawiki["key"] %>'
 SOCIAL_AUTH_MEDIAWIKI_SECRET = '<%= @mediawiki["secret"] %>'
+SOCIAL_AUTH_MEDIAWIKI_URL = 'https://meta.wikimedia.org/w/index.php'
 SOCIAL_AUTH_MEDIAWIKI_CALLBACK = 'https://idm.wikimedia.org/complete/mediawiki'
 
 SOCIAL_AUTH_PIPELINE = (
@@ -193,6 +194,13 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
     'bitu.social_pipeline.add_user_to_groups',
+)
+
+# Byparse most pipelines to avoid issues with groups and
+# prevent logging in with MediaWiki account.
+SOCIAL_AUTH_MEDIAWIKI_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'wikimedia.social_pipeline.global_account_link'
 )
 
 LOGIN_URL = 'wikimedia:login'
