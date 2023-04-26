@@ -461,6 +461,11 @@ node /^cp40(3[789]|4[01234])\.ulsfo.wmnet$/ {
 # eqsin caches
 #
 
+# Temp setup, will go away once wiped
+node /^cp50(1[3456])\.eqsin\.wmnet$/ {
+    role(insetup::traffic)
+}
+
 node /^cp50(2[56789]|3[012])\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
