@@ -32,5 +32,5 @@ case "$1" in
     # full backup for failover, including builds, artifacts and registry and without copy strategy
     /usr/bin/gitlab-backup create CRON=1 GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>";;
     *)
-    echo "Please run script with parameter [full, partial, config]"; exit 1 ;;
+    echo "Please run script with parameter [full, partial, config, failover]"; exit 1 ;;
 esac
