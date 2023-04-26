@@ -54,10 +54,9 @@ last_run_success() {
     local ruby_script
 
     ruby_script=$(cat <<'RUBY_SCRIPT'
-    require 'safe_yaml'
-    SafeYAML::OPTIONS[:default_mode] = :safe
+    require 'yaml'
     begin
-        a = YAML.load(STDIN.read)
+        a = YAML.safe_load(STDIN.read)
         if a['resources']['total'].zero?
           puts 1
         else
@@ -82,10 +81,9 @@ puppet_config_version() {
     local lastrunreport
 
     ruby_script=$(cat <<'RUBY_SCRIPT'
-    require 'safe_yaml'
-    SafeYAML::OPTIONS[:default_mode] = :safe
+    require 'yaml'
     begin
-        a = YAML.load(STDIN.read)
+        a = YAML.safe_load(STDIN.read)
         puts a['configuration_version']
     end
 RUBY_SCRIPT
