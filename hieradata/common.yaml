@@ -369,10 +369,6 @@ wikimedia_clusters:
     description: "Labtest services"
     sites:
       codfw: []
-  restbase_dev:
-    description: "Services development test"
-    sites:
-      eqiad: []
   thumbor:
     description: "Thumbor"
     sites:

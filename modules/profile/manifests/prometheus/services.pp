@@ -49,9 +49,9 @@ class profile::prometheus::services (
       },
     ]
 
-    prometheus::jmx_exporter_config{ "cassandra_restbase_dev_${::site}":
-        dest       => "${targets_path}/cassandra_restbase_dev_${::site}.yaml",
-        class_name => 'role::restbase::dev_cluster',
+    prometheus::jmx_exporter_config{ "cassandra_dev_${::site}":
+        dest       => "${targets_path}/cassandra_dev_${::site}.yaml",
+        class_name => 'role::cassandra_dev',
     }
 
     prometheus::jmx_exporter_config{ "cassandra_restbase_production_${::site}":

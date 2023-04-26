@@ -379,8 +379,6 @@ role::releases:
 role::elasticsearch::relforge:
   target-q: TBD
   phab-task: 289135
-role::restbase::dev_cluster:
-  target-q: TBD
 role::dumps::generation::worker::dumper_monitor:
   target-q: 2023-2
   phab-task: 325228
