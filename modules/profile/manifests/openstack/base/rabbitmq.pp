@@ -130,7 +130,7 @@ class profile::openstack::base::rabbitmq(
     file { '/usr/local/sbin/detect_rabbit_partition':
         owner  => 'root',
         group  => 'root',
-        mode   => '0644',
+        mode   => '0744',
         source => 'puppet:///modules/profile/openstack/base/rabbitmq/detect_rabbit_partition.py',
     }
 
