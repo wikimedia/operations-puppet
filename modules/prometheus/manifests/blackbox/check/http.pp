@@ -68,6 +68,14 @@ define prometheus::blackbox::check::http (
     Optional[String[1]]                     $auth_password           = undef,
     Optional[String[1]]                     $useragent               = undef,
     Optional[String[1]]                     $proxy_url               = undef,
+    String[1]                               $probe_runbook           = 'https://wikitech.wikimedia.org/wiki/Runbook#{{ $labels.instance }}',
+    String[1]                               $probe_description       = '{{ $labels.instance }} failed when probed by {{ $labels.module }} from {{ $externalLabels.site }}. Availability is {{ $value }}%.',
+    String[1]                               $probe_summary           = 'Service {{ $labels.instance }} has failed probes ({{ $labels.module }})',
+    String[1]                               $probe_dashboard         = 'https://grafana.wikimedia.org/d/O0nHhdhnz/network-probes-overview?var-job={{ $labels.job }}&var-module=All',
+    String[1]                               $ssl_expired_runbook     = 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
+    String[1]                               $ssl_expired_description = 'The certificate presented by service {{ $labels.instance }} is going to expire in {{ $value | humanizeDuration }}',
+    String[1]                               $ssl_expired_summary     = 'Certificate for service {{ $labels.instance }} is about to expire',
+    String[1]                               $ssl_expired_dashboard   = 'https://grafana.wikimedia.org/d/K1dRhGCnz/probes-tls-dashboard',
 ) {
     if !$body.empty and !$body_raw.empty {
         fail('can not set both body and body_raw')
@@ -161,10 +169,10 @@ define prometheus::blackbox::check::http (
                     'severity' => $severity,
                 },
                 'annotations' => {
-                    'description' => 'The certificate presented by service {{ $labels.instance }} is going to expire in {{ $value | humanizeDuration }}',
-                    'summary'     => 'Certificate for service {{ $labels.instance }} is about to expire',
-                    'dashboard'   => 'https://grafana.wikimedia.org/d/K1dRhGCnz/probes-tls-dashboard',
-                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
+                    'description' => $ssl_expired_description,
+                    'summary'     => $ssl_expired_summary,
+                    'dashboard'   => $ssl_expired_dashboard,
+                    'runbook'     => $ssl_expired_runbook,
                 },
             }],
         }
@@ -186,11 +194,11 @@ define prometheus::blackbox::check::http (
                     'severity' => $severity,
                 },
                 'annotations' => {
-                    'description' => '{{ $labels.instance }} failed when probed by {{ $labels.module }} from {{ $externalLabels.site }}. Availability is {{ $value }}%.',
-                    'summary'     => "Service {{ \$labels.instance }} has failed probes ({{ \$labels.module }})${page_text}",
-                    'dashboard'   => 'https://grafana.wikimedia.org/d/O0nHhdhnz/network-probes-overview?var-job={{ $labels.job }}&var-module=All',
+                    'description' => $probe_description,
+                    'summary'     => "${probe_summary}${page_text}",
+                    'dashboard'   => $probe_dashboard,
                     'logs'        => 'https://logstash.wikimedia.org/app/dashboards#/view/f3e709c0-a5f8-11ec-bf8e-43f1807d5bc2?_g=(filters:!((query:(match_phrase:(service.name:{{ $labels.module }})))))',
-                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/Runbook#{{ $labels.instance }}',
+                    'runbook'     => $probe_runbook,
                 },
             }],
           },
