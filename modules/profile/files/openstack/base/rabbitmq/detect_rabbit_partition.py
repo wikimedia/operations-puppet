@@ -19,8 +19,8 @@ METRIC_NAME = "rabbitmq_network_partition"
 
 def write_metric(metric):
     with PROMETHEUS_FILE.open("w", encoding="utf-8") as prom_fd:
-        prom_fd.write(f"# TYPE {METRIC_NAME} guage\n")
-        prom_fd.write(f"{METRIC_NAME} guage {metric}\n")
+        prom_fd.write(f"# TYPE {METRIC_NAME} gauge\n")
+        prom_fd.write(f"{METRIC_NAME} {metric}\n")
 
 
 out = subprocess.check_output(["rabbitmqctl", "cluster_status"])
