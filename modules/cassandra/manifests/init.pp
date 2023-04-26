@@ -67,8 +67,8 @@
 #   Default: []
 #
 # [*target_version*]
-#   The Cassandra version to configure for.  Valid choices are '2.1', '2.2', and '3.x'.
-#   Default: 2.1
+#   The Cassandra version to configure for.  Valid choices are '2.2', '3.x', '4.x', and 'dev'
+#   Default: 2.2
 #
 # [*memory_allocator*]
 #   The off-heap memory allocator.
@@ -119,7 +119,7 @@ class cassandra (
     Stdlib::IP::Address              $listen_address          = $::ipaddress,
     Array[String]                    $additional_jvm_opts     = [],
     Array[String]                    $extra_classpath         = [],
-    Enum['2.2', '3.x', 'dev']        $target_version          = '2.2',
+    Enum['2.2', '3.x', 'dev', '4.x'] $target_version          = '2.2',
     String                           $memory_allocator        = 'JEMallocAllocator',
     Hash[String, String]             $cassandra_passwords     = {},
     Stdlib::Port                     $native_transport_port   = 9042,
@@ -143,18 +143,23 @@ class cassandra (
         ensure_packages('python-is-python2')
     }
 
-    # We pin the version to a specific one
-    # The 2.2.6-wmf5 package has been tested on Debian Stretch
-    # and it works nicely
+    # We pin the version to a specific one.
     $package_version = $target_version ? {
         '2.2' => pick($version, '2.2.6-wmf5'),
         '3.x' => pick($version, '3.11.13'),
+        '4.x' => pick($version, '4.1.1'),
+
+        # NOTE: When 'dev' is eventually adjusted to correspond to a v4 version,
+        # the $target_version expressions in instance.pp will need to be
+        # adjusted accordingly (there are differences in the number and
+        # disposition of configuration files).
         'dev' => pick($version, '3.11.14')
     }
 
     $component = $target_version  ? {
         '2.2' => 'component/cassandra22',
         '3.x' => 'component/cassandra311',
+        '4.x' => 'component/cassandra41',
         'dev' => 'component/cassandradev'
     }
 
@@ -259,7 +264,7 @@ class cassandra (
 
     file { '/etc/cassandra.in.sh':
         ensure  => present,
-        content => template("${module_name}/cassandra.in.sh.erb"),
+        content => template("${module_name}/cassandra.in.sh-${target_version}.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',

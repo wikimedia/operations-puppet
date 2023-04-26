@@ -116,10 +116,12 @@
 #   IP address to bind the Thrift RPC service and native transport server.  Default: $::ipaddress
 #
 # [*rpc_port*]
-#   Port for Thrift to listen for clients on.  Default: 9160
+#   Port for Thrift to listen for clients on (target_version <= 3.x).
+#   Default: 9160
 #
 # [*rpc_server_type*]
-#   RPC server type, either 'sync' or 'hsha' (half sync, half async).  Default: sync
+#   RPC server type, either 'sync' or 'hsha' (target_version <= 3.x). 
+#   Default: sync
 #
 # [*incremental_backups*]
 #   If true, Cassandra will create incremental hardlink backups.
@@ -197,6 +199,10 @@
 #   Complete path to nodetool command.
 #   Default: /usr/bin/nodetool
 #
+# [*legacy_ssl_storage_port_enabled*]
+#   Whether or not to enable the legacy SSL storage port.  Must be enabled during
+#   upgrades from 3.x to 4.x; Should be disabled after upgrade to 4.x.
+#   Default: false
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
     Optional[String]                 $cluster_name          = undef,
@@ -271,6 +277,7 @@ define cassandra::instance(
     Boolean                               $auto_bootstrap                   = true,
     Boolean                               $monitor_enabled                  = true,
     Boolean                               $auto_apply_grants                = false,
+    Boolean                               $legacy_ssl_storage_port_enabled  = false,
 ) {
 
     $instance_data_file_directories = $data_file_directories.empty? {
@@ -368,14 +375,15 @@ define cassandra::instance(
 
     file { "${config_directory}/logback-tools.xml":
         ensure => present,
-        source => "puppet:///modules/${module_name}/logback-tools.xml",
+        source => "puppet:///modules/${module_name}/logback-tools.xml-${target_version}",
+        links  => follow,
         owner  => 'cassandra',
         group  => 'cassandra',
         mode   => '0444',
     }
 
     file { "${config_directory}/cqlshrc":
-        content => template("${module_name}/cqlshrc.erb"),
+        content => template("${module_name}/cqlshrc-${target_version}.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -460,6 +468,14 @@ define cassandra::instance(
             target  => '/usr/local/bin/nodetool-instance',
             require => File['/usr/local/bin/nodetool-instance'],
         }
+    } else {
+        file { '/usr/local/bin/nodetool':
+            ensure => present,
+            source => "puppet:///modules/${module_name}/nodetool",
+            owner  => 'cassandra',
+            group  => 'cassandra',
+            mode   => '0755',
+        }
     }
 
     file { "/etc/cassandra-instances.d/${tls_hostname}.yaml":
@@ -469,6 +485,10 @@ define cassandra::instance(
         mode    => '0444',
     }
 
+    # This is becoming brittle; jvm.options was introduced in v3, in v4 we now
+    # have jvm.options + JVM-specific add-ons (see below).  The 'dev'
+    # target_version is currently 3.x, but will eventually be 4.x, and this
+    # expression (and the following one) will need to change accordingly.
     if ($target_version in ['3.x', 'dev']) {
         file { "${config_directory}/jvm.options":
             ensure  => present,
@@ -477,10 +497,68 @@ define cassandra::instance(
             group   => 'cassandra',
             mode    => '0444',
         }
+    }
 
+    if ($target_version in ['4.x']) {
+        file { "${config_directory}/jvm-server.options":
+            ensure  => present,
+            content => template("${module_name}/jvm-server.options-${target_version}.erb"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+        }
+
+        file { "${config_directory}/jvm8-server.options":
+            ensure  => present,
+            content => template("${module_name}/jvm8-server.options-${target_version}.erb"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+        }
+
+        file { "${config_directory}/jvm11-server.options":
+            ensure  => present,
+            content => template("${module_name}/jvm11-server.options-${target_version}.erb"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+        }
+
+        # Install links (where necessary) to package-installed configs
+        if $instance_name != 'default' {
+            file { "${config_directory}/jvm-clients.options":
+                ensure  => link,
+                target  => '/etc/cassandra/jvm-clients.options',
+                require => File['/etc/cassandra/jvm-clients.options'],
+            }
+
+            file { "${config_directory}/jvm8-clients.options":
+                ensure  => link,
+                target  => '/etc/cassandra/jvm8-clients.options',
+                require => File['/etc/cassandra/jvm8-clients.options'],
+            }
+
+            file { "${config_directory}/jvm11-clients.options":
+                ensure  => link,
+                target  => '/etc/cassandra/jvm11-clients.options',
+                require => File['/etc/cassandra/jvm11-clients.options'],
+            }
+        }
+
+        # The credentials file pairs with cqlshrc on Cassandra versions >= 4.1
+        file { "${config_directory}/credentials":
+            content => template("${module_name}/credentials-${target_version}.erb"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+        }
+    }
+
+    if ($target_version in ['3.x', '4.x', 'dev']) {
         file { "${config_directory}/hotspot_compiler":
             ensure => present,
-            source => "puppet:///modules/${module_name}/hotspot_compiler",
+            source => "puppet:///modules/${module_name}/hotspot_compiler-${target_version}",
+            links  => follow,
             owner  => 'cassandra',
             group  => 'cassandra',
             mode   => '0444',
@@ -488,7 +566,8 @@ define cassandra::instance(
 
         file { "${config_directory}/commitlog_archiving.properties":
             ensure => present,
-            source => "puppet:///modules/${module_name}/commitlog_archiving.properties",
+            source => "puppet:///modules/${module_name}/commitlog_archiving.properties-${target_version}",
+            links  => follow,
             owner  => 'cassandra',
             group  => 'cassandra',
             mode   => '0444',

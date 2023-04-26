@@ -1,0 +1,9 @@
+; SPDX-License-Identifier: Apache-2.0
+
+[authentication]
+credentials = <%= @config_directory %>/credentials
+<% if @client_encryption_enabled -%>
+
+[ssl]
+certfile = <%= @config_directory %>/tls/rootCa.crt
+<% end -%>

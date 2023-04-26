@@ -1,0 +1,10 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+
+set -eu
+
+export CASSANDRA_CONF=/etc/cassandra
+export CASSANDRA_INCLUDE=/etc/cassandra.in.sh
+export CASSANDRA_LOG_DIR=/var/log/cassandra
+
+exec /usr/bin/nodetool "$@"

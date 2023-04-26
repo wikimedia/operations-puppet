@@ -9,4 +9,6 @@ instance=${me#*-}
 
 export CASSANDRA_INCLUDE=/etc/cassandra.in.sh
 export CASSANDRA_CONF=/etc/cassandra-${instance}
-exec nodetool "$@"
+export CASSANDRA_LOG_DIR=/var/log/cassandra
+
+exec /usr/bin/nodetool "$@"
