@@ -11,10 +11,10 @@ def parse_pd_list(data)
   disks = Hash.new { |h, k| h[k] = {} }
   data.each do |disk|
     disks[disk['EID:Slt']] = {
-      enclosure: disk['EID:Slt'].split[0],
-      slot: disk['DID'],
-      medium: disk['Med'],
-      interface: disk['Intf'],
+      enclosure: disk['EID:Slt'].strip.split[0],
+      slot: disk['DID'].strip,
+      medium: disk['Med'].strip,
+      interface: disk['Intf'].strip,
     }
   end
   disks
@@ -31,16 +31,16 @@ def parse_device_info(data)
       disks[drive_id]['controller'] = controller
       disks[drive_id]['enclosure'] = enclosure
       disks[drive_id]['slot'] = slot
-      disks[drive_id]['medium'] = drive_config[0]['Med']
-      disks[drive_id]['interface'] = drive_config[0]['Intf']
+      disks[drive_id]['medium'] = drive_config[0]['Med'].strip
+      disks[drive_id]['interface'] = drive_config[0]['Intf'].strip
     end
 
     next unless drive_key.end_with?('- Detailed Information')
     drive_config.each_pair do |section_key, section_config|
       next unless %r{Drive\s/(c\d+/e\d+/s\d+)\sDevice\sattributes} =~ section_key
       drive_id = Regexp.last_match(1)
-      disks[drive_id]['wwn'] = section_config['WWN']
-      disks[drive_id]['serial'] = section_config['SN']
+      disks[drive_id]['wwn'] = section_config['WWN'].strip
+      disks[drive_id]['serial'] = section_config['SN'].strip
     end
   end
   disks
@@ -58,10 +58,10 @@ Facter.add(:ceph_disks) do
     unless perccli_info_raw.empty?
       perccli_info = JSON.parse(perccli_info_raw)
       perccli_info['Controllers'].each do |controller|
-        id = controller['Response Data']['Basics']['SAS Address']
+        id = controller['Response Data']['Basics']['SAS Address'].strip
         result[id] = {
-          status: controller['Command Status']['Status'],
-          model: controller['Response Data']['Basics']['Model'],
+          status: controller['Command Status']['Status'].strip,
+          model: controller['Response Data']['Basics']['Model'].strip,
         }
         next unless result[id][:status] == 'Success'
         if controller['Response Data'].key?('Physical Device Information')
