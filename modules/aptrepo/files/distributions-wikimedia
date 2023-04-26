@@ -101,6 +101,7 @@ Components: main
  component/bird2
  component/calico-future
  component/cassandra311
+ component/cassandra41
  component/cassandradev
  component/cergen
  component/ci
@@ -215,6 +216,7 @@ Components: main
  component/calico317
  component/calico323
  component/cassandra311
+ component/cassandra41
  component/cassandradev
  component/dnsdist
  component/elastic710
