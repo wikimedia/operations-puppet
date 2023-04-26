@@ -13,7 +13,7 @@
 type Wmflib::Service::Lvs = Struct[{
     'enabled'           => Boolean,
     'class'             => Enum['low-traffic', 'high-traffic1', 'high-traffic2'],
-    'scheduler'         => Optional[Enum['rr', 'wrr', 'lc', 'wlc', 'lblc', 'lblcr', 'dh', 'sh', 'sed', 'nq']],
+    'scheduler'         => Optional[Enum['rr', 'wrr', 'lc', 'wlc', 'lblc', 'lblcr', 'dh', 'sh', 'sed', 'nq', 'mh']],
     'conftool'          => Struct[{'cluster' => String[1], 'service' => String[1]}],
     'depool_threshold'  => String[1],
     'monitors'          => Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash],
