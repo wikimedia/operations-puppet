@@ -1539,6 +1539,11 @@ node /^kafkamon[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(kafka::monitoring_buster)
 }
 
+# Kafkamon bullseye hosts
+node /^kafkamon[12]003\.(codfw|eqiad)\.wmnet$/ {
+    role(kafka::monitoring_bullseye)
+}
+
 # New Kafka nodes T314156
 node /^kafka-stretch100[12]\.eqiad\.wmnet$/ {
     role(insetup::data_engineering)
