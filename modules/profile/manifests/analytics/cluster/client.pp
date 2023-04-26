@@ -32,8 +32,8 @@ class profile::analytics::cluster::client {
     # so no role class is needed.
     class { '::bigtop::sqoop': }
     class { '::bigtop::mahout': }
+    class { '::hdfs_tools': }
 
-    include ::profile::analytics::hdfs_tools
     include ::profile::analytics::cluster::hdfs_mount
 
     # Install other useful packages for client nodes.

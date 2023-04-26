@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class profile::analytics::hdfs_tools
+# == Class hdfs_tools
 #
 # Includes configuration and resources needed for deploying
 # the analytics/hdfs_tools/deploy repository.
