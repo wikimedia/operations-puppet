@@ -39,7 +39,7 @@ backend esi_backend {
  * means not enforcing the Always-Encode set above.
  *
  * Update 2023: The semicolon was switched to the Always-Encode set (setting
- * "0" below) to mitigate the ATS-level issue in T238285 .  This is a
+ * "0" below) to mitigate the ATS-level issue in T238285 + T334467.  This is a
  * divergence from MediaWiki's canonical form, but shouldn't be one that will
  * cause redirect loops.
  *****************************************************************************/
@@ -74,6 +74,10 @@ sub normalize_mediawiki_path { C{
  * Therefore, the table below is almost identical to the MW one above, but note
  *   that the '/' is set to 2 (as it would be in generic_decoder_ring), which
  *   means do not change its encoding status.
+ * Update 2023: The semicolon was switched to the Always-Encode set (setting
+ * "0" below) to mitigate the ATS-level issue in T238285 + T334467.  This is a
+ * divergence from MediaWiki's canonical form, but shouldn't be one that will
+ * cause redirect loops.
  *****************************************************************************/
 
 sub normalize_rest_path { C{
@@ -81,7 +85,7 @@ sub normalize_rest_path { C{
       // 0x00-0x1F (all unprintable)
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
       //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
-        0,1,0,2,1,0,2,2,1,1,1,2,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,0,2,0,2,
+        0,1,0,2,1,0,2,2,1,1,1,2,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,0,0,2,0,2,
       //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,0,2,0,1,
       //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
