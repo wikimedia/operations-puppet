@@ -19,10 +19,14 @@
 #  (for example, k8s nodes but not stat100x nodes).
 #  Default: false
 #
+# [*is_kubernetes_node*]
+#  Whether or not the host is a kubernetes node.
+#  Default: false
 #
 class amd_rocm (
     String $version = '42',
     Boolean $allow_gpu_broader_access = false,
+    Boolean $is_kubernetes_node = false,
 ) {
 
     $supported_versions = ['42', '431', '45', '54']
@@ -54,6 +58,12 @@ class amd_rocm (
             owner   => 'root',
             mode    => '0544',
             content => "SUBSYSTEM==\"drm\", KERNEL==\"renderD*\", MODE=\"0666\"",
+        }
+    }
+
+    if $is_kubernetes_node {
+        package { 'amd-k8s-device-plugin':
+            ensure => present,
         }
     }
 

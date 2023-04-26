@@ -68,3 +68,4 @@ profile::contacts::role_contacts:
 profile::kubernetes::pki::intermediate: 'dse'
 
 profile::amd_gpu::allow_gpu_broader_access: true
+profile::amd_gpu::is_kubernetes_node: true
