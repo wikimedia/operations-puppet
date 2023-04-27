@@ -1,2 +1,3 @@
 profile::base::use_linux510_on_buster: false
 profile::cache::varnish::frontend::enable_http_redirection: false
+profile::cache::haproxy::http_redirection_port: 80
