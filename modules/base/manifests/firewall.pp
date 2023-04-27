@@ -11,6 +11,7 @@ class base::firewall (
     Array[Stdlib::IP::Address] $kafka_brokers_analytics = [],
     Array[Stdlib::IP::Address] $kafka_brokers_jumbo     = [],
     Array[Stdlib::IP::Address] $kafka_brokers_logging   = [],
+    Array[Stdlib::IP::Address] $kafkamon_hosts          = [],
     Array[Stdlib::IP::Address] $zookeeper_hosts_main    = [],
     Array[Stdlib::IP::Address] $druid_public_hosts      = [],
     Array[Stdlib::IP::Address] $labstore_hosts          = [],

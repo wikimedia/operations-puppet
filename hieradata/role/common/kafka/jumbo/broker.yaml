@@ -67,11 +67,12 @@ profile::kafka::broker::max_heap_size: '2g'
 # - eventgate/eventstreams kubernetes pods
 #   (via egress filtering, so not all the pods can contact Jumbo with the following settings)
 # - search-loader[12]001 - mjolnir (Search team)
-# - kafkamon hosts (1001/1002 and 2002 in case of failover to codfw)
+# - kafkamon hosts
 # - webperf hosts (due to coal's processors)
 profile::kafka::broker::custom_ferm_srange_components:
   - '$ANALYTICS_NETWORKS'
   - '$KAFKA_BROKERS_JUMBO'
+  - '$KAFKAMON_HOSTS'
   - '$FRACK_NETWORKS'
   - '$CACHES'
   - '$WIKIKUBE_KUBEPODS_NETWORKS'
@@ -88,7 +89,6 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((netflow4002.ulsfo.wmnet)) @resolve((netflow4002.ulsfo.wmnet), AAAA))'
   - '(@resolve((netflow5002.eqsin.wmnet)) @resolve((netflow5002.eqsin.wmnet), AAAA))'
   - '(@resolve((netflow6001.drmrs.wmnet)) @resolve((netflow6001.drmrs.wmnet), AAAA))'
-  - '(@resolve((kafkamon1002.eqiad.wmnet)) @resolve((kafkamon1002.eqiad.wmnet), AAAA))'
   - '(@resolve((webperf2003.codfw.wmnet)) @resolve((webperf2003.codfw.wmnet), AAAA))'
   - '(@resolve((webperf1003.eqiad.wmnet)) @resolve((webperf1003.eqiad.wmnet), AAAA))'
   - '(@resolve((logstash1023.eqiad.wmnet)) @resolve((logstash1023.eqiad.wmnet), AAAA))'

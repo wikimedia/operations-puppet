@@ -52,6 +52,7 @@ dse_kubepods_networks = scope.lookupvar('network::constants::dse_kubepods_networ
 @def $KAFKA_BROKERS_ANALYTICS = (<%- @kafka_brokers_analytics.each do |ip| -%><%= ip %> <% end -%>);
 @def $KAFKA_BROKERS_JUMBO = (<%- @kafka_brokers_jumbo.each do |ip| -%><%= ip %> <% end -%>);
 @def $KAFKA_BROKERS_LOGGING = (<%- @kafka_brokers_logging.each do |ip| -%><%= ip %> <% end -%>);
+@def $KAFKAMON_HOSTS = (<%- @kafkamon_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $ZOOKEEPER_HOSTS_MAIN = (<%- @zookeeper_hosts_main.each do |ip| -%><%= ip %> <% end -%>);
 @def $DRUID_PUBLIC_HOSTS = (<%- @druid_public_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $LABSTORE_HOSTS = (<%- @labstore_hosts.each do |ip| -%><%= ip %> <% end -%>);

@@ -1576,6 +1576,12 @@ kafka_brokers_logging:
 - 2620:0:860:103:10:192:32:180 # logstash2002.codfw.wmnet
 - 10.192.48.131                # logstash2003.codfw.wmnet
 - 2620:0:860:104:10:192:48:131 # logstash2003.codfw.wmnet
+kafkamon_hosts:
+- 10.64.0.110                  # kafkamon1002.eqiad.wmnet
+- 2620:0:861:101:10:64:0:110   # kafkamon1002.eqiad.wmnet
+- 10.192.0.91                  # kafkamon2002.codfw.wmnet
+- 2620:0:860:101:10:192:0:91   # kafkamon2002.codfw.wmnet
+
 zookeeper_hosts_main:
 - 10.64.0.207                  # conf1007.eqiad.wmnet
 - 2620:0:861:101:10:64:0:207   # conf1007.eqiad.wmnet
