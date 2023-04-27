@@ -99,6 +99,8 @@
 #        to 7 to bypass ES client compatibility checks.
 #        NOTE: This change is only available in OpenSearch 1.0.x and is only
 #              to aid in migrating from an ES 7.10 cluster
+# - $disable_security_plugin: Disables the security plugin.  Warning: This will set an
+#        invalid option if the security plugin is not installed. Default false.
 # == Sample usage:
 #
 #   class { "opensearch":
@@ -158,6 +160,7 @@ define opensearch::instance(
     Optional[Stdlib::Port]      $tls_ro_port                        = undef,
     Optional[Array[String]]     $indices_to_monitor                 = undef,
     Boolean                     $compatibility_mode                 = false,
+    Boolean                     $disable_security_plugin            = false,
 ) {
 
     # Check arguments

@@ -228,3 +228,8 @@ ltr.caches.max_mem: <%= @ltr_cache_size %>
 # This change is only available in OpenSearch 1.0.x and is only to aid in migrating from an ES 7.10 cluster
 compatibility.override_main_response_version: true
 <% end %>
+
+<%- if @disable_security_plugin -%>
+# Disables the security plugin and the requirement for intra-cluster TLS.
+plugins.security.disabled: true
+<%- end -%>
