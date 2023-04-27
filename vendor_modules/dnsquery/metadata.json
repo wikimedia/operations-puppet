@@ -1,6 +1,6 @@
 {
   "name": "puppet-dnsquery",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": "Vox Pupuli",
   "summary": "Query functions for DNS",
   "license": "MIT",
@@ -10,7 +10,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.1.0 < 8.0.0"
+      "version_requirement": ">= 7.0.0 < 8.0.0"
     }
   ],
   "dependencies": [

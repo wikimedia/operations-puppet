@@ -10,6 +10,24 @@ describe 'dnsquery::ptr' do
     expect(results).to all(be_a(String))
   end
 
+  it 'returns a list of PTR results when doing a lookup with update nameserver' do
+    results = subject.execute('8.8.8.8.in-addr.arpa', { 'nameserver' => ['8.8.8.8'] })
+    expect(results).to be_a Array
+    expect(results).to all(be_a(String))
+  end
+
+  it 'returns a list of PTR results when doing a lookup with update ndots' do
+    results = subject.execute('8.8.8.8.in-addr.arpa', { 'nameserver' => '8.8.8.8', 'ndots' => 1 })
+    expect(results).to be_a Array
+    expect(results).to all(be_a(String))
+  end
+
+  it 'returns a list of PTR results when doing a lookup with update search' do
+    results = subject.execute('8.8.8.8.in-addr', { 'nameserver' => '8.8.8.8', 'search' => ['arpa'] })
+    expect(results).to be_a Array
+    expect(results).to all(be_a(String))
+  end
+
   it 'returns lambda value if result is empty' do
     is_expected.to(
       run.

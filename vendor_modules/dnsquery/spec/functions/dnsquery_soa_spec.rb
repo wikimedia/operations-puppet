@@ -23,6 +23,42 @@ describe 'dnsquery::soa' do
     expect(results['serial']).to be_a Integer
   end
 
+  it 'must return a hash of SOA-records parts when doing a lookup with update nameserver' do
+    results = subject.execute('google.com', { 'nameserver' => ['8.8.8.8'] })
+    expect(results).to be_a Hash
+    expect(results['expire']).to be_a Integer
+    expect(results['minimum']).to be_a Integer
+    expect(results['mname']).to be_a String
+    expect(results['refresh']).to be_a Integer
+    expect(results['retry']).to be_a Integer
+    expect(results['rname']).to be_a String
+    expect(results['serial']).to be_a Integer
+  end
+
+  it 'must return a hash of SOA-records parts when doing a lookup with update ndots' do
+    results = subject.execute('google.com', { 'nameserver' => '8.8.8.8', 'ndots' => 1 })
+    expect(results).to be_a Hash
+    expect(results['expire']).to be_a Integer
+    expect(results['minimum']).to be_a Integer
+    expect(results['mname']).to be_a String
+    expect(results['refresh']).to be_a Integer
+    expect(results['retry']).to be_a Integer
+    expect(results['rname']).to be_a String
+    expect(results['serial']).to be_a Integer
+  end
+
+  it 'must return a hash of SOA-records parts when doing a lookup with update search' do
+    results = subject.execute('google', { 'nameserver' => '8.8.8.8', 'search' => ['com'] })
+    expect(results).to be_a Hash
+    expect(results['expire']).to be_a Integer
+    expect(results['minimum']).to be_a Integer
+    expect(results['mname']).to be_a String
+    expect(results['refresh']).to be_a Integer
+    expect(results['retry']).to be_a Integer
+    expect(results['rname']).to be_a String
+    expect(results['serial']).to be_a Integer
+  end
+
   it 'returns lambda value if result is empty' do
     is_expected.to(
       run.

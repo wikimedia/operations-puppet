@@ -10,6 +10,12 @@ describe 'dnsquery::rlookup' do
     expect(results).to all(be_a(String))
   end
 
+  it 'returns list of results from a reverse lookup with update nameserver' do
+    results = subject.execute('8.8.4.4', { 'nameserver' => '8.8.8.8' })
+    expect(results).to be_a Array
+    expect(results).to all(be_a(String))
+  end
+
   it 'returns lambda value if result is empty' do
     is_expected.to(
       run.

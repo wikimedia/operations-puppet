@@ -4,7 +4,30 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v4.0.0](https://github.com/voxpupuli/puppet-dnsquery/tree/v4.0.0) (2023-02-17)
+## [v5.0.0](https://github.com/voxpupuli/puppet-dnsquery/tree/v5.0.0) (2023-04-24)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-dnsquery/compare/v4.0.0...v5.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#136](https://github.com/voxpupuli/puppet-dnsquery/pull/136) ([bastelfreak](https://github.com/bastelfreak))
+- drop deprecated functions [\#133](https://github.com/voxpupuli/puppet-dnsquery/pull/133) ([b4ldr](https://github.com/b4ldr))
+- TXT: join text records [\#127](https://github.com/voxpupuli/puppet-dnsquery/pull/127) ([b4ldr](https://github.com/b4ldr))
+
+**Implemented enhancements:**
+
+- config\_info: Allow users to override the resolver config [\#129](https://github.com/voxpupuli/puppet-dnsquery/pull/129) ([b4ldr](https://github.com/b4ldr))
+
+**Fixed bugs:**
+
+- fix deprecation warnings [\#132](https://github.com/voxpupuli/puppet-dnsquery/pull/132) ([nferch](https://github.com/nferch))
+- dnsquery::lookup: update lookup so it always resolves AAAA records [\#131](https://github.com/voxpupuli/puppet-dnsquery/pull/131) ([b4ldr](https://github.com/b4ldr))
+
+**Closed issues:**
+
+- dnsquery::lookup dosen't return AAAA if the local machine has no ipv6 [\#130](https://github.com/voxpupuli/puppet-dnsquery/issues/130)
+
+## [v4.0.0](https://github.com/voxpupuli/puppet-dnsquery/tree/v4.0.0) (2023-02-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-dnsquery/compare/3.0.0...v4.0.0)
 
