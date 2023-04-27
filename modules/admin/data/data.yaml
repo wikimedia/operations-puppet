@@ -402,7 +402,7 @@ groups:
               damilare, appledora, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno]
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -755,7 +755,7 @@ groups:
     gid: 784
     members: [addshore, goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, sihe, ollieshotton,
-              muja]
+              muja, andrewtavis-wmde]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -5857,6 +5857,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBf4B0qbsjMS/bbYiDVoYhrnRRe1y30/JOvjpo4cZqix ppenloglou-ctr@wikimedia.org
+  andrewtavis-wmde:
+    ensure: present
+    realname: Andrew McAllister
+    email: andrew.mcallister@wikimedia.de
+    uid: 44010
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0TtVLJ3ZBLmnxOiFawTtOAoitHj9BpLRyXJZRuG6CI+6pco37i1wqHYCwOpc4jZg8fkPEN0k8lWLkFSzqKt/ZIb44o2g6ntKfzTKl9nsq6hbvPhjELxoU1KvnPeolz5e6d7mkL6uZlOS28zw5QutrjGlfFOREAeitMDkDXJ5YcJOq9/KDtePinHfyqb4djHdA5uuFM4ml4oD/u6FSSSRTUTN3CPbdramhRyfkDDZzBz60td8XTPgK+l7xVqQyQYWQZpeVufRVwYCq7uNMrFYuMI2M/Nuux3YUhq/1ats0LJRUJl1TOmY4g5kY1ltK2ARPsbM3MPc1rJAS2pFw4n8lyYgnZAkju7X0/qqsTfzf3jSh2e2tyFUir3pprMN14QA7PZfLlpZXPMtIKqDmUDVU260XiVDzqdFzUQKWYM0/kEeQ+6wiTfOkpZjP0weaJxj55x8WBVX/cKmVXYjSGiXX+SRPfKViFTg00RzpFGULnnC000KC4ThOiypBUjKmK9fuhVL0+RpPS5+SvHkB4ji4/6tKVm0ec1XL73235buKTwXgb8cLoJGtNZu5dQqesnJeaa0FaYqxXlRqId9WHAioD/IQn0B2WloPsjHH9V+09ICRm2qsScyG2uCG0svdcWSe4sVXRY6/49H0lMGQAVnLoNm9s2trBu/TEPGWuxQLtQ== andrew.mcallister@wikimedia.de
 
 ldap_only_users:
   adavenport:
@@ -6651,10 +6660,6 @@ ldap_only_users:
     ensure: present
     realname: Kamil Bach
     email: kbach@wikimedia.org
-  andrewtavis-wmde:
-    ensure: present
-    realname: Andrew McAllister
-    email: andrew.mcallister@wikimedia.de
   cec:
     ensure: present
     realname: Carrie Coxwell
