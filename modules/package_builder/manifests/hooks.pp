@@ -23,6 +23,12 @@ class package_builder::hooks(
         basepath     => $basepath,
     }
 
+    package_builder::pbuilder_hook { 'bookworm':
+        distribution => 'bookworm',
+        components   => 'main',
+        basepath     => $basepath,
+    }
+
     package_builder::pbuilder_hook { 'sid':
         distribution => 'sid',
         components   => 'main',
