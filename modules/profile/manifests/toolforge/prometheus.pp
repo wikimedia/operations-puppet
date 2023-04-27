@@ -3,13 +3,14 @@
 # native k8s support.
 
 class profile::toolforge::prometheus (
-    Stdlib::Fqdn               $k8s_apiserver_fqdn     = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
-    Stdlib::Port               $k8s_apiserver_port     = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
-    String                     $region                 = lookup('profile::openstack::eqiad1::region'),
-    Stdlib::Fqdn               $keystone_api_fqdn      = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    String                     $observer_password      = lookup('profile::openstack::eqiad1::observer_password'),
-    String                     $observer_user          = lookup('profile::openstack::base::observer_user'),
-    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
+    Stdlib::Fqdn               $k8s_apiserver_fqdn                 = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port               $k8s_apiserver_port                 = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
+    String                     $region                             = lookup('profile::openstack::eqiad1::region'),
+    Stdlib::Fqdn               $keystone_api_fqdn                  = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
+    String                     $observer_password                  = lookup('profile::openstack::eqiad1::observer_password'),
+    String                     $observer_user                      = lookup('profile::openstack::base::observer_user'),
+    Optional[Stdlib::Datasize] $storage_retention_size             = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
+    Array[Stdlib::HTTPUrl]     $probes_pingthing_http_check_urls   = lookup('profile::toolforge::prometheus::probes_pingthing_http_check_urls', { 'default_value' => [] }),
 ) {
     # Bullseye VMs (currently only in toolsbeta) have their storage mounted via Cinder
     if debian::codename::le('buster') {
@@ -59,6 +60,14 @@ class profile::toolforge::prometheus (
         'insecure_skip_verify' => true,
         'cert_file'            => $cert_pub,
         'key_file'             => $cert_priv,
+    }
+
+    file {"${targets_path}/probes_pingthing_http_check_urls.yaml":
+        backup  => false,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => to_yaml([{'targets' => $probes_pingthing_http_check_urls}]),
     }
 
     $openstack_jobs = [
@@ -285,6 +294,42 @@ class profile::toolforge::prometheus (
               { 'files' => [ "${targets_path}/probes-custom_*.yaml" ] }
             ],
             'relabel_configs' => $probes_relabel_configs,
+        },
+        {
+            'job_name'        => 'probes/pingthing',
+            'metrics_path'    => '/probe',
+            'params'          => {
+                'module' => [ 'http_connect_23xx' ],
+            },
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/probes_pingthing_http_check_urls.yaml" ] }
+            ],
+            'relabel_configs'=> [
+                {
+                    'source_labels' => ['__address__'],
+                    'regex'         => '(.*)',
+                    'target_label'  => 'url',
+                },
+                {
+                    'source_labels' => ['__address__'],
+                    'regex'         => '([^@]+)',
+                    'target_label'  => '__param_target',
+                },
+                {
+                    'source_labels' => ['__address__'],
+                    'regex'         => '(.+)@(.+)',
+                    'target_label'  => '__param_target',
+                    'replacement'   => '${2}', # lint:ignore:single_quote_string_with_variables
+                },
+                {
+                    'source_labels' => ['module'],
+                    'target_label'  => '__param_module',
+                },
+                {
+                    'target_label' => '__address__',
+                    'replacement'  => '127.0.0.1:9115',
+                },
+            ],
         },
     ]
 
