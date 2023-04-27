@@ -6,6 +6,9 @@ describe 'debian::codename::gt' do
       let(:facts) { os_facts }
       it { is_expected.to run.with_params('buster').and_return(false) }
       it { is_expected.to run.with_params('stretch').and_return(false) }
+      it { is_expected.to run.with_params('bullseye', 'bullseye').and_return(false) }
+      it { is_expected.to run.with_params('bullseye', 'bookworm').and_return(true) }
+      it { is_expected.to run.with_params('bullseye', 'buster').and_return(false) }
     end
   end
 end

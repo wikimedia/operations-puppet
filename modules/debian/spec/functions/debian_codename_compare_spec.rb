@@ -14,6 +14,9 @@ describe 'debian::codename::compare' do
       it { is_expected.to run.with_params('buster', '<').and_return(false) }
       it { is_expected.to run.with_params('bullseye', '<').and_return(true) }
       it { is_expected.to run.with_params('buster', '!=').and_return(false) }
+      it { is_expected.to run.with_params('buster', '<', 'bookworm').and_return(false) }
+      it { is_expected.to run.with_params('bullseye', '>', 'buster').and_return(false) }
+      it { is_expected.to run.with_params('buster', '!=', 'buster').and_return(false) }
     end
   end
 end

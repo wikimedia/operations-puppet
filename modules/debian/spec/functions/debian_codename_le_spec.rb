@@ -7,6 +7,9 @@ describe 'debian::codename::le' do
       it { is_expected.to run.with_params('buster').and_return(true) }
       it { is_expected.to run.with_params('stretch').and_return(true) }
       it { is_expected.to run.with_params('bullseye').and_return(true) }
+      it { is_expected.to run.with_params('bullseye', 'bullseye').and_return(true) }
+      it { is_expected.to run.with_params('bullseye', 'bookworm').and_return(false) }
+      it { is_expected.to run.with_params('bullseye', 'buster').and_return(true) }
     end
   end
 end
