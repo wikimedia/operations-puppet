@@ -8,6 +8,22 @@ class profile::openstack::base::envscripts(
     $wmflabsdotorg_project = lookup('profile::openstack::base::designate::wmflabsdotorg_project'),
     $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
     ) {
+    $clouds_file = '/root/.config/openstack/clouds.yaml'
+    ensure_resource('file', $clouds_file.dirname.dirname, { 'ensure' => 'directory',
+                                                            'mode' => '0700' })
+
+    ensure_resource('file', $clouds_file.dirname, { 'ensure' => 'directory',
+                                                    'mode' => '0700' })
+    concat { $clouds_file:
+        mode    => '0400'
+    }
+
+    concat::fragment { 'clouds_file_header':
+        target  => $clouds_file,
+        order   => '01',
+        content => inline_template('<%= "clouds:" + "\n" %>'),
+    }
+
 
     # Specify the novaadmin user in the 'admin' project. This gets us
     #  a project-scoped token
@@ -22,6 +38,8 @@ class profile::openstack::base::envscripts(
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/novaenv.sh',
         yaml_mode              => '0440',
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
     }
 
     # If we specify a domain but not a project, we should
@@ -35,10 +53,12 @@ class profile::openstack::base::envscripts(
         keystone_api_interface => 'admin',
         os_user                => 'novaadmin',
         os_password            => $ldap_user_pass,
-        os_project             => 'UNSET',
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/keystoneenv.sh',
         yaml_mode              => '0440',
+        clouds_file            => $clouds_file,
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
     }
 
     # If we don't specify a project or a domain we should get
@@ -50,12 +70,10 @@ class profile::openstack::base::envscripts(
         keystone_api_interface => 'admin',
         os_user                => 'novaadmin',
         os_password            => $ldap_user_pass,
-        os_project             => 'UNSET',
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/ossystemenv.sh',
         yaml_mode              => '0440',
-        os_project_domain_id   => 'UNSET',
-        os_user_domain_id      => 'UNSET',
+        clouds_file            => $clouds_file
     }
 
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
@@ -68,6 +86,9 @@ class profile::openstack::base::envscripts(
         os_project             => $wmflabsdotorg_project,
         scriptpath             => '/root/wmflabsorg-domainadminenv.sh',
         yaml_mode              => '0440',
+        clouds_file            => $clouds_file,
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
     }
 
     # Creds for a mortal user with membership only in select projects.
@@ -82,5 +103,8 @@ class profile::openstack::base::envscripts(
         os_project             => 'admin-monitoring',
         scriptpath             => '/usr/local/bin/osscanaryenv.sh',
         yaml_mode              => '0440',
+        clouds_file            => $clouds_file,
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
     }
 }

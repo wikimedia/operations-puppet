@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+  <%= @title %>:
+    auth:
+      auth_url: https://<%= @keystone_api_fqdn %>:<%= @keystone_api_port %>/v3
+      username: <%= @os_user %>
+      password: <%= @os_password %>
+<% if defined?(@os_project) -%>
+      project_id: <%= @os_project %>
+<% end -%>
+<% if defined?(@os_user_domain_id) -%>
+      user_domain_id: <%= @os_user_domain_id %>
+<% end -%>
+<% if defined?(@os_project_domain_id) -%>
+      project_domain_id: <%= @os_project_domain_id %>
+<% end -%>
+    region_name: <%= @region %>
+    identity_api_version: 3
