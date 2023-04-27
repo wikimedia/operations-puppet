@@ -51,8 +51,6 @@ class profile::monitoring (
     Array[Stdlib::Host] $monitoring_hosts           = lookup('profile::monitoring::monitoring_hosts'),
     Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::raid_write_cache_policy')
 ) {
-    ensure_packages('ruby-safe-yaml')
-
     include profile::puppet::agent
     $puppet_interval = $profile::puppet::agent::interval
 
