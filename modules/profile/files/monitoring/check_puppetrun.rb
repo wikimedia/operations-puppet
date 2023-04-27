@@ -11,11 +11,7 @@
 require 'fileutils'
 require 'optparse'
 require 'puppet'
-# safe-yaml has a dependency on time which is not fixed until 1.0.5
-# https://github.com/dtao/safe_yaml/issues/80
-# instead of patching safe_yaml we declare the requirement here
-require 'time'
-require 'safe_yaml'
+require 'yaml'
 
 PRINT_FAILED_RESOURCES_NO = 3 # Number of failed resources to print. Don't set this high
 Puppet.initialize_settings
@@ -37,7 +33,6 @@ fail_grace = 86_400  # 24 hours
 enabled_only = false
 # init variable
 first_fail_time = Time.now
-SafeYAML::OPTIONS[:default_mode] = :safe
 
 opt = OptionParser.new
 
@@ -94,28 +89,28 @@ end
 
 if File.exists?(adminlockfile)
        enabled = false
-       disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
+       disabled_message = YAML.safe_load(File.read(adminlockfile))["disabled_message"]
        disabled_time = File.stat(adminlockfile).ctime
 end
 
 if File.exists?(summaryfile)
     begin
-        summary = YAML.load_file(summaryfile)
-        lastrun = summary["time"]["last_run"]
+      summary = YAML.safe_load(File.read(summaryfile))
+      lastrun = summary["time"]["last_run"]
 
         # machines that outright failed to run like on missing dependencies
         # are treated as huge failures. The yaml file will be valid but
         # it wont have anything but last_run in it
-        if summary.include?("events")
-            failcount = summary["events"]["failure"]
-        else
-            failcount = :failed
-        end
+      if summary.include?("events")
+          failcount = summary["events"]["failure"]
+      else
+          failcount = :failed
+      end
 
-        if failcount.zero? && summary["resources"]["total"].zero?
-            # When Puppet fails due to a dependency cycle all counters are zero, treat it as a failure.
-            failcount = :failed_no_resources
-        end
+      if failcount.zero? && summary["resources"]["total"].zero?
+          # When Puppet fails due to a dependency cycle all counters are zero, treat it as a failure.
+          failcount = :failed_no_resources
+      end
     rescue
         failcount = :failed_to_parse_summary_file
     end
@@ -195,13 +190,13 @@ unless enabled
 end
 
 if failcount > 0 # rubocop:disable Style/NumericPredicate
-    report = YAML.load_file(reportfile)
-    failed_resources = report["resource_statuses"].select { |_, r| r["failed"] }.map { |_, r| r["resource"] }
-    failed_resources = failed_resources[0..PRINT_FAILED_RESOURCES_NO]
-    puts "WARNING: Puppet has #{failcount} failures. " +
-        "Last run #{human_time_since_last_run} ago with #{failcount} failures. " +
-        "Failed resources (up to #{PRINT_FAILED_RESOURCES_NO} shown): #{failed_resources.join','}"
-    exit 1
+  report = YAML.safe_load(File.read(reportfile))
+  failed_resources = report["resource_statuses"].select { |_, r| r["failed"] }.map { |_, r| r["resource"] }
+  failed_resources = failed_resources[0..PRINT_FAILED_RESOURCES_NO]
+  puts "WARNING: Puppet has #{failcount} failures. " +
+      "Last run #{human_time_since_last_run} ago with #{failcount} failures. " +
+      "Failed resources (up to #{PRINT_FAILED_RESOURCES_NO} shown): #{failed_resources.join','}"
+  exit 1
 end
 
 if time_since_last_run >= crit
