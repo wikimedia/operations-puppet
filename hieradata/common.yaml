@@ -2036,7 +2036,7 @@ swift_aux_partitions:
   - '/dev/sdb4'
 
 mediabackup:
-  batchsize: 1000
+  batchsize: 100
   storage_path: '/srv/objectstorage'
   storage_port: 9000
   console_port: 9001
