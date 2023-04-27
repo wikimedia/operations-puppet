@@ -14,6 +14,7 @@ class profile::prometheus::migration (
         auto_sync           => false,
         module_path         => '/srv',
         server_uses_stunnel => true,
+        progress            => true,
       }
     }
   }
