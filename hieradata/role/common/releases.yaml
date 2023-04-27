@@ -1,4 +1,3 @@
-profile::kubernetes::deployment_server::helm_user_group: wikidev
 profile::admin::groups:
   - releasers-blubber
   - releasers-mediawiki
@@ -9,54 +8,6 @@ profile::admin::groups:
   - contint-docker
   - contint-roots
   - deployment-jenkins
-
-profile::kubernetes::deployment_server::user_defaults:
-  group: wikidev
-  mode: "0640"
-  owner: jenkins-slave
-# Kubernetes configuration.
-# It gives access only to the staging cluster, and the "ci" namespace specifically.
-# kubernetes clusters by group.
-kubernetes::clusters:
-  main:
-    staging:
-      dc: eqiad
-      master: kubestagemaster.svc.eqiad.wmnet
-      pki_intermediate_base: wikikube_staging
-      pki_renew_seconds: 172800
-      # The following are dummy values to satisfy type checks.
-      # We don't want ci/release servers to have credentials to k8s clusters
-      # apart from staging, so we re-declare kubernetes::clusters here.
-      # A bit of context is at: https://phabricator.wikimedia.org/T288629
-      control_plane_nodes: [dummy.x.y]
-      cluster_dns: ["0.0.0.0"]
-      service_cluster_cidr:
-        v4: "127.0.0.0/8"
-        v6: "::1/128"
-      cluster_cidr:
-        v4: "127.0.0.0/8"
-        v6: "::1/128"
-      etcd_urls:
-        - https://dummy.x.y
-        - https://dummy.x.y
-        - https://dummy.x.y
-      cluster_nodes: [dummy.x.y]
-profile::kubernetes::deployment_server::services:
-  main:
-    mw-debug:
-      usernames:
-        - name: mw-debug
-      namespace: mw-debug
-    ci:
-      usernames:
-        - name: jenkins
-          group: contint-roots
-          mode: "0440"
-          kubeconfig: ci
-        # Not a real user. Just using it to ensure
-        # kube_env is properly populated.
-        - name: ci
-      namespace: ci
 
 profile::docker::engine::declare_service: false
 profile::docker::engine::settings:
