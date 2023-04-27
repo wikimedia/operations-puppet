@@ -1,1 +1,2 @@
 profile::cache::varnish::frontend::single_backend: true
+profile::cache::varnish::frontend::enable_http_redirection: false
