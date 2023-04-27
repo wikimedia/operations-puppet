@@ -1,4 +1,5 @@
 #!/usr/bin/env rspec
+# frozen_string_literal: true
 
 require 'spec_helper'
 
@@ -38,7 +39,7 @@ describe provider_class do
     describe '#resource_path' do
       it 'calls #target if no resource path block set' do
         resource = { name: 'foo' }
-        provider.expects(:target).with(resource)
+        expect(provider).to receive(:target).with(resource) # rubocop:disable RSpec/SubjectStub
         provider.resource_path(resource).should == '/foo'
       end
 
@@ -99,7 +100,7 @@ describe provider_class do
 
       it 'uses the :quoted parameter when present' do
         resource = {}
-        resource.stubs(:parameters).returns([:quoted])
+        allow(resource).to receive(:parameters).and_return([:quoted])
 
         resource[:quoted] = :single
         provider.whichquote('foo', resource).should eq("'")
@@ -142,7 +143,7 @@ describe provider_class do
 
       it 'uses the :quoted parameter when present' do
         resource = {}
-        resource.stubs(:parameters).returns([:quoted])
+        allow(resource).to receive(:parameters).and_return([:quoted])
 
         resource[:quoted] = :single
         provider.quoteit('foo', resource).should eq("'foo'")
@@ -174,40 +175,40 @@ describe provider_class do
     describe '#parsed_as?' do
       context 'when text_store is supported' do
         it 'returns false when text_store fails' do
-          Augeas.expects(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).yields(augeas_handler)
-          augeas_handler.expects(:respond_to?).with(:text_store).returns(true)
-          augeas_handler.expects(:set).with('/input', 'foo').returns(nil)
-          augeas_handler.expects(:text_store).with('Baz.lns', '/input', '/parsed').returns(false)
+          expect(Augeas).to receive(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).and_yield(augeas_handler)
+          expect(augeas_handler).to receive(:respond_to?).with(:text_store).and_return(true)
+          expect(augeas_handler).to receive(:set).with('/input', 'foo').and_return(nil)
+          expect(augeas_handler).to receive(:text_store).with('Baz.lns', '/input', '/parsed').and_return(false)
           provider.parsed_as?('foo', 'bar', 'Baz.lns').should == false
         end
 
         it 'returns false when path is not found' do
-          Augeas.expects(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).yields(augeas_handler)
-          augeas_handler.expects(:respond_to?).with(:text_store).returns(true)
-          augeas_handler.expects(:set).with('/input', 'foo').returns(nil)
-          augeas_handler.expects(:text_store).with('Baz.lns', '/input', '/parsed').returns(true)
-          augeas_handler.expects(:match).with('/parsed/bar').returns([])
+          expect(Augeas).to receive(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).and_yield(augeas_handler)
+          expect(augeas_handler).to receive(:respond_to?).with(:text_store).and_return(true)
+          expect(augeas_handler).to receive(:set).with('/input', 'foo').and_return(nil)
+          expect(augeas_handler).to receive(:text_store).with('Baz.lns', '/input', '/parsed').and_return(true)
+          expect(augeas_handler).to receive(:match).with('/parsed/bar').and_return([])
           provider.parsed_as?('foo', 'bar', 'Baz.lns').should == false
         end
 
         it 'returns true when path is found' do
-          Augeas.expects(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).yields(augeas_handler)
-          augeas_handler.expects(:respond_to?).with(:text_store).returns(true)
-          augeas_handler.expects(:set).with('/input', 'foo').returns(nil)
-          augeas_handler.expects(:text_store).with('Baz.lns', '/input', '/parsed').returns(true)
-          augeas_handler.expects(:match).with('/parsed/bar').returns(['/parsed/bar'])
+          expect(Augeas).to receive(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).and_yield(augeas_handler)
+          expect(augeas_handler).to receive(:respond_to?).with(:text_store).and_return(true)
+          expect(augeas_handler).to receive(:set).with('/input', 'foo').and_return(nil)
+          expect(augeas_handler).to receive(:text_store).with('Baz.lns', '/input', '/parsed').and_return(true)
+          expect(augeas_handler).to receive(:match).with('/parsed/bar').and_return(['/parsed/bar'])
           provider.parsed_as?('foo', 'bar', 'Baz.lns').should == true
         end
       end
 
       context 'when text_store is not supported' do
         it 'returns true if path is found in tempfile' do
-          Augeas.expects(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).yields(augeas_handler)
-          augeas_handler.expects(:respond_to?).with(:text_store).returns(false)
-          augeas_handler.expects(:text_store).never
-          augeas_handler.expects(:transform)
-          augeas_handler.expects(:load!)
-          augeas_handler.expects(:match).returns(['/files/tmp/aug_text_store20140410-8734-icc4xn/bar'])
+          expect(Augeas).to receive(:open).with(nil, nil, Augeas::NO_MODL_AUTOLOAD).and_yield(augeas_handler)
+          expect(augeas_handler).to receive(:respond_to?).with(:text_store).and_return(false)
+          expect(augeas_handler).not_to receive(:text_store)
+          expect(augeas_handler).to receive(:transform)
+          expect(augeas_handler).to receive(:load!)
+          expect(augeas_handler).to receive(:match).and_return(['/files/tmp/aug_text_store20140410-8734-icc4xn/bar'])
           provider.parsed_as?('foo', 'bar', 'Baz.lns').should == true
         end
       end
@@ -231,8 +232,8 @@ describe provider_class do
       it 'calls #attr_aug_reader and #attr_aug_writer' do
         name = :foo
         opts = { bar: 'baz' }
-        provider.expects(:attr_aug_reader).with(name, opts)
-        provider.expects(:attr_aug_writer).with(name, opts)
+        expect(provider).to receive(:attr_aug_reader).with(name, opts) # rubocop:disable RSpec/SubjectStub
+        expect(provider).to receive(:attr_aug_writer).with(name, opts) # rubocop:disable RSpec/SubjectStub
         provider.attr_aug_accessor(name, opts)
       end
     end
@@ -296,58 +297,58 @@ describe provider_class do
 
       it 'adds libdir/augeas/lenses/ to the loadpath if it exists' do
         plugindir = File.join(Puppet[:libdir], 'augeas', 'lenses')
-        File.expects(:exist?).with(plugindir).returns(true)
+        expect(File).to receive(:exist?).with(plugindir).and_return(true)
         provider.send(:loadpath).should == plugindir
       end
     end
 
     describe '#augopen' do
-      before(:each) do
-        provider.expects(:augsave!).never
+      before do
+        expect(provider).not_to receive(:augsave!) # rubocop:disable RSpec/SubjectStub
       end
 
       context 'on Puppet < 3.4.0' do
-        before :each do
-          provider.stubs(:supported?).with(:post_resource_eval).returns(false)
+        before do
+          allow(provider).to receive(:supported?).with(:post_resource_eval).and_return(false) # rubocop:disable RSpec/SubjectStub
         end
 
         it 'calls Augeas#close when given a block' do
           provider.augopen(resource) do |aug|
-            aug.expects(:close)
+            expect(aug).to receive(:close)
           end
         end
 
         it 'does not call Augeas#close when not given a block' do
-          Augeas.any_instance.expects(:close).never # rubocop:disable RSpec/AnyInstance
+          expect(Augeas.any_instance).not_to receive(:close) # rubocop:disable RSpec/AnyInstance
           provider.augopen(resource)
         end
       end
 
       context 'on Puppet >= 3.4.0' do
-        before :each do
-          provider.stubs(:supported?).with(:post_resource_eval).returns(true)
+        before do
+          allow(provider).to receive(:supported?).with(:post_resource_eval).and_return(true) # rubocop:disable RSpec/SubjectStub
         end
 
         it 'does not call Augeas#close when given a block' do
-          Augeas.any_instance.expects(:close).never # rubocop:disable RSpec/AnyInstance
+          expect(Augeas.any_instance).not_to receive(:close) # rubocop:disable RSpec/AnyInstance
           provider.augopen(resource)
         end
 
         it 'calls Augeas#close when calling post_resource_eval' do
           provider.augopen(resource) do |aug|
-            aug.expects(:close)
+            expect(aug).to receive(:close)
             provider.post_resource_eval
           end
         end
       end
 
       it 'calls #setvars when given a block' do
-        provider.expects(:setvars)
+        expect(provider).to receive(:setvars) # rubocop:disable RSpec/SubjectStub
         provider.augopen(resource) { |aug| }
       end
 
       it 'does not call #setvars when not given a block' do
-        provider.expects(:setvars).never
+        expect(provider).not_to receive(:setvars) # rubocop:disable RSpec/SubjectStub
         provider.augopen(resource)
       end
 
@@ -362,77 +363,77 @@ describe provider_class do
 
     describe '#augopen!' do
       context 'on Puppet < 3.4.0' do
-        before :each do
-          provider.stubs(:supported?).with(:post_resource_eval).returns(false)
+        before do
+          allow(provider).to receive(:supported?).with(:post_resource_eval).and_return(false) # rubocop:disable RSpec/SubjectStub
         end
 
         it 'calls Augeas#close when given a block' do
           provider.augopen!(resource) do |aug|
-            aug.expects(:close)
+            expect(aug).to receive(:close)
           end
         end
 
         it 'does not call Augeas#close when not given a block' do
-          Augeas.any_instance.expects(:close).never # rubocop:disable RSpec/AnyInstance
+          expect(Augeas.any_instance).not_to receive(:close) # rubocop:disable RSpec/AnyInstance
           provider.augopen!(resource)
         end
       end
 
       context 'on Puppet >= 3.4.0' do
-        before :each do
-          provider.stubs(:supported?).with(:post_resource_eval).returns(true)
+        before do
+          allow(provider).to receive(:supported?).with(:post_resource_eval).and_return(true) # rubocop:disable RSpec/SubjectStub
         end
 
         it 'does not call Augeas#close when given a block' do
-          Augeas.any_instance.expects(:close).never # rubocop:disable RSpec/AnyInstance
+          expect(Augeas.any_instance).not_to receive(:close) # rubocop:disable RSpec/AnyInstance
           provider.augopen!(resource)
         end
       end
 
       it 'calls #setvars when given a block' do
-        provider.expects(:setvars)
+        expect(provider).to receive(:setvars) # rubocop:disable RSpec/SubjectStub
         provider.augopen!(resource) { |aug| }
       end
 
       it 'does not call #setvars when not given a block' do
-        provider.expects(:setvars).never
+        expect(provider).not_to receive(:setvars) # rubocop:disable RSpec/SubjectStub
         provider.augopen!(resource)
       end
 
       context 'on Puppet < 3.4.0' do
-        before :each do
-          provider.stubs(:supported?).with(:post_resource_eval).returns(false)
+        before do
+          allow(provider).to receive(:supported?).with(:post_resource_eval).and_return(false) # rubocop:disable RSpec/SubjectStub
         end
 
         it 'calls #augsave when given a block' do
-          provider.expects(:augsave!)
+          expect(provider).to receive(:augsave!) # rubocop:disable RSpec/SubjectStub
           provider.augopen!(resource) { |aug| }
         end
 
         it 'does not call #augsave when not given a block' do
-          provider.expects(:augsave!).never
+          expect(provider).not_to receive(:augsave!) # rubocop:disable RSpec/SubjectStub
           provider.augopen!(resource)
         end
       end
 
       context 'on Puppet >= 3.4.0' do
-        before :each do
-          provider.stubs(:supported?).with(:post_resource_eval).returns(true)
+        before do
+          allow(provider).to receive(:supported?).with(:post_resource_eval).and_return(true) # rubocop:disable RSpec/SubjectStub
         end
 
         it 'does not call #augsave when given a block' do
-          provider.expects(:augsave!).never
+          expect(provider).not_to receive(:augsave!) # rubocop:disable RSpec/SubjectStub
           provider.augopen!(resource) { |aug| }
         end
 
         it 'does not call #augsave when not given a block' do
-          provider.expects(:augsave!).never
+          expect(provider).not_to receive(:augsave!) # rubocop:disable RSpec/SubjectStub
           provider.augopen!(resource)
         end
 
         it 'calls Augeas#close when calling post_resource_eval' do
           provider.augopen(resource) do |aug|
-            aug.expects(:close)
+            expect(aug).to receive(:close)
             provider.post_resource_eval
           end
         end
@@ -448,11 +449,11 @@ describe provider_class do
 
       context 'when raising an exception in the block' do
         it 'toes raise the right exception' do
-          expect {
+          expect do
             provider.augopen! do |_aug|
               raise Puppet::Error, 'My error'
             end
-          }.to raise_error Puppet::Error, 'My error'
+          end.to raise_error Puppet::Error, 'My error'
         end
       end
     end
@@ -461,9 +462,29 @@ describe provider_class do
       it 'prints /augeas//error on save' do
         provider.augopen(resource) do |aug|
           # Prepare an invalid save
-          provider.stubs(:debug)
+          allow(provider).to receive(:debug) # rubocop:disable RSpec/SubjectStub
           aug.rm("/files#{thetarget}/*/ipaddr").should_not eq(0)
           -> { provider.augsave!(aug) }.should raise_error Augeas::Error, %r{Failed to save Augeas tree}
+        end
+      end
+
+      describe 'with reload' do
+        it 'is expected to call #load! once with augeas < 1.13.0' do
+          provider.augopen(resource) do |aug|
+            allow(provider).to receive(:aug_version).twice.and_return '1.12.0' # rubocop:disable RSpec/SubjectStub
+            expect(aug).to receive(:load!).once
+            aug.set("/files#{thetarget}/dummy")
+            provider.augsave!(aug, true)
+          end
+        end
+
+        it 'is expected to call #load! twice with augeas >= 1.13.0' do
+          provider.augopen(resource) do |aug|
+            allow(provider).to receive(:aug_version).twice.and_return '1.13.0' # rubocop:disable RSpec/SubjectStub
+            expect(aug).to receive(:load!).twice
+            aug.set("/files#{thetarget}/dummy")
+            provider.augsave!(aug, true)
+          end
         end
       end
     end
@@ -471,24 +492,24 @@ describe provider_class do
     describe '#path_label' do
       it 'uses Augeas#label when available' do
         provider.augopen(resource) do |aug|
-          aug.expects(:respond_to?).with(:label).returns true
-          aug.expects(:label).with('/files/foo[2]').returns 'foo'
+          expect(aug).to receive(:respond_to?).with(:label).and_return true
+          expect(aug).to receive(:label).with('/files/foo[2]').and_return 'foo'
           provider.path_label(aug, '/files/foo[2]').should == 'foo'
         end
       end
 
       it 'emulates Augeas#label when it is not available' do
         provider.augopen(resource) do |aug|
-          aug.expects(:respond_to?).with(:label).returns false
-          aug.expects(:label).with('/files/bar[4]').never
+          expect(aug).to receive(:respond_to?).with(:label).and_return false
+          expect(aug).not_to receive(:label).with('/files/bar[4]')
           provider.path_label(aug, '/files/bar[4]').should == 'bar'
         end
       end
 
       it 'emulates Augeas#label when no label is found in the tree' do
         provider.augopen(resource) do |aug|
-          aug.expects(:respond_to?).with(:label).returns true
-          aug.expects(:label).with('/files/baz[15]').returns nil
+          expect(aug).to receive(:respond_to?).with(:label).and_return true
+          expect(aug).to receive(:label).with('/files/baz[15]').and_return nil
           provider.path_label(aug, '/files/baz[15]').should == 'baz'
         end
       end
@@ -497,18 +518,18 @@ describe provider_class do
     describe '#setvars' do
       it 'calls Augeas#defnode to set $target, Augeas#defvar to set $resource and Augeas#set to set /augeas/context when resource is passed' do
         provider.augopen(resource) do |aug|
-          aug.expects(:context=).with("/files#{thetarget}")
-          aug.expects(:defnode).with('target', "/files#{thetarget}", nil)
-          provider.expects(:resource_path).with(resource).returns('/files/foo')
-          aug.expects(:defvar).with('resource', '/files/foo')
+          expect(aug).to receive(:context=).with("/files#{thetarget}")
+          expect(aug).to receive(:defnode).with('target', "/files#{thetarget}", nil)
+          expect(provider).to receive(:resource_path).with(resource).and_return('/files/foo') # rubocop:disable RSpec/SubjectStub
+          expect(aug).to receive(:defvar).with('resource', '/files/foo')
           provider.setvars(aug, resource)
         end
       end
 
       it 'calls Augeas#defnode to set $target but not $resource when no resource is passed' do
         provider.augopen(resource) do |aug|
-          aug.expects(:defnode).with('target', '/files/foo', nil)
-          aug.expects(:defvar).never
+          expect(aug).to receive(:defnode).with('target', '/files/foo', nil)
+          expect(aug).not_to receive(:defvar)
           provider.setvars(aug)
         end
       end
@@ -519,8 +540,8 @@ describe provider_class do
         provider.attr_aug_reader(:foo, {})
         provider.method_defined?('attr_aug_reader_foo').should be true
 
-        Augeas.any_instance.expects(:get).with('$resource/foo').returns('bar') # rubocop:disable RSpec/AnyInstance
         provider.augopen(resource) do |aug|
+          expect(aug).to receive(:get).with('$resource/foo').and_return('bar')
           provider.attr_aug_reader_foo(aug).should == 'bar'
         end
       end
@@ -530,8 +551,8 @@ describe provider_class do
         provider.method_defined?('attr_aug_reader_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:get).with('$resource/foo').returns('baz,bazz')
-          provider.attr_aug_reader_foo(aug).should == ['baz', 'bazz']
+          expect(aug).to receive(:get).with('$resource/foo').and_return('baz,bazz')
+          provider.attr_aug_reader_foo(aug).should == %w[baz bazz]
         end
       end
 
@@ -541,10 +562,10 @@ describe provider_class do
 
         rpath = "/files#{thetarget}/test/foo"
         provider.augopen(resource) do |aug|
-          aug.expects(:match).with('$resource/foo').returns(["#{rpath}[1]", "#{rpath}[2]"])
-          aug.expects(:get).with("#{rpath}[1]").returns('baz')
-          aug.expects(:get).with("#{rpath}[2]").returns('bazz')
-          provider.attr_aug_reader_foo(aug).should == ['baz', 'bazz']
+          expect(aug).to receive(:match).with('$resource/foo').and_return(["#{rpath}[1]", "#{rpath}[2]"])
+          expect(aug).to receive(:get).with("#{rpath}[1]").and_return('baz')
+          expect(aug).to receive(:get).with("#{rpath}[2]").and_return('bazz')
+          provider.attr_aug_reader_foo(aug).should == %w[baz bazz]
         end
       end
 
@@ -554,13 +575,13 @@ describe provider_class do
 
         rpath = "/files#{thetarget}/test/foo"
         provider.augopen(resource) do |aug|
-          aug.expects(:match).with('$resource/foo').returns(["#{rpath}[1]", "#{rpath}[2]"])
-          aug.expects(:match).with("#{rpath}[1]/*[label()=~regexp('[0-9]+')]").returns(["#{rpath}[1]/1"])
-          aug.expects(:get).with("#{rpath}[1]/1").returns('val11')
-          aug.expects(:match).with("#{rpath}[2]/*[label()=~regexp('[0-9]+')]").returns(["#{rpath}[2]/1", "#{rpath}[2]/2"])
-          aug.expects(:get).with("#{rpath}[2]/1").returns('val21')
-          aug.expects(:get).with("#{rpath}[2]/2").returns('val22')
-          provider.attr_aug_reader_foo(aug).should == ['val11', 'val21', 'val22']
+          expect(aug).to receive(:match).with('$resource/foo').and_return(["#{rpath}[1]", "#{rpath}[2]"])
+          expect(aug).to receive(:match).with("#{rpath}[1]/*[label()=~regexp('[0-9]+')]").and_return(["#{rpath}[1]/1"])
+          expect(aug).to receive(:get).with("#{rpath}[1]/1").and_return('val11')
+          expect(aug).to receive(:match).with("#{rpath}[2]/*[label()=~regexp('[0-9]+')]").and_return(["#{rpath}[2]/1", "#{rpath}[2]/2"])
+          expect(aug).to receive(:get).with("#{rpath}[2]/1").and_return('val21')
+          expect(aug).to receive(:get).with("#{rpath}[2]/2").and_return('val22')
+          provider.attr_aug_reader_foo(aug).should == %w[val11 val21 val22]
         end
       end
 
@@ -570,20 +591,20 @@ describe provider_class do
 
         rpath = "/files#{thetarget}/test/foo"
         provider.augopen(resource) do |aug|
-          aug.expects(:match).with('$resource/foo').returns(["#{rpath}[1]", "#{rpath}[2]"])
-          aug.expects(:match).with("#{rpath}[1]/sl").returns(["#{rpath}[1]/sl"])
-          aug.expects(:get).with("#{rpath}[1]/sl").returns('val11')
-          aug.expects(:match).with("#{rpath}[2]/sl").returns(["#{rpath}[2]/sl[1]", "#{rpath}[2]/sl[2]"])
-          aug.expects(:get).with("#{rpath}[2]/sl[1]").returns('val21')
-          aug.expects(:get).with("#{rpath}[2]/sl[2]").returns('val22')
-          provider.attr_aug_reader_foo(aug).should == ['val11', 'val21', 'val22']
+          expect(aug).to receive(:match).with('$resource/foo').and_return(["#{rpath}[1]", "#{rpath}[2]"])
+          expect(aug).to receive(:match).with("#{rpath}[1]/sl").and_return(["#{rpath}[1]/sl"])
+          expect(aug).to receive(:get).with("#{rpath}[1]/sl").and_return('val11')
+          expect(aug).to receive(:match).with("#{rpath}[2]/sl").and_return(["#{rpath}[2]/sl[1]", "#{rpath}[2]/sl[2]"])
+          expect(aug).to receive(:get).with("#{rpath}[2]/sl[1]").and_return('val21')
+          expect(aug).to receive(:get).with("#{rpath}[2]/sl[2]").and_return('val22')
+          provider.attr_aug_reader_foo(aug).should == %w[val11 val21 val22]
         end
       end
 
       it 'creates a class method using :hash and no sublabel' do
-        expect {
+        expect do
           provider.attr_aug_reader(:foo, type: :hash, default: 'deflt')
-        }.to raise_error(RuntimeError, %r{You must provide a sublabel})
+        end.to raise_error(RuntimeError, %r{You must provide a sublabel})
       end
 
       it 'creates a class method using :hash and sublabel' do
@@ -592,19 +613,19 @@ describe provider_class do
 
         rpath = "/files#{thetarget}/test/foo"
         provider.augopen(resource) do |aug|
-          aug.expects(:match).with('$resource/foo').returns(["#{rpath}[1]", "#{rpath}[2]"])
-          aug.expects(:get).with("#{rpath}[1]").returns('baz')
-          aug.expects(:get).with("#{rpath}[1]/sl").returns('bazval')
-          aug.expects(:get).with("#{rpath}[2]").returns('bazz')
-          aug.expects(:get).with("#{rpath}[2]/sl").returns(nil)
+          expect(aug).to receive(:match).with('$resource/foo').and_return(["#{rpath}[1]", "#{rpath}[2]"])
+          expect(aug).to receive(:get).with("#{rpath}[1]").and_return('baz')
+          expect(aug).to receive(:get).with("#{rpath}[1]/sl").and_return('bazval')
+          expect(aug).to receive(:get).with("#{rpath}[2]").and_return('bazz')
+          expect(aug).to receive(:get).with("#{rpath}[2]/sl").and_return(nil)
           provider.attr_aug_reader_foo(aug).should == { 'baz' => 'bazval', 'bazz' => 'deflt' }
         end
       end
 
       it 'creates a class method using wrong type' do
-        expect {
+        expect do
           provider.attr_aug_reader(:foo, type: :foo)
-        }.to raise_error(RuntimeError, %r{Invalid type: foo})
+        end.to raise_error(RuntimeError, %r{Invalid type: foo})
       end
     end
 
@@ -614,9 +635,9 @@ describe provider_class do
         provider.method_defined?('attr_aug_writer_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:set).with('$resource/foo', 'bar')
+          expect(aug).to receive(:set).with('$resource/foo', 'bar')
           provider.attr_aug_writer_foo(aug, 'bar')
-          aug.expects(:clear).with('$resource/foo')
+          expect(aug).to receive(:clear).with('$resource/foo')
           provider.attr_aug_writer_foo(aug)
         end
       end
@@ -626,9 +647,9 @@ describe provider_class do
         provider.method_defined?('attr_aug_writer_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:set).with('$resource/foo', 'bar')
+          expect(aug).to receive(:set).with('$resource/foo', 'bar')
           provider.attr_aug_writer_foo(aug, 'bar')
-          aug.expects(:rm).with('$resource/foo')
+          expect(aug).to receive(:rm).with('$resource/foo')
           provider.attr_aug_writer_foo(aug)
         end
       end
@@ -639,15 +660,15 @@ describe provider_class do
 
         provider.augopen(resource) do |aug|
           # one value
-          aug.expects(:set).with('$resource/foo', 'bar')
+          expect(aug).to receive(:set).with('$resource/foo', 'bar')
           provider.attr_aug_writer_foo(aug, ['bar'])
           # multiple values
-          aug.expects(:set).with('$resource/foo', 'bar,baz')
-          provider.attr_aug_writer_foo(aug, ['bar', 'baz'])
+          expect(aug).to receive(:set).with('$resource/foo', 'bar,baz')
+          provider.attr_aug_writer_foo(aug, %w[bar baz])
           # purge values
-          aug.expects(:rm).with('$resource/foo')
+          expect(aug).to receive(:rm).with('$resource/foo')
           provider.attr_aug_writer_foo(aug, [])
-          aug.expects(:rm).with('$resource/foo')
+          expect(aug).to receive(:rm).with('$resource/foo')
           provider.attr_aug_writer_foo(aug)
         end
       end
@@ -657,12 +678,12 @@ describe provider_class do
         provider.method_defined?('attr_aug_writer_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:rm).with('$resource/foo')
-          aug.expects(:set).with('$resource/foo[1]', 'bar')
+          expect(aug).to receive(:rm).with('$resource/foo')
+          expect(aug).to receive(:set).with('$resource/foo[1]', 'bar')
           provider.attr_aug_writer_foo(aug)
-          aug.expects(:rm).with('$resource/foo')
-          aug.expects(:set).with('$resource/foo[2]', 'baz')
-          provider.attr_aug_writer_foo(aug, ['bar', 'baz'])
+          expect(aug).to receive(:rm).with('$resource/foo')
+          expect(aug).to receive(:set).with('$resource/foo[2]', 'baz')
+          provider.attr_aug_writer_foo(aug, %w[bar baz])
         end
       end
 
@@ -671,12 +692,12 @@ describe provider_class do
         provider.method_defined?('attr_aug_writer_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:rm).with('$resource/foo')
+          expect(aug).to receive(:rm).with('$resource/foo')
           provider.attr_aug_writer_foo(aug)
-          aug.expects(:rm).with("$resource/foo/*[label()=~regexp('[0-9]+')]")
-          aug.expects(:set).with('$resource/foo/1', 'bar')
-          aug.expects(:set).with('$resource/foo/2', 'baz')
-          provider.attr_aug_writer_foo(aug, ['bar', 'baz'])
+          expect(aug).to receive(:rm).with("$resource/foo/*[label()=~regexp('[0-9]+')]")
+          expect(aug).to receive(:set).with('$resource/foo/1', 'bar')
+          expect(aug).to receive(:set).with('$resource/foo/2', 'baz')
+          provider.attr_aug_writer_foo(aug, %w[bar baz])
         end
       end
 
@@ -685,19 +706,19 @@ describe provider_class do
         provider.method_defined?('attr_aug_writer_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:rm).with('$resource/foo')
+          expect(aug).to receive(:rm).with('$resource/foo')
           provider.attr_aug_writer_foo(aug)
-          aug.expects(:rm).with('$resource/foo/sl')
-          aug.expects(:set).with('$resource/foo/sl[1]', 'bar')
-          aug.expects(:set).with('$resource/foo/sl[2]', 'baz')
-          provider.attr_aug_writer_foo(aug, ['bar', 'baz'])
+          expect(aug).to receive(:rm).with('$resource/foo/sl')
+          expect(aug).to receive(:set).with('$resource/foo/sl[1]', 'bar')
+          expect(aug).to receive(:set).with('$resource/foo/sl[2]', 'baz')
+          provider.attr_aug_writer_foo(aug, %w[bar baz])
         end
       end
 
       it 'creates a class method using :hash and no sublabel' do
-        expect {
+        expect do
           provider.attr_aug_writer(:foo, type: :hash, default: 'deflt')
-        }.to raise_error(RuntimeError, %r{You must provide a sublabel})
+        end.to raise_error(RuntimeError, %r{You must provide a sublabel})
       end
 
       it 'creates a class method using :hash and sublabel' do
@@ -705,19 +726,19 @@ describe provider_class do
         provider.method_defined?('attr_aug_writer_foo').should be true
 
         provider.augopen(resource) do |aug|
-          aug.expects(:rm).with('$resource/foo')
-          aug.expects(:set).with("$resource/foo[.='baz']", 'baz')
-          aug.expects(:set).with("$resource/foo[.='baz']/sl", 'bazval')
-          aug.expects(:set).with("$resource/foo[.='bazz']", 'bazz')
-          aug.expects(:set).with("$resource/foo[.='bazz']/sl", 'bazzval').never
+          expect(aug).to receive(:rm).with('$resource/foo')
+          expect(aug).to receive(:set).with("$resource/foo[.='baz']", 'baz')
+          expect(aug).to receive(:set).with("$resource/foo[.='baz']/sl", 'bazval')
+          expect(aug).to receive(:set).with("$resource/foo[.='bazz']", 'bazz')
+          expect(aug).not_to receive(:set).with("$resource/foo[.='bazz']/sl", 'bazzval')
           provider.attr_aug_writer_foo(aug, 'baz' => 'bazval', 'bazz' => 'deflt')
         end
       end
 
       it 'creates a class method using wrong type' do
-        expect {
+        expect do
           provider.attr_aug_writer(:foo, type: :foo)
-        }.to raise_error(RuntimeError, %r{Invalid type: foo})
+        end.to raise_error(RuntimeError, %r{Invalid type: foo})
       end
     end
   end

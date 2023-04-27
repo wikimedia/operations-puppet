@@ -6,7 +6,7 @@ mod 'augeas_core',
 
 mod 'augeasproviders_core',
     :git => 'https://github.com/voxpupuli/puppet-augeasproviders_core.git',
-    :ref => '2.7.0'
+    :ref => 'v3.2.1'
 
 mod 'concat',
     # NOTE: Deviates from upstream v7.3.0

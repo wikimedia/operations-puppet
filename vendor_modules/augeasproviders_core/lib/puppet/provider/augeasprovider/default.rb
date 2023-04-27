@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'augeas' if Puppet.features.augeas?
 
 # Base Augeas provider
@@ -156,10 +158,14 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
         errors << "#{subnode} = #{subvalue}"
       end
     end
-    debug("Save failure details:\n" + errors.join("\n"))
+    debug("Save failure details:\n#{errors.join("\n")}")
     raise Augeas::Error, 'Failed to save Augeas tree to file. See debug logs for details.'
   ensure
     aug.load! if reload
+    # https://github.com/hercules-team/augeas/commit/eb04250a05671b2d001444b72b8778328d209d75 introduced a bug in libaugeas.so.0.25.0
+    # bundled with puppet7.
+    # A temporary fix is to invoke load! twice.
+    aug.load! if reload && Puppet::Util::Package.versioncmp(aug_version, '1.13.0') >= 0
   end
 
   # Define a method with a block passed to #augopen
@@ -222,15 +228,11 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     sublabel = opts[:sublabel] || nil
     split_by = opts[:split_by] || nil
 
-    rpath = (label == :resource) ? '$resource' : "$resource/#{label}"
+    rpath = label == :resource ? '$resource' : "$resource/#{label}"
 
-    if type == :hash && sublabel.nil?
-      raise(Puppet::Error, 'You must provide a sublabel for type hash')
-    end
+    raise(Puppet::Error, 'You must provide a sublabel for type hash') if type == :hash && sublabel.nil?
 
-    unless [:string, :array, :hash].include? type
-      raise(Puppet::Error, "Invalid type: #{type}")
-    end
+    raise(Puppet::Error, "Invalid type: #{type}") unless %i[string array hash].include? type
 
     # Class getter method using an existing aug handler
     # Emulate define_singleton_method for Ruby 1.8
@@ -241,14 +243,15 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
         aug.get(rpath)
       when :array
         return (aug.get(rpath) || '').split(split_by) if split_by
-        aug.match(rpath).map { |p|
+
+        aug.match(rpath).map do |p|
           if sublabel.nil?
             aug.get(p)
           else
-            sp = (sublabel == :seq) ? "#{p}/*[label()=~regexp('[0-9]+')]" : "#{p}/#{sublabel}"
+            sp = sublabel == :seq ? "#{p}/*[label()=~regexp('[0-9]+')]" : "#{p}/#{sublabel}"
             aug.match(sp).map { |spp| aug.get(spp) }
           end
-        }.flatten
+        end.flatten
       when :hash
         values = {}
         aug.match(rpath).each do |p|
@@ -292,15 +295,11 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     rm_node = opts[:rm_node] || false
     split_by = opts[:split_by] || nil
 
-    rpath = (label == :resource) ? '$resource' : "$resource/#{label}"
+    rpath = label == :resource ? '$resource' : "$resource/#{label}"
 
-    if type == :hash && sublabel.nil?
-      raise(Puppet::Error, 'You must provide a sublabel for type hash')
-    end
+    raise(Puppet::Error, 'You must provide a sublabel for type hash') if type == :hash && sublabel.nil?
 
-    unless [:string, :array, :hash].include? type
-      raise(Puppet::Error, "Invalid type: #{type}")
-    end
+    raise(Puppet::Error, "Invalid type: #{type}") unless %i[string array hash].include? type
 
     # Class setter method using an existing aug handler
     # Emulate define_singleton_method for Ruby 1.8
@@ -350,9 +349,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
         aug.rm(rpath)
         args[0].each do |k, v|
           aug.set("#{rpath}[.='#{k}']", k)
-          unless v == default
-            aug.set("#{rpath}[.='#{k}']/#{sublabel}", v)
-          end
+          aug.set("#{rpath}[.='#{k}']/#{sublabel}", v) unless v == default
         end
       end
     end
@@ -412,10 +409,11 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @raise [Puppet::Error] if no block has been set when getting
   # @api public
   def self.lens(resource = nil, &block)
-    if block_given?
+    if block
       @lens_block = block
     else
       raise(Puppet::Error, 'Lens is not provided') unless @lens_block
+
       @lens_block.call(resource)
     end
   end
@@ -428,9 +426,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @return [String] label of the given path
   # @api public
   def self.path_label(aug, path)
-    if aug.respond_to? :label
-      label = aug.label(path)
-    end
+    label = aug.label(path) if aug.respond_to? :label
 
     # Fallback
     label || path.split('/')[-1].split('[')[0]
@@ -445,7 +441,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   def self.whichquote(value, resource = nil, oldvalue = nil)
     oldquote = readquote oldvalue
 
-    quote = if resource && resource.parameters.include?(:quoted)
+    quote = if resource&.parameters&.include?(:quoted)
               resource[:quoted]
             else
               :auto
@@ -454,7 +450,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     if quote == :auto
       quote = if oldquote
                 oldquote
-              elsif value =~ %r{[|&;()<>\s]}
+              elsif value.match?(%r{[|&;()<>\s]})
                 :double
               else
                 :none
@@ -492,10 +488,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
       case Regexp.last_match(1)
       when '"' then :double
       when "'" then :single
-      else nil
       end
-    else
-      nil
     end
   end
 
@@ -522,7 +515,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @see #target
   # @api public
   def self.resource_path(resource = nil, &block)
-    if block_given?
+    if block
       @resource_path_block = block
     elsif @resource_path_block
       @resource_path_block.call(resource)
@@ -567,6 +560,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     file = @default_file_block.call if @default_file_block
     file = resource[:target] if resource && resource[:target]
     raise(Puppet::Error, 'No target file given') if file.nil?
+
     file.chomp('/')
   end
 
@@ -594,9 +588,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     Augeas.open(nil, nil, Augeas::NO_MODL_AUTOLOAD) do |aug|
       if aug.respond_to? :text_store
         aug.set('/input', text)
-        if aug.text_store(lens, '/input', '/parsed')
-          return aug.match("/parsed/#{path}").any?
-        end
+        return aug.match("/parsed/#{path}").any? if aug.text_store(lens, '/input', '/parsed')
       else
         # ruby-augeas < 0.5 doesn't support text_store
         Tempfile.open('aug_text_store') do |tmpfile|
@@ -606,7 +598,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
             lens: lens,
             name: 'Text_store',
             incl: tmpfile.path.to_s,
-            excl: [],
+            excl: []
           )
           aug.load!
           return aug.match("/files#{tmpfile.path}/#{path}").any?
@@ -630,9 +622,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   def self.loadpath
     loadpath = nil
     plugins = File.join(Puppet[:libdir], 'augeas', 'lenses')
-    if File.exist?(plugins)
-      loadpath = loadpath.to_s.split(File::PATH_SEPARATOR).push(plugins).join(File::PATH_SEPARATOR)
-    end
+    loadpath = loadpath.to_s.split(File::PATH_SEPARATOR).push(plugins).join(File::PATH_SEPARATOR) if File.exist?(plugins)
     loadpath
   end
 
@@ -665,13 +655,13 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     aug = aug_handler
     file = target(resource)
     begin
-      lens_name = lens[%r{[^\.]+}]
+      lens_name = lens[%r{[^.]+}]
       if aug.match("/augeas/load/#{lens_name}").empty?
         aug.transform(
           lens: lens,
           name: lens_name,
           incl: file,
-          excl: [],
+          excl: []
         )
         aug.load!
       elsif aug.match("/augeas/load/#{lens_name}/incl[.='#{file}']").empty?
@@ -691,7 +681,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
         raise(Puppet::Error, "Augeas didn't load #{file} with #{lens}#{from}: #{message}")
       end
 
-      if block_given?
+      if block
         setvars(aug, resource)
         if yield_resource
           block.call(aug, resource, *yield_params)
@@ -701,11 +691,11 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
       else
         aug
       end
-    rescue
+    rescue StandardError
       autosave = false
       raise
     ensure
-      if aug && block_given? && !supported?(:post_resource_eval)
+      if aug && block && !supported?(:post_resource_eval)
         augsave!(aug) if autosave
         augclose!(aug)
       end

@@ -1,11 +1,16 @@
-[![Puppet Forge Version](http://img.shields.io/puppetforge/v/herculesteam/augeasproviders_core.svg)](https://forge.puppetlabs.com/herculesteam/augeasproviders_core)
-[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/herculesteam/augeasproviders_core.svg)](https://forge.puppetlabs.com/herculesteam/augeasproviders_core)
-[![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/herculesteam/augeasproviders_core.svg)](https://forge.puppetlabs.com/herculesteam/augeasproviders_core)
-[![Build Status](https://img.shields.io/travis/hercules-team/augeasproviders_core/master.svg)](https://travis-ci.org/hercules-team/augeasproviders_core)
-[![Coverage Status](https://img.shields.io/coveralls/hercules-team/augeasproviders_core.svg)](https://coveralls.io/r/hercules-team/augeasproviders_core)
-[![Sponsor](https://img.shields.io/badge/%E2%99%A5-Sponsor-hotpink.svg)](https://github.com/sponsors/raphink)
-
 # augeasproviders\_core: library for building alternative Augeas-based providers for Puppet
+
+
+[![Build Status](https://github.com/voxpupuli/puppet-augeasproviders_core/workflows/CI/badge.svg)](https://github.com/voxpupuli/puppet-augeasproviders_core/actions?query=workflow%3ACI)
+[![Release](https://github.com/voxpupuli/puppet-augeasproviders_core/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-augeasproviders_core/actions/workflows/release.yml)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-augeasproviders_core/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-augeasproviders_core)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/augeasproviders_core.svg)](https://forge.puppetlabs.com/puppet/augeasproviders_core)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/augeasproviders_core.svg)](https://forge.puppetlabs.com/puppet/augeasproviders_core)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/augeasproviders_core.svg)](https://forge.puppetlabs.com/puppet/augeasproviders_core)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/augeasproviders_core.svg)](https://forge.puppetlabs.com/puppet/augeasproviders_core)
+[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/m/puppet-augeasproviders_core)
+[![Apache-2 License](https://img.shields.io/github/license/voxpupuli/puppet-augeasproviders_core.svg)](LICENSE)
+[![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
 
 ## Module description
 
@@ -33,4 +38,12 @@ See docs/ (run `make`) or [augeasproviders.com](http://augeasproviders.com/docum
 
 ## Issues
 
-Please file any issues or suggestions [on GitHub](https://github.com/hercules-team/augeasproviders_core/issues).
+Please file any issues or suggestions [on GitHub](https://github.com/voxpupuli/puppet-augeasproviders_core/issues).
+
+## Transfer Notice
+
+This plugin was originally authored by [hercules-team](http://augeasproviders.com).
+The maintainer preferred that Puppet Community take ownership of the module for future improvement and maintenance.
+Existing pull requests and issues were transferred over, please fork and continue to contribute here instead of Camptocamp.
+
+Previously: https://github.com/hercules-team/augeasproviders_core

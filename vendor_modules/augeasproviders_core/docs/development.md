@@ -57,7 +57,7 @@ In the event that you need information from the resource itself in order to dete
     lens do |resource|
       resource[:lens]
     end
-    
+
 
 ## Confining your provider
 
@@ -74,7 +74,7 @@ The `augeasproviders` library can take care of automatically declaring some prov
       "$target/#{resource[:name]}"
     end
 
-Using the `resource_path` method will automatically declare two provider methods: 
+Using the `resource_path` method will automatically declare two provider methods:
 
 * `exists?` (which checks if the resource path exists)
 * `destroy` (which removes the resource path and saves the tree)
@@ -239,7 +239,7 @@ Augeas has two ways of representing array values in its trees, using either fix 
 For this reason, property accessors offer 3 ways to manage arrays, using the `sublabel` option:
 
   * the values are all the nodes matching the path with the given label (`sublabel` not set), e.g. for `foo => ["bar", "baz"]`:
-        
+
         attr_aug_accessor(:foo,
           :type     => :array
         )
@@ -251,7 +251,7 @@ For this reason, property accessors offer 3 ways to manage arrays, using the `su
           { "foo" = "baz" } }
 
   * the values are sub-nodes of the path with the given label (`sublabel` set to the label of the sub-nodes), e.g. for `foo => ["bar", "baz"]`:
-        
+
         attr_aug_accessor(:foo,
           :type     => :array,
           :sublabel => 'sub'
@@ -265,7 +265,7 @@ For this reason, property accessors offer 3 ways to manage arrays, using the `su
             { "sub" = "baz" } } }
 
   * the values are sequential entries under the path with the given label (`sublabel` set to `:seq`), e.g. for `foo => ["bar", "baz"]`:
-        
+
         attr_aug_accessor(:foo,
           :type     => :array,
           :sublabel => :seq
@@ -283,7 +283,7 @@ In all cases, all existing values are purged before setting the target values.
 
 ##### Hash value
 
-In the Augeas tree, hash values are represented by sub-nodes, with optional values (the `:sublabel` option is used to set the value node name). When no value is found in the tree, the accessor method will default to the value of the `:default` option. 
+In the Augeas tree, hash values are represented by sub-nodes, with optional values (the `:sublabel` option is used to set the value node name). When no value is found in the tree, the accessor method will default to the value of the `:default` option.
 
 For example, given `foo => { "a" => "bar", "b" => "baz" }`, with:
 

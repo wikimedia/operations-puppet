@@ -1,13 +1,15 @@
 # Managed by modulesync - DO NOT EDIT
 # https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
 
+/docs/
 /pkg/
+/Gemfile
 /Gemfile.lock
 /Gemfile.local
 /vendor/
 /.vendor/
-/spec/fixtures/manifests/
-/spec/fixtures/modules/
+/spec/
+/Rakefile
 /.vagrant/
 /.bundle/
 /.ruby-version
@@ -15,9 +17,21 @@
 /log/
 /.idea/
 /.dependencies/
+/.github/
 /.librarian/
 /Puppetfile.lock
 *.iml
+/.editorconfig
+/.fixtures.yml
+/.gitignore
+/.msync.yml
+/.overcommit.yml
+/.pmtignore
+/.rspec
+/.rspec_parallel
+/.rubocop.yml
+/.sync.yml
 .*.sw?
 /.yardoc/
-/Guardfile
+/.yardopts
+/Dockerfile
