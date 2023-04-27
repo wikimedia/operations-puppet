@@ -25,6 +25,7 @@ profile::admin::groups:
   - deployment-docker
   - research-deployers
   - platform-eng-deployers
+  - airflow-analytics-product-admins
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
@@ -119,6 +120,7 @@ profile::keyholder::server::agents:
       - research-deployers
       - platform-eng-deployers
       - airflow-search-admins
+      - airflow-analytics-product-admins
 
   scap:
     trusted_groups:
@@ -166,6 +168,10 @@ scap::sources:
   airflow-dags/search:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-search
+    origin: gitlab
+  airflow-dags/analytics_product:
+    repository: data-engineering/airflow-dags
+    scap_repository: data-engineering/airflow-dags-scap-analytics_product
     origin: gitlab
 
   analytics/refinery:
