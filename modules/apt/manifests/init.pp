@@ -38,16 +38,20 @@ class apt(
 
     if $manage_apt_source {
 
+        # Starting with bookworm there's a new non-free-firmware component
         # Starting with bullseye, the security suite moved from
-        # foo/updates to foo-security (since the former was confusingly
-        # similar to foo-updates (what was called volatile.debian.org
-        # in the past)
-        if debian::codename::ge('bullseye') {
-            $apt_template    = 'apt/base-apt-conf-new.erb'
+        #   foo/updates to foo-security (since the former was confusingly
+        #   similar to foo-updates (what was called volatile.debian.org
+        #   in the past)
+        # Stretch has been removed, so the apt config only ships stub entries
+        if debian::codename::eq('bullseye') {
+            $apt_template    = 'apt/base-apt-conf-bullseye.erb'
+        } elsif debian::codename::eq('bookworm') {
+            $apt_template    = 'apt/base-apt-conf-bookworm.erb'
         } elsif debian::codename::eq('stretch') {
             $apt_template    = 'apt/base-apt-conf-stretch.erb'
         } elsif debian::codename::eq('buster') {
-            $apt_template    = 'apt/base-apt-conf.erb'
+            $apt_template    = 'apt/base-apt-conf-buster.erb'
         }
 
         file { '/etc/apt/sources.list':
