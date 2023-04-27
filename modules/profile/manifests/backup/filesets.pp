@@ -51,7 +51,9 @@ class profile::backup::filesets(
         includes => [ '/var/lib/jenkins/backups' ]
     }
     bacula::director::fileset { 'gitlab':
-        includes => [ '/srv/gitlab-backup', '/etc/gitlab/config_backup' ]
+        includes => [ '/srv/gitlab-backup', '/etc/gitlab/config_backup' ],
+        # don't store partial backup in bacula T316935
+        excludes => [ '/srv/gitlab-backup/partial_gitlab_backup.tar' ]
     }
     bacula::director::fileset { 'var-lib-mailman3':
         includes => [

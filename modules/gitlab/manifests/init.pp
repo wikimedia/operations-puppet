@@ -110,7 +110,7 @@ class gitlab (
     $ensure_backup = $enable_backup.bool2str('present','absent')
     class { 'gitlab::backup':
         full_ensure             => $ensure_backup,
-        partial_ensure          => 'absent',
+        partial_ensure          => $ensure_backup,
         config_ensure           => $ensure_backup,
         backup_dir_data         => $backup_dir_data,
         backup_dir_config       => $backup_dir_config,

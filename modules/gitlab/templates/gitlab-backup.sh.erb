@@ -25,7 +25,7 @@ case "$1" in
     "full")
     /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" SKIP=builds,artifacts,registry GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>";;
     "partial")
-    /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" SKIP=uploads,builds,artifacts,lfs,registry,pages GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>";;
+    /usr/bin/gitlab-backup create BACKUP=partial CRON=1 STRATEGY=copy GZIP_RSYNCABLE="<%= @rsyncable_gzip %>" SKIP=packages GITLAB_BACKUP_MAX_CONCURRENCY="<%= @max_concurrency %>" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="<%= @max_storage_concurrency %>";;
     "config")
     /usr/bin/gitlab-ctl backup-etc;;
     "failover")
