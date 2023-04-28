@@ -15,6 +15,8 @@ class profile::openstack::base::observerenv(
         os_user                => $os_user,
         os_password            => $os_password,
         os_project             => $os_project,
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
         scriptpath             => '/usr/local/bin/observerenv.sh',
         yaml_mode              => '0444',
     }
