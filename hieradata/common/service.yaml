@@ -3742,3 +3742,18 @@ service::catalog:
     discovery:
       - dnsdisc: rest-gateway
         active_active: true
+
+  machinetranslation:
+    description: MinT, machinetranslation service backend. Use by cxserver.
+      machinetranslation.svc.%{::site}.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+        path: /healthz
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
