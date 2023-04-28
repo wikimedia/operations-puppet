@@ -3,38 +3,41 @@
 # needed for WMF production
 #
 class profile::prometheus::k8s (
-    Hash                $k8s_clusters          = lookup('profile::prometheus::kubernetes::clusters'),
     Hash                $k8s_cluster_tokens    = lookup('profile::prometheus::kubernetes::cluster_tokens'),
     String              $replica_label         = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean             $enable_thanos_upload  = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String]    $thanos_min_time       = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    Array[Stdlib::Host] $alertmanagers         = lookup('alertmanagers', {'default_value' => []}),
-    String              $storage_retention     = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
-    Integer             $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
-    Integer             $memory_chunks         = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
+    Array[Stdlib::Host] $alertmanagers         = lookup('alertmanagers', { 'default_value' => [] }),
+    String              $storage_retention     = lookup('prometheus::server::storage_retention', { 'default_value' => '4032h' }),
+    Integer             $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
+    Integer             $memory_chunks         = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
     Boolean             $disable_compaction    = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
-){
-
-    $real_k8s_clusters = deep_merge($k8s_clusters, $k8s_cluster_tokens)
-    $enabled_k8s_clusters = $real_k8s_clusters.filter |String $k8s_cluster, Hash $value| {
-        $value['enabled']
+) {
+    # Get all prometheus enabled k8s clusters for this DC, excluding aliases
+    $enabled_k8s_clusters = k8s::fetch_clusters(false).filter | String $_, K8s::ClusterConfig $config | {
+        $config['dc'] == $::site and 'prometheus' in $config
     }
 
-    # Let's detect port duplications and fail early
+    # Let's detect port duplications (per DC) and fail early
     $l = length($enabled_k8s_clusters.keys())
-    $p = length(unique($enabled_k8s_clusters.map |String $k, Hash $v| { $v['port'] }))
+    $p = length(unique($enabled_k8s_clusters.map |String $_, K8s::ClusterConfig $c| { $c['prometheus']['port'] }))
     if $l != $p {
         fail('Port duplication detected in k8s_clusters declaration')
     }
 
-    $enabled_k8s_clusters.each |String $k8s_cluster, Hash $value| {
+    $enabled_k8s_clusters.each |String $cluster_name, K8s::ClusterConfig $k8s_config| {
+        # k8s_cluster is the prometheus specific name for this cluster.
+        # Unfortunately those are completely different from the actual cluster names
+        $k8s_cluster = pick($k8s_config['prometheus']['name'], "k8s-${cluster_name}")
         $targets_path = "/srv/prometheus/${k8s_cluster}/targets"
         $bearer_token_file = "/srv/prometheus/${k8s_cluster}/k8s.token"
-        $master_host = $value['master_host']
-        $port = $value['port']
-        $class_name = $value['class_name']
-        $controller_class_name = $value['controller_class_name']
-        $client_token = $value['client_token']
+        $master_host = $k8s_config['master']
+        $master_url = $k8s_config['master_url']
+        $port = $k8s_config['prometheus']['port']
+        $node_class_name = $k8s_config['prometheus']['node_class_name']
+        $control_plane_class_name = $k8s_config['prometheus']['control_plane_class_name']
+        # Fetch the prometheus users API token from puppet private key
+        $client_token = $k8s_cluster_tokens[$k8s_cluster]['client_token']
 
         $config_extra = {
             # All metrics will get an additional 'site' label when queried by
@@ -61,7 +64,7 @@ class profile::prometheus::k8s (
                 },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'endpoints',
                     },
@@ -83,7 +86,7 @@ class profile::prometheus::k8s (
                 'bearer_token_file'     => $bearer_token_file,
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'node',
                     },
@@ -112,7 +115,7 @@ class profile::prometheus::k8s (
                 'metrics_path'          => '/metrics/cadvisor',
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'node',
                     },
@@ -140,7 +143,7 @@ class profile::prometheus::k8s (
                 'bearer_token_file'     => $bearer_token_file,
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'node',
                     },
@@ -169,11 +172,11 @@ class profile::prometheus::k8s (
                 # Note: We dont verify the cert on purpose. Issues IP SAN based
                 # certs for all pods is impossible
                 'tls_config'            => {
-                    insecure_skip_verify =>  true,
+                    insecure_skip_verify => true,
                 },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'pod',
                     },
@@ -301,13 +304,14 @@ class profile::prometheus::k8s (
                 'scheme'                => 'http',
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'pod',
                     },
                 ],
                 'metric_relabel_configs' => [
-                    {   'source_labels' => ['__name__'],
+                    {
+                        'source_labels' => ['__name__'],
                         'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
                         'action'        => 'keep'
                     },
@@ -348,9 +352,9 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'        => 'calico-felix',
-                'file_sd_configs' =>  [
+                'file_sd_configs' => [
                     {
-                      'files' =>  [ "${targets_path}/calico-felix_*.yaml",
+                      'files' => ["${targets_path}/calico-felix_*.yaml",
                                     "${targets_path}/calico-felix-controller_*.yaml"]
                     },
                 ],
@@ -392,15 +396,15 @@ class profile::prometheus::k8s (
 
         prometheus::class_config { "calico-felix-${k8s_cluster}":
             dest           => "${targets_path}/calico-felix_${::site}.yaml",
-            class_name     => $class_name,
+            class_name     => $node_class_name,
             hostnames_only => false,
             port           => 9091,
         }
 
-        if $controller_class_name {
+        if $control_plane_class_name {
             prometheus::class_config { "calico-felix-controller-${k8s_cluster}":
                 dest           => "${targets_path}/calico-felix-controller_${::site}.yaml",
-                class_name     => $controller_class_name,
+                class_name     => $control_plane_class_name,
                 hostnames_only => false,
                 port           => 9091,
             }

@@ -93,6 +93,9 @@
 #
 # @param [Boolean] imagecatalog
 #   Enable imagecatalog scanning on this cluster.
+#
+# @param [Optional[K8s::ClusterConfig::Prometheus]] prometheus
+#   Configuration of the prometheus instances for this cluster
 type K8s::ClusterConfig = Struct[{
   'dc'                      => String[1],
   'cluster_alias'           => Optional[String[1]],
@@ -120,4 +123,5 @@ type K8s::ClusterConfig = Struct[{
   'istio_cni_version'       => String[1],
   'cni_config'              => Hash,
   'imagecatalog'            => Boolean,
+  'prometheus'              => Optional[K8s::ClusterConfig::Prometheus],
 }]

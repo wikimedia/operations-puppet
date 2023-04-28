@@ -2,30 +2,6 @@ prometheus::server::memory_chunks: 3145728
 prometheus::server::max_chunks_to_persist: 1048576
 lvs::realserver::realserver_ips:
  - 10.2.1.25
-# A hash containing configuration for kubernetes clusters.
-profile::prometheus::kubernetes::clusters:
-  k8s:
-    enabled: true
-    master_host: 'kubemaster.svc.codfw.wmnet'
-    port: 9906
-    class_name: role::kubernetes::worker
-  k8s-staging:
-    enabled: true
-    master_host: 'kubestagemaster.svc.codfw.wmnet'
-    port: 9907
-    class_name: role::kubernetes::staging::worker
-  k8s-mlserve:
-    enabled: true
-    master_host: 'ml-ctrl.svc.codfw.wmnet'
-    port: 9909
-    class_name: role::ml_k8s::worker
-    controller_class_name: role::ml_k8s::master
-  k8s-mlstaging:
-    enabled: true
-    master_host: 'ml-staging-ctrl.svc.codfw.wmnet'
-    port: 9910
-    class_name: role::ml_k8s::staging::worker
-    controller_class_name: role::ml_k8s::staging::master
 # In the private repo a stanza like the following is required
 # profile::prometheus::kubernetes::cluster_tokens:
 # k8s:

@@ -69,6 +69,11 @@ kubernetes::clusters:
       master: kubemaster.svc.eqiad.wmnet
       pki_intermediate_base: wikikube
       ipv6dualstack: true
+      prometheus: &wikikube_prometheus
+        name: k8s
+        port: 9906
+        node_class_name: role::kubernetes::worker
+        # TODO: Add control_plane_class_name
       control_plane_nodes:
         - kubemaster1001.eqiad.wmnet
         - kubemaster1002.eqiad.wmnet
@@ -112,6 +117,8 @@ kubernetes::clusters:
       master: kubemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube
       ipv6dualstack: true
+      prometheus:
+        <<: *wikikube_prometheus
       control_plane_nodes:
         - kubemaster2001.codfw.wmnet
         - kubemaster2002.codfw.wmnet
@@ -160,6 +167,11 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
+      prometheus: &wikikube_staging_prometheus
+        name: k8s-staging
+        port: 9907
+        node_class_name: role::kubernetes::staging::worker
+        # TODO: Add control_plane_class_name
       control_plane_nodes:
         - kubestagemaster1001.eqiad.wmnet
       cluster_dns:
@@ -185,6 +197,8 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
+      prometheus:
+        <<: *wikikube_staging_prometheus
       control_plane_nodes:
         - kubestagemaster2001.codfw.wmnet
       cluster_dns:
@@ -208,6 +222,11 @@ kubernetes::clusters:
       dc: eqiad
       master: ml-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: mlserve
+      prometheus: &ml-serve_prometheus
+        name: k8s-mlserve
+        port: 9909
+        node_class_name: role::ml_k8s::worker
+        control_plane_class_name: role::ml_k8s::master
       control_plane_nodes:
         - ml-serve-ctrl1001.eqiad.wmnet
         - ml-serve-ctrl1002.eqiad.wmnet
@@ -268,6 +287,8 @@ kubernetes::clusters:
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
       pki_intermediate_base: mlserve
+      prometheus:
+        <<: *ml-serve_prometheus
       control_plane_nodes:
         - ml-serve-ctrl2001.codfw.wmnet
         - ml-serve-ctrl2002.codfw.wmnet
@@ -303,6 +324,11 @@ kubernetes::clusters:
       master: ml-staging-ctrl.svc.codfw.wmnet
       pki_intermediate_base: mlserve_staging
       pki_renew_seconds: 172800
+      prometheus:
+        name: k8s-mlstaging
+        port: 9910
+        node_class_name: role::ml_k8s::staging::worker
+        control_plane_class_name: role::ml_k8s::staging::master
       control_plane_nodes:
         - ml-staging-ctrl2001.codfw.wmnet
         - ml-staging-ctrl2002.codfw.wmnet
@@ -332,6 +358,11 @@ kubernetes::clusters:
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: dse
+      prometheus:
+        name: k8s-dse
+        port: 9910
+        node_class_name: role::dse_k8s::worker
+        control_plane_class_name: role::dse_k8s::master
       control_plane_nodes:
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
@@ -367,6 +398,11 @@ kubernetes::clusters:
       dc: eqiad
       master: aux-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: aux
+      prometheus:
+        name: k8s-aux
+        port: 9911
+        node_class_name: role::aux_k8s::worker
+        control_plane_class_name: role::aux_k8s::master
       control_plane_nodes:
         - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet
