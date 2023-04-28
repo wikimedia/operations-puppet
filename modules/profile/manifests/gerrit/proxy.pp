@@ -32,6 +32,7 @@ class profile::gerrit::proxy(
             severity           => 'critical',
             path               => '/',
             follow_redirects   => true,
+            status_matches     => [302],
             ip_families        => ['ip4','ip6'],
             port               => 443,
             force_tls          => true,
