@@ -130,7 +130,6 @@ debmonitor: debmonitor.discovery.wmnet
 # List of all prometheus nodes (ops instance)
 prometheus_all_nodes:
   - prometheus3002.esams.wmnet
-  - prometheus4001.ulsfo.wmnet
   - prometheus4002.ulsfo.wmnet
   - prometheus5001.eqsin.wmnet
   - prometheus5002.eqsin.wmnet
@@ -142,10 +141,6 @@ prometheus_all_nodes:
   - prometheus2006.codfw.wmnet
 
 prometheus_migrations:
-  ulsfo:
-    ensure: present
-    src_host: 'prometheus4001.ulsfo.wmnet'
-    dst_host: 'prometheus4002.ulsfo.wmnet'
   eqsin:
     ensure: present
     src_host: 'prometheus5001.eqsin.wmnet'
