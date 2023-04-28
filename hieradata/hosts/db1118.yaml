@@ -1,3 +1,4 @@
 # db1118
+# Will be moved to m3 T335092
 mariadb::shard: 's1'
 mariadb::binlog_format: 'STATEMENT'
