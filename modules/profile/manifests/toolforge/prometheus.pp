@@ -486,5 +486,6 @@ class profile::toolforge::prometheus (
 
     prometheus::web { 'tools':
         proxy_pass => 'http://localhost:9902/tools',
+        homepage   => true,
     }
 }
