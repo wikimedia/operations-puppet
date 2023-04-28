@@ -67,10 +67,23 @@ define apt::package_from_component(
         before      => $exec_before,
     }
 
+    # Starting with Bookworm the Debian installer defaults to using the signed-by
+    # notation in apt-setup, also apply the same for the puppetised Wikimedia
+    # repository.
+    # The signed-by notation allows to specify which repository key is used
+    # for which repository (previously they applied to all repos)
+    # https://wiki.debian.org/DebianRepository/UseThirdParty
+    if debian::codename::ge('bookworm'){
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/files/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
+
     apt::repository { "repository_${title}":
         uri        => $uri,
         dist       => $distro,
         components => $component,
+        keyfile    => $wikimedia_apt_keyfile,
         notify     => Exec["exec_apt_${title}"],
     }
 
