@@ -480,6 +480,7 @@ class profile::toolforge::prometheus (
         rule_files_extra               => ["/srv/alerts/project-${::wmcs_project}/*.yaml"],
         alerting_relabel_configs_extra => [
             { 'target_label' => 'project', 'replacement' => $::wmcs_project, 'action' => 'replace' },
+            { 'target_label' => 'team',    'replacement' => 'wmcs',          'action' => 'replace' },
         ],
     }
 
