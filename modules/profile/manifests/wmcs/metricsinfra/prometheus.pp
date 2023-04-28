@@ -100,4 +100,6 @@ class profile::wmcs::metricsinfra::prometheus(
         grpc_port           => 29900,
         base_path           => '',
     }
+
+    class { 'prometheus::blackbox_exporter': }
 }
