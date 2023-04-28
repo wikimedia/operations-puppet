@@ -26,17 +26,19 @@ class profile::gerrit::proxy(
             notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
         }
 
-        prometheus::blackbox::check::http { 'gerrit-tls':
-            server_name        => $tls_host,
-            team               => 'serviceops-collab-releng',
-            severity           => 'critical',
-            path               => '/',
-            follow_redirects   => true,
-            status_matches     => [200,302,404],
-            ip_families        => ['ip4','ip6'],
-            port               => 443,
-            force_tls          => true,
-            body_regex_matches => ['Gerrit Code Review'],
+        if !$is_replica {
+            prometheus::blackbox::check::http { 'gerrit-tls':
+                server_name        => $tls_host,
+                team               => 'serviceops-collab-releng',
+                severity           => 'critical',
+                path               => '/',
+                follow_redirects   => true,
+                status_matches     => [200,302],
+                ip_families        => ['ip4','ip6'],
+                port               => 443,
+                force_tls          => true,
+                body_regex_matches => ['Gerrit Code Review'],
+            }
         }
     }
 
