@@ -17,4 +17,6 @@ type K8s::ClusterConfig::Prometheus = Struct[{
   'port'                     => Stdlib::Port,
   'node_class_name'          => String[1],
   'control_plane_class_name' => Optional[String[1]],
+  # FIXME: Temporary field for safe transition fo client_cert_auth
+  'client_cert_auth'         => Optional[Boolean],
 }]
