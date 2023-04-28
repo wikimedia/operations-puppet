@@ -270,4 +270,20 @@ class profile::gitlab::runner (
         interval    => $clear_interval,
         require     =>  Package['gitlab-runner'],
     }
+
+    file { '/usr/local/bin/pool':
+        ensure => file,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab_runner/pool.sh',
+    }
+
+    file { '/usr/local/bin/depool':
+        ensure => file,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab_runner/depool.sh',
+    }
 }

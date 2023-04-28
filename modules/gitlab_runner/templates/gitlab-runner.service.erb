@@ -5,4 +5,8 @@ User=
 User=<%= @gitlab_runner_user %>
 ExecStart=
 ExecStart=/usr/bin/gitlab-runner "run" "--working-directory" "/home/<%= @gitlab_runner_user %>" "--config" "<%= @runtime_config %>" "--service" "gitlab-runner" "--user" "<%= @gitlab_runner_user %>"
+KillSignal=
+KillSignal=SIGQUIT
+TimeoutStopSec=
+TimeoutStopSec=3600
 <% end -%>
