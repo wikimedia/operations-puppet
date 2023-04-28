@@ -122,7 +122,14 @@ def get_instance_ips(project, observer_pass, regions, auth_url):
 # to a service name that points to a service IP that is not
 # our primary IP.
 def fqdn_is_us(fqdn):
-    ip_for_fqdn = socket.gethostbyname(fqdn)
+    try:
+        ip_for_fqdn = socket.gethostbyname(fqdn)
+    except socket.gaierror:
+        logging.warning(
+            "DNS lookup failure for %s. No exports for this host.", fqdn
+        )
+        return False
+
     for ifaceName in interfaces():
         addresses = [
             i["addr"]
@@ -202,7 +209,7 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
         logging.error("duplicate GIDs found in project config, aborting")
         sys.exit(1)
 
-    logging.warning("found %s projects requiring private mounts", len(projects))
+    logging.debug("found %s projects requiring private mounts", len(projects))
     return projects
 
 
@@ -232,7 +239,7 @@ def write_public_exports(public_exports, exports_d_path):
         make_public = ["/usr/bin/sudo", "/usr/bin/chmod", "1777", f"/srv/{name}"]
         logging.warning(" ".join(make_public))
         subprocess.call(make_public)
-    logging.warning("found %s public NFS exports" % (len(public_paths)))
+    logging.debug("found %s public NFS exports" % (len(public_paths)))
     return public_paths
 
 
