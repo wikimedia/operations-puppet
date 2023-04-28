@@ -31,6 +31,7 @@ class profile::gerrit::proxy(
             team               => 'serviceops-collab-releng',
             severity           => 'critical',
             path               => '/',
+            follow_redirects   => true,
             ip_families        => ['ip4','ip6'],
             port               => 443,
             force_tls          => true,
