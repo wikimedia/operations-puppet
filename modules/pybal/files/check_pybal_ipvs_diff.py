@@ -129,28 +129,32 @@ class PyBalIPVSDiff(object):
             print("UNKNOWN: %s" % err)
             return 3
 
+        return_code = 0
+
         if pybal_services - ipvs_services:
             print("CRITICAL: Services known to PyBal but not to IPVS: %s" %
                   (pybal_services - ipvs_services))
-            return 2
+            return_code = 2
 
         if ipvs_services - pybal_services:
             print("CRITICAL: Services in IPVS but unknown to PyBal: %s" %
                   (ipvs_services - pybal_services))
-            return 2
+            return_code = 2
 
         if pybal_hosts - ipvs_hosts:
             print("CRITICAL: Hosts known to PyBal but not to IPVS: %s" %
                   (pybal_hosts - ipvs_hosts))
-            return 2
+            return_code = 2
 
         if ipvs_hosts - pybal_hosts:
             print("CRITICAL: Hosts in IPVS but unknown to PyBal: %s" %
                   (ipvs_hosts - pybal_hosts))
-            return 2
+            return_code = 2
 
-        print("OK: no difference between hosts in IPVS/PyBal")
-        return 0
+        if return_code == 0:
+            print("OK: no difference between hosts in IPVS/PyBal")
+
+        return return_code
 
 
 if __name__ == "__main__":
