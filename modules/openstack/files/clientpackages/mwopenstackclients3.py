@@ -14,6 +14,7 @@ from designateclient.v2 import client as designateclient
 from cinderclient.v3 import client as cinderclient
 from troveclient.v1 import client as troveclient
 from neutronclient.v2_0 import client as neutronclient
+import os_client_config
 
 logger = logging.getLogger("mwopenstackclients.DnsManager")
 
@@ -22,10 +23,18 @@ class Clients(object):
     """Wrapper class for creating OpenStack clients."""
 
     def __init__(
-        self, envfile="", username="", password="", url="", project="", region=""
+        self,
+        oscloud="",
+        envfile="",
+        username="",
+        password="",
+        url="",
+        project="",
+        region="",
     ):
         """
         Read config from one of:
+         - clouds.yaml (config specified by oscloud)
          - envfile arg
          - username, password, url, project args
          - execution environment varaiables
@@ -46,7 +55,19 @@ class Clients(object):
         self.troveclients = {}
         self.neutronclients = {}
 
-        if envfile:
+        if oscloud:
+            cloud_config = os_client_config.OpenStackConfig().get_all_clouds()
+            for cloud in cloud_config:
+                if cloud.name == oscloud:
+                    self.url = cloud.auth["auth_url"]
+                    self.project = cloud.auth["project_id"]
+                    self.username = cloud.auth["username"]
+                    self.password = cloud.auth["password"]
+                    self.region = cloud.region_name
+                    break
+            else:
+                raise Exception("%s not found in clouds.yaml", oscloud)
+        elif envfile:
             if username or password or url or project:
                 raise Exception("envfile is incompatible with specific args")
 
