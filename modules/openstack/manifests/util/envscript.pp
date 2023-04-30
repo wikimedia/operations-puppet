@@ -4,7 +4,7 @@ define openstack::util::envscript(
     Stdlib::Fqdn               $keystone_api_fqdn,
     String                     $os_user,
     String                     $os_password,
-    Stdlib::Port               $keystone_api_port      = 5000,
+    Stdlib::Port               $keystone_api_port      = 25000,
     String                     $keystone_api_interface = 'public',
     Optional[Stdlib::Unixpath] $scriptpath             = undef,
     String                     $os_db_password         = '',
