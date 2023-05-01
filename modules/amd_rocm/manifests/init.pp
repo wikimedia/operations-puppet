@@ -90,7 +90,6 @@ class amd_rocm (
     # trying to overwrite '/opt/rocm/miopen/bin/MIOpenDriver',
     # which is also in package miopen-hip 2.0.0-7a8f787
     $_basepkgs = [
-        'hsakmt-roct',
         'hsa-rocr-dev',
         'miopen-hip',
         'mivisionx',
@@ -119,7 +118,9 @@ class amd_rocm (
           'libgcc-10-dev'
         ]
     } else {
-        $basepkgs = $_basepkgs
+        $basepkgs = $_basepkgs + [
+          'hsakmt-roct'
+        ]
     }
 
     apt::package_from_component { "amd-rocm${version}":
