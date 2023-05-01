@@ -39,6 +39,7 @@ profile::gerrit::scap_key_name: 'gerrit'
 # List of gerrit servers used in firewall rules.
 profile::gerrit::ssh_allowed_hosts:
  - gerrit1001.wikimedia.org
+ - gerrit1003.wikimedia.org
  - gerrit2002.wikimedia.org
 
 # Assume all production nodes are slaves
