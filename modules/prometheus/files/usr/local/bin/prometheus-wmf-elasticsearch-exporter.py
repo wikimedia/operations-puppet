@@ -52,6 +52,8 @@ class Connection:
         return self.node_name == self.cat_master['node']
 
     def alias_map(self, indices):
+        if not indices:
+            return {}
         # We use aliases for most production indices. This means we ask for
         # stats on index A, which is an alias, and elasticsearch returns stats
         # for index B, which is pointed to. We want to log the stats against
@@ -188,9 +190,6 @@ class PrometheusWMFElasticsearchExporter(object):
         done for consistency, but due to our customization involving alias
         handling we can likely never switch this back.
         """
-        if not self.indices:
-            return
-
         # This script runs on all nodes, but we don't want to collect many
         # copies of this data. We also don't want to create a ticking time bomb
         # by assigning a single machine to collect this data. The strategy is
@@ -200,9 +199,16 @@ class PrometheusWMFElasticsearchExporter(object):
         if not conn.is_master:
             return
 
-        # Source data metrics will be derived from
-        index_stats = conn.request(self.index_stats_path)['indices']
-        index_settings = conn.request(self.index_settings_path)
+        if self.indices:
+            # Source data metrics will be derived from
+            index_stats = conn.request(self.index_stats_path)['indices']
+            index_settings = conn.request(self.index_settings_path)
+        else:
+            # Supply empty values so *_titlesuggest has something to
+            # attach to.
+            index_stats = {}
+            index_settings = {}
+
         # bit of a hack. inject *_titlesuggest to be picked up by age_days.
         # The batch_id is a unix timestamp marking when the index data was
         # built. Note that this only works because age_days is the only
