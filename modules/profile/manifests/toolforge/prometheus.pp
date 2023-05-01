@@ -30,7 +30,7 @@ class profile::toolforge::prometheus (
     $targets_path = '/srv/prometheus/tools/targets'
 
     class { '::httpd':
-        modules => ['proxy', 'proxy_http'],
+        modules => ['proxy', 'proxy_http', 'rewrite'],
     }
 
     # the certs are used by prometheus to auth to the k8s API and are
