@@ -32,7 +32,7 @@ UNKNOWN = 3
 
 
 def check_roles(user, requiredroles, all_projects=True):
-    clients = mwopenstackclients.clients('/etc/novaobserver.yaml')
+    clients = mwopenstackclients.clients(oscloud='novaobserver')
     keystoneclient = clients.keystoneclient()
 
     # test observer roles

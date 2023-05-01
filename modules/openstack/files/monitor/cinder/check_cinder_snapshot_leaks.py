@@ -26,7 +26,7 @@ CRIT_LEAKS = 12
 
 
 def main():
-    clients = mwopenstackclients.clients('/etc/novaobserver.yaml')
+    clients = mwopenstackclients.clients(oscloud='novaobserver')
     cinder = clients.cinderclient(project='admin')
     snaps = cinder.volume_snapshots.list()
 

@@ -34,13 +34,13 @@ from troveclient import exceptions as troveexceptions
 POLICY_TEST_PROJECT = "policy-test-project"
 
 # Novaadmin: has project-admin rights in every project
-adminclients = mwopenstackclients.clients("/etc/novaadmin.yaml")
+adminclients = mwopenstackclients.clients(oscloud="novaadmin")
 
 # Novaobserver: has read-only rights everywhere, should not be able to change anythin
-observerclients = mwopenstackclients.clients("/etc/novaobserver.yaml")
+observerclients = mwopenstackclients.clients(oscloud='novaobserver')
 
 # osstackcanary: has rights in select projects
-canaryclients = mwopenstackclients.clients("/etc/oss-canary.yaml")
+canaryclients = mwopenstackclients.clients(oscloud="oss-canary")
 
 
 # Helper function to find a small, public flavor

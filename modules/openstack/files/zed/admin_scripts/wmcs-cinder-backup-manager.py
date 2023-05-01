@@ -65,7 +65,7 @@ if __name__ == "__main__":
         logging.error("Unable to locate %s" % backup_tool_name)
         exit(1)
 
-    osclients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
+    osclients = mwopenstackclients.clients(oscloud="novaadmin")
     total_errors = 0
     epoch_days = int(time.time() / (24*60*60))
 

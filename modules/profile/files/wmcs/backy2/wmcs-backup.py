@@ -25,7 +25,6 @@ from rbd2backy2 import (
 # This holds cached openstack information
 IMAGES_CACHE_FILE = "./backups.images.cache"
 INSTANCES_CACHE_FILE = "./backups.instances.cache"
-OPENSTACK_ENV_FILE = "/etc/novaobserver.yaml"
 RED = "\033[91m"
 GREEN = "\033[92m"
 END = "\033[0m"
@@ -1536,9 +1535,7 @@ class ImageBackupsState:
 
 def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(INSTANCES_CACHE_FILE):
-        openstackclients = mwopenstackclients.Clients(
-            envfile=OPENSTACK_ENV_FILE
-        )
+        openstackclients = mwopenstackclients.Clients(oscloud="novaobserver")
         logging.debug("Getting instances...")
         server_id_to_server_info = {
             server.id: server.to_dict()
@@ -1557,7 +1554,7 @@ def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
 def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(IMAGES_CACHE_FILE):
         logging.debug("Getting images from the server...")
-        clients = mwopenstackclients.Clients(envfile="/etc/novaadmin.yaml")
+        clients = mwopenstackclients.Clients(oscloud="novaadmin")
         image_id_to_image_info = {
             image.id: image for image in clients.glanceclient().images.list()
         }

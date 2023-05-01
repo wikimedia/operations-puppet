@@ -29,7 +29,7 @@ def check_flavors():
     ceph_flavors_without_read_iops = []
     ceph_flavors_without_write_iops = []
 
-    clients = mwopenstackclients.clients("/etc/novaadmin.yaml")
+    clients = mwopenstackclients.clients(oscloud="novaadmin")
     novaclient = clients.novaclient()
 
     # quote from the novaclient documentation:

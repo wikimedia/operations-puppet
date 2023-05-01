@@ -84,7 +84,7 @@ def main():
         passwd=cfg.CONF.enc.mysql_password,
     )
 
-    clients = mwopenstackclients.clients(envfile="/etc/novaobserver.yaml")
+    clients = mwopenstackclients.clients(oscloud="novaobserver")
 
     git_env = {
         "SSH_AUTH_SOCK": "/run/keyholder/proxy.sock",

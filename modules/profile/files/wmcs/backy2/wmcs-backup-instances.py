@@ -33,7 +33,7 @@ def backup_this_project_on_this_host(config, project):
 with open("/etc/wmcs_backup_instances.yaml") as f:
     config = yaml.safe_load(f)
 
-openstackclients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
+openstackclients = mwopenstackclients.Clients(oscloud='novaobserver')
 ceph_servers = rbd2backy2.ceph_vms(config["ceph_pool"])
 
 for project in openstackclients.allprojects():

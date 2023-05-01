@@ -21,7 +21,7 @@ import subprocess
 
 import mwopenstackclients
 
-clients = mwopenstackclients.clients("/etc/novaadmin.yaml")
+clients = mwopenstackclients.clients(oscloud="novaadmin")
 
 CEPH_POOL = "eqiad1-compute"
 

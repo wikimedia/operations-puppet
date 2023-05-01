@@ -5,7 +5,7 @@
 
 import mwopenstackclients
 
-clients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
+clients = mwopenstackclients.clients(oscloud="novaadmin")
 hypervisors = clients.novaclient().services.list()
 hvnames = sorted([hv.host for hv in hypervisors])
 

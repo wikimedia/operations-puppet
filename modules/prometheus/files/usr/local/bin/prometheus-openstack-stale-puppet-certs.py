@@ -20,7 +20,7 @@ from prometheus_client.exposition import generate_latest
 @functools.lru_cache()
 def get_project_vms(project_id: str):
     servers = (
-        mwopenstackclients.Clients("/etc/novaobserver.yaml")
+        mwopenstackclients.Clients(oscloud='novaobserver')
         .novaclient(project_id)
         .servers.list()
     )

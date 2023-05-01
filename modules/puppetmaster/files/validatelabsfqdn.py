@@ -6,7 +6,7 @@ import mwopenstackclients
 
 
 certname = sys.argv[1]
-clients = mwopenstackclients.clients(envfile="/etc/novaobserver.yaml")
+clients = mwopenstackclients.clients(oscloud='novaobserver')
 region_recs = clients.keystoneclient().regions.list()
 regions = [region.id for region in region_recs]
 
