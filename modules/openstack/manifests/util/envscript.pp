@@ -9,15 +9,17 @@ define openstack::util::envscript(
     Optional[Stdlib::Unixpath] $scriptpath             = undef,
     String                     $os_db_password         = '',
     Stdlib::Filemode           $yaml_mode              = '0440',
-    Optional[Stdlib::Unixpath] $clouds_file            = undef,
+    Optional[Array[Stdlib::Unixpath]] $clouds_files    = undef,
     Optional[String]           $os_project             = undef,
     Optional[String]           $os_project_domain_id   = undef,
     Optional[String]           $os_user_domain_id      = undef,
   ) {
-    if $clouds_file {
-        concat::fragment { "clouds_file_${title}":
-            target  => $clouds_file,
-            content => template('openstack/util/clouds_fragment.yaml.erb'),
+    if $clouds_files {
+        $clouds_files.each |$clouds_file| {
+            concat::fragment { "${clouds_file}_${title}":
+                target  => $clouds_file,
+                content => template('openstack/util/clouds_fragment.yaml.erb'),
+            }
         }
     }
 

@@ -6,6 +6,20 @@ class profile::openstack::base::observerenv(
     String       $os_password       = lookup('profile::openstack::base::observer_password'),
     String       $os_project        = lookup('profile::openstack::base::observer_project'),
   ) {
+
+    $root_clouds_file = '/root/.config/openstack/clouds.yaml'
+    wmflib::dir::mkdir_p($root_clouds_file.dirname.dirname, {'mode' => '0700'})
+
+    concat { $root_clouds_file:
+        mode => '0400',
+    }
+
+    concat::fragment { 'root_clouds_file_header':
+        target  => $root_clouds_file,
+        order   => '01',
+        content => "clouds:\n",
+    }
+
     $clouds_file = '/etc/openstack/clouds.yaml'
     ensure_resource('file', $clouds_file.dirname, { 'ensure' => 'directory',
                                                     'mode' => '0755' })
@@ -30,6 +44,6 @@ class profile::openstack::base::observerenv(
         os_user_domain_id      => 'default',
         scriptpath             => '/usr/local/bin/observerenv.sh',
         yaml_mode              => '0444',
-        clouds_file            => $clouds_file,
+        clouds_files           => [$clouds_file, $root_clouds_file],
     }
 }

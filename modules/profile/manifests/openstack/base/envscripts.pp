@@ -8,18 +8,7 @@ class profile::openstack::base::envscripts(
     $wmflabsdotorg_project = lookup('profile::openstack::base::designate::wmflabsdotorg_project'),
     $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
 ) {
-    $clouds_file = '/root/.config/openstack/clouds.yaml'
-    wmflib::dir::mkdir_p($clouds_file.dirname, {'mode' => '0700'})
-
-    concat { $clouds_file:
-        mode => '0400',
-    }
-
-    concat::fragment { 'clouds_file_header':
-        target  => $clouds_file,
-        order   => '01',
-        content => "clouds:\n",
-    }
+    $root_clouds_file = '/root/.config/openstack/clouds.yaml'
 
     # Specify the novaadmin user in the 'admin' project. This gets us
     #  a project-scoped token
@@ -34,7 +23,7 @@ class profile::openstack::base::envscripts(
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/novaenv.sh',
         yaml_mode              => '0440',
-        clouds_file            => $clouds_file,
+        clouds_files           => [$root_clouds_file],
         os_project_domain_id   => 'default',
         os_user_domain_id      => 'default',
     }
@@ -53,7 +42,7 @@ class profile::openstack::base::envscripts(
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/keystoneenv.sh',
         yaml_mode              => '0440',
-        clouds_file            => $clouds_file,
+        clouds_files           => [$root_clouds_file],
         os_project_domain_id   => 'default',
         os_user_domain_id      => 'default',
     }
@@ -70,7 +59,7 @@ class profile::openstack::base::envscripts(
         os_db_password         => $nova_db_pass,
         scriptpath             => '/root/ossystemenv.sh',
         yaml_mode              => '0440',
-        clouds_file            => $clouds_file,
+        clouds_files           => [$root_clouds_file],
     }
 
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
@@ -83,7 +72,7 @@ class profile::openstack::base::envscripts(
         os_project             => $wmflabsdotorg_project,
         scriptpath             => '/root/wmflabsorg-domainadminenv.sh',
         yaml_mode              => '0440',
-        clouds_file            => $clouds_file,
+        clouds_files           => [$root_clouds_file],
         os_project_domain_id   => 'default',
         os_user_domain_id      => 'default',
     }
@@ -100,7 +89,7 @@ class profile::openstack::base::envscripts(
         os_project             => 'admin-monitoring',
         scriptpath             => '/usr/local/bin/osscanaryenv.sh',
         yaml_mode              => '0440',
-        clouds_file            => $clouds_file,
+        clouds_files           => [$root_clouds_file],
         os_project_domain_id   => 'default',
         os_user_domain_id      => 'default',
     }
