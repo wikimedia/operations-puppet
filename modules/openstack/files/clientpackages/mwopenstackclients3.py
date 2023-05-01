@@ -24,13 +24,13 @@ class Clients(object):
 
     def __init__(
         self,
-        oscloud="",
         envfile="",
         username="",
         password="",
         url="",
         project="",
         region="",
+        oscloud="",
     ):
         """
         Read config from one of:
