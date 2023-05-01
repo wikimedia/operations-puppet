@@ -9,6 +9,7 @@ class profile::openstack::base::observerenv(
 
     $root_clouds_file = '/root/.config/openstack/clouds.yaml'
     wmflib::dir::mkdir_p($root_clouds_file.dirname.dirname, {'mode' => '0700'})
+    wmflib::dir::mkdir_p($root_clouds_file.dirname, {'mode' => '0700'})
 
     concat { $root_clouds_file:
         mode => '0400',
