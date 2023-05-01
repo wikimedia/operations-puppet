@@ -182,10 +182,6 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
                     logging.warning(
                         "Found illformed mount entry for project %s" % projectname
                     )
-                    # This and the following are legacy special cases;
-                    #  once they move off of the metal labstore hosts
-                    #  they can become generic cases with a :
-                    mountpoints.append("/srv/tools/shared/tools")
 
             if len(mountpoints) == 0:
                 # Skip project if it has no private mounts
