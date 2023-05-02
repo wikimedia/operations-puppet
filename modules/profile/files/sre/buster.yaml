@@ -347,11 +347,11 @@ role::eventlogging::analytics:
   target-q: TBD
   phab-task: 288804
 role::dumps::web::htmldumps:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 325232
 role::kafka::monitoring_buster:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-2
+  phab-task: 335424
 role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
   target-q: TBD
 role::microsites::peopleweb:
