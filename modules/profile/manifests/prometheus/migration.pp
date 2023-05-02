@@ -11,6 +11,7 @@ class profile::prometheus::migration (
         ensure              => Wmflib::Ensure($data_flows['ensure']),
         source_host         => $data_flows['src_host'],
         dest_host           => $data_flows['dst_host'],
+        chown               => 'prometheus:prometheus',
         auto_sync           => false,
         module_path         => '/srv',
         server_uses_stunnel => true,
