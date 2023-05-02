@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath, hghani,
-              ilooremeta]
+              ilooremeta, cmjohnson]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -50,7 +50,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, oblivian,
-              akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
+              akosiaris, mark, ariel, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               cdanis, fsero, jbond, dzahn, sukhe, pt1979,
@@ -636,7 +636,7 @@ groups:
   datacenter-ops:
     gid: 765
     description: Group of datacenter ops engineers
-    members: [wpao, jclark, pt1979, robh, cmjohnson, jhancock]
+    members: [wpao, jclark, pt1979, robh, jhancock]
     privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
                  'ALL = NOPASSWD: /usr/local/bin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
@@ -1439,15 +1439,13 @@ users:
     email: aotto@wikimedia.org
     krb: present
   cmjohnson:
-    ensure: present
+    ensure: absent
     gid: 500
     name: cmjohnson
     realname: Chris Johnson
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRcpxRnwLHjFjOuadfyyQB2CEFArfVzXA9gGZ0yI+zgF7tTfqj0vpAJpo4y8II7RayRuYbMQNMKdSdcHkg0qWrcljaLmkgMxg4eUNSHWWdBuGDKIFKH9Rj7vU7WKK/jmXGf1Slt2h7oFakRUp4p6u1kb4+P2yJwrYyQFXaCmiIQ9elEkkij7fEY2o1BZQ7S9MmmyQwbfg/cw1DShoQJkHlAm6ZG4m4fzYU2z8z+Pgm6d86QsEa8rEBf6GgwMcSon/b7fsXBc/XL0VV9CZOQ6Z5qkSe7ccOlhjS1wSRq6O4IdkxfSgVHAi00HsUZPlMoueB7hX1d9UQOxSMja48Pwklc7XarkuENZdVWu7b7CoJrQ2bSYDky19mKwU5iTZlm/843yE4MtnM8pqq2mx8+onQTAK0Fnmb+cqt8wEz3PAImC0cMnPscmUWYWC2z+2eeOsKUdNe3WyA4wbnR+hRqeUAYHUHEpQobpKHWhOFIh3kIns/WprJj+ezL2jcJRev12qhIoDW3b/VDhkU/Hx22qFHraT6i91j2/qtxNnwInlhQbQ6POCXYaGSTe4BViUAu7T7/OCL6Tx7WW5TCrEeBRKtOqNI3/Un8eob90GdQQ4PzAyEznHRqv5XmgR988WrDtsvR11DgN3benu9GJYFZZJwkt6BvEJDT+W+hlAbc0Rq6Q== cmjohnson@wikimedia.org
+    ssh_keys: []
     uid: 2399
-    email: cjohnson@wikimedia.org
-    krb: present
+    krb: absent
   andrew:
     ensure: present
     gid: 500
