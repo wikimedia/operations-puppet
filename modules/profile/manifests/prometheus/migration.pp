@@ -13,7 +13,7 @@ class profile::prometheus::migration (
         dest_host           => $data_flows['dst_host'],
         chown               => 'prometheus:prometheus',
         auto_sync           => false,
-        module_path         => '/srv',
+        module_path         => '/srv/prometheus',
         server_uses_stunnel => true,
         progress            => true,
       }
