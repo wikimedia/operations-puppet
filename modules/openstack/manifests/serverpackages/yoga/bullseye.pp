@@ -51,7 +51,7 @@ class openstack::serverpackages::yoga::bullseye(
         dist       => 'bullseye-yoga-backports',
         components => 'main',
         source     => false,
-        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
         notify     => Exec['openstack-yoga-bullseye-apt-upgrade'],
     }
 
@@ -60,7 +60,7 @@ class openstack::serverpackages::yoga::bullseye(
         dist       => 'bullseye-yoga-backports-nochange',
         components => 'main',
         source     => false,
-        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
         notify     => Exec['openstack-yoga-bullseye-apt-upgrade'],
     }
 

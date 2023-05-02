@@ -51,7 +51,7 @@ class openstack::serverpackages::zed::bullseye(
         dist       => 'bullseye-zed-backports',
         components => 'main',
         source     => false,
-        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
         notify     => Exec['openstack-zed-bullseye-apt-upgrade'],
     }
 
@@ -60,7 +60,7 @@ class openstack::serverpackages::zed::bullseye(
         dist       => 'bullseye-zed-backports-nochange',
         components => 'main',
         source     => false,
-        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
         notify     => Exec['openstack-zed-bullseye-apt-upgrade'],
     }
 

@@ -1,13 +1,13 @@
 define apt::repository(
-    Optional[Stdlib::HTTPUrl] $uri         = undef,
-    Optional[String]          $dist        = undef,
-    Optional[String]          $components  = undef,
-    Boolean                   $bin         = true,
-    Boolean                   $source      = true,
-    Boolean                   $comment_old = false,
-    Optional[String]          $keyfile     = undef,
-    Wmflib::Ensure            $ensure      = present,
-    Boolean                   $trust_repo  = false,
+    Optional[Stdlib::HTTPUrl]          $uri         = undef,
+    Optional[String]                   $dist        = undef,
+    Optional[String]                   $components  = undef,
+    Boolean                            $bin         = true,
+    Boolean                            $source      = true,
+    Boolean                            $comment_old = false,
+    Optional[Pattern[/\.(asc|gpg)\z/]] $keyfile     = undef,
+    Wmflib::Ensure                     $ensure      = present,
+    Boolean                            $trust_repo  = false,
 ) {
     if $ensure == 'present' and ! ($uri and $dist and $components) {
       fail('uri, dist and component are all required if ensure =>  present')
@@ -15,19 +15,17 @@ define apt::repository(
     if $trust_repo {
         $trustedline = '[trusted=yes] '
     } elsif $keyfile {
-        # using ascii armored key files is fine,
-        # as we only support Stretch and newer
+        $repo_key = $keyfile.basename
 
-        file { "/etc/apt/keyrings/${name}.asc":
+        ensure_resource('file', "/etc/apt/keyrings/${repo_key}", {
             ensure => stdlib::ensure($ensure, 'file'),
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
             source => $keyfile,
-            notify => Exec['apt-get update'],
-        }
+            notify => Exec['apt-get update'], })
 
-        $trustedline = "[signed-by=/etc/apt/keyrings/${name}.asc] "
+        $trustedline = "[signed-by=/etc/apt/keyrings/${repo_key}] "
     } else {
         $trustedline = ''
     }
