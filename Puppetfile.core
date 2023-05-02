@@ -14,4 +14,7 @@ mod 'sshkeys_core',
     :git => 'https://github.com/puppetlabs/puppetlabs-sshkeys_core',
     :ref => 'v2.4.0'
 
+mod 'host_core',
+    :git => 'https://github.com/puppetlabs/puppetlabs-host_core.git',
+    :ref => 'v1.2.0'
 # vim: set filetype=ruby:

@@ -1,0 +1,48 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018 Puppet, Inc.
+# This file is distributed under the same license as the puppetlabs-host_core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: puppetlabs-host_core 1.0.0-2-g10dd80a\n"
+"\n"
+"Report-Msgid-Bugs-To: docs@puppet.com\n"
+"POT-Creation-Date: 2018-08-20 11:22-0700\n"
+"PO-Revision-Date: 2018-08-20 11:22-0700\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../lib/puppet/provider/host/parsed.rb:36
+msgid "%{attr} is a required attribute for hosts"
+msgstr ""
+
+#: ../lib/puppet/type/host.rb:30
+msgid "Invalid IP address %{value}"
+msgstr ""
+
+#: ../lib/puppet/type/host.rb:49
+msgid "Host aliases cannot include whitespace"
+msgstr ""
+
+#: ../lib/puppet/type/host.rb:50
+msgid "Host aliases cannot be an empty string. Use an empty array to delete all host_aliases "
+msgstr ""
+
+#: ../lib/puppet/type/host.rb:58
+msgid "Comment cannot include newline"
+msgstr ""
+
+#: ../lib/puppet/type/host.rb:84
+msgid "Invalid host name"
+msgstr ""
+
+#: ../lib/puppet/type/host.rb:88
+msgid "Hostname cannot include newline"
+msgstr ""

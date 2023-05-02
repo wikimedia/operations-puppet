@@ -1,0 +1,53 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018 Puppet, Inc.
+# This file is distributed under the same license as the puppetlabs-host_core package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# 
+# Translators:
+# Erwin Hom <erwin.hom@puppet.com>, 2018
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: puppetlabs-host_core 1.0.0-2-g10dd80a\n"
+"\n"
+"Report-Msgid-Bugs-To: docs@puppet.com\n"
+"POT-Creation-Date: 2018-08-20 11:22-0700\n"
+"PO-Revision-Date: 2018-10-23 22:50+0000\n"
+"Last-Translator: Erwin Hom <erwin.hom@puppet.com>, 2018\n"
+"Language-Team: Japanese (Japan) (https://www.transifex.com/puppet/teams/41915/ja_JP/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../lib/puppet/provider/host/parsed.rb:36
+msgid "%{attr} is a required attribute for hosts"
+msgstr "%{attr}はホストの必須属性です。"
+
+#: ../lib/puppet/type/host.rb:30
+msgid "Invalid IP address %{value}"
+msgstr "無効なIPアドレス%{value}"
+
+#: ../lib/puppet/type/host.rb:49
+msgid "Host aliases cannot include whitespace"
+msgstr "ホストの別名に空白を含めることはできません。"
+
+#: ../lib/puppet/type/host.rb:50
+msgid ""
+"Host aliases cannot be an empty string. Use an empty array to delete all "
+"host_aliases "
+msgstr "ホストの別名を空文字列にすることはできません。空配列を使ってすべてのhost_aliasesを削除してください。"
+
+#: ../lib/puppet/type/host.rb:58
+msgid "Comment cannot include newline"
+msgstr "コメントに新しい行を含めることはできません。"
+
+#: ../lib/puppet/type/host.rb:84
+msgid "Invalid host name"
+msgstr "無効なホスト名"
+
+#: ../lib/puppet/type/host.rb:88
+msgid "Hostname cannot include newline"
+msgstr "ホスト名に新しい行を含めることはできません。"

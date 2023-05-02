@@ -1,0 +1,13 @@
+---
+HOSTS:
+  centos7-64-1:
+    hypervisor: vmpooler
+    platform: el-7-x86_64
+    packaging_platform: el-7-x86_64
+    template: centos-7-x86_64
+    roles:
+    - agent
+    - database
+CONFIG:
+  type: agent
+  pooling_api: http://vmpooler.delivery.puppetlabs.net/
