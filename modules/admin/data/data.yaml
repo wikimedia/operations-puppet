@@ -223,7 +223,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [addshore, hoo, tarrow, wmde-leszek, dang, rosalie-wmde]
+    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde]
     approval:
       - Leszek Manicki
       - Tobias Andersson
@@ -753,7 +753,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [addshore, goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
+    members: [goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, sihe, ollieshotton,
               muja, andrewtavis-wmde]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
@@ -2644,7 +2644,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCFMD8oAOcXW1Xvxnz3nYOAq9U9RuvTXoNu8spEdEs1wfelLEj4kQlNxp5vaF23lxbPSfGd6vQ3xF/2yu+5TN8ZjghL8NR5e7NfXynHPT2bdk0vLCXZ1KCNs6gc+kjwsUiJfAX9+1Ink9tf1XORLxae2Q+qOZQDsqYL7sTAyAtrPJ5xYQudnQN6Mz5XD5ajyunja6Ihk/UIg0TloYbr63BzTWSVF6gNi9GqEw017JqSaB17v0+meB/U4FDrFmsimtWdpmURir0isLnYdEc9R2wXVzaL4L0gXj4trWjQCMkCnbkvCqYRY7fxq6ersTKssJf4iydFsbEwLGEy3DqKZwlSctrExBh4iyyyxuhANTfNxPaPdggj2aR05Ik15TGrY5uVyNww32GaZAAnv9z0ib8IJje0Lrz9XAIFSIcTsF+rsU1v5yK81tkjWcHx2q2+X77efaOpsaZOwjCgDcxx30g5mAuLrjrRBGARGt5IriG5FTfg4mgc8GgGw76soo/AEM= adshwm-wmf-prodution-20210806
     uid: 2178
-    email: adam.shorland@wikimedia.de
+    email: wikimedia@addshore.com
     krb: present
   tarrow:
     ensure: present
