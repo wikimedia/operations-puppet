@@ -1722,7 +1722,7 @@ node /^lvs101[3456].eqiad.wmnet$/ {
 }
 
 # codfw lvs
-node /^lvs200[789]\.codfw\.wmnet$/ {
+node /^lvs200[89]\.codfw\.wmnet$/ {
     role(lvs::balancer)
 }
 
