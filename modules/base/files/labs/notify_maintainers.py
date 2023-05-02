@@ -21,13 +21,10 @@ Send email alerts to project members -- run on the affected instance
 import sys
 import argparse
 import ldap
+import mwopenstackclients
 import socket
 import yaml
 import subprocess
-
-from keystoneauth1.identity.v3 import Password as KeystonePassword
-from keystoneauth1.session import Session as KeystoneSession
-from keystoneclient.v3 import client as keystone_client
 
 # Don't bother to notify the novaadmin and nova-tools-bot user as it spams ops@
 # and noc@, respectively
@@ -53,29 +50,13 @@ with open("/etc/ldap.yaml") as f:
     ldap_config = yaml.safe_load(f)
 
 
-with open("/etc/novaobserver.yaml") as n:
-    nova_observer_config = yaml.safe_load(n)
-
-
 ldap_conn = connect(
     ldap_config["servers"][0], ldap_config["user"], ldap_config["password"]
 )
 
 
 def email_admins(subject, msg):
-    keystone_session = KeystoneSession(
-        auth=KeystonePassword(
-            auth_url=nova_observer_config["OS_AUTH_URL"],
-            username=nova_observer_config["OS_USERNAME"],
-            password=nova_observer_config["OS_PASSWORD"],
-            project_name=nova_observer_config["OS_PROJECT_NAME"],
-            user_domain_name="default",
-            project_domain_name="default",
-        )
-    )
-    keystoneclient = keystone_client.Client(
-        session=keystone_session, interface="public"
-    )
+    keystoneclient = mwopenstackclients.Clients(oscloud='novaobserver').keystoneclient()
     roleid = None
     for r in keystoneclient.roles.list():
         if r.name == "member":
