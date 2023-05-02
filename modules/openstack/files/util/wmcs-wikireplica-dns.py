@@ -58,9 +58,9 @@ def main():
         "--config", default="/etc/wikireplica_dns.yaml", help="Path to YAML config file"
     )
     parser.add_argument(
-        "--envfile",
-        default="/etc/novaadmin.yaml",
-        help="Path to OpenStack authentication YAML file",
+        "--os-cloud",
+        default="novaadmin",
+        help="clouds.yaml section to use for openstack auth",
     )
     parser.add_argument("--zone", help="limit changes to the given zone")
     parser.add_argument(
@@ -112,11 +112,11 @@ def main():
 
         if zone.endswith("wmflabs."):
             dns = mwopenstackclients.DnsManager(
-                mwopenstackclients.Clients(envfile=args.envfile), "noauth-project"
+                mwopenstackclients.Clients(oscloud=args.os_cloud), "noauth-project"
             )
         elif zone.endswith("db.svc.wikimedia.cloud."):
             dns = mwopenstackclients.DnsManager(
-                mwopenstackclients.Clients(envfile=args.envfile), "clouddb-services"
+                mwopenstackclients.Clients(oscloud=args.os_cloud), "clouddb-services"
             )
         else:
             logging.error(
