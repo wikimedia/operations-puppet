@@ -40,6 +40,10 @@ route:
         instance: '.+-(dev|test)([0-9]+.*)?'
       receiver: 'irc-spam'
 
+    - match_re:
+        instance: 'sretest.*'
+      receiver: 'irc-spam'
+
     - match:
         severity: 'warning'
       repeat_interval: 72h
