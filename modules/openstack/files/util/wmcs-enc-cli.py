@@ -156,7 +156,7 @@ class EncConnection:
 
 def main(args: Namespace) -> int:
     enc_connection = EncConnection(
-        mwopenstackclients.Clients(envfile=args.envfile), args.openstack_project
+        mwopenstackclients.Clients(oscloud=args.os_cloud), args.openstack_project
     )
 
     fn = getattr(enc_connection, args.action)
@@ -172,9 +172,9 @@ if __name__ == "__main__":
         action for action in dir(EncConnection) if not action.startswith("_")
     ]
     parser.add_argument(
-        "--envfile",
-        default="/etc/novaadmin.yaml",
-        help="Path to OpenStack authentication YAML file",
+        "--os-cloud",
+        default="novaadmin",
+        help="clouds.yaml section to use for openstack auth",
     )
     parser.add_argument("--openstack-project")
     parser.add_argument("action", choices=available_actions)
