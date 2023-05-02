@@ -183,12 +183,12 @@ def try_update_tenant(
             time.sleep(retry_interval)
 
 
-def update(config, envfile, retries, retry_interval):
+def update(config, os_cloud, retries, retry_interval):
     floating_ip_ptr_fqdn_matching_regex = re.compile(
         config["floating_ip_ptr_fqdn_matching_regex"]
     )
 
-    client = mwopenstackclients.Clients(envfile=envfile)
+    client = mwopenstackclients.Clients(oscloud=os_cloud)
 
     project_main_zone_ids = {}
     public_addrs = {}
@@ -356,9 +356,9 @@ def main():
         type=argparse.FileType("r"),
     )
     argparser.add_argument(
-        "--envfile",
-        help="Path to OpenStack authentication YAML file",
-        default="/etc/novaadmin.yaml",
+        "--os-cloud",
+        help="clouds.yaml section to use for auth",
+        default="novaadmin",
     )
     args = argparser.parse_args()
 
@@ -386,7 +386,7 @@ def main():
         try:
             update(
                 config,
-                args.envfile,
+                args.os_cloud,
                 retries=retries,
                 retry_interval=retry_interval,
             )
