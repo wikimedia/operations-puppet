@@ -5,13 +5,24 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'profile::wmcs::cloud_private_subnet' do
   on_supported_os(WMFConfig.test_on(11, 11)).each do |os, facts|
     context "on #{os}" do
+      let(:pre_condition) do
+        "function dnsquery::a($fqdn) {
+            if $fqdn == 'cloudlb2001-dev.codfw.hw.wikimedia.cloud' {
+                ['172.20.5.2', '127.0.0.1']
+            } elsif $fqdn == 'cloudsw.codfw.hw.wikimedia.cloud' {
+                ['172.20.5.1', '127.0.0.2']
+            } else {
+                [$fqdn]
+            }
+        }"
+      end
+      let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
         'interface_primary' => 'eno1',
+        'hostname' => 'cloudlb2001-dev',
       }) }
       let(:params) {{
         'vlan_id'     => 2151,
-        'address'     => '172.20.5.2/24',
-        'gw'          => '172.20.5.1/24',
         'supernet'    => '172.20.0.0/16',
         'public_vips' => '185.15.57.24/29',
       }}
