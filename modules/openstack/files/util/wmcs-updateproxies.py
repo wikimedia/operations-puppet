@@ -54,7 +54,7 @@ def proxy_client(client, project):
 
 def update_proxies(args):
     """List proxies for a tenant."""
-    client = mwopenstackclients.Clients(envfile=args.envfile)
+    client = mwopenstackclients.Clients(oscloud=args.os_cloud)
 
     dns = mwopenstackclients.DnsManager(client, tenant=TENANT)
 
@@ -98,8 +98,8 @@ def main():
         '-v', '--verbose', action='count',
         default=0, dest='loglevel', help='Increase logging verbosity')
     parser.add_argument(
-        '--envfile', default='/etc/novaadmin.yaml',
-        help='Path to OpenStack authentication YAML file')
+        '--os-cloud', default='novaadmin',
+        help='clouds.yaml section to use for openstack auth')
     parser.add_argument(
         '-d', '--dry-run', action='count', default=0,
         dest='dryrun',

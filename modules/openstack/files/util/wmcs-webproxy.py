@@ -44,7 +44,7 @@ def proxy_client(client, project):
 
 def add_proxy(args):
     """Setup DNS and dynamicproxy mapping from a host to a URL."""
-    client = mwopenstackclients.Clients(envfile=args.envfile)
+    client = mwopenstackclients.Clients(oscloud=args.os_cloud)
     proxy_url, session = proxy_client(client, args.project)
 
     fqdn = '{}.{}'.format(args.host, ZONE)
@@ -60,7 +60,7 @@ def add_proxy(args):
 
 def list_proxies(args):
     """List proxies for a tenant."""
-    client = mwopenstackclients.Clients(envfile=args.envfile)
+    client = mwopenstackclients.Clients(oscloud=args.os_cloud)
 
     proxy_url, session = proxy_client(client, args.project)
     resp = session.get(f"{proxy_url}/mapping", raise_exc=False)
@@ -78,7 +78,7 @@ def list_proxies(args):
 
 def delete_proxy(args):
     """Delete a proxy."""
-    client = mwopenstackclients.Clients(envfile=args.envfile)
+    client = mwopenstackclients.Clients(oscloud=args.os_cloud)
     proxy_url, session = proxy_client(client, args.project)
 
     fqdn = '{}.{}'.format(args.host, ZONE)
@@ -93,8 +93,8 @@ def main():
         '-v', '--verbose', action='count',
         default=0, dest='loglevel', help='Increase logging verbosity')
     parser.add_argument(
-        '--envfile', default='/etc/novaadmin.yaml',
-        help='Path to OpenStack authentication YAML file')
+        '--os-cloud', default='novaadmin',
+        help='clouds.yaml section to use for openstack auth')
     parser.add_argument(
         '-p', '--project', required=True,
         help='Cloud VPS project that owns proxy')
