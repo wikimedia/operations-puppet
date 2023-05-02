@@ -105,6 +105,7 @@ class package_builder(
         'unzip',
         'wdiff',
         'zip',
+        'python-all',
     ])
 
     file { '/etc/pbuilderrc':

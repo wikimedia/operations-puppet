@@ -27,3 +27,6 @@ profile::java::java_packages:
     variant: "jdk"
   - version: "11"
     variant: "jdk"
+
+# Needed to be able to build pybal
+profile::base::remove_python2_on_bullseye: false
