@@ -1727,6 +1727,11 @@ node /^lvs200[789]\.codfw\.wmnet$/ {
     role(lvs::balancer)
 }
 
+#New codfw lvs servers T326767
+node /^lvs201[1234]\.codfw\.wmnet$/ {
+    role(insetup::traffic)
+}
+
 node 'lvs2010.codfw.wmnet' {
     role(lvs::balancer)
 }
