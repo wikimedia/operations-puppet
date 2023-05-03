@@ -30,6 +30,15 @@ spark.executorEnv.LD_LIBRARY_PATH                   <%= @executor_env_ld_lib_pat
 <% if @hive_enabled -%>
 spark.sql.catalogImplementation                     hive
 <% end -%>
+<% if @hive_enabled and @iceberg_enabled -%>
+# This setting adds support for Iceberg SQL extensions like CALL for stored procedures or ALTER TABLE ... WRITE ORDERED BY.
+# See https://iceberg.apache.org/docs/1.2.1/spark-configuration/#sql-extensions
+spark.sql.extensions                                org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+# These 'spark.sql.catalog.spark_catalog*' settings add support for Iceberg to the default Spark Catalog by wrapping it.
+# See https://iceberg.apache.org/docs/1.2.1/spark-configuration/#replacing-the-session-catalog
+spark.sql.catalog.spark_catalog                     org.apache.iceberg.spark.SparkSessionCatalog
+spark.sql.catalog.spark_catalog.type                hive
+<% end -%>
 <% if @driver_port -%>
 spark.driver.port                                   <%= @driver_port %>
 <% end -%>

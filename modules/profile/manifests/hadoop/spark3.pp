@@ -1,11 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # == Class profile::hadoop::spark3
-# Ultimately this class will install the Spark3 debian package,
-# created from a conda environement.
-# For now it creates only the spark3 configuration, which is used
-# by a Spark3 isntance available through the Airflow installation
-# on an-launcher1002
+# This class will install the Spark3 debian package, which is created from
+# a conda environement.
 #
 # Note: We keep commented the parameters and code from the spark2.pp class
 # that we think will be needed when the proper Spark3 package installation
@@ -128,6 +125,9 @@ class profile::hadoop::spark3(
         group  => 'root',
         mode   => '0755',
     }
+
+    # This flag adds configs to spark3-defaults.conf.erb to have Iceberg tables available on all Spark sessions.
+    $iceberg_enabled = true
 
     file { '/etc/spark3/conf/spark-defaults.conf':
         content => template('profile/hadoop/spark3/spark3-defaults.conf.erb'),
