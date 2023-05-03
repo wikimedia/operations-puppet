@@ -39,7 +39,7 @@ class dumps::web::enterprise(
         group  => $group,
     }
 
-    $download_command = "/usr/bin/python3 ${script_path} --creds ${creds_path} --settings ${settings_path} --retries 2"
+    $download_command = "/usr/bin/python3 ${script_path} --creds ${creds_path} --settings ${settings_path} --retries 5"
     systemd::timer::job { 'download_enterprise_htmldumps':
         ensure                  => $is_primary_server.bool2str('present', 'absent'),
         description             => 'Twice monthly download of Wikimedia Enterprise HTML dumps',
