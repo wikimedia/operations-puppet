@@ -2,14 +2,10 @@
 # A webserver configured for a CI master, as proxy
 class profile::ci::httpd {
     include profile::ci
+    include profile::ci::php
 
-    $php_version = debian::codename::eq('buster') ? {
-        true    => '7.3',
-        default => '7.0',
-    }
-
-    $httpd_php_package = "libapache2-mod-php${php_version}"
-    $httpd_php_module = "php${php_version}"
+    $httpd_php_package = "libapache2-mod-php${profile::ci::php::php_version}"
+    $httpd_php_module = $profile::ci::php::php_prefix
 
     ensure_packages($httpd_php_package)
 

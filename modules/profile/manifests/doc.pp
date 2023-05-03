@@ -6,6 +6,10 @@ class profile::doc (
     Stdlib::Unixpath    $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
     Array[Stdlib::Host] $contint_hosts = lookup('jenkins_controller_hosts'),
 ) {
+    include profile::ci::php
+
+    $php_prefix = $profile::ci::php::php_prefix
+    $php_version = $profile::ci::php::php_version
 
     $deploy_user = 'deploy-ci-docroot'
 
@@ -13,26 +17,11 @@ class profile::doc (
         deploy_user => $deploy_user,
     }
 
-    if debian::codename::eq('buster') {
-        apt::repository { 'wikimedia-php74':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/php74',
-        }
-    }
-
-    $php_version = debian::codename() ? {
-        'buster'   => '7.4',
-        'bullseye' => '7.4',  # provided above by component/php74
-        default    => fail("${module_name} not supported by ${debian::codename()}")
-    }
-    $php = "php${php_version}"
-
-    ensure_packages(["${php}-fpm", "${php}-xml"])
+    ensure_packages(["${php_prefix}-fpm", "${php_prefix}-xml"])
 
     # The Debian package does not provide a `php-fpm` service and we need scap
     # to be able to restart the service without relying on a version number.
-    $restart_cmd = "/bin/systemctl restart ${php}-fpm"
+    $restart_cmd = "/bin/systemctl restart ${php_prefix}-fpm"
 
     # scap deployment swap symlink which confuses PHP opcache. On promote
     # stage, scap invoke this script to clear the opcache.
@@ -64,7 +53,7 @@ class profile::doc (
 
     httpd::conf { 'wmf_doc_path':
         priority => 40,
-        content  => "Define WMF_DOC_PATH ${wmf_doc_path}\nDefine WMF_DOC_PHP_VERSION ${php}",
+        content  => "Define WMF_DOC_PATH ${wmf_doc_path}\nDefine WMF_DOC_PHP_VERSION ${php_prefix}",
     }
 
     # Apache configuration for doc.wikimedia.org
@@ -72,7 +61,7 @@ class profile::doc (
         source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf'
     }
 
-    profile::auto_restarts::service { "${php}-fpm": }
+    profile::auto_restarts::service { "${php_prefix}-fpm": }
 
     ferm::service { 'doc-http':
         proto  => 'tcp',
