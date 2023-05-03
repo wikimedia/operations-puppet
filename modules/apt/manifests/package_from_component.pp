@@ -74,7 +74,7 @@ define apt::package_from_component(
     # for which repository (previously they applied to all repos)
     # https://wiki.debian.org/DebianRepository/UseThirdParty
     if debian::codename::ge('bookworm'){
-        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/files/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
     } else {
         $wikimedia_apt_keyfile = undef
     }
