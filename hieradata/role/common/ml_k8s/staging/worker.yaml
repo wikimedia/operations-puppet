@@ -64,3 +64,5 @@ profile::kubernetes::pki::intermediate: 'mlserve_staging'
 # wikikube_staging certs have a default expiry of 3 days, to this should ultimately lead
 # to every day renewals.
 profile::kubernetes::pki::renew_seconds: 172800
+profile::lvs::realserver::pools:
+  k8s-ingress-ml-staging: {}
