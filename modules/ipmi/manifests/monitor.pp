@@ -2,14 +2,7 @@
 class ipmi::monitor (
     Wmflib::Ensure $ensure = 'present'
 ) {
-    ensure_packages(['freeipmi-tools'])
-
-    # install ipmiseld on hardware to log ipmi system event log entries to syslog
-    ensure_packages('freeipmi-ipmiseld')
-
-    profile::auto_restarts::service { 'ipmiseld':
-        ensure => absent,
-    }
+    ensure_packages(['freeipmi-tools', 'freeipmi-ipmiseld'])
 
     $ipmiseld_config = @(IPMISELDCONFIG)
         # THIS FILE IS MANAGED BY PUPPET
@@ -41,6 +34,7 @@ class ipmi::monitor (
 
     # ipmi_devintf needs to be loaded for the checks to work properly (T167121)
     nrpe::plugin { 'check_ipmi_sensor':
+        ensure => absent,
         source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
     }
 
@@ -49,12 +43,13 @@ class ipmi::monitor (
     }
 
     sudo::user { 'nagios_ipmi_sensor':
+        ensure     => absent,
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
     }
 
     nrpe::monitor_service { 'check_ipmi_sensor':
-        ensure         => $ensure,
+        ensure         => absent,
         description    => 'IPMI Sensor Status',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -T Power_Supply --nosel',
         check_interval => 30,
