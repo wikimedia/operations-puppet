@@ -16,6 +16,12 @@ groups:
 
   - name: service_slo_targets
     rules:
+      - record: service:error_slo:fraction
+        labels:
+          service: "etcd"
+        expr: 0.001
+
+      # Deprecated: Use service:error_slo:fraction instead. Retained for continuity.
       - record: service:error_slo:percent
         labels:
           service: "etcd"
