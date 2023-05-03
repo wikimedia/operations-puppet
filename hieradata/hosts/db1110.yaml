@@ -1,5 +1,6 @@
 # db1110
-# Will be moved to m3 T335092
-mariadb::shard: 's5'
+# Temporary host to test T335080
+mariadb::shard: 'm3'
+mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb106'
 profile::monitoring::notifications_enabled: false

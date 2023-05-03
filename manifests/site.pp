@@ -620,7 +620,7 @@ node 'db2155.codfw.wmnet' {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1113, db1213 and db1144 below
-node /^db1(110|130|183|185|200|210)\.eqiad\.wmnet$/ {
+node /^db1(130|183|185|200|210)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
@@ -766,6 +766,10 @@ node 'db2133.codfw.wmnet' {
 
 # m3 master
 node 'db1159.eqiad.wmnet' {
+    role(mariadb::misc::phabricator)
+}
+
+node 'db1110.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
