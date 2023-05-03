@@ -4,17 +4,30 @@
 #
 <%
 require 'ipaddr'
+# Monkey patch ipaddr to have a netmask property
+# upstream introduces this in the following commit merged in 1.2.2
+# https://github.com/ruby/ipaddr/commit/283d16f3a379d440328e0eb6b8675950988aa2cb
+# not sure when this lands in ruby but its not in 2.7.4p191 (bullseye) and is in 3.1.2p20 (bookworm)
+module WMFExtensions
+  class IPAddr
+    module Netmask
+      def netmask
+        _to_string(@mask_addr)
+      end
+    end
+  end
+end
+IPAddr.include WMFExtensions::IPAddr::Netmask
+
 @mgmt_networks.each do |netname, netlist|
 # FIXME We only support the first network for each DC; we need a better way to define the includes
 # if there are more in the future (probably labelling them with the actual network label).
 addr = IPAddr.new(netlist[0])
-nm = 0xffffffff >> (32 - addr.prefix) << (32 - addr.prefix)
-netmask = (0..3).map { |i| (nm >> (24 - 8 * i)) & 0xff}.join('.')
 -%>
-subnet <%= addr.to_s %> netmask <%= netmask %> {
+subnet <%= addr.to_s %> netmask <%= addr.netmask %> {
      authoratative;
 
-     option subnet-mask <%= netmask %>;
+     option subnet-mask <%= addr.netmask %>;
      option routers <%= addr.succ %>;
      option domain-name "mgmt.<%= netname %>.wmnet";
 
