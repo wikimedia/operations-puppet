@@ -104,8 +104,8 @@ def main():
         '-v', '--verbose', action='count',
         default=0, dest='loglevel', help='Increase logging verbosity')
     parser.add_argument(
-        '--envfile', default='/etc/novaobserver.yaml',
-        help='Path to OpenStack authentication YAML file')
+        '--os-cloud', default='novaobserver',
+        help='clouds.yaml section to use for openstack auth')
     parser.add_argument(
         '--config', type=argparse.FileType('r'),
         help='Path to yaml config file')
@@ -123,7 +123,7 @@ def main():
     logging.getLogger('urllib3').setLevel(logging.WARNING)
 
     config = yaml.safe_load(args.config)
-    client = mwopenstackclients.Clients(envfile=args.envfile)
+    client = mwopenstackclients.Clients(oscloud=args.os_cloud)
 
     classification = classify_instances(
         project=config['project'],
