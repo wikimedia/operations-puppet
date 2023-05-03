@@ -13,15 +13,23 @@ class profile::ci::gitcache {
         require   => File['/srv/git/operations'],
     }
 
-    $minute_puppet = fqdn_rand(60, 'operations-puppet')
-
     systemd::timer::job { 'operations-puppet':
-        ensure      => present,
+        ensure      => absent,
         description => 'Regular jobs to update gitcache for operations/puppet',
         user        => 'root',
         command     => '/usr/bin/git -C /srv/git/operations/puppet.git fetch origin --prune +refs/heads/*:refs/heads/*',
-        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 4:${minute_puppet}:00"},
         require     => Git::Clone['operations/puppet'],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:00:00'},
+    }
+
+    $minute = fqdn_rand(60)
+
+    systemd::timer::job { 'ci-gitcache-refresh':
+        ensure      => present,
+        description => 'Regular job to update the CI git cache',
+        user        => 'root',
+        command     => '/usr/bin/find /srv/git -type d -name \'*.git\' -exec git -C {} fetch origin --prune \'+refs/heads/*:refs/heads/*\' \;',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 3:${minute}:00"},
     }
 
     file { '/srv/git/mediawiki':
@@ -42,14 +50,12 @@ class profile::ci::gitcache {
         require   => File['/srv/git/mediawiki'],
     }
 
-    $minute_core = fqdn_rand(60, 'mediawiki-core')
-
     systemd::timer::job { 'mediawiki-core':
-        ensure      => present,
+        ensure      => absent,
         description => 'Regular jobs to update gitcache for mediawiki/core',
         user        => 'root',
         command     => '/usr/bin/git -C /srv/git/mediawiki/core.git fetch origin --prune +refs/heads/*:refs/heads/*',
-        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 3:${minute_core}:00"},
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:00:00'},
         require     => Git::Clone['mediawiki/core'],
     }
 
