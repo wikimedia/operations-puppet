@@ -30,13 +30,8 @@ import sys
 import socket
 import subprocess
 
-
+import mwopenstackclients
 from keystoneauth1.exceptions.http import Unauthorized
-from keystoneauth1.identity.v3 import Password as KeystonePassword
-from keystoneauth1.session import Session as KeystoneSession
-from keystoneclient.v3 import client as keystone_client
-
-from novaclient import client as novaclient
 
 
 def is_valid_ipv4(ip):
@@ -51,9 +46,9 @@ def is_valid_ipv4(ip):
 
 
 class Project:
-    """ async -- io should be done asynchronously
-        no_root_squash -- allow root in project instances
-                          to be treated as root on mount
+    """async -- io should be done asynchronously
+    no_root_squash -- allow root in project instances
+                      to be treated as root on mount
     """
 
     EXPORTS_TEMPLATE = (
@@ -80,27 +75,18 @@ class Project:
         return "\n".join(exportlines)
 
 
-def get_instance_ips(project, observer_pass, regions, auth_url):
+def get_instance_ips(project, regions, os_cloud):
     """
     Return a list of Instance internal IPs for a given project
 
     This uses the Nova API to fetch this data
     """
-    session = KeystoneSession(
-        auth=KeystonePassword(
-            auth_url=auth_url,
-            username="novaobserver",
-            password=observer_pass,
-            project_name=project,
-            user_domain_name="default",
-            project_domain_name="default",
-        )
-    )
+    clients = mwopenstackclients.Clients(oscloud=os_cloud)
 
     ips = []
     for region in regions:
         try:
-            client = novaclient.Client("2.0", session=session, region_name=region)
+            client = clients.novaclient(project=project, region=region)
             for instance in client.servers.list():
                 for value in instance.addresses.values():
                     for ip in value:
@@ -125,9 +111,7 @@ def fqdn_is_us(fqdn):
     try:
         ip_for_fqdn = socket.gethostbyname(fqdn)
     except socket.gaierror:
-        logging.warning(
-            "DNS lookup failure for %s. No exports for this host.", fqdn
-        )
+        logging.warning("DNS lookup failure for %s. No exports for this host.", fqdn)
         return False
 
     for ifaceName in interfaces():
@@ -142,7 +126,7 @@ def fqdn_is_us(fqdn):
     return False
 
 
-def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
+def get_projects_with_nfs(mounts_config, os_cloud):
     """
     Get populated project objects that need NFS exports
     :param mounts_config: dict
@@ -150,18 +134,8 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
     """
     projects = []
 
-    # Special one-off session just to grab the list of regions
-    session = KeystoneSession(
-        auth=KeystonePassword(
-            auth_url=auth_url,
-            username="novaobserver",
-            password=observer_pass,
-            project_name="observer",
-            user_domain_name="default",
-            project_domain_name="default",
-        )
-    )
-    keystoneclient = keystone_client.Client(session=session, interface="public")
+    keystoneclient = mwopenstackclients.Clients(oscloud=os_cloud).keystoneclient()
+
     region_recs = keystoneclient.regions.list()
     regions = [region.id for region in region_recs]
 
@@ -189,7 +163,7 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
                 continue
         else:
             continue
-        ips = get_instance_ips(projectname, observer_pass, regions, auth_url)
+        ips = get_instance_ips(projectname, regions, os_cloud)
         if ips:
             project = Project(projectname, config["gid"], ips, mountpoints)
             projects.append(project)
@@ -210,7 +184,7 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
 
 
 def exportfs():
-    """ translate on disk definitions into active NFS exports
+    """translate on disk definitions into active NFS exports
     :warn: this can fail with 0 exit code
     """
     exportfs = ["/usr/bin/sudo", "/usr/sbin/exportfs", "-ra"]
@@ -220,7 +194,7 @@ def exportfs():
 
 
 def write_public_exports(public_exports, exports_d_path):
-    """ output public export definitions
+    """output public export definitions
     :param public_exports: dict of defined exports
     """
     public_paths = []
@@ -239,12 +213,12 @@ def write_public_exports(public_exports, exports_d_path):
     return public_paths
 
 
-def write_project_exports(mounts_config, exports_d_path, observer_pass, auth_url):
-    """ output project export definitions
+def write_project_exports(mounts_config, exports_d_path, os_cloud):
+    """output project export definitions
     :param mounts_config: dict of defined exports
     """
     project_paths = []
-    projects = get_projects_with_nfs(mounts_config, observer_pass, auth_url)
+    projects = get_projects_with_nfs(mounts_config, os_cloud)
     for project in projects:
         logging.debug("writing exports file for %s", project.name)
         path = os.path.join(exports_d_path, "%s.exports" % project.name)
@@ -255,7 +229,7 @@ def write_project_exports(mounts_config, exports_d_path, observer_pass, auth_url
 
 
 def check_exports(no_exports_is_ok, project_paths, public_paths):
-    """ check sanity of exports in this daemon iteration
+    """check sanity of exports in this daemon iteration
     :param no_exports_is_ok: boolean, whether we expect to have no exports
     :param project_paths: list of project paths
     :param public_paths: list of public paths
@@ -273,7 +247,7 @@ def check_exports(no_exports_is_ok, project_paths, public_paths):
 
 
 def do_fix_and_export(existing_wo_all):
-    """ do the actual export and fix (delete) stale export files
+    """do the actual export and fix (delete) stale export files
     :param existing_wo_all: a list of paths with export files
     """
 
@@ -309,15 +283,9 @@ def main():
     )
 
     argparser.add_argument(
-        "--observer-pass",
-        default="",
-        help="Password for the OpenStack observer account",
-    )
-
-    argparser.add_argument(
-        "--auth-url",
-        default="",
-        help="Keystone URL -- can be obtained from novaobserver.yaml",
+        "--os-cloud",
+        default="novaobserver",
+        help="clouds.yaml section to use for openstack auth",
     )
 
     argparser.add_argument(
@@ -337,22 +305,8 @@ def main():
 
     args = argparser.parse_args()
 
-    if not args.observer_pass:
-        if os.path.isfile("/etc/novaobserver.yaml"):
-            with open("/etc/novaobserver.yaml") as conf_fh:
-                nova_observer_config = yaml.safe_load(conf_fh)
-
-            args.observer_pass = nova_observer_config["OS_PASSWORD"]
-            args.auth_url = nova_observer_config["OS_AUTH_URL"]
-        else:
-            argparser.error(
-                "The --observer-pass argument is required without /etc/novaobserver.yaml"
-            )
-
-    if not args.auth_url:
-        argparser.error(
-            "The --auth-url argument is required without /etc/novaobserver.yaml"
-        )
+    if not args.os_cloud:
+        argparser.error("The --os-cloud argument is required")
 
     logging.basicConfig(
         format="%(asctime)s %(levelname)s %(message)s",
@@ -387,9 +341,7 @@ def main():
             config["public"] = {}
 
         public_paths = write_public_exports(config["public"], exports_d_path)
-        project_paths = write_project_exports(
-            config, exports_d_path, args.observer_pass, args.auth_url
-        )
+        project_paths = write_project_exports(config, exports_d_path, args.os_cloud)
 
         # compile list of entries in export_d path that are not defined in current config
         existing_wo_public = list(set(existing_exports) - set(public_paths))
