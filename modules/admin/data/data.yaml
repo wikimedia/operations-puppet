@@ -178,7 +178,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, essexigyan, itamar, haak]
+              komla, sgimeno, essexigyan, itamar, haak, erayfield]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -5872,6 +5872,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINotvxyY6suyJrtLkYJxLVt1AuRmMchAutAnwTAU5cJ+ haak@C341
+  erayfield:
+    ensure: present
+    realname: Ellen Rayfield
+    email: erayfield@wikimedia.org
+    uid: 34606
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2htFXhtFzM9qVQu73WrDvNTmQGdMei67vSEqMgHOPs erayfield@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -6501,10 +6509,6 @@ ldap_only_users:
     ensure: present
     realname: Cai Blanton
     email: cblanton@wikimedia.org
-  erayfield:
-    ensure: present
-    realname: Ellen Rayfield
-    email: erayfield@wikimedia.org
   deerbee:
     ensure: present
     realname: Deniz Erdogan
