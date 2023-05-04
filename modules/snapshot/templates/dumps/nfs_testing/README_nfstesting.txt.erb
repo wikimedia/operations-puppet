@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: Apache-2.0
+This document outlines what is needed to test a new nfs share for dumps when it is made available as a dumps spare.
+
+PREPARATION
+
+* Make sure the new share has the role dumps::generation::server::spare, and check that the nfsd and lockd ports it is using are correct
+* Go to the snapshot testbed, become the <%= @user -%> user, and cd into the nfs_testing directory. Presumably you
+  are there since you are reading this file.
+* As root, mount the nfs share. Sample command:
+  mount -t nfs -o rw,vers=3,hard,acdirmin=0,acdirmax=0,acregmin=0,acregmax=0,timeo=600,rsize=8192,wsize=8192,bg,proto=tcp dumpsdata1005.eqiad.wmnet:/data <%= @mountpoint %>
+* As the <%= @user %> user, run the script nfs_testing_create_output_dirs.sh located in this directory.
+  This will create the directories for dumps output files, if they do not already exist.
+
+TESTING SQL/XML DUMPS
+
+All actions are done as the <%= @user -%> user.
+
+* cd into the /srv/deployment/dumps/dumps/xmldumps-backup directory
+* run the worker.py script on olowiki:
+  python3 /srv/deployment/dumps/dumps/xmldumps-backup/worker.py --configfile <%= @confsdir -%>/xmldumps.conf --log --skipdone --exclusive olowiki
+* check that the expected output files in <%= @publicdir -%> are present for each step, that they have reasonable content,
+  and that the dumps log in <%= @privatedir -%>/olowiki/dumps.log doesn't have
+  exceptions in it, etc.
+
+* mkdir <%= @publicdir -%>/igwiki and then rsync the files from the last igwiki run to the test mount point:
+  (substitute in the right YYYYMMDD and the right dumpsdata host values below)
+  rsync -av --bw=100000 dumpsdataXXX.eqiad.wmnet::/data/public/igwiki/202XMMDD <%= @publicdir -%>/igwiki
+* run the worker script on igwiki, testing prefetch:
+  python3 /srv/deployment/dumps/dumps/xmldumps-backup/worker.py --configfile <%= @confsdir -%>/xmldumps.conf --log --skipdone --exclusive igwiki
+* check that the expected output files in <%= @publicdir -%> are present for each step, that they have reasonable content,
+  and that the dumps log in <%= @privatedir -%>/olowiki/dumps.log doesn't have
+  exceptions in it, etc.
+
+* run the dumps monitor:
+  python3 /srv/deployment/dumps/dumps/xmldumps-backup/monitor --configfile <%= @confsdir -%>/xmldumps.conf --basedir /srv/deployment/dumps/dumps/xmldumps-backup
+* in another screen window or another browser tab, check the output: the index.html file should be
+  generated at <%= @publicdir -%>/backup-index.html and you can inspect it manually to make sure the two wikis (igwiki, olowiki)
+  have reasonable entries generated for them
+* stop the monitor
+
+This should be sufficient testing for the SQL/XML dumps for a new nfs share.
+
+TESTING OTHER DUMPS
+
+We will test only the following: the rdf weekly category dumps, the globalblocks dump, the adds-changes dumps,
+the pagetitles dump, and wikidata entity dumps for a small range of entities.
+ 
+Test the categories rdf dump:
+/usr/bin/php /srv/mediawiki/multiversion/MWScript.php maintenance/dumpCategoriesAsRdf.php --wiki=olowiki --format=ttl 2> <%= @homedir -%>/nfs_testing/categories_rdf.log | /usr/bin/gzip > <%= @otherdumpsdir -%>/categoriesrdf/testrun
+ 
+Test the global blocks dump:
+/usr/local/bin/dump-global-blocks.sh --config <%= @homedir -%>/nfs_testing/otherdumps.conf/"
+ 
+Test the wikidata entity dumps:
+/usr/bin/php /srv/mediawiki/multiversion/MWScript.php extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard 500 --sharding-factor FIXME --batch-size FIXME --format ttl --entity-type item --entity-type property --dbgroupdefault dump --part-id 10-batch 2000025 2000525 2>> <%= @homedir -%>/nfs_testing/wikidata_entities.log | gzip -9 > <%= @otherdumpsdir -%>/wikidata-entity-dumps-test.gz
+
+Test the adds-changed sumps:
+Coming soon

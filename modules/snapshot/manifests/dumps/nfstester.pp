@@ -110,4 +110,14 @@ class snapshot::dumps::nfstester(
       content => template('snapshot/dumps/nfs_testing/nfstester_xmldumps.conf.erb')
     }
 
+    # add documentation on how to test, since many commands must be run
+    # manually; at least we won't have to look them up each time.
+    file { "${homedir}/README_nfstesting.txt":
+      ensure  => 'present',
+      mode    => '0444',
+      owner   => $user,
+      group   => $group,
+      content => template('snapshot/dumps/nfs_testing/README_nfstesting.txt.erb'),
+    }
+
 }
