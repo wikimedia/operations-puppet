@@ -5,6 +5,13 @@
 <%- $ssh_fingerprints.keys.sort.each |$host| { -%>
   <%- $config = $ssh_fingerprints[$host] -%>
   <%- $types.each |$type| { -%>
-<%= $host %>,<%= $config['networking']['ip'] %>,<%= $config['networking']['ip6'] %> <%= $config['ssh'][$type]['type'] %> <%= $config['ssh'][$type]['key'] %>
+    <%-
+      $host_line = [
+        $host,
+        $config.dig('networking', 'ip'),
+        $config.dig('networking', 'ip6')
+      ].filter |$x| { $x =~ NotUndef }.join(',')
+    -%>
+<%= $host_line %> <%= $config['ssh'][$type]['type'] %> <%= $config['ssh'][$type]['key'] %>
   <%- } -%>
 <%- } -%>
