@@ -46,7 +46,6 @@ eventlogging_schemas_disabled = (
     'ServerSideAccountCreation',
 
     # NavigationTiming extension legacy schemas
-    'CentralNoticeTiming',
     'CpuBenchmark',
     'FeaturePolicyViolation',
     'NavigationTiming',

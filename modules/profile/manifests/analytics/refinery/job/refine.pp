@@ -163,7 +163,6 @@ class profile::analytics::refinery::job::refine(
         'ServerSideAccountCreation',
 
         # NavigationTiming extension legacy schemas
-        'CentralNoticeTiming',
         'CpuBenchmark',
         'FeaturePolicyViolation',
         'NavigationTiming',
