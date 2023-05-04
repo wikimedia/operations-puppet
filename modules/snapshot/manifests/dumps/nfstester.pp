@@ -44,4 +44,34 @@ class snapshot::dumps::nfstester(
       group  => $group,
     }
 
+    # these wikis are small enough to be useful for testing but still have a little activity each week
+    # so that revision prefetch testing and adds/changes dumps will work with them
+
+    $testwikis = [ 'igwiki', 'olowiki', 'snwiki' ]
+    $allwikis = join($testwikis, "\n")
+    $allwikisdblist = "${dblistsdir}/all.dblist"
+    file { $allwikisdblist:
+        ensure  => 'present',
+        path    => "${dblistsdir}/all.dblist",
+        mode    => '0644',
+        owner   => $user,
+        group   => $group,
+        content => "${allwikis}\n",
+    }
+
+    # these files can all be empty
+    $privatedblist = "${dblistsdir}/privatewikis.dblist"
+    $closeddblist = "${dblistsdir}/closedwikis.dblist"
+    $skipdblist = "${dblistsdir}/skip.dblist"
+    $skipmonitorlist = "${dblistsdir}/skipmonitor.dblist"
+
+    file { [ $privatedblist, $closeddblist, $skipdblist, $skipmonitorlist ]:
+
+        ensure  => 'present',
+        mode    => '0644',
+        owner   => $user,
+        group   => $group,
+        content => '',
+    }
+
 }
