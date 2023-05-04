@@ -46,7 +46,6 @@ class snapshot::dumps::nfstester(
 
     # these wikis are small enough to be useful for testing but still have a little activity each week
     # so that revision prefetch testing and adds/changes dumps will work with them
-
     $testwikis = [ 'igwiki', 'olowiki', 'snwiki' ]
     $allwikis = join($testwikis, "\n")
     $allwikisdblist = "${dblistsdir}/all.dblist"
@@ -72,6 +71,33 @@ class snapshot::dumps::nfstester(
         owner   => $user,
         group   => $group,
         content => '',
+    }
+
+    $mountpoint = '/mnt/dumpsdatatest'
+    $nfstestdir = "${mountpoint}/nfstest"
+    $dumpstree = "${nfstestdir}/xmldatadumps"
+    $otherdumpsdir = "${nfstestdir}/otherdumps"
+    $publicdir = "${dumpstree}/public"
+    $privatedir = "${dumpstree}/private"
+    $tempdir = "${dumpstree}/temp"
+
+    # the nfs share to be tested will be manually mounted. after that, we
+    # want to run a script to create all the needed directories over there
+    # if they do not exist from a previous test session.
+    file { "${homedir}/test_outputdir_paths.sh":
+      ensure  => 'present',
+      mode    => '0755',
+      owner   => $user,
+      group   => $group,
+      content => template('snapshot/dumps/nfs_testing/test_outputdir_paths.sh.erb'),
+    }
+
+    file {"${homedir}/nfs_testing_create_output_dirs.sh":
+      ensure => 'present',
+      mode   => '0755',
+      owner  => $user,
+      group  => $group,
+      source => 'puppet:///modules/snapshot/dumps/nfs_testing/create_output_dirs.sh',
     }
 
 }
