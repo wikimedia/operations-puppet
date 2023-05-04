@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
+    Boolean                       $do_bgp      = lookup('profile::wmcs::cloud_private_subnet::do_bgp',  {'default_value' => false}),
     Stdlib::Fqdn                  $domain      = lookup('profile::wmcs::cloud_private_subnet::domain',  {'default_value' => 'hw.wikimedia.cloud'}),
     Integer[1,32]                 $netmask     = lookup('profile::wmcs::cloud_private_subnet::netmask', {'default_value' => 24}),
     Stdlib::Fqdn                  $gw          = lookup('profile::wmcs::cloud_private_subnet::gw',      {'default_value' => 'cloudsw'}),
@@ -10,6 +11,12 @@ class profile::wmcs::cloud_private_subnet (
 
     $cloud_private_fqdn = "${facts['hostname']}.${::site}.${domain}"
     $cloud_private_address = dnsquery::a($cloud_private_fqdn)[0]
+
+    if $do_bgp {
+        class { 'profile::bird::anycast':
+            ipv4_src => $cloud_private_address,
+        }
+    }
 
     interface::tagged { 'cloud_private_subnet_iface':
         base_interface     => $facts['interface_primary'],

@@ -27,6 +27,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
         'public_vips' => '185.15.57.24/29',
       }}
       it { is_expected.to compile.with_all_deps }
+      it { should_not contain_class("profile::bird::anycast") }
       it {
         is_expected.to contain_interface__tagged("cloud_private_subnet_iface")
               .with_base_interface("eno1")
@@ -54,6 +55,18 @@ describe 'profile::wmcs::cloud_private_subnet' do
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
       }
+      context "when enabling BGP" do
+        let(:params) {
+            super().merge({
+                'do_bgp' => true,
+            })
+        }
+        it { is_expected.to compile.with_all_deps }
+        it {
+            is_expected.to contain_class("profile::bird::anycast")
+                .with_ipv4_src("172.20.5.2")
+        }
+      end
     end
   end
 end
