@@ -384,6 +384,12 @@ class profile::toolforge::prometheus (
             pod_name  => 'jobs-api-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
             port      => 9000,
         },
+        {
+            name      => 'tekton-pipelines-controller',
+            namespace => 'tekton-pipelines',
+            pod_name  => 'tekton-pipelines-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9090,
+        },
     ].map |Hash $job| {
         $result = {
             'job_name'              => $job['name'],
