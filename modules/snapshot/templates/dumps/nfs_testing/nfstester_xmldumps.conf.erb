@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: Apache-2.0
+#############################################################
+# This file is maintained by puppet!
+# modules/snapshot/files/dumps/nfs_testing/nfstester_xmldumps.conf
+#############################################################
+
+[wiki]
+dblist=<%= @allwikisdblist %>
+privatelist=<%= @privatedblist %>
+closedlist=<%= @closeddblist %>
+skipdblist=<%= @skipdblist %>
+dir=/srv/mediawiki
+adminsettings=private/PrivateSettings.php
+tablejobs=/etc/dumps/confs/table_jobs.yaml
+multiversion=/srv/mediawiki/multiversion
+
+[output]
+public=<%= @publicdir %>
+private=<%= @privatedir %>
+temp=<%= @tempdir %>
+templatedir=/etc/dumps/templs
+index=backup-index.html
+webroot=http://download.wikimedia.org
+fileperms=0o644
+
+[reporting]
+adminmail=nomail
+mailfrom=root@wikimedia.org
+smtpserver=localhost
+# 15 minutes is long enough to decide a lock is expired, right?
+staleage=900
+skipprivatetables=1
+
+[database]
+max_allowed_packet=32M
+
+[tools]
+php=/usr/bin/php7.4
+mysql=/usr/bin/mysql
+mysqldump=/usr/bin/mysqldump
+gzip=/bin/gzip
+bzip2=/bin/bzip2
+sevenzip=/usr/bin/7za
+lbzip2=/usr/bin/lbzip2
+checkforbz2footer=/usr/local/bin/checkforbz2footer
+writeuptopageid=/usr/local/bin/writeuptopageid
+recompressxml=/usr/local/bin/recompressxml
+revsperpage=/usr/local/bin/revsperpage
+
+[cleanup]
+keep=10
+
+[chunks]
+chunksEnabled=0
+retryWait=30
+
+[otherformats]
+multistream=1
+
+[misc]
+sevenzipprefetch=1
+maxRetries=3
+
+[stubs]
+minpages=1
+maxrevs=100

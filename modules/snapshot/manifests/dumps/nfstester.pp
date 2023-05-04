@@ -100,4 +100,14 @@ class snapshot::dumps::nfstester(
       source => 'puppet:///modules/snapshot/dumps/nfs_testing/create_output_dirs.sh',
     }
 
+    # set up a custom xml dups conf file for this testing, using the
+    # custom outpuit paths and db lists and so on
+    file { "${settingsdir}/xmldumps.conf":
+      ensure  => 'present',
+      mode    => '0755',
+      owner   => $user,
+      group   => $group,
+      content => template('snapshot/dumps/nfs_testing/nfstester_xmldumps.conf.erb')
+    }
+
 }
