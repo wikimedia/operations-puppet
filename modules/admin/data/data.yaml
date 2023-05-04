@@ -178,7 +178,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, essexigyan, itamar]
+              komla, sgimeno, essexigyan, itamar, haak]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -5864,6 +5864,14 @@ users:
     krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0TtVLJ3ZBLmnxOiFawTtOAoitHj9BpLRyXJZRuG6CI+6pco37i1wqHYCwOpc4jZg8fkPEN0k8lWLkFSzqKt/ZIb44o2g6ntKfzTKl9nsq6hbvPhjELxoU1KvnPeolz5e6d7mkL6uZlOS28zw5QutrjGlfFOREAeitMDkDXJ5YcJOq9/KDtePinHfyqb4djHdA5uuFM4ml4oD/u6FSSSRTUTN3CPbdramhRyfkDDZzBz60td8XTPgK+l7xVqQyQYWQZpeVufRVwYCq7uNMrFYuMI2M/Nuux3YUhq/1ats0LJRUJl1TOmY4g5kY1ltK2ARPsbM3MPc1rJAS2pFw4n8lyYgnZAkju7X0/qqsTfzf3jSh2e2tyFUir3pprMN14QA7PZfLlpZXPMtIKqDmUDVU260XiVDzqdFzUQKWYM0/kEeQ+6wiTfOkpZjP0weaJxj55x8WBVX/cKmVXYjSGiXX+SRPfKViFTg00RzpFGULnnC000KC4ThOiypBUjKmK9fuhVL0+RpPS5+SvHkB4ji4/6tKVm0ec1XL73235buKTwXgb8cLoJGtNZu5dQqesnJeaa0FaYqxXlRqId9WHAioD/IQn0B2WloPsjHH9V+09ICRm2qsScyG2uCG0svdcWSe4sVXRY6/49H0lMGQAVnLoNm9s2trBu/TEPGWuxQLtQ== andrew.mcallister@wikimedia.de
+  haak:
+    ensure: present
+    realname: Hasan Akgün
+    email: hasan.akguen@wikimedia.de
+    uid: 41336
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINotvxyY6suyJrtLkYJxLVt1AuRmMchAutAnwTAU5cJ+ haak@C341
 
 ldap_only_users:
   adavenport:
@@ -6574,10 +6582,6 @@ ldap_only_users:
     ensure: present
     realname: Peter Wangai
     email: pwangai@wikimedia.org
-  haak:
-    ensure: present
-    realname: Hasan Akgün
-    email: hasan.akguen@wikimedia.de
   tanuja:
     ensure: present
     realname: Tanuja Doriya
