@@ -1,13 +1,24 @@
 # SPDX-License-Identifier: Apache-2.0
+# See https://github.com/netbox-community/netbox/blob/develop/contrib/netbox-rq.service
 [Unit]
-Description=Netbox RQ Worker
-After=network.target
+Description=NetBox Request Queue Worker
+Documentation=https://docs.netbox.dev/
+After=network-online.target
+Wants=network-online.target
 
 [Service]
+Type=simple
+
+User=netbox
+Group=netbox
 WorkingDirectory=/srv/deployment/netbox/deploy/src/netbox
-ExecStart=/srv/deployment/netbox/venv/bin/python \
-    /srv/deployment/netbox/deploy/src/netbox/manage.py  \
-    rqworker
+
+ExecStart=/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py rqworker high default low
+
+Restart=on-failure
+RestartSec=30
+# Skipping as per discussion in https://gerrit.wikimedia.org/r/c/operations/puppet/+/915486
+# PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
