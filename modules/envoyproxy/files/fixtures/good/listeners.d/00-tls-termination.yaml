@@ -34,6 +34,6 @@ filter_chains:
         common_tls_context:
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/example-com.crt"
+                filename: "/tmp/.envoyconfig/example-com.crt"
               private_key:
-                filename: "/etc/example-com.key"
+                filename: "/tmp/.envoyconfig/example-com.key"

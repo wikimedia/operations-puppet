@@ -1,32 +1,27 @@
 # SPDX-License-Identifier: Apache-2.0
 import logging
 import os
+import shutil
 import subprocess
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
-import yaml
-
-import pytest
+from pathlib import Path
+from unittest import mock
 
 import build_envoy_config as envoy
-
+import pytest
+import yaml
 
 fixtures = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fixtures")
-
-
-def tempfile_mock(*args, **kwargs):
-    my_dir = "/tmp/envoy-build-test"
-    os.mkdir(my_dir)
-    return my_dir
 
 
 class TestEnvoyConfig:
     def setup_method(self):
         envoy.logger.setLevel(logging.DEBUG)
+        tmpdir = Path("/tmp/.envoyconfig")
+        if not tmpdir.is_dir():
+            os.mkdir(tmpdir, 0o755)
+        for fixture in Path(fixtures).iterdir():
+            if fixture.is_file():
+                shutil.copy(fixture, tmpdir / fixture.name)
 
     def test_init(self):
         """Test initialization"""
@@ -66,25 +61,27 @@ class TestEnvoyConfig:
         if os.path.isfile("/usr/bin/envoy"):
             assert ep.verify_config()
             # Now let's throw a wrench here
-            del ep.config["clusters"][1]
+            del ep.config["static_resources"]["clusters"][1]
             assert ep.verify_config() is False
 
         # Now let's verify the calls with some mocking
-        with mock.patch("subprocess.check_output") as subp:
+        with mock.patch("subprocess.check_output") as subp, mock.patch(
+            "os.geteuid"
+        ) as eiud:
             assert ep.verify_config()
             # Now let's simulate failure
-            subp.assert_called_with(
-                [
-                    "sudo",
-                    "-u",
-                    "envoy",
-                    "/usr/bin/envoy",
-                    "-c",
-                    "/tmp/.envoyconfig/envoy.yaml",
-                    "--mode validate",
-                ]
-            )
+            cmd = [
+                "/usr/bin/envoy",
+                "-c",
+                "/tmp/.envoyconfig/envoy.yaml",
+                "--mode validate",
+            ]
+            subp.assert_called_with(cmd)
+
+            # Become root
+            eiud.return_value = 0
             subp.side_effect = subprocess.CalledProcessError(
                 returncode=2, cmd="foobar", output="that's not valid"
             )
             assert ep.verify_config() is False
+            subp.assert_called_with(["sudo", "-u", "envoy"] + cmd)

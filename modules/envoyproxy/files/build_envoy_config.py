@@ -24,7 +24,6 @@ import os
 import shutil
 import subprocess
 import sys
-
 from typing import Generator, List
 
 import yaml
@@ -137,17 +136,16 @@ class EnvoyConfig:
                 os.mkdir(tmpdir, 0o755)
             tmpconfig = os.path.join(tmpdir, "envoy.yaml")
             self.write_config(config_file=tmpconfig)
-            subprocess.check_output(
-                [
-                    "sudo",
-                    "-u",
-                    "envoy",
-                    "/usr/bin/envoy",
-                    "-c",
-                    tmpconfig,
-                    "--mode validate",
-                ]
-            )
+            cmd = []
+            if os.geteuid() == 0:
+                cmd.extend(("sudo", "-u", "envoy"))
+            cmd.extend((
+                "/usr/bin/envoy",
+                "-c",
+                tmpconfig,
+                "--mode validate",
+            ))
+            subprocess.check_output(cmd)
             return True
         except subprocess.CalledProcessError as e:
             logger.error("Error encountered while verifying the configuration")
