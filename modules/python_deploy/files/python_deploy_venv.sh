@@ -36,7 +36,7 @@ DEPLOY_LINK="${PROJECT_DIR}/deploy"
 
 # Create cache if missing
 if [[ ! -d "${CACHE_DIR}" ]]; then
-    git -C "${PROJECT_DIR}" clone --recursive "http://${DEPLOYMENT_SERVER}/${PROJECT}/deploy/.git" "${CACHE_DIR}"
+    git -C "${PROJECT_DIR}" clone --recursive "http://${DEPLOYMENT_SERVER}/${PROJECT}/deploy/.git" cache
 fi
 
 # Update cache
@@ -46,9 +46,6 @@ git -C "${CACHE_DIR}" pull --ff-only --recurse-submodules
 echo "Deleting directory ${NEW_DIR}"
 rm -rf "${NEW_DIR}"
 git -C "${PROJECT_DIR}" clone --recursive --reference "${CACHE_DIR}" "${CACHE_DIR}" "${NEW_DIR}"
-# Set the setgid bit to allow later to delete the directory also if .pyc files are created by root or other users
-# using the venv, for example when running manage.py commands in a Django project.
-chmod g+s "${NEW_DIR}"
 
 # Run make
 echo "Running ${PROJECT}'s Makefile.deploy deploy"
