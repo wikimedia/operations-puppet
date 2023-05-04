@@ -178,7 +178,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, essexigyan, itamar, haak, erayfield]
+              komla, sgimeno, essexigyan, itamar, haak, erayfield, jkieserman]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -5880,6 +5880,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2htFXhtFzM9qVQu73WrDvNTmQGdMei67vSEqMgHOPs erayfield@wikimedia.org
+  jkieserman:
+    ensure: present
+    realname: Julia Kieserman
+    email: jkieserman@wikimedia.org
+    uid: 35687
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICbC6mZH07ZfqnAM4tlMqybCmk+H7ZuCy1wg2WtRl99C
 
 ldap_only_users:
   adavenport:
@@ -6011,10 +6019,6 @@ ldap_only_users:
     ensure: present
     realname: James Buatti
     email: jbuatti@wikimedia.org
-  jkieserman:
-    ensure: present
-    realname: Julia Kieserman
-    email: jkieserman@wikimedia.org
   jmatazzoni:
     ensure: absent
     realname: James Matazzoni
