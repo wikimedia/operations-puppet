@@ -137,6 +137,9 @@ init_user_repos() {
     echo \"  Bare private repository initialized at $PWD/private.git\"
     "
   )
+
+  git config --global --add safe.directory $puppet_repo
+  git config --global --add safe.directory $private_repo
 }
 
 instructions() {
