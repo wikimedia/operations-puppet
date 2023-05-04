@@ -47,11 +47,11 @@ class k8s::proxy (
         notify  => Service['kube-proxy'],
     }
 
-    service { 'kube-proxy':
-        ensure    => running,
-        enable    => true,
-        subscribe => [
-            File[$kubeconfig],
-        ],
+    systemd::service { 'kube-proxy':
+        ensure    => present,
+        restart   => true,
+        override  => true,
+        content   => "[Unit]\nAfter = ferm.service",
+        subscribe => File[$kubeconfig],
     }
 }
