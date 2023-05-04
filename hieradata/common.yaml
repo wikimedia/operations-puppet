@@ -1172,6 +1172,7 @@ kerberos_kdc_servers:
 kerberos_kdc_servers_to_clients:
     - 'krb1001.eqiad.wmnet'
     - 'krb2001.codfw.wmnet'
+    - 'krb2002.codfw.wmnet'
 
 # Etcd client global configuration
 etcd_client_srv_domain: "conftool.%{::site}.wmnet"
