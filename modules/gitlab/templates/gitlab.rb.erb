@@ -11,6 +11,9 @@ nginx_listen_addresses_escaped = []
     nginx_listen_addresses_escaped.push("#{nginx_listen_address}")
   end
 end
+def _to_ruby(value)
+  scope.call_function('to_ruby', [value])
+end
 
 -%>
 
@@ -207,9 +210,7 @@ gitlab_rails['omniauth_sync_email_from_provider'] = ['cas3']
 <%- if @cas_sync_profile -%>
 gitlab_rails['omniauth_sync_profile_from_provider'] = ['cas3']
 <%- end -%>
-<%- if @cas_sync_attrs -%>
-gitlab_rails['omniauth_sync_profile_attributes'] = true
-<%- end -%>
+gitlab_rails['omniauth_sync_profile_attributes'] = <%= _to_ruby(@cas_sync_attrs) %>
 
 <%- if @cas_session_duration -%>
 gitlab_rails['omniauth_cas3_session_duration'] = <%= @cas_session_duration %>

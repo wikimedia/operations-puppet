@@ -34,7 +34,7 @@ class gitlab (
     String           $cas_nickname_key                  = 'uid',
     Boolean          $cas_sync_email                    = true,
     Boolean          $cas_sync_profile                  = true,
-    Boolean          $cas_sync_attrs                    = true,
+    Array[Gitlab::Attributes] $cas_sync_attrs           = ['name', 'email', 'location'],
     Integer          $cas_session_duration              = 604800,
     Boolean          $csp_enabled                       = false,
     Boolean          $csp_report_only                   = false,
