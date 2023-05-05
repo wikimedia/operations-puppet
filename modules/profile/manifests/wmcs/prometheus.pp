@@ -112,7 +112,7 @@ class profile::wmcs::prometheus(
             'metric_relabel_configs' => [
                 $hostname_to_instance_config,
             ],
-            'scrape_interval' => '4m',
+            'scrape_interval' => '15m',
             'scrape_timeout'  => '120s',
         },
     ]
