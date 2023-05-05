@@ -1,5 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # TODO: add profile and parameter description.
+# @summary configure and manage gitlab server
+# @param block_auto_created_users Blocks users that are automatically created
+#   from signing in until they are approved by an administrator.
+# @param sync_profile_from list of providers where we sync the profile
+# @param sync_email_from list of providers where we sync the email
+# @param single_sign_on_from list of providers that support SSO
+# @param omniauth_providers hash of providers to configure.  the key is the label
+# @param auto_sign_in_with automatically redirect to this provider
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
@@ -10,9 +18,7 @@ class profile::gitlab(
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
     Stdlib::Unixpath $backup_dir_config = lookup('profile::gitlab::backup_dir_config'),
     Array[Stdlib::IP::Address] $monitoring_whitelist  = lookup('profile::gitlab::monitoring_whitelist'),
-    String $cas_label = lookup('profile::gitlab::cas_label'),
-    Stdlib::Httpurl $cas_url = lookup('profile::gitlab::cas_url'),
-    Boolean $cas_auto_create_users = lookup('profile::gitlab::cas_auto_create_users'),
+    Boolean $block_auto_created_users = lookup('profile::gitlab::block_auto_created_users'),
     Boolean $csp_enabled = lookup('profile::gitlab::csp_enabled', {default_value => false}),
     Boolean $csp_report_only = lookup('profile::gitlab::csp_enabled', {default_value => false}),
     Integer[1] $backup_keep_time = lookup('profile::gitlab::backup_keep_time'),
@@ -30,6 +36,12 @@ class profile::gitlab(
     Systemd::Timer::Schedule $restore_interval = lookup('profile::gitlab::restore_interval:'),
     Systemd::Timer::Schedule $rsync_interval = lookup('profile::gitlab::rsync_interval:'),
     Boolean $manage_host_keys = lookup('profile::ssh::server::manage_host_keys', {default_value => false}),
+    Gitlab::Omniauth_providers $auto_sign_in_with = lookup('profile::gitlab::auto_sign_in_with'),
+    Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = lookup('profile::gitlab::omniauth_providers'),
+    Array[Gitlab::Omniauth_providers] $sync_profile_from = lookup('profile::gitlab::sync_profile_from'),
+    Array[Gitlab::Omniauth_providers] $sync_email_from = lookup('profile::gitlab::sync_email_from'),
+    Array[Gitlab::Omniauth_providers] $single_sign_on_from = lookup('profile::gitlab::single_sign_on_from'),
+
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -180,28 +192,31 @@ class profile::gitlab(
     }
 
     class { 'gitlab':
-        backup_dir_data         => $backup_dir_data,
-        exporters               => $exporters,
-        monitoring_whitelist    => $monitoring_whitelist,
-        cas_label               => $cas_label,
-        cas_url                 => $cas_url,
-        cas_auto_create_users   => $cas_auto_create_users,
-        csp_enabled             => $csp_enabled,
-        csp_report_only         => $csp_report_only,
-        backup_keep_time        => $backup_keep_time,
-        smtp_enabled            => $smtp_enabled,
-        enable_backup           => $active_host == $facts['fqdn'], # enable backups on active GitLab server
-        ssh_listen_addresses    => $ssh_listen_addresses,
-        nginx_listen_addresses  => $nginx_listen_addresses,
-        enable_restore          => $active_host != $facts['fqdn'], # enable restore on replicas
-        cert_path               => $cert_path,
-        key_path                => $key_path,
-        gitlab_domain           => $service_name,
-        full_backup_interval    => $full_backup_interval,
-        partial_backup_interval => $partial_backup_interval,
-        config_backup_interval  => $config_backup_interval,
-        restore_interval        => $restore_interval,
-        email_enable            => $active_host == $facts['fqdn'], # enable emails on active GitLab server
-        manage_host_keys        => $manage_host_keys,
+        backup_dir_data          => $backup_dir_data,
+        exporters                => $exporters,
+        monitoring_whitelist     => $monitoring_whitelist,
+        block_auto_created_users => $block_auto_created_users,
+        csp_enabled              => $csp_enabled,
+        csp_report_only          => $csp_report_only,
+        backup_keep_time         => $backup_keep_time,
+        smtp_enabled             => $smtp_enabled,
+        enable_backup            => $active_host == $facts['fqdn'], # enable backups on active GitLab server
+        ssh_listen_addresses     => $ssh_listen_addresses,
+        nginx_listen_addresses   => $nginx_listen_addresses,
+        enable_restore           => $active_host != $facts['fqdn'], # enable restore on replicas
+        cert_path                => $cert_path,
+        key_path                 => $key_path,
+        gitlab_domain            => $service_name,
+        full_backup_interval     => $full_backup_interval,
+        partial_backup_interval  => $partial_backup_interval,
+        config_backup_interval   => $config_backup_interval,
+        restore_interval         => $restore_interval,
+        email_enable             => $active_host == $facts['fqdn'], # enable emails on active GitLab server
+        manage_host_keys         => $manage_host_keys,
+        omniauth_providers       => $omniauth_providers,
+        sync_profile_from        => $sync_profile_from,
+        sync_email_from          => $sync_email_from,
+        single_sign_on_from      => $single_sign_on_from,
+        auto_sign_in_with        => $auto_sign_in_with,
     }
 }

@@ -249,9 +249,14 @@ profile::gitlab::backup_keep_time: 259200
 # Disable sync on cloud test instance
 profile::gitlab::enable_backup_sync: false
 
-profile::gitlab::cas_label: 'Wikimedia Dev Account'
-profile::gitlab::cas_url: 'https://idp.wmcloud.org'
-profile::gitlab::cas_auto_create_users: false
+profile::gitlab::omniauth_providers:
+  'Wikimedia Dev Account':
+    url: 'https://idp.wmcloud.org'
+profile::gitlab::block_auto_created_users: false
+profile::gitlab::sync_profile_from: ['cas3']
+profile::gitlab::sync_email_from: ['cas3']
+profile::gitlab::single_sign_on_from: ['cas3']
+profile::gitlab::auto_sign_in_with: cas3
 
 profile::gitlab::smtp_enabled: false
 

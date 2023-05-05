@@ -201,40 +201,20 @@ sidekiq['listen_port'] = <%= config['port'] %>
 <% end -%>
 <% end -%>
 
-gitlab_rails['omniauth_allow_single_sign_on'] = ['cas3']
-gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'cas3'
-gitlab_rails['omniauth_block_auto_created_users'] = <%= @cas_auto_create_users.to_s %>
-<%- if @cas_sync_email -%>
-gitlab_rails['omniauth_sync_email_from_provider'] = ['cas3']
-<%- end -%>
-<%- if @cas_sync_profile -%>
-gitlab_rails['omniauth_sync_profile_from_provider'] = ['cas3']
-<%- end -%>
-gitlab_rails['omniauth_sync_profile_attributes'] = <%= _to_ruby(@cas_sync_attrs) %>
+gitlab_rails['omniauth_allow_single_sign_on'] = <%= _to_ruby(@single_sign_on_from) %>
+<% unless @auto_sign_in_with.nil? -%>
+gitlab_rails['omniauth_auto_sign_in_with_provider'] = '<%= @auto_sign_in_with %>'
+<% end -%>
+gitlab_rails['omniauth_block_auto_created_users'] = <%= @block_auto_created_users.to_s %>
+gitlab_rails['omniauth_sync_email_from_provider'] = <%= _to_ruby(@sync_email_from) %>
+gitlab_rails['omniauth_sync_profile_from_provider'] = <%= _to_ruby(@sync_profile_from) %>
+gitlab_rails['omniauth_sync_profile_attributes'] = <%= _to_ruby(@sync_profile_attributes) %>
 
-<%- if @cas_session_duration -%>
 gitlab_rails['omniauth_cas3_session_duration'] = <%= @cas_session_duration %>
-<%- end -%>
 
 # See https://github.com/tduehr/omniauth-cas3
 
-gitlab_rails['omniauth_providers'] = [
-  {
-    "name" => "cas3",
-    "label" => "<%= @cas_label %>",
-    "args" => {
-      "uid_field" => '<%= @cas_uid_field %>',
-      "uid_key" => '<%= @cas_uid_key %>',
-      "email_key" => '<%= @cas_email_key %>',
-      "name_key" => '<%= @cas_name_key %>',
-      "nickname_key" => '<%= @cas_nickname_key %>',
-      "url" => '<%= @cas_url %>',
-      "login_url" => '<%= @cas_login_uri %>',
-      "service_validate_url" => '<%= @cas_validate_uri %>',
-      "logout_url" => '<%= @cas_logout_uri %>'
-    }
-  }
-]
+gitlab_rails['omniauth_providers'] = <%= _to_ruby(@_omniauth_providers) %>
 
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
