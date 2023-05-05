@@ -28,6 +28,9 @@ class main(tags.html_tag):
     pass
 
 
+datetime_stamp = datetime.datetime.now().strftime("%Y-%m-%d")
+
+
 def add_header():
     sre_mainpage = 'https://www.mediawiki.org/wiki/Wikimedia_Site_Reliability_Engineering'
     with tags.header().add(tags.div(cls='wm-container')):
@@ -126,7 +129,8 @@ def unroll_result_list(entries):
     return '\n'.join(sorted(entries))
 
 
-def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_dir, eol_date):
+def prepare_report(datafile, puppetdb_host, owners, roles, distro, hosts, uptodate_os,
+                   target_dir, eol_date):
     status_log = []
     owners_to_contact_plan = defaultdict(set)
     owners_to_contact_delayed = defaultdict(set)
@@ -144,14 +148,11 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
     current_quarter = get_current_quarter()
 
     targets = defaultdict(list)
-    roles = get_roles(puppetdb_host)
 
     for current_distro in uptodate_os:
         hosts_current_count += len(get_servers_running_os(current_distro, puppetdb_host))
 
     deprecated_count = len(get_servers_running_os(distro, puppetdb_host))
-
-    hosts = get_servers_running_os(distro, puppetdb_host)
 
     for host in hosts:
 
@@ -188,7 +189,6 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
             owners_to_contact_delayed[owner].add(role)
             hosts_delayed_count += 1
 
-    datetime_stamp = datetime.datetime.now().strftime("%Y-%m-%d")
     file_name = os.path.join(target_dir, 'os-report-{}-{}.html'.format(datetime_stamp, distro))
 
     with dominate.document(title='OS deprecation report for {}'.format(distro)) as html_report:
@@ -222,6 +222,10 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
                         format(hosts_needplan_count))
                 tags.li("A total of {} hosts don't have a designated owner".
                         format(hosts_needowner_count))
+
+                todo_filename = 'os-report-todo-{}-{}.html'.format(datetime_stamp, distro)
+                tags.li(tags.a("Per-team breakdown of open migrations for {}".format(distro),
+                               href=todo_filename))
 
             if owners_to_contact_delayed:
                 tags.h1("The following hosts are lagging behind the current migration plan",
@@ -272,6 +276,43 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
     latest = os.path.join(target_dir, '{}.html'.format(distro))
     with open(latest, 'w') as latest_html:
         latest_html.write(html_report.render())
+
+
+def prepare_todo_report(owners, roles, hosts, distro, target_dir):
+    hosts_todo = defaultdict(list)
+
+    for host in hosts:
+        role = roles[host]
+        # Roles without an owner are flagged in the central report
+        if owners.get(role, None):
+            # On the Puppet/Hiera level a role can have multiple owners, but for tracking we only
+            # use the primarily responsible team
+            owner = owners.get(role)[0]
+
+        hosts_todo[owner].append(host)
+
+    with dominate.document(title='Per-team breakdown of open migrations for {}'.
+                           format(distro)) as html_report:
+        with html_report.head:
+            tags.link(rel='stylesheet', href='base.css')
+        add_header()
+        with main(role='main').add(tags.div(cls='wm-container')).add(tags.article()):
+            tags.h1("Per-SRE team breakdown of open migrations for {}".format(distro),
+                    href='os-report-todo-{}-{}.html'.format(datetime_stamp, distro))
+
+            for team in hosts_todo:
+                if hosts_todo[team]:
+                    tags.h2("The following hosts need to be migrated by {} ({} in total)".
+                            format(team, len(hosts_todo[team])), cls="important")
+                    with tags.div().add(tags.ul()):
+                        for host in sorted(hosts_todo[team]):
+                            tags.ol("{}".format(host))
+                else:
+                    tags.h2("No hosts need to be migrated by SRE sub team {}".format(team))
+
+    file_name = os.path.join(target_dir, 'os-report-todo-{}-{}.html'.format(datetime_stamp, distro))
+    with open(file_name, 'w') as report_html:
+        report_html.write(html_report.render())
 
 
 def prepare_overview(distros, target_dir):
@@ -339,15 +380,30 @@ def main_function():
 
         uptodate_os = [i.strip() for i in cfg.get(distro, 'current').split(",")]
 
+        puppetdb_host = cfg.get('general', 'puppetdb_host')
+        target_directory = cfg.get('general', 'target_directory')
+        roles = get_roles(puppetdb_host)
+        hosts = get_servers_running_os(distro, puppetdb_host)
+
         prepare_report(cfg.get(distro, 'datafile'),
-                       cfg.get('general', 'puppetdb_host'),
+                       puppetdb_host,
                        owners,
+                       roles,
                        distro,
+                       hosts,
                        uptodate_os,
-                       cfg.get('general', 'target_directory'),
+                       target_directory,
                        cfg.get(distro, 'end-of-life'),
                        )
         distros.append(distro)
+
+        if distro not in uptodate_os:
+            prepare_todo_report(owners,
+                                roles,
+                                hosts,
+                                distro,
+                                target_directory,
+                                )
 
     prepare_overview(distros, cfg.get('general', 'target_directory'))
     sys.exit(0)
