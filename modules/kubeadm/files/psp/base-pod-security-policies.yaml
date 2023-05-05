@@ -128,6 +128,8 @@ spec:
       readOnly: true
     - pathPrefix: "/etc/novaobserver.yaml"
       readOnly: true
+    - pathPrefix: "/etc/openstack/clouds.yaml"
+      readOnly: true
     - pathPrefix: "/etc/ldap.conf"
       readOnly: true
 ---
