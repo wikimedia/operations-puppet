@@ -28,6 +28,9 @@ describe 'profile::wmcs::cloud_private_subnet' do
       }}
       it { is_expected.to compile.with_all_deps }
       it { should_not contain_class("profile::bird::anycast") }
+      it { should_not contain_file("/etc/iproute2/rt_tables.d/cloud-private.conf") }
+      it { should_not contain_interface__post_up_command("cloud-private_default_gw") }
+      it { should_not contain_interface__post_up_command("cloud-private_route_lookup_rule") }
       it {
         is_expected.to contain_interface__tagged("cloud_private_subnet_iface")
               .with_base_interface("eno1")
@@ -66,6 +69,21 @@ describe 'profile::wmcs::cloud_private_subnet' do
             is_expected.to contain_class("profile::bird::anycast")
                 .with_ipv4_src("172.20.5.2")
                 .with_neighbors_list(["172.20.5.1"])
+        }
+        it {
+          is_expected.to contain_file("/etc/iproute2/rt_tables.d/cloud-private.conf")
+                .with_ensure("present")
+                .with_content("100 cloud-private\n")
+        }
+        it {
+          is_expected.to contain_interface__post_up_command("cloud-private_default_gw")
+                .with_interface("vlan2151")
+                .with_command("ip route add default via 172.20.5.1 table cloud-private")
+        }
+        it {
+          is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule")
+                .with_interface("vlan2151")
+                .with_command("ip rule add from 185.15.57.24/29 table cloud-private")
         }
       end
     end
