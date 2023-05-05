@@ -29,12 +29,7 @@ import re
 
 from typing import Callable, List, Optional
 
-from keystoneauth1 import session
-from keystoneauth1.identity import v3
-from keystoneclient.v3 import client as keystone_client
-from novaclient import client as novaclient
-import yaml
-
+import mwopenstackclients
 
 VALID_DOMAINS = ["checkpoint", "queue", "hosts"]
 GRID_HOST_TYPE = ["exec", "submit"]
@@ -321,16 +316,13 @@ class HostProcessor:
 
     def __init__(
         self,
-        keystone_url,
-        observer_pass,
         host_prefixes,
         beta,
         config_dir,
         grid_root: str,
         host_types,
     ):
-        self.keystone_url = keystone_url
-        self.observer_pass = observer_pass
+        self.osclients = mwopenstackclients.Clients(oscloud='novaobserver')
         self.project = "toolsbeta" if beta else "tools"
         self.regions = self._get_regions()
         self.os_instances = {}
@@ -339,38 +331,12 @@ class HostProcessor:
         self.grid_root = grid_root
 
     def _get_regions(self):
-        client = keystone_client.Client(
-            session=session.Session(
-                auth=v3.Password(
-                    auth_url=self.keystone_url,
-                    username="novaobserver",
-                    password=self.observer_pass,
-                    project_name="observer",
-                    user_domain_name="default",
-                    project_domain_name="default",
-                )
-            ),
-            interface="public",
-        )
-        return [region.id for region in client.regions.list()]
+        return self.osclients.allregions()
 
     def _hosts(self, host_prefixes, host_types):
         host_set = {name: [] for name in host_types}
         for region in self.regions:
-            client = novaclient.Client(
-                "2.0",
-                session=session.Session(
-                    auth=v3.Password(
-                        auth_url=self.keystone_url,
-                        username="novaobserver",
-                        password=self.observer_pass,
-                        project_name=self.project,
-                        user_domain_name="default",
-                        project_domain_name="default",
-                    )
-                ),
-                region_name=region,
-            )
+            client = self.osclients.novaclient(project=self.project, region=region)
 
             # region is like 'whatever-r', remove trailing '-r', the domain doesn't have it
             domain = f"{self.project}.{region[:-2]}.wikimedia.cloud"
@@ -625,17 +591,6 @@ def get_args():
         help="Location of the grid root. Defaults to '%(default)s'",
         default="/data/project/.system_sge",
     )
-    argparser.add_argument(
-        "--keystone-url",
-        help="Endpoint for openstack keystone. Only for hosts. Defaults to '%(default)s'",
-        default="https://openstack.eqiad1.wikimediacloud.org:25000/v3",
-    )
-
-    argparser.add_argument(
-        "--observer-pass",
-        help="Read-only password to use for Keystone when calling OpenStack -- only for hosts",
-        default="",  # Should not be required unless all-domains or domains includes hosts
-    )
 
     argparser.add_argument(
         "--beta",
@@ -653,16 +608,6 @@ def get_args():
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
     args = argparser.parse_args()
-    if args.all_domains or "hosts" in args.domain:
-        if not args.observer_pass:
-            if os.path.isfile("/etc/novaobserver.yaml"):
-                with open("/etc/novaobserver.yaml") as conf_fh:
-                    nova_observer_config = yaml.safe_load(conf_fh)
-
-                args.observer_pass = nova_observer_config["OS_PASSWORD"]
-            else:
-                argparser.error("To process hosts the --observer-pass argument is required")
-
     return args
 
 
@@ -730,8 +675,6 @@ def main():
     if "hosts" in domains:
         logging.debug("Running configuration updates for hosts")
         host_processor = HostProcessor(
-            args.keystone_url,
-            args.observer_pass,
             GRID_HOST_PREFIX,
             args.beta,
             args.config_dir,

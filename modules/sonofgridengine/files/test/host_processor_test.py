@@ -51,7 +51,7 @@ report_variables      NONE
 class HostProcessorTest(unittest.TestCase):
     @patch("grid_configurator.grid_configurator.HostProcessor._get_regions")
     @patch("grid_configurator.grid_configurator.HostProcessor._hosts")
-    @patch("grid_configurator.grid_configurator.session.Session", autospec=True)
+    @patch("mwopenstackclients.Clients", autospec=True)
     def setUp(self, mock_get_regions, mock_get_servers, mock_session):
         tmp_dir = tempfile.mkdtemp()
         os.mkdir(os.path.join(tmp_dir, "exechosts"))
@@ -69,8 +69,6 @@ class HostProcessorTest(unittest.TestCase):
         mock_get_regions.return_value = ["eqiad1-r"]
         mock_get_servers.return_value = OPENSTACK_MOCK_HOSTS
         self.host_proc_object = grid_configurator.HostProcessor(
-            "https://openstack.someregion.eqiad1.wikimediacloud.org:25000/v3",
-            "not-a-password",
             grid_configurator.GRID_HOST_PREFIX,
             True,
             tmp_dir,  # this is config_dir, the temp file
