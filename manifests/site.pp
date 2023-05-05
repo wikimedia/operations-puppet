@@ -2811,17 +2811,6 @@ node /^cloudvirtlocal100[1-3]\.eqiad\.wmnet$/ {
 }
 
 
-# Cloudvirt1019 and 1020 are special hypervisors;
-#  they host giant database servers using local storage.
-node 'cloudvirt1019.eqiad.wmnet' {
-    role(wmcs::openstack::eqiad1::virt)
-}
-node 'cloudvirt1020.eqiad.wmnet' {
-    role(wmcs::openstack::eqiad1::virt)
-}
-
-# cloudvirt 1021 and 1022 don't exist (T333169)
-
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
 node /^cloudvirt102[3-7]\.eqiad\.wmnet$/ {
