@@ -7,6 +7,8 @@ profile::bird::advertise_vips:
     ensure: present
     service_type: haproxy
     address: 185.15.57.24
-    # TODO: this check may either be for a TCP port or for a concrete openstack API endpoint.
-    # TODO: (cont) as it is, usually nothing listens to TCP/443 in openstack
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H openstack.codfw1dev.wikimediacloud.org --ssl --sni -I 185.15.57.24 / -t 1"
+    # TODO: we need to rethink this check.
+    # TODO: do we check for HAproxy to be up? for working_backends > 0? for a concrete openstack API endpoint?
+    # TODO: also, beware of chicken-egg problems. If this reports DOWN the VIP won't be announced in BGP,
+    # TODO: so the check needs to use local stuff only to validate health
+    check_cmd: "/usr/lib/nagios/plugins/check_icmp 185.15.57.24"
