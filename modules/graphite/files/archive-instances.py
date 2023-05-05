@@ -19,31 +19,10 @@ import logging
 import os
 import time
 
-import yaml
-
-from keystoneauth1.identity.v3 import Password as KeystonePassword
-from keystoneauth1.session import Session as KeystoneSession
+import mwopenstackclients
 from keystoneauth1.exceptions.http import Unauthorized as KeystoneUnauthorisedException
-from keystoneclient.client import Client as KeystoneClient
-from novaclient import client as novaclient
 
 WHISPER_PATH = '/srv/carbon/whisper'
-
-
-def get_keystone_session(project_name):
-
-    with open('/etc/novaobserver.yaml') as n:
-        nova_observer = yaml.safe_load(n)
-        observer_pass = nova_observer['OS_PASSWORD']
-
-    return KeystoneSession(auth=KeystonePassword(
-        auth_url="https://openstack.eqiad1.wikimediacloud.org:25000/v3",
-        username="novaobserver",
-        password=observer_pass,
-        project_name=project_name,
-        user_domain_name='default',
-        project_domain_name='default'
-    ))
 
 
 def makedirs_exist_ok(path, mode=0o777):
@@ -92,38 +71,20 @@ def get_hosts_with_metrics(project_name):
         return []
 
 
-def get_hosts_for_project(project_name):
-    '''
-    Get hosts that are currently present in the given project
-    '''
-    client = novaclient.Client("2.0", session=get_keystone_session(project_name))
-    return [instance.name for instance in client.servers.list()]
-
-
-def get_projects_list():
-    '''
-    Get a list of all active projects from the wikitech API
-    '''
-    keystone_client = KeystoneClient(
-        session=get_keystone_session('observer'),
-        endpoint="https://openstack.eqiad1.wikimediacloud.org:25000/v3",
-        interface='public'
-    )
-    return [project.name for project in keystone_client.projects.list()]
-
-
 def get_deleted_instances():
     '''
     Get list of instances that have been deleted
 
     Returns a dictionary with key being the project name and value a set of deleted hostnames
     '''
-    projects = get_projects_list()
+    clients = mwopenstackclients.Clients(oscloud='novaobserver')
+    allprojectslist = [project.name for project in clients.allprojects()]
+
     deleted_hosts = {}
-    for project in projects:
+    for project in allprojectslist:
         hosts_with_metrics = get_hosts_with_metrics(project)
         try:
-            actual_hosts = get_hosts_for_project(project)
+            actual_hosts = [instance.name for instance in clients.allinstances(projectid=project)]
         except KeystoneUnauthorisedException:
             continue
         deleted = set(hosts_with_metrics) - set(actual_hosts)
