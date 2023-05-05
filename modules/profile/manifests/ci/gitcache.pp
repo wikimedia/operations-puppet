@@ -4,13 +4,33 @@ class profile::ci::gitcache {
         ensure => directory,
     }
 
-    file { '/srv/git/operations':
-        ensure => directory,
-    }
-    git::clone { 'operations/puppet':
-        directory => '/srv/git/operations/puppet.git',
-        bare      => true,
-        require   => File['/srv/git/operations'],
+    $repos = [
+        'operations/puppet',
+        'mediawiki/core',
+        'mediawiki/vendor',
+        'mediawiki/extensions/AbuseFilter',
+        'mediawiki/extensions/Cite',
+        'mediawiki/extensions/cldr',
+        'mediawiki/extensions/Echo',
+        'mediawiki/extensions/EventLogging',
+        'mediawiki/extensions/MobileFrontend',
+        'mediawiki/extensions/Scribunto',
+        'mediawiki/extensions/TemplateData',
+        'mediawiki/extensions/Translate',
+        'mediawiki/extensions/VisualEditor',
+        'mediawiki/extensions/Wikibase',
+        'mediawiki/skins/MinervaNeue',
+        'mediawiki/skins/Vector',
+    ]
+
+    $repos.each |$repo| {
+        $repo_dir = "/srv/git/${repo}.git"
+        ensure_resource('file', $repo_dir.dirname, { 'ensure' => 'directory' })
+        ensure_resource('git::clone', $repo, {
+            'directory' => $repo_dir,
+            'bare' => true,
+            }
+        )
     }
 
     systemd::timer::job { 'operations-puppet':
@@ -32,24 +52,6 @@ class profile::ci::gitcache {
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 3:${minute}:00"},
     }
 
-    file { '/srv/git/mediawiki':
-        ensure => directory,
-    }
-    file { '/srv/git/mediawiki/extensions':
-        ensure  => directory,
-        require => File['/srv/git/mediawiki'],
-    }
-    file { '/srv/git/mediawiki/skins':
-        ensure  => directory,
-        require => File['/srv/git/mediawiki'],
-    }
-
-    git::clone { 'mediawiki/core':
-        directory => '/srv/git/mediawiki/core.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki'],
-    }
-
     systemd::timer::job { 'mediawiki-core':
         ensure      => absent,
         description => 'Regular jobs to update gitcache for mediawiki/core',
@@ -57,89 +59,5 @@ class profile::ci::gitcache {
         command     => '/usr/bin/git -C /srv/git/mediawiki/core.git fetch origin --prune +refs/heads/*:refs/heads/*',
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:00:00'},
         require     => Git::Clone['mediawiki/core'],
-    }
-
-    git::clone { 'mediawiki/vendor':
-        directory => '/srv/git/mediawiki/vendor.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki'],
-    }
-
-    git::clone { 'mediawiki/extensions/AbuseFilter':
-        directory => '/srv/git/mediawiki/extensions/AbuseFilter.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/Cite':
-        directory => '/srv/git/mediawiki/extensions/Cite.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/cldr':
-        directory => '/srv/git/mediawiki/extensions/cldr.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/Echo':
-        directory => '/srv/git/mediawiki/extensions/Echo.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/EventLogging':
-        directory => '/srv/git/mediawiki/extensions/EventLogging.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/MobileFrontend':
-        directory => '/srv/git/mediawiki/extensions/MobileFrontend.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/Scribunto':
-        directory => '/srv/git/mediawiki/extensions/Scribunto.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/TemplateData':
-        directory => '/srv/git/mediawiki/extensions/TemplateData.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/Translate':
-        directory => '/srv/git/mediawiki/extensions/Translate.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/VisualEditor':
-        directory => '/srv/git/mediawiki/extensions/VisualEditor.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/extensions/Wikibase':
-        directory => '/srv/git/mediawiki/extensions/Wikibase.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/extensions'],
-    }
-
-    git::clone { 'mediawiki/skins/MinervaNeue':
-        directory => '/srv/git/mediawiki/skins/MinervaNeue.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/skins'],
-    }
-
-    git::clone { 'mediawiki/skins/Vector':
-        directory => '/srv/git/mediawiki/skins/Vector.git',
-        bare      => true,
-        require   => File['/srv/git/mediawiki/skins'],
     }
 }
