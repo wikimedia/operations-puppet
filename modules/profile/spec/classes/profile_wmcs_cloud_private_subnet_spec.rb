@@ -65,6 +65,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
         it {
             is_expected.to contain_class("profile::bird::anycast")
                 .with_ipv4_src("172.20.5.2")
+                .with_neighbors_list(["172.20.5.1"])
         }
       end
     end

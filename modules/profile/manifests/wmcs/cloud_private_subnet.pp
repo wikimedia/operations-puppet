@@ -12,12 +12,6 @@ class profile::wmcs::cloud_private_subnet (
     $cloud_private_fqdn = "${facts['hostname']}.${::site}.${domain}"
     $cloud_private_address = dnsquery::a($cloud_private_fqdn)[0]
 
-    if $do_bgp {
-        class { 'profile::bird::anycast':
-            ipv4_src => $cloud_private_address,
-        }
-    }
-
     interface::tagged { 'cloud_private_subnet_iface':
         base_interface     => $facts['interface_primary'],
         vlan_id            => $vlan_id,
@@ -48,5 +42,12 @@ class profile::wmcs::cloud_private_subnet (
         prefixlen => split($public_vips, '/')[1],
         nexthop   => $gw_address,
         interface => "vlan${vlan_id}",
+    }
+
+    if $do_bgp {
+        class { 'profile::bird::anycast':
+            neighbors_list => [$gw_address],
+            ipv4_src       => $cloud_private_address,
+        }
     }
 }
