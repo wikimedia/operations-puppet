@@ -87,7 +87,7 @@ class cloudnfs::fileserver::exports(
             ensure    => 'present',
             content   => systemd_template('nfs-exportd'),
             require   => File['/usr/local/bin/nfs-exportd'],
-            subscribe => File['/etc/novaobserver.yaml'],
+            subscribe => Concat['/etc/openstack/clouds.yaml'],
         }
     } else {
         systemd::service { 'nfs-exportd':
