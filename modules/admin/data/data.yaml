@@ -87,7 +87,7 @@ groups:
     gid: 824
     # ariel, hnowlan, kamila, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
-              daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo]
+              daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo, sg912]
     approval:
       - Mat Nadrofsky
       - Will Doran
@@ -402,7 +402,7 @@ groups:
               damilare, appledora, isaranto,
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
-              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde]
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5888,6 +5888,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICbC6mZH07ZfqnAM4tlMqybCmk+H7ZuCy1wg2WtRl99C
+  sg912:
+    ensure: present
+    realname: Surbhi Gupta
+    email: sgupta@wikimedia.org
+    uid: 41194
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFn3hH8Io0va9JgVhJBCSMKVMCJ3JxRc36b3izv3TVFm sgupta@wikimedia.org
 
 ldap_only_users:
   adavenport:
