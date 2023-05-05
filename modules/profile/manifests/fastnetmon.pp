@@ -17,10 +17,6 @@ class profile::fastnetmon (
         icinga_dir           => $icinga_dir,
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_fastnetmon':
-        ensure => absent,
-    }
-
     # Export notifications count as a metric for alerting purposes.
     prometheus::node_file_count { 'fastnetmon notifications':
         paths   => [ $icinga_dir ],
@@ -28,10 +24,10 @@ class profile::fastnetmon (
     }
 
     ferm::service { 'FNM-netflow':
-        proto => 'udp',
-        port  => '2055',
-        desc  => 'FNM-netflow',
-      srange  => '($NETWORK_INFRA $MGMT_NETWORKS)',
+        proto  => 'udp',
+        port   => '2055',
+        desc   => 'FNM-netflow',
+        srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
     }
 
     logrotate::rule { 'fastnetmon':
