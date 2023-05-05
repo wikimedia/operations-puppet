@@ -17,13 +17,16 @@ define apt::repository(
     } elsif $keyfile {
         $repo_key = $keyfile.basename
 
-        ensure_resource('file', "/etc/apt/keyrings/${repo_key}", {
-            ensure => stdlib::ensure($ensure, 'file'),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => $keyfile,
-            notify => Exec['apt-get update'], })
+        if !defined(File["/etc/apt/keyrings/${repo_key}"]) {
+            file { "/etc/apt/keyrings/${repo_key}":
+                ensure => stdlib::ensure($ensure, 'file'),
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0444',
+                source => $keyfile,
+                notify => Exec['apt-get update'],
+            }
+        }
 
         $trustedline = "[signed-by=/etc/apt/keyrings/${repo_key}] "
     } else {
