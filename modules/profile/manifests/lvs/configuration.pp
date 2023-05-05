@@ -42,7 +42,7 @@ class profile::lvs::configuration {
                 'drmrs' => [ ],
                 default => undef,
             },
-            'labs' => $::labsproject ? {
+            'labs' => $::wmcs_project ? {
                 'deployment-prep' => [ ],
                 default => undef,
             },
