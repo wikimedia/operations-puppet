@@ -200,7 +200,8 @@ define prometheus::server (
         group  => 'root',
     }
     File[$targets_path, $rules_path] {
-        purge => true,
+        recurse => true,
+        purge   => true,
     }
 
     exec { "${service_name}-reload":
