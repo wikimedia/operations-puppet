@@ -3,9 +3,6 @@
 # @param block_auto_created_users Blocks users that are automatically created
 #   from signing in until they are approved by an administrator.
 # @param sync_profile_attributes the attributes to sync
-# @param sync_profile_from list of providers where we sync the profile
-# @param sync_email_from list of providers where we sync the email
-# @param single_sign_on_from list of providers that support SSO
 # @param omniauth_providers hash of provideres to configure.  the key is the label
 # @param auto_sign_in_with automatically redirect to this provider
 # @param omniauth_identifier name of the omniauth client identifier
@@ -55,9 +52,6 @@ class gitlab (
     Boolean $manage_host_keys                                   = false,
     Boolean                           $block_auto_created_users = true,
     Array[Gitlab::Attributes]          $sync_profile_attributes = ['name', 'email', 'location'],
-    Array[Gitlab::Omniauth_providers]    $sync_profile_from     = [],
-    Array[Gitlab::Omniauth_providers]    $sync_email_from       = [],
-    Array[Gitlab::Omniauth_providers]    $single_sign_on_from   = [],
     Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = {},
     Optional[Gitlab::Omniauth_providers]    $auto_sign_in_with  = undef,
     Boolean           $letsencrypt_enable                       = false,
@@ -113,6 +107,7 @@ class gitlab (
             default: { fail("omniauth_provider (${label}) is unsupported") }
         }
     }.filter |$item| { !$item.empty }
+    $configured_providers = $_omniauth_providers.map |$provider| { $provider['name'] }.sort.unique
 
     systemd::sysuser { 'git':
       id          => '915:915',

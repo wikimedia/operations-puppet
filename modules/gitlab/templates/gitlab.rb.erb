@@ -201,13 +201,13 @@ sidekiq['listen_port'] = <%= config['port'] %>
 <% end -%>
 <% end -%>
 
-gitlab_rails['omniauth_allow_single_sign_on'] = <%= _to_ruby(@single_sign_on_from) %>
+gitlab_rails['omniauth_allow_single_sign_on'] = <%= _to_ruby(@configured_providers) %>
 <% unless @auto_sign_in_with.nil? -%>
 gitlab_rails['omniauth_auto_sign_in_with_provider'] = '<%= @auto_sign_in_with %>'
 <% end -%>
 gitlab_rails['omniauth_block_auto_created_users'] = <%= @block_auto_created_users.to_s %>
-gitlab_rails['omniauth_sync_email_from_provider'] = <%= _to_ruby(@sync_email_from) %>
-gitlab_rails['omniauth_sync_profile_from_provider'] = <%= _to_ruby(@sync_profile_from) %>
+gitlab_rails['omniauth_sync_email_from_provider'] = <%= _to_ruby(@configured_providers) %>
+gitlab_rails['omniauth_sync_profile_from_provider'] = <%= _to_ruby(@configured_providers) %>
 gitlab_rails['omniauth_sync_profile_attributes'] = <%= _to_ruby(@sync_profile_attributes) %>
 
 gitlab_rails['omniauth_cas3_session_duration'] = <%= @cas_session_duration %>

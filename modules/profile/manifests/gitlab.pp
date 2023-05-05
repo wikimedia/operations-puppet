@@ -3,9 +3,6 @@
 # @summary configure and manage gitlab server
 # @param block_auto_created_users Blocks users that are automatically created
 #   from signing in until they are approved by an administrator.
-# @param sync_profile_from list of providers where we sync the profile
-# @param sync_email_from list of providers where we sync the email
-# @param single_sign_on_from list of providers that support SSO
 # @param omniauth_providers hash of providers to configure.  the key is the label
 # @param auto_sign_in_with automatically redirect to this provider
 class profile::gitlab(
@@ -39,9 +36,6 @@ class profile::gitlab(
     Boolean $manage_host_keys = lookup('profile::ssh::server::manage_host_keys', {default_value => false}),
     Gitlab::Omniauth_providers $auto_sign_in_with = lookup('profile::gitlab::auto_sign_in_with'),
     Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = lookup('profile::gitlab::omniauth_providers'),
-    Array[Gitlab::Omniauth_providers] $sync_profile_from = lookup('profile::gitlab::sync_profile_from'),
-    Array[Gitlab::Omniauth_providers] $sync_email_from = lookup('profile::gitlab::sync_email_from'),
-    Array[Gitlab::Omniauth_providers] $single_sign_on_from = lookup('profile::gitlab::single_sign_on_from'),
 
 ){
 
@@ -222,9 +216,6 @@ class profile::gitlab(
         email_enable             => $active_host == $facts['fqdn'], # enable emails on active GitLab server
         manage_host_keys         => $manage_host_keys,
         omniauth_providers       => $omniauth_providers,
-        sync_profile_from        => $sync_profile_from,
-        sync_email_from          => $sync_email_from,
-        single_sign_on_from      => $single_sign_on_from,
         auto_sign_in_with        => $auto_sign_in_with,
         omniauth_identifier      => $omniauth_identifier,
     }
