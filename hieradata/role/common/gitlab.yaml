@@ -21,9 +21,13 @@ profile::gitlab::single_sign_on_from: ['cas3']
 profile::gitlab::omniauth_providers:
   'Wikimedia Dev Account':
     url: 'https://idp.wikimedia.org'
+  'Wikimedia Dev Account (OIDC)':
+    issuer: 'https://idp.wmcloud.org/oidc'
+    client_options:
+      identifier: 'gitlab_oidc'
+      redirect_uri: "%{lookup('profile::gitlab::external_url')}/users/auth/openid_connect/callback"
 profile::gitlab::block_auto_created_users: true
 profile::gitlab::auto_sign_in_with: cas3
-
 profile::gitlab::smtp_enabled: false
 
 profile::gitlab::monitoring_whitelist: ['127.0.0.1/32', '10.0.0.0/8']

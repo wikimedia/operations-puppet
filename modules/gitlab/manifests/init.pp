@@ -73,6 +73,19 @@ class gitlab (
         'name_key'             => 'cn',
         'nickname_key'         => 'uid',
     }
+    $oidc_defaults = {
+        'scope'                        => ['openid','profile','email'],
+        'response_type'                => 'code',
+        'discovery'                    => true,
+        'client_auth_method'           => 'query',
+        'uid_field'                    => 'sub',
+        'send_scope_to_token_endpoint' => 'false',
+        'pkce'                         => 'true',
+        # TODO: the documents add the name filed to the args but
+        # i suspect its a big in the docs
+        'name'                         => 'openid_connect',
+    }
+
     $_omniauth_providers = $omniauth_providers.map |$label, $args| {
         case $args {
             Gitlab::Omniauth_provider::Cas3: {
@@ -82,9 +95,20 @@ class gitlab (
                     'args'  => $args + $cas_defaults,
                 }
             }
+            Gitlab::Omniauth_provider::OIDC: {
+                if $args['client_options'].has_key('secret') {
+                    {
+                        'label' => $label,
+                        'name'  => 'openid_connect',
+                        'args'  => $args + $oidc_defaults,
+                    }
+                } else {
+                    warning("provider ${label} has no secret will not configure")
+                }
+            }
             default: { fail("omniauth_provider (${label}) is unsupported") }
         }
-    }
+    }.filter |$item| { !$item.empty }
 
     systemd::sysuser { 'git':
       id          => '915:915',

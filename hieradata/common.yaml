@@ -45,6 +45,8 @@ lookup_options:
     merge: deep
   profile::wmcs::firewall::blocked_ips:
     merge: unique
+  profile::gitlab::omniauth_providers:
+    merge: deep
   mediabackup:
     merge: hash
   profile::query_service::blazegraph_extra_jvm_opts:
