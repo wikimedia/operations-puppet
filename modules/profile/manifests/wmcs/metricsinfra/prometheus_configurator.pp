@@ -49,6 +49,7 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
         },
         openstack => {
             credentials => '/etc/novaobserver.yaml',
+            cloud       => 'novaobserver',
         },
         alertmanager_hosts => $alertmanager_hosts.map |Stdlib::Fqdn $host| {
             "${host}:9093"

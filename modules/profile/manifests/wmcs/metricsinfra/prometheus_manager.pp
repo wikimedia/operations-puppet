@@ -41,6 +41,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
         },
         'OPENSTACK' => {
             'CONFIG'       => '/etc/novaobserver.yaml',
+            'CLOUD'        => 'novaobserver',
             'SYNC_EXCLUDE' => $sync_exclude_projects,
         },
     }
