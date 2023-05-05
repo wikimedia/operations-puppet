@@ -204,7 +204,7 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://apigw\.juniper\.net/css-asset/1\.0'
   gitlab_oidc:
-    id: 30
+    id: 31
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
 profile::idp::ldap_attributes:
