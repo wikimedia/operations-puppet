@@ -139,7 +139,11 @@ def stage_git():
     msg_info("creating build dir {} in {}".format(ctx.random_dir, ctx.args.build_host))
     ssh(ctx.args.build_host, "mkdir {}".format(ctx.random_dir))
     # clone repo
-    clone_cmd = "cd {} ; git clone {}".format(ctx.random_dir, ctx.args.git_repo)
+    clone_cmd = "cd {} ; git clone {} {}".format(
+        ctx.random_dir,
+        ctx.args.git_repo,
+        ctx.git_repo_dir
+    )
     ssh(ctx.args.build_host, clone_cmd)
     # checkout branch
     branch_cmd = "cd {} ; git checkout {}".format(ctx.git_repo_dir, ctx.args.git_branch)
@@ -233,7 +237,10 @@ def main():
     global ctx
     args = parse_args()
     ctx.args = args
-    ctx.git_repo_dir = "{}/{}".format(ctx.random_dir, args.git_repo.split("/")[-1])
+    ctx.git_repo_dir = "{}/{}".format(
+        ctx.random_dir,
+        args.git_repo.split("/")[-1].removesuffix(".git")
+    )
 
     stage_git()
     stage_sbuild()
