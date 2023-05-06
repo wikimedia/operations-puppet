@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::toolforge::bastion::toolforge_cli () {
+  package { 'toolforge-cli':
+    ensure => installed,
+  }
+
   $cli_config = {
     'build' => {
       'dest_repository' => "${::wmcs_project}-harbor.wmcloud.org",
