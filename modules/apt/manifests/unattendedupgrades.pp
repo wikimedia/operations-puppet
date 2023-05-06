@@ -1,17 +1,14 @@
 # Manage unattended updates across cloud instances
 #  Note: security updates can not be disabled (enabled by default)
 #
-# [*unattended_wmf*]
-#  present/absent to enable/disable wmf packages
-#
-# [*unattended_distro*]
-#  present/absent to enable/disable updates in stable packages
-
-class apt::unattendedupgrades(
-    $unattended_distro='present',
-    $unattended_wmf='present',
-    ) {
-
+# @param $unattended_distro ensurable for updates in Debian upstream packages
+# @param $unattended_wmf ensurable for updates in packages from apt.wikimedia.org
+# @param $unattended_osbpo ensurable for updates in OpenStack backport packages
+class apt::unattendedupgrades (
+    Wmflib::Ensure $unattended_distro = present,
+    Wmflib::Ensure $unattended_wmf    = present,
+    Wmflib::Ensure $unattended_osbpo  = present,
+) {
     # package installation should enable security upgrades by default
     package { 'unattended-upgrades':
         ensure => 'present',
@@ -74,6 +71,14 @@ class apt::unattendedupgrades(
         # lint:ignore:single_quote_string_with_variables
         value    => 'origin=Wikimedia,codename=${distro_codename}-wikimedia',
         # lint:endignore
+    }
+
+    apt::conf { 'unattended-upgrades-osbpo':
+        ensure   => $unattended_osbpo,
+        priority => '52',
+        # Key with trailing '::' to append to potentially existing entry
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
+        value    => 'origin=Infomaniak',
     }
 
     # Clean up the apt cache to avoid filling the disk periodically T127374

@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::base::labs(
-    Wmflib::Ensure $unattended_wmf = lookup('profile::base::labs::unattended_wmf'),
+# @param $unattended_distro ensurable for updates in Debian upstream packages
+# @param $unattended_wmf ensurable for updates in packages from apt.wikimedia.org
+# @param $unattended_osbpo ensurable for updates in OpenStack backport packages
+class profile::base::labs (
+    Wmflib::Ensure $unattended_wmf    = lookup('profile::base::labs::unattended_wmf'),
     Wmflib::Ensure $unattended_distro = lookup('profile::base::labs::unattended_distro'),
+    Wmflib::Ensure $unattended_osbpo  = lookup('profile::base::labs::unattended_osbpo'),
     Boolean $send_puppet_failure_emails = lookup('send_puppet_failure_emails', {'default_value' => true}),
     Boolean $cleanup_puppet_client_bucket = lookup('profile::base::labs::cleanup_puppet_client_bucket', {'default_value' => false}),
     Integer $client_bucket_file_age = lookup('profile::base::labs::client_bucket_file_age', {'default_value' => 14}),
@@ -9,9 +13,10 @@ class profile::base::labs(
 
     # profile base is shared with production
     include profile::base
-    class {'::apt::unattendedupgrades':
+    class { 'apt::unattendedupgrades':
         unattended_wmf    => $unattended_wmf,
         unattended_distro => $unattended_distro,
+        unattended_osbpo  => $unattended_osbpo,
     }
 
     # Labs instances /var is quite small, provide our own default

@@ -1,6 +1,7 @@
 ## Minimal defaults to get catalogs to compile
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
+profile::base::labs::unattended_osbpo: 'present'
 profile::openstack::eqiad1::version: 'zed'
 profile::base::labs::clean_kernels: false
 

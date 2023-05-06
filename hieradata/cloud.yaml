@@ -113,6 +113,7 @@ profile::cumin::monitor_agentrun: false
 
 profile::base::labs::unattended_wmf: "present"
 profile::base::labs::unattended_distro: "present"
+profile::base::labs::unattended_osbpo: "present"
 
 profile::ci::slave::labs::common::manage_srv: true
 profile::ci::package_builder::extra_packages: []
