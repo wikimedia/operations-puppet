@@ -2,7 +2,6 @@
 class profile::toolforge::bastion () {
     include profile::toolforge::shell_environ
     include profile::toolforge::k8s::client
-    include profile::toolforge::jobs_framework_cli
 
     file { '/bin/disabledtoolshell':
         ensure => file,

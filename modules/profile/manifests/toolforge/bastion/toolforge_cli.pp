@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::toolforge::bastion::toolforge_cli () {
-  package { 'toolforge-cli':
+  package { [
+    'toolforge-cli',
+    'toolforge-jobs-framework-cli',
+  ]:
     ensure => installed,
   }
 
@@ -22,5 +25,18 @@ class profile::toolforge::bastion::toolforge_cli () {
     group   => 'root',
     mode    => '0444',
     content => $cli_config.to_yaml,
+  }
+
+  $jobs_cli_config = {
+    api_url    => "https://api.svc.${::wmcs_project}.eqiad1.wikimedia.cloud:30003/jobs/api/v1",
+    kubeconfig => '~/.kube/config',
+  }
+
+  file { '/etc/toolforge-jobs-framework-cli.cfg':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => $jobs_cli_config.to_yaml,
   }
 }
