@@ -7,9 +7,6 @@ server {
     <%= @ssl_settings.join("\n    ") %>
     <%- end -%>
 
-    # Please keep in sync with proxygetter
-    # TODO: proxygetter can just be merged with this
-    # one after we add Keystone middleware to the API
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/run/uwsgi/invisible-unicorn.sock;

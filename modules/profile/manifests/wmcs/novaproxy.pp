@@ -44,13 +44,7 @@ class profile::wmcs::novaproxy(
     ferm::service { 'dynamicproxy-api-http':
         port  => '5668',
         proto => 'tcp',
-        desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
-    }
-
-    ferm::service { 'dynamicproxy-api-http-readonly':
-        port  => '5669',
-        proto => 'tcp',
-        desc  => 'read-only API for viewing proxies from dynamicproxy domainproxy'
+        desc  => 'Web proxy management API',
     }
 
     if $::hostname != $active_proxy {

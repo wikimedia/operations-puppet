@@ -122,11 +122,4 @@ class dynamicproxy::api (
         content => template('dynamicproxy/api.conf.erb'),
         require => Uwsgi::App['invisible-unicorn'],
     }
-
-    # This is a GET-only front end that sits on port 5669.  We can
-    #  open this up to the public even though the actual API has no
-    #  auth protections.
-    nginx::site { 'proxygetter':
-        source => 'puppet:///modules/dynamicproxy/proxygetter.conf',
-    }
 }
