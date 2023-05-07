@@ -16,7 +16,7 @@ class dynamicproxy::api (
     debian::codename::require('bullseye', '>=')
 
     file { '/usr/local/bin/invisible-unicorn.py':
-        source => 'puppet:///modules/dynamicproxy/invisible-unicorn.py',
+        source => 'puppet:///modules/dynamicproxy/api/invisible-unicorn.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -69,7 +69,7 @@ class dynamicproxy::api (
     }
 
     file { '/etc/dynamicproxy-api/config.ini':
-        content   => template('dynamicproxy/invisible-unicorn.ini.erb'),
+        content   => template('dynamicproxy/api/invisible-unicorn.ini.erb'),
         owner     => 'root',
         group     => 'root',
         mode      => '0444',
@@ -85,7 +85,7 @@ class dynamicproxy::api (
     }
 
     file { '/srv/backup/README':
-        source => 'puppet:///modules/dynamicproxy/BackupReadme',
+        source => 'puppet:///modules/dynamicproxy/api/BackupReadme',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
@@ -95,7 +95,7 @@ class dynamicproxy::api (
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/dynamicproxy/proxydb-bak.sh',
+        source => 'puppet:///modules/dynamicproxy/api/proxydb-bak.sh',
     }
 
     systemd::timer::job { 'proxydb-backup':
@@ -119,7 +119,7 @@ class dynamicproxy::api (
     }
 
     nginx::site { 'invisible-unicorn':
-        content => template('dynamicproxy/api.conf.erb'),
+        content => template('dynamicproxy/api/api.conf.erb'),
         require => Uwsgi::App['invisible-unicorn'],
     }
 }
