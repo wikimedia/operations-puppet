@@ -1,4 +1,5 @@
 class profile::toolforge::k8s::client (
+    Stdlib::Fqdn $web_domain              = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
     Stdlib::Fqdn $buildservice_repository = lookup('profile::toolforge::k8s::client::buildservice_repository'),
 ) {
     class { '::profile::wmcs::kubeadm::client': }
@@ -38,6 +39,9 @@ class profile::toolforge::k8s::client (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => {'buildservice_repository' => $buildservice_repository}.to_yaml,
+        content => {
+            'public_domain'           => $web_domain,
+            'buildservice_repository' => $buildservice_repository,
+        }.to_yaml,
     }
 }
