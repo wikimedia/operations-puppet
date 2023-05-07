@@ -13,19 +13,12 @@ class toolserver_legacy {
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
-    system::role { 'toolserver_legacy': description => 'Toolserver legacy server' }
-
     acme_chief::cert { 'toolserver':
         puppet_svc => 'apache2',
     }
 
     httpd::site { 'www.toolserver.org':
         content => template('toolserver_legacy/www.toolserver.org.erb'),
-    }
-
-    class { '::exim4':
-        queuerunner => 'separate',
-        config      => template('toolserver_legacy/exim4.conf.erb'),
     }
 
     file { '/var/www/html':
