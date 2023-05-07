@@ -114,28 +114,35 @@ class Clients(object):
             raise Exception("No project (env OS_PROJECT_ID) specified")
 
     def session(self, project=None):
-        if not project:
-            project = self.project
-
+        # You can use None as a dictionary key -- I looked it up!
         if project not in self.sessions:
-
-            if project != self.project:
-                # Check the domain of the project before proceeding.
-                # We rely on a least one auth project (self.project)
-                # to already know its domain.
-                projectobj = self.keystoneclient().projects.get(project)
-                projectdomain = projectobj.domain_id
+            if not project:
+                # Get a domain-scoped token
+                auth = KeystonePassword(
+                    auth_url=self.url,
+                    username=self.username,
+                    password=self.password,
+                    user_domain_name="Default",
+                    domain_id='default',
+                )
             else:
-                projectdomain = "default"
+                if project != self.project:
+                    # Check the domain of the project before proceeding.
+                    # We rely on a least one auth project (self.project)
+                    # to already know its domain.
+                    projectobj = self.keystoneclient().projects.get(project)
+                    projectdomain = projectobj.domain_id
+                else:
+                    projectdomain = "default"
 
-            auth = KeystonePassword(
-                auth_url=self.url,
-                username=self.username,
-                password=self.password,
-                user_domain_name="Default",
-                project_domain_id=projectdomain,
-                project_name=project,
-            )
+                auth = KeystonePassword(
+                    auth_url=self.url,
+                    username=self.username,
+                    password=self.password,
+                    user_domain_name="Default",
+                    project_domain_id=projectdomain,
+                    project_name=project,
+                )
 
             self.sessions[project] = keystone_session.Session(auth=auth)
         return self.sessions[project]
@@ -147,9 +154,6 @@ class Clients(object):
         before_sleep=before_sleep_log(logger, logging.WARNING),
     )
     def keystoneclient(self, project=None):
-        if not project:
-            project = self.project
-
         if project not in self.keystoneclients:
             session = self.session(project)
             self.keystoneclients[project] = keystone_client.Client(
