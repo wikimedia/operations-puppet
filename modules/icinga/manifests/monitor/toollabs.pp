@@ -3,12 +3,6 @@
 # * relevant cert expiry is monitored in icinga::monitor::certs
 class icinga::monitor::toollabs {
 
-    # toolserver.org (redirect page to Toolforge)
-    @monitoring::host { 'www.toolserver.org':
-        host_fqdn     => 'www.toolserver.org',
-        contact_group => 'wmcs-team-email',
-    }
-
     # monitoring of https://meta.wikimedia.org/wiki/PAWS
     @monitoring::host { 'paws.wmcloud.org':
         host_fqdn     => 'paws.wmcloud.org',

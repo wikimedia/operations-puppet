@@ -26,13 +26,6 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/wmf-legal/',
     }
 
-    monitoring::service { 'https_toolserver':
-        description   => 'HTTPS-toolserver',
-        check_command => 'check_ssl_http_letsencrypt!www.toolserver.org',
-        host          => 'www.toolserver.org',
-        notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
-    }
-
     # toolforge.org and wmcloud.org wildcard certs
     @monitoring::host { 'admin.toolforge.org':
         host_fqdn     => 'admin.toolforge.org',
