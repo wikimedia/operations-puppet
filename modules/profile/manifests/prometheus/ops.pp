@@ -43,6 +43,38 @@ class profile::prometheus::ops (
     }
 
     class{ '::prometheus::swagger_exporter': }
+
+    $swagger_exporter_jobs = [
+        {
+            'job_name' => 'probes/swagger',
+            'scrape_timeout'  => '15s',
+            'params'          => {},
+            'metrics_path'    => '/probe',
+            'relabel_configs' => [
+                { 'target_label' => '__param_target', 'source_labels' => [ 'address' ] },
+                { 'target_label' => 'instance',       'source_labels' => [ '__param_target' ] },
+                { 'target_label' => 'address',        'replacement'   => '127.0.0.1:9220' }
+            ],
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/swagger_*.yaml" ] }
+            ],
+        }
+    ]
+
+    $swagger_services = wmflib::service::fetch().filter |$name, $config| {
+        (
+            'probes' in $config
+            and $::site in $config['sites']
+            and $config['state'] == 'production'
+            and $config['probes'].any |$value| { $value['type'] == 'swagger' }
+        )
+    }
+
+    prometheus::swagger::service_catalog { $::site :
+        services     => $swagger_services,
+        targets_path => $targets_path
+    }
+
     # We need a deterministic location for client certificates to use for exported
     # blackbox checks e.g. prometheus::blackbox::check::{http,tcp} with use_client_auth
     puppet::expose_agent_certs { '/etc/prometheus':
@@ -2289,7 +2321,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
-            $pint_jobs,
+            $pint_jobs, $swagger_exporter_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,

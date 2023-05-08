@@ -276,6 +276,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4003
     sites:
       - eqiad
@@ -472,6 +473,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4002
     sites:
       - eqiad
@@ -593,6 +595,7 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
+      - type: swagger
     port: 8082
     sites:
       - eqiad
@@ -625,6 +628,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4592
     sites:
       - eqiad
@@ -658,6 +662,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4392
     sites:
       - eqiad
@@ -692,6 +697,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4692
     sites:
       - eqiad
@@ -724,6 +730,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4492
     sites:
       - eqiad
@@ -757,6 +764,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4892
     sites:
       - eqiad
@@ -790,6 +798,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4992
     sites:
       - eqiad
@@ -1033,6 +1042,8 @@ service::catalog:
       scheduler: wrr
     page: false
     port: 6533
+    probes:
+      - type: swagger
     sites:
       - codfw
       - eqiad
@@ -1277,6 +1288,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4001
     sites:
       - eqiad
@@ -1427,6 +1439,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4102
     sites:
       - eqiad
@@ -1796,6 +1809,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4030
     sites:
       - eqiad
@@ -1924,6 +1938,7 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
+      - type: swagger
     port: 7443
     sites:
       - eqiad
@@ -2123,6 +2138,7 @@ service::catalog:
     probes:
       - type: http
         path: /healthz
+      - type: swagger
     port: 8081
     sites:
       - eqiad
@@ -2551,6 +2567,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4004
     sites:
       - eqiad
@@ -3041,6 +3058,7 @@ service::catalog:
     probes:
       - type: http
         path: /_info
+      - type: swagger
     port: 4101
     sites:
       - eqiad

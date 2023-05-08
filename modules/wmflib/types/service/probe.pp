@@ -21,7 +21,7 @@
 #     (15s for service::catalog probes)
 
 type Wmflib::Service::Probe = Struct[{
-    'type'                  => Enum['http', 'tcp', 'tcp-notls'],
+    'type'                  => Enum['http', 'tcp', 'tcp-notls', 'swagger'],
     'path'                  => Optional[String[1]],
     'host'                  => Optional[String[1]],
     'post_json'             => Optional[String[1]],
