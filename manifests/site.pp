@@ -2491,6 +2491,10 @@ node 'otrs1001.eqiad.wmnet' {
     role(vrts)
 }
 
+node 'vrts1001.eqiad.wmnet' {
+    role(insetup::serviceops)
+}
+
 # T323515: WIP
 node 'vrts2001.codfw.wmnet' {
     role(vrts)
