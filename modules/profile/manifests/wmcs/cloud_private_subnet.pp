@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
     Boolean                       $do_bgp      = lookup('profile::wmcs::cloud_private_subnet::do_bgp',  {'default_value' => false}),
-    Stdlib::Fqdn                  $domain      = lookup('profile::wmcs::cloud_private_subnet::domain',  {'default_value' => 'hw.wikimedia.cloud'}),
+    Stdlib::Fqdn                  $domain      = lookup('profile::wmcs::cloud_private_subnet::domain',  {'default_value' => 'wikimedia.cloud'}),
     Integer[1,32]                 $netmask     = lookup('profile::wmcs::cloud_private_subnet::netmask', {'default_value' => 24}),
     Stdlib::Fqdn                  $gw          = lookup('profile::wmcs::cloud_private_subnet::gw',      {'default_value' => 'cloudsw'}),
     Integer[0,4094]               $vlan_id     = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
     Stdlib::IP::Address::V4::Cidr $supernet    = lookup('profile::wmcs::cloud_private_subnet::supernet'),
     Stdlib::IP::Address::V4::Cidr $public_vips = lookup('profile::wmcs::cloud_private_subnet::public_vips'),
 ) {
-    $cloud_private_fqdn = "${facts['hostname']}.${::site}.${domain}"
+    $cloud_private_fqdn = "${facts['hostname']}.private.${::site}.${domain}"
     $cloud_private_address = dnsquery::a($cloud_private_fqdn)[0]
 
     interface::tagged { 'cloud_private_subnet_iface':
@@ -28,7 +28,7 @@ class profile::wmcs::cloud_private_subnet (
         prefixlen => $netmask,
     }
 
-    $gw_fqdn = "${gw}.${::site}.${domain}"
+    $gw_fqdn = "${gw}.private.${::site}.${domain}"
     $gw_address = dnsquery::a($gw_fqdn)[0]
 
     interface::route { 'cloud_private_subnet_route':

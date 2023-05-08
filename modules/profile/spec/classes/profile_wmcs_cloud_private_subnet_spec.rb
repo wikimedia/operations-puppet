@@ -7,9 +7,9 @@ describe 'profile::wmcs::cloud_private_subnet' do
     context "on #{os}" do
       let(:pre_condition) do
         "function dnsquery::a($fqdn) {
-            if $fqdn == 'cloudlb2001-dev.codfw.hw.wikimedia.cloud' {
+            if $fqdn == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
                 ['172.20.5.2', '127.0.0.1']
-            } elsif $fqdn == 'cloudsw.codfw.hw.wikimedia.cloud' {
+            } elsif $fqdn == 'cloudsw.private.codfw.wikimedia.cloud' {
                 ['172.20.5.1', '127.0.0.2']
             } else {
                 [$fqdn]
