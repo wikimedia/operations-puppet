@@ -1,0 +1,30 @@
+#!/bin/sh
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Zero-Touch Provisioning of Juniper devices
+#
+# Set up the bare minimum configuration that allows a subsequent Homer run to fully configure the device.
+
+# Homer SSH public key
+KEY='"<%= @homer_key %>"'
+
+# Temporary root password, hashed. The clear text of the password is in pwstore's network-ztproot file
+ROOT_PASSWORD='"<%= @ztp_juniper_root_password %>"'
+
+# Get the current IP and gateway from the ones assigned by DHCP
+MGMT_IP=$(cli -c "show interfaces em0.0 brief" | awk '/inet/ {print $NF}')
+MGMT_GW=$(cli -c "show route protocol static table inet.0 terse" | awk -F '>' '/0\.0\.0\.0/ {print $NF}')
+
+# Set the minimum configuration to later allow Homer to run
+cli -c "configure; \
+        delete interfaces em0 unit 0 family inet dhcp ; \
+        set interfaces em0 unit 0 family inet address $MGMT_IP ; \
+        set system management-instance ; \
+        set routing-instances mgmt_junos routing-options static route 0.0.0.0/0 next-hop $MGMT_GW ; \
+        set system root-authentication encrypted-password $ROOT_PASSWORD ; \
+        set system login user homer uid 2029 ; \
+        set system login user homer class super-user ; \
+        set system login user homer authentication ssh-rsa $KEY ; \
+        set system services ssh ; \
+        set system services ssh root-login deny ; \
+        set system services netconf ssh; \
+        commit and-quit "

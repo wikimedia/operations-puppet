@@ -23,7 +23,10 @@ describe 'install_server::dhcp_server', :type => :class do
           .without_content(/subnet/)
       end
       describe 'with managment networks' do
-        let(:params) { { mgmt_networks: {'eqiad' => ['10.0.0.0/22'], 'codfw' => ['10.0.4.0/23'] } } }
+        let(:params) { {
+          mgmt_networks: {'eqiad' => ['10.0.0.0/22'], 'codfw' => ['10.0.4.0/23'] },
+          tftp_servers: {'eqiad' => '10.0.0.1', 'codfw' => '10.0.4.1'}
+        } }
         it do
           is_expected.to contain_file('/etc/dhcp/automation.conf')
             .with_content(%r{
@@ -32,6 +35,7 @@ describe 'install_server::dhcp_server', :type => :class do
                 option\ssubnet-mask\s255.255.252.0;\s+
                 option\srouters\s10.0.0.1;\s+
                 option\sdomain-name\s"mgmt\.eqiad\.wmnet";\s+
+                option\stftp-server-name\s"10.0.0.1";\s+
                 include\s"/etc/dhcp/automation/proxies/mgmt-eqiad.conf";\n\}
             }x)
             .with_content(%r{
@@ -40,6 +44,7 @@ describe 'install_server::dhcp_server', :type => :class do
                 option\ssubnet-mask\s255.255.254.0;\s+
                 option\srouters\s10.0.4.1;\s+
                 option\sdomain-name\s"mgmt\.codfw\.wmnet";\s+
+                option\stftp-server-name\s"10.0.4.1";\s+
                 include\s"/etc/dhcp/automation/proxies/mgmt-codfw.conf";\n\}
             }x)
         end

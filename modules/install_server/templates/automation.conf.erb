@@ -25,12 +25,13 @@ IPAddr.include WMFExtensions::IPAddr::Netmask
 addr = IPAddr.new(netlist[0])
 -%>
 subnet <%= addr.to_s %> netmask <%= addr.netmask %> {
-     authoratative;
+    authoratative;
 
-     option subnet-mask <%= addr.netmask %>;
-     option routers <%= addr.succ %>;
-     option domain-name "mgmt.<%= netname %>.wmnet";
+    option subnet-mask <%= addr.netmask %>;
+    option routers <%= addr.succ %>;
+    option domain-name "mgmt.<%= netname %>.wmnet";
+    option tftp-server-name "<%= @tftp_servers[netname] %>";
 
-     include "/etc/dhcp/automation/proxies/mgmt-<%= netname %>.conf";
+    include "/etc/dhcp/automation/proxies/mgmt-<%= netname %>.conf";
 }
 <% end -%>

@@ -4,7 +4,8 @@
 
 class install_server::dhcp_server (
     Stdlib::Ensure::Service                  $ensure_service = 'running',
-    Hash[String, Array[Stdlib::IP::Address]] $mgmt_networks = {}
+    Hash[String, Array[Stdlib::IP::Address]] $mgmt_networks  = {},
+    Hash[Wmflib::Sites, Stdlib::IP::Address] $tftp_servers   = {},
 ){
 
     ensure_packages(['isc-dhcp-server'])

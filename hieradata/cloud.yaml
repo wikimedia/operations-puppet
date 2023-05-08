@@ -73,6 +73,8 @@ profile::apt::install_audit_installed: false
 profile::apt::mirror: "mirrors.wikimedia.org"
 profile::apt::use_private_repo: false
 
+profile::installserver::dhcp::tftp_servers: {}
+
 profile::base::netbase::manage_etc_services: true
 profile::base::netbase::extra_services: {}
 

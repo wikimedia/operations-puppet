@@ -12,7 +12,9 @@
 # Sample Usage:
 #   include install_server::tftp_server
 
-class install_server::tftp_server () {
+class install_server::tftp_server (
+    String $ztp_juniper_root_password,
+) {
 
     file { '/srv/tftpboot':
         # config files in the puppet repository,
@@ -29,6 +31,14 @@ class install_server::tftp_server () {
         group        => 'root',
         recurse      => remote,
         backup       => false,
+    }
+
+    $homer_key = secret('keyholder/homer.pub')
+    file { '/srv/tftpboot/ztp-juniper.sh':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',  # Required for atftp to read it, runs as nobody
+        content => template('install_server/tftpboot/ztp-juniper.sh.erb'),
     }
 
     file { '/etc/default/atftpd':
