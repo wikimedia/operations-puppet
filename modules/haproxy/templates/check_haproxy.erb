@@ -48,27 +48,20 @@ fi
 # Check a primary/secondary pair for failover
 if [ "$check" == "check_failover" ]; then
 
-    tmp='/tmp/haproxy_stat.csv'
-    echo "show stat" | socat stdio $socket >$tmp
+    OUTPUT=$(echo "show stat" | socat stdio "$socket")
 
-    up=$(grep L7OK $tmp | wc -l)
-    down=$(grep DOWN $tmp | wc -l)
-    down_entries=($(grep ',DOWN,' $tmp | cut -d, -f1,2 | sed -e 's/,/:/'))
-    OLDIFS=$IFS
-    IFS=', '
-    down_string="${down_entries[@]}"
-    IFS=$OLDIFS
-
-    rm -f $tmp
+    up=$(grep -c L7OK <<< "$OUTPUT")
+    down=$(grep -c DOWN <<< "$OUTPUT")
+    down_string=$(grep DOWN <<< "$OUTPUT" | awk -F',' '{print $1","$2}')
 
     msg="servers up ${up} down ${down}:\n${down_string}"
 
     if [ $down -eq 0 ]; then
-        echo "${OK} ${check} ${msg}"
+        echo -e "${OK} ${check} ${msg}"
         exit $EOK
     fi
 
-    echo "${CRIT} ${check} ${msg}"
+    echo -e "${CRIT} ${check} ${msg}"
     exit $ECRIT
 
 fi
