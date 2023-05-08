@@ -1,5 +1,3 @@
 # db1215
 # zarcillo / db_inventory
-profile::monitoring::is_critical: false
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
