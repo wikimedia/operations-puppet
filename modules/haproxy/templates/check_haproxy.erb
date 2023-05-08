@@ -25,11 +25,11 @@ done
 # Check service normal response
 if [ "$check" == "check_alive" ]; then
 
-    up=$(echo "show info" | socat stdio $socket | egrep '^Uptime_sec' | awk '{print $2}')
+    up=$(echo "show info" | socat stdio "$socket" | grep -E '^Uptime_sec' | awk '{print $2}')
 
     if [[ "$up" =~ ^[0-9]+$ ]]; then
 
-        if [ $up -lt 300 ]; then
+        if [ "$up" -lt 300 ]; then
             echo "${WARN} ${check} recent restart ${up}s"
             exit $EWARN
         fi
@@ -54,7 +54,7 @@ if [ "$check" == "check_failover" ]; then
 
     msg="servers up ${up} down ${down}:\n${down_string}"
 
-    if [ $down -eq 0 ]; then
+    if [ "$down" -eq 0 ]; then
         echo -e "${OK} ${check} ${msg}"
         exit $EOK
     fi
