@@ -71,13 +71,13 @@ role::sessionstore:
   target-q: 2023-2
   phab-task: 331714
 role::dumps::generation::server::xmldumps:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 325232
 role::dumps::generation::server::misccrons:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 325232
 role::dumps::generation::server::xmlfallback:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 325232
 role::openldap::rw:
   target-q: 2023-2
@@ -115,10 +115,10 @@ role::spare::system:
   target-q: 2023-1
   phab-task: 324475
 role::maps::replica:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 327513
 role::maps::master:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 327513
 role::ping_offload:
   target-q: 2023-1
@@ -360,7 +360,7 @@ role::microsites::peopleweb:
 role::prometheus:
   target-q: TBD
 role::prometheus::pop:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 309979
 role::proton:
   target-q: TBD
@@ -526,5 +526,5 @@ role::apifeatureusage::logstash:
 role::dispatch::backend:
   target-q: TBD
 role::cassandra_dev:
-  target-q: 2023-1
+  target-q: 2023-2
   phab-task: 313814
