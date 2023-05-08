@@ -978,7 +978,7 @@ node 'dispatch-be2001.codfw.wmnet' {
     role(dispatch::backend)
 }
 
-node /^dns200[456]\.wikimedia\.org$/ {
+node /^dns200[56]\.wikimedia\.org$/ {
     role(insetup::traffic)
 }
 
