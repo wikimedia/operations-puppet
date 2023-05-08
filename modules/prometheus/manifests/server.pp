@@ -1,3 +1,4 @@
+
 # == Define: prometheus::server
 #
 # The prometheus server takes care of 'scraping' (polling) a list of 'targets'
@@ -199,9 +200,12 @@ define prometheus::server (
         owner  => 'prometheus',
         group  => 'root',
     }
-    File[$targets_path, $rules_path] {
-        purge => true,
+    File[$rules_path] {
+        recurse => true,
+        purge   => true,
     }
+    # TODO: purge $targets_path too.
+    # Currently that is blocked by the script in P::prometheus::ops_mysql.
 
     exec { "${service_name}-reload":
         command     => "/bin/systemctl reload ${service_name}",
