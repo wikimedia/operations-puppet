@@ -43,27 +43,27 @@ if [ "$check" == "check_alive" ]; then
 
 fi
 
-# Check a primary/secondary pair for failover
-if [ "$check" == "check_failover" ]; then
-
-    OUTPUT=$(echo "show stat" | socat stdio "$socket")
-
-    up=$(grep -c L7OK <<< "$OUTPUT")
-    down=$(grep -c DOWN <<< "$OUTPUT")
-    down_string=$(grep DOWN <<< "$OUTPUT" | awk -F',' '{print $1","$2}')
-
-    msg="servers up ${up} down ${down}:\n${down_string}"
-
-    if [ "$down" -eq 0 ]; then
-        echo -e "${OK} ${check} ${msg}"
-        exit $EOK
-    fi
-
-    echo -e "${CRIT} ${check} ${msg}"
+if [ "$check" != "check_failover" ] && [ "$check" != "check_someup" ] ; then
+    echo "${CRIT} unkown check ${check} "
     exit $ECRIT
-
 fi
 
+OUTPUT=$(echo "show stat" | socat stdio "$socket")
+up=$(grep -c L7OK <<< "$OUTPUT")
+down=$(grep -c DOWN <<< "$OUTPUT")
+down_string=$(grep DOWN <<< "$OUTPUT" | awk -F',' '{print $1","$2}')
+msg="servers up ${up} down ${down}:\n${down_string}"
 
-echo "${CRIT} unkown check ${check} "
+if [ "$check" == "check_failover" ] && [ "$down" -eq 0 ] ; then
+    # Check a primary/secondary pair for failover
+    echo -e "${OK} ${check} ${msg}"
+    exit $EOK
+fi
+if [ "$check" == "check_someup" ] && [ "$up" -gt 0 ] ; then
+    # Check at least some backends are UP
+    echo -e "${OK} ${check} ${msg}"
+    exit $EOK
+fi
+
+echo -e "${CRIT} ${check} ${msg}"
 exit $ECRIT
