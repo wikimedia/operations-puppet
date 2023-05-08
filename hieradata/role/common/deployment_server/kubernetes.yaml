@@ -199,7 +199,9 @@ scap::sources:
   parsoid/deploy:
     repository: mediawiki/services/parsoid/deploy
   #    lvs_service: parsoid
-  phabricator/deployment: {}
+  phabricator/deployment:
+    repository: phabricator/deployment
+    origin: gitlab
   restbase/deploy:
     repository: mediawiki/services/restbase/deploy
   horizon/deploy:

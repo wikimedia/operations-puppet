@@ -133,6 +133,7 @@ scap::sources:
   integration/docroot: {}
   phabricator/deployment:
     repository: phabricator/deployment
+    origin: gitlab
   releng/jenkins-deploy:
     repository: releng/jenkins-deploy
     origin: gitlab
