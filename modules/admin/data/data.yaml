@@ -765,8 +765,14 @@ groups:
   fr-tech-admins:
     gid: 787
     description: fundraising tech admins
-    members: &fr_tech_admins [dwisehaupt]
-    privileges: ['ALL = NOPASSWD: /usr/bin/cat /srv/private/modules/secret/secrets/nagios/contacts.cfg']
+    members: &fr_tech_admins [dwisehaupt, jgreen]
+    approval:
+      - Greg Grossmeier
+    privileges: [
+      'ALL = NOPASSWD: /usr/bin/cat /srv/private/modules/secret/secrets/nagios/contacts.cfg',
+      'ALL = NOPASSWD: /usr/local/bin/secure-cookbook sre.hardware.upgrade-firmware *',
+      'ALL = NOPASSWD: /usr/local/bin/secure-cookbook sre.dns.netbox *',
+    ]
   gitpuppet:
     gid: 998
     description: Private repo users
