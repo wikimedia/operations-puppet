@@ -7,8 +7,6 @@ profile::bird::advertise_vips:
     ensure: present
     service_type: haproxy
     address: 185.15.57.24
-    # TODO: we need to rethink this check.
-    # TODO: do we check for HAproxy to be up? for working_backends > 0? for a concrete openstack API endpoint?
-    # TODO: also, beware of chicken-egg problems. If this reports DOWN the VIP won't be announced in BGP,
-    # TODO: so the check needs to use local stuff only to validate health
-    check_cmd: "/usr/lib/nagios/plugins/check_icmp 185.15.57.24"
+    # TODO: beware of chicken-egg problems. If this reports DOWN the VIP won't be announced in BGP,
+    # TODO: this could be changed to --check=failover to disable the VIP in case a backend is down.
+    check_cmd: "/usr/local/lib/nagios/plugins/check_haproxy --check=alive"
