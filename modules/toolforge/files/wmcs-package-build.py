@@ -103,6 +103,14 @@ def parse_args():
            real
            """
     parser.add_argument("-d", "--dry-run", action="store_true", help=help)
+    help = """If this option is present, the package will be built with this version
+            of the Toolforge Apt repository available.
+            """
+    parser.add_argument("--toolforge-repo", choices=["tools", "toolsbeta"], help=help)
+    help = """If this option is present, the package will be built with Debian Backports
+            repository available.
+            """
+    parser.add_argument("--backports", action="store_true", help=help)
 
     return parser.parse_args()
 
@@ -154,9 +162,27 @@ def stage_sbuild():
     # simple sbuild. Well, some options were enabled to ensure a smooth run in
     # a non interactive session
 
+    extra_repos = []
+    if ctx.args.toolforge_repo:
+        # skip the web proxy, otherwise fails with 'No system certificates available.'
+        extra_repos.append(
+            f"deb [trusted=yes] http://{ctx.args.aptly_host}/repo "
+            f"{ctx.args.build_dist}-{ctx.args.toolforge_repo} main"
+        )
+    if ctx.args.backports:
+        extra_repos.append(
+            f"deb http://deb.debian.org/debian {ctx.args.build_dist}-backports main"
+        )
+
+    extra_repo_args = ""
+    if len(extra_repos) > 0:
+        # aptitude per https://unix.stackexchange.com/questions/298001/building-with-sbuild-and-backports  # noqa: E501
+        extra_repo_args = "--build-dep-resolver=aptitude "
+        extra_repo_args += " ".join([f"--extra-repository='{repo}'" for repo in extra_repos])
+
     # TODO: using sudo here because T273942, but it isn't derisable and it shouldn't be neccesary
-    sbuild_cmd = "cd {} ; sudo sbuild -v -A -d {} --no-clean-source".format(
-        ctx.git_repo_dir, ctx.args.build_dist
+    sbuild_cmd = "cd {} ; sudo sbuild -v -A -d {} {} --no-clean-source".format(
+        ctx.git_repo_dir, ctx.args.build_dist, extra_repo_args,
     )
     ssh(ctx.args.build_host, sbuild_cmd)
 
