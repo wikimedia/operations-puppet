@@ -80,7 +80,7 @@ scap::dsh::groups:
       - stat1007.eqiad.wmnet
   search-airflow:
     hosts:
-      - an-airflow1001.eqiad.wmnet
+      - an-airflow1005.eqiad.wmnet
   wcqs:
     conftool:
       - {'cluster': 'wcqs', 'service': 'wcqs'}

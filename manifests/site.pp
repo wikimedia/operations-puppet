@@ -159,11 +159,6 @@ node 'an-tool1011.eqiad.wmnet' {
     role(analytics_cluster::turnilo::staging)
 }
 
-# analytics-search instance of Apache Airflow
-node 'an-airflow1001.eqiad.wmnet' {
-    role(search::airflow)
-}
-
 # analytics-research instance of Apache Airflow
 node 'an-airflow1002.eqiad.wmnet' {
     role(analytics_cluster::airflow::research)
