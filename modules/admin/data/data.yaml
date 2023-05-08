@@ -6686,3 +6686,7 @@ ldap_only_users:
     ensure: present
     realname: Andy Cooper
     email: acooper@wikimedia.org
+  fjoseph:
+    ensure: present
+    realname: Frantz Joseph
+    email: fjoseph@wikimedia.org
