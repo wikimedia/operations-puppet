@@ -34,7 +34,7 @@ define logster::job(
 
     $cmd_script = "/usr/local/sbin/logster-${title}-service.sh"
     file { $cmd_script:
-        ensure  => $ensure,
+        ensure  => stdlib::ensure($ensure, 'file'),
         content => "#!/bin/bash\n/usr/bin/logster ${logster_options} ${parser} ${logfile}\n",
         mode    => '0555',
     }

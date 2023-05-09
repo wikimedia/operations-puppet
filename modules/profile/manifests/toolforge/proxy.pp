@@ -3,7 +3,6 @@ class profile::toolforge::proxy (
     String              $active_proxy        = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
     Stdlib::Fqdn        $web_domain          = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
     Array[Stdlib::Fqdn] $prometheus          = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
-    String              $statsd              = lookup('statsd',                                {default_value => 'localhost:8125'}),
     Stdlib::Fqdn        $k8s_vip_fqdn        = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port        $k8s_vip_port        = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
     Integer             $rate_limit_requests = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
@@ -105,21 +104,18 @@ class profile::toolforge::proxy (
 
     ensure_packages('goaccess')  # webserver statistics, T121233
 
-    $graphite_metric_prefix = "${::wmcs_project}.reqstats"
-
     file { '/usr/local/lib/python2.7/dist-packages/toolsweblogster.py':
-        source => 'puppet:///modules/profile/toolforge/toolsweblogster.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => absent,
+    }
+
+    class { 'logster':
+        ensure => absent,
     }
 
     logster::job { 'proxy-requests':
-        minute          => '0/1',
-        parser          => 'toolsweblogster.UrlFirstSegmentLogster', # Nothing more specific yet
-        logfile         => '/var/log/nginx/access.log',
-        logster_options => "-o statsd --statsd-host=${statsd} --metric-prefix=${graphite_metric_prefix}.",
-        require         => File['/usr/local/lib/python2.7/dist-packages/toolsweblogster.py'],
+        ensure  => absent,
+        parser  => 'toolsweblogster.UrlFirstSegmentLogster', # Nothing more specific yet
+        logfile => '/var/log/nginx/access.log',
     }
 
     ferm::service { 'proxymanager':

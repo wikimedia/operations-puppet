@@ -2,8 +2,10 @@
 # == Class logster
 # Installs logster package.
 # Use logster::job to set up a systemd timer to tail a log file.
-class logster {
+class logster (
+    Wmflib::Ensure $ensure = 'present',
+) {
     package { 'logster':
-        ensure => 'installed',
+        ensure => stdlib::ensure($ensure, 'package'),
     }
 }
