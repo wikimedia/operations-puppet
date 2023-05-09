@@ -68,6 +68,7 @@ class jenkins(
 )
 {
     user { 'jenkins':
+        uid        => 924,
         home       => '/var/lib/jenkins',
         shell      => '/bin/bash',  # admins need to be able to login
         gid        => 'jenkins',
@@ -78,6 +79,7 @@ class jenkins(
 
     group { 'jenkins':
         ensure    => present,
+        gid       => 924,
         name      => 'jenkins',
         system    => true,
         allowdupe => false,
