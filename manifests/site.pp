@@ -1421,7 +1421,11 @@ node 'clouddb2002-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
-node /^cloudcontrol200[145]-dev\.wikimedia\.org$/ {
+node 'cloudcontrol2001-dev.codfw.wmnet' {
+    role(insetup::wmcs)
+}
+
+node /^cloudcontrol200[45]-dev\.wikimedia\.org$/ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
