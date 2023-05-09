@@ -1,0 +1,11 @@
+profile::lvs::interface_tweaks:
+  eno12399np0:
+    txqlen: 10000
+  eno12409np1:
+    txqlen: 10000
+  enp152s0f0np0:
+    txqlen: 10000
+  enp152s0f1np1:
+    txqlen: 10000
+
+profile::pybal::override_bgp_med: 101

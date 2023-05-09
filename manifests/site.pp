@@ -1721,12 +1721,12 @@ node /^lvs101[3456].eqiad.wmnet$/ {
 }
 
 # codfw lvs
-node /^lvs20(1[1]|0[9])\.codfw\.wmnet$/ {
+node /^lvs20(1[12]|0[9])\.codfw\.wmnet$/ {
     role(lvs::balancer)
 }
 
 #New codfw lvs servers T326767
-node /^lvs201[234]\.codfw\.wmnet$/ {
+node /^lvs201[34]\.codfw\.wmnet$/ {
     role(insetup::traffic)
 }
 
