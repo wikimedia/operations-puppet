@@ -161,9 +161,9 @@ define airflow::instance(
             'web_server_host' => '0.0.0.0',
             'web_server_port' => '8600',
             'instance_name' => $title,
-            # Since the webserver Public as Admin role, and is only
-            # accessible on 127.0.0.1 by default, expose things for admins.
-            'expose_config' => 'True',
+            # Since the webserver Public as Admin role, and is only accessible on 127.0.0.1 by default,
+            # expose config for admins, except sensitives like passwords.
+            'expose_config' => 'non-sensitive-only',
             'expose_hostname' => 'True',
             'expose_stacktrace' => 'True',
         },
