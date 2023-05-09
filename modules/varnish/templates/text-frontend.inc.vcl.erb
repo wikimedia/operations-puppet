@@ -656,7 +656,7 @@ sub cluster_fe_deliver {
     if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
         // ...but exempt CentralNotice banner special pages
         if (req.url !~ "^/(wiki/|(w/index\.php)?\?title=)Special:Banner") {
-            set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+            set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate, no-transform";
         }
     }
 
