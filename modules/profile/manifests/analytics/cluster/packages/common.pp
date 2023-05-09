@@ -12,7 +12,7 @@ class profile::analytics::cluster::packages::common {
         # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
         # and: https://phabricator.wikimedia.org/T229347
         # python3.7 will assist with a Spark & Buster upgrade.
-        require profile::python37
+        ensure_packages(['python3.7', 'libpython3.7'])
     }
     # Install MaxMind databases for geocoding UDFs
     class { '::geoip': }
