@@ -14,9 +14,9 @@ class profile::openstack::base::cloudgw (
     Hash                $conntrackd   = lookup('profile::openstack::base::cloudgw::conntrackd',   {default_value => {}}),
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::base::cloudgw::routing_source_ip',{default_value => '127.0.0.7'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::base::cloudgw::virt_subnet_cidr', {default_value => '127.0.0.8/32'}),
-    Array[Stdlib::IP::Address::V4::Nosubnet] $dmz_cidr = lookup('profile::openstack::base::cloudgw::dmz_cidr',    {default_value => ['0.0.0.0']}),
     Stdlib::IP::Address::V4::CIDR $transport_cidr = lookup('profile::openstack::base::cloudgw::transport_cidr'),
     Stdlib::IP::Address::V4::Nosubnet $transport_vip = lookup('profile::openstack::base::cloudgw::transport_vip'),
+    Array[Stdlib::IP::Address::V4] $dmz_cidr         = lookup('profile::openstack::base::cloudgw::dmz_cidr',      {default_value => ['0.0.0.0']}),
 ) {
     class { '::nftables':
         ensure_package => 'present',
