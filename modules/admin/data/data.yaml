@@ -1158,6 +1158,20 @@ groups:
   #   gid: 922
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in zuul::user
+  # The 'zuul' data migration requires rsync.
+  # zuul:
+  #   gid: 923
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in ::jenkins
+  # The 'jenkins' data migration requires rsync.
+  # jenkins:
+  #   gid: 924
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -1308,6 +1322,26 @@ users:
   #   gid: 922
   #   home_dir: none
   #   shell: /bin/false
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # The 'zuul' data migrate requires rsync.
+  # zuul:
+  #   ensure: present
+  #   system: true
+  #   uid: 923
+  #   gid: 923
+  #   home_dir: /var/lib/zuul
+  #   shell: /bin/bash
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # The 'jenkins' data migrate requires rsync.
+  # jenkins:
+  #   ensure: present
+  #   system: true
+  #   uid: 924
+  #   gid: 924
+  #   home_dir: /var/lib/jenkins
+  #   shell: /bin/bash
   rush:
     ensure: absent
     gid: 500
