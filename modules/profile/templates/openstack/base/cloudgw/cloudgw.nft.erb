@@ -8,6 +8,7 @@ define nic_wan = "<%= @nic_wan %>"
 table inet cloudgw {
     set dmz_cidr_set {
         type ipv4_addr
+        flags interval
         counter
         <%- if !@dmz_cidr.empty? -%>
         elements = {
