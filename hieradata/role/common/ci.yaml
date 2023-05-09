@@ -90,7 +90,7 @@ profile::ci::migration::rsync_dst_hosts:
 profile::ci::migration::rsync_data_dirs:
   - "/var/lib/jenkins/"
   - "/var/lib/zuul/"
-  - "/srv/"
+  - "/srv/jenkins/"
 
 # Docker requires the overlay / overlayFS kernel module
 profile::base::overlayfs: true
