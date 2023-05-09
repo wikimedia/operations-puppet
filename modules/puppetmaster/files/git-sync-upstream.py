@@ -92,7 +92,6 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
 
         # And... rebase.
         tmprepo.git.rebase(
-            "--rebase-merges",
             "--stat",
             "--strategy=recursive",
             "--strategy-option=patience",
