@@ -20,7 +20,7 @@ class profile::lvs::configuration {
         'high-traffic2' => $::realm ? {
             'production' => $::site ? {
                 'eqiad' => [ 'lvs1018', 'lvs1020' ],
-                'codfw' => [ 'lvs2008', 'lvs2010' ],
+                'codfw' => [ 'lvs2010' ],
                 'esams' => [ 'lvs3006', 'lvs3007' ],
                 'ulsfo' => [ 'lvs4009', 'lvs4010' ],
                 'eqsin' => [ 'lvs5005', 'lvs5006'],
@@ -59,7 +59,6 @@ class profile::lvs::configuration {
         'lvs1018'      => 'high-traffic2',
         'lvs1019'      => 'low-traffic',
         'lvs1020'      => 'secondary',
-        'lvs2008'      => 'high-traffic2',
         'lvs2009'      => 'low-traffic',
         'lvs2010'      => 'secondary',
         'lvs2011'      => 'high-traffic1',
