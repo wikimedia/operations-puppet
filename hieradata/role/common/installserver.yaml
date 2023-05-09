@@ -13,5 +13,5 @@ profile::installserver::proxy::ssh_acls:
     src:
       - 'cluster::cloud_management'
     dst:
-      - restricted.bastion.wmflabs.org
+      - restricted.bastion.wmcloud.org
       - bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
