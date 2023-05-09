@@ -8,7 +8,9 @@ local function make_ts(request)
     client_request = {
       get_url_host = function() return request.backend end
     },
-    http = {},
+    http = {
+      id = function() return 1 end
+    },
     now = function() return os.clock() end,
     get_config_dir = function() return base_dir end,
     error = function(msg) error(msg) end
@@ -37,10 +39,25 @@ local function run(request, config)
   return result
 end
 
+function expect(result, is_k8s, host, port)
+  if is_k8s then
+    assert.are.equals(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+    assert.are.equals(result.host, host)
+    assert.are.equals(result.port, port)
+  else
+    assert.are.equals(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+    assert.are.equals(result.host, nil)
+    assert.are.equals(result.port, nil)
+  end
+end
+
 local default_config = {
-  ["test2.wikipedia.org"] = true,
-  ["test.wikidata.org"] = true
+  ["test2.wikipedia.org"] = 1,
+  ["test.wikidata.org"] = 1,
+  ["default"] = 0
 }
+
+-- the tests start here.
 
 describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
@@ -51,10 +68,7 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-
-      assert.are.equals(TS_LUA_REMAP_NO_REMAP, result.remap_value)
-      assert.are.equals(result.host, nil)
-      assert.are.equals(result.port, nil)
+      expect(result, false)
     end)
 
 
@@ -65,9 +79,7 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      assert.are.equals(TS_LUA_REMAP_DID_REMAP, result.remap_value)
-      assert.are.equals(result.host, "mw-api-ext-ro.discovery.wmnet")
-      assert.are.equals(result.port, 4447)
+      expect(result, true, 'mw-api-ext-ro.discovery.wmnet', 4447)
     end)
 
     it("test - appserver RW with a matching host header", function()
@@ -77,9 +89,7 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      assert.are.equals(TS_LUA_REMAP_DID_REMAP, result.remap_value)
-      assert.are.equals(result.host, "mw-web.discovery.wmnet")
-      assert.are.equals(result.port, 4450)
+      expect(result, true, 'mw-web.discovery.wmnet', 4450)
     end)
 
     it("test - appserver RO with a non-matching host header", function()
@@ -89,10 +99,39 @@ describe("Busted unit testing framework", function()
           },
           default_config
       )
+      expect(result, false)
+    end)
 
-      assert.are.equals(TS_LUA_REMAP_NO_REMAP, result.remap_value)
-      assert.are.equals(result.host, nil)
-      assert.are.equals(result.port, nil)
+    it("test - respects 0% probability", function()
+      result = run({
+            host = 'fr.wikipedia.org',
+            backend = 'appservers-rw.discovery.wmnet'
+          },
+          {['fr.wikipedia.org'] = 0, ['default'] = 1}
+      )
+      expect(result, false)
+    end)
+
+    it("test - A random seed smaller than load goes to k8s", function()
+      stub(math, "random", 0.4)
+      result = run({
+            host = 'fr.wikipedia.org',
+            backend = 'appservers-rw.discovery.wmnet'
+          },
+          {["fr.wikipedia.org"] = 0.5}
+      )
+      expect(result, true, 'mw-web.discovery.wmnet', 4450)
+    end)
+
+    it("test - A random seed equal or larger than load is not touched", function()
+      stub(math, "random", 0.5)
+      result = run({
+            host = 'fr.wikipedia.org',
+            backend = 'appservers-rw.discovery.wmnet'
+          },
+          {["fr.wikipedia.org"] = 0.5}
+      )
+      expect(result, false)
     end)
   end)
 end)

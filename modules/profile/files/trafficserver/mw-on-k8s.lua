@@ -61,12 +61,25 @@ local function use_k8s()
   end
   local host = host_raw:lower()
   reload_config()
-  local do_use_k8s = wikis_on_k8s[host]
-
-  if do_use_k8s ~= nil then
-    return do_use_k8s
+  local k8s_load = wikis_on_k8s[host]
+  -- if no configuration is available for our hostname, fallback to the default.
+  if k8s_load == nil then
+    k8s_load = wikis_on_k8s["default"]
   end
-  return false
+  -- If all traffic should go to k8s, don't bother with random seeding
+  -- we also check for a boolean value for easing the transition
+  if k8s_load == 1 or k8s_load == true then
+    return true
+  end
+  if k8s_load == nil or k8s_load == 0 or k8s_load == false then
+    return false
+  end
+  -- All states start with the same random seed, so let's fix that
+  if not random_seeded then
+    random_seeded = true
+    math.randomseed(ts.http.id())
+  end
+  return math.random() < k8s_load
 end
 
 -- The ATS hook point.
