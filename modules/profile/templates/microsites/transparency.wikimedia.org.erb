@@ -22,6 +22,6 @@
 
         # Send the rest of transparency.wm.o (but not transparency-archive!) to the foundation site
         RewriteCond %{REQUEST_URI} !^/historical
-        RewriteRule .* https://wikimediafoundation.org/about/transparency/ [R=302,L]
+        RewriteRule .* https://wikimediafoundation.org/about/transparency/current/ [R=302,L]
     </Location>
 </VirtualHost>
