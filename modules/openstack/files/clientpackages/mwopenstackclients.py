@@ -328,16 +328,18 @@ class Clients(object):
             else:
                 instances.extend(self.novaclient(projectid).servers.list())
         else:
-            for project in self.allprojects():
-                if project.id == "admin":
-                    continue
-                if allregions:
-                    for region in self.allregions():
-                        instances.extend(
-                            self.novaclient(project.id, region).servers.list()
+            search_params = {"all_tenants": True}
+            if allregions:
+                for region in self.allregions():
+                    instances.extend(
+                        self.novaclient(projectid, region).servers.list(
+                            search_opts=search_params
                         )
-                else:
-                    instances.extend(self.novaclient(project.id).servers.list())
+                    )
+            else:
+                instances.extend(
+                    self.novaclient(projectid).servers.list(search_opts=search_params)
+                )
         return instances
 
     @retry(
