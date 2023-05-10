@@ -93,7 +93,9 @@ EMAIL = {
 
 # The number of days to retain job results (scripts and reports).
 # Set this to 0 to retain job results in the database indefinitely.
-JOBRESULT_RETENTION = <%= @jobresult_retention %>
+# Renamed to JOB_RETENTION on 3.5, delete JOBRESULT_RETENTION after upgrade
+JOBRESULT_RETENTION = <%= @job_retention %>
+JOB_RETENTION = <%= @job_retention %>
 
 # Enable custom logging. Please see the Django documentation for detailed guidance on configuring custom logs:
 #   https://docs.djangoproject.com/en/1.11/topics/logging/

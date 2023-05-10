@@ -49,7 +49,7 @@
 # @param http_proxy proxy server to use for outbound connections
 # @param changelog_retention The number of days to retain logged changes (object creations, updates, and deletions).
 #        Set this to 0 to retain changes in the database indefinitely.
-# @param jobresult_retention The number of days to retain job results (scripts and reports).
+# @param job_retention The number of days to retain job results (scripts and reports).
 #        Set this to 0 to retain job results in the database indefinitely.
 # @param prefer_ipv4 When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default.
 # @param validators a list of form validators to install
@@ -82,7 +82,7 @@ class profile::netbox (
     Boolean                     $do_backups              = lookup('profile::netbox::do_backup'),
     Optional[Stdlib::HTTPUrl]   $http_proxy              = lookup('profile::netbox::http_proxy'),
     Integer[0]                  $changelog_retention     = lookup('profile::netbox::changelog_retention'),
-    Integer[0]                  $jobresult_retention     = lookup('profile::netbox::jobresult_retention'),
+    Integer[0]                  $job_retention           = lookup('profile::netbox::job_retention'),
     Boolean                     $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
     Array[String[1]]            $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
@@ -182,7 +182,7 @@ class profile::netbox (
         redis_password              => $redis_password,
         http_proxy                  => $http_proxy,
         changelog_retention         => $changelog_retention,
-        jobresult_retention         => $jobresult_retention,
+        job_retention               => $job_retention,
         prefer_ipv4                 => $prefer_ipv4,
         validators                  => $validators,
         ca_certs                    => $ca_certs,

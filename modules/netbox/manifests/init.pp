@@ -20,7 +20,7 @@
 # @param redis_host the redis host to use
 # @param redis_password the redis password to use
 # @param changelog_retention how many days to keep the changelog
-# @param jobresult_retention how many days to keep the changelog
+# @param job_retention how many days to keep the changelog
 # @param prefer_ipv4 prefer IPv4 over IPV6
 # @param local_redis_maxmem The amount of memory in bytes that the local Redis instance should use
 # @param ldap_server The LDAP server to specify in the configuration
@@ -64,7 +64,7 @@ class netbox (
     Stdlib::Fqdn                  $redis_host                  = 'localhost',
     String                        $redis_password              = '',
     Integer[0]                    $changelog_retention         = 90,
-    Integer[0]                    $jobresult_retention         = 90,
+    Integer[0]                    $job_retention               = 90,
     Boolean                       $prefer_ipv4                 = false,
     Optional[Stdlib::Fqdn]        $ldap_server                 = undef,
     Boolean                       $enable_ldap                 = false,
