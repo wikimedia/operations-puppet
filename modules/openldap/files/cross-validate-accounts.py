@@ -295,42 +295,6 @@ def check_ssh_keys(yamldata):
     return log
 
 
-# Check duplicated ops permissions
-def validate_duplicated_ops_permissions(users):
-    log = ""
-    for i, attrs in users.items():
-        if 'ldap_only' in attrs and not attrs['ldap_only']:
-            if "ops" in attrs['prod_groups']:
-                ops_default_groups = set(['gitpuppet', 'ops'])
-                groups = set(attrs['prod_groups'])
-                if not ops_default_groups <= groups:
-                    log += i + " doesn't have ops default groups\n"
-
-                # ops and gitpuppet are default for all ops users
-                # analytics-privatedata-users enables mysql access in addition to
-                #    cluster-wide root permissions, so might be used in addition to ops privs
-                # ops-adm-group is auto-generated from the ops membership
-                # deploy-phabricator concerns handling of keyholder for deployment
-                # analytics-search-users concerns user creation in HDFS
-                # contint-docker is about being able to issue docker commands
-                # builder-docker is about being able to issue docker commands
-                #    directly and execute scripts issuing docker commands
-                # deployment-ci-admins includes contint-admins
-                # deployment/mwdebuggers for software deployments
-                # datacenter-ops is the DC-Ops group for historical reason some
-                # of theses members are also in ops
-                groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
-                                          'ops-adm-group', 'gpu-users', 'contint-admins',
-                                          'contint-docker', 'builder-docker',
-                                          'deploy-phabricator', 'analytics-search-users',
-                                          'deployment-ci-admins', 'deployment-docker',
-                                          'deployment', 'datacenter-ops', 'mwdebuggers'])
-                if len(set(groups)) > 0:
-                    log += "Malformed membership for ops user " + i + ", has additional group(s): "
-                    log += str(groups) + "\n"
-    return log
-
-
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
@@ -392,7 +356,6 @@ def main():
         validate_common_ops_group(yamldata),
         validate_all_yaml_group_members_are_defined(known_users, yamldata),
         validate_all_ldap_group_members_are_defined(known_users),
-        validate_duplicated_ops_permissions(users),
         print_pending_account_expirys(users),
         validate_privileged_ldap_groups_memberships(users),
         check_ssh_keys(yamldata),
