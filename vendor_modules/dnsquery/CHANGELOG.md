@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.1](https://github.com/voxpupuli/puppet-dnsquery/tree/v5.0.1) (2023-05-10)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-dnsquery/compare/v5.0.0...v5.0.1)
+
+**Fixed bugs:**
+
+- 138: Allow nil value for config\_info [\#141](https://github.com/voxpupuli/puppet-dnsquery/pull/141) ([b4ldr](https://github.com/b4ldr))
+
 ## [v5.0.0](https://github.com/voxpupuli/puppet-dnsquery/tree/v5.0.0) (2023-04-24)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-dnsquery/compare/v4.0.0...v5.0.0)

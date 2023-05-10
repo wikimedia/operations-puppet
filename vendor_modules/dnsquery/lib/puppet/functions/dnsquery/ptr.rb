@@ -10,7 +10,7 @@ Puppet::Functions.create_function(:'dnsquery::ptr') do
   # @return An array of PTR answeres matching domain
   dispatch :dns_ptr do
     param 'Stdlib::Fqdn', :domain
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Array[Stdlib::Fqdn]'
   end

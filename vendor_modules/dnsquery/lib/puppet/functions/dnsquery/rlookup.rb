@@ -10,7 +10,7 @@ Puppet::Functions.create_function(:'dnsquery::rlookup') do
   # @return An array of hostnames matching the ip address
   dispatch :dns_rlookup do
     param 'Stdlib::IP::Address::Nosubnet', :address
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Array[Stdlib::Fqdn]'
   end

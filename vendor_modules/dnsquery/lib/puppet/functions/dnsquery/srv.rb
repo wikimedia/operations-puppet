@@ -11,7 +11,7 @@ Puppet::Functions.create_function(:'dnsquery::srv') do
   dispatch :dns_srv do
     # TODO: resurrect https://github.com/puppetlabs/puppetlabs-stdlib/pull/1230
     param 'String', :domain
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Array[Dnsquery::Srv]'
   end

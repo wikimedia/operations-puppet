@@ -1,6 +1,6 @@
 {
   "name": "puppet-dnsquery",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "author": "Vox Pupuli",
   "summary": "Query functions for DNS",
   "license": "MIT",

@@ -14,7 +14,7 @@ Puppet::Functions.create_function(:'dnsquery::lookup') do
   dispatch :dns_lookup do
     param 'Stdlib::Fqdn', :domain
     optional_param 'Boolean', :force_ipv6
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Array[Stdlib::IP::Address::Nosubnet]'
   end

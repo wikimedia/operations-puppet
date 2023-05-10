@@ -23,7 +23,7 @@ mod 'concat',
 
 mod 'dnsquery',
     :git => 'https://github.com/voxpupuli/puppet-dnsquery.git',
-    :ref => 'v5.0.0'
+    :ref => 'v5.0.1'
 
 mod 'lvm',
     # NOTE: Deviates from upstream v1.4.0

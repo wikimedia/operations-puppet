@@ -10,7 +10,7 @@ Puppet::Functions.create_function(:'dnsquery::soa') do
   # @return The SOA record matching domain
   dispatch :dns_soa do
     param 'Stdlib::Fqdn', :question
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Dnsquery::Soa'
   end

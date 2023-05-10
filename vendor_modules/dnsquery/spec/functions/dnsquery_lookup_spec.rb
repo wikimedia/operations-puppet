@@ -12,6 +12,12 @@ describe 'dnsquery::lookup' do
     expect(results).to all(match(matcher))
   end
 
+  it 'returns a list of addresses when doing a lookup for a single record with force_ipv6' do
+    results = subject.execute('google.com', true)
+    expect(results).to be_a Array
+    expect(results).to all(match(matcher))
+  end
+
   it 'returns a list of addresses when doing a lookup for a single record with update nameserver' do
     results = subject.execute('google.com', true, { 'nameserver' => ['8.8.8.8'] })
     expect(results).to be_a Array

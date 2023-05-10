@@ -10,7 +10,7 @@ Puppet::Functions.create_function(:'dnsquery::aaaa') do
   # @return An array of AAAA records matching domain
   dispatch :dns_aaaa do
     param 'Stdlib::Fqdn', :domain
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Array[Stdlib::IP::Address::V6::Nosubnet]'
   end

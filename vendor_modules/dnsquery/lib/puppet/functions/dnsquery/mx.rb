@@ -10,7 +10,7 @@ Puppet::Functions.create_function(:'dnsquery::mx') do
   # @return An array of hashes representing the mx records for domain
   dispatch :dns_mx do
     param 'Stdlib::Fqdn', :domain
-    optional_param 'Dnsquery::Config_info', :config_info
+    optional_param 'Optional[Dnsquery::Config_info]', :config_info
     optional_block_param :block
     return_type 'Array[Dnsquery::Mx]'
   end
