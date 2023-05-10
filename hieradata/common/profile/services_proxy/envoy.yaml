@@ -285,7 +285,7 @@ profile::services_proxy::envoy::listeners:
     port: 6504
     service: machinetranslation
     timeout: "120s"
-    xfp: https
+    uses_ingress: true
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
