@@ -162,9 +162,20 @@ BITU_NOTIFICATION = {
     'signup_subject': 'Wikimedia Developer Account activation'
 }
 
+# Signup settings:
+# Enable validators
+SIGNUP_USERNAME_VALIDATORS = [
+  'ldapbackend.validators.LDAPUsernameValidator',
+  'ldapbackend.validators.unix_username_validator',
+  'signups.validators.UsernameValidator'
+]
+
+# Display Wikimedia Foundation Signup message
+SIGNUP_INFO_TEMPLATE = 'signup_info_wmf.html'
+
+
 # Social Auth
 # Autheticate users via CAS / OIDC
-
 AUTHENTICATION_BACKENDS = [
     "social_core.backends.cas.CASOpenIdConnectAuth",
     "social_core.backends.mediawiki.MediaWiki",
