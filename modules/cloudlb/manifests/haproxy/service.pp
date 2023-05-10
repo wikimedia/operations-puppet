@@ -40,7 +40,7 @@ define cloudlb::haproxy::service (
     $frontends.each | Integer $index, CloudLB::HAProxy::Service::Frontend $frontend | {
         if $firewall['restricted_to_fqdns'] {
             $ips = $firewall['restricted_to_fqdns'].map |$host| {
-                        dnsquery::lookup($host, true)
+                        dnsquery::lookup($host)
                     }.flatten.sort.unique.join(' ')
             $srange = "(${ips})"
         } else {
