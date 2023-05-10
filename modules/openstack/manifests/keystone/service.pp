@@ -119,6 +119,12 @@ class openstack::keystone::service(
             owner   => 'keystone',
             group   => 'keystone',
             mode    => '0755',
+            require => $require;
+        '/etc/keystone/domains':
+            ensure  => 'directory',
+            owner   => 'keystone',
+            group   => 'keystone',
+            mode    => '0755',
             require => $require,
     }
 
