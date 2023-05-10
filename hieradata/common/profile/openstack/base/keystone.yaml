@@ -1,7 +1,7 @@
 profile::openstack::base::keystone::db_name: 'keystone'
 profile::openstack::base::keystone::db_user: 'keystone'
-profile::openstack::base::keystone::admin_workers: '4'
-profile::openstack::base::keystone::public_workers: '8'
+profile::openstack::base::keystone::admin_workers: '8'
+profile::openstack::base::keystone::public_workers: '16'
 profile::openstack::base::keystone::auth_protocol: 'https'
 profile::openstack::base::keystone::auth_port: 25357
 profile::openstack::base::keystone::public_port: 25000
