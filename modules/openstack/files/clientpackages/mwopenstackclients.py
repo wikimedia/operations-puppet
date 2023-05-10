@@ -55,13 +55,18 @@ class Clients(object):
         self.cinderclients = {}
         self.troveclients = {}
         self.neutronclients = {}
+        self.project = None
+        self.system_scope = None
 
         if oscloud:
             cloud_config = os_client_config.OpenStackConfig().get_all_clouds()
             for cloud in cloud_config:
                 if cloud.name == oscloud:
+                    if "project_id" in cloud.auth:
+                        self.project = cloud.auth["project_id"]
+                    if "system_scope" in cloud.auth:
+                        self.system_scope = cloud.auth["system_scope"]
                     self.url = cloud.auth["auth_url"]
-                    self.project = cloud.auth["project_id"]
                     self.username = cloud.auth["username"]
                     self.password = cloud.auth["password"]
                     self.region = cloud.region_name
@@ -111,21 +116,29 @@ class Clients(object):
             raise Exception("No password (env OS_PASSWORD) specified")
         if not self.url:
             raise Exception("No url (env OS_AUTH_URL) specified")
-        if not self.project:
-            raise Exception("No project (env OS_PROJECT_ID) specified")
 
     def session(self, project=None):
         # You can use None as a dictionary key -- I looked it up!
         if project not in self.sessions:
             if not project:
-                # Get a domain-scoped token
-                auth = KeystonePassword(
-                    auth_url=self.url,
-                    username=self.username,
-                    password=self.password,
-                    user_domain_name="Default",
-                    domain_id='default',
-                )
+                if self.system_scope:
+                    # Get a system-scoped token
+                    auth = KeystonePassword(
+                        auth_url=self.url,
+                        username=self.username,
+                        password=self.password,
+                        user_domain_name="Default",
+                        system_scope=self.system_scope,
+                    )
+                else:
+                    # Get a domain-scoped token
+                    auth = KeystonePassword(
+                        auth_url=self.url,
+                        username=self.username,
+                        password=self.password,
+                        user_domain_name="Default",
+                        domain_id="default",
+                    )
             else:
                 if project != self.project:
                     # Check the domain of the project before proceeding.
