@@ -13,5 +13,8 @@
 <% if defined?(@os_project_domain_id) -%>
       project_domain_id: <%= @os_project_domain_id %>
 <% end -%>
+<% if defined?(@os_system_scope) -%>
+      project_domain_id: <%= @os_system_scope %>
+<% end -%>
     region_name: <%= @region %>
     identity_api_version: 3
