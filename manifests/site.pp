@@ -1891,11 +1891,6 @@ node /^ms-backup200[12]\.codfw\.wmnet$/ {
     role(mediabackup::worker)
 }
 
-# T326846
-node 'thanos-fe1004.eqiad.wmnet' {
-    role(insetup::data_persistence)
-}
-
 node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include lvs::realserver  # lint:ignore:wmf_styleguide
@@ -2766,17 +2761,12 @@ node /^thanos-be200[1234]\.codfw\.wmnet$/ {
     role(thanos::backend)
 }
 
-node /^thanos-fe100[123]\.eqiad\.wmnet$/ {
+node /^thanos-fe100[1234]\.eqiad\.wmnet$/ {
     role(thanos::frontend)
 }
 
-node /^thanos-fe200[123]\.codfw\.wmnet$/ {
+node /^thanos-fe200[1234]\.codfw\.wmnet$/ {
     role(thanos::frontend)
-}
-
-# New thanos-fe node T326848
-node 'thanos-fe2004.codfw.wmnet' {
-    role(insetup::observability)
 }
 
 # Thumbor servers for MediaWiki image scaling
