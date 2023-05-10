@@ -63,8 +63,8 @@ notify_nova_on_port_data_changes = True
 agent_down_time = <%= @agent_down_time %>
 
 # db connection contention
-api_workers = 6
-rpc_workers = 8
+api_workers = 12
+rpc_workers = 16
 
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
