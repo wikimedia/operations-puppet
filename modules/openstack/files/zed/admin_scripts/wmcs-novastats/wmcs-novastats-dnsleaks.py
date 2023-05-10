@@ -38,7 +38,7 @@ import yaml
 
 import mwopenstackclients
 
-clients = mwopenstackclients.clients()
+clients = mwopenstackclients.clients(oscloud='ossystemadmin')
 
 
 def designate_endpoint_and_token():
