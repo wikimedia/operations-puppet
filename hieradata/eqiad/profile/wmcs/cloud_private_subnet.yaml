@@ -1,0 +1,4 @@
+---
+# TODO: this is a temporal placeholder until we have some actual data
+# TODO: so the puppet sees something, in this case, the codfw CIDR
+profile::wmcs::cloud_private_subnet::public_vips: 185.15.57.24/29
