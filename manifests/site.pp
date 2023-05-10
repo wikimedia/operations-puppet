@@ -1416,8 +1416,10 @@ node 'clouddb2002-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
+# new network layout for cloudcontrols using the cloud-private subnet
+# as backends of cloudlb, see T324992
 node 'cloudcontrol2001-dev.codfw.wmnet' {
-    role(insetup::wmcs)
+    role(wmcs::openstack::codfw1dev::control)
 }
 
 node /^cloudcontrol200[45]-dev\.wikimedia\.org$/ {
