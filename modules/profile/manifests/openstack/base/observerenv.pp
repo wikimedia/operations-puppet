@@ -47,4 +47,19 @@ class profile::openstack::base::observerenv(
         yaml_mode              => '0444',
         clouds_files           => [$clouds_file, $root_clouds_file],
     }
+
+    openstack::util::envscript { 'ossystemobserver':
+        region                 => $region,
+        keystone_api_fqdn      => $keystone_api_fqdn,
+        keystone_api_port      => 25000,
+        keystone_api_interface => 'public',
+        os_user                => $os_user,
+        os_password            => $os_password,
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
+        scriptpath             => '/usr/local/bin/osobserverenv.sh',
+        yaml_mode              => '0444',
+        clouds_files           => [$clouds_file, $root_clouds_file],
+        system_scope           => 'all',
+    }
 }

@@ -47,8 +47,7 @@ class profile::openstack::base::envscripts(
         os_user_domain_id      => 'default',
     }
 
-    # If we don't specify a project or a domain we should get
-    #  a system-scoped token.
+    #  system-scoped token:
     openstack::util::envscript { 'ossystemadmin':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,
@@ -60,6 +59,9 @@ class profile::openstack::base::envscripts(
         scriptpath             => '/root/ossystemenv.sh',
         yaml_mode              => '0440',
         clouds_files           => [$root_clouds_file],
+        os_project_domain_id   => 'default',
+        os_user_domain_id      => 'default',
+        os_system_scope        => 'all',
     }
 
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
