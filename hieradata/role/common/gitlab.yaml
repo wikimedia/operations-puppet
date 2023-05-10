@@ -82,10 +82,10 @@ profile::gitlab::config_backup_interval:
   interval: '*-*-* 00:00:00'
 profile::gitlab::rsync_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 01:00:00'
+  interval: '*-*-* 01,13:00:00'
 profile::gitlab::restore_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 02:00:00'
+  interval: '*-*-* 02,14:00:00'
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: true
