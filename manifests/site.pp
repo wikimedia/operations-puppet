@@ -2498,7 +2498,7 @@ node 'vrts1001.eqiad.wmnet' {
 
 # T323515: WIP
 node 'vrts2001.codfw.wmnet' {
-    role(insetup::serviceops)
+    role(vrts)
 }
 
 # new parsoid nodes - codfw (T243112, T247441) - eqiad (T299573)
