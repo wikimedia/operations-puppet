@@ -13,6 +13,7 @@ define openstack::util::envscript(
     Optional[String]           $os_project             = undef,
     Optional[String]           $os_project_domain_id   = undef,
     Optional[String]           $os_user_domain_id      = undef,
+    Optional[String]           $os_system_scope        = undef,
   ) {
     if $clouds_files {
         $clouds_files.each |$clouds_file| {

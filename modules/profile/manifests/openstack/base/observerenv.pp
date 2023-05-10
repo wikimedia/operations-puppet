@@ -60,6 +60,6 @@ class profile::openstack::base::observerenv(
         scriptpath             => '/usr/local/bin/osobserverenv.sh',
         yaml_mode              => '0444',
         clouds_files           => [$clouds_file, $root_clouds_file],
-        system_scope           => 'all',
+        os_system_scope        => 'all',
     }
 }
