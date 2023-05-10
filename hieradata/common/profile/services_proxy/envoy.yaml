@@ -283,7 +283,7 @@ profile::services_proxy::envoy::listeners:
     xfp: https # this is needed for private wikis - see T249535
   - name: machinetranslation  # called by cxserver
     port: 6504
-    service: matchinetranslation
+    service: machinetranslation
     timeout: "120s"
     xfp: https
 
