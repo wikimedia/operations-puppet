@@ -6761,3 +6761,15 @@ ldap_only_users:
     ensure: present
     realname: Loren Johnson
     email: loren.johnson@wikimedia.de
+  twilsonbf:
+    ensure: present
+    realname: Thomas Wilson
+    email: twilson@bishopfox.com
+    expiry_date: 2023-06-12
+    expiry_contact: mstyles@wikimedia.org
+  ryan-bf:
+    ensure: present
+    realname: Ryan Basden
+    email: rbasden@bishopfox.com
+    expiry_date: 2023-06-12
+    expiry_contact: mstyles@wikimedia.org
