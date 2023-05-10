@@ -43,6 +43,8 @@ lookup_options:
     merge: deep
   profile::cloudceph::auth::deploy::configuration:
     merge: deep
+  profile::wmcs::firewall::blocked_ips:
+    merge: unique
   mediabackup:
     merge: hash
 

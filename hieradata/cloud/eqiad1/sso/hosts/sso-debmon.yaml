@@ -1,6 +1,5 @@
 classes:
-  - profile::base::firewall
-  - profile::base::firewall::extra
+  - profile::wmcs::firewall
   - profile::base::production
   - profile::debmonitor::server
   - profile::debmonitor::client
