@@ -19,6 +19,20 @@ table inet cloudgw {
         <%- end -%>
     }
 
+    # if required, this can be integrated with requestctl for abuse networks like in base::firewall
+    set cloud_filter {
+        type upv4_addr
+        flags interval
+        counter
+        <%- if !@cloud_filter.empty? -%>
+        elements = {
+        <% @cloud_filter.each do |element| -%>
+            <%= element %> ,
+        <% end -%>
+        }
+        <%- end -%>
+    }
+
     chain prerouting {
         type nat hook prerouting priority dstnat; policy accept;
     }
@@ -39,6 +53,11 @@ table inet cloudgw {
 
     chain forward {
         type filter hook forward priority filter; policy drop;
+        # general cloud perimetral firewall
+        # drop here traffic before the general VRF accept below
+        ip saddr @cloud_filter counter drop
+        ip daddr @cloud_filter counter drop
+
         # only forward packets in the VRF
         iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
         counter comment "counter dropped packets"
