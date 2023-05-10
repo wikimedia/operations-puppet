@@ -39,9 +39,9 @@ define cloudlb::haproxy::service (
 
     $frontends.each | Integer $index, CloudLB::HAProxy::Service::Frontend $frontend | {
         if $firewall['restricted_to_fqdns'] {
-            $ipv4_list = $firewall['restricted_to_fqdns'].map |$host| { ipresolve($host, 4) }
-            $ipv6_list = $firewall['restricted_to_fqdns'].map |$host| { ipresolve($host, 6) }
-            $ips = join(concat($ipv4_list, $ipv6_list), ' ')
+            $ips = $firewall['restricted_to_fqdns'].map |$host| {
+                        dnsquery::lookup($host, true)
+                    }.flatten.sort.unique.join(' ')
             $srange = "(${ips})"
         } else {
             if $firewall['open_to_internet'] {

@@ -8,14 +8,14 @@ describe 'cloudlb::haproxy::service' do
     """
     include haproxy
     include network::constants
+    function dnsquery::lookup($fqdn, $_forve_ipv6 = true) {
+        ['172.20.5.2', 'fe80::1']
+    }
     """
   }
 
   on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "on #{os}" do
-      before(:each) do
-        Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| "127.0.0.10" }
-      end
       let(:node_params) {{'_role' => 'wmcs::cloudlb'}}
       let(:facts) { os_facts.merge({
         'fqdn' => 'cloudlb1001',
@@ -150,13 +150,13 @@ describe 'cloudlb::haproxy::service' do
                     'ensure' => 'present',
                     'proto'  => 'tcp',
                     'port'   => '11114',
-                    'srange' => '(127.0.0.10 127.0.0.10 127.0.0.10 127.0.0.10)'
+                    'srange' => '(172.20.5.2 fe80::1)'
                 )
             is_expected.to contain_ferm__service('service1_11115').with(
                     'ensure' => 'present',
                     'proto'  => 'tcp',
                     'port'   => '11115',
-                    'srange' => '(127.0.0.10 127.0.0.10 127.0.0.10 127.0.0.10)'
+                    'srange' => '(172.20.5.2 fe80::1)'
                 )
           }
       end
