@@ -17,7 +17,7 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address::V4::CIDR $transport_cidr = lookup('profile::openstack::base::cloudgw::transport_cidr'),
     Stdlib::IP::Address::V4::Nosubnet $transport_vip = lookup('profile::openstack::base::cloudgw::transport_vip'),
     Array[Stdlib::IP::Address::V4] $dmz_cidr         = lookup('profile::openstack::base::cloudgw::dmz_cidr',      {default_value => ['0.0.0.0']}),
-    Array[Stdlib::IP::Address::V4] $cloud_filter     = lookup('profile::openstack::base::cloudgw::cloud_filter',  {default_value => undef}),
+    Optional[Array[Stdlib::IP::Address::V4]] $cloud_filter = lookup('profile::openstack::base::cloudgw::cloud_filter', {default_value => []}),
 ) {
     class { '::nftables':
         ensure_package => 'present',

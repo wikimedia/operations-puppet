@@ -21,7 +21,7 @@ table inet cloudgw {
 
     # if required, this can be integrated with requestctl for abuse networks like in base::firewall
     set cloud_filter {
-        type upv4_addr
+        type ipv4_addr
         flags interval
         counter
         <%- if !@cloud_filter.empty? -%>
