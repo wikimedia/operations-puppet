@@ -141,6 +141,8 @@ scap::dsh::groups:
       - cumin1001.eqiad.wmnet
   ci-docroot:
     pdb_query: "Scap::Target['integration/docroot']"
+  gerrit:
+    pdb_query: "Scap::Target['gerrit/gerrit']"
   zuul:
     pdb_query: "Scap::Target['zuul/deploy']"
   jenkins-ci:
