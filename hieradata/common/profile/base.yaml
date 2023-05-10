@@ -10,6 +10,7 @@ profile::base::remote_syslog_tls:
   esams: *default
   ulsfo: *default
   drmrs: *default
+  eqsin: *default
 profile::base::overlayfs: false
 profile::base::remote_syslog_tls_client_auth: true
 profile::base::remote_syslog_send_logs: standard
