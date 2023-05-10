@@ -180,7 +180,7 @@ node 'an-airflow1005.eqiad.wmnet' {
 
 # product-analytics instance of Apache Airflow
 node 'an-airflow1006.eqiad.wmnet' {
-    role(insetup::data_engineering)
+    role(analytics_cluster::airflow::analytics_product)
     }
 
 # Analytics Zookepeer cluster
