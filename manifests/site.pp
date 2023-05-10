@@ -551,16 +551,11 @@ node 'db2126.codfw.wmnet' {
 }
 
 # s3 core production dbs on eqiad
-node /^db1(123|157|166|175|189|198|223)\.eqiad\.wmnet$/ {
+node /^db1(112|123|157|166|175|189|198|223)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
 # eqiad sanitarium master
-node 'db1112.eqiad.wmnet' {
-    role(mariadb::sanitarium_master)
-}
-
-# future eqiad sanitarium master
 node 'db1212.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
 }
