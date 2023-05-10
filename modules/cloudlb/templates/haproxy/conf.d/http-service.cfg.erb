@@ -24,7 +24,7 @@ backend <%= @title %>_backend
 <% @servers.each do |server| -%>
     # TODO: no IPv6 support (we don't care at this point)
     # TODO: no multi A-record support (we also don't care at this point)
-    server <%= server %> <%- scope.call_function('dnsquery::a', [server])[0] -%>:<%= @port_backend %> check inter 3s rise 2 fall 4
+    server <%= server %> <%= scope.call_function('dnsquery::a', [server])[0] %>:<%= @port_backend %> check inter 3s rise 2 fall 4
 <% end -%>
     stick store-request src
     stick-table type ip size 256k expire 30m
