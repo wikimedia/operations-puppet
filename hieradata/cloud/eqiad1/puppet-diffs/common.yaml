@@ -1,7 +1,22 @@
 ---
+etcd::autogen_pwd_seed: dummyseed
+etcd::peers_list: '%{::hostname}=http://127.0.0.1:2380'
+etcd::use_ssl: true
+mount_nfs: true
+profile::java::java_packages:
+- variant: jre-headless
+  version: '11'
+profile::puppet_compiler::cloud_puppetmaster: puppetmaster.cloudinfra.wmflabs.org
 profile::puppet_compiler::puppetdb::ssldir: '/var/lib/catalog-differ/puppet/ssl'
 profile::puppet_compiler::puppetdb::master: "%{facts.networking.fqdn}"
 profile::puppetdb::database::shared_buffers: '2048MB'
+profile::puppetdb::filter_job_id: false
+profile::puppetdb::master: '%{facts.fqdn}'
+profile::puppetdb::microservice::enabled: false
+profile::puppetdb::microservice::port: 8090
+profile::puppetdb::microservice::uwsgi_port: 8091
+profile::puppetdb::slaves:
+- none
 profile::ci::slave::labs::common::manage_srv: false
 profile::puppet_compiler::puppetdb::max_content_length: 16000000  # 16MB
 profile::ldap::client::labs::restricted_to:
