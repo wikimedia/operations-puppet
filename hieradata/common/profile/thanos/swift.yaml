@@ -51,6 +51,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_search'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'search:platform'
+  mw_event_enrichment:
+    access:       '.admin'
+    account_name: 'AUTH_mw-event-enrichment'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'mw-event-enrichment:prod'
 
 # To be kept private
 #profile::thanos::swift::accounts_keys:
