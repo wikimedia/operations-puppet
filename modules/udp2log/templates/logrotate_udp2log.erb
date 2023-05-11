@@ -3,8 +3,8 @@
 # THIS FILE IS MANAGED BY PUPPET #
 ##################################
 
-# Rotate anything in <%= @log_directory %>/*.log daily
-<%= @log_directory %>/*.log {
+# Rotate everything but api.log daily
+<%= @log_directory %>/!(api).log {
 	daily
 	olddir <%= @log_directory %>/archive
 	notifempty
@@ -18,4 +18,22 @@
 	postrotate
 		/usr/bin/killall -HUP udp2log
 	endscript
+}
+
+# Rotate api.log hourly
+<%= @log_directory %>/api.log {
+        hourly
+        olddir <%= @log_directory %>/archive
+        notifempty
+        nocreate
+        maxage 90
+        rotate <%= @rotate %>
+        dateext
+        datehourago
+        compress
+        delaycompress
+        missingok
+        postrotate
+                /usr/bin/killall -HUP udp2log
+        endscript
 }
