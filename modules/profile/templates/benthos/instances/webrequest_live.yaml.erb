@@ -16,7 +16,7 @@ input:
       enabled: true
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       skip_cert_verify: true # See https://phabricator.wikimedia.org/T291905
-    consumer_group: 'benthos-webrequest-sampled-live'
+    consumer_group: 'benthos-webrequest-sampled-live-franz'
     start_from_oldest: false
     batching:
       count: 2048
