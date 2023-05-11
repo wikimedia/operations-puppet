@@ -33,12 +33,15 @@ class profile::firewall (
     Array[Stdlib::IP::Address] $mysql_root_clients      = lookup('mysql_root_clients'),
     Array[Stdlib::IP::Address] $deployment_hosts        = lookup('deployment_hosts'),
     Array[Stdlib::Host]        $prometheus_nodes        = lookup('prometheus_nodes'),
+    Firewall::Provider         $provider                = lookup('profile::firewall::provider'),
     Boolean                    $manage_nf_conntrack     = lookup('profile::firewall::manage_nf_conntrack'),
     Boolean                    $enable_logging          = lookup('profile::firewall::enable_logging'),
     Boolean                    $defs_from_etcd          = lookup('profile::firewall::defs_from_etcd'),
 ) {
     include network::constants
-    class { 'ferm': }
+    class { 'firewall':
+        provider => $provider,
+    }
 
     # Increase the size of conntrack table size (default is 65536)
     sysctl::parameters { 'ferm_conntrack':
@@ -113,27 +116,32 @@ class profile::firewall (
         }
     }
 
-    nrpe::plugin { 'check_conntrack':
-        source => 'puppet:///modules/base/firewall/check_conntrack.py',
-    }
+    case $provider {
+        'ferm': {
+            nrpe::plugin { 'check_conntrack':
+                source => 'puppet:///modules/base/firewall/check_conntrack.py',
+            }
 
-    nrpe::monitor_service { 'conntrack_table_size':
-        description   => 'Check size of conntrack table',
-        nrpe_command  => '/usr/local/lib/nagios/plugins/check_conntrack 80 90',
-        contact_group => 'admins',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_conntrack',
-    }
+            nrpe::monitor_service { 'conntrack_table_size':
+                description   => 'Check size of conntrack table',
+                nrpe_command  => '/usr/local/lib/nagios/plugins/check_conntrack 80 90',
+                contact_group => 'admins',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_conntrack',
+            }
 
-    nrpe::plugin { 'check_ferm':
-        source => 'puppet:///modules/base/firewall/check_ferm',
-    }
+            nrpe::plugin { 'check_ferm':
+                source => 'puppet:///modules/base/firewall/check_ferm',
+            }
 
-    nrpe::monitor_service { 'ferm_active':
-        description    => 'Check whether ferm is active by checking the default input chain',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_ferm',
-        sudo_user      => 'root',
-        contact_group  => 'admins',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
-        check_interval => 30,
+            nrpe::monitor_service { 'ferm_active':
+                description    => 'Check whether ferm is active by checking the default input chain',
+                nrpe_command   => '/usr/local/lib/nagios/plugins/check_ferm',
+                sudo_user      => 'root',
+                contact_group  => 'admins',
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
+                check_interval => 30,
+            }
+        }
+        default: { fail("unknown provider: ${provider}") }
     }
 }
