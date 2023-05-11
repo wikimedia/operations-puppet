@@ -43,3 +43,6 @@ profile::airflow::instances:
         host: analytics-hive.eqiad.wmnet
         port: 9083
         extra_dejson: {'auth_mechanism': 'GSSAPI'}
+    airflow_config:
+      datahub:
+        enabled: False

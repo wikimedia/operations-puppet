@@ -70,12 +70,10 @@ profile::airflow::instances:
         port: 9083
         # Rename authMechanism to auth_mechanism
         extra_dejson: {'auth_mechanism': 'GSSAPI'}
-      # Add the following connection
       datahub_kafka_test:
         conn_type: datahub_kafka
         host: kafka-test1006.eqiad.wmnet:9092
         extra_dejson: {"connection": {"schema_registry_url": "http://karapace1001.eqiad.wmnet:8081"}}
-
 
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 

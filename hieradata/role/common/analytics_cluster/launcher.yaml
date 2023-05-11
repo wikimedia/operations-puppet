@@ -78,6 +78,11 @@ profile::airflow::instances:
     service_user: analytics
     service_group: analytics
     monitoring_enabled: true
+    airflow_config:
+      datahub:
+        enabled: False
+        conn_id: datahub_kafka_jumbo
+        cluster: prod
     connections:
       analytics-hive:
         conn_type: hive_metastore
