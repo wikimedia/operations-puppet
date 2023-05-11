@@ -41,7 +41,7 @@ profile::openstack::codfw1dev::openstack_controllers:
     - cloudcontrol2005-dev.wikimedia.org
 
 profile::openstack::codfw1dev::rabbitmq_nodes:
-    - rabbitmq01.codfw1dev.wikimediacloud.org
+    #- rabbitmq01.codfw1dev.wikimediacloud.org
     - rabbitmq02.codfw1dev.wikimediacloud.org
     - rabbitmq03.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::cinder::api_bind_port: 18776
