@@ -47,7 +47,7 @@ ntp_peers:
 bastion_hosts:
   - '127.0.0.1'
 # in docker we cant write to this /sys value
-base::firewall::manage_nf_conntrack: false
+profile::firewall::manage_nf_conntrack: false
 # Fail fast
 debmonitor: localhost
 # Dont need proxies in docker

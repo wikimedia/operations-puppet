@@ -8,7 +8,7 @@ class role::apt_private_repo {
     system::role { 'private-apt-repository': }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::nginx
     include profile::installserver::http

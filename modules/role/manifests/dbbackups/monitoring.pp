@@ -5,7 +5,7 @@ class role::dbbackups::monitoring {
         description => 'Database backups monitoring dashboard and metrics endpoint',
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
     include ::profile::mariadb::wmfmariadbpy

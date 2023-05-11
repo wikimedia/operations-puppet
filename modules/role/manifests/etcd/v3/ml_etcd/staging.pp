@@ -2,7 +2,7 @@
 
 class role::etcd::v3::ml_etcd::staging {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::etcd::v3
 
     system::role { 'role::etcd::v3::ml_etcd::staging':

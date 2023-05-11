@@ -12,7 +12,7 @@ class role::alerting_host {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::icinga
     include profile::icinga::performance

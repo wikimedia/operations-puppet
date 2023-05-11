@@ -13,7 +13,7 @@ class profile::idp::standalone (
     ensure_packages(['python3-venv'])
     # Standard stuff
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # configure database
     include profile::mariadb::packages_wmf

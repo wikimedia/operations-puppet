@@ -5,7 +5,7 @@ class role::mariadb::core_test {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::mariadb::monitor
     include ::role::mariadb::ferm
     require ::profile::mariadb::packages_wmf

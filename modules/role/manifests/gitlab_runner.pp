@@ -7,6 +7,6 @@ class role::gitlab_runner {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::gitlab::runner
 }

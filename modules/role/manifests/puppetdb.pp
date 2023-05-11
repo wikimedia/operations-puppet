@@ -1,6 +1,6 @@
 class role::puppetdb {
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::nginx
     include profile::puppetdb::database
     include profile::puppetdb

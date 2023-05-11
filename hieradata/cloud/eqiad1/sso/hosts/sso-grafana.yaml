@@ -34,7 +34,7 @@ profile::grafana::config:
   panels:
     disable_sanitize_html: true
 profile::grafana::enable_cas: true
-profile::base::firewall::extra::services:
+profile::firewall::extra::services:
   'open http for cloud network':
     port: 80
     proto: tcp

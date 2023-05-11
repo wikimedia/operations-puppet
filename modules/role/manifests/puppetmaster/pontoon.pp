@@ -11,7 +11,7 @@ class role::puppetmaster::pontoon {
     # profile::base is needed here for bootstraps to happen, ideally
     # profile::base::production is used instead
     include profile::base
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::puppetmaster::pontoon
 }

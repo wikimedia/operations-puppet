@@ -8,7 +8,7 @@ class role::wmcs::centralserver_syslog {
     }
 
     include ::profile::base::labs
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::syslog::centralserver
 

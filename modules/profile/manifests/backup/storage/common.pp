@@ -3,7 +3,7 @@
 class profile::backup::storage::common(
     $director = lookup('profile::backup::director'),
 ) {
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::production
 
     class { 'bacula::storage':

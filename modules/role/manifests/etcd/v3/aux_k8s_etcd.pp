@@ -3,7 +3,7 @@
 
 class role::etcd::v3::aux_k8s_etcd {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::etcd::v3
 
     system::role { 'role::etcd::v3::aux_k8s_etcd':

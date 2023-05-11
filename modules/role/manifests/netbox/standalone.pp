@@ -20,5 +20,5 @@ class role::netbox::standalone {
     include profile::netbox::scripts
     include profile::netbox::db
     include profile::prometheus::postgres_exporter
-    include profile::base::firewall
+    include profile::firewall
 }

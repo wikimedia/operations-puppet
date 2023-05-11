@@ -6,7 +6,7 @@ class role::aux_k8s::worker {
 
     # setup standard profiles
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # setup docker on the machine
     include profile::docker::engine

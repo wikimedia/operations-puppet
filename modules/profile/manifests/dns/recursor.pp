@@ -6,7 +6,7 @@ class profile::dns::recursor (
   Optional[String]                              $bind_service   = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
 ) {
     include ::network::constants
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::bird::anycast
     # We don't need this for bullseye as the version of pdns-rec ships with the Prometheus endpoint at /metrics
     if debian::codename::eq('buster') {

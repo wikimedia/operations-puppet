@@ -3,7 +3,7 @@
 class role::wmcs::openstack::codfw1dev::virt_ceph {
     system::role { $name: }
     include profile::base::production
-    # include profile::base::firewall
+    # include profile::firewall
     include profile::base::cloud_production
     include profile::cloudceph::client::rbd_libvirt
     include profile::openstack::codfw1dev::clientpackages

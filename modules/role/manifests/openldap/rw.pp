@@ -2,7 +2,7 @@
 
 class role::openldap::rw {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::backup::host
     include ::profile::prometheus::openldap_exporter
 

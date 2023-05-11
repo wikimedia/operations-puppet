@@ -7,7 +7,7 @@ class role::parsoid::testing {
 
     ## Basics
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     ## Parsoid
     include profile::nginx

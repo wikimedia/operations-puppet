@@ -4,7 +4,7 @@
 class role::wmcs::openstack::eqiad1::backy {
     system::role { $name: }
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::cloud_production
 
     # This installs ceph.conf and other ceph client things

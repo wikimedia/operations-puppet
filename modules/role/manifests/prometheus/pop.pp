@@ -4,7 +4,7 @@ class role::prometheus::pop {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     require profile::prometheus::ops
 

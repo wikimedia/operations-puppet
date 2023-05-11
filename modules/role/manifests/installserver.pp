@@ -3,7 +3,7 @@ class role::installserver {
     system::role { 'installserver-without-apt-repo': }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::cuminunpriv
     include profile::backup::host
 

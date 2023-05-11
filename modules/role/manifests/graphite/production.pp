@@ -1,6 +1,6 @@
 class role::graphite::production {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::backup::host
     include ::profile::statsd # all graphite hosts also include statsd
     include ::profile::graphite::production

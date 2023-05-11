@@ -4,7 +4,7 @@
 #
 class role::elasticsearch::relforge {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::elasticsearch::relforge
     include ::profile::kibana
     include ::profile::logstash::gelf_relay

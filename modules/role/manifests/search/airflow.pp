@@ -6,7 +6,7 @@ class role::search::airflow {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::java
     include ::profile::analytics::cluster::client

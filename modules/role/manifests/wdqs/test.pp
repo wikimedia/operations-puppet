@@ -5,7 +5,7 @@
 class role::wdqs::test {
     # Standard for all roles
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     # Standard wdqs installation
     require profile::nginx
     require profile::query_service::categories

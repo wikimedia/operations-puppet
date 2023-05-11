@@ -19,5 +19,5 @@ class role::dispatch::backend {
 
     include profile::dispatch::db
     include profile::prometheus::postgres_exporter
-    include profile::base::firewall
+    include profile::firewall
 }

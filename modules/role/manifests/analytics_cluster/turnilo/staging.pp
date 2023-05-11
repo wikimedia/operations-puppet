@@ -7,6 +7,6 @@ class role::analytics_cluster::turnilo::staging {
     }
 
     include ::profile::druid::turnilo
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 }

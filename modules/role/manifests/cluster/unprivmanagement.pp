@@ -10,7 +10,7 @@ class role::cluster::unprivmanagement {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::cumin::unprivmaster
 }

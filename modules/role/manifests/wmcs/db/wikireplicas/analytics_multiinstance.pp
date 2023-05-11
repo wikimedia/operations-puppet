@@ -6,7 +6,7 @@ class role::wmcs::db::wikireplicas::analytics_multiinstance {
 
     include ::profile::base::production
     include ::profile::wmcs::db::wikireplicas::mariadb_multiinstance
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::cloud_production
     include ::profile::wmcs::db::wikireplicas::views
     include ::profile::mariadb::check_private_data

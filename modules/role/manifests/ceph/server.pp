@@ -19,7 +19,7 @@ class role::ceph::server {
   }
 
   include profile::base::production
-  include profile::base::firewall
+  include profile::firewall
   include profile::ceph::auth::load_all
   include profile::ceph::mon
 }

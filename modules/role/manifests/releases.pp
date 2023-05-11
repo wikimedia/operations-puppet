@@ -30,7 +30,7 @@ class role::releases {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::backup::host
     include profile::releases::common
     include profile::releases::mediawiki

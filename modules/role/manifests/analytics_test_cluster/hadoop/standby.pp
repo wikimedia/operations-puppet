@@ -20,7 +20,7 @@ class role::analytics_test_cluster::hadoop::standby {
     include ::profile::hive::site_hdfs
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
 }

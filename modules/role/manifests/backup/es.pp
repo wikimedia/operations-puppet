@@ -4,7 +4,7 @@ class role::backup::es {
         description => 'External Storage database backups',
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
     include ::profile::backup::storage::es

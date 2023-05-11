@@ -6,7 +6,7 @@ class role::mariadb::objectstash {
         description => 'Object stash database',
     }
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::role::mariadb::ferm
     include ::profile::mariadb::core
 }

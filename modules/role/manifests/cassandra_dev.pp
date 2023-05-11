@@ -9,7 +9,7 @@ class role::cassandra_dev {
         description => 'Development & test storage service'
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
     include ::profile::cassandra_dev
     include ::profile::cassandra

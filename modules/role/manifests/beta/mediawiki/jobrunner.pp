@@ -2,7 +2,7 @@
 class role::beta::mediawiki::jobrunner {
     system::role { 'beta::mediawiki::jobrunner': }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     # Parent role (we don't use inheritance by choice)
     include ::role::mediawiki::common

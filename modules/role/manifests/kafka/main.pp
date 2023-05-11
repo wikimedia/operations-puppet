@@ -1,7 +1,7 @@
 # Compound role for the Kafka "main" cluster
 class role::kafka::main {
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::kafka::broker
     system::role { 'kafka::main':
         description => "Kafka Broker in the main-${::site} Kafka cluster",

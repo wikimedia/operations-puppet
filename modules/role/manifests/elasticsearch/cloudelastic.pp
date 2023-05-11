@@ -4,7 +4,7 @@
 #
 class role::elasticsearch::cloudelastic {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks
     include ::profile::lvs::realserver

@@ -7,7 +7,7 @@ class role::parsoid {
     }
 
     include ::role::mediawiki::common
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::parsoid
     include ::profile::prometheus::apache_exporter
 

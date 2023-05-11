@@ -12,7 +12,7 @@
 # Requires:
 #
 #   Class['install_server::tftp_server']
-#   Class['::profile::base::firewall']
+#   Class['::profile::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:

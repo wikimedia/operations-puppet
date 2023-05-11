@@ -4,7 +4,7 @@
 #
 class role::package::builder {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::package_builder
 
     system::role { 'package::builder':

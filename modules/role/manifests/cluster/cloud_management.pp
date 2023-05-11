@@ -11,7 +11,7 @@ class role::cluster::cloud_management {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::cumin::cloud_master
     include profile::ipmi::mgmt

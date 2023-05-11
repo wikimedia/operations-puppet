@@ -1,6 +1,6 @@
 classes:
   - profile::base::production
-  - profile::base::firewall
+  - profile::firewall
   - profile::java
   - profile::idp
 puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud

@@ -7,7 +7,7 @@ class role::piwik {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::piwik::webserver
     include ::profile::tlsproxy::envoy

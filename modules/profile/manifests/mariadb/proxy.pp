@@ -21,23 +21,23 @@ class profile::mariadb::proxy (
     }
 
     if $firewall == 'internal' {
-        include ::profile::base::firewall
+        include ::profile::firewall
         ::profile::mariadb::ferm { 'dbproxy': }
     } elsif $firewall == 'misc' {
-        include ::profile::base::firewall
+        include ::profile::firewall
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_misc
     } elsif $firewall == 'cloud' {
-        include ::profile::base::firewall
+        include ::profile::firewall
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
     } elsif $firewall == 'cloud+lists' {
-        include ::profile::base::firewall
+        include ::profile::firewall
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
         include ::profile::mariadb::ferm_lists
     } elsif $firewall == 'public' {
-        include ::profile::base::firewall
+        include ::profile::firewall
         ::profile::mariadb::ferm_public { 'dbproxy': }
     } elsif $firewall != 'disabled' {
         fail('profile::mariadb::proxy::firewall can only be internal, public, misc, cloud, cloud+lists or disabled.')

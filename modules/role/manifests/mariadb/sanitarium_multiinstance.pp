@@ -13,7 +13,7 @@ class role::mariadb::sanitarium_multiinstance {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::wmcs::db::scriptconfig
     include ::profile::mariadb::check_private_data

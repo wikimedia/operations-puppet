@@ -6,5 +6,5 @@ class role::insetup::infrastructure_foundations {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 }

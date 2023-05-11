@@ -14,7 +14,7 @@ class role::dbbackups::metadata {
         description => 'Metadata databases dumps and backups',
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
     include ::profile::backup::host

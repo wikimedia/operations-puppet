@@ -3,7 +3,7 @@ class profile::dns::auth::config(
     Hash[String, Hash[String, Any]] $authdns_addrs = lookup('authdns_addrs'),
 ) {
     include ::network::constants
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     # Create the loopback IPs used for public service (defined here since we
     # also create the matching listener config here)

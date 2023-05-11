@@ -10,7 +10,7 @@ class role::thumbor::mediawiki {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::mediawiki::packages::fonts
     include ::profile::prometheus::haproxy_exporter
     include ::profile::prometheus::nutcracker_exporter

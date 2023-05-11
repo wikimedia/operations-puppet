@@ -2,7 +2,7 @@ class role::dumps::distribution::server {
     system::role { 'dumps::distribution::server': description => 'labstore host in the public VLAN that distributes Dumps to clients via NFS/Web/Rsync' }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::wmcs::nfs::ferm
     include profile::nginx
 

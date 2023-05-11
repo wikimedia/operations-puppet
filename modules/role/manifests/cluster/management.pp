@@ -10,7 +10,7 @@ class role::cluster::management {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::cumin::master
     include profile::ipmi::mgmt

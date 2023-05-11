@@ -7,5 +7,5 @@ class role::ganeti {
 
     include ::profile::base::production
     include ::profile::ganeti
-    include ::profile::base::firewall
+    include ::profile::firewall
 }

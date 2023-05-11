@@ -65,7 +65,7 @@ class role::analytics_test_cluster::coordinator {
     include profile::kerberos::keytabs
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::kerberos::client
 

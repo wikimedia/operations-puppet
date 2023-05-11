@@ -5,7 +5,7 @@ class role::eventschemas::service {
         description => 'HTTP Service for event schemas'
     }
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::nginx
 
     include profile::eventschemas::service

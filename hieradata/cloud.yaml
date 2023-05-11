@@ -21,6 +21,17 @@ apereo_cas:
     validate_url: "https://idp.wmcloud.org/serviceValidate"
     validate_url_saml: "https://idp.wmcloud.org/samlValidate"
     oidc_endpoint: "https://idp.wmcloud.org/oidc"
+
+kafka_brokers_main: []
+kafka_brokers_jumbo: []
+kafka_brokers_logging: []
+kafkamon_hosts: []
+zookeeper_hosts_main: []
+druid_public_hosts: []
+labstore_hosts: []
+mysql_root_clients: []
+deployment_hosts: []
+
 etcd::autogen_pwd_seed: "seed"
 profile::contacts::role_contacts: []
 
@@ -334,11 +345,11 @@ profile::tlsproxy::envoy::cfssl_label: ~
 profile::tlsproxy::envoy::error_page: false
 
 # Firewall logging
-profile::base::firewall::enable_logging: true
-profile::base::firewall::log::log_rate: 1/second
-profile::base::firewall::log::log_burst: 5
-profile::base::firewall::log::separate_file: false
-profile::base::firewall::defs_from_etcd: false
+profile::firewall::enable_logging: true
+profile::firewall::log::log_rate: 1/second
+profile::firewall::log::log_burst: 5
+profile::firewall::log::separate_file: false
+profile::firewall::defs_from_etcd: false
 
 prometheus_nodes: []
 profile::prometheus::cadvisor::ensure: absent
@@ -429,8 +440,6 @@ profile::puppetserver::git::repos:
       'pre-merge': 'puppet:///modules/puppetmaster/git/private/pre-merge'
       'pre-rebase': 'puppet:///modules/puppetmaster/git/private/pre-rebase'
     link: '/etc/puppet/private'
-
-profile::base::firewall::default_reject: false
 
 profile::backup::director_seed: changeme
 profile::debdeploy::client::exclude_mounts: []

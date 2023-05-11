@@ -6,7 +6,7 @@ class role::requesttracker {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::requesttracker
     include ::profile::tlsproxy::envoy # TLS termination
 

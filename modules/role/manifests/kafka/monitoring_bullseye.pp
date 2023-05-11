@@ -6,6 +6,6 @@ class role::kafka::monitoring_bullseye {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::kafka::monitoring
 }

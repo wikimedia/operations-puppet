@@ -6,7 +6,7 @@ class role::gerrit::migration {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::gerrit::migration_base
     include ::profile::gerrit::migration
 }

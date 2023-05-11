@@ -5,7 +5,7 @@ class role::swift::storage {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::conftool::client
     include ::profile::swift::storage
     include ::toil::systemd_scope_cleanup

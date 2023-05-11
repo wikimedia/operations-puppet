@@ -39,7 +39,7 @@ class profile::backup::host(
         }
         Motd::Script <| tag == 'backup-motd' |>
 
-        # If the machine includes ::profile::base::firewall then let director connect to us
+        # If the machine includes ::profile::firewall then let director connect to us
         ferm::service { "bacula-file-daemon-${director}":
             proto  => 'tcp',
             port   => '9102',

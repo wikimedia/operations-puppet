@@ -1,7 +1,7 @@
 class role::wmcs::openstack::codfw1dev::control {
     system::role { $name: }
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::cloud_production
     include profile::wmcs::cloud_private_subnet
 

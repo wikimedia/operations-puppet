@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class role::dse_k8s::master {
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master

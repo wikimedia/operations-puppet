@@ -1,7 +1,7 @@
 # A profile for setting up the kubernetes control-plane
 class role::kubernetes::master {
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master

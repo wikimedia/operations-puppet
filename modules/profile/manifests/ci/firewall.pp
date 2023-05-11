@@ -10,7 +10,7 @@
 class profile::ci::firewall (
     Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
 ){
-    class { '::profile::base::firewall': }
+    class { '::profile::firewall': }
     include ::network::constants
 
     # Restrict some services to be only reacheable from localhost over both

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class role::dse_k8s::worker {
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # Sets up docker on the machine
     include profile::docker::engine

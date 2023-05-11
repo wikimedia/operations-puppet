@@ -9,7 +9,7 @@ class role::druid::public::worker {
     class { '::lvs::realserver': }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::java
     include ::profile::druid::broker
     include ::profile::druid::coordinator

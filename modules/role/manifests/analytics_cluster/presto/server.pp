@@ -16,7 +16,7 @@ class role::analytics_cluster::presto::server {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::java
     include ::profile::hadoop::common

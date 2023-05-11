@@ -3,7 +3,7 @@ class role::eventlogging::analytics {
         description => 'eventlogging host'
     }
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::eventlogging::analytics::processor
 }

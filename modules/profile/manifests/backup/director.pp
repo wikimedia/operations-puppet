@@ -15,7 +15,7 @@ class profile::backup::director(
     String              $dbuser           = lookup('profile::backup::director::dbuser'),
     String              $dbpass           = lookup('profile::backup::director::dbpass'),
 ){
-    include profile::base::firewall
+    include profile::firewall
 
     class { 'bacula::director':
         sqlvariant          => 'mysql',

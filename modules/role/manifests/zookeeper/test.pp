@@ -3,7 +3,7 @@ class role::zookeeper::test {
         description => 'Zookeeper test node'
     }
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::zookeeper::server
     include ::profile::zookeeper::firewall

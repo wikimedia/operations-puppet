@@ -2,7 +2,7 @@
 #
 class role::test {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     system::role { 'test': description => 'Unpuppetised system for testing' }
 }

@@ -6,7 +6,7 @@ class role::kafka::test::broker {
         description => "Kafka Broker in a 'test' Kafka cluster",
     }
 
-    include profile::base::firewall
+    include profile::firewall
     include profile::kafka::broker
     include profile::kafka::mirror
 

@@ -7,7 +7,7 @@ class role::phabricator {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::backup::host
     include ::profile::phabricator::main
     include ::profile::phabricator::httpd

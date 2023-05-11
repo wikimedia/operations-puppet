@@ -7,7 +7,7 @@ class role::deployment_server {
 
     # standards
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::backup::host
     backup::set {'home': }
 

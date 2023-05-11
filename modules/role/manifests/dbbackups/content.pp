@@ -10,7 +10,7 @@ class role::dbbackups::content {
         description => 'External Storage dumps',
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
     include ::profile::dbbackups::mydumper

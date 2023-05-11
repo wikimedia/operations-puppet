@@ -8,6 +8,6 @@ class role::kafka::simple::broker {
     }
 
     include ::profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::kafka::broker
 }

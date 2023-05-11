@@ -15,7 +15,7 @@ class role::mariadb::cloudinfra (
 
     include ::profile::base::production
     include ::profile::mariadb::monitor
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::mariadb::monitor::prometheus
 

@@ -7,7 +7,7 @@ class role::wmcs::openstack::codfw1dev::backups {
     # servers in the eqiad DC.
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::cloud_production
     include profile::cloudceph::auth::deploy
     include profile::cloudceph::client::rbd_cloudbackup

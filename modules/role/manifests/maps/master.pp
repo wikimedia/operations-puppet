@@ -2,7 +2,7 @@
 class role::maps::master {
     include ::profile::base::production
     include ::profile::rsyslog::udp_localhost_compat
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::lvs::realserver
 
     include ::profile::maps::apps

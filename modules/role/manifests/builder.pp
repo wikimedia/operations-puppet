@@ -1,7 +1,7 @@
 class role::builder {
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::package_builder
     include profile::docker::engine
     include profile::docker::builder

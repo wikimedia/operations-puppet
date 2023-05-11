@@ -7,6 +7,6 @@ class role::karapace {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::karapace::main
 }

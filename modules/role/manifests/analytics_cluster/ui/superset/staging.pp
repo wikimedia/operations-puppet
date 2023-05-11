@@ -8,7 +8,7 @@ class role::analytics_cluster::ui::superset::staging {
 
     include ::profile::superset
     include ::profile::tlsproxy::envoy
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs

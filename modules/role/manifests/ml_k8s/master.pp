@@ -1,6 +1,6 @@
 class role::ml_k8s::master {
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # Sets up kubernetes on the machine
     include profile::kubernetes::master

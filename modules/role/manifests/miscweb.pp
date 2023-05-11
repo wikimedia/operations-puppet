@@ -6,7 +6,7 @@ class role::miscweb {
     }
 
     include profile::base::production            # base tools
-    include profile::base::firewall              # firewalling
+    include profile::firewall                    # firewalling
     include profile::backup::host                # Bacula backups 
     include profile::miscweb::httpd              # common webserver setup
     include profile::miscweb::rsync              # copy data for migrations

@@ -11,7 +11,7 @@ class role::analytics_cluster::webserver {
 
     include ::profile::statistics::web
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
     # Install java, hadoop configuration and kerberos client and keytabs

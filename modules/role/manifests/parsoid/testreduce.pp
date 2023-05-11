@@ -6,7 +6,7 @@ class role::parsoid::testreduce {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::nginx
     include profile::parsoid::testing

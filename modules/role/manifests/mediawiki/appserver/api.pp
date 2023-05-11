@@ -3,7 +3,7 @@ class role::mediawiki::appserver::api {
     include ::profile::base::production
     include ::role::mediawiki::common
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::prometheus::apache_exporter
     include ::profile::mediawiki::php::monitoring
     include ::profile::mediawiki::webserver

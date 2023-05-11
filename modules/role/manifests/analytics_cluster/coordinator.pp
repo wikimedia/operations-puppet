@@ -45,5 +45,5 @@ class role::analytics_cluster::coordinator {
     include profile::kerberos::keytabs
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 }

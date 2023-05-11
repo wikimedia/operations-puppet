@@ -7,7 +7,7 @@ class role::analytics_cluster::ui::superset {
         description => 'Analytics Superset web interface',
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
     include ::profile::superset
     include ::profile::tlsproxy::envoy

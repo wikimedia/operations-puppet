@@ -47,5 +47,5 @@ class role::analytics_cluster::launcher {
     include profile::kerberos::keytabs
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 }

@@ -6,5 +6,5 @@ class role::insetup::core_platform {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 }

@@ -5,7 +5,7 @@
 class role::wcqs::cloud {
     # Standard for all roles
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     # Standard wcqs installation
     require ::profile::query_service::wcqs
     # Cloud specific profiles

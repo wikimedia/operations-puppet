@@ -2,7 +2,7 @@
 
 class role::openldap::replica {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     if debian::codename::le('buster') {
         include ::profile::prometheus::openldap_exporter

@@ -7,7 +7,7 @@ class role::vrts {
         description => 'VRTS Web Application Server',
     }
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::vrts
     include ::profile::tlsproxy::envoy # TLS termination
 }

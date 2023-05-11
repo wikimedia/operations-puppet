@@ -18,7 +18,7 @@ class role::netbox::database {
 
     include profile::netbox::db
     include profile::prometheus::postgres_exporter
-    include profile::base::firewall
+    include profile::firewall
     # Fixme consider adding this later
     # include ::profile::backup::host
 }

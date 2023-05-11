@@ -19,7 +19,7 @@ class role::pontoon::frontend {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::pontoon::frontend
 }

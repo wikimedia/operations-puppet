@@ -6,7 +6,7 @@ class role::aux_k8s::master {
 
     # setup standard profiles
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     # setup as a kubernetes master
     include profile::kubernetes::master

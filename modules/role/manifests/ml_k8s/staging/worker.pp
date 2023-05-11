@@ -1,6 +1,6 @@
 class role::ml_k8s::staging::worker {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     # Sets up docker on the machine
     include ::profile::docker::engine

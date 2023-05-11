@@ -14,6 +14,6 @@ class role::analytics_test_cluster::hadoop::worker {
     include ::profile::analytics::cluster::users
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 }

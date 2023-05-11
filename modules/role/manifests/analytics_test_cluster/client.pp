@@ -8,7 +8,7 @@ class role::analytics_test_cluster::client {
 
     include ::profile::java
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::analytics::cluster::client
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs

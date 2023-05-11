@@ -4,7 +4,7 @@ class role::orchestrator {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::orchestrator::web
     include profile::orchestrator::server
     include profile::orchestrator::monitoring

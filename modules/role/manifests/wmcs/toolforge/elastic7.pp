@@ -1,6 +1,6 @@
 class role::wmcs::toolforge::elastic7 {
     system::role { $name: }
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::toolforge::base
     include ::profile::toolforge::apt_pinning
     include ::profile::elasticsearch::toolforge

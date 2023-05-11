@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth::monitoring {
     include ::network::constants
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     # Metrics!
     class { 'prometheus::node_gdnsd': }

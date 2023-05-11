@@ -6,7 +6,7 @@ class role::idp {
     system::role { 'idp': description => 'CAS Identity provider' }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::idp
     include ::profile::java
 }

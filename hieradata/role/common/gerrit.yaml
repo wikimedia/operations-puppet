@@ -4,7 +4,7 @@ profile::admin::groups:
 contactgroups: 'admins,gerrit'
 profile::contacts::role_contacts: ['ServiceOps-Collab']
 
-profile::base::firewall::defs_from_etcd: true
+profile::firewall::defs_from_etcd: true
 
 # Allow use of supplemental key for scap deployment
 profile::ssh::server::authorized_keys_file:

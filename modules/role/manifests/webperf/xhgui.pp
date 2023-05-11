@@ -10,7 +10,7 @@
 #
 class role::webperf::xhgui {
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::webperf::xhgui
 
     system::role { 'webperf::xhgui':

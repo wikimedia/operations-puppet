@@ -5,6 +5,6 @@ class role::failoid {
     system::role { 'failoid': description => 'Failoid service' }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::failoid
 }

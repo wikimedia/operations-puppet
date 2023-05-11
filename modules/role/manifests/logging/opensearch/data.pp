@@ -9,7 +9,7 @@ class role::logging::opensearch::data {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::opensearch::logstash
     include ::profile::opensearch::monitoring::base_checks
 }

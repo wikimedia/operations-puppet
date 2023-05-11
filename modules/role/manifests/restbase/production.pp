@@ -3,7 +3,7 @@
 # Configures the production cluster
 class role::restbase::production {
     include passwords::cassandra # lint:ignore:wmf_styleguide
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::production
     include profile::rsyslog::udp_localhost_compat
 

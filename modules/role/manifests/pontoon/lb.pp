@@ -4,7 +4,7 @@ class role::pontoon::lb {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
 
     include ::profile::pontoon::lb
 }

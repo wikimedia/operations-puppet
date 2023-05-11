@@ -6,7 +6,7 @@ class role::backup::production {
         description => 'Regular production backup storage server',
     }
 
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::base::production
 
     include ::profile::backup::storage::production

@@ -10,7 +10,7 @@ class role::aqs {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
 
     include profile::cassandra
     include profile::aqs

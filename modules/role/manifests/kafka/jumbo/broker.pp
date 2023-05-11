@@ -6,7 +6,7 @@ class role::kafka::jumbo::broker {
         description => "Kafka Broker in a 'jumbo' Kafka cluster",
     }
 
-    include profile::base::firewall
+    include profile::firewall
     include profile::kafka::broker
 
     # Mirror main-eqiad -> jumbo-eqiad

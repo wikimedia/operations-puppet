@@ -7,6 +7,6 @@ class role::phabricator::migration {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::phabricator::migration
 }

@@ -11,7 +11,7 @@ profile::debmonitor::server::internal_server_name: "%{facts.networking.fqdn}"
 profile::debmonitor::server::public_server_name: sso-debmon.wmcloud.org
 profile::debmonitor::server::trusted_ca_source: 'puppet:///modules/profile/pki/cloud/sso-debmon-trusted-ca.pem'
 #profile::debmonitor::server::required_groups:
-profile::base::firewall::extra::services:
+profile::firewall::extra::services:
     'open http for cloud network':
         port: 80
         proto: tcp

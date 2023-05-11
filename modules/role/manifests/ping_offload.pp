@@ -4,6 +4,6 @@ class role::ping_offload {
     system::role { 'ping_offload': description => 'Ping offload server' }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::ping_offload
 }

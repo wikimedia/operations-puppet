@@ -7,7 +7,7 @@ class role::gitlab {
     }
 
     include ::profile::base::production
-    include ::profile::base::firewall
+    include ::profile::firewall
     include ::profile::backup::host
     include ::profile::gitlab
 }
