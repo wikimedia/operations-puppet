@@ -6757,3 +6757,7 @@ ldap_only_users:
     ensure: present
     realname: Robert Timm
     email: robert.timm@wikimedia.de
+  lorenjohnson:
+    ensure: present
+    realname: Loren Johnson
+    email: loren.johnson@wikimedia.de
