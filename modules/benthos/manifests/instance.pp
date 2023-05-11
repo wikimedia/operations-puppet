@@ -23,7 +23,7 @@ define benthos::instance(
         group        => 'benthos',
         mode         => '0755',
         content      => $config,
-        validate_cmd => '/usr/bin/benthos lint %',
+        validate_cmd => '/usr/bin/benthos lint --skip-env-var-check %',
     }
 
     if $env_variables {
