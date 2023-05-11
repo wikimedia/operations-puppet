@@ -8,13 +8,9 @@ class profile::toolforge::bastion::toolforge_cli () {
   }
 
   $cli_config = {
-    'api_gateway'   => {
-      'url' => "https://api.svc.${::wmcs_project}.eqiad1.wikimedia.cloud:30003",
-    },
     'build' => {
       'dest_repository' => "${::wmcs_project}-harbor.wmcloud.org",
       'builder_image'   => "${::wmcs_project}-harbor.wmcloud.org/toolforge/heroku-builder-classic:22",
-      'api_endpoint'    => '/builds/v1',
     },
   }
 
