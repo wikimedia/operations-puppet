@@ -47,6 +47,8 @@ lookup_options:
     merge: unique
   mediabackup:
     merge: hash
+  profile::query_service::blazegraph_extra_jvm_opts:
+    merge: unique
 
 # General variables that once would have been in realm.pp
 cluster: misc

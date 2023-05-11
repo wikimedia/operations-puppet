@@ -1,1 +1,5 @@
+profile::query_service::blazegraph_extra_jvm_opts:
+  - '-Dhttp.proxyHost=webproxy.codfw.wmnet'
+  - '-Dhttp.proxyPort=8080'
+
 profile::query_service::streaming_updater::kafka_topic: codfw.mediainfo-streaming-updater.mutation
