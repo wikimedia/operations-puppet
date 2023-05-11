@@ -6753,3 +6753,7 @@ ldap_only_users:
     ensure: present
     realname: Frantz Joseph
     email: fjoseph@wikimedia.org
+  roti:
+    ensure: present
+    realname: Robert Timm
+    email: robert.timm@wikimedia.de
