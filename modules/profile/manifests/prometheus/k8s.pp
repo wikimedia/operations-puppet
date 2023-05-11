@@ -51,7 +51,7 @@ class profile::prometheus::k8s (
         # See also:
         # * https://prometheus.io/docs/operating/configuration/#<kubernetes_sd_config>
         # * https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml
-        $scrape_configs_extra = [
+        $scrape_configs_extra_common = [
             {
                 'job_name'              => 'k8s-api',
                 'bearer_token_file'     => $bearer_token_file,
@@ -290,6 +290,78 @@ class profile::prometheus::k8s (
                 ],
             },
         ]
+
+        if ($k8s_cluster == 'k8s-staging') {
+            $scrape_configs_extra = $scrape_configs_extra_common << {
+                'job_name'              => 'k8s-pods-metrics',
+                'bearer_token_file'     => $bearer_token_file,
+                # Note: We dont verify the cert on purpose. Issues IP SAN based
+                # certs for all pods is impossible
+                'tls_config'            => {
+                    insecure_skip_verify =>  true,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => "https://${master_host}:6443",
+                        'bearer_token_file' => $bearer_token_file,
+                        'role'              => 'pod',
+                    },
+                ],
+                'relabel_configs' => [
+                    # We only scrape ports that have a name ending in -metrics, and have
+                    # prometheus.io/scrape_by_name: true
+                    # You can still control the path of the metrics and the url scheme using
+                    # prometheus.io/path and prometheus.io/scheme as annotations.
+                    #
+                    {
+                        'action'        => 'keep',
+                        'source_labels' => ['__meta_kubernetes_pod_container_port_name'],
+                        'regex'         => '.*-metrics',
+                    },
+                    {
+                        'action'        => 'keep',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus.io_scrape_by_name'],
+                        'regex'         => true,
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
+                        'target_label'  => '__metrics_path__',
+                        'regex'         => '(.+)',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scheme'],
+                        'target_label'  => '__scheme__',
+                        'regex'         => '(.+)',
+                    },
+                    {
+                        'action'        => 'labelmap',
+                        'regex'         => '__meta_kubernetes_pod_label_(.+)',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_namespace'],
+                        'target_label'  => 'kubernetes_namespace',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'target_label'  => 'kubernetes_pod_name',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['job'],
+                        'regex'         => '.*',
+                        'replacement'   => 'k8s-pods',
+                        'target_label'  => 'job'
+                    },
+                ]
+            }
+        } else {
+            $scrape_configs_extra = $scrape_configs_extra_common
+        }
+
 
         $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
             true    => '2h',
