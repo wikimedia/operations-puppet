@@ -9,8 +9,8 @@ http:
 
 input:
   label: "webrequest_sampled_in"
-  kafka:
-    addresses: [ "${KAFKA_BROKERS}" ]
+  kafka_franz:
+    seed_brokers: [ "${KAFKA_BROKERS}" ]
     topics: [ "${KAFKA_TOPICS}" ]
     tls:
       enabled: true
@@ -81,8 +81,8 @@ pipeline:
 
 output:
   label: "webrequest_sampled_out"
-  kafka:
-    addresses: [ "${KAFKA_BROKERS}" ]
+  kafka_franz:
+    seed_brokers: [ "${KAFKA_BROKERS}" ]
     topic: webrequest_sampled
     compression: "snappy"
     tls:
