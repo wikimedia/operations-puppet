@@ -4,7 +4,6 @@ contactgroups: 'admins,analytics,team-product-analytics'
 nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
-  - analytics-product
   - analytics-product-users
   - analytics-admins
 
