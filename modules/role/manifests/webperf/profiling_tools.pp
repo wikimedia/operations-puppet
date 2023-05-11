@@ -13,6 +13,7 @@ class role::webperf::profiling_tools {
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::webperf::arclamp
+    include ::profile::arclamp::redis
 
     # class httpd installs mpm_event by default, and once installed,
     # it cannot easily be uninstalled.
