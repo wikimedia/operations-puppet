@@ -72,6 +72,7 @@ gitlab_rails['content_security_policy'] = {
     }
 }
 
+letsencrypt['enable'] = <%= @letsencrypt_enable %>
 
 # nginx and TLS configuration
 nginx['listen_port'] = <%= @nginx_listen_port %>

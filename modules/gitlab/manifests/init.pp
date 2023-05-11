@@ -60,6 +60,7 @@ class gitlab (
     Array[Gitlab::Omniauth_providers]    $single_sign_on_from   = [],
     Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = {},
     Optional[Gitlab::Omniauth_providers]    $auto_sign_in_with  = undef,
+    Boolean           $letsencrypt_enable                       = false,
 ) {
     $cas_defaults = {
         'login_url'            => '/login',
