@@ -6,3 +6,5 @@ profile::gerrit::mask_service: true
 profile::gerrit::is_replica: false
 
 profile::gerrit::replication: {}
+
+profile::gerrit::enable_monitoring: false
