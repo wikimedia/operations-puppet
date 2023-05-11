@@ -21,7 +21,7 @@ profile::gitlab::single_sign_on_from: ['cas3']
 profile::gitlab::omniauth_providers:
   'Wikimedia Dev Account':
     url: 'https://idp.wikimedia.org'
-profile::gitlab::block_auto_created_users: false
+profile::gitlab::block_auto_created_users: true
 profile::gitlab::auto_sign_in_with: cas3
 
 profile::gitlab::smtp_enabled: false

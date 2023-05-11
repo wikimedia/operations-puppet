@@ -252,7 +252,7 @@ profile::gitlab::enable_backup_sync: false
 profile::gitlab::omniauth_providers:
   'Wikimedia Dev Account':
     url: 'https://idp.wmcloud.org'
-profile::gitlab::block_auto_created_users: false
+profile::gitlab::block_auto_created_users: true
 profile::gitlab::sync_profile_from: ['cas3']
 profile::gitlab::sync_email_from: ['cas3']
 profile::gitlab::single_sign_on_from: ['cas3']
