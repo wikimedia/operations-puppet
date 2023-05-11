@@ -8,7 +8,6 @@ class base::firewall (
     Array[Stdlib::IP::Address] $bastion_hosts           = [],
     Array[Stdlib::IP::Address] $cache_hosts             = [],
     Array[Stdlib::IP::Address] $kafka_brokers_main      = [],
-    Array[Stdlib::IP::Address] $kafka_brokers_analytics = [],
     Array[Stdlib::IP::Address] $kafka_brokers_jumbo     = [],
     Array[Stdlib::IP::Address] $kafka_brokers_logging   = [],
     Array[Stdlib::IP::Address] $kafkamon_hosts          = [],
