@@ -760,10 +760,6 @@ node 'db1159.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-node 'db1110.eqiad.wmnet' {
-    role(mariadb::misc::phabricator)
-}
-
 # m3 codfw master
 node 'db2134.codfw.wmnet' {
     role(mariadb::misc::phabricator)
