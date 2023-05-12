@@ -38,16 +38,17 @@ import yaml
 
 import mwopenstackclients
 
-clients = mwopenstackclients.clients(oscloud='ossystemadmin')
+sysclients = mwopenstackclients.clients(oscloud='ossystemadmin')
+clients = mwopenstackclients.clients(oscloud='novaadmin')
 
 
 def designate_endpoint_and_token():
-    services = clients.keystoneclient().services.list()
+    services = sysclients.keystoneclient().services.list()
     for service in services:
         if service.type == "dns":
             serviceid = service.id
             break
-    endpoints = clients.keystoneclient().endpoints.list(serviceid)
+    endpoints = sysclients.keystoneclient().endpoints.list(serviceid)
     for endpoint in endpoints:
         if endpoint.interface == "public":
             url = endpoint.url
