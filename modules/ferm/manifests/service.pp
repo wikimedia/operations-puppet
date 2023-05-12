@@ -14,10 +14,13 @@ define ferm::service(
     $ensure  = present,
     $desc    = '',
     $prio    = '10',
-    $srange  = undef,
-    $drange  = undef,
+    Optional[Ferm::Hosts] $srange = undef,
+    Optional[Ferm::Hosts] $drange = undef,
     $notrack = false,
 ) {
+    $_srange = $srange.then |$x| { ferm::join_hosts($x) }
+    $_drange = $drange.then |$x| { ferm::join_hosts($x) }
+
     @file { "/etc/ferm/conf.d/${prio}_${name}":
         ensure  => $ensure,
         owner   => 'root',
