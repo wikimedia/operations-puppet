@@ -393,13 +393,6 @@ class profile::hadoop::common (
     # as an apt source on all Hadoop hosts.
     require ::profile::bigtop::apt
 
-    # Add package python-is-python3 if bullseye. Our custom hive packages, based on bigtop version 1.5 sources mistakenly
-    # pull in python 2 unless we explicitly state that python 3 is the default. Once we update the hive packages we can
-    # remove this workaround.
-    if debian::codename::ge('bullseye') {
-        ensure_packages('python-is-python3')
-    }
-
     # Need Java before Hadoop is installed.
     Class['profile::java'] -> Class['profile::hadoop::common']
 
