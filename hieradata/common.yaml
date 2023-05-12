@@ -1203,7 +1203,6 @@ authdns_servers:
   'dns1001.wikimedia.org': 208.80.154.10
   'dns1002.wikimedia.org': 208.80.155.108
   'dns1003.wikimedia.org': 208.80.154.134
-  'dns2001.wikimedia.org': 208.80.153.77
   'dns2002.wikimedia.org': 208.80.153.111
   'dns2003.wikimedia.org': 208.80.153.10
   'dns2004.wikimedia.org': 208.80.153.48
@@ -1250,7 +1249,6 @@ ntp_peers:
     - 'dns1002.wikimedia.org'
     - 'dns1003.wikimedia.org'
     codfw:
-    - 'dns2001.wikimedia.org'
     - 'dns2002.wikimedia.org'
     - 'dns2003.wikimedia.org'
     - 'dns2004.wikimedia.org'
@@ -2560,10 +2558,6 @@ blackbox_smoke_hosts:
     realm: production
     site: codfw
     rack: B5
-  dns2001.wikimedia.org:
-    realm: production
-    site: codfw
-    rack: C5
   dns2002.wikimedia.org:
     realm: production
     site: codfw
