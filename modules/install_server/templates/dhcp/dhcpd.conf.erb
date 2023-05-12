@@ -382,21 +382,6 @@ group {
     }
 }
 
-# mgmt1-esams subnet
-subnet 10.21.0.0 netmask 255.255.255.0 {
-    authoritative;
-
-    range 10.21.0.141 10.21.0.180;
-
-    option subnet-mask 255.255.255.0;
-    option broadcast-address 10.21.0.255;
-    option routers 10.21.0.1;
-    option domain-name "mgmt.esams.wmnet";
-
-    next-server 91.198.174.10; # install3002 (tftp server)
-}
-
-
 #
 # ulsfo
 #
