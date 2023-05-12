@@ -8,8 +8,9 @@ Puppet::Functions.create_function(:'cloudlib::httpyaml') do
     param 'Puppet::LookupContext', :context
   end
   def data_hash(options, context)
+    parser = URI::Parser.new
     uri = URI.parse(options['uri'])
-    path = URI.escape(context.interpolate(uri.request_uri))
+    path = parser.escape(context.interpolate(uri.request_uri))
     if context.cache_has_key(path)
       context.explain { "Returning cached value for #{path}" }
       value = context.cached_value(path)
