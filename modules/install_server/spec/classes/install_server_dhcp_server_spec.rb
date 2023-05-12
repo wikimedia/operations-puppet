@@ -31,7 +31,6 @@ describe 'install_server::dhcp_server', :type => :class do
           is_expected.to contain_file('/etc/dhcp/automation.conf')
             .with_content(%r{
               subnet\s10.0.0.0\snetmask\s255.255.252.0\s\{\s+
-                authoratative;\s+
                 option\ssubnet-mask\s255.255.252.0;\s+
                 option\srouters\s10.0.0.1;\s+
                 option\sdomain-name\s"mgmt\.eqiad\.wmnet";\s+
@@ -40,7 +39,6 @@ describe 'install_server::dhcp_server', :type => :class do
             }x)
             .with_content(%r{
               subnet\s10.0.4.0\snetmask\s255.255.254.0\s\{\s+
-                authoratative;\s+
                 option\ssubnet-mask\s255.255.254.0;\s+
                 option\srouters\s10.0.4.1;\s+
                 option\sdomain-name\s"mgmt\.codfw\.wmnet";\s+
