@@ -145,6 +145,8 @@ mediawiki::sites: []
 profile::gerrit::config: 'gerrit.config.erb'
 profile::gerrit::host: 'gerrit.devtools.wmcloud.org'
 
+profile::gerrit::mask_service: false
+
 profile::gerrit::ssh_allowed_hosts:
 - gerrit-prod-1001.devtools.eqiad.wmflabs
 

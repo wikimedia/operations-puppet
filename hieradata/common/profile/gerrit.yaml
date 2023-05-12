@@ -1,6 +1,8 @@
 profile::gerrit::ipv6: ~
 profile::gerrit::enable_monitoring: true
 
+profile::gerrit::mask_service: false
+
 profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 

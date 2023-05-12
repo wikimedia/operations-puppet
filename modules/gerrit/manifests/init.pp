@@ -27,6 +27,7 @@ class gerrit(
 
     Optional[Stdlib::IP::Address::V6] $ipv6              = undef,
     Optional[String]                  $scap_key_name     = undef,
+    Boolean                           $mask_service      = false,
 ) {
 
     $daemon_user_dir = "/var/lib/${daemon_user}"
@@ -273,9 +274,23 @@ class gerrit(
       require => Scap::Target['gerrit/gerrit'],
     }
 
+    if $mask_service {
+        systemd::mask { 'gerrit.service': }
+        $service_enable = false
+        $service_ensure = stopped
+    } else {
+        systemd::unmask { 'gerrit.service': }
+        $service_enable = true
+        $service_ensure = running
+    }
+
     systemd::service { 'gerrit':
-        ensure  => present,
-        content => systemd_template('gerrit'),
+        ensure         => present,
+        content        => systemd_template('gerrit'),
+        service_params => {
+              enable => $service_enable,
+              ensure => $service_ensure,
+        },
     }
 
     # EnvironmentFile sourced by the systemd service

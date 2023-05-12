@@ -22,6 +22,7 @@ class profile::gerrit(
     Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
     Stdlib::Unixpath                  $lfs_dir           = lookup('profile::gerrit::lfs_dir'),
     Stdlib::Unixpath                  $java_home         = lookup('profile::gerrit::java_home'),
+    Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
 ) {
     require ::profile::java
 
@@ -106,6 +107,7 @@ class profile::gerrit(
         git_dir           => $git_dir,
         lfs_dir           => $lfs_dir,
         java_home         => $java_home,
+        mask_service      => $mask_service,
     }
 
     class { 'gerrit::replication_key':
