@@ -52,7 +52,11 @@ class prometheus::blackbox::modules::service_catalog (
       $service_modules = {}
     }
 
-    $memo + $service_modules
+    if !empty($service_modules) {
+      $memo + $service_modules
+    } else {
+      $memo
+    }
   }
 
   prometheus::blackbox::module { 'service_catalog':
