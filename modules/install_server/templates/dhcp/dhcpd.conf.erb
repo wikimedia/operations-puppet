@@ -1,6 +1,6 @@
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///modules/install_server/dhcpd/dhcpd.conf
+#### template('install_server/dhcp/dhcpd.conf.erb')
 ######################################################################
 
 # DHCPd configuration file for Wikimedia server installations
@@ -43,7 +43,7 @@ filename "nonexistent-file";
 #
 
 group {
-    next-server 208.80.153.105; # install2004 (tftp server)
+    next-server <%= @tftp_servers["codfw"] %>;
 
     # Public subnets
     group {
@@ -117,7 +117,7 @@ group {
 #
 
 group {
-    next-server 208.80.154.74; # install1004 (tftp server)
+    next-server <%= @tftp_servers["eqiad"] %>;
 
     # Public subnets
     group {
@@ -363,7 +363,7 @@ group {
 #
 
 group {
-    next-server 91.198.174.10; # install3002 (tftp server)
+    next-server <%= @tftp_servers["esams"] %>;
 
     # public1-esams subnet
     subnet 91.198.174.0 netmask 255.255.255.128 {
@@ -402,7 +402,7 @@ subnet 10.21.0.0 netmask 255.255.255.0 {
 #
 
 group {
-    next-server 198.35.26.13; # install4002 (tftp server)
+    next-server <%= @tftp_servers["ulsfo"] %>;
 
     # public1-ulsfo subnet
     subnet 198.35.26.0 netmask 255.255.255.240 {
@@ -426,7 +426,7 @@ group {
 #
 
 group {
-    next-server 103.102.166.12; # install5002 (tftp server)
+    next-server <%= @tftp_servers["eqsin"] %>;
 
     # public1-eqsin subnet
     subnet 103.102.166.0 netmask 255.255.255.240 {
@@ -450,7 +450,7 @@ group {
 #
 
 group {
-    next-server 185.15.58.12; # install6002 (tftp server)
+    next-server <%= @tftp_servers["drmrs"] %>;
 
     # Public subnets
     group {

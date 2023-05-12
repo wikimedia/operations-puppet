@@ -11,12 +11,15 @@ class install_server::dhcp_server (
     ensure_packages(['isc-dhcp-server'])
 
     file { '/etc/dhcp':
-        ensure  => directory,
-        recurse => true,
-        owner   => 'root',
-        group   => 'root',
+        ensure => directory,
+        mode   => '0444',
+    }
+
+    file { '/etc/dhcp/dhcpd.conf':
+        ensure  => file,
         mode    => '0444',
-        source  => 'puppet:///modules/install_server/dhcpd',
+        content => template('install_server/dhcp/dhcpd.conf.erb'),
+        notify  => Service['isc-dhcp-server'],
     }
 
     # This is the general path of proxies for the automation include system.

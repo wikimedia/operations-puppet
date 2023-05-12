@@ -14,11 +14,9 @@ describe 'install_server::dhcp_server', :type => :class do
           {
             'ensure' => 'directory',
             'mode'   => '0444',
-            'owner'  => 'root',
-            'group'  => 'root',
-            'recurse' => 'true',
           }
         )
+        is_expected.to contain_file('/etc/dhcp/dhcpd.conf')
         is_expected.to contain_file('/etc/dhcp/automation.conf')
           .without_content(/subnet/)
       end

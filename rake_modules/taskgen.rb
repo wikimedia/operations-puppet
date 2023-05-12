@@ -153,7 +153,7 @@ class TaskGen < ::Rake::TaskLib
   end
 
   def setup_dhcp
-    changed = filter_files_by("modules/install_server/files/dhcpd/*")
+    changed = filter_files_by("modules/install_server/templates/dhcp/*")
     return [] if changed.empty?
     unless File.exists?('/usr/sbin/dhcpd')
       puts 'dhcp: skipping tests as dhcpd is not available'
@@ -163,11 +163,13 @@ class TaskGen < ::Rake::TaskLib
     task :dhcp do
       failures = 0
       Dir.mktmpdir do |dir|
-        FileUtils.cp_r("modules/install_server/files/dhcpd", dir)
-        dhcp_config_dir = File.join dir, "dhcpd"
-        dhcp_config_file = File.join dhcp_config_dir, "dhcpd.conf"
+        dhcp_config_dir = File.join(dir, "dhcp")
+        Dir.mkdir(dhcp_config_dir)
+        dhcp_config_file = File.join(dhcp_config_dir, "dhcpd.conf")
+        FileUtils.cp("modules/install_server/templates/dhcp/dhcpd.conf.erb", dhcp_config_file)
         dhcp_config = File.read(dhcp_config_file)
         dhcp_config.gsub!(%r{/etc/dhcp}, dhcp_config_dir)
+        dhcp_config.gsub!(/<%= @tftp_servers\[".*"\] %>/, "10.0.0.1")
         File.open(dhcp_config_file, "w") {|file| file.puts dhcp_config }
         # Any includes that may be generated or provided by puppet outside of the files/dhcpd tree will be essentially
         # ignored by this test.
