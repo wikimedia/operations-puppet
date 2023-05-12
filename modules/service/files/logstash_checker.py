@@ -74,8 +74,7 @@ def fetch_url(client, url, **kw):
         raise CheckServiceError("Invalid certificate")
     except (urllib3.exceptions.ConnectTimeoutError,
             urllib3.exceptions.TimeoutError,
-            # urllib3.exceptions.ConnectionError, # commented out until we can
-            # remove trusty (aka urllib3 1.7.1) support
+            urllib3.exceptions.ConnectionError,
             urllib3.exceptions.ReadTimeoutError):
         raise CheckServiceError("Timeout on connection while "
                                 "downloading {}".format(url))
@@ -275,7 +274,7 @@ class CheckService(object):
     def _spawn_downloader(self):
         """Spawn a urllib3.Poolmanager with the correct configuration."""
         kw = {
-            # 'retries': 1, uncomment this once we've got rid of trusty
+            'retries': 1,
             'timeout': 10
         }
         kw['ca_certs'] = "/etc/ssl/certs/ca-certificates.crt"
