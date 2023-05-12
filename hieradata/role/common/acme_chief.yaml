@@ -62,7 +62,6 @@ profile::acme_chief::certificates:
         - 'gerrit-replica-new.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
-        - 'gerrit1001.wikimedia.org'
         - 'gerrit1003.wikimedia.org'
         - 'gerrit2002.wikimedia.org'
     gitlab:
