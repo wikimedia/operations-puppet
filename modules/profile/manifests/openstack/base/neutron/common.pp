@@ -7,6 +7,7 @@ class profile::openstack::base::neutron::common(
     $db_host = lookup('profile::openstack::base::neutron::db_host'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     $rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
@@ -40,7 +41,7 @@ class profile::openstack::base::neutron::common(
     contain '::openstack::neutron::common'
 
     openstack::db::project_grants { 'neutron':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => 'neutron',
         db_user      => $db_user,
         db_pass      => $db_pass,

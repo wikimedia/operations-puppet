@@ -69,7 +69,7 @@ class profile::openstack::base::cinder(
     }
 
     openstack::db::project_grants { 'cinder':
-        access_hosts => flatten([$openstack_controllers, $cinder_volume_nodes]),
+        access_hosts => $haproxy_nodes + $cinder_volume_nodes,
         db_name      => 'cinder',
         db_user      => $db_user,
         db_pass      => $db_pass,

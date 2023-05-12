@@ -10,6 +10,7 @@ class profile::openstack::base::nova::common(
     $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
+    Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $scheduler_filters = lookup('profile::openstack::base::nova::scheduler_filters'),
     $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
@@ -49,21 +50,21 @@ class profile::openstack::base::nova::common(
     contain '::openstack::nova::common'
 
     openstack::db::project_grants { 'nova_api':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => $db_name_api,
         db_user      => $db_user,
         db_pass      => $db_pass,
         project_name => 'nova',
     }
     openstack::db::project_grants { 'nova':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => $db_name,
         db_user      => $db_user,
         db_pass      => $db_pass,
         project_name => 'nova',
     }
     openstack::db::project_grants { 'nova_cell':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => $db_name_cell,
         db_user      => $db_user,
         db_pass      => $db_pass,

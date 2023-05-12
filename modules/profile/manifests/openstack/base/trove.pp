@@ -61,7 +61,7 @@ class profile::openstack::base::trove(
     }
 
     openstack::db::project_grants { 'trove':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => $db_name,
         db_user      => $db_user,
         db_pass      => $db_pass,

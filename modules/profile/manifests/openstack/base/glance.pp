@@ -43,7 +43,7 @@ class profile::openstack::base::glance(
     }
 
     openstack::db::project_grants { 'glance':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => 'glance',
         db_user      => $db_user,
         db_pass      => $db_pass,

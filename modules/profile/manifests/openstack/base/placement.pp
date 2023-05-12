@@ -40,7 +40,7 @@ class profile::openstack::base::placement(
     }
 
     openstack::db::project_grants { 'placement':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => 'placement',
         db_user      => $db_user,
         db_pass      => $db_pass,

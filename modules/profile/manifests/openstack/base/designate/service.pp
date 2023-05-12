@@ -145,7 +145,7 @@ class profile::openstack::base::designate::service(
     }
 
     openstack::db::project_grants { 'designate':
-        access_hosts => $designate_hosts + $openstack_controllers,
+        access_hosts => $designate_hosts + $haproxy_nodes,
         db_name      => $db_name,
         db_user      => $db_user,
         db_pass      => $db_pass,

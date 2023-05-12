@@ -124,7 +124,7 @@ class profile::openstack::base::keystone::service(
     }
 
     openstack::db::project_grants { 'keystone':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => 'keystone',
         db_user      => $db_user,
         db_pass      => $db_pass,

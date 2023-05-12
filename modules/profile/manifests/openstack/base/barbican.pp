@@ -43,7 +43,7 @@ class profile::openstack::base::barbican(
     }
 
     openstack::db::project_grants { 'barbican':
-        access_hosts => $openstack_controllers,
+        access_hosts => $haproxy_nodes,
         db_name      => 'barbican',
         db_user      => $db_user,
         db_pass      => $db_pass,

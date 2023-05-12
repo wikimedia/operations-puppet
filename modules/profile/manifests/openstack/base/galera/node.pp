@@ -69,7 +69,7 @@ class profile::openstack::base::galera::node(
 
     openstack::db::project_grants { 'prometheus':
         privs        => 'REPLICATION CLIENT, PROCESS',
-        access_hosts => $openstack_controllers,
+        access_hosts => $openstack_controllers + $haproxy_nodes,
         db_name      => '*',
         db_user      => 'prometheus',
         db_pass      => $prometheus_db_pass,
@@ -78,7 +78,7 @@ class profile::openstack::base::galera::node(
 
     openstack::db::project_grants { 'prometheus_performance':
         privs        => 'SELECT',
-        access_hosts => $openstack_controllers,
+        access_hosts => $openstack_controllers + $haproxy_nodes,
         db_name      => 'performance_schema',
         db_user      => 'prometheus',
         db_pass      => $prometheus_db_pass,
