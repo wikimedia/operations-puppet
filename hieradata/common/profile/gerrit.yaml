@@ -14,9 +14,8 @@ profile::gerrit::replica_hosts:
     - 'gerrit-replica-new.wikimedia.org'
 
 # Settings for rsyncing app data for migration or reinstalls
-profile::gerrit::migration::src_host: 'gerrit1001.wikimedia.org'
+profile::gerrit::migration::src_host: 'gerrit1003.wikimedia.org'
 profile::gerrit::migration::dst_hosts:
-  - 'gerrit1003.wikimedia.org'
   - 'gerrit2002.wikimedia.org'
 
 profile::gerrit::migration::data_dir: '/srv/gerrit'
