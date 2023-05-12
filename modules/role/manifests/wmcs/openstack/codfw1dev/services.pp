@@ -3,6 +3,7 @@ class role::wmcs::openstack::codfw1dev::services {
     include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::base::cloud_production
+    include ::profile::wmcs::cloud_private_subnet
     include ::profile::openstack::codfw1dev::pdns::auth::db
     include ::profile::openstack::codfw1dev::pdns::auth::service
     include ::profile::openstack::codfw1dev::pdns::recursor::service
