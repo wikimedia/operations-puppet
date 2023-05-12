@@ -26,6 +26,8 @@ class profile::openstack::base::designate::service(
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
+    # required by the BGP anycast setup
+    class { 'nagios_common::check_dns_query': }
 
     class{'::openstack::designate::service':
         active                            => true,
