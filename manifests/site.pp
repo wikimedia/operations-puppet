@@ -965,11 +965,11 @@ node 'dispatch-be2001.codfw.wmnet' {
     role(dispatch::backend)
 }
 
-node /^dns200[56]\.wikimedia\.org$/ {
+node /^dns200[6]\.wikimedia\.org$/ {
     role(insetup::traffic)
 }
 
-node /^dns[123456]00[1234]\.wikimedia\.org$/ {
+node /^dns[123456]00[12345]\.wikimedia\.org$/ {
     role(dnsbox)
 }
 
