@@ -103,8 +103,7 @@ class docker::baseimages(
         mode   => '0755',
     }
 
-    # TODO: switch to use $distributions at the end of the transition
-    ['stretch', 'buster', 'bullseye'].each |$distro| {
+    $distributions.each |$distro| {
         file { "/srv/images/base/sources/${distro}":
             ensure => directory,
             owner  => 'root',
