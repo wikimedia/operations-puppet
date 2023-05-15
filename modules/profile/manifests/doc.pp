@@ -112,6 +112,37 @@ class profile::doc (
 
     class { '::rsync::server': }
 
+    # Temporary configuration during T336168 development
+    if $::fqdn == 'doc1003.eqiad.wmnet' {
+        file { '/etc/rsync.d/secrets':
+          ensure  => 'present',
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0400',
+          content => secret('doc/secrets'),
+        }
+
+        rsync::server::module { 'doc-gitlab':
+          ensure         => 'present',
+          comment        => 'Docroot of https://doc.wikimedia.org/',
+          read_only      => 'no',
+          path           => '/srv/doc',
+          uid            => 'doc-uploader',
+          gid            => 'doc-uploader',
+          incoming_chmod => 'D775,F664',
+          hosts_allow    => $gitlab_runner_hosts,
+          auto_ferm      => true,
+          auto_ferm_ipv6 => true,
+          auth_users     => ['gitlab'],
+          secrets_file   => '/etc/rsync.d/secrets',
+          require        => [
+              User['doc-uploader'],
+              File['/srv/doc'],
+              File['/etc/rsync.d/secrets'],
+          ],
+        }
+    }
+
     $is_active = $::fqdn == $active_host
     $ensure_on_active = $is_active.bool2str('present', 'absent')
 
@@ -142,7 +173,8 @@ class profile::doc (
     }
 
     $all_hosts.each |Stdlib::Fqdn $other_host| {
-        if $::fqdn != $other_host {
+        #  Explicit host check temporary for T336168
+        if $::fqdn != $other_host and $other_host != 'doc1003.eqiad.wmnet' {
             systemd::timer::job { "rsync-doc-${other_host}":
                 ensure      => $ensure_on_active,
                 user        => 'root',
