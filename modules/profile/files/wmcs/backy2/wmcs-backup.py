@@ -20,6 +20,7 @@ from rbd2backy2 import (
     cleanup,
     get_backups,
     get_snapshots_for_image,
+    ceph_vms,
 )
 
 # This holds cached openstack information
@@ -1289,7 +1290,10 @@ class InstanceBackupsState:
         assigned_vms: List[Dict[str, Any]] = []
         this_hostname = socket.gethostname()
         server_id_to_server_dict = get_servers_info(from_cache)
-        for server_info in server_id_to_server_dict.values():
+        ceph_servers = ceph_vms(pool=self.config.ceph_pool)
+        for server_id, server_info in server_id_to_server_dict.items():
+            if server_id not in ceph_servers:
+                continue
             project = server_info.get("tenant_id", "no_project")
             name = server_info.get("name", "no_name")
             status = server_info.get("status", "no_status")
