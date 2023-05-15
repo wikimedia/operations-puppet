@@ -25,16 +25,6 @@ class { 'varnishkafka':
 
 See the ```varnishkafka``` class docs in manifests/init.pp for more parameter documentation.
 
-## Monitoring
-
-```puppet
-# The following classes will install logster and a custom VarnishkafkaLogster
-# parser to send JSON stats from the log.statistics.file
-# to Ganglia or Statsd.
-class { 'varnishkafka::monitoring::ganglia': }
-class { 'varnishkafka::monitoring::statsd': }
-```
-
 ## Testing
 
 Run `tox` which setup appropriate virtualenvs and run commands for you.

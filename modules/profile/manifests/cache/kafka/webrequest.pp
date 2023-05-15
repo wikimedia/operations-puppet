@@ -9,9 +9,6 @@
 # [*cache_cluster*]
 #   The name of the cache cluster.
 #
-# [*statsd*]
-#   The host:port to send statsd data to.
-#
 # [*kafka_cluster_name*]
 #   Name of the Kafka cluster in the hiera kafka_clusters hash.  This can
 #   be unqualified (without DC suffix) or fully qualified.
@@ -26,7 +23,6 @@
 #
 class profile::cache::kafka::webrequest(
     String $cache_cluster       = lookup('cache::cluster'),
-    String $statsd              = lookup('statsd'),
     String $kafka_cluster_name  = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
     Boolean $ssl_enabled        = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value' => false}),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value' => false}),
@@ -208,14 +204,6 @@ class profile::cache::kafka::webrequest(
             contact_group => 'admins,analytics',
             require       => Class['::varnishkafka'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
-        }
-
-        # Sets up Logster to read from the Varnishkafka instance stats JSON file
-        # and report metrics to statsd.
-        varnishkafka::monitor::statsd { 'webrequest':
-            ensure                 => 'absent',
-            graphite_metric_prefix => "varnishkafka.${::hostname}.webrequest.${cache_cluster}",
-            statsd_host_port       => $statsd,
         }
     }
 

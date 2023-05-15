@@ -8,10 +8,6 @@
 #
 # === Parameters
 #
-# [*cache_cluster*]
-#   Used in when naming varnishkafka metrics.
-#   Default:  lookup('cache::cluster')
-#
 # [*kafka_cluster_name*]
 #   The name of the kafka cluster to use from the kafka_clusters hiera variable.
 #   Since only one statsd instance is active at any given time, you should probably
@@ -22,11 +18,9 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::statsv(
-    String $cache_cluster       = lookup('cache::cluster'),
     String $kafka_cluster_name  = lookup('profile::cache::kafka::statsv::kafka_cluster_name'),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::statsv::monitoring_enabled', {default_value => false}),
     Boolean $ssl_enabled        = lookup('profile::cache::kafka::statsv::ssl_enabled', {'default_value' => false}),
-    String $statsd              = lookup('statsd')
 )
 {
     $kafka_config  = kafka_config($kafka_cluster_name)
@@ -95,14 +89,6 @@ class profile::cache::kafka::statsv(
             contact_group => 'admins,analytics',
             require       => Class['::varnishkafka'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
-        }
-
-        # Sets up Logster to read from the Varnishkafka instance stats JSON file
-        # and report metrics to statsd.
-        varnishkafka::monitor::statsd { 'statsv':
-            ensure                 => 'absent',
-            graphite_metric_prefix => "varnishkafka.${::hostname}.statsv.${cache_cluster}",
-            statsd_host_port       => $statsd,
         }
     }
 }

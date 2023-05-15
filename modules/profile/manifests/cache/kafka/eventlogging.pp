@@ -8,12 +8,6 @@
 #
 # === Parameters
 #
-# [*cache_cluster*]
-#   The name of the cache cluster.
-#
-# [*statsd*]
-#   The host to send statsd data to.
-#
 # [*kafka_cluster_name*]
 #   Name of the Kafka cluster in the kafka_clusters hash to be passed to the
 #   kafka_config() function.
@@ -27,8 +21,6 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::eventlogging(
-    String $cache_cluster       = lookup('cache::cluster'),
-    String $statsd              = lookup('statsd'),
     String $kafka_cluster_name  = lookup('profile::cache::kafka::eventlogging::kafka_cluster_name'),
     Boolean $ssl_enabled        = lookup('profile::cache::kafka::eventlogging::ssl_enabled', {'default_value' => false}),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::eventlogging::monitoring_enabled', {'default_value' => false}),
@@ -101,14 +93,6 @@ class profile::cache::kafka::eventlogging(
             contact_group => 'admins,analytics',
             require       => Varnishkafka::Instance['eventlogging'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
-        }
-
-        # Sets up Logster to read from the Varnishkafka instance stats JSON file
-        # and report metrics to statsd.
-        varnishkafka::monitor::statsd { 'eventlogging':
-            ensure                 => 'absent',
-            graphite_metric_prefix => "varnishkafka.${::hostname}.eventlogging.${cache_cluster}",
-            statsd_host_port       => $statsd,
         }
     }
 
