@@ -63,7 +63,7 @@ class dumps::web::enterprise(
         send_mail          => true,
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         command            => $rsync_command,
-        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-2,21 8:30:0'},
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-2,4,6,21,23,25 8:30:0'},
         require            => [ File[$script_path], File[$creds_path], File[$settings_path] ],
     }
 }
