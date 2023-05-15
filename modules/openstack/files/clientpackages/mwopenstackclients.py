@@ -15,7 +15,7 @@ from designateclient.v2 import client as designateclient
 from cinderclient.v3 import client as cinderclient
 from troveclient.v1 import client as troveclient
 from neutronclient.v2_0 import client as neutronclient
-import os_client_config
+import openstack.config
 
 logger = logging.getLogger("mwopenstackclients.DnsManager")
 
@@ -59,7 +59,7 @@ class Clients(object):
         self.system_scope = None
 
         if oscloud:
-            cloud_config = os_client_config.OpenStackConfig().get_all_clouds()
+            cloud_config = openstack.config.OpenStackConfig().get_all_clouds()
             for cloud in cloud_config:
                 if cloud.name == oscloud:
                     if "project_id" in cloud.auth:
