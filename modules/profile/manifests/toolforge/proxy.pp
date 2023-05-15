@@ -104,20 +104,6 @@ class profile::toolforge::proxy (
 
     ensure_packages('goaccess')  # webserver statistics, T121233
 
-    file { '/usr/local/lib/python2.7/dist-packages/toolsweblogster.py':
-        ensure => absent,
-    }
-
-    class { 'logster':
-        ensure => absent,
-    }
-
-    logster::job { 'proxy-requests':
-        ensure  => absent,
-        parser  => 'toolsweblogster.UrlFirstSegmentLogster', # Nothing more specific yet
-        logfile => '/var/log/nginx/access.log',
-    }
-
     ferm::service { 'proxymanager':
         proto  => 'tcp',
         port   => '8081',
