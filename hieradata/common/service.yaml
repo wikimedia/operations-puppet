@@ -962,7 +962,7 @@ service::catalog:
     port: 31443
     sites:
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: k8s-ingress-ml-staging
         active_active: false
