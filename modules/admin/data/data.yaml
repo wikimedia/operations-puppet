@@ -6761,6 +6761,10 @@ ldap_only_users:
     ensure: present
     realname: Loren Johnson
     email: loren.johnson@wikimedia.de
+  adri:
+    ensure: present
+    realname: Adee Ritman (WMDE)
+    email: adee.ritman@wikimedia.de
   twilsonbf:
     ensure: present
     realname: Thomas Wilson
