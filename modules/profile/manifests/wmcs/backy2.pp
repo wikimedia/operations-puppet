@@ -38,16 +38,6 @@ class profile::wmcs::backy2(
         source => 'puppet:///modules/profile/wmcs/backy2/wmcs-backup.py';
     }
 
-    # Script to backup all VMs that are on ceph and
-    #   in projects listed in wmcs_backup_instances.yaml
-    file { '/usr/local/sbin/wmcs-backup-instances':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/profile/wmcs/backy2/wmcs-backup-instances.py';
-    }
-
     # Script to cleanup expired backups.  Expiration date is
     #   set when the backups are first created.
     file { '/usr/local/sbin/wmcs-purge-backups':
