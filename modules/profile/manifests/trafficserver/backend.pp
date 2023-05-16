@@ -147,6 +147,7 @@ class profile::trafficserver::backend (
     trafficserver::lua_script { 'mw-on-k8s':
         source    => 'puppet:///modules/profile/trafficserver/mw-on-k8s.lua',
         unit_test => 'puppet:///modules/profile/trafficserver/mw-on-k8s_test.lua',
+        config    => 'puppet:///modules/profile/trafficserver/mw-on-k8s.lua.conf',
     }
 
     if $monitor_enable {
