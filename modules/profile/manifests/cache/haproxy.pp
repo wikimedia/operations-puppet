@@ -60,6 +60,9 @@ class profile::cache::haproxy(
         $numa_iface = 'lo'
     }
 
+    # used on haproxy.cfg.erb
+    $socket = '/run/haproxy/haproxy.sock'
+
     class { '::haproxy':
         config_content        => template('profile/cache/haproxy.cfg.erb'),
         systemd_content       => template('profile/cache/haproxy.service.erb'),
