@@ -50,8 +50,18 @@ class profile::cache::haproxy(
         ensure_packages => false, # this is handled by ::haproxy
     }
 
+    # If numa_networking is turned on, use interface_primary for NUMA hinting,
+    # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
+    # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
+    # in turn consumed by the systemd unit and config templates.
+    if $::numa_networking != 'off' {
+        $numa_iface = $facts['interface_primary']
+    } else {
+        $numa_iface = 'lo'
+    }
+
     class { '::haproxy':
-        template              => 'profile/cache/haproxy.cfg.erb',
+        config_content        => template('profile/cache/haproxy.cfg.erb'),
         systemd_content       => template('profile/cache/haproxy.service.erb'),
         logging               => false,
         monitor_check_haproxy => false,
@@ -144,16 +154,6 @@ class profile::cache::haproxy(
         group   => 'haproxy',
         mode    => '0444',
         content => file('profile/cache/haproxy-tls.lua'),
-    }
-
-    # If numa_networking is turned on, use interface_primary for NUMA hinting,
-    # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
-    # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
-    # in turn consumed by the systemd unit and config templates.
-    if $::numa_networking != 'off' {
-        $numa_iface = $facts['interface_primary']
-    } else {
-        $numa_iface = 'lo'
     }
 
     haproxy::tls_terminator { 'tls':

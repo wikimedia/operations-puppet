@@ -26,6 +26,9 @@
 #   Content used to create the systemd::service. If not provided a default template
 #   located on haproxy/haproxy.service.erb is used
 #
+# [*config_content*]
+#   Content used to populate /etc/haproxy/haproxy.cfg. If not provided a default template
+#   located on haproxy/haproxy.cfg.erb is used
 
 class haproxy(
     $template                         = 'haproxy/haproxy.cfg.erb',
@@ -36,6 +39,7 @@ class haproxy(
     $logging                          = false,
     Boolean $systemd_override         = false,
     Optional[String] $systemd_content = undef,
+    Optional[String] $config_content  = undef,
 ) {
 
     package { [
@@ -61,12 +65,17 @@ class haproxy(
         mode   => '0755',
     }
 
+    $haproxy_config_content = $config_content? {
+        undef   => template($template),
+        default => $config_content,
+    }
+
     file { '/etc/haproxy/haproxy.cfg':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template($template),
+        content => $haproxy_config_content,
         notify  => Service['haproxy'],
     }
 

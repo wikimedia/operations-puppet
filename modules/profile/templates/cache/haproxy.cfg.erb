@@ -1,5 +1,8 @@
 # Note: This file is managed by puppet.
-
+<%
+    htsets = @facts['numa']['device_to_htset'][@numa_iface]
+    num_threads = htsets.flatten.size
+-%>
 global
     user haproxy
     group haproxy
@@ -8,6 +11,7 @@ global
     # do not keep old processes longer than 5m after a reload
     hard-stop-after 5m
     set-dumpable
+    nbthread <%= num_threads %>
 
 
 defaults
