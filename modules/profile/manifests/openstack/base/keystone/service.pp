@@ -45,13 +45,12 @@ class profile::openstack::base::keystone::service(
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips = lookup('profile::openstack::base::prometheus_metricsinfra_reserved_ips'),
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports = lookup('profile::openstack::base::prometheus_metricsinfra_default_ports'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+    Optional[Stdlib::IP::Address::V4] $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet', {default_value => undef}),
 ) {
 
     $keystone_admin_uri = "${auth_protocol}://${keystone_fqdn}:${auth_port}/v3"
 
     include ::network::constants
-    $prod_networks = join($::network::constants::production_networks, ' ')
-    $labs_networks = join($::network::constants::labs_networks, ' ')
     $ldap_rw_host = $ldap_config['rw-server']
 
     class {'::openstack::keystone::service':
@@ -87,7 +86,7 @@ class profile::openstack::base::keystone::service(
         instance_ip_range                     => $instance_ip_range,
         wmcloud_domain_owner                  => $wmcloud_domain_owner,
         bastion_project_id                    => $bastion_project_id,
-        prod_networks                         => $::network::constants::production_networks,
+        prod_networks                         => $::network::constants::production_networks + [$cloud_private_supernet],
         labs_networks                         => $::network::constants::labs_networks,
         enforce_policy_scope                  => $enforce_policy_scope,
         enforce_new_policy_defaults           => $enforce_new_policy_defaults,
