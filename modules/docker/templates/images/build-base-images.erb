@@ -3,7 +3,7 @@
 # them to the appropriate docker registry
 set -e
 DAY=$(date +%Y%m%d)
-DISTRIBUTIONS="${DISTRIBUTIONS:-<%= @distributions.join(" ") %>}"
+DISTRIBUTIONS="${DISTRIBUTIONS:-<%= @distributions.select{ |x| !@skip_distro.include?(x) }.join(" ") %>}"
 REGISTRY='<%= @docker_registry %>'
 PUBLIC_REGISTRY=${PUBLIC_REGISTRY:-docker-registry.wikimedia.org}
 for distro in $DISTRIBUTIONS;

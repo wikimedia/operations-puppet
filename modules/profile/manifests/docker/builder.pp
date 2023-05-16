@@ -38,6 +38,7 @@ class profile::docker::builder(
         proxy_address   => $proxy_address,
         proxy_port      => $proxy_port,
         distributions   => ['bookworm', 'bullseye', 'buster'],
+        skip_distro     => ['bookworm'],
     }
 
     ensure_packages(['python3-virtualenv', 'virtualenv'])

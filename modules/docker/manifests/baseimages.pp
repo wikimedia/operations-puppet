@@ -14,12 +14,17 @@
 #  The port of said proxy, if present. Undefined by default.
 #
 # [*distributions*]
-#  List of distributions to build. Defaults to stretch
+#  List of distributions to build. Defaults to bullseye
+#
+# [*skip_distro*]
+#  List of distributions we want to set up build for but we don't want 
+#  to include in build-base-images because it's being added now.
 class docker::baseimages(
     Stdlib::Host $docker_registry,
     Optional[Stdlib::Host] $proxy_address = undef,
     Optional[Stdlib::Port] $proxy_port = undef,
-    Array[String] $distributions = ['stretch'],
+    Array[String] $distributions = ['bullseye'],
+    Array[String] $skip_distro = [],
 ) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
