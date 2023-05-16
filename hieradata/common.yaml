@@ -1202,6 +1202,7 @@ authdns_servers:
   'dns1001.wikimedia.org': 208.80.154.10
   'dns1002.wikimedia.org': 208.80.155.108
   'dns1003.wikimedia.org': 208.80.154.134
+  'dns2002.wikimedia.org': 208.80.153.111
   'dns2003.wikimedia.org': 208.80.153.10
   'dns2004.wikimedia.org': 208.80.153.48
   'dns3001.wikimedia.org': 91.198.174.61
