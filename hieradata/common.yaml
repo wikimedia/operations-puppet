@@ -1159,7 +1159,6 @@ kerberos_kdc_servers:
 # with kerberos_kdc_servers, but there are circumstances where they might differ,
 # e.g. while provisioning a new server
 kerberos_kdc_servers_to_clients:
-    - 'krb1001.eqiad.wmnet'
     - 'krb2001.codfw.wmnet'
     - 'krb2002.codfw.wmnet'
 
