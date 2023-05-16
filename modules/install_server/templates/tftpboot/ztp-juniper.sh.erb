@@ -12,7 +12,7 @@ ROOT_PASSWORD='"<%= @ztp_juniper_root_password %>"'
 
 # Get the current IP and gateway from the ones assigned by DHCP
 MGMT_IP=$(cli -c "show interfaces em0.0 brief" | awk '/inet/ {print $NF}')
-MGMT_GW=$(cli -c "show route protocol static table inet.0 terse" | awk -F '>' '/0\.0\.0\.0/ {print $NF}')
+MGMT_GW=$(route -n get | awk '/^default/ { print $NF }')
 
 # Set the minimum configuration to later allow Homer to run
 cli -c "configure; \
