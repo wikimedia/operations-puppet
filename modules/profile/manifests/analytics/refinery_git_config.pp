@@ -11,13 +11,20 @@
 # To propagate the Refinery deploy into HDFS a secondary deployment step is
 # made outside of the regular Scap deploy. This process and the script in
 # use (refinery-deploy-to-hdfs) run git commands, so add a safe.directory
-# override for the deployment directory
+# override for the refinery and refinery-cache deploy directories.
 #
 class profile::analytics::refinery_git_config () {
     git::systemconfig { 'safe.directory-refinery-deploy':
         settings => {
             'safe' => {
                 'directory' => '/srv/deployment/analytics/refinery',
+            }
+        }
+    }
+    git::systemconfig { 'safe.directory-refinery-cache-deploy':
+        settings => {
+            'safe' => {
+                'directory' => '/srv/deployment/analytics/refinery-cache',
             }
         }
     }
