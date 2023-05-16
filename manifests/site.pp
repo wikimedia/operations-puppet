@@ -573,16 +573,11 @@ node 'db2156.codfw.wmnet' {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1144 and db1146 below
-node /^db1(138|141|142|143|147|148|149|160|190|199)\.eqiad\.wmnet$/ {
+node /^db1(121|138|141|142|143|147|148|149|160|190|199)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
 # eqiad sanitarium master
-node 'db1121.eqiad.wmnet' {
-    role(mariadb::sanitarium_master)
-}
-
-# future eqiad sanitarium master
 node 'db1221.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
 }
