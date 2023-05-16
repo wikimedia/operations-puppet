@@ -25,6 +25,7 @@ prometheus::node_exporter::collectors_extra:
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference: {}
+  k8s-ingress-ml-serve: {}
 
 profile::calico::kubernetes::cni_config:
   name: "k8s-pod-network"
