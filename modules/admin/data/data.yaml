@@ -5959,6 +5959,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFn3hH8Io0va9JgVhJBCSMKVMCJ3JxRc36b3izv3TVFm sgupta@wikimedia.org
+  fabfur:
+    ensure: present
+    uid: 44338
+    gid: 500
+    name: fabfur
+    realname: Fabrizio Furnari
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILb9vuRPoWECb5Ad6zij0NQGf2kxGs1lp/KUfc60FdfH ffurnari@wikimedia.org
+    email: ffurnari@wikimedia.org
 
 ldap_only_users:
   adavenport:
