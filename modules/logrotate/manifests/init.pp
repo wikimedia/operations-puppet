@@ -6,6 +6,8 @@ class logrotate (
 ) {
     ensure_packages(['logrotate'])
     $hourly_content = @(CONTENT)
+    [Unit]
+    Description=Rotation of log files
     [Timer]
     OnCalendar=
     OnCalendar=hourly
