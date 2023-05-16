@@ -1903,7 +1903,7 @@ service::catalog:
       conftool:
         cluster: eventschemas
         service: eventschemas
-      depool_threshold: ".5"
+      depool_threshold: ".6"
       enabled: true
       monitors:
         IdleConnection:
@@ -1913,7 +1913,7 @@ service::catalog:
           url:
             - https://localhost/repositories/
       scheduler: wrr
-    page: false
+    page: true
     probes:
       - type: http
         path: /repositories/
