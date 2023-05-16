@@ -47,7 +47,7 @@ lvs = service['lvs']
 protocol = <%= lvs.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service['port'] %>
-<% if @site =~ /(eqsin|ulsfo)/ and lvs.fetch("scheduler", "wrr") == "sh" -%>
+<% if @site =~ /(drmrs|eqsin|ulsfo)/ and lvs.fetch("scheduler", "wrr") == "sh" -%>
 # T263797 slow rollout of mh scheduler - This will become permanent once it's
 # verified to not have adverse effects. (2023-04-26)
 scheduler = mh
