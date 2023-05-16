@@ -1006,7 +1006,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: k8s-ingress-ml-serve
         active_active: true
