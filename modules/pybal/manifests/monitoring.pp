@@ -9,17 +9,8 @@ class pybal::monitoring(
 ) {
     require ::pybal::configuration
 
-    # To be removed once we upgrade all PyBal hosts to bullseye.
-    # python-requests is only for buster hosts so as to not break the existing
-    # stuff. Remove once all LVS hosts are upgraded to bullseye.
-    if debian::codename::eq('bullseye') {
-        apt::package_from_component { 'python-prometheus-client':
-            component => 'component/pybal',
-        }
-    } else {
-        package { ['python-prometheus-client', 'python-requests']:
-            ensure => installed,
-        }
+    apt::package_from_component { 'python-prometheus-client':
+        component => 'component/pybal',
     }
 
     ensure_packages([

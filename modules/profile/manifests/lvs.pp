@@ -38,18 +38,8 @@ class profile::lvs(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_rp_filter_disabled',
     }
 
-    # Set up tagged interfaces to all subnets with real servers in them
-    # Do not use the legacy vlan names on bullseye otherwise we exceed the
-    # interface length naming limit.
-    $legacy_vlan_naming = debian::codename() ? {
-        'bullseye' => false,
-        'buster'   => true,
-        default    => false,
-    }
-
     profile::lvs::tagged_interface {$tagged_subnets:
         interfaces         => $vlan_data,
-        legacy_vlan_naming => $legacy_vlan_naming,
     }
 
     # Apply needed interface tweaks
