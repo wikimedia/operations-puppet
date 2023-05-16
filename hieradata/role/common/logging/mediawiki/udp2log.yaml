@@ -5,9 +5,6 @@ profile::admin::groups:
 
 role::logging::mediawiki::udp2log::logstash_host: 'logstash.svc.eqiad.wmnet'
 
-profile::webperf::arclamp::redis_host: '127.0.0.1'
-profile::webperf::arclamp::redis_port: 6379
-
 profile::rsyslog::udp_tee::listen: '0.0.0.0:8420'
 profile::rsyslog::udp_tee::destinations:
   - 'mwlog1002.eqiad.wmnet:8421'
