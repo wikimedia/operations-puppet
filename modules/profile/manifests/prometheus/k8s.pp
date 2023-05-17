@@ -320,7 +320,7 @@ class profile::prometheus::k8s (
                     },
                     {
                         'action'        => 'keep',
-                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus.io_scrape_by_name'],
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scrape_by_name'],
                         'regex'         => true,
                     },
                     {
