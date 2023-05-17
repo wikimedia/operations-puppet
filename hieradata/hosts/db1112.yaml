@@ -1,3 +1,0 @@
-# db1112
-mariadb::shard: 's3'
-profile::monitoring::notifications_enabled: false
