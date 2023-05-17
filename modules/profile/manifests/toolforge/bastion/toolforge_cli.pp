@@ -14,7 +14,7 @@ class profile::toolforge::bastion::toolforge_cli () {
     'build' => {
       'dest_repository' => "${::wmcs_project}-harbor.wmcloud.org",
       'builder_image'   => "${::wmcs_project}-harbor.wmcloud.org/toolforge/heroku-builder-classic:22",
-      'api_endpoint'    => '/builds/v1',
+      'builds_endpoint' => '/builds/v1',
     },
   }
 
