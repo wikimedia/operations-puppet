@@ -36,7 +36,8 @@ groups:
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, lzaman,
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
-              cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah]
+              cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
+              stef25]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6700,9 +6701,8 @@ ldap_only_users:
     expiry_date: 2023-06-30
     expiry_contact: nlaxstrom@wikimedia.org
   stef25:
-    ensure: present
+    ensure: absent
     realname: Stephane Rebai
-    email: srebai@wikimedia.org
   kappakayala:
     ensure: present
     realname: Kavitha Appakayala
