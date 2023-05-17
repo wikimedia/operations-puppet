@@ -7,12 +7,19 @@ class profile::wmcs::cloud_private_subnet (
     Integer[0,4094]               $vlan_id     = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
     Stdlib::IP::Address::V4::Cidr $supernet    = lookup('profile::wmcs::cloud_private_subnet::supernet'),
     Stdlib::IP::Address::V4::Cidr $public_vips = lookup('profile::wmcs::cloud_private_subnet::public_vips'),
+    String                        $base_iface  = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
 ) {
     $cloud_private_fqdn = "${facts['hostname']}.private.${::site}.${domain}"
     $cloud_private_address = dnsquery::a($cloud_private_fqdn)[0]
 
+    if $base_iface == 'primary' {
+        $iface = $facts['interface_primary']
+    } else {
+        $iface = $base_iface
+    }
+
     interface::tagged { 'cloud_private_subnet_iface':
-        base_interface     => $facts['interface_primary'],
+        base_interface     => $iface,
         vlan_id            => $vlan_id,
         method             => 'manual',
         up                 => 'ip link set $IFACE up',

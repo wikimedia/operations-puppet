@@ -4,3 +4,5 @@ profile::openldap::master: cloudservices2004-dev.wikimedia.org
 profile::openldap::server_id: 4
 
 profile::openstack::codfw1dev::version: 'zed'
+
+profile::wmcs::cloud_private_subnet::base_iface: 'eno2'
