@@ -20,6 +20,7 @@ prometheus::node_exporter::collectors_extra:
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference-staging: {}
+  k8s-ingress-ml-staging: {}
 
 profile::calico::kubernetes::cni_config:
   name: "k8s-pod-network"
@@ -64,5 +65,3 @@ profile::kubernetes::pki::intermediate: 'mlserve_staging'
 # wikikube_staging certs have a default expiry of 3 days, to this should ultimately lead
 # to every day renewals.
 profile::kubernetes::pki::renew_seconds: 172800
-profile::lvs::realserver::pools:
-  k8s-ingress-ml-staging: {}
