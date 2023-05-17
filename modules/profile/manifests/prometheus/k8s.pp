@@ -51,7 +51,7 @@ class profile::prometheus::k8s (
         # See also:
         # * https://prometheus.io/docs/operating/configuration/#<kubernetes_sd_config>
         # * https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml
-        $scrape_configs_extra_common = [
+        $scrape_configs_extra = [
             {
                 'job_name'              => 'k8s-api',
                 'bearer_token_file'     => $bearer_token_file,
@@ -229,70 +229,6 @@ class profile::prometheus::k8s (
                 ]
             },
             {
-                'job_name'              => 'k8s-pods-tls',
-                'bearer_token_file'     => $bearer_token_file,
-                'metrics_path'          => '/stats/prometheus',
-                'scheme'                => 'http',
-                'kubernetes_sd_configs' => [
-                    {
-                        'api_server'        => "https://${master_host}:6443",
-                        'bearer_token_file' => $bearer_token_file,
-                        'role'              => 'pod',
-                    },
-                ],
-                'metric_relabel_configs' => [
-                    {   'source_labels' => ['__name__'],
-                        'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
-                        'action'        => 'keep'
-                    },
-                ],
-                'relabel_configs' => [
-                    {
-                        'action'        => 'keep',
-                        'source_labels' => ['__meta_kubernetes_pod_annotation_envoyproxy_io_scrape'],
-                        'regex'         => true,
-                    },
-                    {
-                        'action'        => 'drop',
-                        'source_labels' => ['envoy_cluster_name'],
-                        'regex'         => '^admin_interface$',
-                    },
-                    {
-                        'action'        => 'replace',
-                        'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_envoyproxy_io_port'],
-                        'regex'         => '([^:]+)(?::\d+)?;(\d+)',
-                        'replacement'   => '$1:$2',
-                        'target_label'  => '__address__',
-                    },
-                    {
-                        'action'        => 'labelmap',
-                        'regex'         => '__meta_kubernetes_pod_label_(.+)',
-                    },
-                    {
-                        'action'        => 'replace',
-                        'source_labels' => ['__meta_kubernetes_namespace'],
-                        'target_label'  => 'kubernetes_namespace',
-                    },
-                    {
-                        'action'        => 'replace',
-                        'source_labels' => ['__meta_kubernetes_pod_name'],
-                        'target_label'  => 'kubernetes_pod_name',
-                    },
-                ],
-            },
-            {
-                'job_name'        => 'calico-felix',
-                'file_sd_configs' =>  [
-                    {
-                      'files' =>  [ "${targets_path}/calico-felix_*.yaml",
-                                    "${targets_path}/calico-felix-controller_*.yaml"]
-                    },
-                ],
-            },
-        ]
-
-        if ($k8s_cluster == 'k8s-staging') {
-            $scrape_configs_extra = $scrape_configs_extra_common << {
                 'job_name'              => 'k8s-pods-metrics',
                 'bearer_token_file'     => $bearer_token_file,
                 # Note: We dont verify the cert on purpose. Issues IP SAN based
@@ -357,11 +293,69 @@ class profile::prometheus::k8s (
                         'target_label'  => 'job'
                     },
                 ]
-            }
-        } else {
-            $scrape_configs_extra = $scrape_configs_extra_common
-        }
-
+            },
+            {
+                'job_name'              => 'k8s-pods-tls',
+                'bearer_token_file'     => $bearer_token_file,
+                'metrics_path'          => '/stats/prometheus',
+                'scheme'                => 'http',
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => "https://${master_host}:6443",
+                        'bearer_token_file' => $bearer_token_file,
+                        'role'              => 'pod',
+                    },
+                ],
+                'metric_relabel_configs' => [
+                    {   'source_labels' => ['__name__'],
+                        'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
+                        'action'        => 'keep'
+                    },
+                ],
+                'relabel_configs' => [
+                    {
+                        'action'        => 'keep',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_envoyproxy_io_scrape'],
+                        'regex'         => true,
+                    },
+                    {
+                        'action'        => 'drop',
+                        'source_labels' => ['envoy_cluster_name'],
+                        'regex'         => '^admin_interface$',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_envoyproxy_io_port'],
+                        'regex'         => '([^:]+)(?::\d+)?;(\d+)',
+                        'replacement'   => '$1:$2',
+                        'target_label'  => '__address__',
+                    },
+                    {
+                        'action'        => 'labelmap',
+                        'regex'         => '__meta_kubernetes_pod_label_(.+)',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_namespace'],
+                        'target_label'  => 'kubernetes_namespace',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'target_label'  => 'kubernetes_pod_name',
+                    },
+                ],
+            },
+            {
+                'job_name'        => 'calico-felix',
+                'file_sd_configs' =>  [
+                    {
+                      'files' =>  [ "${targets_path}/calico-felix_*.yaml",
+                                    "${targets_path}/calico-felix-controller_*.yaml"]
+                    },
+                ],
+            },
+        ]
 
         $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
             true    => '2h',
