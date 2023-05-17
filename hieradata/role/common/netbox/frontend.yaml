@@ -9,6 +9,7 @@ profile::netbox::validators:
   - dcim.cable
   - dcim.device
   - dcim.interface
+  - dcim.poweroutlet
   - dcim.site
 profile::netbox::ssl_provider: cfssl
 profile::netbox::http_proxy: "%{alias('http_proxy')}"
