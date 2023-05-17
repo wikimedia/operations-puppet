@@ -796,11 +796,6 @@ node /^db2(186|187)\.codfw\.wmnet$/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# old zarcillo master - to be decommissioned
-node 'db1115.eqiad.wmnet' {
-    role(mariadb::misc::db_inventory)
-}
-
 # zarcillo master
 node 'db1215.eqiad.wmnet' {
     role(mariadb::misc::db_inventory)
