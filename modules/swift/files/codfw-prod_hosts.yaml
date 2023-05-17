@@ -52,14 +52,6 @@ hosts:
     - ms-be2072
     - ms-be2073
   prod:
-    - ms-be2040:
-        - drain
-    - ms-be2041:
-        - drain
-    - ms-be2042:
-        - drain
-    - ms-be2043:
-        - drain
     - ms-be2044
     - ms-be2045
     - ms-be2046
