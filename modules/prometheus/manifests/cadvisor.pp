@@ -10,13 +10,11 @@ class prometheus::cadvisor(
         'accelerator',
         'app',
         'cpu',
-        'cpuLoad',
         'disk',
         'diskIO',
         'memory',
         'network',
         'oom_event',
-        'percpu',
         'perf_event',
     ]
 
