@@ -756,7 +756,7 @@ groups:
     gid: 784
     members: [goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, sihe, ollieshotton,
-              muja, andrewtavis-wmde]
+              muja, andrewtavis-wmde, manuel-wmde]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -5598,7 +5598,8 @@ users:
     email: manuel.merz@wikimedia.de
     uid: 31163
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRfx0qyiPeMovMrMFvFI0g8uZpN4kmuV9ypP8GIPuYJ4IiI7J5p5DJJeA4DKToQeHTujhoHQhu4PXeTYRowYMFbpiDC8ntz71RMxFLrzwmc68arid67o4WZkJ1t0YQoWyAYzSz+B3cfdxyWz9n4v1dBNGJR/U9/G+4cjeOzkIQ16paqUNX5rCLCfd6jz45muOEZY0bpfVvqnjVOlBXT7ajYPwDJq9dWlsXIVVbIBoDCTQYjEeHoqNMfcJOnangB/siTXMoIMqDxobEn4lRnDnq7PGHoHXqc51EqFCFz1Hos7g59KNYyGGad7UCmj15RpkzyOiR7z7ZBXZJOiNddGi8i0PlSRtruydqkr5t/qi8ApvrCsHFlpqvQYtC3dRn81odD7PIn/kK8EB9YonKxqIptkq7H4dMz3E5+QsPbgJ1ztMZSyJoopagjiwD7X6SWEQ0Vh8musYl59JThVTU2mze+sXIdLDTAmcX9YX0TMpx4/uTHInqARG1NOanGdqXMqN26tRPidueo2ANVdEePlMOy4tDHX7I5dAZWy0xEvTT0i6fEdFqqsiJWqt6WoBMjelj74pSg0eXeJqNRLenXzXkneoccI3QzvCM0MnXczkzQGVvkuKaIZ6FgWXe1glY5J5SddUvlZRD//+W9iAbLMraGoO5CVm/X5V3IOMcsXfT1Q== manuel.merz@wikimedia.de
   damilare:
     ensure: present
     realname: Damilare Adedoyin
