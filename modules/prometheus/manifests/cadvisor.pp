@@ -2,7 +2,27 @@
 class prometheus::cadvisor(
     Wmflib::Ensure $ensure,
     Stdlib::Port $port,
+    Array[Prometheus::Cadvisor::Metric] $metrics_enabled_extra = [],
 ) {
+    # Taken by subtracting the default for -disable_metrics from the
+    # list of all valid metrics
+    $metrics_enabled_default = [
+        'accelerator',
+        'app',
+        'cpu',
+        'cpuLoad',
+        'disk',
+        'diskIO',
+        'memory',
+        'network',
+        'oom_event',
+        'percpu',
+        'perf_event',
+    ]
+
+    $metrics_enabled = assert_type(Array[Prometheus::Cadvisor::Metric],
+        $metrics_enabled_default + $metrics_enabled_extra)
+
     package { 'cadvisor':
         ensure => $ensure,
     }
