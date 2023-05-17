@@ -36,7 +36,7 @@ groups:
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, lzaman,
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
-              cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender]
+              cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6088,9 +6088,8 @@ ldap_only_users:
     realname: Jonathan Fraine
     email: jonathan.fraine@wikimedia.de
   jrabah:
-    ensure: present
+    ensure: absent
     realname: Jack Rabah
-    email: jrabah@wikimedia.org
   jrbranaa:
     ensure: present
     realname: Jean-Rene Branaa
