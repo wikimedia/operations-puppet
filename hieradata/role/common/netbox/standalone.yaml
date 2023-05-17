@@ -7,6 +7,7 @@ profile::netbox::validators:
   - dcim.cable
   - dcim.device
   - dcim.interface
+  - dcim.poweroutlet
   - dcim.site
 profile::netbox::discovery_name: netbox-next.discovery.wmnet
 profile::netbox::service_hostname: netbox-next.wikimedia.org
