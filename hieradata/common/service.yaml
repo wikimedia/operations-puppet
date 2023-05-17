@@ -978,7 +978,7 @@ service::catalog:
     lvs:
       class: low-traffic
       conftool:
-        cluster: kubernetes
+        cluster: ml_serve
         service: kubesvc
       depool_threshold: ".5"
       enabled: true
