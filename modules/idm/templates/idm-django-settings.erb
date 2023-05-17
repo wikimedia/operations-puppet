@@ -127,21 +127,14 @@ BITU_SUB_SYSTEMS = {
         'password_hash_method': HASHED_SALTED_SHA,
         'default_groups': [''],
         'attributes': {
-            'edit': [{'name': 'sn', 'display': 'Firstname'},
-                     {'name': 'givenName', 'display': 'Lastname'},
-                     {'name': 'loginShell', 'display': 'Shell', 'choices':(
-                        ('/bin/sh', '/bin/sh'),
-                        ('/bin/bash', '/bin/bash'),
-                        ('/usr/bin/zsh', '/usr/bin/zsh'),
-                        ('/usr/bin/tmux', '/usr/bin/tmux')),
-                      'validators': ['ldapbackend.validators.login_shell_validator',]
-                     },
-            ],
             'view': [{'name': 'mail', 'display': 'e-mail',},
                       {'name': 'wikimediaGlobalAccountName', 'display': 'WikiMedia Global Account (SUL)',
                        'action': reverse_lazy('social:begin', args=['mediawiki']), 'action_label': 'refresh ↺'},
                       {'name': 'uidNumber', 'display': 'POSIX User ID'},
                       {'name': 'gidNumber', 'display': 'POSIX Group ID'},
+                      {'name': 'sn', 'display': 'Lastname'},
+                      {'name': 'givenName', 'display': 'Firstname'},
+                      {'name': 'loginShell', 'display': 'Shell'}
             ]
         },
     }
@@ -215,6 +208,7 @@ SOCIAL_AUTH_MEDIAWIKI_PIPELINE = (
 )
 
 LOGIN_URL = 'wikimedia:login'
+LOGIN_REDIRECT_URL = 'ldapbackend:properties'
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
 STATIC_ROOT = '<%= @static_dir %>'
