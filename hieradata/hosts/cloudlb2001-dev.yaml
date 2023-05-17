@@ -1,0 +1,3 @@
+profile::openstack::codfw1dev::designate_hosts:
+  - cloudservices2004-dev.private.codfw.wikimedia.cloud
+  - cloudservices2005-dev.private.codfw.wikimedia.cloud
