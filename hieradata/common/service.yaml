@@ -3830,7 +3830,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: rest-gateway
         active_active: true
