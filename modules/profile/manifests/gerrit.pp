@@ -20,7 +20,6 @@ class profile::gerrit(
     Hash[String, Hash]                $replication       = lookup('profile::gerrit::replication'),
     String                            $ssh_host_key      = lookup('profile::gerrit::ssh_host_key'),
     Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
-    Stdlib::Unixpath                  $lfs_dir           = lookup('profile::gerrit::lfs_dir'),
     Stdlib::Unixpath                  $java_home         = lookup('profile::gerrit::java_home'),
     Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
 ) {
@@ -105,7 +104,6 @@ class profile::gerrit(
         replication       => $replication,
         ssh_host_key      => $ssh_host_key,
         git_dir           => $git_dir,
-        lfs_dir           => $lfs_dir,
         java_home         => $java_home,
         mask_service      => $mask_service,
     }

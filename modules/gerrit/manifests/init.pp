@@ -13,7 +13,6 @@ class gerrit(
     String                            $config            = 'gerrit.config.erb',
     Boolean                           $enable_monitoring = true,
     Stdlib::Unixpath                  $git_dir           = '/srv/gerrit/git',
-    Stdlib::Unixpath                  $lfs_dir           = '/srv/gerrit/plugins/lfs',
     Integer                           $git_open_files    = 20000,
     Stdlib::HTTPSUrl                  $gitiles_url       = "https://${::gerrit::host}/g",
     Stdlib::Datasize                  $heap_limit        = '32g',
@@ -143,7 +142,6 @@ class gerrit(
         '/srv/gerrit/data/lfs',
         '/srv/gerrit/git',
         '/srv/gerrit/plugins',
-        '/srv/gerrit/plugins/lfs',
     ]:
         ensure => directory,
         owner  => $daemon_user,
