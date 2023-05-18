@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+https://gitlab.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://gitlab.wikimedia.org/explore
+- path: /explore/groups
+  assert_status: 200
+  assert_body_contains: repos
+- path: /help
+  assert_status: 200
+  assert_body_contains: GitLab
