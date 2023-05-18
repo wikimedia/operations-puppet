@@ -47,6 +47,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/people',
             '/srv/deployment/httpbb-tests/releases',
             '/srv/deployment/httpbb-tests/gitlab',
+            '/srv/deployment/httpbb-tests/vrts',
             '/srv/deployment/httpbb-tests/noc',
             '/srv/deployment/httpbb-tests/doc',
             '/srv/deployment/httpbb-tests/parse',
@@ -97,6 +98,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'gitlab/test_gitlab.yaml':
         source => 'puppet:///modules/profile/httpbb/gitlab/test_gitlab.yaml'
+    }
+    httpbb::test_suite {'vrts/test_vrts.yaml':
+        source => 'puppet:///modules/profile/httpbb/vrts/test_vrts.yaml'
     }
     httpbb::test_suite {'phabricator/test_phabricator.yaml':
         source => 'puppet:///modules/profile/httpbb/phabricator/test_phabricator.yaml'

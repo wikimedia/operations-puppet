@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+http://ticket.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://ticket.wikimedia.org/
+
+https://ticket.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://ticket.wikimedia.org/otrs/index.pl
+- path: /otrs
+  assert_status: 301
+  assert_headers:
+    Location: https://ticket.wikimedia.org/otrs/index.pl
+- path: /customer.pl
+  assert_status: 301
+  assert_headers:
+    Location: https://ticket.wikimedia.org/otrs/index.pl
+- path: /otrs/index.pl
+  assert_status: 200
+  assert_body_contains: Volunteer
