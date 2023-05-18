@@ -22,7 +22,7 @@ class profile::openstack::codfw1dev::nova::fullstack::service(
 
     # We only want this running in one place; just pick the first
     #  option in the list.
-    if ($::fqdn == $openstack_controllers[0]) {
+    if ($::fqdn == $openstack_controllers[2]) {
         class {'::openstack::nova::fullstack::monitor':}
     }
 }
