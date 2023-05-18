@@ -138,7 +138,7 @@ function get_cat {
   if ((count <= 4)); then
     printf '😎'
   elif ((count <= 6)); then
-    printf '☺️'
+    printf '🦊'
   elif ((count <= 10)); then
     printf '😐'
   elif ((count <= 20)); then
