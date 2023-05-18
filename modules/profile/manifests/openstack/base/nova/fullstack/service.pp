@@ -17,7 +17,7 @@ class profile::openstack::base::nova::fullstack::service(
     # We only want this running in one place; just pick the first
     #  host in $openstack_controllers.
     class { '::openstack::nova::fullstack::service':
-        active       => ($::fqdn == $openstack_controllers[0]),
+        active       => ($::fqdn == $openstack_controllers[2]),
         password     => $osstackcanary_pass,
         region       => $region,
         network      => $network,
