@@ -70,7 +70,7 @@ class PrometheusBlazeGraphExporter(object):
         el = ElementTree.fromstring(response.content)
         last_name = cnt_name.split('/')[-1]
 
-        for cnt in el.getiterator('c'):
+        for cnt in el.iter('c'):
             if cnt.attrib['name'] == last_name:
                 return cnt.attrib['value']
         return None
