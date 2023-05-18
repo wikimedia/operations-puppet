@@ -150,6 +150,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-jobrunner
         - name: mw-jobrunner-deploy
+    mw-page-content-change-enrich:
+      usernames:
+        - name: mw-page-content-change-enrich
+        - name: mw-page-content-change-enrich-deploy
     # Commented out until discussion of videoscaler on kubernetes is done
     # https://phabricator.wikimedia.org/T321899
     #    mw-videoscaler:
