@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+http://gerrit-replica.wikimedia.org:
+- path: /
+  assert_status: 403
+
+https://gerrit-replica.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://gerrit-replica.wikimedia.org/r/
+- path: /r/
+  assert_status: 404
+- path: /r/admin/repos
+  assert_status: 404
+- path: /r/q/status:open
+  assert_status: 404

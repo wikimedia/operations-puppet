@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+http://gerrit.wikimedia.org:
+- path: /
+  assert_status: 403
+
+https://gerrit.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://gerrit.wikimedia.org/r/
+- path: /r/
+  assert_status: 200
+  assert_body_contains: PolyGerrit
+- path: /r/admin/repos
+  assert_status: 200
+  assert_body_contains: PolyGerrit
+- path: /r/q/status:open
+  assert_status: 200
+  assert_body_contains: PolyGerrit
+
