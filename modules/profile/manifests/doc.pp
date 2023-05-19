@@ -4,7 +4,6 @@ class profile::doc (
     Stdlib::Fqdn        $active_host  = lookup('profile::doc::active_host'),
     Array[Stdlib::Fqdn] $all_hosts    = lookup('profile::doc::all_hosts'),
     Stdlib::Unixpath    $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
-    Array[Stdlib::Host] $gitlab_runner_hosts = lookup('profile::doc::gitlab_runner_hosts'),
     Array[Stdlib::Host] $contint_hosts = lookup('jenkins_controller_hosts'),
 ) {
 
@@ -114,6 +113,7 @@ class profile::doc (
 
     $is_active = $::fqdn == $active_host
     $ensure_on_active = $is_active.bool2str('present', 'absent')
+    $gitlab_runner_hosts = wmflib::role::hosts('gitlab_runner')
 
     file { '/etc/rsync.d/secrets':
       ensure  => $ensure_on_active,
