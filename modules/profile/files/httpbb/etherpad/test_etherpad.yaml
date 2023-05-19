@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+http://etherpad.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://etherpad.wikimedia.org/
+
+https://etherpad.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Etherpad
+- path: /p/test
+  assert_status: 200
+  assert_body_contains: test
+- path: /p/test/
+  assert_status: 404
+  assert_body_contains: forbidden
