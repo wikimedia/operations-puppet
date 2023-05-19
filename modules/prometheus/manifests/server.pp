@@ -72,6 +72,7 @@
 
 define prometheus::server (
     Pattern[/.+:[0-9]+$/]      $listen_address,
+    Wmflib::Ensure             $ensure                         = present,
     String                     $scrape_interval                = '60s',
     Stdlib::Unixpath           $base_path                      = "/srv/prometheus/${title}",
     String                     $storage_retention              = '730h',
@@ -175,7 +176,7 @@ define prometheus::server (
     }
 
     file { "${rules_path}/alerts_default.yml":
-        ensure       => file,
+        ensure       => $ensure,
         mode         => '0444',
         owner        => 'root',
         source       => 'puppet:///modules/prometheus/rules/alerts_default.yml',
@@ -185,7 +186,7 @@ define prometheus::server (
     }
 
     file { "${base_path}/prometheus.yml":
-        ensure       => present,
+        ensure       => $ensure,
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
@@ -228,7 +229,7 @@ define prometheus::server (
     }
 
     systemd::service { $service_name:
-        ensure         => present,
+        ensure         => $ensure,
         restart        => true,
         content        => systemd_template('prometheus@'),
         service_params => {
