@@ -1296,8 +1296,6 @@ maintenance_hosts:
 bastion_hosts:
 - 208.80.155.110                 # bast1003.wikimedia.org
 - 2620:0:861:4:208:80:155:110    # bast1003.wikimedia.org
-- 208.80.153.54                  # bast2002.wikimedia.org
-- 2620:0:860:2:208:80:153:54     # bast2002.wikimedia.org
 - 208.80.153.110                 # bast2003.wikimedia.org
 - 2620:0:860:4:208:80:153:110    # bast2003.wikimedia.org
 - 91.198.174.9                   # bast3006.wikimedia.org
