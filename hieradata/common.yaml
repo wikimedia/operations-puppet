@@ -2552,7 +2552,7 @@ blackbox_smoke_hosts:
     realm: frack
     site: codfw
     rack: C8
-  bast2002.wikimedia.org:
+  gitlab2003.wikimedia.org:
     realm: production
     site: codfw
     rack: B5
