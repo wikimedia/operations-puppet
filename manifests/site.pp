@@ -318,11 +318,6 @@ node 'bast1003.wikimedia.org' {
     role(bastionhost)
 }
 
-# pending decom
-node 'bast2002.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
-}
-
 node 'bast2003.wikimedia.org' {
     role(bastionhost)
 }
