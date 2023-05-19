@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+http://integration.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://integration.wikimedia.org/
+
+https://integration.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikimedia Integration
+- path: /zuul/
+  assert_status: 200
+  assert_body_contains: Zuul Status
+- path: /ci/
+  assert_status: 200
+  assert_body_contains: Jenkins
+- path: /cover/
+  assert_status: 301
+  assert_headers:
+    Location: https://doc.wikimedia.org/cover/
+

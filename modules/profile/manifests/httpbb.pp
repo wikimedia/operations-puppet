@@ -48,6 +48,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/releases',
             '/srv/deployment/httpbb-tests/gitlab',
             '/srv/deployment/httpbb-tests/vrts',
+            '/srv/deployment/httpbb-tests/contint',
             '/srv/deployment/httpbb-tests/gerrit',
             '/srv/deployment/httpbb-tests/noc',
             '/srv/deployment/httpbb-tests/doc',
@@ -102,6 +103,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'vrts/test_vrts.yaml':
         source => 'puppet:///modules/profile/httpbb/vrts/test_vrts.yaml'
+    }
+    httpbb::test_suite {'contint/test_integration.yaml':
+        source => 'puppet:///modules/profile/httpbb/contint/test_integration.yaml'
     }
     httpbb::test_suite {'gerrit/test_gerrit.yaml':
         source => 'puppet:///modules/profile/httpbb/gerrit/test_gerrit.yaml'
