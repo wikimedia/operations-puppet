@@ -72,28 +72,6 @@ datasources:
    withCredentials: false
    version: 1
 
- - name: codfw prometheus/global
-   type: prometheus
-   access: proxy
-   orgId: 1
-   url: http://prometheus.svc.codfw.wmnet/global
-   database:
-   isDefault: false
-   editable: false
-   withCredentials: false
-   version: 1
-
- - name: eqiad prometheus/global
-   type: prometheus
-   access: proxy
-   orgId: 1
-   url: http://prometheus.svc.eqiad.wmnet/global
-   database:
-   isDefault: false
-   editable: false
-   withCredentials: false
-   version: 1
-
  - name: eqiad prometheus/services
    type: prometheus
    access: proxy

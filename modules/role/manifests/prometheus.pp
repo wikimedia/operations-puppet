@@ -11,7 +11,6 @@ class role::prometheus {
     include profile::prometheus::k8s
     include profile::prometheus::analytics
     include profile::prometheus::services
-    include profile::prometheus::global
     include profile::prometheus::ops
     include profile::prometheus::ops_mysql
     include profile::prometheus::ext
