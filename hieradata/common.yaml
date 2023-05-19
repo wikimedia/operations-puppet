@@ -2213,6 +2213,14 @@ infra_devices:
     - lsw1-f1-eqiad
     site: eqiad
     role: l3sw
+  ssw1-f1-eqiad:
+    ipv4: 10.64.146.2
+    ipv6: 2620:0:861:11b::2
+    parents:
+    - lsw1-e1-eqiad
+    - lsw1-f1-eqiad
+    site: eqiad
+    role: l3sw
   lsw1-f1-eqiad:
     ipv4: 10.64.146.7
     ipv6: 2620:0:861:11b::7

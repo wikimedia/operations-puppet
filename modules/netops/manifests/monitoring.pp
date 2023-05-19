@@ -152,6 +152,7 @@ class netops::monitoring(
         'lsw1-e1-eqiad.mgmt' => { ipv4 => '10.65.1.228', parents => ['msw2-eqiad'] },
         'lsw1-e2-eqiad.mgmt' => { ipv4 => '10.65.1.229', parents => ['msw2-eqiad'] },
         'lsw1-e3-eqiad.mgmt' => { ipv4 => '10.65.1.230', parents => ['msw2-eqiad'] },
+        'ssw1-f1-eqiad.mgmt' => { ipv4 => '10.65.2.144', parents => ['msw2-eqiad'] },
         'lsw1-f1-eqiad.mgmt' => { ipv4 => '10.65.1.232', parents => ['msw2-eqiad'] },
         'lsw1-f2-eqiad.mgmt' => { ipv4 => '10.65.1.233', parents => ['msw2-eqiad'] },
         'lsw1-f3-eqiad.mgmt' => { ipv4 => '10.65.1.234', parents => ['msw2-eqiad'] },

@@ -48,6 +48,8 @@ monitoring::groups:
     description: Equipment with lsw1-e2-eqiad as uplink
   lsw1-e3-eqiad:
     description: Equipment with lsw1-e3-eqiad as uplink
+  ssw1-f1-eqiad:
+    description: Equipment with ssw1-f1-eqiad as uplink
   lsw1-f1-eqiad:
     description: Equipment with lsw1-f1-eqiad as uplink
   lsw1-f2-eqiad:

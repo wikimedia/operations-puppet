@@ -14,6 +14,7 @@ asw2-d-eqiad.mgmt.eqiad.wmnet;juniper;up;
 lsw1-e1-eqiad.mgmt.eqiad.wmnet;juniper;up;
 lsw1-e2-eqiad.mgmt.eqiad.wmnet;juniper;up;
 lsw1-e3-eqiad.mgmt.eqiad.wmnet;juniper;up;
+ssw1-f1-eqiad.mgmt.eqiad.wmnet;juniper;up;
 lsw1-f1-eqiad.mgmt.eqiad.wmnet;juniper;up;
 lsw1-f2-eqiad.mgmt.eqiad.wmnet;juniper;up;
 lsw1-f3-eqiad.mgmt.eqiad.wmnet;juniper;up;
