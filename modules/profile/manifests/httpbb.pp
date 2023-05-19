@@ -112,7 +112,7 @@ class profile::httpbb (
     httpbb::test_suite {'etherpad/test_etherpad.yaml':
         source => 'puppet:///modules/profile/httpbb/etherpad/test_etherpad.yaml'
     }
-    httpbb::test_suite {'etherpad/test_rt.yaml':
+    httpbb::test_suite {'rt/test_rt.yaml':
         source => 'puppet:///modules/profile/httpbb/rt/test_rt.yaml'
     }
     httpbb::test_suite {'gerrit/test_gerrit.yaml':
