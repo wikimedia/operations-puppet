@@ -148,6 +148,9 @@ profile::services_proxy::envoy::listeners:
     timeout: "60s"
     service: shellbox-syntaxhighlight
     keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
   - name: shellbox-timeline
     port: 6028
     timeout: "60s"
