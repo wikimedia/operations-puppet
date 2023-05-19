@@ -57,6 +57,8 @@ class Clients(object):
         self.neutronclients = {}
         self.project = None
         self.system_scope = None
+        self.observerclient = None
+        self.observersess = None
 
         if oscloud:
             cloud_config = openstack.config.OpenStackConfig().get_all_clouds()
@@ -144,7 +146,7 @@ class Clients(object):
                     # Check the domain of the project before proceeding.
                     # We rely on a least one auth project (self.project)
                     # to already know its domain.
-                    projectobj = self.keystoneclient().projects.get(project)
+                    projectobj = self.observerkeystoneclient().projects.get(project)
                     projectdomain = projectobj.domain_id
                 else:
                     projectdomain = "default"
@@ -160,6 +162,45 @@ class Clients(object):
 
             self.sessions[project] = keystone_session.Session(auth=auth)
         return self.sessions[project]
+
+    def observersession(self):
+        # Get a keystone session specifically using the novaobserver
+        # credentials
+        if not self.observersess:
+            cloud_config = openstack.config.OpenStackConfig().get_one_cloud(
+                "novaobserver"
+            )
+            auth = KeystonePassword(
+                auth_url=cloud_config.auth["auth_url"],
+                username=cloud_config.auth["username"],
+                password=cloud_config.auth["password"],
+                user_domain_name="Default",
+                project_id=cloud_config.auth["project_id"],
+                project_domain_id=cloud_config.auth["project_id"],
+            )
+            self.observersess = keystone_session.Session(auth=auth)
+        return self.observersess
+
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
+    def observerkeystoneclient(self):
+        """
+        This is a client using the default novaobserver creds. We need this rather than
+        the user-specified creds because the user might not have the rights to list
+        projects, and we need to list projects in order to determine the domain.
+        """
+        if not self.observerclient:
+            self.observerclient = keystone_client.Client(
+                session=self.observersession(),
+                interface="public",
+                connect_retries=5,
+                timeout=300,
+            )
+        return self.observerclient
 
     @retry(
         reraise=True,
