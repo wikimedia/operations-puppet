@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+http://rt.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://rt.wikimedia.org/
+
+https://rt.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    location: https://idp.wikimedia.org/login?service=https%3a%2f%2frt.wikimedia.org%2f
+- path: /foo
+  assert_status: 302
+  assert_headers:
+    location: https://idp.wikimedia.org/login?service=https%3a%2f%2frt.wikimedia.org%2ffoo

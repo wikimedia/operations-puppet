@@ -50,6 +50,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/vrts',
             '/srv/deployment/httpbb-tests/contint',
             '/srv/deployment/httpbb-tests/etherpad',
+            '/srv/deployment/httpbb-tests/rt',
             '/srv/deployment/httpbb-tests/gerrit',
             '/srv/deployment/httpbb-tests/noc',
             '/srv/deployment/httpbb-tests/doc',
@@ -110,6 +111,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'etherpad/test_etherpad.yaml':
         source => 'puppet:///modules/profile/httpbb/etherpad/test_etherpad.yaml'
+    }
+    httpbb::test_suite {'etherpad/test_rt.yaml':
+        source => 'puppet:///modules/profile/httpbb/rt/test_rt.yaml'
     }
     httpbb::test_suite {'gerrit/test_gerrit.yaml':
         source => 'puppet:///modules/profile/httpbb/gerrit/test_gerrit.yaml'
