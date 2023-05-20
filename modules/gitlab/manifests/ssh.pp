@@ -26,6 +26,7 @@ class gitlab::ssh (
         'hmac-sha2-512', 'hmac-sha2-256', 'umac-128@openssh.com',
     ],
     Boolean                    $manage_host_keys     = false,
+    Stdlib::Host               $gitlab_domain        = 'gitlab.wikimedia.org',
 ) {
     $config_file = "${base_dir}/sshd_gitlab"
 
@@ -55,6 +56,18 @@ class gitlab::ssh (
                     mode    => $mode,
                     content => secret("gitlab/${filename}"),
                     notify  => Service['ssh-gitlab'],
+                }
+
+                if $privacy == 'public' {
+                    # add public key to make it available as in wmf known hosts
+                    # TODO: use name instead of host_aliases with puppet 7
+                    # https://github.com/puppetlabs/puppetlabs-sshkeys_core/pull/27
+                    @@sshkey { "${gitlab_domain}-${type}":
+                        ensure       => $ensure,
+                        key          => secret("gitlab/${filename}"),
+                        type         => $type,
+                        host_aliases => [ $gitlab_domain ],
+                    }
                 }
             }
         }

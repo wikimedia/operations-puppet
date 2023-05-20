@@ -188,6 +188,7 @@ class gitlab (
         ensure               => $ensure_sshd,
         ssh_listen_addresses => $ssh_listen_addresses,
         manage_host_keys     => $manage_host_keys,
+        gitlab_domain        => $gitlab_domain,
     }
 
     # enable automated restore from backup (for replica)
