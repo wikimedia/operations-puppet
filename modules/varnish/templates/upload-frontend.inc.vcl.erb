@@ -278,8 +278,6 @@ sub cluster_fe_hit {
 sub cluster_fe_ratelimit_hit {}
 
 sub cluster_fe_miss {
-    call cluster_fe_ratelimit;
-
     // Convert range requests into pass
     if (req.http.Range) {
         // Varnish strips the Range header before copying req into bereq. Save it into
@@ -287,6 +285,8 @@ sub cluster_fe_miss {
         set req.http.X-Range = req.http.Range;
         return (pass);
     }
+
+    call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_pass {
