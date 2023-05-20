@@ -1,10 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 Host restricted.bastion.wmcloud.org bastion-restricted-eqiad1-02.bastion.eqiad1.wikimedia.cloud bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org bastion-codfw1dev-02.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
-    User root
     ProxyCommand nc -X connect -x webproxy:8080 %h %p
     # Set it to none so that it doesn't get set in the next sections
     ProxyJump none
-    IdentityFile /etc/keyholder.d/cumin_openstack_master
 
 Host *.eqiad1.wmflabs.org *.eqiad1.wmcloud.org *.eqiad1.toolforge.org *.eqiad1.wmflabs *.eqiad1.wikimedia.cloud
     ProxyJump restricted.bastion.wmcloud.org
@@ -13,7 +11,6 @@ Host *.codfw1dev.wmflabs.org *.codfw1dev.wmcloud.org *.codfw1dev.toolforge.org *
     ProxyJump bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
 
 Host *.wmflabs.org *.wmcloud.org *.toolforge.org *.wmflabs *.wikimedia.cloud
-    User root
     IdentityFile /etc/keyholder.d/cumin_openstack_master
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
@@ -22,9 +19,13 @@ Host *.wmflabs.org *.wmcloud.org *.toolforge.org *.wmflabs *.wikimedia.cloud
     # In case there is no Openstack deployment name in the FQDN, use the eqiad1 one.
     ProxyJump restricted.bastion.wmcloud.org
 
-Host *
-    User root
+Host *.wmnet *.wikimedia.org
+    # IdentityFile can be specified multiple times
     IdentityFile /etc/keyholder.d/cloud_cumin_master
+
+Host *
+    IdentitiesOnly yes
+    User root
     BatchMode yes
     ConnectTimeout 2
     StrictHostKeyChecking yes
