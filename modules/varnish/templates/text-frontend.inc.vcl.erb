@@ -626,6 +626,17 @@ sub cluster_fe_deliver {
         || req.http.Cookie ~ "(^|;\s*)GeoIP=:::::v6") {
         call geoip_cookie;
     }
+
+    // NetworkProbeLimit Cookie (T335637)
+    // Overrides the default network probe limit value
+    // Current default value is 0.00010 (0.010%)
+    // Set NetworkProbeLimit to 0 to stop all probes
+    header.append(resp.http.Set-Cookie,
+        "NetworkProbeLimit=0.00010;"
+        + "Path=/;"
+        + "Secure;"
+        + "Max-Age=3600"
+    );
 }
 
 sub cluster_fe_err_synth {

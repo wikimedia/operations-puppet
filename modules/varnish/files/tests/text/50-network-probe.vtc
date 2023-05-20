@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: Apache-2.0
+
+varnishtest "Test NetworkProbeLimit cookie for overriding the default network probe limit value (T335637)"
+
+server s1 {
+    loop 11 {
+        rxreq
+        txresp
+    }
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+# Using logexpect because multiple Set-Cookie headers may be present
+# https://varnish-cache.org/docs/trunk/reference/vtc.html#logexpect
+# fail keyword not supported
+# fail add * RespHeader "^Set-Cookie: NetworkProbeLimit="
+logexpect l1 -v v1 -g request {
+    expect 0 * Begin "^req .* rxreq"
+    expect * * RespHeader "^Set-Cookie: NetworkProbeLimit="
+    expect * * End
+} -start
+
+client c1 {
+    # NetworkProbeLimit cookie (english wikipedia domain)
+    txreq -url "/wiki/Main_Page" -hdr "X-Forwarded-Proto: https" -hdr "Host: en.wikipedia.org" -hdr "X-Client-IP: 192.241.194.101" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+    # expect resp.http.Set-Cookie ~ "NetworkProbeLimit="
+} -run
+
+logexpect l1 -wait
