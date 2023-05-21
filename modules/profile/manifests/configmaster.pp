@@ -51,6 +51,25 @@ class profile::configmaster (
         services => wmflib::service::fetch(true),
     }
 
+    # Script to dump pool states to a json file. Used by Amir's tool
+    # fault-tolerance.toolforge.org
+    file { '/usr/local/bin/dump-conftool-pools':
+        ensure => present,
+        source => 'puppet:///modules/profile/conftool/dump-pools-json.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    # Run dump-conftool-pools every 5 minutes
+    systemd::timer::job { 'dump-conftool-pools':
+        ensure      => present,
+        user        => 'root',
+        description => 'Dump pool states from conftool to a json file accessible from the web',
+        command     => "/usr/local/bin/dump-conftool-pools --output ${document_root}/pools.json",
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '5m'},
+    }
+
     class { 'ssh::publish_fingerprints':
         document_root => $document_root,
     }
