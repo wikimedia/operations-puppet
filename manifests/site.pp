@@ -1633,13 +1633,6 @@ node 'clouddb1021.eqiad.wmnet' {
     role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
 }
 
-node /^labstore100[45]\.eqiad\.wmnet$/ {
-    # We want to keep this data around for a while, but
-    #  stop running nfs-exportd so that things
-    #  stay read-only
-    role(insetup::wmcs)
-}
-
 node /^cloudbackup100[34]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::backy)
 }

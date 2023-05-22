@@ -114,7 +114,7 @@ ON `testreduce_0715`.* TO 'ssastry'@'10.64.48.40';
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
 ON `testreduce_vd`.* TO 'ssastry'@'10.64.48.40';
 
--- labsdbaccounts user, will run from labstore1004 and 1005
+-- labsdbaccounts user
 
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.37.19'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';

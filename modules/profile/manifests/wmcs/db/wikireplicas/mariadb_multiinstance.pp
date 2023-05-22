@@ -62,8 +62,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             proto   => 'tcp',
             port    => $port,
             notrack => true,
-            srange  => '(@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet)) @resolve((cloudcontrol1005.wikimedia.org
-)))',
+            srange  => '(@resolve((cloudcontrol1005.wikimedia.org)) @resolve((cloudcontrol1006.wikimedia.org)) @resolve((cloudcontrol1007.wikimedia.org)))',
         }
         mariadb::monitor_readonly{ "wikireplica-${section}":
             port      => $port,
