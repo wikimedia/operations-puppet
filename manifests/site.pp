@@ -1545,16 +1545,12 @@ node 'miscweb1003.eqiad.wmnet', 'miscweb2003.codfw.wmnet' {
     role(miscweb)
 }
 
-# This node will eventually replace kerberos1001
-# It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb1001.eqiad.wmnet' {
     role(kerberos::kdc)
 }
 
-# Kerberos KDC in codfw, replicates from krb1001
-# It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb2001.codfw.wmnet' {
-    role(kerberos::kdc)
+    role(insetup::infrastructure_foundations)
 }
 
 node 'krb2002.codfw.wmnet' {
