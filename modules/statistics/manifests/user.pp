@@ -11,6 +11,13 @@ class statistics::user {
     $stats_uid = assert_type(Admin::UID::System::Global, 918)
     $stats_gid = assert_type(Admin::UID::System::Global, $stats_uid)
 
+    file { [$homedir]:
+        ensure => 'directory',
+        owner  => $username,
+        group  => $username,
+        mode   => '0755',
+    }
+
     systemd::sysuser { $username:
         id       => "${stats_uid}:${stats_gid}",
         shell    => '/bin/bash',
