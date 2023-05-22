@@ -62,7 +62,7 @@ class profile::analytics::cluster::packages::statistics {
         'nodejs',
         'npm',
         'libgslcblas0',
-        'mariadb-client-10.3',
+        'mariadb-client',
         'libyaml-cpp0.6',
         'libapache2-mod-python',
     ])
