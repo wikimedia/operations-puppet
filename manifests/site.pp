@@ -1196,11 +1196,7 @@ node 'es1022.eqiad.wmnet' {
 }
 
 ## codfw servers
-node 'es2020.codfw.wmnet' {
-    role(mariadb::core)
-}
-
-node /^es202[12]\.codfw\.wmnet$/ {
+node /^es202[012]\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
 

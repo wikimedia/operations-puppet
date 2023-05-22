@@ -1,4 +1,4 @@
 # es2021
+# candidate master for es4
 mariadb::shard: 'es4'
-profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'ROW'
