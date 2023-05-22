@@ -49,6 +49,8 @@ profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
 # force to talk on local internal v4 address
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+# Let idle_timeout kick in instead for long-running/streaming requests. T337251
+profile::tlsproxy::envoy::upstream_response_timeout: 0
 
 profile::swift::stats_reporter_host: 'thanos-fe1001.eqiad.wmnet'
 
