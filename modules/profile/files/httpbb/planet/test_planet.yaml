@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: Apache-2.0
+https://planet.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    location: https://meta.wikimedia.org/wiki/Planet_Wikimedia
+
+https://en.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: en.planet.wikimedia.org
+
+https://ar.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: ar.planet.wikimedia.org
+
+https://bg.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: bg.planet.wikimedia.org
+
+https://cs.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: cs.planet.wikimedia.org
+
+https://de.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: de.planet.wikimedia.org
+
+https://el.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: el.planet.wikimedia.org
+
+https://es.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: es.planet.wikimedia.org
+
+https://fr.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: fr.planet.wikimedia.org
+
+https://gmq.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: gmq.planet.wikimedia.org
+
+https://id.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: id.planet.wikimedia.org
+
+https://it.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: it.planet.wikimedia.org
+
+https://pl.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: pl.planet.wikimedia.org
+
+https://pt.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: pt.planet.wikimedia.org
+
+https://ro.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: ro.planet.wikimedia.org
+
+https://ru.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: ru.planet.wikimedia.org
+
+https://sq.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: sq.planet.wikimedia.org
+
+https://uk.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: uk.planet.wikimedia.org
+
+https://zh.planet.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: zh.planet.wikimedia.org
+

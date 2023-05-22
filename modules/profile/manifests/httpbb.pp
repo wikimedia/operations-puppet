@@ -52,6 +52,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/etherpad',
             '/srv/deployment/httpbb-tests/rt',
             '/srv/deployment/httpbb-tests/gerrit',
+            '/srv/deployment/httpbb-tests/planet',
             '/srv/deployment/httpbb-tests/noc',
             '/srv/deployment/httpbb-tests/doc',
             '/srv/deployment/httpbb-tests/parse',
@@ -114,6 +115,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'rt/test_rt.yaml':
         source => 'puppet:///modules/profile/httpbb/rt/test_rt.yaml'
+    }
+    httpbb::test_suite {'planet/test_planet.yaml':
+        source => 'puppet:///modules/profile/httpbb/planet/test_planet.yaml'
     }
     httpbb::test_suite {'gerrit/test_gerrit.yaml':
         source => 'puppet:///modules/profile/httpbb/gerrit/test_gerrit.yaml'
