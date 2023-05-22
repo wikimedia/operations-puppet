@@ -1154,7 +1154,6 @@ kerberos_kadmin_keytabs_repo: 'puppetmaster1001.eqiad.wmnet'
 # e.g. while provisioning a new server
 kerberos_kdc_servers:
     - 'krb1001.eqiad.wmnet'
-    - 'krb2001.codfw.wmnet'
     - 'krb2002.codfw.wmnet'
 
 # This list of servers passed to Kerberos clients. It is typically kept in sync
