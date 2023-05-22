@@ -32,16 +32,30 @@ class profile::wmcs::cloudgw (
         content => template('profile/wmcs/cloudgw/cloudgw.nft.erb'),
     }
 
+    $rt_table_number = 10
+    $rt_table_name = 'cloudgw'
+    file { "/etc/iproute2/rt_tables.d/${rt_table_name}.conf":
+        ensure  => present,
+        content => "${rt_table_number} ${rt_table_name}\n",
+    }
+
+    $cloud_realm_routes = [[
+        # route floating IPs to neutron. The 'onlink' is required for the route to don't be rejected as
+        # the /30 subnet doesn't allow per-cloudgw-node address
+        "${virt_floating} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+        # route internal VM network to neutron
+        "${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+        # select source address for the transport cloudgw <-> neutron subnet
+        "${transport_cidr} table ${rt_table_name} dev ${nic_virt} scope link src ${transport_vip}",
+    ] + [$virt_floating_additional.empty.bool2str('',
+        # route additional floatings IPs to neutron
+        "${virt_floating_additional} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt} onlink"
+    )]].flatten.filter |$x| { $x !~ /^\s*$/ }
+
     # network config, VRF, vlan trunk, routing, etc
     file { '/etc/network/interfaces.d/cloudgw':
         ensure  => present,
         content => template('profile/wmcs/cloudgw/interfaces.erb'),
-    }
-
-    $rt_table = 10
-    file { '/etc/iproute2/rt_tables.d/cloudgw.conf':
-        ensure  => present,
-        content => "${rt_table} cloudgw\n",
     }
 
     # ensure the module is loaded at boot, otherwise sysctl parameters might be ignored
@@ -68,24 +82,6 @@ class profile::wmcs::cloudgw (
             'net.netfilter.nf_conntrack_max'            => 2097152,
         },
         priority => 50,
-    }
-
-    $base_keepalived_routes = [
-            # route floating IPs to neutron
-            "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-            # route internal VM network to neutron
-            "${virt_subnet} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-            # select source address for the transport cloudgw <-> neutron subnet
-            "${transport_cidr} table ${rt_table} dev ${nic_virt} scope link src ${transport_vip}",
-        ]
-
-    if $virt_floating_additional != undef {
-        $keepalived_routes = [
-            # route additional floatings IPs to neutron
-            "${virt_floating_additional} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink"
-        ] + $base_keepalived_routes
-    } else {
-        $keepalived_routes = $base_keepalived_routes
     }
 
     class { 'keepalived':

@@ -20,12 +20,6 @@ vrrp_instance VRRP1 {
   track_interface {
     <%= @nic_virt %>
   }
-  # some routes that keepalived should add when promoting a given router to primary
-  virtual_routes {
-<% @keepalived_routes.each do |route| -%>
-    <%= route %>
-<% end -%>
-  }
   virtual_ipaddress {
 <% @vrrp_vips.each do |vip| -%>
     <%= vip %>
