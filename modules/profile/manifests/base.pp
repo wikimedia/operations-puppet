@@ -72,7 +72,7 @@ class profile::base (
     include profile::rsyslog
     include profile::prometheus::rsyslog_exporter
 
-    if ! $::site in ['eqiad', 'codfw'] {
+    if ! ($::site in ['eqiad', 'codfw']) {
         include profile::prometheus::cadvisor
     }
 
