@@ -26,8 +26,9 @@ class jupyterhub::server (
     $base_path           = "/srv/${service_name}"
     $data_path           = "${base_path}/data"
     $config_path         = "/etc/${service_name}"
+    $notebook_config_path= '/etc/jupyter'
 
-    file { [$base_path, $data_path, $config_path]:
+    file { [$base_path, $data_path, $config_path, $notebook_config_path]:
         ensure => 'directory',
     }
 
@@ -77,7 +78,7 @@ class jupyterhub::server (
     # jupyter_notebook_config.py configures global settings for all user Notebook Servers.
     # Currently this only configures the Notebook Terminal app to work nicely with
     # a sourced stacked conda environment.
-    $jupyter_notebook_config_file = '/etc/jupyter/jupyter_notebook_config.py'
+    $jupyter_notebook_config_file = "${notebook_config_path}/jupyter_notebook_config.py"
     file { $jupyter_notebook_config_file:
         source => 'puppet:///modules/jupyterhub/config/jupyter_notebook_config.py',
         mode   => '0444',
