@@ -39,6 +39,57 @@ class profile::wmcs::cloudgw (
         content => "${rt_table_number} ${rt_table_name}\n",
     }
 
+    $vrf_interface = 'vrf-cloudgw'
+
+    interface::manual { $vrf_interface :
+        interface => $vrf_interface,
+    }
+
+    interface::pre_up_command { "${vrf_interface}_attach" :
+        interface => $vrf_interface,
+        command   => "ip link add ${vrf_interface} type vrf table ${rt_table_name}",
+    }
+
+    interface::tagged { "cloudgw_${nic_virt}":
+        base_interface     => $facts['interface_primary'],
+        vlan_id            => $virt_vlan,
+        # no address given the VIP is handled by keepalived / VRRP
+        method             => 'manual',
+        legacy_vlan_naming => false,
+    }
+
+    interface::tagged { "cloudgw_${nic_wan}":
+        base_interface     => $facts['interface_primary'],
+        vlan_id            => $wan_vlan,
+        address            => $wan_addr,
+        netmask            => $wan_netm,
+        legacy_vlan_naming => false,
+    }
+
+    interface::post_up_command { $vrf_interface :
+        interface => $vrf_interface,
+        command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
+    }
+
+    [$nic_virt, $nic_wan].each |$nic| {
+        interface::post_up_command { "cloudgw_${nic}_vrf":
+            interface => $nic,
+            command   => "ip link set ${nic} master ${vrf_interface}",
+        }
+        interface::post_up_command { "cloudgw_${nic}_ipv4_forwarding":
+            interface => $nic,
+            command   => "sysctl -w net.ipv4.conf.${nic}.forwarding=1",
+        }
+        interface::post_up_command { "cloudgw_${nic}_rp_filter":
+            interface => $nic,
+            command   => "sysctl -w net.ipv4.conf.${nic}.rp_filter=0",
+        }
+        interface::post_up_command { "cloudgw_${nic}_accept_ra":
+            interface => $nic,
+            command   => "sysctl -w net.ipv6.conf.${nic}.accept_ra=0",
+        }
+    }
+
     $cloud_realm_routes = [[
         # route floating IPs to neutron. The 'onlink' is required for the route to don't be rejected as
         # the /30 subnet doesn't allow per-cloudgw-node address
@@ -52,10 +103,9 @@ class profile::wmcs::cloudgw (
         "${virt_floating_additional} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink"
     )]].flatten.filter |$x| { $x !~ /^\s*$/ }
 
-    # network config, VRF, vlan trunk, routing, etc
+    # TODO: remove after we know this is no longer present anywhere
     file { '/etc/network/interfaces.d/cloudgw':
-        ensure  => present,
-        content => template('profile/wmcs/cloudgw/interfaces.erb'),
+        ensure  => absent,
     }
 
     # ensure the module is loaded at boot, otherwise sysctl parameters might be ignored
