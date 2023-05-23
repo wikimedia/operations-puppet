@@ -526,7 +526,7 @@ node 'db2173.codfw.wmnet' {
 
 # s2 (large wikis) core production dbs on eqiad
 # See also db1146, db1170 below
-node /^db1(122|129|162|182|188|197|222)\.eqiad\.wmnet$/ {
+node /^db1(129|162|182|188|197|222)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
