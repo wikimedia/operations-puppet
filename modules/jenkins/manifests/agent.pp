@@ -2,8 +2,8 @@
 #
 class jenkins::agent(
     String $ssh_key,
-    String $user = 'jenkins-slave',
-    Stdlib::Unixpath $workdir = '/var/lib/jenkins-slave',
+    String $user,
+    Stdlib::Unixpath $workdir,
 ) {
     group { $user:
         ensure => present,
@@ -15,15 +15,13 @@ class jenkins::agent(
         shell      => '/bin/bash',
         managehome => true,
         system     => true,
-        home       => '/var/lib/jenkins-slave',
+        home       => "/var/lib/${user}",
     }
-
     file { $workdir:
-        ensure  => directory,
-        owner   => $user,
-        group   => $user,
-        mode    => '0775',
-        require => User[$user],
+        ensure => directory,
+        owner  => $user,
+        group  => $user,
+        mode   => '0775',
     }
 
     # Finally publish the Jenkins controller authorized key

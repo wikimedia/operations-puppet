@@ -88,7 +88,7 @@ kubernetes::clusters:
 
 
 profile::kubernetes::deployment_server::user_defaults:
-  owner: jenkins-slave
+  owner: "%{lookup('jenkins_agent_username')}"
   group: contint-admins
   mode: "0440"
 

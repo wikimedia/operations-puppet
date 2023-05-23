@@ -13,6 +13,8 @@ describe 'jenkins::agent' do
       end
       let(:params) { {
         :ssh_key => 'abc id-rsa',
+        :user    => 'jenkins-agent',
+        :workdir => '/srv/jenkins-agent',
       } }
       it { should compile }
     end

@@ -67,7 +67,7 @@ class profile::releases::mediawiki (
     class { 'jenkins::agent':
         ssh_key => $jenkins_agent_key,
         user    => $jenkins_agent_username,
-        workdir => '/srv/jenkins-slave',
+        workdir => "/srv/${jenkins_agent_username}",
     }
 
     class { '::releases':
