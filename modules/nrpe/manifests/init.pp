@@ -25,12 +25,19 @@ class nrpe($allowed_hosts='127.0.0.1') {
         ensure => present,
     }
 
+    $nrpe_local_data = {
+        server_address => $facts['wmflib']['is_container'] ? {
+            true  => '0.0.0.0',
+            false => $facts['networking']['ip'],
+        },
+        allowed_hosts  => $allowed_hosts,
+    }
     file { '/etc/nagios/nrpe_local.cfg':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('nrpe/nrpe_local.cfg.erb'),
+        content => epp('nrpe/nrpe_local.cfg.epp', $nrpe_local_data),
         require => Package['nagios-nrpe-server'],
         notify  => Service['nagios-nrpe-server'],
     }
