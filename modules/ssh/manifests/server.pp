@@ -45,6 +45,11 @@ class ssh::server (
         false   => 'no',
         default => 'yes',
     }
+    $_use_ca_signed_host_keys = $use_ca_signed_host_keys and ssh::ssh_ca_key_available()
+    if $use_ca_signed_host_keys and !$_use_ca_signed_host_keys {
+        warning('ssh::server: use_ca_signed_host_keys is true but no CA keys are available')
+    }
+
     package { 'openssh-server':
         ensure => present,
     }
@@ -87,7 +92,7 @@ class ssh::server (
         $facts['ipaddress6'],
     ].filter |$x| { $x =~ NotUndef }
 
-    if $use_ca_signed_host_keys {
+    if $_use_ca_signed_host_keys {
         $enabled_key_types.each |Ssh::KeyType $type| {
             ssh::server::ca_signed_hostkey { "/etc/ssh/ssh_host_${type}_key-cert.pub":
                 hosts  => [$facts['networking']['fqdn']] + $aliases,
