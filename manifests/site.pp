@@ -2610,6 +2610,10 @@ node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
 }
 
+node /^releases[12]003\.(codfw|eqiad)\.wmnet$/ {
+    role(insetup::serviceops_collab)
+}
+
 # New relforge servers T241791 (provision), T262211 (service impl.)
 node /^relforge100[3-4]\.eqiad\.wmnet$/ {
     role(elasticsearch::relforge)
