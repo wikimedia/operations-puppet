@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # log using new_install key, useful when debugging during installation or
 # before the first puppet run
 
@@ -11,10 +11,16 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 if [ "$#" -le 0 ]; then
-    echo "usage: $0 host"
+    echo "usage: $0 host [-v]"
     exit 1
 fi
-
+host="$1"
+verbose=''
+if ! getent hosts -- "$host" >/dev/null; then
+  printf "%s: is not a valid hostname\n" "$host"
+  exit 1
+fi
+[ "$2" = '-v' ] && verbose='-v'
 exec ssh -4 -i /root/.ssh/new_install \
     -o UserKnownHostsFile=/dev/null \
-    -o StrictHostKeyChecking=no $@
+    -o StrictHostKeyChecking=no $verbose "$host"
