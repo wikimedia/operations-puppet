@@ -59,28 +59,28 @@
 # @param cas_username_attribute cas attribute to use as a username
 # @param cas_server_url the location of the cas server
 class profile::netbox (
-    Hash                      $ldap_config             = lookup('ldap'),
-    Stdlib::Fqdn              $active_server           = lookup('profile::netbox::active_server'),
-    Stdlib::Fqdn              $service_hostname        = lookup('profile::netbox::service_hostname'),
-    Stdlib::Fqdn              $discovery_name          = lookup('profile::netbox::discovery_name'),
-    Array[Stdlib::Host]       $additional_sans         = lookup('profile::netbox::additional_sans'),
-    Array[String]             $slaves                  = lookup('profile::netbox::slaves'),
-    String                    $scap_repo               = lookup('profile::netbox::scap_repo'),
-    String                    $rw_token                = lookup('profile::netbox::rw_token'),
-    String                    $ro_token                = lookup('profile::netbox::ro_token'),
-    Stdlib::Fqdn              $db_primary              = lookup('profile::netbox::db_primary'),
-    String                    $db_password             = lookup('profile::netbox::db_password'),
-    String                    $secret_key              = lookup('profile::netbox::secret_key'),
-    Enum['ldap', 'cas']       $authentication_provider = lookup('profile::netbox::authentication_provider'),
-    Profile::Pki::Provider    $ssl_provider            = lookup('profile::netbox::ssl_provider'),
-    Optional[String[1]]       $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
-    Stdlib::HTTPSUrl          $netbox_api              = lookup('profile::netbox::netbox_api'),
-    Boolean                   $do_backups              = lookup('profile::netbox::do_backup'),
-    Optional[Stdlib::HTTPUrl] $http_proxy              = lookup('profile::netbox::http_proxy'),
-    Integer[0]                $changelog_retention     = lookup('profile::netbox::changelog_retention'),
-    Integer[0]                $jobresult_retention     = lookup('profile::netbox::jobresult_retention'),
-    Boolean                   $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
-    Array[String[1]]          $validators              = lookup('profile::netbox::validators'),
+    Hash                        $ldap_config             = lookup('ldap'),
+    Stdlib::Fqdn                $active_server           = lookup('profile::netbox::active_server'),
+    Stdlib::Fqdn                $service_hostname        = lookup('profile::netbox::service_hostname'),
+    Stdlib::Fqdn                $discovery_name          = lookup('profile::netbox::discovery_name'),
+    Array[Stdlib::Host]         $additional_sans         = lookup('profile::netbox::additional_sans'),
+    Array[String]               $slaves                  = lookup('profile::netbox::slaves'),
+    String                      $scap_repo               = lookup('profile::netbox::scap_repo'),
+    String                      $rw_token                = lookup('profile::netbox::rw_token'),
+    String                      $ro_token                = lookup('profile::netbox::ro_token'),
+    Stdlib::Fqdn                $db_primary              = lookup('profile::netbox::db_primary'),
+    String                      $db_password             = lookup('profile::netbox::db_password'),
+    String                      $secret_key              = lookup('profile::netbox::secret_key'),
+    Enum['ldap', 'cas', 'oidc'] $authentication_provider = lookup('profile::netbox::authentication_provider'),
+    Profile::Pki::Provider      $ssl_provider            = lookup('profile::netbox::ssl_provider'),
+    Optional[String[1]]         $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
+    Stdlib::HTTPSUrl            $netbox_api              = lookup('profile::netbox::netbox_api'),
+    Boolean                     $do_backups              = lookup('profile::netbox::do_backup'),
+    Optional[Stdlib::HTTPUrl]   $http_proxy              = lookup('profile::netbox::http_proxy'),
+    Integer[0]                  $changelog_retention     = lookup('profile::netbox::changelog_retention'),
+    Integer[0]                  $jobresult_retention     = lookup('profile::netbox::jobresult_retention'),
+    Boolean                     $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
+    Array[String[1]]            $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
 
     #ganeti config
@@ -119,6 +119,8 @@ class profile::netbox (
     Array                      $cas_group_required          = lookup('profile::netbox::cas_group_required'),
     Optional[String]           $cas_username_attribute      = lookup('profile::netbox::cas_username_attribute'),
     Optional[Stdlib::HTTPSUrl] $cas_server_url              = lookup('profile::netbox::cas_server_url'),
+    Optional[String]           $oidc_key                    = lookup('profile::netbox::oidc_service'),
+    Optional[String]           $oidc_secret                 = lookup('profile::netbox::oidc_secret')
 ) {
     if $ssl_provider == 'acme' and !$acme_certificate {
         fail('must provide \$acme_certificate when using \$ssl_provider acme')
@@ -178,6 +180,8 @@ class profile::netbox (
         cas_group_attribute_mapping => $cas_group_attribute_mapping,
         cas_group_mapping           => $cas_group_mapping,
         cas_group_required          => $cas_group_required,
+        oidc_key                    => $oidc_key,
+        oidc_secret                 => $oidc_secret,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }

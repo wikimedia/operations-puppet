@@ -231,4 +231,15 @@ CUSTOM_VALIDATORS = {
 REMOTE_AUTH_BACKEND = 'netbox.authentication.LDAPBackend'
 <% elsif @authentication_provider == 'cas' %>
 CAS_ENABLED = True
+<% elsif @authentication_provider == 'oidc' %>
+REMOTE_AUTH_BACKEND = 'social_core.backends.cas.CASOpenIdConnectAuth'
+REMOTE_AUTH_GROUP_SYNC_ENABLED = True
+REMOTE_AUTH_SUPERUSER_GROUPS = 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+REMOTE_AUTH_STAFF_GROUPS = 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+SOCIAL_AUTH_CAS_OIDC_ENDPOINT = '<%= @cas_server_url %>'
+SOCIAL_AUTH_CAS_KEY = '<%= @oidc_key %>'
+SOCIAL_AUTH_CAS_SECRET = '<%= @oidc_secret %>'
+SOCIAL_AUTH_CAS_USERINFO_URL = ''<%= @cas_server_url %>/profile'
+SOCIAL_AUTH_CAS_SCOPE = ['openid', 'profile', 'email', 'groups']
+SOCIAL_AUTH_CAS_ID_KEY = 'username'
 <% end %>

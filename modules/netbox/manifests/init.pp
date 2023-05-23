@@ -68,7 +68,7 @@ class netbox (
     Boolean                       $prefer_ipv4                 = false,
     Optional[Stdlib::Fqdn]        $ldap_server                 = undef,
     Boolean                       $enable_ldap                 = false,
-    Optional[Enum['ldap', 'cas']] $authentication_provider     = undef,
+    Optional[Enum['ldap', 'cas', 'oidc']] $authentication_provider     = undef,
     Optional[Stdlib::HTTPUrl]     $swift_auth_url              = undef,
     Optional[Stdlib::HTTPUrl]     $http_proxy                  = undef,
     # Cas specific config
@@ -78,6 +78,8 @@ class netbox (
     Array                         $cas_group_required          = [],
     Array[String[1]]              $validators                  = [],
     Stdlib::HTTPSUrl              $cas_server_url              = 'https://cas.example.org',
+    Optional[String]              $oidc_key                    = undef,
+    Optional[String]              $oidc_secret                 = undef,
     Optional[String]              $cas_username_attribute      = undef,
     # Swift specific config
     Optional[String]              $swift_user                  = undef,
@@ -148,7 +150,7 @@ class netbox (
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
     file { '/etc/netbox/cas_configuration.py':
-        ensure  => $ensure,
+        ensure  => stdlib::ensure($authentication_provider == 'cas', file),
         owner   => 'netbox',
         group   => 'www-data',
         mode    => '0440',
