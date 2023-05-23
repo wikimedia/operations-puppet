@@ -1293,6 +1293,7 @@ service::catalog:
     page: false
     probes:
       - type: http
+        host: static-bugzilla.wikimedia.org
     port: *k8s-ingress-wikikube_port
     sites:
       - eqiad
