@@ -42,30 +42,65 @@ class apt(
     }
 
     if $manage_apt_source {
+        if debian::codename::ge('bookworm') {
+            # Starting with bookworm there's a new non-free-firmware component
+            # and deb822 is the default format, sources.list(5)
+            file { '/etc/apt/sources.list':
+                ensure  => absent,
+            }
+            $debian_sources='/etc/apt/sources.list.d/debian.sources'
+            concat { $debian_sources:
+                mode    => '0444',
+                owner   => 'root',
+                group   => 'root',
+                require => Apt::Repository['wikimedia'],
+            }
+            apt::repository { 'debian':
+                uri           => 'http://mirrors.wikimedia.org/debian',
+                dist          => $facts['os']['distro']['codename'],
+                components    => 'main contrib non-free non-free-firmware',
+                concat_target => $debian_sources,
+                keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
+                notify        => Exec['apt-get update'],
+            }
+            apt::repository { 'debian-security':
+                uri           => 'http://security.debian.org/debian-security',
+                dist          => "${facts['os']['distro']['codename']}-security",
+                components    => 'main contrib non-free non-free-firmware',
+                concat_target => $debian_sources,
+                keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
+                notify        => Exec['apt-get update'],
+            }
+            apt::repository { 'debian-updates':
+                uri           => 'http://mirrors.wikimedia.org/debian',
+                dist          => "${facts['os']['distro']['codename']}-updates",
+                components    => 'main contrib non-free non-free-firmware',
+                keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
+                concat_target => $debian_sources,
+                notify        => Exec['apt-get update'],
+            }
+        } else {
+            # Starting with bullseye, the security suite moved from
+            #   foo/updates to foo-security (since the former was confusingly
+            #   similar to foo-updates (what was called volatile.debian.org
+            #   in the past)
+            # Stretch has been removed, so the apt config only ships stub entries
+            if debian::codename::eq('bullseye') {
+                $apt_template    = 'apt/base-apt-conf-bullseye.erb'
+            } elsif debian::codename::eq('stretch') {
+                $apt_template    = 'apt/base-apt-conf-stretch.erb'
+            } elsif debian::codename::eq('buster') {
+                $apt_template    = 'apt/base-apt-conf-buster.erb'
+            }
 
-        # Starting with bookworm there's a new non-free-firmware component
-        # Starting with bullseye, the security suite moved from
-        #   foo/updates to foo-security (since the former was confusingly
-        #   similar to foo-updates (what was called volatile.debian.org
-        #   in the past)
-        # Stretch has been removed, so the apt config only ships stub entries
-        if debian::codename::eq('bullseye') {
-            $apt_template    = 'apt/base-apt-conf-bullseye.erb'
-        } elsif debian::codename::eq('bookworm') {
-            $apt_template    = 'apt/base-apt-conf-bookworm.erb'
-        } elsif debian::codename::eq('stretch') {
-            $apt_template    = 'apt/base-apt-conf-stretch.erb'
-        } elsif debian::codename::eq('buster') {
-            $apt_template    = 'apt/base-apt-conf-buster.erb'
-        }
-
-        file { '/etc/apt/sources.list':
-            ensure  => file,
-            mode    => '0555',
-            owner   => 'root',
-            group   => 'root',
-            content => template($apt_template),
-            require => Apt::Repository['wikimedia'],
+            file { '/etc/apt/sources.list':
+                ensure  => file,
+                mode    => '0555',
+                owner   => 'root',
+                group   => 'root',
+                content => template($apt_template),
+                require => Apt::Repository['wikimedia'],
+            }
         }
     }
 
@@ -124,11 +159,10 @@ class apt(
     }
 
     apt::repository { 'wikimedia':
-        uri         => 'http://apt.wikimedia.org/wikimedia',
-        dist        => "${::lsbdistcodename}-wikimedia",
-        components  => $components,
-        comment_old => true,
-        keyfile     => $wikimedia_apt_keyfile,
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => $components,
+        keyfile    => $wikimedia_apt_keyfile,
     }
 
     if debian::codename::ge('bullseye') and $use_private_repo and !$facts['is_virtual']{
@@ -147,10 +181,9 @@ class apt(
 
     if debian::codename::ge('buster'){
         apt::repository { 'debian-backports':
-            uri         => 'http://mirrors.wikimedia.org/debian/',
-            dist        => "${::lsbdistcodename}-backports",
-            components  => 'main contrib non-free',
-            comment_old => true,
+            uri        => 'http://mirrors.wikimedia.org/debian/',
+            dist       => "${::lsbdistcodename}-backports",
+            components => 'main contrib non-free',
         }
     }
 
