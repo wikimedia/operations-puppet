@@ -149,6 +149,7 @@ class netops::monitoring(
         'cloudsw1-e4-eqiad.mgmt' => { ipv4 => '10.65.1.231', parents => ['msw2-eqiad']},
         'cloudsw1-f4-eqiad.mgmt' => { ipv4 => '10.65.1.235', parents => ['msw2-eqiad']},
         # eqiad prod
+        'ssw1-e1-eqiad.mgmt' => { ipv4 => '10.65.2.143', parents => ['msw2-eqiad'] },
         'lsw1-e1-eqiad.mgmt' => { ipv4 => '10.65.1.228', parents => ['msw2-eqiad'] },
         'lsw1-e2-eqiad.mgmt' => { ipv4 => '10.65.1.229', parents => ['msw2-eqiad'] },
         'lsw1-e3-eqiad.mgmt' => { ipv4 => '10.65.1.230', parents => ['msw2-eqiad'] },

@@ -2188,6 +2188,14 @@ infra_devices:
     - cloudsw1-d5-eqiad
     site: eqiad
     role: l3sw
+  ssw1-e1-eqiad:
+    ipv4: 10.64.146.1
+    ipv6: 2620:0:861:11b::1
+    parents:
+    - lsw1-e1-eqiad
+    - lsw1-f1-eqiad
+    site: eqiad
+    role: l3sw
   lsw1-e1-eqiad:
     ipv4: 10.64.146.3
     ipv6: 2620:0:861:11b::3

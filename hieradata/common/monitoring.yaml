@@ -42,6 +42,8 @@ monitoring::groups:
     description: Equipment with cloudsw1-e4-eqiad as uplink
   cloudsw1-f4-eqiad:
     description: Equipment with cloudsw1-f4-eqiad as uplink
+  ssw1-e1-eqiad:
+    description: Equipment with ssw1-e1-eqiad as uplink
   lsw1-e1-eqiad:
     description: Equipment with lsw1-e1-eqiad as uplink
   lsw1-e2-eqiad:
