@@ -76,7 +76,7 @@
         * level => INFO
     -->
 
-    <appender name="logstash" class="net.logstash.logback.appender.LogstashSocketAppender">
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashUdpSocketAppender">
         <filter class="org.wikidata.query.rdf.common.log.PerLoggerThrottler" />
         <filter class="org.wikidata.query.rdf.common.log.RateLimitFilter">
             <bucketCapacity>100</bucketCapacity>
@@ -88,6 +88,7 @@
         <host>localhost</host>
         <port><%= @logstash_logback_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
+	<layout class="net.logstash.logback.layout.LogstashLayout"/>
     </appender>
     <appender name="async-logstash" class="ch.qos.logback.classic.AsyncAppender">
         <neverBlock>true</neverBlock>
