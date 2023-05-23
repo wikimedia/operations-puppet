@@ -1201,7 +1201,7 @@ tcpircbot_host: 'icinga.wikimedia.org'
 tcpircbot_port: 9200
 
 # User for Jenkins controllers SSH connections to the agents
-jenkins_agent_username: 'jenkins-slave'
+jenkins_agent_username: 'jenkins-agent'
 
 # HTTP proxy.
 # Provide these as seperate host and ports.

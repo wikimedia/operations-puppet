@@ -40,7 +40,7 @@ tendril
 librenms
 tileratorui
 parsoid
-jenkins-slave
+jenkins-agent
 phd
 changeprop
 analytics_deploy
