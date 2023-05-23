@@ -1,6 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
-describe 'jenkins::slave' do
+describe 'jenkins::agent' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts }

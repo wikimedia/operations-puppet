@@ -1,6 +1,6 @@
-# == Class: jenkins::slave
+# == Class: jenkins::agent
 #
-class jenkins::slave(
+class jenkins::agent(
     String $ssh_key,
     String $user = 'jenkins-slave',
     Stdlib::Unixpath $workdir = '/var/lib/jenkins-slave',

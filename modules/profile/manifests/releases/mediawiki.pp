@@ -63,8 +63,8 @@ class profile::releases::mediawiki (
         ensure => $jenkins_restart_ensure,
     }
 
-    # Master connect to itself via the fqdn / primary IP ipaddress
-    class { 'jenkins::slave':
+    # Controller connects to itself via the fqdn / primary IP ipaddress
+    class { 'jenkins::agent':
         ssh_key => $jenkins_agent_key,
         user    => $jenkins_agent_username,
         workdir => '/srv/jenkins-slave',

@@ -10,7 +10,7 @@ describe 'Host being both a Jenkins controller and an agent' do
         class { 'jenkins':
           prefix => '/jenkins',
         }
-        class { 'jenkins::slave':
+        class { 'jenkins::agent':
           ssh_key => 'fake ssh key',
         }
         """

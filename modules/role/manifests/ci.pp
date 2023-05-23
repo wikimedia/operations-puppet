@@ -12,7 +12,7 @@ class role::ci {
     include ::profile::ci::jenkins
     include ::profile::ci::proxy_jenkins
 
-    include ::profile::ci::slave
+    include ::profile::ci::agent
 
     include ::profile::ci::httpd
     include ::profile::tlsproxy::envoy
