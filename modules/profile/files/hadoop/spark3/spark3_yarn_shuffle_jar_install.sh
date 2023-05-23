@@ -9,7 +9,7 @@
 yarn_lib_dir='/usr/lib/hadoop-yarn/lib'
 yarn_lib_removed_dir='/usr/lib/hadoop-yarn/lib.removed'
 
-spark3_yarn_shuffle_jar=$(find /usr/lib/spark3/yarn -name spark*yarn-shuffle.jar | head -n 1)
+spark3_yarn_shuffle_jar=$(find /usr/lib/spark3/yarn -name 'spark*yarn-shuffle.jar' | head -n 1)
 
 if [ ! -f $spark3_yarn_shuffle_jar ]; then
     echo 'Cannot install spark3-yarn-shuffle.jar: no yarn shuffle jar found in /usr/lib/spark3/yarn.'
