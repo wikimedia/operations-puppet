@@ -3,6 +3,7 @@ class profile::wmcs::backy2(
     Stdlib::Unixpath     $data_dir        = lookup('profile::cloudceph::data_dir'),
     String               $ceph_vm_pool    = lookup('profile::cloudceph::client::rbd::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
+    String               $db_pass         = lookup('profile::wmcs::backy2::db_pass'),
 ) {
     require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
@@ -11,6 +12,7 @@ class profile::wmcs::backy2(
 
     class {'::backy2':
         cluster_name => $cluster_name,
+        db_pass      => $db_pass,
     }
 
     file { '/etc/wmcs_backup_instances.yaml':
@@ -76,5 +78,24 @@ class profile::wmcs::backy2(
         monitoring_enabled        => true,
         monitoring_contact_groups => '',
         user                      => 'root',
+    }
+
+    class {'::postgresql::server':
+    }
+
+    postgresql::db { 'backy2':
+        owner   => 'backy2',
+        require => Class['postgresql::server'];
+    }
+
+    postgresql::user { 'backy2':
+        ensure   => 'present',
+        user     => 'backy2',
+        password => $db_pass,
+        cidr     => '127.0.0.1/32',
+        type     => 'host',
+        method   => 'trust',
+        database => 'backy2',
+        notify   => Exec['initialize-backy2-database'],
     }
 }

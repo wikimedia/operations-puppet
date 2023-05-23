@@ -21,6 +21,7 @@
 #   include backy2
 class backy2(
     String       $cluster_name,
+    String       $db_pass,
     String       $rados_name = 'client.admin',
     ) {
 
@@ -75,10 +76,10 @@ class backy2(
 
     # Initialize backy2 db if it isn't already present
     exec {'initialize-backy2-database':
-        command   => '/usr/bin/backy2 initdb',
-        logoutput => true,
-        require   => Package['backy2'],
-        creates   => '/srv/backy2/backy.sqlite'
+        command     => '/usr/bin/backy2 initdb',
+        logoutput   => true,
+        require     => Class['postgresql::server'],
+        refreshonly => true,
     }
 
     file {
@@ -105,6 +106,4 @@ class backy2(
         source  => 'puppet:///modules/backy2/sql.py',
         require => Package['backy2'];
     }
-
-
 }
