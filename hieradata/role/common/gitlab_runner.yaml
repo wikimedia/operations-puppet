@@ -46,9 +46,6 @@ profile::gitlab::runner::allowed_services:
   doc-rsync: # T321629
     host: 'doc.discovery.wmnet'
     port: 873
-  doc-rsync-testing: # T336168 -- temporary
-    host: 'doc1003.eqiad.wmnet'
-    port: 873
   gitlab-https:
     host: 'gitlab.wikimedia.org'
     port: 443
