@@ -54,13 +54,14 @@ class profile::base (
     contain profile::puppet::agent
     contain profile::base::certificates
     include profile::apt
-    include profile::systemd::timesyncd
+    if !$facts['wmflib']['is_container'] {
+        include profile::systemd::timesyncd
+        class { 'grub::defaults': }
+    }
 
     if $use_linux510_on_buster {
         include profile::base::linux510
     }
-
-    class { 'grub::defaults': }
 
     include passwords::root
     include network::constants
@@ -94,9 +95,11 @@ class profile::base (
         }
     }
 
-    # TODO: make base::sysctl a profile itself?
-    class { 'base::sysctl':
-        unprivileged_userns_clone => $unprivileged_userns_clone,
+    if !$facts['wmflib']['is_container'] {
+        # TODO: make base::sysctl a profile itself?
+        class { 'base::sysctl':
+            unprivileged_userns_clone => $unprivileged_userns_clone,
+        }
     }
     class { 'motd': }
     class { 'base::standard_packages':
@@ -113,8 +116,10 @@ class profile::base (
     include profile::ssh::client
     include profile::ssh::server
 
-    class { 'base::kernel':
-        overlayfs => $overlayfs,
+    if !$facts['wmflib']['is_container'] {
+        class { 'base::kernel':
+            overlayfs => $overlayfs,
+        }
     }
 
     include profile::debdeploy::client

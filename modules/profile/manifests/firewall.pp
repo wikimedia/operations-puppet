@@ -43,12 +43,14 @@ class profile::firewall (
         provider => $provider,
     }
 
-    # Increase the size of conntrack table size (default is 65536)
-    sysctl::parameters { 'ferm_conntrack':
-        values => {
-            'net.netfilter.nf_conntrack_max'                   => 262144,
-            'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
-        },
+    if !$facts['wmflib']['is_container'] {
+        # Increase the size of conntrack table size (default is 65536)
+        sysctl::parameters { 'ferm_conntrack':
+            values => {
+                'net.netfilter.nf_conntrack_max'                   => 262144,
+                'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
+            },
+        }
     }
     if $defs_from_etcd {
         # unmanaged files under /etc/ferm/conf.d are purged
@@ -74,7 +76,7 @@ class profile::firewall (
         include profile::firewall::log
     }
 
-    if $manage_nf_conntrack {
+    if $manage_nf_conntrack and !$facts['wmflib']['is_container'] {
         # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
         # via a modprobe parameter, bump it manually for running systems
         exec { 'bump nf_conntrack hash table size':
