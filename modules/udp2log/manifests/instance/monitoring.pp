@@ -14,7 +14,7 @@ define udp2log::instance::monitoring(
     $monitor_processes   = true,
     $monitor_log_age     = true,
 ) {
-    require udp2log::monitoring
+    include udp2log::monitoring
 
     # Monitoring configs.
     # There are 3 ways udp2log instances are currently defined:
