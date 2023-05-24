@@ -8,6 +8,8 @@ RESET=$(tput sgr0)
 git_user=gitpuppet
 USAGE=0
 LABS_PRIVATE=0
+OVERRIDE_TAGOUT=0
+OVERRIDE_TAGOUT_FILE=/var/lock/puppet-merge-lockout-tagout
 # CA_SERVER, MASTERS and WORKERS are configured in /etc/puppet-merge.conf
 CA_SERVER=''
 MASTERS=''
@@ -90,7 +92,13 @@ merge() {
   done
 }
 
-usage="$(basename "${0}") [-y|--yes] [-p|--labsprivate] [-q|--quiet] [-d|--diffs] [SHA1]
+usage="$(basename "${0}") --lockout-tagout LOCKOUT_MSG
+
+Configures Lock out, Tag out for the puppet-merge system.
+https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout
+
+
+$(basename "${0}") [-y|--yes] [-p|--labsprivate] [-q|--quiet] [-d|--diffs] [SHA1]
 
 Fetches changes from origin and from all submodules.
 Shows diffs between HEAD and SHA1 (default FETCH_HEAD)
@@ -110,11 +118,13 @@ runs on both the ops and labsprivate repos.
 -p / --labsprivate: merge only the labsprivate repo
 -d / --diffs: only show diffs, don't perform any merges
 -q / --quiet: don't output diffs
+--lockout-tagout-override for a puppet merge even if log out tag out is in place
 "
 # preserve arguments before we shift them all
 # Our original arguments get passed on, unchanged, to puppet-merge.py.
-ORIG_ARGS=( "$@" )
-TEMP=$(getopt -o yhqd --long yes,help,quiet,labsprivate,diffs -n "$0" -- "$@")
+# This means that both this script and the python script need to share the same set of arguments
+ORIG_ARGS=( "$@" "--lockout-tagout-override-file" "$OVERRIDE_TAGOUT_FILE")
+TEMP=$(getopt -o yhqd --long yes,help,quiet,labsprivate,diffs,lockout-tagout-override,lockout-tagout: -n "$0" -- "$@")
 # shellcheck disable=SC2181
 if [ "$?" != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
@@ -123,10 +133,22 @@ while true; do
     case "$1" in
         -h|--help) USAGE=1; shift ;;
         -p|--labsprivate) LABS_PRIVATE=1; shift ;;
+        --lockout-tagout-override) OVERRIDE_TAGOUT=1; shift ;;
         --) shift ; break ;;
         *) echo 'Internal error!' >&2; exit 1 ;;
     esac
 done
+
+# We check for this file in both this script and the python script.
+# We check here because we want to exit as early as possible.
+# As we need to support this argument in the python script due to the
+# argument handling that has been implemented we also check handle this
+# argument in the python script
+if [ -e $OVERRIDE_TAGOUT_FILE ] && [ $OVERRIDE_TAGOUT -ne 1 ]; then
+  echo "Refusing to merge as Lock out, tag out is in place"
+  cat $OVERRIDE_TAGOUT_FILE
+  exit 1
+fi
 
 if [ $USAGE -eq 1 ]; then
     echo "$usage" && exit 0;

@@ -13,11 +13,12 @@ SHA1 (or 'FETCH_HEAD', or something understood by git-rev-parse).
 import os
 import shlex
 
-from argparse import ArgumentParser, RawTextHelpFormatter
+from argparse import ArgumentParser, RawTextHelpFormatter, SUPPRESS
 from getpass import getuser
-from syslog import syslog
+from pathlib import Path
 from pwd import getpwnam
 from subprocess import CalledProcessError, PIPE, run
+from syslog import syslog
 
 
 FILE_PATHS = {
@@ -32,7 +33,6 @@ FILE_PATHS = {
 }
 
 ERROR_MESSAGE = '\033[91m{msg}\033[0m'
-
 """int: reserved exit code: puppet-merge did not perform a merge operation"""
 PUPPET_MERGE_NO_MERGE = 99
 
@@ -47,6 +47,26 @@ def get_args():
         help='Automatic yes to prompts; assume "yes" as answer to all prompts',
     )
     parser.add_argument('-q', '--quiet', action='store_true', help='Limit output')
+
+    parser.add_argument(
+        "--lockout-tagout",
+        help=("Enable lockout tagout to prevent merges ",
+              "https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout"),
+    )
+    parser.add_argument(
+        '--lockout-tagout-override',
+        action='store_true',
+        help=('Force a merge even if lockout tagout is in place. '
+              'https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout'),
+    )
+    parser.add_argument(
+        '--lockout-tagout-override-file',
+        # to make the code a bit more DRY we want to [pass this file from the sh script
+        # however we don't really want users to use it so we suppress it
+        help=SUPPRESS,
+        type=Path,
+        default=Path('/var/lock/puppet-merge-lockout-tagout'),
+    )
     parser.add_argument(
         '-d',
         '--diffs',
@@ -124,6 +144,25 @@ def main():
     git_user = 'gitpuppet'
     running_user = getuser()
     args = get_args()
+    if args.lockout_tagout:
+        if args.lockout_tagout_override_file.exists():
+            print("Lock out, tag out is already in place:")
+            print(args.lockout_tagout_override_file.read_text())
+            return 1
+
+        if len(args.lockout_tagout) < 8:
+            print("Please provide a longer reason for the lockout")
+            return 1
+        args.lockout_tagout_override_file.write_text(args.lockout_tagout)
+        return 0
+
+    if args.lockout_tagout_override_file.exists():
+        print("Lock out, tag out is in place:")
+        print(args.lockout_tagout_override_file.read_text())
+        if not args.lockout_tagout_override:
+            print("Refusing to merge!!!")
+            return 1
+        print("continuing to merge as --lockout-tagout-override used")
     config = FILE_PATHS['ops'] if args.ops else FILE_PATHS['labsprivate']
 
     if running_user != git_user:
