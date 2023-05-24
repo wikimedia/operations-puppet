@@ -69,6 +69,9 @@ profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
 # Clients must be in this srange to use Hadoop.
 profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS $LABSTORE_HOSTS $DSE_KUBEPODS_NETWORKS))'
 
+profile::hadoop::master::excluded_hosts:
+  - an-worker1058.eqiad.wmnet
+  - an-worker1058
 profile::hadoop::common::config_override:
   hadoop_var_directory: '/srv/hadoop'
 profile::contacts::role_contacts: ['Data Engineering']
