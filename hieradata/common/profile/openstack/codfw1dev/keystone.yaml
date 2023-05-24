@@ -10,4 +10,4 @@ profile::openstack::codfw1dev::keystone::bastion_project_id: "bastioninfra-codfw
 
 # Work in progress, see T330759
 profile::openstack::codfw1dev::keystone::enforce_policy_scope: false
-profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults: true
+profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults: false
