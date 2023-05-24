@@ -200,6 +200,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: rest-gateway
         - name: rest-gateway-deploy
+    ipoid:
+      usernames:
+        - name: ipoid
+        - name: ipoid-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
