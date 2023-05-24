@@ -30,14 +30,13 @@ class udp2log (
         enabled => $monitor,
     }
 
-    unless $default_instance {
-        file { '/etc/init.d/udp2log':
-            ensure  => absent,
+    if $default_instance {
+        systemd::unmask { 'udp2log.service':
             require => Package['udplog'],
         }
-        exec { '/usr/sbin/update-rc.d -f udp2log remove':
-            subscribe   => File['/etc/init.d/udp2log'],
-            refreshonly => true,
+    } else {
+        systemd::mask { 'udp2log.service':
+            require => Package['udplog'],
         }
     }
 }
