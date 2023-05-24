@@ -1,3 +1,0 @@
-profile::base::firewall::log::log_rate: 1/second
-profile::base::firewall::log::log_burst: 5
-profile::base::firewall::log::separate_file: true
