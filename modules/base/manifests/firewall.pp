@@ -90,10 +90,6 @@ class base::firewall (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_conntrack',
     }
 
-    sudo::user { 'nagios_check_ferm':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'check_ferm':
         source => 'puppet:///modules/base/firewall/check_ferm',
     }
