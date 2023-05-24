@@ -35,6 +35,10 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://sso-django-login\.wmcloud\.org(/.*)?'
     allowed_delegate: 'WMF_test'
+  gitlab_oidc:
+    id: 5
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://gitlab\.devtools\.wmcloud\.org(/.*)?'
 profile::idp::standalone::oidc_key: django_oidc
 profile::idp::delegated_authenticators:
   - provider: cas
