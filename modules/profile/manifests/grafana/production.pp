@@ -37,13 +37,9 @@ class profile::grafana::production (
         source => 'puppet:///modules/profile/grafana/production-datasources.yaml',
     }
 
-    grafana::dashboard { 'varnish-http-errors':
-        ensure  => absent,
-        content => '',
-    }
-
     grafana::dashboard { 'varnish-aggregate-client-status-codes':
-        source => 'puppet:///modules/grafana/dashboards/varnish-aggregate-client-status-codes',
+        ensure  => 'absent',
+        content => ''
     }
 
     grafana::dashboard { 'swift':
