@@ -38,34 +38,6 @@ https://dbtree.wikimedia.org:
   assert_status: 200
   assert_body_contains: 'tendril and dbtree'
 
-https://annual.wikimedia.org:
-- path: /
-  assert_status: 302
-  assert_headers:
-    Location: https://wikimediafoundation.org/about/annualreport/current/
-- path: /2016/
-  assert_status: 200
-  assert_body_contains: Wikimedia Foundation 2016 Annual Report
-- path: /2020/
-  assert_status: 301
-  assert_headers:
-    Location: https://wikimediafoundation.org/about/annualreport/2020-annual-report/
-- path: /2021/
-  assert_status: 301
-  assert_headers:
-    Location: https://wikimediafoundation.org/about/annualreport/2021-annual-report/
-- path: /2022/
-  assert_status: 301
-  assert_headers:
-    Location: https://wikimediafoundation.org/about/annualreport/2022-annual-report/
-- path: /2029/
-  assert_status: 301
-  assert_headers:
-    Location: https://wikimediafoundation.org/about/annualreport/2029-annual-report/
-# check that git folders aren't available publicly
-- path: /.git/config
-  assert_status: 403
-
 https://bienvenida.wikimedia.org:
 - path: /
   assert_status: 200
