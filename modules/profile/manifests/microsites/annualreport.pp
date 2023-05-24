@@ -14,16 +14,6 @@ class profile::microsites::annualreport {
         branch    => 'master',
     }
 
-    prometheus::blackbox::check::http { '15.wikipedia.org':
-        team               => 'serviceops-collab',
-        severity           => 'task',
-        path               => '/',
-        ip_families        => ['ip4'],
-        force_tls          => true,
-        status_matches     => [200],
-        body_regex_matches => ['Wikipedia 15'],
-    }
-
     prometheus::blackbox::check::http { 'annual.wikimedia.org':
         team           => 'serviceops-collab',
         severity       => 'task',
