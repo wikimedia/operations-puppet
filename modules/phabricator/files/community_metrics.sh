@@ -12,6 +12,7 @@ source /etc/phab_community_metrics.conf
 result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_differential << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM differential_transaction WHERE
+    (transactionType = "core:create" OR transactionType = "differential:update") AND
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
 
 END
@@ -235,7 +236,7 @@ Lowest: ${mediantasksopen_lowest}
 
 (How long tasks have been open, not how long they have had that priority)
 
-Active Differential users (any activity) in (${lastmonth}): ${activedifferentialusers}
+Differential users who created or updated a patchset in (${lastmonth}): ${activedifferentialusers}
 
 To see the names of the most active task authors:
 * Go to https://wikimedia.biterg.io/
