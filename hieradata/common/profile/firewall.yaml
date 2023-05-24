@@ -1,0 +1,3 @@
+profile::firewall::enable_logging: true
+profile::firewall::defs_from_etcd: true
+profile::firewall::manage_nf_conntrack: true

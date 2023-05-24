@@ -11,7 +11,7 @@ class role::sretest {
     }
 
     include profile::base::production
-    include profile::base::firewall
+    include profile::firewall
     include profile::sretest
 
     if debian::codename::le('bullseye') {
