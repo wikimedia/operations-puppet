@@ -72,6 +72,8 @@ class profile::java (
                 'path'   => '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
             },
         }
+        # includes wmf-certificates
+        include profile::base::certificates
         $java_require = Package['wmf-certificates']
     } else {
         $cacerts = {

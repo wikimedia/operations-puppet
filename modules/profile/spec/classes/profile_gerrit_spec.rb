@@ -31,7 +31,6 @@ describe 'profile::gerrit' do
       let(:pre_condition) {
           """
           service {'apache2': }
-          package {'wmf-certificates': }
           """
       }
 
