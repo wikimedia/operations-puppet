@@ -27,7 +27,7 @@ class ferm {
         before  => Package['ferm', 'libnet-dns-perl', 'conntrack'],
     }
 
-    ensure_packages(['ferm', 'libnet-dns-perl', 'conntrack'])
+    ensure_packages(['ferm', 'iptables', 'libnet-dns-perl', 'conntrack'])
 
     file {'/usr/local/sbin/ferm-status':
         ensure  => file,
@@ -105,10 +105,12 @@ class ferm {
     if debian::codename::ge('bullseye') {
         alternatives::select { 'iptables':
             path    => '/usr/sbin/iptables-legacy',
+            require => Package['iptables'],
         }
 
         alternatives::select { 'ip6tables':
             path    => '/usr/sbin/ip6tables-legacy',
+            require => Package['iptables'],
         }
     }
 
