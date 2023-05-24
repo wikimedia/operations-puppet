@@ -123,7 +123,6 @@ class profile::doc (
       content => secret('doc/secrets'),
     }
 
-    # Temporary configuration during T336168 development
     rsync::server::module { 'doc-gitlab':
         ensure         => $ensure_on_active,
         comment        => 'Docroot of https://doc.wikimedia.org/',
@@ -152,7 +151,7 @@ class profile::doc (
         uid            => 'doc-uploader',
         gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
-        hosts_allow    => $gitlab_runner_hosts + $contint_hosts,
+        hosts_allow    => $contint_hosts,
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
         require        => [
