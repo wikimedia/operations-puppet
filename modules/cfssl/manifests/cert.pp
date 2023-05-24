@@ -9,6 +9,7 @@
 # @param auto_renew if true we will auto_renew the certificate
 # @param renew_seconds renew the certificate if its due to expire in this many seconds
 # @param provide_chain provide the certificate chain in the output dir
+# @param mode the file mode to use for the outdir
 # @param environment environment to use when running commands
 # @param label the cfssl label to use, this is essentially the CA
 # @param profile the cfssl profile to use
@@ -32,6 +33,7 @@ define cfssl::cert (
     # 11 days + 30 minutes to capture the puppet run schedule.
     Integer[1800]                  $renew_seconds  = 952200,
     Boolean                        $provide_chain  = false,
+    Stdlib::Filemode               $mode           = '0740',
     # We need this because the puppet CA cert used for TLS mutual auth has no SAN
     Array[String]                  $environment    = ['GODEBUG=x509ignoreCN=0'],
     Optional[Cfssl::Ca_name]       $label          = undef,
@@ -89,7 +91,7 @@ define cfssl::cert (
             owner   => $owner,
             group   => $group,
             recurse => true,
-            mode    => '0740',
+            mode    => $mode,
         }
     }
     $tls_config = ($_tls_cert and $_tls_key) ? {
