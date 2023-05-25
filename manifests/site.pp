@@ -2620,12 +2620,8 @@ node /^registry[12]00[34]\.(eqiad|codfw)\.wmnet$/ {
 
 # https://releases.wikimedia.org - VMs for releases files (mediawiki and other)
 # https://releases-jenkins.wikimedia.org (automatic Mediawiki builds)
-node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
+node /^releases[12]00[23]\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
-}
-
-node /^releases[12]003\.(codfw|eqiad)\.wmnet$/ {
-    role(insetup::serviceops_collab)
 }
 
 # New relforge servers T241791 (provision), T262211 (service impl.)
