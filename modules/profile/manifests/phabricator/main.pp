@@ -565,6 +565,19 @@ class profile::phabricator::main (
         mysql_db_name    => 'phabricator_user',
     }
 
+    # yearly metrics mail (T337388)
+    phabricator::logmail {'yearly_metrics':
+        ensure           => $logmail_ensure,
+        rcpt_address     => 'aklapper@wikimedia.org',
+        sndr_address     => 'aklapper@wikimedia.org',
+        month            => 1,
+        monthday         => 1,
+        require          => Package[$deploy_target],
+        mysql_slave      => $mysql_slave,
+        mysql_slave_port => $mysql_slave_port,
+        mysql_db_name    => 'phabricator_maniphest',
+    }
+
     # Allow pulling /srv/repos data from the active server.
     rsync::server::module { 'srv-repos':
         ensure         => 'present',
