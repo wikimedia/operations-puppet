@@ -1,3 +1,4 @@
+profile::puppetmaster::common::base_config: {}
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::hiera_config: production
 profile::puppetmaster::common::storeconfigs: none

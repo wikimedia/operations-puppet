@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Shared profile for front- and back-end puppetmasters.
 #
-# @base_param config:  Dict merged with front- or back- specifics and then passed
+# @param base_config  Dict merged with front- or back- specifics and then passed
 #           to ::puppetmaster as $config
-#
-# @param storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
+# @param storeconfigs Accepts values of 'puppetdb', 'activerecord', and 'none'
 # @param puppetdb_hosts list of puppetdb hosts
 # @param command_broadcast
 # @param ssl_verify_depth ssl verify depth
@@ -12,8 +11,9 @@
 # @param reports list of puppet reports
 # @param enable_merge_cli whether to use the puppet-merge tool to manage git updates
 # @param hiera_config which hiera configuration file to use
+# @param disable_env_config disable environments config
 class profile::puppetmaster::common (
-                                $base_config,
+    Hash                        $base_config         = lookup('profile::puppetmaster::common::base_config'),
     Enum['puppetdb', 'none']    $storeconfigs        = lookup('profile::puppetmaster::common::storeconfigs'),
     Array[Stdlib::Host]         $puppetdb_hosts      = lookup('profile::puppetmaster::common::puppetdb_hosts'),
     Boolean                     $command_broadcast   = lookup('profile::puppetmaster::common::command_broadcast'),
@@ -40,7 +40,7 @@ class profile::puppetmaster::common (
     $puppetdb_config = {
         storeconfigs         => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => $reports.join(',')
+        reports              => $reports.join(','),
     }
 
     if $storeconfigs == 'puppetdb' {
