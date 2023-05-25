@@ -1,20 +1,29 @@
-# == Define ferm::client
-# Uses ferm def &CLIENT or &R_CLIENT to allow outbound
-# connections on the specific protocol and destination port.
-#
-# If $drange is not provided, all destination addresses will be allowed.
-# otherwise only traffic towards $drange will be allowed.
-#
+# @summary create a file for outbound client traffic
+# @param proto the protocol to use
+# @param port the port to use
+# @param ensure the ensureabl parameter
+# @param desc the description
+# @param drange the destination range
+# @param notrack if true dont track state
 define ferm::client(
-    $proto,
-    $port,
-    $ensure  = present,
-    $desc    = '',
-    $prio    = '10',
-    $drange  = undef,
-    $notrack = false,
+    Enum['tcp', 'udp']  $proto,
+    Ferm::Port          $port,
+    Wmflib::Ensure      $ensure  = present,
+    Integer[0,99]       $prio    = 10,
+    Boolean             $notrack = false,
+    Array[String[1]]    $drange  = [],
+    Optional[String[1]] $desc    = undef
 ) {
-    @file { "/etc/ferm/conf.d/${prio}_${name}_client":
+    $_port = $port ? {
+        String  => "(${port})",
+        default => $port,
+    }
+    $_drange = $drange.size ? {
+        0       => undef,
+        1       => $drange[0],
+        default => "({drange.join(' ')})"
+    }
+    @file { '/etc/ferm/conf.d/%02d_%s_client'.sprintf($prio, $name):
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',

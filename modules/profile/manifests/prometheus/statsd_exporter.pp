@@ -24,7 +24,7 @@ class profile::prometheus::statsd_exporter (
     ferm::client { 'statsd-exporter-client':
         proto   => 'udp',
         notrack => true,
-        port    => '9125',
-        drange  => '127.0.0.1',
+        port    => 9125,
+        drange  => ['127.0.0.1'],
     }
 }

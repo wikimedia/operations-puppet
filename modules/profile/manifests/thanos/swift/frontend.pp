@@ -78,26 +78,26 @@ class profile::thanos::swift::frontend (
     ferm::client { 'swift-object-server-client':
         proto   => 'tcp',
         notrack => true,
-        port    => '6000',
+        port    => 6000,
     }
 
     # Per-disk object-server ports T222366
     ferm::client { 'swift-object-server-client-disks':
         proto   => 'tcp',
         notrack => true,
-        port    => '(6010:6040)'
+        port    => '6010:6040'
     }
 
     ferm::client { 'swift-container-server-client':
         proto   => 'tcp',
         notrack => true,
-        port    => '6001',
+        port    => 6001,
     }
 
     ferm::client { 'swift-account-server-client':
         proto   => 'tcp',
         notrack => true,
-        port    => '6002',
+        port    => 6002,
     }
 
     $thanos_access = concat($thanos_backends, $thanos_frontends)

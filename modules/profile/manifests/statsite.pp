@@ -31,6 +31,6 @@ class profile::statsite (
         ensure  => $ensure,
         proto   => 'udp',
         notrack => true,
-        port    => '8125',
+        port    => 8125,
     }
 }
