@@ -111,6 +111,4 @@ class role::logging::mediawiki::udp2log(
         source => 'puppet:///modules/role/logging/logspam.pl',
     }
 
-    include profile::arclamp::redis
-
 }
