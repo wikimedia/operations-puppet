@@ -102,6 +102,8 @@ class profile::kafka::mirror(
     Integer $message_max_bytes            = lookup('kafka_message_max_bytes'),
     Boolean $use_pki_settings             = lookup('profile::kafka::mirror:use_pki_settings', {'default_value' => true}),
 ) {
+    include profile::kafka::common
+
     $source_config            = kafka_config($source_cluster_name)
     $destination_config       = kafka_config($destination_cluster_name)
 
@@ -125,9 +127,6 @@ class profile::kafka::mirror(
                 'group'   => 'kafka',
                 'profile' => 'kafka_11',
                 notify    => Sslcert::X509_to_pkcs12['kafka_mirror_keystore'],
-                # After confluent-kafka package has been
-                # installed and /etc/kafka already exists.
-                require => Class['::confluent::kafka::common'],
                 }
             )
 
@@ -140,21 +139,16 @@ class profile::kafka::mirror(
                 certfile    => $ssl_cert['ca'],
                 outfile     => $ssl_keystore_location,
                 password    => $ssl_password,
-                # After confluent-kafka package has been
-                # installed and /etc/kafka already exists.
-                require     => Class['::confluent::kafka::common'],
+                notify      => Service['kafka-mirror'],
             }
 
         } else {
             if !defined(File[$ssl_location]) {
                 file { $ssl_location:
-                    ensure  => 'directory',
-                    owner   => 'kafka',
-                    group   => 'kafka',
-                    mode    => '0555',
-                    # Install certificates after confluent-kafka package has been
-                    # installed and /etc/kafka already exists.
-                    require => Class['::confluent::kafka::common'],
+                    ensure => 'directory',
+                    owner  => 'kafka',
+                    group  => 'kafka',
+                    mode   => '0555',
                 }
             }
             $ssl_truststore_secrets_path = "certificates/${certificate_name}/truststore.jks"

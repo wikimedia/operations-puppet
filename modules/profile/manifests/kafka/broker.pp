@@ -195,6 +195,8 @@ class profile::kafka::broker(
     Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
     Optional[Array[String]] $custom_ferm_srange_components       = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
 ) {
+    include profile::kafka::common
+
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
     $zookeeper_url  = $config['zookeeper']['url']
@@ -250,23 +252,11 @@ class profile::kafka::broker(
         }
 
         # Distribute Java keystore and truststore for this broker.
-        $ssl_location                = '/etc/kafka/ssl'
-        $ssl_enabled_protocols       = 'TLSv1.2'
-        $ssl_cipher_suites           = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
+        $ssl_location = $profile::kafka::common::kafka_ssl_dir
+        $ssl_enabled_protocols = 'TLSv1.2'
+        $ssl_cipher_suites = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
         # https://phabricator.wikimedia.org/T182993#4208208
-        $ssl_java_opts               = '-Djdk.tls.namedGroups=secp256r1 -XX:+UseAES -XX:+UseAESIntrinsics'
-
-        if !defined(File[$ssl_location]) {
-            file { $ssl_location:
-                ensure  => 'directory',
-                owner   => 'kafka',
-                group   => 'kafka',
-                mode    => '0555',
-                # Install certificates after confluent-kafka package has been
-                # installed and /etc/kafka already exists.
-                require => Class['::confluent::kafka::common'],
-            }
-        }
+        $ssl_java_opts = '-Djdk.tls.namedGroups=secp256r1 -XX:+UseAES -XX:+UseAESIntrinsics'
 
         # Context: T291905
         # We are trying to migrate all Kafka clusters to the new PKI Kafka
