@@ -2,6 +2,11 @@ require_relative '../../../../rake_modules/spec_helper'
 
 # TODO: update to use facterdb
 describe 'monitoring::host' do
+  # Would be nice just to use the function, rather than mocking, but I cried
+  # uncle on figuring out how to do that.
+  let(:pre_condition) do
+    'function wmflib::have_puppetdb() { true }'
+  end
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) do
