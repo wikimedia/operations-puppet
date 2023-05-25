@@ -2094,6 +2094,9 @@ node 'mwmaint1002.eqiad.wmnet', 'mwmaint2002.codfw.wmnet' {
 
 # Jobrunners (now mostly used via changepropagation as a LVS endpoint)
 
+# Due to T329366, we are moving some parsoid servers to the jobrunner
+# cluser in both datacenters.
+
 # Row A
 
 # rack A8
@@ -2109,6 +2112,10 @@ node /^mw146[6-9]\.eqiad\.wmnet$/ {
 }
 
 # Row C
+
+node /^parse101[3-6]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
 
 # Row F
 node /^mw149[45]\.eqiad\.wmnet$/ {
@@ -2476,7 +2483,11 @@ node 'vrts2001.codfw.wmnet' {
 }
 
 # new parsoid nodes - codfw (T243112, T247441) - eqiad (T299573)
-node /^parse[12]0(0[1-9]|1[0-9]|2[0-4])\.(codfw|eqiad)\.wmnet$/ {
+node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
+    role(parsoid)
+}
+
+node /^parse10(0[1-9]|1[012789]|2[0-4])\.eqiad\.wmnet$/ {
     role(parsoid)
 }
 
