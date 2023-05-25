@@ -102,7 +102,7 @@ class snapshot::dumps::nfstester(
 
     # set up a custom xml dups conf file for this testing, using the
     # custom outpuit paths and db lists and so on
-    file { "${settingsdir}/xmldumps.conf":
+    file { "${confsdir}/xmldumps.conf":
       ensure  => 'present',
       mode    => '0755',
       owner   => $user,
