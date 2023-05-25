@@ -280,7 +280,7 @@ sub cluster_fe_hit {
 sub cluster_fe_ratelimit_hit {
     # Note this is a temporary manual hack, copied from requestctl VCL generation.  Should remove later and replace with a real requestctl solution, or something better.
     if (!req.http.X-Requestctl) { set req.http.X-Requestctl = ""; }
-    if ((req.http.User-Agent ~ "^Dalvik/2\.1\.0 \(Linux; U; Android 9(; JHS[CD]200)? Build/7\.6\.[23]\)&") && (!req.http.Referer) && (req.http.Host ~ "upload\.wikimedia\.org")) {
+    if ((req.http.User-Agent ~ "^Dalvik/2\.1\.0 \(Linux; U; Android 9(; JHS[CD]200)? Build/7\.6\.[23]\)$") && (!req.http.Referer) && (req.http.Host ~ "upload\.wikimedia\.org")) {
         set req.http.X-Requestctl = req.http.X-Requestctl + ",hotlink_from_jio_set_top";
         if (vsthrottle.is_denied("requestctl:hotlink_from_jio_set_top", 10, 10s, 600s)) {
             set req.http.Retry-After = 600;
