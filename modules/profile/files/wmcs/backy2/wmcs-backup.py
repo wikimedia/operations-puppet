@@ -599,7 +599,13 @@ class VMBackup:
         )
 
     def remove(self, pool: str, noop: bool = True) -> None:
-        maybe_snapshot = self.backup_entry.get_snapshot(pool=pool)
+        maybe_snapshot = None
+        try:
+            maybe_snapshot = self.backup_entry.get_snapshot(pool=pool)
+        except Exception:
+            # happesn when ceph stuff is not there, we want to delete the
+            # backup too if that's the case
+            pass
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
             maybe_snapshot.remove(noop=noop)
@@ -1404,7 +1410,7 @@ class ImageBackupsState:
             project_backups.update_usages(total_size_mb=self.size_mb)
 
     def delete_expired(self, noop: bool) -> None:
-        for image_backup in self.image_backups:
+        for image_backup in self.image_backups.values():
             image_backup.delete_expired(noop=noop)
 
     def print_dangling_snapshots(self) -> None:
