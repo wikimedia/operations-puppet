@@ -45,6 +45,7 @@ class backy2(
         'python3-sqlalchemy',
         'python3-lz4',
         'python3-pycryptodome',
+        'python3-psycopg2',
     ]
     ensure_packages($packages)
     ensure_packages('backy2')
