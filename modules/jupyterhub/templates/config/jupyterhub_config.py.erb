@@ -280,8 +280,7 @@ c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user',
 
 # Create discrete log files for each user's notebook
 c.SystemdSpawner.unit_extra_properties = {
-    'SyslogIdentifier':'jupyterhub-conda-singleuser',
-    'CollectMode':'inactive-or-failed'
+    'SyslogIdentifier':'jupyterhub-conda-singleuser'
 }
 
 # make systemd 'units' easy to correlate with user and conda env
