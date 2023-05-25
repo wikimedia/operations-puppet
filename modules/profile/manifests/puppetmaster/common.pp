@@ -48,6 +48,7 @@ class profile::puppetmaster::common (
         class { 'puppetmaster::puppetdb::client':
             hosts             => $puppetdb_hosts,
             command_broadcast => $command_broadcast,
+            submit_only_hosts => $puppetdb_submit_only_hosts,
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
     } else {
