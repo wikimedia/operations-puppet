@@ -1,2 +1,4 @@
 # db2179
+# candidate master for s4
+mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 's4'
