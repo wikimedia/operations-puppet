@@ -37,6 +37,9 @@ profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
 # Clients must be in this srange to use Hadoop.
 profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
+profile::hadoop::master::standby::excluded_hosts:
+  - an-test-worker1001.eqiad.wmnet
+
 profile::analytics::cluster::hadoop::yarn_capacity_scheduler::extra_settings:
   # Due to how little the test cluster is compared to prod, we need a higher value
   # for application managers.
