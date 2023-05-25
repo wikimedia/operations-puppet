@@ -16,8 +16,9 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::base::cloudgw::virt_subnet_cidr', {default_value => '127.0.0.8/32'}),
     Stdlib::IP::Address::V4::CIDR $transport_cidr = lookup('profile::openstack::base::cloudgw::transport_cidr'),
     Stdlib::IP::Address::V4::Nosubnet $transport_vip = lookup('profile::openstack::base::cloudgw::transport_vip'),
-    Array[Stdlib::IP::Address::V4] $dmz_cidr         = lookup('profile::openstack::base::cloudgw::dmz_cidr',      {default_value => ['0.0.0.0']}),
-    Optional[Array[Stdlib::IP::Address::V4]] $cloud_filter = lookup('profile::openstack::base::cloudgw::cloud_filter', {default_value => []}),
+    Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter = lookup('profile::openstack::base::cloudgw::cloud_filter',   {default_value => []}),
+    Array[Stdlib::IP::Address::V4]                 $dmz_cidr     = lookup('profile::openstack::base::cloudgw::dmz_cidr',       {default_value => ['0.0.0.0']}),
+    Optional[Array[Stdlib::IP::Address::V4::Cidr]] $public_cidrs = lookup('profile::wmcs::cloud_private_subnet::public_cidrs', {default_value => []}),
 ) {
     class { '::nftables':
         ensure_package => 'present',
@@ -27,6 +28,8 @@ class profile::openstack::base::cloudgw (
     ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
+
+    $actual_dmz_cidr = $dmz_cidr + $public_cidrs
 
     nftables::file { 'cloudgw':
         ensure  => present,

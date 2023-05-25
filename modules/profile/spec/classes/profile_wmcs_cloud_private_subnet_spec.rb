@@ -22,9 +22,12 @@ describe 'profile::wmcs::cloud_private_subnet' do
         'hostname' => 'cloudlb2001-dev',
       }) }
       let(:params) {{
-        'vlan_id'     => 2151,
-        'supernet'    => '172.20.0.0/16',
-        'public_vips' => '185.15.57.24/29',
+        'vlan_id'      => 2151,
+        'supernet'     => '172.20.0.0/16',
+        'public_cidrs' => [
+            '185.15.57.0/26',
+            '1.2.3.0/24',
+        ],
       }}
       it { is_expected.to compile.with_all_deps }
       it {
@@ -41,16 +44,21 @@ describe 'profile::wmcs::cloud_private_subnet' do
               .with_prefixlen("24")
       }
       it {
-        is_expected.to contain_interface__route("cloud_private_subnet_route")
+        is_expected.to contain_interface__route("cloud_private_subnet_route_supernet")
               .with_address("172.20.0.0")
               .with_prefixlen("16")
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
       }
       it {
-        is_expected.to contain_interface__route("cloud_private_subnet_public_vips_route")
-              .with_address("185.15.57.24")
-              .with_prefixlen("29")
+        is_expected.to contain_interface__route("cloud_private_subnet_route_public_0")
+              .with_address("185.15.57.0")
+              .with_prefixlen("26")
+              .with_nexthop("172.20.5.1")
+              .with_interface("vlan2151")
+        is_expected.to contain_interface__route("cloud_private_subnet_route_public_1")
+              .with_address("1.2.3.0")
+              .with_prefixlen("24")
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
       }
