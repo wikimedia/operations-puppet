@@ -2192,48 +2192,48 @@ infra_devices:
     ipv4: 10.64.146.1
     ipv6: 2620:0:861:11b::1
     parents:
-    - lsw1-e1-eqiad
-    - lsw1-f1-eqiad
+    - cr1-eqiad
+    - cr2-eqiad
     site: eqiad
     role: l3sw
   lsw1-e1-eqiad:
     ipv4: 10.64.146.3
     ipv6: 2620:0:861:11b::3
     parents:
-    - cr1-eqiad
-    - cr2-eqiad
+    - ssw1-e1-eqiad
+    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-e2-eqiad:
     ipv4: 10.64.146.4
     ipv6: 2620:0:861:11b::4
     parents:
-    - lsw1-e1-eqiad
-    - lsw1-f1-eqiad
+    - ssw1-e1-eqiad
+    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-e3-eqiad:
     ipv4: 10.64.146.5
     ipv6: 2620:0:861:11b::5
     parents:
-    - lsw1-e1-eqiad
-    - lsw1-f1-eqiad
+    - ssw1-e1-eqiad
+    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   ssw1-f1-eqiad:
     ipv4: 10.64.146.2
     ipv6: 2620:0:861:11b::2
     parents:
-    - lsw1-e1-eqiad
-    - lsw1-f1-eqiad
+    - cr1-eqiad
+    - cr2-eqiad
     site: eqiad
     role: l3sw
   lsw1-f1-eqiad:
     ipv4: 10.64.146.7
     ipv6: 2620:0:861:11b::7
     parents:
-    - cr1-eqiad
-    - cr2-eqiad
+    - ssw1-e1-eqiad
+    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-f2-eqiad:
