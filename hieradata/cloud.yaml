@@ -368,6 +368,7 @@ profile::puppetmaster::common::enable_merge_cli: false
 profile::puppetmaster::common::disable_env_config: false
 profile::puppetmaster::common::reports:
   - puppetdb
+profile::puppetmaster::common::puppetdb_submit_only_hosts: []
 
 profile::puppetserver::enc: ~
 profile::puppetserver::reports: ['store']

@@ -4,6 +4,7 @@ class puppetmaster::puppetdb::client(
     Array[Stdlib::Host] $hosts,
     Stdlib::Port        $port              = 443,
     Boolean             $command_broadcast = false,
+    Array[Stdlib::Host] $submit_only_hosts = [],
 ) {
     $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
 
