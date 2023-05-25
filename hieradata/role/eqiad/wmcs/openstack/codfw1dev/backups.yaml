@@ -41,9 +41,10 @@ profile::openstack::codfw1dev::openstack_controllers:
     - cloudcontrol2005-dev.wikimedia.org
 
 profile::openstack::codfw1dev::rabbitmq_nodes:
+    # TODO: decide what to do with these
     #- rabbitmq01.codfw1dev.wikimediacloud.org
     - rabbitmq02.codfw1dev.wikimediacloud.org
-    - rabbitmq03.codfw1dev.wikimediacloud.org
+    #- rabbitmq03.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::cinder::api_bind_port: 18776
 profile::openstack::codfw1dev::cinder::ceph_pool: codfw1dev-cinder
 profile::openstack::codfw1dev::cinder::ceph_rbd_client_name: codfw1dev-cinder

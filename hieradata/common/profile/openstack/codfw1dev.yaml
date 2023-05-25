@@ -17,7 +17,7 @@ profile::openstack::codfw1dev::public_apis: false
 profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2001-dev.codfw.wmnet
   - cloudcontrol2004-dev.wikimedia.org
-  - cloudcontrol2005-dev.wikimedia.org
+  - cloudcontrol2005-dev.codfw.wmnet
 
 
 # The public service name for the keystone API
@@ -35,7 +35,6 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 # rather, that should happen via the keystone_api_fqdn defined above.
 profile::openstack::codfw1dev::haproxy_nodes:
   - cloudcontrol2004-dev.wikimedia.org
-  - cloudcontrol2005-dev.wikimedia.org
   - cloudlb2001-dev.private.codfw.wikimedia.cloud
   - cloudlb2002-dev.private.codfw.wikimedia.cloud
   - cloudlb2003-dev.private.codfw.wikimedia.cloud
@@ -60,9 +59,10 @@ profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
 
 # In codfw1dev, the cloudcontrol nodes also host the RabbitMQ service.
 profile::openstack::codfw1dev::rabbitmq_nodes:
+  # TODO: decide what to do with these
   #- rabbitmq01.codfw1dev.wikimediacloud.org
   - rabbitmq02.codfw1dev.wikimediacloud.org
-  - rabbitmq03.codfw1dev.wikimediacloud.org
+  #- rabbitmq03.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::rabbitmq_setup_nodes: []
 profile::openstack::codfw1dev::rabbit_monitor_user: 'monitoring'
 profile::openstack::codfw1dev::rabbit_file_handles: 8192

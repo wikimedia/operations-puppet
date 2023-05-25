@@ -44,8 +44,6 @@ profile::openstack::base::cloudgw::dmz_cidr:
   - "208.80.155.104"
   # VMs --> cloudcontrol2004-dev.wikimedia.org
   - "208.80.153.116"
-  # VMs --> cloudcontrol2005-dev.wikimedia.org
-  - "208.80.153.40"
   # VMs --> contint2001.wikimedia.org
   - "208.80.153.15"
   # VMs --> contint1002.wikimedia.org
@@ -63,5 +61,5 @@ profile::openstack::base::cloudgw::dmz_cidr:
   # VMs --> cloudmetrics1003 / cloudmetrics1004
   - "10.64.4.6"
   - "10.64.37.6"
-  # VMs --> cloudlb VIPs in codfw
+  # VMs --> cloudlb VIPs
   - "%{lookup('profile::wmcs::cloud_private_subnet::public_vips')}"
