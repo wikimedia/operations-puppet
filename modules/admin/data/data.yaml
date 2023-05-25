@@ -5640,6 +5640,7 @@ users:
     ensure: present
     krb: present
     realname: Hghani
+    email: hghani-ctr@wikimedia.org
     expiry_date: 2023-11-30
     expiry_contact: kzimmerman@wikimedia.org
     uid: 42383
