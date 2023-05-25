@@ -68,7 +68,7 @@ class idm::deployment (
             owner     => $deploy_user,
             group     => $deploy_user,
             source    => 'gerrit',
-            notify    => Exec['collect static assets', "install requirements to ${venv}"],
+            notify    => Exec["install requirements to ${venv}"],
         }
 
         exec { "create virtual environment ${venv}":
@@ -78,18 +78,17 @@ class idm::deployment (
 
         exec { "install requirements to ${venv}":
             command     => "${venv}/bin/pip3 install -r ${base_dir}/${project}/requirements.txt",
-            creates     => "${venv}/bin/django-admin",
             require     => Exec["create virtual environment ${venv}"],
+            notify      => Exec['collect static assets'],
             refreshonly => true,
         }
 
         exec { 'collect static assets':
             command     => "${base_dir}/venv/bin/python ${base_dir}/${project}/manage.py collectstatic  --no-input",
             environment => ["PYTHONPATH=${etc_dir}", 'DJANGO_SETTINGS_MODULE=settings'],
-            require     => Exec["create virtual environment ${venv}"],
+            notify      => Service['uwsgi-bitu', 'rq-bitu'],
             refreshonly => true,
         }
-
     } else {
         # For future use.
         ensure_packages('python3-bitu-idm')

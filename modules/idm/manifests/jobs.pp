@@ -8,22 +8,21 @@ class idm::jobs (
     String         $venv
 ){
 
-    systemd::timer::job { 'idm-sync-permissions':
-        ensure          => absent,
-        description     => 'Syncronize permissions from backend to IDM',
-        command         => "${venv}/bin/python ${base_dir}/${project}/manage.py systems_sync",
-        logging_enabled => true,
-        user            => 'www-data',
-        environment     => { 'PYTHONPATH' => $etc_dir, 'DJANGO_SETTINGS_MODULE' =>'settings' },
-        interval        => { 'start' => 'OnCalendar', 'interval' => '0/1:00:00'},
+    systemd::service { 'rq-bitu':
+        ensure  => $present,
+        content => file('idm/rq-bitu.service')
+    }
+
+    profile::auto_restarts::service {'rq-bitu':
+        ensure => $present,
     }
 
     systemd::service { 'rq-idm':
-        ensure  => $present,
-        content => file('idm/rq-idm.service')
+        ensure  => absent,
+        content => file('idm/rq-bitu.service')
     }
 
     profile::auto_restarts::service {'rq-idm':
-        ensure => $present,
+        ensure => absent,
     }
 }
