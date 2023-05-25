@@ -7,7 +7,7 @@ PREPARATION
 * Go to the snapshot testbed, become the <%= @user -%> user, and cd into the nfs_testing directory. Presumably you
   are there since you are reading this file.
 * As root, mount the nfs share. Sample command:
-  mount -t nfs -o rw,vers=3,hard,acdirmin=0,acdirmax=0,acregmin=0,acregmax=0,timeo=600,rsize=8192,wsize=8192,bg,proto=tcp dumpsdata1005.eqiad.wmnet:/data <%= @mountpoint %>
+  mount -t nfs -o bg,hard,rw,nfsvers=3,rsize=8192,wsize=8192,proto=tcp,actimeo=0 dumpsdata1005.eqiad.wmnet:/data <%= @mountpoint %>
 * As the <%= @user %> user, run the script nfs_testing_create_output_dirs.sh located in this directory.
   This will create the directories for dumps output files, if they do not already exist.
 
