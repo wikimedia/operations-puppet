@@ -3,4 +3,7 @@ type Puppetserver::Hierarchy = Variant[
     Puppetserver::Hierarchy::Httpyaml,
     Puppetserver::Hierarchy::Path,
     Puppetserver::Hierarchy::Paths,
+    Puppetserver::Hierarchy::ExpandPath,
+    Puppetserver::Hierarchy::RegexLookup,
+    Puppetserver::Hierarchy::Glob,
 ]
