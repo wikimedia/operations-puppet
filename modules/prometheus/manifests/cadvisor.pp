@@ -26,6 +26,7 @@ class prometheus::cadvisor(
     }
 
     systemd::service { 'cadvisor':
+        ensure    => $ensure,
         content   => init_template('cadvisor', 'systemd_override'),
         override  => true,
         restart   => true,
