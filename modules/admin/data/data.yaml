@@ -58,7 +58,8 @@ groups:
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila]
+              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
+              nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -239,7 +240,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, nskaggs, sstefanova, raymond-ndibe, pfischer]
+    members: [ebernhardson, dcausse, bd808, sstefanova, raymond-ndibe, pfischer]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -724,7 +725,7 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808, nskaggs, taavi, sstefanova, raymond-ndibe]
+    members: [bd808, taavi, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
@@ -796,14 +797,14 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: [bd808, nskaggs, taavi, sstefanova, raymond-ndibe]
+    members: [bd808, taavi, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
-    members: [bd808, nskaggs, sstefanova, raymond-ndibe]
+    members: [bd808, sstefanova, raymond-ndibe]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.wikireplicas.*',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
