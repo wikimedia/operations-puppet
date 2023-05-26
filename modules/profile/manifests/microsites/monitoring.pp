@@ -24,4 +24,15 @@ class profile::microsites::monitoring {
         port           => 30443, # Kubernetes Ingress port
         ip4            => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
     }
+
+    prometheus::blackbox::check::http { 'bienvenida.wikimedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        force_tls          => true,
+        ip_families        => [ip4],
+        body_regex_matches => ['enciclopedia'],
+        port               => 30443, # Kubernetes Ingress port
+        ip4                => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
+    }
 }
