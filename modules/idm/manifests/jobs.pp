@@ -16,13 +16,4 @@ class idm::jobs (
     profile::auto_restarts::service {'rq-bitu':
         ensure => $present,
     }
-
-    systemd::service { 'rq-idm':
-        ensure  => absent,
-        content => file('idm/rq-bitu.service')
-    }
-
-    profile::auto_restarts::service {'rq-idm':
-        ensure => absent,
-    }
 }
