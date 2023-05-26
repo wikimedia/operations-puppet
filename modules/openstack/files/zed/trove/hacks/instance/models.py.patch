@@ -1,11 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
-
 --- models.py	2022-09-14 14:10:06.000000000 +0000
-+++ models.py.patched	2023-01-11 14:44:14.033303007 +0000
-@@ -141,14 +141,14 @@
++++ models.py.patched	2023-05-26 00:28:32.097182304 +0000
+@@ -147,8 +147,12 @@
  
- def load_simple_instance_addresses(context, db_info):
-     """Get addresses of the instance from Neutron."""
      addresses = []
      user_ports = []
 -    client = clients.create_neutron_client(context, db_info.region_id)
@@ -19,7 +16,7 @@
      for port in ports:
          if port['network_id'] not in CONF.management_networks:
              LOG.debug('Found user port %s for instance %s', port['id'],
-@@ -249,7 +249,7 @@
+@@ -249,7 +253,7 @@
          ips = self.get_visible_ip_addresses()
          if ips:
              # FIXME
