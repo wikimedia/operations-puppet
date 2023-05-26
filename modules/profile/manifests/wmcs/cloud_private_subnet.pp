@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
-    Boolean                       $do_bgp      = lookup('profile::wmcs::cloud_private_subnet::do_bgp',  {'default_value' => false}),
     Stdlib::Fqdn                  $domain      = lookup('profile::wmcs::cloud_private_subnet::domain',  {'default_value' => 'wikimedia.cloud'}),
     Integer[1,32]                 $netmask     = lookup('profile::wmcs::cloud_private_subnet::netmask', {'default_value' => 24}),
     Stdlib::Fqdn                  $gw          = lookup('profile::wmcs::cloud_private_subnet::gw',      {'default_value' => 'cloudsw'}),
@@ -50,30 +49,5 @@ class profile::wmcs::cloud_private_subnet (
         prefixlen => split($public_vips, '/')[1],
         nexthop   => $gw_address,
         interface => $interface,
-    }
-
-    if $do_bgp {
-        class { 'profile::bird::anycast':
-            neighbors_list => [$gw_address],
-            ipv4_src       => $cloud_private_address,
-        }
-
-        $table = 'cloud-private'
-        $table_number = 100
-
-        file { "/etc/iproute2/rt_tables.d/${table}.conf":
-            ensure  => present,
-            content => "${table_number} ${table}\n",
-        }
-
-        interface::post_up_command { "${table}_default_gw":
-            interface => $interface,
-            command   => "ip route add default via ${gw_address} table ${table}",
-        }
-
-        interface::post_up_command { "${table}_route_lookup_rule":
-            interface => $interface,
-            command   => "ip rule add from ${public_vips} table ${table}",
-        }
     }
 }

@@ -1,4 +1,3 @@
 profile::contacts::role_contacts: ["WMCS"]
 
-profile::wmcs::cloud_private_subnet::do_bgp: true
 profile::bird::bind_anycast_service: haproxy.service

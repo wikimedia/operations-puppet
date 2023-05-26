@@ -24,7 +24,6 @@ prometheus_nodes:
     - prometheus2005.codfw.wmnet
     - prometheus2006.codfw.wmnet
 
-profile::wmcs::cloud_private_subnet::do_bgp: true
 profile::bird::bind_anycast_service: pdns.service
 profile::bird::advertise_vips:
   ns0.openstack.codfw1dev.wikimediacloud.org:
