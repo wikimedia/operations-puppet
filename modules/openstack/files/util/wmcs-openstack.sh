@@ -5,5 +5,5 @@ if [ "$(id -u)" != "0" ] ; then
 	exit 1
 fi
 
-source /root/novaenv.sh --no-clobber
+OS_CLOUD=novaadmin
 openstack "$@"
