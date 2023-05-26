@@ -12,7 +12,6 @@ class role::miscweb {
     include profile::miscweb::rsync              # copy data for migrations
     include profile::tlsproxy::envoy             # TLS termination
 
-    include profile::microsites::annualreport    # https://annual.wikimedia.org
     include profile::microsites::static_rt       # https://static-rt.wikimedia.org
     include profile::microsites::transparency    # https://transparency.wikimedia.org
     include profile::microsites::research        # https://research.wikimedia.org (T183916)
