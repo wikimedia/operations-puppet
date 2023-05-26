@@ -42,7 +42,7 @@ define prometheus::targets::service_catalog (
       $memo + $probe_targets
     }
 
-    $memo + $probes
+    $memo + filter($probes) |$probe| { $probe != undef }
   }
 
   file { $targets_file:
