@@ -1,2 +1,2 @@
 profile::puppetmaster::common::puppetdb_submit_only_hosts:
-  - puppetdb1003.eqiad.wmnet
+  - puppetdb2003.codfw.wmnet
