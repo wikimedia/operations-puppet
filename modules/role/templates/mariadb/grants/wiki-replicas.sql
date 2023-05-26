@@ -36,6 +36,7 @@ GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'208.80.155.104' WITH GRAN
 
 -- Labsdbuser is a role with privileges for all views like
 -- GRANT SELECT, SHOW VIEW ON `rowikiquote\_p`.* TO 'labsdbuser'
+CREATE ROLE labsdbuser;
 GRANT USAGE ON *.* TO 'labsdbuser';
 
 -- maintainviews user used by cloud services team
