@@ -1,5 +1,8 @@
-# == Class puppetmaster::puppetdb::client
-# Configures a puppetmaster to work as a puppetdb client
+# @summary Configures a puppetmaster to work as a puppetdb client
+# @param hosts the puppetdb hosts to configure
+# @param port the port puppetdb uses
+# @param command_broadcast brodcast to all puppetdb servers
+# @param submit_only_hosts puppetdb submit only hosts
 class puppetmaster::puppetdb::client(
     Array[Stdlib::Host] $hosts,
     Stdlib::Port        $port              = 443,
@@ -18,7 +21,7 @@ class puppetmaster::puppetdb::client(
     }
 
     file { '/etc/puppet/puppetdb.conf':
-        ensure  => present,
+        ensure  => file,
         content => template($puppetdb_conf_template),
         owner   => 'root',
         group   => 'root',
@@ -26,7 +29,7 @@ class puppetmaster::puppetdb::client(
     }
 
     file { '/etc/puppet/routes.yaml':
-        ensure => present,
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -34,7 +37,7 @@ class puppetmaster::puppetdb::client(
     }
 
     if defined(Service['apache2']) {
-        File['/etc/puppet/routes.yaml'] -> Service['apache2']
+        File['/etc/puppet/routes.yaml', '/etc/puppet/puppetdb.conf'] -> Service['apache2']
     }
 
     # Absence of this directory causes the puppetmaster to spit out
