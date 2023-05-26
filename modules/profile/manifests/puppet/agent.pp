@@ -14,6 +14,7 @@
 # @param serialization_format the serilasation format of catalogs
 # @param dns_alt_names a list of dns alt names
 # @param certificate_revocation The level of certificate revocation to perform
+# @param create_timer whether to create the systemd agent timer
 class profile::puppet::agent (
     String                          $puppetmaster           = lookup('puppetmaster'),
     Optional[String[1]]             $ca_server              = lookup('puppet_ca_server'),
@@ -26,6 +27,7 @@ class profile::puppet::agent (
     Enum['pson', 'json', 'msgpack'] $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
     Array[Stdlib::Fqdn]             $dns_alt_names          = lookup('profile::puppet::agent::dns_alt_names'),
     Optional[Enum['chain', 'leaf']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
+    Boolean                         $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
 ) {
     if $force_puppet7 {
         if debian::codename::lt('bullseye') {
@@ -108,16 +110,18 @@ class profile::puppet::agent (
     $min = $interval.fqdn_rand($timer_seed)
     $timer_interval = "*:${min}/${interval}:00"
 
-    systemd::timer::job { 'puppet-agent-timer':
-        ensure        => present,
-        description   => "Run Puppet agent every ${interval} minutes",
-        user          => 'root',
-        ignore_errors => true,
-        command       => '/usr/local/sbin/puppet-run',
-        interval      => [
-            { 'start' => 'OnCalendar', 'interval' => $timer_interval },
-            { 'start' => 'OnStartupSec', 'interval' => '1min' },
-        ],
+    if $create_timer {
+        systemd::timer::job { 'puppet-agent-timer':
+            ensure        => present,
+            description   => "Run Puppet agent every ${interval} minutes",
+            user          => 'root',
+            ignore_errors => true,
+            command       => '/usr/local/sbin/puppet-run',
+            interval      => [
+                { 'start' => 'OnCalendar', 'interval' => $timer_interval },
+                { 'start' => 'OnStartupSec', 'interval' => '1min' },
+            ],
+        }
     }
 
     logrotate::rule { 'puppet':
