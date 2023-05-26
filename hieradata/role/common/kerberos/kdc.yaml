@@ -1,5 +1,3 @@
-profile::rsyslog::rotate_hourly:
-  - /var/log/auth.log
 profile::kerberos::kadminserver::enable_replication: true
 profile::kerberos::kadminserver::monitoring_enabled: true
 profile::kerberos::kdc::monitoring_enabled: true
