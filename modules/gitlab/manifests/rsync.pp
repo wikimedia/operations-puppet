@@ -37,6 +37,7 @@ class gitlab::rsync (
             description => 'rsync GitLab data backup primary to a secondary server',
             command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='gitlab_config_*.tar' ${backup_dir_data}/ rsync://${host}/data-backup",
             interval    => $rsync_interval,
+            after       => 'full-backup.service',
         }
         # rsync config backup and exclude Shell scripts and data backup from sync
         systemd::timer::job { "rsync-config-backup-${host}":
@@ -45,6 +46,7 @@ class gitlab::rsync (
             description => 'rsync GitLab config backup primary to a secondary server',
             command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='*_gitlab_backup.tar' ${backup_dir_config}/ rsync://${host}/data-backup",
             interval    => $rsync_interval,
+            after       => 'config-backup.service',
         }
     }
 }
