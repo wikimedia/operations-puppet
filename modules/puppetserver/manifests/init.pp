@@ -11,7 +11,9 @@
 # @param hierarchy a hash of hierarchy to add to the hiera file
 # @param puppetdb_urls if present puppetdb will be configured using these urls
 # @param reports list of reports to configure
-# @param enc path to ENC script
+# @param enc_path path to an ENC script
+# @param listen_host host to bind webserver socket
+# @param autosign if true autosign agent certs
 class puppetserver (
     Wmflib::Ensure                 $ensure               = 'present',
     Stdlib::Fqdn                   $server_id            = $facts['networking']['fqdn'],
@@ -25,7 +27,9 @@ class puppetserver (
     Array[Puppetserver::Hierarchy] $hierarchy            = [],
     Array[Stdlib::HTTPUrl]         $puppetdb_urls        = [],
     Array[Puppetserver::Report,1]  $reports              = ['store'],
-    Optional[Stdlib::Filesource]   $enc                  = undef,
+    Optional[Stdlib::Unixpath]     $enc_path             = undef,
+    Stdlib::Host                   $listen_host          = $facts['networking']['ip'],
+    Boolean                        $autosign             = false
 ) {
     ensure_packages(['puppetserver'])
     $ruby_load_path = '/usr/lib/puppetserver/ruby/vendor_ruby'
@@ -36,12 +40,10 @@ class puppetserver (
     $ssl_dir = '/var/lib/puppet/server/ssl'
     $environments_dir = "${code_dir}/environments"
 
-    $_enc = $enc.then |$e| { "node_terminus = exec\nexternal_nodes = ${e}" }
     $_reports = $puppetdb_urls.empty ? {
         false   => $reports + 'puppetdb',
         default => $reports,
     }
-    $store_config = $puppetdb_urls.empty.bool2str('', "storeconfigs = true\nstoreconfigs_backend = puppetdb")
 
     wmflib::dir::mkdir_p([$environments_dir, $config_dir])
     wmflib::dir::mkdir_p(
@@ -53,19 +55,42 @@ class puppetserver (
     )
 
     $config = @("CONFIG")
-    [master]
+
+    [server]
     ssldir = ${ssl_dir}
     ca_server = ${ca_server}
     reports = ${_reports.unique.join(',')}
     codedir = ${code_dir}
-    ${store_config}
-    ${_enc}
     | CONFIG
-    concat::fragment { 'master':
+    concat::fragment { 'server':
         target  => '/etc/puppet/puppet.conf',
         order   => '20',
         content => $config,
         notify  => Service['puppetserver'],
+    }
+    if ! $puppetdb_urls.empty {
+        concat::fragment { 'server-storeconfigs':
+            target  => '/etc/puppet/puppet.conf',
+            order   => '21',
+            content => "storeconfigs = true\nstoreconfigs_backend = puppetdb\n",
+            notify  => Service['puppetserver'],
+        }
+    }
+    if $enc_path {
+        concat::fragment { 'server-enc':
+            target  => '/etc/puppet/puppet.conf',
+            order   => '22',
+            content => "node_terminus = exec\nexternal_nodes = ${enc_path}\n",
+            notify  => Service['puppetserver'],
+        }
+    }
+    if $autosign {
+        concat::fragment { 'server-autosign':
+            target  => '/etc/puppet/puppet.conf',
+            order   => '23',
+            content => "autosign = ${autosign}\n",
+            notify  => Service['puppetserver'],
+        }
     }
 
     # TODO: puppetserver has support for graphite and jmx (with jolokia)
@@ -91,6 +116,9 @@ class puppetserver (
             'data_hash' => 'yaml_data',
         },
     }
+    $web_server_params = {
+        'listen_host' => $listen_host,
+    }
     file {
         default:
             ensure  => stdlib::ensure($ensure, 'file'),
@@ -104,7 +132,7 @@ class puppetserver (
         "${config_d_dir}/web-routes.conf":
             content => epp('puppetserver/web-routes.conf.epp');
         "${config_d_dir}/webserver.conf":
-            content => epp('puppetserver/webserver.conf.epp');
+            content => epp('puppetserver/webserver.conf.epp', $web_server_params);
         '/etc/puppet/hiera.yaml':
             content => $hiera_config.to_yaml;
         '/etc/default/puppetserver':

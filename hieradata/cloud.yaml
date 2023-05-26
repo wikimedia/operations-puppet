@@ -379,7 +379,7 @@ profile::puppetmaster::common::reports:
   - puppetdb
 profile::puppetmaster::common::puppetdb_submit_only_hosts: []
 
-profile::puppetserver::enc: ~
+profile::puppetserver::enc_path: ~
 profile::puppetserver::reports: ['store']
 profile::puppetserver::puppetdb_urls: []
 profile::puppetserver::code_dir: '/srv/puppet_code'
