@@ -21,8 +21,21 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
         'hostname' => 'cloudlb2001-dev',
       }) }
       let(:params) {{
-        'vlan_id'     => 2151,
-        'public_vips' => '185.15.57.24/29',
+        'vlan_id' => 2151,
+        'vips'    => {
+            'openstack.codfw1dev.wikimediacloud.org' => {
+                'ensure' => 'present',
+                'check_cmd' => 'whatever',
+                'service_type' => 'whatever',
+                'address' => '185.15.57.24',
+            },
+            'other' => {
+                'ensure' => 'present',
+                'check_cmd' => 'whatever',
+                'service_type' => 'whatever',
+                'address' => '1.2.3.4',
+            },
+        },
       }}
       it { is_expected.to compile.with_all_deps }
       it {
@@ -41,9 +54,14 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
               .with_command("ip route add default via 172.20.5.1 table cloud-private")
       }
       it {
-        is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule")
+        is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_openstack.codfw1dev.wikimediacloud.org")
               .with_interface("vlan2151")
-              .with_command("ip rule add from 185.15.57.24/29 table cloud-private")
+              .with_command("ip rule add from 185.15.57.24/32 table cloud-private")
+      }
+      it {
+        is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_other")
+              .with_interface("vlan2151")
+              .with_command("ip rule add from 1.2.3.4/32 table cloud-private")
       }
     end
   end
