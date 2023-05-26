@@ -30,7 +30,6 @@ profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
 profile::mediawiki::apc_shm_size: 128M
 
-profile::base::firewall::block_abuse_nets: true
 profile::contacts::role_contacts: ['WMCS']
 
 # TLS for caches -> web interfaces

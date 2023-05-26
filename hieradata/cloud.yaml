@@ -430,7 +430,6 @@ profile::puppetserver::git::repos:
       'pre-rebase': 'puppet:///modules/puppetmaster/git/private/pre-rebase'
     link: '/etc/puppet/private'
 
-profile::base::firewall::block_abuse_nets: false
 profile::base::firewall::default_reject: false
 
 profile::backup::director_seed: changeme

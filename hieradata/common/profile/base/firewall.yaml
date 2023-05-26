@@ -1,4 +1,3 @@
 profile::base::firewall::enable_logging: true
-profile::base::firewall::block_abuse_nets: true
 profile::base::firewall::default_reject: false
 profile::base::firewall::defs_from_etcd: true

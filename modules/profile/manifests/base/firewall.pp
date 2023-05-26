@@ -33,7 +33,6 @@ class profile::base::firewall (
     Array[Stdlib::Host]        $prometheus_nodes        = lookup('prometheus_nodes',
                                                                 {default_value => []}),
     Boolean                    $enable_logging   = lookup('profile::base::firewall::enable_logging'),
-    Boolean                    $block_abuse_nets = lookup('profile::base::firewall::block_abuse_nets'),
     Boolean                    $default_reject   = lookup('profile::base::firewall::default_reject'),
     Boolean                    $defs_from_etcd   = lookup('profile::base::firewall::defs_from_etcd'),
 ) {
@@ -68,12 +67,10 @@ class profile::base::firewall (
             prefix          => $conftool_prefix,
             relative_prefix => false,
         }
-        if $block_abuse_nets {
-            ferm::rule { 'drop-blocked-nets':
-                prio => '01',
-                rule => 'saddr $BLOCKED_NETS DROP;',
-                desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
-            }
+        ferm::rule { 'drop-blocked-nets':
+            prio => '01',
+            rule => 'saddr $BLOCKED_NETS DROP;',
+            desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
         }
     }
     if $enable_logging {
