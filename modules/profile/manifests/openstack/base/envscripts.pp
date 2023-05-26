@@ -28,25 +28,6 @@ class profile::openstack::base::envscripts(
         os_user_domain_id      => 'default',
     }
 
-    # If we specify a domain but not a project, we should
-    #  get a domain-scoped token.
-    # Note that domain is already assumed to be set to 'default'
-    #  by openstack::util::envscript
-    openstack::util::envscript { 'keystoneadmin':
-        region                 => $region,
-        keystone_api_fqdn      => $keystone_api_fqdn,
-        keystone_api_port      => 25357,
-        keystone_api_interface => 'admin',
-        os_user                => 'novaadmin',
-        os_password            => $ldap_user_pass,
-        os_db_password         => $nova_db_pass,
-        scriptpath             => '/root/keystoneenv.sh',
-        yaml_mode              => '0440',
-        clouds_files           => [$root_clouds_file],
-        os_project_domain_id   => 'default',
-        os_user_domain_id      => 'default',
-    }
-
     #  system-scoped token:
     openstack::util::envscript { 'ossystemadmin':
         region                 => $region,
