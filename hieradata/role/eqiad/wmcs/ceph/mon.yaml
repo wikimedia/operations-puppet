@@ -1,6 +1,3 @@
-profile::admin::groups:
-  - wmcs-roots
-
 profile::lvs::realserver::pools:
   cloudceph:
     services:
