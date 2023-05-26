@@ -367,7 +367,7 @@ customviews:
       OR exists( select 1 from oldimage where oi_description_id = comment_id AND oi_deleted&2 = 0 )
       OR exists( select 1 from protected_titles where pt_reason_id = comment_id )
       OR exists( select 1 from recentchanges where rc_comment_id = comment_id AND rc_deleted&2 = 0 )
-      OR exists( select 1 from revision JOIN revision_comment_temp ON(revcomment_rev = rev_id) where revcomment_comment_id = comment_id AND rev_deleted&2 = 0 )
+      OR exists( select 1 from revision where rev_comment_id = comment_id AND rev_deleted&2 = 0 )
       OR exists( select 1 from logging where log_comment_id = comment_id AND log_deleted&2 = 0 AND $INSERTED_EXPR$ )
     logging_where:
       *allowed_logtypes
@@ -413,7 +413,7 @@ customviews:
     view: >
       select comment_id, comment_hash, comment_text, comment_data
     where: >
-      exists( select 1 from revision JOIN revision_comment_temp ON(revcomment_rev = rev_id) where revcomment_comment_id = comment_id AND rev_deleted&2 = 0 )
+      exists( select 1 from revision where rev_comment_id = comment_id AND rev_deleted&2 = 0 )
   comment_logging:
     source: comment
     view: >
@@ -732,20 +732,15 @@ customviews:
   revision:
     source: revision
     view: >
-      select rev_id, rev_page,
-      if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
-      rev_actor,
+      select rev_id, rev_page, rev_comment_id, rev_actor,
       rev_timestamp, rev_minor_edit, rev_deleted, rev_len, rev_parent_id,
       if(rev_deleted&1,null,rev_sha1) as rev_sha1
-    join:
-      - table: revision_comment_temp
-        condition: on revcomment_rev = rev_id
   revision_compat:
     source: revision
     view: >
       select rev_id, rev_page,
       if(rev_deleted&1,null,content_id) as rev_text_id,
-      if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
+      rev_comment_id,
       if(rev_deleted&2,null,comment_text) as rev_comment,
       case when rev_deleted&4 != 0 then null else COALESCE( actor_user, 0 ) END AS rev_user,
       case when rev_deleted&4 != 0 then null else actor_name END AS rev_user_text,
@@ -754,10 +749,8 @@ customviews:
       if(rev_deleted&1,null,rev_sha1) as rev_sha1, model_name as rev_content_model,
       NULL as rev_content_format
     join:
-      - table: revision_comment_temp
-        condition: on revcomment_rev = rev_id
       - table: comment
-        condition: on comment_id = revcomment_comment_id
+        condition: on comment_id = rev_comment_id
       - table:
         - table: slots
         - type: JOIN
@@ -775,14 +768,9 @@ customviews:
   revision_userindex:
     source: revision
     view: >
-      select rev_id, rev_page,
-      if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
-      rev_actor, rev_timestamp, rev_minor_edit, rev_deleted,
+      select rev_id, rev_page, rev_comment_id, rev_actor, rev_timestamp, rev_minor_edit, rev_deleted,
       rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1
     where: (rev_deleted&4)=0
-    join:
-      - table: revision_comment_temp
-        condition: on revcomment_rev = rev_id
   slots:
     source: slots
     view: >
