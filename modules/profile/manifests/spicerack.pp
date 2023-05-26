@@ -80,4 +80,10 @@ class profile::spicerack (
         cookbooks_dirs => $cookbooks_repos.values,
         modules        => $modules,
     }
+
+    file { '/usr/local/bin/test-cookbook':
+        ensure => file,
+        source => 'puppet:///modules/profile/spicerack/test_cookbook.py',
+        mode   => '0555',
+    }
 }
