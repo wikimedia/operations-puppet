@@ -90,7 +90,7 @@ sub cluster_fe_recv {
 
     // GeoIP Mappings (T332028)
     if (req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
-        if (req.url == "/measure") {
+        if (req.url ~ "^/measure(\?.*)?$") {
             return (synth(200, "OK"));
         } else {
             return (synth(404, "Not Found"));

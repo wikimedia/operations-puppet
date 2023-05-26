@@ -112,4 +112,22 @@ client c1 {
     rxresp
 
     expect resp.status == 421
+
+    # single query parameter
+    txreq -url "/measure?test" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqiad.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # single query parameter with value
+    txreq -url "/measure?test=varnish" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqiad.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
+
+    # multiple query parameters
+    txreq -url "/measure?pulse_identifier=k4yfpc47epix21dioz46uftz&pulse_number=1" -hdr "X-Forwarded-Proto: https" -hdr "Host: measure-eqiad.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+
+    expect resp.status == 200
 } -run
