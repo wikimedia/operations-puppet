@@ -74,6 +74,10 @@ class profile::base (
 
     if ! ($::site in ['eqiad', 'codfw']) {
         include profile::prometheus::cadvisor
+    # percentage-based rollout for cadvisor in eqiad/codfw
+    # https://phabricator.wikimedia.org/T108027
+    } elsif fqdn_rand(100, 'cadvisor-rollout') <= 10 {
+        include profile::prometheus::cadvisor
     }
 
     $remote_syslog_tls_servers = $remote_syslog_tls[$::site]
