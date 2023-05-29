@@ -60,6 +60,10 @@ local function use_k8s()
     return false
   end
   local host = host_raw:lower()
+  -- do not force ourselves to spell out the mobile domains.
+  if host:match("%.m%.") then
+    host = host:gsub("%.m%.", ".")
+  end
   reload_config()
   local k8s_load = wikis_on_k8s[host]
   -- if no configuration is available for our hostname, fallback to the default.

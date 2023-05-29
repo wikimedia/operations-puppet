@@ -92,6 +92,16 @@ describe("Busted unit testing framework", function()
       expect(result, true, 'mw-web.discovery.wmnet', 4450)
     end)
 
+    it("test - mobile domain match", function()
+      result = run({
+          host = 'test2.m.wikipedia.org',
+          backend = 'appservers-rw.discovery.wmnet'
+        },
+        default_config
+      )
+      expect(result, true, 'mw-web.discovery.wmnet', 4450)
+    end)
+
     it("test - appserver RO with a non-matching host header", function()
       result = run({
             host = 'fr.wikipedia.org',
