@@ -228,12 +228,17 @@ define prometheus::server (
       default => "--storage.tsdb.retention.time 1000d --storage.tsdb.retention.size ${storage_retention_size.upcase()}",
     }
 
+    $enable = $ensure ? {
+        'present' => true,
+        default   => false,
+    }
+
     systemd::service { $service_name:
         ensure         => $ensure,
         restart        => true,
         content        => systemd_template('prometheus@'),
         service_params => {
-            enable     => true,
+            enable     => $enable,
             hasrestart => true,
         },
     }
