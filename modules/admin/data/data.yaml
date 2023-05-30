@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson]
+              ilooremeta, cmjohnson, xihua]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -402,7 +402,7 @@ groups:
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, isaranto,
-              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, xihua, eileen,
+              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
               hghani]
@@ -934,7 +934,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, xihua]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
@@ -5716,15 +5716,11 @@ users:
     gid: 500
     ssh_keys: []
   xihua:
-    ensure: present
+    ensure: absent
     realname: Hua Xi
-    email: hxi-ctr@wikimedia.org
     uid: 42819
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFUWDQcPOmfMWpyKXSVXbnN+3Tf8Xy3kYtLDyIi+JQ8 xihua@MacBook-Pro-4
-    expiry_date: 2023-05-28
-    expiry_contact: kzimmerman@wikimedia.org
+    ssh_keys: []
   hxi-ctr:
     ensure: absent
     uid: 42819
