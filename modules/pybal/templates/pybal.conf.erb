@@ -67,6 +67,7 @@ config = http://<%= @config_host %>/pybal/<%= @site %>/<%= servicename %>
 bgp = <%= lvs.fetch('bgp') %>
 <%- end -%>
 depool-threshold = <%= lvs['depool_threshold'] %>
+<%- if lvs.has_key? 'monitors' -%>
 monitors = <%= lvs['monitors'].keys.sort.inspect %>
 
 <% lvs['monitors'].sort.each do |monitorname, monitor| -%>
@@ -74,6 +75,7 @@ monitors = <%= lvs['monitors'].keys.sort.inspect %>
 <% monitor.keys.sort.each do |param|
 value = monitor[param] -%>
 <%= monitorname.downcase %>.<%= param %> = <%= value.class == Array ? value.inspect : value %>
+<% end -%>
 <% end -%>
 <% end -%>
 

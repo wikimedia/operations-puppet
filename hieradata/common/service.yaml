@@ -3280,10 +3280,12 @@ service::catalog:
         service: wikireplicas-a
       depool_threshold: ".5"
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
+# Disable monitors for wikireplicas while T337446 is ongoing
+# as its triggering a pybal bug that locks one CPU core
+#     monitors:
+#       IdleConnection:
+#         max-delay: 300
+#         timeout-clean-reconnect: 3
       scheduler: wrr
     port: 3311
     sites:
@@ -3338,10 +3340,12 @@ service::catalog:
         service: wikireplicas-b
       depool_threshold: ".5"
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
+# Disable monitors for wikireplicas while T337446 is ongoing
+# as its triggering a pybal bug that locks one CPU core
+#     monitors:
+#       IdleConnection:
+#         max-delay: 300
+#         timeout-clean-reconnect: 3
       scheduler: wrr
     port: 3311
     sites:

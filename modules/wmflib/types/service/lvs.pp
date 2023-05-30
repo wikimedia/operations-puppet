@@ -16,7 +16,7 @@ type Wmflib::Service::Lvs = Struct[{
     'scheduler'         => Optional[Enum['rr', 'wrr', 'lc', 'wlc', 'lblc', 'lblcr', 'dh', 'sh', 'sed', 'nq', 'mh']],
     'conftool'          => Struct[{'cluster' => String[1], 'service' => String[1]}],
     'depool_threshold'  => String[1],
-    'monitors'          => Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash],
+    'monitors'          => Optional[Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash]],
     'bgp'               => Optional[Boolean],
     'protocol'          => Optional[Enum['tcp', 'udp']],
 }]
