@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson, xihua]
+              ilooremeta, cmjohnson, xihua, nray]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -394,7 +394,7 @@ groups:
               ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, mfossati, skvjold, madasan,
               tandic, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
@@ -5147,11 +5147,10 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8VroNKYrtpnPeziIFkmpF1RhX15Z0uLYWmOfybAnijSV4P6gDPYuzLyniCekkeq6dF9KDU+IfoIwIjV5p6XnsJ6RRQbhQoQUAGThpvPh/0QetFhuLHK77kfmxxhJP04TANgLjVkGyyzbcckkqu7V47hbMuw7jUCsForbVHVbdYF3xdTd494xd6T/eFE8TUcyzpQDsAkzyvWbSwz/g9Ord8zIJicqcgYAzHVaNIt0/qUeyccT6Ql55W2Cftj6BJrT1xHXD4a/yRXN7nvMZnUkJYknoA1fAygkp+4wgBSpjqvP5YNTUVjvLyRCqEiXENMcIW6KSygAWVkqy3Hnj3lYHd+HlMehHoDjqRXXTwBvgXns2b81LxftF8iZNvmk5rD6fRLGqKrCeG8gzeb7QU34umA3iMrPHd3qIGnbhlYTFM+0WbgoxLYEL82PYLhlr6OmKnRmUwTH7FtoTxRfzWhgFVd4Scgyw3UWNrf0IX1WqqKzNwGPXOCLpOoMXNBupY0c= nmaphophe@wikimedia.org
     krb: present
   nray:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 19708
     realname: Nicholas Ray
-    email: nray@wikimedia.org
     ssh_keys: []
   mfossati:
     ensure: present
