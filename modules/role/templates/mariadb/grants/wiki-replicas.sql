@@ -39,6 +39,7 @@ GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'208.80.155.104' WITH GRAN
 CREATE ROLE labsdbuser;
 GRANT USAGE ON *.* TO 'labsdbuser';
 GRANT SELECT, SHOW VIEW ON `heartbeat_p`.* TO `labsdbuser`;
+GRANT SELECT, SHOW VIEW ON `meta_p`.* TO `labsdbuser`;
 
 -- maintainviews user used by cloud services team
 GRANT ALL PRIVILEGES ON `heartbeat\\_p`.* TO 'maintainviews'@'localhost';
