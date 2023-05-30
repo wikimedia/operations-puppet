@@ -105,6 +105,11 @@
 # $ssl_sigalgs_list                 - Colon separared string of supported signature algorithms.
 #                                     This must match at least one of the signature algorithms
 #                                     supported by the broker. More details in SSL_set1_client_sigalgs(3)
+# $ssl_keystore_password            - Password of the TLS keystore.
+#                                     Default: undef
+#
+# $ssl_key_location                 - Full path of the TLS keystore.
+#                                     Default: undef
 define varnishkafka::instance(
     $brokers                        = ['localhost:9092'],
     $topic                          = 'varnish',
@@ -154,6 +159,8 @@ define varnishkafka::instance(
     $ssl_cipher_suites              = undef,
     $ssl_curves_list                = undef,
     $ssl_sigalgs_list               = undef,
+    Optional[Stdlib::Unixpath] $ssl_keystore_location = undef,
+    Optional[String] $ssl_keystore_password = undef,
 ) {
     require ::varnishkafka
 

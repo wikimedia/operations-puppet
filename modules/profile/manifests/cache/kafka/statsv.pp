@@ -28,27 +28,32 @@ class profile::cache::kafka::statsv(
     if $ssl_enabled {
         $kafka_brokers = $kafka_config['brokers']['ssl_array']
 
+        include profile::cache::kafka::certificate
+
         # Include this class to get key and certificate for varnishkafka
         # to produce to Kafka over SSL/TLS.
-        require ::profile::cache::kafka::certificate
-        $ssl_ca_location          = $::profile::cache::kafka::certificate::ssl_ca_location
-        $ssl_key_password         = $::profile::cache::kafka::certificate::ssl_key_password
-        $ssl_key_location         = $::profile::cache::kafka::certificate::ssl_key_location
-        $ssl_certificate_location = $::profile::cache::kafka::certificate::ssl_certificate_location
-        $ssl_cipher_suites        = $::profile::cache::kafka::certificate::ssl_cipher_suites
-        $ssl_curves_list          = $::profile::cache::kafka::certificate::ssl_curves_list
-        $ssl_sigalgs_list         = $::profile::cache::kafka::certificate::ssl_sigalgs_list
+        $ssl_ca_location = $profile::cache::kafka::certificate::ssl_ca_location
+        $ssl_cipher_suites = $profile::cache::kafka::certificate::ssl_cipher_suites
+        $ssl_curves_list = $profile::cache::kafka::certificate::ssl_curves_list
+        $ssl_sigalgs_list = $profile::cache::kafka::certificate::ssl_sigalgs_list
+        $ssl_keystore_location = $profile::cache::kafka::certificate::ssl_keystore_location
+        $ssl_keystore_password = $profile::cache::kafka::certificate::ssl_key_password
+        $ssl_key_password = $profile::cache::kafka::certificate::ssl_key_password
+        $ssl_key_location = $profile::cache::kafka::certificate::ssl_key_location
+        $ssl_certificate_location = $profile::cache::kafka::certificate::ssl_certificate_location
     }
     else {
         $kafka_brokers = $kafka_config['brokers']['array']
 
-        $ssl_ca_location          = undef
-        $ssl_key_password         = undef
-        $ssl_key_location         = undef
+        $ssl_ca_location = undef
+        $ssl_key_password = undef
+        $ssl_key_location = undef
         $ssl_certificate_location = undef
-        $ssl_cipher_suites        = undef
-        $ssl_curves_list          = undef
-        $ssl_sigalgs_list         = undef
+        $ssl_cipher_suites = undef
+        $ssl_curves_list = undef
+        $ssl_sigalgs_list = undef
+        $ssl_keystore_location = undef
+        $ssl_keystore_password = undef
     }
 
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
@@ -73,6 +78,8 @@ class profile::cache::kafka::statsv(
         ssl_cipher_suites           => $ssl_cipher_suites,
         ssl_curves_list             => $ssl_curves_list,
         ssl_sigalgs_list            => $ssl_sigalgs_list,
+        ssl_keystore_location       => $ssl_keystore_location,
+        ssl_keystore_password       => $ssl_keystore_password,
     }
 
     # Make sure varnishes are configured and started for the first time
