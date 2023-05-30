@@ -11,21 +11,21 @@ class snapshot::dumps::nfstester(
     # all dblists and other files under the home
     # directory of the user that runs the dumps
 
-    $settingsdir = "${homedir}/nfs_test_settings"
-    file { $settingsdir:
+    $nfstestingdir = "${homedir}/nfs_testing"
+    file { $nfstestingdir :
       ensure => 'directory',
       mode   => '0755',
       owner  => $user,
       group  => $group,
     }
 
-    $confsdir = "${settingsdir}/confs"
-    $dblistsdir = "${settingsdir}/dblists"
+    $confsdir = "${nfstestingdir}/confs"
+    $dblistsdir = "${nfstestingdir}/dblists"
 
     # the stages directory will be left empty but it should be specified
-    $stagesdir = "${settingsdir}/stages"
+    $stagesdir = "${nfstestingdir}/stages"
 
-    $templsdir = "${settingsdir}/templs"
+    $templsdir = "${nfstestingdir}/templs"
     file { [ $confsdir, $dblistsdir, $stagesdir,
       $templsdir ]:
 
@@ -36,7 +36,7 @@ class snapshot::dumps::nfstester(
     }
 
     # dir will be written in by the dumps process run by the user
-    $cachedir = "${settingsdir}/cache"
+    $cachedir = "${nfstestingdir}/cache"
     file { $cachedir:
       ensure => 'directory',
       mode   => '0755',
@@ -84,7 +84,7 @@ class snapshot::dumps::nfstester(
     # the nfs share to be tested will be manually mounted. after that, we
     # want to run a script to create all the needed directories over there
     # if they do not exist from a previous test session.
-    file { "${homedir}/test_outputdir_paths.sh":
+    file { "${nfstestingdir}/test_outputdir_paths.sh":
       ensure  => 'present',
       mode    => '0755',
       owner   => $user,
@@ -92,7 +92,7 @@ class snapshot::dumps::nfstester(
       content => template('snapshot/dumps/nfs_testing/test_outputdir_paths.sh.erb'),
     }
 
-    file {"${homedir}/nfs_testing_create_output_dirs.sh":
+    file {"${nfstestingdir}/nfs_testing_create_output_dirs.sh":
       ensure => 'present',
       mode   => '0755',
       owner  => $user,
@@ -112,7 +112,7 @@ class snapshot::dumps::nfstester(
 
     # add documentation on how to test, since many commands must be run
     # manually; at least we won't have to look them up each time.
-    file { "${homedir}/README_nfstesting.txt":
+    file { "${nfstestingdir}/README_nfstesting.txt":
       ensure  => 'present',
       mode    => '0444',
       owner   => $user,
