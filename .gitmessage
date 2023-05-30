@@ -6,6 +6,7 @@ Why:
 What:
 ...
 
+Hosts: auto
 Bug: TXXXXX
 #
 # Remember:
@@ -15,6 +16,7 @@ Bug: TXXXXX
 # Use imperative mood, at least in the subject
 # The body should be wrapped at 72 chars
 # Explain why and what
+# Adapt the Hosts: line if needed
 # Don't forget the Bug: line
 # Don't leave a blank line after the Bug: line
 # If you are unsure about what is a valid topic value, a puppet
