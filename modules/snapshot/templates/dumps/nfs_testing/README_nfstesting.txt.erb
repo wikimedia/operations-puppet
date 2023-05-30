@@ -8,6 +8,10 @@ PREPARATION
   are there since you are reading this file.
 * As root, mount the nfs share. Sample command:
   mount -t nfs -o bg,hard,rw,nfsvers=3,rsize=8192,wsize=8192,proto=tcp,actimeo=0 dumpsdata1005.eqiad.wmnet:/data <%= @mountpoint %>
+* After the mount is successful, manually create <%= @mountpoint -%>/nfstest with mkdir -p <%= @mountpoint -%>/nfstest and 
+  run chown <%= @user %>:<%= @group %> <%= @mountpoint %>/nfstest 
+  The reason we do this is because the <%= @mountpoint -%> dir is owned by root and the <%= @mountpoint -%>/nfstest should 
+  be owned by the <%= @user %> user since this is where the dumps subdir will be created by the <%= @user %> user
 * As the <%= @user %> user, run the script nfs_testing_create_output_dirs.sh located in this directory.
   This will create the directories for dumps output files, if they do not already exist.
 
