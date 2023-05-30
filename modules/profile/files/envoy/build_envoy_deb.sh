@@ -30,11 +30,15 @@ function create_image {
 }
 
 function add_repos {
+    case $DISTRO in
+      buster|bullseye) security_component="$DISTRO/updates" ;;
+      *) security_component="$DISTRO-security" ;;
+    esac
     components="main"
     echo "deb http://apt.wikimedia.org/wikimedia ${DISTRO}-wikimedia ${components}" > ${CHROOT_DIR}/etc/apt/sources.list.d/wikimedia.list
     $CHROOTEXEC apt-get install wget gnupg -y
     $CHROOTEXEC wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | $CHROOTEXEC apt-key add -
-    echo "deb http://security.debian.org/debian-security $DISTRO/updates  main contrib non-free" > ${CHROOT_DIR}/etc/apt/sources.list.d/security.list
+    printf "deb http://security.debian.org/debian-security %s main contrib non-free\n" $security_component > ${CHROOT_DIR}/etc/apt/sources.list.d/security.list
     $CHROOTEXEC apt-get update
     $CHROOTEXEC apt-get upgrade -y
 }
