@@ -14,6 +14,18 @@ class profile::microsites::annualreport {
         branch    => 'master',
     }
 
+    prometheus::blackbox::check::http { '15.wikipedia.org':
+        team               => 'serviceops-collab',
+        severity           => 'task',
+        path               => '/',
+        ip_families        => ['ip4'],
+        force_tls          => true,
+        status_matches     => [200],
+        body_regex_matches => ['Wikipedia 15'],
+        port               => 30443,
+        ip4                => ipresolve('miscweb.discovery.wmnet', 4),
+    }
+
     prometheus::blackbox::check::http { 'annual.wikimedia.org':
         team           => 'serviceops-collab',
         severity       => 'task',
@@ -21,6 +33,8 @@ class profile::microsites::annualreport {
         ip_families    => ['ip4'],
         force_tls      => true,
         status_matches => [200],
+        port           => 30443,
+        ip4            => ipresolve('miscweb.discovery.wmnet', 4),
     }
 }
 
