@@ -34,10 +34,11 @@ class profile::lvs::realserver(
         # It contains, for each lvs pool (used as key):
         # - the conftool cluster and service
         # - the service port
-        # - the lvs servers that are serving that pool
+        # - the lvs instrumentation (i13n) hostname for that pool
+        #   (to verify pooledness state)
         $local_services = $services.map |$pool_name, $svc| {
-            $lvs_servers = $::profile::lvs::configuration::lvs_class_hosts[$svc['lvs']['class']]
-            $addition = {'servers' => $lvs_servers, 'port' => $svc['port']}
+            $lvs_i13n = wmflib::service::get_i13n_for_lvs_class($svc['lvs']['class'], $::site)
+            $addition = {'servers' => [$lvs_i13n], 'port' => $svc['port']}
             $retval = {$pool_name => $svc['lvs']['conftool'].merge($addition)}
         }.reduce({}) |$m, $val| {$m.merge($val)}
         file { '/etc/conftool/local_services.yaml':
