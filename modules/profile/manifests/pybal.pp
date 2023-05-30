@@ -36,12 +36,13 @@ class profile::pybal(
             /^lvs6002$/         => "[ '10.136.1.1' ]", # asw1-b13-drmrs gateway
             default             => '(unspecified)'
             },
-        'bgp-nexthop-ipv4'    => $facts['ipaddress'],
-        'bgp-nexthop-ipv6'    => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
-        'instrumentation'     => 'yes',
-        'instrumentation_ips' => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
-        'bgp-local-ips'       => "[ '${ipv4_address}' ]",
-        'bgp-med'             => $bgp_med,
+        'bgp-nexthop-ipv4'               => $facts['ipaddress'],
+        'bgp-nexthop-ipv6'               => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
+        'instrumentation'                => 'yes',
+        'instrumentation_ips'            => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
+        'advertised_instrumentation_ips' => wmflib::service::get_i13n_ips_for_lvs(),
+        'bgp-local-ips'                  => "[ '${ipv4_address}' ]",
+        'bgp-med'                        => $bgp_med,
     }
 
     # Base class, not parametrized

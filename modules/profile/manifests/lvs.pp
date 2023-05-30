@@ -24,10 +24,12 @@ class profile::lvs(
     # Obtain all the IPs configured for this class of load-balancers,
     # as an array.
     $service_ips = wmflib::service::get_ips_for_services($services, $::site)
+    # Also, get the advertised instrumentation IPs:
+    $i13n_ips = wmflib::service::get_i13n_ips_for_lvs()
 
     # Bind balancer IPs to the loopback interface
     class { '::lvs::realserver':
-        realserver_ips => $service_ips
+        realserver_ips => sort($service_ips + $i13n_ips)
     }
 
     # Monitoring sysctl
