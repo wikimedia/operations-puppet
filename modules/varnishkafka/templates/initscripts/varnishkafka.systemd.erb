@@ -4,6 +4,7 @@ Description=VarnishKafka <%= @name.gsub(/^varnishkafka-/, '') %>
 After=network.target local-fs.target <%= @varnish_svc_name %>.service
 Requires=<%= @varnish_svc_name %>.service
 BindsTo=<%= @varnish_svc_name %>.service
+PartOf=varnishkafka-all.service
 
 [Service]
 Type=simple
@@ -12,4 +13,4 @@ ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=varnishkafka-all.service multi-user.target
