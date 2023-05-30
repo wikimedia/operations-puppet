@@ -1,0 +1,1 @@
+profile::cache::kafka::certificate::use_pki_settings: true
