@@ -20,7 +20,7 @@ if ! getent hosts -- "$host" >/dev/null; then
   printf "%s: is not a valid hostname\n" "$host"
   exit 1
 fi
-[ "$2" = '-v' ] && verbose='-v'
+[ "${2:-notset}" = '-v' ] && verbose='-v'
 exec ssh -4 -i /root/.ssh/new_install \
     -o UserKnownHostsFile=/dev/null \
     -o StrictHostKeyChecking=no $verbose "$host"
