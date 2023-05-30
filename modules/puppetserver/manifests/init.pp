@@ -44,7 +44,13 @@ class puppetserver (
     $store_config = $puppetdb_urls.empty.bool2str('', "storeconfigs = true\nstoreconfigs_backend = puppetdb")
 
     wmflib::dir::mkdir_p([$environments_dir, $config_dir])
-    wmflib::dir::mkdir_p($ssl_dir, { 'owner' => 'puppet' })
+    wmflib::dir::mkdir_p(
+        $ssl_dir,
+        {
+            'owner' => 'puppet',
+            'group' => 'puppet'
+        },
+    )
 
     $config = @("CONFIG")
     [master]
