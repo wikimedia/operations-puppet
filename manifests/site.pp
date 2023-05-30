@@ -941,8 +941,12 @@ node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
-node /^debmonitor[12]003\.(codfw|eqiad)\.wmnet$/ {
+node /^debmonitor[1]003\.(codfw|eqiad)\.wmnet$/ {
     role(insetup::infrastructure_foundations)
+}
+
+node /^debmonitor[2]003\.(codfw|eqiad)\.wmnet$/ {
+    role(debmonitor::server)
 }
 
 # Dispatch hosts
