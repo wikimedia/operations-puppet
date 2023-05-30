@@ -12,7 +12,7 @@ class snapshot::dumps::nfstester(
     # directory of the user that runs the dumps
 
     $nfstestingdir = "${homedir}/nfs_testing"
-    file { $nfstestingdir :
+    file { $nfstestingdir:
       ensure => 'directory',
       mode   => '0755',
       owner  => $user,
@@ -80,6 +80,13 @@ class snapshot::dumps::nfstester(
     $publicdir = "${dumpstree}/public"
     $privatedir = "${dumpstree}/private"
     $tempdir = "${dumpstree}/temp"
+
+    file { $mountpoint:
+      ensure => 'directory',
+      mode   => '0755',
+      owner  => root,
+      group  => root,
+    }
 
     # the nfs share to be tested will be manually mounted. after that, we
     # want to run a script to create all the needed directories over there
