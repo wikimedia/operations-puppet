@@ -22,7 +22,7 @@ profile::gitlab::omniauth_providers:
   'Wikimedia Dev Account':
     url: 'https://idp.wikimedia.org'
   'Wikimedia Dev Account (OIDC)':
-    issuer: 'https://idp.wmcloud.org/oidc'
+    issuer: 'https://idp.wikimedia.org/oidc'
     client_options:
       identifier: 'gitlab_oidc'
       redirect_uri: "%{lookup('profile::gitlab::external_url')}/users/auth/openid_connect/callback"
