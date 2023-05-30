@@ -1,3 +1,3 @@
 [Service]
 ExecStart=
-ExecStart=/usr/bin/cadvisor --port=<%= @port %> --enable_metrics=<%= @metrics_enabled.join(',') %>
+ExecStart=/usr/bin/cadvisor --listen=<%= @facts['networking']['ip'] %> --port=<%= @port %> --enable_metrics=<%= @metrics_enabled.join(',') %>
