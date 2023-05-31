@@ -178,6 +178,12 @@
 #   What level of inter node encryption to enable
 #   Default: none
 #
+# [*server_encryption_optional*]
+#   Controls whether server encryption is optional.  This should only be true when
+#   encryption is *not* enabled (i.e. internode_encryption: none), or during a
+#   transitional period.
+#   Default: false
+#
 # [*client_encryption_enabled*]
 #   Enable client-side encryption
 #   Default: false
@@ -272,6 +278,7 @@ define cassandra::instance(
     Optional[String]                      $heap_newsize                     = undef,
     Integer                               $key_cache_size_in_mb             = 400,
     Enum['all','dc', 'none']              $internode_encryption             = 'none',
+    Boolean                               $server_encryption_optional       = false,
     Boolean                               $client_encryption_enabled        = false,
     Boolean                               $client_encryption_optional       = false,
     Boolean                               $auto_bootstrap                   = true,

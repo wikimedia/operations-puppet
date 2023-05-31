@@ -1345,7 +1345,7 @@ server_encryption_options:
   # When set to true, encrypted and unencrypted connections are allowed on the storage_port
   # This should _only be true_ while in unencrypted or transitional operation
   # optional defaults to true if internode_encryption is none
-  # optional: true
+  optional: <%= @server_encryption_optional %>
   # If enabled, will open up an encrypted listening socket on ssl_storage_port. Should only be used
   # during upgrade to 4.0; otherwise, set to false.
   legacy_ssl_storage_port_enabled: <%= @legacy_ssl_storage_port_enabled %>
