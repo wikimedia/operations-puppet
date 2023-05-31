@@ -63,6 +63,7 @@ class k8s::kubelet (
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
+        # FIXME: Warning: Calling function empty() with Numeric value is deprecated.
         content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
         notify  => Service['kubelet'],
     }

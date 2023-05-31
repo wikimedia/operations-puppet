@@ -42,8 +42,10 @@ class profile::calico::kubernetes (
                 $v = $value[1].filter | $plugin | {
                     $plugin['type'] != 'istio-cni'
                 }
+            } else {
+                $v = $value[1]
             }
-            $memo + { $k => pick($v, $value[1]) }
+            $memo + { $k => $v }
         }
     } else {
         $cni_config = $kubernetes_cluster_config['cni_config']
