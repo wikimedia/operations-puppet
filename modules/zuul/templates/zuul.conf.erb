@@ -25,6 +25,22 @@ sshkey=/var/lib/zuul/.ssh/id_rsa
 <% if @gerrit_event_delay -%>
 event_delay=<%= @gerrit_event_delay %>
 <% end -%>
+<%#
+Reporting is done over a different connection to avoid a race condition between
+source and reporter when both tries to reestablish a connection at the same
+time - T309376.
+-%><% if @zuul_role == 'server' -%>
+
+[connection gerrit-reporter]
+driver=gerrit
+server=<%= @gerrit_server %>
+user=<%= @gerrit_user %>
+<% if @gerrit_baseurl %>baseurl=<%= @gerrit_baseurl %><% end %>
+sshkey=/var/lib/zuul/.ssh/id_rsa
+<% if @gerrit_event_delay -%>
+event_delay=<%= @gerrit_event_delay %>
+<% end -%>
+<% end -%>
 
 [zuul]
 layout_config=/etc/zuul/wikimedia/zuul/layout.yaml
