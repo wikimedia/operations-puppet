@@ -4,7 +4,7 @@ class profile::kubernetes::kubeconfig::admin () {
         $default_admin = profile::pki::get_cert($config['pki_intermediate_base'], 'kubernetes-admin', {
             'renew_seconds'   => $config['pki_renew_seconds'],
             'names'           => [{ 'organisation' => 'system:masters' }],
-            'owner'           => 'kube',
+            'owner'           => 'root',
             'outdir'          => '/etc/kubernetes/pki',
         })
         k8s::kubeconfig { "/etc/kubernetes/admin-${name}.config":
