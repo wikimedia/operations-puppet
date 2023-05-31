@@ -1948,7 +1948,7 @@ service::catalog:
       conftool:
         cluster: eventschemas
         service: eventschemas
-      depool_threshold: ".6"
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
