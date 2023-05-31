@@ -23,6 +23,7 @@ define prometheus::swagger::service_catalog (
     }]
   }
   file { "${targets_path}/swagger_${title}.yaml":
+    ensure  => absent,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
