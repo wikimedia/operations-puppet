@@ -9,6 +9,17 @@ class profile::kubernetes::node (
     require profile::rsyslog::kubernetes
     # Using netbox to know where we are situated in the datacenter
     require profile::netbox::host
+    # Ensure /etc/kubernetes/pki is created with proper permissions before the first pki::get_cert call
+    # FIXME: https://phabricator.wikimedia.org/T337826
+    $cert_dir = '/etc/kubernetes/pki'
+    unless defined(File[$cert_dir]) {
+        file { $cert_dir:
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
 
     $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
@@ -38,7 +49,7 @@ class profile::kubernetes::node (
         'profile'        => 'server',
         'renew_seconds'  => $pki_renew_seconds,
         'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
+        'outdir'         => $cert_dir,
         'hosts'          => [
             $facts['hostname'],
             $facts['fqdn'],
@@ -70,7 +81,7 @@ class profile::kubernetes::node (
         'renew_seconds'  => $pki_renew_seconds,
         'names'          => [{ 'organisation' => 'system:nodes' }],
         'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
+        'outdir'         => $cert_dir,
         'notify_service' => 'kubelet'
     })
     k8s::kubeconfig { $kubelet_kubeconfig:
@@ -127,7 +138,7 @@ class profile::kubernetes::node (
         'renew_seconds'  => $pki_renew_seconds,
         'names'          => [{ 'organisation' => 'system:node-proxier' }],
         'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
+        'outdir'         => $cert_dir,
         'notify_service' => 'kube-proxy'
     })
     k8s::kubeconfig { $kubeproxy_kubeconfig:

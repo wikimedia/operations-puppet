@@ -18,6 +18,18 @@ class profile::kubernetes::deployment_server (
     Stdlib::Unixpath $helm_data                                        = lookup('profile::kubernetes::helm_data', { default_value => '/usr/share/helm' }),
     Stdlib::Unixpath $helm_cache                                       = lookup('profile::kubernetes::helm_cache', { default_value => '/var/cache/helm' }),
 ) {
+    # Ensure /etc/kubernetes/pki is created with proper permissions before the first pki::get_cert call
+    # FIXME: https://phabricator.wikimedia.org/T337826
+    $cert_dir = '/etc/kubernetes/pki'
+    unless defined(File[$cert_dir]) {
+        file { $cert_dir:
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
+
     class { 'helm':
         helm_user_group => $helm_user_group,
         helm_home       => $helm_home,
@@ -71,7 +83,7 @@ class profile::kubernetes::deployment_server (
                 $auth_cert = profile::pki::get_cert($cluster_config['pki_intermediate_base'], $user['name'], {
                     'renew_seconds'  => $cluster_config['pki_renew_seconds'],
                     'names'          => $names,
-                    'outdir'         => '/etc/kubernetes/pki',
+                    'outdir'         => $cert_dir,
                     owner            => $user['owner'],
                     group            => $user['group'],
                     # FIXME: Mode is not supported by get_cert/cfssl::cert? Certs will always be 0440
