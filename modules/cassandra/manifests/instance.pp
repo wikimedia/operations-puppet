@@ -527,21 +527,21 @@ define cassandra::instance(
         # Install links (where necessary) to package-installed configs
         if $instance_name != 'default' {
             file { "${config_directory}/jvm-clients.options":
-                ensure  => link,
-                target  => '/etc/cassandra/jvm-clients.options',
-                require => File['/etc/cassandra/jvm-clients.options'],
+                ensure => link,
+                target => '/etc/cassandra/jvm-clients.options',
+                force  => true,
             }
 
             file { "${config_directory}/jvm8-clients.options":
-                ensure  => link,
-                target  => '/etc/cassandra/jvm8-clients.options',
-                require => File['/etc/cassandra/jvm8-clients.options'],
+                ensure => link,
+                target => '/etc/cassandra/jvm8-clients.options',
+                force  => true,
             }
 
             file { "${config_directory}/jvm11-clients.options":
-                ensure  => link,
-                target  => '/etc/cassandra/jvm11-clients.options',
-                require => File['/etc/cassandra/jvm11-clients.options'],
+                ensure => link,
+                target => '/etc/cassandra/jvm11-clients.options',
+                force  => true,
             }
         }
 
