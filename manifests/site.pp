@@ -1409,10 +1409,6 @@ node /^cloudcontrol200[15]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-node /^cloudcontrol2004-dev\.wikimedia\.org$/ {
-    role(wmcs::openstack::codfw1dev::control)
-}
-
 # cloudrabbit servers T304888
 node /^cloudrabbit100[123]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::rabbitmq)

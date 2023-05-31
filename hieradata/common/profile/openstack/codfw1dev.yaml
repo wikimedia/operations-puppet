@@ -16,7 +16,6 @@ profile::openstack::codfw1dev::public_apis: false
 # same network setup
 profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2001-dev.codfw.wmnet
-  - cloudcontrol2004-dev.wikimedia.org
   - cloudcontrol2005-dev.codfw.wmnet
 
 
@@ -34,7 +33,6 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 # These servers should not be accessed using hostnames in this list;
 # rather, that should happen via the keystone_api_fqdn defined above.
 profile::openstack::codfw1dev::haproxy_nodes:
-  - cloudcontrol2004-dev.wikimedia.org
   - cloudlb2001-dev.private.codfw.wikimedia.cloud
   - cloudlb2002-dev.private.codfw.wikimedia.cloud
   - cloudlb2003-dev.private.codfw.wikimedia.cloud

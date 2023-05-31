@@ -3,10 +3,8 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::base::production
     include profile::base::firewall
     include profile::base::cloud_production
-    if $facts['hostname'] != 'cloudcontrol2004-dev' {
-        # cloudlb: the only host not behind cloudlb is cloudcontrol2004-dev
-        include profile::wmcs::cloud_private_subnet
-    }
+    include profile::wmcs::cloud_private_subnet
+
     include profile::openstack::codfw1dev::observerenv
     include profile::openstack::codfw1dev::rabbitmq
 
@@ -34,12 +32,6 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::nova::api::service
     include profile::openstack::codfw1dev::neutron::common
     include profile::openstack::codfw1dev::neutron::service
-
-    if $facts['hostname'] == 'cloudcontrol2004-dev' {
-        # cloudlb: the only host in the old setup is cloudcontrol2004-dev
-        include profile::openstack::codfw1dev::haproxy
-        include profile::prometheus::haproxy_exporter
-    }
 
     include profile::ldap::client::utils
     include profile::memcached::instance
