@@ -29,6 +29,10 @@ profile::idp::services:
     id: 3
     service_class: 'OidcRegisteredService'
     service_id: 'https://idm-test\.wikimedia\.org\/[\w\/]*'
+  netbox_next:
+    id: 4
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://netbox-next\.wikimedia\.org\/[\w\/]*'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
