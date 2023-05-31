@@ -7,7 +7,7 @@ PREPARATION
 * Go to the snapshot testbed, become the <%= @user -%> user, and cd into the nfs_testing directory. Presumably you
   are there since you are reading this file.
 * As root, mount the nfs share. Sample command:
-  mount -t nfs -o bg,hard,rw,nfsvers=3,rsize=8192,wsize=8192,proto=tcp,actimeo=0 dumpsdata1005.eqiad.wmnet:/data <%= @mountpoint %>
+  mount -t nfs -o bg,hard,rw,nfsvers=3,rsize=8192,wsize=8192,proto=tcp,actimeo=0 dumpsdata10XX.eqiad.wmnet:/data <%= @mountpoint %>
 * After the mount is successful, manually create <%= @mountpoint -%>/nfstest with mkdir -p <%= @mountpoint -%>/nfstest and 
   run chown <%= @user %>:<%= @group %> <%= @mountpoint %>/nfstest 
   The reason we do this is because the <%= @mountpoint -%> dir is owned by root and the <%= @mountpoint -%>/nfstest should 
@@ -26,9 +26,10 @@ All actions are done as the <%= @user -%> user.
   and that the dumps log in <%= @privatedir -%>/olowiki/dumps.log doesn't have
   exceptions in it, etc.
 
-* mkdir <%= @publicdir -%>/igwiki and then rsync the files from the last igwiki run to the test mount point:
-  (substitute in the right YYYYMMDD and the right dumpsdata host values below)
-  rsync -av --bw=100000 dumpsdataXXX.eqiad.wmnet::/data/public/igwiki/202XMMDD <%= @publicdir -%>/igwiki
+* mkdir <%= @publicdir -%>/igwiki
+* on the dumpsdata host with the nfs share you want to test, as the dumpsgen user, rsync the files from the last igwiki run to the test mount point:
+  (substitute in the right YYYYMMDD and the right dumpsdata host values below, fix up the target path to be right)
+  rsync -av --bwlimit=100000 dumpsdataXXX.eqiad.wmnet::data/public/igwiki/202XMMDD /some/path/nfstest/xmldatadumps/public/igwiki
 * run the worker script on igwiki, testing prefetch:
   python3 /srv/deployment/dumps/dumps/xmldumps-backup/worker.py --configfile <%= @confsdir -%>/xmldumps.conf --log --skipdone --exclusive igwiki
 * check that the expected output files in <%= @publicdir -%> are present for each step, that they have reasonable content,
