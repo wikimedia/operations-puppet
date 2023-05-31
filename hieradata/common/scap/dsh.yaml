@@ -136,9 +136,7 @@ scap::dsh::groups:
   debmonitor:
     hosts:
       - debmonitor1002.eqiad.wmnet
-      - debmonitor1003.eqiad.wmnet
       - debmonitor2002.codfw.wmnet
-      - debmonitor2003.codfw.wmnet
   homer:
     hosts:
       - cumin1001.eqiad.wmnet
