@@ -47,8 +47,7 @@ class profile::prometheus::k8s (
                 'names'         => [{ 'organisation' => 'system:monitoring' }],
                 'owner'         => 'prometheus',
                 'outdir'        => "/srv/prometheus/${k8s_cluster}/pki",
-                # AIUI prometheus reads client cert and key from disk for every request, so no need to
-                # notify/reload prometheus.
+                'notify'        => Exec["prometheus@${k8s_cluster}-reload"],
             })
 
             # Authenticate to k8a API (and metrics endpoints) using a client certificate

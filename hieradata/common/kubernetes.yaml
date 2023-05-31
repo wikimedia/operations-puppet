@@ -405,6 +405,7 @@ kubernetes::clusters:
         port: 9911
         node_class_name: role::aux_k8s::worker
         control_plane_class_name: role::aux_k8s::master
+        client_cert_auth: true
       control_plane_nodes:
         - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet
