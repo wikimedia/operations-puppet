@@ -11,6 +11,7 @@ import sys
 
 import psutil
 import pymysql
+import requests
 import yaml
 
 
@@ -30,6 +31,12 @@ def dbs_with_table(cursor, table_name, database="all"):
     logging.debug(cursor.mogrify(query))
     cursor.execute(query)
     return [db[0] for db in cursor.fetchall()]
+
+
+def dbs_on_section(section):
+    """Return the names of the databases on a given section"""
+    dblist = requests.get('https://noc.wikimedia.org/conf/dblists/{}.dblist'.format(section)).text
+    return [i.strip() for i in dblist.split('\n') if i and i.strip()[0] != '#']
 
 
 def drop_index(cursor, db_name, index, dryrun=False):
@@ -173,6 +180,8 @@ def main():
                     dbs = dbs_with_table(
                         cursor, index["table"], database=args.database
                     )
+                    dbs_in_section = dbs_on_section(instance)
+                    dbs = sorted(list(set(dbs).intersection(set(dbs_in_section))))
                     for db_name in dbs:
                         with db_connections[instance].cursor() as change_cursor:
                             existing_index = current_index_columns(
