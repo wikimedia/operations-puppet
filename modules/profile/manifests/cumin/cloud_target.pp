@@ -17,7 +17,7 @@ class profile::cumin::cloud_target(
         ferm::service { 'ssh-from-cloudcumin-masters':
           proto  => 'tcp',
           port   => '22',
-          srange => "(${cloud_cumin_masters.join(' ')})",
+          srange => $cloud_cumin_masters,
         }
     }
 }
