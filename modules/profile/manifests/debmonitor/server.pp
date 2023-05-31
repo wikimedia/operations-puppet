@@ -45,12 +45,16 @@ class profile::debmonitor::server (
     }
     include passwords::ldap::production
 
-    $ldap_package_name = debian::codename::ge('bookworm').bool2str('libldap-2.5-0', 'libldap-2.4-2')
-    # Make is required by the deploy system
-    ensure_packages([$ldap_package_name, 'make', 'python3-pip', 'virtualenv'])
-
-    # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
-    ensure_packages('libmariadb3')
+    # Starting with Bookworm Debmonitor uses the packaged Django stack from Debian
+    if debian::codename::ge('bookworm') {
+        ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
+        ensure_packages(['python3-mysqldb'])
+    } else {
+        # Make is required by the deploy system
+        ensure_packages(['libldap-2.4-2', 'make', 'python3-pip', 'virtualenv'])
+        # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
+        ensure_packages('libmariadb3')
+    }
 
     class { 'sslcert::dhparam': }
 
