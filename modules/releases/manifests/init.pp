@@ -31,6 +31,7 @@ class releases (
         ensure    => 'latest',
         directory => '/srv/mediawiki/release-tools',
         require   => File['/srv/mediawiki'],
+        source    => 'gitlab',
     }
 
     file { '/srv/org/wikimedia/releases/mediawiki':
