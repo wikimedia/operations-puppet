@@ -263,16 +263,16 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-pods-metrics',
-                'bearer_token_file'     => $bearer_token_file,
+                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 # Note: We dont verify the cert on purpose. Issues IP SAN based
                 # certs for all pods is impossible
                 'tls_config'            => {
-                    insecure_skip_verify =>  true,
+                    insecure_skip_verify => true,
                 },
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => "https://${master_host}:6443",
-                        'bearer_token_file' => $bearer_token_file,
+                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'role'              => 'pod',
                     },
                 ],
