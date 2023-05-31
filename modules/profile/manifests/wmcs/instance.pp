@@ -5,14 +5,8 @@ class profile::wmcs::instance(
     Stdlib::Fqdn        $metrics_server                = lookup('graphite_host',   {default_value => 'localhost'}),
     Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
 ) {
-    if debian::codename::ge('buster') {
-        if ! defined(Class['Sudo']) {
-            class { 'sudo': }
-        }
-    } else {
-        if ! defined(Class['Sudo::Sudoldap']) {
-            class { 'sudo::sudoldap': }
-        }
+    if ! defined(Class['Sudo']) {
+        class { 'sudo': }
     }
 
     sudo::group { 'ops':

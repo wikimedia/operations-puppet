@@ -26,12 +26,7 @@ define sudo::group(
     Wmflib::Ensure          $ensure      = present,
     String                  $group       = $title,
 ) {
-    # TODO: remove once Stretch is gone from Cloud VPS
-    if $::realm != 'labs' or debian::codename::ge('buster') {
-        require sudo
-    } else {
-        require sudo::sudoldap
-    }
+    require sudo
 
     $title_safe = regsubst($title, '\W', '-', 'G')
     $filename = "/etc/sudoers.d/${title_safe}"

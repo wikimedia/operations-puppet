@@ -7,9 +7,6 @@ class profile::ldap::client::utils (
 ) {
     $basedn = 'dc=wikimedia,dc=org'
 
-    # hack that's going away when stretch goes away
-    $use_sudoldap = $::realm == 'labs' and debian::codename::eq('stretch')
-
     # TODO: this is never used in production
     $sudobasedn = $::realm ? {
         'labs'       => "ou=sudoers,cn=${::wmcs_project},ou=projects,${basedn}",
@@ -35,16 +32,10 @@ class profile::ldap::client::utils (
         'nss_min_uid'          => '499',
     }
 
-    $config_sudo_base_dn = $use_sudoldap ? {
-        true    => $ldapconfig['sudobasedn'],
-        default => undef,
-    }
-
     class { 'ldap::client::config':
-        servers      => $ldapconfig['servernames'],
-        base_dn      => $ldapconfig['basedn'],
-        proxy_pass   => $ldapconfig['proxypass'],
-        sudo_base_dn => $config_sudo_base_dn,
+        servers    => $ldapconfig['servernames'],
+        base_dn    => $ldapconfig['basedn'],
+        proxy_pass => $ldapconfig['proxypass'],
     }
 
     ensure_packages(['ldap-utils'])
