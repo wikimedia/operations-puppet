@@ -31,7 +31,6 @@ class profile::prometheus::k8s (
         $k8s_cluster = pick($k8s_config['prometheus']['name'], "k8s-${cluster_name}")
         $targets_path = "/srv/prometheus/${k8s_cluster}/targets"
         $bearer_token_file = "/srv/prometheus/${k8s_cluster}/k8s.token"
-        $master_host = $k8s_config['master']
         $master_url = $k8s_config['master_url']
         $port = $k8s_config['prometheus']['port']
         $node_class_name = $k8s_config['prometheus']['node_class_name']
@@ -44,8 +43,10 @@ class profile::prometheus::k8s (
 
         if $enable_client_cert_auth {
             $client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'prometheus', {
-                'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-                'names'          => [{ 'organisation' => 'system:monitoring' }],
+                'renew_seconds' => $k8s_config['pki_renew_seconds'],
+                'names'         => [{ 'organisation' => 'system:monitoring' }],
+                'owner'         => 'prometheus',
+                'outdir'        => "/srv/prometheus/${k8s_cluster}/pki",
                 # AIUI prometheus reads client cert and key from disk for every request, so no need to
                 # notify/reload prometheus.
             })
@@ -271,8 +272,9 @@ class profile::prometheus::k8s (
                 },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => $master_url,
                         'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
+                        'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'pod',
                     },
                 ],
