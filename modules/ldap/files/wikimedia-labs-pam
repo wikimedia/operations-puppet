@@ -1,6 +1,0 @@
-Name: Wikimedia Labs-specific PAM settings
-Default: yes
-Priority: 200
-Session-Type: Additional
-Session:
-    [success=ok new_authtok_reqd=ok default=ignore] pam_mkhomedir.so umask=0077

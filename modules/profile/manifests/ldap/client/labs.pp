@@ -9,9 +9,8 @@ class profile::ldap::client::labs(
         fail('profile::ldap::client::labs: only Cloud VPS VMs are supported')
     }
 
-    $includes = debian::codename() ? {
-        'stretch' => ['pam', 'nss', 'sudoldap', 'nosssd'],
-        default   => ['sssd'],
+    if debian::codename::le('stretch') {
+        fail('profile::ldap::client::labs: only Debian Buster and newer are supported')
     }
 
     # bypass pam_access restrictions for local commands
@@ -56,8 +55,16 @@ class profile::ldap::client::labs(
         }
     }
 
-    class{ '::ldap::client::includes':
-        ldapincludes => $includes,
-        ldapconfig   => $::profile::ldap::client::utils::ldapconfig,
+    class { 'ldap::client::sssd':
+        ldapconfig => $::profile::ldap::client::utils::ldapconfig,
+    }
+
+    # The ldap nss package recommends this package
+    # and this package will reconfigure pam as well as add
+    # its support
+    # TODO: this was moved from ldap::client::includes, check
+    # if it's still needed
+    package { 'libpam-ldapd':
+        ensure => absent,
     }
 }
