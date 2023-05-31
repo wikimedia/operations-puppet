@@ -43,6 +43,7 @@ type Opensearch::InstanceParams = Struct[{
     'use_cms_gc'                         => Optional[Boolean],
     'cms_gc_init_occupancy_fraction'     => Optional[Integer],
     'compatibility_mode'                 => Optional[Boolean],
+    'disable_security_plugin'            => Optional[Boolean],
 
     # Dummy parameters consumed upstream of opensearch::instance,
     # but convenient to declare per-cluster
