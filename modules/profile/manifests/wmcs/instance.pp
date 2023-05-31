@@ -96,16 +96,6 @@ class profile::wmcs::instance(
         onlyif  => '/usr/bin/test -e /etc/apache2/apache2.conf -a ! -d /etc/apache2/sites-local',
     }
 
-    # Still needed for Toolforge
-    if debian::codename::eq('stretch'){
-        apt::repository { 'debian-backports':
-            uri         => 'http://mirrors.wikimedia.org/debian/',
-            dist        => 'stretch-backports',
-            components  => 'main contrib non-free',
-            comment_old => true,
-        }
-    }
-
     # In production, puppet freshness checks are done by icinga. Labs has no
     # icinga, so collect puppet freshness metrics via diamond/graphite
     #
