@@ -10,8 +10,8 @@
 # get some directory names, and so on from here
 source "$HOME/nfs_testing/test_outputdir_paths.sh"
 
-if [ "$mountpoint" != "/mnt/*" ]; then
-    echo "The setting in $HOME/nfs_testing/test_settings.sh does not look like a mount point, giving up."
+if ! [[ "$mountpoint" =~ /mnt/[a-zA-Z_]+ ]]; then
+    echo "The setting in $HOME/nfs_testing/test_outputdir_paths.sh does not look like a mount point, giving up."
     exit 1
 fi
 
@@ -22,9 +22,9 @@ fi
 
 # check if the setting is an nfs mount; if not, we'll whine and exit.
 mountinfo=$( /usr/bin/mount | /usr/bin/grep "$mountpoint" | /usr/bin/awk '{ print $1 }' )
-if [ "$mountinfo" == "*:*" ]; then
+if [[ "$mountinfo" =~ ^[a-zA-Z0-9.]+:[a-zA-Z_/]+ ]]; then
   remote=$( echo -n "$mountinfo" | /usr/bin/awk -F: '{ print $1 }' )
-  if [ "$remote" == "*.wmnet" ]; then
+  if [[ "$remote" =~ ^[a-zA-Z.]+wmnet ]]; then
      mounted="OK"
   fi
 fi
