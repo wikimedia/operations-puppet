@@ -5,7 +5,7 @@ class role::miscweb {
         description => 'WMF misc apps and sites web server'
     }
 
-    include profile::base::production                    # base tools
+    include profile::base::production            # base tools
     include profile::base::firewall              # firewalling
     include profile::backup::host                # Bacula backups 
     include profile::miscweb::httpd              # common webserver setup
@@ -24,4 +24,5 @@ class role::miscweb {
     include profile::microsites::query_service   # parts of https://query.wikidata.org (T266702)
     include profile::microsites::os_reports      # https://os-reports.wikimedia.org
     include profile::microsites::static_tendril  # https://tendril.wikimedia.org and dbtree.wikimedia.org (T297605)
+    include profile::microsites::monitoring      # Contains blackbox checks for miscweb services on Kubernetes (T300171)
 }
