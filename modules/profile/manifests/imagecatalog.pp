@@ -10,6 +10,7 @@ class profile::imagecatalog (
             $auth_cert = profile::pki::get_cert($config['pki_intermediate_base'], $username, {
                 'renew_seconds'  => $config['pki_renew_seconds'],
                 'outdir'         => '/etc/kubernetes/pki',
+                'owner'          => $username,
                 # imagecatalog user does not have any organisation attributes (e.g. groups)
                 # attached as it is being granted specific (limited) rights via RBAC.
             })
@@ -17,10 +18,10 @@ class profile::imagecatalog (
             $kubeconfig_path = "/etc/kubernetes/imagecatalog-${name}.config"
             k8s::kubeconfig { $kubeconfig_path:
                 master_host => $config['master'],
-                username    => 'imagecatalog',
+                username    => $username,
                 auth_cert   => $auth_cert,
-                owner       => 'imagecatalog',
-                group       => 'imagecatalog',
+                owner       => $username,
+                group       => $username,
             }
             [$name, $kubeconfig_path]
         }
