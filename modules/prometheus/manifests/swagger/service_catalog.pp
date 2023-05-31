@@ -17,7 +17,6 @@ define prometheus::swagger::service_catalog (
     # there should only be one swagger probe per service
     $probe_config = $swagger_probes[0]
     $memo + [{
-      'cluster' => $service_name,
       'targets' => [
         "${scheme}://${service_name}.svc.${::site}.wmnet:${service_config['port']}"
       ]
