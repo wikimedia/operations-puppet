@@ -25,9 +25,6 @@
 # @param [Stdlib::HTTPSUrl] service_account_issuer
 #   The HTTPS URL of the service account issuer (usually the control-plane URL).
 #
-# @param [Hash[String, Any]] users
-#   A hash containing the infrastructure users (and tokens).
-#
 # @param [K8s::ClusterCIDR] service_cluster_cidr
 #     CIDRs (IPv4, IPv6) used to allocate Service IPs.
 #
@@ -66,7 +63,6 @@ class k8s::apiserver (
     Hash[String, Stdlib::Unixpath] $kubelet_client_cert,
     Hash[String, Stdlib::Unixpath] $frontproxy_cert,
     Stdlib::HTTPSUrl $service_account_issuer,
-    Hash[String, Any] $users,
     K8s::ClusterCIDR $service_cluster_cidr,
     Boolean $allow_privileged = true,
     Integer $v_log_level = 0,
@@ -94,11 +90,7 @@ class k8s::apiserver (
     }
 
     file { '/etc/kubernetes/infrastructure-users':
-        content => template('k8s/infrastructure-users.csv.erb'),
-        owner   => 'kube',
-        group   => 'kube',
-        mode    => '0400',
-        notify  => Service['kube-apiserver'],
+        ensure => absent,
     }
 
     # The admission config file needs to be available as parameter fo apiserver

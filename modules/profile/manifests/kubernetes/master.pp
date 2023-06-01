@@ -3,15 +3,13 @@
 #   This class sets up a kubernetes master (apiserver)
 #
 class profile::kubernetes::master (
-    String $kubernetes_cluster_name                                          = lookup('profile::kubernetes::cluster_name'),
-    Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
-
+    String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
     # TODO: Remove service_cert after T329826 is resolved
-    Stdlib::Fqdn $service_cert                                               = lookup('profile::kubernetes::master::service_cert'),
+    Stdlib::Fqdn $service_cert      = lookup('profile::kubernetes::master::service_cert'),
     # TODO: Remove ssl_cert_path after T329826 is resolved
-    Stdlib::Unixpath $ssl_cert_path                                          = lookup('profile::kubernetes::master::ssl_cert_path'),
+    Stdlib::Unixpath $ssl_cert_path = lookup('profile::kubernetes::master::ssl_cert_path'),
     # TODO: Remove ssl_key_path after T329826 is resolved
-    Stdlib::Unixpath $ssl_key_path                                           = lookup('profile::kubernetes::master::ssl_key_path'),
+    Stdlib::Unixpath $ssl_key_path  = lookup('profile::kubernetes::master::ssl_key_path'),
 ) {
     $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     $kubernetes_cluster_group = $kubernetes_cluster_config['cluster_group']
@@ -121,22 +119,6 @@ class profile::kubernetes::master (
         group       => 'kube',
     }
 
-    # Get the local users and the corresponding tokens.
-    $_users = $all_infrastructure_users[$kubernetes_cluster_group].filter |$_,$data| {
-        # If "constrain_to" is defined, restrict the user to the masters that meet the regexp
-        $data['constrain_to'] ? {
-            undef => true,
-            default => ($facts['fqdn'] =~ Regexp($data['constrain_to']))
-        }
-    }
-    # Ensure all tokens are unique.
-    # Kubernetes will use the last definition of a token, so strange things might
-    # happen if a token is used twice.
-    $_tokens = $_users.map |$_,$data| { $data['token'] }
-    if $_tokens != $_tokens.unique {
-        fail('Not all tokens in profile::kubernetes::infrastructure_users are unique')
-    }
-
     class { 'k8s::apiserver':
         etcd_servers            => join($etcd_urls, ','),
         apiserver_cert          => $apiserver_cert,
@@ -145,7 +127,6 @@ class profile::kubernetes::master (
         additional_sa_certs     => $additional_sa_certs,
         kubelet_client_cert     => $kubelet_client_cert,
         frontproxy_cert         => $frontproxy_cert,
-        users                   => $_users,
         version                 => $version,
         service_cluster_cidr    => $service_cluster_cidr,
         service_node_port_range => $service_node_port_range,

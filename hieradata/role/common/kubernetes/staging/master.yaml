@@ -10,9 +10,6 @@ profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster
 # TODO: Remove ssl_key_path after T329826 is resolved
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
 
-# Define in the private repo
-# profile::kubernetes::master::infrastructure_users:
-
 profile::contacts::role_contacts: ['ServiceOps']
 
 # Configuration to add the Kubelet to Master nodes for limited use cases

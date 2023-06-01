@@ -15,9 +15,6 @@ profile::lvs::realserver::pools:
     services:
       - "kubemaster"
 
-# Define in the private repo
-# profile::kubernetes::master::infrastructure_users:
-
 profile::contacts::role_contacts:
   - 'Data Engineering'
   - 'Machine Learning'

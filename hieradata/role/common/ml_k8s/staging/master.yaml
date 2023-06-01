@@ -15,9 +15,6 @@ profile::lvs::realserver::pools:
     services:
       - "kube-apiserver"
 
-# Define in the private repo
-# profile::kubernetes::master::infrastructure_users:
-
 profile::contacts::role_contacts: ['Machine Learning']
 
 # Configuration to add the Kubelet to Master nodes for limited use cases
