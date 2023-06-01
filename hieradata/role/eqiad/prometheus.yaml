@@ -2,12 +2,6 @@ prometheus::server::memory_chunks: 3145728
 prometheus::server::max_chunks_to_persist: 1048576
 lvs::realserver::realserver_ips:
  - 10.2.2.25
-# In the private repo a stanza like the following is required
-# profile::prometheus::kubernetes::cluster_tokens:
-# k8s:
-#   client_token: eqiaddummy
-# k8s-staging:
-#   client_token: eqiaddummystaging
 
 profile::prometheus::ganeti::clusters:
   - ganeti01.svc.eqiad.wmnet

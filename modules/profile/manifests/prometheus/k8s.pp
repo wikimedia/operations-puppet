@@ -3,7 +3,6 @@
 # needed for WMF production
 #
 class profile::prometheus::k8s (
-    Hash                $k8s_cluster_tokens    = lookup('profile::prometheus::kubernetes::cluster_tokens'),
     String              $replica_label         = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean             $enable_thanos_upload  = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String]    $thanos_min_time       = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
@@ -30,36 +29,23 @@ class profile::prometheus::k8s (
         # Unfortunately those are completely different from the actual cluster names
         $k8s_cluster = pick($k8s_config['prometheus']['name'], "k8s-${cluster_name}")
         $targets_path = "/srv/prometheus/${k8s_cluster}/targets"
-        $bearer_token_file = "/srv/prometheus/${k8s_cluster}/k8s.token"
         $master_url = $k8s_config['master_url']
         $port = $k8s_config['prometheus']['port']
         $node_class_name = $k8s_config['prometheus']['node_class_name']
         $control_plane_class_name = $k8s_config['prometheus']['control_plane_class_name']
 
-        $enable_client_cert_auth = $k8s_config['prometheus']['client_cert_auth'] ? {
-            true    => true,
-            default => false
-        }
+        $client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'prometheus', {
+            'renew_seconds' => $k8s_config['pki_renew_seconds'],
+            'names'         => [{ 'organisation' => 'system:monitoring' }],
+            'owner'         => 'prometheus',
+            'outdir'        => "/srv/prometheus/${k8s_cluster}/pki",
+            'notify'        => Exec["prometheus@${k8s_cluster}-reload"],
+        })
 
-        if $enable_client_cert_auth {
-            $client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'prometheus', {
-                'renew_seconds' => $k8s_config['pki_renew_seconds'],
-                'names'         => [{ 'organisation' => 'system:monitoring' }],
-                'owner'         => 'prometheus',
-                'outdir'        => "/srv/prometheus/${k8s_cluster}/pki",
-                'notify'        => Exec["prometheus@${k8s_cluster}-reload"],
-            })
-
-            # Authenticate to k8a API (and metrics endpoints) using a client certificate
-            $k8s_sd_tls_config = {
-                'cert_file' => $client_cert['cert'],
-                'key_file'  => $client_cert['key'],
-            }
-            $client_token = ''
-        } else {
-            # Fetch the prometheus users API token from puppet private key
-            $client_token = $k8s_cluster_tokens[$k8s_cluster]['client_token']
-            $k8s_sd_tls_config = {}
+        # Authenticate to k8a API (and metrics endpoints) using a client certificate
+        $k8s_sd_tls_config = {
+            'cert_file' => $client_cert['cert'],
+            'key_file'  => $client_cert['key'],
         }
 
         $config_extra = {
@@ -80,13 +66,11 @@ class profile::prometheus::k8s (
         $scrape_configs_extra = [
             {
                 'job_name'              => 'k8s-api',
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 'tls_config'            => $k8s_sd_tls_config,
                 'scheme'                => 'https',
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'endpoints',
                     },
@@ -105,12 +89,9 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-node',
-                # FIXME: No auth required here
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'node',
                     },
@@ -135,13 +116,10 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-node-cadvisor',
-                # FIXME: No auth required here
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 'metrics_path'          => '/metrics/cadvisor',
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'node',
                     },
@@ -166,12 +144,9 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-node-proxy',
-                # FIXME: No auth required here
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'node',
                     },
@@ -196,8 +171,6 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-pods',
-                # FIXME: I'm not completely sure but doesn't this send the bearer token to the pods metrics endpoint?
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 # Note: We dont verify the cert on purpose. Issues IP SAN based
                 # certs for all pods is impossible
                 'tls_config'            => {
@@ -206,7 +179,6 @@ class profile::prometheus::k8s (
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'pod',
                     },
@@ -263,7 +235,6 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-pods-metrics',
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 # Note: We dont verify the cert on purpose. Issues IP SAN based
                 # certs for all pods is impossible
                 'tls_config'            => {
@@ -272,7 +243,6 @@ class profile::prometheus::k8s (
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'pod',
                     },
@@ -330,14 +300,11 @@ class profile::prometheus::k8s (
             },
             {
                 'job_name'              => 'k8s-pods-tls',
-                # FIXME: I'm not completely sure but doesn't this send the bearer token to the pods metrics endpoint?
-                'bearer_token_file'     => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                 'metrics_path'          => '/stats/prometheus',
                 'scheme'                => 'http',
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
-                        'bearer_token_file' => $enable_client_cert_auth ? { true => '', default => $bearer_token_file },
                         'tls_config'        => $k8s_sd_tls_config,
                         'role'              => 'pod',
                     },
@@ -443,12 +410,8 @@ class profile::prometheus::k8s (
             }
         }
 
-        file { $bearer_token_file:
-            ensure  => $enable_client_cert_auth.bool2str(absent, file),
-            content => $client_token,
-            mode    => '0400',
-            owner   => 'prometheus',
-            group   => 'prometheus',
+        file { "/srv/prometheus/${k8s_cluster}/k8s.token":
+            ensure  => absent,
         }
 
         prometheus::pint::source { $k8s_cluster:
