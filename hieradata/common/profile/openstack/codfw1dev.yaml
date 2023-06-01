@@ -16,6 +16,7 @@ profile::openstack::codfw1dev::public_apis: false
 # same network setup
 profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2001-dev.codfw.wmnet
+  - cloudcontrol2004-dev.codfw.wmnet
   - cloudcontrol2005-dev.codfw.wmnet
 
 

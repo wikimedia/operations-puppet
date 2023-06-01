@@ -10,6 +10,7 @@ profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 # TODO: so traffic can't circulate using the cloud-private subnet (yet)
 profile::cloudceph::openstack_controllers:
   - cloudcontrol2001-dev.codfw.wmnet
+  - cloudcontrol2004-dev.codfw.wmnet
   - cloudcontrol2005-dev.codfw.wmnet
 
 # NOTE: remember, backups nodes for codfw1dev are in the eqiad DC

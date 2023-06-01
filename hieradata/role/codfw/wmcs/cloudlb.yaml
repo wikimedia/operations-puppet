@@ -7,6 +7,7 @@ profile::admin::groups:
 # in the same network setup, this override here can be deleted, because it should be set elsewhere.
 profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2001-dev.private.codfw.wikimedia.cloud
+  - cloudcontrol2004-dev.private.codfw.wikimedia.cloud
   - cloudcontrol2005-dev.private.codfw.wikimedia.cloud
 
 profile::bird::advertise_vips:

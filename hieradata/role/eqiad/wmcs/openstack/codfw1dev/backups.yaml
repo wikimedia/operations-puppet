@@ -37,6 +37,7 @@ profile::openstack::codfw1dev::keystone::enforce_policy_scope: false
 # TODO: so traffic can't circulate using the cloud-private subnet (yet)
 profile::openstack::codfw1dev::openstack_controllers:
     - cloudcontrol2001-dev.codfw.wmnet
+    - cloudcontrol2004-dev.codfw.wmnet
     - cloudcontrol2005-dev.codfw.wmnet
 
 profile::openstack::codfw1dev::rabbitmq_nodes:
