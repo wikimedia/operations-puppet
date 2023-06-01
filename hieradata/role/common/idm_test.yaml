@@ -2,7 +2,7 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::idm::processes: 4
 
 # OIDC
-profile::idp::service: idm_dev
+profile::idm::oidc_service: idm_dev
 
 # IDM options
 profile::idm::service_fqdn: 'idm-test.wikimedia.org'

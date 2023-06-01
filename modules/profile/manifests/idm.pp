@@ -14,7 +14,7 @@ class profile::idm(
     Boolean             $envoy_termination         = lookup('profile::idm::envoy_termination', {'default_value'            => false}),
     Apereo_cas::Urls    $apereo_cas                = lookup('apereo_cas'),
     Hash                $ldap_config               = lookup('ldap'),
-    String              $oidc_key                  = lookup('profile::idp::service'),
+    String              $oidc_key                  = lookup('profile::idm::oidc_service'),
     String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
     String              $mediawiki_key             = lookup('profile::idm::mediawiki_key'),
     String              $mediawiki_secret          = lookup('profile::idm::mediawiki_secret'),
