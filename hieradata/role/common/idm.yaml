@@ -27,3 +27,5 @@ profile::tlsproxy::instance::ssl_compatibility_mode: strong
 # Redis
 profile::idm::redis_master: 'idm1001.wikimedia.org'
 profile::idm::redis_replicas: ['idm2001.wikimedia.org',]
+
+profile::idm::enable_monitoring: true

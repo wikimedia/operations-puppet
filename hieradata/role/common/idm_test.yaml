@@ -26,3 +26,5 @@ profile::tlsproxy::instance::ssl_compatibility_mode: strong
 
 # Redis
 profile::idm::redis_master: 'idm-test1001'
+
+profile::idm::enable_monitoring: false
