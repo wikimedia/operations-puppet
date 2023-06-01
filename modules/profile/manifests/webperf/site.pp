@@ -29,7 +29,7 @@ class profile::webperf::site (
     Stdlib::IP::Address::V4::CIDR $excimer_trusted = lookup('profile::webperf::site::excimer_trusted'),
     Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
-    ensure_packages(['libapache2-mod-uwsgi', 'libapache2-mod-php7.4', 'php7.4-mysql', 'mariadb-client'])
+    ensure_packages(['libapache2-mod-php7.4', 'php7.4-mysql', 'mariadb-client'])
 
     file { '/srv/org':
         ensure => directory,
@@ -100,15 +100,6 @@ class profile::webperf::site (
     httpd::site { 'performance-wikimedia-org':
         content => template('profile/webperf/site/performance-website.erb'),
         require => Git::Clone['performance/docroot'],
-    }
-
-    # Decom https://phabricator.wikimedia.org/T335242
-    systemd::timer::job { 'warm_up_coal_cache':
-        ensure      => absent,
-        description => 'Regular jobs to keep coal cache warm',
-        user        => 'nobody',
-        command     => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/30:00'},
     }
 
     profile::auto_restarts::service { 'apache2': }
