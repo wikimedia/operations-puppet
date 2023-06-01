@@ -26,9 +26,17 @@ Puppet::Functions.create_function(:'wmflib::expand_path') do
     return {} unless File.exists?(path)
     context.cached_file_data(path) do |content|
       begin
-        data = YAML.load(content, path)
+        if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7')
+          data = YAML.safe_load(content, filename: path, aliases: true)
+        else
+          data = YAML.load(content, path)
+        end
         if data.is_a?(Hash)
-          Puppet::Pops::Lookup::HieraConfig.symkeys_to_string(data)
+          if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7')
+            data
+          else
+            Puppet::Pops::Lookup::HieraConfig.symkeys_to_string(data)
+          end
         else
           msg = format(_("%{path}: file does not contain a valid yaml hash"), path: path)
           raise Puppet::DataBinding::LookupError, msg if Puppet[:strict] == :error && data != false

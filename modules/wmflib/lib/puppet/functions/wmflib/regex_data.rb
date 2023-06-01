@@ -18,10 +18,17 @@ Puppet::Functions.create_function(:'wmflib::regex_data') do
   def load_data_hash(path, context)
     context.cached_file_data(path) do |content|
       begin
-        # TODO: Use YAML.safe_load and manuly create our Regex objects
-        data = YAML.load(content, path)
+        if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7')
+          data = YAML.safe_load(content, permitted_classes: [Regexp], filename: path, aliases: true)
+        else
+          data = YAML.load(content, path)
+        end
         if data.is_a?(Hash)
-          Puppet::Pops::Lookup::HieraConfig.symkeys_to_string(data)
+          if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7')
+            data
+          else
+            Puppet::Pops::Lookup::HieraConfig.symkeys_to_string(data)
+          end
         else
           msg = format(_("%{path}: file does not contain a valid yaml hash"), path: path)
           raise Puppet::DataBinding::LookupError, msg if Puppet[:strict] == :error && data != false
