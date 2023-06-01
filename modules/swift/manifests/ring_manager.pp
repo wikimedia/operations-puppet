@@ -20,14 +20,7 @@ class swift::ring_manager (
     Optional[Stdlib::Unixpath] $ring_dir = '/var/cache/swift_rings',
 ) {
 
-    #pre-bullseye, we want python to run swift_ring_manager, & python-yaml
-    #bullseye and later, use python3 and python3-yaml
-    $python = debian::codename::lt('bullseye') ? {
-        true  => 'python',
-        false => 'python3',
-    }
-    $yaml_package = "${python}-yaml"
-    ensure_packages($yaml_package)
+    ensure_packages(['python3-yaml'])
 
     # install_dir is managed by git::clone
     wmflib::dir::mkdir_p([$install_dir.dirname(), $ring_dir])
@@ -48,12 +41,12 @@ class swift::ring_manager (
         source => "puppet:///modules/swift/${swift_cluster}_hosts.yaml",
     }
 
-    #Wrapper that runs swift_ring_manager.py with the correct python
-    #This means that we can use syslog matching in process name too
+    #Wrapper that runs swift_ring_manager.py.
+    #This means that we can use syslog matching in process name.
     file { '/usr/local/bin/swift_ring_manager':
         ensure  => file,
         mode    => '0555',
-        content => "#!/bin/sh\n/usr/bin/${python} ${install_dir}/swift_ring_manager.py \"$@\"",
+        content => "#!/bin/sh\n/usr/bin/python3 ${install_dir}/swift_ring_manager.py \"$@\"",
     }
 
     systemd::timer::job { 'swift_ring_manager':

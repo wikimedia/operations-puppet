@@ -19,11 +19,7 @@ class swift::proxy (
     $enable_wmf_filters        = true,
     $read_affinity             = undef,
 ) {
-    package {[
-        'swift-proxy',
-    ]:
-        ensure => present,
-    }
+    ensure_packages(['swift-proxy', 'python3-monotonic'])
 
     # eventlet + getaddrinfo is busted in Bullseye, thus use addresses
     # https://phabricator.wikimedia.org/T283714
@@ -38,12 +34,9 @@ class swift::proxy (
                   'tempauth', 'slo', 'proxy-logging', 'proxy-server'],
     }
 
-    $middlewares = debian::codename::ge('bullseye') ? {
-        # proxy-logging is repeated in the pipeline on purpose
-        # https://bugs.launchpad.net/swift/+bug/1939888
-        true  => ['proxy-logging', 'listing_formats'] + $base_middlewares,
-        false => $base_middlewares,
-    }
+    # proxy-logging is repeated in the pipeline on purpose
+    # https://bugs.launchpad.net/swift/+bug/1939888
+    $middlewares = ['proxy-logging', 'listing_formats'] + $base_middlewares
 
     file { '/etc/swift/proxy-server.conf':
         owner     => 'swift',
@@ -80,21 +73,11 @@ class swift::proxy (
         content => systemd_template('swift-proxy'),
     }
 
-    if debian::codename::lt('bullseye') {
-        $python_version = '2.7'
-        $monotonic_package = 'python-monotonic'
-    } else {
-        $python_version = '3.9'
-        $monotonic_package = 'python3-monotonic'
-    }
-
-    ensure_packages($monotonic_package)
-
-    file { "/usr/local/lib/python${python_version}/dist-packages/wmf/":
+    file { '/usr/local/lib/python3.9/dist-packages/wmf/':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///modules/swift/python${python_version}/SwiftMedia/wmf/",
+        source  => 'puppet:///modules/swift/python3.9/SwiftMedia/wmf/',
         recurse => 'remote',
     }
 }
