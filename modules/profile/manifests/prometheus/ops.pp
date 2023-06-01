@@ -75,6 +75,19 @@ class profile::prometheus::ops (
         targets_path => $targets_path
     }
 
+    # T167048
+    $swagger_external_checks = [
+        { 'targets' => [ 'https://maps.wikimedia.org' ] },
+        { 'targets' => [ 'https://en.wikipedia.org/api/rest_v1' ] },
+    ]
+
+    file { "${targets_path}/swagger_external.yaml":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => to_yaml($swagger_external_checks)
+    }
+
     # We need a deterministic location for client certificates to use for exported
     # blackbox checks e.g. prometheus::blackbox::check::{http,tcp} with use_client_auth
     puppet::expose_agent_certs { '/etc/prometheus':
