@@ -3629,6 +3629,31 @@ service::catalog:
       - dnsdisc: puppetboard
         active_active: true
 
+
+  # puppetboard is not an LVS service. However it does warrant using discovery DC records for it.
+  # Note the lack of an 'lvs' stanza in the configuration below.
+  puppetboard-next:
+    description: Internal production Puppetboard interface
+    encryption: true
+    ip:
+      codfw:
+        default: 10.64.32.38
+      eqiad:
+        default: 10.192.0.8
+    page: false
+    probes:
+      - type: http
+        host: puppetboard-next.wikimedia.org
+        expect_sso: true
+    sites:
+      - eqiad
+      - codfw
+    port: 443
+    state: production
+    discovery:
+      - dnsdisc: puppetboard-next
+        active_active: true
+
   image-suggestion:
     description: image suggestion service, image-suggestion.svc.%{::site}.wmnet
     encryption: true
