@@ -100,7 +100,6 @@ profile::cassandra::settings:
     trickle_fsync: false
     client_encryption_enabled: true
     internode_encryption: all
-    legacy_ssl_storage_port_enabled: true
   users:
     - restbase_dev
 
