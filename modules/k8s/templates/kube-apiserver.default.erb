@@ -10,7 +10,6 @@ daemon_args = [
   "--v=#{@v_log_level}",
   "--allow-privileged=#{@allow_privileged}",
   "--etcd-servers=#{@etcd_servers}",
-  "--token-auth-file=/etc/kubernetes/infrastructure-users",
   "--tls-cert-file=#{@apiserver_cert['chained']}",
   "--tls-private-key-file=#{@apiserver_cert['key']}",
   "--service-account-key-file=#{@sa_cert['cert']}",
