@@ -12,11 +12,8 @@ kubernetes::clusters_defaults:
   imagecatalog: false
   ipv6dualstack: false
   infra_pod: docker-registry.discovery.wmnet/pause:3.6-1
-  # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
-  #       and then copied all over the place. The kubernetes default is 30000-32767.
-  service_node_port_range:
-    - 1
-    - 65535
+  # The kubernetes default is 30000-32767.
+  service_node_port_range: [30000, 32767]
   use_cni: true
   calico_version: "3.23"
   istio_cni_version: "1.15"
@@ -69,6 +66,9 @@ kubernetes::clusters:
       master: kubemaster.svc.eqiad.wmnet
       pki_intermediate_base: wikikube
       ipv6dualstack: true
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       prometheus: &wikikube_prometheus
         name: k8s
         port: 9906
@@ -117,6 +117,9 @@ kubernetes::clusters:
       master: kubemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube
       ipv6dualstack: true
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       prometheus:
         <<: *wikikube_prometheus
       control_plane_nodes:
@@ -167,6 +170,9 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       prometheus: &wikikube_staging_prometheus
         name: k8s-staging
         port: 9907
@@ -197,6 +203,9 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       prometheus:
         <<: *wikikube_staging_prometheus
       control_plane_nodes:
@@ -221,6 +230,9 @@ kubernetes::clusters:
     ml-serve-eqiad:
       dc: eqiad
       master: ml-ctrl.svc.eqiad.wmnet
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve
       prometheus: &ml-serve_prometheus
         name: k8s-mlserve
@@ -286,6 +298,9 @@ kubernetes::clusters:
     ml-serve-codfw:
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve
       prometheus:
         <<: *ml-serve_prometheus
@@ -322,6 +337,9 @@ kubernetes::clusters:
     ml-staging-codfw:
       dc: codfw
       master: ml-staging-ctrl.svc.codfw.wmnet
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve_staging
       pki_renew_seconds: 172800
       prometheus:
@@ -358,6 +376,9 @@ kubernetes::clusters:
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: dse
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       prometheus:
         name: k8s-dse
         port: 9910
@@ -398,6 +419,9 @@ kubernetes::clusters:
       dc: eqiad
       master: aux-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: aux
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
       prometheus:
         name: k8s-aux
         port: 9911

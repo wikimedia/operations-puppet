@@ -44,6 +44,8 @@
 #
 # @param [Array[Stdlib::IP::Address, 1]] cluster_dns
 #     IPv4 IP(s) of cluster internal DNS service(s).
+#     It needs to be in your clusters service IP range.
+#     Don't use .1 as it is used internally by kubernetes.
 #
 # @param [K8s::ClusterCIDR] service_cluster_cidr
 #     CIDRs (IPv4, IPv6) used to allocate Service IPs.
