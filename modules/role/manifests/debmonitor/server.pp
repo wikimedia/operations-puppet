@@ -12,7 +12,7 @@
 class role::debmonitor::server {
     system::role { 'debmonitor::server': description => 'Debmonitor server' }
 
-    include profile::base::firewall
+    include profile::firewall
     include profile::base::production
     include profile::tlsproxy::envoy
     include profile::debmonitor::server
