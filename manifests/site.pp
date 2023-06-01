@@ -1381,7 +1381,7 @@ node /^cloudservices100[45]\.wikimedia\.org$/ {
 }
 
 # New cloud node T289882
-node /^cloudswift100[12]\.codfw\.wmnet$/ {
+node /^cloudswift100[12]\.eqiad\.wmnet$/ {
     role(insetup::wmcs)
 }
 
