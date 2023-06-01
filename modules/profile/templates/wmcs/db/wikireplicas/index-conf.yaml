@@ -49,10 +49,10 @@ indexes:
     name: fa_reason
     columns:
       - fa_deleted_reason_id
-  - table: revision_comment_temp
-    name: revcomment_comment_id
+  - table: revision
+    name: rev_comment_id
     columns:
-      - revcomment_comment_id
+      - rev_comment_id
   - table: image
     name: img_description_id
     columns:
