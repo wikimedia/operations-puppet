@@ -57,11 +57,11 @@ profile::openstack::codfw1dev::labweb_hosts:
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
 
 # In codfw1dev, the cloudcontrol nodes also host the RabbitMQ service.
+# but they are hidden behind these CNAMEs anyway
 profile::openstack::codfw1dev::rabbitmq_nodes:
-  # TODO: decide what to do with these
-  #- rabbitmq01.codfw1dev.wikimediacloud.org
+  - rabbitmq01.codfw1dev.wikimediacloud.org
   - rabbitmq02.codfw1dev.wikimediacloud.org
-  #- rabbitmq03.codfw1dev.wikimediacloud.org
+  - rabbitmq03.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::rabbitmq_setup_nodes: []
 profile::openstack::codfw1dev::rabbit_monitor_user: 'monitoring'
 profile::openstack::codfw1dev::rabbit_file_handles: 8192
