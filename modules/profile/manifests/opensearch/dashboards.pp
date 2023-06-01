@@ -21,7 +21,7 @@ class profile::opensearch::dashboards (
 
   package { [
     'securityDashboards',
-    'notificationDashboards',
+    'notificationsDashboards',
     'indexManagementDashboards'
   ]:
     ensure   => 'absent',
