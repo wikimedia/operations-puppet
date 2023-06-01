@@ -933,7 +933,19 @@ class profile::prometheus::ops (
         'job_name'        => 'cadvisor',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/cadvisor_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [
+            # Drop k8s pods-related metrics, already scraped by
+            # prometheus k8s instances
+            { 'source_labels' => ['id'],
+              'regex'  => '/kubepods\.slice.*',
+              'action' => 'drop',
+            },
+            { 'source_labels' => ['device'],
+              'regex'  => '(overlay_|/var/lib/(kubelet|docker)/).*',
+              'action' => 'drop',
+            },
+        ],
       },
     ]
 
