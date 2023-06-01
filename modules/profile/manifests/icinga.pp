@@ -52,11 +52,6 @@ class profile::icinga(
         mgmt_parents => $mgmt_parents
     }
 
-    # Experimental load-balancer monitoring for services using service-checker
-    class { 'lvs::monitor_services':
-        main_datacenters => ['eqiad', 'codfw'],
-        all_datacenters  => $datacenters,
-    }
     class { 'icinga::monitor::checkpaging': }
 
     class { 'icinga::nsca::daemon':
