@@ -43,26 +43,23 @@ class openstack::nova::common(
         require   => Package['nova-common'];
     }
 
-    if debian::codename::ge('buster') {
-        # The Buster version of the Rocky packages creates the nova user
-        #  with a weird high-number uid.  Try to head it off by creating here
-        #  ahead of time.
-        group { 'nova':
-            ensure => 'present',
-            name   => 'nova',
-            system => true,
-        }
-
-        user { 'nova':
-            ensure     => 'present',
-            name       => 'nova',
-            comment    => 'nova system user',
-            gid        => 'nova',
-            home       => '/var/lib/nova',
-            managehome => false,
-            before     => Package['nova-common'],
-            system     => true,
-        }
+    # The Buster version of the Rocky packages creates the nova user
+    #  with a weird high-number uid.  Try to head it off by creating here
+    #  ahead of time.
+    group { 'nova':
+        ensure => 'present',
+        name   => 'nova',
+        system => true,
     }
 
+    user { 'nova':
+        ensure     => 'present',
+        name       => 'nova',
+        comment    => 'nova system user',
+        gid        => 'nova',
+        home       => '/var/lib/nova',
+        managehome => false,
+        before     => Package['nova-common'],
+        system     => true,
+    }
 }
