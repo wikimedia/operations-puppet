@@ -87,7 +87,7 @@ class profile::openstack::base::rabbitmq(
         owner   => 'rabbitmq',
         group   => 'rabbitmq',
         mode    => '0644',
-        source  => 'puppet:///modules/profile/openstack/base/rabbitmq/rabbitmq-env.conf',
+        content => template('profile/openstack/base/rabbitmq/rabbitmq-env.conf.erb'),
         require => Package['rabbitmq-server'],
         notify  => Service['rabbitmq-server'],
     }

@@ -16,3 +16,7 @@
 # set the busy wait threshold to none.  Explanation
 #  at https://review.opendev.org/c/openstack/tripleo-heat-templates/+/605622
 RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="+sbwt none"
+
+
+RABBITMQ_USE_LONGNAME=true
+RABBITMQ_NODENAME=rabbit@<%= @rabbitmq_service_name %>
