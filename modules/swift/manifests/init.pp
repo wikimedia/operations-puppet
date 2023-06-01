@@ -32,26 +32,10 @@ class swift (
         },
     }
 
-    # Got removed in Linux 4.12 with
-    # https://git.kernel.org/linus/4396e46187ca5070219b81773c4e65088dac50cc
-    if debian::codename::eq('stretch') {
-        sysctl::parameters { 'swift_performance_rw_recycle':
-            values => {
-                'net.ipv4.tcp_tw_recycle'      => '1',
-            },
-        }
-    }
-
-    if debian::codename::ge('bullseye') {
-        $python_swift_pkg = 'python3-swift'
-    } else {
-        $python_swift_pkg = 'python-swift'
-    }
-
     # Use 'package' as opposed to ensure_packagess to avoid dependency cycles
     package { [
         'swift',
-        $python_swift_pkg,
+        'python3-swift',
         'python3-swiftclient',
         'parted',
     ]:
@@ -106,7 +90,7 @@ class swift (
         force   => true,
         target  => '/srv/log/swift',
         require => File['/srv/log/swift'],
-        before  => Package[$python_swift_pkg],
+        before  => Package['python3-swift'],
     }
 
     logrotate::conf { 'swift':
