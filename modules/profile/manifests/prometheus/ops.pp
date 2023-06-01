@@ -51,9 +51,9 @@ class profile::prometheus::ops (
             'params'          => {},
             'metrics_path'    => '/probe',
             'relabel_configs' => [
-                { 'target_label' => '__param_target', 'source_labels' => [ 'address' ] },
+                { 'target_label' => '__param_target', 'source_labels' => [ '__address__' ] },
                 { 'target_label' => 'instance',       'source_labels' => [ '__param_target' ] },
-                { 'target_label' => 'address',        'replacement'   => '127.0.0.1:9220' }
+                { 'target_label' => '__address__',    'replacement'   => '127.0.0.1:9220' }
             ],
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/swagger_*.yaml" ] }
