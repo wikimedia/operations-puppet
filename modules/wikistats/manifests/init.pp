@@ -43,7 +43,6 @@ class wikistats (
 ){
 
     $php_version = debian::codename() ? {
-        'stretch'  => '7.0',
         'buster'   => '7.3',
         'bullseye' => '7.4',
         default    => fail("unsupported on ${debian::codename()}"),

@@ -5,7 +5,6 @@ class profile::cyberbot::exec{
     $php_version = debian::codename() ? {
         'bullseye' => '7.4',
         'buster'   => '7.3',
-        'stretch'  => '7.2',
         default    => fail("profile::cyberbot::exec currently unsupported on debian ${debian::codename()}"),
     }
 

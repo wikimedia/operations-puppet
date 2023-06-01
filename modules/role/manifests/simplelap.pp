@@ -13,7 +13,6 @@ class role::simplelap{
 
     # TODO: another case for php_version facte
     $php_module = debian::codename() ? {
-        'stretch'     => 'php7.0',
         'buster'      => 'php7.3',
         'bullseye'    => 'php7.4',
         default => fail("unsupported on ${debian::codename()}")
