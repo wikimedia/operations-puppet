@@ -92,7 +92,7 @@ class profile::firewall (
     ferm::service { 'ssh-from-bastion':
         proto  => 'tcp',
         port   => '22',
-        srange => $bastion_hosts.join(' '),
+        srange => "(${bastion_hosts.join(' ')})",
     }
 
     ferm::service { 'ssh-from-cumin-masters':
