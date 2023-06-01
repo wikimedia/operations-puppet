@@ -20,9 +20,11 @@ class profile::opensearch::dashboards (
   }
 
   package { [
-    'securityDashboards',
-    'notificationsDashboards',
-    'indexManagementDashboards'
+    'securityDashboards',        # cannot run when security plugin is disabled
+    'indexManagementDashboards', # can cause accidental complete data loss - needs working security settings
+    'notificationsDashboards',   # servers are firewalled off from reaching targets
+    'alertingDashboards',        # requires notification capabilities - see ^^
+    'observabilityDashboards',   # needs further investigation to limit write access via ui
   ]:
     ensure   => 'absent',
     provider => 'opensearch_dashboards_plugin',
