@@ -8,9 +8,12 @@
     Alias /excimer /srv/org/wikimedia/performance/excimer/index.php
 
     <Location /excimer>
-        Order allow,deny
-        Allow from all
+        Order deny,allow
+        Deny from all
 
+        <Limit GET HEAD>
+            Allow from all
+        </Limit>
         # Only MediaWiki servers may submit data to the /excimer/ingest endpoint
         <LimitExcept GET HEAD>
             Allow from <%= @excimer_trusted %>
@@ -71,3 +74,6 @@
     Alias /robots.txt /var/www/no-robots.txt
 <% end -%>
 </VirtualHost>
+
+# Let Varnish override the remote IP, so that excimer_trusted ACL works as expected.
+RemoteIPHeader X-Client-IP
