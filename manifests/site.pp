@@ -2771,18 +2771,9 @@ node /^urldownloader[12]00[12]\.wikimedia\.org$/ {
     role(url_downloader)
 }
 
-node /^urldownloader[12]003\.wikimedia\.org$/ {
-    role(insetup::infrastructure_foundations)
-}
-
-node 'urldownloader1004.wikimedia.org' {
-    role(insetup::infrastructure_foundations)
-}
-
-node 'urldownloader2004.wikimedia.org' {
+node /^urldownloader[12]00[34]\.wikimedia\.org$/ {
     role(url_downloader)
 }
-
 
 # These are hypervisors that use local storage for their VMs
 #  rather than ceph. This is necessary for low-latency workloads
