@@ -3,28 +3,19 @@
 class profile::ntp (
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts'),
 ){
-    $wmf_all_peers = [
-        $::ntp_peers['eqiad'],
-        $::ntp_peers['codfw'],
-        $::ntp_peers['esams'],
-        $::ntp_peers['ulsfo'],
-        $::ntp_peers['eqsin'],
-        $::ntp_peers['drmrs']
-    ].flatten
+    # all global peers at all sites
+    $wmf_all_peers = flatten(values($::ntp_peers))
 
-    # ntp_peers is a list of peer servers that exist within each site,
-    # while wmf_server_peers here is a list of servers a given server should
-    # peer with globally, which is in the most-general terms:
-    # 1) All peers at both core sites
-    # 2) For core sites: All peers at all non-core sites
-    # 3) Exclude self from final list
+    # $wmf_server_peers_plus_self is a full list of peer servers applicable at
+    # each site (which will, for any given server, also include itself):
     $wmf_server_peers_plus_self = $::site ? {
-        esams   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['esams']].flatten,
-        ulsfo   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['ulsfo']].flatten,
-        eqsin   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['eqsin']].flatten,
-        drmrs   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['drmrs']].flatten,
-        default => $wmf_all_peers, # core sites
+        # core sites peer with all global peers at all sites
+        eqiad   => $wmf_all_peers,
+        codfw   => $wmf_all_peers,
+        # edge sites only peer with core DCs and themselves:
+        default => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers[$::site]].flatten,
     }
+    # a server can't peer with itself, so remove self from the list:
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
 
     $pool_zone = $::site ? {
