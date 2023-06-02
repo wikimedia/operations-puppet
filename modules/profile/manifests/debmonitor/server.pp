@@ -91,6 +91,16 @@ class profile::debmonitor::server (
         notify  => Service['uwsgi-debmonitor'],
     }
 
+    # Scap creates the deployment directory internally, otherwise create it here
+    if $app_deployment != 'scap3' {
+        file { $base_path:
+            ensure => directory,
+            owner  => 'www-data',
+            group  => 'www-data',
+            mode   => '0755',
+        }
+    }
+
     # uWSGI service to serve the Django-based WebUI and API
     $socket = '/run/uwsgi/debmonitor.sock'
     service::uwsgi { 'debmonitor':
