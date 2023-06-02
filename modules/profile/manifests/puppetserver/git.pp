@@ -24,6 +24,7 @@ class profile::puppetserver::git (
             group  => $group,
         })
         git::clone { $repo:
+            ensure    => $ensure,
             directory => $dir,
             branch    => $config['branch'],
             origin    => "https://gerrit.wikimedia.org/r/${repo}",
