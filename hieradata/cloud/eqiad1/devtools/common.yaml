@@ -236,8 +236,8 @@ prometheus_nodes:
   - logging-alert-01.logging.eqiad1.wikimedia.cloud
 
 # GitLab
-profile::gitlab::active_host: 'gitlab2002.wikimedia.org'
-profile::gitlab::passive_hosts: ['gitlab.devtools.wmcloud.org']
+profile::gitlab::active_host: 'gitlab-prod-1002.devtools.eqiad1.wikimedia.cloud'
+profile::gitlab::passive_hosts: []
 
 profile::base::ssh_server_settings:
     listen_addresses:
