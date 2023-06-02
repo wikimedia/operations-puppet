@@ -235,9 +235,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://security.wikimedia.org
       replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
-      target: http://sitemaps.wikimedia.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
-    - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
