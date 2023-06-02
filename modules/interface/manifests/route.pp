@@ -18,7 +18,18 @@
 #   Optional Destination's prefix
 # - $options:
 #   Optional Additional options
-define interface::route($address, $nexthop, $ipversion=4, $interface=undef, $mtu=undef, $prefixlen=undef, $options=undef) {
+# - $persist:
+#   Optional: Create a post-up entry in /etc/network/interfaces to persist the route
+define interface::route(
+    $address,
+    $nexthop,
+    $ipversion=4,
+    $interface=undef,
+    $mtu=undef,
+    $prefixlen=undef,
+    $options=undef,
+    Optional[Boolean] $persist = false,
+) {
     if $prefixlen == undef and $ipversion == 4 { # If v6 IP, host prefix lenght is 32
         $prefix = "${address}/32"
     }
@@ -41,5 +52,18 @@ define interface::route($address, $nexthop, $ipversion=4, $interface=undef, $mtu
     exec { $route_command:
         path   => '/bin:/usr/bin',
         unless => $show_command,
+    }
+
+    # persisting the route is optional, but if you don't do it, it won't survive
+    # a reboot of the server and the route will be missing until the next puppet run.
+    if $persist {
+        if $interface == undef {
+            fail('interface::route: missing target interface to persist')
+        }
+
+        interface::post_up_command { "${title}_persist":
+            interface => $interface,
+            command   => $route_command,
+        }
     }
 }
