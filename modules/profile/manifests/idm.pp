@@ -119,6 +119,13 @@ class profile::idm(
         }
     }
 
+    # Bitu is managed via a dedicated systemd unit (uwsgi-bitu.service),
+    # mask the generic uwsgi unit which gets auto-translated based on the init.d script
+    # shipped in the uwsgi Debian package
+    systemd::mask { 'mask_default_uwsgi_bitu':
+        unit => 'uwsgi.service',
+    }
+
     class {'httpd':
         modules => ['proxy_http', 'proxy', 'proxy_uwsgi']
     }
