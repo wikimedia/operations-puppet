@@ -93,12 +93,12 @@ class profile::debmonitor::server (
 
     # Scap creates the deployment directory internally, otherwise create it here
     if $app_deployment != 'scap3' {
-        file { $base_path:
-            ensure => directory,
+
+        wmflib::dir::mkdir_p($base_path, {
             owner  => 'www-data',
             group  => 'www-data',
             mode   => '0755',
-        }
+        })
     }
 
     # uWSGI service to serve the Django-based WebUI and API
