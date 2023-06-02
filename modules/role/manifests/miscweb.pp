@@ -16,7 +16,6 @@ class role::miscweb {
     include profile::microsites::transparency    # https://transparency.wikimedia.org
     include profile::microsites::research        # https://research.wikimedia.org (T183916)
     include profile::microsites::design          # https://design.wikimedia.org (T185282)
-    include profile::microsites::sitemaps        # https://sitemaps.wikimedia.org
     include profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
     include profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
     include profile::microsites::security        # https://security.wikimedia.org (T257830)
