@@ -1537,7 +1537,6 @@ node /^karapace1001\.eqiad\.wmnet$/ {
 # profile::microsites::transparency    # https://transparency.wikimedia.org
 # profile::microsites::research        # https://research.wikimedia.org (T183916)
 # profile::microsites::design          # https://design.wikimedia.org (T185282)
-# profile::microsites::sitemaps        # https://sitemaps.wikimedia.org
 # profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
 # profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
 # profile::microsites::static_tendril  # https://tendril.wikimedia.org and https://dbtree.wikimedia.org (T297605)
