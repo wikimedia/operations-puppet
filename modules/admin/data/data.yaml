@@ -851,10 +851,6 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
-  sitemaps-admins:
-    gid: 805
-    description: People who upload files to sitemaps.wikimedia.org
-    members: [krinkle, phedenskog, aaron]
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
