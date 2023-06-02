@@ -3,19 +3,9 @@ class gdnsd {
     # The package would create this as well if missing, but this allows
     # puppetization to create directories and files owned by these before the
     # package is even installed...
-    group { 'gdnsd':
-        ensure => present,
-        system => true,
-    }
-    user { 'gdnsd':
-        ensure     => present,
-        gid        => 'gdnsd',
-        shell      => '/bin/false',
-        comment    => '',
-        home       => '/var/run/gdnsd',
-        managehome => false,
-        system     => true,
-        require    => Group['gdnsd'],
+
+    systemd::sysuser { 'gdnsd':
+        home_dir    => '/var/run/gdnsd',
     }
 
     package { 'gdnsd':
