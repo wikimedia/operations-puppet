@@ -1,25 +1,6 @@
 include "geoip.inc.vcl";
 
 sub cluster_fe_vcl_switch {
-    // Rewrite sitemap requests for itwiki into the sitemaps backend.
-    // sitemaps is part of alternate_domains, so this rewrite has to happen
-    // in the frontend before VCL switching.  We'll update the conditional
-    // later if we add more maps for more sites.
-    //
-    // This duplicates similar code in text-frontend, as apparently request
-    // data is re-set on VCL switching. This could be factored out a little
-    // differently.
-    if ((req.http.Host == "it.wikipedia.org"
-        || req.http.Host == "id.wikipedia.org"
-        || req.http.Host == "pt.wikipedia.org"
-        || req.http.Host == "pa.wikipedia.org"
-        || req.http.Host == "pnb.wikipedia.org"
-        || req.http.Host == "nl.wikipedia.org"
-        || req.http.Host == "ko.wikipedia.org") && req.url ~ "^/sitemap") {
-        set req.url = "/" + req.http.Host + req.url;
-        set req.http.Host = "sitemaps.wikimedia.org";
-    }
-
     // We need to be able to tell that this domain is an alt domain down the
     // line.
     set req.http.X-IS-ALT-DOMAIN = "1";
