@@ -1,3 +1,4 @@
 # add here, each on a separate line, the name of the jobs to be ignored by monitoring
 cloudcontrol2001-dev.codfw.wmnet-Monthly-1st-Wed-productionEqiad-mysql-srv-backups
+cloudcontrol2004-dev.codfw.wmnet-Monthly-1st-Sun-productionEqiad-mysql-srv-backups
 cloudcontrol2005-dev.codfw.wmnet-Monthly-1st-Fri-productionEqiad-mysql-srv-backups
