@@ -42,6 +42,7 @@ class profile::wmcs::cloud_private_subnet (
         prefixlen => split($supernet, '/')[1],
         nexthop   => $gw_address,
         interface => $interface,
+        persist   => true,
     }
 
     $public_cidrs.each  |$index, $cidr| {
@@ -50,6 +51,7 @@ class profile::wmcs::cloud_private_subnet (
             prefixlen => split($cidr, '/')[1],
             nexthop   => $gw_address,
             interface => $interface,
+            persist   => true,
         }
     }
 }

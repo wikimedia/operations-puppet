@@ -49,6 +49,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
               .with_prefixlen("16")
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
+              .with_persist(true)
       }
       it {
         is_expected.to contain_interface__route("cloud_private_subnet_route_public_0")
@@ -56,11 +57,13 @@ describe 'profile::wmcs::cloud_private_subnet' do
               .with_prefixlen("26")
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
+              .with_persist(true)
         is_expected.to contain_interface__route("cloud_private_subnet_route_public_1")
               .with_address("1.2.3.0")
               .with_prefixlen("24")
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
+              .with_persist(true)
       }
     end
   end
