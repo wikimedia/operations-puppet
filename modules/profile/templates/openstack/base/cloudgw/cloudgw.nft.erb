@@ -19,7 +19,7 @@ table inet cloudgw {
         <%- end -%>
     }
 
-    # if required, this can be integrated with requestctl for abuse networks like in base::firewall
+    # if required, this can be integrated with requestctl for abuse networks like in profile::firewall
     set cloud_filter {
         type ipv4_addr
         flags interval
