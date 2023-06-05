@@ -1688,7 +1688,7 @@ node /^lvs101[3456].eqiad.wmnet$/ {
 }
 
 # codfw lvs
-node /^lvs20(1[12]|0[9])\.codfw\.wmnet$/ {
+node /^lvs20(1[12])\.codfw\.wmnet$/ {
     role(lvs::balancer)
 }
 
