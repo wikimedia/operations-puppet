@@ -50,6 +50,11 @@
         ProxyPass !
     </Location>
 
+    # Prevent public access while allowing access to the internal endpoints for monitoring
+    <Location "/metrics">
+        Require expr %{HTTP_HOST} != '<%= @service_hostname %>'
+    </Location>
+
     <%- if @swift_auth_url -%>
     # Proxy swift image store temporary URLs.
     # FIXME update for other site(s) that frontend runs on once we figure out syncing.
