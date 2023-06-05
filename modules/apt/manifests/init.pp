@@ -55,6 +55,11 @@ class apt(
                 group   => 'root',
                 require => Apt::Repository['wikimedia'],
             }
+            concat::fragment { "${debian_sources}-header":
+                target => $debian_sources,
+                order  => '01',
+                source => 'puppet:///modules/apt/sources-deb822-header.txt',
+            }
             apt::repository { 'debian':
                 uri           => 'http://mirrors.wikimedia.org/debian',
                 dist          => $facts['os']['distro']['codename'],

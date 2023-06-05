@@ -66,13 +66,21 @@ define apt::repository(
                 content => "${deb_sources}\n",
             }
         } else {
-            file { "/etc/apt/sources.list.d/${name}.sources":
-                ensure  => stdlib::ensure($ensure, 'file'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
+            concat { "/etc/apt/sources.list.d/${name}.sources":
+                ensure => present,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0444',
+                notify => Exec['apt-get update'],
+            }
+            concat::fragment { "${name}-header":
+                target => "/etc/apt/sources.list.d/${name}.sources",
+                order  => '01',
+                source => 'puppet:///modules/apt/sources-deb822-header.txt',
+            }
+            concat::fragment { $name:
+                target  => "/etc/apt/sources.list.d/${name}.sources",
                 content => $deb_sources,
-                notify  => Exec['apt-get update'],
             }
         }
     } else {
