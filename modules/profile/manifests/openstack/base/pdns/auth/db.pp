@@ -29,15 +29,7 @@ class profile::openstack::base::pdns::auth::db(
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
 
-    # this override/split should probably go elsewhere, but hey
-    $mysql_client_pkg = case $::lsbdistcodename {
-        'bullseye': { 'default-mysql-client' }
-        'buster': { 'default-mysql-client' }
-        'stretch': { 'mysql-client' }
-        default: { fail("Unsupported distro ${::lsbdistcodename}") }
-    }
-
-    package { $mysql_client_pkg:
+    package { 'default-mysql-client':
         ensure => present,
     }
 
