@@ -18,8 +18,6 @@ class profile::openstack::base::nova::api::service(
     }
     contain '::openstack::nova::api::service'
 
-    $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
-
     ferm::service { 'nova-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
