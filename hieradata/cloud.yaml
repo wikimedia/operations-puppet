@@ -22,16 +22,6 @@ apereo_cas:
     validate_url_saml: "https://idp.wmcloud.org/samlValidate"
     oidc_endpoint: "https://idp.wmcloud.org/oidc"
 
-kafka_brokers_main: []
-kafka_brokers_jumbo: []
-kafka_brokers_logging: []
-kafkamon_hosts: []
-zookeeper_hosts_main: []
-druid_public_hosts: []
-labstore_hosts: []
-mysql_root_clients: []
-deployment_hosts: []
-
 etcd::autogen_pwd_seed: "seed"
 profile::contacts::role_contacts: []
 
