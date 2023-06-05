@@ -16,7 +16,6 @@ This is a wrapper around the cinder-backup API. It automates the following:
 import argparse
 import datetime
 import logging
-import sys
 import time
 from tenacity import retry, stop_after_attempt, wait_random
 
@@ -286,7 +285,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         format="%(filename)s: %(asctime)s: %(levelname)s: %(message)s",
         level=logging.INFO,
-        stream=sys.stdout,
+        filename="/var/log/backup_cinder_volumes/wmcs-cinder-volume-backup.log",
     )
 
     osclients = mwopenstackclients.clients(oscloud="novaadmin")
