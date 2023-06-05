@@ -3,8 +3,10 @@
 # THIS FILE IS MANAGED BY PUPPET #
 ##################################
 
-# Rotate everything but api.log daily
-<%= @log_directory %>/!(api).log {
+# Rotate mw-logs daily
+# note: overlapping hourly file(s) below to be excluded by not meeting
+# file age requirement when considered for daily rotation
+<%= @log_directory %>/*.log {
 	daily
 	olddir <%= @log_directory %>/archive
 	notifempty
