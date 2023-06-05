@@ -70,7 +70,6 @@ profile::apt::use_proxy: false
 
 profile::apt::purge_sources: false
 profile::apt::purge_preferences: false
-profile::apt::manage_apt_source: true
 profile::apt::install_audit_installed: false
 profile::apt::mirror: "mirrors.wikimedia.org"
 profile::apt::use_private_repo: false
