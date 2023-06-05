@@ -8,7 +8,7 @@ class profile::wmcs::firewall (
 ) {
     # We handle firewall rules explicitly in profiles or via requestctl in production
     requires_realm('labs')
-    include profile::base::firewall
+    include profile::firewall
     $services.each |$service, $config| {
         ferm::service {$service:
             * => $config,
