@@ -18,8 +18,11 @@ class profile::mediawiki::maintenance::wikidata() {
         $svc_lbl = "${service_name}_${svc['port']}"
         # Needed to find the LVS servers we need to check.
         $my_lvs_class = $svc['lvs']['class']
-        # Select only the hosts in our class
-        $lb = $profile::lvs::configuration::lvs_classes.filter |$h, $val| { $my_lvs_class == $val}.map |$host, $_| { "--lb ${host}:9090"}.join(' ')
+        # Select the virtual LVS instrumentation hostnames for our class at the two core sites:
+        $lb = [
+            wmflib::service::get_i13n_for_lvs_class($my_lvs_class, 'eqiad'),
+            wmflib::service::get_i13n_for_lvs_class($my_lvs_class, 'codfw')
+        ].map |$host| { "--lb ${host}:9090" }.join(' ')
 
         $additional_args = "--lb-pool ${svc_lbl} ${lb}"
         profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
