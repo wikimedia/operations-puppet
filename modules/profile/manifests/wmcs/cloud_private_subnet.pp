@@ -42,7 +42,7 @@ class profile::wmcs::cloud_private_subnet (
 
     interface::route { 'cloud_private_subnet_route_supernet':
         address   => split($supernet, '/')[0],
-        prefixlen => split($supernet, '/')[1],
+        prefixlen => Integer(split($supernet, '/')[1]),
         nexthop   => $gw_address,
         interface => $interface,
         persist   => true,
@@ -51,7 +51,7 @@ class profile::wmcs::cloud_private_subnet (
     $public_cidrs.each  |$index, $cidr| {
         interface::route { "cloud_private_subnet_route_public_${index}":
             address   => split($cidr, '/')[0],
-            prefixlen => split($cidr, '/')[1],
+            prefixlen => Integer(split($cidr, '/')[1]),
             nexthop   => $gw_address,
             interface => $interface,
             persist   => true,
