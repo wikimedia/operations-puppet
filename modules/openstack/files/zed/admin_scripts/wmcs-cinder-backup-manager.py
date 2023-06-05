@@ -26,7 +26,6 @@ import time
 import logging
 import shutil
 import subprocess
-import sys
 
 import yaml
 
@@ -56,7 +55,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         format="%(filename)s: %(asctime)s: %(levelname)s: %(message)s",
         level=logging.INFO,
-        stream=sys.stdout,
+        filename="/var/log/backup_cinder_volumes/wmcs-cinder-backup-manager.log",
     )
 
     backup_tool_name = "wmcs-cinder-volume-backup"
