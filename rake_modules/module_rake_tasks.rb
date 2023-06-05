@@ -1,3 +1,5 @@
+require_relative 'monkey_patch_early.rb'  # Mute warning about eg URI.escape()
+
 # TODO: we should be able to drop this when we move to puppetlabs_spec_helper >= 5 (requires puppet 6+)
 require 'puppet' # Need to be loaded to avoid uninitialized constant Puppet in puppetlabs_spec_helper/rake_tasks
 require 'puppetlabs_spec_helper/rake_tasks'
