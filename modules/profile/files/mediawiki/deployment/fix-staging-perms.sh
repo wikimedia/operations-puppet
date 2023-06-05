@@ -16,4 +16,4 @@ chmod -R g+w /srv/patches
 find /srv/mediawiki-staging -not -group wikidev -print0 | xargs -0 -r chgrp wikidev
 
 # Files and directories in the patches repository should have group ownership of wikidev
-find /srv/patches -not group wikidev -print0 | xargs -0 -r chgrp wikidev
+find /srv/patches -not -group wikidev -print0 | xargs -0 -r chgrp wikidev
