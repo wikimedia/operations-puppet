@@ -20,6 +20,8 @@ profile::lvs::realserver::pools:
   inference: {}
   k8s-ingress-ml-serve: {}
 
+profile::amd_gpu::is_kubernetes_node: true
+
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::admin::groups:
