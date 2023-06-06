@@ -25,6 +25,7 @@ fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
 bootcmd:
   - [ cloud-init-per, once, disablepuppet, puppet, agent, --disable, "prevent puppet runs during cloud-init" ]
+  - [ cloud-init-per, once, purgeresolved, /usr/bin/dpkg, --purge, systemd-resolved, libnss-resolve ]
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
