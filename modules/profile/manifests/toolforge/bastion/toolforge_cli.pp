@@ -18,11 +18,16 @@ class profile::toolforge::bastion::toolforge_cli () {
     },
   }
 
-  file { '/etc/toolforge.yaml':
-    ensure => absent,
+  # toolforge cli configuration file (toolforge-weld >=1.1.0)
+  file { '/etc/toolforge/common.yaml':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => $cli_config.to_yaml,
   }
 
-  # toolforge cli configuration file
+  # old configuration file, to be removed once every client uses the new path
   file { '/etc/toolforge-cli.yaml':
     ensure  => file,
     owner   => 'root',
