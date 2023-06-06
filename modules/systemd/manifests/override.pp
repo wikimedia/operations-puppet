@@ -13,6 +13,6 @@ define systemd::override (
     systemd::unit { "${unit}-${title}":
         override_filename => $title,
         override          => true,
-        *                 => wmflib::dump_params(),
+        *                 => wmflib::resource::dump_params(),
     }
 }

@@ -45,7 +45,7 @@ class profile::puppetserver (
     }
 
     class { 'puppetserver':
-        * => wmflib::dump_params() - ['enc_source', 'git_pull'],
+        * => wmflib::resource::filter_params('enc_source', 'git_pull'),
     }
 
     ferm::service { 'puppetserver':

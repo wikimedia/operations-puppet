@@ -26,6 +26,6 @@ class profile::ssh::client (
     })
     class { 'ssh::client':
         known_hosts => $known_hosts,
-        *           => wmflib::dump_params(),
+        *           => wmflib::resource::dump_params(),
     }
 }

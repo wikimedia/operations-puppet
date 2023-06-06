@@ -5,6 +5,6 @@ class profile::logrotate (
     Boolean $hourly = lookup('profile::logrotate::hourly'),
 ) {
     class { 'logrotate':
-        * => wmflib::dump_params(),
+        * => wmflib::resource::dump_params(),
     }
 }

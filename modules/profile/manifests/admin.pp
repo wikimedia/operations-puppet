@@ -12,6 +12,6 @@ class profile::admin (
         purge_sudoers_d => $purge_sudoers_d,
     }
     class {'admin':
-        * => wmflib::dump_params(['name', 'purge_sudoers_d'])
+        * => wmflib::resource::filter_params('purge_sudoers_d')
     }
 }

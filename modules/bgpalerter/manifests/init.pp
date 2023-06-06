@@ -68,7 +68,7 @@ class bgpalerter (
         },
     }
     $filter_params = ['name', 'user', 'manage_user', 'prefixes', 'prefixes_options']
-    $config = wmflib::dump_params($filter_params) + {
+    $config = wmflib::resource::filter_params($filter_params) + {
         'connectors'                => [$ris_connector],
         'monitoredPrefixesFiles'    => [$prefix_file],
         # Advanced settings (Don't touch here!)

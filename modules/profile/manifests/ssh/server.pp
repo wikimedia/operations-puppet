@@ -76,7 +76,7 @@ class profile::ssh::server (
     }
 
     class {'ssh::server':
-        *                            => wmflib::dump_params(['name', 'lookup_keys_from_ldap']),
+        *                            => wmflib::resource::filter_params('lookup_keys_from_ldap'),
         authorized_keys_command      => $authorized_keys_command,
         authorized_keys_command_user => $authorized_keys_command_user,
     }
