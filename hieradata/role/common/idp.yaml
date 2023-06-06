@@ -40,7 +40,7 @@ profile::idp::services:
       - nda
   puppetboard:
     id: 3
-    service_id: 'https://puppetboard\.wikimedia\.org(/.*)?'
+    service_id: 'https://puppetboard(-next)?\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - sre-admins
