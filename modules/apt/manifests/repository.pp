@@ -82,6 +82,14 @@ define apt::repository(
                 target  => "/etc/apt/sources.list.d/${name}.sources",
                 content => $deb_sources,
             }
+
+            # We don't want any of the old-school .list files left
+            # which might conflict with the .sources file. These
+            # might be here from an in-place upgrade, or created
+            # by cloud-init.
+            file { "/etc/apt/sources.list.d/${name}.list":
+                ensure => absent,
+            }
         }
     } else {
         if $concat_target {
