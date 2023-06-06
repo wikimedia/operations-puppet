@@ -59,9 +59,12 @@ define apt::package_from_component(
         }
     }
 
-    # We should be able to use the exec defined in the apt class, however this didn't
-    # see: 1f85c34357cb745e36d709e5e696bc92f42d8d2c
-    exec {"exec_apt_${title}":
+    # We intentionally don't use the exec defined in the apt class to avoid
+    # dependency cycles. We require the apt class to be applied before any
+    # packages are installed, so we don't want to also require this define to be
+    # applied before the apt class as we may need to install a package before
+    # this define.
+    exec {"apt_package_from_component_${title}":
         command     => '/usr/bin/apt-get update',
         refreshonly => true,
         before      => $exec_before,
@@ -84,7 +87,7 @@ define apt::package_from_component(
         dist       => $distro,
         components => $component,
         keyfile    => $wikimedia_apt_keyfile,
-        notify     => Exec["exec_apt_${title}"],
+        notify     => Exec["apt_package_from_component_${title}"],
     }
 
     # We already pin o=Wikimedia with priority 1001
@@ -93,7 +96,7 @@ define apt::package_from_component(
             pin      => "release c=${component}",
             priority => $priority,
             package  => join($packages, ' '),
-            notify   => Exec["exec_apt_${title}"],
+            notify   => Exec["apt_package_from_component_${title}"],
         }
         if $ensure_packages {
             Apt::Pin["apt_pin_${title}"] {

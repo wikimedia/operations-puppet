@@ -20,7 +20,7 @@ describe 'apt::pin' do
           owner: 'root',
           group: 'root',
           mode: '0444',
-          notify: "Exec[apt-get update]"
+          notify: "Exec[apt_pin_mypackage]"
         ).with_content(
           /Package:\smypackage\n
           Pin:\srelease\so=Wikimedia\n

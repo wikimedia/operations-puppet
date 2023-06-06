@@ -18,6 +18,16 @@ define apt::repository(
         fail('Only one of keyfile and keyfile_path may be specified')
     }
 
+    # We intentionally don't use the exec defined in the apt class to avoid
+    # dependency cycles. We require the apt class to be applied before any
+    # packages are installed, so we don't want to also require this define to be
+    # applied before the apt class as we may need to install a package before
+    # this define.
+    exec { "apt_repository_${title}":
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+    }
+
     if $trust_repo {
         $kpath = undef
         $trustedline = '[trusted=yes] '
@@ -31,7 +41,7 @@ define apt::repository(
                 group  => 'root',
                 mode   => '0444',
                 source => $keyfile,
-                notify => Exec['apt-get update'],
+                notify => Exec["apt_repository_${title}"],
             }
         }
 
@@ -71,7 +81,7 @@ define apt::repository(
                 owner  => 'root',
                 group  => 'root',
                 mode   => '0444',
-                notify => Exec['apt-get update'],
+                notify => Exec["apt_repository_${title}"],
             }
             concat::fragment { "${name}-header":
                 target => "/etc/apt/sources.list.d/${name}.sources",
@@ -109,7 +119,7 @@ define apt::repository(
             group   => 'root',
             mode    => '0444',
             content => "${binline}${srcline}",
-            notify  => Exec['apt-get update'],
+            notify  => Exec["apt_repository_${title}"],
         }
     }
 }
