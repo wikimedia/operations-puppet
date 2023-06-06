@@ -405,7 +405,7 @@ groups:
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani]
+              hghani, nshahquinn-wmf]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -930,7 +930,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
@@ -2598,6 +2598,15 @@ users:
     realname: Neil Shah-Quinn
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvdgZSS9FVp+GTF29K3OmkaOgtLAMjBROeZ/3KpuBoX nshahquinn@wikimedia.org_Wikimedia_production]
     uid: 12049
+    email: nshahquinn@wikimedia.org
+    krb: present
+  nshahquinn-wmf:
+    ensure: present
+    gid: 500
+    name: nshahquinn-wmf
+    realname: Neil Shah-Quinn
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvdgZSS9FVp+GTF29K3OmkaOgtLAMjBROeZ/3KpuBoX nshahquinn@wikimedia.org_Wikimedia_production]
+    uid: 44437
     email: nshahquinn@wikimedia.org
     krb: present
   dkg:
