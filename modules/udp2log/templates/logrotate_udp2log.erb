@@ -3,25 +3,6 @@
 # THIS FILE IS MANAGED BY PUPPET #
 ##################################
 
-# Rotate mw-logs daily
-# note: overlapping hourly file(s) below to be excluded by not meeting
-# file age requirement when considered for daily rotation
-<%= @log_directory %>/*.log {
-	daily
-	olddir <%= @log_directory %>/archive
-	notifempty
-	nocreate
-	maxage 90
-	rotate <%= @rotate %>
-	dateext
-	compress
-	delaycompress
-	missingok
-	postrotate
-		/usr/bin/killall -HUP udp2log
-	endscript
-}
-
 # Rotate api.log hourly
 <%= @log_directory %>/api.log {
         hourly
@@ -35,7 +16,28 @@
         compress
         delaycompress
         missingok
+        ignoreduplicates
         postrotate
                 /usr/bin/killall -HUP udp2log
         endscript
+}
+
+# Rotate mw-logs daily
+# note: overlapping hourly file(s) below to be excluded by not meeting
+# file age requirement when considered for daily rotation
+<%= @log_directory %>/*.log {
+	daily
+	olddir <%= @log_directory %>/archive
+	notifempty
+	nocreate
+	maxage 90
+	rotate <%= @rotate %>
+	dateext
+	compress
+	delaycompress
+        missingok
+        ignoreduplicates
+	postrotate
+		/usr/bin/killall -HUP udp2log
+	endscript
 }

@@ -34,6 +34,14 @@ class profile::mediawiki::mwlog (
       }
     }
 
+    # use logrotate >= 3.21.0 backported from bookworm on mwlog hosts
+    if debian::codename::eq('bullseye') {
+        apt::package_from_component { 'logrotate':
+            component => 'component/logrotate',
+            priority  => 1002,
+        }
+    }
+
     kafkatee::instance { 'mwlog':
         kafka_brokers   => $kafka_config['brokers']['ssl_array'],
         output_encoding => 'json',
