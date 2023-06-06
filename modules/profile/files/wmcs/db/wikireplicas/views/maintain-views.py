@@ -625,7 +625,10 @@ def main():
 
         customviews = {}
         for view, meta in config["customviews"].items():
-            if meta["source"] == args.table:
+            if (
+                meta["source"] == args.table
+                or (isinstance(meta["source"], list) and args.table in meta["source"])
+            ):
                 customviews[view] = config["customviews"][view]
     else:
         fullviews = config["fullviews"]
