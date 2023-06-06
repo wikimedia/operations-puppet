@@ -8,6 +8,7 @@ describe 'git::clone' do
       let(:params) {{ directory: '/srv/git/testing_repo' }}
 
       context 'dummy invocation' do
+        it { is_expected.to compile.with_all_deps }
         it 'checkouts a workspace' do
           is_expected.to contain_exec('git_clone_testing_repo')
             .with_command('/usr/bin/git  clone https://gerrit.wikimedia.org/r/testing_repo /srv/git/testing_repo')
@@ -23,6 +24,22 @@ describe 'git::clone' do
         it 'git clone is passed --bare' do
           is_expected.to contain_exec('git_clone_testing_repo')
             .with_command(/ --bare /)
+        end
+      end
+      context 'when enabling $bare' do
+        let(:params) { super().merge(ensure: 'latest') }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_exec('git_pull_testing_repo')
+            .with_command(/ pull /)
+        end
+      end
+      context 'when enabling $bare' do
+        let(:params) { super().merge(ensure: 'latest', update_method: 'checkout') }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_exec('git_checkout_testing_repo')
+            .with_command(/ checkout --force -B /)
         end
       end
     end

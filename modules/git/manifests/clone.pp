@@ -33,6 +33,14 @@
 #             'phabricator', 'github', 'gitlab' and 'gerrit' accepted, default is 'gerrit'
 # $+environment_variables+:: An array of additional environment variables to pass
 #                           to the git exec.
+# $+update_method+:: Specifies the method to use to update the checkout when
+#                    $ensure is _latest_.  The value must be _pull_ or _checkout_.
+#                    - _pull_ will perform a merging pull if upstream changes.
+#                    - _checkout_ will perform a forced checkout of the designated
+#                      branch if upstream changes.
+#                    Defaults to 'pull' for compatibility, but 'checkout' is the
+#                    recommended value for clones that you want to be automatically
+#                    maintained.
 #
 # === Example usage
 #
@@ -73,6 +81,7 @@ define git::clone(
     $mode=undef,
     $source='gerrit',
     $environment_variables=[],
+    Enum['pull', 'checkout'] $update_method = 'pull',
 ) {
 
     ensure_packages('git')
@@ -190,24 +199,45 @@ define git::clone(
                 }
             }
 
-            # pull if $ensure == latest and if there are changes to merge in.
+            # Ensure that the URL for 'origin' is always up-to-date.
+            exec { "git_set_origin_${title}":
+                cwd       => $directory,
+                command   => "${git} remote set-url origin ${remote}",
+                provider  => shell,
+                logoutput => on_failure,
+                unless    => "[ \"\$(${git} remote get-url origin)\" == \"${remote}\" ]",
+                user      => $owner,
+                group     => $group,
+                umask     => $git_umask,
+                require   => Exec["git_clone_${title}"],
+            }
+
+            # if $ensure == latest, update the checkout when there are upstream changes.
             if $ensure == 'latest' {
-                $remote_to_check = $branch ? {
+                $local_branch_expression = $branch ? {
+                    ''      => '$(git remote show origin | awk -F": " \'$1~/HEAD branch/ {print $2; exit}\')',
+                    default => $branch,
+                }
+                $ref_to_check = $branch ? {
                     ''      => 'remotes/origin/HEAD',
                     default => "remotes/origin/${branch}",
                 }
-                exec { "git_pull_${title}":
+                $update_cmd = $update_method ? {
+                    'checkout' => "${git} ${shared_arg} checkout --force -B ${local_branch_expression} ${ref_to_check} ${recurse_submodules_arg}--quiet",
+                    'pull'     => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
+                }
+                exec { "git_${update_method}_${title}":
                     cwd       => $directory,
-                    command   => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
+                    command   => $update_cmd,
                     provider  => shell,
                     logoutput => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
-                    unless    => "${git} fetch && ${git} diff --quiet ${remote_to_check}",
+                    unless    => "${git} fetch --prune --prune-tags && ${git} diff --quiet ${ref_to_check}",
                     user      => $owner,
                     group     => $group,
                     umask     => $git_umask,
-                    require   => Exec["git_clone_${title}"],
+                    require   => Exec["git_set_origin_${title}"],
                 }
                 # If we want submodules up to date, then we need
                 # to run git submodule update --init after
@@ -222,7 +252,7 @@ define git::clone(
                         user        => $owner,
                         group       => $group,
                         umask       => $git_umask,
-                        subscribe   => Exec["git_pull_${title}"],
+                        subscribe   => Exec["git_${update_method}_${title}"],
                     }
                 }
             }
