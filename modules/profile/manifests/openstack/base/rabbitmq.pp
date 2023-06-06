@@ -37,7 +37,6 @@ class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
     String $version = lookup('profile::openstack::base::version'),
-    Optional[Stdlib::IP::Address::V4] $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet', {default_value => undef})
 ){
     if $rabbit_cfssl_label {
         $cert_paths = profile::pki::get_cert(
@@ -143,45 +142,32 @@ class profile::openstack::base::rabbitmq(
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/2'}
     }
 
-    # TODO: once this branching goes away, this can really really be simplified
-    if $cloud_private_supernet {
-        $rabbit_internals_srange = $cloud_private_supernet
-        $rabbit_nova_hosts_srange = $cloud_private_supernet
-        $rabbit_control_srange = $cloud_private_supernet
-        $rabbit_designate_srange = $cloud_private_supernet
-    } else {
-        $rabbit_internals_srange = "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))"
-        $hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
-        $rabbit_nova_hosts_srange = "(${hosts_ranges.join(' ')})"
-        $rabbit_control_srange = "(@resolve((${openstack_controllers.join(' ')})))"
-        $rabbit_designate_srange = "(@resolve((${designate_hosts.join(' ')})))"
-    }
     ferm::service { 'rabbitmq-internals':
         proto  => 'tcp',
         port   => '(4369 5671 5672 25672)',
-        srange => $rabbit_internals_srange,
+        srange => "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))",
     }
+
+    $hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
 
     ferm::service { 'rabbitmq-nova-hosts':
         proto  => 'tcp',
         port   => '(5671 5672)',
-        srange => $rabbit_nova_hosts_srange,
+        srange => "(${hosts_ranges.join(' ')})",
     }
 
     ferm::service { 'rabbitmq-openstack-control':
         proto  => 'tcp',
         port   => '(5671 5672)',
-        srange => $rabbit_control_srange,
+        srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-designate':
         proto  => 'tcp',
         port   => '(5671 5672)',
-        srange => $rabbit_designate_srange,
+        srange => "(@resolve((${designate_hosts.join(' ')})))",
     }
 
-    # TODO: this one is a bit tricky to use in cloud-private scenario
-    # since it is cross-DC.
     ferm::service { 'rabbitmq-cinder-backup':
         proto  => 'tcp',
         port   => '(5671 5672)',
