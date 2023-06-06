@@ -125,6 +125,8 @@ profile::url_downloader::url_downloader_port: 8080
 
 zotero::http_proxy: deployment-urldownloader03.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
+deployment_group: wikidev
+
 scap::deployment_server: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 
 scap::dsh::scap_masters:

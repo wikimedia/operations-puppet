@@ -2,12 +2,18 @@
 # = class: scap::master
 #
 # Sets up a scap master (currently deploy1002 and deploy2002)
+#
+# == Parameters
+#
+# [*deployment_group*]
+#   Unix group owning the MediaWiki deployment directories (formerly `wikidev`)
+#
 class scap::master(
+    String $deployment_group,
     Stdlib::Unixpath $common_path        = '/srv/mediawiki',
     Stdlib::Unixpath $common_source_path = '/srv/mediawiki-staging',
     Stdlib::Unixpath $patches_path       = '/srv/patches',
     Stdlib::Unixpath $scap_source_path   = '/srv/deployment/scap',
-    String $deployment_group             = 'wikidev',
     Array[String] $deployment_hosts      = [],
 ){
     include network::constants

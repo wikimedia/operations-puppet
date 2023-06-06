@@ -6,7 +6,7 @@
 # here, so to scap2 users. Scap3-related directories will be owned by wikidev unconditionally.
 class profile::mediawiki::deployment::server(
     Stdlib::Fqdn $apache_fqdn                   = lookup('apache_fqdn', {default_value => $facts['fqdn']}),
-    String $deployment_group                    = lookup('deployment_group', {default_value => 'wikidev'}),
+    String $deployment_group                    = lookup('deployment_group'),
     Stdlib::Fqdn $deployment_server             = lookup('deployment_server'),
     Stdlib::Fqdn $main_deployment_server        = lookup('scap::deployment_server'),
     Stdlib::Unixpath $base_path                 = lookup('base_path', {default_value => '/srv/deployment'}),
