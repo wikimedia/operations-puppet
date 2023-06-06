@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson, xihua, nray]
+              ilooremeta, cmjohnson, xihua, nray, andyrussg]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -140,7 +140,7 @@ groups:
               bd808, brion, cscott, ebernhardson,
               gjg, halfak, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
-              andyrussg, nikerabbit, reedy, ssastry, phedenskog,
+              nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
               mobrovac, nuria, joal,
               mforns, dcausse,
@@ -247,7 +247,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [milimetric, andyrussg]
+    members: [milimetric]
   researchers:
     gid: 714
     description: This was used in the past to access statistics hosts and
@@ -369,7 +369,7 @@ groups:
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, pearley,
-              andyrussg, hoo, daniel, krinkle, tgr,
+              hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
@@ -2456,14 +2456,13 @@ users:
     ssh_keys: []
     uid: 3029
   andyrussg:
-    ensure: present
+    ensure: absent
     gid: 500
     name: andyrussg
     realname: Andrew Green
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0s1xlbcCS1VrAzJNqS+dzOWtBhZtD5hlCzt9SyS0dkjsmrpoO90dUtpYM/nfkkXcXcwfRc71YV2d/MPz2RlwJdIi+EoIQO5eGvrBH7bVo83S80moQ/SpwRFy9eGn855tKVxwMbWmRG0mVVX9lodbmK6AqaKnu7/q8zikb6aHOBOK2rRI9y/rhTc03pqTuZVJuTibxv+hZXKORtBh41bkRXSlMXExOcHALCpUNzGRQm/uVzrdN8qcgSNm/i90eN4L8SIOv2s2PmMIENtsPgF/ELIB/IM3EArfp+4IqcSE02CKGrFMax9ZL4O8oVS9/ML6wlRkVxrj1+bobMH3kr7ANzM5Trw6cg5JU811dOhTFsv09iHmHuo7znn+6siLj0y88Wg+ppzSf/N5x8oevSlobLwuN0YujTPuTutIMUKcPQ4P/2TfcicAF5mKUd5fYhf1LPjZXj8Ks7Jb6QKoKiNkXYylxH3hGy0ckA0xDOBtowXV9mUeWmMVSANNs9Lm/4OxpOgNwBJdXr9XQakFMird6N/chxeoyD3gccbEA5JRHiP3XNPmmPKFYBoOpBt28DEU88k554ZEpnJEZ14z7R+Iy8rQZyxRLmfVMpw6KN+DYm89R4fycNn2BfAqOetA1FctdGuBnFgJtKGWXjg94Mfehje+S8JJBY62SJKff0xZD0Q== lap@debian]
+    ssh_keys: []
     uid: 3609
-    email: agreen@wikimedia.org
-    krb: present
+    krb: absent
   mobrovac:
     ensure: present
     gid: 500
