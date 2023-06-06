@@ -67,7 +67,7 @@ class profile::gitlab(
             path               => '/explore',
             ip4                => $service_ip_v4,
             ip6                => $service_ip_v6,
-            body_regex_matches => ['Discover projects, groups and snippets'],
+            body_regex_matches => ['GitLab Community Edition'],
         }
     }
 
