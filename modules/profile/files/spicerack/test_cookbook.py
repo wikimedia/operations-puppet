@@ -4,23 +4,43 @@
 
 It allows to test a Gerrit patch on the cookbook repository checking out the change locally
 on the cumin host where the command is run and running the cookbook with the change code instead
-of the officially deployed one.
+of the officially deployed one. It also allows to specify a given patch set (PS) to use.
+The cookbook binary will be invoked with the -c/--config argument already set to point to the
+custom configuration pointing to the testing checkout.
+
+After a first checkout is possible to modify the files in place and test it again. The script
+will automatically detect that there are local changes and ask the operator what to do, as long
+as the local modifications are on the same branch (hance the same PS) requested.
 
 It should be used with caution but at least provides a standard way to test cookbook changes.
+All the extra parameters are passed to the cookbook binary.
 
-The file structure is as follows:
+Example usage:
 
-~/cookbooks_testing/  # Parent directory of all modified files
-~/cookbooks_testing/config.yaml  # The configuration file to pass to the cookbook binary
-~/cookbooks_testing/cookbooks  # Symlink that points to the currently tested change
-~/cookbooks_testing/cookbooks-$CHANGE_ID  # A checkout of the change
+    # Use the latest PS of Gerrit change 12345 to make a DRY-RUN of the downtime cookbook
+    test-cookbook -c 12345 --dry-run sre.hosts.dowmtime -h
+
+    # Use a specific PS of Gerrit change 12345 to make a REAL run of the downtime cookbook
+    test-cookbook -c 12345 --ps 3 sre.hosts.dowmtime -h
+
+    # Cleanup a previously tested change
+    test-cookbook --delete -c 12345
+
+The generated files structure is as follows:
+
+    ~/cookbooks_testing/  # Parent directory of all modified files
+    ~/cookbooks_testing/config.yaml  # The configuration file that is passed to the cookbook binary
+    ~/cookbooks_testing/cookbooks  # Symlink that points to the currently tested change
+    ~/cookbooks_testing/cookbooks-$CHANGE_ID  # The git checkou of a given the change ID
+    ~/cookbook_testing/logs  # The log directory where all cookbooks will log into
+
 """
 import argparse
 import json
 import logging
 import sys
 from pathlib import Path
-from subprocess import Popen, run
+from subprocess import CompletedProcess, Popen, run
 
 import requests
 import yaml
@@ -43,17 +63,17 @@ class CookbookTesting:
     spicerack_config = Path("/etc/spicerack/config.yaml")
     custom_config = BASE_DIR / "config.yaml"
 
-    def __init__(self, change, patch_set, remaining_args):
+    def __init__(self, change: int, patch_set: int, remaining_args: list[str]):
         """Initialize the instance and auto-detect last patch set if not set."""
-        self.change = change
+        self.change = str(change)
         self.remaining_args = remaining_args
         self.cookbooks_dir = BASE_DIR / f"cookbooks-{self.change}"
         if patch_set is None:
             self.patch_set = self.get_latest_ps()
         else:
-            self.patch_set = patch_set
+            self.patch_set = str(patch_set)
 
-    def run(self):
+    def run(self) -> int:
         """Execute the cookbook."""
         logger.info("Setting up Cookbooks change %s patch set %s for testing",
                     self.change, self.patch_set)
@@ -72,7 +92,7 @@ class CookbookTesting:
         result.wait()
         return result.returncode
 
-    def delete(self):
+    def delete(self) -> int:
         """Delete che checkout."""
         if "cookbooks_testing" not in str(self.cookbooks_dir):
             raise RuntimeError(f"Refusing to delete malformed dir {self.cookbooks_dir}")
@@ -84,14 +104,14 @@ class CookbookTesting:
         self.cookbooks_symlink.unlink(missing_ok=True)
         return 0
 
-    def setup_config(self):
+    def setup_config(self) -> None:
         """Sync the config file from official spicerack and modify the path to the cookbooks."""
         config = yaml.safe_load(self.spicerack_config.read_text())
         config["cookbooks_base_dirs"] = [str(self.cookbooks_symlink)]
         config["logs_base_dir"] = str(self.logs_dir)
         self.custom_config.write_text(yaml.dump(config))
 
-    def get_latest_ps(self):
+    def get_latest_ps(self) -> str:
         """Find the latest patch set for the given change."""
         raw_response = requests.get(f"{GERRIT}/changes/?q={self.change}&o=CURRENT_REVISION")
         payload = "".join(raw_response.text.splitlines()[1:])
@@ -101,7 +121,7 @@ class CookbookTesting:
         logger.info("Latest patch set is %s", patch_set)
         return patch_set
 
-    def run_git(self, args, **run_kwargs):
+    def run_git(self, args, **run_kwargs) -> CompletedProcess:
         """Run a git command logging the parameters."""
         command = ["/usr/bin/git"]
         if args[0] != "clone":
@@ -111,7 +131,7 @@ class CookbookTesting:
         logger.info("Executing command %s", " ".join(command))
         return run(command, **run_kwargs)
 
-    def setup_repo(self):
+    def setup_repo(self) -> None:
         """Setup the repository."""
         if not self.cookbooks_dir.exists():
             logger.info("Checkout of change %s not found, cloning the repo", self.change)
@@ -147,11 +167,15 @@ class CookbookTesting:
                 self.run_git(["checkout", branch_name], check=True)
 
 
-def parse_args():
+def parse_args() -> tuple[argparse.Namespace, list[str]]:
     """Parse the command line arguments."""
     parser = argparse.ArgumentParser(
         description=__doc__, add_help=False, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("change", help="The Gerrit change ID to fetch")
+    parser.add_argument(  # Not using required=True to allow to use -h/--help without -c/--change
+        "-c",
+        "--change",
+        type=int,
+        help="The Gerrit change ID to fetch.")
     parser.add_argument(
         "--ps",
         type=int,
@@ -174,10 +198,13 @@ def parse_args():
         else:  # Print this wrapper help message and exit
             parser.exit(message=parser.format_help())
 
+    if not args.change:
+        parser.error('the following arguments are required: -c/--change')
+
     return args, remaining_args
 
 
-def main():
+def main() -> int:
     """Execute the script."""
     logging.basicConfig(level=logging.INFO)
     args, remaining_args = parse_args()
