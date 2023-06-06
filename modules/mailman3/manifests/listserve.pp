@@ -21,19 +21,26 @@ class mailman3::listserve (
         'python3-mailman-hyperkitty',
     ])
 
-    apt::package_from_component { 'mailman3':
-        component => 'component/mailman3',
-        packages  => [
-            'mailman3',
-            'python3-authheaders',
-            'python3-falcon',
-            'python3-flufl.bounce',
-            'python3-flufl.lock',
-            'python3-importlib-resources',
-            'python3-zope.interface',
-        ],
-        require   => Package['dbconfig-no-thanks'],
+    $mailman3_debs = [
+        'mailman3',
+        'python3-authheaders',
+        'python3-falcon',
+        'python3-flufl.bounce',
+        'python3-flufl.lock',
+        'python3-importlib-resources',
+        'python3-zope.interface',
+    ]
+
+    # Use stock mailman3 in bookworm and newer
+    if debian::codename::ge('bookworm') {
+        ensure_packages($mailman3_debs)
+    } else {
+        apt::package_from_component { 'mailman3':
+            component => 'component/mailman3',
+            packages  => $mailman3_debs,
+        }
     }
+    Package['dbconfig-no-thanks'] ~> Package['mailman3']
 
     file { '/etc/mailman3/mailman.cfg':
         owner   => 'root',

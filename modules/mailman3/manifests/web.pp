@@ -29,18 +29,25 @@ class mailman3::web (
         'apache2-utils',  # Need httxt2dbm
     ])
 
-    apt::package_from_component { 'mailman3-web':
-        component => 'component/mailman3',
-        packages  => [
-            'mailman3-web',
-            'python3-django-mailman3',
-            'python3-django-hyperkitty',
-            'python3-django-postorius',
-            'python3-flufl.lock',
-            'python3-mailmanclient',
-        ],
-        require   => Package['dbconfig-no-thanks'],
+    $mailman3_web_debs = [
+        'mailman3-web',
+        'python3-django-mailman3',
+        'python3-django-hyperkitty',
+        'python3-django-postorius',
+        'python3-flufl.lock',
+        'python3-mailmanclient',
+    ]
+
+    # Use stock mailman3 in bookworm and newer
+    if debian::codename::ge('bookworm') {
+        ensure_packages($mailman3_web_debs)
+    } else {
+        apt::package_from_component { 'mailman3-web':
+            component => 'component/mailman3',
+            packages  => $mailman3_web_debs,
+        }
     }
+    Package['dbconfig-no-thanks'] ~> Package['mailman3-web']
 
     file { '/etc/mailman3/mailman-web.py':
         owner   => 'root',
