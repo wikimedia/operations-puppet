@@ -13,7 +13,7 @@ SECRET_KEY = '<%= @django_secret_key %>'
 DEBUG = False
 
 ALLOWED_HOSTS = ['<%= @service_fqdn %>',]
-ADMINS = ['sre-foundations@wikimedia.org',]
+ADMINS = [('Infrastruction Foundations','sre-foundations@wikimedia.org'),]
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -51,6 +51,11 @@ LOGGING = {
         },
     },
     'handlers': {
+        'mail_admins': {
+          'level': 'ERROR',
+          'class': 'django.utils.log.AdminEmailHandler',
+          'include_html': DEBUG  # Use debug (False) to avoid sending sensetive information in emails.
+        },
         'django': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
