@@ -17,4 +17,8 @@ mod 'sshkeys_core',
 mod 'host_core',
     :git => 'https://github.com/puppetlabs/puppetlabs-host_core.git',
     :ref => 'v1.2.0'
+
+mod 'mailalias_core',
+    :git => 'https://github.com/puppetlabs/puppetlabs-mailalias_core.git',
+    :ref => 'v1.1.0'
 # vim: set filetype=ruby:

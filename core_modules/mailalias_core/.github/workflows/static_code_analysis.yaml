@@ -1,0 +1,49 @@
+---
+name: Static Code Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  static_code_analysis:
+    name: Run checks
+
+    env:
+      ruby_version: 2.6
+      extra_checks: check:symlinks check:git_ignore check:dot_underscore check:test_file
+
+    runs-on: 'ubuntu-18.04'
+    steps:
+      - name: Checkout current PR code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install ruby version ${{ env.ruby_version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.ruby_version }}
+
+      - name: Prepare testing environment with bundler
+        run: |
+          git config --global core.longpaths true
+          bundle config set --local without 'release'
+          bundle update --jobs 4 --retry 3
+
+      - name: Run commits check
+        run: bundle exec rake commits
+
+      - name: Run rubocop check
+        run: bundle exec rake ${{ env.extra_checks }} rubocop
+
+      - name: Run syntax check
+        run: bundle exec rake ${{ env.extra_checks }} syntax syntax:hiera syntax:manifests syntax:templates
+
+      - name: Run lint check
+        run: bundle exec rake ${{ env.extra_checks }} lint
+
+      - name: Run metadata_lint check
+        run: bundle exec rake ${{ env.extra_checks }} metadata_lint
