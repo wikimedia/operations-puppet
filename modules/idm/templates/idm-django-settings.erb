@@ -112,7 +112,7 @@ LDAP_USER_CONF = {
 }
 
 BITU_LDAP = {
-    'uri': ['ldaps://<%= @ldap_config["ro-server"] %>',],
+    'uri': ['ldaps://<%= @ldap_config["rw-server"] %>',],
     'username': '<%= @ldap_config["proxyagent"] %>',
     'password': '<%= @ldap_config["proxypass"] %>',
     'readonly': False,
