@@ -1688,17 +1688,13 @@ node /^lvs101[3456].eqiad.wmnet$/ {
 }
 
 # codfw lvs
-node /^lvs20(1[12])\.codfw\.wmnet$/ {
+node /^lvs20(1[0123])\.codfw\.wmnet$/ {
     role(lvs::balancer)
 }
 
 #New codfw lvs servers T326767
-node /^lvs201[34]\.codfw\.wmnet$/ {
+node /^lvs201[4]\.codfw\.wmnet$/ {
     role(insetup::traffic)
-}
-
-node 'lvs2010.codfw.wmnet' {
-    role(lvs::balancer)
 }
 
 # ESAMS lvs servers
