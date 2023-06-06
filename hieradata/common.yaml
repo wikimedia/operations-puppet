@@ -51,6 +51,9 @@ lookup_options:
     merge: hash
   profile::query_service::blazegraph_extra_jvm_opts:
     merge: unique
+  profile::opensearch::common_settings:
+    merge:
+      strategy: deep
 
 # General variables that once would have been in realm.pp
 cluster: misc

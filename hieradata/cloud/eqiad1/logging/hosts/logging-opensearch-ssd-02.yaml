@@ -1,8 +1,0 @@
-profile::opensearch::common_settings:
-  holds_data: true
-  disktype: ssd
-
-lookup_options:
-  profile::opensearch::common_settings:
-    merge:
-      strategy: deep

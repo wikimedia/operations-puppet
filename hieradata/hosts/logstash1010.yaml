@@ -1,13 +1,2 @@
-profile::elasticsearch::common_settings:
-  heap_memory: '64G'
-
 profile::opensearch::common_settings:
   heap_memory: '64G'
-
-lookup_options:
-  profile::elasticsearch::common_settings:
-    merge:
-      strategy: deep
-  profile::opensearch::common_settings:
-    merge:
-      strategy: deep
