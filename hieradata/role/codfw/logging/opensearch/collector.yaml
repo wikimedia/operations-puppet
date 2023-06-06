@@ -34,9 +34,6 @@ profile::opensearch::dc_settings:
     - logstash2036.codfw.wmnet
     - logstash2037.codfw.wmnet
 
-profile::opensearch::common_settings:
-  disable_security_plugin: true
-
 profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-codfw'
 profile::logstash::collector::output_public_loki_host: 'grafana2001.codfw.wmnet'
 

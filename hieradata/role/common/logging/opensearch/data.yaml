@@ -30,6 +30,7 @@ profile::opensearch::common_settings:
   transport_tcp_port: 9300
   filter_cache_size: '10%'
   disktype: 'hdd'
+  disable_security_plugin: true
 
 profile::opensearch::monitoring::shard_size_warning: 150
 profile::opensearch::monitoring::shard_size_critical: 350

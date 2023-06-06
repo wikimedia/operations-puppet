@@ -60,6 +60,7 @@ profile::opensearch::common_settings:
   curator_uses_unicast_hosts: false
   http_port: 9200
   transport_tcp_port: 9300
+  disable_security_plugin: true
 
 # API access
 profile::opensearch::api::httpd_proxy::vhost: logs-api.discovery.wmnet

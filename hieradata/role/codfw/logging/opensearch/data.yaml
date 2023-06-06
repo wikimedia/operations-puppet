@@ -34,8 +34,5 @@ profile::opensearch::dc_settings:
     - logstash2036.codfw.wmnet
     - logstash2037.codfw.wmnet
 
-profile::opensearch::common_settings:
-  disable_security_plugin: true
-
 # pick one host per cluster to run singleton jobs
 profile::opensearch::logstash::jobs_host: 'logstash2026.codfw.wmnet'
