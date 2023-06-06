@@ -42,6 +42,10 @@ bootcmd:
 # /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf:
 #   Enable root console on serial0
 #   (cloud-init will create any needed parent dirs)
+#
+# /etc/apt/preferences.d/puppet.pref:
+#   Get puppet package from wikimedia repo
+#   (avoids getting a too-new version from the Bookworm repo)
 write_files:
     - content: "VM is work in progress"
       path: /etc/block-ldap-key-lookup
@@ -52,6 +56,11 @@ write_files:
         ExecStart=
         ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
       path: /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf
+    - content: |
+        Package: puppet puppet-agent
+        Pin: 'release o=Wikimedia'
+        Pin-Priority: 1001
+      path: /etc/apt/preferences.d/puppet.pref
 
 # resetting ttys0 so root is logged in
 runcmd:
