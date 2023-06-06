@@ -67,7 +67,7 @@ define apt::repository(
             }
         } else {
             concat { "/etc/apt/sources.list.d/${name}.sources":
-                ensure => present,
+                ensure => $ensure,
                 owner  => 'root',
                 group  => 'root',
                 mode   => '0444',
