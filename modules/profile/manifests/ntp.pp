@@ -3,6 +3,9 @@
 class profile::ntp (
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts'),
 ){
+    # required for monitoring changes to the ntp.conf file
+    ensure_packages(['python3-pystemd'])
+
     # all global peers at all sites
     $wmf_all_peers = flatten(values($::ntp_peers))
 
