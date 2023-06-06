@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+#############################################################
+# This file is maintained by puppet!
+# modules/snapshot/templates/dumps/nfs_testing/nfstester_otherdumps.conf
+#############################################################
+
+# minimal config file with common settings used by 'misc' dumps
+# i.e. not xml/sql dumps, not adds/changes dumps
+
+[wiki]
+dblist=<%= @allwikisdblist %>
+privatelist=<%= @privatedblist %>
+multiversion=/srv/mediawiki/multiversion
+
+[output]
+temp=<%= @tempdir %>
+
+[tools]
+php=/usr/bin/php7.4
+mysqldump=/usr/bin/mysqldump
+gzip=/bin/gzip
+lbzip2=/usr/bin/lbzip2
+
+# specific settings for wikidata entity dumps
+[wikidata]
+fileSizes=all:100,truthy:100,lexemes:100
+pagesPerBatch=10
+shards=1

@@ -107,7 +107,7 @@ class snapshot::dumps::nfstester(
       source => 'puppet:///modules/snapshot/dumps/nfs_testing/create_output_dirs.sh',
     }
 
-    # set up a custom xml dups conf file for this testing, using the
+    # set up a custom xml dumps conf file for this testing, using the
     # custom outpuit paths and db lists and so on
     file { "${confsdir}/xmldumps.conf":
       ensure  => 'present',
@@ -115,6 +115,24 @@ class snapshot::dumps::nfstester(
       owner   => $user,
       group   => $group,
       content => template('snapshot/dumps/nfs_testing/nfstester_xmldumps.conf.erb')
+    }
+
+    # set up a custom adds-changes dumps conf file for nfs share testing
+    file { "${confsdir}/addschanges.conf":
+      ensure  => 'present',
+      mode    => '0755',
+      owner   => $user,
+      group   => $group,
+      content => template('snapshot/dumps/nfs_testing/nfstester_addschanges.conf.erb')
+    }
+
+    # set up a custom conf file for the rest of the dumps, for nfs share testing
+    file { "${confsdir}/otherdumps.conf":
+      ensure  => 'present',
+      mode    => '0755',
+      owner   => $user,
+      group   => $group,
+      content => template('snapshot/dumps/nfs_testing/nfstester_otherdumps.conf.erb')
     }
 
     # add documentation on how to test, since many commands must be run
