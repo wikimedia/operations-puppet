@@ -112,7 +112,6 @@ class profile::base (
         additional_purged_packages => $additional_purged_packages,
     }
 
-    Class['profile::apt'] -> Class['base::standard_packages']
     include profile::environment
     class { 'base::sysctl::core_dumps':
         core_dump_pattern => $core_dump_pattern,
