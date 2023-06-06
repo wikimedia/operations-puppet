@@ -112,13 +112,21 @@ class profile::mediawiki::deployment::server(
     # Also make sure that no files have been stolen by root ;-)
     ::monitoring::icinga::bad_directory_owner { '/srv/mediawiki-staging': }
 
+    file { '/usr/local/etc/fix-staging-perms.sh':
+        content => "deployment_group=\"${deployment_group}\"\n",
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     # A command that group 'deployment' can execute to fix common file permission snafus
     # inside /srv/mediawiki-staging.
     file { '/usr/local/sbin/fix-staging-perms':
-        mode   => '0555',
-        source => 'puppet:///modules/profile/mediawiki/deployment/fix-staging-perms.sh',
-        owner  => 'root',
-        group  => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/profile/mediawiki/deployment/fix-staging-perms.sh',
+        owner   => 'root',
+        group   => 'root',
+        require => File['/usr/local/etc/fix-staging-perms.sh'],
     }
 
 
