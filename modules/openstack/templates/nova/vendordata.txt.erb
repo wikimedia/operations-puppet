@@ -74,9 +74,12 @@ manage_etc_hosts: true
 
 # gpg: needed for apt to function properly
 # pciutils: used by puppet to determine is_virtual
+# ruby-sorted-set: Needed for puppet to work on Bookworm. This will fail
+#  on other distros.
 packages:
     - gpg
     - pciutils
+    - ruby-sorted-set
 
 # Clear default partitioning/mounting behavior so puppet can manage it
 disk_setup:
