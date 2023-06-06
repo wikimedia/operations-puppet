@@ -33,6 +33,10 @@ profile::idp::services:
     id: 4
     service_class: 'OidcRegisteredService'
     service_id: 'https://netbox-next\.wikimedia\.org\/[\w\/]*'
+  gitlab_oidc:
+    id: 5
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
