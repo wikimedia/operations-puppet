@@ -99,8 +99,8 @@ class profile::wikidough (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
-    nrpe::plugin { 'service_restart_check':
-        source => 'puppet:///modules/profile/wikidough/servicerestartcheck.py',
+    nrpe::plugin { 'check_wikidough_restart':
+        source => 'puppet:///modules/profile/monitoring/check_service_restart.py',
     }
 
     $service_to_check = {
@@ -110,7 +110,7 @@ class profile::wikidough (
     $service_to_check.each |$service, $conf_file| {
         nrpe::monitor_service { "check_service_restart_${service}":
             description    => "Check if ${service} has been restarted after ${conf_file} was changed",
-            nrpe_command   => "/usr/local/lib/nagios/plugins/service_restart_check --service ${service} --file ${conf_file}",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_wikidough_restart --service ${service} --file ${conf_file}",
             sudo_user      => 'root',
             check_interval => 360,  # 6h
             retry_interval => 60,   # 1h
