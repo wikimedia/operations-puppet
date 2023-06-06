@@ -112,6 +112,8 @@ class profile::cloudceph::osd(
                 address   => $cluster_network,
                 nexthop   => $gw_address,
                 prefixlen => 24,
+                interface => $cluster_iface,
+                persist   => true,
                 require   => Interface::Ip['osd-cluster-ip'],
             }
         }
