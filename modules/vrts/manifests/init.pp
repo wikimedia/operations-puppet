@@ -122,13 +122,20 @@ class vrts(
         content => template('vrts/install-script-vars.erb'),
     }
 
-    # Install VRTS Script
     file { '/usr/local/bin/install_vrts':
         ensure => 'file',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/vrts/install_vrts.sh',
+    }
+
+    file { '/usr/local/bin/upgrade_vrts':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/vrts/upgrade_vrts.sh',
     }
 
     file { '/opt/otrs/Kernel/Config.pm':
