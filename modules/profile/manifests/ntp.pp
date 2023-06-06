@@ -96,4 +96,22 @@ class profile::ntp (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP',
     }
 
+    nrpe::plugin { 'check_ntp_service':
+        source => 'puppet:///modules/profile/monitoring/check_service_restart.py',
+    }
+
+    $services_to_check = {
+        'ntp.service' => '/etc/ntp.conf',
+    }
+    $services_to_check.each |$service, $conf_file| {
+        nrpe::monitor_service { "check_service_restart_${service}":
+            description    => "Check if ${service} has been restarted after ${conf_file} was changed",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_ntp_service --service ${service} --file ${conf_file}",
+            sudo_user      => 'root',
+            check_interval => 60, # 60mins
+            retry_interval => 30, # 30mins
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
+        }
+    }
+
 }

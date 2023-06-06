@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-"""servicerestartcheck.py: Really, you should restart that service!
+"""check_service_restart.py: Really, you should restart that service!
 
 This script checks to make sure that if a configuration file was changed, the
 related systemd service was also restarted so that the service can pick up and
