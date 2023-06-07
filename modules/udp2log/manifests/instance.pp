@@ -101,4 +101,15 @@ define udp2log::instance(
             require           => Service["udp2log-${name}"],
         }
     }
+
+    # udp2log lacks native ipv6 support, front it with with a socat v6 to v4 relay
+    package { 'socat':
+        ensure => $ensure,
+    }
+
+    systemd::service { 'udp2log-proxy-socat-6to4':
+        ensure  => $ensure,
+        content => systemd_template('udp2log-proxy-socat-6to4'),
+        restart => true,
+    }
 }
