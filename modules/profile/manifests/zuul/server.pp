@@ -56,8 +56,6 @@ class profile::zuul::server(
         directory => '/etc/zuul/wikimedia',
         owner     => 'zuul',
         group     => 'zuul',
-        mode      => '0775',
-        umask     => '002',
         origin    => 'https://gerrit.wikimedia.org/r/integration/config.git',
         branch    => $conf_server['config_git_branch'],
     }
