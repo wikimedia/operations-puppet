@@ -259,7 +259,7 @@ profile::gitlab::omniauth_providers:
     issuer: 'https://idp.wmcloud.org/oidc'
     client_options:
       identifier: 'gitlab_oidc'
-      redirect_uri: "%{lookup('profile::gitlab::external_url')}/users/auth/openid_connect/callback"
+      redirect_uri: "%{lookup('profile::gitlab::external_url')}users/auth/openid_connect/callback"
 profile::gitlab::block_auto_created_users: true
 profile::gitlab::sync_profile_from: ['cas3']
 profile::gitlab::sync_email_from: ['cas3']

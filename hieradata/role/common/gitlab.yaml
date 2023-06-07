@@ -25,7 +25,7 @@ profile::gitlab::omniauth_providers:
     issuer: 'https://idp-test.wikimedia.org/oidc'
     client_options:
       identifier: 'gitlab_oidc'
-      redirect_uri: "%{lookup('profile::gitlab::external_url')}/users/auth/openid_connect/callback"
+      redirect_uri: "%{lookup('profile::gitlab::external_url')}users/auth/openid_connect/callback"
 profile::gitlab::block_auto_created_users: true
 profile::gitlab::auto_sign_in_with: cas3
 profile::gitlab::smtp_enabled: false
