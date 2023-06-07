@@ -23,28 +23,34 @@ class profile::local_dev::docker_publish(
 ){
 
     git::systemconfig { 'safe.directory-srv-dev-images':
-        settings => {
-            'safe' => {
-                'directory' => '/srv/dev-images',
-            }
-        }
+        ensure => absent,
+    }
+
+    # The sudo rule granted in modules/admin/data/data.yaml
+    $builder_user = 'dockerpkg-builder'
+    $builder_group = 'contint-admins'
+
+    user { $builder_user:
+        ensure => present,
+        gid    => $builder_group,
+        system => true,
+        home   => '/nonexistent',
+        shell  => '/usr/sbin/nologin',
     }
 
     git::clone { 'releng/dev-images':
         directory => '/srv/dev-images',
-        owner     => 'root',
-        group     => 'wikidev',
-        mode      => '0775',
-        umask     => '002',
+        owner     => $builder_user,
+        group     => $builder_group,
         origin    => 'https://gitlab.wikimedia.org/releng/dev-images.git',
-        require   => Git::Systemconfig['safe.directory-srv-dev-images']
+        require   => Git::Systemconfig['safe.directory-srv-dev-images'],
     }
 
     file { '/etc/docker-pkg/dev-images.yaml':
         ensure  => present,
         content => template('profile/local_dev/docker-pkg-dev-images.yaml.erb'),
         owner   => 'root',
-        group   => 'contint-admins',
+        group   => $builder_group,
         mode    => '0440'
     }
 }
