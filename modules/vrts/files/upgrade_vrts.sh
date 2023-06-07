@@ -31,4 +31,7 @@ sudo systemctl start exim4
 sudo systemctl start apache2
 sudo systemctl start vrts-daemon
 
+# Clean Up
+sudo rm -rf /tmp/znuny-$1.tar.gz
+
 sudo puppet agent -t

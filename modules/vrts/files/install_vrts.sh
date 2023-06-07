@@ -4,7 +4,7 @@
 
 . /etc/vrts/install-script-vars
 
-/usr/bin/curl -L $DOWNLOAD_URL/znuny-$1.tar.gz -o /tmp/znuny-$1.tar.gz
+sudo /usr/bin/curl -L $DOWNLOAD_URL/znuny-$1.tar.gz -o /tmp/znuny-$1.tar.gz
 
 if [[ $? -ne 0 ]]; then
     echo "ERROR: Failed Downloading $DOWNLOAD_URL/znuny-$1.tar.gz"
@@ -22,5 +22,8 @@ sudo -u root /opt/otrs/bin/otrs.SetPermissions.pl --web-group=www-data
 sudo -u otrs /opt/otrs/bin/otrs.Console.pl Maint::Config::Rebuild
 sudo -u otrs /opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete
 sudo -u www-data /opt/otrs/bin/otrs.Console.pl Admin::Package::ReinstallAll
+
+# Clean Up
+sudo rm -rf /tmp/znuny-$1.tar.gz
 
 sudo puppet agent -t
