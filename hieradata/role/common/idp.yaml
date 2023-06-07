@@ -207,6 +207,14 @@ profile::idp::services:
     id: 31
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
+  gitlab_replica_oidc:
+    id: 32
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://gitlab(-replica|-replica-old)\.wikimedia\.org(/.*)?'
+    required_groups:
+      - ops
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
