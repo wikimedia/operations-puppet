@@ -145,7 +145,8 @@ class profile::idm(
         etc_dir  => $etc_dir,
         project  => $project,
         present  => $job_state,
-        venv     => $idm::deployment::venv
+        venv     => $idm::deployment::venv,
+        user     => $deploy_user
     }
 
     if $enable_monitoring {
