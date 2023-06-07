@@ -73,10 +73,4 @@ class varnishkafka {
         ensure    => absent,
         subscribe => Package['varnishkafka'],
     }
-
-    # Install a catch-all systemd service to ease stopping and starting
-    # of all varnishkafka processes on this host.
-    systemd::service { 'varnishkafka-all':
-        content => systemd_template('varnishkafka-all'),
-    }
 }
