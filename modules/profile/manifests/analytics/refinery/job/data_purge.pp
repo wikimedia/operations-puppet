@@ -160,6 +160,19 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
+    # In T337460 we are trying to ramp up the webrequest sample live
+    # retention to 30 days as well. The goal is to eventually deprecate
+    # the webrequest-sampled-128 datasource in Druid.
+    # Hence we keep the same retention rules for the live datasource.
+    kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-live-druid':
+        ensure      => $ensure_timers,
+        description => 'Drop Druid Webrequest sampled live data from deep storage following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_live",
+        interval    => '*-*-* 05:30:00',
+        environment => $systemd_env,
+        user        => 'analytics',
+    }
+
     # keep this many public druid mediawiki history refined snapshots
     # runs once a month
     if $public_druid_host {
