@@ -15,7 +15,7 @@
 
 [Unit]
 Description=Traffic Services Pool Control
-After=varnish.service varnish-frontend.service trafficserver-tls.service
+After=haproxy.service varnish-frontend.service trafficserver.service
 
 [Service]
 Type=oneshot
