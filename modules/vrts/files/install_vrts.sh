@@ -4,7 +4,7 @@
 
 . /etc/vrts/install-script-vars
 
-sudo /usr/bin/curl -L $DOWNLOAD_URL/znuny-$1.tar.gz -o /tmp/znuny-$1.tar.gz
+/usr/bin/curl -L $DOWNLOAD_URL/znuny-$1.tar.gz -o /tmp/znuny-$1.tar.gz
 
 if [[ $? -ne 0 ]]; then
     echo "ERROR: Failed Downloading $DOWNLOAD_URL/znuny-$1.tar.gz"
