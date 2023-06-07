@@ -14,6 +14,8 @@ class profile::idm(
     Boolean             $envoy_termination         = lookup('profile::idm::envoy_termination', {'default_value'            => false}),
     Apereo_cas::Urls    $apereo_cas                = lookup('apereo_cas'),
     Hash                $ldap_config               = lookup('ldap'),
+    String              $ldap_dn                   = lookup('profile::idm::ldap_dn'),
+    String              $ldap_dn_password          = lookup('profile::idm::ldap_dn_password'),
     String              $oidc_key                  = lookup('profile::idm::oidc_service'),
     String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
     String              $mediawiki_key             = lookup('profile::idm::mediawiki_key'),
@@ -90,9 +92,9 @@ class profile::idm(
             key    => $mediawiki_key,
             secret => $mediawiki_secret
         },
-        ldap_config              => $ldap_config + {
-            proxypass   => $passwords::ldap::production::proxypass,
-        },
+        ldap_dn                  => $ldap_dn,
+        ldap_dn_password         => $ldap_dn_password,
+        ldap_config              => $ldap_config,
     }
 
     uwsgi::app{ $project:

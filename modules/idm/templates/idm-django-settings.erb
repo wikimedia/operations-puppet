@@ -113,8 +113,8 @@ LDAP_USER_CONF = {
 
 BITU_LDAP = {
     'uri': ['ldaps://<%= @ldap_config["rw-server"] %>',],
-    'username': '<%= @ldap_config["proxyagent"] %>',
-    'password': '<%= @ldap_config["proxypass"] %>',
+    'username': '<%= @ldap_dn %>',
+    'password': '<%= @ldap_dn_password %>',
     'readonly': False,
     'connection_timeout': 5,
     'users': {

@@ -29,3 +29,7 @@ profile::idm::redis_master: 'idm1001.wikimedia.org'
 profile::idm::redis_replicas: ['idm2001.wikimedia.org',]
 
 profile::idm::enable_monitoring: true
+
+# LDAP
+profile::idm::ldap_dn: 'cn=bitu,ou=profile,dc=wikimedia,dc=org'
+profile::idm::ldap_dn_password: 'changeme'

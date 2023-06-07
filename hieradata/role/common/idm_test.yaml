@@ -28,3 +28,7 @@ profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::idm::redis_master: 'idm-test1001'
 
 profile::idm::enable_monitoring: false
+
+# LDAP
+profile::idm::ldap_dn: 'cn=bitu,ou=profile,dc=wikimedia,dc=org'
+profile::idm::ldap_dn_password: 'changeme'
