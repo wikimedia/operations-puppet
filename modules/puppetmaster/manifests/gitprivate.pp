@@ -4,7 +4,6 @@ define puppetmaster::gitprivate (
     String $owner = 'root',
     String $group = 'root',
     Stdlib::Filemode $dir_mode = '0750',
-    Pattern[/\A\d{3,4}\z/] $umask = '027',
     Optional[String] $origin = undef,
 ){
 
@@ -25,7 +24,6 @@ define puppetmaster::gitprivate (
             group     => $group,
             origin    => $origin,
             mode      => $dir_mode,
-            umask     => $umask,
         }
     } else {
         # Create the directory

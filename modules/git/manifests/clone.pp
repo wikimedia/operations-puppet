@@ -7,7 +7,7 @@
 # @param origin If this is not specified, the $title repository will be
 #               checked out from gerrit using a default gerrit url.
 #               If you set this, please specify the full repository url.
-# @param branch Branch you would like to check out. 
+# @param branch Branch you would like to check out.
 # @param git_tag Tag you would like to check out. Only one of 'branch' or 'git_tag'
 #                can be used.
 # @param ensure 'absent', 'present', or 'latest'.
@@ -20,8 +20,6 @@
 # @param recurse_submodules If true, git recurse submodules
 # @param shared Enable git's core.sharedRepository=group setting for sharing the
 #               repository between serveral users, default: false
-# @param umask  umask value that git operations should run under,
-#               default 002 if shared, 022 otherwise.
 # @param mode Permission mode of $directory, default: 2755 if shared, 0755 otherwise
 # @param ssh SSH command/wrapper to use when checking out
 # @param timeout  Time out in seconds for the git clone command
@@ -79,7 +77,6 @@ define git::clone(
     Optional[String[1]]                 $branch                = undef,
     Optional[String[1]]                 $git_tag               = undef,
     Optional[String[1]]                 $ssh                   = undef,
-    Optional[Pattern[/\A\d{3,4}\z/]]    $umask                 = undef,
     Optional[Stdlib::Filemode]          $mode                  = undef,
 ) {
 
@@ -110,16 +107,7 @@ define git::clone(
         $file_mode = $mode
     }
 
-    if $umask == undef {
-        $git_umask = $shared ? {
-            true    => '002',
-            default => '022',
-        }
-    } elsif $shared and $umask !~ /^00\d$/ {
-        fail('Shared repositories must leave "umask" unspecified or set to 00?, specified as octal.')
-    } else {
-        $git_umask = $umask
-    }
+    $umask = mode2umask($file_mode)
 
     if $branch and $git_tag {
         fail('"branch" and "git_tag" cannot be used together.  Choose one')
@@ -160,7 +148,6 @@ define git::clone(
             $shared_arg = $shared.bool2str('-c core.sharedRepository=group', '')
             $git = '/usr/bin/git'
 
-
             $clone_cmd = @("COMMAND"/L)
             ${git} ${shared_arg} clone \
                 ${recurse_submodules_arg} \
@@ -170,6 +157,7 @@ define git::clone(
                 ${barearg} \
                 ${directory}
             |- COMMAND
+
             # clone the repository
             exec { "git_clone_${title}":
                 command     => $clone_cmd.split(/\s+/).join(' '),
@@ -178,13 +166,21 @@ define git::clone(
                 cwd         => '/tmp',
                 environment => $env,
                 creates     => "${git_dir}/config",
+                umask       => $umask,
                 user        => $owner,
                 group       => $group,
-                umask       => $git_umask,
                 timeout     => $timeout,
                 require     => Package['git'],
             }
 
+            # FIXME: this is most probably to ensure the holding directory has
+            # the proper mode, owner and group. However:
+            # - git clone above should do it for us.
+            # - git clone will fail when $directory exists so that should
+            # happen after git clone.
+            #
+            # It most probably should always be executed in case mode, owner
+            # and/or group change.
             if (!defined(File[$directory])) {
                 file { $directory:
                     ensure => 'directory',
@@ -202,9 +198,9 @@ define git::clone(
                 provider  => shell,
                 logoutput => on_failure,
                 unless    => "[ \"\$(${git} remote get-url ${remote_name})\" = \"${remote}\" ]",
+                umask     => $umask,
                 user      => $owner,
                 group     => $group,
-                umask     => $git_umask,
                 require   => Exec["git_clone_${title}"],
             }
 
@@ -239,9 +235,9 @@ define git::clone(
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
                     unless    => "${git} fetch --tags --prune --prune-tags && ${git} diff --quiet ${ref_to_check}",
+                    umask     => $umask,
                     user      => $owner,
                     group     => $group,
-                    umask     => $git_umask,
                     require   => Exec["git_set_${remote_name}_${title}"],
                 }
                 # If we want submodules up to date, then we need
@@ -254,9 +250,9 @@ define git::clone(
                         cwd         => $directory,
                         environment => $env,
                         refreshonly => true,
+                        umask       => $umask,
                         user        => $owner,
                         group       => $group,
-                        umask       => $git_umask,
                         subscribe   => Exec["git_${update_method}_${title}"],
                     }
                 }

@@ -17,6 +17,10 @@ describe 'git::clone' do
           is_expected.to contain_exec('git_clone_testing_repo')
             .with_creates('/srv/git/testing_repo/.git/config')
         end
+        it 'does exec with umask 022' do
+          should contain_exec('git_clone_testing_repo')
+            .with_umask('022')
+        end
       end
 
       context 'when enabling $bare' do
@@ -40,6 +44,35 @@ describe 'git::clone' do
         it do
           is_expected.to contain_exec('git_checkout_testing_repo')
             .with_command(/ checkout --force /)
+        end
+      end
+
+      context 'when shared is enabled' do
+        let(:params) { {
+          :directory => '/srv/deployment/application',
+          :shared    => true,
+        } }
+        it 'does exec with umask 002' do
+          should contain_exec('git_clone_testing_repo').with_umask('002')
+        end
+      end
+
+      context 'when mode prevents others (0440)' do
+        let(:params) { {
+          :directory => '/srv/deployment/application',
+          :mode      => '0440',
+        } }
+        it 'does exec with umask 337' do
+          should contain_exec('git_clone_testing_repo').with_umask('337')
+        end
+      end
+      context 'when mode only allows self (0700)' do
+        let(:params) { {
+          :directory => '/srv/deployment/application',
+          :mode      => '0700',
+        } }
+        it 'does exec with umask 077' do
+          should contain_exec('git_clone_testing_repo').with_umask('077')
         end
       end
     end
