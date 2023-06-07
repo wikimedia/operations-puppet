@@ -46,7 +46,8 @@ class idm::deployment (
     # are generic for all Bitu projects.
     file { "${etc_dir}/base_settings.py":
         ensure => link,
-        target => "${base_dir}/${project}/bitu/base_settings.py"
+        target => "${base_dir}/${project}/bitu/base_settings.py",
+        notify => Service['uwsgi-bitu', 'rq-bitu']
     }
 
     # During development we want to install Bitu and packages
