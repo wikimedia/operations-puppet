@@ -26,7 +26,6 @@ class profile::webperf::site (
     String $excimer_mysql_db                       = lookup('profile::webperf::site::excimer_mysql_db'),
     String $excimer_mysql_user                     = lookup('profile::webperf::site::excimer_mysql_user'),
     String $excimer_mysql_password                 = lookup('profile::webperf::site::excimer_mysql_password'),
-    Stdlib::IP::Address::V4::CIDR $excimer_trusted = lookup('profile::webperf::site::excimer_trusted'),
     Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
     ensure_packages(['libapache2-mod-php7.4', 'php7.4-mysql', 'mariadb-client'])
