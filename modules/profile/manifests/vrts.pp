@@ -4,6 +4,7 @@
 # https://wikitech.wikimedia.org/wiki/VRT_System
 class profile::vrts(
     Stdlib::Fqdn $active_host        = lookup('profile::vrts::active_host'),
+    Stdlib::Fqdn $passive_host       = lookup('profile::vrts::passive_host'),
     Stdlib::Fqdn $vrts_database_host = lookup('profile::vrts::database_host'),
     String $vrts_database_name       = lookup('profile::vrts::database_name'),
     String $vrts_database_user       = lookup('profile::vrts::database_user'),
@@ -35,6 +36,8 @@ class profile::vrts(
 
     class { '::vrts':
         vrts_database_host => $vrts_database_host,
+        active_host        => $active_host,
+        passive_host       => $passive_host,
         vrts_database_name => $vrts_database_name,
         vrts_database_user => $vrts_database_user,
         vrts_database_pw   => $vrts_database_pw,

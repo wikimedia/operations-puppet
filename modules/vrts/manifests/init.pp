@@ -42,6 +42,8 @@
 #
 class vrts(
     Stdlib::Host $vrts_database_host,
+    Stdlib::Host $active_host,
+    Stdlib::Host $passive_host,
     String $vrts_database_name,
     String $vrts_database_user,
     String $vrts_database_pw,
@@ -201,8 +203,8 @@ class vrts(
 
     rsync::quickdatacopy { 'vrts':
         ensure              => present,
-        source_host         => 'otrs1001.eqiad.wmnet',
-        dest_host           => 'vrts2001.codfw.wmnet',
+        source_host         => $active_host,
+        dest_host           => $passive_host,
         auto_sync           => false,
         module_path         => '/opt',
         server_uses_stunnel => true,
