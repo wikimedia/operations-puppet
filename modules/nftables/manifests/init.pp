@@ -31,7 +31,9 @@ class nftables (
 
     # create a directory to hold the nftables config
     file { '/etc/nftables/':
-        ensure => 'directory',
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
     }
 
     # deploy the basic configuration file, i.e, the basic nftables ruleset skeleton
