@@ -28,7 +28,7 @@ from bs4 import BeautifulSoup
 
 
 # version of the CC license to check the match with
-LICENSE_VERSION = '3.0'
+LICENSE_VERSION = '4.0'
 # User agent used to retrieve web content, so it is not a generic one
 UA = 'Python/WMF/check_legal_html.py https://wikitech.org'
 # Icinga error constants
