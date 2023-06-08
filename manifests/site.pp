@@ -386,7 +386,7 @@ node 'gerrit1003.wikimedia.org', 'gerrit2002.wikimedia.org' {
 }
 
 # old gerrit server, about to be decom'ed forever
-node 'gerrit1001..wikimedia.org' {
+node 'gerrit1001.wikimedia.org' {
     role(insetup::serviceops_collab)
 }
 
