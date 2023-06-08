@@ -66,6 +66,8 @@ profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $D
 
 profile::hadoop::master::standby::excluded_hosts:
   - analytics1058.eqiad.wmnet
+  - analytics1059.eqiad.wmnet
+  - analytics1060.eqiad.wmnet
 profile::hadoop::common::config_override:
   hadoop_var_directory: '/srv/hadoop'
 profile::contacts::role_contacts: ['Data Engineering']
