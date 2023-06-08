@@ -35,6 +35,9 @@
 # [*monthday*]
 #    day of the month script is executed
 #
+# [*month*]
+#    month of the year script is executed
+#
 # [*weekday*]
 #    day of the week script is executed, string, Mon-Fri
 #
@@ -50,6 +53,7 @@ define phabricator::logmail (
     Stdlib::Unixpath $basedir  = '/usr/local/bin',
     Optional[Integer] $hour = 0,
     Optional[Integer] $minute = 0,
+    Optional[Integer] $month = undef,
     Optional[Integer] $monthday = undef,
     Optional[Systemd::Timer::Weekday] $weekday = undef,
     Wmflib::Ensure $ensure = 'present',
@@ -85,11 +89,17 @@ define phabricator::logmail (
         $real_monthday = $monthday
     }
 
+    if $month == undef {
+        $real_month = '*'
+    } else {
+        $real_month = $month
+    }
+
     systemd::timer::job { "phabricator_stats_job_${title}":
         ensure      => $ensure,
         user        => 'root',
         description => "phabricator statistics mail - ${title}",
         command     => "${basedir}/${title}.sh",
-        interval    => {'start' => 'OnCalendar', 'interval' => "${real_weekday}*-*-${real_monthday} ${hour}:${minute}:00"},
+        interval    => {'start' => 'OnCalendar', 'interval' => "${real_weekday}*-${real_month}-${real_monthday} ${hour}:${minute}:00"},
     }
 }
