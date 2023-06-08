@@ -1,0 +1,40 @@
+profile::puppetserver::hierarchy:
+  - name: "private node"
+    datadir: "/etc/puppet/private/hieradata"
+    path: "hosts/%{literal('%')}{::hostname}.yaml"
+  - name: "node hierarchy"
+    path: "hosts/%{literal('%')}{::hostname}.yaml"
+  - name: "netbox node hierarchy"
+    path: "hosts/%{literal('%')}{::hostname}.yaml"
+    datadir: "/etc/puppet/netbox"
+  - name: "Regex lookup"
+    lookup_key: 'wmflib::regex_data'
+    path: 'regex.yaml'
+    options:
+      node: "%{literal('%')}{::fqdn}"
+  - name: "role"
+    paths:
+      - "role/%{literal('%')}{::site}/%{literal('%')}{::_role}.yaml"
+      - "role/common/%{literal('%')}{::_role}.yaml"
+  - name: "private role"
+    datadir: "/etc/puppet/private/hieradata"
+    paths:
+      - "role/%{literal('%')}{::site}/%{literal('%')}{::_role}.yaml"
+      - "role/common/%{literal('%')}{::_role}.yaml"
+  - name: "private site"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "%{literal('%')}{::site}"
+  - name: "expand_path site"
+    path: "%{literal('%')}{::site}"
+    lookup_key: 'wmflib::expand_path'
+  - name: "netbox common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/netbox"
+  - name: "common"
+    lookup_key: 'wmflib::expand_path'
+    path: "common"
+  - name: "private common"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "common"
