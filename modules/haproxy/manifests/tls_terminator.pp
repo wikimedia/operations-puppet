@@ -106,6 +106,12 @@ define haproxy::tls_terminator(
         notify  =>  Service['haproxy'],
     }
 
+    mediawiki::errorpage { "/etc/haproxy/tls-terminator-${title}-plaintext-error.html":
+        ensure  => ($http_redirection_port != undef).bool2str('present', 'absent'),
+        content => '<p>Insecure request forbidden, use HTTPS instead. For details see <a href="https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/">https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/</a>.</p>',
+        before  => HAProxy::Site[$title],
+    }
+
     haproxy::site { $title:
         content => template('haproxy/tls_terminator.cfg.erb'),
     }

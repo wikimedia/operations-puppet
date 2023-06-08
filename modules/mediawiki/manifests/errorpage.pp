@@ -68,6 +68,7 @@
 #   Default: undef
 #
 define mediawiki::errorpage(
+    Wmflib::Ensure $ensure = present,
     Stdlib::Unixpath $filepath = $name,
     String $owner = 'root',
     String $group = 'root',
@@ -102,6 +103,7 @@ define mediawiki::errorpage(
         margin_top  => $margin_top,
     }
     file { $filepath:
+        ensure  => stdlib::ensure($ensure, 'file'),
         owner   => $owner,
         group   => $group,
         mode    => $mode,

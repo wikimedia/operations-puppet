@@ -147,5 +147,5 @@ frontend http
     # METH_GET is a predefined ACL that includes GET and HEAD requests
     # http://docs.haproxy.org/2.6/configuration.html#7.4
     http-request redirect scheme https code 301 if METH_GET
-    http-request deny
+    http-request deny status 403 content-type text/html file /etc/haproxy/tls-terminator-<%= @title %>-plaintext-error.html
 <%- end -%>
