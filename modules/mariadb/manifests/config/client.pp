@@ -22,7 +22,8 @@
 #   [*user*]        - MySQL user to use for this client connection.
 #   [*pass*]        - MySQL password to use for this client connection.
 #   [*host*]        - MySQL host to use to for this client connection.
-#   [*port*]        = MySQL port to use for this client connection.
+#   [*port*]        - MySQL port to use for this client connection.
+#   [*db*]          - MariaDB database to use by default for this connection.
 #
 #   [*path*]        - Path at which to create the file.  Default: /etc/mysql/conf.d/${title}-client.cnf
 #   [*owner*]       - Owner of the file.  Default: root
@@ -36,6 +37,7 @@ define mariadb::config::client(
     $pass     = false,
     $host     = false,
     $port     = false,
+    $db       = false,
     $path     = "/etc/mysql/conf.d/${title}-client.cnf",
     $owner    = 'root',
     $group    = 'root',
@@ -56,6 +58,7 @@ define mariadb::config::client(
                 'password' => $pass,
                 'host'     => $host,
                 'port'     => $port,
+                'database' => $db,
             },
         },
         path     => $path,
