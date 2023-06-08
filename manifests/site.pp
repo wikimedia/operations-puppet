@@ -2562,7 +2562,7 @@ node /^puppetdb[12]00[23]\.(codfw|eqiad)\.wmnet$/ {
 }
 
 node /^puppetserver[12]001\.(codfw|eqiad)\.wmnet$/ {
-    role(insetup::infrastructure_foundations)
+    role(puppetserver)
 }
 
 # pybal-test2003 VM is used for pybal testing/development
