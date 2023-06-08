@@ -11,6 +11,7 @@
 # @param node_purge_ttl Automatically delete nodes that have been deactivated or expired for
 #        the specified amount of time
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
+# @param ca_content if present update the ca_path with the content
 #
 # TODO: fold this class into profile::puppetdb
 class puppetmaster::puppetdb(
@@ -30,6 +31,7 @@ class puppetmaster::puppetdb(
     Pattern[/\d+[dhms]/]       $node_ttl              = '7d',
     Pattern[/\d+[dhms]/]       $node_purge_ttl        = '14d',
     Pattern[/\d+[dhms]/]       $report_ttl            = '1d',
+    Optional[String[1]]        $ca_content            = undef,
 
 ){
 
@@ -41,6 +43,13 @@ class puppetmaster::puppetdb(
         provide_private => true,
         require         => Class['nginx'],
         ssldir          => $ssldir,
+    }
+    if $ca_content {
+        file { $ca_path:
+            ensure  => file,
+            content => $ca_content,
+            mode    => '0444',
+        }
     }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid')

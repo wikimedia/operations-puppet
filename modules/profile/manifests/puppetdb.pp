@@ -6,6 +6,7 @@
 # @param jvm_opts additional jvm options
 # @param elk_logging enable elk_logging
 # @param ca_path the to the certificate authority
+# @param ca_content the optional to content of the certificate authority
 # @param puppetboard_hosts list of puppet board hosts
 # @param tmpfs_stockpile_queue use a tmpfs for the file queue
 # @param clean_stockpile aggressively delete the stockpile queue if it gets too big
@@ -34,6 +35,7 @@ class profile::puppetdb (
     String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
     Boolean                              $elk_logging           = lookup('profile::puppetdb::elk_logging'),
     Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
+    Optional[String[1]]                  $ca_content            = lookup('profile::puppetdb::ca_content'),
     Array[Stdlib::Host]                  $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
     Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
     Boolean                              $clean_stockpile       = lookup('profile::puppetdb::clean_stockpile'),
@@ -61,6 +63,7 @@ class profile::puppetdb (
         jvm_opts              => "${jvm_opts} ${prometheus_java_opts}",
         ssldir                => $ssldir,
         ca_path               => $ca_path,
+        ca_content            => $ca_content,
         puppetdb_pass         => $puppetdb_pass,
         puppetdb_ro_pass      => $puppetdb_ro_pass,
         log_level             => $log_level,
