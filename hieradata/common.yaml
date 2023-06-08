@@ -2084,13 +2084,6 @@ infra_devices:
     - pfw3-eqiad
     site: eqiad
     role: l2sw
-  cloudsw2-c8-eqiad:
-    ipv4: 10.64.146.250
-    ipv6: 2620:0:861:11b::250
-    parents:
-    - cloudsw1-c8-eqiad
-    site: eqiad
-    role: l3sw
   cloudsw2-d5-eqiad:
     ipv4: 10.64.146.251
     ipv6: 2620:0:861:11b::251
