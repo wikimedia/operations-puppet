@@ -54,7 +54,7 @@ Test the categories rdf dump:
 /usr/bin/php /srv/mediawiki/multiversion/MWScript.php maintenance/dumpCategoriesAsRdf.php --wiki=olowiki --format=ttl 2> <%= @homedir -%>/nfs_testing/categories_rdf.log | /usr/bin/gzip > <%= @otherdumpsdir -%>/categoriesrdf/testrun
  
 Test the global blocks dump:
-/usr/local/bin/dump-global-blocks.sh --config <%= @homedir -%>/nfs_testing/otherdumps.conf/"
+/usr/local/bin/dump-global-blocks.sh --config <%= @confsdir -%>/otherdumps.conf
  
 Test the wikidata entity dumps:
 /usr/bin/php /srv/mediawiki/multiversion/MWScript.php extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard 500 --sharding-factor FIXME --batch-size FIXME --format ttl --entity-type item --entity-type property --dbgroupdefault dump --part-id 10-batch 2000025 2000525 2>> <%= @homedir -%>/nfs_testing/wikidata_entities.log | gzip -9 > <%= @otherdumpsdir -%>/wikidata-entity-dumps-test.gz
