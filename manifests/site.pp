@@ -2544,6 +2544,11 @@ node /^puppetmaster[12]00[234]\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
 }
 
+# New Puppetmaster node T334479
+node 'puppetmaster1006.eqiad.wmnet' {
+    role(insetup::nfrastructure_foundations)
+}
+
 node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard)
 }
