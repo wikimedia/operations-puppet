@@ -225,7 +225,7 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
 
     LOGGER.info("Stopping the VM")
     logtail = nova.servers.stop(instance.id)
-    time.sleep(30)
+    time.sleep(120)
 
     return instance
 
@@ -233,11 +233,14 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
 def get_snapshot(instance_id: str, snapshot_path: Path):
     LOGGER.info("Taking a snapshot of the stopped instance")
     vm_snap = nova.servers.create_image(instance_id, f"snap for {instance_id}", metadata=None)
-    time.sleep(30)
+    LOGGER.info("snapshot %s begun", vm_snap)
+    time.sleep(120)
 
     while glance.images.get(vm_snap)["status"] != "active":
         LOGGER.info("Waiting for snapshot to finish saving...")
-        time.sleep(60)
+        time.sleep(30)
+
+    time.sleep(180)
 
     LOGGER.info("Grabbing handle to snapshot data")
     snapshot_data = glance.images.data(vm_snap)
