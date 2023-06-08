@@ -8,8 +8,10 @@
 puppetmaster: "puppet"
 
 labsdnsconfig:
-  recursor: "ns-recursor0.openstack.codfw1dev.wikimediacloud.org"
-  recursor_secondary: "ns-recursor1.openstack.codfw1dev.wikimediacloud.org"
+  # single recursor. This is backed by a BGP anycast VIP, so there are 2 servers behind it
+  recursor: "ns-recursor.openstack.codfw1dev.wikimediacloud.org"
+  # TODO: this one will go away soon
+  recursor_secondary: "ns-recursor0.openstack.codfw1dev.wikimediacloud.org"
 
 labsldapconfig:
   hostname: "cloudservices2004-dev.wikimedia.org"
