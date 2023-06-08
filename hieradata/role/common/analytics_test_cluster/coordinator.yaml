@@ -92,6 +92,10 @@ profile::presto::server::catalogs:
       hive.compression-codec: SNAPPY
       # Use the parquet column names instead of the ordinals to order of query results. T321960
       hive.parquet.use-column-names: true
+      # The following hive.copy-on-first-write-configuration-enabled option is a workaround for a bug affecting kerberized
+      # Hive and HDFS. We may remove it when https://github.com/prestodb/presto/issues/18474 is fixed. See also #T337335
+      # The option is only required on the coordinator node, so it is not enabled on the worker nodes.
+      hive.copy-on-first-write-configuration-enabled: false
 
   analytics_test_iceberg:
     properties:
@@ -118,6 +122,10 @@ profile::presto::server::catalogs:
       iceberg.file-format: PARQUET
       iceberg.compression-codec: SNAPPY
 
+      # The following hive.copy-on-first-write-configuration-enabled option is a workaround for a bug affecting kerberized
+      # Hive and HDFS. We may remove it when https://github.com/prestodb/presto/issues/18474 is fixed. See also #T337335
+      # The option is only required on the coordinator node, so it is not enabled on the worker nodes.
+      hive.copy-on-first-write-configuration-enabled: false
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
