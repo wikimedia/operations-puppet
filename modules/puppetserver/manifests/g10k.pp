@@ -22,23 +22,20 @@ class puppetserver::g10k (
     }
     file { $cache_dir:
         ensure  => stdlib::ensure($ensure, 'directory'),
-        purge   => true,
+        force   => true,
         recurse => true,
     }
     file { $config_file:
         ensure  => stdlib::ensure($ensure, file),
         content => $config.to_yaml,
-        notify  => Exec['deploy g10k'],
     }
     if $ensure == 'present' {
         exec { 'deploy g10k':
             command     => "/usr/bin/g10k -config ${config_file}",
             refreshonly => true,
             notify      => Service['puppetserver'],
-            require     => [
-                Package['g10k'],
-                File[$config_file],
-            ],
+            require     => Package['g10k'],
+            subscribe   => File[$config_file],
         }
     }
     # TODD: create a job/update git-sync-upstream to sync g10k
