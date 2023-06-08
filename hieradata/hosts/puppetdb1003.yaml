@@ -1,3 +1,6 @@
+profile::puppetdb::puppetservers:
+  - puppetserver1001.eqiad.wmnet
+  - puppetserver2001.codfw.wmnet
 profile::puppetdb::database::users:
   replication@puppetdb2003:
     user: replication
