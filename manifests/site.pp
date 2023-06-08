@@ -277,6 +277,11 @@ node 'backup1009.eqiad.wmnet' {
     role(backup::production)
 }
 
+# new backup node T326684
+node /^backup101[0-1]\.eqiad\.wmnet$/ {
+    role(insetup::data_persistence)
+}
+
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
