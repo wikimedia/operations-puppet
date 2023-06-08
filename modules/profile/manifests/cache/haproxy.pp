@@ -33,6 +33,7 @@ class profile::cache::haproxy(
     Boolean $enable_coredumps = lookup('profile::cache::haproxy::enable_coredumps', {'default_value'                                             => false}),
     Optional[Stdlib::Port] $http_redirection_port = lookup('profile::cache::haproxy::http_redirection_port', {'default_value'                    => 80}),
     Optional[Haproxy::Timeout] $redirection_timeout = lookup('profile::cache::haproxy::redirection_timeout', {'default_value'                    => undef}),
+    Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', {'default_value'                                      => undef}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -186,6 +187,7 @@ class profile::cache::haproxy(
         http_redirection_port  => $http_redirection_port,
         redirection_timeout    => $redirection_timeout,
         http_disable_keepalive => $http_disable_keepalive,
+        filters                => $filters,
     }
 
     if $monitoring_enabled {

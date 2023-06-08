@@ -65,7 +65,8 @@
 #   Port used to perform http->https redirection for GET/HEAD requests
 # @param http_disable_keepalive
 #   Bool to add Connection: Close response header on port 80 frontend
-
+# @param filters
+#   List of filters to be defined before actions
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Array[Haproxy::Backend] $backends,
@@ -99,6 +100,7 @@ define haproxy::tls_terminator(
     Optional[Array[Haproxy::Sticktable]] $sticktables = undef,
     Optional[Stdlib::Port] $http_redirection_port = undef,
     Optional[Haproxy::Timeout] $redirection_timeout = $undef,
+    Optional[Array[Haproxy::Filter]] $filters = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
