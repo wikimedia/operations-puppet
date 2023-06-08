@@ -20,7 +20,7 @@ class profile::puppet::agent (
     Stdlib::Filesource              $ca_source              = lookup('puppet_ca_source'),
     Boolean                         $manage_ca_file         = lookup('manage_puppet_ca_file'),
     Integer[1,59]                   $interval               = lookup('profile::puppet::agent::interval'),
-    Boolean                         $force_puppet7         = lookup('profile::puppet::agent::force_puppet7'),
+    Boolean                         $force_puppet7          = lookup('profile::puppet::agent::force_puppet7'),
     Optional[String[1]]             $timer_seed             = lookup('profile::puppet::agent::timer_seed'),
     Optional[String[1]]             $environment            = lookup('profile::puppet::agent::environment'),
     Enum['pson', 'json', 'msgpack'] $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
@@ -31,20 +31,18 @@ class profile::puppet::agent (
         if debian::codename::lt('bullseye') {
             # We only have packages for bullseye currently
             fail('puppet7 is only avalible for bullseye')
-        }
-        # puppet7 is available in bookworm
-        if debian::codename::eq('bullseye') {
+        } elsif debian::codename::eq('bullseye') {
+        # Use the backported version
             apt::package_from_component { 'puppet':
                 component => 'component/puppet7',
                 priority  => 1002,
             }
-        }
-    } elsif debian::codename::eq('bookworm') {
-        # On Bookworm we're forcing a 5.5 backport until we have migrated to Puppet 7
-        # T330495
-        apt::package_from_component { 'puppet':
-            component => 'component/puppet5',
-            priority  => 1002,
+        } else {
+            # Add a priority on the debian repos as we have a forward port in wikimedia/main
+            apt::pin { 'puppet':
+                pin      => 'release l=Debian',
+                priority => 1003,
+            }
         }
     }
     class { 'puppet::agent':
