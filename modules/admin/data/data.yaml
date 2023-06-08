@@ -1194,6 +1194,13 @@ groups:
   #   gid: 924
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in ::gerrit
+  # The 'gerrit' data migration requires rsync.
+  # gerrit:
+  #   gid: 925
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -1346,7 +1353,7 @@ users:
   #   shell: /bin/false
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
-  # The 'zuul' data migrate requires rsync.
+  # The 'zuul' data migration requires rsync.
   # zuul:
   #   ensure: present
   #   system: true
@@ -1356,13 +1363,23 @@ users:
   #   shell: /bin/bash
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
-  # The 'jenkins' data migrate requires rsync.
+  # The 'jenkins' data migration requires rsync.
   # jenkins:
   #   ensure: present
   #   system: true
   #   uid: 924
   #   gid: 924
   #   home_dir: /var/lib/jenkins
+  #   shell: /bin/bash
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # The 'gerrit' data migration requires rsync.
+  # gerrit:
+  #   ensure: present
+  #   system: true
+  #   uid: 925
+  #   gid: 925
+  #   home_dir: /var/lib/gerrit
   #   shell: /bin/bash
   rush:
     ensure: absent
