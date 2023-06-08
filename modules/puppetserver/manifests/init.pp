@@ -56,9 +56,13 @@ class puppetserver (
         },
     )
 
+    $section = $facts['puppetversion'].versioncmp('6') ? {
+        -1      => 'master',
+        default => 'server',
+    }
     $config = @("CONFIG")
 
-    [server]
+    [${section}]
     ssldir = ${ssl_dir}
     ca_server = ${ca_server}
     reports = ${_reports.unique.join(',')}
