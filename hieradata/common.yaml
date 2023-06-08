@@ -925,7 +925,7 @@ hadoop_clusters:
       - an-worker1078.eqiad.wmnet  # Row A2
       - analytics1072.eqiad.wmnet  # ROW B2
       - an-worker1090.eqiad.wmnet  # Row C4
-      - analytics1069.eqiad.wmnet  # Row D8
+      - an-worker1142.eqiad.wmnet  # Row E1
     net_topology:
       an-master1001.eqiad.wmnet:  /eqiad/A/5
       an-master1002.eqiad.wmnet:  /eqiad/B/8
