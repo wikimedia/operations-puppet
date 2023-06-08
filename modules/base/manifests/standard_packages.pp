@@ -13,7 +13,7 @@ class base::standard_packages (
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
-        'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd',
+        'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd', 'tshark',
     ])
     if debian::codename::lt('bullseye') {
         # bullseye has version 2.30 which uses version 2 by default
@@ -26,10 +26,6 @@ class base::standard_packages (
         }
     }
     package { 'tzdata': ensure => latest }
-
-    # Pulled in via tshark below, defaults to "no"
-    debconf::seen { 'wireshark-common/install-setuid': }
-    package { 'tshark': ensure => present }
 
     # packages only available in buster and later
     if debian::codename::ge('buster') {
