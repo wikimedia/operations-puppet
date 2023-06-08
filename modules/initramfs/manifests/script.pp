@@ -12,6 +12,7 @@ define initramfs::script($boot_stage='', $content='') {
         group   => 'root',
         mode    => '0544',
         content => $content,
+        require => Package['initramfs-tools'],
         notify  => Exec['update-initramfs'],
     }
 }
