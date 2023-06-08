@@ -121,6 +121,11 @@ BITU_LDAP = {
         'dn': '<%= @ldap_config["users_cn"] %>,<%= @ldap_config["base-dn"] %>',
         'object_classes': ['inetOrgPerson'],
         'auxiliary_classes': ['posixAccount', 'wikimediaPerson', 'ldapPublicKey'],
+    },
+    'groups': {
+        'dn': '<%= @ldap_config["groups_cn"] %>,<%= @ldap_config["base-dn"] %>',
+        'object_classes': ['groupOfNames',],
+        'auxiliary_classes': ['posixGroup',]
     }
 }
 
@@ -131,7 +136,7 @@ BITU_SUB_SYSTEMS = {
         'ssh_keys_display_name': 'Wikimedia Cloud Services SSH keys',
         'password_hash': 'ldapbackend.helpers.hash_password',
         'password_hash_method': HASHED_SALTED_SHA,
-        'default_groups': [''],
+        'default_groups': [],
         'attributes': {
             'view': [{'name': 'mail', 'display': 'e-mail',},
                       {'name': 'wikimediaGlobalAccountName', 'display': 'WikiMedia Global Account (SUL)',
