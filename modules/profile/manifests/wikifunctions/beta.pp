@@ -9,7 +9,7 @@ class profile::wikifunctions::beta () {
         path               => '/w/api.php?action=wikilambda_health_check&format=json',
         proxy_url          => "http://webproxy.${::site}.wmnet:8080",
         team               => 'abstract-wikipedia',
-        timeout            =>  '10s',
+        timeout            =>  '180s',
         severity           => 'warning',
         # This health check runs multiple tests against the orchestrator. It only returns
         # success: true if all tests are run and passed.
