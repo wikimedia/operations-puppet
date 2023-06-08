@@ -23,8 +23,8 @@ class profile::puppetserver (
     Optional[Integer[1]]           $max_active_instances = lookup('profile::puppetserver::max_active_instances', { 'default_value' => undef }),
     Optional[Stdlib::Host]         $listen_host          = lookup('profile::puppetserver::listen_host', { 'default_value' => undef }),
     Optional[Stdlib::Fqdn]         $server_id            = lookup('profile::puppetserver::server_id', { 'default_value' => undef }),
-    Optional[Boolean]              $autosign             = lookup('profile::puppetserver::autosign', { 'default_value' => undef }),
-    Optional[Boolean]              $git_pull             = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
+    Boolean                        $autosign             = lookup('profile::puppetserver::autosign', { 'default_value' => false }),
+    Boolean                        $git_pull             = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
 ) {
     if $git_pull {
         # TODO: update to use sysuseres and make a profile

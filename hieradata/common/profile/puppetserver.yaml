@@ -1,3 +1,4 @@
+profile::puppetserver::enc_source: ~
 profile::puppetserver::enc_path: ~
 profile::puppetserver::reports: ['store']
 profile::puppetserver::puppetdb_urls: []
