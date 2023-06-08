@@ -9,4 +9,5 @@ class role::puppetserver {
     include profile::base::production
     include profile::firewall
     include profile::puppetserver
+    include profile::puppetserver::git::private
 }

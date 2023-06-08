@@ -14,6 +14,9 @@ class profile::puppetserver::git (
     String[1]          $control_repo = lookup('profile::puppetserver::git::control_repo'),
     Hash[String, Hash] $repos        = lookup('profile::puppetserver::git::repos'),
 ) {
+    $servers = wmflib::role::hosts('puppetmaster::frontend') +
+                wmflib::role::hosts('puppetmaster::backend') +
+                wmflib::role::hosts('puppetserver')
     unless $repos.has_key($control_repo) {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
@@ -25,40 +28,68 @@ class profile::puppetserver::git (
     }
     $repos.each |$repo, $config| {
         $dir = "${basedir}/${repo}"
+        $origin = $config['origin'].lest || { "https://gerrit.wikimedia.org/r/${repo}" }
         ensure_resource('file', $dir.dirname, {
             ensure => stdlib::ensure($ensure, 'directory'),
             owner  => $user,
             group  => $group,
         })
-        git::clone { $repo:
-            ensure    => $ensure,
-            directory => $dir,
-            branch    => $config['branch'],
-            origin    => "https://gerrit.wikimedia.org/r/${repo}",
-            owner     => $user,
-            group     => $group,
-            require   => File[$dir.dirname],
-            before    => Service['puppetserver'],
+        if $config['init'] {
+            exec { "git init ${dir}":
+                command => '/usr/bin/git init',
+                user    => $user,
+                group   => $group,
+                cwd     => $dir,
+                creates => "${dir}/.git",
+                require => File[$dir.dirname],
+            }
+            $git_require = Exec["git init ${dir}"]
+        } else {
+            git::clone { $repo:
+                ensure    => $ensure,
+                directory => $dir,
+                branch    => $config['branch'],
+                origin    => $origin,
+                owner     => $user,
+                group     => $group,
+                require   => File[$dir.dirname],
+                before    => Service['puppetserver'],
+            }
+            $git_require = Git::Clone[$repo]
         }
         if $config.has_key('hooks') {
             $hooks_dir = "${dir}/.git/hooks"
             $config['hooks'].each |$hook, $source| {
+                $content = $source.stdlib::start_with('puppet:///modules/') ? {
+                    true    => {'source' => $source},
+                    default => {'content' => template($source)},
+                }
                 file { "${hooks_dir}/${hook}":
                     ensure  => stdlib::ensure($ensure, 'file'),
                     owner   => $user,
                     group   => $group,
                     mode    => '0550',
-                    source  => $source,
-                    require => Git::Clone[$repo],
+                    require => $git_require,
+                    *       => $content,
                 }
             }
         }
         if $config.has_key('link') {
             file { $config['link']:
-                ensure => stdlib::ensure($ensure, 'link'),
-                target => $dir,
-                force  => true,
-                before => Service['puppetserver'],
+                ensure  => stdlib::ensure($ensure, 'link'),
+                target  => $dir,
+                force   => true,
+                before  => Service['puppetserver'],
+                require => $git_require,
+            }
+        }
+        if $config.has_key('config') {
+            file { "${dir}/.git/config":
+                ensure  => stdlib::ensure($ensure, 'file'),
+                owner   => $user,
+                group   => $group,
+                source  => $config['config'],
+                require => $git_require,
             }
         }
     }

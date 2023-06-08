@@ -10,3 +10,16 @@ profile::puppetserver::git::repos:
       'pre-commit': 'puppet:///modules/puppetmaster/git/pre-commit'
       'pre-merge': 'puppet:///modules/puppetmaster/git/pre-merge'
       'pre-rebase': 'puppet:///modules/puppetmaster/git/pre-rebase'
+  'netbox-hiera':
+    branch: 'master'
+    origin: 'https://netbox-exports.wikimedia.org/netbox-hiera'
+    link: '/etc/puppet/netbox'
+  'private':
+    init: true
+    branch: 'master'
+    hooks:
+      'commit-msg': 'puppet:///modules/puppetmaster/git/private/commit-msg-master'
+      'post-commit': 'profile/puppetserver/gitprivate/postcommit.erb'
+      'pre-commit': 'puppet:///modules/puppetmaster/private-repo-pre-commit.sh'
+    config: 'puppet:///modules/puppetmaster/git/private/gitconfig-master'
+    link: '/etc/puppet/private'
