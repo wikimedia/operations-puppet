@@ -110,8 +110,6 @@ class scap::master(
         auto_firewall => true
     }
 
-    class { 'scap::l10nupdate': }
-
     file { '/usr/local/bin/scap-master-sync':
         ensure => present,
         owner  => 'root',

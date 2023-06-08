@@ -50,7 +50,7 @@ class mediawiki::scap (
 
     # /etc/profile.d/mediawiki.sh declares the MEDIAWIKI_DEPLOYMENT_DIR,
     # MEDIAWIKI_STAGING_DIR, and MEDIAWIKI_WEB_USER environment variables and
-    # sets umask to 002 for users in the wikidev or l10nupdate groups.
+    # sets umask to 002 for users in the wikidev group.
 
     file { '/etc/profile.d/mediawiki.sh':
         content => template('mediawiki/mediawiki.sh.erb'),
