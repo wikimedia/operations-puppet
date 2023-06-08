@@ -1,4 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
+# @summary configuyre git repos
+# @param ensure ensurable parameter
+# @param basedir the git repo base dir
+# @param user the owner of the git repo
+# @param group the group owner of the git repo
+# @param control_repo the name of the main puppet control repo
+# @param repos addtional repos to configure
 class profile::puppetserver::git (
     Wmflib::Ensure     $ensure       = lookup('profile::puppetserver::git::ensure'),
     Stdlib::Unixpath   $basedir      = lookup('profile::puppetserver::git::basedir'),

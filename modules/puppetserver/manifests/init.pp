@@ -14,22 +14,24 @@
 # @param enc_path path to an ENC script
 # @param listen_host host to bind webserver socket
 # @param autosign if true autosign agent certs
+# @param g10k_sources a list of g10k sources to configure
 class puppetserver (
-    Wmflib::Ensure                 $ensure               = 'present',
-    Stdlib::Fqdn                   $server_id            = $facts['networking']['fqdn'],
-    Stdlib::Fqdn                   $ca_server            = $server_id,
-    Integer[1]                     $max_active_instances = $facts['processors']['count'],
-    Stdlib::Unixpath               $config_dir           = '/etc/puppet',
-    Stdlib::Unixpath               $code_dir             = "${config_dir}/code",
-    Stdlib::Unixpath               $hiera_data_dir       = "${config_dir}/hieradata",
-    Stdlib::Datasize               $java_start_mem       = '1g',
-    Stdlib::Datasize               $java_max_mem         = '1g',
-    Array[Puppetserver::Hierarchy] $hierarchy            = [],
-    Array[Stdlib::HTTPUrl]         $puppetdb_urls        = [],
-    Array[Puppetserver::Report,1]  $reports              = ['store'],
-    Optional[Stdlib::Unixpath]     $enc_path             = undef,
-    Stdlib::Host                   $listen_host          = $facts['networking']['ip'],
-    Boolean                        $autosign             = false
+    Wmflib::Ensure                           $ensure               = 'present',
+    Stdlib::Fqdn                             $server_id            = $facts['networking']['fqdn'],
+    Stdlib::Fqdn                             $ca_server            = $server_id,
+    Integer[1]                               $max_active_instances = $facts['processors']['count'],
+    Stdlib::Unixpath                         $config_dir           = '/etc/puppet',
+    Stdlib::Unixpath                         $code_dir             = "${config_dir}/code",
+    Stdlib::Unixpath                         $hiera_data_dir       = "${config_dir}/hieradata",
+    Stdlib::Datasize                         $java_start_mem       = '1g',
+    Stdlib::Datasize                         $java_max_mem         = '1g',
+    Array[Puppetserver::Hierarchy]           $hierarchy            = [],
+    Array[Stdlib::HTTPUrl]                   $puppetdb_urls        = [],
+    Array[Puppetserver::Report,1]            $reports              = ['store'],
+    Optional[Stdlib::Unixpath]               $enc_path             = undef,
+    Stdlib::Host                             $listen_host          = $facts['networking']['ip'],
+    Boolean                                  $autosign             = false,
+    Hash[String, Puppetmaster::R10k::Source] $g10k_sources         = {},
 ) {
     ensure_packages(['puppetserver'])
     $ruby_load_path = '/usr/lib/puppetserver/ruby/vendor_ruby'
@@ -139,6 +141,11 @@ class puppetserver (
             content => epp('puppetserver/environment_file.epp', $environment_file_params);
     }
     include puppetserver::puppetdb
+    $g10k_ensure = $g10k_sources.empty.bool2str('absent', $ensure)
+    class { 'puppetserver::g10k':
+        ensure  => $g10k_ensure,
+        sources => $g10k_sources,
+    }
     service { 'puppetserver':
         ensure  => stdlib::ensure($ensure, 'service'),
         enable  => true,

@@ -30,22 +30,18 @@ class profile::puppetserver (
         # TODO: update to use sysuseres and make a profile
         class { 'puppetmaster::gitpuppet': }
         include profile::puppetserver::git
-        $default_sources = {
+        $g10k_sources = {
             'production'  => {
                 'remote'  => $profile::puppetserver::git::control_repo_dir,
             },
         }
-        # TODO: puppet-merge would need to be updated to run r10k
-        # need a dependency to ensure profile::puppetserver::git before r10k
-        # and r10k before puppetserver starts
-        class { 'puppetserver::g10k':
-            sources => $default_sources,
-            require => Class['profile::puppetserver::git'],
-        }
+    } else {
+        $g10k_sources = {}
     }
 
     class { 'puppetserver':
-        * => wmflib::resource::filter_params('enc_source', 'git_pull'),
+        *            => wmflib::resource::filter_params('enc_source', 'git_pull'),
+        g10k_sources => $g10k_sources,
     }
 
     ferm::service { 'puppetserver':
