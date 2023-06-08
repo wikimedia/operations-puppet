@@ -930,15 +930,12 @@ hadoop_clusters:
       an-master1001.eqiad.wmnet:  /eqiad/A/5
       an-master1002.eqiad.wmnet:  /eqiad/B/8
 
-      analytics1058.eqiad.wmnet:  /eqiad/A/1
       an-worker1078.eqiad.wmnet:  /eqiad/A/2
       an-worker1079.eqiad.wmnet:  /eqiad/A/2
       an-worker1096.eqiad.wmnet:  /eqiad/A/2
       an-worker1118.eqiad.wmnet:  /eqiad/A/2
       an-worker1119.eqiad.wmnet:  /eqiad/A/2
       an-worker1129.eqiad.wmnet:  /eqiad/A/2
-      analytics1059.eqiad.wmnet:  /eqiad/A/3
-      analytics1060.eqiad.wmnet:  /eqiad/A/3
       an-worker1080.eqiad.wmnet:  /eqiad/A/4
       an-worker1102.eqiad.wmnet:  /eqiad/A/4
       an-worker1120.eqiad.wmnet:  /eqiad/A/4
