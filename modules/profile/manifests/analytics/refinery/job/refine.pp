@@ -212,6 +212,9 @@ class profile::analytics::refinery::job::refine(
         'CitationUsage',         # Schema is deleted.
         'ReadingDepth',          # Schema is deleted.
         'EditConflict',          # Schema is deleted.
+        'ResourceTiming',        # Schema is deleted.
+        'RUMSpeedIndex',         # Schema is deleted.
+        'LayoutShift',           # Schema is deleted.
     ]
     $eventlogging_legacy_table_exclude_regex = downcase("^(${join($eventlogging_legacy_table_exclude_list, '|')})$")
 
