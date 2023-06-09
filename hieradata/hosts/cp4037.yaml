@@ -1,0 +1,2 @@
+profile::cache::kafka::certificate::use_pki_settings: true
+profile::cache::kafka::certificate::ssl_key_password: undef
