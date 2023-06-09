@@ -281,7 +281,9 @@ kafka.ssl.ca.location=<%= @ssl_ca_location %>
 kafka.ssl.keystore.location=<%= @ssl_keystore_location %>
 kafka.ssl.keystore.password=<%= @ssl_keystore_password %>
 <% else -%>
+<% if @ssl_key_password -%>
 kafka.ssl.key.password=<%= @ssl_key_password %>
+<% end -%>
 kafka.ssl.key.location=<%= @ssl_key_location %>
 kafka.ssl.certificate.location=<%= @ssl_certificate_location %>
 <% end -%>

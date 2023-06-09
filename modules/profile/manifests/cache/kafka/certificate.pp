@@ -26,7 +26,7 @@
 #   cergen created ca.crt.pem file will be used.
 #
 class profile::cache::kafka::certificate(
-    Optional[String] $ssl_key_password = lookup('profile::cache::kafka::certificate::ssl_key_password', {'default_value' => undef}),
+    Optional[String] $ssl_key_pass = lookup('profile::cache::kafka::certificate::ssl_key_password', {'default_value' => undef}),
     String $certificate_name           = lookup('profile::cache::kafka::certificate::certificate_name', {'default_value' => 'varnishkafka'}),
     Boolean $use_internal_ca           = lookup('profile::cache::kafka::certificate::use_internal_ca', {'default_value' => true}),
     String $ssl_cipher_suites          = lookup('profile::cache::kafka::certificate::ssl_cipher_suites', {'default_value' => 'ECDHE-ECDSA-AES256-GCM-SHA384'}),
@@ -43,32 +43,17 @@ class profile::cache::kafka::certificate(
             'owner'   => 'root',
             'group'   => 'root',
             'profile' => 'kafka_11',
-            notify    => Sslcert::X509_to_pkcs12['varnishkafka_keystore'],
+            notify    => Service['varnishkafka-all'],
             }
         )
 
-        $ssl_keystore_location   = "${ssl_location}/${certificate_name}.keystore.p12"
-        sslcert::x509_to_pkcs12 { 'varnishkafka_keystore' :
-            owner       => 'root',
-            group       => 'root',
-            public_key  => $ssl_files['chained'],
-            private_key => $ssl_files['key'],
-            certfile    => $ssl_files['ca'],
-            outfile     => $ssl_keystore_location,
-            password    => $ssl_key_password,
-            notify      => Service['varnishkafka-all'],
-        }
-
-        $ssl_location_private = $ssl_files['key'].basename
-        $ssl_key_location_secrets_path = undef
-        $ssl_key_location = undef
-        $ssl_certificate_secrets_path = undef
-        $ssl_certificate_location = undef
-        $ssl_keystore_password = $ssl_key_password
+        $ssl_key_location = $ssl_files['key']
+        $ssl_certificate_location = $ssl_files['cert']
 
     } else {
         $ssl_location_private = '/etc/varnishkafka/ssl/private'
 
+        $ssl_key_password = $ssl_key_pass
         $ssl_key_location_secrets_path = "certificates/${certificate_name}/${certificate_name}.key.private.pem"
         $ssl_key_location = "${ssl_location_private}/${certificate_name}.key.pem"
 
