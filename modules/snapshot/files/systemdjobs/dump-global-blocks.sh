@@ -73,20 +73,26 @@ dump_tables() {
 }
 
 usage() {
-    echo "Usage: $0 [--config <pathtofile>] [--dryrun]" >& 2
+    echo "Usage: $0 [--config <pathtofile>] [outputdir <path>] [--dryrun]" >& 2
     echo >& 2
-    echo "  --config   path to configuration file for dump generation" >& 2
-    echo "             (default value: ${confsdir}/wikidump.conf.other" >& 2
-    echo "  --dryrun   don't run dump, show what would have been done" >& 2
+    echo "  --config     path to configuration file for dump generation" >& 2
+    echo "               (default value: ${confsdir}/wikidump.conf.other)" >& 2
+    echo "  --outputdir  directory where subdirectories for these dump runs go" >& 2
+    echo "               (default value: ${systemdjobsdir}/globalblocks)" >& 2
+    echo "  --dryrun     don't run dump, show what would have been done" >& 2
     exit 1
 }
 
 configfile="${confsdir}/wikidump.conf.other"
 dryrun="false"
+outputdir="${systemdjobsdir}/globalblocks"
 
 while [ $# -gt 0 ]; do
     if [ $1 == "--config" ]; then
         configfile="$2"
+        shift; shift
+    elif [ $1 == "--outputdir" ]; then
+        outputdir="$2"
         shift; shift
     elif [ $1 == "--dryrun" ]; then
         dryrun="true"
@@ -108,8 +114,6 @@ php=`getsetting "$results" "tools" "php"` || exit 1
 for settingname in "multiversion" "gzip" "mysqldump"; do
     checkval "$settingname" "${!settingname}"
 done
-
-outputdir="${systemdjobsdir}/globalblocks"
 
 host=`get_db_host "$multiversion"` || exit 1
 if [[ $host == *":"* ]]; then
