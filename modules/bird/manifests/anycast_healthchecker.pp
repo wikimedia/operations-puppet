@@ -40,10 +40,13 @@ class bird::anycast_healthchecker(
   }
 
   file {'/etc/anycast-healthchecker.d/':
-      ensure => directory,
-      owner  => 'bird',
-      group  => 'bird',
-      mode   => '0775',
+      ensure  => directory,
+      owner   => 'bird',
+      group   => 'bird',
+      mode    => '0775',
+      purge   => true,
+      recurse => true,
+      notify  => Service['anycast-healthchecker'],
   }
 
   file {'/var/log/anycast-healthchecker/':
