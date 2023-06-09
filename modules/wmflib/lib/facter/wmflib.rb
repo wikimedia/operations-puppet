@@ -1,10 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 require 'facter'
 
-# Returns true if a puppet is executing as part of a container build.
-Facter.add('wmflib::container_build') do
+Facter.add(:wmflib, :type => :aggregate) do
   confine :kernel => 'Linux'
-  setcode do
+
+  chunk(:is_container) do
+    case Facter.value('virtual')
+    when 'crio', 'podman', 'docker', 'lxc',
+         'systemd_nspawn', 'container_other'
+      true
+    else
+      false
+    end
+  end
+
+  chunk(:container_build) do
     # If pid 1 is systemd then we must not be building a container, otherwise
     # we assume we are building a container. Alternatively we could check for
     # the container env var, which does not seem to exist when building.
@@ -13,6 +23,13 @@ Facter.add('wmflib::container_build') do
       false
     else
       true
+    end
+  end
+
+  aggregate do |chunks|
+    chunks.reduce({}) do |memo, (k, v)|
+      memo[k.to_s] = v
+      memo
     end
   end
 end
