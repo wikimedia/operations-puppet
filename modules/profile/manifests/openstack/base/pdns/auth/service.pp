@@ -9,15 +9,14 @@ class profile::openstack::base::pdns::auth::service(
 ){
 
     class { '::pdns_server':
-        dns_auth_ipaddress     => $facts['ipaddress'],
-        dns_auth_ipaddress6    => $facts['ipaddress6'],
-        dns_auth_query_address => $facts['ipaddress'],
-        dns_auth_soa_name      => $service_fqdn,
-        pdns_db_host           => $db_host,
-        pdns_db_password       => $db_pass,
-        dns_webserver          => $pdns_webserver,
-        dns_api_key            => $pdns_api_key,
-        dns_api_allow_from     => $pdns_api_allow_from,
+        listen_on            => [$facts['ipaddress'], $facts['ipaddress6']],
+        query_source_address => $facts['ipaddress'],
+        dns_auth_soa_name    => $service_fqdn,
+        pdns_db_host         => $db_host,
+        pdns_db_password     => $db_pass,
+        dns_webserver        => $pdns_webserver,
+        dns_api_key          => $pdns_api_key,
+        dns_api_allow_from   => $pdns_api_allow_from,
     }
 
     ferm::service { 'udp_dns_rec':

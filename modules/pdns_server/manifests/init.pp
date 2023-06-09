@@ -1,21 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
-# pdns_server/init.pp
+# @param $listen_on addresses to bind to for answering queries
+# @param $dns_auth_query_address The IP address to use as a source address for sending queries.
 #
-# Parameters:
-# - $dns_auth_ipaddress:IPv4 address PowerDNS will bind to and send packets from
-# - $dns_auth_ipaddress6:IPv6 address PowerDNS will bind to and send packets from
 # - $dns_auth_soa_name:DNS SOA name of the server
 # - $pdns_db_host:Database server backing PDNS
 # - $pdns_db_password:PDNS user database password
-# - $dns_auth_query_address: The IP address to use as a source address for sending queries.
 
 class pdns_server(
-    $dns_auth_ipaddress,
-    $dns_auth_ipaddress6,
+    Array[Stdlib::IP::Address] $listen_on,
+    Stdlib::Fqdn               $query_source_address,
     $dns_auth_soa_name,
     $pdns_db_host,
     $pdns_db_password,
-    $dns_auth_query_address = '',
     $dns_webserver = false,
     $dns_api_key = '',
     $dns_api_allow_from = [],
