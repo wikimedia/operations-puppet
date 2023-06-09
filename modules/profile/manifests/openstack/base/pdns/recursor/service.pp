@@ -32,6 +32,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::base::openstack_controllers',  {default_value => []}),
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
+    Optional[Stdlib::IP::Address::V4::Nosubnet] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip', {'default_value' => undef}),
 ) {
 
     include ::network::constants
@@ -83,8 +84,14 @@ class profile::openstack::base::pdns::recursor::service(
 
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_host_ip}, <% end %>")
 
+    if $bgp_vip {
+        $listen_addresses = [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6, $bgp_vip ]
+    } else {
+        $listen_addresses = [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6 ]
+    }
+
     class { '::dnsrecursor':
-        listen_addresses         => [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6 ],
+        listen_addresses         => $listen_addresses,
         allow_from               => $allow_from,
         additional_forward_zones => "${legacy_tld}=${pdns_host_ip}, ${reverse_zone_rules}",
         auth_zones               => 'labsdb=/var/zones/labsdb',
@@ -135,5 +142,5 @@ class profile::openstack::base::pdns::recursor::service(
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
-    dnsrecursor::monitor { [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6 ]: }
+    dnsrecursor::monitor { $listen_addresses: }
 }
