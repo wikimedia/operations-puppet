@@ -1,5 +1,6 @@
 class profile::openstack::base::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Array[Stdlib::IP::Address] $listen_on = lookup('profile::openstack::base::pdns::auth::listen_on'),
     Stdlib::Fqdn $service_fqdn = lookup('profile::openstack::base::pdns::service_fqdn'),
     $db_host = lookup('profile::openstack::base::pdns::db_host'),
     $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
@@ -9,7 +10,7 @@ class profile::openstack::base::pdns::auth::service(
 ){
 
     class { '::pdns_server':
-        listen_on            => [$facts['ipaddress'], $facts['ipaddress6']],
+        listen_on            => $listen_on,
         query_source_address => $facts['ipaddress'],
         dns_auth_soa_name    => $service_fqdn,
         pdns_db_host         => $db_host,

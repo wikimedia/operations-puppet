@@ -1,0 +1,3 @@
+profile::openstack::base::pdns::auth::listen_on:
+  - "%{facts.ipaddress}"
+  - "%{facts.ipaddress6}"
