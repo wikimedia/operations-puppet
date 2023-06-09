@@ -134,3 +134,5 @@ mtail::logs:
   - /var/log/haproxy/haproxy.log
 mtail::group: 'adm'
 profile::contacts::role_contacts: ['Core Platform']
+
+profile::prometheus::cadvisor::ensure: absent
