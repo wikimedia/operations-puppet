@@ -29,8 +29,22 @@ class nftables (
         }
     }
 
-    # create a directory to hold the nftables config
+    # create a directory to hold the nftables main config
     file { '/etc/nftables/':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
+    # For Puppet roles to declare sets of servers, included by the main config
+    file { '/etc/nftables/sets':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
+    # For Puppet roles to declare incoming traffic, included by the main config
+    file { '/etc/nftables/input':
         ensure  => 'directory',
         purge   => true,
         recurse => true,
