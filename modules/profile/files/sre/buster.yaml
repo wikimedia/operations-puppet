@@ -48,7 +48,8 @@ role::vrts:
   target-q: 2023-3
   phab-task: 295416
 role::logging::mediawiki::udp2log:
-  target-q: TBD
+  target-q: 2023-3
+  phab-task: 333614
 role::parsoid:
   target-q: TBD
 role::wdqs::internal:
@@ -355,15 +356,9 @@ role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
 role::microsites::peopleweb:
   target-q: 2023-4
   phab-task: 280989
-role::prometheus:
-  target-q: TBD
 role::prometheus::pop:
   target-q: 2023-2
   phab-task: 309979
-role::proton:
-  target-q: TBD
-role::puppetboard:
-  target-q: TBD
 role::redis::misc::master:
   target-q: TBD
 role::redis::misc::slave:
