@@ -64,6 +64,8 @@ class profile::puppet::agent (
     ensure_packages([
         # needed for the ssh_ca_host_certificate custom fact
         'ruby-net-ssh',
+        # needed by the locate-unmanaged script
+        'python3-yaml',
     ])
 
     # Mode 0751 to make sure non-root users can access
@@ -99,6 +101,9 @@ class profile::puppet::agent (
         '/usr/local/sbin/run-no-puppet':
             mode   => '0550',
             source => 'puppet:///modules/profile/puppet/bin/run-no-puppet';
+        '/usr/local/sbin/locate-unmanaged':
+            mode   => '0550',
+            source => 'puppet:///modules/profile/puppet/bin/locate-unmanaged.py';
     }
     $min = $interval.fqdn_rand($timer_seed)
     $timer_interval = "*:${min}/${interval}:00"
