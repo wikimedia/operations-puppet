@@ -35,9 +35,9 @@ profile::bird::advertise_vips:
     ensure: present
     service_type: "pdns auth"
     address: 185.15.57.25
-    check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 185.15.57.25 -l -d codfw1dev.wikimedia.cloud -t 1 -a"
+    check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 185.15.57.25 -l -d puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org -t 1 -a"
   ns-recursor.openstack.codfw1dev.wikimediacloud.org:
     ensure: present
     service_type: "pdns recursor"
     address: 172.20.254.1
-    check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.254.1 -l -d www.wikimedia.org -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.254.1 -d www.wikimedia.org -t 1"
