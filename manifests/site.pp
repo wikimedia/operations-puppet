@@ -1493,6 +1493,11 @@ node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
 }
 
+# pki-root server T334401
+node 'pki-root1002.eqiad.wmnet' {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^kafka-logging100[1-5]\.eqiad\.wmnet$/ {
     role(kafka::logging)
 }
