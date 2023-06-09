@@ -3,7 +3,9 @@
 # See the sshd_config(5) manpage for details
 
 # What ports, IPs and protocols we listen for
-Port <%= @listen_port %>
+<%- @listen_ports.each do |port| -%>
+Port <%= port %>
+<%- end -%>
 <%- unless @listen_addresses.empty? -%>
     <%- @listen_addresses.each do |listen| -%>
 ListenAddress <%= listen %>

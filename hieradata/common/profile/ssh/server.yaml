@@ -1,4 +1,4 @@
-profile::ssh::server::listen_port: 22
+profile::ssh::server::listen_ports: [22]
 profile::ssh::server::listen_addresses: []
 profile::ssh::server::permit_root: true
 profile::ssh::server::authorized_keys_file:

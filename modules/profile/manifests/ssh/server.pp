@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary manage the ssh server daemon and config
-# @param listen_port the port to listen on
+# @param listen_ports the ports to listen on
 # @param listen_addresses an array of addresses to listen on
 # @param permit_root if true allow root logins
 # @param authorized_keys_file space seperated list of authorized keys files
@@ -25,7 +25,7 @@
 # @param authorized_principals_file path name to file
 # @param authorized_principals array of global principals
 class profile::ssh::server (
-    Stdlib::Port                 $listen_port                = lookup('profile::ssh::server::listen_port'),
+    Array[Stdlib::Port]          $listen_ports               = lookup('profile::ssh::server::listen_ports'),
     Array[Stdlib::IP::Address]   $listen_addresses           = lookup('profile::ssh::server::listen_addresses'),
     Ssh::Config::PermitRootLogin $permit_root                = lookup('profile::ssh::server::permit_root'),
     Array[Stdlib::Unixpath]      $authorized_keys_file       = lookup('profile::ssh::server::authorized_keys_file'),

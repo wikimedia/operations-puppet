@@ -1,5 +1,5 @@
 # @summary manage the ssh server daemon and config
-# @param listen_port the port to listen on
+# @param listen_ports the ports to listen on
 # @param listen_addresses an array of addresses to listen on
 # @param permit_root if true allow root logins
 # @param authorized_keys_file space seperated list of authorized keys files
@@ -24,7 +24,7 @@
 # @param host_certs array of ssh host cert structs
 # @param authorized_principals_file path name to file
 class ssh::server (
-    Stdlib::Port                 $listen_port                  = 22,
+    Array[Stdlib::Port]          $listen_ports                 = [22],
     Array[Stdlib::IP::Address]   $listen_addresses             = [],
     Ssh::Config::PermitRootLogin $permit_root                  = true,
     Array[Stdlib::Unixpath]      $authorized_keys_file         = ['/etc/ssh/userkeys/%u', '/etc/ssh/userkeys/%u.d/cumin'],
