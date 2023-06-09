@@ -1,2 +1,0 @@
-# Temporary: lvs 2009 can't reach row b where conf2004 is, see T327041
-profile::pybal::config_host: conf2005.codfw.wmnet
