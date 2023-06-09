@@ -35,6 +35,7 @@ password_restricted_domains = default
 
 <% @labs_networks.each do |subnet| -%>
 password_safelist = novaobserver:<%=subnet%>
+password_safelist = osstackcanary:<%=subnet%>
 password_safelist = deployment-prep-dns-manager:<%=subnet%>
 password_safelist = testlabs-dns-manager:<%=subnet%>
 password_safelist = traffic-cloud-dns-manager:<%=subnet%>
