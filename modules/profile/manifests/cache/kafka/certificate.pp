@@ -40,8 +40,8 @@ class profile::cache::kafka::certificate(
     if $use_pki_settings {
         $ssl_files = profile::pki::get_cert('kafka', $certificate_name, {
             'outdir'  => $ssl_location,
-            'owner'   => 'kafka',
-            'group'   => 'kafka',
+            'owner'   => 'root',
+            'group'   => 'root',
             'profile' => 'kafka_11',
             notify    => Sslcert::X509_to_pkcs12['varnishkafka_keystore'],
             }
@@ -49,8 +49,8 @@ class profile::cache::kafka::certificate(
 
         $ssl_keystore_location   = "${ssl_location}/${certificate_name}.keystore.p12"
         sslcert::x509_to_pkcs12 { 'varnishkafka_keystore' :
-            owner       => 'kafka',
-            group       => 'kafka',
+            owner       => 'root',
+            group       => 'root',
             public_key  => $ssl_files['chained'],
             private_key => $ssl_files['key'],
             certfile    => $ssl_files['ca'],
