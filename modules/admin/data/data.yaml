@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson, xihua, nray, andyrussg]
+              ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -54,7 +54,7 @@ groups:
               akosiaris, mark, ariel, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              cdanis, fsero, jbond, dzahn, sukhe, pt1979,
+              cdanis, jbond, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
@@ -3748,14 +3748,12 @@ users:
     uid: 20295
     krb: absent
   fsero:
-    ensure: present
+    ensure: absent
     realname: Fabian Selles Rosa
     name: fsero
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiNDB55aZMkiwZXVa6PH54ab/DFMKKAJ37E4WUMg0j7YqHbsX74IcObe/hXgvqkzxQ+yrIt1oVeG2g0qD42PMikITY86SuLj71xPGnh8HAU4Hu44+kFePn/LSgdBhZm0jXMMebhuVfv6gZebjWq1cB4bFgks1dsIvHka0BjZK+IKeZM8g0EyiRSuItxGsoMxDbwJQDznMZqWjSOgTuv0JXmDNqiSNQhhW8mQbE4YI/sf2VjdorSoGUn+6REtqNp4McKXaQ5S981KF5+ejbWTx7ZGfv5eWivH7bGLUd5pj5TWMbly2dognx7QbbuuyaR7yhaBUSmUM1w+ocu6J8HCuD7WpB6+3h5RJeix5TwQsc74/ws+FQMQzpN0Z9B/B5yD7VSk6b2g79UzkUFdxTESLid5LpyJki6wmYBGxZ0STJovleRY1BDSiQvEKgC51GGrIqhht3wdOXgaaAm3rzK9ZINidxr+wBB5fOGdk7tassvhtromRlKhfpDoZgVzeI69Z7i5GS/r+eU2236NyCiWpY2Pkeg5wHz1x+1c3ZVwXIhf+lUqD9u8C1yIzyrHCpJedvR+TSWMUutrN34zC60dqGqMKNj1k8a9AjZHL3oTcDsRrRBo6a/SIxN8/zCw17qowhPGcNmkMdZ46BsE0sFlYWRkhUcsahXxY42rxFdH/+qQ== fselles@wikimedia.org
+    ssh_keys: []
     uid: 20429
-    email: fabian.sellesrosa@gmail.com
   cdanis:
     ensure: present
     realname: Chris Danis
