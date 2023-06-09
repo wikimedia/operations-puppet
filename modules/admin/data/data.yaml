@@ -405,7 +405,7 @@ groups:
               stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf]
+              hghani, nshahquinn-wmf, zabe]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
