@@ -68,9 +68,9 @@ SELECT usr.username AS user, COUNT(usr.username) AS closed
 END
 )
 
-taskscreated=$(echo $result_tasks_created | cut -d " " -f3)
-tasksclosed=$(echo $result_tasks_closed | cut -d " " -f3)
-activeusers=$(echo $result_active_users | cut -d " " -f3)
+taskscreated=$(echo $result_tasks_created | sed 's/[^0-9]*//g')
+tasksclosed=$(echo $result_tasks_closed | sed 's/[^0-9]*//g')
+activeusers=$(echo $result_active_users | sed 's/[^0-9]*//g')
 tasksauthors=$(echo $result_tasks_authors | cut -d " " -f3)
 tasksclosers=$(echo $result_tasks_closers | cut -d " " -f3)
 
