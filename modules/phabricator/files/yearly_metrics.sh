@@ -25,7 +25,7 @@ END
 )
 
 #echo "result_active_users"
-result_tasks_authors=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
+result_active_users=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
 
 SELECT COUNT(DISTINCT (authorPHID)) FROM phabricator_maniphest.maniphest_transaction WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')>=DATE_FORMAT(NOW() - INTERVAL 12 MONTH,'%Y%m');
