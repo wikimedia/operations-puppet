@@ -11,6 +11,7 @@ class profile::toolforge::package_builder(
         'python-all',
     )
 
+    sbuild::chroot { 'bookworm': }
     sbuild::chroot { 'bullseye': }
     sbuild::chroot { 'buster': }
 }

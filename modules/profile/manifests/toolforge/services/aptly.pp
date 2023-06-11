@@ -1,5 +1,8 @@
 class profile::toolforge::services::aptly(
 ) {
+    aptly::repo { 'bookworm-tools':
+        publish => true,
+    }
     aptly::repo { 'bullseye-tools':
         publish      => true,
     }
@@ -8,6 +11,9 @@ class profile::toolforge::services::aptly(
     }
 
     # its interesting to serve some packages to toolsbeta for testing purposes
+    aptly::repo { 'bookworm-toolsbeta':
+        publish => true,
+    }
     aptly::repo { 'bullseye-toolsbeta':
         publish      => true,
     }
