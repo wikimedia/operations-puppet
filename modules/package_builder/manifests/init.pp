@@ -161,9 +161,11 @@ class package_builder(
             bin        => false,
             components => 'main non-free contrib',
         }
+
+        $security_repo = ($dist == 'buster').bool2str("${dist}/updates", "${dist}-security")
         apt::repository{"${dist}-security_source_only":
             uri        => 'http://security.debian.org/debian-security',
-            dist       => "${dist}/updates",
+            dist       => $security_repo,
             bin        => false,
             components => 'main non-free contrib',
         }
