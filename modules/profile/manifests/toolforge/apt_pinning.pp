@@ -8,10 +8,6 @@ class profile::toolforge::apt_pinning {
             $ldap_utils_pkg_version   = 'version 2.4.57+dfsg-3'
             $libnss3_pkg_version      = 'version 2:3.61-1'
             $libnfsidmap2_pkg_version = 'version 0.25-6'
-            $ldapvi_pkg_version       = 'version 1.7-10*'
-            $sudo_ldap_pkg_version    = 'version 1.9.5p2-3'
-            $nscd_pkg_version         = 'version 2.31-13'
-            $python_ldap_pkg_version  = 'version 3.2.0-4'
             $libnss_db_pkg_version    = 'version 2.2.3pre1-6'
             $nfs_common_pkg_version   = 'version 1:1.3.4-6'
             $sssd_pkg_version         = 'version 2.4.1-2'
@@ -23,10 +19,6 @@ class profile::toolforge::apt_pinning {
             $ldap_utils_pkg_version   = 'version 2.4.47+dfsg-3+deb10u1'
             $libnss3_pkg_version      = 'version 2:3.42.1-1+deb10u1'
             $libnfsidmap2_pkg_version = 'version 0.25-5.1'
-            $ldapvi_pkg_version       = 'version 1.7-10*'
-            $sudo_ldap_pkg_version    = 'version 1.8.27-1+deb10u3'
-            $nscd_pkg_version         = 'version 2.28-10'
-            $python_ldap_pkg_version  = 'version 3.1.0-2'
             $libnss_db_pkg_version    = 'version 2.2.3pre1-6+b6'
             $nfs_common_pkg_version   = 'version 1:1.3.4-2.5'
             $sssd_pkg_version         = 'version 1.16.3-3.2'
@@ -37,8 +29,10 @@ class profile::toolforge::apt_pinning {
     }
 
     apt::pin { [
-        'toolforge-linux-pinning',
-        'toolforge-linux-meta-pinning',
+        'toolforge-sudo-ldap-pinning',
+        'toolforge-nscd-pinning',
+        'toolforge-python-ldap-pinning',
+        'toolforge-ldapvi-pinning',
     ]:
         ensure   => absent,
         pin      => 'not used',
@@ -55,29 +49,9 @@ class profile::toolforge::apt_pinning {
         pin      => $libpam_ldapd_pkg_version,
         priority => 1001,
     }
-    apt::pin { 'toolforge-ldapvi-pinning':
-        package  => 'ldapvi',
-        pin      => $ldapvi_pkg_version,
-        priority => 1001,
-    }
-    apt::pin { 'toolforge-sudo-ldap-pinning':
-        package  => 'sudo-ldap',
-        pin      => $sudo_ldap_pkg_version,
-        priority => 1001,
-    }
-    apt::pin { 'toolforge-nscd-pinning':
-        package  => 'nscd',
-        pin      => $nscd_pkg_version,
-        priority => 1001,
-    }
     apt::pin { 'toolforge-libnss-db-pinning':
         package  => 'libnss-db',
         pin      => $libnss_db_pkg_version,
-        priority => 1001,
-    }
-    apt::pin { 'toolforge-python-ldap-pinning':
-        package  => 'python-ldap',
-        pin      => $python_ldap_pkg_version,
         priority => 1001,
     }
     apt::pin { 'toolforge-ldap-utils-pinning':
