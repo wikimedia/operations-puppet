@@ -583,7 +583,7 @@ class profile::phabricator::main (
         ensure           => $logmail_ensure,
         rcpt_address     => 'aklapper@wikimedia.org',
         sndr_address     => 'aklapper@wikimedia.org',
-        month            => '1, 4, 7, 10',
+        month            => '01,04,07,10',
         monthday         => 1,
         require          => Package[$deploy_target],
         mysql_slave      => $mysql_slave,
