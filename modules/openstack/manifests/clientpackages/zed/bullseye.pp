@@ -19,14 +19,6 @@ class openstack::clientpackages::zed::bullseye(
         ensure => 'present',
     }
 
-    $otherpackages = [
-        'ebtables',
-    ]
-
-    package { $otherpackages:
-        ensure => 'present',
-    }
-
     file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
         ensure => 'present',
         source => 'puppet:///modules/openstack/clientpackages/mwopenstackclients.py',

@@ -41,11 +41,6 @@ class openstack::clientpackages::vms::common(
     ]
     ensure_packages($py3packages)
 
-    $otherpackages = [
-        'ebtables',
-    ]
-    ensure_packages($otherpackages)
-
     file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
         ensure => 'present',
         source => 'puppet:///modules/openstack/clientpackages/mwopenstackclients.py',
