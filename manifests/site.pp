@@ -2710,7 +2710,7 @@ node /^snapshot101[4567]\.eqiad\.wmnet$/ {
 }
 
 # Servers for SRE tests which are not suitable for Cloud VPS
-node /^sretest100[1-2]\.eqiad\.wmnet$/ {
+node /^sretest100[1-3]\.eqiad\.wmnet$/ {
     role(sretest)
 }
 
