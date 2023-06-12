@@ -48,7 +48,7 @@ class profile::cache::kafka::certificate(
         )
 
         $ssl_key_location = $ssl_files['key']
-        $ssl_certificate_location = $ssl_files['cert']
+        $ssl_certificate_location = $ssl_files['chained']
 
     } else {
         $ssl_location_private = '/etc/varnishkafka/ssl/private'
