@@ -73,3 +73,5 @@ block_devices:
     uuid: AlsoNotARealUuid
     fstype: ext4
     type: disk
+wmflib:
+  is_container: false
