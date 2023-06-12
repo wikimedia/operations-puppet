@@ -117,10 +117,18 @@ class profile::hive::client(
     # interface to HiveServer2 and install it at
     # /usr/local/bin/beeline
 
+    file { '/etc/beeline.ini':
+        content => epp('profile/hive/client/beeline.ini.epp',
+        {
+            hiveserver_host    => $hiveserver_host,
+            hiveserver_port    => $hiveserver_port,
+            kerberos_principal => $hive_server2_authentication_kerberos_principal
+        }),
+        mode    => '0555',
+    }
+
     file { '/usr/local/bin/beeline':
-        content => template('profile/hive/client/beeline_wrapper.py.erb'),
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
+        source => 'puppet:///modules/profile/hive/client/beeline_wrapper.py',
+        mode   => '0755',
     }
 }

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 # This script is a wrapper script around Beeline - which is a commandline
 # interface to HiveServer2.
 #
@@ -15,23 +15,26 @@
 #
 # USAGE: beeline --help
 
+import configparser
 import os
 import sys
 
-<% if @hive_server2_authentication_kerberos_principal -%>
+
+# Read default configuration
+CFG_FILE = '/etc/beeline.ini'
+
+config = configparser.ConfigParser()
+config.read(CFG_FILE)
+
+jdbc_uri = config['DEFAULT']['jdbc']
+output_format = config['DEFAULT'].get('format', 'tsv2')
+verbose = config['DEFAULT'].getboolean('verbose', True)
+
 DEFAULT_OPTIONS = {'-n': os.environ['USER'],
-                   '-u': 'jdbc:hive2://<%= @hiveserver_host %>:' +
-                         '<%= @hiveserver_port %>' + '/default;principal=<%= @hive_server2_authentication_kerberos_principal %>',
-                   '--outputformat': 'tsv2',
-                   '--verbose': 'true' }
-<% else -%>
-# Let's set beeline defaults for user, database url and outputformat
-DEFAULT_OPTIONS = {'-n': os.environ['USER'],
-                   '-u': 'jdbc:hive2://<%= @hiveserver_host %>:' +
-                         '<%= @hiveserver_port %>',
-                   '--outputformat': 'tsv2',
-                    '--verbose': 'true' }
-<% end -%>
+                   '--outputformat': output_format,
+                   '--verbose': verbose,
+                   '-u': jdbc_uri}
+
 
 # Let's parse out arguments to see if values are set for the default
 # options we have, if not add them to the argument list

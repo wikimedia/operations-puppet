@@ -1,0 +1,17 @@
+<%#  SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+  Stdlib::Host        $hiveserver_host,
+  Stdlib::Port        $hiveserver_port,
+  Optional[String[1]] $kerberos_principal = undef,
+| -%>
+# This file is managed by Puppet, do not edit manually.
+# Puppet: modules/profile/templates/hive/client/beeline.ini.epp
+[DEFAULT]
+<% if $kerberos_principal { -%>
+jdbc=jdbc:hive2://<%= $hiveserver_host %>:<%= $hiveserver_port %>/default;principal=<%= $kerberos_principal %>
+<% } -%>
+<% else { -%>
+jdbc=jdbc:hive2://<%= $hiveserver_host %>:<%= $hiveserver_port %>
+<% } -%>
+format=tsv2
+verbose=True
