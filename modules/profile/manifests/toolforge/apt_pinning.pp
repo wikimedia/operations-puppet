@@ -10,7 +10,6 @@ class profile::toolforge::apt_pinning {
             $libnfsidmap2_pkg_version = 'version 0.25-6'
             $libnss_db_pkg_version    = 'version 2.2.3pre1-6'
             $nfs_common_pkg_version   = 'version 1:1.3.4-6'
-            $sssd_pkg_version         = 'version 2.4.1-2'
         }
 
         'buster': {
@@ -21,7 +20,6 @@ class profile::toolforge::apt_pinning {
             $libnfsidmap2_pkg_version = 'version 0.25-5.1'
             $libnss_db_pkg_version    = 'version 2.2.3pre1-6+b6'
             $nfs_common_pkg_version   = 'version 1:1.3.4-2.5'
-            $sssd_pkg_version         = 'version 1.16.3-3.2'
         }
         default: {
             fail("${debian::codename()}: not supported")
@@ -33,6 +31,7 @@ class profile::toolforge::apt_pinning {
         'toolforge-nscd-pinning',
         'toolforge-python-ldap-pinning',
         'toolforge-ldapvi-pinning',
+        'toolforge-sssd-pinning',
     ]:
         ensure   => absent,
         pin      => 'not used',
@@ -62,12 +61,6 @@ class profile::toolforge::apt_pinning {
     apt::pin { 'toolforge-libnss3-pinning':
         package  => 'libnss3**',
         pin      => $libnss3_pkg_version,
-        priority => 1001,
-    }
-    # sssd
-    apt::pin { 'toolforge-sssd-pinning':
-        package  => 'sssd*',
-        pin      => $sssd_pkg_version,
         priority => 1001,
     }
 
