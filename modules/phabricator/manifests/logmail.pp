@@ -53,7 +53,7 @@ define phabricator::logmail (
     Stdlib::Unixpath $basedir  = '/usr/local/bin',
     Optional[Integer] $hour = 0,
     Optional[Integer] $minute = 0,
-    Optional[Integer] $month = undef,
+    Optional[Variant[String, Integer]] $month = undef,
     Optional[Integer] $monthday = undef,
     Optional[Systemd::Timer::Weekday] $weekday = undef,
     Wmflib::Ensure $ensure = 'present',
