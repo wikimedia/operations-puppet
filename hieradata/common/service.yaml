@@ -1801,6 +1801,7 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
         ProxyFetch:
+          http_status: 302
           url:
             - https://prometheus-%{::site}.wikimedia.org/
       scheduler: wrr
