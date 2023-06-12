@@ -86,9 +86,6 @@ profile::resolving::ndots: 1
 profile::resolving::attempts: 3
 profile::resolving::domain_search:
   - "%{facts.networking.domain}"
-profile::resolving::nameservers:
-  - "%{lookup('labsdnsconfig.recursor')}"
-  - "%{lookup('labsdnsconfig.recursor_secondary')}"
 
 profile::puppet::agent::interval: 30
 profile::puppet::agent::environment: production
