@@ -22,16 +22,11 @@ class profile::openstack::base::puppetmaster::frontend(
     class { 'profile::openstack::base::puppetmaster::common': }
 
     $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
-    $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $openstack_controller_ips_v6 = $openstack_controllers.map |$host| { ipresolve($host, 6) }
-
     class { 'puppetmaster::certmanager':
         remote_cert_cleaners => flatten([
             $designate_ips,
-            $designate_ips_v6,
             $openstack_controller_ips,
-            $openstack_controller_ips_v6,
         ])
     }
 
@@ -72,8 +67,7 @@ class profile::openstack::base::puppetmaster::frontend(
 
     ferm::rule{'puppetcertcleaning':
         ensure => 'present',
-        rule   => "saddr (@resolve((${join($designate_hosts,' ')}))
-                          @resolve((${join($designate_hosts,' ')}), AAAA))
+        rule   => "saddr (@resolve((${join($designate_hosts,' ')})))
                         proto tcp dport 22 ACCEPT;",
     }
 
