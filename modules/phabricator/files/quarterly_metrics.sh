@@ -44,10 +44,10 @@ SELECT COUNT(DISTINCT (closerPHID)) FROM phabricator_maniphest.maniphest_task WH
 END
 )
 
-taskscreated=$(echo $result_tasks_created | cut -d " " -f3)
-tasksclosed=$(echo $result_tasks_closed | cut -d " " -f3)
-tasksauthors=$(echo $result_tasks_authors | cut -d " " -f3)
-tasksclosers=$(echo $result_tasks_closers | cut -d " " -f3)
+taskscreated=$(echo $result_tasks_created | sed 's/[^0-9]*//g')
+tasksclosed=$(echo $result_tasks_closed | sed 's/[^0-9]*//g')
+tasksauthors=$(echo $result_tasks_authors | sed 's/[^0-9]*//g')
+tasksclosers=$(echo $result_tasks_closers | sed 's/[^0-9]*//g')
 
 lastquarter=$(date +"Q$(expr $(expr $(date -d '-1 month' +%m) - 1) / 3 + 1)/%Y")
 
