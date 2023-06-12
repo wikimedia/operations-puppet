@@ -2,7 +2,9 @@
 #
 # Provision a deployment server for scap3 services.
 #
-class deployment::deployment_server() {
+class deployment::deployment_server(
+    $trebuchet_email = "trebuchet@${::fqdn}",
+) {
     include ::redis::client::python
 
     ensure_packages([
@@ -33,11 +35,24 @@ class deployment::deployment_server() {
       }
 
       user { 'trebuchet':
-          shell      => '/bin/false',
-          home       => '/nonexistent',
-          managehome => false,
-          gid        => 'trebuchet',
-          system     => true,
+          shell  => '/bin/false',
+          home   => '/var/lib/trebuchet',
+          gid    => 'trebuchet',
+          system => true,
+      }
+
+      file { '/var/lib/trebuchet':
+          ensure => directory,
+          owner  => 'trebuchet',
+          group  => 'trebuchet',
+      }
+
+      file { '/var/lib/trebuchet/.gitconfig':
+        content => template('deployment/gitconfig.erb'),
+        mode    => '0444',
+        owner   => 'trebuchet',
+        group   => 'trebuchet',
+        require => File['/var/lib/trebuchet'],
       }
     }
 }
