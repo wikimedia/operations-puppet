@@ -54,4 +54,4 @@ profile::tlsproxy::envoy::services:
      port: 80
      cert_name: 'prometheus.wikimedia.org'
 profile::tlsproxy::envoy::use_remote_address: true
-profile::tlsproxy::envoy::sni_support: 'strict'
+profile::tlsproxy::envoy::sni_support: "no"
