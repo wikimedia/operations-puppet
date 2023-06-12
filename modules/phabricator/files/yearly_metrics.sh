@@ -32,7 +32,7 @@ SELECT COUNT(DISTINCT (authorPHID)) FROM phabricator_maniphest.maniphest_transac
 END
 )
 
-#echo "result_task_authors"
+#echo "result_tasks_authors"
 result_tasks_authors=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
 
 SELECT COUNT(DISTINCT (authorPHID)) FROM phabricator_maniphest.maniphest_task WHERE
@@ -48,8 +48,8 @@ SELECT COUNT(DISTINCT (closerPHID)) FROM phabricator_maniphest.maniphest_task WH
 END
 )
 
-#echo "result_task_authors_top20"
-result_task_authors_top20=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
+#echo "result_tasks_authors_top20"
+result_tasks_authors_top20=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
 SELECT usr.username AS user, COUNT(usr.username) AS created
     FROM phabricator_user.user usr JOIN phabricator_maniphest.maniphest_task tsk
     WHERE tsk.authorPHID = usr.phid
