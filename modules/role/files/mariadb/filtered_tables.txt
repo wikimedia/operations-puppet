@@ -195,8 +195,6 @@ campaign_events,event_page_title,K
 campaign_events,event_page_wiki,K
 campaign_events,event_page_prefixedtext,K
 campaign_events,event_chat_url,F
-campaign_events,event_tracking_tool_id,K
-campaign_events,event_tracking_tool_event_id,K
 campaign_events,event_status,K
 campaign_events,event_timezone,K
 campaign_events,event_start_local,K
