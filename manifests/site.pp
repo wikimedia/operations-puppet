@@ -2644,7 +2644,7 @@ node 'people1003.eqiad.wmnet', 'people2002.codfw.wmnet' {
 
 # people VMs on bookworm
 node 'people1004.eqiad.wmnet', 'people2003.codfw.wmnet' {
-    role(insetup::serviceops_collab)
+    role(microsites::peopleweb)
 }
 
 # scandium is a parsoid test server. it replaced ruthenium.
