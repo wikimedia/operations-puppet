@@ -290,13 +290,3 @@ File {
     owner => 'root',
     group => 'root',
 }
-
-# Ensure apt is setup how we want it, before we try to
-# install any apt packages.
-Package {
-    # We set our package provider default to apt explicitly, so we can
-    # collect it below and work around a collector limitation,
-    # https://www.puppet.com/docs/puppet/7/lang_collectors.html
-    provider => 'apt'
-}
-Class['profile::apt'] -> Package <| provider == 'apt' |>
