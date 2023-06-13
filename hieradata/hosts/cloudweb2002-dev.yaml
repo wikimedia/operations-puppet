@@ -37,7 +37,7 @@ profile::wmcs::striker::docker::env:
   DB_USER: striker
   DB_HOST: cloudweb2002-dev.wikimedia.org
   DB_PORT: 3306
-  LDAP_SERVER_URI: ldap://cloudservices2004-dev.wikimedia.org:389
+  LDAP_SERVER_URI: ldap://cloudservices2005-dev.wikimedia.org:389
   LDAP_BIND_USER:  uid=novaadmin,ou=people,dc=wikimedia,dc=org
   CACHE_LOCATION: 127.0.0.1:11212
   REQUIRE_HTTPS: true
@@ -65,5 +65,5 @@ profile::wmcs::striker::docker::env:
 ##   OPENSTACK_PASSWORD:
 
 labsldapconfig:
-  hostname: cloudservices2004-dev.wikimedia.org
-  secondary_hostname: cloudservices2004-dev.wikimedia.org
+  hostname: cloudservices2005-dev.wikimedia.org
+  secondary_hostname: cloudservices2005-dev.wikimedia.org

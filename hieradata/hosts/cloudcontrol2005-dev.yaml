@@ -1,11 +1,11 @@
 labsldapconfig:
-  hostname: cloudservices2004-dev.wikimedia.org
+  hostname: cloudservices2005-dev.wikimedia.org
   secondary_hostname: cloudservices2005-dev.wikimedia.org
 
 ldap:
-  ro-server: cloudservices2004-dev.wikimedia.org
+  ro-server: cloudservices2005-dev.wikimedia.org
   ro-server-fallback: cloudservices2005-dev.wikimedia.org
-  rw-server: cloudservices2004-dev.wikimedia.org
+  rw-server: cloudservices2005-dev.wikimedia.org
   rw-server-fallback: cloudservices2005-dev.wikimedia.org
 
 profile::openstack::codfw1dev::galera::server_id: 3
