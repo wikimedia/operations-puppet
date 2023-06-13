@@ -6228,6 +6228,10 @@ ldap_only_users:
     ensure: present
     realname: Sam Patton
     email: spatton@wikimedia.org
+  superpes:
+    ensure: present
+    realname: Superpes
+    email: superpes15.itwiki@gmail.com
   tbolliger:
     ensure: absent
     realname: Trevor Bolliger
