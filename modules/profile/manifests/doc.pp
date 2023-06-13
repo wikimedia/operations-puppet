@@ -149,16 +149,6 @@ class profile::doc (
         ],
     }
 
-    # TODO: Remove this in a follow-up after  this has landed in production and puppet has run on all doc hosts
-    rsync::server::module { 'doc-between-nodes':
-        ensure         => absent, # Clean up to remove this while switching to rsync::quickdatacopy
-        path           => '/srv/doc',
-        read_only      => 'no',
-        hosts_allow    => [$active_host],
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
-    }
-
     rsync::quickdatacopy { 'doc-host-data-sync':
         ensure        => present,
         source_host   => $active_host,
@@ -172,18 +162,6 @@ class profile::doc (
     }
 
     $all_hosts.each |Stdlib::Fqdn $other_host| {
-        if $::fqdn != $other_host {
-            # TODO: Remove this in a follow-up after  this has landed in production and puppet has run on all doc hosts
-            systemd::timer::job { "rsync-doc-${other_host}":
-                ensure      => absent, # Clean up to remove this while switching to rsync::quickdatacopy
-                user        => 'root',
-                description => 'rsync documentation to a non-active server',
-                command     => "/usr/bin/rsync -avp --delete /srv/doc/ rsync://${other_host}/doc-between-nodes",
-                interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
-            }
-
-        }
-
         prometheus::blackbox::check::http { $other_host:
             server_name        => 'doc.wikimedia.org',
             instance_label     => $other_host,
