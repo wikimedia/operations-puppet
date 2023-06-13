@@ -24,7 +24,6 @@ class profile::openstack::eqiad1::pdns::auth::service(
     #  with the version of Mariadb installed on Jessie.
     class {'::profile::openstack::base::pdns::auth::service':
         hosts               => $hosts,
-        service_fqdn        => $service_fqdn,
         db_pass             => $db_pass,
         db_host             => ipresolve($::fqdn,4),
         pdns_webserver      => true,

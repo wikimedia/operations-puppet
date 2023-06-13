@@ -16,10 +16,7 @@ max-tcp-connections=512
 local-address=<%= @listen_on.join(' ') %>
 query-local-address=<%= @query_source_address %>
 
-# dig SOA wmflabs.org
-# dig SOA eqiad.wmflabs
-# Note: Make this per deployment
-default-soa-content=ns0.openstack.eqiad1.wikimediacloud.org
+default-soa-content=<%= @default_soa_content %>
 
 receiver-threads=8
 distributor-threads=4
