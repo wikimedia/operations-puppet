@@ -37,7 +37,7 @@ groups:
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
-              stef25]
+              stef25, twilsonbf, ryan-bf]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6780,14 +6780,8 @@ ldap_only_users:
     realname: Adee Ritman (WMDE)
     email: adee.ritman@wikimedia.de
   twilsonbf:
-    ensure: present
+    ensure: absent
     realname: Thomas Wilson
-    email: twilson@bishopfox.com
-    expiry_date: 2023-06-12
-    expiry_contact: mstyles@wikimedia.org
   ryan-bf:
-    ensure: present
+    ensure: absent
     realname: Ryan Basden
-    email: rbasden@bishopfox.com
-    expiry_date: 2023-06-12
-    expiry_contact: mstyles@wikimedia.org
