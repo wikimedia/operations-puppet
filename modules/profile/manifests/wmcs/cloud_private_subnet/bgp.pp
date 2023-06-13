@@ -16,6 +16,7 @@ class profile::wmcs::cloud_private_subnet::bgp (
     class { 'profile::bird::anycast':
         neighbors_list => [$gw_address],
         ipv4_src       => $cloud_private_address,
+        multihop       => false,
     }
 
     $table = 'cloud-private'
