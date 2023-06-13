@@ -568,7 +568,7 @@ class profile::phabricator::main (
     # yearly metrics mail (T337388)
     phabricator::logmail {'yearly_metrics':
         ensure           => $logmail_ensure,
-        rcpt_address     => 'aklapper@wikimedia.org',
+        rcpt_address     => [ 'aklapper@wikimedia.org', 'releng@lists.wikimedia.org' ],
         sndr_address     => 'aklapper@wikimedia.org',
         month            => 1,
         monthday         => 1,
@@ -581,7 +581,7 @@ class profile::phabricator::main (
     # quarterly metrics mail (T337387)
     phabricator::logmail {'quarterly_metrics':
         ensure           => $logmail_ensure,
-        rcpt_address     => 'aklapper@wikimedia.org',
+        rcpt_address     => [ 'oonifade@wikimedia.org', 'aklapper@wikimedia.org' ],
         sndr_address     => 'aklapper@wikimedia.org',
         month            => '01,04,07,10',
         monthday         => 1,
