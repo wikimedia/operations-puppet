@@ -8,8 +8,8 @@
 
 class pdns_server(
     Array[Stdlib::IP::Address] $listen_on,
-    Stdlib::Fqdn               $query_source_address,
     Stdlib::Fqdn               $default_soa_content,
+    Stdlib::Fqdn               $query_local_address,
     $pdns_db_host,
     $pdns_db_password,
     $dns_webserver = false,

@@ -14,7 +14,7 @@ max-tcp-connections=512
 # Always bind to specific addresses - pdns complains when using INADDR_ANY.
 # Change this to the external interface address
 local-address=<%= @listen_on.join(' ') %>
-query-local-address=<%= @query_source_address %>
+query-local-address=<%= scope.call_function('dnsquery::a', [@query_local_address])[0] %>
 
 default-soa-content=<%= @default_soa_content %>
 

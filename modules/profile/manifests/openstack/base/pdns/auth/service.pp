@@ -2,6 +2,7 @@ class profile::openstack::base::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::base::pdns::hosts'),
     Array[Stdlib::IP::Address] $listen_on = lookup('profile::openstack::base::pdns::auth::listen_on'),
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
+    Stdlib::Fqdn $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
     $db_host = lookup('profile::openstack::base::pdns::db_host'),
     $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = lookup('profile::openstack::base::pdns::pdns_webserver', {'default_value' => false}),
@@ -10,14 +11,14 @@ class profile::openstack::base::pdns::auth::service(
 ){
 
     class { '::pdns_server':
-        listen_on            => $listen_on,
-        query_source_address => $facts['ipaddress'],
-        default_soa_content  => $default_soa_content,
-        pdns_db_host         => $db_host,
-        pdns_db_password     => $db_pass,
-        dns_webserver        => $pdns_webserver,
-        dns_api_key          => $pdns_api_key,
-        dns_api_allow_from   => $pdns_api_allow_from,
+        listen_on           => $listen_on,
+        default_soa_content => $default_soa_content,
+        query_local_address => $query_local_address,
+        pdns_db_host        => $db_host,
+        pdns_db_password    => $db_pass,
+        dns_webserver       => $pdns_webserver,
+        dns_api_key         => $pdns_api_key,
+        dns_api_allow_from  => $pdns_api_allow_from,
     }
 
     ferm::service { 'udp_dns_rec':

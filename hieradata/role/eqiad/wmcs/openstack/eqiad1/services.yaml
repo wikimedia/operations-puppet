@@ -17,4 +17,5 @@ profile::prometheus::memcached_exporter::arguments: "--memcached.address=localho
 raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ["WMCS"]
 
+profile::openstack::base::pdns::query_local_address: "%{facts.fqdn}"
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org
