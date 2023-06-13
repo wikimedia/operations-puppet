@@ -1,5 +1,6 @@
 # Fix ruby-git deficiencies. TODO: move to rugged instead?
 require 'git'
+require 'yaml'
 
 class GitOps
   # Helper class to perform the git operations we use in the rakefile
