@@ -102,6 +102,8 @@ host_subset_size = 2
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
+<%= scope.call_function('template', ["openstack/#{@version}/common/servicetoken.erb"]) %>
+
 <%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
 
 [oslo_concurrency]
