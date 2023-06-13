@@ -24,6 +24,7 @@ class idm::deployment (
     Integer             $redis_maxmem,
     String              $ldap_dn,
     String              $ldap_dn_password,
+    Boolean             $production,
 ){
     # We need django from backports to get latest LTS.
     if debian::codename::eq('bullseye') {

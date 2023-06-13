@@ -95,6 +95,7 @@ class profile::idm(
         ldap_dn                  => $ldap_dn,
         ldap_dn_password         => $ldap_dn_password,
         ldap_config              => $ldap_config,
+        production               => $production,
     }
 
     uwsgi::app{ $project:
