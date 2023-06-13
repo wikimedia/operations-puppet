@@ -60,6 +60,12 @@ class profile::gitlab(
         default        => 'task'
     }
 
+    # use gitlab_oidc client on active host and gitlab_replica_oidc on replicas
+    $omniauth_identifier = $active_host ? {
+        $facts['fqdn'] => 'gitlab_oidc',
+        default        => 'gitlab_replica_oidc'
+    }
+
     if $active_host == $facts['fqdn'] {
         prometheus::blackbox::check::http { $service_name:
             team               => 'serviceops-collab',
@@ -220,5 +226,6 @@ class profile::gitlab(
         sync_email_from          => $sync_email_from,
         single_sign_on_from      => $single_sign_on_from,
         auto_sign_in_with        => $auto_sign_in_with,
+        omniauth_identifier      => $omniauth_identifier,
     }
 }

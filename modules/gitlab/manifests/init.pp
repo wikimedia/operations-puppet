@@ -8,6 +8,7 @@
 # @param single_sign_on_from list of providers that support SSO
 # @param omniauth_providers hash of provideres to configure.  the key is the label
 # @param auto_sign_in_with automatically redirect to this provider
+# @param omniauth_identifier name of the omniauth client identifier
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
@@ -61,6 +62,7 @@ class gitlab (
     Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = {},
     Optional[Gitlab::Omniauth_providers]    $auto_sign_in_with  = undef,
     Boolean           $letsencrypt_enable                       = false,
+    String            $omniauth_identifier                      = 'gitlab_oidc',
 ) {
     $cas_defaults = {
         'login_url'            => '/login',
@@ -84,6 +86,9 @@ class gitlab (
         # TODO: the documents add the name filed to the args but
         # i suspect its a big in the docs
         'name'                         => 'openid_connect',
+        'client_options'               => {
+            'identifier' => $omniauth_identifier,
+        },
     }
 
     $_omniauth_providers = $omniauth_providers.map |$label, $args| {
@@ -100,7 +105,7 @@ class gitlab (
                     {
                         'label' => $label,
                         'name'  => 'openid_connect',
-                        'args'  => $args + $oidc_defaults,
+                        'args'  => deep_merge($args, $oidc_defaults),
                     }
                 } else {
                     warning("provider ${label} has no secret will not configure")
