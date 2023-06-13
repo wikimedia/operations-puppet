@@ -40,14 +40,6 @@ hosts:
     - ms-be1074
     - ms-be1075
   prod:
-    - ms-be1040:
-        - drain
-    - ms-be1041:
-        - drain
-    - ms-be1042:
-        - drain
-    - ms-be1043:
-        - drain
     - ms-be1044
     - ms-be1045
     - ms-be1046
