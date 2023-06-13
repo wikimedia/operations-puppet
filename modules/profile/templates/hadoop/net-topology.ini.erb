@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[DEFAULT]
+site=<%= @site %>
+
+[nodes]
+<%= @net_topology.map { |host, rack| "#{host}=#{rack}" }.sort.join("\n") %>
+

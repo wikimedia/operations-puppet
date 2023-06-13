@@ -553,6 +553,7 @@ class profile::hadoop::common (
         mapreduce_reduce_java_opts                       => $mapreduce_reduce_java_opts,
 
         net_topology_script_content                      => $net_topology_script_content,
+        net_topology                                     => $net_topology,
 
         # This needs to be set in order to use Impala
         dfs_datanode_hdfs_blocks_metadata_enabled        => true,

@@ -249,6 +249,10 @@
 #     names to row or rack assignments.
 #     Default: undef
 #
+#   [*net_topology*]
+#     A mapping of FQDN hostname to 'rack'.  This will be used by to render the
+#     configuration for script that will be used for Hadoop node rack awareness.
+#
 #   [*fair_scheduler_template*]
 #     The fair-scheduler.xml queue configuration template.
 #     If you set this to false or undef, FairScheduler will
@@ -408,6 +412,7 @@ class bigtop::hadoop(
     $proxyserver_jmxremote_port                         = 9985,
     $mapreduce_history_jmxremote_port                   = 9986,
     $enable_log4j_extras                                = true,
+    Optional[Hash[String, String]] $net_topology        = undef,
 ) {
 
     if $yarn_resourcemanager_fs_state_store_uri and $yarn_resourcemanager_zk_state_store_parent_path {
@@ -595,6 +600,22 @@ class bigtop::hadoop(
         undef   => undef,
         default => "${config_directory}/net-topology.sh",
     }
+
+    file { '/usr/local/bin/hadoop-hdfs-net-topology.py':
+        source => 'puppet:///modules/profile/files/hadoop/hadoop-hdfs-net-topology.py',
+        mode   => '0755',
+    }
+
+    $net_topology_config_ensure = $net_topology ? {
+        undef   => 'absent',
+        default => 'present',
+    }
+
+    file { "${config_directory}/net-topology.ini":
+        ensure  => $net_topology_config_ensure,
+        content => template('profile/hadoop/net-topology.ini.erb'),
+    }
+
     if $net_topology_script_path{
         file { $net_topology_script_path:
             ensure  => $net_topology_script_ensure,
