@@ -800,7 +800,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: [bd808, taavi, sstefanova, raymond-ndibe]
+    members: [bd808, taavi, sstefanova, raymond-ndibe, samtar]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Nicholas Skaggs
