@@ -128,3 +128,11 @@ profile::grafana::loki::config:
         index:
           prefix: 'index_'
           period: '24h'
+
+  limits_config:
+    retention_period: 180d
+
+  compactor:
+    delete_request_cancel_period: 10m
+    retention_enabled: true
+    retention_delete_delay: 2h
