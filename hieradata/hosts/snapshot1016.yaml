@@ -1,0 +1,1 @@
+profile::base::use_linux510_on_buster: true
