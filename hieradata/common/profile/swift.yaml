@@ -105,10 +105,6 @@ profile::swift::proxyhosts:
   - moss-fe2001.codfw.wmnet
 
 profile::swift::storagehosts:
-  - ms-be1040.eqiad.wmnet
-  - ms-be1041.eqiad.wmnet
-  - ms-be1042.eqiad.wmnet
-  - ms-be1043.eqiad.wmnet
   - ms-be1044.eqiad.wmnet
   - ms-be1045.eqiad.wmnet
   - ms-be1046.eqiad.wmnet
