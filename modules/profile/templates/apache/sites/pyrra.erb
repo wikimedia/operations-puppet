@@ -1,0 +1,14 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Apache configuration for Pyrra.
+# This file is managed by Puppet.
+<VirtualHost *:80>
+  ServerName <%= @httpd_servername %>
+  DocumentRoot /var/www
+
+  RewriteEngine On
+
+  ProxyPreserveHost On
+  ProxyPass / http://localhost:9099/
+  ProxyPassReverse / http://localhost:9099/
+
+</VirtualHost>
