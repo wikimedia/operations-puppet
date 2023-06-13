@@ -2705,8 +2705,12 @@ node /^snapshot1013\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::dumper)
 }
 
-node /^snapshot101[4567]\.eqiad\.wmnet$/ {
+node /^snapshot101[45]\.eqiad\.wmnet$/ {
     role(dumps::generation::worker::testbed)
+}
+
+node /^snapshot101[67]\.eqiad\.wmnet$/ {
+    role(insteup::core_platform)
 }
 
 # Servers for SRE tests which are not suitable for Cloud VPS
