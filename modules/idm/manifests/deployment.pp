@@ -57,6 +57,7 @@ class idm::deployment (
     # in a virtual environment.
     if $install_via_git {
         ensure_packages(['python3-venv'])
+
         $venv = "${base_dir}/venv"
 
         file { $base_dir :
