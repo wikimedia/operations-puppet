@@ -18,6 +18,7 @@ class profile::mariadb::misc (
     if $shard == 'm5' {
         include profile::mariadb::ferm_wmcs
         include profile::mariadb::ferm_lists
+        include profile::mariadb::ferm_idm
     }
     include profile::mariadb::monitor::prometheus
 

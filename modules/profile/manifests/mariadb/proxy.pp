@@ -36,6 +36,7 @@ class profile::mariadb::proxy (
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
         include ::profile::mariadb::ferm_lists
+        include ::profile::mariadb::ferm_idm
     } elsif $firewall == 'public' {
         include ::profile::firewall
         ::profile::mariadb::ferm_public { 'dbproxy': }
