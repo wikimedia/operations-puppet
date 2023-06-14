@@ -1,5 +1,4 @@
 ---
-profile::tlsproxy::envoy::cfssl_label: discovery
 # can't use lookup_options to merge as that would include production too
 cache_hosts:
   - 172.16.5.238 # proxy-03.project-proxy.eqiad1.wikimedia.cloud

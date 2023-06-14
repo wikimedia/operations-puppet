@@ -122,13 +122,14 @@ class profile::tlsproxy::envoy(
                     }]
                 }
                 'cfssl': {
+                    $cfssl_base_options = $base_cfssl_options + {'hosts' =>  $service['server_names']}
                     $_cfssl_options = $service['cfssl_options'] ? {
-                        undef   => $base_cfssl_options,
-                        default => $base_cfssl_options + $service['cfssl_options'],
+                        undef   => $cfssl_base_options,
+                        default => $cfssl_base_options + $service['cfssl_options'],
                     }
                     $_cfssl_label = $service['cfssl_label'] ? {
                         undef   => $cfssl_label,
-                        default => $service['cert_options'],
+                        default => $service['cert_label'],
                     }
                     $ssl_paths = profile::pki::get_cert($_cfssl_label, $service['cert_name'], $_cfssl_options)
                     $certificates = [{

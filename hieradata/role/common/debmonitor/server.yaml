@@ -10,7 +10,6 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "%{lookup('debmonitor')}"
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
-profile::tlsproxy::envoy::cfssl_label: 'discovery'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - debmonitor.wikimedia.org
