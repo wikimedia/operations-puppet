@@ -2471,7 +2471,7 @@ node 'otrs1001.eqiad.wmnet' {
 }
 
 node 'vrts1001.eqiad.wmnet' {
-    role(insetup::serviceops_collab)
+    role(vrts)
 }
 
 # T323515: WIP
