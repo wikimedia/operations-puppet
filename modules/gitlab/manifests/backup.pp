@@ -16,13 +16,29 @@ class gitlab::backup (
     Systemd::Timer::Schedule $partial_backup_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
 ) {
 
-    # install backup script
-    file { "${backup_dir_data}/gitlab-backup.sh":
-        ensure  => present,
-        mode    => '0744',
+    # install backup config. This is separate to the script to avoid templating executables, T254480
+    file { "${backup_dir_data}/gitlab-backup-config.sh":
+        ensure  => file,
+        mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => template('gitlab/gitlab-backup.sh.erb') # TODO: remove, T254480
+        content => template('gitlab/gitlab-backup-config.sh.erb'), # TODO: remove, T254480
+    }
+
+    file { "${backup_dir_data}/gitlab-backup-restore-common.sh":
+        ensure => file,
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab/gitlab-backup-restore-common.sh',
+    }
+
+    file { "${backup_dir_data}/gitlab-backup.sh":
+        ensure => file,
+        mode   => '0744',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab/gitlab-backup.sh',
     }
 
     # systemd timer for full backups
