@@ -65,12 +65,7 @@ class profile::base (
 
     include passwords::root
     include network::constants
-    # When we are not in the dev environment and we are not building
-    # a container, manage resolv.conf
-    if $server_facts['environment'] != 'dev' and
-        !$facts['wmflib']['container_build'] {
-        include profile::resolving
-    }
+    include profile::resolving
     include profile::mail::default_mail_relay
 
     include profile::logrotate
