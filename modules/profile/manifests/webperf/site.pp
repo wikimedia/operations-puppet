@@ -78,6 +78,7 @@ class profile::webperf::site (
         'dsn' => "mysql:host=${excimer_mysql_host};dbname=${excimer_mysql_db};charset=utf8",
         'dbUser' => $excimer_mysql_user,
         'dbPassword' => $excimer_mysql_password,
+        'logToSyslogCee' => true,
     }
     file { '/etc/excimer-ui-server/config.json':
         ensure    => file,
