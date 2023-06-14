@@ -1,14 +1,20 @@
+# python 2 is required for git-fat
+profile::base::remove_python2_on_bullseye: false
 profile::query_service::username: 'blazegraph'
 profile::java::java_packages:
   - version: '8'
     variant: 'jre-headless'
-profile::query_service::deploy_mode: 'scap3'
+profile::query_service::blazegraph_main_ns: wcq
 profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::query_service::data_dir: '/srv/query_service'
 profile::query_service::log_dir: '/var/log/query_service'
 profile::query_service::deploy_name: 'wcqs'
 profile::query_service::endpoint: 'https://commons-query.wikimedia.org'
-profile::query_service::load_categories: 'none'
+profile::query_service::deploy_mode: 'scap3'
+profile::query_service::enable_ldf: false
+profile::query_service::high_query_time_port: true
+profile::query_service::sparql_query_stream: 'wcqs-external.sparql-query'
+profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
 profile::query_service::nodes:
   - 'wcqs1001.eqiad.wmnet'
   - 'wcqs1002.eqiad.wmnet'
@@ -17,50 +23,31 @@ profile::query_service::nodes:
   - 'wcqs2002.codfw.wmnet'
   - 'wcqs2003.codfw.wmnet'
 
-profile::query_service::enable_ldf: false
-profile::query_service::high_query_time_port: true
-profile::query_service::blazegraph_main_ns: wcq
-profile::query_service::oauth: true
-
-profile::query_service::blazegraph_heap_size: 31g
-profile::query_service::blazegraph_use_deployed_config: false
-profile::query_service::blazegraph_extra_jvm_opts: [
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.consumerKey=aa08b5587b35bad12d1145d03fc6ebbd",
-    # "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.consumerSecret=<private repo>",
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.niceUrlBase=https://commons.wikimedia.org/wiki/",
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.indexUrl=https://commons.wikimedia.org/w/index.php",
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.wikiLogoutLink=https://commons.wikimedia.org/w/index.php?title=Special:UserLogout",
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStoreHostname=sessionstore.discovery.wmnet",
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStorePort=8081",
-    "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStoreKeyPrefix=mw-oauth-proxy:wcqs:"
-]
-profile::query_service::blazegraph::monitoring_enabled: true
-profile::query_service::sparql_query_stream: 'wcqs-external.sparql-query'
-profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
-profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; https://commons-query.wikimedia.org/'
-
-profile::query_service::streaming_updater::kafka_cluster: main
-profile::query_service::streaming_updater::journal: 'wcqs'
-
-profile::tlsproxy::envoy::global_cert_name: "wcqs.discovery.wmnet"
-
 profile::admin::groups:
-  - wdqs-admins
   - wdqs-roots
-contactgroups: admins,wdqs-admins
+  - wdqs-admins
 cluster: wcqs
-
+contactgroups: admins,wdqs-admins
 profile::lvs::realserver::pools:
     wcqs:
       services:
         - wcqs-blazegraph
         - nginx
 
+profile::tlsproxy::envoy::global_cert_name: "wcqs.discovery.wmnet"
+
+profile::query_service::blazegraph::monitoring_enabled: true
+profile::query_service::oauth: true
+profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; https://commons-query.wikimedia.org/'
+
 # Includes module for connection limits
 profile::nginx::variant: 'full'
+
+profile::query_service::streaming_updater::kafka_cluster: main
+profile::query_service::streaming_updater::journal: 'wcqs'
+
 # Proxy non-blazegraph requests to the gui hosted on microsites
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
-
 profile::contacts::role_contacts: ['Search Platform']
 
 # Customize the URI schemes for commons
@@ -68,3 +55,7 @@ profile::query_service::uri_scheme_options: ['-DwikibaseConceptUri=http://www.wi
 
 # Use kernel 5.10 on buster. See T294961.
 profile::base::use_linux510_on_buster: true
+
+profile::query_service::blazegraph_heap_size: 31g
+profile::query_service::blazegraph_use_deployed_config: false
+profile::query_service::load_categories: 'none'

@@ -21,7 +21,7 @@ class profile::query_service::wikidata(
     Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config', {'default_value' => false}),
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
-    Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled', {'default_value' => false}),
+    Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled'),
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),

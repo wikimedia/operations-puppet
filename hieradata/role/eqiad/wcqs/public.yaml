@@ -1,5 +1,14 @@
 profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
+  - '-XX:+ExitOnOutOfMemoryError'
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.consumerKey=aa08b5587b35bad12d1145d03fc6ebbd"
+  # "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.consumerSecret=<private repo>"
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.niceUrlBase=https://commons.wikimedia.org/wiki/"
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.indexUrl=https://commons.wikimedia.org/w/index.php"
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.wikiLogoutLink=https://commons.wikimedia.org/w/index.php?title=Special:UserLogout"
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStoreHostname=sessionstore.discovery.wmnet"
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStorePort=8081"
+  - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStoreKeyPrefix=mw-oauth-proxy:wcqs:"
 
 profile::query_service::streaming_updater::kafka_topic: eqiad.mediainfo-streaming-updater.mutation

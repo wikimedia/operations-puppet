@@ -1,3 +1,4 @@
+# python 2 is required for git-fat
 profile::base::remove_python2_on_bullseye: false
 profile::java::java_packages:
   - version: '8'
@@ -8,10 +9,6 @@ profile::query_service::data_dir: '/srv/wdqs'
 profile::query_service::log_dir: '/var/log/wdqs'
 profile::query_service::deploy_name: 'wdqs'
 profile::query_service::endpoint: 'https://query.wikidata.org'
-profile::query_service::blazegraph_extra_jvm_opts:
-  - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
-  - '-Dhttp.proxyPort=8080'
-  - '-XX:+ExitOnOutOfMemoryError'
 profile::query_service::deploy_mode: 'scap3'
   # enable by defaults when switching to the streaming_updater
   # required to have wikibase:isSomeValue using skolems instead of blank nodes
@@ -27,6 +24,7 @@ cluster: wdqs-test
 contactgroups: admins,wdqs-admins
 profile::query_service::use_revisions: true
 
+profile::query_service::blazegraph::monitoring_enabled: false
 profile::query_service::oauth: false
 profile::query_service::federation_user_agent: 'Wikidata Query Service (test); https://query.wikidata.org/'
 
@@ -36,9 +34,6 @@ profile::nginx::variant: 'full'
 profile::query_service::streaming_updater::kafka_cluster: main
 profile::query_service::streaming_updater::journal: 'wikidata'
 profile::query_service::legacy_updater::journal: 'wikidata'
-
-# test is only eqiad
-profile::query_service::streaming_updater::kafka_topic: eqiad.rdf-streaming-updater.mutation
 
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
