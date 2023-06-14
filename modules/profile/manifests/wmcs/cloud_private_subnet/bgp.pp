@@ -3,7 +3,7 @@ class profile::wmcs::cloud_private_subnet::bgp (
     Integer[0,4094]                     $vlan_id = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
     Stdlib::Fqdn                        $gw      = lookup('profile::wmcs::cloud_private_subnet::gw',      {'default_value' => 'cloudsw'}),
     Stdlib::Fqdn                        $domain  = lookup('profile::wmcs::cloud_private_subnet::domain',  {'default_value' => 'wikimedia.cloud'}),
-    Hash[String, Wmflib::Advertise_vip] $vips    = lookup('profile::bird::advertise_vips'),
+    Hash[String, Wmflib::Advertise_vip] $vips    = lookup('profile::bird::advertise_vips',                { 'merge' => 'hash' }),
 ) {
     $cloud_private_fqdn = "${facts['hostname']}.private.${::site}.${domain}"
     $cloud_private_address = dnsquery::a($cloud_private_fqdn)[0]
@@ -14,6 +14,7 @@ class profile::wmcs::cloud_private_subnet::bgp (
     $interface = "vlan${vlan_id}"
 
     class { 'profile::bird::anycast':
+        advertise_vips => $vips,  # we did a merge, the base profile does a simple lookup
         neighbors_list => [$gw_address],
         ipv4_src       => $cloud_private_address,
         multihop       => false,
