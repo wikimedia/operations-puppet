@@ -1,8 +1,15 @@
-profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor0.openstack.codfw1dev.wikimediacloud.org
+profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor.openstack.codfw1dev.wikimediacloud.org
+
+profile::bird::advertise_vips:
+  # NOTE: this is the per-host address. There is another shared VIP.
+  ns0.openstack.codfw1dev.wikimediacloud.org:
+    ensure: present
+    service_type: "pdns auth"
+    address: 185.15.57.25
+    # NOTE: we always want to advertise this address
+    check_cmd: "/bin/sh -c 'true'"
 
 profile::openldap::master: cloudservices2005-dev.wikimedia.org
 profile::openldap::server_id: 3
 
 profile::openstack::codfw1dev::version: 'zed'
-
-profile::wmcs::cloud_private_subnet::base_iface: 'eno2'

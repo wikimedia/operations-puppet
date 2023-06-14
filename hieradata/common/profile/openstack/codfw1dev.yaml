@@ -46,8 +46,7 @@ profile::openstack::codfw1dev::glance_backends:
 #  running on the first host in this list will be used
 #  as the tooz coordinator.  T250087
 profile::openstack::codfw1dev::designate_hosts:
-# TODO: reimaging T338778
-#  - cloudservices2004-dev.private.codfw.wikimedia.cloud
+  - cloudservices2004-dev.private.codfw.wikimedia.cloud
   - cloudservices2005-dev.wikimedia.org
 profile::openstack::codfw1dev::puppetmaster_hostname: 'puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org'
 profile::openstack::codfw1dev::osm_host: 'labtestwikitech.wikimedia.org'
