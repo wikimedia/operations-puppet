@@ -46,7 +46,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE
 GRANT SELECT
     ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.%';
 
-<%- if @shard == 's6' -%>
+<%- if @shard == 's6' or @shard.start_with?('es') -%>
 -- wikiadmin @ 208.80.154.150 (cloudweb1003)
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO '<%= @wikiadmin_username %>'@'208.80.154.150'

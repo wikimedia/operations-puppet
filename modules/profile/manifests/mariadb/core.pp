@@ -93,8 +93,9 @@ class profile::mariadb::core (
     }
 
     # hack; remove after wikitech moves to a standard app server
-    #  T282209
-    if $shard == 's6' {
+    #  s6  T282209
+    #  es* T339079
+    if $shard == 's6' or $shard.stdlib::start_with('es') {
         profile::mariadb::ferm_wikitech { $shard: }
     }
 
