@@ -1,4 +1,5 @@
 # db1124
 # Testing section
+mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 'test-s4'
 mariadb::package: 'wmf-mariadb106'
