@@ -1,4 +1,7 @@
 profile::query_service::username: 'blazegraph'
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jre-headless'
 profile::query_service::deploy_mode: 'scap3'
 profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::query_service::data_dir: '/srv/query_service'
