@@ -11,6 +11,7 @@ class profile::cassandra(
     Boolean $monitor_enabled                  = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
     Boolean $auto_apply_grants                = lookup('profile::cassandra::auto_apply_grants', {'default_value' => false}),
     Hash[String, String] $cassandra_passwords = lookup('profile::cassandra::user_credentials', {'default_value' => {}}),
+    Integer $monitor_tls_port                 = lookup('profile::cassandra::monitor_tls_port', {'default_value' => 7001}),
 ){
 
     include ::passwords::cassandra
@@ -54,6 +55,7 @@ class profile::cassandra(
             monitor_enabled  => $monitor_enabled,
             instances        => $instances,
             tls_cluster_name => $cassandra_settings['tls_cluster_name'],
+            tls_port         => $monitor_tls_port,
         }
     } else {
         $default_instances = {
@@ -64,6 +66,7 @@ class profile::cassandra(
             monitor_enabled  => $monitor_enabled,
             instances        => $default_instances,
             tls_cluster_name => $cassandra_settings['tls_cluster_name'],
+            tls_port         => $monitor_tls_port,
         }
     }
 

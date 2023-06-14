@@ -12,6 +12,8 @@ define cassandra::instance::monitoring (
     Boolean           $monitor_enabled  = true,
     Hash              $instances        = {},
     Optional[String]  $tls_cluster_name = undef,
+    Optional[Integer] $tls_port         = 7001,
+    Optional[Integer] $cql_port         = 9042,
 ) {
 
     include cassandra
@@ -42,8 +44,8 @@ define cassandra::instance::monitoring (
     # CQL query interface monitoring (T93886)
     monitoring::service { "${service_name}-cql":
         ensure        => $ensure_monitor,
-        description   => "${service_name} CQL ${listen_address}:9042",
-        check_command => "check_tcp_ip!${listen_address}!9042",
+        description   => "${service_name} CQL ${listen_address}:${cql_port}",
+        check_command => "check_tcp_ip!${listen_address}!${cql_port}",
         contact_group => $contact_group,
         notes_url     => 'https://phabricator.wikimedia.org/T93886',
     }
@@ -52,8 +54,8 @@ define cassandra::instance::monitoring (
     if $tls_cluster_name {
         monitoring::service { "${service_name}-ssl":
             ensure        => $ensure_monitor,
-            description   => "${service_name} SSL ${listen_address}:7001",
-            check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!7001",
+            description   => "${service_name} SSL ${listen_address}:${tls_port}",
+            check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
             contact_group => $contact_group,
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
         }
