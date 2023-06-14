@@ -15,6 +15,8 @@
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
 # @param use_linux510_on_buster whether to setup kernel 5.10 on buster hosts
 # @param additional_purged_packages A list of additional packages to purge
+# @param manage_resolvconf set this to false to disable managing resolv.conf
+#   useful in container environments
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
@@ -30,6 +32,7 @@ class profile::base (
     Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca', {'default_value' => '/var/lib/puppet/ssl/certs/ca.pem'}),
     Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
+    Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages          = lookup('profile::base::additional_purged_packages'),
 ) {
     # Sanity checks for cluster - T234232
@@ -65,7 +68,9 @@ class profile::base (
 
     include passwords::root
     include network::constants
-    include profile::resolving
+    if $manage_resolvconf {
+        include profile::resolving
+    }
     include profile::mail::default_mail_relay
 
     include profile::logrotate
