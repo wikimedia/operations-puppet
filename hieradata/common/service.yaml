@@ -1992,7 +1992,7 @@ service::catalog:
   search:
     description: Elasticsearch search for MediaWiki
     encryption: false
-    ip:
+    ip: &search_ips
       codfw:
         default: 10.2.1.30
       eqiad:
@@ -2021,11 +2021,7 @@ service::catalog:
   search-https:
     description: Elasticsearch search for MediaWiki - HTTPS
     encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.30
-      eqiad:
-        default: 10.2.2.30
+    ip: *search_ips
     lvs:
       class: low-traffic
       conftool:
@@ -2055,11 +2051,7 @@ service::catalog:
   search-omega-https:
     description: Elasticsearch search for MediaWiki (Omega cluster) - HTTPS
     encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.30
-      eqiad:
-        default: 10.2.2.30
+    ip: *search_ips
     lvs:
       class: low-traffic
       conftool:
@@ -2088,11 +2080,7 @@ service::catalog:
   search-psi-https:
     description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
     encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.30
-      eqiad:
-        default: 10.2.2.30
+    ip: *search_ips
     lvs:
       class: low-traffic
       conftool:
