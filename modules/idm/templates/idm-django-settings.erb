@@ -21,7 +21,7 @@ ADMINS = [('Infrastruction Foundations','sre-foundations@wikimedia.org'),]
 <%- if @production -%>
 DATABASES = {
     'default': {
-        'ENGINE': '<%= @django_db_backends_mysql %>',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': '<%= @django_mysql_db_name %>',
         'HOST': '<%= @django_mysql_db_host %>',
         'USER': '<%= @django_mysql_db_user %>',
