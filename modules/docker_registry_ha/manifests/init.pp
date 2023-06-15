@@ -77,4 +77,12 @@ class docker_registry_ha (
             '/etc/docker/registry/config.yml'
         ],
     }
+
+    rsyslog::input::file { 'registry-nginx-error':
+        path => '/var/log/nginx/error.log',
+    }
+
+    rsyslog::input::file { 'registry-nginx-access':
+        path => '/var/log/nginx/access.log',
+    }
 }
