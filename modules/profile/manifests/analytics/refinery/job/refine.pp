@@ -76,6 +76,10 @@ class profile::analytics::refinery::job::refine(
     # Used by Java time formats to find potential hourly paths to refine.
     $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
 
+    # URIs from which to look up event schemas. (not all refine jobs use this).
+    $schema_base_uris = 'https://schema.discovery.wmnet/repositories/primary/jsonschema/,https://schema.discovery.wmnet/repositories/secondary/jsonschema/'
+
+
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
     $event_input_path = '/wmf/data/raw/event'
@@ -106,7 +110,7 @@ class profile::analytics::refinery::job::refine(
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.event_transforms',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+            schema_base_uris                => $schema_base_uris,
             # Set max parallelism to 64.  This is the max number of Refines that can run at once.
             # This will only be reached if there are at least this many tables to refine.
             # Each table is refined in serial.  I.e. if there are 10 hours for a given table,
@@ -234,7 +238,7 @@ class profile::analytics::refinery::job::refine(
             transform_functions             => $eventlogging_legacy_transform_functions,
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+            schema_base_uris                => $schema_base_uris,
 
         }),
         interval         => '*-*-* *:25:00',
