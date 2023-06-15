@@ -205,6 +205,11 @@ class profile::kerberos::kdc (
         },
     }
 
+    logrotate::conf { 'kdc':
+        ensure => present,
+        source => 'puppet:///modules/kerberos/kdc-logrotate.conf',
+    }
+
     systemd::timer::job { 'delete-old-backups-kdc-database':
         description     => 'Daily clean up of old backups of the KDC database',
         command         => '/usr/bin/find /srv/backup -name "kdc_database_.*" -mtime +30 -delete',
