@@ -110,8 +110,13 @@
 # The following allow heat/magnum to do necessary setup. There's a bit of explanation
 #  at https://bugs.launchpad.net/neutron/+bug/1833455 although experimentation
 #  shows the extra three rules are needed.
+#
+# See also upstream patch https://review.opendev.org/c/openstack/neutron/+/886214
 "create_port:fixed_ips:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
 "update_port:fixed_ips:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
 "create_port:fixed_ips:subnet_id": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
+"update_port:fixed_ips:subnet_id": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
 "create_port:allowed_address_pairs": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
+"update_port:allowed_address_pairs": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
 "create_port:allowed_address_pairs:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
+"update_port:allowed_address_pairs:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
