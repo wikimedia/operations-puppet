@@ -85,7 +85,7 @@ class profile::openstack::base::pdns::recursor::service(
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
     if $bgp_vip {
-        $listen_addresses = [ $pdns_recursor_ip_v4, $bgp_vip ]
+        $listen_addresses = [ $bgp_vip ]
     } else {
         $listen_addresses = [ $pdns_recursor_ip_v4 ]
     }
