@@ -40,16 +40,16 @@ class profile::openstack::base::pdns::recursor::service(
         $::network::constants::labs_networks,
         $extra_allow_from,
         $monitoring_hosts,
-        $controllers.map |$host| { ipresolve($host, 4) },
-        $controllers.map |$host| { ipresolve($host, 6)}
+        $controllers.map |$host| { ipresolve($host, 4) }
     ])
 
     $pdns_recursor_ip_v4 = ipresolve($pdns_recursor, 4)
-    $pdns_recursor_ip_v6 = ipresolve($pdns_recursor, 6)
 
-    interface::alias { $title:
-        ipv4 => $pdns_recursor_ip_v4,
-        ipv6 => $pdns_recursor_ip_v6,
+    # TODO: this is not needed in the new network setup
+    if ! $bgp_vip {
+        interface::alias { $title:
+            ipv4 => $pdns_recursor_ip_v4,
+        }
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
@@ -85,9 +85,9 @@ class profile::openstack::base::pdns::recursor::service(
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
     if $bgp_vip {
-        $listen_addresses = [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6, $bgp_vip ]
+        $listen_addresses = [ $pdns_recursor_ip_v4, $bgp_vip ]
     } else {
-        $listen_addresses = [ $pdns_recursor_ip_v4, $pdns_recursor_ip_v6 ]
+        $listen_addresses = [ $pdns_recursor_ip_v4 ]
     }
 
     class { '::dnsrecursor':
@@ -101,7 +101,6 @@ class profile::openstack::base::pdns::recursor::service(
         max_cache_entries        => 3000000,
         client_tcp_timeout       => 1,
         dnssec                   => 'off',  # T226088 - off until 4.1.x
-        require                  => Interface::Alias[$title],
         enable_webserver         => debian::codename::ge('bullseye'),
         api_allow_from           => $pdns_api_allow_from,
     }
