@@ -25,7 +25,7 @@ class profile::idp::build {
 
     ferm::service { 'cas_build_rsync':
         proto  => 'tcp',
-        port   => 873,
+        port   => [873],
         srange => '@resolve((apt1001.wikimedia.org apt2001.wikimedia.org))',
     }
 }

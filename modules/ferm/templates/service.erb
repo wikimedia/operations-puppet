@@ -3,16 +3,16 @@
 # <%= @desc %>
 <% if @_srange -%>
 <% if @_drange -%>
-&RD_SERVICE(<%= @proto %>, <%= @port %>, <%= @_srange %>, <%= @_drange %>);
+&RD_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_srange %>, <%= @_drange %>);
 <% else -%>
-&R_SERVICE(<%= @proto %>, <%= @port %>, <%= @_srange %>);
+&R_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_srange %>);
 <% end -%>
 <% elsif @_drange -%>
-&D_SERVICE(<%= @proto %>, <%= @port %>, <%= @_drange %>);
+&D_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_drange %>);
 <% else -%>
-&SERVICE(<%= @proto %>, <%= @port %>);
+&SERVICE(<%= @proto %>, <%= @_port %>);
 <% end -%>
 
 <% if @notrack == true %>
-&NO_TRACK(<%= @proto %>, <%= @port %>);
+&NO_TRACK(<%= @proto %>, <%= @_port %>);
 <% end -%>
