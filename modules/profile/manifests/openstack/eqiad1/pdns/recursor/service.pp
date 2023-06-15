@@ -28,7 +28,7 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     class {'::profile::openstack::base::pdns::recursor::service':
         keystone_api_fqdn     => $keystone_api_fqdn,
         observer_password     => $observer_password,
-        pdns_host             => $service_pdns_host,
+        pdns_hosts            => [$service_pdns_host],
         pdns_recursor         => $recursor_service_name,
         legacy_tld            => $legacy_tld,
         private_reverse_zones => $private_reverse_zones,

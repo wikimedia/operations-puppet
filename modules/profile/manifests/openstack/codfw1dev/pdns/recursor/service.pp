@@ -11,25 +11,13 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::codfw1dev::openstack_controllers',  {default_value => []}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
-
-    # This iterates on $hosts and returns the entry in $hosts with the same
-    #  ipv4 as $::fqdn
-    $service_pdns_host = $pdns_hosts.reduce(false) |$memo, $service_host_fqdn| {
-        if (ipresolve($::fqdn,4) == ipresolve($service_host_fqdn,4)) {
-            $rval = $service_host_fqdn
-        } else {
-            $rval = $memo
-        }
-        $rval
-    }
-
     # for now only prometheus metrics are needed.. maybe something else in the future?
     $api_allow_hosts = $prometheus_nodes
 
     class {'::profile::openstack::base::pdns::recursor::service':
         keystone_api_fqdn     => $keystone_api_fqdn,
         observer_password     => $observer_password,
-        pdns_host             => $service_pdns_host,
+        pdns_hosts            => $pdns_hosts,
         pdns_recursor         => $recursor_service_name,
         legacy_tld            => $legacy_tld,
         private_reverse_zones => $private_reverse_zones,
