@@ -1422,7 +1422,7 @@ node /^cloudrabbit100[123]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::rabbitmq)
 }
 
-node /^cloudservicesl200[4]-dev\.codfw\.wmnet$/ {
+node /^cloudservices200[4]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
