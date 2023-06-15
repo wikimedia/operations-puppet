@@ -128,6 +128,11 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-8])\.eqiad\.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
+# New an-worker nodes T327295
+node /^an-worker11(4[9]|5[0-6])\.eqiad\.wmnet$/ {
+    role(insetup::core_platform)
+}
+
 # Staging environment of Superset and Turnilo
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
