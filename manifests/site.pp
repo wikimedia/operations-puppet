@@ -1423,7 +1423,7 @@ node /^cloudrabbit100[123]\.wikimedia\.org$/ {
 }
 
 node /^cloudservices200[4]-dev\.codfw\.wmnet$/ {
-    role(wmcs::openstack::codfw1dev::control)
+    role(wmcs::openstack::codfw1dev::services)
 }
 
 node /^cloudservices200[5]-dev\.wikimedia\.org$/ {
