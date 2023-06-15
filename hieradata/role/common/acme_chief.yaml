@@ -148,19 +148,14 @@ profile::acme_chief::certificates:
         - '^ldap-replica100[34]\.wikimedia\.org$'
         - '^ldap-replica200[56]\.wikimedia\.org$'
     ldap-codfw1dev:
-        CN: 'cloudservices2005-dev.wikimedia.org'
+        CN: 'ns-recursor.openstack.codfw1dev.wikimediacloud.org'
         SNI:
-        - 'cloudservices2005-dev.wikimedia.org'
+        - 'ns0.openstack.codfw1dev.wikimediacloud.org'
+        - 'ns1.openstack.codfw1dev.wikimediacloud.org'
         challenge: dns-01
         authorized_hosts:
+        - 'cloudservices2004-dev.codfw.wmnet'
         - 'cloudservices2005-dev.wikimedia.org'
-    ldap-labtest:
-        CN: 'cloudservices2005-dev.wikimedia.org'
-        SNI:
-        - 'cloudservices2005-dev.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^cloudservices2005-dev\.wikimedia\.org$'
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:
