@@ -614,6 +614,8 @@ password = <%= @ldap_user_pass %>
 #  names, so we duplicate things here:
 www_authenticate_uri = https://<%= @keystone_fqdn %>:25000
 
+<%= scope.call_function('template', ["openstack/#{@version}/common/servicetoken.erb"]) %>
+
 
 [kubernetes]
 
