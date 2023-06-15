@@ -62,7 +62,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         spark_driver_memory => '16G',
         spark_max_executors => '128',
         # Temporary: remove once spark3 works with RefineSanitize:
-        spark_submit        => '/usr/bin/spark2-submit,'
+        spark_submit        => '/usr/bin/spark2-submit',
     }
 
     # There are several jobs that run RefineSanitize from event into event_sanitized.
