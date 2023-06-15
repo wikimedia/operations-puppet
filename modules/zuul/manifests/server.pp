@@ -85,17 +85,18 @@ class zuul::server (
 
     }
 
+    # That was solely for zuul-gearman.py , the server has gear embedded.
     package { 'python3-gear':
-        # Solely for zuul-gearman.py , the server has gear embedded.
-        ensure => present,
+        ensure => absent,
     }
     file { '/usr/local/bin/zuul-gearman.py':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/zuul/zuul-gearman.py',
-        require => Package['python3-gear'],
+        ensure  => absent,
+    }
+
+    # `gearadmin` to issue administrative commands
+    # `gearman` a client and worker
+    package { 'gearman-tools':
+        ensure => present,
     }
 
     file { '/usr/local/bin/zuul-test-repo':
