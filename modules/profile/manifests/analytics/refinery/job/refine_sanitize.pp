@@ -70,6 +70,8 @@ class profile::analytics::refinery::job::refine_sanitize(
         spark_executor_memory => '16G',
         spark_executor_cores  => 4,
         spark_extra_opts      => '--conf spark.executor.memoryOverhead=4096 --conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        # Temporary: remove once spark3 works with RefineSanitize:
+        spark_submit        => '/usr/bin/spark2-submit,'
     }
 
     # There are several jobs that run RefineSanitize from event into event_sanitized.

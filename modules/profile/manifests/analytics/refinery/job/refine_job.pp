@@ -24,6 +24,10 @@
 # [*job_name*]
 #   The Spark job name. Default: refine_$title
 #
+# [*spark_submit*]
+#   Path to spark-submit executable spark_job should use.
+#   Default: /usr/bin/spark3-submit
+#
 # [*interval*]
 #   Systemd time interval.
 #   Default: '*-*-* *:00:00' (hourly)
@@ -60,6 +64,7 @@ define profile::analytics::refinery::job::refine_job (
     $monitor_since                    = 48,
     $monitor_until                    = 4,
     $queue                            = 'production',
+    $spark_submit                     = '/usr/bin/spark3-submit',
     $spark_executor_memory            = '4G',
     $spark_executor_cores             = 1,
     $spark_driver_memory              = '8G',
@@ -99,6 +104,7 @@ define profile::analytics::refinery::job::refine_job (
 
     # All spark jobs declared here share these parameters.
     Profile::Analytics::Refinery::Job::Spark_job {
+        spark_submit       => $spark_submit,
         jar                => $_refinery_job_jar,
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,

@@ -24,7 +24,7 @@
 #   Default: true
 #
 class profile::analytics::refinery::job::test::refine_sanitize(
-    String $refinery_version      = lookup('profile::analytics::refinery::job::test::refine_sanitize::refinery_version', { 'default_value' => '0.2.16' }),
+    String $refinery_version      = lookup('profile::analytics::refinery::job::test::refine_sanitize::refinery_version', { 'default_value' => '0.1.15' }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::test::refine_sanitize::ensure_timers', { 'default_value' => 'present' }),
     Boolean $use_kerberos_keytab  = lookup('profile::analytics::refinery::job::test::refine_sanitize::use_kerberos_keytab', { 'default_value' => true }),
 ) {
@@ -61,6 +61,8 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
         spark_driver_memory => '16G',
         spark_max_executors => '128',
+        # Temporary: remove once spark3 works with RefineSanitize:
+        spark_submit        => '/usr/bin/spark2-submit,'
     }
 
     # There are several jobs that run RefineSanitize from event into event_sanitized.

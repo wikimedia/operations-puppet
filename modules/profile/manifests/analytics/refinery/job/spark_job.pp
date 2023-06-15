@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Define profile::analytics::refinery::job::spark_job
 #
-# Renders a spark2-submit wrapper script and sets up a systemd timer to run it.
+# Renders a spark-submit wrapper script and sets up a systemd timer to run it.
 #
 # == Properties
 #
@@ -11,15 +11,19 @@
 # [*class*]
 #   Spark job main class name.
 #
+# [*spark_submit*]
+#   Path to spark-submit executable to run.
+#   Default: /usr/bin/spark3-submit
+#
 # [*job_name*]
 #   Name of this spark job; will be used for script, cron job, and Spark --name.
 #   Default: $title
 #
 # [*spark_opts*]
-#   Extra Spark CLI opts to be passed to spark2-submit
+#   Extra Spark CLI opts to be passed to spark-submit
 #
 # [*job_opts*]
-#   CLI opts to append to the spark2-submit command; these will be passed to your main
+#   CLI opts to append to the spark-submit command; these will be passed to your main
 #   function as args.
 #
 # [*log_file*]
@@ -32,6 +36,7 @@
 define profile::analytics::refinery::job::spark_job(
     $jar,
     $class,
+    $spark_submit        = '/usr/bin/spark3-submit',
     $job_name            = $title,
     $spark_opts          = undef,
     $job_opts            = undef,

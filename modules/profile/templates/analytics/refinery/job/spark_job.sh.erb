@@ -5,7 +5,7 @@
 # Wrapper script for launching Spark Job <%= @title %>
 
 PYTHONPATH=<%= @refinery_path %>/python <%= @refinery_path %>/bin/is-yarn-app-running --verbose <%= @title %> ||
-/usr/bin/spark3-submit \
+<%= @spark_submit %> \
 --name <%= @job_name %> \
 --class <%= @class %> \
 <% if @spark_opts -%>
