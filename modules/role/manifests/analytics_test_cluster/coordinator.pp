@@ -57,7 +57,6 @@ class role::analytics_test_cluster::coordinator {
 
     # Gobblin imports data from Kafka into HDFS.
     include profile::analytics::refinery::job::test::gobblin
-    include profile::analytics::refinery::job::test::druid_load
     include profile::analytics::refinery::job::test::refine
     include profile::analytics::refinery::job::test::refine_sanitize
     include profile::analytics::refinery::job::test::data_purge
