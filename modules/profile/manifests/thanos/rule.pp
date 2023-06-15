@@ -29,7 +29,8 @@ class profile::thanos::rule (
         # will receive automatically-deployed alerts.
         rule_files        => ['/etc/thanos-rule/rules/*.yaml',
                               '/etc/thanos-rule/alerts/*.yaml',
-                              '/srv/alerts-thanos/*.yaml'],
+                              '/srv/alerts-thanos/*.yaml',
+                              '/etc/pyrra/output-rules/*.yaml'],
         rule_hosts        => $thanos_rule_hosts,
         use_objstore      => true,
         objstore_account  => $objstore_account,
