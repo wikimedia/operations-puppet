@@ -23,7 +23,7 @@ cli -c "configure; \
         set system root-authentication encrypted-password $ROOT_PASSWORD ; \
         set system login user homer uid 2029 ; \
         set system login user homer class super-user ; \
-        set system login user homer authentication ssh-rsa $KEY ; \
+        set system login user homer authentication ssh-ed25519 $KEY ; \
         set system services ssh ; \
         set system services ssh root-login deny ; \
         set system services netconf ssh; \
