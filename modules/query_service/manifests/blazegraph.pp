@@ -73,6 +73,7 @@ define query_service::blazegraph(
         log_dir               => $log_dir,
         pattern               => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n%rEx{1,QUERY_TIMEOUT,SYNTAX_ERROR}',
         evaluators            => true,
+        throttle              => true,
     }
 
     # Blazegraph service
