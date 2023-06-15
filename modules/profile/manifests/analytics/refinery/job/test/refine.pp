@@ -44,6 +44,10 @@ class profile::analytics::refinery::job::test::refine (
     # Used by Java time formats to find potential hourly paths to refine.
     $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
 
+    # URIs from which to look up event schemas. (not all refine jobs use this).
+    $schema_base_uris = 'https://schema.discovery.wmnet/repositories/primary/jsonschema/,https://schema.discovery.wmnet/repositories/secondary/jsonschema/'
+
+
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
     # NOTE: refinery::job::test::gobblin only imports limited data in test cluster,
@@ -61,7 +65,7 @@ class profile::analytics::refinery::job::test::refine (
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.event_transforms',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+            schema_base_uris                => $schema_base_uris,
         }),
         interval         => '*-*-* *:20:00',
         monitor_interval => '*-*-* 01:15:00',
@@ -88,7 +92,7 @@ class profile::analytics::refinery::job::test::refine (
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+            schema_base_uris                => $schema_base_uris,
         }),
         interval         => '*-*-* *:25:00',
         monitor_interval => '*-*-* 00:30:00',
