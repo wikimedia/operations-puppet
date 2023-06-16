@@ -1,5 +1,3 @@
-profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor.openstack.codfw1dev.wikimediacloud.org
-
 profile::bird::advertise_vips:
   # NOTE: this is the per-host address. There is another shared VIP.
   ns0.openstack.codfw1dev.wikimediacloud.org:
