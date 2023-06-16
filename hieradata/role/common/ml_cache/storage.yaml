@@ -33,8 +33,4 @@ profile::cassandra::settings:
     server_encryption_optional: true
     legacy_ssl_storage_port_enabled: true
 
-# Needed until Cassandra 4.x will be deployed,
-# since cqlsh doesn't work with py3.
-profile::base::remove_python2_on_bullseye: false
-
 profile::contacts::role_contacts: ["Machine Learning"]

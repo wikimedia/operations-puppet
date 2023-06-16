@@ -139,10 +139,6 @@ class cassandra (
 
     ensure_packages(['cassandra-tools-wmf', 'jvm-tools'])
 
-    if debian::codename::eq('bullseye') {
-        ensure_packages('python-is-python2')
-    }
-
     # We pin the version to a specific one.
     $package_version = $target_version ? {
         '2.2' => pick($version, '2.2.6-wmf5'),
