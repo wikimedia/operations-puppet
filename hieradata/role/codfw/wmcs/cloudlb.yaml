@@ -10,15 +10,6 @@ profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2004-dev.private.codfw.wikimedia.cloud
   - cloudcontrol2005-dev.private.codfw.wikimedia.cloud
 
-# See also: T336808
-# We can't set this as default because this key also configures
-# DNS stuff which needs the .wikimedia.org public IPv4 addresses
-# However cloudservices <-> cloudcontrol network flows needs to be opened
-# for the cloud-private addresses, so that's why this override here.
-profile::openstack::codfw1dev::designate_hosts:
-  - cloudservices2004-dev.private.codfw.wikimedia.cloud
-  - cloudservices2005-dev.private.codfw.wikimedia.cloud
-
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
     ensure: present
