@@ -41,3 +41,7 @@ profile::cloudceph::auth::deploy::selected_creds:
   - codfw1dev-cinder
   - admin
   - radosgw
+
+# inject these particular nameservers into VMs
+profile::openstack::base::nova::fullstack::nameservers:
+  - ns-recursor.openstack.codfw1dev.wikimediacloud.org

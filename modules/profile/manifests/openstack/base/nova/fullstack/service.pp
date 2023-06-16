@@ -6,13 +6,16 @@ class profile::openstack::base::nova::fullstack::service(
     $puppetmaster = lookup('profile::openstack::base::puppetmaster_hostname'),
     $bastion_ip = lookup('profile::openstack::base::nova::fullstack_bastion_ip'),
     $deployment = lookup('profile::openstack::base::nova::fullstack_deployment'),
-    $dnsconfig  = lookup('labsdnsconfig',Hash, 'hash', {})
+    $_nameservers = lookup('profile::openstack::base::nova::fullstack::nameservers')
     ) {
 
-    $nameservers = [
-        ipresolve($dnsconfig['recursor'], 4),
-        ipresolve($dnsconfig['recursor_secondary'], 4)
-    ]
+    $nameservers = $_nameservers.map |$ns| {
+        if $ns =~ Stdlib::IP::Address {
+            $ns
+        } else {
+            dnsquery::a($ns)[0]
+        }
+    }
 
     # We only want this running in one place; just pick the first
     #  host in $openstack_controllers.

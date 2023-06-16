@@ -6,10 +6,6 @@
 #
 puppetdb_host: puppetdb2002.codfw.wmnet
 
-labsdnsconfig:
-  recursor: 'ns-recursor0.openstack.codfw1dev.wikimediacloud.org'
-  recursor_secondary: 'ns-recursor1.openstack.codfw1dev.wikimediacloud.org'
-
 labsldapconfig:
   hostname: ldap-rw.codfw.wikimedia.org
 

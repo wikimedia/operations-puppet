@@ -65,3 +65,8 @@ profile::wmcs::services::maintain_dbusers::mysql_variances:
   s51156: 40 # petscan T255730
 
 profile::toolforge::disable_tool::disable_tool_db_host: '185.15.56.15'
+
+# inject these particular nameservers into VMs
+profile::openstack::base::nova::fullstack::nameservers:
+  - ns-recursor0.openstack.eqiad1.wikimediacloud.org
+  - ns-recursor1.openstack.eqiad1.wikimediacloud.org
