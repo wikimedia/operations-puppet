@@ -48,7 +48,7 @@ class profile::openstack::base::pdns::auth::service(
     ::ferm::service { 'pdns-rest-api':
         proto  => 'tcp',
         port   => '8081',
-        srange => "(@resolve((${join($hosts,' ')}))",
+        srange => "@resolve((${join($hosts,' ')}))",
     }
 
 }
