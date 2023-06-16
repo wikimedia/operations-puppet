@@ -204,6 +204,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: ipoid
         - name: ipoid-deploy
+    opentelemetry-collector:
+      usernames:
+        - name: opentelemetry-collector
+        - name: opentelemetry-collector-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
