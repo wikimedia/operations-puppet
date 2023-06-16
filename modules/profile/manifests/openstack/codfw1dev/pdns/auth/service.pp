@@ -18,8 +18,7 @@ class profile::openstack::codfw1dev::pdns::auth::service(
         pdns_api_key        => $pdns_api_key,
         pdns_api_allow_from => flatten([
             '127.0.0.1',
-            $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 4) },
-            $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 6) }
+            $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 4) }
         ]),
     }
 }
