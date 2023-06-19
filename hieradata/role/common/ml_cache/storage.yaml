@@ -31,7 +31,7 @@ profile::cassandra::settings:
     client_encryption_enabled: false
     disk_failure_policy: best_effort
     # Enable node-to-node encryption only between datacenters.
-    internode_encryption: dc
+    internode_encryption: all
     # Enable client encryption, though optional for the time being (see: T307798).
     client_encryption_enabled: true
     client_encryption_optional: true
