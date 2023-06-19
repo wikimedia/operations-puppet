@@ -33,6 +33,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
     Optional[Stdlib::IP::Address::V4::Nosubnet] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip', {'default_value' => undef}),
     Array[Stdlib::Fqdn]        $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
+    Stdlib::Fqdn               $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
 ) {
 
     include ::network::constants
@@ -103,6 +104,7 @@ class profile::openstack::base::pdns::recursor::service(
         dnssec                   => 'off',  # T226088 - off until 4.1.x
         enable_webserver         => debian::codename::ge('bullseye'),
         api_allow_from           => $pdns_api_allow_from,
+        query_local_address      => $query_local_address,
     }
 
     class { '::dnsrecursor::labsaliaser':

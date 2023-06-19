@@ -34,6 +34,10 @@ reuseport=yes
 # local-address	IP addresses to listen on, separated by spaces or commas
 local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
 local-port=53
+<% if @query_local_address -%>
+# use this address for outgoing queries
+query-local-address=<%= scope.call_function('dnsquery::a', [@query_local_address])[0] %>
+<%- end -%>
 
 # available since: 3.6
 #loglevel=1
