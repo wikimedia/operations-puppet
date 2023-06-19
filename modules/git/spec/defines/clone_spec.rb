@@ -1,34 +1,30 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'git::clone' do
-    let(:title) { 'operations/puppet' }
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
+    context "on #{os}" do
+      let(:title) { 'testing_repo' }
+      let(:facts) { os_facts }
+      let(:params) {{ directory: '/srv/git/testing_repo' }}
 
-    context 'dummy invocation' do
-        let(:params) { {
-            :directory => '/srv/git/operations/puppet'
-        } }
+      context 'dummy invocation' do
         it 'checkouts a workspace' do
-            should contain_exec('git_clone_operations/puppet')
-                     .with_command('/usr/bin/git  clone https://gerrit.wikimedia.org/r/operations/puppet /srv/git/operations/puppet')
+          is_expected.to contain_exec('git_clone_testing_repo')
+            .with_command('/usr/bin/git  clone https://gerrit.wikimedia.org/r/testing_repo /srv/git/testing_repo')
         end
         it 'tracks the proper created file' do
-            should contain_exec('git_clone_operations/puppet')
-                .with_creates('/srv/git/operations/puppet/.git/config')
+          is_expected.to contain_exec('git_clone_testing_repo')
+            .with_creates('/srv/git/testing_repo/.git/config')
         end
-    end
+      end
 
-    context 'when enabling $bare' do
-        let(:params) { {
-            :directory => '/srv/git/operations/puppet.git',
-            :bare => true,
-        } }
+      context 'when enabling $bare' do
+        let(:params) { super().merge(bare: true) }
         it 'git clone is passed --bare' do
-            should contain_exec('git_clone_operations/puppet')
-                .with_command(/ --bare /)
+          is_expected.to contain_exec('git_clone_testing_repo')
+            .with_command(/ --bare /)
         end
-        it 'tracks the proper created file' do
-            should contain_exec('git_clone_operations/puppet')
-                .with_creates('/srv/git/operations/puppet.git/config')
-        end
+      end
     end
+  end
 end
