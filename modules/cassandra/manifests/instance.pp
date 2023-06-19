@@ -120,7 +120,7 @@
 #   Default: 9160
 #
 # [*rpc_server_type*]
-#   RPC server type, either 'sync' or 'hsha' (target_version <= 3.x). 
+#   RPC server type, either 'sync' or 'hsha' (target_version <= 3.x).
 #   Default: sync
 #
 # [*incremental_backups*]
@@ -211,23 +211,26 @@
 #   Default: false
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
-    Optional[String]                 $cluster_name          = undef,
-    Optional[String]                 $memory_allocator      = undef,
-    Optional[Stdlib::IP::Address]    $listen_address        = undef,
-    Optional[String]                 $tls_cluster_name      = undef,
-    Optional[String]                 $default_applications  = undef,
-    Optional[Stdlib::Port]           $native_transport_port = undef,
-    Optional[String]                 $target_version        = undef,
-    Optional[Array[Stdlib::Host, 1]] $seeds                 = undef,
-    Optional[String]                 $dc                    = undef,
-    Optional[String]                 $rack                  = undef,
-    Optional[Array[String]]          $additional_jvm_opts   = undef,
-    Optional[Array[String]]          $extra_classpath       = undef,
-    Optional[Stdlib::Host]           $logstash_host         = undef,
-    Optional[Stdlib::Port]           $logstash_port         = undef,
-    Optional[Boolean]                $start_rpc             = undef,
-    Optional[String]                 $super_username        = undef,
-    Optional[String]                 $super_password        = undef,
+    Optional[String]                 $cluster_name           = undef,
+    Optional[String]                 $memory_allocator       = undef,
+    Optional[Stdlib::IP::Address]    $listen_address         = undef,
+    Optional[String]                 $tls_cluster_name       = undef,
+    Optional[String]                 $default_applications   = undef,
+    Optional[Stdlib::Port]           $native_transport_port  = undef,
+    Optional[String]                 $target_version         = undef,
+    Optional[Array[Stdlib::Host, 1]] $seeds                  = undef,
+    Optional[String]                 $dc                     = undef,
+    Optional[String]                 $rack                   = undef,
+    Optional[Array[String]]          $additional_jvm_opts    = undef,
+    Optional[Array[String]]          $extra_classpath        = undef,
+    Optional[Stdlib::Host]           $logstash_host          = undef,
+    Optional[Stdlib::Port]           $logstash_port          = undef,
+    Optional[Boolean]                $start_rpc              = undef,
+    Optional[String]                 $super_username         = undef,
+    Optional[String]                 $super_password         = undef,
+    Boolean                          $tls_use_pki            = false,
+    Boolean                          $tls_use_pki_truststore = false,
+    Optional[String]                 $tls_keystore_password  = undef,
 
     # the following parameters need specific default values for single instance
     Stdlib::Unixpath        $config_directory       = "/etc/cassandra-${title}",
@@ -356,14 +359,6 @@ define cassandra::instance(
         mode    => '0444',
     }
 
-    file { "${config_directory}/cassandra.yaml":
-        ensure  => present,
-        content => template("${module_name}/cassandra.yaml-${target_version}.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-    }
-
     file { "${config_directory}/cassandra-rackdc.properties":
         ensure  => present,
         content => template("${module_name}/cassandra-rackdc.properties.erb"),
@@ -437,36 +432,74 @@ define cassandra::instance(
         }
     }
 
-    if ($tls_cluster_name) {
-        file { "${config_directory}/tls":
-            ensure  => directory,
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => Package['cassandra'],
-        }
+    if $tls_cluster_name {
+        if $tls_use_pki_truststore {
+            $tls_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+            $tls_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+        } else {
+            $tls_truststore_location = "${config_directory}/tls/server.trust"
+            $tls_truststore_password = undef
 
-        file { "${config_directory}/tls/server.key":
-            content   => secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst"),
-            owner     => 'cassandra',
-            group     => 'cassandra',
-            mode      => '0400',
-            show_diff => false,
-        }
+            file { $tls_truststore_location:
+                content => secret("cassandra/${tls_cluster_name}/truststore"),
+                owner   => 'cassandra',
+                group   => 'cassandra',
+                mode    => '0400',
+            }
 
-        file { "${config_directory}/tls/server.trust":
-            content => secret("cassandra/${tls_cluster_name}/truststore"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
+            file { "${config_directory}/tls/rootCa.crt":
+                content => secret("cassandra/${tls_cluster_name}/rootCa.crt"),
+                owner   => 'cassandra',
+                group   => 'cassandra',
+                mode    => '0400',
+            }
         }
+        if $tls_use_pki {
+            $tls_dir = "${config_directory}/tls"
+            $tls_files = profile::pki::get_cert('cassandra', $facts['fqdn'], {
+                'outdir' => $tls_dir,
+                'owner'  => 'cassandra',
+                'group'  => 'cassandra',
+                'mode'   => '0400',
+                notify    => Sslcert::X509_to_pkcs12['cassandra_keystore'],
+                }
+            )
 
-        file { "${config_directory}/tls/rootCa.crt":
-            content => secret("cassandra/${tls_cluster_name}/rootCa.crt"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
+            $tls_keystore_location = "${tls_dir}/server.key"
+            sslcert::x509_to_pkcs12 { 'cassandra_keystore' :
+                owner       => 'cassandra',
+                group       => 'cassandra',
+                public_key  => $tls_files['chained'],
+                private_key => $tls_files['key'],
+                certfile    => $tls_files['ca'],
+                outfile     => $tls_keystore_location,
+                password    => $tls_keystore_password,
+            }
+        } else {
+            file { "${config_directory}/tls":
+                ensure  => directory,
+                owner   => 'cassandra',
+                group   => 'cassandra',
+                mode    => '0400',
+                require => Package['cassandra'],
+            }
+
+            file { "${config_directory}/tls/server.key":
+                content   => secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst"),
+                owner     => 'cassandra',
+                group     => 'cassandra',
+                mode      => '0400',
+                show_diff => false,
+            }
         }
+    }
+
+    file { "${config_directory}/cassandra.yaml":
+        ensure  => present,
+        content => template("${module_name}/cassandra.yaml-${target_version}.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
     }
 
     if $instance_name != 'default' {

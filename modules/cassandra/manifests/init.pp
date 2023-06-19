@@ -26,6 +26,19 @@
 #   belonging to this cluster. Also install the cluster's CA as trusted.
 #   Default: undef
 #
+# [*tls_use_pki*]
+#   Whether or not to use PKI for TLS certificates. See T288470
+#   Default: false
+#
+# [*tls_use_pki_truststore*]
+#   Whether or not to use a special truststore to support PKI TLS certificates.
+#   See T288470
+#   Default: false
+#
+# [*tls_keystore_password*]
+#   Password of the TLS keystore to use. Needed only if tls_use_pki is true.
+#   Default: undef
+#
 # [*instances*]
 #   An hash from instance name to several instance-specific parameters,
 #   including:
@@ -113,6 +126,9 @@
 class cassandra (
     String                           $cluster_name            = 'Test Cluster',
     Optional[String]                 $tls_cluster_name        = undef,
+    Boolean                          $tls_use_pki             = false,
+    Boolean                          $tls_use_pki_truststore  = false,
+    Optional[String]                 $tls_keystore_password   = undef,
     Hash                             $instances               = {},
     Hash                             $default_instance_params = {},
     Array[Stdlib::Host]              $seeds                   = [$::ipaddress],
@@ -184,25 +200,28 @@ class cassandra (
     # Default is to keep Debian package behaviour,
     # in other words create a "default" instance.
     $default_common = {
-        cluster_name          => $cluster_name,
-        tls_cluster_name      => $tls_cluster_name,
-        seeds                 => $seeds,
-        additional_jvm_opts   => $additional_jvm_opts,
-        extra_classpath       => $extra_classpath,
-        memory_allocator      => $memory_allocator,
-        listen_address        => $listen_address,
-        users                 => $users,
-        native_transport_port => $native_transport_port,
-        target_version        => $target_version,
-        dc                    => $dc,
-        rack                  => $rack,
-        logstash_host         => $logstash_host,
-        logstash_port         => $logstash_port,
-        start_rpc             => $start_rpc,
-        super_username        => $super_username,
-        super_password        => $super_password,
-        cassandra_passwords   => $cassandra_passwords,
-        auto_apply_grants     => $auto_apply_grants,
+        cluster_name           => $cluster_name,
+        tls_cluster_name       => $tls_cluster_name,
+        tls_use_pki            => $tls_use_pki,
+        tls_use_pki_truststore => $tls_use_pki_truststore,
+        tls_keystore_password  => $tls_keystore_password,
+        seeds                  => $seeds,
+        additional_jvm_opts    => $additional_jvm_opts,
+        extra_classpath        => $extra_classpath,
+        memory_allocator       => $memory_allocator,
+        listen_address         => $listen_address,
+        users                  => $users,
+        native_transport_port  => $native_transport_port,
+        target_version         => $target_version,
+        dc                     => $dc,
+        rack                   => $rack,
+        logstash_host          => $logstash_host,
+        logstash_port          => $logstash_port,
+        start_rpc              => $start_rpc,
+        super_username         => $super_username,
+        super_password         => $super_password,
+        cassandra_passwords    => $cassandra_passwords,
+        auto_apply_grants      => $auto_apply_grants,
     }
 
     if empty($instances) {
