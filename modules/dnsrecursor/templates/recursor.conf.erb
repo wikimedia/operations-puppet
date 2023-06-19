@@ -36,7 +36,7 @@ local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
 local-port=53
 <% if @query_local_address -%>
 # use this address for outgoing queries
-query-local-address=<%= scope.call_function('dnsquery::a', [@query_local_address])[0] %>
+query-local-address=<%= @query_local_address %>
 <%- end -%>
 
 # available since: 3.6

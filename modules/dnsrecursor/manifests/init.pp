@@ -54,7 +54,7 @@ class dnsrecursor (
     Optional[Stdlib::Port]                                          $webserver_port           = 8082,
     Boolean                                                         $restart_service          = true,
     Array[Stdlib::IP::Address]                                      $api_allow_from           = [],
-    Optional[Stdlib::Fqdn]                                          $query_local_address      = undef,
+    Optional[Stdlib::IP::Address::Nosubnet]                         $query_local_address      = undef,
 ) {
 
     ensure_packages(['pdns-recursor'])

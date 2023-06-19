@@ -104,7 +104,7 @@ class profile::openstack::base::pdns::recursor::service(
         dnssec                   => 'off',  # T226088 - off until 4.1.x
         enable_webserver         => debian::codename::ge('bullseye'),
         api_allow_from           => $pdns_api_allow_from,
-        query_local_address      => $query_local_address,
+        query_local_address      => dnsquery::a($query_local_address)[0],
     }
 
     class { '::dnsrecursor::labsaliaser':
