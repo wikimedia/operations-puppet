@@ -56,6 +56,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_mw-event-enrichment'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'mw-event-enrichment:prod'
+  machinetranslation:
+    access:       '.admin'
+    account_name: 'AUTH_machinetranslation'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'machinetranslation:prod'
 
 # To be kept private
 #profile::thanos::swift::accounts_keys:
