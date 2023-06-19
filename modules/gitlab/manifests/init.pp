@@ -22,7 +22,6 @@ class gitlab (
     Boolean          $listen_https                              = true,
     Boolean          $enable_backup                             = true,
     Integer[1]       $backup_keep_time                          = 604800,
-    Boolean          $gitlab_can_create_group                   = false,
     Boolean          $gitlab_username_changing                  = false,
     Boolean          $email_enable                              = true,
     String           $email_from                                = "gitlab@${gitlab_domain}",
