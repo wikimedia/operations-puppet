@@ -78,7 +78,7 @@ Update:
  elastic68
  elasticsearch-curator5
  hp-mcp-stretch
- hwraid-stretch
+ hwraid-megacli
  matomo
  mono-project-stretch
  thirdparty/docker-ci
@@ -182,7 +182,7 @@ Update:
  gvisor
  jenkins
  hp-mcp-buster
- hwraid-stretch
+ hwraid-megacli
  postgres
  matomo
  pyall
@@ -266,7 +266,7 @@ Update:
  elasticsearch-curator5
  gvisor
  hp-mcp-bullseye
- hwraid-stretch
+ hwraid-megacli
  node14-bullseye
  node16-bullseye
  routinator
@@ -298,6 +298,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/puppet5
  component/puppetdb7
+ hwraid-megacli
  thirdparty/hwraid
 UDebComponents: main
 Update:

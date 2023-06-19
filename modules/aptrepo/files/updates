@@ -8,7 +8,7 @@ Architectures: all>amd64
 VerifyRelease: 5BA31D57EF5975CA
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
-Name: hwraid-stretch
+Name: hwraid-megacli
 Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty/hwraid
 UDebComponents:
