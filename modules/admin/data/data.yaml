@@ -221,7 +221,7 @@ groups:
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [wmde-fisch, thiemowmde]
+    members: [wmde-fisch, thiemowmde, samtar]
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
