@@ -15,6 +15,7 @@ profile::cassandra::settings:
   cluster_name: "ml_cache"
   tls_cluster_name: "ml_cache"
   tls_use_pki_truststore: true
+  tls_use_pki: true
   super_username: cassandra
   super_password: "%{passwords::cassandra::super_password}"
   target_version: '4.x'
