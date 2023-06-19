@@ -49,7 +49,21 @@ Suite: bullseye/current
 Architectures: amd64
 # Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
-ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
+
+Name: hp-mcp-bookworm
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty/hwraid
+UDebComponents:
+GetInRelease: no
+# TODO: HPE didn't create a bookworm suite yet, switch later
+Suite: bullseye/current
+Architectures: amd64
+# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
+# For Bookworm and later only the packages installed via the raid classes (based on detecting PCI IDs in the
+# custom raid fact) have been listed. Currently only ssacli (perccli gets installed via the private repo)
+ListShellHook: grep-dctrl -e -S 'ssacli' || [ $? -eq 1 ]
 
 Name: elastic55
 Method: https://artifacts.elastic.co/packages/5.x/apt

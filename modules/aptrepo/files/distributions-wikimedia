@@ -298,10 +298,11 @@ Components: main
 # sorted list, leading whitespace matters!
  component/puppet5
  component/puppetdb7
- hwraid-megacli
  thirdparty/hwraid
 UDebComponents: main
 Update:
+ hp-mcp-bookworm
+ hwraid-megacli
 # sorted list, leading whitespace matters!
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
