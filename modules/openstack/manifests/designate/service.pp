@@ -29,7 +29,11 @@ class openstack::designate::service(
     ) {
 
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
-    $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
+
+    # this sets 127.0.0.1 as fallback resolution, to avoid some rare chicken-egg problems
+    # in which this resolution requires a working Designate but this is the puppet code
+    # to set up Designate.
+    $puppetmaster_hostname_ip = dnsquery::a($puppetmaster_hostname) || { ['127.0.0.1'] }[0]
 
     class { "openstack::designate::service::${version}": }
 
