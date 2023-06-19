@@ -34,9 +34,9 @@ reuseport=yes
 # local-address	IP addresses to listen on, separated by spaces or commas
 local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
 local-port=53
-<% if @query_local_address -%>
+<% unless @query_local_address.empty? -%>
 # use this address for outgoing queries
-query-local-address=<%= @query_local_address %>
+query-local-address=<%= @query_local_address.join(' ') %>
 <%- end -%>
 
 # available since: 3.6
