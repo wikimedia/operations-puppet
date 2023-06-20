@@ -267,6 +267,7 @@ Update:
  gvisor
  hp-mcp-bullseye
  hwraid-megacli
+ jenkins
  node14-bullseye
  node16-bullseye
  routinator
