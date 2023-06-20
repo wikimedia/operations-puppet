@@ -82,7 +82,7 @@ class profile::openstack::base::pdns::recursor::service(
         require => File['/var/zones']
     }
 
-    $pdns_auth_addrs = $pdns_hosts.map |$item| { dnsquery::a($item)[0] }.join(';')
+    $pdns_auth_addrs = $pdns_hosts.map |$item| { dnsquery::lookup($item, true) }.flatten.sort.join(';')
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
     if $bgp_vip {
@@ -104,7 +104,7 @@ class profile::openstack::base::pdns::recursor::service(
         dnssec                   => 'off',  # T226088 - off until 4.1.x
         enable_webserver         => debian::codename::ge('bullseye'),
         api_allow_from           => $pdns_api_allow_from,
-        query_local_address      => dnsquery::a($query_local_address),
+        query_local_address      => dnsquery::lookup($query_local_address, true),
     }
 
     class { '::dnsrecursor::labsaliaser':

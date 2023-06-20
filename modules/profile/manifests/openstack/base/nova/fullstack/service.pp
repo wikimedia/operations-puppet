@@ -13,9 +13,9 @@ class profile::openstack::base::nova::fullstack::service(
         if $ns =~ Stdlib::IP::Address {
             $ns
         } else {
-            dnsquery::a($ns)[0]
+            dnsquery::lookup($ns, true)
         }
-    }
+    }.flatten.sort
 
     # We only want this running in one place; just pick the first
     #  host in $openstack_controllers.
