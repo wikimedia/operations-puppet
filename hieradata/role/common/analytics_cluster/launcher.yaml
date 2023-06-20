@@ -87,6 +87,7 @@ profile::airflow::instances:
       datahub_kafka_jumbo:
         conn_type: datahub_kafka
         host: kafka-jumbo1001.eqiad.wmnet:9092
+        extra_dejson: {"connection": {"schema_registry_url": "http://karapace1001.eqiad.wmnet:8081"}}
 
 profile::contacts::role_contacts: ['Data Engineering']
 
