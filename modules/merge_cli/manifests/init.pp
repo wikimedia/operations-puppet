@@ -33,7 +33,7 @@ class merge_cli (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/merge_cli/puppet-merge.sh',
+        source => 'puppet:///modules/merge_cli/puppet-merge.sh',
     }
 
     file { '/usr/local/bin/puppet-merge.py':
@@ -41,6 +41,6 @@ class merge_cli (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/merge_cli/puppet-merge.py',
+        source => 'puppet:///modules/merge_cli/puppet-merge.py',
     }
 }
