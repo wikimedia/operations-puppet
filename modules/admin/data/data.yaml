@@ -6804,3 +6804,7 @@ ldap_only_users:
   ryan-bf:
     ensure: absent
     realname: Ryan Basden
+  dreamyjazz:
+    ensure: present
+    realname: William Brown
+    email: dreamyjazzwikipedia@gmail.com
