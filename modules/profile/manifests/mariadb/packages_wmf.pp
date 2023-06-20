@@ -3,6 +3,8 @@ class profile::mariadb::packages_wmf (
 ) {
     if $package != undef {
         $mariadb_package = $package
+    } elsif debian::codename::eq('bookworm') {
+        $mariadb_package = 'wmf-mariadb106'
     } elsif debian::codename::eq('bullseye') {
         $mariadb_package = 'wmf-mariadb104'
     } elsif debian::codename::eq('buster') {
