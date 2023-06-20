@@ -59,8 +59,14 @@ class pontoon::lb (
         notify  => Exec['dnsmasq-restart'],
     }
 
-    ferm::service { 'pontoon-lb-dns':
-        proto   => '(tcp udp)',
+    ferm::service { 'pontoon-lb-dns-udp':
+        proto   => 'udp',
+        notrack => true,
+        port    => 53,
+    }
+
+    ferm::service { 'pontoon-lb-dns-tcp':
+        proto   => 'tcp)',
         notrack => true,
         port    => 53,
     }

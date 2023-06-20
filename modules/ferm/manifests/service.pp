@@ -22,10 +22,10 @@
 # Only one of $port ot $port_range can be given
 #
 define ferm::service(
-    $proto,
+    Ferm::Protocol $proto,
     Optional[Ferm::Port] $port = undef,
     Optional[Ferm::Portrange] $port_range = undef,
-    $ensure  = present,
+    Wmflib::Ensure $ensure  = present,
     $desc    = '',
     $prio    = '10',
     Optional[Ferm::Hosts] $srange = undef,
