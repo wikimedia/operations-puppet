@@ -2474,10 +2474,6 @@ node /^orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet$/ {
     role(orespoolcounter)
 }
 
-node 'otrs1001.eqiad.wmnet' {
-    role(insetup::serviceops_collab)
-}
-
 node 'vrts1001.eqiad.wmnet' {
     role(vrts)
 }
