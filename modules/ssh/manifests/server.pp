@@ -17,8 +17,12 @@
 # @param accept_env array of elements for AcceptEnv config
 # @param match_config a list of additional configs to apply to specific matches.
 #                     see Ssh::Match for the data structure
-# @param enabled_key_types server key types to enable
-# @param use_ca_signed_host_keys if true, ca signed host keys will be made available
+# @param enabled_key_types server key types to enable, if not provided via $host_keys
+# @param puppetserver_ca_host_certs if true, puppetserver ca signed host certs will be made available
+# @param trusted_user_ca_keys array of trusted user ca keys
+# @param host_keys array of ssh host key structs
+# @param host_certs array of ssh host cert structs
+# @param authorized_principals_file path name to file
 class ssh::server (
     Stdlib::Port                 $listen_port                  = 22,
     Array[Stdlib::IP::Address]   $listen_addresses             = [],
@@ -38,16 +42,52 @@ class ssh::server (
     Array[String[1]]             $accept_env                   = ['LANG', 'LC_*'],
     Array[Ssh::Match]            $match_config                 = [],
     Array[Ssh::KeyType]          $enabled_key_types            = ['rsa', 'ecdsa', 'ed25519'],
-    Boolean                      $use_ca_signed_host_keys      = false,
+    Boolean                      $puppetserver_ca_host_certs   = false,
+    Array[String[1]]             $trusted_user_ca_keys         = [],
+    Ssh::HostKeys                $host_keys                    = {},
+    Ssh::HostCerts               $host_certs                   = {},
+    Optional[Stdlib::Unixpath]   $authorized_principals_file   = undef,
 ) {
+    if $puppetserver_ca_host_certs and length($host_certs) > 0 {
+        fail('Specify only one of $puppetserver_ca_host_certs or $host_certs')
+    }
+
     $_permit_root = $permit_root ? {
         String  => $permit_root,
         false   => 'no',
         default => 'yes',
     }
-    $_use_ca_signed_host_keys = $use_ca_signed_host_keys and ssh::ssh_ca_key_available()
-    if $use_ca_signed_host_keys and !$_use_ca_signed_host_keys {
-        warning('ssh::server: use_ca_signed_host_keys is true but no CA keys are available')
+
+    if length($host_keys) > 0 {
+        $key_types = keys($host_keys)
+    } else {
+        $key_types = $enabled_key_types
+    }
+
+    if $puppetserver_ca_host_certs {
+        if ssh::ssh_ca_key_available() {
+            $ssh_ca_key_available = true
+            $enabled_key_types.each |Ssh::KeyType $type| {
+                ssh::server::ca_signed_hostkey { "/etc/ssh/ssh_host_${type}_key-cert.pub":
+                    hosts  => [$facts['networking']['fqdn']] + $aliases,
+                    type   => $type,
+                    notify => Service['ssh'],
+                }
+            }
+        } else {
+            $ssh_ca_key_available = false
+            warning('ssh::server: puppetserver_ca_host_certs is true but no CA keys are available')
+        }
+    }
+
+    if length($trusted_user_ca_keys) > 0 {
+        file { '/etc/ssh/trusted_user_ca_keys.pub':
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "${join($trusted_user_ca_keys, "\n")}\n",
+        }
     }
 
     package { 'openssh-server':
@@ -101,22 +141,37 @@ class ssh::server (
         $facts['ipaddress6'],
     ].filter |$x| { $x =~ NotUndef }
 
-    if $_use_ca_signed_host_keys {
-        $enabled_key_types.each |Ssh::KeyType $type| {
-            ssh::server::ca_signed_hostkey { "/etc/ssh/ssh_host_${type}_key-cert.pub":
-                hosts  => [$facts['networking']['fqdn']] + $aliases,
-                type   => $type,
-                notify => Service['ssh'],
-            }
-        }
-    }
-
     if wmflib::have_puppetdb() {
         @@sshkey { $facts['networking']['fqdn']:
             ensure       => present,
             type         => 'ecdsa-sha2-nistp256',
             key          => $facts['ssh']['ecdsa']['key'],
             host_aliases => $aliases,
+        }
+    }
+
+    $host_keys.each |$type, $key| {
+        file { "/etc/ssh/ssh_host_${type}_key":
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            content => "${key}\n",
+        }
+    }
+
+    if length($host_certs) > 0 {
+        if sort(keys($host_certs)) != sort($key_types) {
+                fail('Keys for $host_certs and $key_types do not match!')
+        }
+        $host_certs.each |$type, $key| {
+            file { "/etc/ssh/ssh_host_${type}_key-cert.pub":
+                ensure  => file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0440',
+                content => "${key}\n",
+            }
         }
     }
 }

@@ -15,11 +15,17 @@ ListenAddress <%= listen %>
 <%- end -%>
 Protocol 2
 # HostKeys for protocol version 2
-<%- @enabled_key_types.each do |type| -%>
+<%- @key_types.each do |type| -%>
 HostKey /etc/ssh/ssh_host_<%= type %>_key
-<% if @_use_ca_signed_host_keys -%>
+  <%- if @ssh_ca_key_available or @host_certs.length > 0 -%>
 HostCertificate /etc/ssh/ssh_host_<%= type %>_key-cert.pub
+  <%- end -%>
 <%- end -%>
+<%- if @trusted_user_ca_keys.length > 0 -%>
+TrustedUserCAKeys /etc/ssh/trusted_user_ca_keys.pub
+  <%- if @authorized_principals_file -%>
+AuthorizedPrincipalsFile <%= @authorized_principals_file %>
+  <%- end -%>
 <%- end -%>
 
 <%- if @disable_nist_kex -%>

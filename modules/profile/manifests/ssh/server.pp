@@ -17,28 +17,37 @@
 # @param accept_env array of elements for AcceptEnv config
 # @param match_config a list of additional configs to apply to specific matches.
 #                     see Ssh::Match for the data structure
-# @param enabled_key_types server key types to enable
-# @param use_ca_signed_host_keys if true, ca signed host keys will be made available
+# @param enabled_key_types server key types to enable, if not provided via $host_keys
+# @param puppetserver_ca_host_certs if true, puppetserver ca signed host certs will be made available
+# @param trusted_user_ca_keys array of trusted user ca keys
+# @param host_keys array of ssh host key structs
+# @param host_certs array of ssh host cert structs
+# @param authorized_principals_file path name to file
+# @param authorized_principals array of global principals
 class profile::ssh::server (
-    Stdlib::Port                 $listen_port              = lookup('profile::ssh::server::listen_port'),
-    Array[Stdlib::IP::Address]   $listen_addresses         = lookup('profile::ssh::server::listen_addresses'),
-    Ssh::Config::PermitRootLogin $permit_root              = lookup('profile::ssh::server::permit_root'),
-    Array[Stdlib::Unixpath]      $authorized_keys_file     = lookup('profile::ssh::server::authorized_keys_file'),
-    Boolean                      $lookup_keys_from_ldap    = lookup('profile::ssh::server::lookup_keys_from_ldap'),
-    Boolean                      $disable_nist_kex         = lookup('profile::ssh::server::disable_nist_kex'),
-    Boolean                      $explicit_macs            = lookup('profile::ssh::server::explicit_macs'),
-    Boolean                      $enable_hba               = lookup('profile::ssh::server::enable_hba'),
-    Boolean                      $enable_kerberos          = lookup('profile::ssh::server::enable_kerberos'),
-    Boolean                      $disable_agent_forwarding = lookup('profile::ssh::server::disable_agent_forwarding'),
-    Boolean                      $challenge_response_auth  = lookup('profile::ssh::server::challenge_response_auth'),
-    Optional[Integer]            $max_sessions             = lookup('profile::ssh::server::max_sessions'),
-    Optional[String[1]]          $max_startups             = lookup('profile::ssh::server::max_startups'),
-    Boolean                      $gateway_ports            = lookup('profile::ssh::server::gateway_ports'),
-    Array[String[1]]             $accept_env               = lookup('profile::ssh::server::accept_env'),
-    Array[Ssh::Match]            $match_config             = lookup('profile::ssh::server::match_config'),
-    Array[Ssh::KeyType]          $enabled_key_types        = lookup('profile::ssh::server::enabled_key_types'),
-    Boolean                      $use_ca_signed_host_keys  = lookup('profile::ssh::server::use_ca_signed_host_keys'),
-
+    Stdlib::Port                 $listen_port                = lookup('profile::ssh::server::listen_port'),
+    Array[Stdlib::IP::Address]   $listen_addresses           = lookup('profile::ssh::server::listen_addresses'),
+    Ssh::Config::PermitRootLogin $permit_root                = lookup('profile::ssh::server::permit_root'),
+    Array[Stdlib::Unixpath]      $authorized_keys_file       = lookup('profile::ssh::server::authorized_keys_file'),
+    Boolean                      $lookup_keys_from_ldap      = lookup('profile::ssh::server::lookup_keys_from_ldap'),
+    Boolean                      $disable_nist_kex           = lookup('profile::ssh::server::disable_nist_kex'),
+    Boolean                      $explicit_macs              = lookup('profile::ssh::server::explicit_macs'),
+    Boolean                      $enable_hba                 = lookup('profile::ssh::server::enable_hba'),
+    Boolean                      $enable_kerberos            = lookup('profile::ssh::server::enable_kerberos'),
+    Boolean                      $disable_agent_forwarding   = lookup('profile::ssh::server::disable_agent_forwarding'),
+    Boolean                      $challenge_response_auth    = lookup('profile::ssh::server::challenge_response_auth'),
+    Optional[Integer]            $max_sessions               = lookup('profile::ssh::server::max_sessions'),
+    Optional[String[1]]          $max_startups               = lookup('profile::ssh::server::max_startups'),
+    Boolean                      $gateway_ports              = lookup('profile::ssh::server::gateway_ports'),
+    Array[String[1]]             $accept_env                 = lookup('profile::ssh::server::accept_env'),
+    Array[Ssh::Match]            $match_config               = lookup('profile::ssh::server::match_config'),
+    Array[Ssh::KeyType]          $enabled_key_types          = lookup('profile::ssh::server::enabled_key_types'),
+    Boolean                      $puppetserver_ca_host_certs = lookup('profile::ssh::server::puppetserver_ca_host_certs'),
+    Array[String[1]]             $trusted_user_ca_keys       = lookup('profile::ssh::server::trusted_user_ca_keys', { 'default_value' => [] }),
+    Ssh::HostKeys                $host_keys                  = lookup('profile::ssh::server::host_keys', { 'default_value' => {} }),
+    Ssh::HostCerts               $host_certs                 = lookup('profile::ssh::server::host_certs', { 'default_value' => {} }),
+    Optional[Stdlib::Unixpath]   $authorized_principals_file = lookup('profile::ssh::server::authorized_principals_file', { 'default_value' => undef }),
+    Array[String[1]]             $authorized_principals      = lookup('profile::ssh::server::authorized_principals', { 'default_value' => [] }),
 ) {
     if $lookup_keys_from_ldap {
         if debian::codename::ge('buster') {
@@ -75,8 +84,21 @@ class profile::ssh::server (
         $authorized_keys_command_user = undef
     }
 
+    if length($authorized_principals) > 0 and $authorized_principals_file {
+        file { $authorized_principals_file :
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "${join($authorized_principals, "\n")}\n",
+        }
+    }
+
     class {'ssh::server':
-        *                            => wmflib::resource::filter_params('lookup_keys_from_ldap'),
+        *                            => wmflib::resource::filter_params(
+                                          'lookup_keys_from_ldap',
+                                          'authorized_principals'
+                                        ),
         authorized_keys_command      => $authorized_keys_command,
         authorized_keys_command_user => $authorized_keys_command_user,
     }

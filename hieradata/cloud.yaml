@@ -829,7 +829,7 @@ profile::ssh::server::gateway_ports: false
 profile::ssh::server::accept_env: ["LANG", "LC_*"]
 profile::ssh::server::match_config: []
 profile::ssh::server::enabled_key_types: ['dsa', 'rsa', 'ecdsa', 'ed25519']
-profile::ssh::server::use_ca_signed_host_keys: false
+profile::ssh::server::puppetserver_ca_host_certs: false
 
 profile::ssh::client::manage_ssh_keys: true
 profile::ssh::client::manage_ssh_config: false
