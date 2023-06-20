@@ -8,10 +8,6 @@ class profile::dns::recursor (
     include ::network::constants
     include ::profile::firewall
     include ::profile::bird::anycast
-    # We don't need this for bullseye as the version of pdns-rec ships with the Prometheus endpoint at /metrics
-    if debian::codename::eq('buster') {
-      include ::profile::prometheus::pdns_rec_exporter
-    }
     include ::profile::dns::check_dns_query
 
     $recdns_vips = $advertise_vips.filter |$vip_fqdn,$vip_params| { $vip_params['service_type'] == 'recdns' }
