@@ -380,6 +380,8 @@ profile::puppetmaster::common::puppetdb_submit_only_hosts: []
 
 profile::puppetserver::enc_source: ~
 profile::puppetserver::enc_path: ~
+profile::puppetserver::java_start_mem: 1g
+profile::puppetserver::java_max_mem: 1g
 profile::puppetserver::reports: ['store']
 profile::puppetserver::puppetdb_urls: []
 profile::puppetserver::code_dir: '/srv/puppet_code'
