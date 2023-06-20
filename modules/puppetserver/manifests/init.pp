@@ -14,6 +14,7 @@
 # @param enc_path path to an ENC script
 # @param listen_host host to bind webserver socket
 # @param autosign if true autosign agent certs
+# @param separate_ssldir used when the puppetserver is managed by a different puppet server
 # @param g10k_sources a list of g10k sources to configure
 class puppetserver (
     Wmflib::Ensure                           $ensure               = 'present',
@@ -31,9 +32,22 @@ class puppetserver (
     Optional[Stdlib::Unixpath]               $enc_path             = undef,
     Stdlib::Host                             $listen_host          = $facts['networking']['ip'],
     Boolean                                  $autosign             = false,
+    Boolean                                  $separate_ssldir      = true,
     Hash[String, Puppetmaster::R10k::Source] $g10k_sources         = {},
 ) {
+    systemd::mask { 'puppetserver.service':
+        unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',
+    }
     ensure_packages(['puppetserver'])
+    systemd::unmask { 'puppetserver.service':
+        refreshonly => true,
+    }
+    # Ensure puppetserver is not started on the first install
+    # As we first need to configure the CA
+    Systemd::Mask['puppetserver.service'] -> Package['puppetserver'] ~> Systemd::Unmask['puppetserver.service']
+
+    $owner = 'puppet'
+    $group = 'puppet'
     $ruby_load_path = '/usr/lib/puppetserver/ruby/vendor_ruby'
     # This is defined in /puppetserver.conf
     # This is used in systemd
@@ -51,18 +65,19 @@ class puppetserver (
     wmflib::dir::mkdir_p(
         $ssl_dir,
         {
-            'owner' => 'puppet',
-            'group' => 'puppet'
+            'owner' => $owner,
+            'group' => $group,
         },
     )
 
+    $_ssldir_txt = $separate_ssldir.bool2str("ssldir = ${ssl_dir}", '')
     $config = @("CONFIG")
 
     [server]
-    ssldir = ${ssl_dir}
     ca_server = ${ca_server}
     reports = ${_reports.unique.join(',')}
     codedir = ${code_dir}
+    ${_ssldir_txt}
     | CONFIG
     concat::fragment { 'server':
         target  => '/etc/puppet/puppet.conf',

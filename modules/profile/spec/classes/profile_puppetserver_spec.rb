@@ -8,6 +8,10 @@ describe 'profile::puppetserver' do
       describe 'test compilation with default parameters' do
         it { is_expected.to compile.with_all_deps }
       end
+      context "on #{os} using puppetserver role" do
+        let(:node_params) {{ _role: 'puppetserver' }}
+        it { is_expected.to compile.with_all_deps }
+      end
     end
   end
 end
