@@ -6,6 +6,7 @@ class puppetmaster::merge_cli (
     Stdlib::Host                         $ca_server,
     Wmflib::Ensure                       $ensure  = present,
 ) {
+    # TODO: migrate to merge_cli module
     $masters = $servers.keys().filter |$server| { $server != $facts['fqdn'] }
     $workers = $servers.values().map |$worker| {
         $worker.map |$name| { $name['worker'] }.filter |$name| { $name != $facts['fqdn'] }
@@ -30,7 +31,7 @@ class puppetmaster::merge_cli (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/merge_cli/puppet-merge.sh',
+        source => 'puppet:///modules/merge_cli/puppet-merge.sh',
     }
 
     file { '/usr/local/bin/puppet-merge.py':
@@ -38,6 +39,6 @@ class puppetmaster::merge_cli (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/merge_cli/puppet-merge.py',
+        source => 'puppet:///modules/merge_cli/puppet-merge.py',
     }
 }

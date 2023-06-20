@@ -1,6 +1,7 @@
 profile::puppetserver::enc_source: ~
 profile::puppetserver::enc_path: ~
 profile::puppetserver::java_start_mem: 48g
+profile::puppetserver::server_id: "%{facts.networking.fqdn}"
 profile::puppetserver::java_max_mem: 48g
 profile::puppetserver::reports: ['store']
 profile::puppetserver::puppetdb_urls: []

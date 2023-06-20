@@ -21,10 +21,11 @@
 # @param ca_private_key_secret the content of the W
 # @param git_pull whether to pull puppet code from git, defaults to true
 class profile::puppetserver (
+    Stdlib::Fqdn                   $server_id             = lookup('profile::puppetserver::server_id'),
     Stdlib::Unixpath               $code_dir              = lookup('profile::puppetserver::code_dir'),
     Stdlib::Unixpath               $hiera_data_dir        = lookup('profile::puppetserver::hiera_data_dir'),
-    Stdlib::Datasize               $java_start_mem       = lookup('profile::puppetserver::java_start_mem'),
-    Stdlib::Datasize               $java_max_mem         = lookup('profile::puppetserver::java_max_mem'),
+    Stdlib::Datasize               $java_start_mem        = lookup('profile::puppetserver::java_start_mem'),
+    Stdlib::Datasize               $java_max_mem          = lookup('profile::puppetserver::java_max_mem'),
     Array[Puppetserver::Hierarchy] $hierarchy             = lookup('profile::puppetserver::hierarchy'),
     Array[Puppetserver::Report,1]  $reports               = lookup('profile::puppetserver::reports'),
     Array[Stdlib::HTTPUrl]         $puppetdb_urls         = lookup('profile::puppetserver::puppetdb_urls'),
@@ -32,7 +33,6 @@ class profile::puppetserver (
     Optional[Stdlib::Filesource]   $enc_source            = lookup('profile::puppetserver::enc_source'),
     Optional[Integer[1]]           $max_active_instances  = lookup('profile::puppetserver::max_active_instances', { 'default_value' => undef }),
     Optional[Stdlib::Host]         $listen_host           = lookup('profile::puppetserver::listen_host', { 'default_value' => undef }),
-    Optional[Stdlib::Fqdn]         $server_id             = lookup('profile::puppetserver::server_id', { 'default_value' => undef }),
     Boolean                        $autosign              = lookup('profile::puppetserver::autosign', { 'default_value' => false }),
     Boolean                        $git_pull              = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
     Boolean                        $separate_ssldir       = lookup('profile::puppetserver::separate_ssldir'),
@@ -45,6 +45,10 @@ class profile::puppetserver (
 ) {
     if $git_pull {
         include profile::puppetserver::git
+        class { 'merge_cli':
+            ca_server => $server_id,
+            servers   => $profile::puppetserver::git::servers,
+        }
         $g10k_sources = {
             'production'  => {
                 'remote'  => $profile::puppetserver::git::control_repo_dir,
