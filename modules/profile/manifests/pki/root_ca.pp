@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Configure a cfssl root ca with no API end point
 # @param common_name The common name to use on the CA cert
+# @param vhost The vhost for the crl
 # @param names The certificate authority names used for intermediates
 # @param key_params The key algorithm and size used for intermediates
-# @param gen_csr if true genrate a CSR.  this is only needed when bootstrapping
 # @param db_driver The db driver to use
 # @param db_user The db user to use
 # @param db_pass The db pass to use
@@ -12,23 +12,25 @@
 # @param profiles a Hash of signing profiles
 # @param auth_keys A hash of auth_keys, this is not actually use as we don't configure the API end point
 #   but is required as a security measure in case the API service is started by accident
-# @param intermedites An array of intermediate certificates to create.  This profile ensures the certificates are
+# @param intermediates An array of intermediate certificates to create.
+# @param rsa_intermediates An array of intermediate certificates to create with RSA keys.
 #   created however you will need to manually copy the created certificate to the puppet repo
 # @param bootstrap Whether or not to attempt to bootstrap the root CA
 class profile::pki::root_ca(
-    Cfssl::Ca_name                $common_name    = lookup('profile::pki::root_ca::common_name'),
-    String                        $vhost          = lookup('profile::pki::root_ca::vhost'),
-    Array[Cfssl::Name]            $names          = lookup('profile::pki::root_ca::names'),
-    Cfssl::Key                    $key_params     = lookup('profile::pki::root_ca::key_params'),
-    Cfssl::DB_driver              $db_driver      = lookup('profile::pki::root_ca::db_driver'),
-    String                        $db_user        = lookup('profile::pki::root_ca::db_user'),
-    Sensitive[String[1]]          $db_pass        = lookup('profile::pki::root_ca::db_pass'),
-    String                        $db_name        = lookup('profile::pki::root_ca::db_name'),
-    Stdlib::Host                  $db_host        = lookup('profile::pki::root_ca::db_host'),
-    Hash[String, Cfssl::Profile]  $profiles       = lookup('profile::pki::root_ca::profiles'),
-    Hash[String, Cfssl::Auth_key] $auth_keys      = lookup('profile::pki::root_ca::auth_keys'),
-    Array[Cfssl::Ca_name]         $intermediates  = lookup('profile::pki::root_ca::intermediates'),
-    Boolean                       $bootstrap      = lookup('profile::pki::root_ca::bootstrap'),
+    Cfssl::Ca_name                $common_name        = lookup('profile::pki::root_ca::common_name'),
+    String                        $vhost              = lookup('profile::pki::root_ca::vhost'),
+    Array[Cfssl::Name]            $names              = lookup('profile::pki::root_ca::names'),
+    Cfssl::Key                    $key_params         = lookup('profile::pki::root_ca::key_params'),
+    Cfssl::DB_driver              $db_driver          = lookup('profile::pki::root_ca::db_driver'),
+    String                        $db_user            = lookup('profile::pki::root_ca::db_user'),
+    Sensitive[String[1]]          $db_pass            = lookup('profile::pki::root_ca::db_pass'),
+    String                        $db_name            = lookup('profile::pki::root_ca::db_name'),
+    Stdlib::Host                  $db_host            = lookup('profile::pki::root_ca::db_host'),
+    Hash[String, Cfssl::Profile]  $profiles           = lookup('profile::pki::root_ca::profiles'),
+    Hash[String, Cfssl::Auth_key] $auth_keys          = lookup('profile::pki::root_ca::auth_keys'),
+    Array[Cfssl::Ca_name]         $intermediates      = lookup('profile::pki::root_ca::intermediates'),
+    Array[Cfssl::Ca_name]         $rsa_intermediates  = lookup('profile::pki::root_ca::intermediates'),
+    Boolean                       $bootstrap          = lookup('profile::pki::root_ca::bootstrap'),
 ) {
     $safe_title   = $common_name.regsubst('\W', '_', 'G')
     $crl_base_url = "http://${vhost}/crl/${safe_title}"
@@ -76,6 +78,15 @@ class profile::pki::root_ca(
     $intermediates.each |$intermediate| {
         cfssl::cert {$intermediate:
             key           => $key_params,
+            names         => $names,
+            signer_config => {'config_dir' => $root_dir},
+            profile       => 'intermediate',
+            require       => Cfssl::Signer[$common_name],
+        }
+    }
+    $rsa_intermediates.each |$intermediate| {
+        cfssl::cert {$intermediate:
+            key           => {'algo' => 'rsa', 'size' => 4096},
             names         => $names,
             signer_config => {'config_dir' => $root_dir},
             profile       => 'intermediate',
