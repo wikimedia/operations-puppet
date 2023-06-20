@@ -39,18 +39,12 @@ define cloudlb::haproxy::service (
 
     $frontends.each | Integer $index, CloudLB::HAProxy::Service::Frontend $frontend | {
         if $firewall['restricted_to_fqdns'] {
-            # TODO: no IPv6 support, but we don't care at the moment
-            # TODO: no support for multiple A records, but we don't care at the moment
-            $ips = $firewall['restricted_to_fqdns'].map |$host| {
-                        dnsquery::a($host)[0]
-                    }.join(' ')
-            $srange = "(${ips})"
+            $srange = $firewall['restricted_to_fqdns']
         } else {
             if $firewall['open_to_internet'] {
                 $srange = undef
             } else {
-                $cidrs = join(concat($::network::constants::production_networks, $::network::constants::labs_networks), ' ')
-                $srange = "(${cidrs})"
+                $srange = $::network::constants::production_networks + $::network::constants::labs_networks
             }
         }
 

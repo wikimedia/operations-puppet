@@ -8,15 +8,6 @@ describe 'cloudlb::haproxy::service' do
     """
     include haproxy
     include network::constants
-    function dnsquery::a($fqdn) {
-        if $fqdn == 'sourcehost1.example.com' {
-            ['172.20.5.2', '1.2.3.4']
-        } elsif $fqdn == 'sourcehost2.example.com' {
-            ['172.20.5.3', '1.2.3.4']
-        } else {
-            [$fqdn]
-        }
-    }
     """
   }
 
@@ -156,13 +147,19 @@ describe 'cloudlb::haproxy::service' do
                     'ensure' => 'present',
                     'proto'  => 'tcp',
                     'port'   => '11114',
-                    'srange' => '(172.20.5.2 172.20.5.3)'
+                    'srange' => [
+                        'sourcehost1.example.com',
+                        'sourcehost2.example.com',
+                    ]
                 )
             is_expected.to contain_ferm__service('service1_11115').with(
                     'ensure' => 'present',
                     'proto'  => 'tcp',
                     'port'   => '11115',
-                    'srange' => '(172.20.5.2 172.20.5.3)'
+                    'srange' => [
+                        'sourcehost1.example.com',
+                        'sourcehost2.example.com',
+                    ]
                 )
           }
       end
