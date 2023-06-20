@@ -20,7 +20,7 @@ class idm::deployment (
     Stdlib::Fqdn        $redis_master,
     Array[Stdlib::Fqdn] $redis_replicas,
     String              $redis_password,
-    Integer             $redis_port,
+    Stdlib::Port        $redis_port,
     Integer             $redis_maxmem,
     String              $ldap_dn,
     String              $ldap_dn_password,

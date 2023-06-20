@@ -23,7 +23,7 @@ class profile::idm(
     Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
     Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
     String              $redis_password            = lookup('profile::idm::redis_password', {'default_value'               => 'secret'}),
-    Integer             $redis_port                = lookup('profile::idm::redis_port', {'default_value'                   => 6973}),
+    Stdlib::Port        $redis_port                = lookup('profile::idm::redis_port', {'default_value'                   => 6973}),
     Integer             $redis_maxmem              = lookup('profile::idm::redis_maxmem', {'default_value'                 => 1610612736 }),
     Boolean             $enable_monitoring         = lookup('profile::idm::enable_monitoring'),
 ) {
