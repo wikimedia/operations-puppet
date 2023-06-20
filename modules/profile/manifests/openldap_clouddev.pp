@@ -53,6 +53,7 @@ class profile::openldap_clouddev (
     }
 
     if $backup {
+        include profile::backup::host
         backup::openldapset { 'openldap': }
     }
 

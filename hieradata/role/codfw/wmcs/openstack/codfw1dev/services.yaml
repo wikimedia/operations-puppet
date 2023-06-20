@@ -1,6 +1,6 @@
 profile::openldap::hostname: cloudservices2005-dev.wikimedia.org
 profile::openldap::mirror_mode: false
-profile::openldap::backup: false
+profile::openldap::backup: true
 profile::openldap::server_id: 1
 profile::openldap::master: cloudservices2005-dev.wikimedia.org
 profile::openldap::hash_passwords: SHA
