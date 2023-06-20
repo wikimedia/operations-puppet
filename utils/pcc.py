@@ -417,7 +417,7 @@ def main():  # pylint: disable=too-many-locals
 
     node_status = {}
     node_status_matcher = re.compile(
-        r"(?P<count>\d+)\s+(?P<mode>(?:DIFF|NOOP|FAIL|ERROR))"
+        r"(?P<count>\d+)\s+(?P<mode>(?:DIFF|CORE_DIFF|NOOP|FAIL|ERROR))"
     )
     for match in node_status_matcher.finditer(output):
         # as the information we are intrested is at the end we only care about the last matches
