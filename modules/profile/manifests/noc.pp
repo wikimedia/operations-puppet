@@ -6,14 +6,14 @@ class profile::noc {
     # http from envoy to httpd on the backend itself
     ferm::service { 'noc-http-envoy':
         proto  => 'tcp',
-        port   => 'http',
+        port   => [80],
         srange => "(${::ipaddress} ${::ipaddress6})",
     }
 
     # http from cumin masters
     ferm::service { 'noc-http-cumin':
         proto  => 'tcp',
-        port   => 'http',
+        port   => [80],
         srange => '($CUMIN_MASTERS)',
     }
     class { '::noc': }
