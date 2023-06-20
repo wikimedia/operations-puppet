@@ -69,6 +69,9 @@ class profile::gerrit(
         backup::set { $backup_set:
             jobdefaults => "Hourly-${profile::backup::host::day}-${profile::backup::host::pool}"
         }
+        backup::set { 'home':
+            jobdefaults => "Hourly-${profile::backup::host::day}-${profile::backup::host::pool}"
+        }
     }
 
     if $use_acmechief {
