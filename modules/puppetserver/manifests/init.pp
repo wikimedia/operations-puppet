@@ -49,10 +49,11 @@ class puppetserver (
     $owner = 'puppet'
     $group = 'puppet'
     $ruby_load_path = '/usr/lib/puppetserver/ruby/vendor_ruby'
+    $puppetserver_config_dir = "${config_dir}/puppetserver"
     # This is defined in /puppetserver.conf
     # This is used in systemd
-    $config_d_dir = "${config_dir}/puppetserver/conf.d"
-    $bootstap_config_dir = "${config_dir}/puppetserver/services.d"
+    $config_d_dir = "${puppetserver_config_dir}/conf.d"
+    $bootstap_config_dir = "${puppetserver_config_dir}/services.d"
     $ssl_dir = '/var/lib/puppet/server/ssl'
     $environments_dir = "${code_dir}/environments"
 
@@ -61,12 +62,27 @@ class puppetserver (
         default => $reports,
     }
 
-    wmflib::dir::mkdir_p([$environments_dir, $config_dir])
     wmflib::dir::mkdir_p(
-        $ssl_dir,
+        [
+            $code_dir,
+            $environments_dir,
+            $config_dir,
+        ],
+        {
+            'mode'  => '0755',
+        },
+    )
+
+    wmflib::dir::mkdir_p(
+        [
+            $ssl_dir,
+            $puppetserver_config_dir,
+            $bootstap_config_dir,
+        ],
         {
             'owner' => $owner,
             'group' => $group,
+            'mode'  => '0755',
         },
     )
 
