@@ -44,8 +44,6 @@ class profile::puppetserver (
 
 ) {
     if $git_pull {
-        # TODO: update to use sysuseres and make a profile
-        class { 'puppetmaster::gitpuppet': }
         include profile::puppetserver::git
         $g10k_sources = {
             'production'  => {

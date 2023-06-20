@@ -21,6 +21,36 @@ class profile::puppetserver::git (
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
     $control_repo_dir = "${basedir}/${control_repo}"
+    $home_dir = "/home/${user}"
+
+    systemd::sysuser { $user:
+        home_dir => $home_dir,
+        shell    => '/bin/sh',
+    }
+
+    file {"${home_dir}/.ssh":
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0700',
+    }
+    file {
+        default:
+            ensure    => file,
+            owner     => $user,
+            group     => $group,
+            mode      => '0400',
+            show_diff => false;
+        "${home_dir}/.ssh/id_rsa":
+            content   => secret('ssh/gitpuppet/gitpuppet.key');
+        "${home_dir}/.ssh/gitpuppet-private-repo":
+            content   => secret('ssh/gitpuppet/gitpuppet-private.key');
+    }
+    ssh::userkey { $user:
+        content => template('profile/puppetserver/git/gitpuppet_authorized_keys.erb'),
+    }
+
+
     file { $basedir:
         ensure => stdlib::ensure($ensure, 'directory'),
         owner  => $user,

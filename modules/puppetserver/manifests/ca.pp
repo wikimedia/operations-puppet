@@ -19,7 +19,7 @@ class puppetserver::ca (
     $enable_ca = 'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service'
     $disable_ca = 'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service'
     $content = $enable.bool2str(
-        [$base_content, enable_ca].join("\n"),
+        [$base_content, $enable_ca].join("\n"),
         [base_content, $disable_ca].join("\n")
     )
     file { "${puppetserver::bootstap_config_dir}/ca.cfg":
