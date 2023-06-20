@@ -37,14 +37,13 @@ hidden gauge process_time
     process_time += $server_connection_time
   }
   # We are excluding the following states:
-  # More details on http://docs.haproxy.org/2.4/configuration.html#8.5
+  # More details on http://docs.haproxy.org/2.6/configuration.html#8.5
   # R --> Resource on the proxy has been exhausted
   # I --> Internal error
   # D --> Session killed by HAProxy
   # U --> Session killed by HAProxy (this shouldn't happen here)
   # K --> Session actively killed by an admin operating on HAProxy (HAProxy config/TLS material reloads would trigger this one)
-  # L --> Session was locally processed by HAProxy and was not passed to a server (this shouldn't happen here)
-  $termination_state =~ /^[\-CSPcs]/ && process_time < 50 {
+  $termination_state =~ /^[\-CSPLcs]/ && process_time < 50 {
     haproxy_sli_good++
   }
 }

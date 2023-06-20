@@ -131,7 +131,7 @@ frontend stats
 
 <%- if @http_redirection_port -%>
 frontend http
-    no log
+    log global
     maxconn 1000
     bind :<%= @http_redirection_port %>
     bind :::<%= @http_redirection_port %> v6only
