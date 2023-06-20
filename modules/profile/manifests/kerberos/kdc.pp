@@ -136,13 +136,13 @@ class profile::kerberos::kdc (
 
     ferm::service { 'kerberos_kdc_tcp':
         proto  => 'tcp',
-        port   => '88',
+        port   => [88],
         srange => '$DOMAIN_NETWORKS',
     }
 
     ferm::service { 'kerberos_kdc_udp':
         proto  => 'udp',
-        port   => '88',
+        port   => [88],
         srange => '$DOMAIN_NETWORKS',
     }
 

@@ -38,13 +38,13 @@ class profile::kerberos::kadminserver (
 
     ferm::service { 'kerberos_kpasswd_tcp':
         proto  => 'tcp',
-        port   => '464',
+        port   => [464],
         srange => '$DOMAIN_NETWORKS',
     }
 
     ferm::service { 'kerberos_kpasswd_udp':
         proto  => 'udp',
-        port   => '464',
+        port   => [464],
         srange => '$DOMAIN_NETWORKS',
     }
 
