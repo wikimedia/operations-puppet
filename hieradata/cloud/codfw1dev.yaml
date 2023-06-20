@@ -11,7 +11,7 @@ profile::resolving::nameservers:
   - "ns-recursor.openstack.codfw1dev.wikimediacloud.org"
 
 labsldapconfig:
-  hostname: "cloudservices2005-dev.wikimedia.org"
+  hostname: "cloudservices2004-dev.private.codfw.wikimedia.cloud"
   secondary_hostname: "cloudservices2005-dev.wikimedia.org"
 
 ldap:
