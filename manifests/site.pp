@@ -2647,7 +2647,7 @@ node /^rpki[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
 # https://people.wikimedia.org - self-service file hosting
 # VMs on bullseye, access for all shell users (T280989)
 node 'people1003.eqiad.wmnet', 'people2002.codfw.wmnet' {
-    role(microsites::peopleweb)
+    role(insetup::serviceops_collab)
 }
 
 # people VMs on bookworm
