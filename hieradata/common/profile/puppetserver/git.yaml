@@ -9,8 +9,8 @@ profile::puppetserver::git::repos:
     hooks:
       'pre-commit': 'puppet:///modules/puppetmaster/git/pre-commit'
       'pre-merge': 'puppet:///modules/puppetmaster/git/pre-merge'
-      'post-merge': 'puppet:///modules/puppetserver/git/operations/hooks/post-merge.sh'
-      'pre-rebase': 'puppet:///modules/profile/puppetserver/git/pre-rebase'
+      'post-merge': 'puppet:///modules/profile/puppetserver/git/operations/hooks/post-merge.sh'
+      'pre-rebase': 'puppet:///modules/puppetmaster/git/pre-rebase'
   'netbox-hiera':
     branch: 'master'
     origin: 'https://netbox-exports.wikimedia.org/netbox-hiera'
