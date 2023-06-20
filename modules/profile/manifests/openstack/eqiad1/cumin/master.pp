@@ -122,23 +122,15 @@ class profile::openstack::eqiad1::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        file { '/etc/nfs-mounts.yaml':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('labstore/nfs-mounts.yaml.erb'),
+        cloudnfs::volume_config { '/etc/nfs-mounts.yaml':
+            host_scratch => false,
         }
 
         file { '/usr/local/sbin/nfs-hostlist':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0550',
-            source  => 'puppet:///modules/profile/openstack/eqiad1/cumin/nfs_hostlist.py',
-            require => [
-                File['/etc/nfs-mounts.yaml'],
-                File['/etc/cumin'],
-            ],
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0550',
+            source => 'puppet:///modules/profile/openstack/eqiad1/cumin/nfs_hostlist.py',
         }
 }

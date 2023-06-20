@@ -6,9 +6,6 @@
 # We use defined() instead of hiera to apply
 # resources associated with the mounts in one place.
 #
-# [*project]
-#  project name to determine eligibility via mount_nfs_volume.rb
-#
 # [*mount_path]
 #  path on disk to mount share
 #
@@ -34,7 +31,6 @@ define labstore::nfs_mount(
     Array                      $options       = [],
     Integer                    $block_timeout = 180,
     Pattern[/^4(:?\.[0-2])?$/] $nfs_version   = '4',
-    Optional[String]           $project       = undef,
     Optional[Stdlib::Host]     $server        = undef,
     Optional[Stdlib::Unixpath] $share_path    = undef,
 ){

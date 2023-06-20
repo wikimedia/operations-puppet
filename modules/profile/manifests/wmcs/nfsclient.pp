@@ -12,10 +12,10 @@ class profile::wmcs::nfsclient(
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
 ) {
-    $project_hostpath = mount_nfs_volume($::wmcs_project, 'project')
-    $home_hostpath = mount_nfs_volume($::wmcs_project, 'home')
-    $scratch_hostpath = mount_nfs_volume($::wmcs_project, 'scratch')
-    $maps_hostpath = mount_nfs_volume($::wmcs_project, 'maps')
+    $project_hostpath = cloudnfs::mount_volume('project')
+    $home_hostpath = cloudnfs::mount_volume('home')
+    $scratch_hostpath = cloudnfs::mount_volume('scratch')
+    $maps_hostpath = cloudnfs::mount_volume('maps')
 
     if $project_hostpath {
         $project_host = split($project_hostpath, ':')[0]
@@ -26,7 +26,6 @@ class profile::wmcs::nfsclient(
         # changing this would be quite disruptive so put off for a while.
         labstore::nfs_mount { 'project-on-labstore-secondary':
             mount_name  => 'project',
-            project     => $::wmcs_project,
             options     => ['rw', $mode],
             mount_path  => '/mnt/nfs/labstore-secondary-project',
             share_path  => $project_path,
@@ -48,7 +47,6 @@ class profile::wmcs::nfsclient(
 
         labstore::nfs_mount { 'home-on-labstore-secondary':
             mount_name  => 'home',
-            project     => $::wmcs_project,
             options     => ['rw', $home_mode],
             mount_path  => '/mnt/nfs/labstore-secondary-home',
             share_path  => $home_path,
@@ -70,7 +68,6 @@ class profile::wmcs::nfsclient(
 
         labstore::nfs_mount { 'scratch-on-secondary':
             mount_name  => 'scratch',
-            project     => $::wmcs_project,
             options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
             mount_path  => '/mnt/nfs/secondary-scratch',
             server      => $scratch_host,
@@ -87,10 +84,9 @@ class profile::wmcs::nfsclient(
 
     if $::wmcs_project == 'toolsbeta' {
         # Sets up symlinks from new tools mounts to /data/project and /home
-        if mount_nfs_volume($::wmcs_project, 'toolsbeta-project') {
+        if cloudnfs::mount_volume('toolsbeta-project') {
             labstore::nfs_mount { 'toolsbeta-project-on-nfs-01':
                 mount_name  => 'toolsbeta-project',
-                project     => $::wmcs_project,
                 options     => ['rw', $home_mode],
                 mount_path  => '/mnt/nfs/nfs-01-toolsbeta-project',
                 server      => 'toolsbeta-nfs.svc.toolsbeta.eqiad1.wikimedia.cloud',
@@ -105,10 +101,9 @@ class profile::wmcs::nfsclient(
                 require => Labstore::Nfs_mount['toolsbeta-project-on-nfs-01'],
             }
         }
-        if mount_nfs_volume($::wmcs_project, 'toolsbeta-home') {
+        if cloudnfs::mount_volume('toolsbeta-home') {
             labstore::nfs_mount { 'toolsbeta-home-on-nfs-01':
                 mount_name  => 'toolsbeta-home',
-                project     => $::wmcs_project,
                 options     => ['rw', $mode],
                 mount_path  => '/mnt/nfs/nfs-01-toolsbeta-home',
                 server      => 'toolsbeta-nfs.svc.toolsbeta.eqiad1.wikimedia.cloud',
@@ -132,7 +127,6 @@ class profile::wmcs::nfsclient(
 
             labstore::nfs_mount { 'maps-on-secondary':
                 mount_name  => 'maps',
-                project     => $::wmcs_project,
                 options     => ['rw', $home_mode],  # Careful with mode on maps - /home is there
                 mount_path  => '/mnt/nfs/secondary-maps',
                 server      => $maps_host,
@@ -161,10 +155,9 @@ class profile::wmcs::nfsclient(
     # a special purpose instance that uses it for backup or similar.
     if $::wmcs_project == 'tools' {
         # Sets up symlinks from new tools mounts to /data/project and /home
-        if mount_nfs_volume($::wmcs_project, 'tools-project') {
+        if cloudnfs::mount_volume('tools-project') {
             labstore::nfs_mount { 'tools-project-on-labstore-secondary':
                 mount_name  => 'tools-project',
-                project     => $::wmcs_project,
                 options     => ['rw', $home_mode],
                 mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
                 server      => 'tools-nfs.svc.tools.eqiad1.wikimedia.cloud',
@@ -179,10 +172,9 @@ class profile::wmcs::nfsclient(
                 require => Labstore::Nfs_mount['tools-project-on-labstore-secondary'],
             }
         }
-        if mount_nfs_volume($::wmcs_project, 'tools-home') {
+        if cloudnfs::mount_volume('tools-home') {
             labstore::nfs_mount { 'tools-home-on-labstore-secondary':
                 mount_name  => 'tools-home',
-                project     => $::wmcs_project,
                 options     => ['rw', $mode],
                 mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
                 server      => 'tools-nfs.svc.tools.eqiad1.wikimedia.cloud',
@@ -199,11 +191,10 @@ class profile::wmcs::nfsclient(
         }
     }
 
-    if mount_nfs_volume($::wmcs_project, 'dumps') {
+    if cloudnfs::mount_volume('dumps') {
         $dumps_servers.each |String $server| {
             labstore::nfs_mount { $server:
                 mount_name  => 'dumps',
-                project     => $::wmcs_project,
                 options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
                 mount_path  => "/mnt/nfs/dumps-${server}",
                 server      => $server,

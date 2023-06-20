@@ -41,13 +41,9 @@ class cloudnfs::fileserver::exports(
         require    => User['nfsmanager'],
     }
 
-    file { '/etc/nfs-mounts.yaml':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('labstore/nfs-mounts.yaml.erb'),
-        require => [Package['python3'], Package['python3-yaml']],
-        notify  => Service['nfs-exportd'],
+    cloudnfs::volume_config { '/etc/nfs-mounts.yaml':
+        host_scratch => $host_scratch,
+        notify       => Service['nfs-exportd'],
     }
 
     file { '/usr/local/bin/nfs-exportd':

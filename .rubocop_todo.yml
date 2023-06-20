@@ -4,10 +4,6 @@ Metrics/LineLength:
 Style/BlockDelimiters:
   Enabled: false
 
-Style/ClassVars:
-  Exclude:
-    - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
-
 Style/HashSyntax:
   Enabled: false
 

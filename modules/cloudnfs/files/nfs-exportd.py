@@ -335,11 +335,6 @@ def main():
             for filename in os.listdir(exports_d_path)
         ]
 
-        if "public" not in config:
-            # Putting an empty dict in here is easier than constantly checking
-            #  to see if the key is defined.
-            config["public"] = {}
-
         public_paths = write_public_exports(config["public"], exports_d_path)
         project_paths = write_project_exports(config, exports_d_path, args.os_cloud)
 
