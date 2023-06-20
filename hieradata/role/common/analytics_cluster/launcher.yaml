@@ -84,6 +84,9 @@ profile::airflow::instances:
         host: analytics-hive.eqiad.wmnet
         port: 9083
         extra_dejson: {'authMechanism': 'GSSAPI'}
+      datahub_kafka_jumbo:
+        conn_type: datahub_kafka
+        host: kafka-jumbo1001.eqiad.wmnet:9092
 
 profile::contacts::role_contacts: ['Data Engineering']
 
