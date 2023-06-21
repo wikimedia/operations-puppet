@@ -16,15 +16,14 @@ class puppetserver::ca (
         alert("you must set all \$ca_public_key, \$ca_crl, \$ca_private_key when using \$intermediate_ca")
     }
     $base_content = 'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service'
-    $enable_ca = 'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service'
-    $disable_ca = 'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service'
-    $content = $enable.bool2str(
-        [$base_content, $enable_ca].join("\n"),
-        [base_content, $disable_ca].join("\n")
-    )
+    if $enable {
+        $ca_content = 'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service'
+    } else {
+        $ca_content = 'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service'
+    }
     file { "${puppetserver::bootstap_config_dir}/ca.cfg":
         ensure  => file,
-        content => $content,
+        content => "${[$base_content, $ca_content].join("\n")}\n",
         before  => Service['puppetserver'],
     }
     $custom_ca_dir = "${puppetserver::config_dir}/puppetserver/custom_ca"
