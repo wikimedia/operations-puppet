@@ -60,6 +60,10 @@ class beta::autoupdater {
     exec { "/bin/rm -r ${stage_dir}/php-master/extensions":
         refreshonly => true,
         subscribe   => Git::Clone['beta-mediawiki-core'],
+        # In case Git::Clone["beta-mediawiki-core"] has some parameter change
+        # it will refresh this exec and we do not need to needlessly remove
+        # exensions if they are already there.
+        unless      => "/usr/bin/test -d \"${stage_dir}/php-master/extensions/.git\"",
         before      => Git::Clone['beta-mediawiki-extensions'],
     }
 
