@@ -159,6 +159,7 @@ class profile::idm(
             status_matches     => [200],
             body_regex_matches => ['signup'],
             follow_redirects   => true,
+            probe_runbook      => 'https://wikitech.wikimedia.org/wiki/IDM/Runbook'
         }
     }
 }
