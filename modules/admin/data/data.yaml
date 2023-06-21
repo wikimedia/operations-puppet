@@ -6809,3 +6809,7 @@ ldap_only_users:
     ensure: present
     realname: William Brown
     email: dreamyjazzwikipedia@gmail.com
+  eccenux:
+    ensure: present
+    realname: Maciej Jaros
+    email: egil@wp.pl
