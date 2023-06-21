@@ -11,7 +11,7 @@ describe 'git::clone' do
         it { is_expected.to compile.with_all_deps }
         it 'checkouts a workspace' do
           is_expected.to contain_exec('git_clone_testing_repo')
-            .with_command('/usr/bin/git  clone https://gerrit.wikimedia.org/r/testing_repo /srv/git/testing_repo')
+            .with_command('/usr/bin/git clone https://gerrit.wikimedia.org/r/testing_repo /srv/git/testing_repo')
         end
         it 'tracks the proper created file' do
           is_expected.to contain_exec('git_clone_testing_repo')

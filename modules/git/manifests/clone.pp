@@ -1,49 +1,44 @@
-# Definition: git::clone
+# @summary Creates a git clone of a specified origin into a top level directory.
 #
-# Creates a git clone of a specified origin into a top level directory.
-#
-# === Required parameters
-#
-# $+directory+:: path to clone the repository into.
+# @param directory path to clone the repository into.
 #
 # === Optional parameters
 #
-# $+origin+:: If this is not specified, the $title repository will be
-#             checked out from gerrit using a default gerrit url.
-#             If you set this, please specify the full repository url.
-# $+branch+:: Branch you would like to check out.
-# $+ensure+:: _absent_, _present_, or _latest_.  Defaults to _present_.
-#             - _present_ (default) will just clone once.
-#             - _latest_ will execute a git pull if there are any changes.
-#             - _absent_ will ensure the directory is deleted.
-# $+owner+:: Owner of $directory, default: _root_.  git commands will be run
-#  by this user.
-# $+group+:: Group owner of $directory, default: 'root'
-# $+bare+:: $directory is the GIT_DIR itself. Workspace is not checked out.
-#           Default: false
-# $+recurse_submodules:: If true, git
-# $+shared+:: Enable git's core.sharedRepository=group setting for sharing the
-# repository between serveral users, default: false
-# $+umask+:: umask value that git operations should run under,
-#            default 002 if shared, 022 otherwise.
-# $+mode+:: Permission mode of $directory, default: 2755 if shared, 0755 otherwise
-# $+ssh+:: SSH command/wrapper to use when checking out, default: ''
-# $+timeout+:: Time out in seconds for the exec command, default: 300
-# $+source+:: Where to request the repo from, if $origin isn't specified
-#             'phabricator', 'github', 'gitlab' and 'gerrit' accepted, default is 'gerrit'
-# $+environment_variables+:: An array of additional environment variables to pass
-#                           to the git exec.
-# $+update_method+:: Specifies the method to use to update the checkout when
-#                    $ensure is _latest_.  The value must be _pull_ or _checkout_.
-#                    - _pull_ will perform a merging pull if upstream changes.
-#                    - _checkout_ will perform a forced checkout of the designated
+# @param origin If this is not specified, the $title repository will be
+#               checked out from gerrit using a default gerrit url.
+#               If you set this, please specify the full repository url.
+# @param branch Branch you would like to check out.
+# @param ensure 'absent', 'present', or 'latest'.
+#             - 'present' will just clone once.
+#             - 'latest' will execute a git pull if there are any changes.
+#             - 'absent' will ensure the directory is deleted.
+# @param owner Owner of $directory. git commands will be run by this user.
+# @param group Group owner of $directory.
+# @param bare  $directory is the GIT_DIR itself. Workspace is not checked out.
+# @param recurse_submodules If true, git recurse submodules
+# @param shared Enable git's core.sharedRepository=group setting for sharing the
+#               repository between serveral users, default: false
+# @param umask  umask value that git operations should run under,
+#               default 002 if shared, 022 otherwise.
+# @param mode Permission mode of $directory, default: 2755 if shared, 0755 otherwise
+# @param ssh SSH command/wrapper to use when checking out
+# @param timeout  Time out in seconds for the exec command
+# @param depth the depth to clone if not present use full
+# @param source Where to request the repo from, if $origin isn't specified
+#               'phabricator', 'github', 'gitlab' and 'gerrit' accepted
+# @param environment_variables An array of additional environment variables to pass
+#                              to the git exec.
+# @param remote_name the remote name used when setting the url
+# @param update_method Specifies the method to use to update the checkout when
+#                      The value must be _pull_ or _checkout_.
+#                      - 'pull' will perform a merging pull if upstream changes.
+#                      - 'checkout' will perform a forced checkout of the designated
 #                      branch if upstream changes.
-#                    Defaults to 'pull' for compatibility, but 'checkout' is the
-#                    recommended value for clones that you want to be automatically
-#                    maintained.
+#                      Defaults to 'pull' for compatibility, but 'checkout' is the
+#                      recommended value for clones that you want to be automatically
+#                      maintained.
 #
-# === Example usage
-#
+# @example
 #   git::clone { 'my_clone_name':
 #       directory => '/path/to/clone/container',
 #       origin    => 'http://blabla.org/core.git',
@@ -65,24 +60,24 @@
 #   }
 #
 define git::clone(
-    $directory,
-    $origin=undef,
-    $branch='',
-    $ssh='',
-    $ensure='present',
-    $owner='root',
-    $group='root',
-    $shared=false,
-    $timeout='300',
-    $depth='full',
-    $bare=false,
-    $recurse_submodules=false,
-    $umask=undef,
-    $mode=undef,
-    $source='gerrit',
-    $environment_variables=[],
-    String[1] $remote_name = 'origin',
-    Enum['pull', 'checkout'] $update_method = 'pull',
+    Stdlib::Unixpath                    $directory,
+    Enum['absent', 'latest', 'present'] $ensure                = 'present',
+    Enum['pull', 'checkout']            $update_method         = 'pull',
+    String[1]                           $owner                 = 'root',
+    String[1]                           $group                 = 'root',
+    Boolean                             $shared                = false,
+    Integer                             $timeout               = 300,
+    Boolean                             $bare                  = false,
+    Boolean                             $recurse_submodules    = false,
+    String[1]                           $source                = 'gerrit',
+    Array[String[1]]                    $environment_variables = [],
+    String[1]                           $remote_name           = 'origin',
+    Optional[Integer[1]]                $depth                 = undef,
+    Optional[String[1]]                 $origin                = undef,
+    Optional[String[1]]                 $branch                = undef,
+    Optional[String[1]]                 $ssh                   = undef,
+    Optional[Pattern[/\A\d{3,4}\z/]]    $umask                 = undef,
+    Optional[Stdlib::Filemode]          $mode                  = undef,
 ) {
 
     ensure_packages('git')
@@ -134,50 +129,40 @@ define git::clone(
 
         # otherwise clone the repository
         default: {
-            $recurse_submodules_arg = $recurse_submodules ? {
-                true    => '--recurse-submodules ',
-                default => '',
-            }
-            # if branch was specified
-            if !empty($branch) {
-                $brancharg = "-b ${branch} "
-            }
-            # else don't checkout a non-default branch
-            else {
-                $brancharg = ''
-            }
-            if !empty($ssh) {
-                $env = $environment_variables << "GIT_SSH=${ssh}"
-            } else {
-                $env = $environment_variables
+            $recurse_submodules_arg = $recurse_submodules.bool2str('--recurse-submodules', '')
+            $brancharg = $branch.then |$x| { "-b ${branch}" }
+            $env = $ssh ? {
+                undef   => $environment_variables,
+                default => $environment_variables << "GIT_SSH=${ssh}",
             }
 
-            $deptharg = $depth ?  {
-                'full'  => '',
-                default => " --depth=${depth}"
-            }
+            $deptharg = $depth.then |$x| { "--depth=${depth}" }
 
             if $bare == true {
-                $barearg = ' --bare'
+                $barearg = '--bare'
                 $git_dir = $directory
             } else {
                 $barearg = ''
                 $git_dir = "${directory}/.git"
             }
 
-            if $shared {
-                $shared_arg = '-c core.sharedRepository=group'
-            } else {
-                $shared_arg = ''
-            }
 
+            $shared_arg = $shared.bool2str('-c core.sharedRepository=group', '')
             $git = '/usr/bin/git'
 
-            # set PATH for following execs
-            Exec { path => '/usr/bin:/bin' }
+
+            $clone_cmd = @("COMMAND"/L)
+            ${git} ${shared_arg} clone \
+                ${recurse_submodules_arg} \
+                ${brancharg} \
+                ${remote} \
+                ${deptharg} \
+                ${barearg} \
+                ${directory}
+            |- COMMAND
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg}${barearg} ${directory}",
+                command     => $clone_cmd.split(/\s+/).join(' '),
                 provider    => shell,
                 logoutput   => on_failure,
                 cwd         => '/tmp',
@@ -220,13 +205,19 @@ define git::clone(
                     default => $branch,
                 }
                 $ref_to_check = $branch ? {
-                    ''      => "remotes/${remote_name}/HEAD",
+                    undef   => "remotes/${remote_name}/HEAD",
                     default => "remotes/${remote_name}/${branch}",
                 }
+                $checkout_cmd = @("COMMAND"/L)
+                ${git} ${shared_arg} checkout --force -B --quiet \
+                    ${local_branch_expression} \
+                    ${ref_to_check} \
+                    ${recurse_submodules_arg}
+                |- COMMAND
                 $update_cmd = $update_method ? {
-                    'checkout' => "${git} ${shared_arg} checkout --force -B ${local_branch_expression} ${ref_to_check} ${recurse_submodules_arg}--quiet",
-                    'pull'     => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
-                }
+                    'checkout' => $checkout_cmd,
+                    'pull'     => "${git} ${shared_arg} pull ${recurse_submodules_arg} --quiet ${deptharg}",
+                }.split(/\s+/).join(' ')
                 exec { "git_${update_method}_${title}":
                     cwd       => $directory,
                     command   => $update_cmd,
@@ -257,7 +248,6 @@ define git::clone(
                     }
                 }
             }
-
         }
     }
 }
