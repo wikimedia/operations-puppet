@@ -18,6 +18,13 @@ class ssh::client (
 ) {
     ensure_packages('openssh-client')
 
+    file { '/etc/ssh':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     if $manage_ssh_keys and $::use_puppetdb {
         file { '/etc/ssh/ssh_known_hosts':
             ensure  => file,
