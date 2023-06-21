@@ -19,3 +19,7 @@ profile::contacts::role_contacts: ["WMCS"]
 
 profile::openstack::base::pdns::query_local_address: "%{facts.fqdn}"
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org
+
+profile::dbbackups::mydumper::enabled: true
+profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
+profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'

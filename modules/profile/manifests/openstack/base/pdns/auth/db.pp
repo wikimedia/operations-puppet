@@ -63,4 +63,6 @@ class profile::openstack::base::pdns::auth::db(
         srange => "(@resolve((${join($designate_hosts,' ')}))
                    @resolve((${join($designate_hosts,' ')}), AAAA))"
     }
+
+    backup::set { 'mysql-srv-backups-dumps-latest': }
 }
