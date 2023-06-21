@@ -39,7 +39,7 @@ describe 'git::clone' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_exec('git_checkout_testing_repo')
-            .with_command(/ checkout --force -B /)
+            .with_command(/ checkout --force /)
         end
       end
     end

@@ -209,8 +209,8 @@ define git::clone(
                     default => "remotes/${remote_name}/${branch}",
                 }
                 $checkout_cmd = @("COMMAND"/L)
-                ${git} ${shared_arg} checkout --force -B --quiet \
-                    ${local_branch_expression} \
+                ${git} ${shared_arg} checkout --force --quiet \
+                    -B ${local_branch_expression} \
                     ${ref_to_check} \
                     ${recurse_submodules_arg}
                 |- COMMAND
