@@ -26,11 +26,11 @@ define ferm::service(
     Optional[Ferm::Port] $port = undef,
     Optional[Ferm::Portrange] $port_range = undef,
     Wmflib::Ensure $ensure  = present,
-    $desc    = '',
-    $prio    = '10',
+    String $desc    = '',
+    Integer[0,99] $prio    = 10,
     Optional[Ferm::Hosts] $srange = undef,
     Optional[Ferm::Hosts] $drange = undef,
-    $notrack = false,
+    Boolean $notrack = false,
 ) {
     if $port == undef and $port_range == undef {
         fail('One of port or port_range must be passed to ferm::service.')
