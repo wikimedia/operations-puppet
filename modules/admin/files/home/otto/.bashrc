@@ -122,3 +122,14 @@ test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_i
 # Prompt for logging into a kerberos enabled host and no kerberos ticket is active.
 which klist >/dev/null && (klist -s || (echo -n "Kerberos " && kinit))
 
+# shortcut function to use helmfile dirname as namespace arg to kube_env,
+# and print the currently active kube_env.
+# (only if kube_env is defined)
+if [[ $(type -t kube_env) == function ]]; then
+    henv() {
+        if [ -n "${1}" ]; then
+            kube_env $(basename $(pwd)) "${1}"
+        fi
+        __kube_env_ps1
+    }
+fi
