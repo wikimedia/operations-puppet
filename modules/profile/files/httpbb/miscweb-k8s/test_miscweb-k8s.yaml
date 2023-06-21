@@ -51,3 +51,16 @@ https://bienvenida.wikimedia.org:
 - path: /.git/config
   assert_status: 403
 
+https://transparency.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://wikimediafoundation.org/about/transparency/current/
+
+https://transparency-archive.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Transparency Report
+- path: /privacy.html
+  assert_status: 200
+  assert_body_contains: flourish in an ecosystem

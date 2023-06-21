@@ -1,18 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-https://transparency.wikimedia.org:
-- path: /
-  assert_status: 302
-  assert_headers:
-    Location: https://wikimediafoundation.org/about/transparency/current/
-
-https://transparency-archive.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: Transparency Report
-- path: /privacy.html
-  assert_status: 200
-  assert_body_contains: flourish in an ecosystem
-
 https://static-codereview.wikimedia.org:
 - path: /index.html
   assert_status: 200
