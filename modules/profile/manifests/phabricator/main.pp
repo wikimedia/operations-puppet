@@ -474,8 +474,9 @@ class profile::phabricator::main (
             auto_ferm      => true,
             auto_ferm_ipv6 => true,
     }
-    # Backup repositories
+    # Backup repositories and home dirs
     backup::set { 'srv-repos': }
+    backup::set { 'home': }
 
     class { '::exim4':
         variant => 'heavy',
