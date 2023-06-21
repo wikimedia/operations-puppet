@@ -1,9 +1,12 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | String[1] $suffix,
+      Array[Stdlib::Fqdn] $openstack_controllers,
+| -%>
 # The cn=admin DN and the members of the "Directory Managers" group
 # have full write access. The break here means that others will not be
 # considered for this rule
 access to *
-	by dn="cn=admin,<%= @suffix %>" write
+	by dn="cn=admin,<%= $suffix %>" write
 	by group/groupOfNames/member="cn=ldap_ops,ou=groups,dc=wikimedia,dc=org" write
 	by * break
 
@@ -15,8 +18,12 @@ limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited siz
 
 # novaobserver is an account used only for keystone access.  We don't want it
 #  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
+<%- $keystone_ipv4_addrs = $openstack_controllers.map |$fqdn| { dnsquery::a($fqdn) }.flatten.sort.unique -%>
+<%- $keystone_ipv6_addrs = $openstack_controllers.map |$fqdn| { dnsquery::aaaa($fqdn) || { ['::1'] } }.flatten.sort.unique -%>
 access to dn=uid=novaobserver,ou=people,dc=wikimedia,dc=org
-<% @openstack_controllers.each do |keystone_host| -%>
-	by peername.ip=<%=scope.function_ipresolve([keystone_host, 4])%> anonymous read
-	by peername.ipv6=<%=scope.function_ipresolve([keystone_host, 6])%> anonymous read
-<% end -%>
+<% $keystone_ipv4_addrs.each |$v4| { -%>
+	by peername.ip=<%= $v4 %> anonymous read
+<% } -%>
+<% $keystone_ipv6_addrs.each |$v6| { -%>
+	by peername.ipv6=<%= $v6 %> anonymous read
+<% } -%>

@@ -22,6 +22,11 @@ class profile::openldap (
 
     $suffix = 'dc=wikimedia,dc=org'
 
+    $epp_params = {
+        'suffix'                => $suffix,
+        'openstack_controllers' => $openstack_controllers,
+    }
+
     class { '::openldap':
         server_id       => $server_id,
         sync_pass       => $sync_pass,
@@ -33,7 +38,7 @@ class profile::openldap (
         extra_schemas   => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                             'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
         extra_indices   => 'openldap/main-indices.erb',
-        extra_acls      => template('openldap/main-acls.erb'),
+        extra_acls      => epp('openldap/main-acls.epp', $epp_params),
         mirrormode      => $mirror_mode,
         master          => $master,
         hash_passwords  => $hash_passwords,
