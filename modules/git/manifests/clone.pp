@@ -205,7 +205,7 @@ define git::clone(
                 command   => "${git} remote set-url origin ${remote}",
                 provider  => shell,
                 logoutput => on_failure,
-                unless    => "[ \"\$(${git} remote get-url origin)\" == \"${remote}\" ]",
+                unless    => "[ \"\$(${git} remote get-url origin)\" = \"${remote}\" ]",
                 user      => $owner,
                 group     => $group,
                 umask     => $git_umask,
