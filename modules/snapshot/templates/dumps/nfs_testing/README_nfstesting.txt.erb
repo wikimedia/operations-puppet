@@ -52,12 +52,33 @@ the pagetitles dump, and wikidata entity dumps for a small range of entities.
  
 Test the categories rdf dump:
 /usr/bin/php /srv/mediawiki/multiversion/MWScript.php maintenance/dumpCategoriesAsRdf.php --wiki=olowiki --format=ttl 2> <%= @homedir -%>/nfs_testing/categories_rdf.log | /usr/bin/gzip > <%= @otherdumpsdir -%>/categoriesrdf/testrun
- 
+Check the output to see that it looks reasonable.
+
 Test the global blocks dump:
-/usr/local/bin/dump-global-blocks.sh --config <%= @confsdir -%>/otherdumps.conf
+/usr/local/bin/dump-global-blocks.sh --config <%= @confsdir -%>/otherdumps.conf --outputdir <%= @otherdumpsdir -%>/globalblocks
+Check the output to see that it looks reasonable.
  
 Test the wikidata entity dumps:
-/usr/bin/php /srv/mediawiki/multiversion/MWScript.php extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard 500 --sharding-factor FIXME --batch-size FIXME --format ttl --entity-type item --entity-type property --dbgroupdefault dump --part-id 10-batch 2000025 2000525 2>> <%= @homedir -%>/nfs_testing/wikidata_entities.log | gzip -9 > <%= @otherdumpsdir -%>/wikidata-entity-dumps-test.gz
+Remove any files from a previous run.
+rm -f <%= @homedir -%>/nfs_testing/wikidata_entities.log
+rm -f <%= @homedir -%>/nfs_testing/wikidata_entities.log | gzip -9 > <%= @otherdumpsdir -%>/wikidata-entity-dumps-test.gz
+/usr/bin/php /srv/mediawiki/multiversion/MWScript.php extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard 1 --sharding-factor 2 --batch-size 250 --first-page-id 100880001 --last-page-id 100880501 --flavor full-dump --entity-type item --entity-type property --dbgroupdefault dump --part-id 1 2>> <%= @homedir -%>/nfs_testing/wikidata_entities.log | gzip -9 > <%= @otherdumpsdir -%>/wikidata-entity-dumps-test.gz
+Check the output to see that it looks reasonable.
 
-Test the adds-changed sumps:
-Coming soon
+Test the adds-changed dumps:
+Make output directories for for igwiki, snwiki, olowiki.
+mkdir -p <%= @otherdumpsdir -%>/incr/olowiki <%= @otherdumpsdir -%>/incr/igwiki <%= @otherdumpsdir -%>/incr/snwiki
+On the dumpsdata host with the nfs share you want to test, as the dumpsgen user, rsync the files from the igwiki
+incr run from a week ago to the test mount point. We choose a week rather than a day or a month because these are
+small wikis and we want to make sure there are a few but not tons of revisions that will be dumped in our test.
+(substitute in the right YYYYMMDD and the right dumpsdata host values below, fix up the target path to be right)
+rsync -av --bwlimit=100000 dumpsdataXXX.eqiad.wmnet::data/otherdumps/incr/olowiki/202XMMDD /some/path/nfstest/otherdumps/incr/olowiki
+Repeat this for snwiki, igwiki.
+Back on the snapshot testbed, for each of olowiki, snwiki, igwiki, rename the subdir to have yesterday's date (YYYYMMDD always):
+mv <%= @otherdumpsdir -%>/incr/olowiki/old-date <%= @otherdumpsdir -%>/incr/olowiki/yesterday-date
+mv <%= @otherdumpsdir -%>/incr/igwiki/old-date <%= @otherdumpsdir -%>/incr/igwiki/yesterday-date
+mv <%= @otherdumpsdir -%>/incr/snwiki/old-date <%= @otherdumpsdir -%>/incr/snwiki/yesterday-date
+Now run the adds-changes dumps:
+/usr/bin/python3 /srv/deployment/dumps/dumps/xmldumps-backup/generatemiscdumps.py --configfile <%= @confsdir -%>/addschanges.conf --dumptype incrdumps
+Check the output to see that it looks reasonable.
+
