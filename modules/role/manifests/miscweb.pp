@@ -13,7 +13,6 @@ class role::miscweb {
     include profile::tlsproxy::envoy             # TLS termination
 
     include profile::microsites::static_rt       # https://static-rt.wikimedia.org
-    include profile::microsites::transparency    # https://transparency.wikimedia.org
     include profile::microsites::research        # https://research.wikimedia.org (T183916)
     include profile::microsites::design          # https://design.wikimedia.org (T185282)
     include profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
