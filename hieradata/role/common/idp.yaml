@@ -215,6 +215,14 @@ profile::idp::services:
       - ops
       - nda
       - wmf
+  netbox_oidc:
+    id: 33
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://netbox(-next)?\.wikimedia\.org(/.*)?'
+    required_groups:
+      - ops
+      - wmf
+      - nda
 profile::idp::ldap_attributes:
   - cn
   - memberOf
