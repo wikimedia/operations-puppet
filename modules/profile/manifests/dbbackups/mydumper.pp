@@ -15,8 +15,12 @@
 #             'Tue *-*-* 00:00:00' for backwards compatibility)
 
 class profile::dbbackups::mydumper (
-    Boolean $enabled  = lookup('profile::dbbackups::mydumper::enabled', {default_value => true}),
-    String  $schedule = lookup('profile::dbbackups::mydumper::schedule', {default_value => 'Tue *-*-* 00:00:00'}),
+    Boolean $enabled  = lookup('profile::dbbackups::mydumper::enabled',
+      {default_value => true}),
+    String  $schedule = lookup('profile::dbbackups::mydumper::schedule',
+      {default_value => 'Tue *-*-* 00:00:00'}),
+    String  $config = lookup('profile::dbbackups::mydumper::config',
+      {default_value => ''}),
 ) {
 
     include ::passwords::mysql::dump
@@ -88,13 +92,18 @@ class profile::dbbackups::mydumper (
     $password = $passwords::mysql::dump::pass
     $stats_user = $passwords::mysql::dump::stats_user
     $stats_password = $passwords::mysql::dump::stats_pass
+    if $config == '' {
+        $template = "profile/dbbackups/${::hostname}.cnf.erb"
+    } else {
+        $template = $config
+    }
     file { '/etc/wmfbackups/backups.cnf':
         ensure    => present,
         owner     => 'dump',
         group     => 'dump',
         mode      => '0400',
         show_diff => false,
-        content   => template("profile/dbbackups/${::hostname}.cnf.erb"),
+        content   => template($template),
     }
     # separate file for common statistics db config
     file { '/etc/wmfbackups/statistics.cnf':
