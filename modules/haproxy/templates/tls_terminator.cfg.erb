@@ -138,6 +138,8 @@ frontend http
 
     # Needed for logging purposes
     capture request header Host len 25
+    # declare a capture slot with id 0 for X-Cache-Status
+    declare capture response len 10
 
     # we can be rather aggresive regarding timeouts here as only impact http to https redirections
     # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
@@ -152,6 +154,7 @@ frontend http
     # Provide X-Cache headers
     http-after-response set-header X-Cache "<%= @hostname %> int"
     http-after-response set-header X-Cache-Status "int-tls"
+    http-after-response capture hdr(X-Cache-Status) id 0
     # METH_GET is a predefined ACL that includes GET and HEAD requests
     # http://docs.haproxy.org/2.6/configuration.html#7.4
     http-request redirect scheme https code 301 if METH_GET
