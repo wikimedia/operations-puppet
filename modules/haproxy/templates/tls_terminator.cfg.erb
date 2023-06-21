@@ -136,6 +136,9 @@ frontend http
     bind :<%= @http_redirection_port %>
     bind :::<%= @http_redirection_port %> v6only
 
+    # Needed for logging purposes
+    capture request header Host len 25
+
     # we can be rather aggresive regarding timeouts here as only impact http to https redirections
     # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
     timeout http-request 5s
