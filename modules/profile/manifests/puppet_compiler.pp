@@ -33,7 +33,7 @@ class profile::puppet_compiler (
         ferm::service { 'puppetdb-proxy':
             proto  => 'tcp',
             port   => 'https',
-            prio   => '30',
+            prio   => 30,
             # this could be restricted to just localhost i think
             srange => '$LABS_NETWORKS',
         }

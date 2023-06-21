@@ -35,7 +35,7 @@ class profile::dns::recursor (
     ferm::service { 'udp_dns_recursor':
         proto   => 'udp',
         notrack => true,
-        prio    => '07',
+        prio    => 7,
         port    => '53',
         drange  => "(${listen_addrs.join(' ')})",
         srange  => "(${network::constants::aggregate_networks.join(' ')})",
@@ -44,7 +44,7 @@ class profile::dns::recursor (
     ferm::service { 'tcp_dns_recursor':
         proto   => 'tcp',
         notrack => true,
-        prio    => '07',
+        prio    => 7,
         port    => '53',
         drange  => "(${listen_addrs.join(' ')})",
         srange  => "(${network::constants::aggregate_networks.join(' ')})",

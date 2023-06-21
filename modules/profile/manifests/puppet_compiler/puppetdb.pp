@@ -37,7 +37,7 @@ class profile::puppet_compiler::puppetdb (
     ferm::service {'puppet_compiler_web':
         proto  => 'tcp',
         port   => 'http',
-        prio   => '30',
+        prio   => 30,
         # TODO: could restrict this to just the web proxy
         srange => '$LABS_NETWORKS',
     }

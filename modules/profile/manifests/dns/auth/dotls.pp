@@ -63,7 +63,7 @@ class profile::dns::auth::dotls(
     ferm::service { 'tcp_dotls_auth':
         proto   => 'tcp',
         notrack => true,
-        prio    => '06',
+        prio    => 6,
         port    => '853',
         drange  => "(${service_listeners.join(' ')})",
     }

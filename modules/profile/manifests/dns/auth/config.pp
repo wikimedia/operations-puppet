@@ -21,7 +21,7 @@ class profile::dns::auth::config(
     ferm::service { 'udp_dns_auth':
         proto   => 'udp',
         notrack => true,
-        prio    => '05',
+        prio    => 5,
         port    => '53',
         drange  => "(${service_listeners.join(' ')})",
     }
@@ -29,7 +29,7 @@ class profile::dns::auth::config(
     ferm::service { 'tcp_dns_auth':
         proto   => 'tcp',
         notrack => true,
-        prio    => '05',
+        prio    => 5,
         port    => '53',
         drange  => "(${service_listeners.join(' ')})",
     }
