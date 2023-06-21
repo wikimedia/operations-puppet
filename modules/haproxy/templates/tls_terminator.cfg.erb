@@ -147,6 +147,11 @@ frontend http
     # set the maximum inactivity time on the client side
     timeout client 10s
 
+    # Provide Server header
+    http-after-response set-header Server HAProxy
+    # Provide X-Cache headers
+    http-after-response set-header X-Cache "<%= @hostname %> int"
+    http-after-response set-header X-Cache-Status "int-tls"
     # METH_GET is a predefined ACL that includes GET and HEAD requests
     # http://docs.haproxy.org/2.6/configuration.html#7.4
     http-request redirect scheme https code 301 if METH_GET
