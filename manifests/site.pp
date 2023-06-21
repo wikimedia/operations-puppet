@@ -1482,7 +1482,7 @@ node 'phab2002.codfw.wmnet' {
 }
 
 # temp test VM for T335080
-node 'phab-test1002.eqiad.wmnet' {
+node 'phab-test1001.eqiad.wmnet' {
     role(insetup::serviceops_collab)
 }
 
