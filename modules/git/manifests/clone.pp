@@ -81,6 +81,7 @@ define git::clone(
     $mode=undef,
     $source='gerrit',
     $environment_variables=[],
+    String[1] $remote_name = 'origin',
     Enum['pull', 'checkout'] $update_method = 'pull',
 ) {
 
@@ -200,12 +201,12 @@ define git::clone(
             }
 
             # Ensure that the URL for 'origin' is always up-to-date.
-            exec { "git_set_origin_${title}":
+            exec { "git_set_${remote_name}_${title}":
                 cwd       => $directory,
-                command   => "${git} remote set-url origin ${remote}",
+                command   => "${git} remote set-url ${remote_name} ${remote}",
                 provider  => shell,
                 logoutput => on_failure,
-                unless    => "[ \"\$(${git} remote get-url origin)\" = \"${remote}\" ]",
+                unless    => "[ \"\$(${git} remote get-url ${remote_name})\" = \"${remote}\" ]",
                 user      => $owner,
                 group     => $group,
                 umask     => $git_umask,
@@ -215,12 +216,12 @@ define git::clone(
             # if $ensure == latest, update the checkout when there are upstream changes.
             if $ensure == 'latest' {
                 $local_branch_expression = $branch ? {
-                    ''      => '$(git remote show origin | awk -F": " \'$1~/HEAD branch/ {print $2; exit}\')',
+                    ''      => "$(git remote show ${remote_name} | awk -F': ' '\$1~/HEAD branch/ {print \$2; exit}')",
                     default => $branch,
                 }
                 $ref_to_check = $branch ? {
-                    ''      => 'remotes/origin/HEAD',
-                    default => "remotes/origin/${branch}",
+                    ''      => "remotes/${remote_name}/HEAD",
+                    default => "remotes/${remote_name}/${branch}",
                 }
                 $update_cmd = $update_method ? {
                     'checkout' => "${git} ${shared_arg} checkout --force -B ${local_branch_expression} ${ref_to_check} ${recurse_submodules_arg}--quiet",
@@ -237,7 +238,7 @@ define git::clone(
                     user      => $owner,
                     group     => $group,
                     umask     => $git_umask,
-                    require   => Exec["git_set_origin_${title}"],
+                    require   => Exec["git_set_${remote_name}_${title}"],
                 }
                 # If we want submodules up to date, then we need
                 # to run git submodule update --init after

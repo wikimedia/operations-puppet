@@ -49,6 +49,7 @@ class homer(
   git::clone { 'homer_private_repo':
       ensure                => 'present',
       origin                => "ssh://${private_git_peer}/srv/homer/private",
+      remote_name           => 'peer',
       directory             => $private_repo,
       environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
       owner                 => 'root',
