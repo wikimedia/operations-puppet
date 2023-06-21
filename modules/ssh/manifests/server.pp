@@ -70,6 +70,15 @@ class ssh::server (
         purge   => true,
     }
 
+    # The privilege separation dir for sshd must exist for sshd's
+    # config validation command to complete successfully
+    file { '/run/sshd':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/ssh/sshd_config':
         ensure       => file,
         owner        => 'root',
