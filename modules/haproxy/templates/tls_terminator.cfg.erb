@@ -143,11 +143,15 @@ frontend http
 
     # we can be rather aggresive regarding timeouts here as only impact http to https redirections
     # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
-    timeout http-request 5s
+<%- if @redirection_timeout -%>
+    timeout http-request <%= @redirection_timeout['http_request'] %>s
     # set the maximum allowed time to wait for a new HTTP request to appear
-    timeout http-keep-alive 10s
+    timeout http-keep-alive <%= @redirection_timeout['keep_alive'] %>s
     # set the maximum inactivity time on the client side
-    timeout client 10s
+    timeout client <%= @redirection_timeout['client'] %>s
+    # inactivity timeout on the client side for half-closed connections
+    timeout client-fin <%= @redirection_timeout['client_fin'] %>s
+<%- end -%>
 
     # Provide Server header
     http-after-response set-header Server HAProxy

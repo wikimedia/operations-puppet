@@ -94,6 +94,7 @@ define haproxy::tls_terminator(
     Optional[Stdlib::Port] $prometheus_port = undef,
     Optional[Array[Haproxy::Sticktable]] $sticktables = undef,
     Optional[Stdlib::Port] $http_redirection_port = undef,
+    Optional[Haproxy::Timeout] $redirection_timeout = $undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {

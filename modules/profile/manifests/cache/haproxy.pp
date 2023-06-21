@@ -31,6 +31,7 @@ class profile::cache::haproxy(
     Boolean $do_systemd_hardening = lookup('profile::cache::haproxy::do_systemd_hardening', {'default_value'                                     => false}),
     Boolean $enable_coredumps = lookup('profile::cache::haproxy::enable_coredumps', {'default_value'                                             => false}),
     Optional[Stdlib::Port] $http_redirection_port = lookup('profile::cache::haproxy::http_redirection_port', {'default_value'                    => undef}),
+    Optional[Haproxy::Timeout] $redirection_timeout = lookup('profile::cache::haproxy::redirection_timeout', {'default_value'                    => undef}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -183,6 +184,7 @@ class profile::cache::haproxy(
         sticktables           => $sticktables,
         haproxy_version       => $haproxy_version,
         http_redirection_port => $http_redirection_port,
+        redirection_timeout   => $redirection_timeout,
     }
 
     if $monitoring_enabled {
