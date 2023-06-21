@@ -395,11 +395,6 @@ node 'gerrit1003.wikimedia.org', 'gerrit2002.wikimedia.org' {
     role(gerrit)
 }
 
-# old gerrit server, about to be decom'ed forever
-node 'gerrit1001.wikimedia.org' {
-    role(insetup::serviceops_collab)
-}
-
 # Zookeeper and Etcd discovery service nodes
 node /^conf200[456]\.codfw\.wmnet$/ {
     role(configcluster)
