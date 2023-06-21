@@ -125,6 +125,7 @@ class idm::deployment (
 
     redis::instance { String($redis_port):
         settings => $redis_settings,
+        notify   => Service['uwsgi-bitu', 'rq-bitu'],
     }
 
     $logs = ['idm', 'django']
