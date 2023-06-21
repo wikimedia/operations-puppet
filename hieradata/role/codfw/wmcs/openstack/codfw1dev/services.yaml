@@ -1,8 +1,8 @@
-profile::openldap::hostname: cloudservices2005-dev.wikimedia.org
+profile::openldap::hostname: cloudservices2004-dev.codfw.wmnet
 profile::openldap::mirror_mode: false
 profile::openldap::backup: true
 profile::openldap::server_id: 1
-profile::openldap::master: cloudservices2005-dev.wikimedia.org
+profile::openldap::master: cloudservices2004-dev.codfw.wmnet
 profile::openldap::hash_passwords: SHA
 profile::openldap::read_only: false
 profile::openldap::certname: ldap-codfw1dev
