@@ -66,7 +66,7 @@ class pontoon::lb (
     }
 
     ferm::service { 'pontoon-lb-dns-tcp':
-        proto   => 'tcp)',
+        proto   => 'tcp',
         notrack => true,
         port    => 53,
     }
