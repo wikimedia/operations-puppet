@@ -14,6 +14,7 @@ profile::cassandra::settings:
   dc: "%{::site}"
   cluster_name: "ml_cache"
   tls_cluster_name: "ml_cache"
+  tls_use_pki_truststore: true
   super_username: cassandra
   super_password: "%{passwords::cassandra::super_password}"
   target_version: '4.x'
@@ -34,3 +35,16 @@ profile::cassandra::settings:
     legacy_ssl_storage_port_enabled: true
 
 profile::contacts::role_contacts: ["Machine Learning"]
+
+# Temporary override to allow the creation of a bundle
+# that includes the custom CA certificate that Cassandra nodes use.
+# TODO: remove the trusted_certs setting after the cluster
+# is migrated to PKI.
+profile::base::certificates::include_bundle_jks: true
+profile::base::certificates::trusted_certs:
+  package: 'wmf-certificates'
+  bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
+  certs:
+  - '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt'
+  - '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt'
+  - '/etc/cassandra-a/tls/rootCa.crt'
