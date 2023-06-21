@@ -1481,6 +1481,11 @@ node 'phab2002.codfw.wmnet' {
     role(phabricator)
 }
 
+# temp test VM for T335080
+node 'phab-test1001.eqiad.wmnet' {
+    role(insetup::serviceops_collab)
+}
+
 # PKI server
 node 'pki1001.eqiad.wmnet' {
     role(pki::multirootca)
