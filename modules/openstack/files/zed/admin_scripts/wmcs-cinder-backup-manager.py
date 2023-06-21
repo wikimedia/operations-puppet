@@ -108,11 +108,16 @@ if __name__ == "__main__":
                     logging.warning("Unabled to find requested volume %s" % requested_volume)
         if volume_ids:
             logging.info("Backing up %s in project %s" % (volume_ids, project))
+            volume_dict = {volume.id: volume for volume in all_volumes}
             for volume_id in volume_ids:
                 # Create today's backup
-
                 backupargs = [backup_tool, volume_id, "--timeout", str(args.timeout)]
-                if full:
+
+                # our backup nodes go OOM when doing incremental backups of large volumes
+                #  due to the epic metadata overhead. For volumes that are more than 5Tb
+                #  we just have to do full backups every time (and, ideally make those
+                #  backups less often).
+                if full or volume_dict[volume_id].size > 5000:
                     backupargs.append("--full")
 
                 r = subprocess.call(backupargs)
