@@ -51,7 +51,7 @@ define ferm::service(
         $_port = $port_range.join(':')
     }
 
-    @file { "/etc/ferm/conf.d/${prio}_${name}":
+    @file { '/etc/ferm/conf.d/%.2d_%s'.sprintf($prio, $name):
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
