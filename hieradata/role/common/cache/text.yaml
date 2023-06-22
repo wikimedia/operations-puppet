@@ -287,3 +287,7 @@ profile::cache::haproxy::enable_coredumps: true
 # T323557
 profile::cache::varnish::frontend::enable_http_redirection: false
 profile::cache::haproxy::http_redirection_port: 80
+
+# T337825
+profile::cache::kafka::certificate::use_pki_settings: true
+profile::cache::kafka::certificate::ssl_key_password: undef

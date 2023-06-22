@@ -10,7 +10,3 @@ profile::cache::varnish::frontend::cache_be_opts:
     between_bytes_timeout: '33s'
     max_connections: 400000
     probe: 'varnish'
-
-# See T337825
-profile::cache::kafka::certificate::use_pki_settings: true
-profile::cache::kafka::certificate::ssl_key_password: undef
