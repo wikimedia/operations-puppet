@@ -9,8 +9,18 @@
 <% end -%>
 <% elsif @_drange -%>
 &D_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_drange %>);
-<% else -%>
+<% end -%>
+<% if !@_srange and !@_drange and !@_src_sets and !@_dst_sets -%>
 &SERVICE(<%= @proto %>, <%= @_port %>);
+<% end -%>
+<% if @_src_sets and @_dst_sets -%>
+&RD_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_src_sets %>, <%= @_dst_sets %>);
+<% else -%>
+<% if @_src_sets -%>
+&R_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_src_sets %>);
+<% elsif @_dst_sets -%>
+&D_SERVICE(<%= @proto %>, <%= @_port %>, <%= @_dst_sets %>);
+<% end -%>
 <% end -%>
 
 <% if @notrack == true %>

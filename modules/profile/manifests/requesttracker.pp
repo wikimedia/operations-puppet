@@ -24,9 +24,9 @@ class profile::requesttracker {
     }
 
     ferm::service { 'rt-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+        proto    => 'tcp',
+        port     => [80],
+        src_sets => ['CACHES'],
     }
 
     prometheus::blackbox::check::http { 'rt.wikimedia.org':
