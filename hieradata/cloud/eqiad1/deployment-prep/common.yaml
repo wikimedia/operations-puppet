@@ -393,7 +393,7 @@ cache::nodes:
     upload:
         eqiad:
           - 'deployment-cache-upload07.deployment-prep.eqiad1.wikimedia.cloud'
-
+          - 'deployment-cache-upload08.deployment-prep.eqiad1.wikimedia.cloud'
 ## Swift settings
 # Beta requires slower replication - T160990
 # Container server
