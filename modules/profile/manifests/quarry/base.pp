@@ -21,6 +21,7 @@ class profile::quarry::base(
     file { [$clone_path, $result_path_parent, $result_path]:
         ensure  => directory,
         owner   => 'quarry',
+        group   => 'www-data',
         require => User['quarry'],
     }
 
