@@ -13,6 +13,16 @@ class profile::wmcs::instance(
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
     }
 
+    file { '/etc/sudoers.d/T205463-disable-sudo-password-prompts':
+        ensure       => 'present',
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0440',
+        content      => "Defaults passwd_tries=0,lecture=\"never\"\n",
+        validate_cmd => '/usr/sbin/visudo -cqf %',
+        require      => Class['sudo'],
+    }
+
     class { 'profile::ldap::client::labs': }
 
     # make common logs readable
