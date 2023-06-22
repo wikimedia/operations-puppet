@@ -32,3 +32,5 @@ profile::contacts::role_contacts: ['Traffic']
 profile::admin::groups:
  - dns-admins
  - fr-tech-admins
+
+profile::dns::recursor::bind_service: 'gdnsd.service'

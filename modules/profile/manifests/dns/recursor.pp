@@ -5,10 +5,10 @@ class profile::dns::recursor (
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
   Optional[String]                              $bind_service   = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
 ) {
-    include ::network::constants
-    include ::profile::firewall
-    include ::profile::bird::anycast
-    include ::profile::dns::check_dns_query
+    include network::constants
+    include profile::firewall
+    include profile::bird::anycast
+    include profile::dns::check_dns_query
 
     $recdns_vips = $advertise_vips.filter |$vip_fqdn,$vip_params| { $vip_params['service_type'] == 'recdns' }
     $recdns_addrs = $recdns_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
@@ -30,6 +30,7 @@ class profile::dns::recursor (
         webserver_port    => 9199,
         api_allow_from    => $network::constants::aggregate_networks,
         bind_service      => $bind_service,
+        require           => Systemd::Service['gdnsd'],
     }
 
     ferm::service { 'udp_dns_recursor':
