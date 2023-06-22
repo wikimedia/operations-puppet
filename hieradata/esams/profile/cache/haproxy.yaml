@@ -1,9 +1,0 @@
-# port 80 timeout.
-profile::cache::haproxy::redirection_timeout:
-  client: 3
-  client_fin: 1
-  connect: 0 # N/A
-  http_request: 3
-  keep_alive: 3
-  server: 0 # N/A
-  tunnel: 0 # N/A

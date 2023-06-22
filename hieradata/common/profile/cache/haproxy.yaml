@@ -256,11 +256,11 @@ profile::cache::haproxy::timeout:
   tunnel: 3600
 # port 80 timeout.
 profile::cache::haproxy::redirection_timeout:
-  client: 10
+  client: 3
   client_fin: 1
   connect: 0 # N/A
-  http_request: 5
-  keep_alive: 10
+  http_request: 3
+  keep_alive: 3
   server: 0 # N/A
   tunnel: 0 # N/A
 profile::cache::haproxy::tls13_ciphers: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
