@@ -1553,7 +1553,6 @@ node /^karapace100[12]\.eqiad\.wmnet$/ {
 # profile::microsites::design          # https://design.wikimedia.org (T185282)
 # profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
 # profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
-# profile::microsites::static_tendril  # https://tendril.wikimedia.org and https://dbtree.wikimedia.org (T297605)
 node 'miscweb1003.eqiad.wmnet', 'miscweb2003.codfw.wmnet' {
     role(miscweb)
 }
