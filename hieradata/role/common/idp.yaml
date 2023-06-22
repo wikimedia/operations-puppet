@@ -218,7 +218,7 @@ profile::idp::services:
   netbox_oidc:
     id: 33
     service_class: 'OidcRegisteredService'
-    service_id: 'https://netbox(-next)?\.wikimedia\.org(/.*)?'
+    service_id: 'https://netbox(-next)?\.wikimedia\.org\/[\w\/]*'
     required_groups:
       - ops
       - wmf
