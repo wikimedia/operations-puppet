@@ -1087,11 +1087,11 @@ netmon_server: netmon1003.wikimedia.org
 netmon_servers_failover:
     - 'netmon2002.wikimedia.org'
 
-releases_server: releases1002.eqiad.wmnet
+releases_server: releases1003.eqiad.wmnet
 releases_servers_failover:
     - 'releases2002.codfw.wmnet'
     - 'releases2003.codfw.wmnet'
-    - 'releases1003.eqiad.wmnet'
+    - 'releases1002.eqiad.wmnet'
 
 # Defines which Phabricator server is the active
 # one to open needed firewall holes and decide where
