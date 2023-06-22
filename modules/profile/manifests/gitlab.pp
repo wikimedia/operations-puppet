@@ -36,7 +36,11 @@ class profile::gitlab(
     Boolean $manage_host_keys = lookup('profile::ssh::server::manage_host_keys', {default_value => false}),
     Gitlab::Omniauth_providers $auto_sign_in_with = lookup('profile::gitlab::auto_sign_in_with'),
     Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = lookup('profile::gitlab::omniauth_providers'),
-
+    Hash $ldap_config = lookup('ldap'),
+    String $ldap_group_sync_user = lookup('profile::gitlab::ldap_group_sync_user'),
+    String $ldap_group_sync_bot = lookup('profile::gitlab::ldap_group_sync_bot_user'),
+    String $ldap_group_sync_bot_token = lookup('profile::gitlab::ldap_group_sync_bot_token'),
+    Systemd::Timer::Schedule $ldap_group_sync_interval = lookup('profile::gitlab::ldap_group_sync_interval_interval'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -193,30 +197,36 @@ class profile::gitlab(
     }
 
     class { 'gitlab':
-        backup_dir_data          => $backup_dir_data,
-        exporters                => $exporters,
-        monitoring_whitelist     => $monitoring_whitelist,
-        block_auto_created_users => $block_auto_created_users,
-        csp_enabled              => $csp_enabled,
-        csp_report_only          => $csp_report_only,
-        backup_keep_time         => $backup_keep_time,
-        smtp_enabled             => $smtp_enabled,
-        enable_backup            => $active_host == $facts['fqdn'], # enable backups on active GitLab server
-        ssh_listen_addresses     => $ssh_listen_addresses,
-        nginx_listen_addresses   => $nginx_listen_addresses,
-        enable_restore           => $active_host != $facts['fqdn'], # enable restore on replicas
-        cert_path                => $cert_path,
-        key_path                 => $key_path,
-        gitlab_domain            => $service_name,
-        external_url             => $external_url,
-        full_backup_interval     => $full_backup_interval,
-        partial_backup_interval  => $partial_backup_interval,
-        config_backup_interval   => $config_backup_interval,
-        restore_interval         => $restore_interval,
-        email_enable             => $active_host == $facts['fqdn'], # enable emails on active GitLab server
-        manage_host_keys         => $manage_host_keys,
-        omniauth_providers       => $omniauth_providers,
-        auto_sign_in_with        => $auto_sign_in_with,
-        omniauth_identifier      => $omniauth_identifier,
+        backup_dir_data           => $backup_dir_data,
+        exporters                 => $exporters,
+        monitoring_whitelist      => $monitoring_whitelist,
+        block_auto_created_users  => $block_auto_created_users,
+        csp_enabled               => $csp_enabled,
+        csp_report_only           => $csp_report_only,
+        backup_keep_time          => $backup_keep_time,
+        smtp_enabled              => $smtp_enabled,
+        enable_backup             => $active_host == $facts['fqdn'], # enable backups on active GitLab server
+        ssh_listen_addresses      => $ssh_listen_addresses,
+        nginx_listen_addresses    => $nginx_listen_addresses,
+        enable_restore            => $active_host != $facts['fqdn'], # enable restore on replicas
+        cert_path                 => $cert_path,
+        key_path                  => $key_path,
+        gitlab_domain             => $service_name,
+        external_url              => $external_url,
+        full_backup_interval      => $full_backup_interval,
+        partial_backup_interval   => $partial_backup_interval,
+        config_backup_interval    => $config_backup_interval,
+        restore_interval          => $restore_interval,
+        email_enable              => $active_host == $facts['fqdn'], # enable emails on active GitLab server
+        manage_host_keys          => $manage_host_keys,
+        omniauth_providers        => $omniauth_providers,
+        auto_sign_in_with         => $auto_sign_in_with,
+        omniauth_identifier       => $omniauth_identifier,
+        enable_ldap_group_sync    => $active_host != $facts['fqdn'], # enable LDAP group sync on Gitlab replicas while testing
+        ldap_config               => $ldap_config,
+        ldap_group_sync_user      => $ldap_group_sync_user,
+        ldap_group_sync_bot       => $ldap_group_sync_bot,
+        ldap_group_sync_bot_token => $ldap_group_sync_bot_token,
+        ldap_group_sync_interval  => $ldap_group_sync_interval,
     }
 }

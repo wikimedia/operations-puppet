@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+ldap:
+  url: <%= @ldap_url %>
+gitlab:
+  url: <%= @external_url %>
+  ldap_sync_user: <%= @ldap_group_sync_bot %>
+  ldap_sync_token: <%= @ldap_group_sync_bot_token %>

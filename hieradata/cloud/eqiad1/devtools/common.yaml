@@ -311,6 +311,14 @@ profile::gitlab::restore_interval:
   start: 'OnCalendar'
   interval: '*-*-* 02:00:00'
 
+# LDAP group sync configuration
+profile::gitlab::ldap_group_sync_user: ldapgroupsync
+profile::gitlab::ldap_group_sync_bot_user: ldap-sync-bot
+profile::gitlab::ldap_group_sync_bot_token: stored_elsewhere
+profile::gitlab::ldap_group_sync_interval_interval:
+  start: 'OnCalendar'
+  interval: '*:0/15' # Every 15 minutes
+
 # GitLab Runner
 profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
 profile::gitlab::runner::registration_token: private

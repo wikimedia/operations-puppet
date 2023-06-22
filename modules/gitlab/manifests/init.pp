@@ -58,6 +58,12 @@ class gitlab (
     Boolean           $letsencrypt_enable                       = false,
     String            $omniauth_identifier                      = 'gitlab_oidc',
     Boolean           $omniauth_auto_link_saml_user             = true,
+    Boolean                  $enable_ldap_group_sync            = false,
+    Hash                     $ldap_config                       = {},
+    String                   $ldap_group_sync_user              = 'ldapgroupsync',
+    String                   $ldap_group_sync_bot               = 'ldap-sync-bot',
+    String                   $ldap_group_sync_bot_token         = 'ldap-sync-bot-token-not-supplied',
+    Systemd::Timer::Schedule $ldap_group_sync_interval          = {'start' => 'OnCalendar', 'interval' => '*:0/15'},
 ) {
     $cas_defaults = {
         'login_url'            => '/login',
@@ -217,5 +223,43 @@ class gitlab (
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/gitlab/provision-backup-fs.sh';
+    }
+
+    ### Group management stuff
+    ensure_packages('python3-ldap')
+
+    $ensure_ldap_group_sync = $enable_ldap_group_sync.bool2str('present','absent')
+    systemd::sysuser { $ldap_group_sync_user:
+        ensure      => $ensure_ldap_group_sync,
+        description => 'sync-gitlab-group-with-ldap user',
+    }
+
+    # NOTE: Gitlab needs to be operational for this to work.
+    $ensure_gitlab_settings = $enable_ldap_group_sync.bool2str('latest','absent')
+    git::clone { 'repos/releng/gitlab-settings':
+        ensure        => $ensure_gitlab_settings,
+        update_method => 'checkout',
+        git_tag       => 'v1.0.0',
+        directory     => '/srv/gitlab-settings',
+        source        => 'gitlab',
+        owner         => $ldap_group_sync_user,
+        group         => $ldap_group_sync_user,
+    }
+
+    $ldap_url = "ldaps://${ldap_config[ro-server]}:636"
+    file { "${config_dir}/group-management-config.yaml":
+        ensure  => $ensure_ldap_group_sync,
+        owner   => $ldap_group_sync_user,
+        group   => $ldap_group_sync_user,
+        mode    => '0400',
+        content => template('gitlab/group-management-config.yaml.erb'),
+    }
+
+    systemd::timer::job { 'sync-gitlab-group-with-ldap':
+        ensure      => $ensure_ldap_group_sync,
+        user        => $ldap_group_sync_user,
+        description => 'Sync wmf and ops LDAP groups with GitLab repos/mediawiki group',
+        command     => "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml --yes repos/mediawiki wmf ops",
+        interval    => $ldap_group_sync_interval,
     }
 }
