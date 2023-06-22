@@ -58,6 +58,7 @@ pipeline:
       root.requestctl = root.x_analytics_data.requestctl.or("0")
       root.is_debug = root.x_analytics_data.is_debug.or("0")
       root.client_port = root.x_analytics_data.client_port.or("-")
+      root.https = root.x_analytics_data.https.or("0")
 
       root.x_analytics_data = deleted()
       root.x_analytics = deleted()
