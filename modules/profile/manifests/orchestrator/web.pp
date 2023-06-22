@@ -10,7 +10,7 @@ class profile::orchestrator::web {
 
     ferm::service { 'orchestrator-http-https':
         proto => 'tcp',
-        port  =>  '(http https)',
+        port  => [80,443],
     }
 
     profile::auto_restarts::service { 'apache2': }
