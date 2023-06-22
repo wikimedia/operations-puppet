@@ -228,6 +228,8 @@ profile::gitlab::runner::allowed_images:
   - "ruby:*"
   - "rust:*"
   - "rustlang/rust:*"
+  # Database engines
+  - "mariadb:*"
   # GitLab upstream - includes security analyzers and terraform images:
   - "registry.gitlab.com/gitlab-org/**/*"
   - "registry.gitlab.com/security-products/**/*"
