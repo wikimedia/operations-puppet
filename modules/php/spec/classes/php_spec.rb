@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'php' do
-  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     let(:params) {{'versions' => ['7.2']}}
     context "on #{os}" do
       let(:facts) { facts }

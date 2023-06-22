@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'java' do
-  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
         context "On #{os}" do
             let(:facts) { facts }
             let(:node_params) { { 'site' => 'eqiad' } }

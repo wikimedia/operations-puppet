@@ -3,7 +3,7 @@ require_relative '../../../../rake_modules/spec_helper'
 default_file = '/etc/default/etcd'
 
 describe 'etcd::v3' do
-    on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
+    on_supported_os(WMFConfig.test_on).each do |os, facts|
         context "On #{os}" do
             let(:facts) { facts.merge({ networking: { ip: '1.1.1.1'} }) }
 

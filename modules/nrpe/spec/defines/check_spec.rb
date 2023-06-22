@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'nrpe::check', :type => :define do
-  on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts.merge({ realm: 'production' }) }
       let(:title) { 'something' }

@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::services_proxy::envoy' do
-  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     let(:facts) { facts }
 
     context "on #{os}" do
