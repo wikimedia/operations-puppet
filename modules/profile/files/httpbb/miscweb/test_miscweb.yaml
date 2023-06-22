@@ -9,21 +9,6 @@ https://static-codereview.wikimedia.org:
   assert_status: 200
   assert_body_contains: 'r1 MediaWiki'
 
-https://static-tendril.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: 'tendril and dbtree'
-
-https://tendril.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: 'tendril and dbtree'
-
-https://dbtree.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: 'tendril and dbtree'
-
 https://design.wikimedia.org:
 - path: /
   assert_status: 200

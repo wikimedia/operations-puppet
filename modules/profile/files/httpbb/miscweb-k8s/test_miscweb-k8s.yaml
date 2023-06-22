@@ -64,3 +64,19 @@ https://transparency-archive.wikimedia.org:
 - path: /privacy.html
   assert_status: 200
   assert_body_contains: flourish in an ecosystem
+
+https://static-tendril.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: 'tendril and dbtree'
+
+https://tendril.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: 'tendril and dbtree'
+
+https://dbtree.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: 'tendril and dbtree'
+
