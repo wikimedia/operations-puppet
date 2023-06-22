@@ -222,7 +222,6 @@ profile::idp::services:
     required_groups:
       - ops
       - wmf
-      - nda
 profile::idp::ldap_attributes:
   - cn
   - memberOf
