@@ -199,17 +199,17 @@ class profile::mail::mx (
             wikimedia_domains_path => $wikimedia_domains_path
         })
     }
-    file {'/usr/local/bin/otrs_aliases':
+    file {'/usr/local/bin/vrts_aliases':
         ensure => file,
         owner  => 'root',
         group  => 'Debian-exim',
         mode   => '0550',
-        source => 'puppet:///modules/profile/mail/otrs_aliases.py',
+        source => 'puppet:///modules/profile/mail/vrts_aliases.py',
     }
-    systemd::timer::job {'generate_otrs_aliases':
+    systemd::timer::job {'generate_vrts_aliases':
         ensure              => 'present',
-        description         => 'Generate OTRS aliases file for Exim',
-        command             => '/usr/local/bin/otrs_aliases',
+        description         => 'Generate VRTS aliases file for Exim',
+        command             => '/usr/local/bin/vrts_aliases',
         user                => 'root',
         ignore_errors       => true,
         # We should set this to true once T284145 is resolved
