@@ -4857,10 +4857,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhRXJiQz3jMGbDfCY5VO8CZJQHMwfq6FQsBGUhHjXTs josephmando@wmf2938
     uid: 33218
-    comment: Fundraising analytics team
-    expiry_date: 2023-06-30
-    expiry_contact: eyener@wikimedia.org
-    email: jmando-ctr@wikimedia.org
+    email: jmando@wikimedia.org
     krb: present
   nforrester:
     ensure: present
