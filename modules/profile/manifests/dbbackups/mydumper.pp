@@ -108,7 +108,11 @@ class profile::dbbackups::mydumper (
         content   => template($template),
     }
 
-    if $statistics {
+    if $statistics == '' {
+        file { '/etc/wmfbackups/statistics.cnf':
+            ensure => absent
+        }
+    } else {
         # separate file for common statistics db config
         file { '/etc/wmfbackups/statistics.cnf':
             ensure    => present,
@@ -117,10 +121,6 @@ class profile::dbbackups::mydumper (
             mode      => '0400',
             show_diff => false,
             content   => template($statistics),
-        }
-    } else {
-        file { '/etc/wmfbackups/statistics.cnf':
-            ensure => absent
         }
     }
 
