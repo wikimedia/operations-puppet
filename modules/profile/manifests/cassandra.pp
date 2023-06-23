@@ -58,6 +58,7 @@ class profile::cassandra(
             instances        => $instances,
             tls_cluster_name => $cassandra_settings['tls_cluster_name'],
             tls_port         => $monitor_tls_port,
+            tls_use_pki      => $cassandra_settings['tls_use_pki'],
         }
     } else {
         $default_instances = {

@@ -10,6 +10,7 @@
 define cassandra::instance::monitoring (
     String            $contact_group    = 'admins,team-services',
     Boolean           $monitor_enabled  = true,
+    Boolean           $tls_use_pki      = false,
     Hash              $instances        = {},
     Optional[String]  $tls_cluster_name = undef,
     Optional[Integer] $tls_port         = 7001,
@@ -52,12 +53,25 @@ define cassandra::instance::monitoring (
 
     # SSL cert expiration monitoring (T120662)
     if $tls_cluster_name {
-        monitoring::service { "${service_name}-ssl":
-            ensure        => $ensure_monitor,
-            description   => "${service_name} SSL ${listen_address}:${tls_port}",
-            check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
-            contact_group => $contact_group,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
+        if $tls_use_pki {
+            # The TLS certificates provided by PKI are automatically
+            # renewed by puppet, and reloaded by Cassandra automatically.
+            # This alert is needed to warn the admins in case something goes
+            # wrong and the new cert is not picked up as expected.
+            prometheus::blackbox::check::tcp { "${service_name}-ssl":
+                server_name             => $listen_address,
+                port                    => $tls_port,
+                force_tls               => true,
+                certificate_expiry_days => 5,
+            }
+        } else {
+            monitoring::service { "${service_name}-ssl":
+                ensure        => $ensure_monitor,
+                description   => "${service_name} SSL ${listen_address}:${tls_port}",
+                check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
+                contact_group => $contact_group,
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
+            }
         }
     }
 }
