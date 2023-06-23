@@ -1398,7 +1398,11 @@ client_encryption_options:
   optional: <%= @client_encryption_optional %>
   # Set keystore and keystore_password to valid keystores if enabled is true
   keystore: <%= @config_directory %>/tls/server.key
+<% if @tls_keystore_password -%>
+  keystore_password: <%= @tls_keystore_password %>
+<% else -%>
   keystore_password: placeholder
+<% end -%>
   # Verify client certificates
   require_client_auth: false
   # Set trustore and truststore_password if require_client_auth is true
