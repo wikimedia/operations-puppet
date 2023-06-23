@@ -1317,18 +1317,26 @@ class InstanceBackupsState:
         for server_info in self.get_assigned_vms(from_cache):
             cur_try = 0
             vm_name = server_info.get("name", "no_name")
+            vm_id = server_info.get("id", "no_id")
+            project_id = server_info.get(
+                            "tenant_id", "no_project"
+                        ),
             while cur_try < tries:
                 try:
                     self.create_vm_backup(
                         vm_name=vm_name,
-                        project_name=server_info.get(
-                            "tenant_id", "no_project"
-                        ),
+                        project_name=project_id,
                         noop=noop,
                     )
                     break
 
                 except Exception as error:
+                    if not vm_in_project(vm_id, project_id):
+                        logging.warning(
+                            f"VM {vm_name} vanished mid-backup, skipping."
+                        )
+                        break
+
                     logging.warning(
                         f"Got an error trying to backup {vm_name}, try "
                         f"n#{cur_try} of {tries}: {error}"
@@ -1576,6 +1584,16 @@ def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
         image_id_to_image_info = json.load(open(IMAGES_CACHE_FILE, "r"))
 
     return image_id_to_image_info
+
+
+def vm_in_project(server_id: str, project_id: str) -> bool:
+    """Double-check that a given VM still exists. This is useful for
+       noticing when VMs have been deleted mid-backup."""
+    openstackclients = mwopenstackclients.Clients(oscloud="novaobserver")
+    logging.debug("Getting instances in %s...", project_id)
+    server_ids = [server.id
+                  for server in openstackclients.allinstances(projectid=project_id)]
+    return server_id in server_ids
 
 
 def get_current_images_state(from_cache: bool = False) -> ImageBackupsState:
