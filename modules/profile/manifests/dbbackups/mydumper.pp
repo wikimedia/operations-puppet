@@ -21,6 +21,8 @@ class profile::dbbackups::mydumper (
       {default_value => 'Tue *-*-* 00:00:00'}),
     String  $config = lookup('profile::dbbackups::mydumper::config',
       {default_value => ''}),
+    String  $statistics = lookup('profile::dbbackups::mydumper::statistics',
+      {default_value => ''}),
 ) {
 
     include ::passwords::mysql::dump
@@ -105,15 +107,23 @@ class profile::dbbackups::mydumper (
         show_diff => false,
         content   => template($template),
     }
-    # separate file for common statistics db config
-    file { '/etc/wmfbackups/statistics.cnf':
-        ensure    => present,
-        owner     => 'dump',
-        group     => 'dump',
-        mode      => '0400',
-        show_diff => false,
-        content   => template('profile/dbbackups/statistics.cnf.erb'),
+
+    if $statistics {
+        # separate file for common statistics db config
+        file { '/etc/wmfbackups/statistics.cnf':
+            ensure    => present,
+            owner     => 'dump',
+            group     => 'dump',
+            mode      => '0400',
+            show_diff => false,
+            content   => template($statistics),
+        }
+    } else {
+        file { '/etc/wmfbackups/statistics.cnf':
+            ensure => absent
+        }
     }
+
     # Logging support
     file { '/var/log/mariadb-backups':
         ensure => directory,
