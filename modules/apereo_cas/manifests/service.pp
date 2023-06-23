@@ -24,7 +24,6 @@ define apereo_cas::service (
         if !$client_secret {
             fail('$client_secret required when using OidcRegisteredService')
         }
-        $group_attribute = 'groups'
 
         $additional_params = {
             'clientId'               => $title,
@@ -32,11 +31,10 @@ define apereo_cas::service (
             'bypassApprovalPrompt'   => true,
             'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
-            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'groups' ] ],
+            'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'groups', 'memberOf'] ],
         }
     } else {
         $additional_params = {}
-        $group_attribute = 'memberOf'
     }
 
     include apereo_cas
@@ -58,7 +56,7 @@ define apereo_cas::service (
             '@class'             => "org.apereo.cas.services.${access_strategy}",
             'requiredAttributes' => {
                 '@class'   => 'java.util.HashMap',
-                $group_attribute => [
+                'memberOf' => [
                     'java.util.HashSet',
                     $ldap_groups,
                 ],

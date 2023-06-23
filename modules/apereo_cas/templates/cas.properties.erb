@@ -165,15 +165,46 @@ cas.authn.oidc.core.issuer=<%= @server_name %><%= @server_prefix.sub(/\/$/, '') 
 cas.authn.oidc.core.accepted-issuers-pattern=<%= @oidc_issuers_pattern %>
 cas.authn.oidc.id-token.include-id-token-claims=<%= @oidc_id_token_claims %>
 
-# Add custom groups scope.
+# Add OIDC claims and scopes.
+# Map LDAP fields to OIDC claims.
+# The following claims are considered standard OIDC claims:
+#  * preferred_username
+#  * email
+#  * name (firstname)
+#  * family_name
+#  * group
+
 cas.authn.oidc.core.claims-map.preferred_username=uid
 cas.authn.oidc.core.claims-map.email=mail
 cas.authn.oidc.core.claims-map.name=cn
 cas.authn.oidc.core.claims-map.family_name=givenName
 cas.authn.oidc.core.claims-map.groups=memberOf
+
+# Add a custom claim: memberOf
+# memberOf is also represented as group in OIDC, but we
+# add it as an additional claim to map it as an attribute
+# for CAS to use when doing group membership validation.
+cas.authn.oidc.core.claims-map.memberOf=memberOf
+
+# Groups are considered standard in most OIDC implementations,
+# but not in CAS, so we add it as a custom scope. For the
+# clients where will be no difference between a custom defined
+# and standard scope.
+cas.authn.oidc.core.user-defined-scopes.groups=memberOf
+
+# Let the clients know which scopes we provide.
 cas.authn.oidc.discovery.scopes=openid,profile,email,groups
-cas.authn.oidc.discovery.claims=sub,name,groups,email,family_name,preferred_username,profile
-cas.authn.oidc.core.user-defined-scopes.groups=groups
+
+# Claims available to clients, note that we add both memberOf
+# and groups. The groups attribute is to provide the data in
+# an attribute the clients will expect. Adding memberOf is
+# solely to ensure that the attribute will be available to
+# CAS itself when doing group membership validation. Removing
+# the "memberOf" claim WILL remove is from the internal workings
+# of the service definition and we will not be able to utilize
+# it in "requiredAttributes". Note that memberOf is not part
+# of any offered scope, clients will need to use groups.
+cas.authn.oidc.discovery.claims=sub,name,groups,email,family_name,preferred_username,profile,memberOf
 
 <%- if @enable_webauthn -%>
 cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file %>
