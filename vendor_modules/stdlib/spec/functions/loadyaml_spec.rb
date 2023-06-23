@@ -10,30 +10,51 @@ describe 'loadyaml' do
     let(:filename) { '/tmp/doesnotexist' }
 
     it "'default' => 'value'" do
-      expect(File).to receive(:exists?).with(filename).and_return(false).once
-      expect(YAML).to receive(:load_file).never
-      is_expected.to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
+      allow(File).to receive(:exist?).and_call_original
+      expect(File).to receive(:exist?).with(filename).and_return(false).once
+      expect(YAML).not_to receive(:safe_load)
+      expect(subject).to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
     end
   end
 
   context 'when an existing file is specified' do
-    let(:filename) { '/tmp/doesexist' }
+    let(:tempfile) { Tempfile.new }
+    let(:filename) { tempfile.path }
     let(:data) { { 'key' => 'value', 'ķęŷ' => 'νậŀųề', 'キー' => '値' } }
+    let(:yaml) do
+      <<~YAML
+        key: 'value'
+        ķęŷ: 'νậŀųề'
+        キー: '値'
+      YAML
+    end
 
     it "returns 'key' => 'value', 'ķęŷ' => 'νậŀųề', 'キー' => '値'" do
-      expect(File).to receive(:exists?).with(filename).and_return(true).once
-      expect(YAML).to receive(:load_file).with(filename).and_return(data).once
-      is_expected.to run.with_params(filename).and_return(data)
+      tempfile.write(yaml)
+      tempfile.rewind
+      allow(File).to receive(:exist?).and_call_original
+      expect(File).to receive(:exist?).with(filename).and_return(true).once
+      expect(YAML).to receive(:safe_load).and_call_original
+      expect(subject).to run.with_params(filename).and_return(data)
     end
   end
 
-  context 'when the file could not be parsed' do
-    let(:filename) { '/tmp/doesexist' }
+  context 'when the file could not be parsed, with default specified' do
+    let(:tempfile) { Tempfile.new }
+    let(:filename) { tempfile.path }
+    let(:yaml) do
+      <<~YAML
+        ,,,,
+      YAML
+    end
 
-    it 'filename /tmp/doesexist' do
-      expect(File).to receive(:exists?).with(filename).and_return(true).once
-      allow(YAML).to receive(:load_file).with(filename).once.and_raise(StandardError, 'Something terrible have happened!')
-      is_expected.to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
+    it 'is expected to return the default value' do
+      tempfile.write(yaml)
+      tempfile.rewind
+      allow(File).to receive(:exist?).and_call_original
+      expect(File).to receive(:exist?).with(filename).and_return(true).once
+      allow(YAML).to receive(:safe_load).with(yaml, aliases: true).once.and_raise(StandardError, 'Something terrible have happened!')
+      expect(subject).to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
     end
   end
 
@@ -45,8 +66,8 @@ describe 'loadyaml' do
 
     it {
       expect(OpenURI).to receive(:open_uri).with(filename, basic_auth).and_return(yaml)
-      expect(YAML).to receive(:safe_load).with(yaml).and_return(data).once
-      is_expected.to run.with_params(filename).and_return(data)
+      expect(YAML).to receive(:safe_load).with(yaml, aliases: true).and_return(data).once
+      expect(subject).to run.with_params(filename).and_return(data)
     }
   end
 
@@ -59,8 +80,8 @@ describe 'loadyaml' do
 
     it {
       expect(OpenURI).to receive(:open_uri).with(url_no_auth, basic_auth).and_return(yaml)
-      expect(YAML).to receive(:safe_load).with(yaml).and_return(data).once
-      is_expected.to run.with_params(filename).and_return(data)
+      expect(YAML).to receive(:safe_load).with(yaml, aliases: true).and_return(data).once
+      expect(subject).to run.with_params(filename).and_return(data)
     }
   end
 
@@ -73,8 +94,8 @@ describe 'loadyaml' do
 
     it {
       expect(OpenURI).to receive(:open_uri).with(url_no_auth, basic_auth).and_return(yaml)
-      expect(YAML).to receive(:safe_load).with(yaml).and_return(data).once
-      is_expected.to run.with_params(filename).and_return(data)
+      expect(YAML).to receive(:safe_load).with(yaml, aliases: true).and_return(data).once
+      expect(subject).to run.with_params(filename).and_return(data)
     }
   end
 
@@ -85,8 +106,8 @@ describe 'loadyaml' do
 
     it {
       expect(OpenURI).to receive(:open_uri).with(filename, basic_auth).and_return(yaml)
-      expect(YAML).to receive(:safe_load).with(yaml).and_raise StandardError, 'Cannot parse data'
-      is_expected.to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
+      expect(YAML).to receive(:safe_load).with(yaml, aliases: true).and_raise StandardError, 'Cannot parse data'
+      expect(subject).to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
     }
   end
 
@@ -98,6 +119,45 @@ describe 'loadyaml' do
     it {
       expect(OpenURI).to receive(:open_uri).with(filename, basic_auth).and_raise OpenURI::HTTPError, '404 File not Found'
       is_expected.to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
+    }
+  end
+
+  context 'when the file contains aliases' do
+    let(:tempfile) { Tempfile.new }
+    let(:filename) { tempfile.path }
+    let(:yaml) do
+      <<~YAML
+        some_numbers: &nums
+          - one
+          - two
+        more_numbers: *nums
+      YAML
+    end
+    let(:data) { { 'some_numbers' => ['one', 'two'], 'more_numbers' => ['one', 'two'] } }
+
+    it 'parses the aliases' do
+      tempfile.write(yaml)
+      tempfile.rewind
+      expect(subject).to run.with_params(filename).and_return(data)
+    end
+  end
+
+  context 'when a URL returns yaml with aliases' do
+    let(:filename) { 'https://example.local/myhash.yaml' }
+    let(:basic_auth) { { http_basic_authentication: ['', ''] } }
+    let(:yaml) do
+      <<~YAML
+        some_numbers: &nums
+          - one
+          - two
+        more_numbers: *nums
+      YAML
+    end
+    let(:data) { { 'some_numbers' => ['one', 'two'], 'more_numbers' => ['one', 'two'] } }
+
+    it {
+      expect(OpenURI).to receive(:open_uri).with(filename, basic_auth).and_return(yaml)
+      expect(subject).to run.with_params(filename).and_return(data)
     }
   end
 end

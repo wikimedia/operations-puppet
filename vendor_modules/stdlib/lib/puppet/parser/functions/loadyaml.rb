@@ -48,9 +48,20 @@ module Puppet::Parser::Functions
           warning("Can't load '#{url}' HTTP Error Code: '#{res.status[0]}'")
           args[1]
         end
-        YAML.safe_load(contents) || args[1]
-      elsif File.exists?(args[0]) # rubocop:disable Lint/DeprecatedClassMethods : Changing to .exist? breaks the code
-        YAML.load_file(args[0]) || args[1]
+        if RUBY_PLATFORM != "java" && Gem::Version.new(Psych::VERSION) <= Gem::Version.new('3.0.2')
+          YAML.safe_load(contents, [], [], true) || args[1]
+        else
+          YAML.safe_load(contents, aliases: true) || args[1]
+        end
+      elsif File.exist?(args[0])
+        # Read the file first rather than calling YAML.load_file as ruby2.7
+        # doesn't support the aliases option on YAML.load_file
+        contents = File.read(args[0])
+        if RUBY_PLATFORM != "java" && Gem::Version.new(Psych::VERSION) <= Gem::Version.new('3.0.2')
+          YAML.safe_load(contents, [], [], true) || args[1]
+        else
+          YAML.safe_load(contents, aliases: true) || args[1]
+        end
       else
         warning("Can't load '#{args[0]}' File does not exist!")
         args[1]

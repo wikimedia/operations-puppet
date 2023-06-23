@@ -60,5 +60,5 @@ mod 'rspamd',
     :ref => 'v1.3.1'
 
 mod 'stdlib',
-    :git => 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    :ref => 'v8.1.0'
+    :git => 'https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib',
+    :ref => 'wmf-v8.6.2'

@@ -15,21 +15,25 @@
 #   }
 
 Puppet::Functions.create_function(:to_ruby) do
-  dispatch :to_ruby do
-    param 'Any', :object
-  end
-
   # @param object
   #   The object to be converted
   #
   # @return [String]
   #   The String representation of the object
+  dispatch :to_ruby do
+    param 'Any', :object
+  end
+
   def to_ruby(object)
-    case object
-    when :undef then 'nil'
-    when Array then "[#{object.map { |x| to_ruby(x) }.join(', ')}]"
-    when Hash then "{#{object.map { |k, v| "#{to_ruby(k)} => #{to_ruby(v)}" }.join(', ')}}"
-    else object.inspect
+    serialized = Puppet::Pops::Serialization::ToDataConverter.convert(object, rich_data: true)
+    serialized_to_ruby(serialized)
+  end
+
+  def serialized_to_ruby(serialized)
+    case serialized
+    when Array then "[#{serialized.map { |x| serialized_to_ruby(x) }.join(', ')}]"
+    when Hash then "{#{serialized.map { |k, v| "#{serialized_to_ruby(k)} => #{serialized_to_ruby(v)}" }.join(', ')}}"
+    else serialized.inspect
     end
   end
 end

@@ -3,11 +3,7 @@
 #  Please note: This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible.
 #  To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 #
-Puppet::Parser::Functions.newfunction(
-  :pw_hash,
-  type: :rvalue,
-  arity: 3,
-  doc: <<-DOC,
+Puppet::Parser::Functions.newfunction(:pw_hash, type: :rvalue, arity: 3, doc: <<-DOC
   @summary
     Hashes a password using the crypt function. Provides a hash usable
     on most POSIX systems.
@@ -29,7 +25,9 @@ Puppet::Parser::Functions.newfunction(
   |bcrypt-x |2x    |bug compatible       |
   |bcrypt-y |2y    |historic alias for 2b|
 
-  The third argument to this function is the salt to use.
+  The third argument to this function is the salt to use. For bcrypt-type hashes,
+  the first two characters of the salt represent a strength parameter, with a value
+  between 4 and 31 inclusive.
 
   @return [String]
     Provides a crypt hash usable on most POSIX systems.
@@ -52,10 +50,10 @@ Puppet::Parser::Functions.newfunction(
     'md5'       => { prefix: '1' },
     'sha-256'   => { prefix: '5' },
     'sha-512'   => { prefix: '6' },
-    'bcrypt'    => { prefix: '2b', salt: %r{^[0-9]{2}\$[./A-Za-z0-9]{22}} },
-    'bcrypt-a'  => { prefix: '2a', salt: %r{^[0-9]{2}\$[./A-Za-z0-9]{22}} },
-    'bcrypt-x'  => { prefix: '2x', salt: %r{^[0-9]{2}\$[./A-Za-z0-9]{22}} },
-    'bcrypt-y'  => { prefix: '2y', salt: %r{^[0-9]{2}\$[./A-Za-z0-9]{22}} },
+    'bcrypt'    => { prefix: '2b', salt: %r{^(0[4-9]|[12][0-9]|3[01])\$[./A-Za-z0-9]{22}} },
+    'bcrypt-a'  => { prefix: '2a', salt: %r{^(0[4-9]|[12][0-9]|3[01])\$[./A-Za-z0-9]{22}} },
+    'bcrypt-x'  => { prefix: '2x', salt: %r{^(0[4-9]|[12][0-9]|3[01])\$[./A-Za-z0-9]{22}} },
+    'bcrypt-y'  => { prefix: '2y', salt: %r{^(0[4-9]|[12][0-9]|3[01])\$[./A-Za-z0-9]{22}} },
   }
 
   raise ArgumentError, 'pw_hash(): first argument must be a string' unless args[0].is_a?(String) || args[0].nil?

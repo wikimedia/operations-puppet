@@ -40,7 +40,7 @@ If you are authoring a module that depends on stdlib, be sure to [specify depend
 
 Most of stdlib's features are automatically loaded by Puppet. To use standardized run stages in Puppet, declare this class in your manifest with `include stdlib`.
 
-When declared, stdlib declares all other classes in the module. The only other class currently included in the module is `stdlib::stages`.
+When declared, stdlib declares all other classes in the module. This currently consists of `stdlib::manage` and `stdlib::stages`.
 
 The `stdlib::stages` class declares various run stages for deploying infrastructure, language runtimes, and application layers. The high level stages are (in order):
 
@@ -60,6 +60,21 @@ node default {
   include stdlib
   class { java: stage => 'runtime' }
 }
+```
+
+The `stdlib::manage` class provides an interface for generating trivial resource declarations via the `create_resources` parameter.  Depending on your usage, you may want to set `hiera`'s `lookup_options` for the `stdlib::manage::create_resources:` element.
+
+```yaml
+---
+stdlib::manage::create_resources:
+  file:
+    /etc/somefile:
+      ensure: file
+      owner: root
+      group: root
+  package:
+    badpackage:
+      ensure: absent
 ```
 
 ## Reference
@@ -392,7 +407,7 @@ Valid values: An IPv4 address.
 
 #### `Stdlib::IP::Address::V6`
 
-Match any string consistenting of an IPv6 address in any of the documented formats in RFC 2373, with or without an address prefix.
+Match any string consisting of an IPv6 address in any of the documented formats in RFC 2373, with or without an address prefix.
 
 Examples:
 

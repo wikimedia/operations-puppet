@@ -15,23 +15,28 @@
 #   }
 
 Puppet::Functions.create_function(:to_python) do
-  dispatch :to_python do
-    param 'Any', :object
-  end
-
   # @param object
   #   The object to be converted
   #
   # @return [String]
   #   The String representation of the object
+  dispatch :to_python do
+    param 'Any', :object
+  end
+
   def to_python(object)
-    case object
+    serialized = Puppet::Pops::Serialization::ToDataConverter.convert(object, rich_data: true)
+    serialized_to_python(serialized)
+  end
+
+  def serialized_to_python(serialized)
+    case serialized
     when true then 'True'
     when false then 'False'
-    when :undef then 'None'
-    when Array then "[#{object.map { |x| to_python(x) }.join(', ')}]"
-    when Hash then "{#{object.map { |k, v| "#{to_python(k)}: #{to_python(v)}" }.join(', ')}}"
-    else object.inspect
+    when nil then 'None'
+    when Array then "[#{serialized.map { |x| serialized_to_python(x) }.join(', ')}]"
+    when Hash then "{#{serialized.map { |k, v| "#{serialized_to_python(k)}: #{serialized_to_python(v)}" }.join(', ')}}"
+    else serialized.inspect
     end
   end
 end

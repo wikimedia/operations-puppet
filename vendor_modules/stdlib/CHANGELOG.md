@@ -2,6 +2,109 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+
+## [v8.6.2](https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib/tree/wmf-v8.6.2) - 2023-06-26
+
+### Fixed
+
+- `load_yaml`: fix alias loading on ruby 2.5
+
+## [v8.6.1](https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib/tree/wmf-v8.6.1) - 2023-06-23
+
+### Added
+
+- re-add support for loading aliases in yaml files [#1362](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1362) ([lollipopman](https://github.com/lollipopman))
+
+## [v8.6.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.6.0) - 2023-04-24
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.5.0...v8.6.0)
+
+### Added
+
+- Stdlib::Http::Method: Add new type for http methods [#1299](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1299) ([b4ldr](https://github.com/b4ldr))
+- Add `stdlib::sha256` [#1289](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1289) ([jcpunk](https://github.com/jcpunk))
+- Add `stdlib::crc32` [#1288](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1288) ([jcpunk](https://github.com/jcpunk))
+- Add Stdlib::Ensure::Package type [#1281](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1281) ([arjenz](https://github.com/arjenz))
+
+### Fixed
+
+- (PUP-11752) Fix fqdn_rand_string_spec.rb test [#1308](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1308) ([alexjfisher](https://github.com/alexjfisher))
+- Make ensure_packages work with `ensure => present` [#1300](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1300) ([alexjfisher](https://github.com/alexjfisher))
+- Safely handle a missing root user [#1295](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1295) ([ekohl](https://github.com/ekohl))
+- stdlib::ensure: update function to support the generic case [#1286](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1286) ([b4ldr](https://github.com/b4ldr))
+- Drop Puppet < 3.6 support in package_provider fact [#1280](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1280) ([ekohl](https://github.com/ekohl))
+- Correct bcrypt salt regex [#1279](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1279) ([sabo](https://github.com/sabo))
+- Determine root_home without shelling out [#1278](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1278) ([ekohl](https://github.com/ekohl))
+- (CONT-173) - Updating deprecated facter instances [#1277](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1277) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [v8.5.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.5.0) (2022-10-13)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.4.0...v8.5.0)
+
+### Added
+
+- Add a Stdlib::CreateResources type [\#1267](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1267) ([ekohl](https://github.com/ekohl))
+- pdksync - \(GH-cat-11\) Certify Support for Ubuntu 22.04 [\#1261](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1261) ([david22swan](https://github.com/david22swan))
+- \(FEAT\) Add function parsepson [\#1259](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1259) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- \(CONT-200\) Fix require relative paths [\#1275](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1275) ([chelnak](https://github.com/chelnak))
+- pdksync - \(CONT-189\) Remove support for RedHat6 / OracleLinux6 / Scientific6 [\#1272](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1272) ([david22swan](https://github.com/david22swan))
+- pdksync - \(CONT-130\) - Dropping Support for Debian 9 [\#1269](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1269) ([jordanbreen28](https://github.com/jordanbreen28))
+- \(MAINT\) Drop support for AIX + Windows EOL OSs [\#1265](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1265) ([jordanbreen28](https://github.com/jordanbreen28))
+- \(GH-1262\) Use 'require\_relative' to load stdlib due to lookup errors [\#1264](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1264) ([david22swan](https://github.com/david22swan))
+- Switch parsejson\(\) from PSON to JSON parsing [\#1240](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1240) ([seanmil](https://github.com/seanmil))
+
+## [v8.4.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.4.0) (2022-07-21)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.3.0...v8.4.0)
+
+### Added
+
+- deferrable epp function simplifying deferred templates [\#1253](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1253) ([binford2k](https://github.com/binford2k))
+
+## [v8.3.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.3.0) (2022-07-11)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.2.0...v8.3.0)
+
+### Added
+
+- pdksync - \(GH-cat-12\) Add Support for Redhat 9 [\#1247](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1247) ([david22swan](https://github.com/david22swan))
+- Convert `ensure_packages` to new API and refactor [\#1244](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1244) ([alexjfisher](https://github.com/alexjfisher))
+
+### Fixed
+
+- \(MODULES-2892\) Handle missing file in file\_line [\#1251](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1251) ([silug](https://github.com/silug))
+- Simplify stdlib::manage [\#1250](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1250) ([jcpunk](https://github.com/jcpunk))
+- Unbreak `rake strings:generate:reference` [\#1239](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1239) ([smortex](https://github.com/smortex))
+- loadjson: do not send http\_basic\_authentication if not needed [\#1208](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1208) ([chaen](https://github.com/chaen))
+
+## [v8.2.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.2.0) (2022-05-16)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.1.0...v8.2.0)
+
+### Added
+
+- Add `xml_encode` function [\#1236](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1236) ([alexjfisher](https://github.com/alexjfisher))
+- \(MODULES-4976\) Add windows escaping functions [\#1235](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1235) ([smortex](https://github.com/smortex))
+- MODULES-11309 : convert a string to a resource [\#1233](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1233) ([jcpunk](https://github.com/jcpunk))
+- pdksync - \(FM-8922\) - Add Support for Windows 2022 [\#1222](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1222) ([david22swan](https://github.com/david22swan))
+- \(MODULES-11196\) Add support for AIX 7.2 [\#1220](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1220) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-1753\) - Add Support for AlmaLinux 8 [\#1216](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1216) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- Update load\_module\_metadata.rb to correct capitalisation in strings documentartion [\#1241](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1241) ([davidsandilands](https://github.com/davidsandilands))
+- Modernize escape functions [\#1238](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1238) ([smortex](https://github.com/smortex))
+- Convert data to Pcore before serialisation in to\_ruby/to\_python [\#1237](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1237) ([smortex](https://github.com/smortex))
+- \(maint\) Update str2saltedpbkdf2.rb to use the correct salt length [\#1232](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1232) ([AriaXLi](https://github.com/AriaXLi))
+- Fix `to_yaml` `options` parameter [\#1231](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1231) ([alexjfisher](https://github.com/alexjfisher))
+- pdksync - \(GH-iac-334\) Remove Support for Ubuntu 14.04/16.04 [\#1224](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1224) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-1787\) Remove Support for CentOS 6 [\#1219](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1219) ([david22swan](https://github.com/david22swan))
+- Fix serialization of undef in to\_python\(\) [\#1205](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1205) ([smortex](https://github.com/smortex))
+
 ## [v8.1.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.1.0) (2021-10-04)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.0.0...v8.1.0)
@@ -274,7 +377,7 @@ This is a major release which removes support for the Scientific 5 and Debian 7 
 - Updated `merge()` with puppt language equivalent example.
 - Updated `min()` and `max()` with note that they are in puppet.
 - Updated `num2bool()` with information that Boolean can convert.
-- Updated `prefix()` function with equivalent operation in pupppet.
+- Updated `prefix()` function with equivalent operation in puppet.
 - Updated `range()` with information that Integer can be used.
 - Updated `reject()` with equivalent filter() call.
 - Added note to `reverse()` that the `reverse_each()` Puppet function does the same as it.
