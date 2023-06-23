@@ -24,6 +24,11 @@
     SSLCertificateKeyFile <%= @ssl_paths['key'] %>
     <%= @ssl_settings.join("\n    ") %>
 
+    <%- if @authentication_provider == 'oidc' -%>
+    RewriteEngine on
+    RewriteRule ^/login/(.*)$ https://<%= @service_hostname %>/oauth/login/cas/
+    <%- end -%>
+
     # CSP headers - T296356
     Header always set Content-Security-Policy "default-src 'self'; style-src 'unsafe-inline' 'self'; script-src 'unsafe-inline' 'self'; img-src 'self' data:;"
 
