@@ -208,6 +208,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: opentelemetry-collector
         - name: opentelemetry-collector-deploy
+    wikifunctions:
+      usernames:
+        - name: wikifunctions
+        - name: wikifunctions-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
