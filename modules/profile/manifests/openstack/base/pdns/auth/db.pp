@@ -65,4 +65,5 @@ class profile::openstack::base::pdns::auth::db(
     }
 
     backup::set { 'mysql-srv-backups-dumps-latest': }
+    class { '::pdns_server::db_backups':  }
 }
