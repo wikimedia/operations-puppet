@@ -19,7 +19,7 @@ limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited siz
 # novaobserver is an account used only for keystone access.  We don't want it
 #  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
 <%- $keystone_ipv4_addrs = $openstack_controllers.map |$fqdn| { dnsquery::a($fqdn) }.flatten.sort.unique -%>
-<%- $keystone_ipv6_addrs = $openstack_controllers.map |$fqdn| { dnsquery::aaaa($fqdn) || { ['::1'] } }.flatten.sort.unique -%>
+<%- $keystone_ipv6_addrs = $openstack_controllers.map |$fqdn| { dnsquery::aaaa($fqdn) }.flatten.sort.unique -%>
 access to dn=uid=novaobserver,ou=people,dc=wikimedia,dc=org
 <% $keystone_ipv4_addrs.each |$v4| { -%>
 	by peername.ip=<%= $v4 %> anonymous read
