@@ -3,14 +3,12 @@
 
     # Disable golang debugging from outside localhost
     <Location /debug >
-        Order allow,deny
-        Allow from none
+        Require all denied
     </Location>
 
     # Disable quit/reload from outside localhost
     <LocationMatch ^/-/(quit|reload) >
-        Order allow,deny
-        Allow from none
+        Require all denied
     </LocationMatch>
 
     ProxyPass / http://localhost:<%= @listen_port %>/

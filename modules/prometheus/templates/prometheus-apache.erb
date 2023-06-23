@@ -5,8 +5,7 @@
     <%- else -%>
     <Location /debug >
     <%- end -%>
-        Order allow,deny
-        Allow from none
+        Require all denied
     </Location>
 
     # disable quit/reload from outside localhost
@@ -15,8 +14,7 @@
     <%- else -%>
     <LocationMatch ^/-/(quit|reload) >
     <%- end -%>
-        Order allow,deny
-        Allow from none
+        Require all denied
     </LocationMatch>
 
     # max connections _per apache child process_
