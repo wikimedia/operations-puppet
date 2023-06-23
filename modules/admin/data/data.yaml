@@ -5932,7 +5932,7 @@ users:
     realname: Panagiotis Penloglou
     email: ppenloglou-ctr@wikimedia.org
     expiry_contact: dbu@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: 2023-07-18
     uid: 42507
     gid: 500
     ssh_keys:
