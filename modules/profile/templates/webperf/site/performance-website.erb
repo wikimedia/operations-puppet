@@ -42,10 +42,9 @@
     # the arclamp buckets.  Also filtering those requests here adds
     # another layer of protection against misconfiguration.
     <Location /arclamp>
-        Order allow,deny
-        Allow from all
+        Require all granted
         <LimitExcept GET HEAD>
-            Deny from all
+            Require all denied
         </LimitExcept>
     </Location>
 
