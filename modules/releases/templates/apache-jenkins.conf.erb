@@ -44,8 +44,10 @@
         SetEnvIf User-Agent TweetmemeBot bad_browser
         SetEnvIf User-Agent ZumBot bad_browser
 
-        Order deny,allow
-        deny from env=bad_browser
+        <RequireAll>
+          Require all granted
+          Require not env bad_browser
+        </RequireAll>
 
         # Jenkins is behind cache_text, the API calls lacks cache headers and
         # their 4xx errors ends up being cached which causes troubles when
@@ -62,8 +64,12 @@
         SetEnvIf Request_URI ^<%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
         # Blacklist RSS feeds entirely
         SetEnvIf Request_URI ^<%= @prefix -%>/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
-        Order deny,allow
-        deny from env=DENY_BUILDS_ACCESS
+
+        <RequireAll>
+          Require all granted
+          Require not env DENY_BUILDS_ACCESS
+        </RequireAll>
+
     </Proxy>
 
 </VirtualHost>
