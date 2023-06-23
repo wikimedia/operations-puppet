@@ -2496,7 +2496,7 @@ blackbox_smoke_hosts:
     realm: frack
     site: eqiad
     rack: C1
-  frpig1001.frack.eqiad.wmnet:
+  payments-listener-eqiad.wikimedia.org:
     realm: frack
     site: eqiad
     rack: C1
@@ -2521,7 +2521,7 @@ blackbox_smoke_hosts:
     realm: frack
     site: codfw
     rack: C8
-  frpig2001.frack.codfw.wmnet:
+  payments-listener-codfw.wikimedia.org:
     realm: frack
     site: codfw
     rack: C8
