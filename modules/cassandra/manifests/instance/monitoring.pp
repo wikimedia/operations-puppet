@@ -63,6 +63,8 @@ define cassandra::instance::monitoring (
                 port                    => $tls_port,
                 force_tls               => true,
                 certificate_expiry_days => 5,
+                ip4                     => $listen_address,
+                ip_families             => ['ip4'],
             }
         } else {
             monitoring::service { "${service_name}-ssl":
