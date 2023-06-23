@@ -32,8 +32,8 @@ class pdns_server::db_backups(
             $unless_grep_match = $item['stmt']
         }
         exec { "inject-pdns-db-backup-stmt-${index}":
-            command => "/usr/bin/mysql -u root -Bs <<< \"${item['stmt']};\"",
-            unless  => "/usr/bin/mysql -u root -Bs <<< \"${item['unless']};\" | grep -q \"${unless_grep_match}\"",
+            command => "/usr/bin/mysql -u root -Bs -e \"${item['stmt']};\"",
+            unless  => "/usr/bin/mysql -u root -Bs -e \"${item['unless']};\" | grep -q \"${unless_grep_match}\"",
             user    => 'root',
             timeout => '30',
         }
