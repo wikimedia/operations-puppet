@@ -5,8 +5,7 @@
 
     # disable golang debugging from outside localhost
     <Location /debug >
-        Order allow,deny
-        Allow from none
+        Require all denied
     </Location>
 
     # max connections _per apache child process_
