@@ -8,7 +8,7 @@
 # [*jar*]
 #   Path to Spark job .jar file
 #
-# [*class*]
+# [*main_class*]
 #   Spark job main class name.
 #
 # [*spark_submit*]
@@ -35,7 +35,7 @@
 #
 define profile::analytics::refinery::job::spark_job(
     $jar,
-    $class,
+    $main_class,
     $spark_submit        = '/usr/bin/spark3-submit',
     $job_name            = $title,
     $spark_opts          = undef,

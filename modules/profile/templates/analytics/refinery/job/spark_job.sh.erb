@@ -7,7 +7,7 @@
 PYTHONPATH=<%= @refinery_path %>/python <%= @refinery_path %>/bin/is-yarn-app-running --verbose <%= @title %> ||
 <%= @spark_submit %> \
 --name <%= @job_name %> \
---class <%= @class %> \
+--class <%= @main_class %> \
 <% if @spark_opts -%>
 <%= Array(@spark_opts).join(" ") %> \
 <% end -%>

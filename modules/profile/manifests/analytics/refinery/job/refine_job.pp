@@ -146,7 +146,7 @@ define profile::analytics::refinery::job::refine_job (
     # (securely) by Yarn to its distributed cache.
     profile::analytics::refinery::job::spark_job { $job_name:
         ensure     => $ensure,
-        class      => $job_class,
+        main_class => $job_class,
         # We use spark's --files option to load the $job_config_file to the Spark job's working HDFS dir.
         # It is then referenced via its relative file name with --config_file $job_name.properties.
         spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars}${_spark_extra_files} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --executor-memory ${spark_executor_memory} --executor-cores ${spark_executor_cores} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
@@ -167,12 +167,12 @@ define profile::analytics::refinery::job::refine_job (
         $ensure_monitor = 'absent'
     }
     profile::analytics::refinery::job::spark_job { "monitor_${job_name}":
-        ensure    => $ensure_monitor,
-        class     => $monitor_class,
+        ensure     => $ensure_monitor,
+        main_class => $monitor_class,
         # Use the same config file as the Refine job, but override the since and until.
-        job_opts  => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
-        interval  => $monitor_interval,
-        send_mail => $send_mail,
+        job_opts   => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
+        interval   => $monitor_interval,
+        send_mail  => $send_mail,
     }
 
 }
