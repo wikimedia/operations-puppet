@@ -4,9 +4,9 @@
 #
 # Set up to only allow root to add packages
 class aptly(
-    $manage_nginx=true,
-    $owner='root',
-    $group='root',
+    Boolean   $manage_nginx = true,
+    String[1] $owner        = 'root',
+    String[1] $group        = 'root',
 ){
     ensure_packages('aptly')
     ensure_packages('graphviz') # for aptly graph
