@@ -71,11 +71,11 @@ class profile::releases::common(
         # releases-jenkins does not yet work in codfw (T330960#8687674)
         # so monitoring needs to be limited to the active server until that changes
         prometheus::blackbox::check::http { 'releases-jenkins.wikimedia.org':
-            team           => 'serviceops-collab',
-            severity       => 'task',
-            path           => '/',
-            port           => 8080,
-            status_matches => [401,403],
+            team               => 'serviceops-collab',
+            severity           => 'task',
+            path               => '/',
+            port               => 8080,
+            body_regex_matches => ['log in'],
         }
 
     } else {
