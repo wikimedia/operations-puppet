@@ -12,6 +12,7 @@ class profile::cassandra(
     Boolean $auto_apply_grants                = lookup('profile::cassandra::auto_apply_grants', {'default_value' => false}),
     Hash[String, String] $cassandra_passwords = lookup('profile::cassandra::user_credentials', {'default_value' => {}}),
     Integer $monitor_tls_port                 = lookup('profile::cassandra::monitor_tls_port', {'default_value' => 7001}),
+    Optional[String] $tls_keystore_password = lookup('profile::cassandra::tls_keystore_password', {'default_value' => undef}),
 ){
 
     include ::passwords::cassandra
@@ -24,13 +25,14 @@ class profile::cassandra(
     $ferm_seeds = split($all_seeds[1], ',')
 
     $base_settings = {
-        'instances'           => $instances,
-        'rack'                => $rack,
-        'seeds'               => $seeds,
-        'logstash_host'       => 'localhost',
-        'cassandra_passwords' => $cassandra_passwords,
-        'java_package'        => $profile::java::default_package_name,
-        'auto_apply_grants'   => $auto_apply_grants,
+        'instances'             => $instances,
+        'rack'                  => $rack,
+        'seeds'                 => $seeds,
+        'logstash_host'         => 'localhost',
+        'cassandra_passwords'   => $cassandra_passwords,
+        'java_package'          => $profile::java::default_package_name,
+        'auto_apply_grants'     => $auto_apply_grants,
+        'tls_keystore_password' => $tls_keystore_password,
     }
     $cassandra_real_settings = merge($base_settings, $cassandra_settings)
 
