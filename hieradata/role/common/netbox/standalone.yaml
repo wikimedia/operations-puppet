@@ -36,5 +36,5 @@ profile::netbox::db::frontends:
   - "%{facts.networking.fqdn}"
 
 profile::netbox::cas_server_url: "%{lookup('apereo_cas.staging.oidc_endpoint')}"
-profile::netbox::authentication_provider: 'oidc'
+profile::netbox::authentication_provider: 'cas'
 profile::netbox::oidc_service: 'netbox_next'
