@@ -1351,7 +1351,11 @@ server_encryption_options:
   legacy_ssl_storage_port_enabled: <%= @legacy_ssl_storage_port_enabled %>
   # Set to a valid keystore if internode_encryption is dc, rack or all
   keystore: <%= @config_directory %>/tls/server.key
+<% if @tls_keystore_password -%>
+  keystore_password: <%= @tls_keystore_password %>
+<% else -%>
   keystore_password: placeholder
+<% end -%>
   # Verify peer server certificates
   require_client_auth: false
   # Set to a valid trustore if require_client_auth is true
