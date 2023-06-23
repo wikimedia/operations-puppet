@@ -4,8 +4,7 @@
     ServerName <%= @hostname %>
     DocumentRoot "/usr/share/graphite-web"
     <Location />
-        Order allow,deny
-        Allow from all
+        Require all granted
 <%= @apache_auth -%>
 
         # uWSGI reverse-proxy
