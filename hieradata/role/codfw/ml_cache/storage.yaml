@@ -3,11 +3,6 @@ profile::cassandra::client_ips:
   # ml-serve-codfw
   - 10.194.16.0/21
   - 2620:0:860:300::/64
-  # Prometheus control plane nodes to allow probes
-  - 10.192.16.75/32
-  - 2620:0:860:102:10:192:16:75/128
-  - 10.192.32.67/32
-  - 2620:0:860:103:10:192:32:67/128
 
 ## Instances
 profile::cassandra::instances:

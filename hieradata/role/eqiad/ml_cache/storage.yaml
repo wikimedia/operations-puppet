@@ -3,11 +3,6 @@ profile::cassandra::client_ips:
   # ml-serve-eqiad
   - 10.67.16.0/21
   - 2620:0:861:300::/64
-  # Prometheus control plane nodes to allow probes
-  - 10.64.0.82/32
-  - 2620:0:861:101:10:64:0:82/128
-  - 10.64.16.62/32
-  - 2620:0:861:102:10:64:16:62/128
 
 ## Instances
 profile::cassandra::instances:
