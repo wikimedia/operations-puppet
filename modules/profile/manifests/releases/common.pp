@@ -15,25 +15,15 @@ class profile::releases::common(
 
     # when there is more than one releases server per DC
     # we can't rely on primary_dc alone
-    # TODO: Once the releases hosts have been migrated, switch this back to
-    # only showing the warning on the replica hosts
-    #$motd_ensure = $primary_server ? {
-    #    $::fqdn => 'absent',
-    #    default => 'present',
-    #}
+    $motd_ensure = $primary_server ? {
+        $::fqdn => 'absent',
+        default => 'present',
+    }
 
-    if $primary_server == $::fqdn {
-        motd::script { 'rsync_deprecated_host':
-            ensure   => present,
-            priority => 1,
-            content  => template('role/releases/rsync_deprecated_host.motd.erb'),
-        }
-    } else {
-        motd::script { 'rsync_source_warning':
-            ensure   => present,
-            priority => 1,
-            content  => template('role/releases/rsync_source_warning.motd.erb'),
-        }
+    motd::script { 'rsync_source_warning':
+        ensure   => $motd_ensure,
+        priority => 1,
+        content  => template('role/releases/rsync_source_warning.motd.erb'),
     }
 
     $all_secondary_servers = join($secondary_servers, ' ')
