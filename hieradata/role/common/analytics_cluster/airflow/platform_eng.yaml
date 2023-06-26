@@ -25,7 +25,7 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 # These two values support the upgrade of Airflow in T326193
-profile::airflow::airflow_version: '2.5.1-py3.10-20230228'
+profile::airflow::airflow_version: '2.6.3-py3.10-20230711'
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
 # Set up airflow instances.
