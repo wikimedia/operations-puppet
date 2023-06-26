@@ -1,5 +1,5 @@
 profile::openldap::hostname: cloudservices2004-dev.codfw.wmnet
-profile::openldap::mirror_mode: false
+profile::openldap::mirror_mode: true
 profile::openldap::backup: true
 profile::openldap::server_id: 1
 profile::openldap::master: cloudservices2004-dev.codfw.wmnet
