@@ -456,7 +456,7 @@ define cassandra::instance(
         }
         if $tls_use_pki {
             $tls_dir = "${config_directory}/tls"
-            $tls_files = profile::pki::get_cert('cassandra', $facts['fqdn'], {
+            $tls_files = profile::pki::get_cert('cassandra', 'cassandra', {
                 'outdir' => $tls_dir,
                 'owner'  => 'cassandra',
                 'group'  => 'cassandra',
