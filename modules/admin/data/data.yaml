@@ -4816,6 +4816,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGUVver0av05S1PEXYWDwKhuVBrdhk7b8ZPOAfANU8+L cjming@wmf2858
+    krb: present
   jabrams:
     ensure: present
     realname: Janina Abrams
