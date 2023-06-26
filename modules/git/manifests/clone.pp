@@ -7,10 +7,12 @@
 # @param origin If this is not specified, the $title repository will be
 #               checked out from gerrit using a default gerrit url.
 #               If you set this, please specify the full repository url.
-# @param branch Branch you would like to check out.
+# @param branch Branch you would like to check out. 
+# @param git_tag Tag you would like to check out. Only one of 'branch' or 'git_tag'
+#                can be used.
 # @param ensure 'absent', 'present', or 'latest'.
 #             - 'present' will just clone once.
-#             - 'latest' will execute a git pull if there are any changes.
+#             - 'latest' will update the checkout according to 'update_method' (see below).
 #             - 'absent' will ensure the directory is deleted.
 # @param owner Owner of $directory. git commands will be run by this user.
 # @param group Group owner of $directory.
@@ -22,7 +24,7 @@
 #               default 002 if shared, 022 otherwise.
 # @param mode Permission mode of $directory, default: 2755 if shared, 0755 otherwise
 # @param ssh SSH command/wrapper to use when checking out
-# @param timeout  Time out in seconds for the exec command
+# @param timeout  Time out in seconds for the git clone command
 # @param depth the depth to clone if not present use full
 # @param source Where to request the repo from, if $origin isn't specified
 #               'phabricator', 'github', 'gitlab' and 'gerrit' accepted
@@ -75,6 +77,7 @@ define git::clone(
     Optional[Integer[1]]                $depth                 = undef,
     Optional[String[1]]                 $origin                = undef,
     Optional[String[1]]                 $branch                = undef,
+    Optional[String[1]]                 $git_tag               = undef,
     Optional[String[1]]                 $ssh                   = undef,
     Optional[Pattern[/\A\d{3,4}\z/]]    $umask                 = undef,
     Optional[Stdlib::Filemode]          $mode                  = undef,
@@ -117,6 +120,10 @@ define git::clone(
         $git_umask = $umask
     }
 
+    if $branch and $git_tag {
+        fail('"branch" and "git_tag" cannot be used together.  Choose one')
+    }
+
     case $ensure {
         'absent': {
             # make sure $directory does not exist
@@ -130,7 +137,9 @@ define git::clone(
         # otherwise clone the repository
         default: {
             $recurse_submodules_arg = $recurse_submodules.bool2str('--recurse-submodules', '')
-            $brancharg = $branch.then |$x| { "-b ${branch}" }
+
+            $branch_or_tag = $branch.lest || { $git_tag }
+            $brancharg = $branch_or_tag.then |$x| { "-b ${branch_or_tag}" }
             $env = $ssh ? {
                 undef   => $environment_variables,
                 default => $environment_variables << "GIT_SSH=${ssh}",
@@ -200,13 +209,16 @@ define git::clone(
 
             # if $ensure == latest, update the checkout when there are upstream changes.
             if $ensure == 'latest' {
-                $local_branch_expression = $branch ? {
-                    ''      => "$(git remote show ${remote_name} | awk -F': ' '\$1~/HEAD branch/ {print \$2; exit}')",
-                    default => $branch,
+                $local_branch_expression = $branch_or_tag.lest || {
+                    # Use the default branch name obtained from the remote.
+                    "$(git remote show ${remote_name} | awk -F': ' '\$1~/HEAD branch/ {print \$2; exit}')"
                 }
-                $ref_to_check = $branch ? {
-                    undef   => "remotes/${remote_name}/HEAD",
-                    default => "remotes/${remote_name}/${branch}",
+                $ref_to_check = $git_tag ? {
+                    undef => $branch ? {
+                        undef   => "remotes/${remote_name}/HEAD",
+                        default => "remotes/${remote_name}/${branch}",
+                    },
+                    default => "refs/tags/${git_tag}",
                 }
                 $checkout_cmd = @("COMMAND"/L)
                 ${git} ${shared_arg} checkout --force --quiet \
@@ -225,7 +237,7 @@ define git::clone(
                     logoutput => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
-                    unless    => "${git} fetch --prune --prune-tags && ${git} diff --quiet ${ref_to_check}",
+                    unless    => "${git} fetch --tags --prune --prune-tags && ${git} diff --quiet ${ref_to_check}",
                     user      => $owner,
                     group     => $group,
                     umask     => $git_umask,
