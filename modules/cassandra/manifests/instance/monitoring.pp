@@ -53,26 +53,34 @@ define cassandra::instance::monitoring (
 
     # SSL cert expiration monitoring (T120662)
     if $tls_cluster_name {
+        $ensure_nagios_monitor = $tls_use_pki ? {
+            true  => 'absent',
+            false => $ensure_monitor,
+        }
         if $tls_use_pki {
             # The TLS certificates provided by PKI are automatically
             # renewed by puppet, and reloaded by Cassandra automatically.
             # This alert is needed to warn the admins in case something goes
             # wrong and the new cert is not picked up as expected.
             prometheus::blackbox::check::tcp { "${service_name}-ssl":
+                # The blackbox probe doesn't support one servername
+                # for each instance, so we fallback to a CN: cassandra
+                # to have a single config supported by all PKI-enabled
+                # instances.
+                server_name             => 'cassandra',
                 port                    => $tls_port,
                 force_tls               => true,
                 certificate_expiry_days => 5,
                 ip4                     => $listen_address,
                 ip_families             => ['ip4'],
             }
-        } else {
-            monitoring::service { "${service_name}-ssl":
-                ensure        => $ensure_monitor,
-                description   => "${service_name} SSL ${listen_address}:${tls_port}",
-                check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
-                contact_group => $contact_group,
-                notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
-            }
+        }
+        monitoring::service { "${service_name}-ssl":
+            ensure        => $ensure_nagios_monitor,
+            description   => "${service_name} SSL ${listen_address}:${tls_port}",
+            check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
+            contact_group => $contact_group,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
         }
     }
 }
