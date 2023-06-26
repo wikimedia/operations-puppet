@@ -42,15 +42,6 @@ define cassandra::instance::monitoring (
         require => Service[$service_name],
     }
 
-    # CQL query interface monitoring (T93886)
-    monitoring::service { "${service_name}-cql":
-        ensure        => $ensure_monitor,
-        description   => "${service_name} CQL ${listen_address}:${cql_port}",
-        check_command => "check_tcp_ip!${listen_address}!${cql_port}",
-        contact_group => $contact_group,
-        notes_url     => 'https://phabricator.wikimedia.org/T93886',
-    }
-
     # SSL cert expiration monitoring (T120662)
     if $tls_cluster_name {
         $ensure_nagios_monitor = $tls_use_pki ? {
@@ -73,8 +64,33 @@ define cassandra::instance::monitoring (
                 certificate_expiry_days => 5,
                 ip4                     => $listen_address,
                 ip_families             => ['ip4'],
+                instance_label          => "${::hostname}-${instance_name}",
+            }
+
+            prometheus::blackbox::check::tcp { "${service_name}-cql":
+                # The blackbox probe doesn't support one servername
+                # for each instance, so we fallback to a CN: cassandra
+                # to have a single config supported by all PKI-enabled
+                # instances.
+                server_name             => 'cassandra',
+                port                    => $cql_port,
+                force_tls               => true,
+                certificate_expiry_days => 5,
+                ip4                     => $listen_address,
+                ip_families             => ['ip4'],
+                instance_label          => "${::hostname}-${instance_name}",
             }
         }
+
+        # CQL query interface monitoring (T93886)
+        monitoring::service { "${service_name}-cql":
+            ensure        => $ensure_nagios_monitor,
+            description   => "${service_name} CQL ${listen_address}:${cql_port}",
+            check_command => "check_tcp_ip!${listen_address}!${cql_port}",
+            contact_group => $contact_group,
+            notes_url     => 'https://phabricator.wikimedia.org/T93886',
+        }
+
         monitoring::service { "${service_name}-ssl":
             ensure        => $ensure_nagios_monitor,
             description   => "${service_name} SSL ${listen_address}:${tls_port}",
