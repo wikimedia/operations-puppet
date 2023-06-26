@@ -14,6 +14,7 @@ knownhosts:
         - /etc/ssh/ssh_known_hosts
 
 clustershell:
+    connect_timeout: <%= @cumin_connect_timeout %>
     ssh_options:
         - '-K -F <%= @ssh_config_path %>'
 

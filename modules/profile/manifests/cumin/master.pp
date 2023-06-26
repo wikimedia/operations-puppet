@@ -12,6 +12,7 @@ class profile::cumin::master (
     Boolean       $monitor_agentrun        = lookup('profile::cumin::monitor_agentrun'),
     Boolean       $email_alerts            = lookup('profile::cumin::master::email_alerts'),
     Integer[0,31] $insetup_role_report_day = lookup('profile::cumin::master::insetup_role_report_day'),
+    Integer       $cumin_connect_timeout   = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
 ) {
     include passwords::phabricator
     $with_openstack = false  # Used in the cumin/config.yaml.erb template

@@ -10,9 +10,9 @@ puppetdb:
       - SubjectAltNameWarning  # Temporary fix for T158757
 
 clustershell:
+    connect_timeout: <%= @cumin_connect_timeout %>
     ssh_options:
         - '-o BatchMode=yes'
-        - '-o ConnectTimeout=2'
         - '-o StrictHostKeyChecking=no'
         - '-o UserKnownHostsFile=/dev/null'
         - '-o GlobalKnownHostsFile=/dev/null'

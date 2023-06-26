@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::cumin::unprivmaster (
-    Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
-    Array[String] $datacenters          = lookup('datacenters'),
-    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary'),
-    Stdlib::Port  $puppetdb_micro_port  = lookup('profile::puppetdb::microservice::port')
+    Stdlib::Host  $puppetdb_host         = lookup('puppetdb_host'),
+    Array[String] $datacenters           = lookup('datacenters'),
+    Stdlib::Host  $kerberos_kadmin_host  = lookup('kerberos_kadmin_server_primary'),
+    Stdlib::Port  $puppetdb_micro_port   = lookup('profile::puppetdb::microservice::port'),
+    Integer       $cumin_connect_timeout = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
 ) {
     include profile::kerberos::client
 

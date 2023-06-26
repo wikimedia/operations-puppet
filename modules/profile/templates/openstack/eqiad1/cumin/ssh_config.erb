@@ -1,7 +1,8 @@
 Host *
     BatchMode yes
-    ConnectTimeout 2
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
     GlobalKnownHostsFile /dev/null
     LogLevel ERROR
+    # Note: do not set ConnectTimeout here, because Cumin will ignore it.
+    # Instead use clustershell.connect_timeout in /etc/cumin/config.yaml
