@@ -50,7 +50,9 @@ profile::openstack::codfw1dev::designate_hosts:
   - cloudservices2005-dev.private.codfw.wikimedia.cloud
 profile::openstack::codfw1dev::puppetmaster_hostname: 'puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org'
 profile::openstack::codfw1dev::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::codfw1dev::ldap_hosts: ['cloudservices2004-dev.private.codfw.wikimedia.cloud']
+profile::openstack::codfw1dev::ldap_hosts:
+  - 'cloudservices2004-dev.private.codfw.wikimedia.cloud'
+  - 'cloudservices2005-dev.private.codfw.wikimedia.cloud'
 profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2002-dev.wikimedia.org

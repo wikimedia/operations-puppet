@@ -12,7 +12,7 @@ profile::resolving::nameservers:
 
 labsldapconfig:
   hostname: "cloudservices2004-dev.private.codfw.wikimedia.cloud"
-  secondary_hostname: "cloudservices2004-dev.private.codfw.wikimedia.cloud"
+  secondary_hostname: "cloudservices2005-dev.private.codfw.wikimedia.cloud"
 
 ldap:
   ro-server: ldap-ro.codfw.wikimedia.org
