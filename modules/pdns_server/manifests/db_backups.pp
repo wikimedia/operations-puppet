@@ -21,7 +21,7 @@ class pdns_server::db_backups(
 
         },
         {
-            'stmt'              => "GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON \\`${db}\\`.* TO \\`${dbuser}\\`@\\`localhost\\`",
+            'stmt'              => "GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER ON \\`${db}\\`.* TO \\`${dbuser}\\`@\\`localhost\\`",
             'unless'            => "SHOW GRANTS FOR '${dbuser}'@'localhost'",
             'unless_grep_match' => undef,  # will use the same stmt
         },
