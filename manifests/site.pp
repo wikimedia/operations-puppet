@@ -1573,10 +1573,6 @@ node 'krb1001.eqiad.wmnet' {
     role(kerberos::kdc)
 }
 
-node 'krb2001.codfw.wmnet' {
-    role(insetup::infrastructure_foundations)
-}
-
 node 'krb2002.codfw.wmnet' {
     role(kerberos::kdc)
 }
