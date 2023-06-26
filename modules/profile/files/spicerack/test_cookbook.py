@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 """Cookbook testing script
 
-It allows to test a Gerrit patch on the cookbook repository checking out the change locally
+It allows testing a Gerrit patch on the cookbook repository checking out the change locally
 on the cumin host where the command is run and running the cookbook with the change code instead
 of the officially deployed one. It also allows to specify a given patch set (PS) to use.
 The cookbook binary will be invoked with the -c/--config argument already set to point to the
 custom configuration pointing to the testing checkout.
 
-After a first checkout is possible to modify the files in place and test it again. The script
+After a first checkout it is possible to modify the files in place and test it again. The script
 will automatically detect that there are local changes and ask the operator what to do, as long
-as the local modifications are on the same branch (hance the same PS) requested.
+as the local modifications are on the same branch (hence the same PS) requested.
 
 It should be used with caution but at least provides a standard way to test cookbook changes.
 All the extra parameters are passed to the cookbook binary.
@@ -31,7 +31,7 @@ The generated files structure is as follows:
     ~/cookbooks_testing/  # Parent directory of all modified files
     ~/cookbooks_testing/config.yaml  # The configuration file that is passed to the cookbook binary
     ~/cookbooks_testing/cookbooks  # Symlink that points to the currently tested change
-    ~/cookbooks_testing/cookbooks-$CHANGE_ID  # The git checkou of a given the change ID
+    ~/cookbooks_testing/cookbooks-$CHANGE_ID  # The git checkout of a given the change ID
     ~/cookbook_testing/logs  # The log directory where all cookbooks will log into
 
 """
