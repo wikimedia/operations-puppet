@@ -66,7 +66,6 @@ profile::analytics::refinery::job::gobblin::ensure_timers: present
 # Versioned gobblin-wmf shaded to use for gobblin ingestion jobs.
 profile::analytics::refinery::job::gobblin::gobblin_jar_file: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-core-1.0.1-jar-with-dependencies.jar
 
-profile::airflow::airflow_version: '2.6.3-py3.10-20230711'
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
 # Set up airflow instances.

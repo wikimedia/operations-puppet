@@ -26,7 +26,6 @@ profile::java::java_packages:
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
-profile::airflow::airflow_version: '2.6.3-py3.10-20230711'
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
 # Set up airflow instances.
