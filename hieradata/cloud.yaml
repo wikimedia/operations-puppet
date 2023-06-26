@@ -243,6 +243,8 @@ profile::gitlab::runner::allowed_images:
 profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
+  # Database engines
+  - "mariadb:*"
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 profile::mail::smarthost::support_ipv6: false
