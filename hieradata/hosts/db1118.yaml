@@ -1,4 +1,4 @@
-# db1118
-mariadb::shard: 's1'
-mariadb::binlog_format: 'STATEMENT'
+# db1118 - temporary in m3
+mariadb::shard: 'm3'
+mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false
