@@ -19,7 +19,8 @@ filter_chains:
       stat_prefix: <%= n %>_egress
       http_filters:
       - name: envoy.filters.http.router
-        typed_config: {}
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
       route_config:
         <%- if @listener['xfp'] -%>
         request_headers_to_remove:

@@ -13,7 +13,8 @@ per_connection_buffer_limit_bytes: <%= @connection_buffer_limit %>
 <%- end -%>
 listener_filters:
 - name: "envoy.filters.listener.tls_inspector"
-  typed_config: {}
+  typed_config:
+    "@type": type.googleapis.com/envoy.extensions.filters.listener.tls_inspector.v3.TlsInspector
 tcp_fast_open_queue_length: <%= @fast_open_queue %>
 filter_chains:
 <%- @upstreams.each do |upstream| -%>
@@ -179,6 +180,8 @@ filter_chains:
 <%- end -%>
 <%- end -%>
       - name: envoy.filters.http.router
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
       server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
 <%- end -%>
@@ -336,6 +339,8 @@ filter_chains:
 <%- end -%>
 <%- end -%>
       - name: envoy.filters.http.router
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
       http_protocol_options:
         accept_http_10: true
 <%- if @header_key_format != 'none' -%>
