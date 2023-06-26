@@ -59,7 +59,6 @@ define cassandra::instance::monitoring (
             # This alert is needed to warn the admins in case something goes
             # wrong and the new cert is not picked up as expected.
             prometheus::blackbox::check::tcp { "${service_name}-ssl":
-                server_name             => $listen_address,
                 port                    => $tls_port,
                 force_tls               => true,
                 certificate_expiry_days => 5,
