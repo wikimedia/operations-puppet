@@ -156,6 +156,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'cloudservices2004-dev.codfw.wmnet'
+        - 'cloudservices2005-dev.codfw.wmnet'
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:
