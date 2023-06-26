@@ -5,8 +5,8 @@ After=network.target
 Requires=network.target
 Documentation=https://github.com/unixsurfer/anycast_healthchecker/blob/master/README.rst
 <%- if @bind_service -%>
-After=<%= @bind_service %>
-BindsTo=<%= @bind_service %>
+After=<%= @bind_service_with_ext.join(" ") %>
+BindsTo=<%= @bind_service_with_ext.join(" ") %>
 <%- end -%>
 
 [Service]

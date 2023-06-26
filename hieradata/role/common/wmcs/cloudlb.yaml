@@ -1,3 +1,4 @@
 profile::contacts::role_contacts: ["WMCS"]
 
-profile::bird::bind_anycast_service: haproxy.service
+profile::bird::bind_anycast_services:
+  - haproxy

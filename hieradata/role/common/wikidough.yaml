@@ -47,6 +47,10 @@ profile::wikidough::dnsdist::webserver_config:
     - '0.0.0.0/0'
     - '::/0'
 
+profile::bird::bind_anycast_services:
+  - 'pdns-recursor'
+  - 'dnsdist'
+
 profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   *domain:
