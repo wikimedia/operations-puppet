@@ -13,8 +13,13 @@ daemon_args = [
   "--tls-cert-file=#{@apiserver_cert['chained']}",
   "--tls-private-key-file=#{@apiserver_cert['key']}",
   "--service-account-key-file=#{@sa_cert['cert']}",
-  "--service-cluster-ip-range=#{@service_cluster_cidr['v4']}",
 ]
+
+if @ipv6dualstack
+  daemon_args.push("--service-cluster-ip-range=#{@service_cluster_cidr['v4']},#{@service_cluster_cidr['v6']}")
+else
+  daemon_args.push("--service-cluster-ip-range=#{@service_cluster_cidr['v4']}")
+end
 
 if @additional_sa_certs
   @additional_sa_certs.each do |v|
