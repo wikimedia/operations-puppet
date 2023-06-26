@@ -4,6 +4,7 @@
 from pathlib import Path
 
 import yaml
+import re
 
 from yamllint.config import YamlLintConfig
 from yamllint.linter import run
@@ -45,6 +46,7 @@ def main():
     ansi_ok = '\033[92m'
     ansi_end = '\033[0m'
     yamllint_error = False
+    datelint_error = False
 
     NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
     yamllint_config = YamlLintConfig(YAML_LINT_CONFIG)
@@ -53,6 +55,26 @@ def main():
     data_path = Path(__file__).parent / 'data.yaml'
 
     try:
+        # Ensure dates are quoted so that we don't hit a Ruby bug with
+        # safe_load, https://github.com/ruby/psych/issues/262, we can't do this
+        # check with yamllint, because pyyaml also parses dates, :(.
+        with open(data_path, "r") as f:
+            for i, line in enumerate(f, start=1):
+                match = re.search("^ +(expiry_date: \\d{4}-\\d{2}-\\d{2})$", line)
+                if match:
+                    datelint_error = True
+                    print(
+                        "{}FAIL:{} {} '{}' {}".format(
+                            ansi_fail,
+                            i,
+                            "dates must be quoted",
+                            match.group(1),
+                            ansi_end,
+                        )
+                    )
+        if datelint_error:
+            return 1
+
         for problem in run(data_path.read_text(), yamllint_config):
             yamllint_error = True
             print('{}FAIL:{} {}{}'.format(

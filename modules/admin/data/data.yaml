@@ -2422,7 +2422,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGd7k8tpFmG0m7qe1tD9M7QGQCioHi/kDuSlA8FpSRAsmDWcARisV1/29lpdHUCy4tJ0s3zaEcoGUjy3630El1Ch+dn+NiQSKBcW9fFZ0yhr4uEoOTcamou3L/tpr6ky0hzvX/BNmZTL9ZF2v3PUyb7jAmDs0/1rVSRJ0Egy3+tRR7TttKXdUArGda9/CznW7tQ1BWBIWQ3CeA9Um+uUckF0JFa/IKRdZ5LADrQ/w3wVqcN9WyXza30ITXYKQWkiJPnW+oU/j5r2huY8rTVjaKxTVFf8qVBJXPULUgdgGJqbAkJ34wAW200xij830pTPkh+P/b33/CtUeM+9k9sY0f west@malum]
     uid: 10972
     comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: 2023-11-14
+    expiry_date: "2023-11-14"
     expiry_contact: lzia@wikimedia.org
     email: robert.west@epfl.ch
     krb: present
@@ -3145,7 +3145,7 @@ users:
     ssh_keys: []
     uid: 1023
     email: markus.kroetzsch@tu-dresden.de
-    expiry_date: 2019-01-26
+    expiry_date: "2019-01-26"
     expiry_contact: leila@wikimedia.org
   akrausetud:
     ensure: absent
@@ -3233,7 +3233,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/gM+ET26j1I16ZWjbbcoWQhMNYj3AlS0yZQCSnLKbv6pbGCOs9xtTsxQQLH71ITdrlvS9E7KTjR4Ycn/gbgprkrtxCT89U4kU41kQTDHfAow8zodB7S99B0NR2cfUzAVglzw28mDfiCnlk7RS761Zgw+vJhrvGIwwwQngDXR7Y3PN8I3n6h4Jvv3Sm+NvWZD2j/OzeGWZF6XE60sRxXR9IriEjSpETqTwrAk6l0PhrJgzccfEtFWWcLy+ueSrSjL7TF6rxG663C8WA3F2NGm3GTGJCwxGyH94urPOoHZ/Xfqwa3vt6al8DLNpgVziUPnARXN0DsNsT0bUV2MIhRm1b0vapWUySFHr4yyGYjoMzB4WWqQZXeswJr4LYhf2j8RRhjacKp4ucKwbNO/ytwXzwvAGXXxgA+RGqxcKp6wwGVyZNDS0kRyI23xlaIM7N9nJxsK+q9n7uTDeeR+beUxmqoRg0x4pt8nNI2C+NnNL0vKdZtPtHBhunIN2ARycBm8Q8oEfOq/eA7RDw+srPFCaadG0z9jQ0qJB69RHCVZZohCHv7Jryz+iHTdiRcAPqUBCB9MwcpzqkWUirdpSQR1kz0qJpGN3BWxU6VlDpBpMRnjByTcAigVPfei2fOzAH3P7k1yE9eoT7ooyU+RtLreYbtCODpp03sTwRTOzvbjWiQ==
     uid: 15999
     email: tiziano.piccardi@epfl.ch
-    expiry_date: 2023-12-21
+    expiry_date: "2023-12-21"
     expiry_contact: mgerlach@wikimedia.org
     krb: present
   fdans:
@@ -4113,7 +4113,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMnomWTASEzJqGKtpCqUA8g+Wcz4RmcpD5qRbuiXurptrXPQaoogl2U/RfnyInPZQAoc4QgM3JGLvjaNfIGIkCNPq8H3oWc4DeUE+OTfbH3/L8UvvB8CQ8KEOC92C9GBCDAfva5hY94CziKeFZvFEFLpxVRLWkdZcXVzQGZmVX09Rf+KANf/9/XH8WtlLvtfT7e0d5f4aTYNJ96VtLih5BneA+CYlRM/xXzDiH5Am31ffPduKAeFfMMdDYRJAVHayVGqAaGHo+T38mHNibtt9hZFVWr/nnbOnNo2EIE1JVtoUHR6p4Jzr+XR/d6rgJWmvn7gfdewzfCMHNSPPSTeiuOPnnvJeF1OeiASu7FeHOndeB3VKQyUGcAr+6luAs4Wg4CoAz+zzEOvUYPoK7DZKuvyUeXoVjBWb1UkW6OizYjqiTxjNM8HPQ6vCtkM0sV3dAPfGJqDCy9rtmgCwfdeKch54Cw4QdKBkoMa/C2ciJFqHemo3YvGrsghRgekfObo5euOUVSf1pVqr2igmNtaSiEMXs0/06fzdn88ojQgBSHW/XSIQ+Yi47ZLIGE5R7Ht+9LH9pIDlujR81bxvrGoLICeZbTg1lZPMhAcFuNa84lpiKKgPxONC7cxqtizclghZW/KtGA2gfszazg1uyGI7xFEhGhfWi3NwQ9zqOxrGg6Q== aarora@tsf-452-wpa-3-166.epfl.ch
-    expiry_date: 2023-12-13
+    expiry_date: "2023-12-13"
     expiry_contact: lzia@wikimedia.org
     krb: present
   dpifke:
@@ -4267,7 +4267,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzKRxyFfYw/A8UIQAm6o6hTdVOKCjgdh+qsXlzOGBT4 daniele@MacBook-Pro-di-Daniele.local'
-    expiry_date: 2023-07-05
+    expiry_date: "2023-07-05"
     expiry_contact: mredi@wikimedia.org
     krb: present
   rodolfovalentim:
@@ -4369,7 +4369,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdflcuMhIJ5BVKdg2C4/3VqM9jeSoGnJoclTEXyPHp1 edward@Edwards-MacBook-Pro.local
     krb: present
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: jbranaa@wikimedia.org
   dvrandecic:
     ensure: present
@@ -4685,7 +4685,7 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMps+r6DTe3WVUkC1e19G8cVz8SjKaQw4Da3nK7/cjz0 akhatun-ctr@wikimedia.org'
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: mgerlach@wikimedia.org
   mmandere:
     ensure: absent
@@ -4983,7 +4983,7 @@ users:
     ensure: present
     email: munaslam001@gmail.com
     realname: MunizaA
-    expiry_date: 2024-06-30
+    expiry_date: "2024-06-30"
     expiry_contact: diego@wikimedia.org
     gid: 500
     uid: 32084
@@ -5211,7 +5211,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhg5l9FdMRyic4YF1+EDVbxatxyEhn6K8SGwIBpAY9V tandic-ctr@wikimedia.org
     krb: present
-    expiry_date: 2024-06-30
+    expiry_date: "2024-06-30"
     expiry_contact: mredi@wikimedia.org
   dannyh:
     ensure: absent
@@ -5258,7 +5258,7 @@ users:
     realname: Michael Hay
     email: michael@tmlt.io
     krb: present
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: htriedman@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDn47QmSyOAeYM5foeXneTjTX/LW5KCDdYYx3e4Ca2AP mhay@Blizzard.local
@@ -5269,7 +5269,7 @@ users:
     realname: Skye Berghel
     email: sberghel@gmail.com
     krb: present
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFR6HVVjTuiJM6r8Zl12+41Pef80nk/zhchCW3mTzoMx skye@Neikos.local
@@ -5280,7 +5280,7 @@ users:
     realname: Tom Magerlein
     email: tom.magerlein@tmlt.io
     krb: present
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILpX/tkSGrfKB7+S4fkCOz5ivRxmR5TymsNzn90iZlP5 tom@tumult-tjm-dev
@@ -5291,7 +5291,7 @@ users:
     realname: Damien Desfontaines
     email: damien+wikimedia@tmlt.io
     krb: present
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: jcross@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETNJbuSzSjngqw7YMt5kv6+iIfWqx43a0OQC1Loa8bZ damien@cyclone.local
@@ -5309,7 +5309,7 @@ users:
     krb: present
     realname: Shubhankar Patankar
     email: spatank@seas.upenn.edu
-    expiry_date: 2023-07-21
+    expiry_date: "2023-07-21"
     expiry_contact: mgerlach@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlEIMQQGbuyTAod+ev+GLFEhBYnaXuXI+t7iWVVDoSn spatank@seas.upenn.edu
@@ -5320,7 +5320,7 @@ users:
     krb: present
     realname: Dale Zhou
     email: dalezhou@pennmedicine.upenn.edu
-    expiry_date: 2023-07-21
+    expiry_date: "2023-07-21"
     expiry_contact: mgerlach@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwgplBvgCWWSYgmTW8cwNlG7pjwr5I8INx4pGL4rE5n dalezhou@seasnet-14-33.seas.upenn.edu
@@ -5373,7 +5373,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFUWkbN5/6nDSKi4x+wvs5bo1wt6KmwBinBrYYB8SfT5 baiaitolkyn@gmail.com
     krb: present
-    expiry_date: 2023-10-19
+    expiry_date: "2023-10-19"
     expiry_contact: diego@wikimedia.org
   drochford:
     ensure: present
@@ -5415,7 +5415,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUZw20NNlj/iDCDwsF1fVXTH0m8XgLG1NXjl7TS3Y/DYCsXm4rtMp8QIQQ2yvqjo6EeD2nXUjCPqa3glAsuICIg7vAex/XBZXVuWS8esZ+kdj697PyRDN4hKowezyGk1pS97TjtxDAf+xFpWc26t+8BJLVG7rCWEafN6T/95UDTZElPlp/QDZOK/Tl/EAFWhJqK2pvD4I0C4o4QuvXj3meahvnPO38hBlmfPD/m47Y+ZIZU5lnRrBKQfGHn16heJMBTveMyjjcEOGzFk507tRwKXHx0cx/GwftnmN9XEZnr+AvTx4ydIrmDmwa0wab5RLLoMHrWPyP2tBTaU54PwNUOp24fXXWiyfecbiFAZZ0Bo9n2paijZejn2G2KGC370fA7yVBST/tm4I2uq6h58LmAmYCoIxC3bnGKVt4a543ZWZnpIr+4yuKzIwTDHOr/pwAjCNhC4hW1tUkk57UG7TKy+vOglmgWdvUHBtC1/7/ZEoAF26YR69Coy5KeVnO1qRCi0PkdxR6NoUIkG/RYcHz9zYcM6hu45QISBeAU4CmQZp1+sniIKoVJHewl3IbdZv+gawfEpvzUWWVVa1HEBoRBIVaRHiwGuKsQhFJmG7K4Moywtrc+u+5bkAKabYHlVGVwTZcq97THA9OFeCAQ5dWxlBnZe8Cjrgbe5+J9QHk7Q== mhoutti@infra04-wg324.eduroam.wireless.umn.edu
     krb: present
-    expiry_date: 2023-08-11
+    expiry_date: "2023-08-11"
     expiry_contact: ijohnson@wikimedia.org
   mazevedo:
     ensure: present
@@ -5440,7 +5440,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J
     krb: present
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: lzia@wikimedia.org
   kstoller:
     ensure: present
@@ -5470,7 +5470,7 @@ users:
     email: ddesouza-ctr@wikimedia.org
     uid: 39452
     gid: 500
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: bgerdemann@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bgwiki:
@@ -5507,7 +5507,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkIgD8ZSMXnIaUfkq1j4KKgZ3kphxffQWWktv6Ya75mLEIPYON7yl2W0iY4B/493NgoR3ghVRwLGR3YXFDXoLdpmeebyAmvHpaH+2T5lGVrCbXyc6fz5E7qArZGdMf0MhQ8eylkofK7NJI2azGWrqE+uxIaghIIy401zYCh516iieI5DSqvKs4bEWjokEQ1EXWmx4MASbXnvgwgXOFIpi8VPGABlMhdJWPr8NemCCUs6xgY+T+9jAcnvIflWv2HkYlOnaKgY8dhrim9m+BGVAdqK+3mN18zuvoaz3kjlzv8emL9JeUb32JgDrHfcONKtWwm4T9wrbNUZJ2nsC8JVsWJDXDKUej+KHfmoDjny4mHgx+oymHSY29ibstNHbWAan+S8V1yfQXEfFbjMm5HwPHJx7KYeJTblYtAd6fUmmDUieRdJxDBCszwUt0A4HIeomcVXbKBVfFSO91pLRrDiFlMTwauuKT1OOG1L4KLQz8gE30TlZyiOIxtrdR5gmQhRNGIppKlx/Rm3zUNPwyoRr2a5Nc4IgZaa+U8j4o6YxOeSRD3Kfx3MORhvwa6ruJ533IDX3BNKzrNAz0fiHLtHpysIkTQeY9BpxD8dujXfBNrvn8ZYeWsaHE5ejssOJyElIox63MkVKUSeChyta6WL2MLLwjTrOuz33NZ9T2XVb/bQ== raymond@ubuntu
-    expiry_date: 2023-09-30
+    expiry_date: "2023-09-30"
     expiry_contact: nskaggs@wikimedia.org
   alinebruenger:
     ensure: present
@@ -5563,7 +5563,7 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCyl+eu4X9cI/XT6nCSvud+X6LJyVV7Rcr1g4MnP2xf trokhymovych.mykola@gmail.com'
-    expiry_date: 2024-06-30
+    expiry_date: "2024-06-30"
     expiry_contact: diego@wikimedia.org
   siko:
     ensure: present
@@ -5635,7 +5635,7 @@ users:
     email: ntasnim-ctr@wikimedia.org
     uid: 37831
     gid: 500
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: ijohnson@wikimedia.org
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDl3CP/l+yFwQqG5ifShJgIgmp1x/krK8slFXTIRYuFOj1imPrZJRoWp144UPZsQ279ulIpaVJol4vNULqIFuG1nE1TCH9ICnIUquoZEjqRrm+1U0jXFrrye1U4SjUnq2bdFli1rkNkLI9MT/ZcPBBcN9kwASfwYAHQOnUtlHgvGdGvtSeQzV0G3lqwYCqyZzEQi6N+DR/s5tfQo2osnufEGZZpf2jRWrm6D6AK7LDODyzj/LmNvCgH3yme024kn3KvGjzs2B5+nQqIFa1cA21ETKbq3jS6HwqHaOYGR/aAfGFBaAn3G89ppTlAMqXKdfRAfqb7O7bQKxxfWnXxJLYEwkKBKc/XEq6Zyil3WJd0/Z5Bhaglopp2TLcGHhO//kM4P+IlAowp/YNwEpZnIu4zojW0cd3u7hH+84yfjqonKt9j2BPodZArdJDavNUS2ZmPXm/Ddql4qnGQmYK21XVrAswNeEI/y6PlYVmxTiV4rTaZMHaP6IU6ay3ko9zYO35xQcsHv/yXALh4K/myxP0QLHFz3dBXIFdVZt5n6y90+mINsI3zy9r9RigjPX52iaccAI0vyJo/hGUk1vlt8nmB0/CiVKlDHSrGAT20Jcp004ezkASNP77RE1H8wqfIB6Iew4UnW6+wJ/PCGRhMW3CyWWSQzOGABHna52yfFQhbdw== appledora@pop-os
@@ -5651,7 +5651,7 @@ users:
     krb: present
     realname: Hghani
     email: hghani-ctr@wikimedia.org
-    expiry_date: 2023-11-30
+    expiry_date: "2023-11-30"
     expiry_contact: kzimmerman@wikimedia.org
     uid: 42383
     gid: 500
@@ -5698,7 +5698,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPrO2p2KUW1Fd/k+63WrU+wFScl2La3eAgjcVUjD13/1 david.pujol@tmlt.io
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: jcross@wikimedia.org
   abartov:
     ensure: present
@@ -5715,7 +5715,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7ltKIKe7rrL2LacWR7RgP+YKB2KqMzvve40nJI1ypJ dasm@Daniels-MacBook-Pro.local
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: jcross@wikimedia.org
   wfan219:
     ensure: present
@@ -5762,7 +5762,7 @@ users:
     realname: Jennifer Hancock
     email: jhancock-ctr@wikimedia.org
     expiry_contact: wpao@wikimedia.org
-    expiry_date: 2024-06-30
+    expiry_date: "2024-06-30"
     uid: 42729
     gid: 500
     ssh_keys:
@@ -5830,7 +5830,7 @@ users:
     realname: Jameel Kaisar
     email: jkaisarkhan-ctr@wikimedia.org
     expiry_contact: jborun@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     uid: 43611
     gid: 500
     ssh_keys:
@@ -5840,7 +5840,7 @@ users:
     realname: Aranya Prum
     email: aprum-ctr@wikimedia.org
     expiry_contact: jcross@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     uid: 43621
     gid: 500
     krb: present
@@ -5851,7 +5851,7 @@ users:
     realname: Nick Ifeajika
     email: nifeajika-ctr@wikimedia.org
     expiry_contact: mredi@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     uid: 43623
     gid: 500
     krb: present
@@ -5896,7 +5896,7 @@ users:
     realname: Francisco Navas
     email: fnavas-ctr@wikimedia.org
     expiry_contact: Naïké Nembetwa Nzali
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     uid: 43670
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
@@ -5928,7 +5928,7 @@ users:
     realname: Panagiotis Penloglou
     email: ppenloglou-ctr@wikimedia.org
     expiry_contact: dbu@wikimedia.org
-    expiry_date: 2023-07-18
+    expiry_date: "2023-07-18"
     uid: 42507
     gid: 500
     ssh_keys:
@@ -6560,7 +6560,7 @@ ldap_only_users:
     ensure: present
     realname: Luca Martinelli
     email: sannita-ctr@wikimedia.org
-    expiry_date: 2024-02-08
+    expiry_date: "2024-02-08"
     expiry_contact: elitrenta@wikimedia.org
   stei:
     ensure: present
@@ -6601,7 +6601,7 @@ ldap_only_users:
     ensure: present
     realname: Simone Cuomo
     email: simone@thisdot.co
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
     expiry_contact: abaso@wikimedia.org
   jjbk:
     ensure: present
@@ -6716,7 +6716,7 @@ ldap_only_users:
     ensure: present
     realname: Eugene Wang'ombe
     email: ewangombe-ctr@wikimedia.org
-    expiry_date: 2024-06-30
+    expiry_date: "2024-06-30"
     expiry_contact: nlaxstrom@wikimedia.org
   stef25:
     ensure: absent
@@ -6746,19 +6746,19 @@ ldap_only_users:
     realname: Lauralyn Watson
     email: lwatson-ctr@wikimedia.org
     expiry_contact: NHillard@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
   s-mukuti:
     ensure: present
     realname: Sarah Mukuti
     email: smukuti-ctr@wikimedia.org
     expiry_contact: ksiebert@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
   babiola:
     ensure: present
     realname: Barakat Ajadi
     email: babiola-ctr@wikimedia.org
     expiry_contact: lgaulia@wikimedia.org
-    expiry_date: 2023-06-30
+    expiry_date: "2023-06-30"
   maurelio:
     ensure: present
     realname: (known to Legal)
