@@ -25,12 +25,6 @@ prometheus_nodes:
     - prometheus2006.codfw.wmnet
 
 profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor.openstack.codfw1dev.wikimediacloud.org
-
-profile::openstack::base::pdns::auth::listen_on:
-  - "%{facts.ipaddress}"
-  - "%{facts.ipaddress6}"
-  - 185.15.57.25  # ns.openstack.codfw1dev.wikimediacloud.org
-
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.codfw1dev.wikimediacloud.org
 
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.254.1
