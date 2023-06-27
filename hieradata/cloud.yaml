@@ -331,7 +331,7 @@ profile::tlsproxy::envoy::global_cert_name: ~
 profile::tlsproxy::envoy::idle_timeout: ~
 profile::tlsproxy::envoy::ferm_srange: ~
 profile::tlsproxy::envoy::max_requests: ~
-profile::tlsproxy::envoy::cfssl_label: ~
+profile::tlsproxy::envoy::cfssl_label: 'discovery'
 profile::tlsproxy::envoy::error_page: false
 
 # Firewall logging
