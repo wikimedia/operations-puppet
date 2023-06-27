@@ -17,7 +17,8 @@ class profile::url_downloader (
     } else {
         fail('Dont use this role outside of wikimedia')
     }
-    $towikimedia = $wikimedia
+    # Don't allow using the proxy to reach internal hosts
+    $towikimedia = $network::constants::mw_appserver_networks_private
 
     $syslog_facility = 'local0'
     $syslog_priority = 'info'
