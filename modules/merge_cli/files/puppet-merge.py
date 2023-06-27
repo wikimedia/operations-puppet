@@ -11,7 +11,6 @@ SHA1 (or 'FETCH_HEAD', or something understood by git-rev-parse).
 """
 
 import os
-import json
 import shlex
 
 from argparse import ArgumentParser, RawTextHelpFormatter, SUPPRESS
@@ -21,6 +20,17 @@ from pwd import getpwnam
 from subprocess import CalledProcessError, PIPE, run
 from syslog import syslog
 
+
+FILE_PATHS = {
+    'ops': {
+        'repo': '/var/lib/git/operations/puppet',
+        'sha1': '/srv/config-master/puppet-sha1.txt',
+    },
+    'labsprivate': {
+        'repo': '/var/lib/git/labs/private',
+        'sha1': '/srv/config-master/labsprivate-sha1.txt',
+    },
+}
 
 ERROR_MESSAGE = '\033[91m{msg}\033[0m'
 """int: reserved exit code: puppet-merge did not perform a merge operation"""
@@ -37,28 +47,17 @@ def get_args():
         help='Automatic yes to prompts; assume "yes" as answer to all prompts',
     )
     parser.add_argument('-q', '--quiet', action='store_true', help='Limit output')
-    parser.add_argument(
-        '-c',
-        '--config',
-        type=Path,
-        help='Limit output',
-        default="/etc/puppet-merge/puppet-merge.json",
-    )
 
     parser.add_argument(
         "--lockout-tagout",
-        help=(
-            "Enable lockout tagout to prevent merges ",
-            "https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout",
-        ),
+        help=("Enable lockout tagout to prevent merges ",
+              "https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout"),
     )
     parser.add_argument(
         '--lockout-tagout-override',
         action='store_true',
-        help=(
-            'Force a merge even if lockout tagout is in place. '
-            'https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout'
-        ),
+        help=('Force a merge even if lockout tagout is in place. '
+              'https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout'),
     )
     parser.add_argument(
         '--lockout-tagout-override-file',
@@ -95,12 +94,12 @@ def setuid(username):
     """change the process uid to the uid of username"""
     try:
         uid = getpwnam(username).pw_uid
-    except KeyError as error:
-        raise SystemExit('unable to get uid for: {}'.format(username)) from error
+    except KeyError:
+        raise SystemExit('unable to get uid for: {}'.format(username))
     try:
         os.setuid(uid)
     except OSError as error:
-        raise SystemExit('unable to setuid to: {}\n{}'.format(uid, error)) from error
+        raise SystemExit('unable to setuid to: {}\n{}'.format(uid, error))
 
 
 def git(args, repo_dir, stdout=PIPE):
@@ -109,7 +108,7 @@ def git(args, repo_dir, stdout=PIPE):
     try:
         result = run(command, cwd=repo_dir, stdout=stdout, stderr=PIPE, check=True)
     except CalledProcessError as error:
-        raise SystemExit('failed to run `{}`\n{}'.format(' '.join(command), error)) from error
+        raise SystemExit('failed to run `{}`\n{}'.format(' '.join(command), error))
     if isinstance(result.stdout, bytes):
         try:
             return result.stdout.decode()
@@ -145,7 +144,6 @@ def main():
     git_user = 'gitpuppet'
     running_user = getuser()
     args = get_args()
-    config_data = json.loads(args.config.read_text())
     if args.lockout_tagout:
         if args.lockout_tagout_override_file.exists():
             print("Lock out, tag out is already in place:")
@@ -165,9 +163,7 @@ def main():
             print("Refusing to merge!!!")
             return 1
         print("continuing to merge as --lockout-tagout-override used")
-    config = (
-        config_data['paths']['ops'] if args.ops else config_data['paths']['labsprivate']
-    )
+    config = FILE_PATHS['ops'] if args.ops else FILE_PATHS['labsprivate']
 
     if running_user != git_user:
         setuid(git_user)
