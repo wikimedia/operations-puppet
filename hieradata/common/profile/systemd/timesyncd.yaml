@@ -1,3 +1,1 @@
 profile::systemd::timesyncd::ensure: present
-# set at the site level
-profile::systemd::timesyncd::ntp_servers: []

@@ -1,7 +1,0 @@
-profile::systemd::timesyncd::ntp_servers:
-  - dns1001.wikimedia.org
-  - dns1002.wikimedia.org
-  - dns1003.wikimedia.org
-  - dns2004.wikimedia.org
-  - dns2005.wikimedia.org
-  - dns2006.wikimedia.org

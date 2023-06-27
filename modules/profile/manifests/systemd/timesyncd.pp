@@ -3,13 +3,26 @@
 # @param ensure wether to ensure the profile
 # @param ntp_servers list of ntp servers
 class profile::systemd::timesyncd (
-    Wmflib::Ensure      $ensure      = lookup('profile::systemd::timesyncd::ensure'),
-    Array[Stdlib::Host] $ntp_servers = lookup('profile::systemd::timesyncd::ntp_servers'),
+    Wmflib::Ensure                           $ensure            = lookup('profile::systemd::timesyncd::ensure'),
+    Hash[Wmflib::Sites, Wmflib::Sites]       $site_nearest_core = lookup('site_nearest_core'),
+    Hash[Wmflib::Sites, Array[Stdlib::Fqdn]] $ntp_peers         = lookup('ntp_peers'),
+    Optional[Array[Stdlib::Host]]            $ntp_servers       = lookup('profile::systemd::timesyncd::ntp_servers', {'default_value' => undef}),
 ) {
+
+    # For historical context, this array was manually managed via
+    # hieradata/$::site/profile/systemd/timesyncd.yaml.
+    #
+    # To set ntp_servers in a site, use the ntp_peers under it and the peers of
+    # the closest core site, which we determine from $::datacenters_tree.
+    if $ntp_servers == undef {
+        $_ntp_servers = [$ntp_peers[$::site], $ntp_peers[$site_nearest_core[$::site]]].flatten
+    } else {
+        $_ntp_servers = $ntp_servers
+    }
 
     class {'systemd::timesyncd':
         ensure      => $ensure,
-        ntp_servers => $ntp_servers,
+        ntp_servers => $_ntp_servers,
     }
     # HDFS/fuse is known to cause issues with timesync and ProtectSystem= strict
     # As such remove this from the list of accessible paths (T310643)
