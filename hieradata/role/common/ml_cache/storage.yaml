@@ -34,6 +34,8 @@ profile::cassandra::settings:
     internode_encryption: all
     server_encryption_optional: true
 
+profile::cassandra::monitor_tls_port: 7000
+
 profile::contacts::role_contacts: ["Machine Learning"]
 
 # Temporary override to allow the creation of a bundle
