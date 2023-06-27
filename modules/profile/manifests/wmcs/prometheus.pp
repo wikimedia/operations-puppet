@@ -112,7 +112,9 @@ class profile::wmcs::prometheus(
             'metric_relabel_configs' => [
                 $hostname_to_instance_config,
             ],
-            'scrape_interval' => '15m',
+            # this number is controversial and may have a high impact on the APIs
+            # see T335943
+            'scrape_interval' => '4m',
             'scrape_timeout'  => '120s',
         },
     ]
