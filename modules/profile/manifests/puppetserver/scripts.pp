@@ -22,7 +22,7 @@ class profile::puppetserver::scripts (
     Optional[String[1]]       $realm_override       = lookup('profile::puppetserver::scripts::realm_override'),
 ){
     # export and sanitize facts for puppet compiler
-    ensure_packages(['python3-requests', 'python3-yaml'])
+    ensure_packages(['python3-cryptography', 'python3-requests', 'python3-yaml'])
 
     $puppet_facts_export_source = $has_puppetdb ? {
         false   => 'puppet:///modules/profile/puppetserver/scripts/puppet-facts-export-nodb.sh',

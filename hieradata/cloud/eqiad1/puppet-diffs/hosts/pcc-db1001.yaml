@@ -1,6 +1,22 @@
 ---
 puppetdb::app::bind_ip_insecure: '0.0.0.0'
 puppet_compiler::uploader::realms:
+  production7:
+    puppetserver1001: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAql419SE+5PyPPiY4YJjN
+      yD/z4T3OrvIFTqKSJgyBcxDsjYehVrz6NEaBLRjkGd26ktS7VbtSgG/xkVNpiQWv
+      jrZbBXsAMeLJMtnkPOXq60k0WyxjT1JTuLQr7u0yMSBVvzacJRGgK0ByfZ7gjN1v
+      Md0wvCbBh2a7RmMPLOmEEFxyFyE2ugEbUsTXpxKt64AU8kvAytigiRv04rvcesDW
+      kF6cn1DIXZ5LvP1KVZzHeSKrU2AeimYPc5hEtSAAiFFPqnDpVmeJWuNBmFXMUq5f
+      pMV0FpgiOCYMY3l5rJSml/ToSHDpr5IYAs5Dffq8rVkrCT0AAuhyXqFMzA7v621Z
+      xnsO7JV/a9BUcGxpEdf4AP5drlPlj5cP1phlIUwxHOlRi4f+Wd6kZJ2hzVvQTpok
+      7N/5sDRknQmBvys0dbrOtSo6vz172NxjAOWFI9Kx+GQbuoKCNpMicUtnB2PM02DB
+      0waJeV4kkdEx47wPaBdWUbTKDl0E56I6rJ3NURVv+DRUc7XNGtprj26f7vs3whby
+      2zkThEaTo1jnrY/VNarkdRdxDiaftDz2kcv7CSRKnYitUF1cH+Mbq6rbOQpCAJjx
+      uzGNshZJqg6NphOAhcx123TKhOBu+/58usSktJH2Ud4v8AlkdMGtXn3WssTMkA7z
+      FnfHySxj7A+/1I9TQJL0FysCAwEAAQ==
+      -----END PUBLIC KEY-----
   production:
     puppetmaster1001: |
       -----BEGIN PUBLIC KEY-----

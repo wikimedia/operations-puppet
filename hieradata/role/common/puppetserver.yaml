@@ -1,3 +1,5 @@
+# TODO: drop this and use production when we have just one infra
+profile::puppetserver::scripts::realm_override: "production7"
 manage_puppet_ca_file: false
 puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::contacts::role_contacts: ["Infrastructure Foundations"]
