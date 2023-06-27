@@ -1,8 +1,6 @@
-# dbproxy1023 to replace dbproxy1013
 # m2
 profile::mariadb::proxy::master::primary_name: 'db1195'
 profile::mariadb::proxy::master::primary_addr: '10.64.136.12:3306'
 profile::mariadb::proxy::master::secondary_name: 'db1217:3322'
 profile::mariadb::proxy::master::secondary_addr: '10.64.32.33:3322'
 profile::mariadb::proxy::firewall: 'misc'
-profile::monitoring::notifications_enabled: false
