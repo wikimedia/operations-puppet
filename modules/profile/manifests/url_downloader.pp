@@ -9,48 +9,7 @@ class profile::url_downloader (
 
     # TODO rework all this ugly mess
     if $::realm == 'production' {
-        $wikimedia = flatten([
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv6'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-b-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-b-eqiad']['ipv6'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-c-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-c-eqiad']['ipv6'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-d-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-d-eqiad']['ipv6'],
-
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv6'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-b-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-b-codfw']['ipv6'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-c-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-c-codfw']['ipv6'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-d-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-d-codfw']['ipv6'],
-
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv6'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv6'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv6'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv6'],
-
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv6'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv6'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv6'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv6'],
-
-            # Kubernetes services/main cluster pods
-            $network::constants::services_kubepods_networks,
-            # Kubernetes staging cluster pods
-            $network::constants::staging_kubepods_networks,
-            ])
+        $wikimedia = $network::constants::mw_appserver_networks
     } elsif $::realm == 'labs' {
         $wikimedia = [
             $network::constants::all_network_subnets['labs']['eqiad']['private']['cloud-instances2-b-eqiad']['ipv4'],
