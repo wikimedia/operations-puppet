@@ -42,7 +42,7 @@ def get_args():
         '--config',
         type=Path,
         help='Limit output',
-        default="/etc/puppet-merge/puppet-merge.json",
+        default="/etc/puppet-merge/puppet_merge.json",
     )
 
     parser.add_argument(
