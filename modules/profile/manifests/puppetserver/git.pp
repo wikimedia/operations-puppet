@@ -55,6 +55,13 @@ class profile::puppetserver::git (
         content => template('profile/puppetserver/git/gitpuppet_authorized_keys.erb'),
     }
 
+    unless $servers.empty() {
+        ferm::service { 'open access for puppetservers':
+            proto  => 'tcp',
+            port   => 22,
+            srange => $servers,
+        }
+    }
 
     file { $basedir:
         ensure => stdlib::ensure($ensure, 'directory'),
