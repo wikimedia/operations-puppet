@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd]
+              ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -370,7 +370,7 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, pearley,
               hoo, daniel, krinkle, tgr,
-              ebernhardson, addshore, jminor, neilpquinn-wmf,
+              ebernhardson, addshore, jminor,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga,
@@ -930,7 +930,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf, kcv-wikimf]
+    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf, kcv-wikimf]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
@@ -2604,15 +2604,14 @@ users:
     realname: Stephen Niedzielski
     ssh_keys: []
     uid: 11833
-  neilpquinn-wmf:
-    ensure: present
+  neilpquinn-wmf:  # Old account name of nshahquinn-wmf
+    ensure: absent
     gid: 500
     name: neilpquinn-wmf
     realname: Neil Shah-Quinn
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvdgZSS9FVp+GTF29K3OmkaOgtLAMjBROeZ/3KpuBoX nshahquinn@wikimedia.org_Wikimedia_production]
+    ssh_keys: []
     uid: 12049
-    email: nshahquinn@wikimedia.org
-    krb: present
+    krb: absent
   nshahquinn-wmf:
     ensure: present
     gid: 500
