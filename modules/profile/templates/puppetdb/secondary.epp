@@ -1,0 +1,44 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<% |
+  String[1]        $site_name,
+  Stdlib::Port     $port,
+  Stdlib::Port     $jetty_port,
+  Stdlib::UnixPath $cert,
+  Stdlib::UnixPath $ca,
+  Stdlib::UnixPath $key,
+  Array[String[1]] $ssl_settings,
+| %>
+# This file is managed by puppet. Do not edit
+log_format  show_client_cert '$remote_addr - $ssl_client_s_dn - $ssl_client_verify - $remote_user [$time_local] "$request" '
+    '$status $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$upstream_response_time"';
+
+server {
+
+    listen <%= $port %> ssl default_server;
+    listen [::]:<%= $port %> ssl default_server ipv6only=on;
+
+    # SSL settings
+    ssl_certificate     <%= $cert %>
+    ssl_certificate_key <%= $key %>
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 5m;
+
+    ssl_verify_client optional;
+    ssl_client_certificate <%= $ca %>;
+
+    <%= $ssl_settings.join("\n    ") %>
+
+    access_log   /var/log/nginx/puppetdb_<%= $site_name %>access.log show_client_cert;
+    error_log    /var/log/nginx/puppetdb_<%= $site_name %>error.log;
+
+    root /dev/null;
+
+    location / {
+        proxy_pass http://127.0.0.1:<%= $jetty_port %>/;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;
+        client_max_body_size 60m;
+    }
+}
+

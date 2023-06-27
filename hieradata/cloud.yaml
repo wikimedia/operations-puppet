@@ -280,6 +280,7 @@ profile::puppetdb::node_purge_ttl: "14d"
 profile::puppetdb::report_ttl: "1d"
 profile::puppetdb::ca_content: ~
 profile::puppetdb::ssl_verify_client: optional
+profile::puppetdb::sites: {}
 
 profile::puppetdb::database::use_replication_slots: false
 profile::puppetdb::database::users:

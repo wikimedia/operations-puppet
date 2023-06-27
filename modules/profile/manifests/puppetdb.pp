@@ -27,6 +27,8 @@
 #        the specified amount of time
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
 # @param ssldir the location of the ssldir
+# @param ssl_verify_client how to validate mtls clients
+# @param sites a list of additional nginx proxies to configure
 #
 class profile::puppetdb (
     Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
@@ -51,6 +53,7 @@ class profile::puppetdb (
     Pattern[/\d+[dhms]/]                 $node_purge_ttl        = lookup('profile::puppetdb::node_purge_ttl'),
     Pattern[/\d+[dhms]/]                 $report_ttl            = lookup('profile::puppetdb::report_ttl'),
     Nginx::SSL::Verify_client            $ssl_verify_client     = lookup('profile::puppetdb::ssl_verify_client'),
+    Hash[String[1], Hash]                $sites                 = lookup('profile::puppetdb::sites'),
     Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir'),
 ) {
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -156,5 +159,10 @@ class profile::puppetdb (
         ensure => file,
         mode   => '0555',
         source => 'puppet:///modules/profile/puppetdb/pdb_changes.py',
+    }
+    $sites.each |$site, $config| {
+        profile::puppetdb::site { $site:
+            * => $config,
+        }
     }
 }

@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+# @summary define to configure secondary proxies to the local puppetdb.  This allows
+#  puppetserveres with different CA infrastructure to submit to the same puppetdb.
+#  In order to use this you will need to generate additional private keys and certs
+#  for the puppetdb servers.  This can be done from the puppetca server using the following
+#  command
+#   puppetserver ca generate $fqdn
+#  The command should output the location of the certificates paths. You should copy these
+#  to the necessary location in puppet and the private repo.
+# @param port the port to listen
+# @param cert_source the puppet source location to the cert file to use.
+# @param key_secret_path a path to be passed to the secret function to get the content of the private key
+# @param ca_source The puppet source location of the ca cert ot use for client auth.
+#   You can get this by running the following on the puppet ca server
+#   `cat $(sudo facter -p puppet_config.hostpubkey.localcacert)`
+# @param jetty_port the port of the backend jetty server
+define profile::puppetdb::site (
+    Stdlib::Port       $port,
+    Stdlib::Filesource $cert_source,
+    String[1]          $key_secret_path,
+    Stdlib::Filesource $ca_source,
+    Stdlib::Port       $jetty_port = 8080,
+) {
+    include sslcert::dhparam  # lint:ignore:wmf_styleguide
+
+    $ssl_dir = "/etc/nginx/ssl/${title}"
+    wmflib::dir::mkdir_p($ssl_dir)
+    $params = {
+        'site_name'    => $title,
+        'port'         => $port,
+        'jetty_port'   => $jetty_port,
+        'cert'         => "${ssl_dir}/cert.pem",
+        'key'          => "${ssl_dir}/key.pem",
+        'ca'           => "${ssl_dir}/ca.pem",
+        'ssl_settings' => ssl_ciphersuite('nginx', 'mid'),
+    }
+    file {
+        default:
+            ensure    => file,
+            owner     => 'puppetdb',
+            group     => 'puppetdb',
+            show_diff => false,
+            mode      => '0550';
+        $params['cert']:
+            source => $cert_source;
+        $params['ca']:
+            source => $ca_source;
+        $params['key']:
+            source => secret($key_secret_path);
+    }
+    nginx::site { $title:
+        ensure  => present,
+        content => epp('profile/puppetdb/secondary.epp', $params),
+    }
+}
