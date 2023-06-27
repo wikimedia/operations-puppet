@@ -65,9 +65,15 @@ profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS $LABSTORE_HOSTS $DSE_KUBEPODS_NETWORKS))'
 
 profile::hadoop::master::standby::excluded_hosts:
+  - analytics1061.eqiad.wmnet
+  - analytics1062.eqiad.wmnet
+  - analytics1063.eqiad.wmnet
   - analytics1064.eqiad.wmnet
   - analytics1065.eqiad.wmnet
   - analytics1066.eqiad.wmnet
+  - analytics1067.eqiad.wmnet
+  - analytics1068.eqiad.wmnet
+  - analytics1069.eqiad.wmnet
 profile::hadoop::common::config_override:
   hadoop_var_directory: '/srv/hadoop'
 profile::contacts::role_contacts: ['Data Engineering']
