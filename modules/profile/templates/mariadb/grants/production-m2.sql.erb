@@ -1,82 +1,82 @@
--- haproxy@dbproxy1015
+-- haproxy@dbproxy1025
 
 GRANT USAGE
-    ON *.* TO 'haproxy'@'10.64.16.19';
+    ON *.* TO 'haproxy'@'10.64.48.33';
 
 
 -- exim
 
 GRANT USAGE
-    ON *.* TO 'exim'@'10.64.16.19'
+    ON *.* TO 'exim'@'10.64.48.33'
     IDENTIFIED BY '<%= @vrts_exim_database_pass %>'
     WITH MAX_USER_CONNECTIONS 100;
 
 GRANT SELECT
-    ON `otrs`.* TO 'exim'@'10.64.16.19';
+    ON `otrs`.* TO 'exim'@'10.64.48.33';
 
 
 -- frack
 
 GRANT USAGE
-    ON *.* TO 'frack'@'10.64.16.19'
+    ON *.* TO 'frack'@'10.64.48.33'
     IDENTIFIED BY PASSWORD '*BBA9CC17A0D2B26D5CC025DA918624E8D3F550E6'
     WITH MAX_USER_CONNECTIONS 10;
 
 GRANT ALL PRIVILEGES
-    ON `frimpressions`.* TO 'frack'@'10.64.16.19';
+    ON `frimpressions`.* TO 'frack'@'10.64.48.33';
 
 
 -- iegadmin
 
 GRANT USAGE
-    ON *.* TO 'iegadmin'@'10.64.16.19'
+    ON *.* TO 'iegadmin'@'10.64.48.33'
     IDENTIFIED BY PASSWORD '*10A7DA2BA1C20E0A200C92A8AB7E81F5541D9E20'
     WITH MAX_USER_CONNECTIONS 10;
 
 GRANT ALL PRIVILEGES
-    ON `iegreview`.* TO 'iegadmin'@'10.64.16.19';
+    ON `iegreview`.* TO 'iegadmin'@'10.64.48.33';
 
 
 -- iegapp
 
 GRANT USAGE
-    ON *.* TO 'iegapp'@'10.64.16.19'
+    ON *.* TO 'iegapp'@'10.64.48.33'
     IDENTIFIED BY PASSWORD '*5A01835A89FB3E10052187364B0CCC2C77263CC3'
     WITH MAX_USER_CONNECTIONS 50;
 
 GRANT DELETE, INSERT, SELECT, UPDATE
-    ON `iegreview`.* TO 'iegapp'@'10.64.16.19';
+    ON `iegreview`.* TO 'iegapp'@'10.64.48.33';
 
 
 -- otrs
 
 GRANT USAGE
-    ON *.* TO 'otrs'@'10.64.16.19'
+    ON *.* TO 'otrs'@'10.64.48.33'
     IDENTIFIED BY '<%= @vrts_database_pw %>'
     WITH MAX_USER_CONNECTIONS 100;
 
 GRANT ALL PRIVILEGES
-    ON `otrs`.* TO 'otrs'@'10.64.16.19';
+    ON `otrs`.* TO 'otrs'@'10.64.48.33';
 
 
 -- Recommendation API
 -- (admin account)
 GRANT USAGE
-    ON *.* TO 'recommendationapi'@'10.64.16.19'
+    ON *.* TO 'recommendationapi'@'10.64.48.33'
     IDENTIFIED BY '<%= @recommendationapi_pass %>'
     WITH MAX_USER_CONNECTIONS 10;
 
 GRANT ALL PRIVILEGES
-    ON `recommendationapi`.* TO 'recommendationapi'@'10.64.16.19';
+    ON `recommendationapi`.* TO 'recommendationapi'@'10.64.48.33';
 
 -- (service account - read only)
 GRANT USAGE
-    ON *.* TO 'recommendationapiservice'@'10.64.16.19'
+    ON *.* TO 'recommendationapiservice'@'10.64.48.33'
     IDENTIFIED BY '<%= @recommendationapiservice_pass %>'
     WITH MAX_USER_CONNECTIONS 50;
 
 GRANT SELECT
-    ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.16.19';
+    ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.48.33';
 
 -- dbproxy2002
 
@@ -236,9 +236,9 @@ GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.192.16.9';
 -- Grants for 'xhgui'@'10.64.16.7'
 GRANT USAGE ON *.* TO 'xhgui'@'10.64.16.7' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 100;
 GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.16.7';
--- Grants for 'xhgui'@'10.64.16.19'
-GRANT USAGE ON *.* TO 'xhgui'@'10.64.16.19' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 100;
-GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.16.19';
+-- Grants for 'xhgui'@'10.64.48.33'
+GRANT USAGE ON *.* TO 'xhgui'@'10.64.48.33' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 100;
+GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.48.33';
 -- xhguiadmin user (T260640)
 -- Password at: puppetmaster1001:/srv/private/hieradata/role/common/webperf/xhgui.yaml
 -- Grants for 'xhguiadmin'@'10.192.16.9'
@@ -247,15 +247,15 @@ GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'
 --- Grants for 'xhguiadmin'@'10.64.16.7'
 GRANT USAGE ON *.* TO 'xhguiadmin'@'10.64.16.7' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
 GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.64.16.7';
--- Grants for 'xhguiadmin'@'10.64.16.19'
-GRANT USAGE ON *.* TO 'xhguiadmin'@'10.64.16.19' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
-GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.64.16.19';
+-- Grants for 'xhguiadmin'@'10.64.48.33'
+GRANT USAGE ON *.* TO 'xhguiadmin'@'10.64.48.33' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
+GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.64.48.33';
 
 -- excimer_ui_server user (T331956)
 -- Password at: TBD
--- Grants for 'excimer_ui_server'@'10.64.16.19'
-GRANT USAGE ON *.* TO 'excimer_ui_server'@'10.64.16.19' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
-GRANT INSERT, SELECT, DELETE ON `excimer`.* TO 'excimer_ui_server'@'10.64.16.19';
+-- Grants for 'excimer_ui_server'@'10.64.48.33'
+GRANT USAGE ON *.* TO 'excimer_ui_server'@'10.64.48.33' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
+GRANT INSERT, SELECT, DELETE ON `excimer`.* TO 'excimer_ui_server'@'10.64.48.33';
 
 -- Grants for 'excimer_ui_server'@'10.64.16.7'
 GRANT USAGE ON *.* TO 'excimer_ui_server'@'10.64.16.7' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
@@ -266,9 +266,9 @@ GRANT USAGE ON *.* TO 'excimer_ui_server'@'10.192.16.9' IDENTIFIED BY PASSWORD '
 GRANT INSERT, SELECT, DELETE ON `excimer`.* TO 'excimer_ui_server'@'10.192.16.9';
 
 -- debmonitor user
--- Grants for 'debmonitor'@'10.64.16.19' -- dbproxy1015
-GRANT USAGE ON *.* TO `debmonitor`@`10.64.16.19` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `debmonitor`.* TO `debmonitor`@`10.64.16.19`;
+-- Grants for 'debmonitor'@'10.64.48.33' -- dbproxy1025
+GRANT USAGE ON *.* TO `debmonitor`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `debmonitor`.* TO `debmonitor`@`10.64.48.33`;
 -- Grants for 'debmonitor'@'10.64.16.7' -- dbproxy1023
 GRANT USAGE ON *.* TO `debmonitor`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `debmonitor`.* TO `debmonitor`@`10.64.16.7`;
@@ -280,17 +280,17 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT DROP, SELECT, DELETE, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.16.7`;
 
--- Grants for 'adminlinkrecommendation'@'10.64.16.19' -- dbproxy1015
-GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.64.16.19` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT DROP, CREATE, SELECT, DELETE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.16.19`;
+-- Grants for 'adminlinkrecommendation'@'10.64.48.33' -- dbproxy1025
+GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT DROP, CREATE, SELECT, DELETE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.48.33`;
 
 -- Grants for 'linkrecommendation'@'10.64.16.7' -- dbproxy1023
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.64.16.7`;
 
--- Grants for 'linkrecommendation'@'10.64.16.19' -- dbproxy1015
-GRANT USAGE ON *.* TO `linkrecommendation`@`10.64.16.19` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.64.16.19`;
+-- Grants for 'linkrecommendation'@'10.64.48.33' -- dbproxy1025
+GRANT USAGE ON *.* TO `linkrecommendation`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.64.48.33`;
 
 -- Grants for 'adminlinkrecommendation'@'10.192.16.9' -- dbproxy2002
 GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.192.16.9` IDENTIFIED BY PASSWORD 'REDACTED';
@@ -300,13 +300,13 @@ GRANT DROP, SELECT, DELETE, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecomme
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.192.16.9` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.192.16.9`;
 
--- Grants for 'sockpuppet_import'@'10.64.16.19' -- dbproxy1015
-GRANT USAGE ON *.* TO `sockpuppet_import`@`10.64.16.19` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.64.16.19`;
+-- Grants for 'sockpuppet_import'@'10.64.48.33' -- dbproxy1025
+GRANT USAGE ON *.* TO `sockpuppet_import`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.64.48.33`;
 
--- Grants for 'sockpuppet_service'@'10.64.16.19' -- dbproxy1015
-GRANT USAGE ON *.* TO `sockpuppet_service`@`10.64.16.19` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.64.16.19`;
+-- Grants for 'sockpuppet_service'@'10.64.48.33' -- dbproxy1025
+GRANT USAGE ON *.* TO `sockpuppet_service`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.64.48.33`;
 
 -- Grants for 'sockpuppet_import'@'10.64.16.7' -- dbproxy1023
 GRANT USAGE ON *.* TO `sockpuppet_import`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
