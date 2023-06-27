@@ -509,7 +509,7 @@ node /^db1(208)\.eqiad\.wmnet$/ {
 }
 
 # Hosts to be set up T326346
-node /^dbproxy10(26|27)\.eqiad\.wmnet$/ {
+node /^dbproxy10(27)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
@@ -933,7 +933,7 @@ node 'dbprov2004.codfw.wmnet' {
 }
 
 # Active eqiad proxies for misc databases
-node /^dbproxy10(12|13|14|15|16|17|20|21|22|23|24|25)\.eqiad\.wmnet$/ {
+node /^dbproxy10(12|13|14|15|16|17|20|21|22|23|24|25|26)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
 }
 
