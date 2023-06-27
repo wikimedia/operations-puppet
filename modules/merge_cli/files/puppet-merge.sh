@@ -14,7 +14,7 @@ OVERRIDE_TAGOUT_FILE=/var/lock/puppet-merge-lockout-tagout
 CA_SERVER=''
 MASTERS=''
 WORKERS=''
-. /etc/puppet-merge.conf
+. /etc/puppet-merge/shell_config.conf
 
 if [ -z "$CA_SERVER" ] || [ -z "$MASTERS" ] || [ -z "$WORKERS" ]; then
   printf 'Error reading variables from /etc/puppet-merge.conf\\n' >&2

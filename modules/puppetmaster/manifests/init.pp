@@ -147,9 +147,20 @@ class puppetmaster(
     $all_workers = $servers.values().map |$_workers| {
         $_workers.map |$worker| { $worker['worker'] }
     }.flatten
+    $paths = {
+        'ops' => {
+            'repo' => '/var/lib/git/operations/puppet',
+            'sha1' => '/srv/config-master/puppet-sha1.txt',
+        },
+        'labsprivate' => {
+            'repo' => '/var/lib/git/labs/private',
+            'sha1' => '/srv/config-master/labsprivate-sha1.txt',
+        },
+    }
     class { 'merge_cli':  # lint:ignore:wmf_styleguide
         ensure    => $enable_merge_cli.bool2str('present', 'absent'),
         ca_server => $ca_server,
+        paths     => $paths,
         masters   => $servers.keys(),
         workers   => $all_workers,
 

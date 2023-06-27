@@ -2,11 +2,13 @@
 # @summary provisions the puppet-merge cli tools used in production to This is a private class called
 #   by profile::puppetserver::git
 # @param ca_server the configured ca server
+# @param paths override the set of paths for the sha1 file and git repos
+# @param ensure ensurable parameter
 # @param masters The list of masters in the cluster
 # @param workers The list of workers in the cluster
-# @param paths override the set of paths for the sha1 file and git repos
 class merge_cli (
     Stdlib::Host        $ca_server,
+    Merge_cli::Paths    $paths,
     Wmflib::Ensure      $ensure  = 'present',
     Array[Stdlib::Host] $masters = [],
     Array[Stdlib::Host] $workers = [],
@@ -21,12 +23,24 @@ class merge_cli (
     WORKERS="${_workers.join(' ')}"
     CA_SERVER="${ca_server}"
     | CONF
+    $python_config = {
+        'paths' => $paths,
+    }
+    # Remove old file 2023-06-28
+    file { '/etc/puppet-merge.conf':
+        ensure => absent,
+    }
+    file { '/etc/puppet-merge':
+        ensure => directory,
+    }
     file {
         default:
             ensure => stdlib::ensure($ensure, 'file'),
             mode   => '0555';
-        '/etc/puppet-merge.conf':
+        '/etc/puppet-merge/shell_config.conf':
             content => $puppet_merge_conf;
+        '/etc/puppet-merge/python_config.json':
+            content => $python_config.to_json();
         '/usr/local/bin/puppet-merge':
             source => 'puppet:///modules/merge_cli/puppet-merge.sh';
         '/usr/local/bin/puppet-merge.py':
