@@ -52,27 +52,33 @@ class network::constants {
     if $::realm == 'production' {
         $mw_appserver_networks = flatten([
             slice_network_constants('production', {
-                'site'   => 'eqiad',
-                'sphere' => 'public',
+                'site'        => 'eqiad',
+                'sphere'      => 'public',
+                'description' => '-[abcd]-',
                 }),
             slice_network_constants('production', {
                 'site'   => 'codfw',
                 'sphere' => 'public',
+                'description' => '-[abcd]-',
                 }),
             slice_network_constants('production', {
                 'site'        => 'eqiad',
                 'sphere'      => 'private',
-                'description' => 'private',
+                'description' => 'private\d?-[abcdef]\d?-',
                 }),
             slice_network_constants('production', {
                 'site'        => 'codfw',
                 'sphere'      => 'private',
-                'description' => 'private',
+                'description' => 'private\d?-[abcdef]\d?-',
                 }),
             slice_network_constants('production', {
                 'site'        => 'eqiad',
                 'sphere'      => 'private',
                 'description' => 'labs-support',
+                }),
+            slice_network_constants('production', {
+                'sphere'      => 'private',
+                'description' => '-kubepods-',
                 }),
             ])
     } elsif $::realm == 'labs' {
