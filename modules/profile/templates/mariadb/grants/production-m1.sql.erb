@@ -1,21 +1,21 @@
--- haproxy@dbproxy1012
+-- haproxy@dbproxy1022
 
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.0.15';
 
--- haproxy@dbproxy1014
+-- haproxy@dbproxy1024
 
 GRANT USAGE
-    ON *.* TO 'haproxy'@'10.64.16.18';
+    ON *.* TO 'haproxy'@'10.64.32.10';
 
 -- bacula9
 
 GRANT USAGE
-    ON *.* TO 'bacula9'@'10.64.16.18'
+    ON *.* TO 'bacula9'@'10.64.32.10'
     IDENTIFIED BY PASSWORD '*F1F25EA591EF45D1777BCC5540F5AF7CC4D6D235';
 
 GRANT ALL PRIVILEGES
-    ON `bacula9`.* TO 'bacula9'@'10.64.16.18';
+    ON `bacula9`.* TO 'bacula9'@'10.64.32.10';
     
 GRANT USAGE
     ON *.* TO 'bacula9'@'10.64.0.15'
@@ -27,11 +27,11 @@ GRANT ALL PRIVILEGES
 -- etherpadlite
 
 GRANT USAGE
-    ON *.* TO 'etherpadlite'@'10.64.16.18'
+    ON *.* TO 'etherpadlite'@'10.64.32.10'
     IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
 
 GRANT ALL PRIVILEGES
-    ON `etherpadlite`.* TO 'etherpadlite'@'10.64.16.18';
+    ON `etherpadlite`.* TO 'etherpadlite'@'10.64.32.10';
     
 GRANT USAGE
     ON *.* TO 'etherpadlite'@'10.64.0.15'
@@ -43,11 +43,11 @@ GRANT ALL PRIVILEGES
 -- librenms
 
 GRANT USAGE
-    ON *.* TO 'librenms'@'10.64.16.18'
+    ON *.* TO 'librenms'@'10.64.32.10'
     IDENTIFIED BY PASSWORD '*AD0D2C74067568FE1E34E75191C2137762AC0A49';
 
 GRANT ALL PRIVILEGES
-    ON `librenms`.* TO 'librenms'@'10.64.16.18';
+    ON `librenms`.* TO 'librenms'@'10.64.32.10';
 
 GRANT USAGE
     ON *.* TO 'librenms'@'10.64.0.15'
@@ -59,11 +59,11 @@ GRANT ALL PRIVILEGES
 -- rt
 
 GRANT USAGE
-    ON *.* TO 'rt'@'10.64.16.18'
+    ON *.* TO 'rt'@'10.64.32.10'
     IDENTIFIED BY PASSWORD '*876E1392F4CCBAD0362B8BEC583772EB50DCB02C';
 
 GRANT ALL PRIVILEGES
-    ON `rt`.* TO 'rt'@'10.64.16.18';
+    ON `rt`.* TO 'rt'@'10.64.32.10';
     
 GRANT USAGE
     ON *.* TO 'rt'@'10.64.0.15'
@@ -74,7 +74,7 @@ GRANT ALL PRIVILEGES
 
 -- rddmarc
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
-    ON rddmarc.* TO 'rddmarc'@'10.64.16.18' IDENTIFIED BY '<%=@rddmarc_pass%>';
+    ON rddmarc.* TO 'rddmarc'@'10.64.32.10' IDENTIFIED BY '<%=@rddmarc_pass%>';
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.64.0.15' IDENTIFIED BY '<%=@rddmarc_pass%>';
 
@@ -115,24 +115,24 @@ GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.192.0.129' IDENTIFIED BY '<%=@rddmarc_pass%>';
 
 -- cas
--- dbproxy1012
+-- dbproxy1022
 -- Grants for 'cas'@'10.64.0.15'
 GRANT USAGE ON *.* TO `cas`@`10.64.0.15` IDENTIFIED BY '<%=@u2f_jpa_password%>';
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.0.15`;
 
--- dbproxy1014
--- Grants for 'cas'@'10.64.16.18'
-GRANT USAGE ON *.* TO `cas`@`10.64.16.18` IDENTIFIED BY '<%=@u2f_jpa_password%>';
-GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.16.18`;
+-- dbproxy1024
+-- Grants for 'cas'@'10.64.32.10'
+GRANT USAGE ON *.* TO `cas`@`10.64.32.10` IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.32.10`;
 
 -- dbproxy2001
 -- Grants for 'cas'@'10.192.0.129'
 GRANT USAGE ON *.* TO `cas`@`10.192.0.129` IDENTIFIED BY '<%=@u2f_jpa_password%>';
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.192.0.129`;
 
--- cas @ dbproxy1012 and dbproxy1014
-GRANT USAGE ON *.* TO 'cas'@'10.64.16.18' IDENTIFIED BY '<%=@u2f_jpa_password%>';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.64.16.18';
+-- cas @ dbproxy1022 and dbproxy1024
+GRANT USAGE ON *.* TO 'cas'@'10.64.32.10' IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.64.32.10';
 GRANT USAGE ON *.* TO 'cas'@'10.64.0.15' IDENTIFIED BY '<%=@u2f_jpa_password%>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.64.0.15';
 
@@ -186,8 +186,8 @@ GRANT USAGE ON *.* TO `backupmon-django`@`10.64.48.150` IDENTIFIED BY '<%=@backu
 GRANT SELECT ON `dbbackups`.* TO `backupmon-django`@`10.64.48.150`;
 
 -- pki @ pki1001.eqiad.wmnet
-GRANT USAGE ON *.* TO 'pki'@'10.64.16.18' IDENTIFIED BY '<%=@pki_pass%>';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.16.18';
+GRANT USAGE ON *.* TO 'pki'@'10.64.32.10' IDENTIFIED BY '<%=@pki_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.32.10';
 GRANT USAGE ON *.* TO 'pki'@'10.64.0.15' IDENTIFIED BY '<%=@pki_pass%>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.0.15';
 
