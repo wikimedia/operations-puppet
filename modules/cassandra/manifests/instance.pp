@@ -456,12 +456,13 @@ define cassandra::instance(
         }
         if $tls_use_pki {
             $tls_dir = "${config_directory}/tls"
-            $tls_files = profile::pki::get_cert('cassandra', $facts['networking']['fqdn'], {
+            $instance_fqdn = "${tls_hostname}.${::site}.wmnet"
+            $tls_files = profile::pki::get_cert('cassandra', $instance_fqdn, {
                 'outdir' => $tls_dir,
                 'owner'  => 'cassandra',
                 'group'  => 'cassandra',
                 'mode'   => '0400',
-                'hosts'  => ['cassandra'],
+                'hosts'  => ['cassandra', $facts['networking']['fqdn']],
                 notify   => Sslcert::X509_to_pkcs12['cassandra_keystore'],
                 }
             )
