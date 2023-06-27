@@ -50,10 +50,6 @@ class profile::url_downloader (
             $network::constants::services_kubepods_networks,
             # Kubernetes staging cluster pods
             $network::constants::staging_kubepods_networks,
-
-            $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv4'], #TODO: Do we need this ?
-            $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv6'], #TODO: Do we need this ?
-
             ])
     } elsif $::realm == 'labs' {
         $wikimedia = [
