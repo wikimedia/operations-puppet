@@ -103,6 +103,7 @@ class profile::doc (
     $is_active = $::fqdn == $active_host
     $ensure_on_active = $is_active.bool2str('present', 'absent')
     $gitlab_runner_hosts = wmflib::role::hosts('gitlab_runner')
+    $jenkins_releases_hosts = wmflib::class::hosts('profile::releases::mediawiki')
 
     file { '/etc/rsync.d/secrets':
       ensure  => $ensure_on_active,
@@ -112,7 +113,7 @@ class profile::doc (
       content => secret('doc/secrets'),
     }
 
-    rsync::server::module { 'doc-gitlab':
+    rsync::server::module { 'doc-auth':
         ensure         => $ensure_on_active,
         comment        => 'Docroot of https://doc.wikimedia.org/',
         read_only      => 'no',
@@ -120,9 +121,10 @@ class profile::doc (
         uid            => 'doc-uploader',
         gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
-        hosts_allow    => $gitlab_runner_hosts,
+        hosts_allow    => $gitlab_runner_hosts + $jenkins_releases_hosts,
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
+        # TODO: User should not be coupled to GitLab
         auth_users     => ['gitlab'],
         secrets_file   => '/etc/rsync.d/secrets',
         require        => [
