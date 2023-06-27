@@ -1,7 +1,7 @@
 -- haproxy@dbproxy1012
 
 GRANT USAGE
-    ON *.* TO 'haproxy'@'10.64.0.134';
+    ON *.* TO 'haproxy'@'10.64.0.15';
 
 -- haproxy@dbproxy1014
 
@@ -18,11 +18,11 @@ GRANT ALL PRIVILEGES
     ON `bacula9`.* TO 'bacula9'@'10.64.16.18';
     
 GRANT USAGE
-    ON *.* TO 'bacula9'@'10.64.0.134'
+    ON *.* TO 'bacula9'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*F1F25EA591EF45D1777BCC5540F5AF7CC4D6D235';
 
 GRANT ALL PRIVILEGES
-    ON `bacula9`.* TO 'bacula9'@'10.64.0.134';
+    ON `bacula9`.* TO 'bacula9'@'10.64.0.15';
 
 -- etherpadlite
 
@@ -34,11 +34,11 @@ GRANT ALL PRIVILEGES
     ON `etherpadlite`.* TO 'etherpadlite'@'10.64.16.18';
     
 GRANT USAGE
-    ON *.* TO 'etherpadlite'@'10.64.0.134'
+    ON *.* TO 'etherpadlite'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
 
 GRANT ALL PRIVILEGES
-    ON `etherpadlite`.* TO 'etherpadlite'@'10.64.0.134';
+    ON `etherpadlite`.* TO 'etherpadlite'@'10.64.0.15';
 
 -- librenms
 
@@ -50,11 +50,11 @@ GRANT ALL PRIVILEGES
     ON `librenms`.* TO 'librenms'@'10.64.16.18';
 
 GRANT USAGE
-    ON *.* TO 'librenms'@'10.64.0.134'
+    ON *.* TO 'librenms'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*AD0D2C74067568FE1E34E75191C2137762AC0A49';
 
 GRANT ALL PRIVILEGES
-    ON `librenms`.* TO 'librenms'@'10.64.0.134';
+    ON `librenms`.* TO 'librenms'@'10.64.0.15';
 
 -- rt
 
@@ -66,17 +66,17 @@ GRANT ALL PRIVILEGES
     ON `rt`.* TO 'rt'@'10.64.16.18';
     
 GRANT USAGE
-    ON *.* TO 'rt'@'10.64.0.134'
+    ON *.* TO 'rt'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*876E1392F4CCBAD0362B8BEC583772EB50DCB02C';
 
 GRANT ALL PRIVILEGES
-    ON `rt`.* TO 'rt'@'10.64.0.134';
+    ON `rt`.* TO 'rt'@'10.64.0.15';
 
 -- rddmarc
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.64.16.18' IDENTIFIED BY '<%=@rddmarc_pass%>';
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
-    ON rddmarc.* TO 'rddmarc'@'10.64.0.134' IDENTIFIED BY '<%=@rddmarc_pass%>';
+    ON rddmarc.* TO 'rddmarc'@'10.64.0.15' IDENTIFIED BY '<%=@rddmarc_pass%>';
 
 -- haproxy@dbproxy2001
 
@@ -116,9 +116,9 @@ GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
 
 -- cas
 -- dbproxy1012
--- Grants for 'cas'@'10.64.0.134'
-GRANT USAGE ON *.* TO `cas`@`10.64.0.134` IDENTIFIED BY '<%=@u2f_jpa_password%>';
-GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.0.134`;
+-- Grants for 'cas'@'10.64.0.15'
+GRANT USAGE ON *.* TO `cas`@`10.64.0.15` IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.0.15`;
 
 -- dbproxy1014
 -- Grants for 'cas'@'10.64.16.18'
@@ -133,8 +133,8 @@ GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON 
 -- cas @ dbproxy1012 and dbproxy1014
 GRANT USAGE ON *.* TO 'cas'@'10.64.16.18' IDENTIFIED BY '<%=@u2f_jpa_password%>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.64.16.18';
-GRANT USAGE ON *.* TO 'cas'@'10.64.0.134' IDENTIFIED BY '<%=@u2f_jpa_password%>';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.64.0.134';
+GRANT USAGE ON *.* TO 'cas'@'10.64.0.15' IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.64.0.15';
 
 -- cas @ dbproxy2001
 GRANT USAGE ON *.* TO 'cas'@'10.192.0.129' IDENTIFIED BY '<%=@u2f_jpa_password%>';
@@ -188,8 +188,8 @@ GRANT SELECT ON `dbbackups`.* TO `backupmon-django`@`10.64.48.150`;
 -- pki @ pki1001.eqiad.wmnet
 GRANT USAGE ON *.* TO 'pki'@'10.64.16.18' IDENTIFIED BY '<%=@pki_pass%>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.16.18';
-GRANT USAGE ON *.* TO 'pki'@'10.64.0.134' IDENTIFIED BY '<%=@pki_pass%>';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.0.134';
+GRANT USAGE ON *.* TO 'pki'@'10.64.0.15' IDENTIFIED BY '<%=@pki_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.0.15';
 
 -- pki @ pki2002.codfw.wmnet
 GRANT USAGE ON *.* TO 'pki'@'10.192.16.172' IDENTIFIED BY '<%=@pki_pass%>';
