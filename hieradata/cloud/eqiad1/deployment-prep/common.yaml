@@ -3,7 +3,6 @@
 cache_hosts:
   - 172.16.5.238 # proxy-03.project-proxy.eqiad1.wikimedia.cloud
   - 172.16.5.200 # proxy-04.project-proxy.eqiad1.wikimedia.cloud
-  - 172.16.0.113 # deployment-cache-text07.deployment-prep.eqiad1.wikimedia.cloud
   - 172.16.3.164 # deployment-cache-text08.deployment-prep.eqiad1.wikimedia.cloud
   - 172.16.3.146 # deployment-cache-upload08.deployment-prep.eqiad1.wikimedia.cloud
 
@@ -390,11 +389,9 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
 cache::nodes:
     text:
         eqiad:
-          - 'deployment-cache-text07.deployment-prep.eqiad1.wikimedia.cloud'
           - 'deployment-cache-text08.deployment-prep.eqiad1.wikimedia.cloud'
     upload:
         eqiad:
-          - 'deployment-cache-upload07.deployment-prep.eqiad1.wikimedia.cloud'
           - 'deployment-cache-upload08.deployment-prep.eqiad1.wikimedia.cloud'
 ## Swift settings
 # Beta requires slower replication - T160990
