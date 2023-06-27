@@ -6,17 +6,21 @@
 # @param group the group owner of the git repo
 # @param control_repo the name of the main puppet control repo
 # @param repos addtional repos to configure
+# @param additional_servers used to add hardcoded serveres not yet avaliable in puppetdb.
+#   usefull for transition and potentialy adding new servers
 class profile::puppetserver::git (
-    Wmflib::Ensure     $ensure       = lookup('profile::puppetserver::git::ensure'),
-    Stdlib::Unixpath   $basedir      = lookup('profile::puppetserver::git::basedir'),
-    String[1]          $user         = lookup('profile::puppetserver::git::user'),
-    String[1]          $group        = lookup('profile::puppetserver::git::group'),
-    String[1]          $control_repo = lookup('profile::puppetserver::git::control_repo'),
-    Hash[String, Hash] $repos        = lookup('profile::puppetserver::git::repos'),
+    Wmflib::Ensure      $ensure             = lookup('profile::puppetserver::git::ensure'),
+    Stdlib::Unixpath    $basedir            = lookup('profile::puppetserver::git::basedir'),
+    String[1]           $user               = lookup('profile::puppetserver::git::user'),
+    String[1]           $group              = lookup('profile::puppetserver::git::group'),
+    String[1]           $control_repo       = lookup('profile::puppetserver::git::control_repo'),
+    Array[Stdlib::Fqdn] $additional_servers = lookup('profile::puppetserver::git::additional_servers'),
+    Hash[String, Hash]  $repos              = lookup('profile::puppetserver::git::repos'),
 ) {
-    $servers = wmflib::role::hosts('puppetmaster::frontend') +
+    $servers = (wmflib::role::hosts('puppetmaster::frontend') +
                 wmflib::role::hosts('puppetmaster::backend') +
-                wmflib::role::hosts('puppetserver')
+                wmflib::role::hosts('puppetserver') +
+                $additional_servers).sort.unique
     unless $repos.has_key($control_repo) {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }

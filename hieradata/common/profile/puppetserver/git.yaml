@@ -1,3 +1,4 @@
+profile::puppetserver::git::additional_servers: []
 profile::puppetserver::git::ensure: 'present'
 profile::puppetserver::git::basedir: '/srv/git'
 profile::puppetserver::git::user: 'gitpuppet'

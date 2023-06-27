@@ -3,6 +3,15 @@ puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::contacts::role_contacts: ["Infrastructure Foundations"]
 profile::puppet::agent::force_puppet7: true
 profile::puppet::agent::puppetmaster: "%{facts.networking.fqdn}"
+profile::puppetserver::git::additional_servers:
+- puppetmaster1001.eqiad.wmnet
+- puppetmaster1002.eqiad.wmnet
+- puppetmaster1003.eqiad.wmnet
+- puppetmaster1004.eqiad.wmnet
+- puppetmaster2001.codfw.wmnet
+- puppetmaster2002.codfw.wmnet
+- puppetmaster2003.codfw.wmnet
+- puppetmaster2004.codfw.wmnet
 profile::puppetserver::ca_public_key: 'puppet:///modules/profile/puppetserver/puppet_ca.pem'
 profile::puppetserver::ca_crl: 'puppet:///modules/profile/puppetserver/pki_crl.pem'
 profile::puppetserver::ca_private_key_secret: 'puppetserver/puppet_ca.key'

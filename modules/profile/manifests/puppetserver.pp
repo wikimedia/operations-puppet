@@ -15,9 +15,9 @@
 # @param autosign if true autosign agent certs
 # @param enable_ca indicate if the ca is enabled
 # @param intermediate_ca configure puppet Ca with an intermediate CA
-# @param ca_public_key location of the ihntermediate ca content
+# @param ca_public_key location of the intermediate ca content
 # @param separate_ssldir use seperate ssldir for the server.  usefull in cloud setup
-# @param ca_crl location of the ihntermediate crl content
+# @param ca_crl location of the intermediate crl content
 # @param ca_private_key_secret the content of the W
 # @param git_pull whether to pull puppet code from git, defaults to true
 class profile::puppetserver (
