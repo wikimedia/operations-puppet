@@ -1,0 +1,5 @@
+profile::puppetserver::scripts::keep_reports_minutes: 960
+profile::puppetserver::scripts::has_puppetdb: true
+profile::puppetserver::scripts::upload_facts: "%{alias('profile::puppetserver::enable_ca')}"
+profile::puppetserver::scripts::http_proxy: ~
+profile::puppetserver::scripts::realm_override: ~

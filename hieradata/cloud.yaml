@@ -443,6 +443,11 @@ profile::puppetserver::git::repos:
       'pre-merge': 'puppet:///modules/puppetmaster/git/private/pre-merge'
       'pre-rebase': 'puppet:///modules/puppetmaster/git/private/pre-rebase'
     link: '/etc/puppet/private'
+profile::puppetserver::scripts::keep_reports_minutes: 960
+profile::puppetserver::scripts::has_puppetdb: false
+profile::puppetserver::scripts::upload_facts: false
+profile::puppetserver::scripts::http_proxy: ~
+profile::puppetserver::scripts::realm_override: ~
 
 profile::backup::director_seed: changeme
 profile::debdeploy::client::exclude_mounts: []
