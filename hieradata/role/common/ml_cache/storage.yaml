@@ -33,7 +33,6 @@ profile::cassandra::settings:
     client_encryption_optional: true
     internode_encryption: all
     server_encryption_optional: true
-    legacy_ssl_storage_port_enabled: true
 
 profile::contacts::role_contacts: ["Machine Learning"]
 
