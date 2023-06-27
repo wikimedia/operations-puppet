@@ -2859,6 +2859,10 @@ node 'xhgui1001.eqiad.wmnet', 'xhgui2001.codfw.wmnet' {
     role(webperf::xhgui)
 }
 
+node 'xhgui1002.eqiad.wmnet', 'xhgui2002.codfw.wmnet' {
+  role(insetup::observability)
+}
+
 node default {
     if $::realm == 'production' and !$::_role {
         fail('No puppet role has been assigned to this node.')
