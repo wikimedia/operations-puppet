@@ -14,7 +14,5 @@ class role::swift::storage {
         relay_address => '',
     }
 
-    include ::profile::swift::storage::expirer
-
     include ::profile::swift::performance
 }

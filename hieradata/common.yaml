@@ -81,10 +81,12 @@ swift_clusters:
     cluster_name: 'codfw-prod'
     ring_manager: 'ms-fe2009.codfw.wmnet'
     rclone_host:  'ms-be2069.codfw.wmnet'
+    expirer_host: 'ms-be2068.codfw.wmnet'
   eqiad:
     cluster_name: 'eqiad-prod'
     ring_manager: 'ms-fe1009.eqiad.wmnet'
     rclone_host:  'ms-be1069.eqiad.wmnet'
+    expirer_host: 'ms-be1068.eqiad.wmnet'
   thanos:
     cluster_name: 'thanos-prod'
     ring_manager: 'thanos-fe1001.eqiad.wmnet'

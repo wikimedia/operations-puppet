@@ -408,6 +408,7 @@ swift_clusters:
   deployment-prep:
     cluster_name: 'deployment-prep'
     ring_manager: 'deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud'
+    expirer_host: 'deployment-ms-be07.deployment-prep.eqiad1.wikimedia.cloud'
 
 profile::swift::cluster: deployment-prep
 profile::swift::cluster_label: deployment-prep
