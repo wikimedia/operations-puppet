@@ -5,20 +5,10 @@ profile::openstack::codfw1dev::horizon_version: 'zed'
 # Keep codfw1dev APIs limited to VMs and prod hosts
 profile::openstack::codfw1dev::public_apis: false
 
-# The openstack_controllers host most of the cloud-vps OpenStack
-# control plane, with the notable exclusion of the Designate API.
-# All of the API endpoints are behind a HAProxy load balancer, running
-# haproxy_nodes (defined below).
-
-# TODO:: this could use private.codfw.wikimedia.cloud since this is mostly read
-# by openstack services themselves that run in the same hosts / cloud-private subnet
-# but for that to work we need to reimage the other servers so they are in the
-# same network setup
 profile::openstack::codfw1dev::openstack_controllers:
-  - cloudcontrol2001-dev.codfw.wmnet
-  - cloudcontrol2004-dev.codfw.wmnet
-  - cloudcontrol2005-dev.codfw.wmnet
-
+  - cloudcontrol2001-dev.private.codfw.wikimedia.cloud
+  - cloudcontrol2004-dev.private.codfw.wikimedia.cloud
+  - cloudcontrol2005-dev.private.codfw.wikimedia.cloud
 
 # The public service name for the keystone API
 #
