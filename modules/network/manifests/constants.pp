@@ -50,7 +50,7 @@ class network::constants {
     #  - public hosts in eqiad/codfw
     #  - all private networks in eqiad/codfw
     if $::realm == 'production' {
-        $mw_appserver_networks = flatten([
+        $mw_appserver_networks_public = flatten([
             slice_network_constants('production', {
                 'site'        => 'eqiad',
                 'sphere'      => 'public',
@@ -61,6 +61,8 @@ class network::constants {
                 'sphere' => 'public',
                 'description' => '-[abcd]-',
                 }),
+            ])
+        $mw_appserver_networks_private = flatten([
             slice_network_constants('production', {
                 'site'        => 'eqiad',
                 'sphere'      => 'private',
@@ -81,6 +83,7 @@ class network::constants {
                 'description' => '-kubepods-',
                 }),
             ])
+        $mw_appserver_networks = concat($mw_appserver_networks_private, $mw_appserver_networks_public)
     } elsif $::realm == 'labs' {
         # rely on security groups in labs to restrict this
         $mw_appserver_networks = flatten([
