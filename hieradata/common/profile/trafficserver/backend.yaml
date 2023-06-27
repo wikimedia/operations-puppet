@@ -302,21 +302,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://yarn.wikimedia.org
       replacement: https://an-tool1008.eqiad.wmnet
     - type: regex_map
-      target: 'http://(.*)/api/rest_v1/(.+)/pdf/(.*)'
-      replacement: https://rest-gateway.discovery.wmnet:4113/api/rest_v1/$2/pdf/$3
-      params:
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
-          # decode    :  @  !  $  (  )  *  ,  ;  '
-          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
-          # encode    [  ]  &  +  =
-          - '@pparam="5B 5D 26 2B 3D"'
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
-          # Re-use origin server connections if origin IP and port match
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
-    - type: regex_map
       target: 'http://(.*)/api/rest_v1'
       replacement: https://restbase.discovery.wmnet:7443/api/rest_v1
       params:
