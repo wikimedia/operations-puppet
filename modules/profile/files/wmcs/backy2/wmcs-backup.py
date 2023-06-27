@@ -1320,7 +1320,7 @@ class InstanceBackupsState:
             vm_id = server_info.get("id", "no_id")
             project_id = server_info.get(
                             "tenant_id", "no_project"
-                        ),
+                        )
             while cur_try < tries:
                 try:
                     self.create_vm_backup(
