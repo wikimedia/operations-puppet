@@ -46,7 +46,9 @@ class profile::puppet::agent (
                 priority => 1003,
             }
         }
-    }
+        # Force leaf on puppet7 T330490
+        $_certificate_revocation = 'leaf'
+    } else { $_certificate_revocation = $certificate_revocation }
     class { 'puppet::agent':
         ca_source              => $ca_source,
         manage_ca_file         => $manage_ca_file,
@@ -54,7 +56,7 @@ class profile::puppet::agent (
         ca_server              => $ca_server,
         dns_alt_names          => $dns_alt_names,
         environment            => $environment,
-        certificate_revocation => $certificate_revocation,
+        certificate_revocation => $_certificate_revocation,
     }
     class { 'puppet_statsd':
         statsd_host   => 'statsd.eqiad.wmnet',
