@@ -20,8 +20,9 @@ su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
   workers.each do |workerhash|
       # Do not clone to myself
       if workerhash['worker'] == @fqdn then next end
+  dir = workerhash['worker'].start_with?('puppetmaster') ? '/srv/private' : '/srv/git/private'
 -%>
-su -c "export GIT_SSH=/srv/private/.git/ssh_wrapper.sh ; git push ssh://<%= workerhash['worker'] %>/srv/private master" gitpuppet
+su -c "export GIT_SSH=/srv/private/.git/ssh_wrapper.sh ; git push ssh://<%= workerhash['worker'] %><%= dir %> master" gitpuppet
 <%- end -%>
 <%- end -%>
 
