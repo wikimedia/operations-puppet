@@ -3,9 +3,11 @@
 #   by profile::puppetserver::git
 # @param ca_server the configured ca server
 # @param servers The list of servers in the custer
+# @param paths override the set of paths for the sha1 file and git repos
 class merge_cli (
     Stdlib::Host        $ca_server,
-    Array[Stdlib::Host] $servers = []
+    Merge_cli::Paths    $paths,
+    Array[Stdlib::Host] $servers = [],
 ) {
     # Not sure this helps much as im pretty sure it only restricts to the same module
 
@@ -18,13 +20,21 @@ class merge_cli (
     WORKERS="${_servers.join(' ')}"
     CA_SERVER="${ca_server}"
     | CONF
-
-    file { '/etc/puppet-merge.conf':
+    $python_config = {
+        'paths' => $paths,
+    }
+    file { '/etc/puppet-merge':
+        ensure => directory,
+    }
+    file { '/etc/puppet-merge/puppet_merge.conf':
         ensure  => file,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0555',
         content => $puppet_merge_conf,
+    }
+    file { '/etc/puppet-merge/puppet_merge.json':
+        ensure  => file,
+        mode    => '0555',
+        content => $python_config.to_json(),
     }
 
     # TODO: move the source to this module

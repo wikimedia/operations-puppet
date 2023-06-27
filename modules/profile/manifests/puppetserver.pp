@@ -45,9 +45,22 @@ class profile::puppetserver (
 ) {
     if $git_pull {
         include profile::puppetserver::git
+        $paths = {
+            'ops'  => {
+                'repo' => $profile::puppetserver::git::control_repo_dir,
+                # TODO: link this with config master profile
+                'sha1' => '/srv/config-master/puppet-sha1.txt',
+            },
+            # TODO: why do we need labs private
+            'labsprivate'  => {
+                'repo' => '/var/lib/git/labs/private',
+                'sha1' => '/srv/config-master/puppet-sha1.txt',
+            },
+        }
         class { 'merge_cli':
             ca_server => $server_id,
             servers   => $profile::puppetserver::git::servers,
+            paths     => $paths,
         }
         $g10k_sources = {
             'production'  => {
