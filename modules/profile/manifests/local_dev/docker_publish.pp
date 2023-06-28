@@ -22,13 +22,22 @@ class profile::local_dev::docker_publish(
     Optional[Stdlib::Httpurl] $http_proxy = lookup('http_proxy', {'default_value' => undef})
 ){
 
+    git::systemconfig { 'safe.directory-srv-dev-images':
+        settings => {
+            'safe' => {
+                'directory' => '/srv/dev-images',
+            }
+        }
+    }
+
     git::clone { 'releng/dev-images':
         directory => '/srv/dev-images',
         owner     => 'root',
         group     => 'wikidev',
         mode      => '0775',
         umask     => '002',
-        origin    => 'https://gitlab.wikimedia.org/releng/dev-images.git'
+        origin    => 'https://gitlab.wikimedia.org/releng/dev-images.git',
+        require   => Git::Systemconfig['safe.directory-srv-dev-images']
     }
 
     file { '/etc/docker-pkg/dev-images.yaml':
