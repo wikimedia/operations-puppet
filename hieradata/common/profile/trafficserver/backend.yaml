@@ -142,6 +142,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://ores.wikimedia.org
       replacement: https://ores.discovery.wmnet
     - type: map
+      target: http://ores-legacy.wikimedia.org
+      replacement: https://ores-legacy.discovery.wmnet:31443
+    - type: map
       target: http://parsoid-rt-tests.wikimedia.org
       replacement: https://testreduce.discovery.wmnet
     - type: map
