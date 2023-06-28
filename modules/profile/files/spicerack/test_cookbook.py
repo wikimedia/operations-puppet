@@ -36,6 +36,7 @@ The generated files structure is as follows:
 
 """
 import argparse
+import getpass
 import json
 import logging
 import sys
@@ -83,7 +84,7 @@ class CookbookTesting:
         self.cookbooks_symlink.unlink(missing_ok=True)
         self.cookbooks_symlink.symlink_to(self.cookbooks_dir)
 
-        command = ['sudo', 'cookbook', '-c', str(self.custom_config)] + self.remaining_args
+        command = ["sudo", "cookbook", "-c", str(self.custom_config)] + self.remaining_args
         logger.info("=" * 50)
         logger.info("Executing: %s", " ".join(command))
         logger.info("=" * 50)
@@ -199,7 +200,7 @@ def parse_args() -> tuple[argparse.Namespace, list[str]]:
             parser.exit(message=parser.format_help())
 
     if not args.change:
-        parser.error('the following arguments are required: -c/--change')
+        parser.error("the following arguments are required: -c/--change")
 
     return args, remaining_args
 
@@ -215,5 +216,9 @@ def main() -> int:
     return cookbook_testing.run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    if getpass.getuser() == "root":
+        print("This script must be run as your own user, without sudo.", file=sys.stderr)
+        sys.exit(1)
+
     sys.exit(main())
