@@ -144,10 +144,15 @@ class puppetmaster(
         realm_override => $realm_override,
     }
 
-    class { 'puppetmaster::merge_cli':
+    $all_workers = $servers.values().map |$_workers| {
+        $_workers.map |$worker| { $worker['worker'] }
+    }.flatten
+    class { 'merge_cli':  # lint:ignore:wmf_styleguide
         ensure    => $enable_merge_cli.bool2str('present', 'absent'),
-        servers   => $servers,
         ca_server => $ca_server,
+        masters   => $servers.keys(),
+        workers   => $all_workers,
+
     }
 
     if $enable_geoip {

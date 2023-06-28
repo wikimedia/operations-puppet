@@ -47,7 +47,8 @@ class profile::puppetserver (
         include profile::puppetserver::git
         class { 'merge_cli':
             ca_server => $server_id,
-            servers   => $profile::puppetserver::git::servers,
+            masters   => $profile::puppetserver::git::servers,
+            workers   => $profile::puppetserver::git::servers,
         }
         $g10k_sources = {
             'production'  => {
