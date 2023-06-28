@@ -4,59 +4,30 @@
 #
 class deployment::rsync(
     Stdlib::Host $deployment_server,
+    Wmflib::Ensure $job_ensure = 'absent',
     Array[Stdlib::Host] $deployment_hosts = [],
     Stdlib::Unixpath $deployment_path = '/srv/deployment',
     Stdlib::Unixpath $patches_path = '/srv/patches',
 ){
-    rsync::quickdatacopy { 'deployment_home':
-        source_host         => $deployment_server,
-        dest_host           => $deployment_hosts,
-        module_path         => '/home',
-        auto_sync           => false,
-        server_uses_stunnel => true,
+
+    include ::rsync::server
+
+    rsync::server::module { 'deployment_home':
+        path        => '/home',
+        read_only   => 'yes',
+        hosts_allow => $deployment_hosts,
     }
 
-    rsync::quickdatacopy { 'deployment_module':
-        source_host         => $deployment_server,
-        dest_host           => $deployment_hosts,
-        module_path         => $deployment_path,
-        auto_sync           => true,
-        delete              => true,
-        auto_interval       => [
-            {
-            'start'    => 'OnBootSec', # initially start the unit
-            'interval' => '10sec',
-            },{
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:00:00', # then hourly on the hour
-            },
-        ],
-        server_uses_stunnel => true,
+    rsync::server::module { 'deployment_module':
+        path        => $deployment_path,
+        read_only   => 'yes',
+        hosts_allow => $deployment_hosts,
     }
 
-    rsync::quickdatacopy { 'patches_module':
-        source_host         => $deployment_server,
-        dest_host           => $deployment_hosts,
-        module_path         => $patches_path,
-        auto_sync           => true,
-        delete              => true,
-        auto_interval       => [
-            {
-            'start'    => 'OnBootSec', # initially start the unit
-            'interval' => '15sec',
-            },{
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:30:00', # then hourly on the half hour
-            },
-        ],
-        server_uses_stunnel => true,
-    }
-
-    # TODO: remove everything below after running puppet
     $sync_command = "/usr/bin/rsync -avz --delete ${deployment_server}::deployment_module ${deployment_path}"
 
     systemd::timer::job { 'sync_deployment_dir':
-        ensure      => absent,
+        ensure      => $job_ensure,
         user        => 'root',
         description => "rsync the deployment server data directory ${deployment_path}",
         command     => $sync_command,
@@ -71,10 +42,16 @@ class deployment::rsync(
         ],
     }
 
+    rsync::server::module { 'patches_module':
+        path        => $patches_path,
+        read_only   => 'yes',
+        hosts_allow => $deployment_hosts,
+    }
+
     $sync_patches_command = "/usr/bin/rsync -avz --delete ${deployment_server}::patches_module ${patches_path}"
 
     systemd::timer::job { 'sync_patches_dir':
-        ensure      => absent,
+        ensure      => $job_ensure,
         user        => 'root',
         description => "rsync the deployment server patches directory ${patches_path}",
         command     => $sync_patches_command,
@@ -88,5 +65,4 @@ class deployment::rsync(
             },
         ],
     }
-
 }
