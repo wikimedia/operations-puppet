@@ -82,7 +82,7 @@ node 'an-test-coord1001.eqiad.wmnet' {
 
 # new an-test-coord1002  T293938
 node 'an-test-coord1002.eqiad.wmnet' {
-    role(insetup::data_engineering)
+    role(spare::system)
 }
 
 node 'an-test-client1001.eqiad.wmnet' {
