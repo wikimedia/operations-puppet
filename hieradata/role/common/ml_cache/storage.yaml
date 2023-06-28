@@ -6,7 +6,7 @@ profile::admin::groups:
 profile::cassandra::allow_analytics: true
 
 profile::java::java_packages:
-  - version: '8'
+  - version: '11'
     variant: 'jdk'
 
 profile::cassandra::settings:
