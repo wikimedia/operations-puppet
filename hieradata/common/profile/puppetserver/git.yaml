@@ -25,3 +25,9 @@ profile::puppetserver::git::repos:
       'pre-commit': 'puppet:///modules/profile/puppetserver/git/private/hooks/pre-commit.sh'
     config: 'puppet:///modules/puppetmaster/git/private/gitconfig-master'
     link: '/etc/puppet/private'
+  'labs/private':
+    branch: master
+    hooks:
+        'pre-commit': 'puppet:///modules/puppetmaster/git/private/pre-commit'
+        'pre-merge': 'puppet:///modules/puppetmaster/git/private/pre-merge'
+        'pre-rebase': 'puppet:///modules/puppetmaster/git/private/pre-rebase'

@@ -56,7 +56,7 @@ class profile::puppetserver (
             # malicious modules injected into the private repo.  And to a lesser extent any
             # vulnerabilities that may be present via hiera injections.  e.g. injecting a user
             'labsprivate'  => {
-                'repo' => '/var/lib/git/labs/private',
+                'repo' => "${profile::puppetserver::git::basedir}/labs/private",
                 'sha1' => '/srv/config-master/puppet-sha1.txt',
             },
         }
