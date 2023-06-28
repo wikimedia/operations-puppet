@@ -6,7 +6,7 @@ class profile::openstack::base::pdns::dns_floating_ip_updater(
     ) {
 
     # only run the cronjob in one node
-    if ($::fqdn == $openstack_controllers[0]) {
+    if ($::facts['networking']['hostname'] == $openstack_controllers[0].split('\.')[0]) {
         $ensure = 'present'
     }
     else {

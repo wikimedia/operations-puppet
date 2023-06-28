@@ -4,9 +4,8 @@ class profile::openstack::eqiad1::nova::instance_purge(
     Array[Hash]         $purge_projects        = lookup('profile::openstack::eqiad1::purge_projects'),
     ) {
 
-
     # systemd::timer::job does not take a boolean
-    if ($::fqdn == $openstack_controllers[0]) {
+    if ($::facts['networking']['hostname'] == $openstack_controllers[0].split('\.')[0]) {
         $ensure = 'present'
     }
     else {
