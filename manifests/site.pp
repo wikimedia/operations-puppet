@@ -2752,11 +2752,11 @@ node /^deploy[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(deployment_server::kubernetes)
 }
 
-# https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[12]\.wikimedia\.org$/ {
-    role(url_downloader)
+    role(insetup::infrastructure_foundations)
 }
 
+# https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[34]\.wikimedia\.org$/ {
     role(url_downloader)
 }
