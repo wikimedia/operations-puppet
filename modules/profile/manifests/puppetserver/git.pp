@@ -130,12 +130,16 @@ class profile::puppetserver::git (
             }
         }
         if $config.has_key('config') {
+            $content = $config['config'].stdlib::start_with('puppet:///modules/') ? {
+                true    => {'source' => $config['config']},
+                default => {'content' => template($config['config'])},
+            }
             file { "${dir}/.git/config":
                 ensure  => stdlib::ensure($ensure, 'file'),
                 owner   => $user,
                 group   => $group,
-                source  => $config['config'],
                 require => $git_require,
+                *       => $content,
             }
         }
     }
