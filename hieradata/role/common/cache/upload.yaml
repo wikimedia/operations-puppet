@@ -94,9 +94,6 @@ profile::lvs::realserver::pools:
 profile::contacts::role_contacts: ['Traffic']
 profile::cache::varnish::frontend::use_etcd_req_filters: true
 
-# T323557
-profile::cache::varnish::frontend::enable_http_redirection: false
-
 # T337825
 profile::cache::kafka::certificate::use_pki_settings: true
 profile::cache::kafka::certificate::ssl_key_password: undef

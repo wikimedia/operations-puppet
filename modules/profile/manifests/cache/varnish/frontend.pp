@@ -52,7 +52,6 @@ class profile::cache::varnish::frontend (
     Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
     Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
-    Boolean                 $enable_http_redirection = lookup('profile::cache::varnish::frontend::enable_http_redirection', {'default_value' => true}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -241,12 +240,7 @@ class profile::cache::varnish::frontend (
         metric  => 'node_varnish_filedescriptors_total',
     }
 
-    if $enable_http_redirection {
-        $ports = [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ]
-    } else {
-        $ports = [ 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ]
-    }
-
+    $ports = [ 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ]
 
     varnish::instance { "${cache_cluster}-frontend":
         instance_name     => 'frontend',

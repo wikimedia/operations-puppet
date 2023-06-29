@@ -151,27 +151,6 @@ sub shutdown_public_clouds {
 <% end -%>
 }
 
-// *** HTTPS-forcing recv code
-sub https_recv_redirect {
-    if (req.http.X-Forwarded-Proto != "https") {
-        if (req.method == "GET" || req.method == "HEAD") {
-            set req.http.Location = "https://" + req.http.Host + req.url;
-            return (synth(301, "TLS Redirect"));
-        } else {
-            return (synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html"));
-        }
-    }
-}
-
-// *** HTTPS error code - implements 301 response for recv code
-sub https_error_redirect {
-    if (resp.reason == "TLS Redirect") {
-        set resp.http.Location = req.http.Location;
-        set resp.http.Content-Length = "0"; // T64245
-        return(deliver);
-    }
-}
-
 // *** HTTPS deliver code - domain-based HSTS headers
 sub https_deliver_hsts {
     if (req.http.X-Forwarded-Proto == "https") {
@@ -750,10 +729,6 @@ sub vcl_recv {
 
     set req.backend_hint = cache_local.backend();
 
-    if (req.method != "PURGE") {
-        call https_recv_redirect;
-    }
-
     if(req.restarts == 0) {
         call analytics_recv;
         if (!req.http.X-IS-ALT-DOMAIN &&
@@ -1162,7 +1137,6 @@ sub vcl_synth {
     if (req.method != "PURGE") {
         set resp.http.X-CDIS = "int";
         call deliver_synth_;
-        call https_error_redirect;
         call cluster_fe_err_synth;
 
         // Set Retry-After for requests throttled by requestctl.
