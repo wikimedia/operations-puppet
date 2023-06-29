@@ -2799,32 +2799,18 @@ node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-# New wcqs node T276644
 node /^wcqs100[123]\.eqiad\.wmnet$/ {
     role(wcqs::public)
 }
 
-# New wcqs node T276647
 node /^wcqs200[123]\.codfw\.wmnet$/ {
     role(wcqs::public)
 }
 
-# Wikidata query service
-node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
-    role(wdqs::public)
+node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
+    role(wdqs::test)
 }
 
-# T260083 brought wdqs101[1-3] into service with [2,3] public and [1] private
-# new wdqs servers wdqs101[4-6] T307138
-node /^wdqs101[2-6]\.eqiad\.wmnet$/ {
-    role(wdqs::public)
-}
-
-node /^wdqs200[47]\.codfw\.wmnet$/ {
-    role(wdqs::public)
-}
-
-# Wikidata query service internal
 node /^wdqs100[38]\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
@@ -2833,23 +2819,28 @@ node /^wdqs1011\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
 
-node /^wdqs200[568]\.codfw\.wmnet$/ {
-    role(wdqs::internal)
-}
-
-# Codfw new wdqs nodes T294297
-node /^(wdqs2009|wdqs2010|wdqs2011|wdqs2012|wdqs2021|wdqs2022)\.codfw\.wmnet$/ {
+node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
     role(wdqs::public)
 }
 
-# Codfw new wdqs nodes T326689
-node /^wdqs20(1[3-9]|2[0-2])\.codfw\.wmnet$/ {
-    role(insetup::search_platform)
+node /^wdqs101[2-6]\.eqiad\.wmnet$/ {
+    role(wdqs::public)
+}
+# wdqs200[56] soon to be decommed T326689
+node /^wdqs200[56]\.codfw\.wmnet$/ {
+    role(wdqs::internal)
 }
 
-# Wikidata query service test
-node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
-    role(wdqs::test)
+node /^(wdqs2008|wdqs201[45])\.codfw\.wmnet$/ {
+    role(wdqs::internal)
+}
+# wdqs2004 soon to be decommed T326689
+node /^wdqs2004\.codfw\.wmnet$/ {
+    role(wdqs::public)
+}
+
+node /^(wdqs200[7,9]|wdqs201[1-3]|wdqs201[6-9]|wdqs202[0-2])\.codfw\.wmnet$/ {
+    role(wdqs::public)
 }
 
 node /^webperf[12]003\.(codfw|eqiad)\.wmnet$/ {
