@@ -837,6 +837,7 @@ profile::ssh::client::hash_known_hosts: true
 profile::ssh::client::gss_api_authentication: true
 profile::ssh::client::gss_api_delegate_credentials: false
 profile::ssh::client::send_env: ["LANG", "LC_*"]
+profile::ssh::client::extra_ssh_keys: {}
 
 profile::spicerack::ganeti_rapi_timeout: 30
 profile::spicerack::peeringdb_temp_dir: /tmp/peeringdb-cache

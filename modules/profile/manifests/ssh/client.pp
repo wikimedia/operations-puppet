@@ -7,6 +7,9 @@
 # @param gss_api_authentication GSSAPIAuthentication value
 # @param gss_api_delegate_credentials GSSAPIDelegateCredentials value
 # @param send_env list of environment variables to send
+# @param extra_ssh_keys A list of addtional ssh keys to trust.  The main use of
+#   this is to configure some addtional authorized keys files for puppet-merge while
+#   we migrate
 class profile::ssh::client (
     Boolean          $manage_ssh_keys              = lookup('profile::ssh::client::manage_ssh_keys'),
     Boolean          $manage_ssh_config            = lookup('profile::ssh::client::manage_ssh_config'),
@@ -14,6 +17,7 @@ class profile::ssh::client (
     Boolean          $gss_api_authentication       = lookup('profile::ssh::client::gss_api_authentication'),
     Boolean          $gss_api_delegate_credentials = lookup('profile::ssh::client::gss_api_delegate_credentials'),
     Array[String[1]] $send_env                     = lookup('profile::ssh::client::send_env'),
+    Hash[Stdlib::Host, Hash] $extra_ssh_keys       = lookup('profile::ssh::client::extra_ssh_keys'),
 ) {
     $pql = @("PQL")
     resources[parameters, title] {
@@ -23,9 +27,9 @@ class profile::ssh::client (
     $known_hosts = Hash(wmflib::puppetdb_query($pql).map |$resource| {
         $key = $resource['name'].lest || { $resource['title'] }
         [$key, $resource['parameters']]
-    })
+    }) + $extra_ssh_keys
     class { 'ssh::client':
         known_hosts => $known_hosts,
-        *           => wmflib::resource::dump_params(),
+        *           => wmflib::resource::filter_params('extra_ssh_keys'),
     }
 }
