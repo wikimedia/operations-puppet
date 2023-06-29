@@ -8,8 +8,8 @@
 # of openjdk variants (jre, jre-headless, jdk, jdk-headless).
 #
 # To avoid unnecessary hiera params, we have defaults:
-# - On Debian Stretch, we simply deploy openjdk-8-jdk.
-# - On Debian Buster, by default, we simply deploy openjdk-11-jdk.
+# - On Debian Buster/Bullseye, by default, we simply deploy openjdk-11-jdk.
+# - On Debian Bookworm, by default, we simply deploy openjdk-17-jdk.
 #
 # Changing the defaults is very easy, for example we can set the following in hiera
 # to deploy openjdk-8-jre-headless, openjdk-11-jdk and set the former as default
@@ -44,7 +44,6 @@ class profile::java (
 ) {
 
     $default_java_packages = $facts['os']['distro']['codename'] ? {
-        'stretch'   => [{'version' => '8', 'variant' => 'jdk'}],
         'buster'    => [{'version' => '11', 'variant' => 'jdk'}],
         'bullseye'  => [{'version' => '11', 'variant' => 'jdk'}],
         'bookworm'  => [{'version' => '17', 'variant' => 'jdk'}],
