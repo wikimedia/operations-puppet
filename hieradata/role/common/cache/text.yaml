@@ -100,7 +100,7 @@ cache::alternate_domains:
   ores.wikimedia.org:
     caching: 'normal'
   ores-legacy.wikimedia.org:
-    caching: 'normal'
+    caching: 'pass'
   parsoid-rt-tests.wikimedia.org:
     caching: 'pass'
   people.wikimedia.org:
