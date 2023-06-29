@@ -1,5 +1,6 @@
 class profile::openstack::eqiad1::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $db_pass = lookup('profile::openstack::eqiad1::pdns::db_pass'),
     $monitor_target_fqdn = lookup('profile::openstack::eqiad1::pdns::monitor_target_fqdn'),
@@ -17,7 +18,7 @@ class profile::openstack::eqiad1::pdns::auth::service(
         $rval
     }
 
-    $api_allow_hosts = flatten([$hosts, $prometheus_nodes])
+    $api_allow_hosts = flatten([$hosts, $prometheus_nodes, $designate_hosts])
 
     # We're patching in our ipv4 address for db_host here;
     #  for unclear reasons 'localhost' doesn't work properly
