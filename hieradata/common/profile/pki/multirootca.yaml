@@ -8,7 +8,7 @@ profile::pki::multirootca::db_driver: 'mysql'
 profile::pki::multirootca::db_user: 'pki'
 profile::pki::multirootca::db_name: 'pki'
 profile::pki::multirootca::enable_client_auth: true
-profile::pki::multirootca::client_ca_source: "%{facts.puppet_config.localcacert}"
+profile::pki::multirootca::client_ca_source: "puppet:///modules/profile/pki/production/client_auth_CA.pem"
 # certs should auto renew 10 days before expiry
 profile::pki::multirootca::enable_monitoring: true
 profile::pki::multirootca::enable_k8s_vhost: true
