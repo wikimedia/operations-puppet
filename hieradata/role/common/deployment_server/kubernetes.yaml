@@ -7,7 +7,6 @@ cluster: misc
 profile::base::overlayfs: true
 profile::admin::groups:
   - deployment
-  - deploy-service
   - deploy-ml-service
   - parsoid-admin
   - wdqs-admins
@@ -62,7 +61,6 @@ profile::keyholder::server::agents:
 
   deploy-service:
     trusted_groups:
-      - deploy-service
       - aqs-admins
       - deploy-aqs
       - deployment

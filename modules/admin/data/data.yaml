@@ -601,16 +601,12 @@ groups:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
     members: [tjones, matanya]
-
   deploy-service:
     gid: 763
-    description: Service deploy users
-    members: [bd808, mobrovac, thcipriani, dduvall,
-              kartik, halfak, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, jforrester,
-              pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit,
-              kevinbazira, chrisalbon, jgiannelos]
+    description: Service deploy users (deprecated, use deployment instead)
+    members: []
     privileges: []
+    deprecated: true
   deploy-aqs:
     gid: 786
     description: Deployers for the Analytics Query Service
