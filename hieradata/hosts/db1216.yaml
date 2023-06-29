@@ -4,4 +4,3 @@ profile::mariadb::dbstore_multiinstance::instances:
   s5: 100G
   s8: 200G
   x1: 85G
-profile::monitoring::notifications_enabled: false
