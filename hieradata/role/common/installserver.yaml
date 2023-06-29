@@ -6,12 +6,21 @@ profile::nginx::variant: 'light'
 profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::installserver::proxy::structured_logs: true
-profile::installserver::proxy::ssh_acls:
-  cloudcumin:
+profile::installserver::proxy::custom_acls:
+  cloudcumin_ssh:
     task: T324986
+    port: 22
     dst_type: host
     src:
       - 'cluster::cloud_management'
     dst:
       - restricted.bastion.wmcloud.org
       - bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
+  cloudcumin_wmbot:
+    task: T325756
+    port: 64835
+    dst_type: host
+    src:
+      - 'cluster::cloud_management'
+    dst:
+      - wm-bot.wm-bot.wmcloud.org

@@ -6,4 +6,4 @@ profile::installserver::proxy::ssl_ports:
 profile::installserver::proxy::safe_ports:
   - 80
   - 8080 # http://wpt-graphite.wmftest.org:8080/
-profile::installserver::proxy::ssh_acls: {}
+profile::installserver::proxy::custom_acls: {}
