@@ -102,8 +102,10 @@ class apt(
             owner   => 'root',
             group   => 'root',
             content => template($apt_template),
-            require => Apt::Repository['wikimedia'],
+            notify  => Exec['apt-get update'],
         }
+
+        File['/etc/apt/sources.list'] -> Exec<| tag == 'Apt::Repository' |>
     }
 
     file { '/etc/apt/sources.list.d':
