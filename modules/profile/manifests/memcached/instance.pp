@@ -77,6 +77,7 @@ class profile::memcached::instance (
     Optional[Stdlib::Unixpath]  $ssl_key          = lookup('profile::memcached::ssl_key'),
     Optional[Boolean]           $enable_16        = lookup('profile::memcached::enable_16'),
     Optional[Integer]           $threads          = lookup('profile::memcached::threads'),
+    Optional[Ferm::Hosts]       $srange           = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
 ) {
     include ::profile::prometheus::memcached_exporter
 
@@ -115,13 +116,13 @@ class profile::memcached::instance (
     ferm::service { 'memcached':
         proto  => 'tcp',
         port   => $port,
-        srange => '$DOMAIN_NETWORKS',
+        srange => $srange,
     }
     if $notls_port and $enable_tls {
       ferm::service { 'memcached_notls':
           proto  => 'tcp',
           port   => $notls_port,
-          srange => '$DOMAIN_NETWORKS',
+          srange => $srange,
       }
     }
 }
