@@ -150,7 +150,7 @@ class puppetmaster::gitclone(
                 require => File['/srv/private'],
             }
             file { "${private_repo_dir}/.git/config":
-                source  => 'puppet:///modules/puppetmaster/git/private/gitconfig-master',
+                source  => 'puppet:///modules/puppetmaster/git/private/config',
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
