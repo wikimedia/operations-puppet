@@ -22,10 +22,6 @@ class profile::local_dev::docker_publish(
     Optional[Stdlib::Httpurl] $http_proxy = lookup('http_proxy', {'default_value' => undef})
 ){
 
-    git::systemconfig { 'safe.directory-srv-dev-images':
-        ensure => absent,
-    }
-
     # The sudo rule granted in modules/admin/data/data.yaml
     $builder_user = 'dockerpkg-builder'
     $builder_group = 'contint-admins'
@@ -43,7 +39,6 @@ class profile::local_dev::docker_publish(
         owner     => $builder_user,
         group     => $builder_group,
         origin    => 'https://gitlab.wikimedia.org/releng/dev-images.git',
-        require   => Git::Systemconfig['safe.directory-srv-dev-images'],
     }
 
     file { '/etc/docker-pkg/dev-images.yaml':
