@@ -2052,11 +2052,6 @@ node /^mw1406\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# rack C5
-node /^mw148[2-6]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
 # rack C8
 node /^mw14(08|1[02])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
@@ -2107,6 +2102,11 @@ node /^mw146[6-9]\.eqiad\.wmnet$/ {
 # Row C
 
 node /^parse101[3-6]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# rack C5
+node /^mw148[2-6]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 

@@ -127,11 +127,6 @@ eqiad:
     mw1465.eqiad.wmnet: [nginx]
     mw1470.eqiad.wmnet: [nginx]
     mw1471.eqiad.wmnet: [nginx]
-    mw1482.eqiad.wmnet: [nginx]
-    mw1483.eqiad.wmnet: [nginx]
-    mw1484.eqiad.wmnet: [nginx]
-    mw1485.eqiad.wmnet: [nginx]
-    mw1486.eqiad.wmnet: [nginx]
     mw1489.eqiad.wmnet: [nginx]
     mw1490.eqiad.wmnet: [nginx]
     mw1491.eqiad.wmnet: [nginx]
@@ -157,6 +152,11 @@ eqiad:
     mw1467.eqiad.wmnet: [apache2,nginx]
     mw1468.eqiad.wmnet: [apache2,nginx]
     mw1469.eqiad.wmnet: [apache2,nginx]
+    mw1482.eqiad.wmnet: [apache2,nginx]        # Only pooled as jobrunner
+    mw1483.eqiad.wmnet: [apache2,nginx]        # Only pooled as jobrunner
+    mw1484.eqiad.wmnet: [apache2,nginx]        # Only pooled as jobrunner
+    mw1485.eqiad.wmnet: [apache2,nginx]        # Only pooled as jobrunner
+    mw1486.eqiad.wmnet: [apache2,nginx]        # Only pooled as jobrunner
     mw1494.eqiad.wmnet: [apache2,nginx]
     mw1495.eqiad.wmnet: [apache2,nginx]
   videoscaler: *jobrunner
