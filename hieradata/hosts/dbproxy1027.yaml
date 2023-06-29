@@ -1,4 +1,3 @@
-# dbproxy1027 in setup  to replace dbproxy1017
 # m5
 profile::mariadb::proxy::master::primary_name: 'db1176'
 profile::mariadb::proxy::master::primary_addr: '10.64.0.143:3306'
