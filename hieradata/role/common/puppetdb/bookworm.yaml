@@ -1,0 +1,4 @@
+puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
+profile::contacts::role_contacts: ["Infrastructure Foundations"]
+profile::puppet::agent::puppetmaster: puppetserver1001.eqiad.wmnet
+profile::puppet::agent::force_puppet7: true

@@ -2564,8 +2564,17 @@ node /^puppetboard[12]003\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard::bookworm)
 }
 
-node /^puppetdb[12]00[23]\.(codfw|eqiad)\.wmnet$/ {
+node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetdb)
+}
+
+# Leave this on the old infrastructure for now
+node /^puppetdb2003\.codfw\.wmnet$/ {
+    role(puppetdb)
+}
+
+node /^puppetdb1003\.eqiad\.wmnet$/ {
+    role(puppetdb::bookworm)
 }
 
 node /^puppetserver[12]001\.(codfw|eqiad)\.wmnet$/ {
