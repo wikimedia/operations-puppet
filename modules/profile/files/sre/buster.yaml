@@ -34,7 +34,8 @@ role::installserver:
   target-q: 2023-1
   phab-task: 327867
 role::webperf::xhgui:
-  target-q: TBD
+  target-q: 2023-3
+  phab-task: 333613
 role::pybaltest:
   target-q: 2023-2
   phab-task: 321309
@@ -45,7 +46,7 @@ role::mw_rc_irc:
   target-q: 2023-2
   phab-task: 331702
 role::vrts:
-  target-q: 2023-3
+  target-q: 2023-2
   phab-task: 295416
 role::logging::mediawiki::udp2log:
   target-q: 2023-3
@@ -129,7 +130,8 @@ role::ganeti:
   target-q: 2023-2
   phab-task: 311687,311686
 role::alerting_host:
-  target-q: TBD
+  target-q: 2023-3
+  phab-task: 333615
 role::analytics_cluster::launcher:
   target-q: TBD
   phab-task: 332580
