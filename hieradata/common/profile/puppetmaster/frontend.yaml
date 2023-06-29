@@ -6,5 +6,4 @@ profile::puppetmaster::frontend: chain
 profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::secure_private: true
 profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
-profile::puppetmaster::frontend::extra_ssh_keys: {}
 

@@ -14,9 +14,6 @@
 # @param ssl_ca_revocation_check the type of SSL revocation check to perform
 # @param http_proxy the HTTP proxy if one is required
 # @param mcrouter_ca_secret The secret for mcrouter CA
-# @param extra_ssh_keys A list of addtional ssh keys to trust.  The main use of
-#   this is to configure some addtional authorized keys files for puppet-merge while
-#   we migrate
 class profile::puppetmaster::frontend(
     # Globals
     Stdlib::Host        $ca_server               = lookup('puppet_ca_server'),
@@ -35,7 +32,6 @@ class profile::puppetmaster::frontend(
     Enum['chain', 'leaf', 'none'] $ssl_ca_revocation_check = lookup('profile::puppetmaster::frontend::ssl_ca_revocation_check'),
     Optional[String]              $extra_auth_rules        = lookup('profile::puppetmaster::frontend::extra_auth_rules'),
     Optional[String[1]]           $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret'),
-    Hash[Stdlib::Host, Ssh::HostKeys] $extra_ssh_keys   = lookup('profile::puppetmaster::frontend::extra_ssh_keys'),
 ) {
     ensure_packages([
       'libapache2-mod-passenger',
@@ -193,15 +189,6 @@ class profile::puppetmaster::frontend(
         conftool    => $ca,
         outfile     => '/var/lib/puppet/volatile/external_cloud_vendors/public_clouds.json',
         http_proxy  => $http_proxy,
-    }
-    $extra_ssh_keys.each |$host, $keys| {
-        $keys.each |$type, $key| {
-            sshkey { $host:
-                ensure => 'present',
-                type   => "ssh-${type}",
-                key    => $key,
-            }
-        }
     }
 }
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab

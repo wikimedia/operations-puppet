@@ -18,9 +18,6 @@ profile::conftool::state::query_interval: 30
 profile::discovery::path: "/srv/config-master/discovery"
 profile::puppetmaster::frontend::canary_hosts:
   - sretest2002.codfw.wmnet
-profile::puppetmaster::frontend::extra_ssh_keys:
-  'puppetserver1001.eqiad.wmnet':
-    'ed25519': 'AAAAC3NzaC1lZDI1NTE5AAAAICQFROaqtJSWHx5DOMLDj+e4t4R+/BvUP2ELuaciHyRj'
 profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::common::reports:
   - puppetdb
