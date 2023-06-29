@@ -11,7 +11,7 @@
   <Directory  <%= @document_root %>>
     Require all granted
   </Directory>
-  
+
   <Location /metrics>
     Require host <%= @prometheus_nodes.join(' ') %>
     ProxyPass http://127.0.0.1:8888/metrics
@@ -45,7 +45,7 @@
   <%= @ssl_settings.join("\n  ") %>
 <%- if @enable_client_auth -%>
   SSLVerifyClient require
-  SSLVerifyDepth 1
+  SSLVerifyDepth 2
   SSLCACertificateFile <%= @client_auth_ca_file %>
 <%- end -%>
 

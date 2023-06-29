@@ -17,6 +17,8 @@ class profile::base::production (
         contain profile::admin
 
         include profile::pki::client
+        # profile::base::certificates provides the ca file used by the pki client
+        Class['profile::base::certificates'] -> Class['profile::pki::client']
         include profile::contacts
         include profile::base::netbase
         include profile::logoutd

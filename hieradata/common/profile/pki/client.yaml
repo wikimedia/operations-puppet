@@ -7,7 +7,8 @@ profile::pki::client::listen_port: 8888
 profile::pki::client::bundles_source: 'puppet:///modules/profile/pki/intermediates'
 profile::pki::client::mutual_tls_client_cert: "%{facts.puppet_config.hostcert}"
 profile::pki::client::mutual_tls_client_key: "%{facts.puppet_config.hostprivkey}"
-profile::pki::client::tls_remote_ca: "%{facts.puppet_config.localcacert}"
+# provided by profile::base::certificates
+profile::pki::client::tls_remote_ca: "/etc/ssl/certs/wmf-ca-certificates.crt"
 profile::pki::client::tls_remote_ca_source: ~
 profile::pki::client::certs: {}
 profile::pki::client::root_ca_cn: 'Wikimedia_Internal_Root_CA'
