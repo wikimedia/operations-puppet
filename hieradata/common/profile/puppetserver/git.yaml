@@ -36,6 +36,7 @@ profile::puppetserver::git::repos:
   # i.e. if we simply used the above repo it would be possible for puppet to act on files that where still
   # being edited, not committed and potentially broken
   'operations/private':
+    init: true
     branch: master
     hooks:
         'pre-commit': 'puppet:///modules/puppetmaster/git/private/pre-commit'
