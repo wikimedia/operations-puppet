@@ -1,2 +1,2 @@
 profile::puppetserver::puppetdb_urls:
-  - 'https://puppetdb1003.eqiad.wmnet:8443'
+  - 'https://puppetdb1003.eqiad.wmnet'
