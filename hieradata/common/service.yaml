@@ -1150,6 +1150,33 @@ service::catalog:
     role: "kubernetes::master"
     state: production
 
+  kubestagemaster:
+    description: Kubernetes staging master service. kubestagemaster.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.86
+      eqiad:
+        default: 10.2.2.86
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes-staging
+        service: kubemaster
+      depool_threshold: ".2"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 6443
+    sites:
+      - eqiad
+      - codfw
+    role: "kubernetes::staging::master"
+    state: service_setup
+
   labweb:
     description: "lvs for labweb services: horizon, striker, wikitech"
     encryption: false
