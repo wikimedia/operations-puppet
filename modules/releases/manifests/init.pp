@@ -28,14 +28,14 @@ class releases (
         bare      => true,
     }
     git::clone { 'repos/releng/release':
-        ensure    => 'latest',
+        ensure    => latest,
         directory => '/srv/mediawiki/release-tools',
         require   => File['/srv/mediawiki'],
         source    => 'gitlab',
     }
 
     file { '/srv/org/wikimedia/releases/mediawiki':
-        ensure  => 'directory',
+        ensure  => directory,
         mode    => '2775',
         owner   => 'root',
         group   => 'releasers-mediawiki',
@@ -43,7 +43,7 @@ class releases (
     }
 
     file { '/srv/org/wikimedia/releases/wikidiff2':
-        ensure  => 'directory',
+        ensure  => directory,
         mode    => '2775',
         owner   => 'root',
         group   => 'releasers-wikidiff2',
@@ -51,7 +51,7 @@ class releases (
     }
 
     file { '/srv/org/wikimedia/releases/releases-header.html':
-        ensure => 'present',
+        ensure => present,
         mode   => '0444',
         owner  => 'www-data',
         group  => 'www-data',
@@ -59,7 +59,7 @@ class releases (
     }
 
     file { '/srv/org/wikimedia/releases/mediawiki/releases-header-mw.html':
-        ensure => 'present',
+        ensure => present,
         mode   => '0444',
         owner  => 'www-data',
         group  => 'www-data',
