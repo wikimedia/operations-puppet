@@ -17,14 +17,15 @@
 # After that, change puppet config to enable on all nodes.
 #
 class galera(
-    Array[Stdlib::Fqdn] $cluster_nodes,
-    Integer             $server_id,
-    Boolean             $enabled,
-    Stdlib::Port        $port            = 3306,
-    Stdlib::Unixpath    $socket          = '/var/run/mysqld/mysqld.sock',
-    Stdlib::Unixpath    $basedir         = '/usr',
-    Stdlib::Unixpath    $datadir         = '/var/lib/mysql',
-    Stdlib::Unixpath    $tmpdir          = '/tmp',
+    Array[Stdlib::Fqdn]    $cluster_nodes,
+    Integer                $server_id,
+    Boolean                $enabled,
+    Stdlib::Fqdn           $wsrep_node_name,
+    Stdlib::Port           $port            = 3306,
+    Stdlib::Unixpath       $socket          = '/var/run/mysqld/mysqld.sock',
+    Stdlib::Unixpath       $basedir         = '/usr',
+    Stdlib::Unixpath       $datadir         = '/var/lib/mysql',
+    Stdlib::Unixpath       $tmpdir          = '/tmp',
 ) {
     debian::codename::require('bullseye', '==', 'likely missing reprepro packages')
 
@@ -58,6 +59,7 @@ class galera(
     }
 
     $cluster_node_ips = $cluster_nodes.map |$host| { ipresolve($host, 4) }
+    $wsrep_node_address = dnsquery::a($wsrep_node_name) || { ['127.0.0.1'] }[0]
 
     file { '/etc/mysql/mariadb.conf.d/50-server.cnf':
         owner   => 'root',

@@ -9,6 +9,7 @@ class profile::openstack::base::galera::node(
     Array[Stdlib::Fqdn]    $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Array[Stdlib::Fqdn]    $haproxy_nodes          = lookup('profile::openstack::base::haproxy_nodes'),
     Array[Stdlib::Fqdn]    $cinder_volume_nodes    = lookup('profile::openstack::base::cinder_volume_nodes'),
+    Stdlib::Fqdn           $wsrep_node_name        = lookup('profile::openstack::base::galera::node::wsrep_node_name'),
 ) {
     $socket = '/var/run/mysqld/mysqld.sock'
     $datadir = '/srv/sqldata'
@@ -20,12 +21,13 @@ class profile::openstack::base::galera::node(
     }
 
     class {'::galera':
-        cluster_nodes => $openstack_controllers,
-        server_id     => $server_id,
-        enabled       => $enabled,
-        port          => $listen_port,
-        datadir       => $datadir,
-        socket        => $socket,
+        cluster_nodes   => $openstack_controllers,
+        server_id       => $server_id,
+        enabled         => $enabled,
+        port            => $listen_port,
+        datadir         => $datadir,
+        socket          => $socket,
+        wsrep_node_name => $wsrep_node_name,
     }
 
     # 4567, replication

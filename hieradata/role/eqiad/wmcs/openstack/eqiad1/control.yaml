@@ -70,3 +70,6 @@ profile::toolforge::disable_tool::disable_tool_db_host: '185.15.56.15'
 profile::openstack::base::nova::fullstack::nameservers:
   - ns-recursor0.openstack.eqiad1.wikimediacloud.org
   - ns-recursor1.openstack.eqiad1.wikimediacloud.org
+
+# TODO: in the future, this can be removed and made default to cloud-private FQDN in the profile
+profile::openstack::base::galera::node::wsrep_node_name: "%{facts.fqdn}"

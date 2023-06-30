@@ -56,3 +56,6 @@ ldap:
 labsldapconfig:
   hostname: cloudservices2004-dev.codfw.wmnet
   secondary_hostname: cloudservices2004-dev.codfw.wmnet
+
+# TODO: in the future, when eqiad1 is migrated to cloud-private, this can be made the default in the profile
+profile::openstack::base::galera::node::wsrep_node_name: "%{lookup('profile::wmcs::cloud_private_subnet::host')}"
