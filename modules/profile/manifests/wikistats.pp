@@ -15,7 +15,7 @@ class profile::wikistats (
 ){
 
     motd::script { 'deployment_info':
-        ensure   => 'present',
+        ensure   => present,
         priority => 1,
         content  => template('wikistats/deployment_info.motd.erb'),
     }

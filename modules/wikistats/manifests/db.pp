@@ -14,7 +14,7 @@ class wikistats::db (
     # db backup
     wmflib::dir::mkdir_p('/usr/local/bin/wikistats')
     file { '/usr/local/bin/wikistats/dbdump.sh':
-        ensure => 'present',
+        ensure => present,
         owner  => 'wikistatsuser',
         group  => 'root',
         mode   => '0554',
@@ -22,7 +22,7 @@ class wikistats::db (
     }
     wmflib::dir::mkdir_p('/etc/wikistats')
     file { '/etc/wikistats/dbdump.cfg':
-        ensure  => 'present',
+        ensure  => present,
         owner   => 'wikistatsuser',
         group   => 'wikistatsuser',
         mode    => '0444',
@@ -30,7 +30,7 @@ class wikistats::db (
     }
 
     systemd::timer::job { 'wikistats-dbdump':
-        ensure          => 'present',
+        ensure          => present,
         user            => 'root',
         description     => 'create a database backup',
         command         => '/usr/local/bin/wikistats/dbdump.sh',
@@ -42,7 +42,7 @@ class wikistats::db (
 
     # don't run out of disk
     systemd::timer::job { 'wikistats-cleanup-mysqldump':
-        ensure          => 'present',
+        ensure          => present,
         user            => 'root',
         description     => 'delete old dump files to avoid running out of disk space',
         command         => "/usr/bin/find ${backupdir} -name \"*.sql.gz\" -mtime +7 -exec rm {} \\;",
@@ -56,7 +56,7 @@ class wikistats::db (
     # get it and replace it in the config file after deploying
     wmflib::dir::mkdir_p('/usr/lib/wikistats')
     file { '/usr/lib/wikistats/wikistats-db-pass':
-        ensure  => 'present',
+        ensure  => present,
         owner   => 'wikistatsuser',
         group   => 'wikistatsuser',
         mode    => '0400',
@@ -65,7 +65,7 @@ class wikistats::db (
 
     # database schema
     file { '/usr/lib/wikistats/schema.sql':
-        ensure => 'present',
+        ensure => present,
         owner  => 'wikistatsuser',
         group  => 'wikistatsuser',
         mode   => '0444',
@@ -83,7 +83,7 @@ class wikistats::db (
     }
 
     file { '/usr/lib/wikistats/db_init_done':
-        ensure  => 'present',
+        ensure  => present,
         content => 'database has been initialized',
         owner   => 'wikistatsuser',
         group   => 'wikistatsuser',
@@ -93,7 +93,7 @@ class wikistats::db (
     # grant db permissions on the first run
 
     file { '/usr/lib/wikistats/grants.sql':
-        ensure  => 'present',
+        ensure  => present,
         content => template('wikistats/db/grants.sql.erb'),
         owner   => 'wikistatsuser',
         group   => 'wikistatsuser',
@@ -110,7 +110,7 @@ class wikistats::db (
     }
 
     file { '/usr/lib/wikistats/db_grants_done':
-        ensure  => 'present',
+        ensure  => present,
         content => 'database grants have been applied',
         owner   => 'wikistatsuser',
         group   => 'wikistatsuser',

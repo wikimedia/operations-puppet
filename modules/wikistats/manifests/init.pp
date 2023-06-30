@@ -62,26 +62,26 @@ class wikistats (
     }
 
     file { '/srv/wikistats':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'wikistatsuser',
         group  => 'wikistatsuser',
     }
 
     # directory used by deploy-script to store backups
     file { '/usr/lib/wikistats/backup':
-        ensure  => 'directory',
+        ensure  => directory,
         owner   => 'wikistatsuser',
         group   => 'wikistatsuser',
         require => User['wikistatsuser'],
     }
 
     file { '/usr/local/bin/wikistats':
-        ensure => 'directory',
+        ensure => directory,
     }
 
     # deployment script that copies files in place after puppet git clones to /srv/
     file { '/usr/local/bin/wikistats/deploy-wikistats':
-        ensure => 'present',
+        ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
@@ -89,7 +89,7 @@ class wikistats (
     }
 
     git::clone { 'repos/cloud/wikistats':
-        ensure    => 'latest',
+        ensure    => latest,
         directory => '/srv/wikistats',
         branch    => 'master',
         owner     => 'wikistatsuser',
