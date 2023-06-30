@@ -10,7 +10,7 @@ class profile::gerrit::migration_base (
     }
 
     user { $daemon_user:
-        ensure     => 'present',
+        ensure     => present,
         gid        => $daemon_user,
         shell      => '/bin/bash',
         home       => "/var/lib/${daemon_user}",

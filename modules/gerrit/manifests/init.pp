@@ -40,7 +40,7 @@ class gerrit(
 
     # TODO convert to systemd::sysuser
     user { $daemon_user:
-        ensure     => 'present',
+        ensure     => present,
         gid        => $daemon_user,
         shell      => '/bin/bash',
         home       => $daemon_user_dir,
@@ -163,7 +163,7 @@ class gerrit(
     }
     # Make sure we use our targetted version rather than the one copied on init
     file { "${gerrit_site}/bin/gerrit.war":
-      ensure  => 'link',
+      ensure  => link,
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
       require => Scap::Target['gerrit/gerrit'],
     }
@@ -259,7 +259,7 @@ class gerrit(
     }
 
     file { "${gerrit_site}/logs":
-        ensure  => 'link',
+        ensure  => link,
         target  => '/var/log/gerrit',
         owner   => $daemon_user,
         group   => $daemon_user,
@@ -267,7 +267,7 @@ class gerrit(
     }
 
     file { "${gerrit_site}/plugins":
-      ensure  => 'link',
+      ensure  => link,
       target  => '/srv/deployment/gerrit/gerrit/plugins',
       require => Scap::Target['gerrit/gerrit'],
     }
@@ -301,7 +301,7 @@ class gerrit(
 
     # Legacy default, probably no more used (2022-09-14)
     file { '/etc/default/gerritcodereview':
-        ensure => 'link',
+        ensure => link,
         target => '/etc/default/gerrit',
     }
 
@@ -313,7 +313,7 @@ class gerrit(
 
     if $enable_monitoring {
         nrpe::monitor_service { 'gerrit':
-            ensure       => 'present',
+            ensure       => present,
             description  => 'gerrit process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar ${gerrit_site}/bin/gerrit.war daemon -d ${gerrit_site}'",
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Gerrit',

@@ -32,12 +32,12 @@ class profile::gerrit::migration (
         }
 
         file { "/srv/home-${src_host}/":
-            ensure => 'directory',
+            ensure => directory,
         }
 
         if !defined(File[$gerrit_site]) {
             file { $gerrit_site:
-                ensure => 'directory',
+                ensure => directory,
             }
         }
 

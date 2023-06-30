@@ -116,7 +116,7 @@ class profile::gerrit(
     $sshkey = 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ=='
 
     @@sshkey { 'gerrit.wikimedia.org':
-        ensure       => 'present',
+        ensure       => present,
         key          => $sshkey,
         type         => 'ssh-rsa',
         host_aliases => [ipresolve('gerrit.wikimedia.org'), ipresolve('gerrit.wikimedia.org', 6)],

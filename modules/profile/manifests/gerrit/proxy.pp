@@ -70,14 +70,14 @@ class profile::gerrit::proxy(
         content => template('gerrit/error.html.erb'),
     }
     file { '/var/www/page-bkg.cache.jpg':
-        ensure => 'link',
+        ensure => link,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         target => "${gerrit_site}/static/page-bkg.cache.jpg",
     }
     file { '/var/www/wikimedia-codereview-logo.cache.png':
-        ensure => 'link',
+        ensure => link,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
