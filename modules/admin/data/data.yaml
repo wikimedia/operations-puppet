@@ -1398,7 +1398,7 @@ users:
     gid: 500
     name: dzahn
     realname: Daniel Zahn
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHKBourcpbDepSoYOiGL3KmyiL2NDWWL9c3ro/91Jt2q mutante@seaotter]
+    ssh_keys: []
     uid: 2075
     email: dzahn@wikimedia.org
   jzerebecki:
