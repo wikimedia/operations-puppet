@@ -3,9 +3,16 @@
 #
 # Configures an LVM logical volume just for Docker.
 #
-class profile::ci::dockervolume {
+# Parameters:
+#
+#   size => size of the volume passed to lvcreate(8).
+#           default to 24G.
+#
+class profile::ci::dockervolume(
+    $size = lookup('profile::ci::dockervolume::size', {'default_value' => '24G'})
+) {
     labs_lvm::volume { 'docker':
-        size      => '24G',
+        size      => $size,
         mountat   => '/var/lib/docker',
         mountmode => '711',
     }
