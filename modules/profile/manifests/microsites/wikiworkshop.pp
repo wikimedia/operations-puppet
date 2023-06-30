@@ -19,7 +19,7 @@ class profile::microsites::wikiworkshop {
     wmflib::dir::mkdir_p('/srv/org/wikimedia/wikiworkshop')
 
     git::clone { 'research/wikiworkshop':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/wikiworkshop',
         branch    => 'master',

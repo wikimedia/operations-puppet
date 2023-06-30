@@ -53,7 +53,7 @@ class profile::microsites::peopleweb (
     # ensure each user automatically gets a public_html dir inside their home dir
     admin::unique_users(['all-users']).each |String $user| {
         file { "/home/${user}/public_html":
-            ensure => 'directory',
+            ensure => directory,
             owner  => $user,
             group  => 'wikidev',
             mode   => '0755',
@@ -81,7 +81,7 @@ class profile::microsites::peopleweb (
     } else {
       $motd_content = "#!/bin/sh\necho '\nThis is NOT the active backend for people.wikimedia.org. DO NOT USE THIS. Please go to ${rsync_src_host} instead.\n'"
       $rsync_auto_restart_ensure = 'absent'
-      service { 'rsync': ensure => 'stopped' }
+      service { 'rsync': ensure => stopped }
     }
 
 

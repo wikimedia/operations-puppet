@@ -17,21 +17,21 @@ class profile::microsites::design(
     wmflib::dir::mkdir_p('/srv/org/wikimedia/design-strategy')
 
     git::clone { 'design/landing-page':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/design',
         branch    => 'master',
     }
 
     git::clone { 'design/strategy':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/design-strategy',
         branch    => 'master',
     }
 
     git::clone { 'design/blog':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => $design_blog_repo_dir,
         branch    => 'master',
@@ -42,7 +42,7 @@ class profile::microsites::design(
     }
 
     file { '/srv/org/wikimedia/design-style-guide':
-        ensure  => 'link',
+        ensure  => link,
         target  => '/srv/deployment/design/style-guide',
         require => Scap::Target['design/style-guide'],
     }

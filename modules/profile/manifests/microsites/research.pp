@@ -22,7 +22,7 @@ class profile::microsites::research(
     wmflib::dir::mkdir_p('/srv/org/wikimedia/research')
 
     git::clone { 'research/landing-page':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/research',
         branch    => 'master',

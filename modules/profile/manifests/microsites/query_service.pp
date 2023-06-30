@@ -14,14 +14,14 @@ class profile::microsites::query_service {
     wmflib::dir::mkdir_p('/srv/org/wikidata/query-builder')
 
     git::clone { 'wikidata/query/gui-deploy':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikidata/query',
         branch    => 'production',
     }
 
     git::clone { 'wikidata/query-builder/deploy':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikidata/query-builder',
         branch    => 'production',

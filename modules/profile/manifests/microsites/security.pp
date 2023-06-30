@@ -12,7 +12,7 @@ class profile::microsites::security(
     wmflib::dir::mkdir_p('/srv/org/wikimedia/security')
 
     git::clone { 'wikimedia/security/landing-page':
-        ensure    => 'latest',
+        ensure    => latest,
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/security',
         branch    => 'master',
