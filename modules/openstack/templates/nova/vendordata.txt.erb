@@ -95,17 +95,12 @@ mounts:
 #  two settings and if they're different the stage fails. That means that
 #  if one of them is set differently from the default (True) then nothing
 #  works.
-apt_preserve_sources_list: False
+#
+#  Setting preserve_sources_list avoids clobbering the pre-set repos
+#  (T340814) but still lets us inject the mediawiki repos.
+apt_preserve_sources_list: True
 apt:
-    conf: |
-      APT {
-          Get {
-              Assume-Yes 'true';
-              Fix-Broken 'true';
-              allow-downgrades 'true';
-          }
-      }
-    preserve_sources_list: False
+    preserve_sources_list: True
     sources:
         wikimedia.list:
             source: |
