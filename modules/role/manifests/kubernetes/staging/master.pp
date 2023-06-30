@@ -9,6 +9,8 @@ class role::kubernetes::staging::master {
     include profile::docker::engine
     include profile::kubernetes::node
     include profile::calico::kubernetes
+    # Kubernetes staging masters are LVS backend servers
+    include profile::lvs::realserver
 
     system::role { 'kubernetes::staging::master':
         description => 'Kubernetes master server (staging setup)',
