@@ -74,7 +74,7 @@ class vrts::mail(
     }
 
     file { '/usr/local/bin/train_spamassassin':
-        ensure => 'file',
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -90,7 +90,7 @@ class vrts::mail(
     }
 
     file { '/var/spool/spam':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0775',

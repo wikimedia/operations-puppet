@@ -117,7 +117,7 @@ class vrts(
     })
 
     file { '/etc/vrts/install-script-vars':
-        ensure  => 'file',
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -125,7 +125,7 @@ class vrts(
     }
 
     file { '/usr/local/bin/install_vrts':
-        ensure => 'file',
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -133,7 +133,7 @@ class vrts(
     }
 
     file { '/usr/local/bin/upgrade_vrts':
-        ensure => 'file',
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -141,7 +141,7 @@ class vrts(
     }
 
     file { '/opt/otrs/Kernel/Config.pm':
-        ensure  => 'file',
+        ensure  => file,
         owner   => 'otrs',
         group   => 'www-data',
         mode    => '0440',
@@ -149,7 +149,7 @@ class vrts(
     }
 
     file { '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
-        ensure => 'file',
+        ensure => file,
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0755',
@@ -158,21 +158,21 @@ class vrts(
 
     # WMF skin customizations
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
-        ensure => 'file',
+        ensure => file,
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
         source => 'puppet:///modules/vrts/wmf.ico',
     }
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/logo_bg_wmf.png':
-        ensure => 'file',
+        ensure => file,
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
         source => 'puppet:///modules/vrts/logo_bg_wmf.png',
     }
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_wmf.png':
-        ensure => 'file',
+        ensure => file,
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
@@ -194,7 +194,7 @@ class vrts(
     }
 
     systemd::timer::job { 'vrts-cache-cleanup':
-        ensure      => 'present',
+        ensure      => present,
         user        => 'otrs',
         description => 'Cleanup VRTS cache',
         command     => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
