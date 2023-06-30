@@ -87,7 +87,9 @@ def ask_for_confirmation() -> AskReply:
 def get_run(step_by_step: bool) -> Callable:
     def run(*command: str, **kwargs: Any) -> str:
         with_confirmation = get_with_confirmation(step_by_step)
-        with with_confirmation(f"Running command:\n    {command}\n    options: {kwargs}") as reply:
+        with with_confirmation(
+            f"Running command:\n    {command}\n    options: {kwargs}"
+        ) as reply:
             if reply == AskReply.CONTINUE:
                 subprocess.check_output(command, **kwargs)
             elif reply == AskReply.SKIP:
@@ -123,9 +125,14 @@ def parse_args():
 
     argparser.add_argument(
         "--image-url",
-        default="https://cdimage.debian.org/cdimage/openstack/"
-        "current/debian-10-openstack-amd64.raw",
         help="url for base image"
+        "  see: https://cdimage.debian.org/cdimage/openstack/ for Buster,"
+        "  https://cdimage.debian.org/cdimage/cloud/ for bullseye or later"
+        "  (but ignore the openstack subdir)",
+    )
+    argparser.add_argument(
+        "--image-file",
+        help="file for base image"
         "  see: https://cdimage.debian.org/cdimage/openstack/ for Buster,"
         "  https://cdimage.debian.org/cdimage/cloud/ for bullseye or later"
         "  (but ignore the openstack subdir)",
@@ -166,7 +173,9 @@ def parse_args():
     return argparser.parse_args()
 
 
-def download_image(upstream_image_path: Path, image_url: str, run: Callable, workdir: Path):
+def download_image(
+    upstream_image_path: Path, image_url: str, run: Callable, workdir: Path
+):
     LOGGER.info("Downloading upstream image...")
     run("wget", image_url, "-O", upstream_image_path)
 
@@ -179,17 +188,29 @@ def download_image(upstream_image_path: Path, image_url: str, run: Callable, wor
 
 
 def upload_image(name: str, image_path: Path):
-    args = ["openstack", "image", "create", "--file", image_path,
-            "--private", "--container-format", "ovf", "--disk-format", "raw",
-            "--property", "hw_scsi_model=virtio-scsi",
-            "--property", "hw_disk_bus=scsi",
-            name]
+    args = [
+        "openstack",
+        "image",
+        "create",
+        "--file",
+        image_path,
+        "--private",
+        "--container-format",
+        "ovf",
+        "--disk-format",
+        "raw",
+        "--property",
+        "hw_scsi_model=virtio-scsi",
+        "--property",
+        "hw_disk_bus=scsi",
+        name,
+    ]
     rstring = subprocess.check_output(args)
 
     print("rstring: %s" % rstring)
-    for line in rstring.decode('utf8').split('\n'):
-        if ' id ' in line:
-            newimageid = line.split('|')[2].strip()
+    for line in rstring.decode("utf8").split("\n"):
+        if " id " in line:
+            newimageid = line.split("|")[2].strip()
 
     print("newimageid: %s" % newimageid)
 
@@ -200,7 +221,10 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
     LOGGER.info("Launching a vm with the new image")
     nics = [{"net-id": network_id}]
     instance = nova.servers.create(
-        name="buildvm-%s" % upstream_image.id, image=upstream_image.id, flavor=flavor_id, nics=nics
+        name="buildvm-%s" % upstream_image.id,
+        image=upstream_image.id,
+        flavor=flavor_id,
+        nics=nics,
     )
     LOGGER.info("Created temporary VM %s" % instance.id)
 
@@ -218,7 +242,10 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
             LOGGER.info("VM seems to be up!")
             break
 
-    while "Execute cloud user/final scripts" not in logtail and "Reached target" not in logtail:
+    while (
+        "Execute cloud user/final scripts" not in logtail
+        and "Reached target" not in logtail
+    ):
         LOGGER.info("Waiting one minutes for VM to puppetize")
         time.sleep(60)
         logtail = nova.servers.get_console_output(instance.id, length=20)
@@ -232,7 +259,9 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
 
 def get_snapshot(instance_id: str, snapshot_path: Path):
     LOGGER.info("Taking a snapshot of the stopped instance")
-    vm_snap = nova.servers.create_image(instance_id, f"snap for {instance_id}", metadata=None)
+    vm_snap = nova.servers.create_image(
+        instance_id, f"snap for {instance_id}", metadata=None
+    )
     LOGGER.info("snapshot %s begun", vm_snap)
     time.sleep(120)
 
@@ -294,7 +323,9 @@ def sparsify_image(workdir: Path, snapshot_path: Path, run: Callable) -> None:
     return sparse_snapshot_path
 
 
-def create_and_upload_image(new_image_name: str, sparse_snapshot_path: Path, project_owner: str):
+def create_and_upload_image(
+    new_image_name: str, sparse_snapshot_path: Path, project_owner: str
+):
     final_image = upload_image(new_image_name, sparse_snapshot_path)
 
     LOGGER.info("Setting image ownership and visibility")
@@ -329,29 +360,47 @@ def main(args: argparse.Namespace) -> None:
         else:
             workdir = Path(workdir_path)
 
-        upstream_image_path = workdir / "upstreamimage"
+        if args.image_url and args.image_file:
+            print("Only one of image_url or image_file may be set.")
+            exit(1)
+
+        if args.image_file:
+            upstream_image_path = args.image_file
+            image_source = "from %s" % args.image_file
+        elif args.image_url:
+            image_source = "upstream from %s" % args.image_url
+            upstream_image_path = workdir / "upstreamimage"
+            if not args.reuse_downloaded_image or not upstream_image_path.is_file():
+                download_image(
+                    upstream_image_path=upstream_image_path,
+                    image_url=args.image_url,
+                    run=run,
+                    workdir=workdir,
+                )
+        else:
+            print("Either image_url or image_file must be set.")
+            exit(1)
+
+        snapshot_path = workdir / "snapshot.img"
         snapshot_path = workdir / "snapshot.img"
 
-        if not args.reuse_downloaded_image or not upstream_image_path.is_file():
-            download_image(
-                upstream_image_path=upstream_image_path,
-                image_url=args.image_url,
-                run=run,
-                workdir=workdir,
-            )
-
-        with with_confirmation("Creating a VM from the image and downloading a snapshot.") as reply:
+        with with_confirmation(
+            "Creating a VM from the image and downloading a snapshot."
+        ) as reply:
             if reply == AskReply.CONTINUE:
                 upstream_image = upload_image(
-                    name="upstream image from %s" % args.image_url,
-                    image_path=upstream_image_path
+                    name=image_source, image_path=upstream_image_path
                 )
                 instance = create_puppetized_vm(upstream_image, networkid, flavorid)
-                vm_snap = get_snapshot(instance_id=instance.id, snapshot_path=snapshot_path)
+                vm_snap = get_snapshot(
+                    instance_id=instance.id, snapshot_path=snapshot_path
+                )
 
         disable_puppet_on_image(workdir=workdir, snapshot_path=snapshot_path, run=run)
 
-        sparse_snapshot_path = sparsify_image(snapshot_path=snapshot_path, workdir=workdir, run=run)
+        sparse_snapshot_path = sparsify_image(
+            snapshot_path=snapshot_path, workdir=workdir, run=run
+        )
 
         with with_confirmation("Creating final image") as reply:
             if reply == AskReply.CONTINUE:
@@ -366,7 +415,9 @@ def main(args: argparse.Namespace) -> None:
         ) as reply:
             if reply == AskReply.CONTINUE:
                 cleanup(
-                    instance_id=instance.id, vm_snap=vm_snap, upstream_image_id=upstream_image.id
+                    instance_id=instance.id,
+                    vm_snap=vm_snap,
+                    upstream_image_id=upstream_image.id,
                 )
 
         LOGGER.info("Finished creating new image: %s" % final_image.id)
