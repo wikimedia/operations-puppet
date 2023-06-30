@@ -276,6 +276,13 @@ def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -
         LOGGER.warning("Found legacy Puppet cron file %s", puppet_cron_config)
         puppet_cron_config.unlink()
 
+    # Bonus: enable dhcp setting of resolv.conf.  This will get turned off again by puppet
+    #  but will allow new images to pick up a proper resolv.conf on boot
+    nodnsupdate = mountpath / "etc/dhcp/dhclient-enter-hooks.d/nodnsupdate"
+    if not nodnsupdate.is_file():
+        raise Exception(f"Unable to find nodnsupdate file {nodnsupdate}, aborting")
+    nodnsupdate.unlink()
+
     run("umount", mountpath)
     run("qemu-nbd", "--disconnect", "/dev/nbd0")
 
