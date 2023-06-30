@@ -180,6 +180,7 @@ kubernetes::clusters:
         # TODO: Add control_plane_class_name
       control_plane_nodes:
         - kubestagemaster1001.eqiad.wmnet
+        - kubestagemaster1002.eqiad.wmnet
       cluster_dns:
         - "10.64.76.3"
       service_cluster_cidr:
@@ -194,6 +195,7 @@ kubernetes::clusters:
         - https://kubestagetcd1006.eqiad.wmnet:2379
       cluster_nodes:
         - kubestagemaster1001.eqiad.wmnet
+        - kubestagemaster1002.eqiad.wmnet
         - kubestage1003.eqiad.wmnet
         - kubestage1004.eqiad.wmnet
     staging-codfw:
@@ -210,6 +212,7 @@ kubernetes::clusters:
         <<: *wikikube_staging_prometheus
       control_plane_nodes:
         - kubestagemaster2001.codfw.wmnet
+        - kubestagemaster2002.codfw.wmnet
       cluster_dns:
         - "10.192.76.3"
       service_cluster_cidr:
@@ -224,6 +227,7 @@ kubernetes::clusters:
         - https://kubestagetcd2003.codfw.wmnet:2379
       cluster_nodes:
         - kubestagemaster2001.codfw.wmnet
+        - kubestagemaster2002.codfw.wmnet
         - kubestage2001.codfw.wmnet
         - kubestage2002.codfw.wmnet
   ml-serve:
