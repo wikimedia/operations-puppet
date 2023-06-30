@@ -105,7 +105,7 @@ class profile::phabricator::aphlict (
     }
 
     file { $base_dir:
-        ensure  => 'link',
+        ensure  => link,
         target  => $deploy_root,
         require => Package[$deploy_target],
     }

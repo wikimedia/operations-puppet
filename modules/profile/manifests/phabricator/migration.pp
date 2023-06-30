@@ -9,15 +9,15 @@ class profile::phabricator::migration (
     if $facts['fqdn'] in $dst_hosts {
 
         file { '/srv/repos':
-            ensure => 'directory',
+            ensure => directory,
         }
 
         file { '/srv/dumps':
-            ensure => 'directory',
+            ensure => directory,
         }
 
         file { '/srv/homes':
-            ensure => 'directory',
+            ensure => directory,
         }
 
         ferm::service { 'phabricator-migration-rsync':

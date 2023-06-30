@@ -35,14 +35,14 @@ class phabricator::tools (
     }
 
     file { '/srv/dumps':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
     file { '/srv/dumps/WARNING_NEVER_PUT_PRIVATE_DATA_HERE_THIS_IS_SYNCED_TO_PUBLIC':
-        ensure => 'present',
+        ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

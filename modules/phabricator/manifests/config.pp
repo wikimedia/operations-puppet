@@ -83,7 +83,7 @@ class phabricator::config (
     # Provide secrets and host-specific configuration that scap3 will use for
     # its config deploy templates
     file { '/etc/phabricator':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'root',
         group  => $deploy_user,
         mode   => '0750',
@@ -106,7 +106,7 @@ class phabricator::config (
     }
 
     file { $phabdir:
-        ensure  => 'link',
+        ensure  => link,
         target  => $deploy_root,
         require => Package[$deploy_target],
     }

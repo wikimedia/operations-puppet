@@ -27,7 +27,7 @@ define phabricator::redirector(
     }
 
     file { "${rootdir}/phabricator/support/preamble.php":
-        ensure => 'link',
+        ensure => link,
         target => $preamble
     }
 
@@ -40,7 +40,7 @@ define phabricator::redirector(
     }
 
     file { "${rootdir}/phabricator/support/redirect_config.json":
-        ensure => 'link',
+        ensure => link,
         target => $redirect_config,
     }
 }

@@ -26,7 +26,7 @@ class phabricator::phd (
     }
 
     file { $phd_log_dir:
-        ensure => 'directory',
+        ensure => directory,
         owner  => $phd_user,
         group  => $phd_user,
     }

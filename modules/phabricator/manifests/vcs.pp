@@ -41,13 +41,13 @@ class phabricator::vcs (
 
     # git-http-backend needs to be in $PATH
     file { '/usr/local/bin/git-http-backend':
-        ensure  => 'link',
+        ensure  => link,
         target  => '/usr/lib/git-core/git-http-backend',
         require => Package['git'],
     }
 
     file { "${phd_log_dir}/ssh.log":
-        ensure  => 'present',
+        ensure  => present,
         owner   => $vcs_user,
         group   => 'root',
         mode    => '0640',
@@ -76,7 +76,7 @@ class phabricator::vcs (
     }
 
     file { '/usr/libexec':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

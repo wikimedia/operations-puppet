@@ -142,7 +142,7 @@ class phabricator (
     $gitblit_servername = $phab_settings['gitblit.hostname']
 
     file { '/srv/git.wikimedia.org':
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'root',
         group  => 'root',
     }
@@ -175,7 +175,7 @@ class phabricator (
     }
 
     file { '/usr/local/bin/arc':
-        ensure  => 'link',
+        ensure  => link,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -202,7 +202,7 @@ class phabricator (
     }
 
     systemd::service { 'phd':
-        ensure         => 'present',
+        ensure         => present,
         content        => systemd_template('phd'),
         require        => Class['::phabricator::phd'],
         service_params => {

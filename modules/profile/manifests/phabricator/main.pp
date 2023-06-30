@@ -465,7 +465,7 @@ class profile::phabricator::main (
     }
 
     # Allow pthers phab servers to pull tarballs with home dir files
-    file { '/srv/homes': ensure => 'directory',}
+    file { '/srv/homes': ensure => directory,}
 
     rsync::server::module { 'srv-homes':
             path           => '/srv/homes',
@@ -594,7 +594,7 @@ class profile::phabricator::main (
 
     # Allow pulling /srv/repos data from the active server.
     rsync::server::module { 'srv-repos':
-        ensure         => 'present',
+        ensure         => present,
         read_only      => 'yes',
         path           => '/srv/repos',
         hosts_allow    => $phabricator_servers,

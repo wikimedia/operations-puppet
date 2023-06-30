@@ -82,7 +82,7 @@ class phabricator::aphlict (
 
     # Defines
     file { $node_modules:
-        ensure => 'link',
+        ensure => link,
         target => "${basedir}/aphlict/node_modules",
     }
 
@@ -95,13 +95,13 @@ class phabricator::aphlict (
     }
 
     file { '/var/run/aphlict/':
-        ensure => 'directory',
+        ensure => directory,
         owner  => $user,
         group  => $group,
     }
 
     file { '/var/log/aphlict/':
-        ensure => 'directory',
+        ensure => directory,
         owner  => $user,
         group  => $group,
     }
@@ -124,7 +124,7 @@ class phabricator::aphlict (
 
     # accounts
     group { $group:
-        ensure => 'present',
+        ensure => present,
         system => true,
     }
 
