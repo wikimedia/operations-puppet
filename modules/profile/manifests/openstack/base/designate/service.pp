@@ -15,7 +15,7 @@ class profile::openstack::base::designate::service(
     $pdns_api_key = lookup('profile::openstack::base::pdns::api_key'),
     $db_admin_user = lookup('profile::openstack::base::designate::db_admin_user'),
     $db_admin_pass = lookup('profile::openstack::base::designate::db_admin_pass'),
-    Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::base::designate::hosts'),
+    Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
@@ -63,16 +63,17 @@ class profile::openstack::base::designate::service(
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
 
+    $mdns_clients = flatten([$designate_hosts, $pdns_hosts])
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
-        rule => "saddr (@resolve((${join($designate_hosts,' ')}))
-                        @resolve((${join($designate_hosts,' ')}), AAAA))
+        rule => "saddr (@resolve((${join($mdns_clients,' ')}))
+                        @resolve((${join($mdns_clients,' ')}), AAAA))
                  proto tcp dport (5354) ACCEPT;",
     }
 
     ferm::rule { 'mdns-axfr-udp':
-        rule => "saddr (@resolve((${join($designate_hosts,' ')}))
-                        @resolve((${join($designate_hosts,' ')}), AAAA))
+        rule => "saddr (@resolve((${join($mdns_clients,' ')}))
+                        @resolve((${join($mdns_clients,' ')}), AAAA))
                  proto udp dport (5354) ACCEPT;",
     }
 
