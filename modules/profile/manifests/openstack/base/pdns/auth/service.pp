@@ -1,5 +1,6 @@
 class profile::openstack::base::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::IP::Address] $listen_on = lookup('profile::openstack::base::pdns::auth::listen_on'),
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
     Stdlib::Fqdn $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
@@ -45,10 +46,10 @@ class profile::openstack::base::pdns::auth::service(
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
+    $api_clients = flatten([$hosts, $designate_hosts])
     ::ferm::service { 'pdns-rest-api':
         proto  => 'tcp',
         port   => '8081',
-        srange => "@resolve((${join($hosts,' ')}))",
+        srange => "@resolve((${join($api_clients,' ')}))",
     }
-
 }
