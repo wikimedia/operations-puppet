@@ -1258,13 +1258,8 @@ node /^kubestagetcd200[123]\.codfw\.wmnet$/ {
 }
 
 # kubernetes master for staging
-node /^kubestagemaster[12]001\.(eqiad|codfw)\.wmnet$/ {
+node /^kubestagemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::staging::master)
-}
-
-# kubernetes master for staging, tmp entry
-node /^kubestagemaster[12]002\.(eqiad|codfw)\.wmnet$/ {
-    role(insetup::serviceops)
 }
 
 # kubernetes masters
