@@ -31,7 +31,6 @@ profile::puppetboard::graph_facts_override:
 - firmware_idrac
 - firmware_ilo
 - has_ipmi
-- initsystem
 - interface_primary
 - is_pe
 - is_virtual
