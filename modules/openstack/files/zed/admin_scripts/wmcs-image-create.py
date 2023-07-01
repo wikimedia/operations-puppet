@@ -203,6 +203,8 @@ def upload_image(name: str, image_path: Path):
         "hw_scsi_model=virtio-scsi",
         "--property",
         "hw_disk_bus=scsi",
+        "--tag",
+        "wmcs-puppetized",
         name,
     ]
     rstring = subprocess.check_output(args)
