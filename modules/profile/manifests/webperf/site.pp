@@ -44,12 +44,13 @@ class profile::webperf::site (
     }
 
     git::clone { 'performance/docroot':
-        ensure    => latest,
-        owner     => 'www-data',
-        group     => 'www-data',
-        directory => '/srv/org/wikimedia/performance',
-        notify    => Service['apache2'],
-        require   => Package['apache2']
+        ensure             => latest,
+        recurse_submodules => true,
+        owner              => 'www-data',
+        group              => 'www-data',
+        directory          => '/srv/org/wikimedia/performance',
+        notify             => Service['apache2'],
+        require            => Package['apache2']
     }
 
     # Allow traffic to port 80 from internal networks
