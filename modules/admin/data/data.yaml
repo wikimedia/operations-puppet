@@ -38,7 +38,7 @@ groups:
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
-              stef25, twilsonbf, ryan-bf, prtksxna]
+              stef25, twilsonbf, ryan-bf, prtksxna, babiola]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6740,11 +6740,8 @@ ldap_only_users:
     expiry_contact: ksiebert@wikimedia.org
     expiry_date: "2023-06-30"
   babiola:
-    ensure: present
+    ensure: absent
     realname: Barakat Ajadi
-    email: babiola-ctr@wikimedia.org
-    expiry_contact: lgaulia@wikimedia.org
-    expiry_date: "2023-06-30"
   maurelio:
     ensure: present
     realname: (known to Legal)
