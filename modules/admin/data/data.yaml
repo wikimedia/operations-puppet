@@ -38,7 +38,7 @@ groups:
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
-              stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot]
+              stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, lwatson]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6717,11 +6717,8 @@ ldap_only_users:
     realname: Kelton Hurd
     email: khurd@wikimedia.org
   lwatson:
-    ensure: present
+    ensure: absent
     realname: Lauralyn Watson
-    email: lwatson-ctr@wikimedia.org
-    expiry_contact: NHillard@wikimedia.org
-    expiry_date: "2023-06-30"
   s-mukuti:
     ensure: present
     realname: Sarah Mukuti
