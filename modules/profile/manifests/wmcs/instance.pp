@@ -1,7 +1,6 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
     Boolean             $mount_nfs                     = lookup('mount_nfs',       {default_value => false}),
-    Boolean             $diamond_remove                = lookup('diamond::remove', {default_value => false}),
     Stdlib::Fqdn        $metrics_server                = lookup('graphite_host',   {default_value => 'localhost'}),
     Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
 ) {
@@ -106,31 +105,14 @@ class profile::wmcs::instance(
         onlyif  => '/usr/bin/test -e /etc/apache2/apache2.conf -a ! -d /etc/apache2/sites-local',
     }
 
-    # In production, puppet freshness checks are done by icinga. Labs has no
-    # icinga, so collect puppet freshness metrics via diamond/graphite
-    #
-    # Diamond isn't packaged for Bullseye so we'll have to live without it.
-    if ! $diamond_remove and debian::codename::le('buster') {
-        # Prefix labs metrics with project name
-        $path_prefix  = $::wmcs_project
-        $server_ip    = ipresolve($metrics_server, 4)
+    # Uninstall Diamond from remaining Buster servers where it was enabled
+    # at some point,
+    if debian::codename::le('buster') {
+        class { 'diamond': }
 
-        class { 'diamond':
-            path_prefix   => $path_prefix,
-            keep_logs_for => '0',
-            service       => true,
-            settings      => {
-                # lint:ignore:quoted_booleans
-                # Diamond needs its bools in string-literals.
-                enabled => 'true',
-                # lint:endignore
-                host    =>  $server_ip,
-                port    => '2003',
-                batch   => '20',
-            },
+        profile::auto_restarts::service { 'diamond':
+            ensure => absent,
         }
-
-        profile::auto_restarts::service { 'diamond': }
     }
 
     class { 'prometheus::node_ssh_open_sessions': }

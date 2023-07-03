@@ -1,8 +1,0 @@
-# <%= @title %> Diamond Collector configuration
-# This file is managed by Puppet.
-<%=
-    Hash["enabled" => "true"].update(@settings.is_a?(Hash)? @settings : {}).sort.map { |k,v|
-        v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
-        "#{k} = #{v}"
-    }.join("\n")
-%>

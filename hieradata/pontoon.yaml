@@ -48,7 +48,6 @@ profile::cumin::master::insetup_role_report_day: 0  # disabled
 ## Customizations
 
 profile::apt::use_proxy: false
-diamond::remove: true
 
 ## SSH access
 bastion_hosts:

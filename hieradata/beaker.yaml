@@ -35,8 +35,6 @@ ntp_peers:
 # Disable insetup role report
 # profile::cumin::master::insetup_role_report_day: 0
 
-# diamond::remove: true
-
 ## Puppet CA management
 # manage_puppet_ca_file: false
 
