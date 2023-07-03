@@ -27,7 +27,7 @@ groups:
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
-              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap]
+              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -404,7 +404,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, isaranto,
               stevemunene, ryasmeen, abartov, wfan219, eileen,
-              jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, nickifeajika, dmartin,
+              jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -5418,16 +5418,12 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bscarone:
-    ensure: present
+    ensure: absent
     realname: Bruno Scarone
-    email: scarone.b@northeastern.edu
     uid: 39391
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElXAh+NueiIvNo55Qv8+Mm4GVx7A7KiOSdMiS/AIX6J
-    krb: present
-    expiry_date: "2023-06-30"
-    expiry_contact: lzia@wikimedia.org
+    ssh_keys: []
+    krb: absent
   kstoller:
     ensure: present
     realname: Kirsten Stoller
