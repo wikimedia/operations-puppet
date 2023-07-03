@@ -305,10 +305,8 @@ profile::kubernetes::deployment_server::include_admin: true
 profile::kubernetes::deployment_server::general:
   default:
     # envoy
-    tls:
-      image_version: 1.18.3-2-s2
     mesh:
-      image_version: 1.18.3-2-s2
+      image_version: 1.23.10-1
     # prometheus-statsd-exporter
     monitoring:
       image_version: 0.0.10
@@ -321,7 +319,6 @@ profile::kubernetes::deployment_server::general:
       nutcracker:
         nutcracker: nutcracker:0.0.4-20211010
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
-      envoy: 1.15.5-1-20211010
       rsyslogd: rsyslog:8.2102.0-2
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
