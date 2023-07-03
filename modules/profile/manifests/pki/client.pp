@@ -10,27 +10,32 @@
 # @param bundles_source puppet source location of intermidate certificates
 # @param root_ca_cn cn of the root ca
 # @param root_ca_source puppet source location of root ca
+# @param mutual_tls_add_puppet_ca Causes puppet to add the puppet ca file to the
+#   certificate used by mutual_tls_client_cert.  This is for puppet installations where
+#   the puppet certificate is signed by the intermediate.  in this case clients should
+#   send the intermediate and leaf certificate when performing mTLS.
 # @param mutual_tls_client_cert location of client auth tls cert
 # @param mutual_tls_client_key location of client auth tls key
 # @param tls_remote_ca location of ca bundle for pki service
 # @param tls_remote_ca_source puppet source for tls_remote_ca
 # @param certs a hash of certs to create
 class profile::pki::client (
-    Wmflib::Ensure               $ensure                 = lookup('profile::pki::client::ensure'),
-    Stdlib::Host                 $signer_host            = lookup('profile::pki::client::signer_host'),
-    Stdlib::Port                 $signer_port            = lookup('profile::pki::client::signer_port'),
-    Sensitive[String[1]]         $auth_key               = lookup('profile::pki::client::auth_key'),
-    Boolean                      $enable_proxy           = lookup('profile::pki::client::enable_proxy'),
-    Stdlib::IP::Address          $listen_addr            = lookup('profile::pki::client::listen_addr'),
-    Stdlib::Port                 $listen_port            = lookup('profile::pki::client::listen_port'),
-    Stdlib::Filesource           $bundles_source         = lookup('profile::pki::client::bundles_source'),
-    Cfssl::Ca_name               $root_ca_cn             = lookup('profile::pki::client::root_ca_cn'),
-    Optional[Stdlib::Filesource] $root_ca_source         = lookup('profile::pki::client::root_ca_source'),
-    Optional[Stdlib::Unixpath]   $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
-    Optional[Stdlib::Unixpath]   $mutual_tls_client_key  = lookup('profile::pki::client::mutual_tls_client_key'),
-    Optional[Stdlib::Unixpath]   $tls_remote_ca          = lookup('profile::pki::client::tls_remote_ca'),
-    Optional[Stdlib::Filesource] $tls_remote_ca_source   = lookup('profile::pki::client::tls_remote_ca_source'),
-    Hash                         $certs                  = lookup('profile::pki::client::certs'),
+    Wmflib::Ensure               $ensure                   = lookup('profile::pki::client::ensure'),
+    Stdlib::Host                 $signer_host              = lookup('profile::pki::client::signer_host'),
+    Stdlib::Port                 $signer_port              = lookup('profile::pki::client::signer_port'),
+    Sensitive[String[1]]         $auth_key                 = lookup('profile::pki::client::auth_key'),
+    Boolean                      $enable_proxy             = lookup('profile::pki::client::enable_proxy'),
+    Stdlib::IP::Address          $listen_addr              = lookup('profile::pki::client::listen_addr'),
+    Stdlib::Port                 $listen_port              = lookup('profile::pki::client::listen_port'),
+    Stdlib::Filesource           $bundles_source           = lookup('profile::pki::client::bundles_source'),
+    Cfssl::Ca_name               $root_ca_cn               = lookup('profile::pki::client::root_ca_cn'),
+    Optional[Stdlib::Filesource] $root_ca_source           = lookup('profile::pki::client::root_ca_source'),
+    Boolean                      $mutual_tls_add_puppet_ca = lookup('profile::pki::client::mutual_tls_add_puppet_ca'),
+    Optional[Stdlib::Unixpath]   $mutual_tls_client_cert   = lookup('profile::pki::client::mutual_tls_client_cert'),
+    Optional[Stdlib::Unixpath]   $mutual_tls_client_key    = lookup('profile::pki::client::mutual_tls_client_key'),
+    Optional[Stdlib::Unixpath]   $tls_remote_ca            = lookup('profile::pki::client::tls_remote_ca'),
+    Optional[Stdlib::Filesource] $tls_remote_ca_source     = lookup('profile::pki::client::tls_remote_ca_source'),
+    Hash                         $certs                    = lookup('profile::pki::client::certs'),
 ) {
     $signer = "https://${signer_host}:${signer_port}"
     if $root_ca_source {
@@ -54,6 +59,32 @@ class profile::pki::client (
             source => $tls_remote_ca_source,
         }
     }
+    if $mutual_tls_add_puppet_ca {
+        unless $mutual_tls_client_cert == $facts['puppet_config']['hostcert'] {
+            fail('\$mutual_tls_add_puppet_ca is only compatiable when using the puppet agent cert')
+        }
+        $_mutual_tls_client_cert = '/etc/cfssl/mutual_tls_client_cert.pem'
+        concat { $_mutual_tls_client_cert:
+            ensure => present,
+        }
+        concat::fragment { 'mtls_client_cert_leaf':
+            target => $_mutual_tls_client_cert,
+            order  => '01',
+            source => $facts['puppet_config']['hostcert'],
+        }
+        # Note that here we add the full chain including the root CA, but we only strictly
+        # the intermediate certificate.  however its much harder to try and extract the
+        # intermediate then just adding the hole chain.  The down side of adding the root
+        # means we use a bit more bandwith as we are sending more certificates.
+        # T340557#8985560
+        concat::fragment { 'mtls_client_cert_chain':
+            target => $_mutual_tls_client_cert,
+            order  => '02',
+            source => $facts['puppet_config']['localcacert'],
+        }
+    } else {
+        $_mutual_tls_client_cert = $mutual_tls_client_cert
+    }
     class {'cfssl::client':
         ensure                 => $ensure,
         signer                 => $signer,
@@ -62,7 +93,7 @@ class profile::pki::client (
         enable_proxy           => $enable_proxy,
         listen_addr            => $listen_addr,
         listen_port            => $listen_port,
-        mutual_tls_client_cert => $mutual_tls_client_cert,
+        mutual_tls_client_cert => $_mutual_tls_client_cert,
         mutual_tls_client_key  => $mutual_tls_client_key,
         tls_remote_ca          => $tls_remote_ca,
 

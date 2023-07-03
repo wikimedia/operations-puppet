@@ -5,6 +5,7 @@ profile::pki::client::enable_proxy: false
 profile::pki::client::listen_addr: 127.0.0.1
 profile::pki::client::listen_port: 8888
 profile::pki::client::bundles_source: 'puppet:///modules/profile/pki/intermediates'
+profile::pki::client::mutual_tls_add_puppet_ca: false
 profile::pki::client::mutual_tls_client_cert: "%{facts.puppet_config.hostcert}"
 profile::pki::client::mutual_tls_client_key: "%{facts.puppet_config.hostprivkey}"
 # provided by profile::base::certificates
