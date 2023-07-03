@@ -173,6 +173,15 @@ Architectures: amd64
 VerifyRelease: 670540C841468433
 ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11' || [ $? -eq 1 ]
 
+Name: confluent7
+Method: http://packages.confluent.io/deb/7.4
+Components: main>thirdparty/confluent7
+UDebComponents:
+Suite: stable
+Architectures: amd64
+VerifyRelease: 8B1DA6120C2BF624
+ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
+
 Name: mono-project-stretch
 Method: https://download.mono-project.com/repo/debian
 Components: main>thirdparty/mono-project-stretch

@@ -143,6 +143,7 @@ Components: main
  thirdparty/ci
  thirdparty/conda
  thirdparty/confluent
+ thirdparty/confluent7
  thirdparty/docker-ci-buster
  thirdparty/elasticsearch-curator5
  thirdparty/elastic710
@@ -240,6 +241,7 @@ Components: main
  thirdparty/ci
  thirdparty/conda
  thirdparty/confluent
+ thirdparty/confluent7
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
  thirdparty/gitlab-bullseye
