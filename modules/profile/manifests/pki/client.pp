@@ -10,10 +10,6 @@
 # @param bundles_source puppet source location of intermidate certificates
 # @param root_ca_cn cn of the root ca
 # @param root_ca_source puppet source location of root ca
-# @param mutual_tls_add_puppet_ca Causes puppet to add the puppet ca file to the
-#   certificate used by mutual_tls_client_cert.  This is for puppet installations where
-#   the puppet certificate is signed by the intermediate.  in this case clients should
-#   send the intermediate and leaf certificate when performing mTLS.
 # @param mutual_tls_client_cert location of client auth tls cert
 # @param mutual_tls_client_key location of client auth tls key
 # @param tls_remote_ca location of ca bundle for pki service
@@ -30,7 +26,6 @@ class profile::pki::client (
     Stdlib::Filesource           $bundles_source           = lookup('profile::pki::client::bundles_source'),
     Cfssl::Ca_name               $root_ca_cn               = lookup('profile::pki::client::root_ca_cn'),
     Optional[Stdlib::Filesource] $root_ca_source           = lookup('profile::pki::client::root_ca_source'),
-    Boolean                      $mutual_tls_add_puppet_ca = lookup('profile::pki::client::mutual_tls_add_puppet_ca'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_cert   = lookup('profile::pki::client::mutual_tls_client_cert'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_key    = lookup('profile::pki::client::mutual_tls_client_key'),
     Optional[Stdlib::Unixpath]   $tls_remote_ca            = lookup('profile::pki::client::tls_remote_ca'),
@@ -59,10 +54,9 @@ class profile::pki::client (
             source => $tls_remote_ca_source,
         }
     }
-    if $mutual_tls_add_puppet_ca {
-        unless $mutual_tls_client_cert == $facts['puppet_config']['hostcert'] {
-            fail('\$mutual_tls_add_puppet_ca is only compatiable when using the puppet agent cert')
-        }
+    if $mutual_tls_client_cert == $facts['puppet_config']['hostcert'] {
+        # If using puppet certs we create a cert file with the puppet cert file and the local ca
+        # This helps use support puppet infrastructre which that use an intermediate cert.
         $_mutual_tls_client_cert = '/etc/cfssl/mutual_tls_client_cert.pem'
         concat { $_mutual_tls_client_cert:
             ensure => present,
@@ -72,7 +66,7 @@ class profile::pki::client (
             order  => '01',
             source => $facts['puppet_config']['hostcert'],
         }
-        # Note that here we add the full chain including the root CA, but we only strictly
+        # Here we add the full chain including the root CA, but we only strictly need
         # the intermediate certificate.  however its much harder to try and extract the
         # intermediate then just adding the hole chain.  The down side of adding the root
         # means we use a bit more bandwith as we are sending more certificates.
