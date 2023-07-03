@@ -1,45 +1,47 @@
 profile::cache::haproxy::acls:
-  - name: cache_miss
-    criterion: res.hdr(X-Cache-Status)
-    operator: -m str
-    value: miss
-  - name: cache_pass
-    criterion: res.hdr(X-Cache-Status)
-    operator: -m str
-    value: pass
-  - name: backend_saturation
-    criterion: be_conn
-    operator: gt
-    value: '1000'
-  - name: concurrent_queries
-    criterion: sc0_trackers(httpreqrate)
-    operator: gt
-    value: '200'  # 200 concurrently-executing requests, since we use sc0_trackers
-  - name: excessive_new_conns
-    criterion: sc1_conn_rate(newconnrate)
-    operator: gt
-    value: '1000'  # 200 new conns/sec, aka 1000 new conns/5secs
+  tls:
+    - name: cache_miss
+      criterion: res.hdr(X-Cache-Status)
+      operator: -m str
+      value: miss
+    - name: cache_pass
+      criterion: res.hdr(X-Cache-Status)
+      operator: -m str
+      value: pass
+    - name: backend_saturation
+      criterion: be_conn
+      operator: gt
+      value: '1000'
+    - name: concurrent_queries
+      criterion: sc0_trackers(httpreqrate)
+      operator: gt
+      value: '200'  # 200 concurrently-executing requests, since we use sc0_trackers
+    - name: excessive_new_conns
+      criterion: sc1_conn_rate(newconnrate)
+      operator: gt
+      value: '1000'  # 200 new conns/sec, aka 1000 new conns/5secs
 
 profile::cache::haproxy::vars:
-  - direction: request
-    name: req.dummy_concurrency_drop
-    value: src,debug(would_drop,stderr)
-    acl: backend_saturation concurrent_queries
-  # The incantations below will cause haproxy to log both the source IP and the occurrences-over-period together on the same line.
-  # for example: Oct 18 21:02:52 cp2027 haproxy[25803]: [debug] excessive_new_conns: type=str <ip={::1} rate={2969}>
-  # We use curly braces as the inner field delimiter as they aren't already used by syslog, haproxy's config parsing, or IPv6 addresses.
-  - direction: request
-    name: req.dummy_excess_concurrency_src
-    value: src
-    acl: concurrent_queries
-  - direction: request
-    name: req.dummy_excess_concurrency_concur
-    value: sc0_trackers(httpreqrate)
-    acl: concurrent_queries
-  - direction: request
-    name: req.dummy_excessive_new_conns
-    value: str(),concat(ip={,req.dummy_excess_concurrency_src,}\ ),concat(concur={,req.dummy_excess_concurrency_concur,}),debug(excess_concurrency,stderr)
-    acl: concurrent_queries
+  tls:
+    - direction: request
+      name: req.dummy_concurrency_drop
+      value: src,debug(would_drop,stderr)
+      acl: backend_saturation concurrent_queries
+      # The incantations below will cause haproxy to log both the source IP and the occurrences-over-period together on the same line.
+      # for example: Oct 18 21:02:52 cp2027 haproxy[25803]: [debug] excessive_new_conns: type=str <ip={::1} rate={2969}>
+      # We use curly braces as the inner field delimiter as they aren't already used by syslog, haproxy's config parsing, or IPv6 addresses.
+    - direction: request
+      name: req.dummy_excess_concurrency_src
+      value: src
+      acl: concurrent_queries
+    - direction: request
+      name: req.dummy_excess_concurrency_concur
+      value: sc0_trackers(httpreqrate)
+      acl: concurrent_queries
+    - direction: request
+      name: req.dummy_excessive_new_conns
+      value: str(),concat(ip={,req.dummy_excess_concurrency_src,}\ ),concat(concur={,req.dummy_excess_concurrency_concur,}),debug(excess_concurrency,stderr)
+      acl: concurrent_queries
 
 
 profile::cache::haproxy::sticktables:
@@ -51,18 +53,19 @@ profile::cache::haproxy::sticktables:
       - conn_rate(5s)
 
 profile::cache::haproxy::pre_acl_actions:
-  - context: http-request
-    verb: track-sc0 src table httpreqrate
-  - context: tcp-request connection
-    verb: track-sc1 src table newconnrate
+  tls:
+    - context: http-request
+      verb: track-sc0 src table httpreqrate
+    - context: tcp-request connection
+      verb: track-sc1 src table newconnrate
 
 lookup_options:
   profile::cache::haproxy::acls:
     merge:
-      strategy: unique
+      strategy: first
   profile::cache::haproxy::vars:
     merge:
-      strategy: unique
+      strategy: hash
   profile::cache::haproxy::sticktables:
     merge:
       strategy: unique
