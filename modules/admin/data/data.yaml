@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              akhatun]
+              akhatun, jameel]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -78,7 +78,7 @@ groups:
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members [jameel]
+    members: &sre_admins_members []
     approval:
       - Joanna Borun
   ops-adm-group:
@@ -5793,15 +5793,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRI8OoE065ltLVp8Yx5jE6wJBv9L+ndPNL1mYC1ZuYHkAwC/adwn7TzJBaEybgniH4fP8iNqTgP4b4Ju3/fPjN9B+GCCNybEaAu5niknclp2sTE1Y8BYz440+kfwwbPyNRnRn4Fu2AHrLjJpOeONIxkDIVqrpJQ/LsI06uoKpwkMGeA/w2K5qKlcCmmr3r9LjG3CAVjxqZ9xg3WEuTAwQBgrWX3JHMYiIKOl6kc6KuyPi3qQvnK25czwvDvVvZDyrWZWezQ4PFqTV7qh6WnfC5w9k9/NGoKjNe1xn3zw3vD9S27wfwvXcjMaxoqhaL2aBbSjOwh33ELiyIdAnBfh5Q3wlehv/+AOYGpFSqGKQ3/cGFb7IcDCUiGP33ooLS9NUT15m5ZDhlID+c6U3Rhq3jjedqwv114Bd3s6iNxeTVQNFPz8iTwdZjeWcPjIw6IJaSbT7pTKoPC8PvL5E0cSM8hN+riOSOPE0VDhLOZT/j+blyXQtqbemlv/WQPPAh1gjOrFLkwdJC4GHvftOODRK90/ru7vQblEGbXj71GchCXG2iV+ModhOpuMQJpcCn7J4gh3+HoLbyQpRqHsr/hMRYcI2xm5GPkWBe6AiWMBhlqvHOnciJ92il1TxYbrtZuyezBeCBrU5y6pb6FW7jY55lW82wQErT4cml7Ka7qWilkQ== kofori@wmf3127
   jameel:
-    ensure: present
+    ensure: absent
     realname: Jameel Kaisar
-    email: jkaisarkhan-ctr@wikimedia.org
-    expiry_contact: jborun@wikimedia.org
-    expiry_date: "2023-06-30"
     uid: 43611
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlRgp3mlplguVA+jZMMei6M9g5ft0Tpi0S3hSnfdvdc wmf2021@wmf2021
+    ssh_keys: []
   aranyap:
     ensure: absent
     realname: Aranya Prum
