@@ -26,7 +26,8 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf]
+              ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
+              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -395,14 +396,14 @@ groups:
               natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, mfossati, skvjold, madasan,
-              tandic, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
+              tandic, auglnkv, rzl, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, isaranto,
-              stevemunene, ryasmeen, dpujol, abartov, dasm, wfan219, eileen,
+              stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe]
@@ -5253,49 +5254,33 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBVyQpwHszMYsZmG1ydOvIigJhTwAI9CHhSrmShhLwsS hannah@Hannahs-MacBook-Pro.local
   mhay:
-    ensure: present
+    ensure: absent
     uid: 37778
     gid: 500
     realname: Michael Hay
-    email: michael@tmlt.io
-    krb: present
-    expiry_date: "2023-06-30"
-    expiry_contact: htriedman@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDn47QmSyOAeYM5foeXneTjTX/LW5KCDdYYx3e4Ca2AP mhay@Blizzard.local
+    krb: absent
+    ssh_keys: []
   skyenet:
-    ensure: present
+    ensure: absent
     uid: 37818
     gid: 500
     realname: Skye Berghel
-    email: sberghel@gmail.com
-    krb: present
-    expiry_date: "2023-06-30"
-    expiry_contact: jcross@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFR6HVVjTuiJM6r8Zl12+41Pef80nk/zhchCW3mTzoMx skye@Neikos.local
+    krb: absent
+    ssh_keys: []
   tmlt-tmager:
-    ensure: present
+    ensure: absent
     uid: 37826
     gid: 500
     realname: Tom Magerlein
-    email: tom.magerlein@tmlt.io
-    krb: present
-    expiry_date: "2023-06-30"
-    expiry_contact: jcross@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILpX/tkSGrfKB7+S4fkCOz5ivRxmR5TymsNzn90iZlP5 tom@tumult-tjm-dev
+    krb: absent
+    ssh_keys: []
   damiendf:
-    ensure: present
+    ensure: absent
     uid: 37889
     gid: 500
     realname: Damien Desfontaines
-    email: damien+wikimedia@tmlt.io
-    krb: present
-    expiry_date: "2023-06-30"
-    expiry_contact: jcross@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETNJbuSzSjngqw7YMt5kv6+iIfWqx43a0OQC1Loa8bZ damien@cyclone.local
+    krb: absent
+    ssh_keys: []
   aminalhazwani:
     ensure: present
     uid: 36110
@@ -5691,16 +5676,12 @@ users:
     gid: 500
     ssh_keys: []
   dpujol:
-    ensure: present
-    krb: present
+    ensure: absent
+    krb: absent
     realname: David Pujol
-    email: david.pujol@tmlt.io
     uid: 42474
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPrO2p2KUW1Fd/k+63WrU+wFScl2La3eAgjcVUjD13/1 david.pujol@tmlt.io
-    expiry_date: "2023-06-30"
-    expiry_contact: jcross@wikimedia.org
+    ssh_keys: []
   abartov:
     ensure: present
     realname: Asaf Bartov
@@ -5709,15 +5690,11 @@ users:
     gid: 500
     ssh_keys: []
   dasm:
-    ensure: present
+    ensure: absent
     realname: Daniel Simmons-Marengo
-    email: dasm@tmlt.io
     uid: 42464
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7ltKIKe7rrL2LacWR7RgP+YKB2KqMzvve40nJI1ypJ dasm@Daniels-MacBook-Pro.local
-    expiry_date: "2023-06-30"
-    expiry_contact: jcross@wikimedia.org
+    ssh_keys: []
   wfan219:
     ensure: present
     realname: Wenjun Fan
