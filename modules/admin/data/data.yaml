@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              akhatun, jameel]
+              akhatun, jameel, jminor]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -373,7 +373,7 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, pearley,
               hoo, daniel, krinkle, tgr,
-              ebernhardson, addshore, jminor,
+              ebernhardson, addshore,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga,
@@ -2762,13 +2762,12 @@ users:
     email: leszek.manicki@wikimedia.de
     krb: present
   jminor:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jminor
     realname: Joshua Minor
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/DVqjpNzvrXk070XI1TUChXlXTcYjzH4M8nprwuY5Nnd+dMuWP3IaFvDTCHmZP6U40jKFQzxsOcht4KN/5cACTwUqNbrWyp2Emj/CSriE7iDhaRc1ojnTaOuCQRWXWk4S+KxUyKnTB0au59ldKU8GoaD1qlpv3jgK0I6LEuNTJWorSubaTAvd/DLq3JLPTjUWJehd9RGYznhOosIxmKU5cr3pwjJkWVZP4Xkd/CTlmsfrYpyEzL3fjT1fADWQOGOpbNGtRpI2ZvqYjD/9jU2Dy4vBp418yyOkEZ2gvkxItbg5ttJ0f87Q7l+Uv4+nccN+xOfWfWMmdcNfAvHdvfDroiynAURdq/uwq/+UjQtN+Rh3nsvNNRilL+S3NgNzrXgjG7377HKBo/MTru89Z7HzQFxYvbJQ1B3fZJP3OB+lUNTdiwwnbNPYBZVW1wvjUMs27D5TlNZCZv4sjL9AR1+u9iQJ6EDIqwBP9ib1P2+OipJXwbGR+W8rQQJEf9+XajS8kdzH1/vZxc0lzFiezbeTiWSXvZUIEdLPbhMexiPdUUdEWEUtLlyzILEKEhNa5uW9TebxCdIqdReqRYEm+yHEEDDMgfexbmhYmfz754KHOH0rrTL6esJ7JXrgFroDZ6wyX7dfq33Tqb3h8WfNanVX63NPwDzDXRbhmsPuR6PzxQ== jminor@wikimedia.org]
+    ssh_keys: []
     uid: 12948
-    email: jminor@wikimedia.org
   chedasaurus:
     ensure: absent
     gid: 500
