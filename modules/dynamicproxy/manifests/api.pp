@@ -27,7 +27,7 @@ class dynamicproxy::api (
         apt::pin { 'python3-flask-sqlalchemy-bullseye-bpo':
             pin      => 'release a=bullseye-backports',
             package  => 'python3-flask-sqlalchemy',
-            priority => '1001',
+            priority => 1001,
             before   => Package['python3-flask-sqlalchemy'],
             notify   => Exec['python3-flask-sqlalchemy-apt-get-update'],
         }
