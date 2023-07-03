@@ -1,0 +1,415 @@
+profile::trafficserver::backend::mapping_rules:
+    - type: map
+      target: http://15.wikipedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
+      target: http://analytics.wikimedia.org
+      replacement: https://analytics-web.discovery.wmnet:8443
+    - type: map
+      target: http://annual.wikimedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
+      target: http://api.wikimedia.org
+      replacement: https://api-gateway.discovery.wmnet:8087
+    - type: map
+      target: http://bienvenida.wikimedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
+      target: http://blubberoid.wikimedia.org
+      replacement: https://blubberoid.discovery.wmnet:4666
+    - type: map
+      target: http://bugs.wikimedia.org
+      replacement: https://phabricator.discovery.wmnet
+    - type: map
+      target: http://bugzilla.wikimedia.org
+      replacement: https://phabricator.discovery.wmnet
+    - type: map
+      target: http://config-master.wikimedia.org
+      replacement: https://config-master.eqiad.wmnet
+      #replacement: https://config-master.codfw.wmnet
+    - type: map
+      target: http://cxserver.wikimedia.org
+      replacement: https://cxserver.discovery.wmnet:4002
+    - type: map
+      target: http://datahub.wikimedia.org
+      replacement: https://datahub-frontend.discovery.wmnet:30443
+    - type: map
+      target: http://datasets.wikimedia.org
+      replacement: https://analytics-web.discovery.wmnet:8443
+    - type: map
+      target: http://dbtree.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://developer.wikimedia.org
+      replacement: https://developer-portal.discovery.wmnet:30443
+    - type: map
+      target: http://tendril.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://debmonitor.wikimedia.org
+      replacement: https://debmonitor.discovery.wmnet:7443
+    - type: map
+      target: http://design.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://docker-registry.wikimedia.org
+      replacement: https://docker-registry.discovery.wmnet
+    - type: map
+      target: http://doc.wikimedia.org
+      replacement: https://doc.discovery.wmnet
+    - type: map
+      target: http://etherpad.wikimedia.org
+      replacement: https://etherpad.discovery.wmnet:7443
+    - type: map
+      target: ws://etherpad.wikimedia.org
+      replacement: wss://etherpad.discovery.wmnet:7443
+    - type: map
+      target: http://git.wikimedia.org
+      replacement: https://phabricator.discovery.wmnet
+    - type: map
+      target: http://grafana-next.wikimedia.org
+      replacement: https://grafana2001.codfw.wmnet
+    - type: map
+      target: http://grafana-rw.wikimedia.org
+      replacement: https://grafana1002.eqiad.wmnet
+    - type: map
+      target: http://grafana-next-rw.wikimedia.org
+      replacement: https://grafana2001.codfw.wmnet
+    - type: map
+      target: http://grafana-cloud.wikimedia.org
+      replacement: https://grafana-labs.discovery.wmnet
+    - type: map
+      target: http://grafana-labs.wikimedia.org
+      replacement: https://grafana-labs.discovery.wmnet
+    - type: map
+      target: http://grafana.wikimedia.org
+      replacement: https://grafana1002.eqiad.wmnet
+    - type: map
+      target: http://graphite-labs.wikimedia.org
+      replacement: https://graphite-labs.discovery.wmnet
+    - type: map
+      target: http://graphite.wikimedia.org
+      replacement: https://graphite.discovery.wmnet
+    - type: map
+      target: http://helm-charts.wikimedia.org
+      replacement: https://helm-charts.discovery.wmnet
+    - type: map
+      target: http://horizon.wikimedia.org
+      replacement: https://labweb.svc.eqiad.wmnet:7443
+    - type: map
+      target: http://wikitech.wikimedia.org
+      replacement: https://labweb.svc.eqiad.wmnet:7443
+    - type: map
+      target: http://hue.wikimedia.org
+      replacement: https://an-tool1009.eqiad.wmnet
+    - type: map
+      target: http://integration.wikimedia.org
+      replacement: https://contint.wikimedia.org:1443
+    - type: map
+      target: http://labtesthorizon.wikimedia.org
+      replacement: https://cloudweb2002-dev.wikimedia.org:7443
+    - type: map
+      target: http://labtestwikitech.wikimedia.org
+      replacement: https://cloudweb2002-dev.wikimedia.org:7443
+    - type: map
+      target: http://labtesttoolsadmin.wikimedia.org
+      replacement: https://cloudweb2002-dev.wikimedia.org:7443
+    - type: map
+      target: http://logstash.wikimedia.org
+      replacement: https://kibana7.svc.codfw.wmnet
+    - type: map
+      target: http://maps.wikimedia.org
+      replacement: https://kartotherian.discovery.wmnet
+    - type: map
+      target: http://netbox.wikimedia.org
+      replacement: https://netbox.discovery.wmnet
+    - type: map
+      target: http://netbox-exports.wikimedia.org
+      replacement: https://netbox-exports.discovery.wmnet
+    - type: map
+      target: http://netbox-next.wikimedia.org
+      replacement: https://netbox-dev2002.codfw.wmnet
+    - type: map
+      target: http://noc.wikimedia.org
+      replacement: https://mwmaint.discovery.wmnet
+    - type: map
+      target: http://os-reports.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://ores.wikimedia.org
+      replacement: https://ores.discovery.wmnet
+    - type: map
+      target: http://ores-legacy.wikimedia.org
+      replacement: https://ores-legacy.discovery.wmnet:31443
+    - type: map
+      target: http://parsoid-rt-tests.wikimedia.org
+      replacement: https://testreduce.discovery.wmnet
+    - type: map
+      target: http://people.wikimedia.org
+      replacement: https://peopleweb.discovery.wmnet
+    - type: map
+      target: http://performance.wikimedia.org
+      replacement: https://performance.discovery.wmnet
+    - type: map
+      target: http://phabricator.wikimedia.org
+      replacement: https://phabricator.discovery.wmnet
+    - type: map
+      target: http://phab.wmfusercontent.org
+      replacement: https://phabricator.discovery.wmnet
+    - type: map
+      target: ws://phabricator.wikimedia.org
+      replacement: wss://aphlict.discovery.wmnet
+    - type: map
+      target: http://pivot.wikimedia.org
+      replacement: https://an-tool1007.eqiad.wmnet
+    - type: map
+      target: http://piwik.wikimedia.org
+      replacement: https://matomo1002.eqiad.wmnet
+    - type: map
+      target: http://planet.wikimedia.org
+      replacement: https://planet.discovery.wmnet
+    - type: regex_map
+      target: 'http://([^.]+\.)?planet\.wikimedia\.org'
+      replacement: https://planet.discovery.wmnet
+    - type: map
+      target: http://prometheus-eqiad.wikimedia.org
+      replacement: https://prometheus1005.eqiad.wmnet
+    - type: map
+      target: http://prometheus-codfw.wikimedia.org
+      replacement: https://prometheus2005.codfw.wmnet
+    - type: map
+      target: http://prometheus-esams.wikimedia.org
+      replacement: https://prometheus.svc.esams.wmnet
+    - type: map
+      target: http://prometheus-ulsfo.wikimedia.org
+      replacement: https://prometheus.svc.ulsfo.wmnet
+    - type: map
+      target: http://prometheus-eqsin.wikimedia.org
+      replacement: https://prometheus.svc.eqsin.wmnet
+    - type: map
+      target: http://prometheus-drmrs.wikimedia.org
+      replacement: https://prometheus.svc.drmrs.wmnet
+    - type: map
+      target: http://puppetboard.wikimedia.org
+      replacement: https://puppetboard.discovery.wmnet
+    - type: map
+      target: http://puppetboard-idptest.wikimedia.org
+      replacement: https://puppetboard.discovery.wmnet
+    - type: map
+      target: http://puppetboard-samltest.wikimedia.org
+      replacement: https://puppetboard.discovery.wmnet
+    - type: map
+      target: http://puppetboard-next.wikimedia.org
+      replacement: https://puppetboard-next.discovery.wmnet
+    - type: map
+      target: http://query.wikidata.org/bigdata/ldf
+      replacement: https://wdqs1005.eqiad.wmnet/bigdata/ldf
+    - type: map
+      target: http://query.wikidata.org/sparql
+      replacement: https://wdqs.discovery.wmnet/sparql
+    - type: map
+      target: http://query.wikidata.org/bigdata
+      replacement: https://wdqs.discovery.wmnet/bigdata
+    - type: map
+      target: http://query.wikidata.org
+      replacement: https://webserver-misc-codfw.discovery.wmnet
+    - type: map
+      target: http://commons-query.wikimedia.org
+      replacement: https://wcqs.discovery.wmnet
+    - type: map
+      target: http://releases.wikimedia.org
+      replacement: https://releases.discovery.wmnet
+    - type: map
+      target: http://releases-jenkins.wikimedia.org
+      replacement: https://releases.discovery.wmnet
+    - type: map
+      target: http://research.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://rt.wikimedia.org
+      replacement: https://rt.discovery.wmnet
+    - type: map
+      target: http://schema.wikimedia.org
+      replacement: https://schema.discovery.wmnet
+    - type: map
+      target: http://security.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://static-bugzilla.wikimedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
+      target: http://static-codereview.wikimedia.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://stats.wikimedia.org
+      replacement: https://analytics-web.discovery.wmnet:8443
+    - type: map
+      target: http://stream.wikimedia.org
+      # XXX pipe requests to /v2/stream/.+ ?
+      replacement: https://eventstreams.discovery.wmnet:4892
+    - type: map
+      target: http://intake-logging.wikimedia.org
+      replacement: https://eventgate-logging-external.discovery.wmnet:4392 # TLS port
+    - type: map
+      target: http://intake-analytics.wikimedia.org
+      replacement: https://eventgate-analytics-external.discovery.wmnet:4692 # TLS port
+    - type: map
+      target: http://superset.wikimedia.org
+      replacement: https://an-tool1010.eqiad.wmnet
+    - type: map
+      target: http://superset-next.wikimedia.org
+      replacement: https://an-tool1005.eqiad.wmnet
+    - type: map
+      target: http://thanos.wikimedia.org
+      replacement: https://thanos-web.discovery.wmnet
+    - type: map
+      target: http://ticket.wikimedia.org
+      replacement: https://ticket.discovery.wmnet:1443
+    - type: map
+      target: http://toolhub.wikimedia.org
+      replacement: https://toolhub.discovery.wmnet:4011
+    - type: map
+      target: http://toolsadmin.wikimedia.org
+      replacement: https://labweb.svc.eqiad.wmnet:7443
+    - type: map
+      target: http://transparency.wikimedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
+      target: http://transparency-archive.wikimedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
+      target: http://turnilo.wikimedia.org
+      replacement: https://an-tool1007.eqiad.wmnet
+    - type: map
+      target: http://upload.wikimedia.org
+      replacement: https://swift.discovery.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    /
+          - '@pparam="2F"'
+          # encode    !  $  &  '  (  )  *  +  ,  :  ;  =  @  [  ]
+          - '@pparam="21 24 26 27 28 29 2A 2B 2C 3A 3B 3D 40 5B 5D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
+    - type: map
+      target: http://wikiworkshop.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://www.wikiworkshop.org
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://yarn.wikimedia.org
+      replacement: https://an-tool1008.eqiad.wmnet
+    - type: regex_map
+      target: 'http://(.*)/api/rest_v1'
+      replacement: https://restbase.discovery.wmnet:7443/api/rest_v1
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          # api-gateway/rest-gateway services
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+      # mediawiki
+      # REST api
+    - type: regex_map
+      target: 'http://(.*)/w/rest.php'
+      replacement: https://api-rw.discovery.wmnet/w/rest.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=api-ro.discovery.wmnet' # dest
+          # mw-on-k8s
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    # Action API
+    - type: regex_map
+      target: 'http://(.*)/w/api.php'
+      replacement: https://api-rw.discovery.wmnet/w/api.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=api-ro.discovery.wmnet' # dest
+          # mw-on-k8s
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    # The following seems redundant, given that the next and final catchall
+    # remap does pretty much the same. However, here we do not specify
+    # server_session_sharing.match=2 to ensure requests for wikidata are mapped
+    # to different connections than the rest. The reason is that wikidata
+    # requests result in very frequent errors at the TLS termination layer,
+    # each of which causes the ats-be<->nginx connection to be closed.
+    - type: map
+      target: http://www.wikidata.org
+      replacement: https://appservers-rw.discovery.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  /  @  !  $  (  )  *  ,  ;
+          - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
+          # encode    [  ]  &  '  +  =
+          - '@pparam="5B 5D 26 27 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=appservers-ro.discovery.wmnet' # dest
+          # TODO: add mw-on-k8s once we think of moving wikidata or partial traffic.
+    - type: map
+      target: /
+      replacement: https://appservers-rw.discovery.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  /  @  !  $  (  )  *  ,  ;
+          - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
+          # encode    [  ]  &  '  +  =
+          - '@pparam="5B 5D 26 27 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=appservers-ro.discovery.wmnet' # dest
+          # mw-on-k8s
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
