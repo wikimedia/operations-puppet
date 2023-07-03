@@ -27,7 +27,7 @@ groups:
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
-              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm]
+              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -404,7 +404,7 @@ groups:
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, appledora, isaranto,
               stevemunene, ryasmeen, abartov, wfan219, eileen,
-              jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, aranyap, nickifeajika, dmartin,
+              jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, bscarone, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -5814,16 +5814,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGlRgp3mlplguVA+jZMMei6M9g5ft0Tpi0S3hSnfdvdc wmf2021@wmf2021
   aranyap:
-    ensure: present
+    ensure: absent
     realname: Aranya Prum
-    email: aprum-ctr@wikimedia.org
-    expiry_contact: jcross@wikimedia.org
-    expiry_date: "2023-06-30"
     uid: 43621
     gid: 500
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEwEOsCJll6xPBlcACRHbdvKWUtn97AVvEGvDK9A9SkL aprum@wikimedia.org
+    krb: absent
+    ssh_keys: []
   nickifeajika:
     ensure: present
     realname: Nick Ifeajika
