@@ -1175,7 +1175,7 @@ service::catalog:
       - eqiad
       - codfw
     role: "kubernetes::staging::master"
-    state: lvs_setup
+    state: production
 
   labweb:
     description: "lvs for labweb services: horizon, striker, wikitech"
