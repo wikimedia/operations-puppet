@@ -1,7 +1,7 @@
 class profile::toolforge::base(
-    $is_mail_relay     = lookup('profile::toolforge::is_mail_relay', {default_value => false}),
-    $active_mail_relay = lookup('profile::toolforge::active_mail_relay', {default_value => 'tools-mail-02.tools.eqiad.wmflabs'}),
-    $mail_domain       = lookup('profile::toolforge::mail_domain', {default_value => 'tools.wmflabs.org'}),
+    Stdlib::Fqdn $active_mail_relay = lookup('profile::toolforge::active_mail_relay'),
+    Boolean      $is_mail_relay     = lookup('profile::toolforge::is_mail_relay', {default_value => false}),
+    Stdlib::Fqdn $mail_domain       = lookup('profile::toolforge::mail_domain', {default_value => 'toolforge.org'}),
 ){
     # T292289
     class { 'sslcert::ca_deselect_dstx3': }
