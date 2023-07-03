@@ -241,7 +241,7 @@ transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}
 # The listen IP for the Magnum API server. (IP address value)
 host = <%= @ipaddress %>
 
-workers = 2
+workers = 8
 
 
 [barbican_client]
