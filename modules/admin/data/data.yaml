@@ -5853,9 +5853,7 @@ users:
   fnavas-foundation:
     ensure: present
     realname: Francisco Navas
-    email: fnavas-ctr@wikimedia.org
-    expiry_contact: Naïké Nembetwa Nzali
-    expiry_date: "2023-06-30"
+    email: fnavas@wikimedia.org
     uid: 43670
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
