@@ -9,7 +9,10 @@ if (echo "$size"|grep '%'); then
   sopt="-l $size"
 fi
 
-if /sbin/lvcreate $sopt -n "$name" vd; then
+# `--wipesignatures n` disables the check looking up for an existing file
+# system when creating the logical volume. That allows recreating a volume from
+# Puppet when one existed previously and got manually removed.
+if /sbin/lvcreate --wipesignatures n $sopt -n "$name" vd; then
   makefs="/sbin/mkfs -t $fstype"
   if [ "x$fstype" = "xswap" ]; then
     makefs="/sbin/mkswap"
