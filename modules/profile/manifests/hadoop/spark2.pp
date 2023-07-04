@@ -225,12 +225,4 @@ class profile::hadoop::spark2(
         }
     }
 
-    if $local_dir {
-        file { $local_dir:
-            ensure => directory,
-            mode   => '1777',
-            owner  => 'root',
-            group  => 'root',
-        }
-    }
 }

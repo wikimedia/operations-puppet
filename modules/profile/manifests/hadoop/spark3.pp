@@ -211,14 +211,12 @@ class profile::hadoop::spark3(
         }
     }
 
-    # TODO: This directory is currently managed by the spark2 profile.
-    #       Uncomment when spark3 takes over.
-    # if $local_dir {
-    #     file { $local_dir:
-    #         ensure => directory,
-    #         mode   => '1777',
-    #         owner  => 'root',
-    #         group  => 'root',
-    #     }
-    # }
+    if $local_dir {
+        file { $local_dir:
+            ensure => directory,
+            mode   => '1777',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
 }
