@@ -33,6 +33,7 @@ class profile::base (
     Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
     Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
+    Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages          = lookup('profile::base::additional_purged_packages'),
 ) {
     # Sanity checks for cluster - T234232
@@ -57,8 +58,10 @@ class profile::base (
     contain profile::puppet::agent
     contain profile::base::certificates
     include profile::apt
-    if !$facts['wmflib']['is_container'] {
+    if !$facts['wmflib']['is_container'] and $manage_resolvconf {
         include profile::systemd::timesyncd
+    }
+    unless $facts['wmflib']['is_container']  {
         class { 'grub::defaults': }
     }
 
