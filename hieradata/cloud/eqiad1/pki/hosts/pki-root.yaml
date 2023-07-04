@@ -1,3 +1,4 @@
+profile::pki::root_ca::rsa_intermediates: []
 profile::pki::root_ca::intermediates:
   - WMF_test_intermediate_ca
   - WMF_test2_intermediate_ca

@@ -29,7 +29,7 @@ class profile::pki::root_ca(
     Hash[String, Cfssl::Profile]  $profiles           = lookup('profile::pki::root_ca::profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys          = lookup('profile::pki::root_ca::auth_keys'),
     Array[Cfssl::Ca_name]         $intermediates      = lookup('profile::pki::root_ca::intermediates'),
-    Array[Cfssl::Ca_name]         $rsa_intermediates  = lookup('profile::pki::root_ca::intermediates'),
+    Array[Cfssl::Ca_name]         $rsa_intermediates  = lookup('profile::pki::root_ca::rsa_intermediates'),
     Boolean                       $bootstrap          = lookup('profile::pki::root_ca::bootstrap'),
 ) {
     $safe_title   = $common_name.regsubst('\W', '_', 'G')
