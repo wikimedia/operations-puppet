@@ -654,12 +654,12 @@ groups:
       - Willy Pao
   perf-team:
     gid: 796
-    description: performance team members with access to 'webperf' and 'xhgui' servers
+    description: performance team members with access to webperf, and arclamp servers
     members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
-    description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
+    description: users who have root on memcached, varnish, application servers, and thumbor servers
     members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:

@@ -1,8 +1,0 @@
-profile::admin::groups:
-  - perf-team
-profile::webperf::xhgui::mysql_host: 'm2-master.eqiad.wmnet'
-profile::webperf::xhgui::mysql_db: 'xhgui'
-profile::webperf::xhgui::mysql_user: 'xhgui'
-profile::webperf::xhgui::mysql_admin_user: 'xhguiadmin'
-
-profile::contacts::role_contacts: ['Observability']
