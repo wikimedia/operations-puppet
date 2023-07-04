@@ -15,6 +15,9 @@ profile::ssh::client::extra_ssh_keys:
   'puppetserver1001.eqiad.wmnet':
     type: 'ssh-ed25519'
     key: 'AAAAC3NzaC1lZDI1NTE5AAAAICQFROaqtJSWHx5DOMLDj+e4t4R+/BvUP2ELuaciHyRj'
+  'puppetserver2001.codfw.wmnet':
+    type: 'ssh-ed25519'
+    key: 'AAAAC3NzaC1lZDI1NTE5AAAAIKvmkTkNSJVtbqXv7nvWZubW40dE9zyR8wzTT1ZevF2N'
 # Conftool
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::conftool::state::ensure: present
