@@ -11,12 +11,17 @@ rundir = /var/run/puppet
 factpath = $vardir/lib/facter
 
 [agent]
+<%- if @use_srv_records -%>
+use_srv_records = true
+srv_domain = <%= @srv_domain %>
+<%- else -%>
 server = <%= @server %>
+  <%- unless @ca_server.nil? -%>
+ca_server = <%= @ca_server %>
+  <%- end -%>
+<%- end -%>
 <%- unless @certificate_revocation.nil? -%>
 certificate_revocation = <%= @certificate_revocation %>
-<%- end -%>
-<%- unless @ca_server.nil? -%>
-ca_server = <%= @ca_server %>
 <%- end -%>
 <%- unless @certname.nil? -%>
 certname = <%= @certname %>
