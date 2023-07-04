@@ -18,7 +18,7 @@
     ProxyVia Off
     ProxyPreserveHost On
     ProxyPass <%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix -%> retry=0 nocanon
-    ProxyPassReverse <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
+    ProxyPassReverse <%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix %>
     AllowEncodedSlashes NoDecode
 
     ErrorLog /var/log/apache2/<%= @sitename_jenkins %>.error.log
@@ -31,7 +31,7 @@
     # Local reverse proxy authorization override
     # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
-    <Proxy http://localhost:<%= @http_port -%><%= @prefix -%>*>
+    <Proxy http://127.0.0.1:<%= @http_port -%><%= @prefix -%>*>
 
         # user agent blacklisting for Jenkins
         SetEnvIf User-Agent 80legs bad_browser
@@ -43,11 +43,6 @@
         SetEnvIf User-Agent Sosospider bad_browser
         SetEnvIf User-Agent TweetmemeBot bad_browser
         SetEnvIf User-Agent ZumBot bad_browser
-
-        <RequireAll>
-          Require all granted
-          Require not env bad_browser
-        </RequireAll>
 
         # Jenkins is behind cache_text, the API calls lacks cache headers and
         # their 4xx errors ends up being cached which causes troubles when
@@ -68,6 +63,7 @@
         <RequireAll>
           Require all granted
           Require not env DENY_BUILDS_ACCESS
+          Require not env bad_browser
         </RequireAll>
 
     </Proxy>
