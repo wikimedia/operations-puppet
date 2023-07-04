@@ -4,7 +4,10 @@ profile::admin::groups:
   - eventlogging-admins
 
 profile::webperf::site::server_name: performance.wikimedia.org
-profile::webperf::site::xhgui_host: xhgui1001.eqiad.wmnet
+profile::webperf::xhgui::mysql_host: m2-master.eqiad.wmnet
+profile::webperf::xhgui::mysql_db: xhgui
+profile::webperf::xhgui::mysql_user: xhgui
+profile::webperf::xhgui::mysql_admin_user: xhguiadmin
 profile::webperf::site::excimer_mysql_host: m2-master.eqiad.wmnet
 profile::webperf::site::excimer_mysql_db: excimer
 profile::webperf::site::excimer_mysql_user: excimer_ui_server
