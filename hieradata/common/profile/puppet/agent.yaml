@@ -5,4 +5,6 @@ profile::puppet::agent::serialization_format: json
 profile::puppet::agent::timer_seed: ~
 profile::puppet::agent::certificate_revocation: ~
 profile::puppet::agent::force_puppet7: false
-
+# TYhe following only have an affect on puppet7
+profile::puppet::agent::use_srv_records: true
+profile::puppet::agent::srv_domain: ~

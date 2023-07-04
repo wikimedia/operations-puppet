@@ -4,6 +4,10 @@
 # @param ca_server the ca server
 # @param ca_source to source of the CA file
 # @param manage_ca_file if true manage the puppet ca file
+# @param site_nearest_core list of mappings to a sites nearest core
+# @param use_srv_records if true use SRV records to resolve the puppet server and ca server
+# @param srv_domain the domain to use when resolving SRV records.  puppet will look for records al
+#   _x-puppet._tcp.$srv_domain and _x-puppet-ca._tcp.$srv_domain
 # @param interval the, in minutes, interval to perform puppet runs
 # @param force_puppet7 on bullseye hosts this enables an experimental puppet7
 #   backport.  however this is known to have some issues with puppetmaster5
@@ -16,18 +20,21 @@
 # @param certificate_revocation The level of certificate revocation to perform
 # @param create_timer whether to create the systemd agent timer
 class profile::puppet::agent (
-    String                          $puppetmaster           = lookup('puppetmaster'),
-    Optional[String[1]]             $ca_server              = lookup('puppet_ca_server'),
-    Stdlib::Filesource              $ca_source              = lookup('puppet_ca_source'),
-    Boolean                         $manage_ca_file         = lookup('manage_puppet_ca_file'),
-    Integer[1,59]                   $interval               = lookup('profile::puppet::agent::interval'),
-    Boolean                         $force_puppet7          = lookup('profile::puppet::agent::force_puppet7'),
-    Optional[String[1]]             $timer_seed             = lookup('profile::puppet::agent::timer_seed'),
-    Optional[String[1]]             $environment            = lookup('profile::puppet::agent::environment'),
-    Enum['pson', 'json', 'msgpack'] $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
-    Array[Stdlib::Fqdn]             $dns_alt_names          = lookup('profile::puppet::agent::dns_alt_names'),
-    Optional[Enum['chain', 'leaf']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
-    Boolean                         $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
+    String                             $puppetmaster           = lookup('puppetmaster'),
+    Optional[String[1]]                $ca_server              = lookup('puppet_ca_server'),
+    Stdlib::Filesource                 $ca_source              = lookup('puppet_ca_source'),
+    Boolean                            $manage_ca_file         = lookup('manage_puppet_ca_file'),
+    Hash[Wmflib::Sites, Wmflib::Sites] $site_nearest_core      = lookup('site_nearest_core'),
+    Boolean                            $use_srv_records        = lookup('profile::puppet::agent::use_srv_records'),
+    Optional[Stdlib::Fqdn]             $srv_domain             = lookup('profile::puppet::agent::srv_domain'),
+    Integer[1,59]                      $interval               = lookup('profile::puppet::agent::interval'),
+    Boolean                            $force_puppet7          = lookup('profile::puppet::agent::force_puppet7'),
+    Optional[String[1]]                $timer_seed             = lookup('profile::puppet::agent::timer_seed'),
+    Optional[String[1]]                $environment            = lookup('profile::puppet::agent::environment'),
+    Enum['pson', 'json', 'msgpack']    $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
+    Array[Stdlib::Fqdn]                $dns_alt_names          = lookup('profile::puppet::agent::dns_alt_names'),
+    Optional[Enum['chain', 'leaf']]    $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
+    Boolean                            $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
 ) {
     if $force_puppet7 {
         if debian::codename::lt('bullseye') {
@@ -48,12 +55,25 @@ class profile::puppet::agent (
         }
         # Force leaf on puppet7 T330490
         $_certificate_revocation = 'leaf'
-    } else { $_certificate_revocation = $certificate_revocation }
+        $_use_srv_records = $use_srv_records
+        $_srv_domain = $srv_domain.lest || {
+            $::site ? {
+                /codfw|eqiad/ => "${::site}.wmnet",
+                default       => "${site_nearest_core[$::site]}.wmnet",
+            }
+        }
+    } else {
+        $_certificate_revocation = $certificate_revocation
+        $_use_srv_records = false
+        $_srv_domain = undef
+    }
     class { 'puppet::agent':
         ca_source              => $ca_source,
         manage_ca_file         => $manage_ca_file,
         server                 => $puppetmaster,
         ca_server              => $ca_server,
+        use_srv_records        => $_use_srv_records,
+        srv_domain             => $_srv_domain,
         dns_alt_names          => $dns_alt_names,
         environment            => $environment,
         certificate_revocation => $_certificate_revocation,

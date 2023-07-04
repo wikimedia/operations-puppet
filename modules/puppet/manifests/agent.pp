@@ -5,7 +5,8 @@
 # @param server the puppet server
 # @param use_srv_records if true use SRV records to resolve the puppet server and ca server
 # @param srv_domain the domain to use when resolving SRV records.  puppet will look for records al
-#   _x-puppet._tcp.$srv_domain and _x-puppet-ca._tcp.$srv_domain
+#   _x-puppet._tcp.$srv_domain and _x-puppet-ca._tcp.$srv_domain.  if no value is provided a value
+#   will be calculated based on the $::site variable
 # @param certname the agent certname
 # @param dns_alt_names a list of dns alt names
 # @param environment the agent environment

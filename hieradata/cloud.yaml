@@ -94,6 +94,8 @@ profile::puppet::agent::timer_seed: ~
 profile::puppet::agent::certificate_revocation: ~
 profile::puppet::agent::dns_alt_names: []
 profile::puppet::agent::force_puppet7: false
+profile::puppet::agent::use_srv_records: false
+profile::puppet::agent::srv_domain: ~
 
 profile::puppet::client_bucket::ensure: absent
 profile::puppet::client_bucket::file_age: 14
