@@ -67,11 +67,12 @@ class profile::puppetserver::git (
         }
     }
 
-    file { $basedir:
+    wmflib::dir::mkdir_p($basedir, {
         ensure => stdlib::ensure($ensure, 'directory'),
         owner  => $user,
         group  => $group,
-    }
+    })
+
     $repos.each |$repo, $config| {
         $dir = "${basedir}/${repo}"
         $origin = $config['origin'].lest || { "https://gerrit.wikimedia.org/r/${repo}" }
