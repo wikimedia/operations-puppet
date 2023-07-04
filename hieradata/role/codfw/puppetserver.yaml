@@ -1,2 +1,2 @@
 profile::puppetserver::puppetdb_urls:
-  - 'https://puppetdb2003.codfw.wmnet:8443'
+  - 'https://puppetdb2003.codfw.wmnet'
