@@ -71,6 +71,16 @@ datacenters:
   - eqsin
   - drmrs
 
+# This is used for setting the resolv.conf on the DNS hosts and the NTP peers
+# that are consumed by P:systemd::timesyncd.
+site_nearest_core:
+  eqiad: codfw
+  codfw: eqiad
+  esams: eqiad
+  ulsfo: codfw
+  eqsin: codfw
+  drmrs: eqiad
+
 public_domain: 'wikimedia.org'
 
 # Swift cluster metadata
