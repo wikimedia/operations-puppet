@@ -2568,12 +2568,7 @@ node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetdb)
 }
 
-# Leave this on the old infrastructure for now
-node /^puppetdb2003\.codfw\.wmnet$/ {
-    role(puppetdb)
-}
-
-node /^puppetdb1003\.eqiad\.wmnet$/ {
+node /^puppetdb2003\.(codfw|eqiad)\.wmnet$/ {
     role(puppetdb::bookworm)
 }
 
