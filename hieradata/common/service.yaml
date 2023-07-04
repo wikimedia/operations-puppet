@@ -3655,9 +3655,9 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.64.32.38
-      eqiad:
         default: 10.192.0.8
+      eqiad:
+        default: 10.64.32.38
     page: false
     probes:
       - type: http
