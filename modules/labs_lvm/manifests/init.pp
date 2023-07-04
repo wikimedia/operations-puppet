@@ -21,7 +21,7 @@ class labs_lvm(
 
     file { '/usr/local/sbin/make-instance-vg':
         ensure  => file,
-        source  => 'puppet:///modules/labs_lvm/make-instance-vg',
+        source  => 'puppet:///modules/labs_lvm/make-instance-vg.sh',
         require => Package['lvm2', 'parted'],
         mode    => '0544',
         owner   => 'root',
@@ -30,7 +30,7 @@ class labs_lvm(
 
     file { '/usr/local/sbin/make-instance-vg-ephem':
         ensure  => file,
-        source  => 'puppet:///modules/labs_lvm/make-instance-vg-ephem',
+        source  => 'puppet:///modules/labs_lvm/make-instance-vg-ephem.sh',
         require => Package['lvm2'],
         mode    => '0544',
         owner   => 'root',
@@ -48,7 +48,7 @@ class labs_lvm(
 
     file { '/usr/local/sbin/make-instance-vol':
         ensure  => file,
-        source  => 'puppet:///modules/labs_lvm/make-instance-vol',
+        source  => 'puppet:///modules/labs_lvm/make-instance-vol.sh',
         require => Package['lvm2'],
         mode    => '0544',
         owner   => 'root',
@@ -57,7 +57,7 @@ class labs_lvm(
 
     file { '/usr/local/sbin/extend-instance-vol':
         ensure  => file,
-        source  => 'puppet:///modules/labs_lvm/extend-instance-vol',
+        source  => 'puppet:///modules/labs_lvm/extend-instance-vol.sh',
         require => Package['lvm2'],
         mode    => '0544',
         owner   => 'root',
