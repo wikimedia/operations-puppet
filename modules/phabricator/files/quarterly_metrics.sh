@@ -63,11 +63,34 @@ for https://www.mediawiki.org/wiki/Technical_Community_Newsletter
 * Phabricator: Number of tasks closed in ${lastquarter}: ${tasksclosed}
 * Phabricator: Number of different people who created tasks in ${lastquarter}: ${tasksauthors}
 * Phabricator: Number of different people who closed tasks in ${lastquarter}: ${tasksclosers}
-* [[mw:Gerrit|Gerrit]]: 
-** Go to https://wikimedia.biterg.io/
-** Select "Gerrit" from the top bar
-** Adjust the time frame in the upper right corner to cover the last quarter
-** Select "Independent" in the "Organizations" pie chart to filter on affiliation
+* [[mw:Gerrit|Gerrit]]: [https://wikimedia.biterg.io/goto/xxxTODOxxx X people wrote patches] ([https://wikimedia.biterg.io/goto/xxxTODOxxx X of them being volunteers]) in ${lastquarter}.
+
+
+Instructions / steps how to get Gerrit statistics for that last line:
+
+* Go to https://wikimedia.biterg.io/
+* Select "Gerrit" in the top bar, then select the "Overview" subpage
+* Adjust the time frame to cover the last calendar quarter:
+** Select the time filter in the upper right corner
+** Under "Time Range" select "Absolute"
+** Set the exact start date and end date of the last calendar quarter
+* Use the number of "Change Submitters" in the box called "Gerrit" as
+  that is the number of all and any Gerrit contributors
+* Select "Independent" in the "Organizations" pie chart to filter on
+  affiliation ("Independent" organization = volunteer contributors)
+* Use the number of "Change Submitters" in the box called "Gerrit" as
+  that is the number of volunteer Gerrit contributors
+* To create a short URL link to what you see on wikimedia.biterg.io:
+** Log in via the button in the bottom left corner
+*** If you do not have an account yet, see
+    https://www.mediawiki.org/wiki/Community_metrics#Contact
+** Select "Share" in the top bar
+** Select "Permalink"
+** Enable "Short URL"
+** Select "Copy link"
+For general info how to use wikimedia.biterg.io, see
+https://www.mediawiki.org/wiki/Community_metrics
+
 
 Yours sincerely,
 Fab Rick Aytor
