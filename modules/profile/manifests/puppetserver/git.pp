@@ -67,10 +67,9 @@ class profile::puppetserver::git (
         }
     }
 
-    wmflib::dir::mkdir_p($basedir, {
-        ensure => stdlib::ensure($ensure, 'directory'),
+    wmflib::dir::mkdir_p($basedir.dirname, {
         owner  => $user,
-        group  => $group,
+        group  => $group
     })
 
     $repos.each |$repo, $config| {
@@ -82,13 +81,18 @@ class profile::puppetserver::git (
             group  => $group,
         })
         if $config['init'] {
+            file { $dir:
+                ensure => directory,
+                owner  => $user,
+                group  => $group,
+            }
             exec { "git init ${dir}":
                 command => '/usr/bin/git init',
                 user    => $user,
                 group   => $group,
                 cwd     => $dir,
                 creates => "${dir}/.git",
-                require => File[$dir.dirname],
+                require => File[$dir],
             }
             $git_require = Exec["git init ${dir}"]
         } else {
