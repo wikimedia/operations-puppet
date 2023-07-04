@@ -27,6 +27,12 @@ class profile::toolforge::mailrelay (
                             '/usr/local/sbin/maintainers'],
     }
 
+    exim4::dkim { $primary_domain:
+        domain   => $primary_domain,
+        selector => 'toolforge',
+        content  => secret("dkim/wmcs/${primary_domain}-toolforge.key"),
+    }
+
     # Manually maintained outbound sender blocklist
     file { '/etc/exim4/deny_senders.list':
         ensure  => present,

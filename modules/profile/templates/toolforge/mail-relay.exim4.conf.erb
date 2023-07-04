@@ -313,6 +313,10 @@ begin transports
 
 remote_smtp:
   driver = smtp
+  dkim_domain = ${sender_address_domain}
+  dkim_selector = toolforge
+  dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+  dkim_canon = relaxed
 
 ###############
 # Retry rules #
