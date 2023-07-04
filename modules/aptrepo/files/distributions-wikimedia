@@ -175,6 +175,7 @@ Update:
  amd-rocm45
  bigtop15-buster
  confluent
+ confluent7
  elastic74
  elastic78
  elastic79
@@ -188,9 +189,8 @@ Update:
  matomo
  pyall
  thirdparty/ceph-octopus
- thirdparty/docker-ci-buster
  thirdparty/conda
- thirdparty/confluent7
+ thirdparty/docker-ci-buster
  thirdparty/gitlab-runner
  thirdparty/haproxy24
  thirdparty/haproxy26
@@ -265,6 +265,7 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm54
+ confluent7
  elastic710
  elasticsearch-curator5
  gvisor
@@ -276,9 +277,8 @@ Update:
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/ceph-quincy
- thirdparty/docker-ci-bullseye
  thirdparty/conda
- thirdparty/confluent7
+ thirdparty/docker-ci-bullseye
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/haproxy24
