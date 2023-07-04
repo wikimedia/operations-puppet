@@ -21,9 +21,7 @@ class puppetserver::g10k (
         'sources'  => $_sources,
     }
     file { $cache_dir:
-        ensure  => stdlib::ensure($ensure, 'directory'),
-        force   => true,
-        recurse => true,
+        ensure => stdlib::ensure($ensure, 'directory'),
     }
     file { $config_file:
         ensure  => stdlib::ensure($ensure, file),
