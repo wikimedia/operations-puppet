@@ -4,7 +4,7 @@
 # we change nothing on disk, but indicate with an exit status other
 # than 0 that we would have changed anything and with an exit status
 # of 0 that this call would have been a no-op.
-if [ "x$1" = "x--test" ]; then
+if [ "$1" = "--test" ]; then
   dryrun=1
   shift
 else
@@ -13,19 +13,19 @@ fi
 
 mount="$1"; shift
 size="$1"; shift
-sopt="-L $size"
+sopt=("-L" "$size")
 
 # Getting the lvextend version is ugly but we need it because
 #  the return codes changed at version 2.02.141 as per
 #  https://bugzilla.redhat.com/show_bug.cgi?id=1354396
 #
 #  $oldlvextend will == 0 if we're running an older version.
-lvmversion=`dpkg -s lvm2 | grep Version | cut -d ' ' -f 2`
-dpkg --compare-versions $lvmversion lt 2.02.141
+lvmversion=$(dpkg -s lvm2 | grep Version | cut -d ' ' -f 2)
+dpkg --compare-versions "$lvmversion" lt 2.02.141
 oldlvextend=$?
 
 if (/bin/echo "$size"|/bin/grep -q '%'); then
-  sopt="-l $size"
+  sopt=("-l" "$size")
 fi
 
 if ! mountpoint -q "$mount"; then
@@ -34,7 +34,7 @@ if ! mountpoint -q "$mount"; then
 fi
 
 volume=$(grep "\S* $mount " /proc/mounts | cut -d ' ' -f 1 | tail -n 1)
-if [ "x$volume" = "x" -o ! -b "$volume" ]; then
+if [ -n "$volume" ] || [ ! -b "$volume" ]; then
   echo "$0: unable to find device for $mount" >&2
   exit 1
 fi
@@ -43,11 +43,11 @@ if ! /sbin/lvs "$volume" >/dev/null 2>&1; then
   exit 1
 fi
 
-if /sbin/lvextend -t $sopt "$volume" >/dev/null 2>&1; then
+if /sbin/lvextend -t "${sopt[@]}" "$volume" >/dev/null 2>&1; then
   if [ $dryrun -ne 0 ]; then
     exit 1
   fi
-  /sbin/lvextend -r $sopt "$volume"
+  /sbin/lvextend -r "${sopt[@]}" "$volume"
   exit
 else
   lvextend_exitcode=$?
