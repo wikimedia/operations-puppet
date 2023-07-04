@@ -15,4 +15,5 @@ root: tools.admin
 administrator: root
 admin: root
 prometheus: root
+noreply: :blackhole:
 wiktcapt: :blackhole:
