@@ -190,6 +190,7 @@ Update:
  thirdparty/ceph-octopus
  thirdparty/docker-ci-buster
  thirdparty/conda
+ thirdparty/confluent7
  thirdparty/gitlab-runner
  thirdparty/haproxy24
  thirdparty/haproxy26
@@ -277,6 +278,7 @@ Update:
  thirdparty/ceph-quincy
  thirdparty/docker-ci-bullseye
  thirdparty/conda
+ thirdparty/confluent7
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/haproxy24
