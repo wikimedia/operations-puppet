@@ -1,18 +1,20 @@
-# == Class: role::webperf::profiling_tools
+# == Class: role::arclamp
 #
-# This role provisions a set of profiling tools for
-# the performance team. (T194390)
+# Host the Arc Lamp receiver (Redis), processors,
+# and static file server.
 #
-class role::webperf::profiling_tools {
+# See also profile::arclamp::processor.
+#
+class role::arclamp {
 
-    system::role { 'webperf::profiling_tools':
-        description => 'profiling tools host'
+    system::role { 'arclamp':
+        description => 'Arc Lamp service'
     }
 
     include ::profile::base::production
     include ::profile::firewall
     include ::profile::backup::host
-    include ::profile::webperf::arclamp
+    include ::profile::arclamp::processor
     include ::profile::arclamp::redis
 
     # class httpd installs mpm_event by default, and once installed,

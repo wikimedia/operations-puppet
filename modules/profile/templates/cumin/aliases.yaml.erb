@@ -411,7 +411,7 @@ wdqs-main: P{O:wdqs::public or O:wdqs::internal}
 wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
-webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
+webperf: P{O:webperf or O:arclamp}
 wikidough: P{O:wikidough}
 <% @datacenters.each do |dc| -%>
 wikidough-<%= dc %>: A:wikidough and A:<%= dc %>
@@ -429,7 +429,7 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::webserver} or A:eventlogging
-misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
+misc-devel: P{O:webperf or O:arclamp or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:sretest} or A:insetup
 #### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ####
 # The following aliases use the `~` operator to look for a $value in Array.  This is undocumented

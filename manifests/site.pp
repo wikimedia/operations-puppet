@@ -2935,16 +2935,20 @@ node /^wdqs202[3-5]\.codfw\./ {
     role(insetup::search_platform)
 }
 
-node /^webperf[12]003\.(codfw|eqiad)\./ {
-    role(webperf::processors_and_site)
+node /^webperf1003.eqiad\./ {
+    role(webperf)
 }
 
-node /^arclamp2001\.codfw\./ {
-    role(webperf::profiling_tools)
+node /^webperf2003\.codfw\./ {
+    role(webperf)
 }
 
 node /^arclamp1001\.eqiad\./ {
-    role(webperf::profiling_tools)
+    role(arclamp)
+}
+
+node /^arclamp2001\.codfw\./ {
+    role(arclamp)
 }
 
 node default {

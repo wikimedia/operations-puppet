@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: profile::webperf::arclamp
+# == Class: profile::arclamp::processor
 #
 # Provision Arc Lamp, which processes PHP stack traces and generates
-# SVG flame graphs. This profile also provisions an HTTP server
+# SVG flame graphs. This profile also provisions a static HTTP server
 # exposing the trace logs and SVG flame graphs.
 #
 # See also profile::webperf::site, which provisions a reverse proxy
 # to expose the data at <https://performance.wikimedia.org/arclamp/>.
+#
+# Original launch task: https://phabricator.wikimedia.org/T194390.
 #
 # === Parameters
 #
@@ -28,7 +30,7 @@
 # [*retain_daily_logs_days*]
 #   How many daily captures to retain on local disk.
 #
-class profile::webperf::arclamp (
+class profile::arclamp::processor (
     Stdlib::Fqdn $redis_host                 = lookup('profile::webperf::arclamp::redis_host'),
     Stdlib::Port $redis_port                 = lookup('profile::webperf::arclamp::redis_port'),
     String $errors_mailto                    = lookup('profile::webperf::arclamp::errors_mailto'),
