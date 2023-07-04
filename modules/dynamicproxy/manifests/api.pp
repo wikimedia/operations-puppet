@@ -24,19 +24,9 @@ class dynamicproxy::api (
 
     if debian::codename::eq('bullseye') {
         # see https://phabricator.wikimedia.org/T340881
-        apt::pin { 'python3-flask-sqlalchemy-bullseye-bpo':
-            pin      => 'release a=bullseye-backports',
-            package  => 'python3-flask-sqlalchemy',
-            priority => 1001,
-            before   => Package['python3-flask-sqlalchemy'],
-            notify   => Exec['python3-flask-sqlalchemy-apt-get-update'],
+        apt::package_from_bpo { 'python3-flask-sqlalchemy':
+            distro => 'bullseye',
         }
-        exec { 'python3-flask-sqlalchemy-apt-get-update':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-        }
-
-        Exec['python3-flask-sqlalchemy-apt-get-update'] -> Package <| |>
     }
 
     ensure_packages([
