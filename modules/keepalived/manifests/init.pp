@@ -32,20 +32,9 @@ class keepalived(
     if debian::codename::eq('bullseye') {
         # default keepalived in bullseye seems broken, see
         # https://bugs.debian.org/1008222
-        apt::pin { 'keepalived-bullseye-bpo':
-            pin      => 'release a=bullseye-backports',
-            package  => 'keepalived',
-            priority => 1001,
-            before   => Package['keepalived'],
-            notify   => Exec['keepalived-apt-get-update'],
+        apt::package_from_bpo { 'keepalived':
+            distro => 'bullseye',
         }
-
-        exec { 'keepalived-apt-get-update':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-        }
-
-        Exec['keepalived-apt-get-update'] -> Package <| |>
     }
 
     package { 'keepalived':
