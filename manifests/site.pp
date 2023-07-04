@@ -2568,7 +2568,7 @@ node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetdb)
 }
 
-node /^puppetdb2003\.(codfw|eqiad)\.wmnet$/ {
+node /^puppetdb[12]003\.(codfw|eqiad)\.wmnet$/ {
     role(puppetdb::bookworm)
 }
 
