@@ -5,4 +5,6 @@ profile::wmcs::services::toolsdb_replica_cnf::htuser: tools-db-replica-cnf
 profile::wmcs::services::toolsdb_replica_cnf::htpassword: test-password
 profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt: tczR9usd
 profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix: tools
+profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template: "/srv/tools/project/{user}/.kube/config"
 profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https: true
+profile::wmcs::services::toolsdb_replica_cnf::include_tools_repo: false

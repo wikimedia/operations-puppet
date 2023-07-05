@@ -11,11 +11,15 @@ CURDIR="${CURFILE%/*}"
 FAKE_BINDIR="/tmp/fakebins"
 cd "$CURDIR"
 SERVER_PID=0
+ENVVARS_SERVER_PID=0
 
 
 cleanup() {
     if [[ "$SERVER_PID" != "0" ]]; then
         kill -9 "$SERVER_PID"
+    fi
+    if [[ "$ENVVARS_SERVER_PID" != "0" ]]; then
+        kill -9 "$ENVVARS_SERVER_PID"
     fi
 }
 
@@ -92,6 +96,22 @@ start_server() {
     SERVER_PID=$!
 }
 
+start_fake_toolforge_envvars() {
+    python $PWD/../replica_cnf_api_service/tests/mock_envvars.py &
+    ENVVARS_SERVER_PID=$!
+    # wait for the server to start
+    max_wait=0
+    while ! curl --silent http://127.0.0.1:8081/healthz >/dev/null; do
+        sleep 0.1
+        max_wait=$((max_wait + 1))
+        if [[ $max_wait -ge 100 ]]; then
+            echo "Timed out to start the mocked envvars service."
+            exit 1
+        fi
+    done
+    sleep 2
+}
+
 run_tests() {
     CONF_FILE=ci_config.yaml \
     PROJECT=localtest  \
@@ -99,13 +119,14 @@ run_tests() {
     USER_ID=$(id -u) \
     BASE_URL="http://127.0.0.1:8081/v1" \
     TERM=xterm-256color \
-    bats_core_pkg --timing --verbose-run .
+    bats_core_pkg --timing --print-output-on-failure --verbose-run .
 }
 
 
 main() {
     prepare_fake_env
     start_server
+    start_fake_toolforge_envvars
     run_tests
 }
 

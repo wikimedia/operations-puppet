@@ -7,8 +7,11 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     String $htpassword               = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword'),
     String $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
     String $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
+    String $kubeconfig_path_template = lookup('profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template'),
     Array[Stdlib::Fqdn]$cloudcontrol = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Boolean $redirect_to_https       = lookup('profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https'),
+    # might be needed to get toolforge weld
+    Boolean $include_tools_repo      = lookup('profile::wmcs::services::toolsdb_replica_cnf::include_tools_repo'),
 ) {
     $user                           = 'www-data'
     $group                          = 'www-data'
@@ -23,13 +26,24 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     $write_replica_cnf_script_path  = "${scripts_path}/write_replica_cnf.sh"
     $read_replica_cnf_script_path   = "${scripts_path}/read_replica_cnf.sh"
     $delete_replica_cnf_script_path = "${scripts_path}/delete_replica_cnf.sh"
+    $load_kubeconfig_script_path = "${scripts_path}/load_user_kubeconfig.py"
     $metrics_dir                    = '/run/toolsdb-replica-cnf-metrics'
     $htpassword_file                = '/etc/nginx/toolsdb-replica-cnf.htpasswd';
     $htpassword_hash                = htpasswd($htpassword, $htpassword_salt);
 
-    package { 'python3-flask':
-        ensure   => installed,
+
+    if $include_tools_repo {
+        apt::repository { 'toolforge':
+            uri        => 'https://deb-tools.wmcloud.org/repo',
+            dist       => "${::lsbdistcodename}-tools",
+            components => 'main',
+            trust_repo => true,
+            source     => false,
+        }
+
     }
+
+    ensure_packages(['python3-flask', 'python3-toolforge-weld'])
 
     file { $replica_cnf_config_file_path:
         ensure  => 'file',
@@ -41,7 +55,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
           'PAWS_REPLICA_CNF_PATH' => $paws_replica_cnf_path,
           'USER_REPLICA_CNF_PATH' => $user_replica_cnf_path,
           'BACKENDS'              => {
-            'ToolforgeToolFileBackend' => {
+            'ToolforgeToolFileBackend'    => {
               'ToolforgeToolBackendConfig' => {
                 'replica_cnf_path'     => $tool_replica_cnf_path,
                 'scripts_path'         => $scripts_path,
@@ -49,19 +63,28 @@ class profile::wmcs::services::toolsdb_replica_cnf(
                 'use_sudo'             => true,
               },
             },
-            'ToolforgeUserFileBackend' => {
+            'ToolforgeUserFileBackend'    => {
               'FileConfig' => {
                 'replica_cnf_path' => $user_replica_cnf_path,
                 'scripts_path'     => $scripts_path,
                 'use_sudo'         => true,
               },
             },
-            'PawsUserFileBackend'      => {
+            'PawsUserFileBackend'         => {
               'FileConfig' => {
                 'replica_cnf_path' => $paws_replica_cnf_path,
                 'scripts_path'     => $scripts_path,
                 'use_sudo'         => true,
-              },},
+              },
+            },
+            'ToolforgeToolEnvvarsBackend' => {
+              'EnvvarsConfig' => {
+                'kubeconfig_path_template' => $kubeconfig_path_template,
+                'toolforge_api_endpoint'   => "https://api.svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud:30003",
+                'scripts_path'             => $scripts_path,
+                'use_sudo'                 => true,
+              },
+            },
           }
         })
     }
@@ -89,6 +112,13 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         mode   => '0500',
         source => "${api_service_base_path_in_repo}/delete_replica_cnf.sh"
     }
+    file { $load_kubeconfig_script_path:
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500',
+        source => "${api_service_base_path_in_repo}/load_user_kubeconfig.py"
+    }
 
     sudo::user { $user:
         ensure     => present,
@@ -96,6 +126,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
             "ALL = (ALL) NOPASSWD: ${write_replica_cnf_script_path}",
             "ALL = (ALL) NOPASSWD: ${read_replica_cnf_script_path}",
             "ALL = (ALL) NOPASSWD: ${delete_replica_cnf_script_path}",
+            "ALL = (ALL) NOPASSWD: ${load_kubeconfig_script_path}",
         ]
     }
 

@@ -37,7 +37,6 @@ setup() {
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_equal "detail.replica_path" "${TOOL_BASE_PATH}/${SHORT_TOOL_NAME}/replica.my.cnf" "$output"
 }
 
 
@@ -52,7 +51,6 @@ setup() {
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_match "detail.replica_path" ".*${TOOL_BASE_PATH}/${SHORT_TOOL_NAME}/replica.my.cnf.*" "$output"
 }
 
 
@@ -80,7 +78,6 @@ password = dummypass'
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_equal "detail.replica_path" "$cnf_path" "$output"
     exists "$cnf_path"
     is_equal "$(sudo cat "$cnf_path")" "$expected_contents"
 
@@ -144,7 +141,6 @@ password = dummypass'
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_match "detail.replica_path" ".*$cnf_path.*" "$output"
 
     ! exists "$cnf_path"
 }

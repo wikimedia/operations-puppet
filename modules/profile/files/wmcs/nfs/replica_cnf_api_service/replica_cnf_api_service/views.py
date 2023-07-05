@@ -15,6 +15,10 @@ from replica_cnf_api_service.backends.common import (
     Skip,
     UserType,
 )
+from replica_cnf_api_service.backends.envvars_backend import (
+    EnvvarsConfig,
+    ToolforgeToolEnvvarsBackend,
+)
 from replica_cnf_api_service.backends.file_backend import (
     FileConfig,
     PawsUserFileBackend,
@@ -30,11 +34,13 @@ DRY_RUN_PASSWORD = "dry.run.password"
 BACKEND_CONFIGS = {
     "FileConfig": FileConfig,
     "ToolforgeToolBackendConfig": ToolforgeToolBackendConfig,
+    "EnvvarsConfig": EnvvarsConfig,
 }
 BACKENDS = {
     "PawsUserFileBackend": PawsUserFileBackend,
     "ToolforgeToolFileBackend": ToolforgeToolFileBackend,
     "ToolforgeUserFileBackend": ToolforgeUserFileBackend,
+    "ToolforgeToolEnvvarsBackend": ToolforgeToolEnvvarsBackend,
 }
 
 
@@ -196,8 +202,6 @@ def write_replica_cnf() -> tuple[Response, int]:
 
     results: dict[str, str] = {}
     has_error = False
-    final_replica_path = None
-    replica_path = None
     has_skipped = False
     for backend in get_backends():
         if not backend.handles_user_type(account_type):
@@ -205,27 +209,28 @@ def write_replica_cnf() -> tuple[Response, int]:
 
         backend_key = backend.__class__.__name__
         try:
-            replica_path = backend.save_replica_cnf(
+            new_replica_cnf = backend.save_replica_cnf(
                 replica_cnf=replica_cnf,
                 account_uid=uid,
                 dry_run=dry_run,
             )
-            current_app.logger.debug("Backend %s created file %s ok", backend, replica_path)
-            results[backend_key] = replica_path
-            if replica_path != Path() and (dry_run or replica_path.exists()):
-                final_replica_path = replica_path
+            current_app.logger.debug("Backend %s created ok", backend)
+            results[
+                backend_key
+            ] = f"OK (user={new_replica_cnf.user}, db_user={new_replica_cnf.db_user})"
 
         except Skip as skip:
             results[backend_key] = str(skip)
             has_skipped = True
             current_app.logger.debug("Backend %s skips: %s", backend, str(skip))
+
         except BackendError as error:
             results[backend_key] = str(error)
             has_error = True
             current_app.logger.debug(
-                "Backend %s failed to create file %s: %s",
+                "Backend %s failed to create replica auth for %s: %s",
                 backend,
-                replica_path,
+                replica_cnf.user,
                 error,
             )
 
@@ -241,16 +246,16 @@ def write_replica_cnf() -> tuple[Response, int]:
         return get_skip_response(
             reason=(
                 "Some backends skipped:\n  "
-                + "\n  ".join(f"{backend}:{result}" for backend, result in results.items())
+                + "\n  ".join(f"{backend}:{result or 'OK'}" for backend, result in results.items())
             ),
         )
 
-    if not final_replica_path:
+    if not results:
         return get_error_response(
             reason=f"Got error: none of the backend did actually create a file: {results}"
         )
 
-    return get_ok_response(replica_path=str(final_replica_path))
+    return get_ok_response(results=results)
 
 
 @bp_v1.route("/read-replica-cnf", methods=["POST"])
@@ -270,6 +275,7 @@ def read_replica_cnf() -> tuple[Response, int]:
     dry_run = request_data["dry_run"]
 
     replica_cnf: Optional[Path] = None
+    prev_backend = None
     for backend in get_backends():
         if not backend.handles_user_type(UserType(account_type)):
             continue
@@ -278,6 +284,9 @@ def read_replica_cnf() -> tuple[Response, int]:
             new_replica_cnf = backend.get_replica_cnf(
                 user=account_id, dry_run=dry_run, user_type=account_type
             )
+        except Skip as skip:
+            current_app.logger.info("Skipping backend %s: %s", backend.__class__, str(skip))
+            continue
         except Exception as error:
             return get_error_response(reason=str(error))
 
@@ -287,9 +296,13 @@ def read_replica_cnf() -> tuple[Response, int]:
         if replica_cnf != new_replica_cnf:
             return get_error_response(
                 reason=(
-                    f"Different backends gave different replies: {replica_cnf} != {new_replica_cnf}"
+                    "Different backends gave different replies: "
+                    f"{replica_cnf} ({prev_backend.__class__.__name__}) != "
+                    f"{new_replica_cnf} ({backend.__class__.__name__})"
                 )
             )
+
+        prev_backend = backend
 
     if replica_cnf is None:
         return get_error_response(reason=f"Unable to find a backend for user type {account_type}")
@@ -314,9 +327,12 @@ def delete_replica_cnf() -> tuple[Response, int]:
 
         backend_key = backend.__class__.__name__
         try:
-            results[backend_key] = backend.delete_replica_cnf(
-                user=account_id, user_type=account_type, dry_run=dry_run
-            )
+            backend.delete_replica_cnf(user=account_id, user_type=account_type, dry_run=dry_run)
+            results[backend_key] = "OK"
+
+        except Skip as skip:
+            current_app.logger.info("Skipping backend %s: %s", backend.__class__, str(skip))
+            continue
 
         except BackendError as error:
             return (
@@ -327,7 +343,7 @@ def delete_replica_cnf() -> tuple[Response, int]:
     if not results:
         return get_error_response(reason=f"Unable to find a backend for user type {account_type}")
 
-    return get_ok_response(replica_path=str(results))
+    return get_ok_response(results=results)
 
 
 @bp_v1.route("/paws-uids", methods=["GET"])

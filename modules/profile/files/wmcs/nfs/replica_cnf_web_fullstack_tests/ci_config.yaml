@@ -21,3 +21,9 @@ BACKENDS:
       replica_cnf_path: /tmp/paws
       scripts_path: *scripts_path
       use_sudo: *use_sudo
+  ToolforgeToolEnvvarsBackend:
+    EnvvarsConfig:
+      kubeconfig_path_template: /tmp/dummy_kubeconfig
+      toolforge_api_endpoint: http://127.0.0.1:8082
+      scripts_path: *scripts_path
+      use_sudo: *use_sudo

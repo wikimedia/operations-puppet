@@ -61,6 +61,7 @@ class Config:
 @dataclass
 class ReplicaCnf:
     user_type: UserType
+    # full username including the project prefix, ex. toolsbeta.test
     user: str
     db_user: str
     db_password: str
@@ -85,11 +86,13 @@ class Backend(ABC):
         pass
 
     @abstractmethod
-    def save_replica_cnf(self, replica_cnf: ReplicaCnf, account_uid: int, dry_run: bool) -> Path:
+    def save_replica_cnf(
+        self, replica_cnf: ReplicaCnf, account_uid: int, dry_run: bool
+    ) -> ReplicaCnf:
         pass
 
     @abstractmethod
-    def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> None:
+    def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> str:
         pass
 
     @abstractmethod

@@ -11,6 +11,7 @@ from pathlib import Path
 import pytest
 from replica_cnf_api_service.backends.common import get_command_array, mysql_hash
 from replica_cnf_api_service.views import DRY_RUN_PASSWORD, DRY_RUN_USERNAME
+from requests_mock import Mocker
 
 from .conftest import (
     ACCOUNT_ID,
@@ -37,12 +38,12 @@ def test_get_command_array(app, script):
     expected_script_path = str(scripts_path / script)
 
     command_array = get_command_array(script=script, scripts_path=scripts_path, use_sudo=False)
-    assert type(command_array) == list
+    assert isinstance(command_array, list)
     assert len(command_array) == 1
     assert command_array[0] == expected_script_path
 
     command_array = get_command_array(script=script, scripts_path=scripts_path, use_sudo=True)
-    assert type(command_array) == list
+    assert isinstance(command_array, list)
     assert len(command_array) == 3
     assert command_array[0] == "sudo"
     assert command_array[1] == "--preserve-env=CONF_FILE"
@@ -54,12 +55,12 @@ def test_fetch_paws_uids_success(client):
     response_data = json.loads(response.data)
     assert response.status_code == 200
     assert response_data["result"] == "ok"
-    assert type(response_data["detail"]["paws_uids"]) == list
+    assert isinstance(response_data["detail"]["paws_uids"], list)
     assert response_data["detail"]["paws_uids"][0] == ACCOUNT_ID
 
 
 class TestWriteReplicaCnf:
-    def test_write_replica_cnf_for_tools_success(self, app, client):
+    def test_write_replica_cnf_for_tools_success(self, app, client, mock_envvars_api: Mocker):
         tool_path = app.config["TESTONLY_CORRECT_TOOL_PATH"]
         account_type = "tool"
 
@@ -81,11 +82,12 @@ class TestWriteReplicaCnf:
 
         assert response.status_code == 200
         assert response_data["result"] == "ok"
-        assert response_data["detail"]["replica_path"] == tool_path
+        for result in response_data["detail"]["results"].values():
+            assert "ok" in result.lower()
 
         config_parser = ConfigParser()
         try:
-            config_parser.read(response_data["detail"]["replica_path"])
+            config_parser.read(tool_path)
         except ConfigParserError as err:
             raise AssertionError("The generated replica config file is not parseable") from err
         assert "client" in config_parser.sections()
@@ -109,7 +111,9 @@ class TestWriteReplicaCnf:
         )
         assert response.status_code == 404
 
-    def test_write_replica_cnf_for_tools_non_existing_parent_dir_returns_skip(self, client, app):
+    def test_write_replica_cnf_for_tools_non_existing_parent_dir_returns_skip(
+        self, client, app, mock_envvars_api
+    ):
         wrong_tool_path = app.config["TESTONLY_WRONG_TOOL_PATH"]
         account_type = "tool"
 
@@ -154,11 +158,12 @@ class TestWriteReplicaCnf:
 
         assert response.status_code == 200
         assert response_data["result"] == "ok"
-        assert response_data["detail"]["replica_path"] == paw_path
+        for result in response_data["detail"]["results"].values():
+            assert "ok" in result.lower()
 
         config_parser = ConfigParser()
         try:
-            config_parser.read(response_data["detail"]["replica_path"])
+            config_parser.read(paw_path)
         except ConfigParserError as err:
             raise AssertionError("The generated replica config file is not parseable") from err
         assert "client" in config_parser.sections()
@@ -228,11 +233,12 @@ class TestWriteReplicaCnf:
 
         assert response.status_code == 200
         assert response_data["result"] == "ok"
-        assert response_data["detail"]["replica_path"] == other_path
+        for result in response_data["detail"]["results"].values():
+            assert "ok" in result.lower()
 
         config_parser = ConfigParser()
         try:
-            config_parser.read(response_data["detail"]["replica_path"])
+            config_parser.read(other_path)
         except ConfigParserError as err:
             raise AssertionError("The generated replica config file is not parseable") from err
         assert "client" in config_parser.sections()
@@ -301,12 +307,13 @@ class TestWriteReplicaCnf:
 
         assert response.status_code == 200
         assert response_data["result"] == "ok"
-        assert response_data["detail"]["replica_path"] == tool_path
+        for result in response_data["detail"]["results"].values():
+            assert "ok" in result.lower()
         assert not os.path.exists(tool_path)
 
 
 class TestReadReplicaCnf:
-    def test_read_replica_cnf_success(self, client, create_replica_my_cnf):
+    def test_read_replica_cnf_success(self, client, create_replica_my_cnf, mock_envvars_api):
         data = {"account_id": TOOL_ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
         response = client.post(
@@ -321,7 +328,7 @@ class TestReadReplicaCnf:
         assert response_data["detail"]["user"] == USERNAME
         assert response_data["detail"]["password"] == mysql_hash(PASSWORD)
 
-    def test_read_replica_cnf_failure(self, client, create_replica_my_cnf):
+    def test_read_replica_cnf_failure(self, client, create_replica_my_cnf, mock_envvars_api):
         data = {
             "account_id": "wrong-accound-id",
             "account_type": "tool",
@@ -338,7 +345,7 @@ class TestReadReplicaCnf:
         assert response.status_code == 500
         assert response_data["result"] == "error"
 
-    def test_read_replica_cnf_dry_run(self, client):
+    def test_read_replica_cnf_dry_run(self, client, mock_envvars_api):
         data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True}
 
         response = client.post(
@@ -355,7 +362,7 @@ class TestReadReplicaCnf:
 
 
 class TestDeleteReplicaCnf:
-    def test_delete_replica_cnf_success(self, client, create_replica_my_cnf, app):
+    def test_delete_replica_cnf_success(self, client, create_replica_my_cnf, app, mock_envvars_api):
         tool_path = app.config["TESTONLY_CORRECT_TOOL_PATH"]
         data = {"account_id": TOOL_ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
@@ -368,10 +375,11 @@ class TestDeleteReplicaCnf:
 
         assert response.status_code == 200
         assert response_data["result"] == "ok"
-        assert tool_path in response_data["detail"]["replica_path"]
+        for result in response_data["detail"]["results"].values():
+            assert "ok" in result.lower()
         assert not os.path.exists(tool_path)
 
-    def test_delete_replica_cnf_failure(self, client, create_replica_my_cnf, app):
+    def test_delete_replica_cnf_failure(self, client, create_replica_my_cnf, app, mock_envvars_api):
         tool_path = app.config["TESTONLY_CORRECT_TOOL_PATH"]
         data = {
             "account_id": WRONG_TOOL_ACCOUNT_ID,
@@ -391,7 +399,7 @@ class TestDeleteReplicaCnf:
         assert "No such file or directory" in response_data["detail"]["reason"]
         assert os.path.exists(tool_path)
 
-    def test_delete_replica_cnf_dry_run(self, client, create_replica_my_cnf, app):
+    def test_delete_replica_cnf_dry_run(self, client, create_replica_my_cnf, app, mock_envvars_api):
         tool_path = app.config["TESTONLY_CORRECT_TOOL_PATH"]
         data = {"account_id": TOOL_ACCOUNT_ID, "account_type": "tool", "dry_run": True}
 
@@ -404,5 +412,4 @@ class TestDeleteReplicaCnf:
 
         assert response.status_code == 200
         assert response_data["result"] == "ok"
-        assert tool_path in response_data["detail"]["replica_path"]
         assert os.path.exists(tool_path)

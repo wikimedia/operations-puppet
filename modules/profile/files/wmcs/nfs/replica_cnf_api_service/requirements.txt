@@ -12,5 +12,4 @@ PyMySQL==1.0.2
 ldap3==2.8.1
 netifaces==0.10.9
 requests==2.25.1
-# Remove git pin once https://gitlab.wikimedia.org/repos/cloud/toolforge/toolforge-weld/-/merge_requests/28 is merged and released
-toolforge-weld @ git+https://gitlab.wikimedia.org/repos/cloud/toolforge/toolforge-weld@main#egg=toolforge-weld
+toolforge-weld==1.2.1

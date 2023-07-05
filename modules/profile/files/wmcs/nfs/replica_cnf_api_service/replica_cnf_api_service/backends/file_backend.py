@@ -116,7 +116,7 @@ class ToolforgeUserFileBackend(Backend):
         replica_cnf: ReplicaCnf,
         account_uid: int,
         dry_run: bool,
-    ) -> Path:
+    ) -> ReplicaCnf:
         """
         Common for all the file backends
         """
@@ -125,7 +125,7 @@ class ToolforgeUserFileBackend(Backend):
         ).resolve()
         if dry_run:
             # do not attempt to write replica.my.cnf file to replica_path if dry_run is True
-            return dest_path
+            return replica_cnf
 
         self.check_if_should_skip_write_replica_cnf(dest_path=dest_path, replica_cnf=replica_cnf)
 
@@ -160,7 +160,7 @@ class ToolforgeUserFileBackend(Backend):
             raise BackendError(f"Failed to create conf file at {replica_path}: {stderr}")
 
         LOGGER.info("created conf file at %s.", replica_path)
-        return replica_path
+        return replica_cnf
 
     def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> Path:
         """

@@ -893,7 +893,9 @@ profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path: /srv/paws/p
 profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path: /srv/tools/project
 profile::wmcs::services::toolsdb_replica_cnf::htuser: tools-db-replica-cnf
 profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix: tools
+profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template: "/srv/tools/project/{user}/.kube/config"
 profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https: true
+profile::wmcs::services::toolsdb_replica_cnf::include_tools_repo: false
 
 profile::cache::base::wikimedia_domains:
   - wikipedia.org

@@ -12,6 +12,7 @@ from unittest import mock
 
 import pytest
 import yaml
+from replica_cnf_api_service.backends.envvars_backend import ToolforgeToolEnvvarsBackend
 from replica_cnf_api_service.views import create_app
 from requests_mock import Mocker
 
@@ -124,6 +125,14 @@ def app(tmp_path: Path):
                             "use_sudo": False,
                         }
                     },
+                    "ToolforgeToolEnvvarsBackend": {
+                        "EnvvarsConfig": {
+                            "kubeconfig_path_template": str(dummy_kubeconfig_path),
+                            "toolforge_api_endpoint": DUMMY_TOOLFORGE_API,
+                            "scripts_path": str(SCRIPTS_PATH),
+                            "use_sudo": False,
+                        }
+                    },
                 },
                 "TESTONLY_CORRECT_TOOL_PATH": str(correct_tool_path),  # only for testing
                 "TESTONLY_WRONG_TOOL_PATH": str(wrong_tool_path),  # only for testing
@@ -178,3 +187,30 @@ def create_replica_my_cnf(app):
             "tool",
         ]
     )
+
+
+@pytest.fixture
+def mock_envvars_api(requests_mock: Mocker):
+    for var in ToolforgeToolEnvvarsBackend.USER_ENVVARS:
+        name_envvar = {
+            "name": var,
+            "value": USERNAME,
+        }
+        user_url = f"{DUMMY_TOOLFORGE_API}/envvars/v1/envvar/{var}"
+
+        requests_mock.get(user_url, json=name_envvar)
+        requests_mock.post(user_url, json=name_envvar)
+        requests_mock.delete(user_url, json=name_envvar)
+
+    for var in ToolforgeToolEnvvarsBackend.PASSWORD_ENVVARS:
+        pass_envvar = {
+            "name": var,
+            "value": PASSWORD,
+        }
+        pass_url = f"{DUMMY_TOOLFORGE_API}/envvars/v1/envvar/{var}"
+
+        requests_mock.get(pass_url, json=pass_envvar)
+        requests_mock.post(pass_url, json=pass_envvar)
+        requests_mock.delete(pass_url, json=pass_envvar)
+
+    return requests_mock
