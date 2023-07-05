@@ -12,7 +12,18 @@
 #        the specified amount of time
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
 # @param ca_content if present update the ca_path with the content
-#
+# @param master the primary db server
+# @param port the port to to listen on
+# @param jetty_port the port the  puppetdb app listens on
+# @param jvm_opts options passed to the java vm
+# @param ssldir the puippet ssl directory
+# @param ca_path the to use for client auth
+# @param puppetdb_pass the puppetdb password
+# @param puppetdb_ro_pass the puppetdb read only password
+# @param log_level the log log_level
+# @param tmpfs_stockpile_queue if true use tmpfs fort the stockpile queue
+# @param facts_blacklist a liust of facts to blacklist from insertion to the db
+# @param facts_blacklist_type wether the above blacklist entries are literal or regex
 # TODO: fold this class into profile::puppetdb
 class puppetmaster::puppetdb(
     Stdlib::Host               $master,
@@ -32,8 +43,7 @@ class puppetmaster::puppetdb(
     Pattern[/\d+[dhms]/]       $node_purge_ttl        = '14d',
     Pattern[/\d+[dhms]/]       $report_ttl            = '1d',
     Optional[String[1]]        $ca_content            = undef,
-
-){
+) {
 
     ## TLS Termination
     # Set up nginx as a reverse-proxy
@@ -61,13 +71,13 @@ class puppetmaster::puppetdb(
     }
 
     # T209709
-    nginx::status_site { $::fqdn:
+    nginx::status_site { $facts['networking']['fqdn']:
         port => 10080,
     }
 
     class { 'puppetdb::app':
         db_rw_host            => $master,
-        db_ro_host            => $::fqdn,
+        db_ro_host            => $facts['networking']['fqdn'],
         db_password           => $puppetdb_pass,
         db_ro_password        => $puppetdb_ro_pass,
         jvm_opts              => $jvm_opts,
