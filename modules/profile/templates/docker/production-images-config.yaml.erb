@@ -12,6 +12,7 @@ base_images:
   - <%= @registry %>/stretch:latest
   - <%= @registry %>/buster:latest
   - <%= @registry %>/bullseye:latest
+  - <%= @registry %>/bookworm:latest
 <%- if @known_uid_mappings -%>
 known_uid_mappings:
   <%- @known_uid_mappings.each do |user,uid| -%>

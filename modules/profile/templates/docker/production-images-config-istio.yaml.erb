@@ -3,7 +3,11 @@
 http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
 <%- end -%>
 registry: <%= @registry %>
-seed_image: <%= @registry %>/wikimedia-buster:latest
+seed_image: <%= @registry %>/buster:latest
+base_images:
+  - <%= @registry %>/buster:latest
+  - <%= @registry %>/bullseye:latest
+  - <%= @registry %>/bookworm:latest
 namespace: istio
 username: prod-build
 password: <%= @password %>
