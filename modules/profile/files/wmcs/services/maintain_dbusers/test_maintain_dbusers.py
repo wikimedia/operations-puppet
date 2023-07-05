@@ -3,13 +3,13 @@
 # pylint: disable=missing-class-docstring,missing-function-docstring
 from __future__ import annotations
 
-from typing import Any
 import unittest
+from typing import Any
 from unittest import mock
-import pymysql
-import pytest
 
 import maintain_dbusers
+import pymysql
+import pytest
 
 
 class MockResponse:
@@ -284,11 +284,9 @@ class WriteReplicaCnfTestCase(unittest.TestCase):
     SERVER_SKIP_REPLY = MockResponse(
         json_data={
             "result": "skip",
-            "detail": {
-                "replica_path": "path/skipped",
-                "reason": "this is a skip reply"
-            }
-        }, status_code=200
+            "detail": {"replica_path": "path/skipped", "reason": "this is a skip reply"},
+        },
+        status_code=200,
     )
     SERVER_OK_REPLY = MockResponse(
         json_data={"result": "ok", "detail": {"replica_path": "/this/is/a/path"}}, status_code=200
@@ -526,7 +524,6 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
 
     @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
     def test_should_raise_key_error_if_function_is_called_with_wrong_config_keys(self, _):
-
         with pytest.raises(KeyError):
             maintain_dbusers.delete_replica_cnf(
                 "right", "args", "passed", {"but wrong config keys": ""}
@@ -624,7 +621,6 @@ class FetchPawsUidsTestCase(unittest.TestCase):
 
     @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
     def test_should_raise_key_error_if_function_is_called_with_wrong_config_keys(self, _):
-
         with pytest.raises(KeyError):
             maintain_dbusers.fetch_paws_uids(
                 {"right number of function args but wrong config keys": ""}
@@ -705,7 +701,6 @@ class FindPawsUsersTestCase(unittest.TestCase):
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", side_effect=Exception("Dummy error"))
     def test_should_re_raise_if_fetch_paws_uids_raises(self, mocked_fetch_paws_uids):
-
         with pytest.raises(Exception, match="Dummy error"):
             maintain_dbusers.find_paws_users({"wrong-config-key": ""})
 

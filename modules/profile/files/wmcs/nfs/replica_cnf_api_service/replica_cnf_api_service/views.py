@@ -57,7 +57,9 @@ def get_relative_path(account_type, name):
     """
     if account_type == "tool":
         return str(
-            Path(name[len(current_app.config.get("TOOLS_PROJECT_PREFIX")) + 1:]) / "replica.my.cnf"
+            # flake8: noqa
+            Path(name[len(current_app.config.get("TOOLS_PROJECT_PREFIX")) + 1 :])
+            / "replica.my.cnf"
         )
     elif account_type == "paws":
         return str(Path(name) / ".my.cnf")
@@ -114,7 +116,7 @@ def write_replica_cnf():
                             "this might happen if maintain-kubeusers has not yet created it, "
                             "skipping to retry in the next run"
                         ).format(account_id, str(Path(replica_path).parent)),
-                    }
+                    },
                 }
             ),
             200,
@@ -132,7 +134,7 @@ def write_replica_cnf():
                             "this might happen if the user has not logged in yet, "
                             "skipping to retry in the next run"
                         ).format(account_id, str(Path(replica_path).parent)),
-                    }
+                    },
                 }
             ),
             200,
@@ -148,8 +150,7 @@ def write_replica_cnf():
                     "detail": {
                         "replica_path": replica_path,
                         "reason": "Skipping Account {0}: {1} Already exists".format(
-                            account_id,
-                            replica_path
+                            account_id, replica_path
                         ),
                     },
                 }
@@ -167,8 +168,14 @@ def write_replica_cnf():
 
     res = subprocess.run(
         get_command_array(script="write_replica_cnf.sh")
-        + [str(uid), relative_path, replica_buffer.getvalue().encode("utf-8"), account_type],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        + [
+            str(uid),
+            relative_path,
+            replica_buffer.getvalue().encode("utf-8"),
+            account_type,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         # subprocess.run without check=True is used here to avoid arguments
         # including username and password from being unintentionally sent back to client on error
         check=False,
@@ -213,7 +220,8 @@ def read_replica_cnf():
     try:
         res = subprocess.run(
             get_command_array(script="read_replica_cnf.sh") + [relative_path, account_type],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             check=False,
         )
 
@@ -261,19 +269,26 @@ def delete_replica_cnf():
 
     res = subprocess.run(
         get_command_array(script="delete_replica_cnf.sh") + [relative_path, account_type],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         check=False,
     )
 
     if res.returncode == 0:
         return (
             jsonify(
-                {"result": "ok", "detail": {"replica_path": res.stdout.decode("utf-8").strip()}}
+                {
+                    "result": "ok",
+                    "detail": {"replica_path": res.stdout.decode("utf-8").strip()},
+                }
             ),
             200,
         )
     else:
-        return jsonify({"result": "error", "detail": {"reason": res.stderr.decode("utf-8")}}), 500
+        return (
+            jsonify({"result": "error", "detail": {"reason": res.stderr.decode("utf-8")}}),
+            500,
+        )
 
 
 @bp_v1.route("/paws-uids", methods=["GET"])

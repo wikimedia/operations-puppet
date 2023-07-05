@@ -77,10 +77,7 @@ def parse_php_canonical(mfile):
 
 
 def seed_schema(ops):
-
-    ops.write_execute(
-        "CREATE DATABASE IF NOT EXISTS meta_p DEFAULT CHARACTER SET utf8;"
-    )
+    ops.write_execute("CREATE DATABASE IF NOT EXISTS meta_p DEFAULT CHARACTER SET utf8;")
     ops.write_execute(
         """CREATE TABLE IF NOT EXISTS meta_p.wiki (
             dbname varchar(32) PRIMARY KEY,
@@ -109,7 +106,6 @@ def seed_schema(ops):
 
 
 def main():
-
     argparser = argparse.ArgumentParser(
         "maintain-meta_p", description="Maintain metadatabase of wiki's"
     )
@@ -137,10 +133,7 @@ def main():
 
     argparser.add_argument(
         "--dry-run",
-        help=(
-            "Give this parameter if you don't want the script to actually"
-            " make changes."
-        ),
+        help=("Give this parameter if you don't want the script to actually" " make changes."),
         action="store_true",
     )
 
@@ -153,10 +146,7 @@ def main():
 
     argparser.add_argument(
         "--mediawiki-config",
-        help=(
-            "Specify path to mediawiki-config checkout"
-            " values can be given space-separated."
-        ),
+        help=("Specify path to mediawiki-config checkout" " values can be given space-separated."),
         default="/usr/local/lib/mediawiki-config",
     )
 
@@ -166,9 +156,7 @@ def main():
         default="",
     )
 
-    argparser.add_argument(
-        "--debug", help="Turn on debug logging", action="store_true"
-    )
+    argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
     argparser.add_argument(
         "--bootstrap",
@@ -224,18 +212,13 @@ def main():
             ops.write_execute("TRUNCATE meta_p.wiki;")
 
         alldbs = "{}/dblists/all.dblist".format(args.mediawiki_config)
-        dbs = {
-            db: {"has_visualeditor": True}
-            for db in open(alldbs).read().splitlines()
-        }
+        dbs = {db: {"has_visualeditor": True} for db in open(alldbs).read().splitlines()}
 
         if args.databases:
             dbs = {k: v for k, v in dbs.items() if k in args.databases}
 
         def read_list(fname, prop, val):
-            fpath = os.path.join(
-                args.mediawiki_config, "dblists", "{}.dblist".format(fname)
-            )
+            fpath = os.path.join(args.mediawiki_config, "dblists", "{}.dblist".format(fname))
             if os.path.isfile(fpath):
                 for db in open(fpath).read().splitlines():
                     if db in dbs:
@@ -273,14 +256,11 @@ def main():
         ]:
             read_list(family, "family", family)
 
-        initialise_settings = "{}/wmf-config/InitialiseSettings.php".format(
-            args.mediawiki_config
-        )
+        initialise_settings = "{}/wmf-config/InitialiseSettings.php".format(args.mediawiki_config)
 
         canonical = parse_php_canonical(initialise_settings)
 
         for db, dbInfo in dbs.items():
-
             logging.debug("collecting action api info for {}".format(db))
             if "private" in dbInfo and dbInfo["private"]:
                 continue
@@ -303,9 +283,7 @@ def main():
                     header = {"User-Agent": "Labsdb maintain-meta_p.py"}
                     r = requests.get(canon + url_tail, headers=header)
                     siteinfo = r.json()
-                    name = force_to_unicode(
-                        siteinfo["query"]["general"]["sitename"]
-                    )
+                    name = force_to_unicode(siteinfo["query"]["general"]["sitename"])
                     lang = force_to_unicode(siteinfo["query"]["general"]["lang"])
                     case = force_to_unicode(siteinfo["query"]["general"]["case"])
                     dbInfo["name"] = name
@@ -316,7 +294,6 @@ def main():
                     logging.warning("failed request for {}: {}".format(canon, e))
 
         for db, dbInfo in dbs.items():
-
             logging.debug("update meta_p for {}".format(db))
             if "deleted" in dbInfo and dbInfo["deleted"]:
                 continue
@@ -327,15 +304,11 @@ def main():
                 continue
 
             fields = {
-                "has_flaggedrevs": int(
-                    "has_flaggedrevs" in dbInfo and dbInfo["has_flaggedrevs"]
-                ),
+                "has_flaggedrevs": int("has_flaggedrevs" in dbInfo and dbInfo["has_flaggedrevs"]),
                 "has_visualeditor": int(
                     "has_visualeditor" in dbInfo and dbInfo["has_visualeditor"]
                 ),
-                "has_wikidata": int(
-                    "has_wikidata" in dbInfo and dbInfo["has_wikidata"]
-                ),
+                "has_wikidata": int("has_wikidata" in dbInfo and dbInfo["has_wikidata"]),
                 "is_closed": int("closed" in dbInfo and dbInfo["closed"]),
                 "is_sensitive": int("sensitive" in dbInfo and dbInfo["sensitive"]),
                 "lang": "en",

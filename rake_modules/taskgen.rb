@@ -635,6 +635,17 @@ class TaskGen < ::Rake::TaskLib
           raise 'Invalid commit message'.red unless system("tox -e commit-message")
         end
         tasks << 'tox:commit_message'
+
+        wmcs_files = filter_files_by("modules/profile/files/wmcs/***")
+        unless wmcs_files.empty?
+          desc 'Run wmcs tests'
+          task :wmcs do
+            res = system("tox -e wmcs")
+            raise 'Tests for wmcs failed!'.red unless res
+          end
+          tasks << 'tox:wmcs'
+        end
+
       end
     end
 

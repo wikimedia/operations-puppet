@@ -50,10 +50,15 @@ def test_get_command_array(app, script):
     [
         [
             "tool",
-            str(Path(ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1:]) / "replica.my.cnf"),
+            # flake8: noqa
+            str(Path(ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1 :]) / "replica.my.cnf"),
             lambda _app: _app.config["CORRECT_TOOL_PATH"],
         ],
-        ["paws", str(Path(ACCOUNT_ID) / ".my.cnf"), lambda _app: _app.config["CORRECT_PAWS_PATH"]],
+        [
+            "paws",
+            str(Path(ACCOUNT_ID) / ".my.cnf"),
+            lambda _app: _app.config["CORRECT_PAWS_PATH"],
+        ],
         [
             "user",
             str(Path(ACCOUNT_ID) / "replica.my.cnf"),
@@ -68,7 +73,11 @@ def test_get_replica_path(app, account_type, relative_path, get_expected_path):
 @pytest.mark.parametrize(
     "account_type, expected_path",
     [
-        ["tool", str(Path(ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1:]) / "replica.my.cnf")],
+        # flake8: noqa
+        [
+            "tool",
+            str(Path(ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1 :]) / "replica.my.cnf"),
+        ],
         ["paws", str(Path(ACCOUNT_ID) / ".my.cnf")],
         ["user", str(Path(ACCOUNT_ID) / "replica.my.cnf")],
     ],
@@ -101,7 +110,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -149,7 +160,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
         assert response.status_code == 200
@@ -171,7 +184,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -219,7 +234,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
         assert response.status_code == 500
@@ -241,7 +258,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -289,7 +308,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
         assert response.status_code == 200
@@ -311,7 +332,9 @@ class TestWriteReplicaCnf:
         }
 
         response = client.post(
-            "/v1/write-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/write-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -326,7 +349,9 @@ class TestReadReplicaCnf:
         data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
         response = client.post(
-            "/v1/read-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/read-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -336,10 +361,16 @@ class TestReadReplicaCnf:
         assert response_data["detail"]["password"] == mysql_hash(PASSWORD)
 
     def test_read_replica_cnf_failure(self, client, create_replica_my_cnf):
-        data = {"account_id": "wrong-accound-id", "account_type": "tool", "dry_run": False}
+        data = {
+            "account_id": "wrong-accound-id",
+            "account_type": "tool",
+            "dry_run": False,
+        }
 
         response = client.post(
-            "/v1/read-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/read-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -350,7 +381,9 @@ class TestReadReplicaCnf:
         data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True}
 
         response = client.post(
-            "/v1/read-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/read-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -366,7 +399,9 @@ class TestDeleteReplicaCnf:
         data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": False}
 
         response = client.post(
-            "/v1/delete-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/delete-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -377,10 +412,16 @@ class TestDeleteReplicaCnf:
 
     def test_delete_replica_cnf_failure(self, client, create_replica_my_cnf):
         tool_path = current_app.config["CORRECT_TOOL_PATH"]
-        data = {"account_id": WRONG_ACCOUNT_ID, "account_type": "tool", "dry_run": False}
+        data = {
+            "account_id": WRONG_ACCOUNT_ID,
+            "account_type": "tool",
+            "dry_run": False,
+        }
 
         response = client.post(
-            "/v1/delete-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/delete-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 
@@ -394,7 +435,9 @@ class TestDeleteReplicaCnf:
         data = {"account_id": ACCOUNT_ID, "account_type": "tool", "dry_run": True}
 
         response = client.post(
-            "/v1/delete-replica-cnf", data=json.dumps(data), content_type="application/json"
+            "/v1/delete-replica-cnf",
+            data=json.dumps(data),
+            content_type="application/json",
         )
         response_data = json.loads(response.data)
 

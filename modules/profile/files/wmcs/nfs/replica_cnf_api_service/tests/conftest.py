@@ -32,15 +32,22 @@ def app(tmp_path):
     temp_replica_cnf_config_path = tmp_path / "replica_cnf_config.yaml"
 
     # in production this is automatically handled
-    os.makedirs(temp_tool_path / ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1:])
+    # flake8: noqa
+    os.makedirs(temp_tool_path / ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1 :])
     os.makedirs(temp_paws_path / ACCOUNT_ID)
     os.makedirs(temp_user_path / ACCOUNT_ID)
 
     correct_tool_path = (
-        temp_tool_path / ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1:] / "replica.my.cnf"
+        # flake8: noqa
+        temp_tool_path
+        / ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1 :]
+        / "replica.my.cnf"
     )
     wrong_tool_path = (
-        temp_tool_path / WRONG_ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1:] / "replica.my.cnf"
+        # flake8: noqa
+        temp_tool_path
+        / WRONG_ACCOUNT_ID[len(TOOLS_PROJECT_PREFIX) + 1 :]
+        / "replica.my.cnf"
     )
     correct_paws_path = temp_paws_path / ACCOUNT_ID / ".my.cnf"
     wrong_paws_path = temp_paws_path / WRONG_ACCOUNT_ID / ".my.cnf"
@@ -124,7 +131,9 @@ def create_replica_my_cnf(app):
     # Setup
 
     relative_path = (
-        Path(ACCOUNT_ID[len(app.config.get("TOOLS_PROJECT_PREFIX")) + 1:]) / "replica.my.cnf"
+        # flake8: noqa
+        Path(ACCOUNT_ID[len(app.config.get("TOOLS_PROJECT_PREFIX")) + 1 :])
+        / "replica.my.cnf"
     )
 
     replica_config = configparser.ConfigParser()

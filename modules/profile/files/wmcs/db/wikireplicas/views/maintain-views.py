@@ -31,8 +31,8 @@ import re
 import sys
 from typing import Dict, List
 
-import yaml
 import pymysql
+import yaml
 
 
 class SchemaOperations:
@@ -141,10 +141,7 @@ class SchemaOperations:
             # Some views only exist in CentralAuth, some only in MediaWiki,
             # etc.
             logging.debug(
-                (
-                    "Skipping full view %s on database %s as the table does not"
-                    " seem to exist."
-                ),
+                ("Skipping full view %s on database %s as the table does not" " seem to exist."),
                 view,
                 self.db,
             )
@@ -159,8 +156,7 @@ class SchemaOperations:
         match = re.match(r"^(?:(.*)\.)?([^.]+)$", source)
         if not match:
             raise Exception(
-                f"Custom view source does not look valid! "
-                f"Source: {source}, view: {view_name}"
+                f"Custom view source does not look valid! " f"Source: {source}, view: {view_name}"
             )
 
         # Effectively separate a db.table source into it's parts
@@ -175,10 +171,7 @@ class SchemaOperations:
             return source_db, source_table
 
         logging.debug(
-            (
-                "Failed to find table %s in database %s as a source for"
-                " view %s"
-            ),
+            ("Failed to find table %s in database %s as a source for" " view %s"),
             source_table,
             source_db,
             view_name,
@@ -350,18 +343,10 @@ class SchemaOperations:
             if "$INSERTED_EXPR$" in query:
                 query = query.replace(
                     "$INSERTED_EXPR$",
-                    (
-                        " log_type IN ('"
-                        + "', '".join(view_details["logging_where"])
-                        + "')\n"
-                    ),
+                    (" log_type IN ('" + "', '".join(view_details["logging_where"]) + "')\n"),
                 )
             else:
-                query += (
-                    "log_type IN ('"
-                    + "', '".join(view_details["logging_where"])
-                    + "')\n"
-                )
+                query += "log_type IN ('" + "', '".join(view_details["logging_where"]) + "')\n"
 
         if "group" in view_details:
             # Technically nothing is using this at the moment...
@@ -447,9 +432,7 @@ def read_dblist(db_list, mwroot):
         line = line.strip()
         if line.startswith("%%"):
             if dbs:
-                raise RuntimeError(
-                    f"Encountered a dblist expression inside dblist {db_list}"
-                )
+                raise RuntimeError(f"Encountered a dblist expression inside dblist {db_list}")
             dbs = eval_dblist(line, mwroot)
             break
         elif line:
@@ -525,9 +508,7 @@ def dbrun(
                         ops.drop_view(dt)
                     except pymysql.err.MySQLError:
                         exit_status = 1
-                        logging.exception(
-                            "Error dropping view %s.%s", ops.db_p, dt
-                        )
+                        logging.exception("Error dropping view %s.%s", ops.db_p, dt)
     return exit_status
 
 
@@ -557,15 +538,10 @@ def main():
         help="Path to find the configuration file",
         default="/etc/maintain-views.yaml",
     )
-    argparser.add_argument(
-        "--table", help="Specify a single table to act on", default=""
-    )
+    argparser.add_argument("--table", help="Specify a single table to act on", default="")
     argparser.add_argument(
         "--dry-run",
-        help=(
-            "Give this parameter if you don't want the script to actually"
-            " make changes."
-        ),
+        help=("Give this parameter if you don't want the script to actually" " make changes."),
         action="store_true",
     )
     argparser.add_argument(
@@ -573,29 +549,21 @@ def main():
         help="Clean out views from _p db that are no longer specified.",
         action="store_true",
     )
-    argparser.add_argument(
-        "--drop", help="Remove _p db entirely.", action="store_true"
-    )
+    argparser.add_argument("--drop", help="Remove _p db entirely.", action="store_true")
     argparser.add_argument(
         "--replace-all",
         help=(
-            "Give this parameter if you don't want the script to prompt"
-            " before replacing views."
+            "Give this parameter if you don't want the script to prompt" " before replacing views."
         ),
         action="store_true",
     )
     argparser.add_argument(
         "--mediawiki-config",
-        help=(
-            "Specify path to mediawiki-config checkout"
-            " values can be given space-separated."
-        ),
+        help=("Specify path to mediawiki-config checkout" " values can be given space-separated."),
         default="/usr/local/lib/mediawiki-config",
     )
 
-    argparser.add_argument(
-        "--debug", help="Turn on debug logging", action="store_true"
-    )
+    argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
     args = argparser.parse_args()
 
@@ -625,9 +593,8 @@ def main():
 
         customviews = {}
         for view, meta in config["customviews"].items():
-            if (
-                meta["source"] == args.table
-                or (isinstance(meta["source"], list) and args.table in meta["source"])
+            if meta["source"] == args.table or (
+                isinstance(meta["source"], list) and args.table in meta["source"]
             ):
                 customviews[view] = config["customviews"][view]
     else:
@@ -697,9 +664,7 @@ def main():
             dbs_in_section = set(dbs_for_section)
             instance_dbs = dbs_in_scope.intersection(dbs_in_section)
             instance_dbs_with_metadata = {
-                db: meta
-                for (db, meta) in dbs_with_metadata.items()
-                if db in instance_dbs
+                db: meta for (db, meta) in dbs_with_metadata.items() if db in instance_dbs
             }
             if instance_dbs_with_metadata:
                 exit_status = dbrun(

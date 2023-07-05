@@ -35,15 +35,13 @@ def dbs_with_table(cursor, table_name, database="all"):
 
 def dbs_on_section(section):
     """Return the names of the databases on a given section"""
-    dblist = requests.get('https://noc.wikimedia.org/conf/dblists/{}.dblist'.format(section)).text
-    return [i.strip() for i in dblist.split('\n') if i and i.strip()[0] != '#']
+    dblist = requests.get("https://noc.wikimedia.org/conf/dblists/{}.dblist".format(section)).text
+    return [i.strip() for i in dblist.split("\n") if i and i.strip()[0] != "#"]
 
 
 def drop_index(cursor, db_name, index, dryrun=False):
     """Drop an index"""
-    query = "DROP INDEX {} on {}.{}".format(
-        index["name"], db_name, index["table"]
-    )
+    query = "DROP INDEX {} on {}.{}".format(index["name"], db_name, index["table"])
     logging.debug(cursor.mogrify(query))
 
     if not dryrun:
@@ -133,9 +131,7 @@ def main():
         default=False,
         help="Print out SQL only",
     )
-    parser.add_argument(
-        "--debug", dest="debug", action="store_true", default=False
-    )
+    parser.add_argument("--debug", dest="debug", action="store_true", default=False)
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -151,9 +147,7 @@ def main():
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError:
-            logging.exception(
-                "YAML file at %s could not be opened", args.config
-            )
+            logging.exception("YAML file at %s could not be opened", args.config)
             sys.exit(1)
 
     db_connections = {}
@@ -177,16 +171,12 @@ def main():
                     cursor.execute("SET NAMES 'utf8';")
                     cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
                     cursor.execute("SET SESSION lock_wait_timeout=60;")
-                    dbs = dbs_with_table(
-                        cursor, index["table"], database=args.database
-                    )
+                    dbs = dbs_with_table(cursor, index["table"], database=args.database)
                     dbs_in_section = dbs_on_section(instance)
                     dbs = sorted(list(set(dbs).intersection(set(dbs_in_section))))
                     for db_name in dbs:
                         with db_connections[instance].cursor() as change_cursor:
-                            existing_index = current_index_columns(
-                                change_cursor, db_name, index
-                            )
+                            existing_index = current_index_columns(change_cursor, db_name, index)
                             if not existing_index:
                                 write_index(
                                     change_cursor,
@@ -196,13 +186,9 @@ def main():
                                     args.debug,
                                 )
                             elif existing_index == index["columns"]:
-                                logging.debug(
-                                    "Skipping %s -- already exists", index["name"]
-                                )
+                                logging.debug("Skipping %s -- already exists", index["name"])
                             else:
-                                drop_index(
-                                    change_cursor, db_name, index, args.dryrun
-                                )
+                                drop_index(change_cursor, db_name, index, args.dryrun)
                                 write_index(
                                     change_cursor,
                                     db_name,
