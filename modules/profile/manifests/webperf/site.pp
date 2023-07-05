@@ -91,6 +91,18 @@ class profile::webperf::site (
         require   => File['/etc/excimer-ui-server']
     }
 
+    file { '/etc/php/7.4/apache2/conf.d/50-webperf.ini':
+        ensure  => file,
+        content => wmflib::php_ini({
+            # XHGui requires more than the default 128M
+            'memory_limit' => '512M',
+        }),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Class['::httpd'],
+    }
+
     $httpd_config = [
         'SetEnv EXCIMER_CONFIG_PATH /etc/excimer-ui-server/config.json',
         'SetEnv XHGUI_SAVE_HANDLER pdo',
