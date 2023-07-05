@@ -99,10 +99,3 @@ profile::contacts::role_contacts: ['Data Engineering']
 profile::base::certificates::include_bundle_jks: true
 
 profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
-
-# The spark jobs are being temporarily disabled in order to permit us to upgrade the spark
-# shuffler service on YARN from version 2 to version 3. This change will be reverted after
-# the upgrade is complete.
-profile::analytics::refinery::job::canary_events::ensure_timers: absent
-profile::analytics::refinery::job::refine::ensure_timers: absent
-profile::analytics::refinery::job::refine_sanitize::ensure_timers: absent
