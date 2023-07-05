@@ -381,6 +381,8 @@ class TaskGen < ::Rake::TaskLib
     task :python_extensions do
       failures = false
       source_files.each do |source_file|
+        # Skip if this is a direcory (or a symlink to a directory)
+        next if File.directory?(source_file)
         # We don't need to perform CI on user files as such we skip them
         next if source_file.end_with?('.py') || source_file.start_with?('modules/admin/files/home')
         # skip zero byte files
