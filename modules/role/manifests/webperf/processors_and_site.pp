@@ -12,7 +12,7 @@ class role::webperf::processors_and_site {
     }
 
     class { '::httpd':
-        modules   => ['php7.4', 'rewrite', 'proxy', 'proxy_http', 'remoteip', 'headers', 'ssl'],
+        modules   => ['php7.4', 'proxy', 'proxy_http', 'remoteip', 'headers', 'ssl'],
         http_only => true,
     }
 }

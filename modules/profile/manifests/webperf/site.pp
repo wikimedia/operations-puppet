@@ -13,15 +13,15 @@
 #   For example "prof.example" or "127.0.0.2:8000".
 #   Optional. If undefined, the "/arclamp" path is not proxied.
 #
+# [*xhgui_host*]
+#   HTTP host address where the XHGui application is served (hostname or IP, port allowed).
+#   For example "xhgui.example" or "127.0.0.3:8000".
+#   Optional. If undefined, the "/xhgui" path is not proxied.
+#
 class profile::webperf::site (
     Stdlib::Fqdn $server_name                      = lookup('profile::webperf::site::server_name'),
     Stdlib::Fqdn $arclamp_host                     = lookup('arclamp_host'),
-    Stdlib::Fqdn $xhgui_mysql_host                 = lookup('profile::webperf::xhgui::mysql_host'),
-    String $xhgui_mysql_db                         = lookup('profile::webperf::xhgui::mysql_db'),
-    String $xhgui_mysql_user                       = lookup('profile::webperf::xhgui::mysql_user'),
-    String $xhgui_mysql_password                   = lookup('profile::webperf::xhgui::mysql_password'),
-    String $xhgui_mysql_admin_user                 = lookup('profile::webperf::xhgui::mysql_admin_user'),
-    String $xhgui_mysql_admin_password             = lookup('profile::webperf::xhgui::mysql_admin_password'),
+    Stdlib::Fqdn $xhgui_host                       = lookup('profile::webperf::site::xhgui_host'),
     Stdlib::Fqdn $excimer_mysql_host               = lookup('profile::webperf::site::excimer_mysql_host'),
     String $excimer_mysql_db                       = lookup('profile::webperf::site::excimer_mysql_db'),
     String $excimer_mysql_user                     = lookup('profile::webperf::site::excimer_mysql_user'),
@@ -91,28 +91,8 @@ class profile::webperf::site (
         require   => File['/etc/excimer-ui-server']
     }
 
-    file { '/etc/php/7.4/apache2/conf.d/50-webperf.ini':
-        ensure  => file,
-        content => wmflib::php_ini({
-            # XHGui requires more than the default 128M
-            'memory_limit' => '512M',
-        }),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        notify  => Class['::httpd'],
-    }
-
-    $httpd_config = [
-        'SetEnv EXCIMER_CONFIG_PATH /etc/excimer-ui-server/config.json',
-        'SetEnv XHGUI_SAVE_HANDLER pdo',
-        "SetEnv XHGUI_PDO_DSN \"mysql:host=${xhgui_mysql_host};dbname=${xhgui_mysql_db};charset=utf8\"",
-        "SetEnv XHGUI_PDO_USER \"${xhgui_mysql_user}\"",
-        "SetEnv XHGUI_PDO_PASS \"${xhgui_mysql_password}\"",
-        'SetEnv XHGUI_PDO_TABLE xhgui'
-    ];
-    httpd::conf { 'webperf_env':
-        content => inline_template("<%= @httpd_config.join(\"\n\") %>\n"),
+    httpd::conf { 'excimer_config':
+        content => "SetEnv EXCIMER_CONFIG_PATH /etc/excimer-ui-server/config.json\n"
     }
 
     $swift_auth_url = $swift_accounts['performance_arclamp']['auth']
