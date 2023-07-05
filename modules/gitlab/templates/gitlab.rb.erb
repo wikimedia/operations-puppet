@@ -194,7 +194,9 @@ puma['exporter_port'] = <%= config['port'] %>
 <%- when 'workhorse' -%>
 gitlab_workhorse['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
 <%- when 'gitaly' -%>
-gitaly['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
+gitaly['configuration'] = {
+  prometheus_listen_addr: '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>',
+}
 <%- when 'sidekiq' -%>
 sidekiq['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
 sidekiq['listen_port'] = <%= config['port'] %>
