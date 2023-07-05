@@ -113,6 +113,7 @@ zookeeper_clusters:
     hosts:
       deployment-zookeeper02.eqiad.wmflabs: '2'
 profile::cache::haproxy::vars:
+  tls:
     - direction: request
       name: 'txn.xwd_count'
       value: 'req.hdr_cnt(X-Wikimedia-Debug)'
@@ -153,6 +154,7 @@ profile::cache::haproxy::vars:
       acl: '!ssl_auth_rsa'
 
 profile::cache::haproxy::acls:
+  tls:
     - name: missing_xwd
       criterion: 'var(txn.xwd_count)'
       operator: 'eq'
@@ -171,6 +173,7 @@ profile::cache::haproxy::acls:
       value: '^ECDHE-RSA'
 
 profile::cache::haproxy::add_headers:
+  tls:
     - direction: request
       name: 'X-Client-IP'
       value: '%[src]'
@@ -188,6 +191,7 @@ profile::cache::haproxy::add_headers:
       value: 'vers=%[ssl_fc_protocol];keyx=unknown;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
 
 profile::cache::haproxy::del_headers:
+  tls:
     - direction: response
       name: 'X-Analytics'
     - direction: response
