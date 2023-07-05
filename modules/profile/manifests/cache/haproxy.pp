@@ -13,12 +13,12 @@ class profile::cache::haproxy(
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', {'default_value'                        => undef}),
-    Hash[String, Array[Haproxy::Var]] $vars = lookup('profile::cache::haproxy::vars'),
-    Hash[String, Array[Haproxy::Acl]] $acls = lookup('profile::cache::haproxy::acls'),
-    Hash[String, Array[Haproxy::Header]] $add_headers = lookup('profile::cache::haproxy::add_headers'),
-    Hash[String, Array[Haproxy::Header]] $del_headers = lookup('profile::cache::haproxy::del_headers'),
-    Optional[Hash[String, Array[Haproxy::Action]]] $pre_acl_actions = lookup('profile::cache::haproxy::pre_acl_actions', {'default_value'                      => undef}),
-    Optional[Hash[String, Array[Haproxy::Action]]] $post_acl_actions = lookup('profile::cache::haproxy::post_acl_actions', {'default_value'                    => undef}),
+    Array[Haproxy::Var] $vars = lookup('profile::cache::haproxy::vars'),
+    Array[Haproxy::Acl] $acls = lookup('profile::cache::haproxy::acls'),
+    Array[Haproxy::Header] $add_headers = lookup('profile::cache::haproxy::add_headers'),
+    Array[Haproxy::Header] $del_headers = lookup('profile::cache::haproxy::del_headers'),
+    Optional[Array[Haproxy::Action]] $pre_acl_actions = lookup('profile::cache::haproxy::pre_acl_actions', {'default_value'                      => undef}),
+    Optional[Array[Haproxy::Action]] $post_acl_actions = lookup('profile::cache::haproxy::post_acl_actions', {'default_value'                    => undef}),
     Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value'                          => undef}),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     String $ocsp_proxy = lookup('http_proxy'),
@@ -37,23 +37,6 @@ class profile::cache::haproxy(
     }
     if $do_ocsp {
         class { 'sslcert::ocsp::init':
-        }
-    }
-
-    # First check mandatory params for required 'tls' key
-    $hashes = [ $vars, $acls, $add_headers, $del_headers ]
-    $hashes.each |Hash $_hash| {
-        if !has_key($_hash, 'tls') {
-            fail("profile::cache::haproxy::${_hash} must have a 'tls' key")
-        }
-    }
-    # Then check optional parameters (if they are defined)
-    $optional_hashes = [$pre_acl_actions, $post_acl_actions]
-    $optional_hashes.each |Hash $_opt_hash| {
-        if defined('$_opt_hash') {
-            if !has_key($_opt_hash, 'tls') {
-                fail("profile::cache::haproxy::${_opt_hash} must have a 'tls' key")
-            }
         }
     }
 

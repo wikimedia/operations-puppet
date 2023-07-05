@@ -65,7 +65,7 @@ listen tls
     capture request header Host len 25
 
 <%- if @vars -%>
-<%- @vars['tls'].each do |var| -%>
+<%- @vars.each do |var| -%>
 <%- if var['acl'] == nil -%>
     http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
 <%- end -%>
@@ -73,41 +73,34 @@ listen tls
 <%- end -%>
 
 <%- if @pre_acl_actions -%>
-<%- @pre_acl_actions['tls'].each do |action| -%>
+<%- @pre_acl_actions.each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
 <%- end -%>
 
-<%- if @acls -%>
-<%- @acls['tls'].each do |acl| -%>
+<%- @acls.each do |acl| -%>
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
-<%- end -%>
 <%- end -%>
 
 <%- if @vars -%>
-<%- @vars['tls'].each do |var| -%>
+<%- @vars.each do |var| -%>
 <%- if var['acl'] -%>
     http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
 <%- end -%>
 <%- end -%>
 <%- end -%>
 
-<%- if @add_headers -%>
-<%- @add_headers['tls'].each do |add_header| -%>
+<%- @add_headers.each do |add_header| -%>
 <%- if add_header['value'] -%>
     http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> "<%= add_header['value'] %>"
 <%- end -%>
 <%- end -%>
-<%- end -%>
-
-<%- if @del_headers -%>
-<%- @del_headers['tls'].each do |del_header| -%>
+<%- @del_headers.each do |del_header| -%>
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
-<%- end -%>
 <%- end -%>
 
 <%- if @post_acl_actions -%>
-<%- @post_acl_actions['tls'].each do |action| -%>
+<%- @post_acl_actions.each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
 <%- end -%>

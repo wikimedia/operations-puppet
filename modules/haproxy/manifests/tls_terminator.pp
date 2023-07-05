@@ -46,17 +46,17 @@
 # @param lua_scripts
 #   List of lua scripts to be loaded
 # @param vars
-#   Hash of list of variables to set based on HTTP request|response data, keyed by frontend
+#   List of variables to set based on HTTP request|response data
 # @param acls
-#   Hash of list of ACLs. They can be used to conditionally remove HTTP headers, keyed by frontend
+#   List of ACLs. They can be used to conditionally remove HTTP headers
 # @param add_headers
-#   Hash of list of headers to add on HTTP requests or responses, keyed by frontend
+#   List of headers to add on HTTP requests or responses
 # @param del_headers
-#   Hash of list of headers to remove on HTTP requests or respones, keyed by frontend
+#   List of headers to remove on HTTP requests or respones
 # @param pre_acl_actions
-#   Hash of list of actions to take before ACLs are defined, keyed by frontend
+#   List of actions to take before ACLs are defined
 # @param post_acl_actions
-#   Hash of list of actions to take after ACLs are defined, keyed by frontend
+#   List of actions to take after ACLs are defined
 # @param prometheus_port
 #   Port to expose stats and prometheus metrics. Requires HAProxy >= 2.0
 # @param sticktables
@@ -85,12 +85,12 @@ define haproxy::tls_terminator(
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,
-    Optional[Hash[String ,Array[Haproxy::Var]]] $vars = undef,
-    Optional[Hash[String, Array[Haproxy::Acl]]] $acls = undef,
-    Optional[Hash[String, Array[Haproxy::Header]]] $add_headers = undef,
-    Optional[Hash[String, Array[Haproxy::Header]]] $del_headers = undef,
-    Optional[Hash[String, Array[Haproxy::Action]]] $pre_acl_actions = undef,
-    Optional[Hash[String, Array[Haproxy::Action]]] $post_acl_actions = undef,
+    Optional[Array[Haproxy::Var]] $vars = undef,
+    Optional[Array[Haproxy::Acl]] $acls = undef,
+    Optional[Array[Haproxy::Header]] $add_headers = undef,
+    Optional[Array[Haproxy::Header]] $del_headers = undef,
+    Optional[Array[Haproxy::Action]] $pre_acl_actions = undef,
+    Optional[Array[Haproxy::Action]] $post_acl_actions = undef,
     Optional[Stdlib::Port] $prometheus_port = undef,
     Optional[Array[Haproxy::Sticktable]] $sticktables = undef,
     Optional[Stdlib::Port] $http_redirection_port = undef,
@@ -99,16 +99,6 @@ define haproxy::tls_terminator(
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
         fail('haproxy::tls_terminator should only be used once the haproxy class is declared.')
-    }
-
-    # Check hash parameters for 'tls' key
-    $optional_hashes = [ $vars, $acls, $add_headers, $del_headers, $pre_acl_actions, $post_acl_actions ]
-    $optional_hashes.each |Hash $opt_hash| {
-        if defined('$opt_hash') {
-            if !has_key($opt_hash, 'tls') {
-                fail("${opt_hash} must have a 'tls' key")
-            }
-        }
     }
 
     file { $crt_list_path:

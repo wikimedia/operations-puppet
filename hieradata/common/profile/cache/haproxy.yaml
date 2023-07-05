@@ -1,5 +1,4 @@
 profile::cache::haproxy::post_acl_actions:
-  tls:
     # To disable concurrency enforcement, comment out this entire block below.
     - context: http-request
       verb: silent-drop
@@ -17,12 +16,10 @@ profile::cache::haproxy::sticktables:
         - 'gpc0_rate(300s)'
 
 profile::cache::haproxy::pre_acl_actions:
-  tls:
     - context: http-request
       verb: track-sc0 src table httpreqrate
 
 profile::cache::haproxy::vars:
-  tls:
     - direction: request
       name: 'req.dummy_silent_drop'  # exists only for logging purposes
       value: 'src,debug(silent-drop_for_300s,stderr)'
@@ -68,7 +65,6 @@ profile::cache::haproxy::vars:
       acl: '!ssl_auth_rsa'
 
 profile::cache::haproxy::acls:
-  tls:
     - name: 'too_many_concurrent_queries'
       criterion: 'sc0_trackers(httpreqrate)'
       operator: 'ge'
@@ -83,6 +79,7 @@ profile::cache::haproxy::acls:
       # (so yes, evaluating this ACL is mutating, and yes, this is haproxy-idiomatic)
       operator: 'gt'
       value: '0'
+
     - name: missing_xwd
       criterion: 'var(txn.xwd_count)'
       operator: '-m int eq'
@@ -101,7 +98,6 @@ profile::cache::haproxy::acls:
       value: '^ECDHE-RSA'
 
 profile::cache::haproxy::add_headers:
-  tls:
     - direction: request
       name: 'X-Client-IP'
       value: '%[src]'
@@ -119,7 +115,6 @@ profile::cache::haproxy::add_headers:
       value: 'vers=%[ssl_fc_protocol];keyx=unknown;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
 
 profile::cache::haproxy::del_headers:
-  tls:
     - direction: response
       name: 'X-Analytics'
     - direction: response
