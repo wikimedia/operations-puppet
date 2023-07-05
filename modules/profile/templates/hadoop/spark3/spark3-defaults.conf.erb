@@ -17,9 +17,6 @@
 # More info: https://spark.apache.org/docs/2.1.2/configuration.html#dynamic-allocation
 spark.dynamicAllocation.enabled                     true
 spark.shuffle.service.enabled                       true
-# Needed for spark3 to work with spark 2.4 shuffle service
-# To be removed when we migrate to spark3 shuffle service
-spark.shuffle.useOldFetchProtocol                   true
 spark.dynamicAllocation.executorIdleTimeout         60s
 spark.dynamicAllocation.cachedExecutorIdleTimeout   3600s
 spark.shuffle.io.maxRetries                         10
