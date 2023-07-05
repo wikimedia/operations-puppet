@@ -15,3 +15,4 @@ profile::puppetdb::node_ttl: '7d'
 profile::puppetdb::node_purge_ttl: '14d'
 profile::puppetdb::report_ttl: '1d'
 profile::puppetdb::ca_content: ~
+profile::puppetdb::ssl_verify_client: optional

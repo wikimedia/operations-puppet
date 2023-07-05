@@ -50,6 +50,7 @@ class profile::puppetdb (
     Pattern[/\d+[dhms]/]                 $node_ttl              = lookup('profile::puppetdb::node_ttl'),
     Pattern[/\d+[dhms]/]                 $node_purge_ttl        = lookup('profile::puppetdb::node_purge_ttl'),
     Pattern[/\d+[dhms]/]                 $report_ttl            = lookup('profile::puppetdb::report_ttl'),
+    Nginx::SSL::Verify_client            $ssl_verify_client     = lookup('profile::puppetdb::ssl_verify_client'),
     Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir'),
 ) {
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -74,6 +75,7 @@ class profile::puppetdb (
         node_ttl              => $node_ttl,
         node_purge_ttl        => $node_purge_ttl,
         report_ttl            => $report_ttl,
+        ssl_verify_client     => $ssl_verify_client,
     }
     # TODO: remove this when a fix is in place T263578
     # This is quite a heavy hammer to work around on going issues

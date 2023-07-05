@@ -14,7 +14,7 @@ server {
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
 
-    ssl_verify_client optional;
+    ssl_verify_client <%= @ssl_verify_client %>;
     ssl_client_certificate <%= @ca_path %>;
 
     <%= @ssl_settings.join("\n    ") %>

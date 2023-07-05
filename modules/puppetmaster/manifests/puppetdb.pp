@@ -24,6 +24,7 @@
 # @param tmpfs_stockpile_queue if true use tmpfs fort the stockpile queue
 # @param facts_blacklist a liust of facts to blacklist from insertion to the db
 # @param facts_blacklist_type wether the above blacklist entries are literal or regex
+# @param ssl_verify_client this value indicates how to authenticate mtls users
 # TODO: fold this class into profile::puppetdb
 class puppetmaster::puppetdb(
     Stdlib::Host               $master,
@@ -42,6 +43,7 @@ class puppetmaster::puppetdb(
     Pattern[/\d+[dhms]/]       $node_ttl              = '7d',
     Pattern[/\d+[dhms]/]       $node_purge_ttl        = '14d',
     Pattern[/\d+[dhms]/]       $report_ttl            = '1d',
+    Nginx::SSL::Verify_client  $ssl_verify_client     = 'optional',
     Optional[String[1]]        $ca_content            = undef,
 ) {
 
