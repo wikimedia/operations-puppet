@@ -22,8 +22,16 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
       }) }
       let(:params) {{
         'cloud_private_gw_t' => 'cloudsw-<%= $rack %>.private.codfw.wikimedia.cloud',
-        'vlan_id' => 2151,
-        'vips'    => {
+        'vlan_mapping' => {
+            'codfw' => {
+                'b1' => 2151,
+            },
+            'eqiad' => {
+                'a1' => 1151,
+                'a2' => 1152,
+            },
+        },
+        'vips' => {
             'openstack.codfw1dev.wikimediacloud.org' => {
                 'ensure' => 'present',
                 'check_cmd' => 'whatever',

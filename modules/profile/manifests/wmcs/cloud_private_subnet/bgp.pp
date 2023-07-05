@@ -1,15 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet::bgp (
-    Stdlib::Fqdn                        $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
-    String[1]                           $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
-    Integer[0,4094]                     $vlan_id            = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
-    Hash[String, Wmflib::Advertise_vip] $vips               = lookup('profile::bird::advertise_vips',                { 'merge' => 'hash' }),
-    Netbox::Device::Location            $netbox_location    = lookup('profile::netbox::host::location'),
+    Stdlib::Fqdn                              $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
+    String[1]                                 $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
+    Profile::Wmcs::Cloud_Private_Vlan_Mapping $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
+    Hash[String, Wmflib::Advertise_vip]       $vips               = lookup('profile::bird::advertise_vips', { 'merge' => 'hash' }),
+    Netbox::Device::Location                  $netbox_location    = lookup('profile::netbox::host::location'),
 ) {
     $cloud_private_address = dnsquery::a($cloud_private_host)[0]
-    $cloud_private_gw = inline_epp($cloud_private_gw_t, { 'rack' => downcase($netbox_location['rack']) })
+    $rack = downcase($netbox_location['rack'])
+    $cloud_private_gw = inline_epp($cloud_private_gw_t, { 'rack' => $rack })
     $gw_address = dnsquery::a($cloud_private_gw)[0]
 
+    $vlan_id = $vlan_mapping[$::site][$rack]
     $interface = "vlan${vlan_id}"
 
     class { 'profile::bird::anycast':

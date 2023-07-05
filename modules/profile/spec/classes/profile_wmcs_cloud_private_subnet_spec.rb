@@ -23,7 +23,15 @@ describe 'profile::wmcs::cloud_private_subnet' do
       }) }
       let(:params) {{
         'cloud_private_gw_t' => 'cloudsw-<%= $rack %>.private.codfw.wikimedia.cloud',
-        'vlan_id'            => 2151,
+        'vlan_mapping' => {
+            'codfw' => {
+                'b1' => 2151,
+            },
+            'eqiad' => {
+                'a1' => 1151,
+                'a2' => 1152,
+            },
+        },
         'supernet'           => '172.20.0.0/16',
         'public_cidrs'       => [
             '185.15.57.0/26',

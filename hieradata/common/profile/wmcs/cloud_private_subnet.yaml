@@ -3,3 +3,23 @@
 profile::wmcs::cloud_private_subnet::host: "%{facts.hostname}.private.%{::site}.wikimedia.cloud"
 profile::wmcs::cloud_private_subnet::gw_template: 'cloudsw-<%= $rack %>.private.%{::site}.wikimedia.cloud'
 profile::wmcs::cloud_private_subnet::supernet: 172.20.0.0/16
+profile::wmcs::cloud_private_subnet::vlan_mapping:
+  # TODO: generate this from netbox instead of this ugly hardcoding
+  #
+  # see modules/profile/types/wmcs/cloud_private_vlan_mapping.pp
+  # for the definition of this hash, which is
+  # Profile::Wmcs::Cloud_Private_Vlan_Mapping
+  # basically:
+  # dc1:
+  #   rack1: vlan1
+  #   rack2: vlan2
+  # dc2:
+  #   rack1: vlan1
+  #   rack2: vlan2
+  eqiad:
+    c8: 1151
+    d5: 1152
+    e4: 1153
+    f4: 1154
+  codfw:
+    b1: 2151

@@ -1,14 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
-    Stdlib::Fqdn                         $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
-    String[1]                            $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
-    Integer[1,32]                        $netmask            = lookup('profile::wmcs::cloud_private_subnet::netmask', {'default_value' => 24}),
-    Integer[0,4094]                      $vlan_id            = lookup('profile::wmcs::cloud_private_subnet::vlan_id'),
-    Stdlib::IP::Address::V4::Cidr        $supernet           = lookup('profile::wmcs::cloud_private_subnet::supernet'),
-    Array[Stdlib::IP::Address::V4::Cidr] $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
-    String                               $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
-    Netbox::Device::Location             $netbox_location    = lookup('profile::netbox::host::location'),
+    Stdlib::Fqdn                              $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
+    String[1]                                 $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
+    Integer[1,32]                             $netmask            = lookup('profile::wmcs::cloud_private_subnet::netmask', {'default_value' => 24}),
+    Stdlib::IP::Address::V4::Cidr             $supernet           = lookup('profile::wmcs::cloud_private_subnet::supernet'),
+    Array[Stdlib::IP::Address::V4::Cidr]      $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
+    String                                    $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
+    Profile::Wmcs::Cloud_Private_Vlan_Mapping $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
+    Netbox::Device::Location                  $netbox_location    = lookup('profile::netbox::host::location'),
 ) {
+    $rack = downcase($netbox_location['rack'])
+    $vlan_id = $vlan_mapping[$::site][$rack]
+
     $cloud_private_address = dnsquery::a($cloud_private_host)[0]
 
     if $base_iface == 'primary' {
@@ -34,7 +37,7 @@ class profile::wmcs::cloud_private_subnet (
         prefixlen => $netmask,
     }
 
-    $cloud_private_gw = inline_epp($cloud_private_gw_t, { 'rack' => downcase($netbox_location['rack']) })
+    $cloud_private_gw = inline_epp($cloud_private_gw_t, { 'rack' => $rack })
     $gw_address = dnsquery::a($cloud_private_gw)[0]
 
     interface::route { 'cloud_private_subnet_route_supernet':
