@@ -1,11 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# ==  Class puppetdb::app
-#
-# Sets up the puppetdb clojure app.
-# This assumes you're using ...magic!
-#
-# === Parameters
-#
+# @summary Sets up the puppetdb clojure app. This assumes you're using ...magic!
 # @param gc_interval This controls how often, in minutes, to compact the database.
 #        The compaction process reclaims space and deletes unnecessary rows. If not
 #        supplied, the default is every 60 minutes. If set to zero, all database GC
@@ -16,7 +10,21 @@
 # @param node_purge_ttl Automatically delete nodes that have been deactivated or expired for
 #        the specified amount of time
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
-#
+# @param jvm_opts options passed to the jvm_opts
+# @param db_user the database user
+# @param db_driver the database driver to user
+# @param ssldir the puppet ssl directory
+# @param ca_path the path to the CA to use
+# @param tmpfs_stockpile_queue if true store the stockpile queue on tmpfs
+# @param command_processing_threads number of threads to use for command processing 
+# @param log_level log level to use
+# @param facts_blacklist a list of facts to blacklist from db storage
+# @param facts_blacklist_type indicates if the facts list contains literal or regex expressions
+# @param bind_ip the ip address to bind to for TLS
+# @param bind_ip_insecure the clear text ip to bind to
+# @param db_ro_host the host of the read only database
+# @param db_password the database password
+# @param db_ro_password the password for the ro database
 class puppetdb::app(
     String                        $jvm_opts                   = '-Xmx4G',
     String                        $db_user                    = 'puppetdb',
@@ -32,7 +40,7 @@ class puppetdb::app(
     Pattern[/\d+[dhms]/]          $node_ttl                   = '7d',
     Pattern[/\d+[dhms]/]          $node_purge_ttl             = '14d',
     Pattern[/\d+[dhms]/]          $report_ttl                 = '1d',
-    Stdlib::Host                  $db_rw_host                 = $facts['fqdn'],
+    Stdlib::Host                  $db_rw_host                 = $facts['networking']['fqdn'],
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
     Optional[Stdlib::IP::Address] $bind_ip_insecure           = undef,
     Optional[String]              $db_ro_host                 = undef,
@@ -68,7 +76,7 @@ class puppetdb::app(
     }
 
     file { '/etc/default/puppetdb':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         content => template('puppetdb/etc/default/puppetdb.erb'),
@@ -76,7 +84,7 @@ class puppetdb::app(
 
     systemd::service { 'puppetdb':
         override => true,
-        content  => "[Service]\nRestart=on-failure\nRestartSec=5s\n"
+        content  => "[Service]\nRestart=on-failure\nRestartSec=5s\n",
     }
 
     ## Configuration
