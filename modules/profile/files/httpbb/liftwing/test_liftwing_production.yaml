@@ -383,6 +383,13 @@ https://svwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
+https://testwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/testwiki-damaging:predict
+  json_body:
+    rev_id: 21
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
 https://trwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
 - path: /v1/models/trwiki-damaging:predict
   json_body:
@@ -611,6 +618,13 @@ https://svwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
 - path: /v1/models/svwiki-goodfaith:predict
   json_body:
     rev_id: 51706742
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/testwiki-goodfaith:predict
+  json_body:
+    rev_id: 21
   assert_status: 200
   assert_body_contains: probability
   method: POST
