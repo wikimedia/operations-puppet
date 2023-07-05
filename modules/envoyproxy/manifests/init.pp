@@ -71,9 +71,11 @@ class envoyproxy(
             'typed_config' => {
                 '@type' => 'type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog',
                 'path' => '/var/log/envoy/admin-access.log',
-            }
+            },
         },
-        'address'    => {'socket_address' => {'address' => '0.0.0.0', 'port_value' => $admin_port}}
+        'address' => { 'socket_address' => { 'address' => '0.0.0.0', 'port_value' => $admin_port } },
+        # Don't apply global connection limits to the admin listener so we can still get metrics when overloaded
+        'ignore_global_conn_limit' => true,
     }
 
     file { "${envoy_directory}/admin-config.yaml":

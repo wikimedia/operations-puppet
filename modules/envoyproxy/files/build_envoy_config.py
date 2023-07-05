@@ -87,22 +87,37 @@ class EnvoyConfig:
         self.config["admin"] = admin
 
     def _read_runtime(self):
+        self.config["layered_runtime"] = {
+            "layers": [
+                # Limit the total number of allowed active connections per envoy instance.
+                # Envoys configuration best practice "Configuring Envoy as an edge proxy"
+                # uses 50k connections which is still essentially unlimited in our use case.
+                {
+                    "name": "static_layer_0",
+                    "static_layer": {
+                        "overload": {"global_downstream_max_connections": 50000}
+                    },
+                },
+            ]
+        }
+
         try:
             with open(self.runtime_file, "r") as runtime_fh:
                 static_runtime = yaml.safe_load(runtime_fh)
         except FileNotFoundError:
-            # Runtime config is optional. If the file is absent, don't set
-            # layered_runtime in the output config, so we get the default.
-            return
-        self.config["layered_runtime"] = {
-            "layers": [
-                {"name": "static_layer", "static_layer": static_runtime},
-                # Include an empty admin_layer *after* the static layer, so we can
-                # continue to make changes via the admin console and they'll overwrite
-                # values from the previous layer.
-                {"name": "admin_layer", "admin_layer": {}},
-            ]
-        }
+            # Additional runtime config is optional.
+            pass
+        else:
+            self.config["layered_runtime"]["layers"].append(
+                {"name": "static_layer_1", "static_layer": static_runtime}
+            )
+
+        # Include an empty admin_layer *after* the static layers, so we can
+        # continue to make changes via the admin console and they'll overwrite
+        # values from the previous layer.
+        self.config["layered_runtime"]["layers"].append(
+            {"name": "admin_layer_0", "admin_layer": {}}
+        )
 
     def _walk_dir(self, what: str, glob_expr: str) -> Generator[str, None, None]:
         """Returns the full path of files in a directory"""
@@ -139,12 +154,14 @@ class EnvoyConfig:
             cmd = []
             if os.geteuid() == 0:
                 cmd.extend(("sudo", "-u", "envoy"))
-            cmd.extend((
-                "/usr/bin/envoy",
-                "-c",
-                tmpconfig,
-                "--mode validate",
-            ))
+            cmd.extend(
+                (
+                    "/usr/bin/envoy",
+                    "-c",
+                    tmpconfig,
+                    "--mode validate",
+                )
+            )
             subprocess.check_output(cmd)
             return True
         except subprocess.CalledProcessError as e:
