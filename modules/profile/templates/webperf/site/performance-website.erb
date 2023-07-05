@@ -6,20 +6,7 @@
 
     DocumentRoot /srv/org/wikimedia/performance/public_html
     Alias /excimer /srv/org/wikimedia/performance/excimer/index.php
-
-    <Location /excimer>
-        <Limit GET HEAD>
-            Require all granted
-        </Limit>
-        # Only MediaWiki servers may submit data to the /excimer/ingest endpoint
-        <LimitExcept GET HEAD>
-          <RequireAny>
-          <%- scope.lookupvar('network::constants::domain_networks').each do |net| -%>
-            Require ip <%= net %>
-          <%- end -%>
-          </RequireAny>
-        </LimitExcept>
-    </Location>
+    Alias /xhgui /srv/org/wikimedia/performance/xhgui/webroot
 
     <Directory />
         AllowOverride None
@@ -32,11 +19,65 @@
         Require all granted
     </Directory>
 
+    # Excimer UI displays flamegraphs.
+    # The data is collected by php-excimer, saved over HTTP from MediaWiki hosts via WikimediaDebug.
+    #
+    # https://wikitech.wikimedia.org/wiki/WikimediaDebug#Request_profiling
     <Directory /srv/org/wikimedia/performance/excimer>
         AllowOverride None
         php_admin_flag engine on
         Require all granted
     </Directory>
+
+    # XHGui displays memory usage and call counts.
+    # The data is collected by php-tideways, saved to MySQL from MediaWiki hosts via WikimediaDebug.
+    #
+    # https://wikitech.wikimedia.org/wiki/XHGui
+    <Directory /srv/org/wikimedia/performance/xhgui>
+        AllowOverride None
+        php_admin_flag engine on
+        Require all granted
+
+        # Based on:
+        # https://gerrit.wikimedia.org/g/operations/software/xhgui/+/refs/tags/0.12.0/webroot/.htaccess
+        RewriteEngine On
+        RewriteBase /xhgui
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [QSA,L]
+    </Directory>
+
+    <Location /excimer>
+        <Limit GET HEAD>
+            Require all granted
+        </Limit>
+        # Only MediaWiki servers may post data to the /excimer/ingest endpoint
+        <LimitExcept GET HEAD>
+          <RequireAny>
+          <%- scope.lookupvar('network::constants::domain_networks').each do |net| -%>
+            Require ip <%= net %>
+          <%- end -%>
+          </RequireAny>
+        </LimitExcept>
+    </Location>
+
+    <Location /xhgui>
+        <Limit GET HEAD>
+            Require all granted
+        </Limit>
+        # We deploy the XHGui frontend in read-only configuration.
+        #
+        # This is enforced through read-only MySQL credentials,
+        # and also at the HTTP level here by disabling all non-GET
+        # endpoints, such as
+        #
+        # - POST /xhgui/delete_all: **Truncates the entire database**.
+        # - POST /xhgui/delete: Delete single record.
+        # - POST /xhgui/import: Import an offline profile.
+        # - POST /xhgui/watch: shared bookmark list for certain function names.
+        <LimitExcept GET HEAD>
+            Require all denied
+        </LimitExcept>
+    </Location>
 
     # Swift should already reject unauthenticated write requests to
     # the arclamp buckets.  Also filtering those requests here adds
@@ -62,11 +103,6 @@
     ProxyPass /arclamp http://<%= @arclamp_host %>/arclamp
     ProxyPassReverse /arclamp http://<%= @arclamp_host %>/arclamp
     Redirect 301 /xenon /arclamp
-<% end -%>
-
-<% if @xhgui_host -%>
-    ProxyPass /xhgui http://<%= @xhgui_host %>/xhgui
-    ProxyPassReverse /xhgui http://<%= @xhgui_host %>/xhgui
 <% end -%>
 
 <% if @server_name != "performance.wikimedia.org" -%>
