@@ -9,7 +9,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
         "function dnsquery::a($fqdn) {
             if $fqdn == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
                 ['172.20.5.2', '127.0.0.1']
-            } elsif $fqdn == 'cloudsw.private.codfw.wikimedia.cloud' {
+            } elsif $fqdn == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
                 ['172.20.5.1', '127.0.0.2']
             } else {
                 [$fqdn]
@@ -21,6 +21,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
         'hostname' => 'cloudlb2001-dev',
       }) }
       let(:params) {{
+        'cloud_private_gw_t' => 'cloudsw-<%= $rack %>.private.codfw.wikimedia.cloud',
         'vlan_id' => 2151,
         'vips'    => {
             'openstack.codfw1dev.wikimediacloud.org' => {
@@ -35,6 +36,11 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
                 'service_type' => 'whatever',
                 'address' => '1.2.3.4',
             },
+        },
+        'netbox_location'    => {
+            'rack'           => 'B1',
+            'row'            => 'codfw-row-b',
+            'site'           => 'codfw',
         },
       }}
       it { is_expected.to compile.with_all_deps }
