@@ -35,3 +35,9 @@ profile::admin::groups:
  - fr-tech-admins
 
 profile::dns::recursor::bind_service: 'gdnsd.service'
+
+# we want to pass a custom nameserver list so will call this profile with that
+# instead of it being called automatically when base::production is called.
+profile::base::manage_resolvconf: false
+# no timesyncd required for dns hosts themselves
+profile::base::manage_timesyncd: false

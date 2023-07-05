@@ -2,13 +2,39 @@
 # A profile class for a dns recursor
 
 class profile::dns::recursor (
-  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
-  Optional[String]                              $bind_service   = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
+  Optional[Hash[String, Wmflib::Advertise_vip]]     $advertise_vips    = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
+  Optional[String]                                  $bind_service      = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
+  Hash[Wmflib::Sites, Array[Stdlib::Fqdn]]          $ntp_peers         = lookup('ntp_peers'),
+  Hash[Wmflib::Sites, Wmflib::Sites]                $site_nearest_core = lookup('site_nearest_core'),
+  Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers   = lookup('authdns_servers'),
 ) {
     include network::constants
     include profile::firewall
     include profile::bird::anycast
     include profile::dns::check_dns_query
+
+    # For historical context, this was managed through per-host DNS host
+    # overrides, such as hieradata/hosts/dns1001.yaml. To manage this list
+    # manually, we do not include profile::resolving from profile::base but
+    # instead call it from here, passing the automatically generated
+    # resolv.conf nameservers list.
+    #
+    # This is a bit of a hack: since all NTP hosts are also DNS hosts, use the
+    # ntp_peers list to get a list of per-site DNS hosts. We use the same logic
+    # to generate the NTP peers list in P:systemd::timesyncd, with the
+    # difference that we need the IP addresses here and not the hostnames.
+    $dns_servers_and_self = [$ntp_peers[$::site], $ntp_peers[$site_nearest_core[$::site]]].flatten
+
+    # A host cannot/should not resolve against itself.
+    $dns_servers = delete($dns_servers_and_self, $facts['networking']['fqdn'])
+
+    # Get the IP addresses from authdns_servers in common.yaml, since it's the
+    # canonical list anyway.
+    $nameservers = $dns_servers.map |$server| { $authdns_servers[$server] }
+
+    class { 'profile::resolving' :
+        nameservers => $nameservers,
+    }
 
     $recdns_vips = $advertise_vips.filter |$vip_fqdn,$vip_params| { $vip_params['service_type'] == 'recdns' }
     $recdns_addrs = $recdns_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
