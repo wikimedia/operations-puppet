@@ -15,9 +15,6 @@ profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
 profile::gitlab::backup_keep_time: 86400
 profile::gitlab::enable_backup_sync: true
 
-profile::gitlab::sync_profile_from: ['cas3']
-profile::gitlab::sync_email_from: ['cas3']
-profile::gitlab::single_sign_on_from: ['cas3']
 profile::gitlab::omniauth_providers:
   'Wikimedia Dev Account':
     url: 'https://idp.wikimedia.org'
