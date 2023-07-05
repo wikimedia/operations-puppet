@@ -6,6 +6,8 @@ typed_extension_protocol_options:
     "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
     common_http_protocol_options:
       idle_timeout: <%= @listener['keepalive'] %>
+      # Given we go through a load-balancer, we want to keep the number of requests that go through a single connection pool small
+      max_requests_per_connection: 1000
     use_downstream_protocol_config: {}
 <%- end -%>
 type: STRICT_DNS
@@ -20,8 +22,6 @@ load_assignment:
           socket_address:
             address: <%= @address %>
             port_value: <%= @svc['port'] %>
-# Given we go through a load-balancer, we want to keep the number of requests that go through a single connection pool small
-max_requests_per_connection: 1000
 # Let's not enable circuit-breaking for now. It would look something like
 #circuit_breakers:
 #  thresholds:

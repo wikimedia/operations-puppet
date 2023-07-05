@@ -7,6 +7,13 @@ typed_extension_protocol_options:
     "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
     common_http_protocol_options:
       idle_timeout: <%= @idle_timeout %>s
+      <%- if @max_requests_per_conn
+      # We limit persistent connections to a finite number of requests.
+      # This can be important to keep our load-balancing in order if both the
+      # client and the server can maintain persistent connections indefinitely.
+      -%>
+      max_requests_per_connection: <%= @max_requests_per_conn %>
+      <%- end -%>
     use_downstream_protocol_config: {}
 <%- end -%>
 <%- if @upstream['upstream'].include? 'port' -%>
@@ -28,13 +35,6 @@ load_assignment:
 <%- elsif @upstream['upstream'].include? 'path' -%>
           pipe:
             path: <%= @upstream['upstream']['path'] %>
-<%- end -%>
-<%- if @max_requests_per_conn
-# We limit persistent connections to a finite number of requests.
-# This can be important to keep our load-balancing in order if both the
-# client and the server can maintain persistent connections indefinitely.
--%>
-max_requests_per_connection: <%= @max_requests_per_conn %>
 <%- end -%>
 <%- if @circuit_breakers_config == 'disabled' -%>
 circuit_breakers:
