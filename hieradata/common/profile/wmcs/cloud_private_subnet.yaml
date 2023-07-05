@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 ---
 profile::wmcs::cloud_private_subnet::host: "%{facts.hostname}.private.%{::site}.wikimedia.cloud"
-profile::wmcs::cloud_private_subnet::gw_template: 'cloudsw-<%= $rack %>.private.${::site}.wikimedia.cloud'
+profile::wmcs::cloud_private_subnet::gw_template: 'cloudsw-<%= $rack %>.private.%{::site}.wikimedia.cloud'
 profile::wmcs::cloud_private_subnet::supernet: 172.20.0.0/16
