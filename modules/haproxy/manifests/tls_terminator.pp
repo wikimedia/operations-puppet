@@ -103,10 +103,10 @@ define haproxy::tls_terminator(
 
     # Check hash parameters for 'tls' key
     $optional_hashes = [ $vars, $acls, $add_headers, $del_headers, $pre_acl_actions, $post_acl_actions ]
-    $optional_hashes.each |Hash $opt_hash| {
-        if defined('$opt_hash') {
-            if !has_key($opt_hash, 'tls') {
-                fail("${opt_hash} must have a 'tls' key")
+    $optional_hashes.each |Optional[Hash] $opt_h| {
+        if $opt_h {
+            if !has_key($opt_h, 'tls') {
+                fail("${opt_h} must have a 'tls' key")
             }
         }
     }

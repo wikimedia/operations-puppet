@@ -42,17 +42,17 @@ class profile::cache::haproxy(
 
     # First check mandatory params for required 'tls' key
     $hashes = [ $vars, $acls, $add_headers, $del_headers ]
-    $hashes.each |Hash $_hash| {
-        if !has_key($_hash, 'tls') {
-            fail("profile::cache::haproxy::${_hash} must have a 'tls' key")
+    $hashes.each |Hash $h| {
+        if !has_key($h, 'tls') {
+            fail("profile::cache::haproxy::${h} must have a 'tls' key")
         }
     }
     # Then check optional parameters (if they are defined)
     $optional_hashes = [$pre_acl_actions, $post_acl_actions]
-    $optional_hashes.each |Hash $_opt_hash| {
-        if defined('$_opt_hash') {
-            if !has_key($_opt_hash, 'tls') {
-                fail("profile::cache::haproxy::${_opt_hash} must have a 'tls' key")
+    $optional_hashes.each |Optional[Hash] $opt_h| {
+        if $opt_h {
+            if !has_key($opt_h, 'tls') {
+                fail("profile::cache::haproxy::${opt_h} must have a 'tls' key")
             }
         }
     }
