@@ -1,13 +1,15 @@
 # @summary profile to configure ntp
 # @monitoring_hosts list of monitoring hosts
+# @ntp_peers list of ntp peers
 class profile::ntp (
-    Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts'),
+    Array[Stdlib::Host]                      $monitoring_hosts = lookup('monitoring_hosts'),
+    Hash[Wmflib::Sites, Array[Stdlib::Fqdn]] $ntp_peers        = lookup('ntp_peers'),
 ){
     # required for monitoring changes to the ntp.conf file
     ensure_packages(['python3-pystemd'])
 
     # all global peers at all sites
-    $wmf_all_peers = flatten(values($::ntp_peers))
+    $wmf_all_peers = flatten(values($ntp_peers))
 
     # $wmf_server_peers_plus_self is a full list of peer servers applicable at
     # each site (which will, for any given server, also include itself):
@@ -16,10 +18,10 @@ class profile::ntp (
         eqiad   => $wmf_all_peers,
         codfw   => $wmf_all_peers,
         # edge sites only peer with core DCs and themselves:
-        default => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers[$::site]].flatten,
+        default => [$ntp_peers['eqiad'], $ntp_peers['codfw'], $ntp_peers[$::site]].flatten,
     }
     # a server can't peer with itself, so remove self from the list:
-    $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
+    $wmf_server_peers = delete($wmf_server_peers_plus_self, $facts['networking']['fqdn'])
 
     $pool_zone = $::site ? {
         esams   => 'nl',
