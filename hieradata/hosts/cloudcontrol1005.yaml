@@ -63,14 +63,3 @@ profile::openstack::eqiad1::cinder_backup_volumes:
     FREQUENCY: 3
     FULL_FREQUENCY: 3
     PURGE_AFTER: 30
-  tools:
-    volumes:
-      - tools-harbor
-      - tools-docker-registry-data
-      - tools-aptly-data
-      - tools-db-2
-      - tools-nfs
-    FULL_FREQUENCY: 7
-    PURGE_AFTER: 30
-    FULL_FREQUENCY_OFFSET: 4
-    FREQUENCY: 2
