@@ -10,7 +10,7 @@
 
 service::catalog:
   apertium:
-    description: Machine Translation service. apertium.svc.%{::site}.wmnet
+    description: Machine Translation service. apertium.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -43,7 +43,7 @@ service::catalog:
         active_active: true
 
   api-https:
-    description: MediaWiki API cluster, api.svc.%{::site}.wmnet
+    description: MediaWiki API cluster, api.discovery.wmnet
     encryption: true
     ip: &api_ips
       codfw:
@@ -86,7 +86,7 @@ service::catalog:
 
   appservers-https:
     description:
-      Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
+      Main MediaWiki application server cluster, appservers.discovery.wmnet
       (https)
     encryption: true
     ip:
@@ -129,7 +129,7 @@ service::catalog:
       - "appservers"
 
   aqs:
-    description: Analytics Query Service, aqs.svc.%{::site}.wmnet
+    description: Analytics Query Service, aqs.discovery.wmnet
     encryption: false
     ip:
       codfw:
@@ -183,7 +183,7 @@ service::catalog:
     state: 'production'
 
   k8s-ingress-aux:
-    description: "istio-ingresscontroller on aux-k8s. k8s-ingress-aux.svc.%{::site}.wmnet"
+    description: "istio-ingresscontroller on aux-k8s. k8s-ingress-aux.discovery.wmnet"
     encryption: true
     ip: &k8s-ingress-aux_ips
       eqiad:
@@ -224,7 +224,7 @@ service::catalog:
         active_active: false
 
   blubberoid:
-    description: Blubberoid, blubberoid.svc.%{::site}.wmnet (https)
+    description: Blubberoid, blubberoid.discovery.wmnet (https)
     encryption: true
     ip:
       codfw:
@@ -257,7 +257,7 @@ service::catalog:
         active_active: true
 
   citoid:
-    description: Citation lookup service, citoid.svc.%{::site}.wmnet
+    description: Citation lookup service, citoid.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -454,7 +454,7 @@ service::catalog:
     state: production
 
   cxserver:
-    description: Content Translation service, cxserver.svc.%{::site}.wmnet
+    description: Content Translation service, cxserver.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -575,7 +575,7 @@ service::catalog:
     state: production
 
   echostore:
-    description: Echo store, echostore.svc.%{::site}.wmnet
+    description: Echo store, echostore.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -609,7 +609,7 @@ service::catalog:
         active_active: true
 
   eventgate-analytics:
-    description: EventGate Analytics endpoint, TLS enabled. https://eventgate-analytics.svc.%{::site}.wmnet
+    description: EventGate Analytics endpoint, TLS enabled. https://eventgate-analytics.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -642,7 +642,7 @@ service::catalog:
         active_active: true
 
   eventgate-logging-external:
-    description: EventGate logging endpoint, eventgate-logging-external.svc.%{::site}.wmnet and intake-logging.wikimedia.org
+    description: EventGate logging endpoint, eventgate-logging-external.discovery.wmnet and intake-logging.wikimedia.org
     encryption: true
     ip:
       codfw:
@@ -676,7 +676,7 @@ service::catalog:
         active_active: true
 
   eventgate-analytics-external:
-    description: EventGate analytics external endpoint, eventgate-analytics-external.svc.%{::site}.wmnet and intake-analytics.wikimedia.org
+    description: EventGate analytics external endpoint, eventgate-analytics-external.discovery.wmnet and intake-analytics.wikimedia.org
     encryption: true
     ip:
       codfw:
@@ -711,7 +711,7 @@ service::catalog:
         active_active: true
 
   eventgate-main:
-    description: EventGate main endpoint, TLS enabled, https://eventgate-main.svc.%{::site}.wmnet
+    description: EventGate main endpoint, TLS enabled, https://eventgate-main.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -744,7 +744,7 @@ service::catalog:
         active_active: true
 
   eventstreams:
-    description: Public streams of events via HTTP + SSE, backed by Kafka. eventstreams.svc.%{::site}.wmnet
+    description: Public streams of events via HTTP + SSE, backed by Kafka. eventstreams.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -778,7 +778,7 @@ service::catalog:
         active_active: true
 
   eventstreams-internal:
-    description: Internal streams of events via HTTP + SSE, backed by Kafka. eventstreams-internal.svc.%{::site}.wmnet
+    description: Internal streams of events via HTTP + SSE, backed by Kafka. eventstreams-internal.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -812,7 +812,7 @@ service::catalog:
         active_active: true
 
   jobrunner:
-    description: JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet
+    description: JobRunner LVS interface (https). jobrunner.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -849,7 +849,7 @@ service::catalog:
         active_active: false
 
   k8s-ingress-staging:
-    description: istio-ingresscontroller on kubernetes staging. k8s-ingress-staging.svc.%{::site}.wmnet
+    description: istio-ingresscontroller on kubernetes staging. k8s-ingress-staging.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -893,7 +893,7 @@ service::catalog:
         active_active: false
 
   k8s-ingress-wikikube:
-    description: istio-ingresscontroller on kubernetes. k8s-ingress-wikikube.svc.%{::site}.wmnet
+    description: istio-ingresscontroller on kubernetes. k8s-ingress-wikikube.discovery.wmnet
     encryption: true
     ip: &k8s-ingress-wikikube_ips
       codfw:
@@ -939,7 +939,7 @@ service::catalog:
         active_active: false
 
   k8s-ingress-ml-staging:
-    description: istio-ingresscontroller on kubernetes ML staging. k8s-ingress-ml-staging.svc.%{::site}.wmnet
+    description: istio-ingresscontroller on kubernetes ML staging. k8s-ingress-ml-staging.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -980,7 +980,7 @@ service::catalog:
         active_active: false
 
   k8s-ingress-ml-serve:
-    description: istio-ingresscontroller on kubernetes. k8s-ingress-ml-serve.svc.%{::site}.wmnet
+    description: istio-ingresscontroller on kubernetes. k8s-ingress-ml-serve.discovery.wmnet
     encryption: true
     ip: &k8s-ingress-ml-serve_ips
       codfw:
@@ -1024,7 +1024,7 @@ service::catalog:
         active_active: true
 
   kartotherian:
-    description: Kartotherian, kartotherian.svc.%{::site}.wmnet
+    description: Kartotherian, kartotherian.discovery.wmnet
     encryption: false
     ip:
       codfw:
@@ -1053,7 +1053,7 @@ service::catalog:
     state: production
 
   kartotherian-ssl:
-    description: Kartotherian, kartotherian.svc.%{::site}.wmnet - HTTPS
+    description: Kartotherian, kartotherian.discovery.wmnet - HTTPS
     encryption: true
     ip:
       codfw:
@@ -1124,7 +1124,7 @@ service::catalog:
     public_endpoint: "logstash"
 
   kubemaster:
-    description: Kubernetes master service. kubemaster.svc.%{::site}.wmnet
+    description: Kubernetes master service. kubemaster.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1151,7 +1151,7 @@ service::catalog:
     state: production
 
   kubestagemaster:
-    description: Kubernetes staging master service. kubestagemaster.svc.%{::site}.wmnet
+    description: Kubernetes staging master service. kubestagemaster.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1296,7 +1296,7 @@ service::catalog:
     state: production
 
   mathoid:
-    description: Mathematical rendering service, mathoid.svc.%{::site}.wmnet
+    description: Mathematical rendering service, mathoid.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1329,7 +1329,7 @@ service::catalog:
         active_active: true
 
   miscweb:
-    description: Misc static sites, miscweb.svc.%{::site}.wmnet
+    description: Misc static sites, miscweb.discovery.wmnet
     encryption: true
     ip: *k8s-ingress-wikikube_ips
     page: false
@@ -1373,7 +1373,7 @@ service::catalog:
     state: production
 
   dse-k8s-ctrl:
-    description: Kubernetes master service for DSE cluster. dse-k8s-ctrl.svc.%{::site}.wmnet
+    description: Kubernetes master service for DSE cluster. dse-k8s-ctrl.discovery.wmnet
     encryption: true
     ip:
       eqiad:
@@ -1396,7 +1396,7 @@ service::catalog:
     state: lvs_setup
 
   ml-ctrl:
-    description: Kubernetes master service for ML cluster. ml-ctrl.svc.%{::site}.wmnet
+    description: Kubernetes master service for ML cluster. ml-ctrl.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1422,7 +1422,7 @@ service::catalog:
     state: lvs_setup
 
   ml-staging-ctrl:
-    description: Kubernetes master service for ML staging cluster. ml-staging-ctrl.svc.%{::site}.wmnet
+    description: Kubernetes master service for ML staging cluster. ml-staging-ctrl.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1447,7 +1447,7 @@ service::catalog:
   mobileapps:
     description:
       A service for use by mobile apps. Provides DOM manipulation, aggregation,
-      JSON flattening. mobileapps.svc.%{::site}.wmnet
+      JSON flattening. mobileapps.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1480,7 +1480,7 @@ service::catalog:
         active_active: true
 
   mwdebug:
-    description: mwdebug, mwdebug.svc.%{::site}.wmnet
+    description: mwdebug, mwdebug.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1708,7 +1708,7 @@ service::catalog:
     state: production
 
   ores:
-    description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
+    description: Objective Revision Evaluation Service. ores.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1743,7 +1743,7 @@ service::catalog:
         active_active: true
 
   parsoid-php:
-    description: Parsoid/PHP wikitext parser for VisualEditor (%{::site})
+    description: Parsoid/PHP wikitext parser for VisualEditor
     encryption: true
     ip:
       codfw:
@@ -1816,7 +1816,7 @@ service::catalog:
     state: production
 
   proton:
-    description: Proton PDF rendering service. proton.svc.%{::site}.wmnet
+    description: Proton PDF rendering service. proton.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1850,7 +1850,7 @@ service::catalog:
         active_active: true
 
   push-notifications:
-    description: Push-notifications service push-notifications.svc.%{::site}.wmnet
+    description: Push-notifications service push-notifications.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1883,7 +1883,7 @@ service::catalog:
         active_active: true
 
   recommendation-api:
-    description: Service for recommendation API. recommendation-api.svc.%{::site}.wmnet
+    description: Service for recommendation API. recommendation-api.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -1915,7 +1915,7 @@ service::catalog:
         active_active: true
 
   restbase-backend:
-    description: RESTBase backend, restbase.svc.%{::site}.wmnet
+    description: RESTBase backend, restbase.discovery.wmnet
     encryption: false
     ip:
       codfw:
@@ -1944,7 +1944,7 @@ service::catalog:
     state: production
 
   restbase-https:
-    description: RESTBase, restbase.svc.%{::site}.wmnet - HTTPS
+    description: RESTBase, restbase.discovery.wmnet - HTTPS
     encryption: true
     ip:
       codfw:
@@ -2134,7 +2134,7 @@ service::catalog:
       - "search"
 
   sessionstore:
-    description: Session store, sessionstore.svc.%{::site}.wmnet
+    description: Session store, sessionstore.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2167,7 +2167,7 @@ service::catalog:
         active_active: true
 
   shellbox:
-    description: Shellbox, shellbox.svc.%{::site}.wmnet
+    description: Shellbox, shellbox.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2200,7 +2200,7 @@ service::catalog:
         active_active: true
 
   shellbox-constraints:
-    description: Shellbox Constraints, shellbox-constraints.svc.%{::site}.wmnet
+    description: Shellbox Constraints, shellbox-constraints.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2233,7 +2233,7 @@ service::catalog:
         active_active: true
 
   shellbox-media:
-    description: Shellbox Media, shellbox-media.svc.%{::site}.wmnet
+    description: Shellbox Media, shellbox-media.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2266,7 +2266,7 @@ service::catalog:
         active_active: true
 
   shellbox-syntaxhighlight:
-    description: Shellbox SyntaxHighlight, shellbox-syntaxhighlight.svc.%{::site}.wmnet
+    description: Shellbox SyntaxHighlight, shellbox-syntaxhighlight.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2299,7 +2299,7 @@ service::catalog:
         active_active: true
 
   shellbox-timeline:
-    description: Shellbox Timeline, shellbox-timeline.svc.%{::site}.wmnet
+    description: Shellbox Timeline, shellbox-timeline.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2404,7 +2404,7 @@ service::catalog:
       - "ms-fe"
 
   tegola-vector-tiles:
-    description: Tegola Vector Tiles, tegola-vector-tiles.svc.%{::site}.wmnet
+    description: Tegola Vector Tiles, tegola-vector-tiles.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2563,7 +2563,7 @@ service::catalog:
     role: "thanos::frontend"
 
   termbox:
-    description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
+    description: Wikidata Termbox SSR termbox.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2730,7 +2730,7 @@ service::catalog:
     state: production
 
   toolhub:
-    description: Toolhub, toolhub.svc.%{::site}.wmnet
+    description: Toolhub, toolhub.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -2852,7 +2852,7 @@ service::catalog:
     state: production
 
   videoscaler:
-    description: Videoscaler LVS interface (https). videoscaler.svc.%{::site}.wmnet
+    description: Videoscaler LVS interface (https). videoscaler.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -3054,7 +3054,7 @@ service::catalog:
         active_active: true
 
   wikifeeds:
-    description: A node webservice supporting featured wiki content feeds. wikifeeds.svc.%{::site}.wmnet
+    description: A node webservice supporting featured wiki content feeds. wikifeeds.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -3087,7 +3087,7 @@ service::catalog:
         active_active: true
 
   zotero:
-    description: Zotero, zotero.svc.%{::site}.wmnet
+    description: Zotero, zotero.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -3169,7 +3169,7 @@ service::catalog:
         active_active: true
 
   api-gateway:
-    description: API gateway, api-gateway.svc.%{::site}.wmnet
+    description: API gateway, api-gateway.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -3203,7 +3203,7 @@ service::catalog:
         active_active: true
 
   similar-users:
-    description: Similar-users/sockpuppet, similar-users.svc.%{::site}.wmnet
+    description: Similar-users/sockpuppet, similar-users.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -3237,7 +3237,7 @@ service::catalog:
         active_active: true
 
   linkrecommendation:
-    description: Link Recommendation, linkrecommendation.svc.%{::site}.wmnet
+    description: Link Recommendation, linkrecommendation.discovery.wmnet
     encryption: true
     ip: &linkrecommendation_ips
       codfw:
@@ -3271,7 +3271,7 @@ service::catalog:
         active_active: true
 
   linkrecommendation-external:
-    description: Link Recommendation, public release, linkrecommendation.svc.%{::site}.wmnet
+    description: Link Recommendation, public release, linkrecommendation.discovery.wmnet
     encryption: true
     ip: *linkrecommendation_ips
     lvs:
@@ -3673,7 +3673,7 @@ service::catalog:
         active_active: true
 
   image-suggestion:
-    description: image suggestion service, image-suggestion.svc.%{::site}.wmnet
+    description: image suggestion service, image-suggestion.discovery.wmnet
     encryption: true
     ip: *k8s-ingress-wikikube_ips
     page: false
@@ -3687,7 +3687,7 @@ service::catalog:
     state: production
 
   developer-portal:
-    description: Static documentation site, developer-portal.svc.%{::site}.wmnet
+    description: Static documentation site, developer-portal.discovery.wmnet
     encryption: true
     ip: *k8s-ingress-wikikube_ips
     page: false
@@ -3758,7 +3758,7 @@ service::catalog:
     state: production
 
   device-analytics:
-    description: device-analytics AQS2 service, device-analytics.svc.%{::site}.wmnet
+    description: device-analytics AQS2 service, device-analytics.discovery.wmnet
     encryption: true
     ip:
       codfw:
@@ -3820,7 +3820,7 @@ service::catalog:
         active_active: true
 
   rest-gateway:
-    description: REST API gateway, rest-gateway.svc.%{::site}.wmnet. See REST Gateway page on wikitech for URLs proxied
+    description: REST API gateway, rest-gateway.discovery.wmnet. See REST Gateway page on wikitech for URLs proxied
     encryption: true
     ip:
       codfw:
@@ -3855,7 +3855,7 @@ service::catalog:
 
   machinetranslation:
     description: MinT, machinetranslation service backend. Use by cxserver.
-      machinetranslation.svc.%{::site}.wmnet
+      machinetranslation.discovery.wmnet
     encryption: true
     ip: *k8s-ingress-wikikube_ips
     page: false
