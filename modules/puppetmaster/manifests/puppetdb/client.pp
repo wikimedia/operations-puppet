@@ -4,10 +4,10 @@
 # @param command_broadcast brodcast to all puppetdb servers
 # @param submit_only_hosts puppetdb submit only hosts
 class puppetmaster::puppetdb::client(
-    Array[Stdlib::Host] $hosts,
-    Stdlib::Port        $port              = 443,
-    Boolean             $command_broadcast = false,
-    Array[Stdlib::Host] $submit_only_hosts = [],
+    Array[Stdlib::Host]     $hosts,
+    Stdlib::Port            $port              = 443,
+    Boolean                 $command_broadcast = false,
+    Array[Stdlib::HTTPSUrl] $submit_only_hosts = [],
 ) {
     $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
 

@@ -13,17 +13,17 @@
 # @param hiera_config which hiera configuration file to use
 # @param disable_env_config disable environments config
 class profile::puppetmaster::common (
-    Hash         $base_config         = lookup('profile::puppetmaster::common::base_config'),
-    Boolean      $command_broadcast   = lookup('profile::puppetmaster::common::command_broadcast'),
-    Integer[1,2] $ssl_verify_depth    = lookup('profile::puppetmaster::common::ssl_verify_depth'),
-    Boolean      $netbox_hiera_enable = lookup('profile::puppetmaster::common::netbox_hiera_enable'),
-    Boolean      $enable_merge_cli    = lookup('profile::puppetmaster::common::enable_merge_cli'),
-    Boolean      $disable_env_config  = lookup('profile::puppetmaster::common::disable_env_config'),
-    String[1]    $hiera_config        = lookup('profile::puppetmaster::common::hiera_config'),
-    Enum['puppetdb', 'none'] $storeconfigs          = lookup('profile::puppetmaster::common::storeconfigs'),
-    Array[Stdlib::Host] $puppetdb_hosts             = lookup('profile::puppetmaster::common::puppetdb_hosts'),
-    Array[Stdlib::Host] $puppetdb_submit_only_hosts = lookup('profile::puppetmaster::common::puppetdb_submit_only_hosts'),
-    Array[Puppetmaster::Report] $reports            = lookup('profile::puppetmaster::common::reports'),
+    Hash         $base_config              = lookup('profile::puppetmaster::common::base_config'),
+    Boolean      $command_broadcast        = lookup('profile::puppetmaster::common::command_broadcast'),
+    Integer[1,2] $ssl_verify_depth         = lookup('profile::puppetmaster::common::ssl_verify_depth'),
+    Boolean      $netbox_hiera_enable      = lookup('profile::puppetmaster::common::netbox_hiera_enable'),
+    Boolean      $enable_merge_cli         = lookup('profile::puppetmaster::common::enable_merge_cli'),
+    Boolean      $disable_env_config       = lookup('profile::puppetmaster::common::disable_env_config'),
+    String[1]    $hiera_config             = lookup('profile::puppetmaster::common::hiera_config'),
+    Enum['puppetdb', 'none'] $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs'),
+    Array[Puppetmaster::Report] $reports   = lookup('profile::puppetmaster::common::reports'),
+    Array[Stdlib::Host] $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
+    Array[Stdlib::HTTPSUrl] $puppetdb_submit_only_hosts = lookup('profile::puppetmaster::common::puppetdb_submit_only_hosts'),
 ) {
     $env_config = $disable_env_config ? {
         true    => {},

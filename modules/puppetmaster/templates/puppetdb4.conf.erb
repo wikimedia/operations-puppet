@@ -1,13 +1,9 @@
 [main]
 server_urls = https://<%= @hosts.join(":#{@port},https://") %>:<%= @port %>
 <%- unless @submit_only_hosts.empty? -%>
-submit_only_server_urls = https://<%= @submit_only_hosts.join(":#{@port},https://") %>:<%= @port %>
-# TODO: we should set this in puppet
-# We get an error if min_successful_submissions > server_urls.size
-# This is confusing as the docs say that submit_only_server_urls contributes to 
-# min_successful_submissions so more investigation needed
-# min_successful_submissions = <%= (@hosts + @submit_only_hosts).size %>
+submit_only_server_urls = <%= @submit_only_hosts.join(',') %>
 <%- end -%>
+# min_successful_submissions = <%= (@hosts).size %>
 <% if @command_broadcast -%>
 command_broadcast = true
 <% end -%>
