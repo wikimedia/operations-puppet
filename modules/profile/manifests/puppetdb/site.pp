@@ -46,7 +46,8 @@ define profile::puppetdb::site (
         $params['ca']:
             source => $ca_source;
         $params['key']:
-            source => secret($key_secret_path);
+            show_diff => false,
+            content   => secret($key_secret_path);
     }
     nginx::site { $title:
         ensure  => present,
