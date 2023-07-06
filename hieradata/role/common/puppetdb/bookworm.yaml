@@ -20,7 +20,6 @@ profile::puppetdb::database::log_line_prefix: '%m [db:%d,sess:%c,pid:%p,vtid:%v,
 profile::puppetdb::database::log_min_duration_statement: 10000 # 10secs
 profile::puppetdb::database::log_autovacuum_min_duration: 250  # 250ms
 profile::puppetdb::tmpfs_stockpile_queue: true
-profile::puppetdb::ssl_verify_client: 'on'
 profile::puppetdb::facts_blacklist_type: 'regex'
 # The following list should only include facts which are not used by for catalog compilation
 # This is specifically because we need the facts used by compilation to be available in puppetdb
