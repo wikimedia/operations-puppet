@@ -8,19 +8,14 @@
   Stdlib::UnixPath $key,
   Array[String[1]] $ssl_settings,
 | %>
-# This file is managed by puppet. Do not edit
-log_format  show_client_cert '$remote_addr - $ssl_client_s_dn - $ssl_client_verify - $remote_user [$time_local] "$request" '
-    '$status $body_bytes_sent "$http_referer" '
-    '"$http_user_agent" "$upstream_response_time"';
-
 server {
 
     listen <%= $port %> ssl default_server;
     listen [::]:<%= $port %> ssl default_server ipv6only=on;
 
     # SSL settings
-    ssl_certificate     <%= $cert %>
-    ssl_certificate_key <%= $key %>
+    ssl_certificate     <%= $cert %>;
+    ssl_certificate_key <%= $key %>;
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
 

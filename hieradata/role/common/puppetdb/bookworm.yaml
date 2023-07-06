@@ -40,7 +40,7 @@ profile::puppetdb::facts_blacklist:
   - '^block_devices.*'
   - '^mountpoints.*'  # used in cloud by cinderutils::ensure but not in production
 profile::puppetdb::sites:
-  puppet5:
+  puppetdb5:
     port: 8443
     cert_source: "puppet:///modules/profile/puppetdb/puppet5_certs/%{facts.networking.fqdn}.pem"
     key_secret_path: "puppetdb/puppet5_certs/%{facts.networking.fqdn}.pem"
