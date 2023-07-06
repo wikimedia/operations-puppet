@@ -155,6 +155,10 @@ route:
     - match:
         team: 'netops'
       receiver: 'netops-mail'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
     - match:
         team: 'peering'
       receiver: 'peering-mail'
@@ -165,6 +169,10 @@ route:
     - match:
         team: 'traffic'
       receiver: 'traffic-ircmail'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
     - match:
         team: 'releng'
       receiver: 'releng-ircmail'
