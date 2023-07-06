@@ -9,34 +9,27 @@
 class profile::calico::kubernetes (
     String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
 ) {
-    $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-    $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
-    $pki_renew_seconds = $kubernetes_cluster_config['pki_renew_seconds']
-    $master_fqdn = $kubernetes_cluster_config['master']
-    $cluster_nodes = $kubernetes_cluster_config['cluster_nodes']
-    $calico_version = $kubernetes_cluster_config['calico_version']
-    $istio_cni_version = $kubernetes_cluster_config['istio_cni_version']
-
+    $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     $calico_cni_username = 'calico-cni'
     $calicoctl_username = 'calicoctl'
     $istio_cni_username = 'istio-cni'
 
-    $calicoctl_client_cert = profile::pki::get_cert($pki_intermediate_base, $calicoctl_username, {
-        'renew_seconds'  => $pki_renew_seconds,
+    $calicoctl_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $calicoctl_username, {
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'outdir'         => '/etc/kubernetes/pki',
     })
     class { 'calico':
-        master_fqdn        => $master_fqdn,
+        master_fqdn        => $k8s_config['master'],
         calicoctl_username => $calicoctl_username,
         auth_cert          => $calicoctl_client_cert,
-        calico_version     => $calico_version,
+        calico_version     => $k8s_config['calico_version'],
     }
 
     # We don't install istio-cni on control-planes as they should not
     # run any workload that needs access to it's service mesh.
     # So drop the istio-cni plugin from the list of configured plugins.
-    if $::fqdn in $kubernetes_cluster_config['control_plane_nodes'] {
-        $cni_config = $kubernetes_cluster_config['cni_config'].reduce({}) | $memo, $value | {
+    if $::fqdn in $k8s_config['control_plane_nodes'] {
+        $cni_config = $k8s_config['cni_config'].reduce({}) | $memo, $value | {
             $k = $value[0]
             if $k == 'plugins' {
                 $v = $value[1].filter | $plugin | {
@@ -48,7 +41,7 @@ class profile::calico::kubernetes (
             $memo + { $k => $v }
         }
     } else {
-        $cni_config = $kubernetes_cluster_config['cni_config']
+        $cni_config = $k8s_config['cni_config']
     }
 
     k8s::kubelet::cni { 'calico':
@@ -56,12 +49,12 @@ class profile::calico::kubernetes (
         config   => $cni_config,
     }
 
-    $calico_cni_client_cert = profile::pki::get_cert($pki_intermediate_base, $calico_cni_username, {
-        'renew_seconds'  => $pki_renew_seconds,
+    $calico_cni_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $calico_cni_username, {
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'outdir'         => '/etc/kubernetes/pki',
     })
     k8s::kubeconfig { '/etc/cni/net.d/calico-kubeconfig':
-        master_host => $master_fqdn,
+        master_host => $k8s_config['master'],
         username    => $calico_cni_username,
         auth_cert   => $calico_cni_client_cert,
         require     => File['/etc/cni/net.d'],
@@ -72,19 +65,19 @@ class profile::calico::kubernetes (
     $ensure_istio_cni = pick($cni_config['plugins'], []).filter | $plugin | {
         $plugin['type'] == 'istio-cni'
     }.empty.bool2str('absent', 'present')
-    $istio_cni_version_safe = regsubst($istio_cni_version, '\.', '', 'G')
+    $istio_cni_version_safe = regsubst($k8s_config['istio_cni_version'], '\.', '', 'G')
     apt::package_from_component { "istio${istio_cni_version_safe}":
         component => "component/istio${istio_cni_version_safe}",
         packages  => { 'istio-cni' => $ensure_istio_cni },
     }
-    $istio_cni = profile::pki::get_cert($pki_intermediate_base, $istio_cni_username, {
+    $istio_cni = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $istio_cni_username, {
         ensure           => $ensure_istio_cni,
-        'renew_seconds'  => $pki_renew_seconds,
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'outdir'         => '/etc/kubernetes/pki',
     })
     k8s::kubeconfig { '/etc/cni/net.d/istio-kubeconfig':
         ensure      => $ensure_istio_cni,
-        master_host => $master_fqdn,
+        master_host => $k8s_config['master'],
         username    => $istio_cni_username,
         auth_cert   => $istio_cni,
         require     => File['/etc/cni/net.d'],
@@ -105,7 +98,7 @@ class profile::calico::kubernetes (
     # All nodes need to talk to typha and it runs as hostNetwork pod
     # TODO: If and when we move to a layered BGP hierarchy, revisit the use of
     # $cluster_nodes.
-    $cluster_nodes_ferm = join($cluster_nodes, ' ')
+    $cluster_nodes_ferm = join($k8s_config['cluster_nodes'], ' ')
     ferm::service { 'calico-typha':
         proto  => 'tcp',
         port   => '5473',
