@@ -21,17 +21,7 @@ class profile::kubernetes::node (
         }
     }
 
-    $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-    $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
-    $pki_renew_seconds = $kubernetes_cluster_config['pki_renew_seconds']
-    $master_fqdn = $kubernetes_cluster_config['master']
-    $version = $kubernetes_cluster_config['version']
-    $control_plane_nodes = $kubernetes_cluster_config['control_plane_nodes']
-    $infra_pod = $kubernetes_cluster_config['infra_pod']
-    $use_cni = $kubernetes_cluster_config['use_cni']
-    $cluster_dns = $kubernetes_cluster_config['cluster_dns']
-    $ipv6dualstack = $kubernetes_cluster_config['ipv6dualstack']
-    $cluster_cidr = $kubernetes_cluster_config['cluster_cidr']
+    $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
 
     # Enable performance governor for hardware nodes
     class { 'cpufrequtils': }
@@ -45,9 +35,9 @@ class profile::kubernetes::node (
         priority           => 8,
     }
 
-    $kubelet_cert = profile::pki::get_cert($pki_intermediate_base, 'kubelet', {
+    $kubelet_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kubelet', {
         'profile'        => 'server',
-        'renew_seconds'  => $pki_renew_seconds,
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'owner'          => 'kube',
         'outdir'         => $cert_dir,
         'hosts'          => [
@@ -77,15 +67,15 @@ class profile::kubernetes::node (
 
     # Setup kubelet
     $kubelet_kubeconfig = '/etc/kubernetes/kubelet.conf'
-    $default_auth = profile::pki::get_cert($pki_intermediate_base, "system:node:${facts['fqdn']}", {
-        'renew_seconds'  => $pki_renew_seconds,
+    $default_auth = profile::pki::get_cert($k8s_config['pki_intermediate_base'], "system:node:${facts['fqdn']}", {
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'names'          => [{ 'organisation' => 'system:nodes' }],
         'owner'          => 'kube',
         'outdir'         => $cert_dir,
         'notify_service' => 'kubelet'
     })
     k8s::kubeconfig { $kubelet_kubeconfig:
-        master_host => $master_fqdn,
+        master_host => $k8s_config['master'],
         username    => 'default-auth',
         auth_cert   => $default_auth,
         owner       => 'kube',
@@ -119,30 +109,30 @@ class profile::kubernetes::node (
 
     $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { 'k8s::kubelet':
-        cni                             => $use_cni,
-        cluster_dns                     => $cluster_dns,
-        pod_infra_container_image       => $infra_pod,
+        cni                             => $k8s_config['use_cni'],
+        cluster_dns                     => $k8s_config['cluster_dns'],
+        pod_infra_container_image       => $k8s_config['infra_pod'],
         kubelet_cert                    => $kubelet_cert,
         kubeconfig                      => $kubelet_kubeconfig,
         node_labels                     => $node_labels,
         node_taints                     => $kubelet_node_taints,
         extra_params                    => $kubelet_extra_params,
-        version                         => $version,
-        ipv6dualstack                   => $ipv6dualstack,
+        version                         => $k8s_config['version'],
+        ipv6dualstack                   => $k8s_config['ipv6dualstack'],
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
     }
 
     # Setup kube-proxy
     $kubeproxy_kubeconfig = '/etc/kubernetes/proxy.conf'
-    $default_proxy = profile::pki::get_cert($pki_intermediate_base, 'system:kube-proxy', {
-        'renew_seconds'  => $pki_renew_seconds,
+    $default_proxy = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'system:kube-proxy', {
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'names'          => [{ 'organisation' => 'system:node-proxier' }],
         'owner'          => 'kube',
         'outdir'         => $cert_dir,
         'notify_service' => 'kube-proxy'
     })
     k8s::kubeconfig { $kubeproxy_kubeconfig:
-        master_host => $master_fqdn,
+        master_host => $k8s_config['master'],
         username    => 'default-proxy',
         auth_cert   => $default_proxy,
         owner       => 'kube',
@@ -150,9 +140,9 @@ class profile::kubernetes::node (
     }
     class { 'k8s::proxy':
         kubeconfig    => $kubeproxy_kubeconfig,
-        version       => $version,
-        ipv6dualstack => $ipv6dualstack,
-        cluster_cidr  => $cluster_cidr,
+        version       => $k8s_config['version'],
+        ipv6dualstack => $k8s_config['ipv6dualstack'],
+        cluster_cidr  => $k8s_config['cluster_cidr'],
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6
@@ -171,7 +161,7 @@ class profile::kubernetes::node (
     # lint:endignore
 
     $kubelet_default_port = 10250
-    $control_plane_nodes_ferm = join($control_plane_nodes, ' ')
+    $control_plane_nodes_ferm = join($k8s_config['control_plane_nodes'], ' ')
     ferm::service { 'kubelet-http':
         proto  => 'tcp',
         port   => $kubelet_default_port,
