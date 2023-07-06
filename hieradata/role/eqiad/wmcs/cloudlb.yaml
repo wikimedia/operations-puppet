@@ -1,2 +1,18 @@
 profile::admin::groups:
   - wmcs-roots
+
+# TODO: override here the list of openstack controllers so HAproxy in cloudlb
+# can contact the backends using the cloud-private subnet. Once all cloudcontrol servers are
+# in the same network setup, this override here can be deleted, because it should be set elsewhere.
+profile::openstack::eqiad1::openstack_controllers:
+  # TODO: placeholder!
+  - cloudlb1001.private.eqiad.wikimedia.cloud
+  - cloudlb1002.private.eqiad.wikimedia.cloud
+
+profile::bird::advertise_vips:
+  # TODO: the FQDN needs update (remove the -next)
+  openstack-next.eqiad1.wikimediacloud.org:
+    ensure: present
+    service_type: haproxy
+    address: 185.15.56.161
+    check_cmd: "/usr/local/lib/nagios/plugins/check_haproxy --check=someup"
