@@ -6,10 +6,7 @@ class profile::rsyslog::kubernetes (
 ) {
     include profile::rsyslog::shellbox
 
-    $kubernetes_cluster_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-    $pki_intermediate_base = $kubernetes_cluster_config['pki_intermediate_base']
-    $pki_renew_seconds = $kubernetes_cluster_config['pki_renew_seconds']
-    $kubernetes_url = $kubernetes_cluster_config['master_url']
+    $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
 
     apt::package_from_component { 'rsyslog_kubernetes':
         component => 'component/rsyslog-k8s',
@@ -21,9 +18,9 @@ class profile::rsyslog::kubernetes (
       default => absent,
     }
 
-    $client_auth = profile::pki::get_cert($pki_intermediate_base, 'rsyslog', {
+    $client_auth = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'rsyslog', {
         'ensure'         => $ensure,
-        'renew_seconds'  => $pki_renew_seconds,
+        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'names'          => [{ 'organisation' => 'view' }],
         'notify_service' => 'rsyslog'
     })

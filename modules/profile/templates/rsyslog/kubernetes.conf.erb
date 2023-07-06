@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 module(load="mmkubernetes"
-        KubernetesURL="<%= @kubernetes_url %>"
+        KubernetesURL="<%= @k8s_config['master_url'] %>"
         tls.mycert="<%= @client_auth['cert'] %>"
         tls.myprivkey="<%= @client_auth['key'] %>")
 action(type="mmkubernetes"
