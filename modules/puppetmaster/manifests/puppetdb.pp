@@ -53,7 +53,6 @@ class puppetmaster::puppetdb(
     puppet::expose_agent_certs { '/etc/nginx':
         ensure          => present,
         provide_private => true,
-        require         => Class['nginx'],
         ssldir          => $ssldir,
     }
     if $ca_content {

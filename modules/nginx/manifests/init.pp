@@ -71,6 +71,7 @@ class nginx(
         ensure     => stdlib::ensure($ensure, 'service'),
         enable     => ($ensure == 'present'),
         hasrestart => true,
+        require    => Package[$nginx_package_name],
     }
 
     exec { 'nginx-reload':
@@ -78,6 +79,9 @@ class nginx(
         refreshonly => true,
     }
 
+    file { '/etc/nginx':
+        ensure => directory,
+    }
     file { [ '/etc/nginx/conf.d', '/etc/nginx/sites-available', '/etc/nginx/sites-enabled' ]:
         ensure  => stdlib::ensure($ensure, 'directory'),
         recurse => true,
@@ -93,12 +97,11 @@ class nginx(
         }
     }
 
-    # Order package -> config -> service for all
+    # Order config -> service for all
     #  nginx-tagged config files (including all File resources
     #  declared within this module), and set up the
     #  notification for config~>service if $managed.
     # Also set up ssl tag -> service similarly, for certs
-    Package[$nginx_package_name] -> File <| tag == 'nginx' |>
     if $managed {
         File <| tag == 'nginx' |> ~> Service['nginx']
         File <| tag == 'ssl' |> ~> Service['nginx']
