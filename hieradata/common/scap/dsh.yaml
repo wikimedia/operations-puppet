@@ -91,6 +91,16 @@ scap::dsh::groups:
     hosts:
       - wdqs1009.eqiad.wmnet
       - wdqs1010.eqiad.wmnet
+      - wdqs2013.codfw.wmnet
+      - wdqs2014.codfw.wmnet
+      - wdqs2015.codfw.wmnet
+      - wdqs2016.codfw.wmnet
+      - wdqs2017.codfw.wmnet
+      - wdqs2018.codfw.wmnet
+      - wdqs2019.codfw.wmnet
+      - wdqs2020.codfw.wmnet
+      - wdqs2021.codfw.wmnet
+      - wdqs2022.codfw.wmnet
   librenms:
     hosts:
       - netmon1003.wikimedia.org
