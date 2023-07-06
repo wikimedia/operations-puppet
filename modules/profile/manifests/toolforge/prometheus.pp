@@ -415,6 +415,11 @@ class profile::toolforge::prometheus (
                 },
                 {
                     'action'      => 'labelmap',
+                    'regex'       => '__meta_kubernetes_pod_name',
+                    'replacement' => 'pod_name',
+                },
+                {
+                    'action'      => 'labelmap',
                     'regex'       => '__meta_kubernetes_pod_label_(.+)',
                     'replacement' => 'pod_label_$1', # lint:ignore:single_quote_string_with_variables
                 },
