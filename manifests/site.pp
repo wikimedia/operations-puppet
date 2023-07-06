@@ -103,7 +103,7 @@ node 'an-test-presto1001.eqiad.wmnet' {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^analytics10(5[89]|6[0-9]|7[0-7]).eqiad.wmnet$/ {
+node /^analytics10(7[0-7]).eqiad.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
