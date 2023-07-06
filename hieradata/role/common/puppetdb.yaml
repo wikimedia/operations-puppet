@@ -15,6 +15,12 @@ profile::puppetdb::database::replication_lag_warn: 8388608 # 8MB
 profile::puppetdb::database::log_line_prefix: '%m [db:%d,sess:%c,pid:%p,vtid:%v,tid:%x] '
 profile::puppetdb::database::log_min_duration_statement: 10000 # 10secs
 profile::puppetdb::database::log_autovacuum_min_duration: 250  # 250ms
+profile::puppetdb::sites:
+  puppetdb7:
+    port: 8443
+    cert_source: "puppet:///modules/profile/puppetdb/puppet7_certs/%{facts.networking.fqdn}.pem"
+    key_secret_path: "puppetdb/puppet7_certs/%{facts.networking.fqdn}.pem"
+    ca_source: "/etc/ssl/certs/wmf-ca-certificates.crt"
 profile::puppetdb::database::users:
   replication@puppetdb2002-ipv4:
     user: replication
