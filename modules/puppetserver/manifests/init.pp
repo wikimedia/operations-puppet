@@ -10,6 +10,7 @@
 # @param hiera_data_dir the default location for hiera data
 # @param hierarchy a hash of hierarchy to add to the hiera file
 # @param puppetdb_urls if present puppetdb will be configured using these urls
+# @param puppetdb_submit_only_urls if present puppetdb will be configured using these urls for writes only
 # @param reports list of reports to configure
 # @param enc_path path to an ENC script
 # @param listen_host host to bind webserver socket
@@ -17,23 +18,24 @@
 # @param separate_ssldir used when the puppetserver is managed by a different puppet server
 # @param g10k_sources a list of g10k sources to configure
 class puppetserver (
-    Wmflib::Ensure                           $ensure               = 'present',
-    Stdlib::Fqdn                             $server_id            = $facts['networking']['fqdn'],
-    Stdlib::Fqdn                             $ca_server            = $server_id,
-    Integer[1]                               $max_active_instances = $facts['processors']['count'],
-    Stdlib::Unixpath                         $config_dir           = '/etc/puppet',
-    Stdlib::Unixpath                         $code_dir             = "${config_dir}/code",
-    Stdlib::Unixpath                         $hiera_data_dir       = "${config_dir}/hieradata",
-    Stdlib::Datasize                         $java_start_mem       = '1g',
-    Stdlib::Datasize                         $java_max_mem         = '1g',
-    Array[Puppetserver::Hierarchy]           $hierarchy            = [],
-    Array[Stdlib::HTTPUrl]                   $puppetdb_urls        = [],
-    Array[Puppetserver::Report,1]            $reports              = ['store'],
-    Optional[Stdlib::Unixpath]               $enc_path             = undef,
-    Stdlib::Host                             $listen_host          = $facts['networking']['ip'],
-    Boolean                                  $autosign             = false,
-    Boolean                                  $separate_ssldir      = true,
-    Hash[String, Puppetmaster::R10k::Source] $g10k_sources         = {},
+    Wmflib::Ensure                           $ensure                    = 'present',
+    Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
+    Stdlib::Fqdn                             $ca_server                 = $server_id,
+    Integer[1]                               $max_active_instances      = $facts['processors']['count'],
+    Stdlib::Unixpath                         $config_dir                = '/etc/puppet',
+    Stdlib::Unixpath                         $code_dir                  = "${config_dir}/code",
+    Stdlib::Unixpath                         $hiera_data_dir            = "${config_dir}/hieradata",
+    Stdlib::Datasize                         $java_start_mem            = '1g',
+    Stdlib::Datasize                         $java_max_mem              = '1g',
+    Array[Puppetserver::Hierarchy]           $hierarchy                 = [],
+    Array[Stdlib::HTTPUrl]                   $puppetdb_urls             = [],
+    Array[Stdlib::HTTPUrl]                   $puppetdb_submit_only_urls = [],
+    Array[Puppetserver::Report,1]            $reports                   = ['store'],
+    Optional[Stdlib::Unixpath]               $enc_path                  = undef,
+    Stdlib::Host                             $listen_host               = $facts['networking']['ip'],
+    Boolean                                  $autosign                  = false,
+    Boolean                                  $separate_ssldir           = true,
+    Hash[String, Puppetmaster::R10k::Source] $g10k_sources              = {},
 ) {
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',

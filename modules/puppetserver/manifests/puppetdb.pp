@@ -4,13 +4,22 @@ class puppetserver::puppetdb {
     # We call this from profile::puppetserver
     assert_private()
     $urls = $puppetserver::puppetdb_urls
+    $submit_only_urls = $puppetserver::puppetdb_submit_only_urls
     $enable = !$urls.empty
+    # Always enable command_broadcast if we have more then 1 host
+    $command_broadcast = ($urls + $submit_only_urls).length > 1
 
     ensure_packages('puppet-terminus-puppetdb', { 'ensure' => stdlib::ensure($enable, 'package') })
+
+    $submit_only_config = $submit_only_urls.empty.bool2str(
+        '', "submit_only_server_urls = ${submit_only_urls.join(' ')}"
+    )
 
     $puppetdb_config = @("CONFIG")
     [main]
     server_urls = ${urls.join(',')}
+    ${submit_only_config}
+    commant_broadcast = ${command_broadcast}
     | CONFIG
 
     $routes = {

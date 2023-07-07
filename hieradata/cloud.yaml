@@ -391,6 +391,7 @@ profile::puppetserver::java_start_mem: 1g
 profile::puppetserver::java_max_mem: 1g
 profile::puppetserver::reports: ['store']
 profile::puppetserver::puppetdb_urls: []
+profile::puppetserver::puppetdb_submit_only_urls: []
 profile::puppetserver::code_dir: '/srv/puppet_code'
 profile::puppetserver::enable_ca: false
 profile::puppetserver::intermediate_ca: false
