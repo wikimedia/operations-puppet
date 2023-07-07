@@ -46,6 +46,15 @@ profile::puppetdb::sites:
     cert_source: "puppet:///modules/profile/puppetdb/puppet5_certs/%{facts.networking.fqdn}.pem"
     key_secret_path: "puppetdb/puppet5_certs/%{facts.networking.fqdn}.pem"
     ca_source: "/etc/ssl/certs/wmf-ca-certificates.crt"
+    allowed_hosts:
+      - puppetmaster1001.eqiad.wmnet
+      - puppetmaster1002.eqiad.wmnet
+      - puppetmaster1003.eqiad.wmnet
+      - puppetmaster1004.eqiad.wmnet
+      - puppetmaster2001.codfw.wmnet
+      - puppetmaster2002.codfw.wmnet
+      - puppetmaster2003.codfw.wmnet
+      - puppetmaster2004.codfw.wmnet
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
 profile::puppetdb::database::users:

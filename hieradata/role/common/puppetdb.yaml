@@ -21,6 +21,7 @@ profile::puppetdb::sites:
     cert_source: "puppet:///modules/profile/puppetdb/puppet7_certs/%{facts.networking.fqdn}.pem"
     key_secret_path: "puppetdb/puppet7_certs/%{facts.networking.fqdn}.pem"
     ca_source: "/etc/ssl/certs/wmf-ca-certificates.crt"
+    allowed_hosts: "%{alias('puppetservers')}"
 profile::puppetdb::database::users:
   replication@puppetdb2002-ipv4:
     user: replication
