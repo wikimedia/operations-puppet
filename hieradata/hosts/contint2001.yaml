@@ -1,0 +1,2 @@
+# Host has slow disks and is replaced by contint2002
+profile::zuul::merger::enable: false
