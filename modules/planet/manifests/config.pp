@@ -8,7 +8,7 @@ define planet::config (
 
 
     file { "${config_path}/${title}":
-        ensure => 'directory',
+        ensure => directory,
         path   => "${config_path}/${title}",
         mode   => '0755',
         owner  => 'planet',
@@ -16,7 +16,7 @@ define planet::config (
     }
 
     file { "${config_path}/${title}/${config_file}":
-        ensure  => 'present',
+        ensure  => present,
         path    => "${config_path}/${title}/${config_file}",
         owner   => 'planet',
         group   => 'planet',

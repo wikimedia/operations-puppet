@@ -5,7 +5,7 @@ class planet::packages {
     # to produce a "planet"-like static site
     # 'RSS Aggregator Without Delusions Of Grandeur'
     package { 'rawdog':
-        ensure => 'present',
+        ensure => present,
     }
 
     # PyTidyLib 0.2.1 or later (optional but strongly recommended)
@@ -13,7 +13,7 @@ class planet::packages {
     # for rawdog.
     if debian::codename::eq('buster') {
         package { ['python-tidylib', 'python-libxml2']:
-            ensure => 'present',
+            ensure => present,
         }
     }
 

@@ -9,7 +9,7 @@ define planet::rawdogplugin {
     }
 
     file { "/etc/rawdog/${title}/plugins/rss.py":
-        ensure  => 'present',
+        ensure  => present,
         owner   => 'planet',
         group   => 'planet',
         mode    => '0755',

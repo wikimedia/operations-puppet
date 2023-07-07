@@ -15,26 +15,26 @@ define planet::theme {
     }
 
     file { "/etc/rawdog/theme/wikimedia/${title}":
-        ensure  => 'directory',
+        ensure  => directory,
     }
     file { "/var/www/planet/${title}/main.css":
-        ensure => 'present',
+        ensure => present,
         source => 'puppet:///modules/planet/theme/rawdog/rawdog_style.css';
     }
     file { "/var/www/planet/${title}/bulma.min.css":
-        ensure => 'present',
+        ensure => present,
         source => 'puppet:///modules/planet/theme/rawdog/bulma.min.css';
     }
     file { "/var/www/planet/${title}/Wikimedia_Community_Logo.svg":
-        ensure => 'present',
+        ensure => present,
         source => 'puppet:///modules/planet/theme/rawdog/Wikimedia_Community_Logo.svg';
     }
     file { "/etc/rawdog/theme/wikimedia/${title}/rd_page.tmpl":
-        ensure  => 'present',
+        ensure  => present,
         content => template('planet/html/rawdog/rd_page.html.tmpl.erb');
     }
     file { "/etc/rawdog/theme/wikimedia/${title}/rd_item.tmpl":
-        ensure  => 'present',
+        ensure  => present,
         content => template('planet/html/rawdog/rd_item.html.tmpl.erb');
     }
 }

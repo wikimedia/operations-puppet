@@ -13,7 +13,7 @@ define planet::updatejob (
     $minute = Integer(seeded_rand(60, $title))
 
     systemd::timer::job { "planet-update-${title}":
-        ensure          => 'present',
+        ensure          => present,
         user            => 'planet',
         description     => "Update feed content for Planet language version: ${title}",
         command         => $planet_cmd,

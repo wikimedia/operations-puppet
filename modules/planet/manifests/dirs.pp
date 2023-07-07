@@ -8,7 +8,7 @@ class planet::dirs {
         '/etc/rawdog/theme',
         '/etc/rawdog/theme/wikimedia',
         ]:
-        ensure => 'directory',
+        ensure => directory,
         owner  => 'planet',
         group  => 'planet',
         mode   => '0755',
@@ -22,7 +22,7 @@ class planet::dirs {
     }
 
     file { '/etc/rawdog/config':
-        ensure  => 'present',
+        ensure  => present,
         mode    => '0444',
         owner   => 'planet',
         group   => 'planet',
