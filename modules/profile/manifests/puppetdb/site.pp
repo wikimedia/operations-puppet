@@ -14,12 +14,14 @@
 #   You can get this by running the following on the puppet ca server
 #   `cat $(sudo facter -p puppet_config.hostpubkey.localcacert)`
 # @param jetty_port the port of the backend jetty server
+# @param allowed_hosts a list of hosts allowed to use this site
 define profile::puppetdb::site (
-    Stdlib::Port       $port,
-    Stdlib::Filesource $cert_source,
-    String[1]          $key_secret_path,
-    Stdlib::Filesource $ca_source,
-    Stdlib::Port       $jetty_port = 8080,
+    Stdlib::Port        $port,
+    Stdlib::Filesource  $cert_source,
+    String[1]           $key_secret_path,
+    Stdlib::Filesource  $ca_source,
+    Stdlib::Port        $jetty_port    = 8080,
+    Array[Stdlib::Host] $allowed_hosts = [],
 ) {
     include sslcert::dhparam  # lint:ignore:wmf_styleguide
 
@@ -52,5 +54,12 @@ define profile::puppetdb::site (
     nginx::site { $title:
         ensure  => present,
         content => epp('profile/puppetdb/secondary.epp', $params),
+    }
+    unless $allowed_hosts.empty() {
+        ferm::service { "puppetdb_${title}":
+            proto  => tcp,
+            port   => $port,
+            srange => $allowed_hosts,
+        }
     }
 }
