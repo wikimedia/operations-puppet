@@ -53,6 +53,10 @@ class profile::puppetboard (
     $uwsgi_port = 8001
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     include profile::rsyslog::udp_json_logback_compat
+    # Either both or none should be set
+    if !$puppetdb_key != !$puppetdb_cert {
+        fail('you have to either set both or neither of \$puppetdb_key and \$puppetdb_cert')
+    }
     class {'puppetboard':
         ensure                   => $ensure,
         puppetdb_host            => $puppetdb_host,
@@ -82,11 +86,15 @@ class profile::puppetboard (
         'port'     => $uwsgi_port,
     }
 
+    # if we are using client auth then puppetboard needs to be able to read the private key
+    # As such we set the systemd group to 'puppet'
+    $systemd_group = ($puppetdb_key and $puppetdb_cert).bool2str('puppet', 'www-data')
     service::uwsgi { 'puppetboard':
         port            => $uwsgi_port,
         deployment      => 'No Deploy',
         nrpe_check_http => $nrpe_check_http,
         no_workers      => 4,
+        systemd_group   => $systemd_group,
         config          => {
             need-plugins => 'python3',
             wsgi         => 'puppetboard.wsgi',
