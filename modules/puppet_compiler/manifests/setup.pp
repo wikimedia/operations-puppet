@@ -7,7 +7,7 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
     # Install the puppet var dir files
     exec { 'create puppet directories':
         command     => "/usr/bin/puppet master --compile test --vardir ${vardir}",
-        creates     => "${vardir}/yaml",
+        creates     => "${vardir}/preview",
         user        => $user,
         cwd         => $homedir,
         environment => "HOME=${homedir}",

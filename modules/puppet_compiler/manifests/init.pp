@@ -46,7 +46,8 @@ class puppet_compiler (
             recurse => true;
         $yamldir:
             ensure => link,
-            target => $yaml_mount;
+            target => $yaml_mount,
+            before => Class['puppet_compiler::setup'],
     }
     file { $output_dir:
         ensure  => link,
