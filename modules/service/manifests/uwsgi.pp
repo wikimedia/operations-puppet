@@ -1,79 +1,43 @@
-# == Define: service::uwsgi
-#
-# service::uwsgi provides a common wrapper for setting up python services
-# based on uwsgi on. It is still a WIP
-#
-# === Parameters
-#
-# [*port*]
-#   Port on which to run the service
-#
-# [*config*]
+# @summary service::uwsgi provides a common wrapper for setting up python services
+#   based on uwsgi on.
+# @param port Port on which to run the service
+# @param config
 #   The individual service's config to use. It must be a hash of
 #   key => value pairs, or a YAML-formatted string. Note that the complete
 #   configuration will be assembled using the bits given here and common
 #   service configuration directives.
-#
-# [*no_workers*]
-#   Number of workers to start. Default: 'ncpu' (i.e. start as many workers as
-#   there are CPUs)
-#
-# [*healthcheck_url*]
+# @param no_workers  Number of workers to start.
+# @param healthcheck_url
 #   The url to monitor the service at. 200 OK is the expected
 #   answer. If has_spec it true, this is supposed to be the base url
 #   for the spec request
-#
-# [*has_spec*]
-#   If the service specifies a swagger spec, use it to thoroughly
-#   monitor it
-#
-# [*repo*]
-#   The name of the repo to use for deployment. Default: ${title}/deploy
-#
-# [*local_logging*]
-#   Whether to store log entries on the target node as well. Default: true
-#
-# [*icinga_check*]
-#   Whether to include an Icinga check for monitoring the service. Default: true
-#
-# [*deployment*]
-#   What deployment system to use for deploying this service.
-#   Options: scap3, fabric
-#   Note: this parameter will be removed onces ores.wmflabs.org stops
-#         using service::uwsgi
-#
-# [*deployment_user*]
-#   The user that will own the service code. Only applicable when
-#   $deployment ='scap3'. Default: $title
-#
-# [*deployment_manage_user*]
-#   Boolean. Whether or not scap::target manages user. Only applicable
-#   when $deployment ='scap3'. Default: false
-
-# [*sudo_rules*]
+# @param has_spec If the service specifies a swagger spec, use it to thoroughly monitor it
+# @param repo The name of the repo to use for deployment. Default: ${title}/deploy
+# @param firejail run in firejail
+# @param local_logging Whether to store log entries on the target node as well.
+# @param icinga_check Whether to include an Icinga check for monitoring the service.
+# @param deployment What deployment system to use for deploying this service.
+#   Note: this parameter will be removed onces ores.wmflabs.org stops using service::uwsgi
+# @param deployment_user The user that will own the service code. Only applicable when
+#   $deployment ='scap3'.
+# @param deployment_manage_user Boolean. Whether or not scap::target manages user.
+#   Only applicable when $deployment ='scap3'.
+# @param sudo_rules
 #   An array of string representing sudo rules in the sudoers format that you
-#   want the service to have. Default: empty array
-#
-# [*contact_groups*]
-#   Contact groups for alerting.
-#   Default: lookup('contactgroups', {'default_value' => 'admins'})) - use 'contactgroups'
-#            hiera variable with a fallback to 'admins' if 'contactgroups' isn't set.
-#
-# [*add_logging_config*]
-#   Boolean. Inject logging configuration into the generated uwsgi config file
+#   want the service to have.
+# @param contact_groups  Contact groups for alerting.
+# @param add_logging_config
+#   Inject logging configuration into the generated uwsgi config file
 #   that will route logs to the Logstash ingest host defined in
 #   service::configuration::logstash_host and optionally local files if
 #   $local_logging is true. Default: true
-#
-# [*core_limit*]
+# @param core_limit
 #   This setting adds the LimitCore functionality of the uwsgi's systemd unit.
 #   Useful when segfaults are happening regularly and a more detailed report
 #   is needed.
 #   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
-#   Default: '0'
-#
-# === Examples
-#
+# @param nrpe_check_http a list of arguments to pass to check_http
+# @example
 #    service::uwsgi { 'myservice':
 #        port   => 8520,
 #        config => {
@@ -88,7 +52,7 @@
 define service::uwsgi(
     Stdlib::Port               $port,
     Hash                       $config                 = {},
-    Integer                    $no_workers             = $::processorcount,
+    Integer                    $no_workers             = $facts['processors']['count'],
     String                     $healthcheck_url        = '/_info',
     Boolean                    $has_spec               = false,
     String                     $repo                   = "${title}/deploy",
@@ -147,14 +111,14 @@ define service::uwsgi(
               logger    => [
                   "local file:${local_logfile}",
                   "logstash socket:${service::configuration::logstash_host}:11514",
-              ]
+              ],
           }
       } else {
           $log_config_local = {
               log-route => ['logstash .*'],
               logger    => [
                   "logstash socket:${service::configuration::logstash_host}:11514",
-              ]
+              ],
           }
       }
       $log_config_shared = {
@@ -206,7 +170,7 @@ define service::uwsgi(
         core_limit => $core_limit,
         settings   => {
             uwsgi => $complete_config,
-        }
+        },
     }
 
     if $icinga_check {
@@ -214,10 +178,11 @@ define service::uwsgi(
             # Advanced monitoring
             include service::monitoring
 
-            $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
+            $fact_ip = $facts['networking']['ip']
+            $monitor_url = "http://${fact_ip}:${port}${healthcheck_url}"
             nrpe::monitor_service{ "endpoints_${title}":
                 description   => "${title} endpoints health",
-                nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
+                nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${fact_ip} ${monitor_url}",
                 contact_group => $contact_groups,
             }
             # we also support smart-releases

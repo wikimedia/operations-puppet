@@ -1,21 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Define: uwsgi:app
-#
-# Provisions a uWSGI application server instance.
-#
-# === Parameters
-#
-# [*settings*]
+# @summary Provisions a uWSGI application server instance.
+# @param ensure tne ensurable parameter
+# @param enabled if the service should be enabled
+# @param service_settings Additional arguments to pass to uwsgi
+# @param settings
 #   Hash of hashes, representing the app configuration. Each key of the
 #   top-level hash is used as a section in the app's ini file. If a second
 #   level key has a value that is an Array, that key is repeated for each
 #   value of the array
-# [* core_limit *]
+# @param core_limit
 #   A string containing the core size limit to allow coredumps.
 #   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
-#
-# === Examples
-#
+# @param routes a list of additional routes to configure
+# @param extra_systemd_opts A hash of addtional options for the systemd unit
+# @example
 #  uwsgi::app { 'graphite-web':
 #    settings => {
 #      uwsgi => {
