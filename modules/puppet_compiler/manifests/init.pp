@@ -40,9 +40,7 @@ class puppet_compiler (
             owner  => $user,
             group  => $group,
             mode   => '0644';
-        [$workdir, $vardir]: ;
-        $libdir:
-            recurse => true;
+        [$workdir, $vardir, $libdir]: ;
         $yaml_mount:
             require => Labstore::Nfs_mount['project-on-labstore-secondary'],
             recurse => true;
