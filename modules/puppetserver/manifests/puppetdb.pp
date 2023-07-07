@@ -19,7 +19,7 @@ class puppetserver::puppetdb {
     [main]
     server_urls = ${urls.join(',')}
     ${submit_only_config}
-    commant_broadcast = ${command_broadcast}
+    command_broadcast = ${command_broadcast}
     | CONFIG
 
     $routes = {
