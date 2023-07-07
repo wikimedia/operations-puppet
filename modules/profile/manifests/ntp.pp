@@ -113,8 +113,8 @@ class profile::ntp (
             description    => "Check if ${service} has been restarted after ${conf_file} was changed",
             nrpe_command   => "/usr/local/lib/nagios/plugins/check_ntp_service --service ${service} --file ${conf_file}",
             sudo_user      => 'root',
-            check_interval => 240, # 240mins
-            retry_interval => 120, # 120mins
+            check_interval => 60, # 60mins
+            retry_interval => 30, # 30mins
             notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
         }
     }
