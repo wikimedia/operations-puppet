@@ -1,4 +1,46 @@
 # SPDX-License-Identifier: Apache-2.0
+# @summary configure puppetboard
+# @see https://github.com/voxpupuli/puppetboard/#configuration
+# @param ensure ensurable parameter
+# @param puppetdb_host puppetdb host to connect to
+# @param puppetdb_port puppetdb port to use
+# @param puppetdb_ssl_verify If we shold verify TLS
+# @param puppetdb_cert the puppet cert to use for client auth
+# @param puppetdb_key the puppet key to use for client auth
+# @param puppetdb_proto the protocol to use for connecting to puppetdb
+# @param puppetdb_timeout the timeout to use for puppetdb connections
+# @param page_title The page title
+# @param default_environment The default puppet environment
+# @param enable_catalog enable the catalog browser
+# @param enable_query enable the query interface
+# @param unresponsive_hours how long untill a host is considered unresponsive
+# @param localise_timestamp If we should localize timestamps
+# @param log_level the log level to use
+# @param refresh_rate the refresh rate
+# @param daily_reports_chart_enabled enable the daily report chart
+# @param daily_reports_chart_days how many days for the daily report chart
+# @param with_event_numbers  If set to True then Overview and Nodes list shows exact number of
+#   changed resources in the last report. Otherwise shows only 'some' string if there are
+#   resources with given status. Setting this to False gives performance benefits, especially in
+#   big Puppet environment
+# @param normal_table_count Default number of nodes to show when displaying reports and catalog nodes
+# @param little_table_count  Default number of reports to show when when looking at a node.
+# @param table_count_selector  Configure the dropdown to limit number of hosts to show per page.
+# @param graph_type Specify the type of graph to display. Default is pie, other good option is donut.
+#   Other choices can be found here: _C3JS_documentation`
+# @param graph_facts_override A list of fact names to tell PuppetBoard to generate a pie-chart on the
+#   fact page. With some fact values being unique per node, like ipaddress, uuid, and serial number,
+#   as well as structured facts it was no longer feasible to generate a graph for everything.
+# @param displayed_metrics_override
+# @param inventory_facts_override  list of tuples that serve as the column header and the fact name to
+#   search for to create the inventory page. If a fact is not found for a node then undef is printed.
+# @param query_endpoints_override If enable_query is True, allow to fine tune the endpoints of PuppetDB
+#   APIs that can be queried. It must be a list of strings of PuppetDB endpoints for which the query is
+#   enabled. See the QUERY_ENDPOINTS constant in the puppetboard.app module for a list of the available
+#   endpoints.
+# @param overview_filter This allows to filter out nodes in the overview by passing queries to
+#   the PuppetDB
+# @param secret_key the secret key to use
 class puppetboard (
     # puppetdb settings
     Wmflib::Ensure                      $ensure                      = 'present',
