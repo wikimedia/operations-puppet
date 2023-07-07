@@ -69,7 +69,7 @@
     rgw_keystone_api_version = 3
     rgw_keystone_url = <%= $keystone_internal_uri %>
     rgw_keystone_accepted_roles = 'reader, admin, member'
-    rgw_keystone_implicit_tenants = false
+    rgw_keystone_implicit_tenants = true
     rgw_keystone_admin_domain = default
     rgw_keystone_admin_project = <%= $radosgw_service_user_project %>
     rgw_keystone_admin_user = <%= $radosgw_service_user %>
