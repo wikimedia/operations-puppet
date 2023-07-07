@@ -2,7 +2,8 @@
 # @summary class to set up addtional aspects of the git private repo
 class profile::puppetserver::git::private (
 ) {
-    $repo_url = "${profile::profile::puppetserver::git::basedir}/private"
+    include profile::puppetserver::git
+    $repo_url = "${profile::puppetserver::git::basedir}/private"
     ensure_packages(['yamllint'])
     file { '/etc/puppet/yamllint.yaml':
         ensure => file,
