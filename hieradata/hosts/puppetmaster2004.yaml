@@ -1,3 +1,0 @@
-profile::puppetmaster::common::command_broadcast: true
-profile::puppetmaster::common::puppetdb_submit_only_hosts:
-  - https://puppetdb2003.codfw.wmnet:8443

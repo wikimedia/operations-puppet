@@ -1,2 +1,4 @@
 profile::puppetmaster::common::puppetdb_hosts:
   - puppetdb2002.codfw.wmnet
+profile::puppetmaster::common::puppetdb_submit_only_hosts:
+  - https://puppetdb2003.codfw.wmnet:8443
