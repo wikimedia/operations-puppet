@@ -16,15 +16,18 @@ configuration file should not result in an automatic restart.
 
 The purpose of this script is to check if a configuration file change (mtime)
 is more recent than the subsequent service restart (ActiveEnterTimestamp), to
-remind us to restart the service (WARNING). If the time delta between the mtime
-and ActiveEnterTimestamp exceeds 24 hours (configurable), then it raises the
-alert from WARNING to CRITICAL.
+remind us to restart the service (WARNING). If mtime is greater than
+ActiveEnterTimestamp, we consider that to be a problem. After that, if the
+difference between the current time and the mtime exceeds the value defined by
+the critical argument, we raise a CRITICAL alert, if not, a simple WARNING.
 """
 
 import argparse
 import enum
 import os
 import sys
+
+from datetime import datetime
 
 import pystemd
 
@@ -76,7 +79,7 @@ def parse_args():
                         required=True,
                         help="path to the configuration file")
     parser.add_argument("--critical",
-                        type=int, default=24,
+                        type=int, default=4,
                         help="time (h) after which to raise alert to CRITICAL")
     return parser.parse_args()
 
@@ -86,17 +89,22 @@ def main():
 
     unit_time = unit_active_time(args.service)
     file_time = file_last_modified(args.file)
-    diff = file_time - unit_time
+    current_time = datetime.now()
 
+    # The configuration file was changed but the service was not restarted.
     if file_time > unit_time:
-        alert = (StatusCode.CRITICAL if (diff > args.critical * 3600)
+        # What we care about is how long has it been between when this script
+        # is called and the file was last modified. If this exceeds the
+        # CRITICAL interval, complain, otherwise just send a WARNING.
+        diff_time = (current_time - datetime.fromtimestamp(file_time)).seconds
+        alert = (StatusCode.CRITICAL if (diff_time > args.critical * 3600)
                  else StatusCode.WARNING)
         msg = (f"{alert.name}: Service {args.service} has not been restarted "
-               f"after {args.file} was changed (stale by {diff:.2f}s).")
+               f"after {args.file} was changed (gt {args.critical}h).")
         write_msg(alert, msg)
     else:
         msg = (f"OK: {args.service} was restarted after {args.file} "
-               f"was changed (within 3600 seconds).")
+               f"was changed.")
         write_msg(StatusCode.OK, msg)
 
 
