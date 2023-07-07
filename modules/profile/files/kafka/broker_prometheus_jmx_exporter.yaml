@@ -100,3 +100,6 @@ rules:
   name: kafka_$1_$2_$3_$6
   labels:
     "$4": "$5"
+- pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>(MeanRate|OneMinuteRate|FiveMinuteRate|FifteenMinuteRate)
+  name: kafka_server_KafkaRequestHandlerPool_RequestHandlerAvgIdlePercent_$1
+  type: GAUGE
