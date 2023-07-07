@@ -2,14 +2,6 @@ profile::admin::groups:
   - wmcs-roots
   - labtest-roots
 
-# TODO: override here the list of openstack controllers so HAproxy in cloudlb
-# can contact the backends using the cloud-private subnet. Once all cloudcontrol servers are
-# in the same network setup, this override here can be deleted, because it should be set elsewhere.
-profile::openstack::codfw1dev::openstack_controllers:
-  - cloudcontrol2001-dev.private.codfw.wikimedia.cloud
-  - cloudcontrol2004-dev.private.codfw.wikimedia.cloud
-  - cloudcontrol2005-dev.private.codfw.wikimedia.cloud
-
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
     ensure: present

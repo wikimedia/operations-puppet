@@ -37,15 +37,6 @@ profile::bird::advertise_vips:
     address: 172.20.254.1
     check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.254.1 -d www.wikimedia.org -t 1"
 
-# TODO: override here the list of openstack controllers so communication happens
-# over the cloud-private subnet. Once all openstack servers (most notably cloudnet)
-# are in the same network setup, this override could probably be deleted and set more
-# generally
-profile::openstack::codfw1dev::openstack_controllers:
-  - cloudcontrol2001-dev.private.codfw.wikimedia.cloud
-  - cloudcontrol2004-dev.private.codfw.wikimedia.cloud
-  - cloudcontrol2005-dev.private.codfw.wikimedia.cloud
-
 profile::dbbackups::mydumper::enabled: true
 profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
 profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'
