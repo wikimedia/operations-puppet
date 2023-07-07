@@ -11,6 +11,7 @@ class profile::puppet_compiler (
     requires_realm('labs')
 
     include profile::openstack::base::puppetmaster::enc_client
+    class { 'sslcert::dhparam': }
     class { 'puppet_compiler':
         group => 'wikidev',
     }
