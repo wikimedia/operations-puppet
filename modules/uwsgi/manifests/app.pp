@@ -12,6 +12,8 @@
 #   A string containing the core size limit to allow coredumps.
 #   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
 # @param routes a list of additional routes to configure
+# @param systemd_user the user the syetmd unit will be started with
+# @param systemd_group the group the syetmd unit will be started with
 # @param extra_systemd_opts A hash of addtional options for the systemd unit
 # @example
 #  uwsgi::app { 'graphite-web':
@@ -34,6 +36,8 @@ define uwsgi::app(
     String              $core_limit         = '0',
     Hash                $settings           = {},
     Array[Uwsgi::Route] $routes             = [],
+    String[1]           $systemd_user       = 'www-data',
+    String[1]           $systemd_group      = 'www-data',
     Hash                $extra_systemd_opts = {},
 ) {
     include uwsgi

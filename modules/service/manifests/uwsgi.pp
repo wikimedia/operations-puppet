@@ -6,6 +6,8 @@
 #   key => value pairs, or a YAML-formatted string. Note that the complete
 #   configuration will be assembled using the bits given here and common
 #   service configuration directives.
+# @param systemd_user the user to use in the systemd unit
+# @param systemd_group the group to use in the systemd unit
 # @param no_workers  Number of workers to start.
 # @param healthcheck_url
 #   The url to monitor the service at. 200 OK is the expected
@@ -52,6 +54,8 @@
 define service::uwsgi(
     Stdlib::Port               $port,
     Hash                       $config                 = {},
+    String[1]                  $systemd_user           = 'www-data',
+    String[1]                  $systemd_group          = 'www-data',
     Integer                    $no_workers             = $facts['processors']['count'],
     String                     $healthcheck_url        = '/_info',
     Boolean                    $has_spec               = false,
@@ -167,8 +171,10 @@ define service::uwsgi(
     $complete_config = deep_merge($base_config, $logging_config, $config)
 
     uwsgi::app { $title:
-        core_limit => $core_limit,
-        settings   => {
+        core_limit    => $core_limit,
+        systemd_user  => $systemd_user,
+        systemd_group => $systemd_group,
+        settings      => {
             uwsgi => $complete_config,
         },
     }
