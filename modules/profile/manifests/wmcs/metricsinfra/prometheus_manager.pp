@@ -97,7 +97,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     }
     exec { 'prometheus-manager-venv-install':
         user        => 'www-data',
-        command     => "${venv_dir}/bin/pip install -e .",
+        command     => "${venv_dir}/bin/pip install -e ${clone_dir}",
         notify      => Uwsgi::App['prometheus-manager'],
         refreshonly => true,
     }
@@ -133,7 +133,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     # again, a better tool would be nice for deployment
     # automatically run database migrations after git updates
     exec { 'prometheus-manager-migrate':
-        command     => "${venv_dir}/bin/python3 scripts/pm-migrate",
+        command     => "${venv_dir}/bin/pm-migrate",
         cwd         => $clone_dir,
         environment => $env_array,
         user        => 'www-data',
@@ -152,7 +152,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     systemd::timer::job { 'metricsinfra-maintain-projects':
         ensure      => present,
         description => 'Syncronize list of OpenStack projects monitored by metricsinfra',
-        command     => "${venv_dir}/bin/python3 ${clone_dir}/scripts/pm-maintain-projects",
+        command     => "${venv_dir}/bin/pm-maintain-projects",
         user        => 'www-data',
         # every 20 minutes, so at minute :7, :27, :47
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:7/20:00'},
