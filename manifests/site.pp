@@ -1035,7 +1035,7 @@ node /^dumpsdata1006\.eqiad\.wmnet$/ {
 }
 
 # nfs server for misc dumps generation, also rsyncs misc dumps
-node /^dumpsdata1002\.eqiad\.wmnet$/ {
+node /^dumpsdata1003\.eqiad\.wmnet$/ {
     role(dumps::generation::server::misccrons)
 }
 
@@ -1046,7 +1046,7 @@ node /^dumpsdata1004\.eqiad\.wmnet$/ {
 }
 
 # new dumpsdata servers T283290
-node /^dumpsdata100[357]\.eqiad\.wmnet$/ {
+node /^dumpsdata100[257]\.eqiad\.wmnet$/ {
     role(dumps::generation::server::spare)
 }
 
