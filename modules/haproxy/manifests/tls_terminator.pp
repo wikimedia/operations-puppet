@@ -101,16 +101,6 @@ define haproxy::tls_terminator(
         fail('haproxy::tls_terminator should only be used once the haproxy class is declared.')
     }
 
-    # Check hash parameters for 'tls' key
-    $optional_hashes = [ $vars, $acls, $add_headers, $del_headers, $pre_acl_actions, $post_acl_actions ]
-    $optional_hashes.each |Optional[Hash] $opt_h| {
-        if $opt_h {
-            if !has_key($opt_h, 'tls') {
-                fail("${opt_h} must have a 'tls' key")
-            }
-        }
-    }
-
     file { $crt_list_path:
         mode    => '0444',
         content =>  template('haproxy/crt-list.cfg.erb'),

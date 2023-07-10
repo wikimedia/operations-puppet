@@ -64,7 +64,7 @@ listen tls
     capture response header X-Cache-Status len 10
     capture request header Host len 25
 
-<%- if @vars -%>
+<%- if @vars and @vars['tls'] -%>
 <%- @vars['tls'].each do |var| -%>
 <%- if var['acl'] == nil -%>
     http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
@@ -72,19 +72,19 @@ listen tls
 <%- end -%>
 <%- end -%>
 
-<%- if @pre_acl_actions -%>
+<%- if @pre_acl_actions and @pre_acl_actions['tls'] -%>
 <%- @pre_acl_actions['tls'].each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
 <%- end -%>
 
-<%- if @acls -%>
+<%- if @acls and @acls['tls'] -%>
 <%- @acls['tls'].each do |acl| -%>
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
 <%- end -%>
 <%- end -%>
 
-<%- if @vars -%>
+<%- if @vars and @vars['tls'] -%>
 <%- @vars['tls'].each do |var| -%>
 <%- if var['acl'] -%>
     http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
@@ -92,20 +92,20 @@ listen tls
 <%- end -%>
 <%- end -%>
 
-<%- if @add_headers -%>
+<%- if @add_headers and @add_headers['tls'] -%>
 <%- @add_headers['tls'].each do |add_header| -%>
 <%- if add_header['value'] -%>
     http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> "<%= add_header['value'] %>"
 <%- end -%>
 <%- end -%>
 <%- end -%>
-<%- if @del_headers -%>
+<%- if @del_headers and @del_headers['tls'] -%>
 <%- @del_headers['tls'].each do |del_header| -%>
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
 <%- end -%>
 
-<%- if @post_acl_actions -%>
+<%- if @post_acl_actions and @post_acl_actions['tls'] -%>
 <%- @post_acl_actions['tls'].each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
@@ -157,6 +157,54 @@ frontend http
     timeout client <%= @redirection_timeout['client'] %>s
     # inactivity timeout on the client side for half-closed connections
     timeout client-fin <%= @redirection_timeout['client_fin'] %>s
+<%- end -%>
+<%# vars -%>
+<%- if @vars and @vars['http'] -%>
+<%- @vars['http'].each do |var| -%>
+<%- if var['acl'] == nil -%>
+    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
+<%- end -%>
+<%- end -%>
+<%- end -%>
+<%# pre_acl_actions -%>
+<%- if @pre_acl_actions and @pre_acl_actions['http'] -%>
+<%- @pre_acl_actions['http'].each do |action| -%>
+    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
+<%- end -%>
+<%- end -%>
+<%# acls -%>
+<%- if @acls and @acls['http'] -%>
+<%- @acls['http'].each do |acl| -%>
+    acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
+<%- end -%>
+<%- end -%>
+<%# vars (with acls) -%>
+<%- if @vars and @vars['http'] -%>
+<%- @vars['http'].each do |var| -%>
+<%- if var['acl'] -%>
+    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
+<%- end -%>
+<%- end -%>
+<%- end -%>
+<%# add_headers -%>
+<%- if @add_headers and @add_headers['http'] -%>
+<%- @add_headers['http'].each do |add_header| -%>
+<%- if add_header['value'] -%>
+    http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> "<%= add_header['value'] %>"
+<%- end -%>
+<%- end -%>
+<%- end -%>
+<%# del_headers -%>
+<%- if @del_headers and @del_headers['http'] -%>
+<%- @del_headers['http'].each do |del_header| -%>
+    http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
+<%- end -%>
+<%- end -%>
+<%# post_acl_actions -%>
+<%- if @post_acl_actions and @post_acl_actions['http'] -%>
+<%- @post_acl_actions['http'].each do |action| -%>
+    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
+<%- end -%>
 <%- end -%>
 
     # Provide Server header

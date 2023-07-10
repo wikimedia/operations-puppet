@@ -40,23 +40,6 @@ class profile::cache::haproxy(
         }
     }
 
-    # First check mandatory params for required 'tls' key
-    $hashes = [ $vars, $acls, $add_headers, $del_headers ]
-    $hashes.each |Hash $h| {
-        if !has_key($h, 'tls') {
-            fail("profile::cache::haproxy::${h} must have a 'tls' key")
-        }
-    }
-    # Then check optional parameters (if they are defined)
-    $optional_hashes = [$pre_acl_actions, $post_acl_actions]
-    $optional_hashes.each |Optional[Hash] $opt_h| {
-        if $opt_h {
-            if !has_key($opt_h, 'tls') {
-                fail("profile::cache::haproxy::${opt_h} must have a 'tls' key")
-            }
-        }
-    }
-
     # variables used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
     $exec_start = '/usr/sbin/haproxy -Ws'

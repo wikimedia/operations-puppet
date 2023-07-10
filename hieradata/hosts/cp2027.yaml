@@ -63,7 +63,7 @@ lookup_options:
   profile::cache::haproxy::acls:
     merge:
       strategy: deep
-  profile::cache::haproxy::pre_acls_actions:
+  profile::cache::haproxy::pre_acl_actions:
     merge:
       strategy: deep
   profile::cache::haproxy::vars:
