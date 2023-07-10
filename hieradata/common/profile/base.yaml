@@ -15,3 +15,4 @@ profile::base::overlayfs: false
 profile::base::remote_syslog_tls_client_auth: true
 profile::base::remote_syslog_send_logs: standard
 profile::base::additional_purged_packages: ['isc-dhcp-client']
+profile::base::remote_syslog_tls_ca: "/etc/ssl/certs/wmf-ca-certificates.crt"

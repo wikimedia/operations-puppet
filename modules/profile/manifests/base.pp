@@ -29,7 +29,7 @@ class profile::base (
     Boolean                             $remote_syslog_tls_client_auth      = lookup('profile::base::remote_syslog_tls_client_auth'),
     Enum['x509/certvalid', 'x509/name'] $remote_syslog_tls_server_auth      = lookup('profile::base::remote_syslog_tls_server_auth', {'default_value' => 'x509/certvalid'}),
     Enum['gtls', 'ossl']                $remote_syslog_tls_netstream_driver = lookup('profile::base::remote_syslog_tls_netstream_driver', {'default_value' => 'gtls'}),
-    Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca', {'default_value' => '/var/lib/puppet/ssl/certs/ca.pem'}),
+    Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca'),
     Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
     Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),

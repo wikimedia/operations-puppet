@@ -59,6 +59,7 @@ profile::base::additional_purged_packages: []
 profile::base::remote_syslog_send_logs: standard
 profile::base::remote_syslog_tls_client_auth: true
 profile::base::remote_syslog_tls: {}
+profile::base::remote_syslog_tls_ca: "%{facts.puppet_config.localcacert}"
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}
