@@ -1,49 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: rsyslog::receiver
-#
-# Setup the rsyslog daemon as a receiver for remote logs.
-#
-# === Parameters
-#
-# [*udp_port*]
-#   Listen for UDP syslog on this port
-#
-# [*tcp_port*]
-#   Listen for TCP syslog on this port (TLS only)
-#
-# [*log_retention_days*]
-#   How long to keep logs in $archive_directory for
-#
-# [*log_directory*]
-#   Write logs to this directory, parent directory must already
-#   exist.
-#
-# [*archive_directory*]
-#   Archive logs into this directory, it is an error to set this equal to
+# @summary Setup the rsyslog daemon as a receiver for remote logs.
+# @param udp_port Listen for UDP syslog on this port
+# @param tcp_port Listen for TCP syslog on this port (TLS only)
+# @param log_retention_days How long to keep logs in $archive_directory for
+# @param log_directory Write logs to this directory, parent directory must already exist.
+# @param archive_directory Archive logs into this directory, it is an error to set this equal to
 #   $log_directory and vice versa.
-# [*tls_auth_mode*]
-#   Specifies the authentication mode for syslog clients. Default is
-#   x509/certvalid (verify certificate for all clients).
-# [*tls_netstream_driver*]
-#   Rsyslog Network Stream driver to use for TLS support. Can be either 'gtls'
-#   (GnuTLS, default) or 'ossl' (OpenSSL).
-# [*file_template_property*]
-#   Property to be used for determining the file name (e.g.
-#   /srv/syslog/<property>/syslog.log) of the log file. Can be
-#   either hostname ('host1001') or fromhost-ip (10.0.0.1). Default is hostname.
-#
-# [*acme_cert_name*]
-#   Optional name for acme-chief cert to use for tls clients
+# @param tls_auth_mode Specifies the authentication mode for syslog clients.
+# @param tls_netstream_driver Rsyslog Network Stream driver to use for TLS support.
+# @param file_template_property Property to be used for determining the file name (e.g.
+#   /srv/syslog/<property>/syslog.log) of the log file.
+# @param acme_cert_name name for acme-chief cert to use for tls clients
 class rsyslog::receiver (
-    $udp_port                                                   = 514,
-    $tcp_port                                                   = 6514,
-    $log_retention_days                                         = 90,
-    $log_directory                                              = '/srv/syslog',
-    $archive_directory                                          = '/srv/syslog/archive',
-    Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = 'x509/certvalid',
-    Enum['gtls', 'ossl'] $tls_netstream_driver                  = 'gtls',
-    Enum['fromhost-ip', 'hostname'] $file_template_property     = 'hostname',
-    Optional[Stdlib::Fqdn] $acme_cert_name                      = undef
+    Stdlib::Port                    $udp_port               = 514,
+    Stdlib::Port                    $tcp_port               = 6514,
+    Integer                         $log_retention_days     = 90,
+    Stdlib::Unixpath                $log_directory          = '/srv/syslog',
+    Stdlib::Unixpath                $archive_directory      = '/srv/syslog/archive',
+    Rsyslog::TLS::Auth_mode         $tls_auth_mode          = 'x509/certvalid',
+    Rsyslog::TLS::Driver            $tls_netstream_driver   = 'gtls',
+    Enum['fromhost-ip', 'hostname'] $file_template_property = 'hostname',
+    Optional[Stdlib::Fqdn]          $acme_cert_name         = undef
 ) {
     if $tls_netstream_driver == 'gtls' {
         # Unlike rsyslog-openssl (see below), rsyslog-gnutls is available
