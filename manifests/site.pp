@@ -1540,8 +1540,8 @@ node /^kafka-stretch200[12]\.codfw\.wmnet$/ {
     role(insetup::data_engineering)
 }
 
-# Karapace VM in support of DataHub
-node /^karapace1001\.eqiad\.wmnet$/ {
+# Two karapace VMs in support of DataHub
+node /^karapace100[12]\.eqiad\.wmnet$/ {
     role(karapace)
 }
 
