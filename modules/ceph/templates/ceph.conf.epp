@@ -76,4 +76,17 @@
     rgw_keystone_admin_password = <%= $radosgw_service_user_pass %>
     rgw_s3_auth_use_keystone = true
     rgw_swift_account_in_url = true
+
+    # For now leave these on install defaults, which are unlimited.
+    #  Users will be constrained by the 'user' quota and there's no good
+    #  reason to make them divide that quota among multiple buckets
+    #  if they don't want to.
+    #rgw_bucket_default_quota_max_objects = 100
+    #rgw_bucket_default_quota_max_size = 10485760
+
+    # For our purposes a 'user' is equivalent to a Keystone
+    #  tenant.
+    rgw_user_default_quota_max_objects = 4096
+    # max_size is in bytes. This is 8GB:
+    rgw_user_default_quota_max_size = 8589934592
 <%} -%>
