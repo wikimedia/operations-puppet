@@ -1,4 +1,4 @@
 motd::messages:
-'karapace_production':
+  'karapace_staging':
     message: 'This server supports the DataHub deployment in staging'
 karapace::bootstrap_uri: kafka-test1006.eqiad.wmnet:9092
