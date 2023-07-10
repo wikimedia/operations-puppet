@@ -39,21 +39,10 @@ class profile::openstack::base::magnum(
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
     ferm::service { 'magnum-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
-    }
-
-    # TODO: move to haproxy/cloudlb profiles
-    ferm::service { 'magnum-api-access':
-        proto  => 'tcp',
-        port   => 29511,
-        srange => "(${prod_networks} ${labs_networks})",
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'magnum':
