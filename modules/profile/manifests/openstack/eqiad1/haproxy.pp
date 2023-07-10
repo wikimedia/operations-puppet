@@ -142,7 +142,7 @@ class profile::openstack::eqiad1::haproxy(
                 acme_chief_cert_name => $acme_chief_cert_name,
             },
         ],
-        firewall           => 'internal',
+        firewall           => $firewall,
     }
 
     openstack::haproxy::site { 'neutron':
