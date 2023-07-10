@@ -106,6 +106,10 @@ class profile::webperf::site (
     $httpd_config = [
         'SetEnv EXCIMER_CONFIG_PATH /etc/excimer-ui-server/config.json',
         'SetEnv XHGUI_SAVE_HANDLER pdo',
+        # Turn off schema mgmt, as the app fatals unconditionally otherwise.
+        # We deploy XHGui as read-only frontend (enforced with non-admin DB grant).
+        # https://github.com/perftools/xhgui/pull/494
+        'SetEnv XHGUI_PDO_INITSCHEMA "false"',
         "SetEnv XHGUI_PDO_DSN \"mysql:host=${xhgui_mysql_host};dbname=${xhgui_mysql_db};charset=utf8\"",
         "SetEnv XHGUI_PDO_USER \"${xhgui_mysql_user}\"",
         "SetEnv XHGUI_PDO_PASS \"${xhgui_mysql_password}\"",
