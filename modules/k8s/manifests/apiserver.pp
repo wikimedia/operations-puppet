@@ -84,6 +84,8 @@ class k8s::apiserver (
         shell  => '/usr/sbin/nologin',
     }
 
+    # etcd-client is used to orchestrate kube-apiserver restarts
+    ensure_packages('etcd-client')
     k8s::package { 'apiserver':
         package => 'master',
         version => $version,
@@ -124,8 +126,13 @@ class k8s::apiserver (
         notify  => Service['kube-apiserver'],
     }
 
-    service { 'kube-apiserver':
-        ensure => running,
-        enable => true,
+    # Override the restart from puppet to become a reload, which runs
+    # restart with an etcdctl lock to ensure only one apiserver restarts
+    # at any given time.
+    systemd::service { 'kube-apiserver':
+        ensure         => present,
+        content        => file('k8s/kube-apiserver.systemd.override.conf'),
+        override       => true,
+        service_params => { 'restart' => '/bin/systemctl reload kube-apiserver.service', },
     }
 }
