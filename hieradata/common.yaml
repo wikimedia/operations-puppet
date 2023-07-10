@@ -1174,8 +1174,6 @@ http_proxy: "http://%{lookup('http_proxy_host')}:%{lookup('http_proxy_port')}"
 # IP address information so that authdns tooling can operate in the face of
 # recdns issues.
 authdns_servers:
-  'dns1002.wikimedia.org': 208.80.155.108
-  'dns1003.wikimedia.org': 208.80.154.134
   'dns1004.wikimedia.org': 208.80.154.6
   'dns1005.wikimedia.org': 208.80.154.153
   'dns1006.wikimedia.org': 208.80.154.77
@@ -1221,8 +1219,6 @@ wikimail_smarthost:
 # pool servers.
 ntp_peers:
     eqiad:
-    - 'dns1002.wikimedia.org'
-    - 'dns1003.wikimedia.org'
     - 'dns1004.wikimedia.org'
     - 'dns1005.wikimedia.org'
     - 'dns1006.wikimedia.org'
@@ -2517,10 +2513,6 @@ blackbox_smoke_hosts:
     realm: production
     site: eqiad
     rack: C6
-  dns1002.wikimedia.org:
-    realm: production
-    site: eqiad
-    rack: D1
   gerrit1003.wikimedia.org:
     realm: production
     site: eqiad
