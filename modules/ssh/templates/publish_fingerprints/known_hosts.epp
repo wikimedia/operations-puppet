@@ -1,17 +1,12 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-<%- | Hash[String[1], Hash]          $ssh_fingerprints,
+<%- | Array[Hash]                              $ssh_fingerprints,
       Array[Enum['rsa', 'ecdsa', 'ed25519'],1] $types,
 | -%>
-<%- $ssh_fingerprints.keys.sort.each |$host| { -%>
-  <%- $config = $ssh_fingerprints[$host] -%>
-  <%- $types.each |$type| { -%>
-    <%-
-      $host_line = [
-        $host,
-        $config.dig('networking', 'ip'),
-        $config.dig('networking', 'ip6')
-      ].filter |$x| { $x =~ NotUndef }.join(',')
-    -%>
-<%= $host_line %> <%= $config['ssh'][$type]['type'] %> <%= $config['ssh'][$type]['key'] %>
-  <%- } -%>
+<%- $ssh_fingerprints.each |$data| {
+  unless $data['parameters']['type'] in $types {
+    next()
+  }
+$host_line = ([$data['title'], $data['certname']] + $data['parameters']['host_aliases']).unique.join(',')
+-%>
+<%= $host_line %> <%= $data['parameters']['type'] %> <%= $data['parameters']['key'] %>
 <%- } -%>

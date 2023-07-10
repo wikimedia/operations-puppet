@@ -3,48 +3,17 @@
 class ssh::publish_fingerprints (
     Stdlib::Unixpath $document_root,
 ) {
-    $exported_types = ['ecdsa', 'ed25519']
-    $ssh_fingerprints = puppetdb::query_facts(['ssh', 'networking'])
 
-    file{"${document_root}/ssh-fingerprints.txt":
-        ensure  => file,
-        backup  => false,  # Theses files change often don't back them up
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        content => epp('ssh/publish_fingerprints/ssh-fingerprints.txt',
-                      {'ssh_fingerprints' => $ssh_fingerprints}),
+    file { "${document_root}/known_hosts":
+        ensure => link,
+        target => '/etc/ssh/ssh_known_hosts',
     }
 
-    $params = {
-        'ssh_fingerprints' => $ssh_fingerprints,
-        'types'            => $exported_types,
-    }
-    file{ "${document_root}/known_hosts":
-        ensure  => file,
-        backup  => false,  # Theses files change often don't back them up
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        content => epp('ssh/publish_fingerprints/known_hosts', $params),
-    }
-
-    $exported_types.each |String $type| {
-        $params = {
-            'ssh_fingerprints' => $ssh_fingerprints,
-            'types'            => [$type],
-        }
-        file{"${document_root}/known_hosts.${type}":
-            ensure  => file,
-            backup  => false,  # Theses files change often don't back them up
-            mode    => '0644',
-            owner   => 'root',
-            group   => 'root',
-            content => epp('ssh/publish_fingerprints/known_hosts', $params),
-        }
-    }
-    file{"${document_root}/known_hosts.rsa":
-        ensure => absent,
+    file { ["${document_root}/known_hosts.rsa",
+            "${document_root}/known_hosts.ed25519",
+            "${document_root}/known_hosts.ecdsa",
+            "${document_root}/ssh-fingerprints.txt",]:
+        ensure  => absent,
     }
 
 }
