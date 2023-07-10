@@ -4,7 +4,7 @@ class profile::kubernetes::deployment_server::mediawiki::repl {
         ensure => present,
         owner  => 'root',
         group  => 'root',
-        mode   => '0500',
+        mode   => '0555',
         source => 'puppet:///modules/profile/kubernetes/deployment_server/mw-debug-repl.sh'
     }
 
