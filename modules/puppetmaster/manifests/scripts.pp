@@ -24,8 +24,8 @@ class puppetmaster::scripts(
     ensure_packages(['python3-requests', 'python3-yaml'])
 
     $puppet_facts_export_source = $has_puppetdb ? {
-        false   => 'puppet:///modules/puppetmaster/puppet-facts-export-nodb.sh',
-        default => 'puppet:///modules/puppetmaster/puppet-facts-export-puppetdb.py',
+        false   => 'puppet:///modules/profile/puppetserver/scripts/puppet-facts-export-nodb.sh',
+        default => 'puppet:///modules/profile/puppetserver/scripts/puppet-facts-export-puppetdb.py',
     }
     file { '/usr/local/bin/puppet-facts-export':
         ensure => file,
@@ -40,7 +40,7 @@ class puppetmaster::scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0554',
-        source => 'puppet:///modules/puppetmaster/puppet-facts-upload.py',
+        source => 'puppet:///modules/profile/puppetserver/scripts/puppet-facts-upload.py',
     }
 
     $proxy_arg = $http_proxy.then |$x| { "--proxy ${http_proxy}" }
