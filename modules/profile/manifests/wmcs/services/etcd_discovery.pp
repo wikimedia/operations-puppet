@@ -50,5 +50,6 @@ endpoint_location=<%= @endpoint_location %>"
         content => "# etcd-discovery expects v2
 DAEMON_ARGS=--enable-v2",
         require => Package['etcd-server'],
+        notify  => Service['etcd'],
     }
 }
