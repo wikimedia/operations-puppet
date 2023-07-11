@@ -24,4 +24,9 @@ class profile::sretest {
         'tag'     => 'foo::bar::merge',
     })
     wmflib::resource::import('file', undef, { tag => 'foo::bar::merge' }, true)
+
+    file {'/tmp/httpasswd_test.txt':
+        ensure  => file,
+        content => htpasswd('foobar', 'salty123'),
+    }
 }
