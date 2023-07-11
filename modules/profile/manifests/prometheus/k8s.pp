@@ -315,6 +315,11 @@ class profile::prometheus::k8s (
                         'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
                         'action'        => 'keep'
                     },
+                    {
+                        'source_labels' => ['__name__'],
+                        'regex'         => '^envoy_runtime_.*$',
+                        'action'        => 'keep'
+                    },
                 ],
                 'relabel_configs' => [
                     {
