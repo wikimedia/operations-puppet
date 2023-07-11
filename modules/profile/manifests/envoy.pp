@@ -29,7 +29,7 @@ class profile::envoy(
     }
 
     nrpe::monitor_systemd_unit_state{ 'envoyproxy.service':
-        ensure      => $ensure,
+        ensure      => absent,
         description => 'Check that envoy is running',
         retries     => 2,
         notes_url   => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#Envoy',
