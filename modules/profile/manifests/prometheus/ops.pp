@@ -1114,15 +1114,12 @@ class profile::prometheus::ops (
         ],
         # Envoy produces a ton of metrics, but for now we're just interested in
         # the subset configured below.
+        # Only the fist keep rule is evaluated, so we need to condense all metrics
+        # we want to keep into one regex.
         'metric_relabel_configs' => [
           {
             'source_labels' => ['__name__'],
-            'regex'         => '^envoy_(http_down|cluster_up)stream_(rq|cx).*$',
-            'action'        => 'keep'
-          },
-          {
-            'source_labels' => ['__name__'],
-            'regex'         => '^envoy_runtime_.*$',
+            'regex'         => '^envoy_((http_down|cluster_up)stream_(rq|cx)|runtime_).*$',
             'action'        => 'keep'
           },
         ]
