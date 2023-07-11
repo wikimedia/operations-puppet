@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+# this is run from the parent directory
+# these three are repeated so the scripts have an easy way to extract them
+TOOL_REPLICA_CNF_PATH: /tmp/tool
+USER_REPLICA_CNF_PATH: /tmp/user
+PAWS_REPLICA_CNF_PATH: /tmp/paws
+BACKENDS:
+  ToolforgeToolFileBackend:
+    ToolforgeToolBackendConfig:
+      replica_cnf_path: /tmp/tool
+      scripts_path: &scripts_path $PWD/../replica_cnf_api_service
+      use_sudo: &use_sudo true,
+      tools_project_prefix: tool.
+  ToolforgeUserFileBackend:
+    FileConfig:
+      replica_cnf_path: /tmp/user
+      scripts_path: *scripts_path
+      use_sudo: *use_sudo
+  PawsUserFileBackend:
+    FileConfig:
+      replica_cnf_path: /tmp/paws
+      scripts_path: *scripts_path
+      use_sudo: *use_sudo

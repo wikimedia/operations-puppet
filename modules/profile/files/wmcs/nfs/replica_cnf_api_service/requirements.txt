@@ -4,8 +4,13 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==2.0.1
 PyYAML==5.3.1
-Werkzeug==0.11
+# werkzeug 0.11 fails on python 3.7 with:
+# TypeError: Unicode-objects must be encoded before hashing
+# when trying to set the cookiesalt on init
+Werkzeug<0.11
 PyMySQL==1.0.2
 ldap3==2.8.1
 netifaces==0.10.9
 requests==2.25.1
+# Remove git pin once https://gitlab.wikimedia.org/repos/cloud/toolforge/toolforge-weld/-/merge_requests/28 is merged and released
+toolforge-weld @ git+https://gitlab.wikimedia.org/repos/cloud/toolforge/toolforge-weld@main#egg=toolforge-weld

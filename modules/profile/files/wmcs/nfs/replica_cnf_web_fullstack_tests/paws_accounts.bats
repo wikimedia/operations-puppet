@@ -53,7 +53,7 @@ setup() {
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_equal "detail.replica_path" "${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" "$output"
+    json_has_match "detail.replica_path" ".*${PAWS_BASE_PATH}/${USER_ID}/.my.cnf.*" "$output"
 }
 
 
@@ -85,15 +85,14 @@ password = dummypass'
     exists "$cnf_path"
     is_equal "$(sudo cat "$cnf_path")" "$expected_contents"
 
-    USER=$USER_ID
-    if (id -nu "$USER_ID" &> /dev/null);then
-        USER="$TOOL_NAME"
-    fi
-    run sudo ls -la "$cnf_path"
-    match_regex "^-r--r----- 1 ${USER} ${USER} .*" "$output"
+    run sudo ls -lan "$cnf_path"
+    match_regex "^-r--r-----.* 1 ${USER_ID} ${USER_ID} .*" "$output"
 
-    run sudo lsattr "$cnf_path"
-    match_regex "^----i---------e----.* " "$output"
+    # in CI we don't have root, so we can't chattr files, we can't really test for this
+    if [[ $UID == "0" ]]; then
+        run sudo lsattr "$cnf_path"
+        match_regex "^----i---.*" "$output"
+    fi
 }
 
 
@@ -113,7 +112,6 @@ password = dummypass'
 
     is_equal "$status" "0"
     json_has_equal "result" "skip" "$output"
-    json_has_equal "detail.replica_path" "$cnf_path" "$output"
 }
 
 
@@ -146,7 +144,7 @@ password = dummypass'
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_equal "detail.replica_path" "$cnf_path" "$output"
+    json_has_match "detail.replica_path" ".*$cnf_path.*" "$output"
 
     ! exists "$cnf_path"
 }

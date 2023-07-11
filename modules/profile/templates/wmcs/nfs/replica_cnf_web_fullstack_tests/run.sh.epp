@@ -1,0 +1,24 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+  String[1] $http_user,
+  String[1] $http_password,
+| -%>
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+CURFILE="$(realpath "$0")"
+CURDIR="${CURFILE%/*}"
+
+main() {
+    cd "$CURDIR"
+    HTTP_USER="<%= $http_user %>" \
+    HTTP_PASSWORD="<%= $http_password %>" \
+    TERM=xterm-256color \
+    bats .
+}
+
+
+main "$@"

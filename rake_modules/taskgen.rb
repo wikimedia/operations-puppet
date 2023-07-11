@@ -646,6 +646,15 @@ class TaskGen < ::Rake::TaskLib
           tasks << 'tox:wmcs'
         end
 
+        wmcs_replica_cnf_files = filter_files_by("modules/profile/files/wmcs/nfs/replica_cnf_api_service/**")
+        unless wmcs_replica_cnf_files.empty?
+          desc 'Run wmcs replica_cnf tests'
+          task :wmcs_replica_cnf do
+            res = system("tox -e wmcs-replica_cnf_api_service")
+            raise 'Tests for wmcs replica cnf failed!'.red unless res
+          end
+          tasks << 'tox:wmcs_replica_cnf'
+        end
       end
     end
 

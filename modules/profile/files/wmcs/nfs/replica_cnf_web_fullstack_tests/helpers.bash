@@ -1,33 +1,55 @@
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
-<%- | String $http_user,
-      String $http_password,
-| -%>
 #!/usr/bin/env bats
+#- SPDX-License-Identifier: Apache-2.0
+# You need to export some variables
+#   HTTP_USER
+#   HTTP_PASSWORD
+# You can override some of the configs (for local testing for example):
+#   CONF_FILE -> path to the repliac config yaml file
+#   PROJECT   -> set to localtest if doing local testing
+#   TOOL_NAME -> when doing a localtest, the username to create the conf file for
+#   USER_ID   -> when doing a localtest, the numeric uid of the user
 
-if [[ -e "/etc/wmcs-project" ]]
-then
-  PROJECT="$(cat /etc/wmcs-project)"
-else
-  PROJECT="file /etc/wmcs-project does not exist"
+
+CONF_FILE="${CONF_FILE:-/etc/replica_cnf_config.yaml}"
+if [[ $BASE_URL == "" ]]; then
+    HTTP_USER="${HTTP_USER?}"
+    HTTP_PASSWORD="${HTTP_PASSWORD?}"
+    BASE_URL="http://${HTTP_USER}:${HTTP_PASSWORD}@127.0.0.1:${PORT:-80}/v1"
 fi
 
-TOOL_BASE_PATH=$(grep -E "^TOOL_REPLICA_CNF_PATH *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
-PAWS_BASE_PATH=$(grep -E "^PAWS_REPLICA_CNF_PATH *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
-USER_BASE_PATH=$(grep -E "^USER_REPLICA_CNF_PATH *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
-PROJECT_PREFIX=$(grep -E "^TOOLS_PROJECT_PREFIX *: *" '/etc/replica_cnf_config.yaml' | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
-BASE_URL="http://<%= $http_user %>:<%= $http_password %>@127.0.0.1/v1"
+if [[ "${PROJECT}" == "" ]]; then
+    if [[ -e "/etc/wmcs-project" ]]
+    then
+        PROJECT="$(cat /etc/wmcs-project)"
+    else
+        PROJECT="file /etc/wmcs-project does not exist"
+    fi
+fi
+
+TOOL_BASE_PATH=$(grep -E "^TOOL_REPLICA_CNF_PATH *: *" "$CONF_FILE" | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
+PAWS_BASE_PATH=$(grep -E "^PAWS_REPLICA_CNF_PATH *: *" "$CONF_FILE" | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
+USER_BASE_PATH=$(grep -E "^USER_REPLICA_CNF_PATH *: *" "$CONF_FILE" | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
+PROJECT_PREFIX=$(grep -E "^ *tools_project_prefix *: *" "$CONF_FILE" | sed -e 's/^.*: *"\?\([^"]*\)"\?/\1/')
 case $PROJECT in
     testlabs)
         TOOL_NAME="toolsbeta.test"
+        SHORT_TOOL_NAME="test"
         USER_ID=51595
         ;;
     toolsbeta)
         TOOL_NAME="toolsbeta.test"
+        SHORT_TOOL_NAME="test"
         USER_ID=51595
         ;;
+    localtest)
+        TOOL_NAME="${TOOL_NAME:?}"
+        SHORT_TOOL_NAME="${TOOL_NAME:$((${#PROJECT_PREFIX}+1))}"
+        USER_ID="${USER_ID:?}"
+        ;;
     *)
-        TOOL_NAME="tools.test"
-        USER_ID=52503
+        SHORT_TOOL_NAME="test"
+        TOOL_NAME="${PROJECT_PREFIX}.${SHORT_TOOL_NAME}"
+        USER_ID="52503"
         ;;
 esac
 

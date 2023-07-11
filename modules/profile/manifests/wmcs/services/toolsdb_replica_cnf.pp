@@ -37,12 +37,32 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         group   => 'root',
         mode    => '0444',
         content => to_yaml({
-          'USE_SUDO'              => true,
-          'TOOLS_PROJECT_PREFIX'  => $tools_project_prefix,
-          'SCRIPTS_PATH'          => $scripts_path,
           'TOOL_REPLICA_CNF_PATH' => $tool_replica_cnf_path,
           'PAWS_REPLICA_CNF_PATH' => $paws_replica_cnf_path,
           'USER_REPLICA_CNF_PATH' => $user_replica_cnf_path,
+          'BACKENDS'              => {
+            'ToolforgeToolFileBackend' => {
+              'ToolforgeToolBackendConfig' => {
+                'replica_cnf_path'     => $tool_replica_cnf_path,
+                'scripts_path'         => $scripts_path,
+                'tools_project_prefix' => $tools_project_prefix,
+                'use_sudo'             => true,
+              },
+            },
+            'ToolforgeUserFileBackend' => {
+              'FileConfig' => {
+                'replica_cnf_path' => $user_replica_cnf_path,
+                'scripts_path'     => $scripts_path,
+                'use_sudo'         => true,
+              },
+            },
+            'PawsUserFileBackend'      => {
+              'FileConfig' => {
+                'replica_cnf_path' => $paws_replica_cnf_path,
+                'scripts_path'     => $scripts_path,
+                'use_sudo'         => true,
+              },},
+          }
         })
     }
 
@@ -120,17 +140,18 @@ class profile::wmcs::services::toolsdb_replica_cnf(
             uwsgi              => {
                 'plugins'      => 'python3',
                 'socket'       => '/run/uwsgi/toolsdb-replica-cnf-web.sock',
-                'module'       => 'views:app',
+                'module'       => 'replica_cnf_api_service.views:create_app()',
                 'chmod-socket' => 664,
                 'die-on-term'  => true,
                 'vacuum'       => true,
                 'master'       => true,
                 'processes'    => 8,
-                'chdir'        => $api_service_app_path,
+                'chdir'        => $api_service_base_path,
                 'env'          => [
                     # fix prometheus exporter for multiple uwsgi processes/workers
                     "PROMETHEUS_MULTIPROC_DIR=${metrics_dir}",
                 ],
+                'pythonpath'   => $api_service_base_path,
             },
         },
         extra_systemd_opts => {
@@ -176,15 +197,15 @@ class profile::wmcs::services::toolsdb_replica_cnf(
       ensure => 'directory',
       mode   => '0500',
     }
-    file { "${func_tests_dir}/helpers.bash":
+    file { "${func_tests_dir}/run.sh":
       content => epp(
-        "${puppet_path}/helpers.bash.epp",
+        "${puppet_path}/run.sh.epp",
         {
           'http_user'     => $htuser,
           'http_password' => $htpassword,
         }
       ),
-      mode    => '0400',
+      mode    => '0500',
     }
     file { "${func_tests_dir}/paws_account.bats":
       source => "puppet:///modules/${puppet_path}/paws_accounts.bats",
@@ -196,6 +217,10 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     }
     file { "${func_tests_dir}/tool_account.bats":
       source => "puppet:///modules/${puppet_path}/tool_accounts.bats",
+      mode   => '0400',
+    }
+    file { "${func_tests_dir}/helpers.bash":
+      source => "puppet:///modules/${puppet_path}/helpers.bash",
       mode   => '0400',
     }
 

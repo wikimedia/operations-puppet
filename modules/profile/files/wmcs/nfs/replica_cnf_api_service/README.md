@@ -1,67 +1,57 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-> **_NOTE:_** This readme is outdated and any attempt to follow the instructions in this readme will probably not work out or end up behaving unexpectedly. Having said that, the purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
+
+> **_NOTE:_** This readme is outdated and any attempt to follow the instructions
+> in this readme will probably not work out or end up behaving unexpectedly.
+> Having said that, the purpose of this readme is to make it easy for anyone to
+> begin testing this service. However, everything outlined in this readme might
+> not work exactly like it is outlined here.
+
 #### This REST API service is used to manage toolforge replica.my.cnf.
+
 #### It decouples the functionality of reading and writing replica.my.cnf files away from this repository and into its server environment.
 
 # To Deploy
-* Setup Nginx
-* Setup gunicorn
-* Run setup.sh
 
-## Setup Nginx
+- Use puppet :)
 
-* If you don't already have Nginx running on your server, you can follow [this link](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04) to setup Nginx.
+# To test locally
 
-* When you are done setting up Nginx, you can then add the below server block to your Nginx file.
+There's two very different suites of tests, unit tests (written with pytest) and
+the functional tests (written with bats). In this README we will run both,
+included in tox.
 
-```
-log_format private '[$time_local] "$request" $status $body_bytes_sent "$http_referer"';
+## Install dependencies
 
-server {
-    listen 80;
-    server_name <domain name>;
-    access_log /var/log/nginx/access.log private;
+Currently the application has to run on buster nodes, so it has to be backwards
+compatible with python 3.7.
 
-    location / {
-        include proxy_params;
-        proxy_pass http://unix:/home/<username>/replica_cnf_api_service/replica_cnf_api_service.sock;
-    }
-}
-```
-> **_NOTE:_** Remember to replace `<domain name>` and `<username>` with the appropriate values for your server.
+## Run the tests locally
 
-## Setup gunicorn
+### Install python 3.7
 
-* Follow [this link](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04) to see how to setup gunicorn for this project.
-* For this project, the important part is to remember to use the below snippet for the systemd setup:
+You have to setup python 3.7 whichever way you prefer :), this uses pyenv:
 
 ```
-[Unit]
-Description=Gunicorn instance to serve replica_cnf_api_service
-After=network.target
-
-[Service]
-User=<username>
-Group=www-data
-WorkingDirectory=/home/<username>/replica_cnf_api_service
-Environment="PATH=/home/<username>/replica_cnf_api_service/venv/bin"
-ExecStart=/home/<username>/replica_cnf_api_service/venv/bin/gunicorn "replica_cnf_api_service:create_app()" --threads=3 --timeout 155 --bind unix:replica_cnf_api_service.sock -m 007
-ExecReload=/bin/kill -HUP $MAINPID
-
-[Install]
-WantedBy=multi-user.target
+pyenv install 3.7
+pyenv local 3.7
+pyenv virtualenv mytestingvenv
+pyenv activate mytestingvenv
 ```
 
-> **_NOTE:_** Always remember to replace `<username>` with the appropriate value for your server. Also, you should name your systemd file replica_cnf_api_service.service, or else an attempt to reload the server by the setup script will probably fail.
+### Run the tests
 
-## Run setup.sh
+Now you can use the virtualenv above (or your preferred method) to install tox
+and run the tests:
 
-* In the same directory containing this readme file, you will find a setup.sh script, run the script with `sudo ./setup.sh`
-* create the path `/test_srv/shared/test_tools/home/test_tool` for testing purposes.
-* the curl command below can be used to start interacting with your server over HTTP:
 ```
-curl -X POST -H 'Content-Type: application/json' -d '{"mysql_username":"Raymond_Ndibe","password":"my_password","file_path":"/test_srv/shared/test_tools/home/test_tool/replica.my.cnf","uid":0}'  http://localhost:8000/v1/write-replica-cnf
+pip install tox
+tox -e wmcs-replica_cnf_api_service
 ```
 
-> **_NOTE:_** This readme is outdated and any attempt to follow the instructions in this readme will probably not work out or end up behaving unexpectedly. Having said that, the purpose of this readme is to make it easy for anyone to begin testing this service. However, everything outlined in this readme might not work exactly like it is outlined here.
+## Run the tests as CI would
 
+For this you can just use the common script:
+
+```
+utils/run_ci_locally.sh
+```
