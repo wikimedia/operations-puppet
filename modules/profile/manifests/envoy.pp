@@ -40,7 +40,7 @@ class profile::envoy(
     # minutes.
     $command = "/usr/lib/nagios/plugins/check_http -H localhost -I 127.0.0.1 -p ${admin_port} -u /runtime  -s '\"entries\": {}'"
     nrpe::monitor_service{ 'envoy_runtime_vars':
-        ensure         => $ensure,
+        ensure         => absent,
         description    => 'Check no envoy runtime configuration is left persistent',
         nrpe_command   => $command,
         retries        => 2,
