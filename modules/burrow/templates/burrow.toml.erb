@@ -27,6 +27,7 @@ servers=["<%= @kafka_brokers.map{ |host| "#{host}:#{@kafka_brokers_port}" }.join
 <% if @consumer_groups_blacklist -%>
 group-blacklist="<%= @consumer_groups_blacklist -%>"
 <% end -%>
+start-latest=true
 
 [httpserver.mylistener]
 address=":<%= @httpserver_port -%>"
