@@ -34,18 +34,4 @@ class profile::envoy(
         retries     => 2,
         notes_url   => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#Envoy',
     }
-
-    # Check the envoy admin interface to find if the runtime variables have been modified.
-    # The check runs every 30 minutes, and in case of failure it's re-tested every 5
-    # minutes.
-    $command = "/usr/lib/nagios/plugins/check_http -H localhost -I 127.0.0.1 -p ${admin_port} -u /runtime  -s '\"entries\": {}'"
-    nrpe::monitor_service{ 'envoy_runtime_vars':
-        ensure         => absent,
-        description    => 'Check no envoy runtime configuration is left persistent',
-        nrpe_command   => $command,
-        retries        => 2,
-        check_interval => 30,
-        retry_interval => 5,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#Envoy',
-    }
 }
