@@ -8,6 +8,7 @@ class openstack::magnum::service::zed(
     String $db_pass,
     String $db_name,
     Stdlib::Fqdn $db_host,
+    Stdlib::Fqdn $etcd_discovery_host,
     String $ldap_user_pass,
     Stdlib::Fqdn $keystone_fqdn,
     Stdlib::Port $api_bind_port,
@@ -29,6 +30,7 @@ class openstack::magnum::service::zed(
     $version = inline_template("<%= @title.split(':')[-1] -%>")
     $keystone_auth_username = 'magnum'
     $keystone_auth_project = 'service'
+    $etcd_discovery_url = "https://${etcd_discovery_host}"
     file {
         '/etc/magnum/magnum.conf':
             content   => template('openstack/zed/magnum/magnum.conf.erb'),

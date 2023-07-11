@@ -327,7 +327,7 @@ region_name = <%= @region %>
 #
 
 # Url for etcd public discovery endpoint. (string value)
-#etcd_discovery_service_endpoint_format = https://discovery.etcd.io/new?size=%(size)d
+etcd_discovery_service_endpoint_format = <%= @etcd_discovery_url %>/new?size=%(size)d
 
 # DEPRECATED: Enabled cluster definition entry points. (list value)
 # This option is deprecated for removal.

@@ -3,3 +3,8 @@ profile::openstack::eqiad1::magnum::db_host: "openstack.eqiad1.wikimediacloud.or
 profile::openstack::eqiad1::magnum::db_user: "magnum"
 profile::openstack::eqiad1::magnum::db_name: "eqiad1_magnum"
 profile::openstack::eqiad1::magnum::active: true
+
+# This is the default upstream discovery service; it will need to be replaced
+#  with a VM-hosted service in our cloud when cloudcontrols move to the private
+#  network.
+profile::openstack::eqiad1::magnum::etcd_discovery_host: "discovery.etcd.io"
