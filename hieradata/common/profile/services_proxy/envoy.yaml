@@ -337,3 +337,4 @@ profile::services_proxy::envoy::enabled_listeners:
   - linkrecommendation
   - image-suggestion
   - device-analytics
+  - inference
