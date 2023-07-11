@@ -7,4 +7,4 @@ profile::openstack::eqiad1::magnum::active: true
 # This is the default upstream discovery service; it will need to be replaced
 #  with a VM-hosted service in our cloud when cloudcontrols move to the private
 #  network.
-profile::openstack::eqiad1::magnum::etcd_discovery_host: "discovery.etcd.io"
+profile::openstack::eqiad1::magnum::etcd_discovery_host: "etcd-discovery.wmcloud.org"
