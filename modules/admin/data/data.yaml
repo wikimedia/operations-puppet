@@ -5938,7 +5938,7 @@ users:
     realname: Fabrizio Furnari
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILb9vuRPoWECb5Ad6zij0NQGf2kxGs1lp/KUfc60FdfH ffurnari@wikimedia.org
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqng4GN499gVPPUoZFD93+4oW9nwvWJ+LNmc2h7a1KWmFS8Ej7kOUfj7hfI5Ovd54FVNIrmYV3j6YhTfZtMpWo5R/snDFjQUmPKrY4w+l9S5TCyumm+Ce4+W7kEdSRw6n8G311Zi5jxmfdl9XdPH+j6YZEKz5C7x8gEWNA8UUf3Z1S5DpWt9s0zLunPOxOGiIxAu3baR9HsIrCDj7z+I/M+0KIbgyVCQnk8wfW+lyQEr54F9UYtGZPxtVIb9k++T+sJPL7jZSWKKbgqQ0Ymc8eV7406OP/3G7VqgKFl8tb9RslLe/gZBOfziP+vZyL9c0K6vapubGnFdAj7UOyATD2r6t3guJ+NOB5Ccu6Mro/kbjJ50+TpAxKQDoHRF11MDW4Hnuz4XBX+h94gQ8dTKiF5rE5U0dPxWy/GPuI9naNdJt9/rJq0ijzBhz4Umjn+X8WY+rc1H7jmUUZHtLOn5gVj7v22YeDeqlEJYt8xgdYp13qn4YxOLkA/FMq8Qpqs1BwTRJS1oVZnX3sqEpizAU1ymAr8Hs8dfmSR0FNIaf77Fp6pdbIqIt3/0uJHYxpw/YjR6xb2QY8K462FRJ3XFhRw94tRDFOlDYVBmQDGkrZUpi/OFdek4SvDXVqYnkXMEoVanX3VD+gcfrIqfB0whhsXs+wv9FB1DT3R3QfNzR4pQ== ffurnari@wikimedia.org-yubikey5
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeydDXbMjhj9yFWzukobrDPyjyIlRY6ugP6tUYUcuVX cardno:23 857 498
     email: ffurnari@wikimedia.org
   gengh:
     ensure: present
