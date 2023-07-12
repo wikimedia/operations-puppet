@@ -1,0 +1,18 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Publish the public kubernetes service account signing key to etcd
+
+[Service]
+Type=oneshot
+User=kube
+SyslogIdentifier=%N
+Environment="ETCDCTL_API=3"
+Environment="ETCDCTL_ENDPOINTS=<%= @etcd_servers %>"
+Environment="ETCD_KEY=<%= @confd_prefix %>/<%= @fqdn %>"
+Environment="SA_CERT_PATH=<%= @sa_cert['cert'] %>"
+ExecStart=/bin/bash -c '/usr/bin/etcdctl put "$ETCD_KEY" < "$SA_CERT_PATH"'
+# Service shall be considered active even when the processes exited to not raise alerts.
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -12,6 +12,9 @@ class profile::kubernetes::master (
     Stdlib::Unixpath $ssl_key_path  = lookup('profile::kubernetes::master::ssl_key_path'),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
+    # Comma separated list of etcd URLs is consumed by the kube-publish-sa-cert service
+    # as well as k8s::apiserser so we produce it here.
+    $etcd_servers = join($k8s_config['etcd_urls'], ',')
 
     # Install kubectl matching the masters kubernetes version
     # (that's why we don't use profile::kubernetes::client)
@@ -66,8 +69,13 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
         'outdir'          => '/etc/kubernetes/pki',
-        'notify_services' => ['kube-apiserver'],
+        'notify_services' => ['kube-apiserver', 'kube-publish-sa-cert'],
     })
+    $confd_prefix = '/kube-apiserver-sa-certs'
+    # Add a one-shot service that writes the public sa_cert to etcd for all control-planes to fetch
+    systemd::service { 'kube-publish-sa-cert':
+        content => systemd_template('kubernetes-publish-sa-cert'),
+    }
     # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
     # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
     $additional_sa_certs = [$cergen_sa_cert['cert'], $sa_cert['cert']]
@@ -108,7 +116,7 @@ class profile::kubernetes::master (
     }
 
     class { 'k8s::apiserver':
-        etcd_servers            => join($k8s_config['etcd_urls'], ','),
+        etcd_servers            => $etcd_servers,
         apiserver_cert          => $apiserver_cert,
         # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case
         sa_cert                 => $cergen_sa_cert,
