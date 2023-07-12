@@ -64,11 +64,13 @@ class CookbookTesting:
     spicerack_config = Path("/etc/spicerack/config.yaml")
     custom_config = BASE_DIR / "config.yaml"
 
-    def __init__(self, change: int, patch_set: int, remaining_args: list[str]):
+    def __init__(self, *, change: int, patch_set: int, remaining_args: list[str],
+                 no_sal: bool = False):
         """Initialize the instance and auto-detect last patch set if not set."""
         self.change = str(change)
         self.remaining_args = remaining_args
         self.cookbooks_dir = BASE_DIR / f"cookbooks-{self.change}"
+        self.no_sal = no_sal
         if patch_set is None:
             self.patch_set = self.get_latest_ps()
         else:
@@ -110,6 +112,12 @@ class CookbookTesting:
         config = yaml.safe_load(self.spicerack_config.read_text())
         config["cookbooks_base_dirs"] = [str(self.cookbooks_symlink)]
         config["logs_base_dir"] = str(self.logs_dir)
+
+        if self.no_sal:
+            logger.warning("Not logging to SAL!")
+            del config["tcpircbot_host"]
+            del config["tcpircbot_port"]
+
         self.custom_config.write_text(yaml.dump(config))
 
     def get_latest_ps(self) -> str:
@@ -186,6 +194,10 @@ def parse_args() -> tuple[argparse.Namespace, list[str]]:
         action="store_true",
         help="Delete any existing environment for the given change.")
     parser.add_argument(
+        "--no-sal-logging",
+        action="store_true",
+        help="Do not log to SAL. Use with CAUTION!")
+    parser.add_argument(
         "-h",
         "--help",
         action="store_true",
@@ -209,7 +221,12 @@ def main() -> int:
     """Execute the script."""
     logging.basicConfig(level=logging.INFO)
     args, remaining_args = parse_args()
-    cookbook_testing = CookbookTesting(args.change, args.ps, remaining_args)
+    cookbook_testing = CookbookTesting(
+        change=args.change,
+        patch_set=args.ps,
+        remaining_args=remaining_args,
+        no_sal=args.no_sal_logging)
+
     if args.delete:
         return cookbook_testing.delete()
 
