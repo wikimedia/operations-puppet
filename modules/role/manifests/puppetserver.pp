@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
-
+# @summary puppetserver rol
 class role::puppetserver {
     system::role { 'puppetserver':
         description => 'Puppetserver'
@@ -11,4 +10,8 @@ class role::puppetserver {
     include profile::puppetserver
     include profile::puppetserver::git::private
     include profile::puppetserver::scripts
+    # conftool
+    include profile::conftool::master
+    include profile::conftool::requestctl_client
+    require profile::conftool::state
 }
