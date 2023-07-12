@@ -40,12 +40,12 @@ class profile::kubernetes::master (
     # kubernetes apiserver service (kubernetes.default.cluster.local)
     $apiserver_clusterip = wmflib::cidr_first_address($k8s_config['service_cluster_cidr']['v4'])
     $apiserver_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kube-apiserver', {
-        'profile'        => 'server',
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
+        'profile'         => 'server',
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
         # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
-        'hosts'          => [
+        'hosts'           => [
             $facts['hostname'],
             $facts['fqdn'],
             $facts['ipaddress'],
@@ -58,15 +58,15 @@ class profile::kubernetes::master (
             'kubernetes.default.svc.cluster',
             'kubernetes.default.svc.cluster.local',
         ],
-        'notify_service' => 'kube-apiserver'
+        'notify_services' => ['kube-apiserver'],
     })
 
     $sa_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'sa', {
-        'profile'        => 'service-account-management',
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
-        'notify_service' => 'kube-apiserver'
+        'profile'         => 'service-account-management',
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
+        'notify_services' => ['kube-apiserver'],
     })
     # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
     # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
@@ -74,26 +74,26 @@ class profile::kubernetes::master (
 
     # Client certificate used to authenticate against kubelets
     $kubelet_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kube-apiserver-kubelet-client', {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'names'          => [{ 'organisation' => 'system:masters' }],
-        'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
-        'notify_service' => 'kube-apiserver'
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'names'           => [{ 'organisation' => 'system:masters' }],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
+        'notify_services' => ['kube-apiserver'],
     })
 
     # Client cert for the front proxy (this uses a separate intermediate then everything else)
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/
     $frontproxy_cert = profile::pki::get_cert("${k8s_config['pki_intermediate_base']}_front_proxy", 'front-proxy-client', {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
-        'notify_service' => 'kube-apiserver'
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
+        'notify_services' => ['kube-apiserver'],
     })
 
     # Fetch a client cert with kubernetes-admin permission
     # This is not actually used by anything but here for convenience of operators
     $default_admin_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kubernetes-admin', {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'names'           => [{ 'organisation' => 'system:masters' }],
         'owner'           => 'kube',
         'outdir'          => '/etc/kubernetes/pki',
@@ -126,11 +126,11 @@ class profile::kubernetes::master (
 
     # Setup kube-scheduler
     $scheduler_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'system:kube-scheduler', {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'names'          => [{ 'organisation' => 'system:kube-scheduler' }],
-        'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
-        'notify_service' => 'kube-scheduler',
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'names'           => [{ 'organisation' => 'system:kube-scheduler' }],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
+        'notify_services' => ['kube-scheduler'],
     })
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler.conf'
     k8s::kubeconfig { $scheduler_kubeconfig:
@@ -147,11 +147,11 @@ class profile::kubernetes::master (
 
     # Setup kube-controller-manager
     $controller_manager_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'system:kube-controller-manager', {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'names'          => [{ 'organisation' => 'system:kube-controller-manager' }],
-        'owner'          => 'kube',
-        'outdir'         => '/etc/kubernetes/pki',
-        'notify_service' => 'kube-controller-manager',
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'names'           => [{ 'organisation' => 'system:kube-controller-manager' }],
+        'owner'           => 'kube',
+        'outdir'          => '/etc/kubernetes/pki',
+        'notify_services' => ['kube-controller-manager'],
     })
     $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager.conf'
     k8s::kubeconfig { $controllermanager_kubeconfig:

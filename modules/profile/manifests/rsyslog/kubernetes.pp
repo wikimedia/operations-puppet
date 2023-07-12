@@ -19,10 +19,10 @@ class profile::rsyslog::kubernetes (
     }
 
     $client_auth = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'rsyslog', {
-        'ensure'         => $ensure,
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'names'          => [{ 'organisation' => 'view' }],
-        'notify_service' => 'rsyslog'
+        'ensure'          => $ensure,
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'names'           => [{ 'organisation' => 'view' }],
+        'notify_services' => ['rsyslog'],
     })
 
     rsyslog::conf { 'kubernetes':

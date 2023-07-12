@@ -36,17 +36,17 @@ class profile::kubernetes::node (
     }
 
     $kubelet_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kubelet', {
-        'profile'        => 'server',
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'owner'          => 'kube',
-        'outdir'         => $cert_dir,
-        'hosts'          => [
+        'profile'         => 'server',
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'owner'           => 'kube',
+        'outdir'          => $cert_dir,
+        'hosts'           => [
             $facts['hostname'],
             $facts['fqdn'],
             $facts['ipaddress'],
             $facts['ipaddress6'],
         ],
-        'notify_service' => 'kubelet'
+        'notify_services' => ['kubelet'],
     })
 
     # Figure out if this node has SSD or spinning disks
@@ -68,11 +68,11 @@ class profile::kubernetes::node (
     # Setup kubelet
     $kubelet_kubeconfig = '/etc/kubernetes/kubelet.conf'
     $default_auth = profile::pki::get_cert($k8s_config['pki_intermediate_base'], "system:node:${facts['fqdn']}", {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'names'          => [{ 'organisation' => 'system:nodes' }],
-        'owner'          => 'kube',
-        'outdir'         => $cert_dir,
-        'notify_service' => 'kubelet'
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'names'           => [{ 'organisation' => 'system:nodes' }],
+        'owner'           => 'kube',
+        'outdir'          => $cert_dir,
+        'notify_services' => ['kubelet'],
     })
     k8s::kubeconfig { $kubelet_kubeconfig:
         master_host => $k8s_config['master'],
@@ -125,11 +125,11 @@ class profile::kubernetes::node (
     # Setup kube-proxy
     $kubeproxy_kubeconfig = '/etc/kubernetes/proxy.conf'
     $default_proxy = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'system:kube-proxy', {
-        'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-        'names'          => [{ 'organisation' => 'system:node-proxier' }],
-        'owner'          => 'kube',
-        'outdir'         => $cert_dir,
-        'notify_service' => 'kube-proxy'
+        'renew_seconds'   => $k8s_config['pki_renew_seconds'],
+        'names'           => [{ 'organisation' => 'system:node-proxier' }],
+        'owner'           => 'kube',
+        'outdir'          => $cert_dir,
+        'notify_services' => ['kube-proxy'],
     })
     k8s::kubeconfig { $kubeproxy_kubeconfig:
         master_host => $k8s_config['master'],

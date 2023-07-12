@@ -13,7 +13,7 @@
 # @param environment environment to use when running commands
 # @param label the cfssl label to use, this is essentially the CA
 # @param profile the cfssl profile to use
-# @param notify_service a service to notify when the certificate changes
+# @param notify_services array of service names to notify when the certificate changes
 # @param outdir specify a specific directory to write all certificate files to
 # @param tls_cert the tls client certificate use when requesting signing
 # @param tls_key the tls client key use when requesting signing
@@ -21,30 +21,30 @@
 # @param signer_config the configuration used for signing (only for advance usage)
 # @param hosts an array of hosts to be added to the SNI
 define cfssl::cert (
-    String                         $common_name    = $title,
-    Array[Cfssl::Name]             $names          = [],
-    Cfssl::Key                     $key            = { 'algo' => 'ecdsa', 'size' => 256 },
-    Wmflib::Ensure                 $ensure         = 'present',
-    String                         $owner          = 'root',
-    String                         $group          = 'root',
-    Boolean                        $auto_renew     = true,
+    String                         $common_name     = $title,
+    Array[Cfssl::Name]             $names           = [],
+    Cfssl::Key                     $key             = { 'algo' => 'ecdsa', 'size' => 256 },
+    Wmflib::Ensure                 $ensure          = 'present',
+    String                         $owner           = 'root',
+    String                         $group           = 'root',
+    Boolean                        $auto_renew      = true,
     # the default https checks go warning after 10 full days i.e. anywhere
     # from 864000 to 950399 seconds before the certificate expires.  As such set this to
     # 11 days + 30 minutes to capture the puppet run schedule.
-    Integer[1800]                  $renew_seconds  = 952200,
-    Boolean                        $provide_chain  = false,
-    Stdlib::Filemode               $mode           = '0740',
+    Integer[1800]                  $renew_seconds   = 952200,
+    Boolean                        $provide_chain   = false,
+    Stdlib::Filemode               $mode            = '0740',
     # We need this because the puppet CA cert used for TLS mutual auth has no SAN
-    Array[String]                  $environment    = ['GODEBUG=x509ignoreCN=0'],
-    Optional[Cfssl::Ca_name]       $label          = undef,
-    Optional[String]               $profile        = undef,
-    Optional[String]               $notify_service = undef,
-    Optional[Stdlib::Unixpath]     $outdir         = undef,
-    Optional[Stdlib::Unixpath]     $tls_cert       = undef,
-    Optional[Stdlib::Unixpath]     $tls_key        = undef,
-    Optional[Stdlib::Unixpath]     $tls_remote_ca  = undef,
-    Optional[Cfssl::Signer_config] $signer_config  = undef,
-    Array[Cfssl::Common_name]      $hosts          = [],
+    Array[String]                  $environment     = ['GODEBUG=x509ignoreCN=0'],
+    Optional[Cfssl::Ca_name]       $label           = undef,
+    Optional[String]               $profile         = undef,
+    Array[String]                  $notify_services = [],
+    Optional[Stdlib::Unixpath]     $outdir          = undef,
+    Optional[Stdlib::Unixpath]     $tls_cert        = undef,
+    Optional[Stdlib::Unixpath]     $tls_key         = undef,
+    Optional[Stdlib::Unixpath]     $tls_remote_ca   = undef,
+    Optional[Cfssl::Signer_config] $signer_config   = undef,
+    Array[Cfssl::Common_name]      $hosts           = [],
 
 ) {
     include cfssl
@@ -139,22 +139,22 @@ define cfssl::cert (
         "$(/usr/bin/openssl pkey -pubout -in ${key_path} 2>&1)"
         | TEST_COMMAND
     if $ensure == 'present' {
-        $_notify_service = $notify_service ? {
-            undef   => undef,
-            default => Service[$notify_service],
+        $_notify_services = $notify_services.empty() ? {
+            true    => undef,
+            default => Service[$notify_services],
         }
         exec { "Generate cert ${title}":
             command     => $gen_command,
             environment => $environment,
             unless      => $test_command,
-            notify      => $_notify_service,
+            notify      => $_notify_services,
             require     => Cfssl::Csr[$csr_json_path],
         }
         exec { "Generate cert ${title} refresh":
             command     => $gen_command,
             environment => $environment,
             refreshonly => true,
-            notify      => $_notify_service,
+            notify      => $_notify_services,
             subscribe   => File[$csr_json_path],
         }
         if $auto_renew {
@@ -163,7 +163,7 @@ define cfssl::cert (
                 environment => $environment,
                 unless      => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
                 require     => Exec["Generate cert ${title}"],
-                notify      => $_notify_service,
+                notify      => $_notify_services,
             }
         }
     }
@@ -218,7 +218,7 @@ define cfssl::cert (
             exec { "create chained cert ${cert_chain_path}":
                 command   => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
                 unless    => $test_chained,
-                notify    => $_notify_service,
+                notify    => $_notify_services,
                 subscribe => $subscribe,
             }
         }

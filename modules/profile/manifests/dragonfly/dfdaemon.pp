@@ -18,11 +18,11 @@ class profile::dragonfly::dfdaemon (
   # in case of ensure == 'absent'
   if $ensure == 'present' {
     $ssl_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
-      'ensure'         => $ensure,
-      'owner'          => 'dragonfly',
-      'outdir'         => '/etc/dragonfly',
-      'hosts'          => [$facts['hostname'], $facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost'],
-      'notify_service' => 'dragonfly-dfdaemon'
+      'ensure'          => $ensure,
+      'owner'           => 'dragonfly',
+      'outdir'          => '/etc/dragonfly',
+      'hosts'           => [$facts['hostname'], $facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost'],
+      'notify_services' => ['dragonfly-dfdaemon'],
     })
   } else {
     # Create a dummy so that dragonfly::dfdaemon receives valid paths
