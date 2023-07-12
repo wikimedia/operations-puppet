@@ -98,9 +98,9 @@ class profile::kubernetes::master (
         'owner'           => 'kube',
         'outdir'          => '/etc/kubernetes/pki',
     })
-    # Create a supersuer kubeconfig
+    # Create a superuser kubeconfig connecting locally to this control-plane
     k8s::kubeconfig { '/etc/kubernetes/admin.conf':
-        master_host => $k8s_config['master'],
+        master_host => $::fqdn,
         username    => 'default-admin',
         auth_cert   => $default_admin_cert,
         owner       => 'kube',
