@@ -51,6 +51,8 @@ class profile::toolforge::docker::registry(
             source_host => $active_node,
             dest_host   => $standby_node,
             module_path => '/srv/registry',
+            progress    => true,
+            delete      => true,
         }
     }
 
