@@ -111,7 +111,7 @@ class dynamicproxy::api (
     # Create initial db file if it doesn't exist, but don't clobber if it does.
     file { '/etc/dynamicproxy-api/data.db':
         ensure  => file,
-        source  => 'puppet:///modules/dynamicproxy/initial-data.db',
+        source  => 'puppet:///modules/dynamicproxy/api/initial-data.db',
         replace => false,
         require => File['/etc/dynamicproxy-api'],
         owner   => 'www-data',
