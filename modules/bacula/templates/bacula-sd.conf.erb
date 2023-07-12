@@ -7,7 +7,7 @@ Director {
     # Have the Control channel encrypted. Used for incoming console connections
     TLS Enable = yes
     TLS Require = yes
-    TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
+    TLS CA Certificate File = "/etc/ssl/certs/wmf-ca-certificates.crt"
     TLS Verify Peer = no
     TLS Certificate = "/etc/bacula/sd/ssl/cert.pem"
     TLS Key = "/etc/bacula/sd/ssl/server.key"
@@ -23,7 +23,7 @@ Storage {
     # Do Have the data channel encrypted.
     TLS Enable = yes
     TLS Require = yes
-    TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
+    TLS CA Certificate File = "/etc/ssl/certs/wmf-ca-certificates.crt"
     TLS Verify Peer = yes
     TLS Certificate = "/etc/bacula/sd/ssl/cert.pem"
     TLS Key = "/etc/bacula/sd/ssl/server.key"

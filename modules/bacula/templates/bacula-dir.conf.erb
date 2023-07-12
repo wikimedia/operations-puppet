@@ -13,7 +13,7 @@ Director {
     # Have the Control channel encrypted. Used for incoming console connections
     TLS Enable = yes
     TLS Require = yes
-    TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
+    TLS CA Certificate File = "/etc/ssl/certs/wmf-ca-certificates.crt"
     TLS Verify Peer = no
     TLS Certificate = "/etc/bacula/director/ssl/cert.pem"
     TLS Key = "/etc/bacula/director/ssl/server.key"
