@@ -969,3 +969,14 @@ profile::wmcs::cloud_private_subnet::host: 'not-in-cloud-realm.example.com'
 profile::wmcs::cloud_private_subnet::gw_template: 'not-in-cloud-realm.example.com'
 profile::wmcs::cloud_private_subnet::supernet: '127.0.0.1/32'
 profile::wmcs::cloud_private_subnet::vlan_mapping: {}
+
+profile::httpd::modules: []
+profile::httpd::legacy_compat: "present"
+profile::httpd::period: "daily"
+profile::httpd::rotate: 30
+profile::httpd::enable_forensic_log: false
+profile::httpd::extra_pkgs: []
+profile::httpd::purge_manual_config: true
+profile::httpd::remove_default_ports: false
+profile::httpd::http_only: false
+profile::httpd::wait_network_online: false
