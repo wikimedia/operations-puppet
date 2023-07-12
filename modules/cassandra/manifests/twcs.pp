@@ -11,6 +11,7 @@ class cassandra::twcs(
     require ::cassandra
 
     scap::target { 'cassandra/twcs':
+        ensure      => 'absent',
         deploy_user => 'deploy-service',
         manage_user => true,
     }
