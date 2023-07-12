@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary ferm host filter
-type Ferm::Hosts = Variant[
+type Wmflib::Firewall::Hosts = Variant[
   String,
   Array[
     Variant[

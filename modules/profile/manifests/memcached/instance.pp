@@ -64,20 +64,20 @@
 
 
 class profile::memcached::instance (
-    String                      $version          = lookup('profile::memcached::version'),
-    Stdlib::Port                $port             = lookup('profile::memcached::port'),
-    Integer                     $size             = lookup('profile::memcached::size'),
-    Array[String]               $extended_options = lookup('profile::memcached::extended_options'),
-    Integer                     $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
-    Integer                     $min_slab_size    = lookup('profile::memcached::min_slab_size'),
-    Float                       $growth_factor    = lookup('profile::memcached::growth_factor'),
-    Optional[Boolean]           $enable_tls       = lookup('profile::memcached::enable_tls'),
-    Optional[Stdlib::Port]      $notls_port       = lookup('profile::memcached::notls_port'),
-    Optional[Stdlib::Unixpath]  $ssl_cert         = lookup('profile::memcached::ssl_cert'),
-    Optional[Stdlib::Unixpath]  $ssl_key          = lookup('profile::memcached::ssl_key'),
-    Optional[Boolean]           $enable_16        = lookup('profile::memcached::enable_16'),
-    Optional[Integer]           $threads          = lookup('profile::memcached::threads'),
-    Optional[Ferm::Hosts]       $srange           = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
+    String                            $version          = lookup('profile::memcached::version'),
+    Stdlib::Port                      $port             = lookup('profile::memcached::port'),
+    Integer                           $size             = lookup('profile::memcached::size'),
+    Array[String]                     $extended_options = lookup('profile::memcached::extended_options'),
+    Integer                           $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
+    Integer                           $min_slab_size    = lookup('profile::memcached::min_slab_size'),
+    Float                             $growth_factor    = lookup('profile::memcached::growth_factor'),
+    Optional[Boolean]                 $enable_tls       = lookup('profile::memcached::enable_tls'),
+    Optional[Stdlib::Port]            $notls_port       = lookup('profile::memcached::notls_port'),
+    Optional[Stdlib::Unixpath]        $ssl_cert         = lookup('profile::memcached::ssl_cert'),
+    Optional[Stdlib::Unixpath]        $ssl_key          = lookup('profile::memcached::ssl_key'),
+    Optional[Boolean]                 $enable_16        = lookup('profile::memcached::enable_16'),
+    Optional[Integer]                 $threads          = lookup('profile::memcached::threads'),
+    Optional[Wmflib::Firewall::Hosts] $srange           = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
 ) {
     include ::profile::prometheus::memcached_exporter
 
