@@ -184,11 +184,14 @@ def parse_commit(change):
         change (str): the change ID to use
 
     Returns:
-        str: The lists of hosts or an empty string
+        (str, str):  A tuple of the lists of hosts and the private change.
+            in both cases if there is no value found an empty string is returned
+
 
     """
     hosts = []
     res = get_gerrit_blob(change)
+    private_change = ''
 
     for result in res:
         if result["change_id"] != change:
@@ -199,13 +202,15 @@ def parse_commit(change):
         raise ParseCommitException("No Hosts found")
 
     for line in commit.splitlines():
+        # Strip any comments after '#'
+        if "#" in line:
+            line = line.split("#", 1)[0]
         if line.startswith("Hosts:"):
-            # Strip any comments after '#'
-            if "#" in line:
-                line = line.split("#", 1)[0]
             hosts.append(line.split(":", 1)[1].strip())
+        if line.startswith("Change-Private:"):
+            private_change = line.split(':', 1)[1].strip()
 
-    return ",".join(hosts)
+    return ",".join(hosts), private_change
 
 
 def get_args():
@@ -266,8 +271,10 @@ def get_args():
     parser.add_argument(
         "-p",
         "--private-change",
-        help=("The Gerrit change number (without patchset number) of the private "
-              "repo that will be fetched from Gerrit to compile the change catalog."),
+        help=(
+            "The Gerrit change number (without patchset number) of the private "
+            "repo that will be fetched from Gerrit to compile the change catalog."
+        ),
     )
     parser.add_argument("-v", "--verbose", action="count")
     return parser.parse_args()
@@ -354,8 +361,8 @@ def main():  # pylint: disable=too-many-locals
         )
     )
     try:
-        nodes = (
-            parse_commit(change["id"]) if args.nodes == "parse_commit" else args.nodes
+        nodes, private_change = (
+            parse_commit(change["id"]) if args.nodes == "parse_commit" else args.nodes, ''
         )
     except KeyError as error:
         print("Unable to find commit message: {}".format(error))
@@ -383,7 +390,9 @@ def main():  # pylint: disable=too-many-locals
         "LIST_OF_NODES": nodes,
         "COMPILER_MODE": "change",
         "FAIL_FAST": "YES" if args.fail_fast else "",
-        "GERRIT_PRIVATE_CHANGE_NUMBER": args.private_change if args.private_change else "",
+        "GERRIT_PRIVATE_CHANGE_NUMBER": args.private_change
+        if args.private_change
+        else private_change,
     }
 
     invocation = job.invoke(build_params=build_params)
