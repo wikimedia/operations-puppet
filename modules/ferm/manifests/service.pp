@@ -28,7 +28,7 @@
 # Only one of $port ot $port_range can be given
 #
 define ferm::service(
-    Ferm::Protocol $proto,
+    Wmflib::Protocol $proto,
     Optional[Ferm::Port] $port = undef,
     Optional[Ferm::Portrange] $port_range = undef,
     Wmflib::Ensure $ensure  = present,

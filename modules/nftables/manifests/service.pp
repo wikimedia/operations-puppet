@@ -16,7 +16,7 @@
 # @param src_sets see srange docs
 # @param dst_sets see srange docs
 define nftables::service (
-    Ferm::Protocol             $proto,
+    Wmflib::Protocol           $proto,
     Wmflib::Ensure             $ensure     = present,
     Integer[1,99]              $prio       = 10,
     Optional[String]           $desc       = undef,
