@@ -111,6 +111,7 @@
     {"index" : "ceph-rgw", "value" : "kafka local ecs_170" },
     {"index" : "pybal", "value" : "kafka local" },
     {"index" : "navtiming", "value" : "kafka local" },
+    {"index" : "excimer", "value" : "kafka local" },
     {"index" : "jupyterhub-conda-singleuser", "value" : "kafka ecs_170" },
     {"index" : "puppet-master", "value" : "kafka local ecs_170" },
     {"index" : "squid", "value" : "kafka local" },
