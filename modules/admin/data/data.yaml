@@ -5882,9 +5882,7 @@ users:
   ppenloglou:
     ensure: present
     realname: Panagiotis Penloglou
-    email: ppenloglou-ctr@wikimedia.org
-    expiry_contact: dbu@wikimedia.org
-    expiry_date: "2023-07-18"
+    email: ppenloglou@wikimedia.org
     uid: 42507
     gid: 500
     ssh_keys:
