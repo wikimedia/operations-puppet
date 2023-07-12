@@ -263,6 +263,12 @@ def get_args():
         action="store_true",
         help="If passed, will stop the compilation when the first failure happens.",
     )
+    parser.add_argument(
+        "-p",
+        "--private-change",
+        help=("The Gerrit change number (without patchset number) of the private "
+              "repo that will be fetched from Gerrit to compile the change catalog."),
+    )
     parser.add_argument("-v", "--verbose", action="count")
     return parser.parse_args()
 
@@ -377,6 +383,7 @@ def main():  # pylint: disable=too-many-locals
         "LIST_OF_NODES": nodes,
         "COMPILER_MODE": "change",
         "FAIL_FAST": "YES" if args.fail_fast else "",
+        "GERRIT_PRIVATE_CHANGE_NUMBER": args.private_change if args.private_change else "",
     }
 
     invocation = job.invoke(build_params=build_params)
