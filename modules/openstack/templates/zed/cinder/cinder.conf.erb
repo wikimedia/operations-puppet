@@ -49,7 +49,7 @@ backup_sha_block_size_bytes = <%= 32 * 1024 %>
 # The div(32)*32 no-op here is to round things off to an even multiple of
 # backup_sha_block_size_bites_data
 #
-backup_file_size = <%= ((((@facts['memorysize_mb'] - 1024)/32).div(2)  * 1024).div(32) * 32 * 1024) %>
+backup_file_size = <%= ((((@facts['memorysize_mb'] - 1024)/64).div(2)  * 1024).div(32) * 32 * 1024) %>
 
 # Default availability zone for new volumes. If not set, the storage_availability_zone option value is used as the default for new volumes.
 # (string value)
