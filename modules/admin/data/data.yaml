@@ -103,7 +103,7 @@ groups:
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
                   gerrit-root, gerrit-deployers, deployment, contint-roots, contint-admins, deployment-ci-admins,
                   zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator, contint-docker, deployment-docker'
-    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche]
+    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper]
     approval:
       - Tyler Cipriani
   parsoid-roots:
