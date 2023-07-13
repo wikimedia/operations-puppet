@@ -373,6 +373,12 @@ class profile::toolforge::prometheus (
             },
         },
         {
+            name      => 'k8s-maintain-kubeusers',
+            namespace => 'maintain-kubeusers',
+            pod_name  => 'maintain-kubeusers-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9000,
+        },
+        {
             name      => 'k8s-kube-state-metrics',
             namespace => 'metrics',
             pod_name  => 'kube-state-metrics-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
