@@ -118,6 +118,30 @@ namespace :global do
     ParallelTests::CLI.new.run(args)
   end
 
+  namespace :shellcheck do
+    def shellcheck(severity)
+      shell_files = FileList['**/*.sh'].reject { |f|
+          f.start_with?('modules/admin/files/home')
+      }
+      opts = ["--severity=#{severity}"]
+      opts += ["--color=always"] if ENV.key?('JENKINS_URL')
+      unless system("shellcheck", *opts, *shell_files)
+        abort("Global shellcheck failed")
+      end
+    end
+
+    ["style", "info", "warning", "error"].each { |severity|
+      desc "Run shellcheck with minimum #{severity} severity"
+      task severity do
+        shellcheck(severity)
+      end
+    }
+  end
+
+  shellcheck_default_severity = "error"
+  desc "Run global shellcheck (severity: #{shellcheck_default_severity})"
+  task :shellcheck => ["shellcheck:#{shellcheck_default_severity}"]
+
   desc 'Run the wmf style guide check on all files, or on a single module (with module=<module-name>)'
   task :wmf_style do
     if ENV['module']
