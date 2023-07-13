@@ -17,7 +17,7 @@ profile::gitlab::runner::docker_gc_images_high_water_mark: 6g
 profile::gitlab::runner::docker_gc_images_low_water_mark: 3g
 profile::gitlab::runner::docker_gc_volumes_high_water_mark: 6g
 profile::gitlab::runner::docker_gc_volumes_low_water_mark: 3g
-profile::gitlab::runner::buildkitd_gckeepstorage: 6000
+profile::gitlab::runner::buildkitd_gckeepstorage: 6Gb
 profile::gitlab::runner::locked: true
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::run_untagged: false

@@ -18,7 +18,7 @@ profile::gitlab::runner::docker_gc_images_high_water_mark: 135gb
 profile::gitlab::runner::docker_gc_images_low_water_mark: 130gb
 profile::gitlab::runner::docker_gc_volumes_high_water_mark: 135gb
 profile::gitlab::runner::docker_gc_volumes_low_water_mark: 130gb
-profile::gitlab::runner::buildkitd_gckeepstorage: 135000
+profile::gitlab::runner::buildkitd_gckeepstorage: 135Gb
 profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
 profile::gitlab::runner::locked: true
 # profile::gitlab::runner::registration_token: private

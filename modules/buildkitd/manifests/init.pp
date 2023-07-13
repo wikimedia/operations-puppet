@@ -8,6 +8,7 @@
 # @param image Ref to the buildkitd image to run
 # @param nameservers DNS nameservers to configure for OCI worker containers.
 # @param environment Environment variables to set for the buildkitd container.
+# @param gckeepstorage Local buildkitd cache to keep after garbage collection (e.g. "10Gb")
 # @param cni_pool_size Size of the preallocated pool of CNI network namespaces.
 #
 class buildkitd(
@@ -18,7 +19,7 @@ class buildkitd(
     String                   $image = 'docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.11-6',
     Array[Stdlib::Host]      $nameservers = [],
     Wmflib::POSIX::Variables $environment = {},
-    Optional[Integer]        $gckeepstorage = 0,
+    Optional[String]         $gckeepstorage = undef,
     Integer                  $cni_pool_size = 20,
 ){
     group { 'buildkitd':

@@ -81,7 +81,7 @@ class profile::gitlab::runner (
     Array[String]                               $allowed_images     = lookup('profile::gitlab::runner::allowed_images'),
     Array[String]                               $allowed_docker_services = lookup('profile::gitlab::runner::allowed_docker_services'),
     Stdlib::IP::Address::V4::CIDR               $internal_ip_range  = lookup('profile::gitlab::runner::internal_ip_range'),
-    Optional[Integer]                           $buildkitd_gckeepstorage = lookup('profile::gitlab::runner::buildkitd_gckeepstorage'),
+    Optional[String]                            $buildkitd_gckeepstorage = lookup('profile::gitlab::runner::buildkitd_gckeepstorage'),
     Boolean                                     $enable_registry_proxy = lookup('profile::gitlab::runner::enable_registry_proxy'),
     Hash                                        $registry_proxy_environment = lookup('profile::gitlab::runner::registry_proxy_environment'),
     String                                      $registry_proxy_image = lookup('profile::gitlab::runner::registry_proxy_image'),

@@ -4,9 +4,10 @@
 enabled = true
 gc = true
 
-<% if @gckeepstorage > 0 -%>
-# MB units
-gckeepstorage = <%= @gckeepstorage %>
+<% if @gckeepstorage != :undef -%>
+# Despite --oci-worker-gc-keepstorage being in MB, this config field is in
+# bytes. See https://github.com/moby/buildkit/issues/2922
+gckeepstorage = <%= scope.function_to_bytes [@gckeepstorage] %>
 <% end -%>
 
 # Use CNI to isolate each build container network namespace
