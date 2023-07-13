@@ -25,7 +25,7 @@ class role::analytics_test_cluster::client {
     # This conditional is a hack to ensure that if someone ever creates
     # a more an-test-client instances, that the airflow-analytics-test
     # instance is not created there accidentally.
-    if $::fqdn == 'an-test-client1001.eqiad.wmnet' {
+    if $::fqdn == 'an-test-client1002.eqiad.wmnet' {
         include ::profile::airflow
     }
 
