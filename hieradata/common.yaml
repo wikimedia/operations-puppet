@@ -23,6 +23,16 @@ lookup_options:
     merge: hash
   profile::cache::varnish::frontend::cache_be_opts:
     merge: hash
+  profile::cache::haproxy::acls:
+    merge: deep
+  profile::cache::haproxy::pre_acl_actions:
+    merge: deep
+  profile::cache::haproxy::post_acl_actions:
+    merge: deep
+  profile::cache::haproxy::vars:
+    merge: deep
+  profile::cache::haproxy::sticktables:
+    merge: deep
   profile::docker::engine::settings:
     merge: hash
   profile::debdeploy::client::filter_services:

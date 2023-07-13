@@ -5,7 +5,6 @@ profile::cache::haproxy::post_acl_actions:
       verb: silent-drop
       condition: if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
       comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
-    # To disable concurrency enforcement, comment out this entire block above.
 
 profile::cache::haproxy::sticktables:
   - name: httpreqrate_http
@@ -46,20 +45,3 @@ profile::cache::haproxy::acls:
       operator: 'gt'
       value: '0'
 
-
-lookup_options:
-  profile::cache::haproxy::vars:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::acls:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::pre_acl_actions:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::post_acl_actions:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::sticktables:
-    merge:
-      strategy: deep

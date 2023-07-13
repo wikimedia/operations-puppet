@@ -58,17 +58,3 @@ profile::cache::haproxy::pre_acl_actions:
       verb: track-sc0 src table httpreqrate
     - context: tcp-request connection
       verb: track-sc1 src table newconnrate
-
-lookup_options:
-  profile::cache::haproxy::acls:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::pre_acl_actions:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::vars:
-    merge:
-      strategy: deep
-  profile::cache::haproxy::sticktables:
-    merge:
-      strategy: unique
