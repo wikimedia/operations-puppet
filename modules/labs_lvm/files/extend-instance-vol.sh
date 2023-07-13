@@ -34,7 +34,7 @@ if ! mountpoint -q "$mount"; then
 fi
 
 volume=$(grep "\S* $mount " /proc/mounts | cut -d ' ' -f 1 | tail -n 1)
-if [ -n "$volume" ] || [ ! -b "$volume" ]; then
+if [[ "$volume" == "" ]] || [[ ! -b "$volume" ]]; then
   echo "$0: unable to find device for $mount" >&2
   exit 1
 fi
