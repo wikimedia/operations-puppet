@@ -22,8 +22,8 @@ class zookeeper::server(
     $cleanup_script       = '/usr/share/zookeeper/bin/zkCleanup.sh',
     $cleanup_script_args  = '-n 10',
     $cleanup_timer_deploy = true,
-    $default_template     = 'zookeeper/zookeeper.default.erb',
-    $log4j_template       = 'zookeeper/log4j.properties.erb',
+    $default_template     = 'profile/zookeeper/zookeeper.default.erb',
+    $log4j_template       = 'profile/zookeeper/log4j.properties.erb',
     $java_home            = undef,
 ) {
     # need zookeeper common package and config.

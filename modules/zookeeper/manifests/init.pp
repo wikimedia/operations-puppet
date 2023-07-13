@@ -52,7 +52,7 @@ class zookeeper(
     $tick_time              = 2000,
     $init_limit             = 10,
     $sync_limit             = 5,
-    $conf_template          = 'zookeeper/zoo.cfg.erb',
+    $conf_template          = 'profile/zookeeper/zoo.cfg.erb',
 ) {
     ensure_packages('zookeeper')
 
