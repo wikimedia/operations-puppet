@@ -48,6 +48,7 @@ class dnsrecursor (
     Boolean                                                         $do_ipv6                  = false,
     Boolean                                                         $enable_webserver         = false,
     Optional[Stdlib::Port]                                          $webserver_port           = 8082,
+    Enum['none', 'normal', 'detailed']                              $webserver_log_level      = 'none',
     Boolean                                                         $restart_service          = true,
     Array[Stdlib::IP::Address]                                      $api_allow_from           = [],
     Array[Stdlib::IP::Address::Nosubnet]                            $query_local_address      = [],

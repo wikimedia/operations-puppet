@@ -144,5 +144,6 @@ query-local-address=0.0.0.0,[::]
 webserver=yes
 webserver-port=<%= @webserver_port %>
 webserver-address=<%= @ipaddress %>
+webserver-loglevel=<%= @webserver_log_level %>
 webserver-allow-from=<%= flatten_ips(@api_allow_from).sort.join(" ") %>
 <%- end -%>
