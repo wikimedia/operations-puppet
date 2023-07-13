@@ -9,14 +9,17 @@
 # [*prefix*] Prefix to use for all keys; it will actually be joined with the global
 #            confd prefix
 #
+# [*instance*] Which confd::instance we should configure. Anything other than the
+#              default 'main' instance will need to be instantiated explicitly
+#
 # [*watch_keys*] list of keys to watch relative to the value assigned in
-#                $prefix.
+#                $prefix
 #
 # [*uid*] Numeric uid of the owner of the file produced. Default: 0
 #
 # [*gid*] Numeric gid of the owner of the produced file. Default: 0
 #
-# [*mode*] File mode for the generated file.
+# [*mode*] File mode for the generated file
 #
 # [*reload*] Command to execute when the produced file changes
 #
@@ -29,6 +32,7 @@
 define confd::file (
     $ensure     = 'present',
     $prefix     = undef,
+    $instance   = 'main',
     $watch_keys = [],
     $uid        = undef,
     $gid        = undef,
@@ -39,24 +43,36 @@ define confd::file (
     Boolean $relative_prefix = true,
 ) {
 
-    include confd
+    if $instance == 'main' {
+        #TODO: remove this special casing?
+        include confd::default_instance
+        $confd_prefix = $confd::default_instance::prefix
+    } else {
+        $confd_prefix = ''
+    }
 
-    $_prefix = $relative_prefix.bool2str("${confd::prefix}${prefix}", $prefix)
+    $label = $instance ? {
+        'main'  => 'confd',
+        default => sprintf('confd-%s', regsubst($instance, '/', '_', 'G')),
+    }
+    $path = "/etc/${label}"
+
+    $_prefix = $relative_prefix.bool2str("${confd_prefix}${prefix}", $prefix)
     $safe_name = regsubst($name, '/', '_', 'G')
 
-    file { "/etc/confd/templates/${safe_name}.tmpl":
+    file { "${path}/templates/${safe_name}.tmpl":
         ensure  => $ensure,
         mode    => '0400',
         content => $content,
         require => Package['confd'],
-        before  => File["/etc/confd/conf.d/${safe_name}.toml"],
+        before  => File["${path}/conf.d/${safe_name}.toml"],
     }
 
     #TODO validate at least uid and guid
-    file { "/etc/confd/conf.d/${safe_name}.toml":
+    file { "${path}/conf.d/${safe_name}.toml":
         ensure  => $ensure,
         content => template('confd/service_template.toml.erb'),
-        notify  => Service['confd'],
+        notify  => Service[$label],
     }
 
     if $ensure == 'absent' {

@@ -8,7 +8,7 @@ class profile::scap::dsh(
     String $conftool_prefix = lookup('conftool_prefix'),
 ){
 
-    class { 'confd':
+    class { 'confd::default_instance':
         interval => 300,
         prefix   => $conftool_prefix,
         srv_dns  => "${::site}.wmnet",

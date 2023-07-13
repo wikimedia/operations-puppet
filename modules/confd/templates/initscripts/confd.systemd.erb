@@ -5,15 +5,18 @@ if @interval
 else
    opts = "-watch"
 end
+if @name != 'main'
+   opts += " -confdir #{@path}"
+end
 -%>
 [Unit]
-Description=confd
+Description=<%= @label %>
 
 [Service]
 User=root
 Environment="CONFD_BACKEND=<%= @backend %>"
-<%- if @node -%>
-Environment="CONFD_DISCOVERY=-node <%= @node %>"
+<%- if @host -%>
+Environment="CONFD_DISCOVERY=-node <%= @host %>"
 <%- else -%>
 <%- if @scheme == "https" -%>
 Environment="CONFD_DISCOVERY=-srv-record _etcd-client-ssl._tcp.<%= @srv_dns %> -scheme https"
