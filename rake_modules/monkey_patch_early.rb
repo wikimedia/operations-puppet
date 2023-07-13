@@ -20,7 +20,7 @@ if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7.0')
     # puppet-5.5.10/lib/puppet/file_system/file_impl.rb:80:
     # warning: Using the last argument as keyword parameters is deprecated
     module PathnameDeprecations
-      def read(opts)
+      def read(**opts)
         super(**opts)
       end
     end
