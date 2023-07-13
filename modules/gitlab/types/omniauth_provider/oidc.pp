@@ -2,8 +2,9 @@
 type Gitlab::Omniauth_provider::OIDC = Struct[{
     'issuer'                                 => Stdlib::Httpurl,
     'client_options'                         => Struct[{
-        'identifier'       => String[1],
-        'redirect_uri'     => Stdlib::Httpurl,
+        'identifier'        => String[1],
+        'redirect_uri'      => Stdlib::Httpurl,
+        'userinfo_endpoint' => String,
         # The secret is optional to allow useres to first add the definition in puppet
         # and then to the private repo
         Optional['secret'] => String[1],

@@ -23,6 +23,7 @@ profile::gitlab::omniauth_providers:
     client_options:
       identifier: 'gitlab_oidc'
       redirect_uri: "%{lookup('profile::gitlab::external_url')}users/auth/openid_connect/callback"
+      userinfo_endpoint: '/oidcProfile'
 profile::gitlab::block_auto_created_users: true
 profile::gitlab::auto_sign_in_with: cas3
 profile::gitlab::smtp_enabled: false
