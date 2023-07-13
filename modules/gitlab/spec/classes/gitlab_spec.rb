@@ -21,7 +21,6 @@ describe 'gitlab' do
                 'client_options' => {
                   'identifier' => 'Gitlab',
                   'redirect_uri' => 'https://gitlab.example.org/users/auth/openid_connect/callback',
-                  'userinfo_endpoint' => '/user_info',
                   'secret' => 'SECRET'
                 }
               }
