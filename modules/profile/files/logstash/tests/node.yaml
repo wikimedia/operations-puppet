@@ -450,6 +450,7 @@ testcases:
         request_id: "0b652d81-b435-11eb-a1a3-adc9deeef955"
         type: "kartotherian"
         host: "maps1007"
+        program: "node"
         request:
           method: "GET"
           query:
