@@ -81,7 +81,7 @@ testcases:
         }
       }
   - expected:
-    - __target_index: "ecs-test-1-1.11.0-N-weekly"
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
 #      '@timestamp': "2023-03-20T22:36:59.000Z"
       message: 'backtracking required because of match "thumbor.swift.original.*.miss", matching performance may be degraded'
       host:
@@ -114,19 +114,7 @@ testcases:
       ecs:
         version: "1.11.0"
 
-    - __target_index: "logstash-k8s-1-1.0.0-N-daily"
-      facility: "local0"
-      host: "kubernetes1008"
-      log: "time=\"2023-03-20T22:36:59Z\" level=warning msg=\"backtracking required because of match \\\"thumbor.swift.original.*.miss\\\", matching performance may be degraded\" source=\"fsm.go:313\" \n"
-      logsource: "kubernetes1008"
-      normalized_message: "%{message}"
-      program: "input-file-kubernetes"
-      severity: "NOTICE"
-      stream: "stderr"
-      time: "2023-03-20T22:36:59.206196962Z"
-      timestamp: "2023-03-20T22:36:59.625226+00:00"
-
-    - __target_index: "ecs-test-1-1.11.0-N-weekly"
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
 #      '@timestamp': "2023-03-21T22:19:28.000Z"
       message: "backtracking required because of match \"*.heap.*\", matching performance may be degraded"
       host:
@@ -158,15 +146,3 @@ testcases:
           name: "mobileapps-production-7d9f7bfd56-hz5zw"
       ecs:
         version: "1.11.0"
-
-    - __target_index: "logstash-k8s-1-1.0.0-N-daily"
-      facility: "local0"
-      host: "kubernetes1008"
-      log: "time=\"2023-03-21T22:19:28Z\" level=warning msg=\"backtracking required because of match \\\"*.heap.*\\\", matching performance may be degraded\" source=\"fsm.go:313\" \n"
-      logsource: "kubernetes1008"
-      normalized_message: "%{message}"
-      program: "input-file-kubernetes"
-      severity: "NOTICE"
-      stream: "stderr"
-      time: "2023-03-21T22:19:28.478278042Z"
-      timestamp: "2023-03-21T22:19:28.478377+00:00"
