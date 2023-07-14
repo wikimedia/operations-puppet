@@ -23,7 +23,7 @@ testcases:
           "message": "[ldap-ro-ssl_636] INFO: Server ldap-replica2006.wikimedia.org (enabled/partially up/not pooled) is up"
         }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "[ldap-ro-ssl_636] INFO: Server ldap-replica2006.wikimedia.org (enabled/partially up/not pooled) is up"
         host:
           name: "lvs2008"
@@ -41,10 +41,3 @@ testcases:
           type: "pybal"
         ecs:
           version: "1.11.0"
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "[ldap-ro-ssl_636] INFO: Server ldap-replica2006.wikimedia.org (enabled/partially up/not pooled) is up"
-        facility: "local0"
-        host: "lvs2008"
-        severity: "INFO"
-        logsource: "lvs2008"
-        program: "pybal"
