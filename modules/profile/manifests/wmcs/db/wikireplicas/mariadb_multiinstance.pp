@@ -4,6 +4,8 @@ class profile::wmcs::db::wikireplicas::mariadb_multiinstance (
     Hash[String,Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports', ),
     Integer[0, 100] $mariadb_memory_warning_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold', {'default_value' => 90}),
     Integer[0, 100] $mariadb_memory_critical_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold', {'default_value' => 95}),
+    Array[Stdlib::Fqdn] $cloudcontrols = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[Stdlib::Fqdn] $dbproxies = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies'),
 ) {
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
@@ -56,13 +58,13 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             proto   => 'tcp',
             port    => $port,
             notrack => true,
-            srange  => '(@resolve((dbproxy1018.eqiad.wmnet)) @resolve((dbproxy1019.eqiad.wmnet)))',
+            srange  => "(@resolve((${dbproxies.join(' ')})))",
         }
         ferm::service { "mysql_wmcs_db_admin_${section}":
             proto   => 'tcp',
             port    => $port,
             notrack => true,
-            srange  => '(@resolve((cloudcontrol1005.wikimedia.org)) @resolve((cloudcontrol1006.wikimedia.org)) @resolve((cloudcontrol1007.wikimedia.org)))',
+            srange  => "(@resolve((${cloudcontrols.join(' ')})))",
         }
         mariadb::monitor_readonly{ "wikireplica-${section}":
             port      => $port,

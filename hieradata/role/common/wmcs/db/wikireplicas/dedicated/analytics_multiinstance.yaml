@@ -1,4 +1,13 @@
+---
 profile::admin::groups:
     - wmcs-admin
 contactgroups: wmcs-team-email
 profile::contacts::role_contacts: ['WMCS']
+
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies:
+  - dbproxy1018.eqiad.wmnet
+  - dbproxy1019.eqiad.wmnet
+profile::openstack::eqiad1::openstack_controllers:
+  - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org

@@ -1,3 +1,5 @@
+---
+profile::contacts::role_contacts: ["WMCS"]
 profile::admin::groups:
     - wmcs-admin
 profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_victims: "all"
@@ -11,4 +13,10 @@ contactgroups: wmcs-team-email,admins
 
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
-profile::contacts::role_contacts: ["WMCS"]
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies:
+  - dbproxy1018.eqiad.wmnet
+  - dbproxy1019.eqiad.wmnet
+profile::openstack::eqiad1::openstack_controllers:
+  - cloudcontrol1005.wikimedia.org
+  - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.wikimedia.org
