@@ -24,7 +24,7 @@ testcases:
           "message": "level=warn ts=2023-03-23T22:38:19.497293277Z caller=endpointset.go:446 component=endpointset msg=\"update of endpoint failed\" err=\"getting metadata: fallback fetching info from prometheus6001:29900: rpc error: code = DeadlineExceeded desc = context deadline exceeded\" address=prometheus6001:29900"
         }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
 #        '@timestamp': "2023-03-23T22:38:19.497Z"
         message: "update of endpoint failed"
         error:
@@ -50,12 +50,3 @@ testcases:
           type: "thanos-query"
         ecs:
           version: "1.11.0"
-
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "level=warn ts=2023-03-23T22:38:19.497293277Z caller=endpointset.go:446 component=endpointset msg=\"update of endpoint failed\" err=\"getting metadata: fallback fetching info from prometheus6001:29900: rpc error: code = DeadlineExceeded desc = context deadline exceeded\" address=prometheus6001:29900"
-        level: "INFO"
-        facility: "local0"
-        program: "thanos-query"
-        host: "thanos-fe0000"
-        logsource: "thanos-fe0000"
-        severity: "INFO"
