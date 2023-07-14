@@ -186,7 +186,13 @@ profile::pki::multirootca::intermediates:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
     # Kubernetes will only use the default profile for client auth certs
     ocsp_port: 20062
-
+  network_devices:
+    ocsp_port: 20063
+    default_expiry: '8760h'  # 1 year
+    default_usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
 profile::pki::multirootca::db_host: 'm1-master.eqiad.wmnet'
