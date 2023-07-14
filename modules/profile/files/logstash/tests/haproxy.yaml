@@ -24,7 +24,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "A bogus STREAM [0x000000000000] is spinning at 697825 calls per second and refuses to die, aborting now! Please report this error to developers [strm=0x000000000000,123456 src=127.0.0.1 fe=tls be=tls dst=backend_server_3 txn=0x000000000000,40000 txn.req=MSG_ERROR,d txn.rsp=MSG_DONE,d rqf=123456 rqa=0 rpf=12345678 rpa=0 scf=0x000000000000,EST,0 scb=0x000000000000,EST,1 af=(nil),0 sab=(nil),0 cof=0x000000000000,12345678:H2(0x000000000000)/SSL(0x000000000000)/tcpv4(0000) cob=0x000000000000,12345:H1(0x000000000000)/RAW((nil))/unix_stream(1234) filters={}]"
         log:
           level: "EMERG"
@@ -42,11 +42,3 @@ testcases:
           type: "haproxy"
         ecs:
           version: "1.11.0"
-
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "A bogus STREAM [0x000000000000] is spinning at 697825 calls per second and refuses to die, aborting now! Please report this error to developers [strm=0x000000000000,123456 src=127.0.0.1 fe=tls be=tls dst=backend_server_3 txn=0x000000000000,40000 txn.req=MSG_ERROR,d txn.rsp=MSG_DONE,d rqf=123456 rqa=0 rpf=12345678 rpa=0 scf=0x000000000000,EST,0 scb=0x000000000000,EST,1 af=(nil),0 sab=(nil),0 cof=0x000000000000,12345678:H2(0x000000000000)/SSL(0x000000000000)/tcpv4(0000) cob=0x000000000000,12345:H1(0x000000000000)/RAW((nil))/unix_stream(1234) filters={}]"
-        facility: "local0"
-        host: "cp0000"
-        logsource: "cp0000"
-        program: "haproxy"
-        severity: "EMERG"
