@@ -6754,3 +6754,7 @@ ldap_only_users:
     ensure: present
     realname: Maciej Jaros
     email: egil@wp.pl
+  ikhanyaree:
+    ensure: present
+    realname: Ifrah Khanyaree
+    email: ifrah.khanyaree@wikimedia.de
