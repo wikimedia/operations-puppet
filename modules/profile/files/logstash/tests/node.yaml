@@ -77,7 +77,7 @@ testcases:
         "logsource": "restbase1027"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "500: server_error"
         log:
           level: "ERROR"
@@ -188,7 +188,7 @@ testcases:
         "logsource": "restbase1019"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "MW API call error readinglists-too-old"
         labels:
           level_path: "debug/api_error"
@@ -259,7 +259,7 @@ testcases:
         "logsource": "restbase2015"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "Heap memory limit temporarily exceeded"
         labels:
           level_path: "warn/service-runner/heap"
@@ -318,7 +318,7 @@ testcases:
         "logsource": "restbase1021"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "No content returned"
         labels:
           level_path: "error/request"
@@ -402,7 +402,7 @@ testcases:
         "logsource": "maps1007"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
         message: "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
         labels:
           level_path: "warn"
@@ -442,28 +442,4 @@ testcases:
             method: "GET"
         ecs:
           version: "1.7.0"
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
-        level: "WARNING"
-        levelPath: "warn"
-        pid: 27393
-        request_id: "0b652d81-b435-11eb-a1a3-adc9deeef955"
-        type: "kartotherian"
-        host: "maps1007"
-        program: "node"
-        request:
-          method: "GET"
-          query:
-            groups:
-              - "_f0f1729e33129fae22015c99dd3e1f60a34a8177"
-            domain: "ar.wikipedia.org"
-            lang: "ar"
-            title: "%D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9"
-          url: "/img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177"
-          headers:
-            user-agent: "redacted"
-            x-request-id: "0b652d81-b435-11eb-a1a3-adc9deeef955"
-          remotePort: 36058
-          remoteAddress: "10.64.16.6"
-          params:
-            0: "/img/osm-intl,8,35.32034,6.74657,300x300.png"
+
