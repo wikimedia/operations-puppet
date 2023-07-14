@@ -26,7 +26,8 @@ profile::pki::root_ca::intermediates:
   - dse
   - dse_front_proxy
   - cassandra
-  - puppet # UUNUSED byt the puppetserver infrastructre SERVER-3164
+  - puppet # USED by the puppetserver infrastructure SERVER-3164
+  - network_devices
 profile::pki::root_ca::common_name: 'Wikimedia_Internal_Root_CA'
 profile::pki::root_ca::key_params:
    algo: ecdsa
