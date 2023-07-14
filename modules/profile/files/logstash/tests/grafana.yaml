@@ -23,7 +23,7 @@ testcases:
           "message": "logger=context traceID=00000000000000000000000000000000 userId=0 orgId=1 uname= t=2023-03-31T21:43:35.45+0000 lvl=eror msg=\"Could not find plugin definition for data source\" datasource_type=datasource-plugin-genericdatasource"
         }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
 #        '@timestamp': "2023-03-31T21:43:35.450Z"
         message: "Could not find plugin definition for data source"
         host:
@@ -50,20 +50,13 @@ testcases:
         ecs:
           version: "1.11.0"
 
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "logger=context traceID=00000000000000000000000000000000 userId=0 orgId=1 uname= t=2023-03-31T21:43:35.45+0000 lvl=eror msg=\"Could not find plugin definition for data source\" datasource_type=datasource-plugin-genericdatasource"
-        facility: "user"
-        host: "grafana0000"
-        logsource: "grafana0000"
-        program: "grafana-server"
-        severity: "INFO"
   - input:
     - >
       {
         "message": "logger=context userId=0 orgId=1 uname= t=2023-03-22T20:51:22.060326985Z level=info msg=\"Request Completed\" method=GET path=/api/live/ws status=400 remote_addr=0.0.0.0 time_ms=6 duration=6.683093ms size=12 referer= handler=/api/live/ws"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
 #        '@timestamp': "2023-03-22T20:51:22.060Z"
         message: "Request Completed"
         host:
@@ -101,20 +94,13 @@ testcases:
         ecs:
           version: "1.11.0"
 
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "logger=context userId=0 orgId=1 uname= t=2023-03-22T20:51:22.060326985Z level=info msg=\"Request Completed\" method=GET path=/api/live/ws status=400 remote_addr=0.0.0.0 time_ms=6 duration=6.683093ms size=12 referer= handler=/api/live/ws"
-        facility: "user"
-        host: "grafana0000"
-        logsource: "grafana0000"
-        program: "grafana-server"
-        severity: "INFO"
   - input:
     - >
       {
         "message": "logger=ngalert.sender.router rule_uid=mp0FSj14z org_id=1 t=2023-03-22T20:52:09.260520522Z level=info msg=\"Sending alerts to local notifier\" count=1"
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
 #        '@timestamp': "2023-03-22T20:52:09.260Z"
         message: "Sending alerts to local notifier"
         host:
@@ -139,20 +125,13 @@ testcases:
         ecs:
           version: "1.11.0"
 
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "logger=ngalert.sender.router rule_uid=mp0FSj14z org_id=1 t=2023-03-22T20:52:09.260520522Z level=info msg=\"Sending alerts to local notifier\" count=1"
-        facility: "user"
-        host: "grafana0000"
-        logsource: "grafana0000"
-        program: "grafana-server"
-        severity: "INFO"
   - input:
     - >
       {
         "message": "logger=alertmanager org=1 t=2023-03-22T21:10:09.725088848Z level=error component=dispatcher msg=\"Notify for alerts failed\" num_alerts=1 err=\"cxserver/email[0]: notify retry canceled due to unrecoverable error after 1 attempts: SMTP not configured, check your grafana.ini config file's [smtp] section\""
       }
     expected:
-      - __target_index: "ecs-test-1-1.11.0-N-weekly"
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
 #        '@timestamp': "2023-03-22T21:10:09.725Z"
         message: "Notify for alerts failed"
         error:
@@ -178,11 +157,3 @@ testcases:
           type: "grafana"
         ecs:
           version: "1.11.0"
-
-      - __target_index: "logstash-default-1-1.0.0-N-daily"
-        message: "logger=alertmanager org=1 t=2023-03-22T21:10:09.725088848Z level=error component=dispatcher msg=\"Notify for alerts failed\" num_alerts=1 err=\"cxserver/email[0]: notify retry canceled due to unrecoverable error after 1 attempts: SMTP not configured, check your grafana.ini config file's [smtp] section\""
-        facility: "user"
-        host: "grafana0000"
-        logsource: "grafana0000"
-        program: "grafana-server"
-        severity: "INFO"
