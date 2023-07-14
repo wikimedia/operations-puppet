@@ -77,6 +77,7 @@ class role::logging::mediawiki::udp2log(
         description => 'cleanup mediawiki logs',
         command     => '/usr/local/bin/mw-log-cleanup',
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
+        after       => 'logrotate.service',
     }
 
     file { '/usr/local/bin/mw-log-cleanup':
