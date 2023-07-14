@@ -10,7 +10,6 @@ profile::openstack::eqiad1::public_apis: true
 # All of the API endpoints are behind a HAProxy load balancer, running
 # haproxy_nodes (defined below).
 profile::openstack::eqiad1::openstack_controllers:
-  - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
 
@@ -28,7 +27,6 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 # These servers should not be accessed using hostnames in this list;
 # rather, that should happen via the keystone_api_fqdn defined above.
 profile::openstack::eqiad1::haproxy_nodes:
-  - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
 

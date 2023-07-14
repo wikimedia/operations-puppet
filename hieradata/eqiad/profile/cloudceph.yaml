@@ -12,7 +12,6 @@ profile::cloudceph::public_networks:
 profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 
 profile::cloudceph::openstack_controllers:
-  - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
 

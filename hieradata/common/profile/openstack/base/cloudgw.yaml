@@ -36,8 +36,8 @@ profile::openstack::base::cloudgw::dmz_cidr:
   - "208.80.153.107"
   # VMs --> gerrit.wikimedia.org
   - "208.80.154.151"
-  # VMs --> cloudcontrol1005.wikimedia.org
-  - "208.80.154.85"
+  # VMs --> openstack-next.eqiad1.wikimediacloud.org
+  - "185.15.56.161"
   # VMs --> cloudcontrol1006.wikimedia.org
   - "208.80.154.149"
   # VMs --> cloudcontrol1007.wikimedia.org

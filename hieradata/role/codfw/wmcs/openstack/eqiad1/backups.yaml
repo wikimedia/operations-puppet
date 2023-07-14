@@ -29,7 +29,6 @@ profile::openstack::eqiad1::version: zed
 profile::openstack::eqiad1::cinder::db_host: openstack.eqiad1.wikimediacloud.org
 profile::openstack::eqiad1::keystone_api_fqdn: openstack.eqiad1.wikimediacloud.org
 profile::openstack::eqiad1::openstack_controllers:
-  - cloudcontrol1005.wikimedia.org
   - cloudcontrol1006.wikimedia.org
   - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::rabbitmq_nodes:
