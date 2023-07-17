@@ -197,6 +197,8 @@ $private_tables = [
     'cu_log',
     'cu_log_event',
     'cu_private_event',
+    'cu_useragent_clienthints',
+    'cu_useragent_clienthints_map',
     'cur',
     'discussiontools_subscription',
     'echo_email_batch',
