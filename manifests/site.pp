@@ -1642,6 +1642,11 @@ node /^cloudbackup200[12]\.codfw\.wmnet$/ {
     role(wmcs::openstack::eqiad1::backups)
 }
 
+# Flink team-specific zookeeper cluster T341705
+node /^flink-zk100[123]\.eqiad\.wmnet$/ {
+    role(zookeeper::test)
+}
+
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
 # they are ganeti virtual machines. See T295584 for details.
 node /^cloudbackup100[12]-dev\.eqiad\.wmnet$/ {
