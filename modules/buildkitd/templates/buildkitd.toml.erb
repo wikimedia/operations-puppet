@@ -1,5 +1,12 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 
+<% if @allowed_frontends != :undef -%>
+allowed-frontends = <%= @allowed_frontends.to_json %>
+<% end -%>
+<% if @allowed_gateway_sources != :undef -%>
+allowed-gateway-sources = <%= @allowed_gateway_sources.to_json %>
+<% end -%>
+
 [worker.oci]
 enabled = true
 gc = true

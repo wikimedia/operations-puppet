@@ -41,6 +41,8 @@
 # @param enable_registry_proxy run a dedicated docker registry to act as a image proxy
 # @param registry_proxy_config config which is passed to docker registry
 # @param registry_proxy_image image to execute as the registry
+# @param buildkitd_allowed_frontends A list of frontends that buildkitd will allow. If undef, all are allowed
+# @param buildkitd_allowed_gateway_sources A list of gateway sources that buildkitd will allow. If undef, all are allowed
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
@@ -85,6 +87,8 @@ class profile::gitlab::runner (
     Boolean                                     $enable_registry_proxy = lookup('profile::gitlab::runner::enable_registry_proxy'),
     Hash                                        $registry_proxy_environment = lookup('profile::gitlab::runner::registry_proxy_environment'),
     String                                      $registry_proxy_image = lookup('profile::gitlab::runner::registry_proxy_image'),
+    Optional[Array[String]]                     $buildkitd_allowed_frontends = lookup('profile::gitlab::runner::buildkitd_allowed_frontends', {default_value => undef}),
+    Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources', {default_value => undef}),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -252,13 +256,15 @@ class profile::gitlab::runner (
     }
 
     class { 'buildkitd':
-        ensure        => $ensure_buildkitd,
-        network       => $docker_network,
-        image         => $buildkitd_image,
-        nameservers   => $buildkitd_nameservers,
-        environment   => $proxy_variables,
-        gckeepstorage => $buildkitd_gckeepstorage,
-        require       => Docker::Network[$docker_network],
+        ensure                  => $ensure_buildkitd,
+        network                 => $docker_network,
+        image                   => $buildkitd_image,
+        nameservers             => $buildkitd_nameservers,
+        environment             => $proxy_variables,
+        gckeepstorage           => $buildkitd_gckeepstorage,
+        allowed_frontends       => $buildkitd_allowed_frontends,
+        allowed_gateway_sources => $buildkitd_allowed_gateway_sources,
+        require                 => Docker::Network[$docker_network],
     }
 
     $ensure_clear_cache = $enable_clear_cache.bool2str('present','absent')

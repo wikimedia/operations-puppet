@@ -21,6 +21,8 @@ class buildkitd(
     Wmflib::POSIX::Variables $environment = {},
     Optional[String]         $gckeepstorage = undef,
     Integer                  $cni_pool_size = 20,
+    Optional[Array[String]]  $allowed_frontends = undef,
+    Optional[Array[String]]  $allowed_gateway_sources = undef,
 ){
     group { 'buildkitd':
         ensure => $ensure,
