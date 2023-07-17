@@ -48,7 +48,7 @@ profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 
 # Set the airflow package version that will be installed.
 # This parameter may be used to help test airflow package upgrades on the analytics_test instance.
-profile::airflow::airflow_version: '2.6.1-py3.10-20230619'
+profile::airflow::airflow_version: '2.6.3-py3.10-20230711'
 
 # Set up airflow instances.
 profile::airflow::instances:
