@@ -31,13 +31,10 @@
 # SOFTWARE.
 
 
-PROGPATH=`dirname $0`
-
 STATE_OK=0
 STATE_WARNING=1
 STATE_CRITICAL=2
 STATE_UNKNOWN=3
-STATE_DEPENDENT=4
 
 print_usage() {
     echo "
@@ -127,13 +124,13 @@ set_exit_status() {
   # that case.
   case $exitstatus
   in
-    $STATE_WARNING)
+    "$STATE_WARNING")
       # Only upgrade from warning to critical.
       if [ "$new_status" = "$STATE_CRITICAL" ]; then
         exitstatus=$new_status;
       fi
     ;;
-    $STATE_OK)
+    "$STATE_OK")
       # Always update state if current state is OK.
       exitstatus=$new_status;
     ;;
@@ -226,17 +223,17 @@ if [ ! "$dirs" ]; then
   exit $STATE_UNKNOWN
 fi
 
-if [ `echo "$warning" | grep [^0-9]` ] || [ ! "$warning" ]; then
+if  echo "$warning" | grep -q "[^0-9]" || [ ! "$warning" ]; then
   echo "Warning value must be a number."
   exit $STATE_UNKNOWN
 fi
 
-if [ `echo "$critical" | grep [^0-9]` ] || [ ! "$critical" ]; then
+if  echo "$critical" | grep -q "[^0-9]" || [ ! "$critical" ]; then
   echo "Critical value must be a number."
   exit $STATE_UNKNOWN
 fi
 
-if [ ! `echo "$time_unit" | grep "seconds\|minutes\|hours\|days"` ]; then
+if ! echo "$time_unit" | grep -q "seconds\|minutes\|hours\|days"; then
   echo "Time unit must be one of: seconds, minutes, hours, days."
   exit $STATE_UNKNOWN
 fi
@@ -270,19 +267,19 @@ esac
 DIR_COUNT=0
 OK_FILE_COUNT=0
 OUTPUT=
-CURRENT_TIME=`date +%s`
-OS_DISTRO=`uname -s`
+CURRENT_TIME=$(date +%s)
+OS_DISTRO=$(uname -s)
 
 # Loop through each provided directory.
 for dir in $dirs
 do
   check_file=
-  DIR_COUNT=$(($DIR_COUNT + 1))
+  DIR_COUNT=$((DIR_COUNT + 1))
 
   # Check if dir exists.
   full_path=${base_dir}${dir}
   if [ -d "$full_path" ]; then
-    file_list=`ls -t $full_path`
+    file_list=$(ls -t "$full_path")
     # Cycle through files, looking for a checkable file.
     for next_file in $file_list
     do
@@ -302,15 +299,15 @@ do
         # stat doesn't work the same on Linux and FreeBSD/Darwin, so
         # make adjustments here.
         if [ "$OS_DISTRO" = "Linux" ]; then
-          st_ctime=`stat --printf=%Y ${next_filepath}`
+          st_ctime=$(stat --printf=%Y "$next_filepath")
         else
-          eval $(stat -s ${next_filepath})
+          eval "$(stat -s "$next_filepath")"
         fi
 
-        FILE_AGE=$(($CURRENT_TIME - $st_ctime))
-        FILE_AGE_UNITS=$(($FILE_AGE / $multiplier))
-        MAX_WARN_AGE=$(($warning * $multiplier))
-        MAX_CRIT_AGE=$(($critical * $multiplier))
+        FILE_AGE=$((CURRENT_TIME - st_ctime))
+        FILE_AGE_UNITS=$((FILE_AGE / multiplier))
+        MAX_WARN_AGE=$((warning * multiplier))
+        MAX_CRIT_AGE=$((critical * multiplier))
         if [ $FILE_AGE -gt $MAX_CRIT_AGE ]; then
           OUTPUT="$OUTPUT ${dir}: ${FILE_AGE_UNITS}${abbreviation}"
           set_exit_status $STATE_CRITICAL
@@ -318,7 +315,7 @@ do
           OUTPUT="$OUTPUT ${dir}: ${FILE_AGE_UNITS}${abbreviation}"
           set_exit_status $STATE_WARNING
         else
-          OK_FILE_COUNT=$(($OK_FILE_COUNT + 1))
+          OK_FILE_COUNT=$((OK_FILE_COUNT + 1))
           if [ "$verbose" ]; then
             OUTPUT="$OUTPUT ${dir}: ${FILE_AGE_UNITS}${abbreviation}"
           fi
@@ -332,7 +329,7 @@ do
       OUTPUT="$OUTPUT ${dir}: No files"
       # If empty is an OK state, then increment the ok file count.
       if [ "$on_empty" = "$STATE_OK" ]; then
-        OK_FILE_COUNT=$(($OK_FILE_COUNT + 1))
+        OK_FILE_COUNT=$((OK_FILE_COUNT + 1))
       fi
     fi
   else
@@ -343,13 +340,13 @@ done
 
 case $exitstatus
 in
-  $STATE_CRITICAL)
+  "$STATE_CRITICAL")
     exit_message="CRITICAL";
   ;;
-  $STATE_WARNING)
+  "$STATE_WARNING")
     exit_message="WARNING";
   ;;
-  $STATE_OK)
+  "$STATE_OK")
     exit_message="OK";
   ;;
   *)
