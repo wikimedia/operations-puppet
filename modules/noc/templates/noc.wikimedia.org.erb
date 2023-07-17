@@ -33,8 +33,8 @@
 
     CustomLog /var/log/apache2/access.log wmf
 
-    # This path is populated by a systemd timer that mirrors data from etcd.
-    Alias /dbconfig /srv/dbconfig
+    # Backwards compatibility: allow reaching the db configuration jsons from the web.
+    RewriteRule ^/dbconfig/(.+)\.json$ /dbconfig.php [L]
 
     <Directory />
         AllowOverride None

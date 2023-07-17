@@ -18,15 +18,16 @@ class noc {
         content => template('noc/noc.wikimedia.org.erb'),
     }
 
+    # TODO: remove after absenting
     $fetch_dbconfig_user = 'mwdeploy'
     file { '/srv/dbconfig':
-        ensure => directory,
+        ensure => absent,
         owner  => $fetch_dbconfig_user,
         group  => $fetch_dbconfig_user,
         mode   => '0755',
     }
     file { '/srv/dbconfig/README':
-        ensure  => present,
+        ensure  => absent,
         content => join(
             [
                 'Database configs mirrored from etcd.',
@@ -38,11 +39,13 @@ class noc {
     $fetch_dbconfig_path = '/usr/local/sbin/fetch_dbconfig'
 
     file { $fetch_dbconfig_path:
+        ensure => absent,
         source => 'puppet:///modules/noc/fetch_dbconfig.sh',
         mode   => '0755',
     }
 
     systemd::timer::job { 'fetch_dbconfig':
+        ensure          => absent,
         description     => 'Fetch the dbconfig from etcd and store it locally',
         command         => $fetch_dbconfig_path,
         interval        => {
