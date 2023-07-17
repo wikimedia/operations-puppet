@@ -4,6 +4,17 @@
 # See prometheus::blackbox_exporter for an example usage.
 
 class prometheus::assemble_config {
+    # This class is used by pint, which can run with Thanos only
+    # (i.e. Prometheus is not installed)
+    if (!defined(File['/etc/prometheus'])) {
+        file { '/etc/prometheus':
+            ensure => directory,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+
     file { '/usr/local/bin/prometheus-assemble-config':
         ensure => present,
         mode   => '0555',
