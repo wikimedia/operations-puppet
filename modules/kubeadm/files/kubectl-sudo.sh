@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: MIT
 # This file is managed by Puppet (modules/kubeadm/files/kubectl-sudo.sh).
 #
