@@ -76,3 +76,6 @@ profile::base::certificates::trusted_certs: ~
 
 # don't configure benthos instances from prod hieradata
 profile::benthos::instances: {}
+
+# default to not require etcd for easier bootstraps
+profile::firewall::defs_from_etcd: false
