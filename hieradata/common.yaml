@@ -490,6 +490,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  titan:
+    description: "Titan hosts Thanos components"
+    sites:
+      eqiad: []
+      codfw: []
   kafka_test:
     description: "Kafka Test Cluster"
     sites:

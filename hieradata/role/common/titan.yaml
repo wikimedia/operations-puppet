@@ -1,0 +1,48 @@
+profile::contacts::role_contacts:
+  - 'Observability'
+
+cluster: titan
+profile::resolving::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - codfw.wmnet
+  - esams.wmnet
+  - ulsfo.wmnet
+  - eqsin.wmnet
+  - drmrs.wmnet
+profile::lvs::realserver::pools:
+  thanos-query:
+    services:
+      - thanos-query
+      - thanos-query-frontend
+      - apache2
+  thanos-web:
+    services:
+      - thanos-query
+      - thanos-query-frontend
+      - apache2
+
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::sni_support: 'yes'
+profile::tlsproxy::envoy::services:
+   - server_names:
+     - 'thanos-query'
+     - 'thanos-query.svc.eqiad.wmnet'
+     - 'thanos-query.svc.codfw.wmnet'
+     - 'thanos-query.discovery.wmnet'
+     - 'thanos.wikimedia.org'
+     port: 80
+     cert_name: 'thanos-query.discovery.wmnet'
+profile::tlsproxy::envoy::global_cert_name: 'thanos-fe-combined.discovery.wmnet'
+profile::tlsproxy::envoy::use_remote_address: true
+profile::tlsproxy::envoy::listen_ipv6: true
+# force to talk on local internal v4 address
+profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+# Let idle_timeout kick in instead for long-running/streaming requests. T337251
+profile::tlsproxy::envoy::upstream_response_timeout: 0.0
+
+# Hit object storage only for data older than max_time
+profile::thanos::store::max_time: '-15d'
+
+# Retention custom settings -- see also T311690
+profile::thanos::retention::raw: '54w'
