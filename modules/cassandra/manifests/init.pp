@@ -158,7 +158,7 @@ class cassandra (
     # We pin the version to a specific one.
     $package_version = $target_version ? {
         '2.2' => pick($version, '2.2.6-wmf5'),
-        '3.x' => pick($version, '3.11.13'),
+        '3.x' => pick($version, '3.11.14'),
         '4.x' => pick($version, '4.1.1'),
 
         # NOTE: When 'dev' is eventually adjusted to correspond to a v4 version,

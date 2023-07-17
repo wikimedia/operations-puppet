@@ -71,7 +71,7 @@ profile::cassandra::instances:
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
   logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
-  target_version: 'dev'
+  target_version: '3.x'
   default_instance_params:
     rpc_address: '%{::ipaddress}'
 # end cassandra
