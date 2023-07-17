@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
+# the active nfs share for sql/xml dumps should run these jobs
+profile::dumps::generation::server::exceptionchecker: present
+profile::dumps::generation::server::jobswatcher: present

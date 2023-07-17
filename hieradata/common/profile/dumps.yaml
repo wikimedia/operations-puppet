@@ -33,6 +33,8 @@ profile::dumps::internal:
     - dumpsdata1004.eqiad.wmnet
 # root of xml/sql dumps tree we want to rsync (public contents only)
 profile::dumps::xmldumpsdir: '/data/xmldatadumps/public'
+# root of private xml/sql dumps tree
+profile::dumps::xmldumpsprivatedir: '/data/xmldatadumps/private'
 # root of misc dumps we want to rsync
 profile::dumps::miscdumpsdir: '/data/otherdumps'
 # subdirectories of misc dumps we want to rsync to fallback generation servers

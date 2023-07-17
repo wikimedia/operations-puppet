@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# most nfs shares are not running systemd timer jobs to check for
+# exceptions nor to check for hung jobs for sql/xml dumps, so
+# make that default to false
+
+profile::dumps::generation::server::exceptionchecker: absent
+profile::dumps::generation::server::jobswatcher: absent

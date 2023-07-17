@@ -1,7 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
 class dumps::generation::server::jobswatcher(
     $dumpsbasedir = undef,
     $locksbasedir = undef,
     $user         = undef,
+    $ensure       = 'present',
 )  {
     file { '/usr/local/bin/job_watcher.sh':
         ensure => 'present',
@@ -12,7 +14,7 @@ class dumps::generation::server::jobswatcher(
     }
 
     systemd::timer::job { 'dump-jobs-watcher':
-        ensure                  => 'present',
+        ensure                  => $ensure,
         description             => 'Watch for stalled XML dumps',
         environment             => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         send_mail               => true,

@@ -10,4 +10,6 @@ class role::dumps::generation::server::xmlfallback {
     include ::profile::dumps::generation::server::dumpstatusfiles_sync
     include ::profile::dumps::generation::server::statsender
     include ::profile::dumps::generation::server::common
+    include ::profile::dumps::generation::server::jobswatcher
+    include ::profile::dumps::generation::server::exceptionchecker
 }

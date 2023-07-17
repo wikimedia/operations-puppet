@@ -1,6 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
 class dumps::generation::server::exceptionchecker(
     $dumpsbasedir = undef,
     $user         = undef,
+    $ensure       = 'present',
 )  {
     file { '/usr/local/bin/dumps_exception_checker.py':
         ensure => 'present',
@@ -11,7 +13,7 @@ class dumps::generation::server::exceptionchecker(
     }
 
     systemd::timer::job { 'dumps-exception-checker':
-        ensure                  => 'present',
+        ensure                  => $ensure,
         description             => 'Regular jobs to check for exceptions',
         user                    => $user,
         send_mail               => true,

@@ -8,4 +8,6 @@ class role::dumps::generation::server::misccrons {
     include ::profile::dumps::generation::server::rsync_firewall
     include ::profile::dumps::rsyncer_peer
     include ::profile::dumps::generation::server::cleanup
+    include ::profile::dumps::generation::server::jobswatcher
+    include ::profile::dumps::generation::server::exceptionchecker
 }
