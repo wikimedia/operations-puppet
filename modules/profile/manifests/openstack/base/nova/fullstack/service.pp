@@ -20,7 +20,7 @@ class profile::openstack::base::nova::fullstack::service(
     # We only want this running in one place; just pick the first
     #  host in $openstack_controllers.
     class { '::openstack::nova::fullstack::service':
-        active       => ($::facts['networking']['hostname'] == $openstack_controllers[2].split('\.')[0]),
+        active       => ($::facts['networking']['hostname'] == $openstack_controllers[1].split('\.')[0]),
         password     => $osstackcanary_pass,
         region       => $region,
         network      => $network,

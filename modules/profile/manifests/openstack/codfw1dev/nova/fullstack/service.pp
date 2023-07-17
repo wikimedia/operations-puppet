@@ -22,7 +22,7 @@ class profile::openstack::codfw1dev::nova::fullstack::service(
 
     # We only want this running in one place; just pick the first
     #  option in the list.
-    if ($::facts['networking']['hostname'] == $openstack_controllers[2].split('\.')[0]) {
+    if ($::facts['networking']['hostname'] == $openstack_controllers[1].split('\.')[0]) {
         class {'::openstack::nova::fullstack::monitor':}
     }
 }
