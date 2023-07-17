@@ -16,9 +16,6 @@
 # [*do_ipv6*]
 #  (bool) Whether to enable IPv6 for outgoing queries. Disabled by default in pdns-recursor.
 #
-# [*install_from_component*]
-#  (bool) Whether the pdns-recursor package should be installed from component
-#
 # [*restart_service*]
 #  (bool) Specifies if the pdns-recursor service should be restarted when the config file changes
 
@@ -49,7 +46,6 @@ class dnsrecursor (
     Optional[Enum['always', 'padded-queries-only']]                 $edns_padding_mode        = undef,
     Optional[Stdlib::IP::Address]                                   $edns_padding_from        = undef,
     Boolean                                                         $do_ipv6                  = false,
-    Boolean                                                         $install_from_component   = false, # for Wikidough, enable pdns-recursor from component
     Boolean                                                         $enable_webserver         = false,
     Optional[Stdlib::Port]                                          $webserver_port           = 8082,
     Boolean                                                         $restart_service          = true,
