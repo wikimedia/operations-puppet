@@ -3141,13 +3141,13 @@ service::catalog:
   # Releases is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below. The IPs are the ones of the VMs per DC
   releases:
-    description: MediaWiki, Parsoid, MobileApps and other Wikimedia realease files (https://releases.wikimedia.org)
+    description: MediaWiki, Parsoid, MobileApps and other Wikimedia release files (https://releases.wikimedia.org)
     encryption: true
     ip:
       codfw:
-        default: 10.192.16.180
+        default: 10.192.16.72
       eqiad:
-        default: 10.64.48.17
+        default: 10.64.48.34
     page: false
     probes:
       - type: http

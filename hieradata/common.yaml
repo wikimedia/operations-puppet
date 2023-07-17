@@ -1113,9 +1113,7 @@ netmon_servers_failover:
 
 releases_server: releases1003.eqiad.wmnet
 releases_servers_failover:
-    - 'releases2002.codfw.wmnet'
     - 'releases2003.codfw.wmnet'
-    - 'releases1002.eqiad.wmnet'
 
 # Defines which Phabricator server is the active
 # one to open needed firewall holes and decide where

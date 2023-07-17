@@ -3,8 +3,6 @@ profile::docker_registry_ha::registry::image_builders:
   - '208.80.154.132' # contint1002
   - '208.80.153.15' # contint2001
   - '208.80.153.39' # contint2002
-  - '10.64.48.17' # releases1002.eqiad.wmnet
-  - '10.192.16.180' # releases2002.codfw.wmnet
   - '10.64.48.34' # releases1003.eqiad.wmnet
   - '10.192.16.72' # releases2003.codfw.wmnet
 profile::docker_registry_ha::registry::jwt_allowed_ips:
