@@ -10,4 +10,5 @@ profile::spicerack::netbox_config_data:
   api_token_rw: "%{alias('profile::netbox::rw_token')}"
 profile::spicerack::peeringdb_config_data: {}
 profile::spicerack::elasticsearch_config_data: {}
+profile::spicerack::mysql_config_data: {}
 profile::spicerack::configure_kafka: false

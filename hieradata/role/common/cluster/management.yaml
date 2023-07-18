@@ -39,3 +39,7 @@ profile::spicerack::elasticsearch_config_data:
   logging:
     logging-eqiad: 'http://logstash1010.eqiad.wmnet:9200'
     logging-codfw: 'http://logstash2001.codfw.wmnet:9200'
+profile::spicerack::mysql_config_data:
+  replication_user: repl
+  # replication_password: overiden in the private repo
+

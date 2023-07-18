@@ -11,6 +11,7 @@
 # @param netbox_config_data netbox config data
 # @param peeringdb_config_data peeringdb config data
 # @param elasticsearch_config_data elastic config data
+# @param mysql_config_data MySQL/MariaDB config data
 # @param configure_redis if true configure redis
 # @param configure_kafka if true configure kafka
 class profile::spicerack (
@@ -23,6 +24,7 @@ class profile::spicerack (
     Hash                           $netbox_config_data        = lookup('profile::spicerack::netbox_config_data'),
     Hash                           $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
     Hash                           $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
+    Hash                           $mysql_config_data         = lookup('profile::spicerack::mysql_config_data'),
     Hash                           $authdns_config_data       = lookup('authdns_servers'),
     Boolean                        $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
 
@@ -69,6 +71,7 @@ class profile::spicerack (
         'kafka'         => { 'config.yaml'  => $kafka_config_data },
         'netbox'        => { 'config.yaml'  => $netbox_config_data },
         'peeringdb'     => { 'config.yaml'  => $peeringdb_config_data },
+        'mysql'         => { 'config.yaml'  => $mysql_config_data },
         'service'       => { 'service.yaml' => wmflib::service::fetch() },
         'discovery'     => { 'authdns.yaml' => $authdns_config_data },
     }.filter |$module, $config| { !$config.values[0].empty }
