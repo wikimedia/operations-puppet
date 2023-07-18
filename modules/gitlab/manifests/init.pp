@@ -6,6 +6,7 @@
 # @param omniauth_providers hash of provideres to configure.  the key is the label
 # @param auto_sign_in_with automatically redirect to this provider
 # @param omniauth_identifier name of the omniauth client identifier
+# @omniauth_auto_link_saml_user automatically link SAML users with existing GitLab users if their email addresses match
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
@@ -56,6 +57,7 @@ class gitlab (
     Optional[Gitlab::Omniauth_providers]    $auto_sign_in_with  = undef,
     Boolean           $letsencrypt_enable                       = false,
     String            $omniauth_identifier                      = 'gitlab_oidc',
+    Boolean           $omniauth_auto_link_saml_user             = true,
 ) {
     $cas_defaults = {
         'login_url'            => '/login',

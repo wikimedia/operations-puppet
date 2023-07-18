@@ -218,5 +218,8 @@ gitlab_rails['omniauth_cas3_session_duration'] = <%= @cas_session_duration %>
 
 gitlab_rails['omniauth_providers'] = <%= _to_ruby(@_omniauth_providers) %>
 
+gitlab_rails['omniauth_auto_link_user'] = <%= _to_ruby(@configured_providers) %>
+gitlab_rails['omniauth_auto_link_saml_user'] = <%= @omniauth_auto_link_saml_user %>
+
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
