@@ -3,13 +3,19 @@
       Stdlib::Datasize $java_max_mem,
       Stdlib::Unixpath $config_d_dir,
       Stdlib::Unixpath $bootstap_config_dir,
+      Boolean          $enable_jmx,
+      Stdlib::Port     $jmx_port,
 | -%>
 ###########################################
 # Init settings for puppetserver
 ###########################################
 
 # Modify this if you'd like to change the memory allocation, enable JMX, etc
-JAVA_ARGS="-Xms<%= $java_max_mem %> -Xmx<%= $java_max_mem %> -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
+<%- $jmx_ops = $enable_jmx.bool2str(
+  "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:${jmx_port}",
+  ""
+) -%>
+JAVA_ARGS="-Xms<%= $java_max_mem %> -Xmx<%= $java_max_mem %> -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger <%= $jmx_ops %>"
 
 # Modify this as you would JAVA_ARGS but for non-service related subcommands
 JAVA_ARGS_CLI="${JAVA_ARGS_CLI:-}"

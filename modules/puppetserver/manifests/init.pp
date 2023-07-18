@@ -15,6 +15,8 @@
 # @param enc_path path to an ENC script
 # @param listen_host host to bind webserver socket
 # @param autosign if true autosign agent certs
+# @param enable_jmx add the jmx java agent parameter
+# @param jmx_port the port for jmx to bind to
 # @param separate_ssldir used when the puppetserver is managed by a different puppet server
 # @param g10k_sources a list of g10k sources to configure
 class puppetserver (
@@ -35,6 +37,8 @@ class puppetserver (
     Stdlib::Host                             $listen_host               = $facts['networking']['ip'],
     Boolean                                  $autosign                  = false,
     Boolean                                  $separate_ssldir           = true,
+    Boolean                                  $enable_jmx                = false,
+    Stdlib::Port                             $jmx_port                  = 8141,
     Hash[String, Puppetmaster::R10k::Source] $g10k_sources              = {},
 ) {
     systemd::mask { 'puppetserver.service':
@@ -142,6 +146,8 @@ class puppetserver (
         'java_max_mem'        => $java_max_mem,
         'config_d_dir'        => $config_d_dir,
         'bootstap_config_dir' => $bootstap_config_dir,
+        'enable_jmx'          => $enable_jmx,
+        'jmx_port'            => $jmx_port,
     }
     $hiera_config = {
         'hierarchy' => $hierarchy,

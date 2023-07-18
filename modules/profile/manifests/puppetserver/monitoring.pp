@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary add monitoring for puppetserver
 class profile::puppetserver::monitoring {
-
     include profile::puppetserver
     profile::prometheus::jmx_exporter { 'puppetserver':
         hostname    => $facts['networking']['hostname'],

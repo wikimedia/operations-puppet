@@ -6,6 +6,7 @@
 # @param code_dir the location where puppet looks for code
 # @param reports list of reports to configure
 # @param puppetdb_urls if present puppetdb will be configured using these urls
+# @param puppetdb_submit_only_urls if present puppetdb will be configured to also use these urls for writes
 # @param enc_path path to an enc to use
 # @param enc_source puppet file source for enc
 # @param max_active_instances number of jruby instances to start, defaults to
@@ -20,6 +21,7 @@
 # @param ca_crl location of the intermediate crl content
 # @param ca_private_key_secret the content of the W
 # @param git_pull whether to pull puppet code from git, defaults to true
+# @param enable_monitoring
 class profile::puppetserver (
     Stdlib::Fqdn                   $server_id                 = lookup('profile::puppetserver::server_id'),
     Stdlib::Unixpath               $code_dir                  = lookup('profile::puppetserver::code_dir'),
@@ -39,6 +41,7 @@ class profile::puppetserver (
     Boolean                        $separate_ssldir           = lookup('profile::puppetserver::separate_ssldir'),
     Boolean                        $enable_ca                 = lookup('profile::puppetserver::enable_ca'),
     Boolean                        $intermediate_ca           = lookup('profile::puppetserver::intermediate_ca'),
+    Boolean                        $enable_monitoring         = lookup('profile::puppetserver::enable_monitoring'),
     Optional[Stdlib::Filesource]   $ca_public_key             = lookup('profile::puppetserver::ca_public_key'),
     Optional[Stdlib::Filesource]   $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
     Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret')
@@ -78,14 +81,18 @@ class profile::puppetserver (
 
     $exluded_args = [
         'enc_source', 'git_pull', 'enable_ca', 'intermediate_ca',
-        'ca_public_key', 'ca_crl', 'ca_private_key_secret',
+        'ca_public_key', 'ca_crl', 'ca_private_key_secret', 'enable_monitoring',
     ]
     class { 'puppetserver':
         *            => wmflib::resource::filter_params($exluded_args),
         g10k_sources => $g10k_sources,
+        enable_jmx   => $enable_monitoring,
     }
     $config_dir = $puppetserver::puppetserver_config_dir
     $ca_private_key = $ca_private_key_secret.then |$x| { Sensitive(secret($x)) }
+    if $enable_monitoring {
+        include profile::puppetserver::monitoring
+    }
     class { 'puppetserver::ca':
         enable          => $enable_ca,
         intermediate_ca => $intermediate_ca,
