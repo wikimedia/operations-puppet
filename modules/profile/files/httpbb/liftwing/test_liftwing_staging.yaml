@@ -96,21 +96,21 @@ https://viwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
-https://revertrisk.experimental.wikimedia.org:
-- path: /v1/models/revertrisk:predict
+https://revertrisk-language-agnostic.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-language-agnostic:predict
   json_body:
     rev_id: 21774755
     lang: en
   assert_status: 200
-  assert_body_contains: score
+  assert_body_contains: probabilities
   method: POST
-https://revertrisk-multilingual.experimental.wikimedia.org:
+https://revertrisk-multilingual.revertrisk.wikimedia.org:
 - path: /v1/models/revertrisk-multilingual:predict
   json_body:
     rev_id: 21774755
     lang: en
   assert_status: 200
-  assert_body_contains: score
+  assert_body_contains: probabilities
   method: POST
 https://outlink-topic-model.articletopic-outlink.wikimedia.org:
 - path: /v1/models/outlink-topic-model:predict
@@ -119,13 +119,4 @@ https://outlink-topic-model.articletopic-outlink.wikimedia.org:
     page_title: "Victoria_Jubilee_Government_High_School"
   assert_status: 200
   assert_body_contains: score
-  method: POST
-https://nsfw-model.experimental.wikimedia.org:
-- path: /v1/models/nsfw-model:predict
-  json_body:
-    instances:
-    - image:
-        b64: "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"
-  assert_status: 200
-  assert_body_contains: prob_nsfw
   method: POST

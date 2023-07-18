@@ -54,10 +54,24 @@ https://ruwiki-articlequality.revscoring-articlequality.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
+https://simplewiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/simplewiki-articlequality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
 https://svwiki-articlequality.revscoring-articlequality.wikimedia.org:
 - path: /v1/models/svwiki-articlequality:predict
   json_body:
     rev_id: 51706742
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/testwiki-articlequality:predict
+  json_body:
+    rev_id: 1
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -120,7 +134,7 @@ https://huwiki-articletopic.revscoring-articletopic.wikimedia.org:
 https://hywiki-articletopic.revscoring-articletopic.wikimedia.org:
 - path: /v1/models/hywiki-articletopic:predict
   json_body:
-    rev_id: 8575039
+    rev_id: 12345
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -170,6 +184,20 @@ https://ptwiki-draftquality.revscoring-draftquality.wikimedia.org:
 - path: /v1/models/ptwiki-draftquality:predict
   json_body:
     rev_id: 65009367
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/simplewiki-draftquality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/testwiki-draftquality:predict
+  json_body:
+    rev_id: 1
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -373,6 +401,13 @@ https://srwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
 - path: /v1/models/srwiki-damaging:predict
   json_body:
     rev_id: 25467687
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/simplewiki-damaging:predict
+  json_body:
+    rev_id: 21
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -614,6 +649,13 @@ https://srwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
+https://simplewiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/simplewiki-goodfaith:predict
+  json_body:
+    rev_id: 21
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
 https://svwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
 - path: /v1/models/svwiki-goodfaith:predict
   json_body:
@@ -726,4 +768,20 @@ https://outlink-topic-model.articletopic-outlink.wikimedia.org:
     page_title: "Victoria_Jubilee_Government_High_School"
   assert_status: 200
   assert_body_contains: score
+  method: POST
+https://revertrisk-language-agnostic.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-language-agnostic:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: probabilities
+  method: POST
+https://revertrisk-multilingual.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-multilingual:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: probabilities
   method: POST
