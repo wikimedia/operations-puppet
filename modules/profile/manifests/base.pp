@@ -85,7 +85,7 @@ class profile::base (
         include profile::prometheus::cadvisor
     # percentage-based rollout for cadvisor in eqiad/codfw
     # https://phabricator.wikimedia.org/T108027
-    } elsif fqdn_rand(100, 'cadvisor-rollout') <= 45 {
+    } elsif fqdn_rand(100, 'cadvisor-rollout') <= 80 {
         include profile::prometheus::cadvisor
     }
 
