@@ -9,6 +9,6 @@ class profile::alerts::deploy::prometheus {
     }
 
     class { 'alerts::deploy::prometheus':
-        instances => ['analytics', 'ext', 'ops', 'services'] + $k8s_prometheus_names
+        instances => ['analytics', 'ext', 'ops', 'services', 'cloud'] + $k8s_prometheus_names
     }
 }

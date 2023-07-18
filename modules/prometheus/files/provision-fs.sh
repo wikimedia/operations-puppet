@@ -14,12 +14,12 @@ create_fs() {
   lv="prometheus-${instance}"
   dev=/dev/$vg/$lv
 
-  if [ ! -e $dev ]; then
-    lvcreate --size $size --name $lv $vg
+  if [ ! -e "$dev" ]; then
+    lvcreate --size "$size" --name "$lv" "$vg"
   fi
 
-  if ! blkid --match-token TYPE=ext4 $dev ; then
-    mkfs.ext4 -m 0 $dev
+  if ! blkid --match-token TYPE=ext4 "$dev" ; then
+    mkfs.ext4 -m 0 "$dev"
   fi
 }
 
@@ -31,14 +31,14 @@ mount_fs() {
   lv="prometheus-${instance}"
   dev=/dev/$vg/$lv
 
-  install -d -o prometheus -m 750 $mountpoint
+  install -d -o prometheus -m 750 "$mountpoint"
 
   if ! grep -q "^$dev $mountpoint " /etc/fstab ; then
     echo "$dev $mountpoint  ext4  defaults  0 0" >> /etc/fstab
   fi
 
-  if ! findmnt $mountpoint; then
-    mount $mountpoint
+  if ! findmnt "$mountpoint"; then
+    mount "$mountpoint"
   fi
 }
 
@@ -46,9 +46,11 @@ provision() {
   local instance=$1
   local size=$2
 
-  create_fs $instance $size
-  mount_fs $instance
+  create_fs "$instance" "$size"
+  mount_fs "$instance"
 }
+
+site=$(cat /etc/wikimedia-cluster 2>/dev/null || echo "")
 
 provision analytics 10g
 provision ext 10g
@@ -59,3 +61,4 @@ provision k8s-staging 50g
 provision k8s-aux 50g
 provision ops 1.7t
 provision services 150g
+[ "$site" = "eqiad" ] && provision cloud 100g
