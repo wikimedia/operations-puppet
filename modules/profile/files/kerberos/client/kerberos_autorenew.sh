@@ -10,7 +10,7 @@ autorenew_is_active() {
 }
 
 create_autorenew_timer() {
-    printf "\nCreating automatic Kerberos ticket renewal service"
+    printf "\nCreating automatic Kerberos ticket renewal service\n"
     /usr/bin/systemd-run --quiet --user --unit "krenew-${USER}.timer" \
         --on-calendar=daily \
         --description="Kerberos ticket renewal timer for for ${USER}" \
@@ -22,10 +22,10 @@ create_autorenew_timer() {
 if /usr/bin/klist -s; then
     printf '\nYou have a valid Kerberos ticket.'
     if autorenew_is_active; then
-      printf 'Your automatic Kerberos ticket renewal service is also active on this host\n'
+      printf 'Your automatic Kerberos ticket renewal service is also active on this host\n\n'
     else
      create_autorenew_timer
     fi
 else
-    printf '\nYou do not have a valid Kerberos ticket in the credential cache, remember to kinit.'
+    printf '\nYou do not have a valid Kerberos ticket in the credential cache, remember to kinit.\n'
 fi
