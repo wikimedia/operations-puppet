@@ -322,6 +322,55 @@ profile::kubernetes::deployment_server::general:
         nutcracker: nutcracker:0.0.4-20211010
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
       rsyslogd: rsyslog:8.2102.0-2
+  eqiad:
+    certmanager: &certmanager_eqiad
+      domains:
+        - discovery.wmnet
+        - svc.eqiad.wmnet
+  codfw:
+    certmanager: &certmanager_codfw
+      domains:
+        - discovery.wmnet
+        - svc.codfw.wmnet
+  staging-eqiad:
+    certmanager: &wikikube_staging_certmanager
+      # We have a wildcard DNS entry for *.k8s-staging.discovery.wmnet
+      # used for ingress, but we can reuse that for NodePort services as well.
+      domains:
+        - k8s-staging.discovery.wmnet
+      # Staging used a generic cergen cert with the following SAN
+      # so we keep them for backwards compatibility.
+      extraFQDNs:
+        - staging.svc.eqiad.wmnet
+  staging-codfw:
+    certmanager:
+      <<: *wikikube_staging_certmanager
+      extraFQDNs:
+        - staging.svc.codfw.wmnet
+  ml-serve-eqiad:
+    certmanager:
+      <<: *certmanager_eqiad
+  ml-serve-codfw:
+    certmanager:
+      <<: *certmanager_codfw
+  ml-staging-codfw:
+    certmanager:
+      # We have a wildcard DNS entry for *.k8s-ml-staging.discovery.wmnet
+      # used for ingress, but we can reuse that for NodePort services as well.
+      domains:
+        - k8s-ml-staging.discovery.wmnet
+      # Staging used a generic cergen cert with the following SAN
+      # so we keep them for backwards compatibility.
+      extraFQDNs:
+        - ml-staging.svc.eqiad.wmnet
+        - ml-staging.svc.eqiad.wmnet
+  dse-k8s-eqiad:
+    certmanager:
+      <<: *certmanager_eqiad
+  aux-k8s-eqiad:
+    certmanager:
+      <<: *certmanager_eqiad
+
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
