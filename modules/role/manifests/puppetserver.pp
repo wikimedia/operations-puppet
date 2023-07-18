@@ -2,7 +2,7 @@
 # @summary puppetserver rol
 class role::puppetserver {
     system::role { 'puppetserver':
-        description => 'Puppetserver'
+        description => 'Puppetserver',
     }
 
     include profile::base::production
@@ -10,6 +10,7 @@ class role::puppetserver {
     include profile::puppetserver
     include profile::puppetserver::git::private
     include profile::puppetserver::scripts
+    include profile::puppetserver::monitoring
     # conftool
     include profile::conftool::master
     include profile::conftool::requestctl_client

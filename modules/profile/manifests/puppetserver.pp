@@ -84,6 +84,7 @@ class profile::puppetserver (
         *            => wmflib::resource::filter_params($exluded_args),
         g10k_sources => $g10k_sources,
     }
+    $config_dir = $puppetserver::puppetserver_config_dir
     $ca_private_key = $ca_private_key_secret.then |$x| { Sensitive(secret($x)) }
     class { 'puppetserver::ca':
         enable          => $enable_ca,

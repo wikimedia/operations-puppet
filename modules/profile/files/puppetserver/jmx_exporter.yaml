@@ -1,0 +1,211 @@
+# SPDX-License-Identifier: Apache-2.0
+# from https://github.com/matejzero/puppet_server_jmx_exporter/blob/master/jmx_exporter.yaml
+---
+  lowercaseOutputName: true
+  lowercaseOutputLabelNames: true
+  blacklistObjectNames:
+    - puppetserver:name=puppetlabs.puppet(\d).compiler.evaluate_resource.*
+    - puppetserver:name=puppetlabs.puppet(\d).compiler.compile.*
+    - puppetserver:name=puppetlabs.puppet(\d).puppetdb.catalog.*
+    - puppetserver:name=puppetlabs.puppet(\d).puppetdb.facts.*
+  whitelistObjectNames:
+    - puppetserver:name=puppetlabs.puppet(\d).compiler
+    - puppetserver:name=puppetlabs.puppet(\d).compiler.*
+    - puppetserver:name=puppetlabs.puppet(\d).functions
+    # - puppetserver:name=puppetlabs.puppet(\d).puppetdb.*
+    - puppetserver:name=puppetlabs.puppet(\d).memory.*
+    - puppetserver:name=puppetlabs.puppet(\d).jruby.*
+    - puppetserver:name=puppetlabs.puppet(\d).http.*
+    - puppetserver:name=puppetlabs.puppet(\d).http-client.experimental.with-metric-id.puppetdb.*
+    - puppetserver:name=puppetlabs.puppet(\d).uptime
+
+  rules:
+    # Metrics from https://puppet.com/docs/puppetserver/latest/puppet_server_metrics.html#enabling-puppet-servers-graphite-support
+
+    ## Compiler metrics
+    # Disabled, since it reports too low values
+    # - pattern: 'puppetserver<name=puppetlabs.puppet(\d).compiler><>(Max|Min|Mean$|StdDev|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+    #   name: puppetserver_compiler_seconds_sum
+    #   type: GAUGE
+    #   help: "Total time spent compiling catalogs. This metric represents the sum of the compiler.compile, static_compile, find_facts, and find_node fields."
+    #   valueFactor: 0.001
+    #   labels:
+    #     measurement: "$1"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).compiler.([\w-]+)><>(Max|Min|Mean$|StdDev|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_compiler_seconds
+      type: GAUGE
+      help: "Time spent parsing/retrieving/compiling catalogs."
+      valueFactor: 0.001
+      labels:
+        function: "$2"
+        measurement: "$3"
+
+    ## Function metrics
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).functions><>(Max|Min|Mean$|StdDev|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_functions_seconds
+      type: GAUGE
+      help: "The amount of time during catalog compilation spent in function calls."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+
+    ## HTTP metrics
+    # ## Not working, doesn't export metrics with * in them
+    # # - pattern: 'puppetserver<name="puppetlabs.puppet(\d).http.(puppet.+requests)"><>(Max|Min|Mean$|StdDev|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+    # #   name: puppetserver_http_requests_duration_seconds_a
+    # #   type: GAUGE
+    # #   help: "The time spent handling requests."
+    # #   valueFactor: 0.001
+    # #   labels:
+    # #     endpoint: "$1"
+    # #     measurement: "$2"
+    # - pattern: 'puppetserver<name=puppetlabs.puppet(\d).http.(puppet.+requests)><>(Max|Min|Mean$|StdDev|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+    #   name: puppetserver_http_requests_duration_seconds
+    #   type: GAUGE
+    #   help: "The time spent handling requests."
+    #   valueFactor: 0.001
+    #   labels:
+    #     endpoint: "$1"
+    #     measurement: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).http.total-requests><>(Max|Min|Mean$|StdDev|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_http_requests_duration_seconds
+      type: GAUGE
+      help: "The time spent handling requests."
+      valueFactor: 0.001
+      labels:
+        endpoint: "total"
+        measurement: "$2"
+
+    ## JRuby metrics
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.borrow-timer><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_jruby_borrow_timer
+      type: GAUGE
+      help: "The time spent with a borrowed JRuby."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.free-jrubies-histo><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_jruby_free_jrubies_histo
+      type: GAUGE
+      help: "A histogram of free JRubies over time. This metric’s average value should greater than 1; if it isn’t, more JRubies or another compile master might be needed to keep up with requests."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.lock-held-timer><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_jruby_lock_held_timer
+      type: GAUGE
+      help: "The time spent holding the JRuby lock."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.lock-wait-timer><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_jruby_lock_wait_timer
+      type: GAUGE
+      help: "The time spent waiting to acquire the JRuby lock."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.requested-jrubies-histo><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_jruby_requested_jrubies_histo
+      type: GAUGE
+      help: "A histogram of requested JRubies over time. This increases as the number of free JRubies, or the free-jrubies-histo metric, decreases, which can suggest that the server’s capacity is being depleted."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.wait-timer><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_jruby_wait_timer
+      type: GAUGE
+      help: "The time spent waiting to borrow a JRuby."
+      valueFactor: 0.001
+      labels:
+        measurement: "$2"
+
+    # PuppetDB metrics
+    # puppetserver_puppetdb_duration_seconds{function="facts",measurement="Mean",} 0.08795445645602212
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).http-client.experimental.with-metric-id.puppetdb.(.+).full-response><>(Max|Min|Mean$|StdDev|Count|50thPercentile|75thPercentile|95thPercentile|99thPercentile)'
+      name: puppetserver_puppetdb_duration_seconds
+      type: GAUGE
+      help: "Time that Puppet Server spends sending or receiving data from PuppetDB."
+      valueFactor: 0.001
+      labels:
+        function: "$2"
+        measurement: "$3"
+
+    # Counters only
+
+    ## HTTP metrics
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).http.active-requests><>Count'
+      name: puppetserver_http_requests_active
+      type: GAUGE
+      help: "The number of active HTTP requests."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).http.total-requests><>Count'
+      name: puppetserver_http_requests_total
+      type: COUNTER
+      help: "The number of active HTTP requests."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).http.(puppet.+percentage)><>Value'
+      name: puppetserver_http_requests_percentage
+      type: GAUGE
+      help: "Percentage of each HTTP API endpoint’s share of total handled HTTP requests."
+      labels:
+        endpoint: "$2"
+
+    ## JRuby metrics
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.borrow-count><>Count'
+      name: puppetserver_jruby_borrow_count
+      type: COUNTER
+      help: "The number of successfully borrowed JRubies."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.borrow-retry-count><>Count'
+      name: puppetserver_jruby_borrow_retry_count
+      type: COUNTER
+      help: "The number of attempts to borrow a JRuby that must be retried."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.borrow-timeout-count><>Count'
+      name: puppetserver_jruby_borrow_timeout_count
+      type: COUNTER
+      help: "The number of attempts to borrow a JRuby that resulted in a timeout."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.request-count><>Count'
+      name: puppetserver_jruby_request_count
+      type: COUNTER
+      help: "The number of requested JRubies."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.return-count><>Count'
+      name: puppetserver_jruby_return_count
+      type: COUNTER
+      help: "The number of JRubies successfully returned to the pool."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.num-free-jrubies><>Value'
+      name: puppetserver_jruby_num_free_jrubies
+      type: COUNTER
+      help: "The number of free JRuby instances. If this number is often 0, more requests are coming in than the server has available JRuby instances. To alleviate this, increase the number of JRuby instances on the Server or add additional compile masters."
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).jruby.num-jrubies><>Value'
+      name: puppetserver_jruby_num_jrubies
+      type: COUNTER
+      help: "The total number of JRuby instances on the server, governed by the max-active-instances setting. See Tuning JRuby on Puppet Server for details."
+
+    ## Other metrics
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).uptime><>Value'
+      name: puppetserver_uptime
+      type: COUNTER
+      help: "Puppet Server process’s uptime."
+
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).memory.([\w-]+).used><>Value'
+      name: puppetserver_memory_bytes_used
+      type: GAUGE
+      help: "Used bytes of a given JVM memory area."
+      labels:
+        area: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).memory.([\w-]+).committed><>Value'
+      name: puppetserver_memory_bytes_committed
+      type: GAUGE
+      help: "Committed bytes of memory."
+      labels:
+        area: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).memory.([\w-]+).init><>Value'
+      name: puppetserver_memory_bytes_init
+      type: GAUGE
+      help: "Initialized bytes of memory."
+      labels:
+        area: "$2"
+    - pattern: 'puppetserver<name=puppetlabs.puppet(\d).memory.([\w-]+).max><>Value'
+      name: puppetserver_memory_bytes_max
+      type: GAUGE
+      help: "Maximum amount of memory that can be used."
+      labels:
+        area: "$2"
