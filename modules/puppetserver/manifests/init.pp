@@ -141,6 +141,7 @@ class puppetserver (
         'code_dir'             => $code_dir,
         'max_active_instances' => $max_active_instances,
     }
+    $jmx_config = "${puppetserver_config_dir}/jmx_exporter.yaml"
     $environment_file_params = {
         'java_start_mem'      => $java_start_mem,
         'java_max_mem'        => $java_max_mem,
@@ -148,7 +149,7 @@ class puppetserver (
         'bootstap_config_dir' => $bootstap_config_dir,
         'enable_jmx'          => $enable_jmx,
         'jmx_port'            => $jmx_port,
-        'jmx_config'          => "${puppetserver_config_dir}/jmx_exporter.yaml",
+        'jmx_config'          => $jmx_config,
     }
     $hiera_config = {
         'hierarchy' => $hierarchy,
@@ -186,9 +187,24 @@ class puppetserver (
         ensure  => $g10k_ensure,
         sources => $g10k_sources,
     }
+    if $enable_jmx {
+        ensure_packages(['prometheus-jmx-exporter'])
+        file { $jmx_config:
+            ensure => file,
+            source => 'puppet:///modules/puppetserver/jmx_exporter.yaml',
+        }
+        $service_require = [File[$ssl_dir], Package['prometheus-jmx-exporter']]
+        # This is quite specific to the WMF systems it might be better top move this to some profile
+        prometheus::jmx_exporter_instance { 'puppetserver':
+            hostname => $facts['networking']['hostname'],
+            port     => $jmx_port,
+        }
+    } else {
+        $service_require = File[$ssl_dir]
+    }
     service { 'puppetserver':
         ensure  => stdlib::ensure($ensure, 'service'),
         enable  => true,
-        require => File[$ssl_dir],
+        require => $service_require,
     }
 }

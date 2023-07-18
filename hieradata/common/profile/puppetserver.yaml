@@ -15,7 +15,7 @@ profile::puppetserver::ca_public_key: ~
 profile::puppetserver::ca_crl: ~
 profile::puppetserver::ca_private_key_secret: ~
 profile::puppetserver::separate_ssldir: false
-profile::puppetserver::enable_monitoring: true
+profile::puppetserver::enable_jmx: true
 # ni nthe private repo
 # profile::puppetserver::ca_private_key
 profile::puppetserver::hierarchy:
