@@ -148,6 +148,7 @@ class puppetserver (
         'bootstap_config_dir' => $bootstap_config_dir,
         'enable_jmx'          => $enable_jmx,
         'jmx_port'            => $jmx_port,
+        'jmx_config'          => "${puppetserver_config_dir}/jmx_exporter.yaml",
     }
     $hiera_config = {
         'hierarchy' => $hierarchy,
