@@ -4,7 +4,6 @@ profile::gitlab::runner::docker_settings:
 profile::gitlab::runner::docker_volume: true
 profile::gitlab::runner::ensure_buildkitd: present
 puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
-profile::base::unprivileged_userns_clone: true
 
 # don't exclude /var/lib/docker T328972
 prometheus::node_exporter::ignored_mount_points: '^/(sys|proc|dev|var/lib/kubelet)($|/)'

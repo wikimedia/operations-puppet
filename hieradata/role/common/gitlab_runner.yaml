@@ -86,7 +86,6 @@ profile::gitlab::runner::clear_interval:
   interval: 'hourly'
 profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true
-profile::base::unprivileged_userns_clone: true
 profile::gitlab::runner::enable_registry_proxy: false
 profile::gitlab::runner::registry_proxy_environment: {}
 profile::gitlab::runner::registry_proxy_image: 'docker-registry.wikimedia.org/registry:2'
