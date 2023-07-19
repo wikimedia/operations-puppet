@@ -28,7 +28,6 @@ profile::netbox::ganeti_sync_interval: 15
 profile::netbox::ganeti_sync_profiles: []
 
 # puppetDB settings
-profile::netbox::puppetdb_host: "%{alias('puppetdb_host')}"
 profile::netbox::puppetdb_microservice_port: "%{alias('profile::puppetdb::microservice::port')}"
 profile::netbox::puppetdb_microservice_fqdn: puppetdb-api.discovery.wmnet
 

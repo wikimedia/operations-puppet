@@ -29,7 +29,6 @@
 # @param ganeti_password The ganeti password
 # @param ganeti_sync_interval how frequently to sync with ganeti
 # @param ganeti_sync_profiles list of profiles to sync and the config
-# @param puppetdb_host the host of the puppetdb server
 # @param puppetdb_microservice_port the port where the puppetd micro service listens
 # @param puppetdb_microservice_fqdn the fqdn where the puppetd micro service listens
 # @param report_checks a list of report checks
@@ -95,7 +94,6 @@ class profile::netbox (
     Array[Profile::Netbox::Ganeti_sync_profile] $ganeti_sync_profiles = lookup('profile::netbox::ganeti_sync_profiles'),
 
     # puppetdb config
-    Optional[Stdlib::Fqdn]     $puppetdb_host               = lookup('profile::netbox::puppetdb_host'),
     Optional[Stdlib::Port]     $puppetdb_microservice_port  = lookup('profile::netbox::puppetdb_microservice_port'),
     Optional[Stdlib::Fqdn]     $puppetdb_microservice_fqdn  = lookup('profile::netbox::puppetdb_microservice_fqdn'),
 
