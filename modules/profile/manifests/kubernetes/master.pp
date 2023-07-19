@@ -76,8 +76,28 @@ class profile::kubernetes::master (
     systemd::service { 'kube-publish-sa-cert':
         content => systemd_template('kubernetes-publish-sa-cert'),
     }
+    # Setup a confd instance with the k8s etcd as backend (to fetch other control-planes sa certs from)
+    confd::instance { 'k8s':
+        ensure  => present,
+        backend => 'etcdv3',
+        prefix  => $confd_prefix,
+        srv_dns => $k8s_config['etcd_srv_name'],
+    }
+    # Write out the service account certs form all control-planes into one file
+    $kube_apiserver_sa_certs = '/etc/kubernetes/pki/kube-apiserver-sa-certs.pem'
+    confd::file { $kube_apiserver_sa_certs:
+        ensure     => present,
+        instance   => 'k8s',
+        watch_keys => ['/'],
+        # Add all but the local cert to the file (the local one will be used unconditionally)
+        content    => "{{range gets \"/*\"}}\n{{if ne .Key ${facts['fqdn']}}}{{.Value}}{{end}}\n{{end}}",
+        # FIXME: T329826 Don't reload apiserver until we know it's working properly
+        #reload     => '/bin/systemctl reload kube-apiserver.service',
+    }
+
     # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
     # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
+    # FIXME: T329826 Add $kube_apiserver_sa_certs here when it's working properly
     $additional_sa_certs = [$cergen_sa_cert['cert'], $sa_cert['cert']]
 
     # Client certificate used to authenticate against kubelets
