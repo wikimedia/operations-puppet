@@ -6,6 +6,9 @@
 <VirtualHost *:80>
     ServerName <%= @title %>
     ServerAdmin noc@wikimedia.org
+<%- unless @server_aliases.empty? -%>
+    ServerAlias <%= @server_aliases.join(' ') %>
+<%- end -%>
 
     <%- @cas_settings.each_pair do |key, setting| -%>
       <%- unless setting.nil? or setting == :undef -%>

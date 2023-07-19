@@ -10,6 +10,7 @@ profile::tlsproxy::envoy::cfssl_options:
 service::configuration::logstash_host: localhost
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::puppetboard::vhost: 'puppetboard.wikimedia.org'
+profile::puppetboard::server_aliases: ['puppetboard-next.wikimedia.org']
 profile::puppetboard::vhost_staging: 'puppetboard-idptest.wikimedia.org'
 profile::puppetboard::vhost_saml: 'puppetboard-samltest.wikimedia.org'
 profile::puppetboard::puppetdb_host: "%{lookup('puppetdb_host')}"
