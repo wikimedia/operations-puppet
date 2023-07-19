@@ -498,9 +498,9 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
     role(analytics_cluster::datahub::opensearch)
 }
 
-# Hosts to be set up T325209
-node /^db1(208)\.eqiad\.wmnet$/ {
-    role(insetup::data_persistence)
+## Analytics Backup Multi-instance
+node 'db1208.eqiad.wmnet' {
+    role(mariadb::misc::analytics::backup)
 }
 
 # s1 (enwiki) core production dbs on eqiad
@@ -762,6 +762,8 @@ node 'db2134.codfw.wmnet' {
 }
 
 ## Analytics Backup Multi-instance
+## Replaced by db1208 in T334055
+## To be decommissioned in T336254
 node 'db1108.eqiad.wmnet' {
     role(mariadb::misc::analytics::backup)
 }
