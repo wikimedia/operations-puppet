@@ -11,6 +11,15 @@ profile::prometheus::icinga_exporter::label_teams_config:
     alertname:
       - '^Netbox report(?!.*physical)'
 
+  # Taken from modules/netops/manifests/check.pp
+  # monitoring::service 'description' parameter
+  netops:
+    alertname:
+      - '^Juniper alarms'
+      - '^Juniper virtual chassis ports'
+      - '^Router interfaces'
+      - '^(BGP|VRRP|BFD|OSPF) status'
+
   # this is the default team, must be the last in the definition.
   sre:
     alertname:
