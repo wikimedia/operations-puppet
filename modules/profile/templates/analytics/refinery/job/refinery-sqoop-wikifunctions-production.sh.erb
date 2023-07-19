@@ -1,0 +1,25 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by puppet
+# NOTE: This DELETES all previous data and reimports fresh
+# The specified tables are created by the WikiLambda extension,
+# which is a component of Wikifunctions.
+#
+
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+/usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
+    --job-name sqoop-wikifunctions-production \
+    --output-dir <%= @output_directory_private %> \
+    --force \
+    --wiki-file /mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikifunctions_wikis.csv \
+    --tables wikilambda_zobject_labels,wikilambda_zobject_function_join \
+    --user <%= @private_db_user %> \
+    --password-file <%= @db_password_private %> \
+    --partition-name snapshot \
+    --partition-value latest \
+    --mappers <%= @num_mappers_one_month %> \
+    --processors <%= @num_processors %> \
+    --yarn-queue <%= @yarn_queue %> \
+    --output-format avrodata \
+    --log-file <%= @wikifunctions_production_log_file %>

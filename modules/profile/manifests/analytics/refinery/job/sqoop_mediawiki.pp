@@ -147,4 +147,28 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         user        => 'analytics',
         require     => [File['/tmp/sqoop-jars']],
     }
+
+    ############################################################################
+    # daily sqoop of data in WikiLambda tables. (WikiLambda is a MediaWiki
+    # extension and a component of Wikifunctions.)  Expected to not use up too
+    # many resources for the foreseeable future.
+    # Template uses num_mappers_one_month
+    # Tables: wikilambda_zobject_labels,wikilambda_zobject_function_join
+
+    file { '/usr/local/bin/refinery-sqoop-wikifunctions-production':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-wikifunctions-production.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-wikifunctions-production':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import WikiLambda tables into Hadoop daily.',
+        command     => '/usr/local/bin/refinery-sqoop-wikifunctions-production',
+        interval    => '*-*-* 05:00:00',
+        user        => 'analytics',
+        require     => [File['/tmp/sqoop-jars']],
+    }
 }
