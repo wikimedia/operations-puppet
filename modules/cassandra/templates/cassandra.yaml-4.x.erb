@@ -1359,7 +1359,11 @@ server_encryption_options:
   # Verify peer server certificates
   require_client_auth: false
   # Set to a valid trustore if require_client_auth is true
+<% if @tls_truststore_location -%>
   truststore: <%= @tls_truststore_location %>
+<% else -%>
+  truststore: /path/to/trustore
+<% end -%>
 <% if @tls_truststore_password -%>
   truststore_password: <%= @tls_truststore_password %>
 <% else -%>
