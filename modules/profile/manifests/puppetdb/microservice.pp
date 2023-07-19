@@ -20,7 +20,7 @@ class profile::puppetdb::microservice (
 
     if $enabled {
         $certs = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
-            hosts   => ['puppetdb-api.discovery.wmnet'],
+            hosts   => ['puppetdb-api.discovery.wmnet', 'puppetdb-api-next.discovery.wmnet'],
             notify  => Exec['nginx-reload'],
         })
         $site_content = template('profile/puppetdb/nginx-puppetdb-microservice.conf.erb')
