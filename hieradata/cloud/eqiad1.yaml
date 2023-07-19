@@ -65,6 +65,7 @@ profile::puppetdb::microservice::enabled: false
 profile::puppetdb::microservice::port: 8090
 profile::puppetdb::microservice::uwsgi_port: 8091
 profile::puppetdb::microservice::allowed_hosts: []
+profile::puppetdb::microservice::allowed_roles: []
 
 profile::puppetmaster::common::hiera_config: wmcs-eqiad1
 

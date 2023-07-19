@@ -1,20 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
-#
+# @summary install the puppetdb micro service
+# @param enabled wether to enable the service
+# @param port the port to listen on
+# @param uwsgi_port the port of the backend service
+# @param allowed_hosts a list of allowed hosts
+# @param allowed_roles a list of allowed roles
 class profile::puppetdb::microservice (
     Boolean             $enabled       = lookup('profile::puppetdb::microservice::enabled'),
     Stdlib::Port        $port          = lookup('profile::puppetdb::microservice::port'),
     Stdlib::Port        $uwsgi_port    = lookup('profile::puppetdb::microservice::uwsgi_port'),
     Array[Stdlib::Host] $allowed_hosts = lookup('profile::puppetdb::microservice::allowed_hosts'),
+    Array[String[1]]    $allowed_roles = lookup('profile::puppetdb::microservice::allowed_roles'),
 ) {
     $ssl_settings = ssl_ciphersuite('nginx', 'strong', true)
-    $ensure = $enabled ? {
-        false => 'absent',
-        default => 'present',
-    }
-    $ferm_ensure = $allowed_hosts.empty? {
-        false   => 'present',
-        default => 'absent',
-    }
+    $_allowed_hosts = $allowed_roles.map |$role| {
+        wmflib::role::ips($role)
+    }.flatten + $allowed_hosts
 
     ensure_packages(['python3-flask'])
 
@@ -29,19 +30,19 @@ class profile::puppetdb::microservice (
     }
 
     nginx::site { 'puppetdb-microservice':
-        ensure  => $ensure,
+        ensure  => stdlib::ensure($enabled),
         content => $site_content,
     }
 
     file { '/srv/puppetdb-microservice.py':
-        ensure => $ensure,
+        ensure => stdlib::ensure($enabled, 'file'),
         source => 'puppet:///modules/profile/puppetdb/puppetdb-microservice.py',
         owner  => 'root',
         mode   => '0644',
         notify => Service['uwsgi-puppetdb-microservice'],
     }
     uwsgi::app { 'puppetdb-microservice':
-        ensure   => $ensure,
+        ensure   => stdlib::ensure($enabled),
         settings => {
             uwsgi => {
                 'plugins'     => 'python3',
@@ -64,10 +65,11 @@ class profile::puppetdb::microservice (
 
     profile::auto_restarts::service { 'uwsgi-puppetdb-microservice': }
 
-    ferm::service { 'puppetdb-microservice':
-        ensure => $ferm_ensure,
-        proto  => 'tcp',
-        port   => $port,
-        srange => "@resolve((${allowed_hosts.join(' ')}))",
+    unless $_allowed_hosts.empty() {
+        ferm::service { 'puppetdb-microservice':
+            proto  => 'tcp',
+            port   => $port,
+            srange => $_allowed_hosts,
+        }
     }
 }

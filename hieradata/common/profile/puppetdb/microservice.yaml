@@ -1,13 +1,10 @@
 profile::puppetdb::microservice::enabled: true
 profile::puppetdb::microservice::port: 8090
 profile::puppetdb::microservice::uwsgi_port: 8091
-profile::puppetdb::microservice::allowed_hosts:
-  - netbox1002.eqiad.wmnet
-  - netbox2002.codfw.wmnet
-  - netbox-dev2002.codfw.wmnet
-  - cuminunpriv1001.eqiad.wmnet
-  - pki1001.eqiad.wmnet
-  - pki2002.codfw.wmnet
-  - cloudcumin1001.eqiad.wmnet
-  - cloudcumin2001.codfw.wmnet
-
+profile::puppetdb::microservice::allowed_hosts: []
+profile::puppetdb::microservice::allowed_roles:
+- netbox::frontend
+- cluster::management
+- cluster::unprivmanagement
+- cluster::cloud_management
+- pki::multirootca
