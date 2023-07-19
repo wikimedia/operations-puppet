@@ -13,4 +13,4 @@ profile::puppetboard::graph_facts_override: []
 profile::puppetboard::secret_key: ~
 profile::puppetboard::inventory_facts_override: {}
 profile::puppetboard::vhost_staging: ~
-profile::puppetboard::server_aliases: []
+profile::puppetboard::vhost_next: ~

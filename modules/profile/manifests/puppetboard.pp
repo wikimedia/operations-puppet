@@ -11,7 +11,7 @@
 #       include profile::puppetboard
 # @param ensure ensureable
 # @param vhost the fqdn to use for the vhost
-# @param server_aliases an array of additional server aliases
+# @param vhost_next The puppetboard-next domain used for testing new releases
 # @param vhost_staging vhost for use in the idp staging environment
 # @param vhost_saml saml vhost for use in the idp staging environment
 # @param puppetdb_host the puppetdb host
@@ -31,7 +31,7 @@
 class profile::puppetboard (
     Wmflib::Ensure                  $ensure                   = lookup('profile::puppetboard::ensure'),
     Stdlib::Fqdn                    $vhost                    = lookup('profile::puppetboard::vhost'),
-    Array[Stdlib::Fqdn]             $server_aliases           = lookup('profile::puppetboard::server_aliases'),
+    Optional[Stdlib::Fqdn]          $vhost_next               = lookup('profile::puppetboard::vhost_next'),
     Optional[Stdlib::Fqdn]          $vhost_staging            = lookup('profile::puppetboard::vhost_staging'),
     Optional[Stdlib::Fqdn]          $vhost_saml               = lookup('profile::puppetboard::vhost_saml'),
     # puppet db settings
@@ -129,7 +129,6 @@ class profile::puppetboard (
 
     profile::idp::client::httpd::site { $vhost:
         # TODO: move template to hiera config
-        server_aliases   => $server_aliases,
         vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
@@ -161,6 +160,21 @@ class profile::puppetboard (
                 'cn=ops,ou=groups,dc=wikimedia,dc=org',
                 'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
                 'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
+            ],
+            proxied_as_https => true,
+            cookie_secure    => 'On',
+            vhost_settings   => {'uwsgi_port' => $uwsgi_port},
+            validate_saml    => true,
+            environment      => 'staging',
+            enable_monitor   => false,
+        }
+    }
+    if $vhost_next {
+        profile::idp::client::httpd::site { $vhost_next:
+            vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
+            required_groups  => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
             ],
             proxied_as_https => true,
             cookie_secure    => 'On',
