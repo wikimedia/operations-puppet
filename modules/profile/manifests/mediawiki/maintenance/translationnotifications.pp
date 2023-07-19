@@ -40,6 +40,6 @@ class profile::mediawiki::maintenance::translationnotifications {
     # Commons
     profile::mediawiki::periodic_job { 'translationnotifications-unsubscribeinactiveusers-commons':
         command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki commonswiki --days 365 --really',
-        interval => '* *-01,04,07,10-02 05:30:00',
+        interval => '*-01,04,07,10-02 05:30:00',
     }
 }
