@@ -84,7 +84,8 @@ class profile::kubernetes::deployment_server::global_config (
     }.reduce({}) | $mem, $val| { $mem.merge($val) }
 
     # Per-cluster general defaults.
-    k8s::fetch_clusters().each | String $cluster_name, K8s::ClusterConfig $cluster_config | {
+    # Fetch clusters excluding aliases, for aliases we create symlinks to the actual cluster defaults
+    k8s::fetch_clusters(false).each | String $cluster_name, K8s::ClusterConfig $cluster_config | {
         $dc = $cluster_config['dc']
         $puppet_ca_data = file($facts['puppet_config']['localcacert'])
 
@@ -110,9 +111,18 @@ class profile::kubernetes::deployment_server::global_config (
         # TODO: add info about the cluster group? So we don't need to have unique cluster names.
         # Merge default and environment specific general values with deployment config and service proxies
         $opts = deep_merge($general_values['default'], $general_values[$cluster_name], $deployment_config_opts, { 'services_proxy' => $proxies, 'kafka_brokers' => $kafka_brokers })
-        file { "${general_dir}/general-${cluster_name}.yaml":
+        $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
+        file { $general_config_path:
             content => to_yaml($opts),
             mode    => '0444',
+        }
+
+        # If this cluster has an alias, create a symlink for it
+        if $cluster_config['cluster_alias'] {
+            file { "${general_dir}/general-${$cluster_config['cluster_alias']}.yaml":
+                ensure => 'link',
+                target => $general_config_path,
+            }
         }
     }
 }
