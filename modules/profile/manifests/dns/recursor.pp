@@ -30,8 +30,13 @@ class profile::dns::recursor (
 
     # Get the IP addresses from authdns_servers in common.yaml, since it's the
     # canonical list anyway.
-    $nameservers = $dns_servers.map |$server| { $authdns_servers[$server] }
+    $nameservers = $dns_servers.map |$server| {
+        $authdns_servers[$server]
+    }.filter |$x| { $x =~ NotUndef }
 
+    if $nameservers.empty() {
+        fail('no nameservers configured')
+    }
     class { 'profile::resolving' :
         nameservers => $nameservers,
     }
