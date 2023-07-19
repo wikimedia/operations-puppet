@@ -213,6 +213,10 @@ frontend http
     http-after-response set-header X-Cache "<%= @hostname %> int"
     http-after-response set-header X-Cache-Status "int-tls"
     http-after-response capture hdr(X-Cache-Status) id 0
+<%- if @http_disable_keepalive -%>
+    # Explicitly avoid keep-alive
+    http-after-response set-header Connection Close
+<%- end -%>
     # METH_GET is a predefined ACL that includes GET and HEAD requests
     # http://docs.haproxy.org/2.6/configuration.html#7.4
     http-request redirect scheme https code 301 if METH_GET

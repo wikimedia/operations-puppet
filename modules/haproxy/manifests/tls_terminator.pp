@@ -63,6 +63,9 @@
 #   List of pseudo-backends to create for tracking stats with stick-tables.
 # @param http_redirection_port
 #   Port used to perform http->https redirection for GET/HEAD requests
+# @param http_disable_keepalive
+#   Bool to add Connection: Close response header on port 80 frontend
+
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Array[Haproxy::Backend] $backends,
@@ -82,6 +85,7 @@ define haproxy::tls_terminator(
     Haproxy::Httpreuse $http_reuse = 'safe',
     String $numa_iface = 'lo',
     Haproxy::Version $haproxy_version = 'haproxy24',
+    Boolean $http_disable_keepalive = false,
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,
