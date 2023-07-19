@@ -289,6 +289,13 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     timeout: "60s"
     xfp: https
+  - name: mw-api-int-async-ro  # mw-on-k8s api for long-lasting async requests (T333120)
+    port: 6500  # NOTE: re-use "mwapi-async" port to make the transition easier
+    service: "mw-api-int"
+    upstream: "mw-api-int-ro.discovery.wmnet"
+    keepalive: "4s"
+    timeout: "120s"
+    xfp: https
   - name: restbase-for-services # applications that have call loops with restbase
     port: 6503
     service: restbase-https
