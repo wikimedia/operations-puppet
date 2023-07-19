@@ -31,6 +31,7 @@
 # @param ganeti_sync_profiles list of profiles to sync and the config
 # @param puppetdb_host the host of the puppetdb server
 # @param puppetdb_microservice_port the port where the puppetd micro service listens
+# @param puppetdb_microservice_fqdn the fqdn where the puppetd micro service listens
 # @param report_checks a list of report checks
 # @param librenms_db_user librenms DB user
 # @param librenms_db_password librenms DB password
@@ -43,6 +44,7 @@
 # @param swift_container Swift container
 # @param redis_port redis port number
 # @param redis_maxmem redis maximum memory
+# @param redis_host redis host
 # @param ldap_config the ldap config for cas
 # @param do_backups if we should perform backups
 # @param http_proxy proxy server to use for outbound connections
@@ -51,6 +53,7 @@
 # @param jobresult_retention The number of days to retain job results (scripts and reports).
 #        Set this to 0 to retain job results in the database indefinitely.
 # @param prefer_ipv4 When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default.
+# @param validators a list of form validators to install
 #        Set this to True to prefer IPv4 instead.
 # @param cas_rename_attributes a mapping of attributes that should be renamed
 # @param cas_group_attribute_mapping a mapping of attributes to netbox groups
@@ -58,6 +61,8 @@
 # @param cas_group_required list of required groups
 # @param cas_username_attribute cas attribute to use as a username
 # @param cas_server_url the location of the cas server
+# @param oidc_key the OIDC key to use
+# @param oidc_secret the OIDC secret to use
 class profile::netbox (
     Hash                        $ldap_config             = lookup('ldap'),
     Stdlib::Fqdn                $active_server           = lookup('profile::netbox::active_server'),
@@ -92,6 +97,7 @@ class profile::netbox (
     # puppetdb config
     Optional[Stdlib::Fqdn]     $puppetdb_host               = lookup('profile::netbox::puppetdb_host'),
     Optional[Stdlib::Port]     $puppetdb_microservice_port  = lookup('profile::netbox::puppetdb_microservice_port'),
+    Optional[Stdlib::Fqdn]     $puppetdb_microservice_fqdn  = lookup('profile::netbox::puppetdb_microservice_fqdn'),
 
 
     # Lirenms settings
@@ -240,8 +246,8 @@ class profile::netbox (
         settings => {
             'safe' => {
                 'directory' => '/srv/deployment/netbox/current/src',
-            }
-        }
+            },
+        },
     }
 
     git::clone { 'operations/software/netbox-extras':
