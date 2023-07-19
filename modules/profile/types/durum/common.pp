@@ -7,5 +7,5 @@
 #    [directory path] install path for durum web application scripts.
 
 type Profile::Durum::Common = Struct[{
-    durum_path    => Stdlib::Unixpath,
+    durum_path => Stdlib::Unixpath,
 }]
