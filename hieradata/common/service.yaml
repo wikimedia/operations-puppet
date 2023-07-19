@@ -3602,9 +3602,9 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.192.32.30
+        default: 10.192.0.8
       eqiad:
-        default: 10.64.48.59
+        default: 10.64.32.38
     page: false
     probes:
       - type: http
@@ -3620,16 +3620,15 @@ service::catalog:
         active_active: true
 
 
-  # puppetboard is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
   puppetboard-next:
     description: Internal production Puppetboard interface
     encryption: true
     ip:
       codfw:
-        default: 10.192.0.8
+        default: 10.192.32.30
       eqiad:
-        default: 10.64.32.38
+        default: 10.64.48.59
     page: false
     probes:
       - type: http
