@@ -30,7 +30,7 @@ profile::dumps::public:
     - clouddumps1001.wikimedia.org
     - clouddumps1002.wikimedia.org
 profile::dumps::internal:
-    - dumpsdata1004.eqiad.wmnet
+    - dumpsdata1007.eqiad.wmnet
 # root of xml/sql dumps tree we want to rsync (public contents only)
 profile::dumps::xmldumpsdir: '/data/xmldatadumps/public'
 # root of private xml/sql dumps tree
