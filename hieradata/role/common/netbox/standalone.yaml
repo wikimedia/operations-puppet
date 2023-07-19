@@ -9,6 +9,7 @@ profile::netbox::validators:
   - dcim.interface
   - dcim.poweroutlet
   - dcim.site
+profile::netbox::puppetdb_microservice_fqdn: puppetdb-api-next.discovery.wmnet
 profile::netbox::discovery_name: netbox-next.discovery.wmnet
 profile::netbox::service_hostname: netbox-next.wikimedia.org
 profile::netbox::do_backup: false
