@@ -19,6 +19,8 @@
 # @param jmx_port the port for jmx to bind to
 # @param separate_ssldir used when the puppetserver is managed by a different puppet server
 # @param g10k_sources a list of g10k sources to configure
+# @param auto_restart if true changes to config files will cause the puppetserver to either restart or
+#   reload the puppetserver service
 class puppetserver (
     Wmflib::Ensure                           $ensure                    = 'present',
     Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
@@ -38,6 +40,7 @@ class puppetserver (
     Boolean                                  $autosign                  = false,
     Boolean                                  $separate_ssldir           = true,
     Boolean                                  $enable_jmx                = false,
+    Boolean                                  $auto_restart              = true,
     Stdlib::Port                             $jmx_port                  = 8141,
     Hash[String, Puppetmaster::R10k::Source] $g10k_sources              = {},
 ) {
@@ -63,9 +66,17 @@ class puppetserver (
     $ssl_dir = '/var/lib/puppet/server/ssl'
     $environments_dir = "${code_dir}/environments"
 
+    $service_reload_notify = $auto_restart ? {
+        true  => Exec['reload puppetserver'],
+        false => undef,
+    }
+    $service_restart_notify = $auto_restart ? {
+        true  => Service['puppetserver'],
+        false => undef,
+    }
     $_reports = $puppetdb_urls.empty ? {
-        false   => $reports + 'puppetdb',
-        default => $reports,
+        true  => $reports,
+        false => $reports + 'puppetdb',
     }
 
     wmflib::dir::mkdir_p(
@@ -105,14 +116,14 @@ class puppetserver (
         target  => '/etc/puppet/puppet.conf',
         order   => '20',
         content => $config,
-        notify  => Service['puppetserver'],
+        notify  => $service_reload_notify,
     }
     if ! $puppetdb_urls.empty {
         concat::fragment { 'server-storeconfigs':
             target  => '/etc/puppet/puppet.conf',
             order   => '21',
             content => "storeconfigs = true\nstoreconfigs_backend = puppetdb\n",
-            notify  => Service['puppetserver'],
+            notify  => $service_reload_notify,
         }
     }
     if $enc_path {
@@ -120,7 +131,7 @@ class puppetserver (
             target  => '/etc/puppet/puppet.conf',
             order   => '22',
             content => "node_terminus = exec\nexternal_nodes = ${enc_path}\n",
-            notify  => Service['puppetserver'],
+            notify  => $service_reload_notify,
         }
     }
     if $autosign {
@@ -128,7 +139,7 @@ class puppetserver (
             target  => '/etc/puppet/puppet.conf',
             order   => '23',
             content => "autosign = ${autosign}\n",
-            notify  => Service['puppetserver'],
+            notify  => $service_reload_notify,
         }
     }
 
@@ -166,7 +177,7 @@ class puppetserver (
         default:
             ensure  => stdlib::ensure($ensure, 'file'),
             require => Package['puppetserver'],
-            notify  => Service['puppetserver'];
+            notify  => $service_reload_notify;
         "${config_d_dir}/metrics.conf":
             content => epp('puppetserver/metrics.conf.epp', $metrics_params);
         "${config_d_dir}/puppetserver.conf":
@@ -179,7 +190,8 @@ class puppetserver (
         '/etc/puppet/hiera.yaml':
             content => $hiera_config.to_yaml;
         '/etc/default/puppetserver':
-            content => epp('puppetserver/environment_file.epp', $environment_file_params);
+            content => epp('puppetserver/environment_file.epp', $environment_file_params),
+            notify  => $service_restart_notify;
     }
     include puppetserver::puppetdb
     $g10k_ensure = $g10k_sources.empty.bool2str('absent', $ensure)
@@ -206,5 +218,9 @@ class puppetserver (
         ensure  => stdlib::ensure($ensure, 'service'),
         enable  => true,
         require => $service_require,
+    }
+    exec { 'reload puppetserver':
+        command     => '/usr/bin/systemctl reload puppetserver',
+        refreshonly => true,
     }
 }

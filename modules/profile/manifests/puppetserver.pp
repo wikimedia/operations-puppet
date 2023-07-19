@@ -21,6 +21,8 @@
 # @param ca_crl location of the intermediate crl content
 # @param ca_private_key_secret the content of the W
 # @param git_pull whether to pull puppet code from git, defaults to true
+# @param auto_restart if true changes to config files will cause the puppetserver to either restart or
+#   reload the puppetserver service
 # @param enable_jmx
 class profile::puppetserver (
     Stdlib::Fqdn                   $server_id                 = lookup('profile::puppetserver::server_id'),
@@ -42,6 +44,7 @@ class profile::puppetserver (
     Boolean                        $enable_ca                 = lookup('profile::puppetserver::enable_ca'),
     Boolean                        $intermediate_ca           = lookup('profile::puppetserver::intermediate_ca'),
     Boolean                        $enable_jmx                = lookup('profile::puppetserver::enable_jmx'),
+    Boolean                        $auto_restart              = lookup('profile::puppetserver::auto_restart'),
     Optional[Stdlib::Filesource]   $ca_public_key             = lookup('profile::puppetserver::ca_public_key'),
     Optional[Stdlib::Filesource]   $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
     Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret')
