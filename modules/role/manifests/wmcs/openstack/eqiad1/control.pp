@@ -3,6 +3,12 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::base::production
     include profile::firewall
     include profile::base::cloud_production
+
+    if $facts['hostname'] != 'cloudcontrol1005' {
+        # the only server on the new network setup
+        include profile::wmcs::cloud_private_subnet
+    }
+
     include profile::openstack::eqiad1::metrics
     include profile::openstack::eqiad1::observerenv
 
