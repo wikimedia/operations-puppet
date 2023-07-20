@@ -20,6 +20,8 @@
 #
 # [*short_urls*] Whether or not support for short urls should be added
 #
+# [*view_urls*] Whether or not support for /view urls should be added
+#
 # [*https_only*] Wether or not to force https everywhere.
 #
 # [*encoded_slashes*] AllowEncodedSlashes apache httpd directive.
@@ -62,6 +64,7 @@ define mediawiki::web::vhost(
     Boolean $public_rewrites = true,
     Boolean $legacy_rewrites = true,
     Boolean $short_urls = false,
+    Boolean $view_urls = false,
     Boolean $https_only = false,
     Enum['On', 'Off', 'NoDecode'] $encoded_slashes = 'On',
     Enum['On', 'Off'] $canonical_name = 'Off',

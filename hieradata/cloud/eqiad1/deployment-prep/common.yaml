@@ -645,6 +645,7 @@ mediawiki::sites:
       - name: wikifunctions
         params:
           server_aliases: ["wikifunctions.beta.wmflabs.org", "*.wikifunctions.beta.wmflabs.org"]
+          view_urls: true
       - name: wikimedia
         params:
           server_name: "misc-sites"
