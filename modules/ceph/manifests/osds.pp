@@ -15,7 +15,8 @@ class ceph::osds (
 
     ensure_packages(['ceph-osd'])
 
-    $facts['disk_type'].each |$disk, $type| {
+    # Disable the write cache on devices using the SCSI disk driver
+    $facts['disk_type'].filter | $disk | { $disk[0] =~ 'sd*' }.each |$disk, $type| {
     # Unset wite cache
     exec { "Disable write cache on device /dev/${disk}":
         # 0->disable, 1->enable
