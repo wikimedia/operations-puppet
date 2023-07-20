@@ -65,9 +65,9 @@ class ceph::osds (
 
         # Set gpt partition table
         exec { "Create gpt label on ${bluestore_device_name}":
-            command => "parted -s -a optimal /dev/${bluestore_device_name} mklabel gpt",
+            command => "parted -s -a optimal ${bluestore_device_name} mklabel gpt",
             user    => 'root',
-            unless  => "parted -s /dev/${bluestore_device_name} print|grep \"Partition Table: gpt\"",
+            unless  => "parted -s ${bluestore_device_name} print|grep \"Partition Table: gpt\"",
             path    => ['/usr/sbin', '/usr/bin'],
         }
 
