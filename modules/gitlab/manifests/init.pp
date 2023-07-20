@@ -244,6 +244,7 @@ class gitlab (
         source        => 'gitlab',
         owner         => $ldap_group_sync_user,
         group         => $ldap_group_sync_user,
+        require       => Systemd::Sysuser[$ldap_group_sync_user],
     }
 
     $ldap_url = "ldaps://${ldap_config[ro-server]}:636"
@@ -253,6 +254,7 @@ class gitlab (
         group   => $ldap_group_sync_user,
         mode    => '0400',
         content => template('gitlab/group-management-config.yaml.erb'),
+        require => Systemd::Sysuser[$ldap_group_sync_user],
     }
 
     systemd::timer::job { 'sync-gitlab-group-with-ldap':
@@ -261,5 +263,6 @@ class gitlab (
         description => 'Sync wmf and ops LDAP groups with GitLab repos/mediawiki group',
         command     => "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml --yes repos/mediawiki wmf ops",
         interval    => $ldap_group_sync_interval,
+        require     => Systemd::Sysuser[$ldap_group_sync_user],
     }
 }
