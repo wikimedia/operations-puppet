@@ -1589,7 +1589,11 @@ node /^cloudmetrics100[34]\.eqiad\.wmnet$/ {
     role(wmcs::monitoring)
 }
 
-node /^cloudcontrol100[5-7]\.wikimedia\.org$/ {
+node /^cloudcontrol100[5]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::control)
+}
+
+node /^cloudcontrol100[6-7]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
