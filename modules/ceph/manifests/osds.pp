@@ -23,8 +23,8 @@ class ceph::osds (
         command => "hdparm -W 0 /dev/${disk}",
         user    => 'root',
         unless  => [
-                    "hdparm -W ${disk} | grep write-caching | grep -q off",
-                    "hdparm -W ${disk} | grep write-caching | grep -v 'not supported'",
+                    "hdparm -W /dev/${disk} | grep write-caching | grep -q off",
+                    "hdparm -W /dev/${disk} | grep write-caching | grep -v 'not supported'",
         ],
         path    => ['/usr/sbin', '/usr/bin'],
     }
