@@ -15,6 +15,11 @@ https://integration.wikimedia.org:
 - path: /ci/
   assert_status: 200
   assert_body_contains: Jenkins
+# Jenkins Gearman has a wide open entry point allowing port scan. It is
+# forbidden at Apache level.
+# SECURITY-991 - T219991
+- path: /ci/descriptorByName/hudson.plugins.gearman.GearmanPluginConfig/testConnection
+  assert_status: 403
 - path: /cover/
   assert_status: 301
   assert_headers:
