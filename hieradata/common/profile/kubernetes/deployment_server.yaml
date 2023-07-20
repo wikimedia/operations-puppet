@@ -164,6 +164,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-web
         - name: mw-web-deploy
+    mw-misc:
+      usernames:
+        - name: mw-misc
+        - name: mw-misc-deploy
     tegola-vector-tiles:
       usernames:
         - name: tegola-vector-tiles
@@ -304,15 +308,15 @@ profile::kubernetes::deployment_server::services:
     kubeflow-kfserving:
       usernames: []
       private_files:
-        owner: 'root'
-        group: 'root'
-        mode: '640'
+        owner: "root"
+        group: "root"
+        mode: "640"
     knative-serving:
       usernames: []
       private_files:
-        owner: 'root'
-        group: 'root'
-        mode: '640'
+        owner: "root"
+        group: "root"
+        mode: "640"
   dse-k8s:
     rdf-streaming-updater:
       usernames:
@@ -330,30 +334,6 @@ profile::kubernetes::deployment_server::services:
     cfssl-issuer:
       usernames: []
       private_files:
-        owner: 'root'
-        group: 'root'
-        mode: '640'
-
-# Specified in the private repo in this form
-#profile::kubernetes::deployment_server_secrets::services:
-#    zotero:
-#      staging:
-#         somekey: somevalue
-#      codfw:
-#         somekey: somevalue
-#      eqiad:
-#         somekey: somevalue
-# Tokens are mandatory or the user won't be defined.
-# Tokens are per-user and should be specified in the private repo
-# in this form:
-#profile::kubernetes::deployment_server::tokens:
-#  main:
-#    mathoid:
-#      token: dummy
-# ...
-#  ml-serve:
-#    admin:
-#      token: dummy
-#    revscoring-editquality:
-#      token: dummy
-#
+        owner: "root"
+        group: "root"
+        mode: "640"
