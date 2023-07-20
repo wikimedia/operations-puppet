@@ -101,6 +101,11 @@
 #
 # @param [Optional[K8s::ClusterConfig::Prometheus]] prometheus
 #   Configuration of the prometheus instances for this cluster
+
+# @param [Optional[Array[String] apparmor_profiles
+#   A list of apparmor profiles to populate in the cluster. The actual profiles
+#   will need to be placed in modules/profile/files/kubernetes/node/ and are
+#   referenced by filename
 type K8s::ClusterConfig = Struct[{
   'dc'                      => String[1],
   'cluster_alias'           => Optional[String[1]],
@@ -130,4 +135,5 @@ type K8s::ClusterConfig = Struct[{
   'cni_config'              => Hash,
   'imagecatalog'            => Boolean,
   'prometheus'              => Optional[K8s::ClusterConfig::Prometheus],
+  'apparmor_profiles'       => Optional[Array[String]],
 }]

@@ -201,4 +201,17 @@ class profile::kubernetes::node (
             'fs.inotify.max_user_instances' => 512,
         },
     }
+
+    # Populating apparmor profile for fun and profit
+    class { 'apparmor': }
+    $apparmor_profiles = 'apparmor_profiles' in $k8s_config ? {
+        true  => $k8s_config['apparmor_profiles'],
+        false => [],
+    }
+    $apparmor_profiles.each |$pname| {
+        apparmor::profile { $pname:
+            source    => "puppet:///modules/profile/kubernetes/node/${pname}",
+            directory => '/etc/apparmor.d/containers',
+        }
+    }
 }

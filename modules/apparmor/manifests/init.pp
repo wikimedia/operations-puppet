@@ -4,12 +4,8 @@
 # Stub class for apparmor so that other classes can define profiles
 # and then notify service['apparmor']
 #
-
 class apparmor {
-
-    package { 'apparmor':
-        ensure => present,
-    }
+    ensure_packages(['apparmor'])
 
     service { 'apparmor':
         ensure     => running,
@@ -29,5 +25,4 @@ class apparmor {
         mode    => '0755',
         require => Package['apparmor'],
     }
-
 }

@@ -113,6 +113,9 @@ kubernetes::clusters:
         - kubernetes1022.eqiad.wmnet
         - kubernetes1023.eqiad.wmnet
         - kubernetes1024.eqiad.wmnet
+      apparmor_profiles: &wikikube_apparmor_profiles
+        - wikifunctions-orchestrator
+        - wikifunctions-evaluator
     codfw:
       dc: codfw
       master: kubemaster.svc.codfw.wmnet
@@ -162,6 +165,7 @@ kubernetes::clusters:
         - kubernetes2022.codfw.wmnet
         - kubernetes2023.codfw.wmnet
         - kubernetes2024.codfw.wmnet
+      apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.
       # kubeconfig files will be generated with the alias name.
@@ -201,6 +205,7 @@ kubernetes::clusters:
         - kubestagemaster1002.eqiad.wmnet
         - kubestage1003.eqiad.wmnet
         - kubestage1004.eqiad.wmnet
+      apparmor_profiles: *wikikube_apparmor_profiles
     staging-codfw:
       dc: codfw
       master: kubestagemaster.svc.codfw.wmnet
@@ -234,6 +239,7 @@ kubernetes::clusters:
         - kubestagemaster2002.codfw.wmnet
         - kubestage2001.codfw.wmnet
         - kubestage2002.codfw.wmnet
+      apparmor_profiles: *wikikube_apparmor_profiles
   ml-serve:
     ml-serve-eqiad:
       dc: eqiad
