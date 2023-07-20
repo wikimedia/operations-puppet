@@ -2839,7 +2839,7 @@ node /^wdqs2004\.codfw\.wmnet$/ {
     role(wdqs::public)
 }
 
-node /^(wdqs200[7,9]|wdqs201[1-3]|wdqs201[6-9]|wdqs202[0-2])\.codfw\.wmnet$/ {
+node /^(wdqs200[7,9]|wdqs201[0-3]|wdqs201[6-9]|wdqs202[0-2])\.codfw\.wmnet$/ {
     role(wdqs::public)
 }
 
