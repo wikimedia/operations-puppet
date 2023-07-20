@@ -75,8 +75,6 @@ eqiad:
     mw1497.eqiad.wmnet: [nginx]
     mw1498.eqiad.wmnet: [nginx]
   api_appserver:
-    mw1356.eqiad.wmnet: [nginx]
-    mw1357.eqiad.wmnet: [nginx]
     mw1358.eqiad.wmnet: [nginx]
     mw1359.eqiad.wmnet: [nginx]
     mw1360.eqiad.wmnet: [nginx]
@@ -179,7 +177,6 @@ eqiad:
     cp1088.eqiad.wmnet: [cdn, ats-be]
     cp1090.eqiad.wmnet: [cdn, ats-be]
   parsoid:
-    # Don't forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     parse1001.eqiad.wmnet: [parsoid-php, canary]
     parse1002.eqiad.wmnet: [parsoid-php]
     parse1003.eqiad.wmnet: [parsoid-php,canary]
@@ -200,6 +197,9 @@ eqiad:
     parse1022.eqiad.wmnet: [parsoid-php]
     parse1023.eqiad.wmnet: [parsoid-php]
     parse1024.eqiad.wmnet: [parsoid-php]
+    # Temp capacity from api_appserver https://phabricator.wikimedia.org/T342085
+    mw1356.eqiad.wmnet: [parsoid-php]
+    mw1357.eqiad.wmnet: [parsoid-php]
   restbase:
     restbase1016.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1017.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]

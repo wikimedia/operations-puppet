@@ -2065,7 +2065,7 @@ node /^mw14(08|1[02])\.eqiad\.wmnet$/ {
 # Row D
 
 # rack D1
-node /^mw13(5[6-9]|6[0-2])\.eqiad\.wmnet$/ {
+node /^mw13(5[8-9]|6[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 # rack D8
@@ -2482,6 +2482,11 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
 }
 
 node /^parse10(0[1-9]|1[012789]|2[0-4])\.eqiad\.wmnet$/ {
+    role(parsoid)
+}
+
+# Temp parsoid eqiad capacity - T342085
+node /^mw135[67]\.eqiad\.wmnet$/ {
     role(parsoid)
 }
 
