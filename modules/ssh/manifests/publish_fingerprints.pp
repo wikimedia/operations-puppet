@@ -4,16 +4,9 @@ class ssh::publish_fingerprints (
     Stdlib::Unixpath $document_root,
 ) {
 
-    file { "${document_root}/known_hosts":
+    # TODO: update wmf-update-know-host to just fetch the known_host file (not the known_hosts.ecdsa
+    file { ["${document_root}/known_hosts", "${document_root}/known_hosts.ecdsa"]:
         ensure => link,
         target => '/etc/ssh/ssh_known_hosts',
     }
-
-    file { ["${document_root}/known_hosts.rsa",
-            "${document_root}/known_hosts.ed25519",
-            "${document_root}/known_hosts.ecdsa",
-            "${document_root}/ssh-fingerprints.txt",]:
-        ensure  => absent,
-    }
-
 }
