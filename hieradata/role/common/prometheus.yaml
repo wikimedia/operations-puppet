@@ -46,12 +46,8 @@ profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - 'prometheus'
-    - 'prometheus-eqiad.wikimedia.org'
-    - 'prometheus-codfw.wikimedia.org'
-    - 'prometheus-esams.wikimedia.org'
-    - 'prometheus-ulsfo.wikimedia.org'
-    - 'prometheus-eqsin.wikimedia.org'
-    - 'prometheus-drmrs.wikimedia.org'
+    - 'prometheus-%{::site}.wikimedia.org'
+    - 'prometheus.svc.%{::site}.wmnet'
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::global_cert_name: prometheus.discovery.wmnet
 profile::tlsproxy::envoy::use_remote_address: true
