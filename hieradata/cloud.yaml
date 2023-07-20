@@ -592,7 +592,6 @@ profile::swift::proxy::dispersion_account: ~
 profile::swift::proxy::rewrite_account: ~
 profile::swift::proxy::thumborhost: ~
 profile::swift::proxy::inactivedc_thumborhost: ~
-profile::swift::proxy::enable_swiftrepl: false
 
 profile::memcached::enable_16: false
 profile::memcached::threads: ~

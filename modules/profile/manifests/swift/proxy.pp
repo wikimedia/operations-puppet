@@ -21,7 +21,6 @@ class profile::swift::proxy (
     Optional[Array[String]] $memcached_servers = lookup('profile::swift::proxy::memcached_servers'),
     Optional[String] $thumborhost              = lookup('profile::swift::proxy::thumborhost'),
     Optional[String] $inactivedc_thumborhost   = lookup('profile::swift::proxy::inactivedc_thumborhost'),
-    Boolean $enable_swiftrepl                  = lookup('profile::swift::proxy::enable_swiftrepl'),
 ){
 
     class { 'swift':
@@ -78,10 +77,6 @@ class profile::swift::proxy (
 
     if $use_tls {
         include profile::swift::proxy_tls
-    }
-
-    if $enable_swiftrepl {
-        include profile::swift::swiftrepl
     }
 
     class { 'memcached':
