@@ -71,6 +71,14 @@ profile::presto::server::catalogs:
       # Hive and HDFS. We may remove it when https://github.com/prestodb/presto/issues/18474 is fixed. See also #T337335
       hive.copy-on-first-write-configuration-enabled: false
 
+      # Enable the use of the built-in alluxio cache for this catalog.
+      # See https://prestodb.io/docs/current/cache/local.html and #T266641
+      hive.node-selection-strategy: SOFT_AFFINITY
+      cache.enabled: true
+      cache.type: ALLUXIO
+      cache.alluxio.max-cache-size: 5GB
+      cache.base-directory: /tmp/alluxio-cache
+
   analytics_test_iceberg:
     properties:
       connector.name: iceberg
