@@ -72,6 +72,7 @@ define ceph::osd (
         exec { $check_fsid_mismatch:
             command   => $check_fsid_command,
             unless    => $check_fsid_unless,
+            provider  => 'shell',
             path      => '/usr/bin:/bin:/usr/sbin:/sbin',
             logoutput => true,
             timeout   => $exec_timeout,
@@ -84,6 +85,7 @@ define ceph::osd (
         exec { $prepare:
             command   => $prepare_command,
             unless    => $prepare_unless,
+            provider  => 'shell',
             path      => '/usr/bin:/bin:/usr/sbin:/sbin',
             logoutput => true,
             timeout   => $exec_timeout,
@@ -105,6 +107,7 @@ define ceph::osd (
         exec { $activate:
             command   => $activate_command,
             unless    => $activate_unless,
+            provider  => 'shell',
             path      => '/usr/bin:/bin:/usr/sbin:/sbin',
             logoutput => true,
             timeout   => $exec_timeout,
@@ -132,6 +135,7 @@ define ceph::osd (
         exec { "remove-osd-${name}":
             command   => $remove_command,
             onlyif    => $remove_onlyif,
+            provider  => 'shell',
             path      => '/usr/bin:/bin:/usr/sbin:/sbin',
             logoutput => true,
             timeout   => $exec_timeout,
