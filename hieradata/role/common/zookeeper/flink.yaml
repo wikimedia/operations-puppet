@@ -1,0 +1,16 @@
+# TODO: Notify the Search Platform and Data Engineering SREs
+# about services on these hosts. These groups are in the process
+# of merging into Data Platform SRE team.
+
+contactgroups: 'admins'
+
+cluster: flink
+
+profile::zookeeper::cluster_name: "flink-%{::site}"
+# network range TBD
+profile::zookeeper::firewall::srange: '(($WIKIKUBE_KUBEPODS_NETWORKS $DSE_KUBEPODS_NETWORKS $ZOOKEEPER_FLINK_CLUSTER_HOSTS))'
+profile::zookeeper::prometheus_instance: 'analytics'
+profile::zookeeper::monitoring_enabled: true
+profile::zookeeper::monitoring_contact_group: 'admins'
+# Will eventually merge role contacts into Data Platform SRE
+profile::contacts::role_contacts: ['Data Engineering', 'Search Platform']

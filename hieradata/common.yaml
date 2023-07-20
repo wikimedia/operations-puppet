@@ -254,6 +254,10 @@ wikimedia_clusters:
     description: "Analytics cluster"
     sites:
       eqiad: []
+  flink:
+    description: "Zookeeper cluster for Flink HA"
+    sites:
+      eqiad: []
   memcached:
     description: "Memcached"
     sites:
@@ -645,6 +649,8 @@ dumps_dist_active_vps: clouddumps1002.wikimedia.org
 dumps_dist_active_web: clouddumps1001.wikimedia.org
 
 # List of all zookeeper clusters in production.
+# The number after each hostname represents the host's zkid
+# within Zookeeper
 zookeeper_clusters:
   main-eqiad:
     hosts:
@@ -657,6 +663,13 @@ zookeeper_clusters:
       conf2004.codfw.wmnet: '2001'
       conf2005.codfw.wmnet: '2002'
       conf2006.codfw.wmnet: '2003'
+
+# ZK cluster for Flink HA T341792
+  flink-eqiad:
+    hosts:
+      flink-zk1001.eqiad.wmnet: '1001'
+      flink-zk1002.eqiad.wmnet: '1002'
+      flink-zk1003.eqiad.wmnet: '1003'
 
   # ZK cluster for Druid analytics-eqiad cluster (non public),
   # colocated on druid hosts.
@@ -1575,6 +1588,15 @@ zookeeper_hosts_main:
 - 2620:0:860:103:10:192:32:52  # conf2005.codfw.wmnet
 - 10.192.48.59                 # conf2006.codfw.wmnet
 - 2620:0:860:104:10:192:48:59  # conf2006.codfw.wmnet
+
+zookeeper_flink_hosts:
+- 10.64.16.9                   # flink-zk1001.eqiad.wmnet
+- 2620:0:861:102:10:64:16:9    # flink-zk1001.eqiad.wmnet
+- 10.64.0.8                    # flink-zk1002.eqiad.wmnet
+- 2620:0:861:101:10:64:0:8     # flink-zk1002.eqiad.wmnet
+- 10.64.32.41                  # flink-zk1003.eqiad.wmnet
+- 2620:0:861:103:10:64:32:41   # flink-zk1003.eqiad.wmnet
+
 druid_public_hosts:
 - 10.64.0.35                  # druid1004.eqiad.wmnet
 - 2620:0:861:101:10:64:0:35   # druid1004.eqiad.wmnet

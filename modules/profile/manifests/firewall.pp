@@ -28,6 +28,7 @@ class profile::firewall (
     Array[Stdlib::IP::Address] $kafka_brokers_logging   = lookup('kafka_brokers_logging'),
     Array[Stdlib::IP::Address] $kafkamon_hosts          = lookup('kafkamon_hosts'),
     Array[Stdlib::IP::Address] $zookeeper_hosts_main    = lookup('zookeeper_hosts_main'),
+    Array[Stdlib::IP::Address] $zookeeper_flink_hosts    = lookup('zookeeper_flink_hosts'),
     Array[Stdlib::IP::Address] $druid_public_hosts      = lookup('druid_public_hosts'),
     Array[Stdlib::IP::Address] $labstore_hosts          = lookup('labstore_hosts'),
     Array[Stdlib::IP::Address] $mysql_root_clients      = lookup('mysql_root_clients'),

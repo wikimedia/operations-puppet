@@ -183,7 +183,7 @@ node 'an-airflow1006.eqiad.wmnet' {
     role(analytics_cluster::airflow::analytics_product)
     }
 
-# Analytics Zookepeer cluster
+# Analytics Zookeeper cluster
 node /^an-conf100[1-3]\.eqiad\.wmnet$/ {
     role(analytics_cluster::zookeeper)
 }
@@ -1650,7 +1650,7 @@ node /^cloudbackup200[12]\.codfw\.wmnet$/ {
 
 # Flink team-specific zookeeper cluster T341705
 node /^flink-zk100[123]\.eqiad\.wmnet$/ {
-    role(zookeeper::test)
+    role(zookeeper::flink)
 }
 
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
