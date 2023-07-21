@@ -66,16 +66,8 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
-      - Chris Albon
-      - Guillaume Lederrey
       - Joanna Borun
-      - Kavitha Appakayala
-      - Kwaku Addo Ofori
-      - Leo Mata
-      - Lukasz Sobanski
       - Mark Bergsma
-      - Nicholas Skaggs
-      - Olja Dimitrjevic
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
