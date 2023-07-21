@@ -91,7 +91,7 @@ class profile::kubernetes::master (
         instance   => 'k8s',
         watch_keys => ['/'],
         # Add all but the local cert to the file (the local one will be used unconditionally)
-        content    => "{{range gets \"/*\"}}{{if ne .Key \"${facts['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
+        content    => "{{range gets \"/*\"}}{{if ne .Key \"/${facts['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
         # FIXME: T329826 Don't reload apiserver until we know it's working properly
         #reload     => '/bin/systemctl reload kube-apiserver.service',
     }
