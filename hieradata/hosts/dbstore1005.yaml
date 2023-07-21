@@ -6,3 +6,4 @@ profile::mariadb::dbstore_multiinstance::instances:
   x1: 65G
   # Analytics staging database
   staging: 20G
+mariadb::package: 'wmf-mariadb106'
