@@ -113,6 +113,7 @@ puppet_ca_server: "%{lookup('puppetmaster')}"
 manage_puppet_ca_file: false
 
 profile::cumin::monitor_agentrun: false
+profile::cumin::unprivmaster::puppetdb_micro_host: "%{lookup('puppetdb_host')}"
 
 profile::base::labs::unattended_wmf: "present"
 profile::base::labs::unattended_distro: "present"

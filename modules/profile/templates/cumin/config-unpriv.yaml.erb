@@ -3,7 +3,7 @@ log_file: <%= @cumin_log_path %>/cumin.log
 default_backend: puppetdb
 
 puppetdb:
-    host: <%= @puppetdb_host %>
+    host: <%= @puppetdb_micro_host %>
     port: <%= @puppetdb_micro_port %>
     api_version: 4
     urllib3_disable_warnings:
