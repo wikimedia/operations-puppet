@@ -79,12 +79,16 @@ describe 'ceph::osds' do
       describe 'remove ceph osd' do
         it { is_expected.to contain_ceph__osd('c0e23s23').with_ensure('absent') }
       end
-      # Check that we increment the hexadecimal wwn value by one for a SAS drive
-      describe 'create ceph osd on sas drive' do
-        it { is_expected.to contain_ceph__osd('c0e23s16').with_device('/dev/disk/by-id/wwn-0x58ce38ee21f3c50f') }
+      # Check that we increment the hexadecimal wwn value by one for a SAS solid-state drive
+      describe 'create ceph osd on SAS solid-state drive' do
+        it { is_expected.to contain_ceph__osd('c0e23s16').with_device('/dev/disk/by-id/wwn-0x58ce38ee21f3c50d') }
+      end
+      # Check that we increment the hexadecimal wwn value by three for a SAS hard drive
+      describe 'create ceph osd on SAS hard drive' do
+        it { is_expected.to contain_ceph__osd('c0e23s0').with_device('/dev/disk/by-id/wwn-0x5000c500d9bb2bb7') }
       end
       # Check that we do not increment the wwn value for a SATA drive
-      describe 'create ceph osd on sata drive' do
+      describe 'create ceph osd on SATA drive' do
         it { is_expected.to contain_ceph__osd('c0e23s22').with_device('/dev/disk/by-id/wwn-0x58ce38ee21edcd78') }
       end
     end

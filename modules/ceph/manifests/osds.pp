@@ -107,10 +107,15 @@ class ceph::osds (
         }
 
         # For a SATA disk the WWN reported by the perccli64 tool matches that reported by the kernel in /dev/disk/by-id/wwwn-0x*.
-        # For a SAS disk we need to increment the hex string reported by three bits to obtain the LUN. The reason for this is that SAS disks can have two ports.
-        # In order to handle this we convert the wwn to a decimal, add three if it's a SAS disk, then convert it back to hexadecimal in lowercase.
+        # For a SAS hard drive we need to increment the hex string reported by three bits to obtain the LUN.
+        # For a SAS sold-state drive we need to increment the hex string by one bit to obtain the first SAS port.
+        # In order to handle this we convert the wwn to a decimal, add zero, one, or three bits, then convert it back to hexadecimal in lowercase.
         $sas_disk = bool2num($disk['interface'] == 'SAS')
-        $wwid = String.new(Integer.new("0x${disk['wwn']}")+($sas_disk * 3),'%#x')
+        $wwn_bitshift = $disk['medium'] ? {
+            'SSD' => $sas_disk,
+            'HDD' => $sas_disk * 3,
+        }
+        $wwid = String.new(Integer.new("0x${disk['wwn']}")+$wwn_bitshift,'%#x')
 
         # This device name will always be a symlink from the disk with this WWN to its current /dev/sd* name, as managed by udev.
         # The links are always in lower case, whereas the WWN reported by the perccli64 tool is in upper case.
