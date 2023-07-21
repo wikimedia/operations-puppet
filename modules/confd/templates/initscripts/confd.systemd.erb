@@ -17,6 +17,7 @@ Description=<%= @label %>
 
 [Service]
 User=root
+SyslogIdentifier=%N
 Environment="CONFD_BACKEND=<%= @backend %>"
 <%- if @hosts -%>
 Environment="CONFD_DISCOVERY=-node <%= @hosts.join(' -node ') %>"
