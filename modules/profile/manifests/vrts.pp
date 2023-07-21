@@ -102,9 +102,8 @@ class profile::vrts(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/VRT_System#ClamAV',
     }
 
-    prometheus::blackbox::check::http { $active_host:
+    prometheus::blackbox::check::http { 'ticket.wikimedia.org':
         team               => 'serviceops-collab',
-        instance_label     => $active_host,
         severity           => 'task',
         path               => '/otrs/index.pl',
         port               => 1443,
