@@ -18,8 +18,8 @@ Description=<%= @label %>
 [Service]
 User=root
 Environment="CONFD_BACKEND=<%= @backend %>"
-<%- if @host -%>
-Environment="CONFD_DISCOVERY=-node <%= @host %>"
+<%- if @hosts -%>
+Environment="CONFD_DISCOVERY=-node <%= @hosts.join(' -node ') %>"
 <%- else -%>
 <%- if @scheme == "https" -%>
 Environment="CONFD_DISCOVERY=-srv-record _etcd-client-ssl._tcp.<%= @srv_dns %> -scheme https"

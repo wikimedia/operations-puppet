@@ -12,9 +12,6 @@ class profile::kubernetes::master (
     Stdlib::Unixpath $ssl_key_path  = lookup('profile::kubernetes::master::ssl_key_path'),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-    # Comma separated list of etcd URLs is consumed by the kube-publish-sa-cert service
-    # as well as k8s::apiserser so we produce it here.
-    $etcd_servers = join($k8s_config['etcd_urls'], ',')
 
     # Install kubectl matching the masters kubernetes version
     # (that's why we don't use profile::kubernetes::client)
@@ -81,7 +78,8 @@ class profile::kubernetes::master (
         ensure  => present,
         backend => 'etcdv3',
         prefix  => $confd_prefix,
-        srv_dns => $k8s_config['etcd_srv_name'],
+        # confd with etcdv3 does not work well with srv_dns as it does not prepend the scheme in that case
+        hosts   => $k8s_config['etcd_urls'],
     }
     # Write out the service account certs form all control-planes into one file
     $kube_apiserver_sa_certs = '/etc/kubernetes/pki/kube-apiserver-sa-certs.pem'
@@ -90,7 +88,7 @@ class profile::kubernetes::master (
         instance   => 'k8s',
         watch_keys => ['/'],
         # Add all but the local cert to the file (the local one will be used unconditionally)
-        content    => "{{range gets \"/*\"}}\n{{if ne .Key ${facts['fqdn']}}}{{.Value}}{{end}}\n{{end}}",
+        content    => "{{range gets \"/*\"}}{{if ne .Key \"${facts['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
         # FIXME: T329826 Don't reload apiserver until we know it's working properly
         #reload     => '/bin/systemctl reload kube-apiserver.service',
     }
@@ -136,7 +134,7 @@ class profile::kubernetes::master (
     }
 
     class { 'k8s::apiserver':
-        etcd_servers            => $etcd_servers,
+        etcd_servers            => join($k8s_config['etcd_urls'], ','),
         apiserver_cert          => $apiserver_cert,
         # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case
         sa_cert                 => $cergen_sa_cert,

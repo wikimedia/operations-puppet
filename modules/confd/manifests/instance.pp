@@ -9,8 +9,8 @@
 #
 # [*backend*] The backend to use. Default: etcd
 #
-# [*host*] If defined, the specific backend node to connect to in the host:port
-#          form. Default: undef
+# [*hosts*] URLs of specific backend nodes to connect to.
+#           Default: undef
 #
 # [*srv_dns*] The domain under which to perform a SRV query to discover the
 #             backend cluster. Default: $::domain
@@ -23,14 +23,14 @@
 # [*prefix*] A global prefix with respect to which confd will do all of its
 #            operations. Default: undef
 define confd::instance (
-    Wmflib::Ensure   $ensure        = present,
-    Boolean          $running       = true,
-    String           $backend       = 'etcd',
-    Optional[String] $host          = undef,
-    Stdlib::Fqdn     $srv_dns       = $facts['domain'],
-    String           $scheme        = 'https',
-    Integer          $interval      = 3,
-    Optional[String] $prefix        = undef,
+    Wmflib::Ensure                   $ensure        = present,
+    Boolean                          $running       = true,
+    String                           $backend       = 'etcd',
+    Optional[Array[Stdlib::HTTPUrl]] $hosts         = undef,
+    Stdlib::Fqdn                     $srv_dns       = $facts['domain'],
+    String                           $scheme        = 'https',
+    Integer                          $interval      = 3,
+    Optional[String]                 $prefix        = undef,
 ) {
     require confd
     $label = $name ? {
