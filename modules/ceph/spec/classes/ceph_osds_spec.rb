@@ -81,7 +81,7 @@ describe 'ceph::osds' do
       end
       # Check that we increment the hexadecimal wwn value by one for a SAS drive
       describe 'create ceph osd on sas drive' do
-        it { is_expected.to contain_ceph__osd('c0e23s16').with_device('/dev/disk/by-id/wwn-0x58ce38ee21f3c50d') }
+        it { is_expected.to contain_ceph__osd('c0e23s16').with_device('/dev/disk/by-id/wwn-0x58ce38ee21f3c50f') }
       end
       # Check that we do not increment the wwn value for a SATA drive
       describe 'create ceph osd on sata drive' do
