@@ -8,6 +8,7 @@ class profile::kubernetes::deployment_server::global_config (
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', { 'default_value' => [] }),
     Array[Stdlib::Fqdn] $prometheus_nodes               = lookup('prometheus_all_nodes'),
     Hash[String, Hash] $kafka_clusters                  = lookup('kafka_clusters'),
+    Hash[String, Integer] $db_sections                  = lookup('profile::mariadb::section_ports'),
     String $helm_user_group                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
 
 ) {
@@ -110,7 +111,16 @@ class profile::kubernetes::deployment_server::global_config (
 
         # TODO: add info about the cluster group? So we don't need to have unique cluster names.
         # Merge default and environment specific general values with deployment config and service proxies
-        $opts = deep_merge($general_values['default'], $general_values[$cluster_name], $deployment_config_opts, { 'services_proxy' => $proxies, 'kafka_brokers' => $kafka_brokers })
+        $opts = deep_merge(
+          $general_values['default'],
+          $general_values[$cluster_name],
+          $deployment_config_opts,
+          {
+            'services_proxy' => $proxies,
+            'kafka_brokers'  => $kafka_brokers,
+            'mariadb'        => {'section_ports' =>$db_sections },
+          }
+        )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
         file { $general_config_path:
             content => to_yaml($opts),
