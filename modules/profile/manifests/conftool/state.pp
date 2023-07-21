@@ -13,7 +13,7 @@ class profile::conftool::state(
     String $prefix = lookup('conftool_prefix'),
     Integer $query_interval = lookup('profile::conftool::state::query_interval'),
 ) {
-    class { '::confd':
+    class { 'confd::default_instance':
         ensure   => $ensure,
         prefix   => $prefix,
         interval => $query_interval,
