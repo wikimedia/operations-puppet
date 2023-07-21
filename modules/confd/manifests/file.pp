@@ -44,7 +44,12 @@ define confd::file (
 ) {
 
     if $instance == 'main' {
-        #TODO: remove this special casing?
+        # On the main instance, we don't define $prefix
+        # globally from the command line, but instead we prepend it
+        # to the single templates.
+        # This is done for historical reasons - we did this to allow multiple
+        # definitions which would use different prefixes, but it's a hack.
+        # TODO: use multiple instances instead of this hack.
         include confd::default_instance
         $confd_prefix = $confd::default_instance::prefix
     } else {
