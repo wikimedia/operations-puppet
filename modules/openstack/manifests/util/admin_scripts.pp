@@ -18,8 +18,12 @@ class openstack::util::admin_scripts(
 
     # We need a mysql client in order to run wmcs-cold-migrate and wmcs-ceph-migrate;
     #  they modify the VM host directly in the db
-    package{ 'mariadb-client':
-        ensure => 'present',
+    # Make the custom component explicit so this is not installed from the debian archive
+    # which would result in puppet trying to downgrade later the package when galera's
+    # module mariadb-backup is installed
+    apt::package_from_component { 'openstack-mariadb-client':
+        component => 'thirdparty/openstack-db',
+        packages  => ['mariadb-client'],
     }
 
     package{ 'python3-pytest':
