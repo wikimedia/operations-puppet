@@ -68,11 +68,11 @@ class puppetserver (
 
     $service_reload_notify = $auto_restart ? {
         true  => Exec['reload puppetserver'],
-        false => undef,
+        false => Exec['restart puppetserver required'],
     }
     $service_restart_notify = $auto_restart ? {
         true  => Service['puppetserver'],
-        false => undef,
+        false => Exec['restart puppetserver required'],
     }
     $_reports = $puppetdb_urls.empty ? {
         true  => $reports,
@@ -221,6 +221,12 @@ class puppetserver (
     }
     exec { 'reload puppetserver':
         command     => '/usr/bin/systemctl reload puppetserver',
+        refreshonly => true,
+    }
+    # Add a file indicating that a restart or reload is required this file exists for other tooling to consume
+    exec { 'restart puppetserver required':
+        path        => '/usr/bin',
+        command     => 'printf "Restart required from %s\n" "$(date)" >> /run/puppetserver/restart_required',
         refreshonly => true,
     }
 }
