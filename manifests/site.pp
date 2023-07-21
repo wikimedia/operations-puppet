@@ -2603,6 +2603,10 @@ node /^rdb101[02]\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
+node /^rdb101[34]\.eqiad\.wmnet$/ {
+    role(insetup::serviceops)
+}
+
 node /^rdb200[79]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }
