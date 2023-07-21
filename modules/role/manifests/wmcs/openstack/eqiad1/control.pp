@@ -29,8 +29,13 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::nova::conductor::service
     include profile::openstack::eqiad1::nova::scheduler::service
     include profile::openstack::eqiad1::nova::api::service
-    include profile::openstack::eqiad1::haproxy
-    include profile::prometheus::haproxy_exporter
+
+    if $facts['hostname'] != 'cloudcontrol1005' {
+        # the only server on the new network setup
+        include profile::openstack::eqiad1::haproxy
+        include profile::prometheus::haproxy_exporter
+    }
+
     include profile::ldap::client::utils
     include profile::openstack::eqiad1::pdns::dns_floating_ip_updater
     include profile::openstack::eqiad1::nova::fullstack::service
