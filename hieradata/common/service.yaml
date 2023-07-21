@@ -3442,9 +3442,9 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.192.0.147
+        default: 10.192.48.75
       eqiad:
-        default: 10.64.32.80
+        default: 10.64.16.87
     page: false
     probes:
       - type: http
@@ -3464,9 +3464,9 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.192.48.75
+        default: 10.192.0.147
       eqiad:
-        default: 10.64.16.87
+        default: 10.64.32.80
     page: false
     probes:
       - type: http
