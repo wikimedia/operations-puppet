@@ -5,9 +5,7 @@ profile::admin::groups:
 # can contact the backends using the cloud-private subnet. Once all cloudcontrol servers are
 # in the same network setup, this override here can be deleted, because it should be set elsewhere.
 profile::openstack::eqiad1::openstack_controllers:
-  # TODO: placeholder!
-  - cloudlb1001.private.eqiad.wikimedia.cloud
-  - cloudlb1002.private.eqiad.wikimedia.cloud
+  - cloudcontrol1005.private.eqiad.wikimedia.cloud
 
 profile::bird::advertise_vips:
   # TODO: the FQDN needs update (remove the -next)
