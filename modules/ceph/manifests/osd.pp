@@ -50,33 +50,34 @@ define ceph::osd (
 
     if $ensure == 'present' {
         # These will be the names of the exec resources
-        $check_fsid_mismatch = "ceph-osd-check-fsid-mismatch-${name}"
+        # $check_fsid_mismatch = "ceph-osd-check-fsid-mismatch-${name}"
         $prepare = "ceph-osd-prepare-${name}"
         $activate = "ceph-osd-activate-${name}"
 
         # Ensure that all OSDs are prepared before any are activated
         Exec<| tag == 'prepare' |> -> Exec<| tag == 'activate' |>
 
+        # TODO: Disabling fsid mismatch check for now, until we can refactor
         # Check for any fsid mismatch before running any prepare operations
-        Exec[$check_fsid_mismatch] -> Exec[$prepare]
+        # Exec[$check_fsid_mismatch] -> Exec[$prepare]
 
         # We want this exec to exit with an error and prevent any further osd operations if there is an fsid mismatch
-        $check_fsid_command = 'exit 1'
+        # $check_fsid_command = 'exit 1'
 
         # return error if $(readlink -f ${device}) has fsid differing from ${fsid}, unless there is no fsid
-        $check_fsid_unless = @("COMMAND"/L$)
-        if [ -z $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') ]; then exit 0 ; fi \
-        test ${fsid} = $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"')
-        | -COMMAND
+        # $check_fsid_unless = @("COMMAND"/L$)
+        # if [ -z $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') ]; then exit 0 ; fi \
+        # test ${fsid} = $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"')
+        # | -COMMAND
 
-        exec { $check_fsid_mismatch:
-            command   => $check_fsid_command,
-            unless    => $check_fsid_unless,
-            provider  => 'shell',
-            path      => '/usr/bin:/bin:/usr/sbin:/sbin',
-            logoutput => true,
-            timeout   => $exec_timeout,
-        }
+        # exec { $check_fsid_mismatch:
+        #     command   => $check_fsid_command,
+        #     unless    => $check_fsid_unless,
+        #     provider  => 'shell',
+        #     path      => '/usr/bin:/bin:/usr/sbin:/sbin',
+        #     logoutput => true,
+        #     timeout   => $exec_timeout,
+        # }
 
         # Prepare OSD
         $prepare_command = "ceph-volume lvm prepare --bluestore --data ${device} ${bluestore_opts} --crush-device-class ${device_class}"

@@ -17,8 +17,9 @@ describe 'ceph::osd', :type => :define do
       end
       # rubocop:disable Metrics/LineLength
       describe 'create hdd osd without bluestore db' do
-        it { is_expected.to contain_exec('ceph-osd-check-fsid-mismatch-c0e23s0')
-                              .with_before('["Exec[ceph-osd-prepare-c0e23s0]"]') }
+        # Note, that the check-fsid-mismatch command is currently disabled
+        # it { is_expected.to contain_exec('ceph-osd-check-fsid-mismatch-c0e23s0')
+        #                       .with_before('["Exec[ceph-osd-prepare-c0e23s0]"]') }
         it { is_expected.to contain_exec('ceph-osd-prepare-c0e23s0')
                               .with_before('["Exec[ceph-osd-activate-c0e23s0]"]') }
         it { is_expected.to contain_exec('ceph-osd-activate-c0e23s0')
