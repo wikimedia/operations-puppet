@@ -65,7 +65,7 @@ define ceph::osd (
 
         # return error if $(readlink -f ${device}) has fsid differing from ${fsid}, unless there is no fsid
         $check_fsid_unless = @("COMMAND"/L$)
-        if [ -z $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') ]; then exit 0 fi \
+        if [ -z $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') ]; then exit 0 ; fi \
         test ${fsid} = $(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"')
         | -COMMAND
 
