@@ -103,6 +103,11 @@ class profile::base (
         }
     }
     class { 'motd': }
+    # Indicate if any services need to be restarted
+    motd::script { 'Check for restarts':
+        priority => 99,
+        source   => 'puppet:///modules/profile/base/motd/check_restarts.sh',
+    }
     class { 'base::standard_packages':
         remove_python2             => $remove_python2_on_bullseye,
         additional_purged_packages => $additional_purged_packages,
