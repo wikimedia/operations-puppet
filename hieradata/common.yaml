@@ -43,6 +43,8 @@ lookup_options:
     merge: deep
   profile::spicerack::peeringdb_config_data:
     merge: hash
+  profile::spicerack::mysql_config_data:
+    merge: hash
   profile::statograph::api_key:
     convert_to: 'Sensitive'
   profile::statograph::page_id:
