@@ -102,14 +102,16 @@ class profile::vrts(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/VRT_System#ClamAV',
     }
 
-    prometheus::blackbox::check::http { 'ticket.wikimedia.org':
-        team               => 'serviceops-collab',
-        severity           => 'task',
-        path               => '/otrs/index.pl',
-        port               => 1443,
-        ip_families        => ['ip4'],
-        force_tls          => true,
-        body_regex_matches => ['wikimedia'],
+    if $active_host == $facts['fqdn'] {
+        prometheus::blackbox::check::http { 'ticket.wikimedia.org':
+            team               => 'serviceops-collab',
+            severity           => 'task',
+            path               => '/otrs/index.pl',
+            port               => 1443,
+            ip_families        => ['ip4'],
+            force_tls          => true,
+            body_regex_matches => ['wikimedia'],
+    }
     }
 
     # can conflict with ferm module
