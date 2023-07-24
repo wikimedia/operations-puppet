@@ -458,7 +458,7 @@ profile::trafficserver::backend::logs:
     ensure: present
 profile::trafficserver::backend::network_settings:
   connections_throttle: 0
-  sock_option_flag_in: 0x5
+  sock_option_flag_in: 0x1
   default_inactivity_timeout: 360
   max_connections_in: 270000
   max_connections_active_in: 90000
