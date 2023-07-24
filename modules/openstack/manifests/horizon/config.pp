@@ -33,10 +33,13 @@ class openstack::horizon::config(
     String        $secret_key,
     Stdlib::Fqdn  $webserver_hostname = 'horizon.wikimedia.org',
 ) {
-    file { '/etc/openstack-dashboard':
+    ensure_resource('file', '/etc/openstack-dashboard', {
         ensure => 'directory',
         owner  => 'root',
-    }
+        group  => 'root',
+        mode   => '0755',
+        force  => true,
+    })
 
     file { '/etc/openstack-dashboard/local_settings.py':
         content => template("openstack/${horizon_version}/horizon/local_settings.py.erb"),
