@@ -23,7 +23,7 @@ describe 'ceph::osd', :type => :define do
         it { is_expected.to contain_exec('ceph-osd-prepare-c0e23s0')
                               .with_before('["Exec[ceph-osd-activate-c0e23s0]"]') }
         it { is_expected.to contain_exec('ceph-osd-activate-c0e23s0')
-                              .with_unless("id=$(ceph-volume lvm list /dev/disk/by-id/wwn-0x5000c500d9bb2bb5 --format=json | jq -r keys[]) systemctl is-active ceph-osd@\$id") }
+                              .with_unless("id=$(ceph-volume lvm list /dev/disk/by-id/wwn-0x5000c500d9bb2bb5 --format=json | jq -r keys[]) && systemctl is-active ceph-osd@\$id") }
       end
       describe 'create hdd osd with bluestore db' do
         let(:params) { super().merge(:bluestore_db => '/dev/nvme0n1p1') }

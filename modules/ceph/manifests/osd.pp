@@ -95,13 +95,13 @@ define ceph::osd (
 
         # Activate osd
         $activate_command = @("COMMAND"/L$)
-        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) \
-        fsid=$(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') \
+        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) && \
+        fsid=$(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') &&\
         ceph-volume lvm activate \$id \$fsid
         | -COMMAND
 
         $activate_unless = @("COMMAND"/L$)
-        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) \
+        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) && \
         systemctl is-active ceph-osd@\$id
         | -COMMAND
 
@@ -117,7 +117,7 @@ define ceph::osd (
     } elsif $ensure == 'absent' {
         $remove = "ceph-osd-remove-${name}"
         $remove_command = @("COMMAND"/L$)
-        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) \
+        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) && \
         if [[ \$id ]] && [[ \$id =~ ^[0-9]+\$ ]] ; then \
             ceph osd ok-to-stop osd.\$id && \
             ceph osd safe-to-destroy osd.\$id && \
