@@ -64,7 +64,14 @@ class VarnishHospital(BaseVarnishLogConsumer):
         """
         splitline = line.split(None)
 
-        vcl_id, origin_server = splitline[3].split('.')
+        try:
+            vcl_id, origin_server = splitline[3].split('.')
+        # This happens when we a get a line such as ['(null)'] from the code
+        # above, splitline[3].split('.)].
+        # 0 Backend_health - (null) Went sick -------H 2 3 5 0.000000 0.
+        # See T342566. When this happens, simply skip writing the log.
+        except ValueError:
+            return
 
         log = {
             'vcl_id': vcl_id,
