@@ -319,3 +319,4 @@ profile::cache::haproxy::varnish_socket:
 profile::cache::haproxy::monitoring_enabled: true
 profile::cache::haproxy::version: haproxy26
 profile::cache::haproxy::do_systemd_hardening: true
+profile::cache::haproxy::http_disable_keepalive: true
