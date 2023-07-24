@@ -18,12 +18,15 @@ class profile::cloudceph::mon(
 
     include network::constants
 
-    $client_networks = [
-        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-e4-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-f4-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['codfw']['private']['cloud-hosts1-codfw']['ipv4'],
-    ]
+    # this selects all production networks in eqiad & codfw that have a private subnet with name
+    # cloud-host that contains an 'ipv4' attribute
+    $client_networks = ['eqiad', 'codfw'].map |$dc| {
+        $network::constants::all_network_subnets['production'][$dc]['private'].filter | $subnet | {
+            $subnet[0] =~ /cloud-hosts/
+        }.map | $subnet, $value | {
+            $value['ipv4']
+        }
+    }.flatten.delete_undef_values.sort
 
     # Make sure the mgr keyring dir has the right permissions
     $keyring_path = ceph::auth::get_keyring_path("mgr.${::hostname}", $ceph_auth_conf["mgr.${::hostname}"]['keyring_path'])
