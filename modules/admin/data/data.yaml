@@ -755,7 +755,7 @@ groups:
     gid: 784
     members: [goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, sihe, ollieshotton,
-              muja, andrewtavis-wmde, manuel-wmde]
+              muja, andrewtavis-wmde, manuel-wmde, kpayne]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
