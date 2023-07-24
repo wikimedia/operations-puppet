@@ -385,9 +385,21 @@ network::subnets:
       private:
         cloud-instances2-b-eqiad:
           ipv4: 172.16.0.0/21
+        cloud-private-c8-eqiad:
+          ipv4: 172.20.1.0/24
+        cloud-private-d5-eqiad:
+          ipv4: 172.20.2.0/24
+        cloud-private-e4-eqiad:
+          ipv4: 172.20.3.0/24
+        cloud-private-f4-eqiad:
+          ipv4: 172.20.4.0/24
+        cloud-eqiad-bgp-private-vips:
+          ipv4: 172.20.255.0/24
       public:
         cloud-eqiad1-floating:
           ipv4: 185.15.56.0/25
+        cloud-eqiad1-bgp-public-vips:
+          ipv4: 185.15.56.160/28
     codfw:
       private:
         cloud-instances2-b-codfw:
