@@ -544,6 +544,19 @@ groups:
   - record: instance_name:node_systemd_unit_state_failed:sum
     expr: sum by (instance, name) (node_systemd_unit_state{state="failed"})
 
+- name: cadvisor
+  rules:
+  - record: cluster_id:container_cpu_usage_seconds_total:rate5m
+    expr: sum by (id,cluster) (rate(container_cpu_usage_seconds_total{id!~"(/|/system.slice)"}[5m]))
+  - record: cluster_id:container_cpu_system_seconds_total:rate5m
+    expr: sum by (id,cluster) (rate(container_cpu_system_seconds_total{id!~"(/|/system.slice)"}[5m]))
+  - record: cluster_id:container_cpu_user_seconds_total:rate5m
+    expr: sum by (id,cluster) (rate(container_cpu_user_seconds_total{id!~"(/|/system.slice)"}[5m]))
+  - record: cluster_id:container_memory_usage_bytes:sum
+    expr: sum by (id,cluster) (container_memory_usage_bytes{id!~"(/|/system.slice)"})
+  - record: cluster_id:container_memory_working_set_bytes:sum
+    expr: sum by (id,cluster) (container_memory_working_set_bytes{id!~"(/|/system.slice)"})
+
 - name: ipvs
   rules:
   - record: instance:node_ipvs_backend_connections_active:max5m
