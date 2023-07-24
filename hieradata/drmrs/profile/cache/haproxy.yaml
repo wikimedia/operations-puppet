@@ -1,0 +1,1 @@
+profile::cache::haproxy::http_disable_keepalive: true
