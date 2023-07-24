@@ -27,11 +27,11 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         ],
     }
 
-    class { '::openstack::horizon::source_deploy':
+    class { '::openstack::horizon::config':
         horizon_version      => $horizon_version,
         openstack_version    => $openstack_version,
-        keystone_api_fqdn    => $keystone_api_fqdn,
         dhcp_domain          => $dhcp_domain,
+        keystone_api_fqdn    => $keystone_api_fqdn,
         instance_network_id  => $instance_network_id,
         ldap_rw_host         => $ldap_rw_host,
         ldap_user_pass       => $ldap_user_pass,
@@ -41,7 +41,10 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         secret_key           => $secret_key,
     }
 
-    contain '::openstack::horizon::source_deploy'
+    class { '::openstack::horizon::source_deploy':
+        horizon_version    => $horizon_version,
+        webserver_hostname => $webserver_hostname,
+    }
 
     ferm::service { 'horizon_http':
         proto  => 'tcp',

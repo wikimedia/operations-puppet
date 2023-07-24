@@ -13,17 +13,9 @@
 # pull the policy files that Horizon uses from the appropriate services
 # and avoid having to duplicate them just for Horizon to consume.
 #
+# SPDX-License-Identifier: Apache-2.0
 class openstack::horizon::source_deploy(
     String        $horizon_version,
-    String        $openstack_version,
-    Stdlib::Fqdn  $keystone_api_fqdn,
-    Stdlib::Fqdn  $dhcp_domain,
-    String        $instance_network_id,
-    Stdlib::Host  $ldap_rw_host,
-    String        $ldap_user_pass,
-    Array[String] $all_regions,
-    String        $puppet_git_repo_name,
-    String        $secret_key,
     String        $venv_dir           = '/srv/deployment/horizon/venv',
     Stdlib::Fqdn  $webserver_hostname = 'horizon.wikimedia.org',
 ) {
@@ -33,62 +25,6 @@ class openstack::horizon::source_deploy(
         'virtualenv',
         'gettext',
     ])
-
-    file { '/etc/openstack-dashboard/local_settings.py':
-        content => template("openstack/${horizon_version}/horizon/local_settings.py.erb"),
-        mode    => '0444',
-        owner   => 'root',
-        notify  => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/nova_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/nova/common/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/keystone_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/keystone/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/glance_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/glance/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/designate_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/designate/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/neutron_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/neutron/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/cinder_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/cinder/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/trove_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/trove/policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
 
     # A user and group to run this as
     group { 'horizon':
@@ -101,16 +37,6 @@ class openstack::horizon::source_deploy(
         gid        => 'horizon',
         system     => true,
         managehome => true,
-    }
-
-    # This is a trivial policy file that forbids everything.  We'll use it
-    #  for services that we don't support to prevent Horizon from
-    #  displaying spurious panels.
-    file { '/etc/openstack-dashboard/disabled_policy.yaml':
-        source => "puppet:///modules/openstack/${horizon_version}/horizon/disabled_policy.yaml",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
     }
 
     scap::target { 'horizon/deploy':
@@ -134,13 +60,6 @@ class openstack::horizon::source_deploy(
     httpd::site { $webserver_hostname:
         content => template("openstack/${horizon_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
-    }
-
-    # We need to do some work that would otherwise by handled by the horizon
-    #  debian package
-    file { '/etc/openstack-dashboard':
-        ensure => 'directory',
-        owner  => 'root',
     }
 
     # Prepare this directory for scap to drop some files into
