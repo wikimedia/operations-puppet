@@ -13,7 +13,7 @@ class ceph::osds (
     Ceph::Auth::Keyring["osd.${facts['hostname']}"] -> Class['ceph::osds']
     Class['ceph::config'] -> Class['ceph::osds']
 
-    ensure_packages(['ceph-osd'])
+    ensure_packages(['ceph-osd','ceph-volume','hdparm'])
 
     # Disable the write cache on devices using the SCSI disk driver
     $facts['disk_type'].filter | $disk | { $disk[0] =~ 'sd*' }.each |$disk, $type| {
