@@ -5,6 +5,7 @@
 # @param service_class The services class to use
 # @param release_policy the release policy to use
 # @param access_strategy the access strategy to use
+# @param profile_format set the OIDC/OAuth2 profile view data format
 # @param required_groups a list of required ldap groups for the services
 # @param properties a list of addtional properties for the services
 # @param allowed_delegate add an allowed delegated authentication provider
@@ -12,9 +13,10 @@
 define apereo_cas::service (
     Integer                              $id,
     String                               $service_id,
-    Apereo_cas::Service::Class           $service_class   = 'CasRegisteredService',
+    Apereo_cas::Service::Class           $service_class    = 'CasRegisteredService',
     Apereo_cas::Service::Release_policy  $release_policy   = 'ReturnAllAttributeReleasePolicy',
     Apereo_cas::Service::Access_strategy $access_strategy  = 'DefaultRegisteredServiceAccessStrategy',
+    ENUM['FLAT', 'NESTED']               $profile_format   = 'NESTED',
     Array[String]                        $required_groups  = [],
     Hash                                 $properties       = {},
     Optional[String[1]]                  $allowed_delegate = undef,
@@ -28,6 +30,7 @@ define apereo_cas::service (
         $additional_params = {
             'clientId'               => $title,
             'clientSecret'           => $client_secret,
+            'userProfileViewType'    => $profile_format,
             'bypassApprovalPrompt'   => true,
             'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
