@@ -9,7 +9,7 @@ class profile::openstack::codfw1dev::horizon::docker_deploy(
     Stdlib::Fqdn    $webserver_hostname = lookup('profile::openstack::codfw1dev::horizon::webserver_hostname'),
     Array[String]   $all_regions = lookup('profile::openstack::codfw1dev::all_regions'),
     String          $puppet_git_repo_name = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_name'),
-    Stdlib::Port::User $port = lookup('profile::openstack::codfw1dev::horizon::docker_port', { 'default_value' => 8081 }),
+    Stdlib::Port::User $port = lookup('profile::openstack::codfw1dev::horizon::docker_port', { 'default_value' => 8084 }),
     String          $secret_key = lookup('profile::openstack::codfw1dev::horizon::secret_key'),
     String          $docker_version = lookup('profile::openstack::codfw1dev::horizon::docker_version'),
 ) {

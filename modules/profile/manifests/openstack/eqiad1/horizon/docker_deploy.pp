@@ -11,7 +11,7 @@ class profile::openstack::eqiad1::horizon::docker_deploy(
     String          $puppet_git_repo_name = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_name'),
     String          $secret_key = lookup('profile::openstack::eqiad1::horizon::secret_key'),
     String          $docker_version = lookup('profile::openstack::eqiad1::horizon::docker_version'),
-    Stdlib::Port::User $port = lookup('profile::openstack::eqiad1::horizon::docker_port', { 'default_value' => 8081 }),
+    Stdlib::Port::User $port = lookup('profile::openstack::eqiad1::horizon::docker_port', { 'default_value' => 8084 }),
 ) {
 
     require ::profile::openstack::eqiad1::clientpackages
