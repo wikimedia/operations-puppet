@@ -250,6 +250,13 @@ https://enwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
+https://eswikibooks-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/eswikibooks-damaging:predict
+  json_body:
+    rev_id: 4364
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
 https://eswikibookswiki-damaging.revscoring-editquality-damaging.wikimedia.org:
 - path: /v1/models/eswikibookswiki-damaging:predict
   json_body:
@@ -261,6 +268,13 @@ https://eswiki-damaging.revscoring-editquality-damaging.wikimedia.org:
 - path: /v1/models/eswiki-damaging:predict
   json_body:
     rev_id: 148304768
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswikiquote-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/eswikiquote-damaging:predict
+  json_body:
+    rev_id: 4364
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -495,6 +509,13 @@ https://enwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
+https://eswikibooks-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/eswikibooks-goodfaith:predict
+  json_body:
+    rev_id: 4364
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
 https://eswikibookswiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
 - path: /v1/models/eswikibookswiki-goodfaith:predict
   json_body:
@@ -506,6 +527,13 @@ https://eswiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
 - path: /v1/models/eswiki-goodfaith:predict
   json_body:
     rev_id: 148304768
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswikiquote-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/eswikiquote-goodfaith:predict
+  json_body:
+    rev_id: 4364
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -709,6 +737,13 @@ https://elwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
 - path: /v1/models/elwiki-reverted:predict
   json_body:
     rev_id: 9843950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiktionary-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/enwiktionary-reverted:predict
+  json_body:
+    rev_id: 3457
   assert_status: 200
   assert_body_contains: probability
   method: POST
