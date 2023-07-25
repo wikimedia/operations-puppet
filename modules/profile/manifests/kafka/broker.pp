@@ -421,6 +421,8 @@ class profile::kafka::broker(
         authorizer_class_name                     => $authorizer_class_name,
         super_users                               => $super_users,
         num_partitions                            => $num_partitions,
+        num_io_threads                            => $num_io_threads,
+        num_recovery_threads_per_data_dir         => $num_recovery_threads_per_data_dir,
         # Make sure that java is installed and configured before the kafka broker service.
         require                                   => Class['::profile::java'],
     }
