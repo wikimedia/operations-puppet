@@ -32,7 +32,7 @@ profile::wmcs::striker::docker::port: 8080
 
 profile::openstack::codfw1dev::horizon::docker_version: 2023-07-25-205500-dev
 
-profile::openstack::codfw1dev::horizon::port: 8081
+profile::openstack::codfw1dev::horizon::port: 8084
 
 profile::wmcs::striker::docker::version: 2023-07-13-234503-production
 profile::wmcs::striker::docker::env:
