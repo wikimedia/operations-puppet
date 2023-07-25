@@ -45,10 +45,18 @@ sub cluster_fe_recv_tail {
 
 sub cluster_fe_hash { }
 sub cluster_fe_ratelimit {
+    // TODO: move all these rules to requestctl if possible.
+    // For now, add the requestctl header for them too,
+    // so that we have some more insight into which rule is kicking in
+    // Set the header to the empty string if not present.
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
+    }
     // Requests in violation of the User-Agent policy
     if (req.http.User-Agent ~ "^python-requests" && req.http.Host == "query.wikidata.org") {
         // UA-policy violations: 10/10s (1/s long term, with 10 burst)
         if (vsthrottle.is_denied("wdqs-ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_wdqs_ua_policy";
             return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
         }
     }
@@ -56,6 +64,7 @@ sub cluster_fe_ratelimit {
     if (req.http.User-Agent ~ "^vscode-phabricator" && req.http.Host == "phabricator.wikimedia.org") {
         // UA-policy violations: 30/10s (3/s long term, with 30 burst)
         if (vsthrottle.is_denied("vscode-phab-ua-policy:" + req.http.X-Client-IP, 30, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_vscode_phab_ua_policy";
             return (synth(429, "vscode-phabricator fetches users too aggressively: https://phabricator.wikimedia.org/T271528"));
         }
     }

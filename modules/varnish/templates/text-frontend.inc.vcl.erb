@@ -416,8 +416,17 @@ sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_ratelimit {
+    // TODO: move all these rules to requestctl if possible.
+    // For now, add the requestctl header for them too,
+    // so that we have some more insight into which rule is kicking in
+    // Set the header to the empty string if not present.
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
+    }
+
     if (req.url ~ "^/api/rest_v1/page/pdf/") {
         if (vsthrottle.is_denied("proton_limiter:" + req.http.X-Client-IP, 10, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_proton";
             return (synth(429, "Too Many Requests"));
         }
     }
@@ -427,11 +436,13 @@ sub cluster_fe_ratelimit {
     if (req.http.X-Public-Cloud
         && std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets
         && vsthrottle.is_denied("public_cloud_all:" + req.http.X-Client-IP, 1000, 10s)) {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud";
         return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
     }
 
     // T284479
     if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",static_T284479";
         return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
     }
 
@@ -449,12 +460,15 @@ sub cluster_fe_ratelimit {
         std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
         if (req.url ~ "^/(api/rest_v1/|w/api.php|wiki/Special:EntityData)") {
             if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_rest";
                 return (synth(429, "Too Many Requests"));
             }
         } else {
             if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud_uncached:" + req.http.X-Client-IP, 100, 10s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud_uncached";
                 return (synth(429, "Too Many Requests"));
             } else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_general";
                 return (synth(429, "Too Many Requests"));
             }
         }

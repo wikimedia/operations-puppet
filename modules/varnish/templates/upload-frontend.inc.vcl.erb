@@ -206,9 +206,17 @@ sub cluster_fe_ratelimit {
     // dont apply any rate limiting to internal networks
     // Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
     if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+        // TODO: move all these rules to requestctl if possible.
+        // For now, add the requestctl header for them too,
+        // so that we have some more insight into which rule is kicking in
+        // Set the header to the empty string if not present.
+        if (!req.http.X-Requestctl) {
+            set req.http.X-Requestctl = "";
+        }
         if (req.http.User-Agent ~ "omnibot") {
             if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
-                    return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_ua_policy";
+                return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
             }
         }
 
@@ -216,49 +224,58 @@ sub cluster_fe_ratelimit {
         if (req.http.User-Agent ~ "^(Go-http-client|Python-urllib|Java/|Wget/)") {
             // UA-policy violations: 10/10s (1/s long term, with 10 burst)
             if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_ua_policy";
                 return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
             }
         }
 
         // Bytedance issue mitigation: 100/10s (10/s long term, with 100 burst)
         if (req.http.X-Client-IP ~ "^130\.44\.21[2345]\." && vsthrottle.is_denied("bytedance", 100, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_bytedance";
             return (synth(429, "Too Many Requests"));
                 }
 
         // 403 all python-requests UA
         if (req.http.User-Agent ~ "^python-requests") {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_python_requests";
             return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
         }
 
         // 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
         if (req.http.User-Agent ~ "^DownloadBot/") {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_downloadbot";
             return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
         }
 
         // Missing or empty User-Agent header
         if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_missing_ua";
             return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
         }
 
         // Bingbot excessive media fetch limiting
         if (req.http.User-Agent ~ "bingbot") {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_bingbot";
             return (synth(403, "Forbidden"));
         }
 
         // geoshape limit rate: 10/10s (1/s long term, with 10 burst)
         if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>" && req.url ~ "/geoshape") {
             if (vsthrottle.is_denied("maps-geoshape:" + req.http.X-Client-IP, 10, 10s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_maps_geoshape";
                 return (synth(429, "Too Many Requests"));
             }
         }
 
         // General public_cloud rate limiting: 100/10s (10/s long term, with 100 burst)
         if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud:" + req.http.X-Client-IP, 100, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud";
             return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
         }
 
         // General upload rate limiting: 1000/10s (100/s long term, with 1000 burst)
         if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_general";
             return (synth(429, "Too Many Requests"));
         }
         <%- if @etcd_filters -%>
