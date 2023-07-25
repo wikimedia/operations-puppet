@@ -9,6 +9,7 @@ class profile::tcpircbot(
 
     tcpircbot::instance { 'logmsgbot':
         ensure      => $ensure,
+        listen_port => 9200,
         channels    => '#wikimedia-operations',
         password    => $passwords::logmsgbot::logmsgbot_password,
         server_host => $irc_host,
@@ -33,11 +34,26 @@ class profile::tcpircbot(
             '2620:0:860:103:10:192:32:49/128',  # cumin2002.codfw.wmnet
         ],
     }
+    tcpircbot::instance { 'logmsgbot_cloud':
+        ensure      => $ensure,
+        listen_port => 9201,
+        channels    => '#wikimedia-cloud-feed',
+        password    => $passwords::logmsgbot::logmsgbot_password,
+        server_host => $irc_host,
+        server_port => $irc_port,
+        cidr        => [
+            '::ffff:127.0.0.1/128',             # loopback
+            '::ffff:10.64.48.148/128',          # cloudcumin1001.eqiad.wmnet
+            '2620:0:861:107:10:64:48:148/128',  # cloudcumin1001.eqiad.wmnet
+            '::ffff:10.192.32.140/128',         # cloudcumin2001.codfw.wmnet
+            '2620:0:860:103:10:192:32:140/128', # cloudcumin2001.codfw.wmnet
+        ],
+    }
     nrpe::monitor_service { 'tcpircbot':
         ensure => 'absent'
     }
 
-    $allowed_hosts = [
+    $allowed_hosts_prod = [
         'deploy1002.eqiad.wmnet',       # deployment eqiad
         'deploy2002.codfw.wmnet',       # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
@@ -47,11 +63,22 @@ class profile::tcpircbot(
         'cumin1001.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2002.codfw.wmnet',        # cluster mgmt codfw
     ]
+    $allowed_hosts_cloud = [
+        'cloudcumin1001.eqiad.wmnet',   # cloud cluster mgmt eqiad
+        'cloudcumin2001.codfw.wmnet',   # cloud cluster mgmt codfw
+    ]
 
-    $allowed_hosts_ferm = join($allowed_hosts, ' ')
+    $allowed_hosts_prod_ferm = join($allowed_hosts_prod, ' ')
     ferm::service { 'tcpircbot_allowed':
         proto  => 'tcp',
         port   => '9200',
-        srange => "(@resolve((${allowed_hosts_ferm})) @resolve((${allowed_hosts_ferm}), AAAA))",
+        srange => "(@resolve((${allowed_hosts_prod_ferm})) @resolve((${allowed_hosts_prod_ferm}), AAAA))",
+    }
+
+    $allowed_hosts_cloud_ferm = join($allowed_hosts_cloud, ' ')
+    ferm::service { 'tcpircbot_cloud_allowed':
+        proto  => 'tcp',
+        port   => '9201',
+        srange => "(@resolve((${allowed_hosts_cloud_ferm})) @resolve((${allowed_hosts_cloud_ferm}), AAAA))",
     }
 }

@@ -9,3 +9,8 @@ profile::cumin::master::connect_timeout: 20
 profile::spicerack::cookbooks_repos:
   'operations/cookbooks': '/srv/deployment/spicerack'
   'cloud/wmcs-cookbooks': '/srv/deployment/wmcs-cookbooks'
+# This sets the right port in /etc/spicerack/config.yaml
+# (9200 logs to #wikimedia-operations, 9201 logs to #wikimedia-cloud-feed)
+# Please note that this variable can also affect /etc/conftool/config.yaml,
+# but that file is currently not present in the cloud_management cluster.
+tcpircbot_port: 9201
