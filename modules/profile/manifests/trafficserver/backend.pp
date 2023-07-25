@@ -150,6 +150,12 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/mw-on-k8s.lua.conf',
     }
 
+    trafficserver::lua_script { 'gateway-check':
+        source    => 'puppet:///modules/profile/trafficserver/gateway-check.lua',
+        unit_test => 'puppet:///modules/profile/trafficserver/gateway-check_test.lua',
+        config    => 'puppet:///modules/profile/trafficserver/gateway-check.lua.conf',
+    }
+
     if $monitor_enable {
         # Monitoring
         profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
