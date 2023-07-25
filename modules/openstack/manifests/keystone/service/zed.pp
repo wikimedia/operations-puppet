@@ -137,7 +137,7 @@ class openstack::keystone::service::zed(
     }
 
     $utils_file_to_patch = '/usr/lib/python3/dist-packages/keystone/common/utils.py'
-    $utils_patch_file = "${file_to_patch}.patch"
+    $utils_patch_file = "${utils_file_to_patch}.patch"
     file {$utils_patch_file:
         source => 'puppet:///modules/openstack/zed/keystone/hacks/utils.py.patch',
         owner  => 'root',
