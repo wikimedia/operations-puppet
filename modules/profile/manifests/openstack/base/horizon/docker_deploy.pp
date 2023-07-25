@@ -12,7 +12,7 @@ class profile::openstack::base::horizon::docker_deploy(
     String          $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
     String          $secret_key = lookup('profile::openstack::base::horizon::secret_key'),
     String          $docker_version = lookup('profile::openstack::base::horizon::docker_version'),
-    Stdlib::Port::User $port = lookup('profile::openstack::base::horizon::docker_port', { 'default_value' => 8081 }),
+    Stdlib::Port::User $port = lookup('profile::openstack::base::horizon::docker_port', { 'default_value' => 8084 }),
     Hash $env                = lookup('profile::openstack::base::horizon::env', { 'default_value' => {} }),
     Hash $secret_env         = lookup('profile::openstack::base::horizon::secret_env', { 'default_value' => {} } ),
 ) {
