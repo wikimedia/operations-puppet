@@ -3896,3 +3896,17 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+
+  wikifunctions:
+    description: Wikifunctions orchestrator, wikifunctions.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+        path: /_info
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
