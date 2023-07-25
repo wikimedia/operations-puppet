@@ -400,8 +400,8 @@ eqiad:
     druid1007.eqiad.wmnet: [druid-public-broker]
     druid1008.eqiad.wmnet: [druid-public-broker]
   labweb:
-      cloudweb1003.wikimedia.org: [labweb-ssl]
-      cloudweb1004.wikimedia.org: [labweb-ssl]
+    cloudweb1003.wikimedia.org: [labweb-ssl]
+    cloudweb1004.wikimedia.org: [labweb-ssl]
   ores:
     ores1001.eqiad.wmnet: [ores]
     ores1002.eqiad.wmnet: [ores]
@@ -464,3 +464,6 @@ eqiad:
     aux-k8s-ctrl1002.eqiad.wmnet: [kubemaster]
     aux-k8s-worker1001.eqiad.wmnet: [kubesvc]
     aux-k8s-worker1002.eqiad.wmnet: [kubesvc]
+  cloudweb:
+    cloudweb1003.wikimedia.org: [cloudweb-ssl]
+    cloudweb1004.wikimedia.org: [cloudweb-ssl]
