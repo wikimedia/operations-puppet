@@ -3909,4 +3909,4 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
