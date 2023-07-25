@@ -401,9 +401,6 @@ eqiad:
     druid1009.eqiad.wmnet: [druid-public-broker]
     druid1010.eqiad.wmnet: [druid-public-broker]
     druid1011.eqiad.wmnet: [druid-public-broker]
-  labweb:
-    cloudweb1003.wikimedia.org: [labweb-ssl]
-    cloudweb1004.wikimedia.org: [labweb-ssl]
   docker-registry:
     registry1003.eqiad.wmnet: [docker-registry]
     registry1004.eqiad.wmnet: [docker-registry]
