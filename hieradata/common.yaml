@@ -1202,7 +1202,6 @@ authdns_servers:
   'dns5003.wikimedia.org': 103.102.166.10
   'dns5004.wikimedia.org': 103.102.166.8
   'dns6001.wikimedia.org': 185.15.58.5
-  'dns6002.wikimedia.org': 185.15.58.37
 
 # .. and this is the set of public IPs they provide service on, which is
 # consumed by both authdns servers and the icinga monitoring of them.
