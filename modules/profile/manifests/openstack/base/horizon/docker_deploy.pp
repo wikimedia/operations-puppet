@@ -49,8 +49,8 @@ class profile::openstack::base::horizon::docker_deploy(
     require ::profile::docker::engine
     require ::profile::docker::ferm
     service::docker { 'openstack-dashboard':
-        namespace    => 'wikimedia',
-        image_name   => 'openstack-horizon',
+        namespace    => 'repos/cloud/cloud-vps/horizon',
+        image_name   => 'deploy',
         version      => $docker_version,
         port         => $port,
         environment  => deep_merge($env, $secret_env),
