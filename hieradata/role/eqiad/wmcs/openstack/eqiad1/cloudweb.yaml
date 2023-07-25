@@ -70,7 +70,7 @@ profile::wmcs::striker::docker::instances:
 #    - '10.2.2.40' # labweb.svc.eqiad.wmnet
 
 profile::lvs::realserver::pools:
-  labweb-ssl:
+  cloudweb-ssl:
     services:
       - apache2
       - php7.4-fpm

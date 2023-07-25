@@ -1195,7 +1195,7 @@ service::catalog:
     state: production
 
   labweb-ssl:
-    description: "lvs for labweb services: horizon, striker, wikitech - HTTPS"
+    description: "lvs for cloudweb services: horizon, striker, wikitech - HTTPS"
     encryption: true
     ip:
       eqiad:
@@ -1203,8 +1203,8 @@ service::catalog:
     lvs:
       class: low-traffic
       conftool:
-        cluster: labweb
-        service: labweb-ssl
+        cluster: cloudweb
+        service: cloudweb-ssl
       depool_threshold: ".5"
       enabled: true
       monitors:
