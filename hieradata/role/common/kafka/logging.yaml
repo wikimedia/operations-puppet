@@ -20,14 +20,11 @@ profile::kafka::broker::auth_acls_enabled: true
 profile::kafka::broker::monitoring_enabled: true
 profile::kafka::broker::monitoring::is_critical: false
 
-# (4 disks in the broker HW RAID array)
-# Bump this up to get a little more parallelism between replicas.
+# Number of working threads that Kafka brokers use to
+# handle replication and incoming requests.
 profile::kafka::broker::num_replica_fetchers: 4
-# These two values were not picked up before
-# https://gerrit.wikimedia.org/r/c/operations/puppet/+/941362
-# Rolling them out carefully instead of all at once.
-#profile::kafka::broker::num_recovery_threads_per_data_dir: 4
-#profile::kafka::broker::num_io_threads: 4
+profile::kafka::broker::num_recovery_threads_per_data_dir: 4
+profile::kafka::broker::num_io_threads: 4
 
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
