@@ -1,0 +1,4 @@
+# Override for T341558
+profile::kafka::broker::num_replica_fetchers: 8
+profile::kafka::broker::num_recovery_threads_per_data_dir: 8
+profile::kafka::broker::num_io_threads: 8
