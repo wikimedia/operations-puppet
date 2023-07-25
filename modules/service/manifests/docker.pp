@@ -37,6 +37,17 @@
 #   management of that docker volume is left up to the user of the volume. So
 #   precreate it and prepopulate it please
 #
+# [*bind_mounts*] Hash of strings. Defaults to empty.
+#   The /etc dir (or variant see above) will always be mounted into
+#   the container. $bind_mounts can be used to specify additional
+#   mounts as src/dst pairs. For example:
+#
+#   {"/var/lib/puppet" => "/opt/puppetstuff",
+#    "/usr/lib/puppet" => "/opt/otherpuppetstuff"}
+#
+#   All paths must be absolute and all parent directories pre-existing
+#   in the container.
+#
 # [*host_network*] Boolean. default false.
 #   Bind the container to the host's network rather than the default bridge
 #   nework. From a networking point of view, this provides the same level of
@@ -57,6 +68,7 @@ define service::docker(
     Hash $environment = {},
     String $image_name = $title,
     Boolean $volume = false,
+    Hash[Stdlib::Unixpath, Stdlib::Unixpath] $bind_mounts = {},
     Boolean $host_network = false,
     Optional[String] $runtime = undef,
 ) {
