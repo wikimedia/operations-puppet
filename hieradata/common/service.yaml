@@ -1600,6 +1600,19 @@ service::catalog:
       - dnsdisc: mw-api-int-ro
         active_active: true
 
+  mw-misc:
+    description: Miscellaneous mediawiki installs, mw-misc.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes: # monitoring for this service
+      - type: http
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   ncredir:
     description: Non canonical domains redirect service
     encryption: false
