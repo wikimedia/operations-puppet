@@ -343,7 +343,6 @@ codfw:
     wcqs2002.codfw.wmnet: [wcqs]
     wcqs2003.codfw.wmnet: [wcqs]
   wdqs:
-    wdqs2004.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2007.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2009.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2010.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
@@ -358,8 +357,6 @@ codfw:
     wdqs2021.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2022.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
   wdqs-internal:
-    wdqs2005.codfw.wmnet: [wdqs]
-    wdqs2006.codfw.wmnet: [wdqs]
     wdqs2008.codfw.wmnet: [wdqs]
     wdqs2014.codfw.wmnet: [wdqs]
     wdqs2015.codfw.wmnet: [wdqs]

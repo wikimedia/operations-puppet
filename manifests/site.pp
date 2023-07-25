@@ -2834,17 +2834,9 @@ node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
 node /^wdqs101[2-6]\.eqiad\.wmnet$/ {
     role(wdqs::public)
 }
-# wdqs200[56] soon to be decommed T326689
-node /^wdqs200[56]\.codfw\.wmnet$/ {
-    role(wdqs::internal)
-}
 
 node /^(wdqs2008|wdqs201[45])\.codfw\.wmnet$/ {
     role(wdqs::internal)
-}
-# wdqs2004 soon to be decommed T326689
-node /^wdqs2004\.codfw\.wmnet$/ {
-    role(wdqs::public)
 }
 
 node /^(wdqs200[7,9]|wdqs201[0-3]|wdqs201[6-9]|wdqs202[0-2])\.codfw\.wmnet$/ {

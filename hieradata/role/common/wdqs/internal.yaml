@@ -17,9 +17,6 @@ profile::query_service::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1008.eqiad.wmnet'
   - 'wdqs1011.eqiad.wmnet'
-  - 'wdqs2004.codfw.wmnet'
-  - 'wdqs2005.codfw.wmnet'
-  - 'wdqs2006.codfw.wmnet'
   - 'wdqs2008.codfw.wmnet'
 profile::admin::groups:
   - wdqs-roots
