@@ -55,7 +55,7 @@ class profile::openstack::base::horizon::docker_deploy(
         port         => $port,
         environment  => deep_merge($env, $secret_env),
         host_network => true,
-        bind_mounts  => {'/etc/openstack_dashboard/local_settings.py' => '/opt/lib/python/site-packages/openstack_dashboard/local/local_settings.py'},
+        bind_mounts  => {'/etc/openstack-dashboard/local_settings.py' => '/opt/lib/python/site-packages/openstack_dashboard/local/local_settings.py'},
     }
 
     # Horizon error logs to ELK.  The Apache log is called horizon_error
