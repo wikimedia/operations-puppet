@@ -1,0 +1,20 @@
+---
+# TODO: remove the '-next' suffix when ready
+profile::openstack::base::pdns::query_local_address: ns0-next.openstack.eqiad1.wikimediacloud.org
+profile::openstack::base::pdns::auth::listen_on:
+  - 185.15.56.162  # ns0-next.openstack.eqiad1.wikimediacloud.org
+
+profile::bird::advertise_vips:
+  # NOTE: this is the per-host address. There is another shared VIP.
+  # TODO: remove the -next suffix when ready
+  ns0-next.openstack.eqiad1.wikimediacloud.org:
+    ensure: present
+    service_type: "pdns auth"
+    address: 185.15.56.162
+    # NOTE: we always want to advertise this address
+    check_cmd: "/bin/sh -c 'true'"
+
+# TODO: this can go into hieradata/role/eqiad/wmcs/openstack/eqiad1/services.yaml
+# once all cloudservices hosts are in the same network setup
+# before that, cloudservices1006 is the only node in the new network setup
+profile::openstack::base::pdns::recursor::bgp_vip: 172.20.255.1
