@@ -297,7 +297,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
   - namespace: mw-misc
     release: main
     canary: ~
-    mw_flavour: "debug"
+    mw_flavour: "publish"
+    debug: true
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
