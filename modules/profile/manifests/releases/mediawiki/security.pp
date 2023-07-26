@@ -15,6 +15,7 @@ class profile::releases::mediawiki::security (
         source_host => $deployment_server,
         dest_host   => $primary_server,
         module_path => '/srv/patches',
+        chown       => 'jenkins:jenkins',
     }
 
     # if the primary changes, absent the hostname-based rsync
