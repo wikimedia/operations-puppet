@@ -547,15 +547,23 @@ groups:
 - name: cadvisor
   rules:
   - record: cluster_id:container_cpu_usage_seconds_total:rate5m
-    expr: sum by (id,cluster) (rate(container_cpu_usage_seconds_total{id!~"(/|/system.slice)"}[5m]))
+    expr: sum by (id,cluster) (rate(container_cpu_usage_seconds_total{id=~".*\\.service"}[5m]))
   - record: cluster_id:container_cpu_system_seconds_total:rate5m
-    expr: sum by (id,cluster) (rate(container_cpu_system_seconds_total{id!~"(/|/system.slice)"}[5m]))
+    expr: sum by (id,cluster) (rate(container_cpu_system_seconds_total{id=~".*\\.service"}[5m]))
   - record: cluster_id:container_cpu_user_seconds_total:rate5m
-    expr: sum by (id,cluster) (rate(container_cpu_user_seconds_total{id!~"(/|/system.slice)"}[5m]))
-  - record: cluster_id:container_memory_usage_bytes:sum
-    expr: sum by (id,cluster) (container_memory_usage_bytes{id!~"(/|/system.slice)"})
-  - record: cluster_id:container_memory_working_set_bytes:sum
-    expr: sum by (id,cluster) (container_memory_working_set_bytes{id!~"(/|/system.slice)"})
+    expr: sum by (id,cluster) (rate(container_cpu_user_seconds_total{id=~".*\\.service"}[5m]))
+  - record: cluster_id:container_memory_bytes:sum
+    # Sum cache/rss/swap to get a realistic memory usage instead of
+    # container_memory_usage_bytes. See section 5.5 of
+    # https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt
+    expr: |
+      sum by (id,cluster) (
+        container_memory_cache{id=~".*\\.service"}
+          +
+        container_memory_rss{id=~".*\\.service"}
+          +
+        container_memory_swap{id=~".*\\.service"}
+      )
 
 - name: ipvs
   rules:
