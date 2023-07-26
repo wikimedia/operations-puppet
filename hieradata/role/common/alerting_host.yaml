@@ -57,6 +57,7 @@ profile::certspotter::monitor_domains:
   - 'mediawiki.org'
   - 'wikibooks.org'
   - 'wikidata.org'
+  - 'wikifunctions.org'
   - 'wikinews.org'
   - 'wikiquote.org'
   - 'wikisource.org'
