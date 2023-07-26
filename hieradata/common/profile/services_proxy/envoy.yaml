@@ -196,6 +196,7 @@ profile::services_proxy::envoy::listeners:
     port: 6034
     service: wikifunctions
     timeout: "120s"
+    uses_ingress: true
 
   # Non-discovery records
   # Eqiad ports are at 61xx
@@ -349,3 +350,4 @@ profile::services_proxy::envoy::enabled_listeners:
   - image-suggestion
   - device-analytics
   - inference
+  - wikifunctions
