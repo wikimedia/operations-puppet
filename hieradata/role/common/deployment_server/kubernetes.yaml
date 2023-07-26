@@ -294,6 +294,10 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
+  - namespace: mw-misc
+    release: main
+    canary: ~
+    mw_flavour: "debug"
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
