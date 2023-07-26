@@ -192,6 +192,10 @@ profile::services_proxy::envoy::listeners:
     service: rest-gateway
     timeout: "10s"
     keepalive: "4s"
+  - name: wikifunctions
+    port: 6034
+    service: wikifunctions
+    timeout: "120s"
 
   # Non-discovery records
   # Eqiad ports are at 61xx
