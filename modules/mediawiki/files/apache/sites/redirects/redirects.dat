@@ -184,6 +184,8 @@ rewrite	wikidata.org	https://www.wikidata.org #T47005
 
 rewrite	www.wikisource.org	https://wikisource.org
 
+rewrite	wikifunctions.org	https://www.wikifunctions.org
+
 ###############
 ## chapters
 ###############
