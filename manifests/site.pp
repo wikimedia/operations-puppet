@@ -2855,10 +2855,6 @@ node 'arclamp1001.eqiad.wmnet' {
     role(webperf::profiling_tools)
 }
 
-node 'xhgui1001.eqiad.wmnet', 'xhgui2001.codfw.wmnet' {
-    role(webperf::xhgui)
-}
-
 node default {
     if $::realm == 'production' and !$::_role {
         fail('No puppet role has been assigned to this node.')
