@@ -13,5 +13,12 @@ class profile::parsoid::vd_client (
         parsoid_port   => $parsoid_port,
     }
 
-    profile::auto_restarts::service { 'parsoid-vd-client': }
+    $restart_ensure = $service_ensure ? {
+        'stopped' => absent,
+        default   => present,
+    }
+
+    profile::auto_restarts::service { 'parsoid-vd-client':
+        ensure => $restart_ensure,
+    }
 }
