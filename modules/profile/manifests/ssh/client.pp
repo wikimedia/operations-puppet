@@ -19,15 +19,7 @@ class profile::ssh::client (
     Array[String[1]] $send_env                     = lookup('profile::ssh::client::send_env'),
     Hash[Stdlib::Host, Hash] $extra_ssh_keys       = lookup('profile::ssh::client::extra_ssh_keys'),
 ) {
-    $pql = @("PQL")
-    resources[parameters, title] {
-        type = 'Sshkey' and exported = true and parameters.ensure = 'present' order by title
-    }
-    | PQL
-    $known_hosts = Hash(wmflib::puppetdb_query($pql).map |$resource| {
-        $key = $resource['name'].lest || { $resource['title'] }
-        [$key, $resource['parameters']]
-    }) + $extra_ssh_keys
+    $known_hosts = ssh::known_hosts() + $extra_ssh_keys
     class { 'ssh::client':
         known_hosts => $known_hosts,
         *           => wmflib::resource::filter_params('extra_ssh_keys'),
