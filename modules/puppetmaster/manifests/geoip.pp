@@ -1,10 +1,13 @@
-# Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
-# can then just sync that directory into their own /usr/share/GeoIP via a
-# normal puppet File resource (see the geoip module for more)
+# @summary Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
+#   can then just sync that directory into their own /usr/share/GeoIP via a
+#   normal puppet File resource (see the geoip module for more)
+# @param fetch_private Fetch the proprietary paid-for MaxMind database
+# @param use_proxy fetch resources using the proxy
+# @param ca_server the CA server to use
 class puppetmaster::geoip(
-    Boolean $fetch_private = true,
-    Boolean $use_proxy = true,
-    Stdlib::Host $ca_server = $facts['fqdn'],
+    Boolean      $fetch_private = true,
+    Boolean      $use_proxy     = true,
+    Stdlib::Host $ca_server     = $facts['networking']['fqdn'],
 ){
 
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
@@ -20,13 +23,11 @@ class puppetmaster::geoip(
         $webproxy = undef
     }
 
-    # Fetch the proprietary paid-for MaxMind database
     if $fetch_private {
-
         # FIXME: password classes should not be used within other modules
-        include ::passwords::geoip # lint:ignore:wmf_styleguide
+        include passwords::geoip # lint:ignore:wmf_styleguide
 
-        class { '::geoip::data::maxmind':
+        class { 'geoip::data::maxmind':  # lint:ignore:wmf_styleguide
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
             ca_server      => $ca_server,
@@ -62,7 +63,7 @@ class puppetmaster::geoip(
 
     } else {
     # fall back to public legacy databases
-        class { '::geoip::data::maxmind':
+        class { 'geoip::data::maxmind':  # lint:ignore:wmf_styleguide
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
             product_ids    => [
