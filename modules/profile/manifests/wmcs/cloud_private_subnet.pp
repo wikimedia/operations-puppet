@@ -12,7 +12,7 @@ class profile::wmcs::cloud_private_subnet (
     $rack = downcase($netbox_location['rack'])
     $vlan_id = $vlan_mapping[$::site][$rack]
 
-    $cloud_private_address = dnsquery::a($cloud_private_host)[0]
+    $cloud_private_address = dnsquery::a($cloud_private_host) || { fail("failed ot resolv '${cloud_private_host}'") }[0]
 
     if $base_iface == 'primary' {
         $iface = $facts['interface_primary']
@@ -38,7 +38,7 @@ class profile::wmcs::cloud_private_subnet (
     }
 
     $cloud_private_gw = inline_epp($cloud_private_gw_t, { 'rack' => $rack })
-    $gw_address = dnsquery::a($cloud_private_gw)[0]
+    $gw_address = dnsquery::a($cloud_private_gw) || { fail("failed ot resolv '${cloud_private_gw}'") }[0]
 
     interface::route { 'cloud_private_subnet_route_supernet':
         address   => split($supernet, '/')[0],

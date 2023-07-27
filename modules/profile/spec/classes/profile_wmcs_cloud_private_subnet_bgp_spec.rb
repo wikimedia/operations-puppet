@@ -4,18 +4,22 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::wmcs::cloud_private_subnet::bgp' do
   on_supported_os(WMFConfig.test_on(11, 11)).each do |os, facts|
-    context "on #{os}" do
-      let(:pre_condition) do
-        "function dnsquery::a($fqdn) {
-            if $fqdn == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
+    before(:each) do
+      Puppet::Functions.create_function(:'dnsquery::a') do
+        dispatch :dns_a do
+          param 'Stdlib::Fqdn', :domain
+          optional_block_param :block
+        end
+        def dns_a(domain)
+            if domain == 'cloudlb2001-dev.private.codfw.wikimedia.cloud'
                 ['172.20.5.2', '127.0.0.1']
-            } elsif $fqdn == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
+            elsif domain == 'cloudsw-b1.private.codfw.wikimedia.cloud'
                 ['172.20.5.1', '127.0.0.2']
-            } else {
-                [$fqdn]
-            }
-        }"
+            end
+        end
       end
+    end
+    context "on #{os}" do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
         'hostname' => 'cloudlb2001-dev',
