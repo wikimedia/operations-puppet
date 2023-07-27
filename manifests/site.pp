@@ -854,7 +854,7 @@ node 'db1216.eqiad.wmnet' {
 }
 
 # codfw backup sources
-## s1, bullseye
+## s2, s6 & x1, bullseye
 node 'db2097.codfw.wmnet' {
     role(mariadb::backup_source)
 }
@@ -878,7 +878,7 @@ node 'db2101.codfw.wmnet' {
 node 'db2139.codfw.wmnet' {
     role(mariadb::backup_source)
 }
-## s1 & s6, bullseye
+## s1, bullseye
 node 'db2141.codfw.wmnet' {
     role(mariadb::backup_source)
 }
