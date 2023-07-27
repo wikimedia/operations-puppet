@@ -74,6 +74,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: changeprop-jobqueue
         - name: changeprop-jobqueue-deploy
+    benthos-cache-invalidator:
+      usernames:
+        - name: benthos-cache-invalidator
+        - name: benthos-cache-invalidator-deploy
     proton:
       usernames:
         - name: proton
