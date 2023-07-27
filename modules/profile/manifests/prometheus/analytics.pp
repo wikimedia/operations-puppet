@@ -2,6 +2,10 @@
 # Uses the prometheus module and generates the specific configuration
 # needed for WMF production
 #
+# Configures prometheus for hosts owned by the Data Engineering group,
+# formerly known as 'analytics' (which is why this name appears so
+# frequently in the config).
+
 class profile::prometheus::analytics (
     String $replica_label              = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload      = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
@@ -192,7 +196,12 @@ class profile::prometheus::analytics (
         class_name => 'role::analytics_cluster::zookeeper',
     }
 
-    prometheus::jmx_exporter_config{ "presto_analytics_${::site}":
+  prometheus::jmx_exporter_config { "zookeeper_flink_${::site}":
+    dest       => "${targets_path}/jmx_zookeeper_flink_${::site}.yaml",
+    class_name => 'role::zookeeper::flink',
+  }
+
+  prometheus::jmx_exporter_config{ "presto_analytics_${::site}":
         dest       => "${targets_path}/jmx_presto_analytics_${::site}.yaml",
         class_name => 'role::analytics_cluster::presto::server',
     }
