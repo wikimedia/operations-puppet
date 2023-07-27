@@ -55,10 +55,7 @@ class puppetmaster::geoip(
             ca_server      => $ca_server,
             user_id        => $passwords::geoip::user_id_ipinfo,
             license_key    => $passwords::geoip::license_key_ipinfo,
-            product_ids    => [
-                'GeoIP2-Anonymous-IP',
-                'GeoIP2-Enterprise',
-                ],
+            product_ids    => ['GeoIP2-Enterprise'],
         }
 
     } else {
