@@ -195,12 +195,15 @@ sub cluster_fe_recv_pre_purge {
         if (req.http.X-Subdomain) {
             // Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
             // hostnames are being rewritten by the regex in the final else
-            // clause, except for m.mediawiki.org and m.wikidata.org which are
-            // rewritten here (because of the www.).
+            // clause, except for m.mediawiki.org, m.wikidata.org and
+            // m.wikifunctions.org which are rewritten here (because of the
+            // www.).
             if (req.http.host == "m.mediawiki.org") {
                 set req.http.x-dt-host = "www.mediawiki.org";
             } else if (req.http.host == "m.wikidata.org") {
                 set req.http.x-dt-host = "www.wikidata.org";
+            } else if (req.http.host == "m.wikifunctions.org") {
+                set req.http.x-dt-host = "www.wikifunctions.org";
             } else {
                 // All other hostnames are taken care of here.
                 // Replace <language>.m.<project>.org by <language>.<project>.org
