@@ -37,6 +37,7 @@ class profile::releases::mediawiki::security (
                 source_host => $deployment_server,
                 dest_host   => $secondary_server,
                 module_path => '/srv/patches',
+                chown       => 'jenkins:705',
             }
         }
     }
