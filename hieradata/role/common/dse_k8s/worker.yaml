@@ -29,6 +29,3 @@ profile::contacts::role_contacts:
 
 profile::amd_gpu::allow_gpu_broader_access: true
 profile::amd_gpu::is_kubernetes_node: true
-
-# cadvisor rollout https://phabricator.wikimedia.org/T337836
-profile::prometheus::cadvisor::ensure: absent

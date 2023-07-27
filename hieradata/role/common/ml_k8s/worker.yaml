@@ -28,6 +28,3 @@ prometheus::node_exporter::collectors_extra:
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
-
-# cadvisor rollout https://phabricator.wikimedia.org/T337836
-profile::prometheus::cadvisor::ensure: absent

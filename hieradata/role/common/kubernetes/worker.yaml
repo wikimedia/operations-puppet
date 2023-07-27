@@ -62,6 +62,3 @@ profile::lvs::realserver::pools:
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps']
-
-# cadvisor rollout https://phabricator.wikimedia.org/T337836
-profile::prometheus::cadvisor::ensure: absent
