@@ -30,10 +30,6 @@ class profile::docker::runner(
         service::docker { $svc_name:
             * => $svc_params,
         }
-        ferm::service { "${svc_name} ingress":
-            proto => 'tcp',
-            port  => $svc_params[$port]
-        }
     }
 
     # Configure rsyslog to ingest logs from containers so they can be forwarded to kafka/logstash.
