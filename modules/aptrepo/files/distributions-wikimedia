@@ -301,6 +301,7 @@ Version: 12
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/dnsdist
  component/puppet5
  component/puppetdb7
  thirdparty/hwraid
