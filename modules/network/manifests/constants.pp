@@ -89,6 +89,9 @@ class network::constants {
         $mw_appserver_networks = flatten([
             slice_network_constants('labs'),
             '127.0.0.1'])
+        $mw_appserver_networks_private = flatten([
+            slice_network_constants('labs'),
+            '127.0.0.1'])
     }
 
     # Analytics subnets
