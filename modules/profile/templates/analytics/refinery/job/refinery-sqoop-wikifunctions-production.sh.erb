@@ -22,4 +22,5 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --processors <%= @num_processors %> \
     --yarn-queue <%= @yarn_queue %> \
     --output-format avrodata \
+    --sample-wiki-for-jar wikifunctionswiki \
     --log-file <%= @wikifunctions_production_log_file %>

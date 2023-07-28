@@ -31,6 +31,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # Separate logs for sqoops from production replicas
     $production_log_file        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production.log"
     $production_daily_log_file  = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production-daily.log"
+    $wikifunctions_production_log_file = "${::profile::analytics::refinery::log_dir}/sqoop-wikifunctions-production.log"
     # These are rendered elsewhere by role::analytics_cluster::mysql_password.
     $db_password_labs           = '/user/analytics/mysql-analytics-labsdb-client-pw.txt'
     $db_password_private        = '/user/analytics/mysql-analytics-research-client-pw.txt'
