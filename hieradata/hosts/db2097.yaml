@@ -5,4 +5,3 @@ profile::mariadb::dbstore_multiinstance::instances:
   s6: 165G
   x1: 80G
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
