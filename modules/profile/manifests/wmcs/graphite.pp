@@ -39,34 +39,4 @@ class profile::wmcs::graphite (
         port   => '1903',
         srange => "@resolve(${graphite_host})",
     }
-
-    ferm::service { 'statsite_udp':
-        proto  => 'udp',
-        port   => '8125',
-        srange => '$LABS_NETWORKS',
-    }
-
-    ferm::service { 'statsite_tcp':
-        proto  => 'udp',
-        port   => '8125',
-        srange => '$LABS_NETWORKS',
-    }
-
-    ferm::service { 'carbon_c_relay-frontend_relay_udp':
-        proto  => 'udp',
-        port   => '2003',
-        srange => '$LABS_NETWORKS',
-    }
-
-    ferm::service { 'carbon_c_relay-frontend_relay_tcp':
-        proto  => 'tcp',
-        port   => '2003',
-        srange => '$LABS_NETWORKS',
-    }
-
-    ferm::service { 'carbon_pickled':
-        proto  => 'tcp',
-        port   => '2004',
-        srange => '$LABS_NETWORKS',
-    }
 }

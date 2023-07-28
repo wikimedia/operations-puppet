@@ -55,7 +55,6 @@ elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
-graphite_host: "cloudmetrics1003.eqiad.wmnet"
 profile::puppetdb::jvm_opts: "-Xmx4G"
 profile::puppetdb::elk_logging: false
 profile::puppetdb::ca_path: "/etc/ssl/certs/Puppet_Internal_CA.pem"
