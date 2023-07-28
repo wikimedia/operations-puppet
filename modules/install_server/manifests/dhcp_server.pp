@@ -3,6 +3,7 @@
 # @param a hash of managment networks
 
 class install_server::dhcp_server (
+    Stdlib::IP::Address::V4                  $http_server_ip,
     Stdlib::Ensure::Service                  $ensure_service = 'running',
     Hash[String, Array[Stdlib::IP::Address]] $mgmt_networks  = {},
     Hash[Wmflib::Sites, Stdlib::IP::Address] $tftp_servers   = {},

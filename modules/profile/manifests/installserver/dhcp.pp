@@ -10,6 +10,7 @@ class profile::installserver::dhcp(
     ensure_service => $ensure_service,
     mgmt_networks  => $network::constants::mgmt_networks_bydc,
     tftp_servers   => $tftp_servers,
+    http_server_ip => dnsquery::a('apt.discovery.wmnet') || { fail('unable to resolve') }[0],
   }
 
   ferm::service { 'dhcp':

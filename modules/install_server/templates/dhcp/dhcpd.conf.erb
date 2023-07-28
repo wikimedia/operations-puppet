@@ -522,7 +522,11 @@ group {
 class "juniper" {
     match if (substring(lcase(option vendor-class-identifier), 0, 7) = "juniper");
     vendor-option-space juniper;
-    option juniper.config-file-name "ztp-juniper.sh";
+    option tftp-server-name "<%= @http_server_ip %>";
+    option juniper.transfer-mode "http";
+    option juniper.http-port "8080";
+    option juniper.image-file-name "junos/qfx5120.tgz";
+    option juniper.config-file-name "junos/ztp-juniper.sh";
 }
 
 # Additional automated includes happen via this proxy.
