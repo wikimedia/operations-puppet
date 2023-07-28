@@ -14,8 +14,6 @@ class profile::url_downloader (
         $wikimedia = [
             $network::constants::all_network_subnets['labs']['eqiad']['private']['cloud-instances2-b-eqiad']['ipv4'],
         ]
-        # I don't know what this is, but the template expects it. (AGB)
-        $towikimedia = []
     } else {
         fail('Dont use this role outside of wikimedia')
     }
