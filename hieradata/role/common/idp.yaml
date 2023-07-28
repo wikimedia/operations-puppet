@@ -207,10 +207,12 @@ profile::idp::services:
     id: 31
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
   gitlab_replica_oidc:
     id: 32
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab(-replica|-replica-old)\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
     required_groups:
       - ops
       - nda
