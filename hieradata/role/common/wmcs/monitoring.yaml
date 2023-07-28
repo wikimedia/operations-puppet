@@ -79,7 +79,6 @@ profile::tlsproxy::envoy::cfssl_options:
     - graphite-labs.discovery.wmnet
     - grafana-labs.wikimedia.org
     - grafana-cloud.wikimedia.org
-    - graphite-labs.wikimedia.org
 profile::tlsproxy::envoy::sni_support: "no"
 
 profile::grafana::enable_cas: false

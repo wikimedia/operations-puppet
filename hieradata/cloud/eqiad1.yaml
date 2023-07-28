@@ -224,8 +224,6 @@ cumin_masters:
   - 172.16.2.249 # cloud-cumin-04.cloudinfra.eqiad1.wikimedia.cloud
   - 172.16.5.8   # bastion-restricted-eqiad1-02.bastion.eqiad1.wikimedia.cloud
 
-# Url to use for reaching graphite
-graphite_url: "https://graphite-labs.wikimedia.org"
 profile::puppet::agent::dns_alt_names: []
 
 bastion_hosts:
