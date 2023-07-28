@@ -39,6 +39,7 @@ profile::idp::services:
     id: 5
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab\.devtools\.wmcloud\.org(/.*)?'
+    profile_format: 'FLAT'
 profile::idp::standalone::oidc_key: django_oidc
 profile::idp::delegated_authenticators:
   - provider: cas
