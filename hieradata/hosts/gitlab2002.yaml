@@ -2,6 +2,3 @@
 profile::gitlab::service_ip_v4: '208.80.153.8'
 profile::gitlab::service_ip_v6: '2620:0:860:1:208:80:153:8'
 profile::gitlab::service_name: 'gitlab-replica.wikimedia.org'
-
-# test login with oidc on replicas (T320390)
-profile::gitlab::auto_sign_in_with: openid_connect
