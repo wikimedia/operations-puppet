@@ -35,6 +35,10 @@
 
     # Backwards compatibility: allow reaching the db configuration jsons from the web.
     RewriteRule ^/dbconfig/(.+)\.json$ /dbconfig.php [L]
+    # serve the files from php if they don't exists
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
+    RewriteRule ^/conf/.* /conf/fileserve.php [L]
 
     <Directory />
         AllowOverride None
@@ -43,12 +47,5 @@
 
     <Directory /srv/mediawiki/docroot/noc/conf>
         AddDefaultCharset utf-8
-        # Force the Content-Type to text/plain
-        # for files without an extension, since
-        # AddDefaultCharset works only
-        # for text/plain or text/html.
-        <FilesMatch "^[^.]+$">
-            ForceType text/plain
-        </FilesMatch>
     </Directory>
 </VirtualHost>
