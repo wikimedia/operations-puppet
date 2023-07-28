@@ -51,6 +51,7 @@ profile::klaxon::klaxon_config:
 profile::klaxon::escalation_policy_slug: 'pol-V2neyZAfRV4fBh3U'
 
 profile::certspotter::alert_email: sre-traffic@wikimedia.org   # to be updated later once the SNR is fixed
+# NOTE: certspotter is no longer running (see T204993) so updating this list has no effect.
 profile::certspotter::monitor_domains:
   - 'wikipedia.org'
   - 'wikimedia.org'
