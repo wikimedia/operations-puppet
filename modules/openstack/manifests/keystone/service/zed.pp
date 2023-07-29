@@ -136,21 +136,6 @@ class openstack::keystone::service::zed(
         notify  => Service[$wsgi_server],
     }
 
-    $utils_file_to_patch = '/usr/lib/python3/dist-packages/keystone/common/utils.py'
-    $utils_patch_file = "${utils_file_to_patch}.patch"
-    file {$utils_patch_file:
-        source => 'puppet:///modules/openstack/zed/keystone/hacks/utils.py.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${utils_patch_file}":
-        command => "/usr/bin/patch --forward ${utils_file_to_patch} ${utils_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${utils_file_to_patch} ${utils_patch_file}",
-        require => [File[$utils_patch_file], Package['keystone']],
-        notify  => Service[$wsgi_server],
-    }
-
     # Specify that the Default domain uses ldap (while the default /config/ specifies
     #  mysql. Confusing, right?)
     file {'/etc/keystone/domains/keystone.default.conf':
