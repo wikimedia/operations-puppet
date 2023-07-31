@@ -38,6 +38,7 @@ class profile::tcpircbot(
         ensure      => $ensure,
         listen_port => 9201,
         channels    => '#wikimedia-cloud-feed',
+        nickname    => 'logmsgbot', # If not specified, it defaults to $title
         password    => $passwords::logmsgbot::logmsgbot_password,
         server_host => $irc_host,
         server_port => $irc_port,
