@@ -223,8 +223,8 @@ groups:
     description: people who upload wikibase releases (T268818)
     members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde]
     approval:
+      - Monica Pinedo
       - Leszek Manicki
-      - Tobias Andersson
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
