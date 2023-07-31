@@ -111,4 +111,12 @@ class vrts::mail(
     rsyslog::input::file { 'vrts-exim-mailerr':
         path => '/var/log/mail.err',
     }
+
+    rsyslog::input::file { 'vrts-clamav':
+        path => '/var/log/clamav/clamav.log',
+    }
+
+    rsyslog::input::file { 'vrts-freshclam':
+        path => '/var/log/clamav/freshclam.log',
+    }
 }
