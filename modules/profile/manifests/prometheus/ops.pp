@@ -2334,6 +2334,39 @@ class profile::prometheus::ops (
         port_parameter => 'port'
     }
 
+    # Demo config for liberica exporters
+    # https://phabricator.wikimedia.org/T342618
+
+    $liberica_jobs = [
+      {
+        'job_name'        => 'liberica',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/liberica_*.yaml"] },
+        ],
+      },
+    ]
+
+    if $::site == 'eqiad' {
+        $liberica_demo_config = [{
+          'labels' => {
+            'cluster' => 'liberica',
+        },
+        'targets' =>  [
+          'lvs1013.eqiad.wmnet:9112',
+          'lvs1013.eqiad.wmnet:9113',
+        ]
+      }]
+
+        file { "${targets_path}/liberica_eqiad.yaml":
+            backup  => false,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => to_yaml($liberica_demo_config),
+        }
+    }
+
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -2364,7 +2397,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
-            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs,
+            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
@@ -2495,4 +2528,5 @@ class profile::prometheus::ops (
             content => to_yaml($sonic_demo_config);
         }
     }
+
 }
