@@ -756,13 +756,6 @@ node 'db2134.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-## Analytics Backup Multi-instance
-## Replaced by db1208 in T334055
-## To be decommissioned in T336254
-node 'db1108.eqiad.wmnet' {
-    role(mariadb::misc::analytics::backup)
-}
-
 ## m5 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
