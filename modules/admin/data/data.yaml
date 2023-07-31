@@ -40,7 +40,7 @@ groups:
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, lwatson, s-mukuti,
-              kchapman]
+              kchapman, ryanbrounley]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6442,9 +6442,8 @@ ldap_only_users:
     realname: Claudia Lo
     email: clo@wikimedia.org
   ryanbrounley:
-    ensure: present
+    ensure: absent
     realname: Ryan Brounley
-    email: rbrounley@wikimedia.org
   criley:
     ensure: absent
     realname: Chelsea Riley
