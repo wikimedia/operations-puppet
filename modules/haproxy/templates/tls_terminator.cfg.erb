@@ -133,6 +133,9 @@ frontend stats
     stats enable
     stats uri /stats
     stats refresh 10s
+    # Explicitly avoid keep-alive to prevent Prometheus scrapers from
+    # reusing indefinitelly the same TCP connection. See T343000
+    http-after-response set-header Connection Close
 <%- end -%>
 
 <%- if @http_redirection_port -%>
