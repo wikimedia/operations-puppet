@@ -164,12 +164,7 @@ node 'an-airflow1002.eqiad.wmnet' {
     role(analytics_cluster::airflow::research)
 }
 
-# [Deprecated] analytics-platform-eng instance of Apache Airflow
-node 'an-airflow1003.eqiad.wmnet' {
-    role(analytics_cluster::airflow::platform_eng_legacy)
-}
-
-# analytics-platform-eng instance of Apache Airflow to replace an-airflow1003
+# analytics-platform-eng instance of Apache Airflow
 node 'an-airflow1004.eqiad.wmnet' {
     role(analytics_cluster::airflow::platform_eng)
 }
