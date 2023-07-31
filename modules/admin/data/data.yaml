@@ -6749,3 +6749,7 @@ ldap_only_users:
     ensure: present
     realname: Ifrah Khanyaree
     email: ifrah.khanyaree@wikimedia.de
+  mpossoupe:
+    ensure: present
+    realname: Mahuton Possoupe
+    email: mpossoupe@wikimedia.org
