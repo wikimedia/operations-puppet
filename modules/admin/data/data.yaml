@@ -6753,3 +6753,7 @@ ldap_only_users:
     ensure: present
     realname: Mahuton Possoupe
     email: mpossoupe@wikimedia.org
+  cyndywikime:
+    ensure: present
+    realname: Cynthia Simiyu
+    email: csimiyu@wikimedia.org
