@@ -8,11 +8,7 @@ describe 'gitlab' do
       describe 'default run' do
         it { is_expected.to compile.with_all_deps }
       end
-      describe 'with cas provider' do
-        let(:params) {{ omniauth_providers: {'cas' => {'url' => 'https://cas.example.org/cas'}} }}
-        it { is_expected.to compile.with_all_deps }
-      end
-      describe 'with cas provider' do
+      describe 'with oidc provider' do
         let(:params) do
           {
             omniauth_providers: {

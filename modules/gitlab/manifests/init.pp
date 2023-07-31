@@ -27,7 +27,6 @@ class gitlab (
     String           $email_name                                = 'Gitlab',
     # TODO: should this be int?
     String           $default_theme                             = '2',
-    Integer          $cas_session_duration                      = 604800,
     Boolean          $csp_enabled                               = false,
     Boolean          $csp_report_only                           = false,
     Hash             $extra_settings                            = {},
@@ -69,17 +68,6 @@ class gitlab (
     String                   $thanos_storage_password           = '',
 
 ) {
-    $cas_defaults = {
-        'login_url'            => '/login',
-        'logout_url'           => '/logout',
-        'service_validate_url' => '/p3/serviceValidate',
-        'label'                => 'Cas Login',
-        'uid_field'            => 'uid',
-        'uid_key'              => 'uid',
-        'email_key'            => 'mail',
-        'name_key'             => 'cn',
-        'nickname_key'         => 'uid',
-    }
     $oidc_defaults = {
         'scope'                        => ['openid','profile','email'],
         'response_type'                => 'code',
@@ -98,13 +86,6 @@ class gitlab (
 
     $_omniauth_providers = $omniauth_providers.map |$label, $args| {
         case $args {
-            Gitlab::Omniauth_provider::Cas3: {
-                {
-                    'label' => $label,
-                    'name'  => 'cas3',
-                    'args'  => $args + $cas_defaults,
-                }
-            }
             Gitlab::Omniauth_provider::OIDC: {
                 if $args['client_options'].has_key('secret') {
                     {
