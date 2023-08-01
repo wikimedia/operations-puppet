@@ -1406,6 +1406,21 @@ node /^cloudcontrol200[145]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
+# New cloudcontrol node in codfw T342456
+node /^cloudcontrol200[678]-dev\.codfw\.wmnet$/ {
+    role(insetup::wmcs)
+}
+
+# New cloudnet node in codfw T342456
+node /^cloudnet200[78]-dev\.codfw\.wmnet$/ {
+    role(insetup::wmcs)
+}
+
+# New cloudvirt node in codfw T342459
+node /^cloudvirt200[456]-dev\.codfw\.wmnet$/ {
+    role(insetup::wmcs)
+}
+
 # cloudrabbit servers T304888
 node /^cloudrabbit100[123]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::rabbitmq)
