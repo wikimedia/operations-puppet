@@ -6755,3 +6755,9 @@ ldap_only_users:
     ensure: present
     realname: Cynthia Simiyu
     email: csimiyu@wikimedia.org
+  radimer-ctr:
+    ensure: present
+    realname: Rae Adimer
+    email: radimer-ctr@wikimedia.org
+    expiry_date: "2024-06-30"
+    expiry_contact: lmccabe@wikimedia.org
