@@ -61,6 +61,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_machinetranslation'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'machinetranslation:prod'
+  gitlab:
+    access:       '.admin'
+    account_name: 'AUTH_gitlab'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'gitlab:prod'
 
 # To be kept private
 #profile::thanos::swift::accounts_keys:
