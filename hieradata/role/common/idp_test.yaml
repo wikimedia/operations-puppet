@@ -55,6 +55,14 @@ profile::idp::services:
     id: 7
     service_class: 'OidcRegisteredService'
     service_id: 'https://apigw\.juniper\.net/css-asset/1\.0'
+  datahub:
+    id: 8
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://datahub\.wikimedia\.org'
+    required_groups:
+      - ops
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
