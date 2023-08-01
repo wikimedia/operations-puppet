@@ -72,8 +72,9 @@ define ferm::service(
 
     if $port {
         $_port = $port ? {
-            Array           => $port.join(','),
-            default         => $port,
+            Array[Stdlib::Port,1,1] => $port[0],
+            Array                   => sprintf('(%s)', $port.join(' ')),
+            default                 => $port,
         }
     } elsif $port_range {
         $_port = $port_range.join(':')
