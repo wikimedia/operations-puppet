@@ -1,13 +1,17 @@
 # @summary A profile to configure the config-master.wikimedia.org site content
 # @param conftool_prefix th conftool_prefix
+# @param puppet_ca_server the location of the puppet ca server
 # @param server_name the main server name
 # @param server_aliases a list of alternate server names
 # @param enable_nda if true enable the nda uri
+# @param proxy_sha1 if true proxy the sha1's used by puppet-merge from the puppetmaster ca host
 class profile::configmaster (
     $conftool_prefix                    = lookup('conftool_prefix'),
+    Stdlib::Fqdn $puppet_ca_server      = lookup('puppet_ca_server'),
     Stdlib::Host $server_name           = lookup('profile::configmaster::server_name'),
     Array[Stdlib::Host] $server_aliases = lookup('profile::configmaster::server_aliases'),
     Boolean             $enable_nda     = lookup('profile::configmaster::enable_nda'),
+    Boolean             $proxy_sha1     = lookup('profile::configmaster::proxy_sha1'),
 ) {
     $real_server_aliases = $server_aliases + [
         'pybal-config',
@@ -25,28 +29,22 @@ class profile::configmaster (
         mode   => '0755',
     }
 
-    # gitpuppet can't/shouldn't be able to create files under $document_root.
-    # So puppet makes sure the file at least exists, and then puppet-merge
-    # can write.
-    file { "${document_root}/puppet-sha1.txt":
-        ensure => file,
-        owner  => 'gitpuppet',
-        group  => 'gitpuppet',
-        mode   => '0644',
+    unless $proxy_sha1 {
+        # gitpuppet can't/shouldn't be able to create files under $document_root.
+        # So puppet makes sure the file at least exists, and then puppet-merge
+        # can write.
+        file { ["${document_root}/puppet-sha1.txt", "${document_root}/labsprivate-sha1.txt"]:
+            ensure => file,
+            owner  => 'gitpuppet',
+            group  => 'gitpuppet',
+            mode   => '0644',
+        }
     }
-
     # copy mediawiki conftool-state file to configmaster so we can fetch it
     # from pcc and pontoon.
     file { "${document_root}/mediawiki.yaml":
         ensure => file,
         source => '/etc/conftool-state/mediawiki.yaml',
-    }
-
-    file { "${document_root}/labsprivate-sha1.txt":
-        ensure => file,
-        owner  => 'gitpuppet',
-        group  => 'gitpuppet',
-        mode   => '0644',
     }
 
     # Write pybal pools

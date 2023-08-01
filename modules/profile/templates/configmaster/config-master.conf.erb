@@ -32,6 +32,10 @@
      </Directory>
 <%- end -%>
 
+<%- if @proxy_sha1 -%>
+    ProxyPass /puppet-sha1.txt https://<%= @puppet_ca_server %>/puppet-sha1.txt
+    ProxyPass /labsprivate-sha1.txt https://<%= @puppet_ca_server %>/labsprivate-sha1.txt
+<%- end -%>
      CustomLog ${APACHE_LOG_DIR}/configmaster-access.log wmf
      ErrorLog ${APACHE_LOG_DIR}/configmaster-error.log
 </VirtualHost>
