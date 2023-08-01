@@ -1,0 +1,3 @@
+profile::configmaster::server_name: config-master.wikimedia.org
+profile::configmaster::server_aliases:
+profile::configmaster::enable_nda: true
