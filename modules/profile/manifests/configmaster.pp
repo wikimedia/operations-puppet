@@ -1,3 +1,8 @@
+# @summary A profile to configure the config-master.wikimedia.org site content
+# @param conftool_prefix th conftool_prefix
+# @param server_name the main server name
+# @param server_aliases a list of alternate server names
+# @param enable_nda if true enable the nda uri
 class profile::configmaster (
     $conftool_prefix                    = lookup('conftool_prefix'),
     Stdlib::Host $server_name           = lookup('profile::configmaster::server_name'),
