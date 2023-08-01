@@ -244,7 +244,7 @@ class profile::graphite::base(
 
     ferm::service { 'graphite-http':
         proto => 'tcp',
-        port  => 'http',
+        port  => [80],
     }
 
     # This check goes to the backend, which is http.
