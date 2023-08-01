@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              akhatun, jameel, jminor, awjrichards]
+              akhatun, jameel, jminor, awjrichards, ntsako]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -390,7 +390,7 @@ groups:
               ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, mfossati, skvjold, madasan,
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, skvjold, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
@@ -414,7 +414,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako,
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu,
               xcollazo, hokwelum, gmodena, dcausse, mnz, jebe, tchin]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
@@ -5140,14 +5140,12 @@ users:
     krb: absent
     uid: 38462
   ntsako:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 36856
     realname: Ntsako Maphophe
-    email: nmaphophe@wikimedia.org
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8VroNKYrtpnPeziIFkmpF1RhX15Z0uLYWmOfybAnijSV4P6gDPYuzLyniCekkeq6dF9KDU+IfoIwIjV5p6XnsJ6RRQbhQoQUAGThpvPh/0QetFhuLHK77kfmxxhJP04TANgLjVkGyyzbcckkqu7V47hbMuw7jUCsForbVHVbdYF3xdTd494xd6T/eFE8TUcyzpQDsAkzyvWbSwz/g9Ord8zIJicqcgYAzHVaNIt0/qUeyccT6Ql55W2Cftj6BJrT1xHXD4a/yRXN7nvMZnUkJYknoA1fAygkp+4wgBSpjqvP5YNTUVjvLyRCqEiXENMcIW6KSygAWVkqy3Hnj3lYHd+HlMehHoDjqRXXTwBvgXns2b81LxftF8iZNvmk5rD6fRLGqKrCeG8gzeb7QU34umA3iMrPHd3qIGnbhlYTFM+0WbgoxLYEL82PYLhlr6OmKnRmUwTH7FtoTxRfzWhgFVd4Scgyw3UWNrf0IX1WqqKzNwGPXOCLpOoMXNBupY0c= nmaphophe@wikimedia.org
-    krb: present
+    ssh_keys: []
+    krb: absent
   nray:
     ensure: absent
     gid: 500
