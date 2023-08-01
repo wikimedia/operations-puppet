@@ -38,6 +38,7 @@ configcluster:
 
 alerting_host:
   - pontoon-icinga-01.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-alerting-host-01.monitoring.eqiad1.wikimedia.cloud
 
 acme_chief:
   - pontoon-acmechief-01.monitoring.eqiad1.wikimedia.cloud
