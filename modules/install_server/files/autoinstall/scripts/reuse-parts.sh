@@ -87,8 +87,7 @@ log() {
 }
 
 error() {
-    # local not available in sh
-    # local tmpl
+    local tmpl
     tmpl="reuse-parts/${1:?}"; shift
 
     log "$@"
@@ -111,8 +110,7 @@ un_dev_path() {
 }
 
 parse_recipes() {
-    # local not available in sh
-    # local - reuse_recipe dev_recipe item first dev id
+    local - reuse_recipe dev_recipe item first dev id
     reuse_recipe="${1:?}"; shift
     # Disable globbing in this function, as recipe devices can contain wildcards.
     set -o noglob
@@ -132,7 +130,7 @@ parse_recipes() {
                 mkdir -p /tmp/reuse-parts/recipes/"$dev"
             else
                 # Drop part num from the start
-                set -- "$item"
+                set -- $item
                 shift
                 echo "$@" >> /tmp/reuse-parts/recipes/"$dev"/"$first"
             fi
@@ -141,8 +139,7 @@ parse_recipes() {
 }
 
 get_part_recipe() {
-    # local not available in sh
-    # local dev_name recipe_dev part_num recipe_file
+    local dev_name recipe_dev part_num recipe_file
     dev_name="${1:?}"; shift
     recipe_dev="${1:?}"; shift
     part_num="${1:?}"; shift
@@ -154,16 +151,16 @@ get_part_recipe() {
         return 1
     fi
 
-    read -r recipe_fs recipe_action recipe_mountpoint < "$recipe_file"
+    read recipe_fs recipe_action recipe_mountpoint < "$recipe_file"
     # Ensure all fields are set
-    if [ -z "$recipe_fs" ] || [ -z "$recipe_action" ] || [ -z "$recipe_mountpoint" ]; then
+    if ! [ -n "$recipe_fs" -a -n "$recipe_action" -a -n "$recipe_mountpoint" ]; then
         error recipe_parse_failed \
             "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num does not have all fields set: '$(cat "$recipe_file")'"
         return 1
     fi
     # Ensure there are no extra fields (which wind up as being added to the last var as extra words)
-    if [ "$(echo "$recipe_mountpoint" | wc -w)" != 1 ]; then
-        set -- "$recipe_mountpoint"
+    if [ $(echo $recipe_mountpoint | wc -w) != 1 ]; then
+        set -- $recipe_mountpoint
         shift # Drop the mountpoint from the output
         error recipe_parse_failed \
             "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num has trailing garbage: '$*'"
@@ -172,8 +169,7 @@ get_part_recipe() {
 }
 
 part_action() {
-    # local not available in sh
-    # local dev_name partid action fs mountpoint
+    local disk partid action fs mountpoint
     dev_name="${1:?}"; shift
     partid="${1:?}"; shift
     action="${1:?}"; shift
@@ -182,20 +178,20 @@ part_action() {
 
     case "$action" in
         format)
-            log "[$dev_name] Format $mountpoint as $fs"
+            log "[$disk] Format $mountpoint as $fs"
             echo format > "$partid/method"
             touch "$partid/format"
             touch "$partid/formatable"
             ;;
         keep)
-            log "[$dev_name] Keep $mountpoint as $fs"
+            log "[$disk] Keep $mountpoint as $fs"
             echo keep > "$partid/method"
             ;;
         ignore)
             return 0
             ;;
         *) error recipe_parse_failed \
-            "[$dev_name] ERROR: unsupported recipe action '$recipe_action' (Supported: format|keep|ignore)";
+            "[$disk] ERROR: unsupported recipe action '$recipe_action' (Supported: format|keep|ignore)";
             return 1
             ;;
     esac
@@ -249,40 +245,30 @@ for recipe_dir in /tmp/reuse-parts/recipes/*; do
     recipe_dev="$(basename "$recipe_dir")"
     dev_dir="$DEVICES/$recipe_dev"
     # Deliberately not quoting $dev_dir here, as it can contain wildcards.
-    # Also not going to use find here as its overkill
-    # shellcheck disable=SC2012,SC2086
     dev_matches=$(ls -1d $dev_dir | wc -l)
     case $dev_matches in
         0)
             fatal dev_match_failed \
-              "$(printf "ERROR: %s matches zero devices\n\nAll devices:\n%s" \
-              "$recipe_dev" \
-              "$(ls -1 "$DEVICES")")"
+                "ERROR: $recipe_dev matches zero devices $(cd "$DEVICES"; printf "\n\nAll devices:\n$(ls -1)")"
             ;;
         1) ;; # 1 match is a good number.
         *)
             fatal dev_match_failed \
-              "$(printf "ERROR: %s matches more than on device\n\nMatching devices:\n%s" \
-              "$recipe_dev" \
-              "$(ls -1 $recipe_dev)")"
+                "ERROR: $recipe_dev matches more than one device $(cd "$DEVICES"; printf "\n\Matching devices:\n$(ls -1d $recipe_dev)")"
             ;;
     esac
-    # shellcheck disable=SC2086
     cd $dev_dir || fatal dev_match_failed "ERROR: $dev_dir is not a directory"
-    dev_name=$(un_dev_path "$(basename "$PWD")")
+    dev_name=$(un_dev_path $(basename "$PWD"))
 
     ret=0
     part_count=0
     open_dialog PARTITIONS
-    while {
-      read_line num id size type fs path name && [ -n "${id:=}" ];
-    }; do
+    while { read_line num id size type fs path name; [ "$id" ]; }; do
         # libparted gives sections of free space the partition number -1. Skip these.
-        # shellcheck disable=SC2154
-        [ "${num}" = "-1" ] && continue
+        [ "$num" == "-1" ] && continue
         part_count=$((part_count+1))
         get_part_recipe "$dev_name" "$recipe_dev" "$num" || { ret=1; break; }
-        if [ "$fs" != "$recipe_fs" ] && [ "$recipe_action" = "keep" ]; then
+        if [ "$fs" != "$recipe_fs" -a "$recipe_action" = "keep" ]; then
             # If we're supposed to use an existing FS, but the filesystem doesn't match
             # what we've been told, bail out.
             error recipe_mismatch "[$dev_name] ERROR: recipe fs ($recipe_fs) != preexisting fs ($fs)"
@@ -297,7 +283,6 @@ for recipe_dir in /tmp/reuse-parts/recipes/*; do
     # in an inconsistent state.
     [ $ret -eq 0 ] || exit $ret
 
-    # shellcheck disable=SC2012
     recipes_count=$(ls "$recipe_dir"/* | wc -l)
     if [ "$part_count" != "$recipes_count" ]; then
         fatal recipe_mismatch \
