@@ -66,6 +66,7 @@ class profile::mediawiki::mcrouter_wancache(
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $gutters_by_datacenter = $servers_by_datacenter_category['gutter']
+    $wikifunctions_servers = $servers_by_datacenter_category['wikifunctions'][$::site]
 
     if $use_onhost_memcached {
         if $use_onhost_memcached_socket {
@@ -96,6 +97,9 @@ class profile::mediawiki::mcrouter_wancache(
         }
     }.reduce()|$memo, $value| { $memo + $value }
 
+    # wikifunction pool. We just need the one for the local datacenter.
+    # No need for tls here, either, as the traffic is all dc-local.
+    $wikifunction_pool = profile::mcrouter_pools("wf-${::site}", $wikifunctions_servers, 'plain', $memcached_notls_port)
     # Server pools
     $pools = $servers_by_datacenter.map |$dc, $servers| {
         if $dc == $::site {
@@ -103,7 +107,7 @@ class profile::mediawiki::mcrouter_wancache(
         } else {
             profile::mcrouter_pools($dc, $servers, 'ssl', $memcached_tls_port)
         }
-    }.reduce($onhost_pool + $gutter_pools) |$memo, $value| { $memo + $value }
+    }.reduce($onhost_pool + $gutter_pools + $wikifunction_pool) |$memo, $value| { $memo + $value }
 
     $routes = union(
         # Local cache for each region
@@ -188,7 +192,12 @@ class profile::mediawiki::mcrouter_wancache(
                     false => profile::mcrouter_route($dc, $gutter_ttl, $failover_route)
                 }
             }
-        }
+        },
+        # wikifunctions pool, fully dc-local, no failover.
+        [{
+            'aliases' => [ '/local/wf/' ],
+            'route'   => "PoolRoute|wf-${::site}"
+        }]
     )
 
     class { 'mcrouter':
