@@ -362,7 +362,9 @@ def main():  # pylint: disable=too-many-locals
     )
     try:
         nodes, private_change = (
-            parse_commit(change["id"]) if args.nodes == "parse_commit" else args.nodes, ''
+            parse_commit(change["id"])
+            if args.nodes == "parse_commit"
+            else (args.nodes, args.private_change)
         )
     except KeyError as error:
         print("Unable to find commit message: {}".format(error))
