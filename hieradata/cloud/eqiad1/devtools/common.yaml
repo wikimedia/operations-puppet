@@ -251,8 +251,6 @@ profile::gitlab::enable_backup_sync: false
 
 # client secrets are in the private repo
 profile::gitlab::omniauth_providers:
-  'Wikimedia Dev Account':
-    url: 'https://idp.wmcloud.org'
   'Wikimedia Dev Account (OIDC)':
     issuer: 'https://idp.wmcloud.org/oidc'
     client_options:
