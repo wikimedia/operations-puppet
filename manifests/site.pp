@@ -715,6 +715,11 @@ node /^db21(42|43|44)\.codfw\.wmnet$/ {
     role(mariadb::objectstash)
 }
 
+# New db hosts to be setup T342174
+node /^db21(88|89|90|91|92|93|94|95)\.codfw\.wmnet$/ {
+    role(insetup::data_persistence)
+}
+
 ## m1 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
@@ -2538,7 +2543,7 @@ node 'pc2014.codfw.wmnet' {
     role(mariadb::parsercache)
 }
 
-# To be setup T342163
+# New parsercache hosts to be setup T342163
 node /^pc20(15|16)\.codfw\.wmnet$/ {
     role(insetup::data_persistence)
 }
