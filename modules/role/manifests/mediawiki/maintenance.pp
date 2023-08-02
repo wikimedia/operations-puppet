@@ -14,10 +14,6 @@ class role::mediawiki::maintenance {
     include ::profile::mariadb::maintenance
     include ::profile::mariadb::client
 
-    # NOC - https://noc.wikimedia.org/
-    include ::profile::noc
-    include ::profile::tlsproxy::envoy # TLS termination
-
     # LDAP
     if ($::realm == 'production') {
         include ::profile::openldap::management
