@@ -105,7 +105,7 @@ class profile::docker_registry_ha::registry(
 
     ferm::service { 'docker_registry_https':
         proto  => 'tcp',
-        port   => 'https',
+        port   => 443,
         srange => '$DOMAIN_NETWORKS',
     }
 
