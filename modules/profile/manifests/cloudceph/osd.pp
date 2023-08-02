@@ -86,11 +86,11 @@ class profile::cloudceph::osd(
 
     $ferm_cluster_srange = join($osd_hosts.map | $key, $value | { $value['cluster']['addr'] }, ' ')
     ferm::service { 'ceph_osd_cluster_range':
-        proto  => 'tcp',
-        port   => '6800:7100',
-        srange => "(${ferm_cluster_srange})",
-        drange => $host_conf['cluster']['addr'],
-        before => Class['ceph::common'],
+        proto      => 'tcp',
+        port_range => [6800, 7100],
+        srange     => "(${ferm_cluster_srange})",
+        drange     => $host_conf['cluster']['addr'],
+        before     => Class['ceph::common'],
     }
 
 
@@ -135,11 +135,11 @@ class profile::cloudceph::osd(
     $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
     $ferm_public_srange = join(concat($mon_addrs, $osd_public_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
     ferm::service { 'ceph_osd_range':
-        proto  => 'tcp',
-        port   => '6800:7100',
-        srange => "(${ferm_public_srange})",
-        drange => $host_conf['public']['addr'],
-        before => Class['ceph::common'],
+        proto      => 'tcp',
+        port_range => [6800, 7100],
+        srange     => "(${ferm_public_srange})",
+        drange     => $host_conf['public']['addr'],
+        before     => Class['ceph::common'],
     }
 
     class { 'ceph::common':
