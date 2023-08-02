@@ -1,6 +1,6 @@
 class role::mediawiki::maintenance {
     system::role { 'mediawiki::maintenance':
-        description => 'MediaWiki maintenance systemd timer job server + noc.wikimedia.org',
+        description => 'MediaWiki maintenance systemd timer job server',
     }
 
     include ::profile::base::production
