@@ -59,7 +59,7 @@ class profile::mirrors::debian {
 
     ferm::service { 'mirrors_ssh':
         proto  => 'tcp',
-        port   => 'ssh',
+        port   => [22],
         srange => '(@resolve(syncproxy2.wna.debian.org))',
     }
 

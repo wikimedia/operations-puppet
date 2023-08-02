@@ -34,12 +34,12 @@ class profile::mirrors::serve {
 
     ferm::service { 'mirrors_http':
         proto => 'tcp',
-        port  => '(http https)'
+        port  => [80,443],
     }
 
     ferm::service { 'mirrors_rsync':
         proto => 'tcp',
-        port  => '873',
+        port  => [873],
     }
 
     prometheus::blackbox::check::http { 'mirrors.wikimedia.org':
