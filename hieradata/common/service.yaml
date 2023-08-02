@@ -158,6 +158,9 @@ service::catalog:
       - codfw
       - eqiad
     state: production
+    discovery:
+      - dnsdisc: aqs
+        active_active: true
 
   aux-k8s-ctrl:
     description: 'Kubernetes API service for aux cluster'
