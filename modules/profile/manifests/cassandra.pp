@@ -83,7 +83,7 @@ class profile::cassandra(
     # Cassandra intra-node messaging
     ferm::service { 'cassandra-intra-node':
         proto  => 'tcp',
-        port   => '7000',
+        port   => 7000,
         srange => "@resolve((${cassandra_hosts_ferm}))",
     }
 
@@ -91,24 +91,24 @@ class profile::cassandra(
         # Cassandra intra-node SSL messaging
         ferm::service { 'cassandra-intra-node-ssl':
             proto  => 'tcp',
-            port   => '7001',
+            port   => 7001,
             srange => "@resolve((${cassandra_hosts_ferm}))",
         }
     }
 
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-jmx-rmi':
-        proto  => 'tcp',
+        proto      => 'tcp',
         # hardcoded limit of 4 instances per host
-        port   => '7199:7202',
-        srange => "@resolve((${cassandra_hosts_ferm}))",
+        port_range => [7199, 7202],
+        srange     => "@resolve((${cassandra_hosts_ferm}))",
     }
 
     # Cassandra CQL query interface
     # Note: $client_ips is presumed to be IPs and not be resolved
     ferm::service { 'cassandra-cql':
         proto  => 'tcp',
-        port   => '9042',
+        port   => 9042,
         srange => "(@resolve((${cassandra_hosts_ferm})) ${client_ips_ferm})",
     }
     if $allow_analytics {
@@ -116,7 +116,7 @@ class profile::cassandra(
         $analytics_networks = join($network::constants::analytics_networks, ' ')
         ferm::service { 'cassandra-analytics-cql':
             proto  => 'tcp',
-            port   => '9042',
+            port   => 9042,
             srange => "(@resolve((${cassandra_hosts_ferm})) ${analytics_networks})",
         }
 
