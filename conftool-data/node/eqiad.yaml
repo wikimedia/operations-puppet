@@ -72,8 +72,6 @@ eqiad:
     mw1487.eqiad.wmnet: [nginx]
     mw1488.eqiad.wmnet: [nginx]
     mw1496.eqiad.wmnet: [nginx]
-    mw1497.eqiad.wmnet: [nginx]
-    mw1498.eqiad.wmnet: [nginx]
   api_appserver:
     mw1358.eqiad.wmnet: [nginx]
     mw1359.eqiad.wmnet: [nginx]
