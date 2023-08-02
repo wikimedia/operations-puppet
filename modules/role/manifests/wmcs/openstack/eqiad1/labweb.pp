@@ -22,7 +22,7 @@ class role::wmcs::openstack::eqiad1::labweb {
     include ::profile::openstack::eqiad1::wikitech::monitor
 
     # Horizon:
-    include ::profile::openstack::eqiad1::horizon::dashboard_source_deploy
+    include ::profile::openstack::eqiad1::horizon::docker_deploy
 
     # Striker:
     include ::profile::wmcs::striker::docker

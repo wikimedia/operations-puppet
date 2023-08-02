@@ -101,6 +101,8 @@ profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 profile::tlsproxy::envoy::services:
   - server_names: ['toolsadmin.wikimedia.org']
     port: 8080
+  - server_names: ['horizon.wikimedia.org']
+    port: 8084
   - server_names: ['*']
     port: 80
 
