@@ -91,7 +91,7 @@ class profile::ntp (
 
     ferm::service { 'ntp':
         proto  => 'udp',
-        port   => 'ntp',
+        port   => 123,
         srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
     }
 
