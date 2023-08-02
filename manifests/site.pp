@@ -1579,7 +1579,7 @@ node 'krb2002.codfw.wmnet' {
     role(kerberos::kdc)
 }
 
-node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-4])\.(codfw|eqiad)\.wmnet$/ {
+node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-6])\.(codfw|eqiad)\.wmnet$/ {
     role(kubernetes::worker)
 }
 
@@ -2036,7 +2036,7 @@ node /^mw144([1-2])\.eqiad\.wmnet$/ {
 }
 
 # Row F
-node /^mw149[6-8]\.eqiad\.wmnet$/ {
+node /^mw1496\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 

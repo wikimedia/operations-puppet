@@ -113,6 +113,8 @@ kubernetes::clusters:
         - kubernetes1022.eqiad.wmnet
         - kubernetes1023.eqiad.wmnet
         - kubernetes1024.eqiad.wmnet
+        - kubernetes1025.eqiad.wmnet
+        - kubernetes1026.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
