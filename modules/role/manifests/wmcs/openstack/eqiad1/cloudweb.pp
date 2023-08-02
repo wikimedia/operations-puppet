@@ -1,6 +1,4 @@
-# All horizon/striker/wikitech profiles should fold into
-# role::wmcs::openstack::eqiad1::web when labweb* is finished
-class role::wmcs::openstack::eqiad1::labweb {
+class role::wmcs::openstack::eqiad1::cloudweb {
     system::role { $name: }
 
     include ::profile::base::production

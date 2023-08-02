@@ -283,7 +283,7 @@ role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
 role::openldap::corp:
   target-q: 2023-1
   phab-task: 323820
-role::wmcs::openstack::eqiad1::labweb:
+role::wmcs::openstack::eqiad1::cloudweb:
   target-q: TBD
   phab-task: 332400
 role::piwik:

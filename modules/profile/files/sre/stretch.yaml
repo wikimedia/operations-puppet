@@ -235,7 +235,7 @@ role::labs::db::wikireplica_analytics::dedicated:
   target-q: 2020-4
 role::openldap::replica:
   target-q: 2020-3
-role::wmcs::openstack::eqiad1::labweb:
+role::wmcs::openstack::eqiad1::cloudweb:
   target-q: 2020-4
 role::piwik:
   target-q: 2020-2

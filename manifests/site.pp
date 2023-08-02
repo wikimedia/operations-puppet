@@ -1391,7 +1391,7 @@ node /^cloudlb100[12]\.eqiad\.wmnet$/ {
 
 #new cloudweb hosts T305414
 node /^cloudweb100[34]\.wikimedia\.org$/ {
-    role(wmcs::openstack::eqiad1::labweb)
+    role(wmcs::openstack::eqiad1::cloudweb)
 }
 
 node 'cloudweb2002-dev.wikimedia.org' {
