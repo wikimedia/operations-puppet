@@ -1,4 +1,2 @@
 # db1218
-# candidate master for s1
 mariadb::shard: 's1'
-mariadb::binlog_format: 'STATEMENT'
