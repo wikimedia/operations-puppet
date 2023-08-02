@@ -124,7 +124,7 @@ class profile::ganeti (
     # Allow SSH between ganeti cluster members
     ferm::service { 'ganeti_ssh_cluster':
         proto  => 'tcp',
-        port   => 'ssh',
+        port   => 22,
         srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
@@ -156,12 +156,11 @@ class profile::ganeti (
         srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
-    # DRBD is used for HA of disk images. Port range for ganeti is
-    # 11000-14999
+    # DRBD is used for HA of disk images. Port range for ganeti is 11000-14999
     ferm::service { 'ganeti_drbd':
-        proto  => 'tcp',
-        port   => '11000:14999',
-        srange => "@resolve((${ganeti_ferm_nodes}))",
+        proto      => 'tcp',
+        port_range => [11000,14999],
+        srange     => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     # Migration is done over TCP port

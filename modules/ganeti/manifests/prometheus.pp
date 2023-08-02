@@ -14,7 +14,7 @@ class ganeti::prometheus(
 
     ferm::service {'ganeti-prometheus-exporter':
         proto  => 'tcp',
-        port   => '8080',
+        port   => 8080,
         srange => '$PRODUCTION_NETWORKS',
     }
 
