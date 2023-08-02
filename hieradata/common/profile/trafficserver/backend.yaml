@@ -134,7 +134,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://netbox-dev2002.codfw.wmnet
     - type: map
       target: http://noc.wikimedia.org
-      replacement: https://mwmaint.discovery.wmnet
+      replacement: https://mw-misc.discovery.wmnet:30443
     - type: map
       target: http://os-reports.wikimedia.org
       replacement: https://webserver-misc-eqiad.discovery.wmnet
