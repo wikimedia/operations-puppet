@@ -2538,6 +2538,11 @@ node 'pc2014.codfw.wmnet' {
     role(mariadb::parsercache)
 }
 
+# To be setup T342163
+node /^pc20(15|16)\.codfw\.wmnet$/ {
+    role(insetup::data_persistence)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[123]003\.(eqiad|codfw|esams)\.wmnet$/ {
     role(ping_offload)
