@@ -1689,6 +1689,11 @@ node /^ldap-replica200[5-6]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
+# Read-only ldap replicas in codfw
+node 'lists2001.codfw.wmnet' {
+    role(insetup::data_persistence)
+}
+
 # Logging data nodes (codfw)
 node /^logstash20(0[123]|2[6789]|3[34567])\.codfw\.wmnet$/ {
     role(logging::opensearch::data)
