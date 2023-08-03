@@ -2543,8 +2543,13 @@ node 'pc2014.codfw.wmnet' {
     role(mariadb::parsercache)
 }
 
-# New parsercache hosts to be setup T342163
+# New parsercache hosts to be setup #T342163
 node /^pc20(15|16)\.codfw\.wmnet$/ {
+    role(insetup::data_persistence)
+}
+
+# New parsercache hosts to be setup #T342164
+node /^pc10(15|16)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
