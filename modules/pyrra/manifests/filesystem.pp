@@ -14,7 +14,9 @@ class pyrra::filesystem(
 
     ensure_packages(['pyrra'])
 
-    file { $prometheus_folder:
+    $config_folder = dirname($config_files)
+
+    file { [ $prometheus_folder, $config_folder ]:
         ensure => directory,
         mode   => '0555',
         owner  => 'root',
