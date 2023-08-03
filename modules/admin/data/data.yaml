@@ -402,7 +402,7 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe]
+              hghani, nshahquinn-wmf, zabe, amalr]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5945,6 +5945,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMDFSs6MJZekBu3PVnPTaEnU/KFrEPvf4Unje7o3Kib/
+  amalr:
+    ensure: present
+    realname: Amal Ramadan
+    email: aramadan@wikimedia.org
+    uid: 44840
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
