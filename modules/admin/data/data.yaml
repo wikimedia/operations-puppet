@@ -402,7 +402,7 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe, amalr]
+              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5952,6 +5952,13 @@ users:
     uid: 44840
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  mpossoupe:
+    ensure: present
+    realname: Mahuton Possoupe
+    email: mpossoupe@wikimedia.org
+    uid: 44822
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6755,10 +6762,6 @@ ldap_only_users:
     ensure: present
     realname: Ifrah Khanyaree
     email: ifrah.khanyaree@wikimedia.de
-  mpossoupe:
-    ensure: present
-    realname: Mahuton Possoupe
-    email: mpossoupe@wikimedia.org
   cyndywikime:
     ensure: present
     realname: Cynthia Simiyu
