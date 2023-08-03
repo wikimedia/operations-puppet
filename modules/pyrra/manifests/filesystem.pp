@@ -17,10 +17,11 @@ class pyrra::filesystem(
     $config_folder = dirname($config_files)
 
     file { [ $prometheus_folder, $config_folder ]:
-        ensure => directory,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => directory,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['pyrra'],
     }
 
     systemd::service { 'pyrra-filesystem':
