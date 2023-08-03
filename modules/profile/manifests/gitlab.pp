@@ -222,7 +222,7 @@ class profile::gitlab(
         omniauth_providers        => $omniauth_providers,
         auto_sign_in_with         => $auto_sign_in_with,
         omniauth_identifier       => $omniauth_identifier,
-        enable_ldap_group_sync    => $active_host != $facts['fqdn'], # enable LDAP group sync on Gitlab replicas while testing
+        enable_ldap_group_sync    => $active_host == $facts['fqdn'], # enable LDAP group sync on active Gitlab server
         ldap_config               => $ldap_config,
         ldap_group_sync_user      => $ldap_group_sync_user,
         ldap_group_sync_bot       => $ldap_group_sync_bot,
