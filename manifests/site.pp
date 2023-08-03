@@ -2755,6 +2755,11 @@ node /^sretest200[1-2]\.codfw\.wmnet$/ {
     role(sretest)
 }
 
+# codfw new titan node T342300
+node /^titan200[1-2]\.codfw\.wmnet$/ {
+    role(insetup::observability)
+}
+
 # parsoid visual diff and roundtrip testing (T257940)
 # also see scandium.eqiad.wmnet
 node 'testreduce1001.eqiad.wmnet' {
