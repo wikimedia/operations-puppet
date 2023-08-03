@@ -531,6 +531,8 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad: {}
   proxies:
     eqiad: {}
+  wikifunctions:
+    eqiad: {}
 profile::mediawiki::scap_client::is_master: false
 profile::mediawiki::php::php_versions:
   - "7.4"
