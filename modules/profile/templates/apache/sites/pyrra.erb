@@ -5,10 +5,7 @@
   ServerName <%= @http_servername %>
   DocumentRoot /var/www
 
-  RewriteEngine On
-
   ProxyPreserveHost On
   ProxyPass / http://localhost:9099/
   ProxyPassReverse / http://localhost:9099/
-
 </VirtualHost>
