@@ -8,7 +8,7 @@ class mediawiki::mcrouter::yaml_defs(
     Stdlib::Port $memcached_tls_port       = undef,
     Hash  $servers_by_datacenter_category  = {},
 ){
-    $pools = $servers_by_datacenter_category['wancache'].map |$datacenter, $servers| {
+    $wancache_pools = $servers_by_datacenter_category['wancache'].map |$datacenter, $servers| {
         {
             'name' => "${datacenter}-servers",
             'zone' => $datacenter,
@@ -20,12 +20,21 @@ class mediawiki::mcrouter::yaml_defs(
             },
         }
     }
+    $wikifunctions_pool = $servers_by_datacenter_category['wikifunctions'].map |$dc, $servers| {
+        {
+            'name' => "wf-${dc}",
+            'zone' => $dc,
+            'servers' =>  $servers.map |$shard_slot, $address| {
+                $address['host']
+            },
+        }
+    }
 
     file { $path:
         ensure  => present,
         content => to_yaml(
             {'cache' => {'mcrouter' => {
-                'pools'                => $pools,
+                'pools'                => $wancache_pools + $wikifunctions_pool,
                 'memcached_notls_port' => $memcached_notls_port,
                 'memcached_tls_port'   => $memcached_tls_port
             }}}
