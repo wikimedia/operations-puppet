@@ -292,6 +292,7 @@ profile::base::remote_syslog_tls:
   - syslogaudit1.svc.eqiad1.wikimedia.cloud:6514
   - syslogaudit2.svc.eqiad1.wikimedia.cloud:6514
 profile::base::remote_syslog_tls_client_auth: false
+profile::base::remote_syslog_tls_server_auth: x509/name
 profile::base::remote_syslog_tls_ca: /etc/ssl/certs/ca-certificates.crt
 
 # we need the ossl driver; gtls doesn't work with acme certs.
