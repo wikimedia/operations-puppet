@@ -78,10 +78,6 @@
     # ShortUrl support, for wikis where it's enabled
     RewriteRule ^/s/.*$     /w/index.php
 <%- end -%>
-<%- if @view_urls -%>
-    # /view support, for Wikifunctions.org
-    RewriteRule ^/view/.*$     /w/index.php
-<%- end -%>
 <%- if @legacy_rewrites -%>
     # UseMod compatibility URLs
     RewriteCond %{QUERY_STRING} ([^&;]+)

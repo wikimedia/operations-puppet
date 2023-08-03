@@ -642,7 +642,11 @@ mediawiki::sites:
       - name: wikifunctions
         params:
           server_aliases: ["wikifunctions.beta.wmflabs.org", "*.wikifunctions.beta.wmflabs.org"]
-          view_urls: true
+          additional_rewrites:
+            "early": []
+            "late":
+              - "    # /view support, for Wikifunctions.org"
+              - "    RewriteRule ^/view/.*$     /w/index.php"
       - name: wikimedia
         params:
           server_name: "misc-sites"

@@ -232,9 +232,13 @@ mediawiki::sites:
           server_aliases: ["*.wikifunctions.org"]
           docroot: "/srv/mediawiki/docroot/wikifunctions.org"
           short_urls: true
-          view_urls: true
           canonical_name: "On"
           legacy_rewrites: false
+          additional_rewrites:
+            "early": []
+            "late":
+              - "    # /view support, for Wikifunctions.org"
+              - "    RewriteRule ^/view/.*$     /w/index.php"
   # other important wikis
   - name: "remnant"
     priority: 4
