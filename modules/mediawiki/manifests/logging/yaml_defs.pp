@@ -3,7 +3,7 @@ class mediawiki::logging::yaml_defs(
     Array[String] $kafka_brokers,
     String $udp2log,
     String $ca_cert_path = '/etc/ssl/certs/wmf-ca-certificates.crt',
-    String $rsyslog_max_message_size = '64K',
+    String $rsyslog_max_message_size = '64k',
 ) {
     $kb = $kafka_brokers.map |$broker| { {'host' => $broker, 'port' => 9093}}
     $logging_data = {

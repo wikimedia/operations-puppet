@@ -41,7 +41,7 @@ class profile::kubernetes::deployment_server::mediawiki::config(
         path                     => "${general_dir}/mediawiki/logging.yaml",
         udp2log                  => $udp2log_aggregator,
         kafka_brokers            => $kafka_brokers,
-        rsyslog_max_message_size => '64K',
+        rsyslog_max_message_size => '64k',
     }
     class { 'mediawiki::mcrouter::yaml_defs':
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
