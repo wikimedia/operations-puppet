@@ -1,9 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class profile::zookeeper::server
 #
-# zookeeper_cluster_name in hiera will be used to make jmxtrans
-# properly prefix zookeeper statsd (and graphite) metrics.
-#
 class profile::zookeeper::server (
     Hash $clusters                       = lookup('zookeeper_clusters'),
     String $cluster_name                 = lookup('profile::zookeeper::cluster_name'),
