@@ -24,7 +24,7 @@ class profile::installserver::http_light {
 
     ferm::service { 'install_http_light':
         proto  => 'tcp',
-        port   => '80',
+        port   => 80,
         srange => '$DOMAIN_NETWORKS',
     }
 

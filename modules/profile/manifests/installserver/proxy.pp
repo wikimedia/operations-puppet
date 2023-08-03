@@ -49,7 +49,7 @@ class profile::installserver::proxy(
 
     ferm::service { 'proxy':
         proto  => 'tcp',
-        port   => '8080',
+        port   => 8080,
         srange => '$PRODUCTION_NETWORKS',
     }
 

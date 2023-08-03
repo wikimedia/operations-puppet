@@ -12,7 +12,7 @@ class profile::installserver::http {
 
     ferm::service { 'install_http':
         proto => 'tcp',
-        port  => '(http https)'
+        port  => [80,443],
     }
 
     monitoring::service { 'http':

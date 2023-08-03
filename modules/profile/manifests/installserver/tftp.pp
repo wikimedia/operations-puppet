@@ -30,7 +30,7 @@ class profile::installserver::tftp (
 
     ferm::service { 'tftp':
         proto  => 'udp',
-        port   => 'tftp',
+        port   => 69,
         srange => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
     }
 

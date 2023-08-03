@@ -24,7 +24,7 @@ class profile::installserver::migration (
 
         ferm::service { 'installserver-migration-rsync':
             proto  => 'tcp',
-            port   => '873',
+            port   => 873,
             srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
         }
 

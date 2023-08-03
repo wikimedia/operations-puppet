@@ -14,7 +14,7 @@ class profile::installserver::dhcp(
 
   ferm::service { 'dhcp':
     proto  => 'udp',
-    port   => 'bootps',
+    port   => 67,
     srange => '($PRODUCTION_NETWORKS $NETWORK_INFRA)',
   }
 }
