@@ -53,26 +53,6 @@ class profile::firewall (
             },
         }
     }
-    if $defs_from_etcd {
-        # unmanaged files under /etc/ferm/conf.d are purged
-        # so we define the file to stop it being deleted
-        file { '/etc/ferm/conf.d/00_defs_requestctl':
-            ensure => 'file',
-        }
-        confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-            ensure          => 'present',
-            reload          => '/bin/systemctl reload ferm',
-            watch_keys      => ['/request-ipblocks/abuse'],
-            content         => file('profile/firewall/defs_requestctl.tpl'),
-            prefix          => $conftool_prefix,
-            relative_prefix => false,
-        }
-        ferm::rule { 'drop-blocked-nets':
-            prio => '01',
-            rule => 'saddr $BLOCKED_NETS DROP;',
-            desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
-        }
-    }
     if $enable_logging {
         include profile::firewall::log
     }
@@ -86,20 +66,15 @@ class profile::firewall (
         }
     }
 
-    ferm::conf { 'main':
-        prio   => '02',
-        source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
-    }
-
     ferm::service { 'ssh-from-bastion':
         proto  => 'tcp',
-        port   => '22',
+        port   => 22,
         srange => "(${bastion_hosts.join(' ')})",
     }
 
     ferm::service { 'ssh-from-cumin-masters':
         proto  => 'tcp',
-        port   => '22',
+        port   => 22,
         srange => '$CUMIN_MASTERS',
     }
 
@@ -117,6 +92,32 @@ class profile::firewall (
 
     case $provider {
         'ferm': {
+
+            if $defs_from_etcd {
+                # unmanaged files under /etc/ferm/conf.d are purged
+                # so we define the file to stop it being deleted
+                file { '/etc/ferm/conf.d/00_defs_requestctl':
+                    ensure => 'file',
+                }
+                confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
+                    ensure          => 'present',
+                    reload          => '/bin/systemctl reload ferm',
+                    watch_keys      => ['/request-ipblocks/abuse'],
+                    content         => file('profile/firewall/defs_requestctl.tpl'),
+                    prefix          => $conftool_prefix,
+                    relative_prefix => false,
+                }
+                ferm::rule { 'drop-blocked-nets':
+                    prio => '01',
+                    rule => 'saddr $BLOCKED_NETS DROP;',
+                    desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
+                }
+            }
+
+            ferm::conf { 'main':
+                prio   => '02',
+                source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
+            }
 
             ferm::conf { 'defs':
                 prio    => '00',
