@@ -3,7 +3,7 @@ groups:
   absent:
     description: meta group for absented users with previous cluster shell access, it removes the account from /etc/passwd on all production hosts running puppet
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
-              handrade, howief, jdouglas, jgonera, jsahleen, maryana, mglaser,
+              handrade, howief, jdouglas, jgonera, jsahleen, mglaser,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman, dbarratt,
@@ -402,7 +402,7 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe]
+              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -2145,11 +2145,11 @@ users:
     uid: 2402
     krb: absent
   maryana:
-    ensure: absent
+    ensure: present
     gid: 500
     name: maryana
     realname: Maryana Pinchuk
-    ssh_keys: []
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     uid: 2515
   msyed:
     ensure: absent
@@ -6467,10 +6467,6 @@ ldap_only_users:
   nnair:
     ensure: absent
     realname: Neha Nair
-  maryana:
-    ensure: present
-    realname: Maryana Pinchuk
-    email: mpinchuk@wikimedia.org
   jbol:
     ensure: absent
     realname: John Bolorinos
