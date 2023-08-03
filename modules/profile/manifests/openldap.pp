@@ -51,7 +51,7 @@ class profile::openldap (
     # WMCS and on various prod hosts.
     ferm::service { 'ldap':
         proto  => 'tcp',
-        port   => '(389 636)',
+        port   => [389, 636],
         srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
