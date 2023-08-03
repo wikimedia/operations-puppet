@@ -38,9 +38,10 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     $kafka_config = kafka_config('logging-eqiad')
     $kafka_brokers = $kafka_config['brokers']['array']
     class { 'mediawiki::logging::yaml_defs':
-        path          => "${general_dir}/mediawiki/logging.yaml",
-        udp2log       => $udp2log_aggregator,
-        kafka_brokers => $kafka_brokers,
+        path                     => "${general_dir}/mediawiki/logging.yaml",
+        udp2log                  => $udp2log_aggregator,
+        kafka_brokers            => $kafka_brokers,
+        rsyslog_max_message_size => '64K',
     }
     class { 'mediawiki::mcrouter::yaml_defs':
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
