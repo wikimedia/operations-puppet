@@ -77,15 +77,22 @@ class profile::thanos::swift::backend (
     # - account server (6002)
     # - per-disk object-server ports T222366 (6010:6040)
     ferm::service { 'swift-object-server':
-        proto   => 'tcp',
-        port    => '(6000:6002 6010:6040)',
-        notrack => true,
-        srange  => "@resolve((${swift_access_ferm}))",
+        proto      => 'tcp',
+        port_range => [6000, 6002],
+        notrack    => true,
+        srange     => "@resolve((${swift_access_ferm}))",
+    }
+
+    ferm::service { 'swift-object-server-per-disk':
+        proto      => 'tcp',
+        port_range => [6010, 6040],
+        notrack    => true,
+        srange     => "@resolve((${swift_access_ferm}))",
     }
 
     ferm::service { 'swift-rsync':
         proto   => 'tcp',
-        port    => '873',
+        port    => 873,
         notrack => true,
         srange  => "@resolve((${swift_rsync_access_ferm}))",
     }

@@ -106,7 +106,7 @@ class profile::thanos::swift::frontend (
 
     ferm::service { 'memcached':
         proto   => 'tcp',
-        port    => '11211',
+        port    => 11211,
         notrack => true,
         srange  => "@resolve((${thanos_access_ferm}))",
     }
