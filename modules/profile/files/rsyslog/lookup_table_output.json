@@ -49,6 +49,8 @@
     {"index" : "input-file-vrts-exim-mailinfo", "value" : "kafka" },
     {"index" : "input-file-vrts-exim-mailwarn", "value" : "kafka" },
     {"index" : "input-file-vrts-exim-mailerr", "value" : "kafka" },
+    {"index" : "input-file-vrts-clamav", "value" : "kafka" },
+    {"index" : "input-file-vrts-freshclam", "value" : "kafka" },
     {"index" : "input-file-doc-apache2-error", "value" : "kafka" },
     {"index" : "input-file-doc-apache2-access", "value" : "kafka" },
     {"index" : "input-file-doc-phpfpm-error", "value" : "kafka" },
