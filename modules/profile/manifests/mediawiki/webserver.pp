@@ -82,7 +82,7 @@ class profile::mediawiki::webserver(
     ferm::service { 'mediawiki-http':
         proto   => 'tcp',
         notrack => true,
-        port    => 'http',
+        port    => 80,
         srange  => '$DOMAIN_NETWORKS',
     }
 

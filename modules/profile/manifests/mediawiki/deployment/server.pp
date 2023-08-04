@@ -79,7 +79,7 @@ class profile::mediawiki::deployment::server(
 
     ferm::service { 'rsyncd_scap_master':
         proto  => 'tcp',
-        port   => '873',
+        port   => 873,
         srange => "(${deployable_networks_ferm})",
     }
 
@@ -87,7 +87,7 @@ class profile::mediawiki::deployment::server(
     ferm::service { 'http_deployment_server':
         desc   => 'HTTP on deployment servers, for serving actual files to deploy',
         proto  => 'tcp',
-        port   => '80',
+        port   => 80,
         srange => "(${deployable_networks_ferm})",
     }
 
@@ -96,7 +96,7 @@ class profile::mediawiki::deployment::server(
     ferm::service { 'git-daemon':
         desc   => 'Git daemon',
         proto  => 'tcp',
-        port   => '9418',
+        port   => 9418,
         srange => "(@resolve((${releases_servers.join(' ')})))",
     }
     ### End firewall rules

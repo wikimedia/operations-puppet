@@ -14,7 +14,7 @@ class profile::mediawiki::maintenance (
     # firewall: allow http from deployment servers for testing with httpbb
     ferm::service { 'deploy-http-mwmaint':
         proto  => 'tcp',
-        port   => '80',
+        port   => 80,
         srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 
