@@ -720,6 +720,10 @@ node /^db21(88|89|90|91|92|93|94|95)\.codfw\.wmnet$/ {
     role(insetup::data_persistence)
 }
 
+# New db hosts to be setup T342166
+node /^db12(34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\.wmnet$/ {
+    role(insetup::data_persistence)
+}
 ## m1 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
