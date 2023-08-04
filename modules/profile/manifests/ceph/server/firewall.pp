@@ -37,10 +37,10 @@ class profile::ceph::server::firewall (
     $ferm_srange = join($ceph_server_addrs, ' ')
 
     ferm::service { 'ceph_daemons':
-        proto  => 'tcp',
-        port   => '6800:7300',
-        srange => "(${ferm_srange})",
-        before => Class['ceph::common'],
+        proto      => 'tcp',
+        port_range => [6800, 7300],
+        srange     => "(${ferm_srange})",
+        before     => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_v1':
       proto  => 'tcp',
