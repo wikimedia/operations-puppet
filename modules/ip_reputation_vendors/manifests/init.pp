@@ -31,12 +31,10 @@ class ip_reputation_vendors (
         undef   => {},
         default => Hash( ['http_proxy', 'https_proxy' ].map |$env| {[$env, $http_proxy, $env.upcase, $http_proxy]}.flatten)
     }
-    if !defined($outfile.dirname) {
-        file { $outfile.dirname():
-            ensure => stdlib::ensure($ensure, 'directory'),
-            owner  => $user,
-            group  => $group,
-        }
+    file { $outfile.dirname():
+        ensure => stdlib::ensure($ensure, 'directory'),
+        owner  => $user,
+        group  => $group,
     }
     file { '/usr/local/bin/fetch-ip-reputation-vendors':
         ensure => stdlib::ensure($ensure, 'file'),
