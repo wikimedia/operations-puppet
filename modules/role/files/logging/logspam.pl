@@ -143,7 +143,6 @@ my @junk_patterns = (
   qr/A connection error occurred during a query\./,
   qr/Invariant failed: Bad UTF-8 at (start|end) of string/,
   qr/Shellbox server returned status code 503/,
-  qr/Unexpected clearActionName after getActionName already called/,  # T323254
 );
 
 # A pattern for extracting exception names and the invariant error messages /
