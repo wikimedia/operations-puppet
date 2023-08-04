@@ -59,6 +59,15 @@ class profile::vrts(
         mail_smarthosts    => $profile::mail::default_mail_relay::smarthosts,
     }
 
+    class { 'prometheus::sql_exporter':
+        db_connection => "mysql://${vrts_database_user}:${vrts_database_pw}@tcp(${vrts_database_host}:${vrts_database_port})/${vrts_database_name}",
+        metric_name   => 'vrts_sql_metrics',
+        metrics       => {
+            'valid_queues'   => 'select count(*) from queue where valid_id=1;',
+            'invalid_queues' => 'select count(*) from queue where valid_id=2;',
+        },
+    }
+
     class { '::httpd':
         modules => ['headers', 'rewrite', 'perl'],
     }
