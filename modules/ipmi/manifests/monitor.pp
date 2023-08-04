@@ -25,6 +25,10 @@ class ipmi::monitor (
         require => Package['freeipmi-ipmiseld'],
     }
 
+    if debian::codename::ge('bookworm') {
+        profile::auto_restarts::service { 'ipmiseld': }
+    }
+
     file { '/var/cache/ipmiseld':
         ensure => directory,
         owner  => 'root',
