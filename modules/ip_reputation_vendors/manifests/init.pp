@@ -66,7 +66,7 @@ class ip_reputation_vendors (
     $opts = $proxy_families.join(' ')
     $command = "/usr/local/bin/fetch-ip-reputation-vendors -vv -c ${config_file} -o ${outfile} ${opts}"
     systemd::timer::job { 'dump_ip_reputation':
-        ensure            => $ensure,
+        ensure            => 'absent',
         command           => $command,
         description       => 'Job to update ip reputation data',
         user              => $user,
