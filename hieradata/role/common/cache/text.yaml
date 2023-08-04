@@ -282,6 +282,7 @@ profile::lvs::realserver::pools:
       - cdn
 profile::contacts::role_contacts: ['Traffic']
 profile::cache::varnish::frontend::use_etcd_req_filters: true
+profile::cache::varnish::frontend::use_ip_reputation: false
 profile::cache::haproxy::enable_coredumps: true
 
 # T337825

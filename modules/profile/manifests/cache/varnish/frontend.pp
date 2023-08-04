@@ -47,6 +47,7 @@ class profile::cache::varnish::frontend (
     String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
     Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
+    Boolean                 $use_ip_reputation       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
     Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
     Boolean                 $enable_monitoring       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
     Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
@@ -63,11 +64,6 @@ class profile::cache::varnish::frontend (
         include profile::lvs::realserver
     }
 
-    # Defaults for the vcl files
-    # TODO: pass it down once we've refactored the varnish classes.
-    Varnish::Wikimedia_vcl {
-        etcd_filters  => $use_etcd_req_filters,
-    }
     $packages = [
         'varnish',
         'varnish-modules',
@@ -267,5 +263,7 @@ class profile::cache::varnish::frontend (
         enable_monitoring => $enable_monitoring,
         thread_pool_max   => $thread_pool_max,
         vsl_size          => $vsl_size,
+        etcd_filters      => $use_etcd_req_filters,
+        ip_reputation     => $use_ip_reputation,
     }
 }

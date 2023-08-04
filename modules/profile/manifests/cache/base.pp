@@ -19,6 +19,7 @@ class profile::cache::base(
     Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
     String $conftool_prefix                          = lookup('conftool_prefix'),
+    Boolean $use_ip_reputation                       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
 ){
 
     require network::constants
@@ -84,12 +85,16 @@ class profile::cache::base(
         content    => template('profile/cache/public_clouds.json.tpl.erb'),
         check      => '/usr/bin/vnm_validate {{.src}}'
     }
-    # Add /var/netmapper/vendor_proxies.json
-    # lint:ignore:puppet_url_without_modules
-    file { '/var/netmapper/vendor_proxies.json':
-        ensure       => present,
-        source       => 'puppet:///volatile/ip_reputation_vendors/proxies.json',
-        validate_cmd => '/usr/bin/vnm_validate %',
+    if ( $use_ip_reputation ) {
+        # Add /var/netmapper/vendor_proxies.json
+        # This file is loaded in wikimedia-frontend.vcl.erb
+        # lint:ignore:puppet_url_without_modules
+        file { '/var/netmapper/vendor_proxies.json':
+            ensure       => present,
+            source       => 'puppet:///volatile/ip_reputation_vendors/proxies.json',
+            before       => Service['varnish-frontend'],
+            validate_cmd => '/usr/bin/vnm_validate %',
+        }
     }
     # lint:endignore
 

@@ -23,6 +23,9 @@
 # @param enable_monitoring enable monitoring
 # @param thread_pool_max Maximum threads per pool
 # @param vsl_size Size of the space for VSL records (varnish default is 80M)
+# @param etcd_filters pull in dynamic rules from etcd
+# @param use_ip_reputation if true, load the ip reputation maps.
+
 define varnish::instance(
     Hash                    $vcl_config,
     Array[Stdlib::Port]     $ports,
@@ -50,6 +53,8 @@ define varnish::instance(
     Boolean                 $enable_monitoring = true,
     Integer[1]              $thread_pool_max   = 5000,
     Optional[String]        $vsl_size          = undef,
+    Boolean                 $etcd_filters      = false,
+    Boolean                 $ip_reputation     = false,
 ) {
 
     include varnish::common
@@ -93,6 +98,8 @@ define varnish::instance(
             wikimedia_trust        => $wikimedia_trust,
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
+            etcd_filters           => $etcd_filters,
+            ip_reputation          => $ip_reputation,
         }
 
         # This version of wikimedia_${vcl_name}.vcl is exactly the same as the
@@ -114,6 +121,8 @@ define varnish::instance(
             wikimedia_trust        => $wikimedia_trust,
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
+            etcd_filters           => $etcd_filters,
+            ip_reputation          => $ip_reputation,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
@@ -125,6 +134,8 @@ define varnish::instance(
             dynamic_backend_caches => $backends_in_etcd,
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
+            etcd_filters           => $etcd_filters,
+            ip_reputation          => $ip_reputation,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl_name}.inc.vcl":
@@ -137,6 +148,8 @@ define varnish::instance(
             dynamic_backend_caches => false,
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
+            etcd_filters           => $etcd_filters,
+            ip_reputation          => $ip_reputation,
         }
     }
 

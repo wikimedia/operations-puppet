@@ -6,7 +6,8 @@
 # @param dynamic_backend_caches set to true if dynamic backend caches
 # @param generate_extra_vcl set to true to generate extra vcl
 # @param is_separate_vcl
-# @param etcd_filters pull in dynamic rules from etc
+# @param etcd_filters pull in dynamic rules from etcd
+# @param ip_reputation if true, load the ip reputation maps.
 # @param wikimedia_nets wikimedia owned networks
 # @param wikimedia_trust wikimedia owned trusted
 # @param wikimedia_domains wikimedia production owned domains
@@ -22,6 +23,7 @@ define varnish::wikimedia_vcl(
     Boolean             $generate_extra_vcl     = false,
     Boolean             $is_separate_vcl        = false,
     Boolean             $etcd_filters           = false,
+    Boolean             $ip_reputation          = false,
     Array               $wikimedia_nets         = [],
     Array               $wikimedia_trust        = [],
     Array[Stdlib::Fqdn] $wikimedia_domains      = [],
