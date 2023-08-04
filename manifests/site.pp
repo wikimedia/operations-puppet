@@ -326,16 +326,32 @@ node 'bast3006.wikimedia.org' {
     role(bastionhost)
 }
 
+node 'bast3007.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
+}
+
 node 'bast4004.wikimedia.org' {
     role(bastionhost)
+}
+
+node 'bast4005.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
 }
 
 node 'bast5003.wikimedia.org' {
     role(bastionhost)
 }
 
+node 'bast5004.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
+}
+
 node 'bast6002.wikimedia.org' {
     role(bastionhost)
+}
+
+node 'bast6003.wikimedia.org' {
+    role(insetup::infrastructure_foundations)
 }
 
 # Debian package/docker images building host in production
