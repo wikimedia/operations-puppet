@@ -84,6 +84,14 @@ class profile::cache::base(
         content    => template('profile/cache/public_clouds.json.tpl.erb'),
         check      => '/usr/bin/vnm_validate {{.src}}'
     }
+    # Add /var/netmapper/vendor_proxies.json
+    # lint:ignore:puppet_url_without_modules
+    file { '/var/netmapper/vendor_proxies.json':
+        ensure       => present,
+        source       => 'puppet:///volatile/ip_reputation_vendors/proxies.json',
+        validate_cmd => '/usr/bin/vnm_validate %',
+    }
+    # lint:endignore
 
     ###########################################################################
     # Analytics/Logging stuff
