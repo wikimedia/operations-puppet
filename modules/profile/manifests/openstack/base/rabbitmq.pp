@@ -146,13 +146,13 @@ class profile::openstack::base::rabbitmq(
     # TODO: once migrated to the new network setup, this is the only rule we need
     ferm::service { 'rabbitmq-cloud-private':
         proto  => 'tcp',
-        port   =>  '(4369 5671 5672 25672)',
+        port   =>  [4369, 5671, 5672, 25672],
         srange => "(${cloud_private_supernet})",
     }
 
     ferm::service { 'rabbitmq-internals':
         proto  => 'tcp',
-        port   => '(4369 5671 5672 25672)',
+        port   => [4369, 5671, 5672, 25672],
         srange => "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))",
     }
 
@@ -160,31 +160,31 @@ class profile::openstack::base::rabbitmq(
 
     ferm::service { 'rabbitmq-nova-hosts':
         proto  => 'tcp',
-        port   => '(5671 5672)',
+        port   => [5671, 5672],
         srange => "(${hosts_ranges.join(' ')})",
     }
 
     ferm::service { 'rabbitmq-openstack-control':
         proto  => 'tcp',
-        port   => '(5671 5672)',
+        port   => [5671, 5672],
         srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-designate':
         proto  => 'tcp',
-        port   => '(5671 5672)',
+        port   => [5671, 5672],
         srange => "(@resolve((${designate_hosts.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-cinder-backup':
         proto  => 'tcp',
-        port   => '(5671 5672)',
+        port   => [5671, 5672],
         srange => "(@resolve((${cinder_backup_nodes.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-cloud-vps-instances':
         proto  => 'tcp',
-        port   => '(5671 5672)',
+        port   => [5671, 5672],
         srange => '$LABS_NETWORKS',
     }
 }
