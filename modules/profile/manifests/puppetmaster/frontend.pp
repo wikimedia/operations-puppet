@@ -14,6 +14,8 @@
 # @param ssl_ca_revocation_check the type of SSL revocation check to perform
 # @param http_proxy the HTTP proxy if one is required
 # @param mcrouter_ca_secret The secret for mcrouter CA
+# @param ip_reputation_config The configuration of the ip reputation download script
+# @param ip_reputation_proxies The list of proxy families to use in the ip reputation script
 class profile::puppetmaster::frontend(
     # Globals
     Stdlib::Host        $ca_server               = lookup('puppet_ca_server'),
@@ -32,6 +34,9 @@ class profile::puppetmaster::frontend(
     Enum['chain', 'leaf', 'none'] $ssl_ca_revocation_check = lookup('profile::puppetmaster::frontend::ssl_ca_revocation_check'),
     Optional[String]              $extra_auth_rules        = lookup('profile::puppetmaster::frontend::extra_auth_rules'),
     Optional[String[1]]           $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret'),
+    # Should be defined in the private repo.
+    Hash[String, Any]             $ip_reputation_config    = lookup('profile::puppetmaster::frontend::ip_reputation_config'),
+    Array[String]                 $ip_reputation_proxies   = lookup('profile::puppetmaster::frontend::ip_reputation_proxies'),
 ) {
     ensure_packages([
       'libapache2-mod-passenger',
@@ -190,5 +195,20 @@ class profile::puppetmaster::frontend(
         outfile     => '/var/lib/puppet/volatile/external_cloud_vendors/public_clouds.json',
         http_proxy  => $http_proxy,
     }
+
+
+    # Download the IP reputation data for consumption by
+    # various parts of the infra.
+    # It will be set to present if the list of reputation proxies to import isn't empty.
+    class { 'ip_reputation_vendors':
+        ensure         => $ip_reputation_proxies.empty().bool2str('absent', 'present'),
+        user           => 'root',
+        manage_user    => false,
+        outfile        => '/var/lib/puppet/volatile/ip_reputation_vendors/proxies.json',
+        proxy_families => $ip_reputation_proxies,
+        configuration  => $ip_reputation_config,
+        http_proxy     => $http_proxy,
+    }
+
 }
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab

@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: Apache-2.0
+require_relative '../../rake_modules/module_rake_tasks.rb'
+require 'open-uri'
+require 'yaml'
+desc 'Update the hierada/common.yaml file with por list from debian'
+task :update_hieradata do
+  # TODO: pull this from an internal source such as one of our docker images
+  master_source = 'https://salsa.debian.org/md/netbase/-/raw/master/etc/services'
+  out_file = File.join(__dir__, 'data', 'common.yaml')
+  line_regex = %r{\A(?<service>[a-z-]+)\s+(?<port>\d+)/(?<proto>tcp|udp)(?:\s+(?<aliases>(?!\s)[^#]+))?}
+  services = Hash.new{ |h, k| h[k] = { 'protocols' => [] }}
+  open(master_source).read.each_line do |line|
+    line.strip!
+    next if line.empty? || line.start_with?('#')
+    matches = line.match(line_regex)
+    next unless matches
+    key = matches[:service]
+    services[key]['port'] = matches[:port].to_i
+    services[key]['protocols'] << matches[:proto]
+    services[key]['aliases'] = matches[:aliases].strip.split unless matches[:aliases].nil?
+    services[key]['description'] = line.split('#')[1].strip if line.include?('#')
+  end
+  hieradata = {'netbase::default_services' => services}
+  File.open(out_file, 'w') { |file| file.write(hieradata.to_yaml) }
+end

@@ -196,7 +196,7 @@ profile::gitlab::runner::allowed_services:
     host: "gitlab.devtools.wmcloud.org"
     port: 443
     proto: tcp
-  cloud-public-proxy:  # Any *.wmcloud.org (or deprecated *.wmflabs.org) proxied service, ex. tools-harbor.wmcloud.org
+  cloud-public-proxy: # Any *.wmcloud.org (or deprecated *.wmflabs.org) proxied service, ex. tools-harbor.wmcloud.org
     host: "proxy-eqiad1.wmcloud.org"
     port: 443
     proto: tcp
@@ -339,7 +339,7 @@ profile::tlsproxy::envoy::global_cert_name: ~
 profile::tlsproxy::envoy::idle_timeout: ~
 profile::tlsproxy::envoy::ferm_srange: ~
 profile::tlsproxy::envoy::max_requests: ~
-profile::tlsproxy::envoy::cfssl_label: 'discovery'
+profile::tlsproxy::envoy::cfssl_label: "discovery"
 profile::tlsproxy::envoy::error_page: false
 
 # Firewall logging
@@ -350,7 +350,6 @@ profile::firewall::manage_nf_conntrack: true
 profile::firewall::log::log_rate: 1/second
 profile::firewall::log::log_burst: 5
 profile::firewall::log::separate_file: false
-
 
 prometheus_nodes: []
 profile::prometheus::cadvisor::ensure: absent
@@ -371,6 +370,8 @@ profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
 profile::puppetmaster::frontend::config: {}
 profile::puppetmaster::frontend::web_hostname: puppet
 profile::puppetmaster::frontend::prevent_cherrypicks: true
+profile::puppetmaster::frontend::ip_reputation_config: {}
+profile::puppetmaster::frontend::ip_reputation_proxies: []
 profile::puppetmaster::frontend: chain
 puppetmaster::servers: {}
 profile::puppetmaster::frontend::extra_auth_rules: ~
@@ -393,10 +394,10 @@ profile::puppetserver::enc_path: ~
 profile::puppetserver::server_id: "%{facts.networking.fqdn}"
 profile::puppetserver::java_start_mem: 1g
 profile::puppetserver::java_max_mem: 1g
-profile::puppetserver::reports: ['store']
+profile::puppetserver::reports: ["store"]
 profile::puppetserver::puppetdb_urls: []
 profile::puppetserver::puppetdb_submit_only_urls: []
-profile::puppetserver::code_dir: '/srv/puppet_code'
+profile::puppetserver::code_dir: "/srv/puppet_code"
 profile::puppetserver::enable_ca: false
 profile::puppetserver::intermediate_ca: false
 profile::puppetserver::ca_public_key: ~
@@ -407,7 +408,7 @@ profile::puppetserver::enable_jmx: false
 profile::puppetserver::auto_restart: true
 profile::puppetserver::hiera_data_dir: "%{lookup('profile::puppetserver::code_dir')}/environments/%{literal('%')}{::environment}/hieradata"
 profile::puppetserver::hierarchy:
-  - name: 'Http Yaml'
+  - name: "Http Yaml"
     data_hash: cloudlib::httpyaml
     uri: "http://puppet-enc.cloudinfra.wmcloud.org:8100/v1/%{literal('%')}{::wmcs_project}/node/%{literal('%')}{facts.networking.fqdn}"
   - name: "cloud hierarchy"
@@ -435,26 +436,26 @@ profile::puppetserver::hierarchy:
   - name: "Private Common hierarchy"
     path: "common.yaml"
     datadir: "/etc/puppet/private/hieradata"
-profile::puppetserver::git::ensure: 'present'
-profile::puppetserver::git::basedir: '/srv/git'
-profile::puppetserver::git::user: 'gitpuppet'
-profile::puppetserver::git::group: 'gitpuppet'
-profile::puppetserver::git::control_repo: 'operations/puppet'
+profile::puppetserver::git::ensure: "present"
+profile::puppetserver::git::basedir: "/srv/git"
+profile::puppetserver::git::user: "gitpuppet"
+profile::puppetserver::git::group: "gitpuppet"
+profile::puppetserver::git::control_repo: "operations/puppet"
 profile::puppetserver::git::additional_servers: []
 profile::puppetserver::git::repos:
-  'operations/puppet':
-    branch: 'production'
+  "operations/puppet":
+    branch: "production"
     hooks:
-      'pre-commit': 'puppet:///modules/puppetmaster/git/pre-commit'
-      'pre-merge': 'puppet:///modules/puppetmaster/git/pre-merge'
-      'pre-rebase': 'puppet:///modules/puppetmaster/git/pre-rebase'
-  'labs/private':
-    branch: 'master'
+      "pre-commit": "puppet:///modules/puppetmaster/git/pre-commit"
+      "pre-merge": "puppet:///modules/puppetmaster/git/pre-merge"
+      "pre-rebase": "puppet:///modules/puppetmaster/git/pre-rebase"
+  "labs/private":
+    branch: "master"
     hooks:
-      'pre-commit': 'puppet:///modules/puppetmaster/git/private/pre-commit'
-      'pre-merge': 'puppet:///modules/puppetmaster/git/private/pre-merge'
-      'pre-rebase': 'puppet:///modules/puppetmaster/git/private/pre-rebase'
-    link: '/etc/puppet/private'
+      "pre-commit": "puppet:///modules/puppetmaster/git/private/pre-commit"
+      "pre-merge": "puppet:///modules/puppetmaster/git/private/pre-merge"
+      "pre-rebase": "puppet:///modules/puppetmaster/git/private/pre-rebase"
+    link: "/etc/puppet/private"
 profile::puppetserver::scripts::keep_reports_minutes: 960
 profile::puppetserver::scripts::has_puppetdb: false
 profile::puppetserver::scripts::upload_facts: false
@@ -841,7 +842,7 @@ profile::ssh::server::max_startups: ~
 profile::ssh::server::gateway_ports: false
 profile::ssh::server::accept_env: ["LANG", "LC_*"]
 profile::ssh::server::match_config: []
-profile::ssh::server::enabled_key_types: ['dsa', 'rsa', 'ecdsa', 'ed25519']
+profile::ssh::server::enabled_key_types: ["dsa", "rsa", "ecdsa", "ed25519"]
 profile::ssh::server::puppetserver_ca_host_certs: false
 
 profile::ssh::client::manage_ssh_keys: true
@@ -968,9 +969,9 @@ profile::bgpalerter::reports:
 # if available with their specific settings.
 profile::kafka::broker:use_pki_settings: false
 
-profile::wmcs::cloud_private_subnet::host: 'not-in-cloud-realm.example.com'
-profile::wmcs::cloud_private_subnet::gw_template: 'not-in-cloud-realm.example.com'
-profile::wmcs::cloud_private_subnet::supernet: '127.0.0.1/32'
+profile::wmcs::cloud_private_subnet::host: "not-in-cloud-realm.example.com"
+profile::wmcs::cloud_private_subnet::gw_template: "not-in-cloud-realm.example.com"
+profile::wmcs::cloud_private_subnet::supernet: "127.0.0.1/32"
 profile::wmcs::cloud_private_subnet::vlan_mapping: {}
 
 profile::httpd::modules: []

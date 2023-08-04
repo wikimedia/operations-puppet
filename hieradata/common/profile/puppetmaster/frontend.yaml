@@ -6,4 +6,6 @@ profile::puppetmaster::frontend: chain
 profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::secure_private: true
 profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
-
+# To define in puppet/private
+# profile::puppetmaster::frontend::ip_reputation_config: {}
+# profile::puppetmaster::frontend::ip_reputation_proxies: []
