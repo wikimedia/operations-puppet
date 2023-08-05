@@ -24,12 +24,15 @@ def parse_args() -> argparse.Namespace:
         help="Can be passed multiple times to encrease log level",
     )
     parser.add_argument(
-        "--config", "-c", default="config.json", help="Path of the configuration file"
+        "--datadir",
+        default="/srv/dataimport",
+        help="Path where to download/unzip the feeds.",
+    )
+    parser.add_argument(
+        "--config", "-c", default="config.json", help="Path of the configuration file."
     )
     parser.add_argument("--outfile", "-o", default="proxies.json")
-    parser.add_argument(
-        "proxy_families", nargs="+", help="List of proxy network to select."
-    )
+    parser.add_argument("proxy_families", nargs="+", help="List of proxy network to select.")
     return parser.parse_args()
 
 
@@ -46,9 +49,12 @@ def get_log_level(args_level: int) -> int:
 class ProxyFetcher:
     """Allows fetching proxy family information."""
 
-    def __init__(self, configpath: pathlib.Path, families: List[str]) -> None:
+    def __init__(
+        self, configpath: pathlib.Path, families: List[str], data_path: pathlib.Path
+    ) -> None:
         self.config = json.loads(configpath.read_text())
         self.selected_proxies = families
+        self.data_path = data_path
 
     def download(self):
         r = requests.get(
@@ -57,13 +63,21 @@ class ProxyFetcher:
             allow_redirects=True,
             timeout=120,
         )
-        destfile = pathlib.Path(os.path.basename(self.config["url"]))
+        destfile = self.data_path / os.path.basename(self.config["url"])
         destfile.write_bytes(r.content)
         if destfile.suffix == ".gz":
             logging.info("Decompressing %s", destfile)
-            subprocess.check_call(["gunzip", str(destfile)])
-            destfile = destfile.with_suffix("")
-        return destfile
+            try:
+                subprocess.check_call(["gunzip", str(destfile)])
+                destfile_uncompressed = destfile.with_suffix("")
+            except subprocess.CalledProcessError as exc:
+                logging.exception(exc)
+                # TODO: change when not running on debian buster/python3.7
+                # to using missing_ok
+                for path in [destfile, destfile_uncompressed]:
+                    if path.exists():
+                        path.unlink()
+        return destfile_uncompressed
 
     def load_data(self, path: pathlib.Path) -> Dict[str, List[IPNetwork]]:
         proxy_ips: Dict[str, List[IPNetwork]] = {k: [] for k in self.selected_proxies}
@@ -76,6 +90,7 @@ class ProxyFetcher:
                         break
                     loaded += 1
                     if loaded % 10000 == 0:
+                        print(".", end="")
                         logging.debug("Loaded %d lines", loaded)
                     try:
                         ip_data = json.loads(line)
@@ -88,6 +103,7 @@ class ProxyFetcher:
                                 proxy_ips[proxy].append(IPNetwork(ip_data["ip"]))
                     except Exception:
                         logging.error("Unable to parse line: %s", line)
+            print()
         finally:
             if path.exists():
                 path.unlink()
@@ -99,11 +115,9 @@ class ProxyFetcher:
         logging.info("Now loading and consolidating ip information")
         data = self.load_data(dest)
         for tag, ips in data.items():
-            logging.debug("Loaded %d entries for proxy family %s", len(ips), tag)
+            logging.info("Loaded %d entries for proxy family %s", len(ips), tag)
             merged_ips = list(map(lambda x: str(x), cidr_merge(ips)))
-            logging.debug(
-                "Reduced to %d CIDRs for proxy family %s", len(merged_ips), tag
-            )
+            logging.info("Reduced to %d CIDRs for proxy family %s", len(merged_ips), tag)
             data[tag] = merged_ips
         return data
 
@@ -112,7 +126,7 @@ if __name__ == "__main__":
     args = parse_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     configpath = pathlib.Path(args.config)
-    fetcher = ProxyFetcher(configpath, args.proxy_families)
+    fetcher = ProxyFetcher(configpath, args.proxy_families, args.datadir)
     ip_data = fetcher.fetch()
     out = pathlib.Path(args.outfile)
     tempout = out.with_suffix(".temp")
