@@ -126,7 +126,7 @@ if __name__ == "__main__":
     args = parse_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     configpath = pathlib.Path(args.config)
-    fetcher = ProxyFetcher(configpath, args.proxy_families, args.datadir)
+    fetcher = ProxyFetcher(configpath, args.proxy_families, pathlib.Path(args.datadir))
     ip_data = fetcher.fetch()
     out = pathlib.Path(args.outfile)
     tempout = out.with_suffix(".temp")
