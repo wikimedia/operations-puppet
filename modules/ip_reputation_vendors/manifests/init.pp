@@ -54,6 +54,14 @@ class ip_reputation_vendors (
         before  => Systemd::Timer::Job['dump_ip_reputation']
     }
 
+    # Directory where to download and uncompress the feed
+    $datadir = '/srv/dataimport'
+    file { $datadir:
+        ensure => stdlib::ensure($ensure, 'directory'),
+        owner  => $user,
+        group  => $group,
+    }
+
     file { $outfile:
         ensure  => stdlib::ensure($ensure, 'file'),
         mode    => '0644',
@@ -64,7 +72,7 @@ class ip_reputation_vendors (
         content => '{}',
     }
     $opts = $proxy_families.join(' ')
-    $command = "/usr/local/bin/fetch-ip-reputation-vendors -vv -c ${config_file} -o ${outfile} ${opts}"
+    $command = "/usr/local/bin/fetch-ip-reputation-vendors -vv --datadir ${datadir} -c ${config_file} -o ${outfile} ${opts}"
     systemd::timer::job { 'dump_ip_reputation':
         ensure            => $ensure,
         command           => $command,

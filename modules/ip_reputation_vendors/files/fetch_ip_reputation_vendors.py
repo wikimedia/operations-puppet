@@ -90,7 +90,7 @@ class ProxyFetcher:
                         break
                     loaded += 1
                     if loaded % 10000 == 0:
-                        print(".", end="")
+                        print(".", end="", flush=True)
                         logging.debug("Loaded %d lines", loaded)
                     try:
                         ip_data = json.loads(line)
