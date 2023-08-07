@@ -382,8 +382,10 @@ sub recv_fe_ip_processing {
         // Ensure external clients do not set X-Request-Id because we
         // generate, use and propagate it internally in order to be able
         // to trace request chains. If internal clients propagate it,
-        // though, let it pass through.
+        // though, let it pass through.  Do the same for W3C tracing headers.
         unset req.http.X-Request-Id;
+        unset tracestate;
+        unset traceparent;
     }
 
     if (client.ip !~ local_host && remote.ip !~ local_tls_terminator) {
