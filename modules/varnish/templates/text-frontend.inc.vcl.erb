@@ -416,6 +416,17 @@ sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_ratelimit {
+    <%- if @ip_reputation -%>
+    // For non-api POST requests, and action=edit GET requests use the large expensive map of ip reputation
+    if ( (req.method == "POST" || req.url ~ "[?&]action=edit") && req.url ~ "^/w/index\.php") {
+        set req.http.X-Vendor-Proxy = netmapper.map("vendor_proxies", req.http.X-Client-IP);
+        if (req.http.X-Vendor-Proxy == "") {
+            unset req.http.X-Vendor-Proxy;
+        } else {
+            set bereq.http.X-Vendor-Proxy = req.http.X-Vendor-Proxy;
+        }
+    }
+    <%- end -%>
     // TODO: move all these rules to requestctl if possible.
     // For now, add the requestctl header for them too,
     // so that we have some more insight into which rule is kicking in

@@ -54,6 +54,11 @@ class profile::cache::varnish::frontend (
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
     Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
 ) {
+    # IP reputation is only used in cache text. To avoid misconceptions and mistakes,
+    # fail early
+    if ($cache_cluster != 'text' and $use_ip_reputation) {
+        fail('use_ip_reputation should only be set to true in cache::text')
+    }
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust

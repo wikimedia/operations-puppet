@@ -482,15 +482,7 @@ sub recv_fe_ip_processing {
     if (req.http.X-Public-Cloud == "") {
         unset req.http.X-Public-Cloud;
     }
-    <%- if @ip_reputation -%>
-    // For non-api POST requests, use the large expensive map of ip reputation
-    if (req.method == "POST" && req.url ~ "^/w/index\.php") {
-        set req.http.X-Vendor-Proxy = netmapper.map("vendor_proxies", req.http.X-Client-IP);
-        if (req.http.X-Vendor-Proxy == "") {
-            unset req.http.X-Vendor-Proxy;
-        }
-    }
-    <%- end -%>
+
     set req.http.X-Abuse-Network = netmapper.map("abuse_networks", req.http.X-Client-IP);
     // normalize to boolean post-netmapper
     if (req.http.X-Abuse-Network == "") {
