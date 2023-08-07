@@ -1680,8 +1680,12 @@ node /^cloudbackup200[12]\.codfw\.wmnet$/ {
     role(wmcs::openstack::eqiad1::backups)
 }
 
-# Flink team-specific zookeeper cluster T341705
+# Flink team-specific zookeeper clusters T341705
 node /^flink-zk100[123]\.eqiad\.wmnet$/ {
+    role(zookeeper::flink)
+}
+
+node /^flink-zk200[123]\.codfw\.wmnet$/ {
     role(zookeeper::flink)
 }
 
