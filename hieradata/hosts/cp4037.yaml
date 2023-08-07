@@ -1,1 +1,0 @@
-profile::cache::varnish::frontend::use_ip_reputation: true
