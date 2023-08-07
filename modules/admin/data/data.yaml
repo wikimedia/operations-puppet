@@ -221,7 +221,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde]
+    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri]
     approval:
       - Monica Pinedo
       - Leszek Manicki
@@ -5960,6 +5960,14 @@ users:
     uid: 44822
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  adri:
+    ensure: present
+    realname: Adee Ritman (WMDE)
+    email: adee.ritman@wikimedia.de
+    uid: 44245
+    gid: 500
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCNCzanbJKsXXeOIEGaJdzs/YD7kQmXXGE5GFITVqNjsoPFT8maVdBqocC7yjpnsQ/favu8x2rc3lHse88kjVnnUxU4tqJeuAPaYz/HEKxFHxGhSudEppR4bCF2fWDsXr6vUpdw15VRQtKlr7+aO56x3Zvjtl+vDBZp48Yvmd7k3s+6IjsayjGbRgf/dSwgdpi/buvxxBiSz3a+ONNIKUBQUth+T9D/Bhpevg8JTjyJQIJvE9JpXgIDtXHF2xKDXDlG3npmZJsmuh6j5P9a1ftplmuEr9JbrvB08AxNh9ZEIZwOiJf8HkHMEGyX5KW7yeQZzZjU3jIYL6ehSrxGg/kyOAi8rnRRa728TI9+5ZuIeV/rkoUqYGpmymLOMKgBwYaFv5GAp34w+Xg3EpiS5NaNroCSjC7ZFoWjroDuqAm8qLorqtzUwJJjqMSMjh/Gx8j+Ps6Z+lE1OLJag7dVdilvehQ8tXthRN2W+UGnIOBdrXRQ0zTV/Z0vukI1ZK2TdQk= adee.ritman@wikimedia.de'
 
 ldap_only_users:
   adavenport:
@@ -6737,10 +6745,6 @@ ldap_only_users:
     ensure: present
     realname: Loren Johnson
     email: loren.johnson@wikimedia.de
-  adri:
-    ensure: present
-    realname: Adee Ritman (WMDE)
-    email: adee.ritman@wikimedia.de
   twilsonbf:
     ensure: absent
     realname: Thomas Wilson
