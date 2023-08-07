@@ -36,6 +36,7 @@ class profile::dispatch (
     Hash[String, String] $ldap_config        = lookup('ldap', {'merge' => 'hash'}),
 ) {
     require ::profile::docker::engine
+    include profile::docker::prune_old_images
 
     if $active_host == $::fqdn {
         $scheduler_ensure = present
