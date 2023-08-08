@@ -86,7 +86,7 @@ def _email_member(member, subject, body):
     userrec = ldap_conn.search_s(member, ldap.SCOPE_BASE)
     email = userrec[0][1]["mail"][0]
 
-    args = ["/usr/bin/mail", "-s", subject, email.decode()]
+    args = ["/usr/bin/mail", "-s", subject, "-a", "Precedence: Bulk", email.decode()]
 
     p = subprocess.Popen(
         args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT
