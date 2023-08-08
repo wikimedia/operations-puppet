@@ -483,8 +483,8 @@ sub recv_fe_ip_processing {
         unset req.http.X-Public-Cloud;
     }
     <%- if @ip_reputation -%>
-    // For non-api POST requests, use the large expensive map of ip reputation
-    if (req.method == "POST" && req.url ~ "^/w/index\.php") {
+    // For the desktop non-ve edit path, use the large expensive map of ip reputation
+    if (req.url ~ "^/w/index\.php" && (req.method == "POST" || req.url ~ "[?&]action=edit")) {
         set req.http.X-Vendor-Proxy = netmapper.map("vendor_proxies", req.http.X-Client-IP);
         if (req.http.X-Vendor-Proxy == "") {
             unset req.http.X-Vendor-Proxy;
