@@ -140,7 +140,6 @@ profile::mediawiki::scap_client::deployment_dir_linked_to_staging_dir: true
 # by the profile::mediawiki::deployment::server class.
 # Each source listed here will be cloned on the scap deploy server.
 scap::sources:
-  3d2png/deploy: {}
 
   # airflow-dags is a shared airflow repository for the various
   # Data Engineering maintained airflow instances.

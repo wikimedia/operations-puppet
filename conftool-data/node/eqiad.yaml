@@ -307,10 +307,6 @@ eqiad:
     schema1003.eqiad.wmnet: [eventschemas]
     schema1004.eqiad.wmnet: [eventschemas]
   thumbor:
-    thumbor1001.eqiad.wmnet: [thumbor]
-    thumbor1002.eqiad.wmnet: [thumbor]
-    thumbor1005.eqiad.wmnet: [thumbor]
-    thumbor1006.eqiad.wmnet: [thumbor]
     kubernetes1005.eqiad.wmnet: [thumbor]
     kubernetes1006.eqiad.wmnet: [thumbor]
     kubernetes1007.eqiad.wmnet: [thumbor]

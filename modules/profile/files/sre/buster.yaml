@@ -65,8 +65,6 @@ role::wdqs::test:
 role::wcqs::public:
   target-q: TBD
   phab-task: 323921
-role::thumbor::mediawiki:
-  target-q: TBD
 role::sessionstore:
   target-q: 2023-2
   phab-task: 331714

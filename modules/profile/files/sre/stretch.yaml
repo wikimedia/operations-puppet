@@ -58,8 +58,6 @@ role::wdqs:
 role::wdqs::test:
   target-q: 2020-3
   phab-task: 244753
-role::thumbor::mediawiki:
-  target-q: TBD
 role::sessionstore:
   target-q: 2022-1
 role::dumps::generation::worker::dumper:

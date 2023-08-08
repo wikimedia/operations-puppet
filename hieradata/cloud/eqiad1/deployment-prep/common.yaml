@@ -285,7 +285,6 @@ profile::keyholder::server::agents:
 # by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
-  3d2png/deploy: {}
 
   # eventlogging/analytics is the original EventLogging server deployment.
   eventlogging/analytics:

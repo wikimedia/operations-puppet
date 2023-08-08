@@ -1536,12 +1536,6 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
-    prometheus::class_config{ "mtail_thumbor_haproxy_${::site}":
-        dest       => "${targets_path}/mtail_thumbor_haproxy_${::site}.yaml",
-        class_name => 'role::thumbor::mediawiki',
-        port       => 3903,
-    }
-
     prometheus::class_config{ "mtail_mediawiki_apache_${::site}":
         dest       => "${targets_path}/mtail_mediawiki_webserver_${::site}.yaml",
         class_name => 'profile::mediawiki::webserver',

@@ -2855,13 +2855,12 @@ node /^thanos-fe200[1234]\.codfw\./ {
     role(thanos::frontend)
 }
 
-# Thumbor servers for MediaWiki image scaling
+# Thumbor servers are being decommissioned T334488
 node /^thumbor100[1256]\.eqiad\./ {
-    role(thumbor::mediawiki)
+    role(insetup::serviceops)
 }
-
 node /^thumbor200[3456]\.codfw\./ {
-    role(thumbor::mediawiki)
+    role(insetup::serviceops)
 }
 
 # deployment servers

@@ -313,10 +313,6 @@ codfw:
     schema2003.codfw.wmnet: [eventschemas]
     schema2004.codfw.wmnet: [eventschemas]
   thumbor:
-    thumbor2003.codfw.wmnet: [thumbor]
-    thumbor2004.codfw.wmnet: [thumbor]
-    thumbor2005.codfw.wmnet: [thumbor]
-    thumbor2006.codfw.wmnet: [thumbor]
     kubernetes2005.codfw.wmnet: [thumbor]
     kubernetes2006.codfw.wmnet: [thumbor]
     kubernetes2007.codfw.wmnet: [thumbor]
