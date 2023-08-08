@@ -2148,6 +2148,7 @@ users:
     ensure: present
     gid: 500
     name: maryana
+    email: mpinchuk@wikimedia.org
     realname: Maryana Pinchuk
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     uid: 2515
