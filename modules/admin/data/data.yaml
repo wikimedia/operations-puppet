@@ -221,7 +221,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon]
+    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon, roti]
     approval:
       - Monica Pinedo
       - Leszek Manicki
@@ -5974,6 +5974,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKqqF3EjMr1y5oM+5qfjBrQq/BhRsoHLA4DGZYtWKaE monica.pinedo@wikimedia.de'
+  roti:
+    ensure: present
+    realname: Robert Timm
+    email: robert.timm@wikimedia.de
+    uid: 44252
+    gid: 500
+    ssh_keys:
+      - 'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM6q+AiKMUiZFeeODnplXSu12Dx8QNLG9YPmfsLbSSazCNOzBK0wuKtmzqQ3e4tL32J7kyjiIKRgoyEfEikLpi8='
 
 ldap_only_users:
   adavenport:
@@ -6739,10 +6747,6 @@ ldap_only_users:
     ensure: present
     realname: Frantz Joseph
     email: fjoseph@wikimedia.org
-  roti:
-    ensure: present
-    realname: Robert Timm
-    email: robert.timm@wikimedia.de
   lorenjohnson:
     ensure: present
     realname: Loren Johnson
