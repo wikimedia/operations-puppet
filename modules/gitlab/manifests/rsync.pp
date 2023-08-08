@@ -29,7 +29,8 @@ class gitlab::rsync (
     $all_hosts.each | Stdlib::Fqdn $host | {
         # We need to ensure that systemd timeres are only active on the active host
         # and that any jobs on the old active pulling from the new active are also cleaned up
-        $ensure_job = ($active_host == $facts['networking']['fqdn'] and $active_host != $host).bool2str($ensure, 'absent')
+        # Also disallow gitlab1003, which is being used for testing temporarily
+        $ensure_job = ($active_host == $facts['networking']['fqdn'] and $active_host != $host and $host != 'gitlab1003.wikimedia.org').bool2str($ensure, 'absent')
         # rsync data backup and exclude Shell scripts and config backup from sync
         systemd::timer::job { "rsync-data-backup-${host}":
             ensure      => $ensure_job,

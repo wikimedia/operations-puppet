@@ -223,3 +223,14 @@ gitlab_rails['omniauth_auto_link_saml_user'] = <%= @omniauth_auto_link_saml_user
 
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
+
+<% if @thanos_storage_enabled %>
+gitlab_rails['object_store']['enabled'] = true
+gitlab_rails['object_store']['proxy_download'] = true
+gitlab_rails['object_store']['connection'] = {
+  'provider' => 'AWS',
+  'aws_access_key_id' => '<%= @thanos_storage_username %>',
+  'aws_secret_access_key' => '<%= @thanos_storage_password %>',
+  'host' => 'thanos-swift.discovery.wmnet',
+}
+<% end %>

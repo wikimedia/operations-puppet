@@ -64,6 +64,10 @@ class gitlab (
     String                   $ldap_group_sync_bot               = 'ldap-sync-bot',
     String                   $ldap_group_sync_bot_token         = 'ldap-sync-bot-token-not-supplied',
     Systemd::Timer::Schedule $ldap_group_sync_interval          = {'start' => 'OnCalendar', 'interval' => '*:0/15'},
+    Boolean                  $thanos_storage_enabled            = false,
+    String                   $thanos_storage_username           = '',
+    String                   $thanos_storage_password           = '',
+
 ) {
     $cas_defaults = {
         'login_url'            => '/login',
