@@ -26,6 +26,7 @@ from rbd2backy2 import (
 # This holds cached openstack information
 IMAGES_CACHE_FILE = "./backups.images.cache"
 INSTANCES_CACHE_FILE = "./backups.instances.cache"
+VOLUMES_CACHE_FILE = "./backups.volumes.cache"
 RED = "\033[91m"
 GREEN = "\033[92m"
 END = "\033[0m"
@@ -93,6 +94,11 @@ class InstanceBackupsConfig(MinimalConfig):
 @dataclass
 class ImageBackupsConfig(MinimalConfig):
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_images.yaml"
+
+
+@dataclass
+class VolumeBackupsConfig(MinimalConfig):
+    CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_volumes.yaml"
 
 
 @dataclass
@@ -1422,6 +1428,22 @@ def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     return image_id_to_image_info
 
 
+def get_volumes_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
+    if not from_cache or not os.path.exists(VOLUMES_CACHE_FILE):
+        logging.debug("Getting volumes from the server...")
+        clients = mwopenstackclients.Clients(oscloud="novaadmin")
+        volume_id_to_volume_info = {
+            f"volume-{volume.id}": volume.to_dict() for volume in clients.allvolumes()
+        }
+        with open(VOLUMES_CACHE_FILE, "w") as cache_fd:
+            logging.debug("Writing volumes to cache...")
+            cache_fd.write(json.dumps(volume_id_to_volume_info))
+    else:
+        volume_id_to_volume_info = json.load(open(VOLUMES_CACHE_FILE, "r"))
+
+    return volume_id_to_volume_info
+
+
 def vm_in_project(server_id: str, project_id: str) -> bool:
     """Double-check that a given VM still exists. This is useful for
     noticing when VMs have been deleted mid-backup."""
@@ -1429,6 +1451,26 @@ def vm_in_project(server_id: str, project_id: str) -> bool:
     logging.debug("Getting instances in %s...", project_id)
     server_ids = [server.id for server in openstackclients.allinstances(projectid=project_id)]
     return server_id in server_ids
+
+
+# glance images and cinder volumes are approximately the same for backup purposes,
+#  so we can re-use the ImageBackups* classes to manage these.
+def get_current_volumes_state(from_cache: bool = False) -> ImageBackupsState:
+    config = VolumeBackupsConfig.from_file()
+
+    volume_id_to_volume_dict = get_volumes_info(from_cache)
+    logging.debug("Getting backup entries...")
+    backup_entries = get_backups()
+
+    logging.debug("Creating volume summaries")
+    volume_backups_state = ImageBackupsState(
+        config=config, image_backups={}, images_info=volume_id_to_volume_dict
+    )
+    for backup_entry in backup_entries:
+        volume_backups_state.add_image_backup(
+            ImageBackup.from_entry_and_images(entry=backup_entry, images=volume_id_to_volume_dict)
+        )
+    return volume_backups_state
 
 
 def get_current_images_state(from_cache: bool = False) -> ImageBackupsState:
@@ -1769,7 +1811,6 @@ def _add_images_parser(subparser: argparse.ArgumentParser) -> None:
         func=lambda: get_current_images_state(from_cache=args.from_cache).create_image_backup(
             noop=args.noop,
             image_id=args.image_id,
-            from_cache=args.from_cache,
         )
     )
 
@@ -1785,8 +1826,89 @@ def _add_images_parser(subparser: argparse.ArgumentParser) -> None:
     )
     backup_image_parser.set_defaults(
         func=lambda: get_current_images_state(from_cache=args.from_cache).backup_all_images(
+            noop=args.noop
+        )
+    )
+
+
+def _add_volumes_parser(subparser: argparse.ArgumentParser) -> None:
+    volumes_parser = subparser.add_parser("volumes", help="Handle cinder volume backups")
+
+    volumes_subparser = volumes_parser.add_subparsers()
+
+    summary_parser = volumes_subparser.add_parser("summary", help="Show a list of all backups.")
+    summary_parser.set_defaults(
+        func=lambda: summary(print(str(get_current_volumes_state(from_cache=args.from_cache))))
+    )
+
+    delete_expired_parser = volumes_subparser.add_parser(
+        "delete-expired", help="Delete all expired backups"
+    )
+    delete_expired_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=("If set, will not really do anything, just tell you what " "would be done."),
+    )
+    delete_expired_parser.set_defaults(
+        func=lambda: summary(
+            get_current_volumes_state(from_cache=args.from_cache).delete_expired(noop=args.noop)
+        )
+    )
+
+    remove_dangling_snapshots_parser = volumes_subparser.add_parser(
+        "remove-dangling-snapshots", help="Remave all dangling snapshots"
+    )
+    remove_dangling_snapshots_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=("If set, will not really do anything, just tell you what " "would be done."),
+    )
+    remove_dangling_snapshots_parser.set_defaults(
+        func=lambda: summary(
+            get_current_volumes_state(from_cache=args.from_cache).remove_dangling_snapshots(
+                noop=args.noop
+            )
+        )
+    )
+
+    backup_volume_parser = volumes_subparser.add_parser(
+        "backup-volume",
+        help=(
+            "Trigger a backup for the given volume, removing old backups and " "snapshots if needed"
+        ),
+    )
+    backup_volume_parser.add_argument(
+        "volume_id",
+        help="volume id to backup",
+    )
+    backup_volume_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=("If set, will not really do anything, just tell you what " "would be done."),
+    )
+    backup_volume_parser.set_defaults(
+        func=lambda: get_current_volumes_state(from_cache=args.from_cache).create_image_backup(
             noop=args.noop,
-            from_cache=args.from_cache,
+            image_id=args.volume_id,
+        )
+    )
+
+    backup_volume_parser = volumes_subparser.add_parser(
+        "backup-all-volumes",
+        help="Trigger a backup for all the volumes",
+    )
+    backup_volume_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=("If set, will not really do anything, just tell you what " "would be done."),
+    )
+    backup_volume_parser.set_defaults(
+        func=lambda: get_current_volumes_state(from_cache=args.from_cache).backup_all_images(
+            noop=args.noop
         )
     )
 
@@ -1806,6 +1928,7 @@ if __name__ == "__main__":
     subparser = parser.add_subparsers()
     _add_instances_parser(subparser)
     _add_images_parser(subparser)
+    _add_volumes_parser(subparser)
 
     args = parser.parse_args()
     if args.debug:
