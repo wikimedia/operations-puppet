@@ -1237,6 +1237,7 @@ class InstanceBackupsState:
 @dataclass(unsafe_hash=True)
 class ImageBackupsState:
     image_backups: Dict[str, ImageBackups]
+    images_info: Dict[str, Dict[str, Any]]
     config: ImageBackupsConfig
     size_mb: int = 0
 
@@ -1316,16 +1317,14 @@ class ImageBackupsState:
         if failed_snapshots:
             sys.exit(1)
 
-    def create_image_backup(
-        self, image_id: str, noop: bool = True, from_cache: bool = True
-    ) -> None:
+    def create_image_backup(self, image_id: str, noop: bool = True) -> None:
         logging.info(
             "%sBacking up image %s",
             "NOOP:" if noop else "",
             image_id,
         )
         if image_id not in self.image_backups:
-            all_images = get_images_info(from_cache)
+            all_images = self.images_info
             if image_id not in all_images:
                 raise Exception(
                     f"Image with ID {image_id} not found, known images:\n"
@@ -1354,14 +1353,14 @@ class ImageBackupsState:
             image_info.get("name", "no_name"),
         )
 
-    def backup_all_images(self, from_cache: bool = False, noop: bool = True) -> None:
-        all_images = get_images_info(from_cache)
+    def backup_all_images(self, noop: bool = True) -> None:
+        all_images = self.images_info
         logging.info(
             "%sBacking up %d images...",
             "NOOP:" if noop else "",
             len(all_images),
         )
-        for image_id, image_info in get_images_info(from_cache).items():
+        for image_id, image_info in self.images_info.items():
             if "shelved" in image_info.get("name", "no_name"):
                 # We don't want to back up shelved servers. For one thing they can't
                 #  be snapshotted as far as I can see.
@@ -1371,7 +1370,7 @@ class ImageBackupsState:
                     image_info.get("name", "no_name"),
                 )
                 continue
-            self.create_image_backup(image_id=image_id, noop=noop, from_cache=True)
+            self.create_image_backup(image_id=image_id, noop=noop)
 
         logging.info(
             "%sBacked up %d images.",
@@ -1440,7 +1439,9 @@ def get_current_images_state(from_cache: bool = False) -> ImageBackupsState:
     backup_entries = get_backups()
 
     logging.debug("Creating image summaries")
-    image_backups_state = ImageBackupsState(config=config, image_backups={})
+    image_backups_state = ImageBackupsState(
+        config=config, image_backups={}, images_info=image_id_to_image_dict
+    )
     for backup_entry in backup_entries:
         image_backups_state.add_image_backup(
             ImageBackup.from_entry_and_images(entry=backup_entry, images=image_id_to_image_dict)
