@@ -4,15 +4,6 @@ profile::openstack::eqiad1::keystone::enforce_new_policy_defaults: false
 # these hosts are in the eqiad1 cluster despite being in codfw. For convenience
 #  the following is just a duplication of the eqiad1 backy config.
 
-cluster: wmcs
-profile::admin::groups:
-  - wmcs-roots
-contactgroups: wmcs-team-email
-
-profile::debdeploy::client::filter_services:
-  qemu-system-x86:
-    - '*'
-
 profile::cloudceph::client::rbd::client_name: 'eqiad1-compute'
 profile::cloudceph::client::rbd::pool: 'eqiad1-compute'
 profile::cloudceph::client::rbd::glance::pool: 'eqiad1-glance-images'
