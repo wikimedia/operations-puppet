@@ -1693,7 +1693,7 @@ node /^cloudbackup100[34]\.eqiad\./ {
 
 # Generates and stores cinder backups
 node /^cloudbackup200[12]\.codfw\./ {
-    role(wmcs::openstack::eqiad1::backups)
+    role(wmcs::openstack::eqiad1::cinder_backups)
 }
 
 # Flink team-specific zookeeper clusters T341705

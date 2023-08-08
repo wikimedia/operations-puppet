@@ -1,0 +1,42 @@
+profile::admin::groups:
+  - wmcs-roots
+contactgroups: wmcs-team-email
+
+profile::debdeploy::client::filter_services:
+  qemu-system-x86:
+    - '*'
+
+profile::openstack::eqiad1::cinder::ceph_pool: eqiad1-cinder
+profile::cloudceph::client::rbd::client_name: 'eqiad1-compute'
+profile::cloudceph::client::rbd::pool: 'eqiad1-cinder'
+profile::cloudceph::client::rbd::glance::pool: 'eqiad1-glance-images'
+profile::cloudceph::client::rbd::enable_v2_messenger: false
+
+# This key is shared across all the libvirt / nova / backy hosts
+profile::cloudceph::client::rbd::cinder_client_name: "eqiad1-cinder"
+
+profile::cloudceph::auth::deploy::enabled: true
+profile::cloudceph::auth::deploy::selected_creds:
+- eqiad1-cinder
+- admin
+
+profile::monitoring::monitor_systemd: false
+
+profile::contacts::role_contacts: ['WMCS']
+
+profile::cloudceph::auth::deploy::configuration:
+  eqiad1-cinder:
+    group: root
+    owner: root
+    mode: "0440"
+    caps:
+      mon: profile rbd
+      osd: profile rbd-read-only pool=eqiad1-glance-images, profile rbd pool=eqiad1-compute
+
+
+profile::wmcs::backy2::backup_dir: /srv/cinder-backups/backy/data
+profile::wmcs::backy2::volume_backup_time: '*-*-* 19:00:00'
+profile::wmcs::backy2::backup_cinder_volumes::enabled: true
+profile::wmcs::backy2::backup_cinder_volumes::div: 2
+profile::wmcs::backy2::backup_cinder_volumes::remainder: 0
+profile::wmcs::backy2::cluster_name: ceph
