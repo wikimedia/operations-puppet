@@ -329,18 +329,21 @@ profile::kubernetes::deployment_server::general:
   eqiad:
     mesh:
       certmanager: &certmanager_eqiad
+        enabled: true
         domains:
           - discovery.wmnet
           - svc.eqiad.wmnet
   codfw:
     mesh:
       certmanager: &certmanager_codfw
+        enabled: true
         domains:
           - discovery.wmnet
           - svc.codfw.wmnet
   staging-eqiad:
     mesh:
       certmanager: &wikikube_staging_certmanager
+        enabled: true
         # We have a wildcard DNS entry for *.k8s-staging.discovery.wmnet
         # used for ingress, but we can reuse that for NodePort services as well.
         domains:
