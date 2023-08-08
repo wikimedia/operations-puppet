@@ -10,4 +10,7 @@ class role::wmcs::openstack::eqiad1::backups {
     include profile::cloudceph::auth::deploy
     include profile::cloudceph::client::rbd_cloudbackup
     include profile::openstack::eqiad1::cinder::backup
+
+    # Temporary, for experimentation:
+    include profile::wmcs::backy2
 }
