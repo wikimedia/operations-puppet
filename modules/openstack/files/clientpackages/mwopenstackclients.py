@@ -389,6 +389,19 @@ class Clients(object):
         wait=wait_random(min=5, max=15),
         before_sleep=before_sleep_log(logger, logging.WARNING),
     )
+    def allvolumes(self, projectid=None):
+        if projectid:
+            return self.cinderclient(projectid).volumes.list()
+        else:
+            search_params = {"all_tenants": True}
+            return self.cinderclient(projectid).volumes.list(search_opts=search_params)
+
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
     def globalimages(self):
         client = self.glanceclient()
         return [i for i in client.images.list()]
