@@ -30,7 +30,7 @@
 define ferm::service(
     Wmflib::Protocol $proto,
     Optional[Ferm::Port] $port = undef,
-    Optional[Ferm::Portrange] $port_range = undef,
+    Optional[Firewall::Portrange] $port_range = undef,
     Wmflib::Ensure $ensure  = present,
     String $desc    = '',
     Integer[0,99] $prio    = 10,

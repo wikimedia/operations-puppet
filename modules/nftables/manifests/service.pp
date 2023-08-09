@@ -16,16 +16,16 @@
 # @param src_sets see srange docs
 # @param dst_sets see srange docs
 define nftables::service (
-    Wmflib::Protocol           $proto,
-    Wmflib::Ensure             $ensure     = present,
-    Integer[1,99]              $prio       = 10,
-    Optional[String]           $desc       = undef,
-    Array[Stdlib::Port]        $port       = [],
-    Optional[Ferm::Portrange]  $port_range = undef,
-    Array[Stdlib::IP::Address] $src_ips    = [],
-    Array[Stdlib::IP::Address] $dst_ips    = [],
-    Array[String[1]]           $src_sets   = [],
-    Array[String[1]]           $dst_sets   = [],
+    Wmflib::Protocol              $proto,
+    Wmflib::Ensure                $ensure     = present,
+    Integer[1,99]                 $prio       = 10,
+    Optional[String]              $desc       = undef,
+    Array[Stdlib::Port]           $port       = [],
+    Optional[Firewall::Portrange] $port_range = undef,
+    Array[Stdlib::IP::Address]    $src_ips    = [],
+    Array[Stdlib::IP::Address]    $dst_ips    = [],
+    Array[String[1]]              $src_sets   = [],
+    Array[String[1]]              $dst_sets   = [],
 ) {
     # TODO: notrack is not implemented yet
     # TODO: there is a nftables construct 'concatenation' that can drastically
