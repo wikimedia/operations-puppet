@@ -1674,7 +1674,7 @@ class profile::prometheus::ops (
         port_parameter => 'prometheus_port',
     }
 
-    # Job definition for haproxy_exporter
+    # Job definition for haproxy_exporter (to be deprecated, replaced by haproxy internal metrics)
     $haproxy_jobs = [
       {
         'job_name'        => 'haproxy',
@@ -1689,6 +1689,39 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/haproxy_${::site}.yaml",
         class_name => 'profile::prometheus::haproxy_exporter',
         port       => 9901,
+    }
+
+    # Job definition for openstack haproxy
+    $openstack_haproxy_jobs = [
+      {
+        'job_name'        => 'openstack_haproxy',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/openstack_haproxy_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "openstack_haproxy_${::site}":
+        dest       => "${targets_path}/openstack_haproxy_${::site}.yaml",
+        class_name => 'profile::openstack::eqiad1::haproxy',
+        port       => 9900,
+    }
+
+    # Job definition for cloudlb haproxy
+    $cloudlb_haproxy_jobs = [
+      {
+        'job_name'        => 'cloudlb_harpoxy',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/cloudlb_haproxy_*.yaml"] },
+        ],
+      },
+    ]
+    prometheus::class_config{ "cloudlb_haproxy_${::site}":
+        dest       => "${targets_path}/cloudlb_haproxy_${::site}.yaml",
+        class_name => 'profile::wmcs::cloudlb::haproxy',
+        port       => 9900,
     }
 
     $statsd_exporter_jobs = [
@@ -2397,7 +2430,8 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
-            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs,
+            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $openstack_haproxy_jobs,
+            $cloudlb_haproxy_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
