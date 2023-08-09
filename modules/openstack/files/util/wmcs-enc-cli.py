@@ -3,6 +3,7 @@
 import sys
 import yaml
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
 
 import mwopenstackclients
 import requests
@@ -22,6 +23,23 @@ def get_url(clients, project):
 
 class EncError(Exception):
     pass
+
+
+def read_data(param: str) -> str:
+    if param == "-":
+        return sys.stdin.read()
+
+    if param.startswith("/"):
+        path = Path(param)
+        if not path.exists():
+            raise EncError(f"Given file '{path}' does not exist")
+        return path.read_text()
+
+    return param
+
+
+def read_yaml_data(param: str) -> str:
+    return yaml.safe_load(read_data(param))
 
 
 class EncConnection:
@@ -60,7 +78,7 @@ class EncConnection:
                 self.enc_url,
                 prefix,
             ),
-            data=yaml.dump(yaml.safe_load(data)),
+            data=yaml.dump(read_yaml_data(data)),
             headers={
                 "Content-Type": "application/x-yaml",
                 "Accept": "application/x-yaml",
@@ -89,7 +107,7 @@ class EncConnection:
                 "Content-Type": "application/x-yaml",
                 "Accept": "application/x-yaml",
             },
-            data=yaml.dump(yaml.safe_load(data)),
+            data=yaml.dump(read_yaml_data(data)),
             raise_exc=False,
         )
         if not response.ok:
