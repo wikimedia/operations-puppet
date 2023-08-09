@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              akhatun, jameel, jminor, awjrichards, ntsako]
+              akhatun, jameel, jminor, awjrichards, ntsako, jkieserman]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -175,7 +175,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, essexigyan, itamar, haak, erayfield, jkieserman,
+              komla, sgimeno, essexigyan, itamar, haak, erayfield,
               dbrant]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
@@ -5905,13 +5905,11 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2htFXhtFzM9qVQu73WrDvNTmQGdMei67vSEqMgHOPs erayfield@wikimedia.org
   jkieserman:
-    ensure: present
+    ensure: absent
     realname: Julia Kieserman
-    email: jkieserman@wikimedia.org
     uid: 35687
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICbC6mZH07ZfqnAM4tlMqybCmk+H7ZuCy1wg2WtRl99C
+    ssh_keys: []
   sg912:
     ensure: present
     realname: Surbhi Gupta
