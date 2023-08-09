@@ -100,10 +100,15 @@ class profile::bird::anycast(
     }
   }
 
+  systemd::sysuser { 'bird':
+      home_dir => '/run/bird',
+  }
+
   class { 'bird::anycast_healthchecker':
       bind_service => $bind_anycast_services,
       do_ipv6      => $do_ipv6,
       logging      => $anycasthc_logging,
+      require      => Systemd::Sysuser['bird'],
   }
 
   include profile::bird::anycast_healthchecker_monitoring
@@ -115,5 +120,6 @@ class profile::bird::anycast(
       do_ipv6      => $do_ipv6,
       multihop     => $_multihop,
       ipv4_src     => $ipv4_src,
+      require      => Systemd::Sysuser['bird'],
   }
 }
