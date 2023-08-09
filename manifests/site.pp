@@ -519,7 +519,7 @@ node 'db1208.eqiad.wmnet' {
 }
 
 # s1 (enwiki) core production dbs on eqiad
-node /^db1(106|119|128|132|134|135|163|169|184|186|206|207|218|219)\.eqiad\.wmnet$/ {
+node /^db1(106|128|132|134|135|163|169|184|186|206|207|218|219)\.eqiad\.wmnet$/ {
     role(mariadb::core)
 }
 
