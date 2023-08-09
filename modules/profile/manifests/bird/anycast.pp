@@ -104,6 +104,7 @@ class profile::bird::anycast(
       bind_service => $bind_anycast_services,
       do_ipv6      => $do_ipv6,
       logging      => $anycasthc_logging,
+      require      => Class['bird'],
   }
 
   include profile::bird::anycast_healthchecker_monitoring
