@@ -30,3 +30,6 @@ listen stats
     http-request use-service prometheus-exporter if { path /metrics }
     stats enable
     stats uri /stats
+    # Explicitly avoid keep-alive to prevent Prometheus scrapers from
+    # reusing indefinitelly the same TCP connection. See T343000
+    http-after-response set-header Connection Close
