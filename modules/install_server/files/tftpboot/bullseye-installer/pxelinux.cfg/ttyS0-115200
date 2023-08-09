@@ -10,9 +10,9 @@ timeout 100
 LABEL server
 	kernel debian-installer/amd64/linux
 	ipappend 2
-	append initrd=debian-installer/amd64/initrd.gz vga=normal auto-install/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/get_domain=unassigned netcfg/dhcp_timeout=60 --- console=ttyS0,115200n8 raid0.default_layout=2
+	append initrd=debian-installer/amd64/initrd.gz vga=normal auto-install/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/get_domain=unassigned netcfg/dhcp_timeout=60 hw-detect/load_firmware=false --- console=ttyS0,115200n8 raid0.default_layout=2
 
 LABEL rescue
 	kernel debian-installer/amd64/linux
 	ipappend 2
-	append initrd=debian-installer/amd64/initrd.gz vga=normal rescue/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/get_domain=unassigned netcfg/dhcp_timeout=60 --- console=ttyS0,115200n8 raid0.default_layout=2
+	append initrd=debian-installer/amd64/initrd.gz vga=normal rescue/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/get_domain=unassigned netcfg/dhcp_timeout=60 hw-detect/load_firmware=false --- console=ttyS0,115200n8 raid0.default_layout=2
