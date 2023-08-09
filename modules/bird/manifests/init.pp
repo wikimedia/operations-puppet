@@ -37,19 +37,10 @@ class bird(
   Stdlib::IP::Address        $ipv6_src        = $facts['ipaddress6'],
   ){
 
-  ensure_packages(['prometheus-bird-exporter'])
+  ensure_packages(['bird2', 'prometheus-bird-exporter'])
 
   $neighbors_v4 = $neighbors.filter |$neighbor| { $neighbor =~ Stdlib::IP::Address::V4::Nosubnet }
   $neighbors_v6 = $neighbors.filter |$neighbor| { $neighbor =~ Stdlib::IP::Address::V6::Nosubnet }
-
-  # Install the backported bird2 package from bullseye if the host is buster.
-  if debian::codename::eq('buster') {
-      apt::package_from_component { 'bird2':
-          component => 'component/bird2',
-      }
-  } else {
-    ensure_packages(['bird2'])
-  }
 
   systemd::service { 'bird':
       ensure         => present,
