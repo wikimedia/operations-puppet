@@ -737,7 +737,7 @@ node /^db21(88|89|90|91|92|93|94|95)\.codfw\.wmnet$/ {
 }
 
 # New db hosts to be setup T342166
-node /^db12(34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\.wmnet$/ {
+node /^db12(26|27|28|39|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\.wmnet$/ {
     role(insetup::data_persistence)
 }
 ## m1 shard
