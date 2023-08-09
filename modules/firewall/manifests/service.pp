@@ -2,6 +2,7 @@
 # @summary a shim define to support a common interface between ferm::service and nft::service
 # @param proto the protocol to use
 # @param port the port to configure
+# @param a port range to configure
 # @param ensure the ensurable parameter
 # @param desc a description to add as a comment
 # @param prio the priority
@@ -9,14 +10,17 @@
 # @param drange the destination range to configure
 # @param notrack set the rule with no state tracking
 define firewall::service(
-    $proto,
-    $port,
-    $ensure  = present,
-    $desc    = '',
-    $prio    = 10,
-    $srange  = undef,
-    $drange  = undef,
-    $notrack = false,
+    Wmflib::Protocol            $proto,
+                                $port,
+    Wmflib::Ensure              $ensure = present,
+    Optional[String]            $desc = '',
+    Integer[0,99]               $prio = 10,
+    Optional[Stdlib::Portrange] $port_range = undef,
+                                $srange = undef,
+                                $drange = undef,
+    Optional[Array[String[1]]]  $src_sets = undef,
+    Optional[Array[String[1]]]  $dst_sets = undef,
+    Boolean                     $notrack = false,
 ) {
     include firewall
     case $firewall::provider {
@@ -25,6 +29,29 @@ define firewall::service(
                 * => wmflib::dump_params(),
             }
         }
+        'nftables': {
+
+            if $srange =~ String {
+                fail('The srange needs to needs to passed as an array of hosts or IPs')
+            }
+
+            if $drange =~ String {
+                fail('The drange needs to needs to passed as an array of hosts or IPs')
+            }
+
+            if $port =~ Pattern[/\d{1,5}:\d{1,5}/] {
+                fail('The port needs to converted to use a port_range')
+            }
+
+            if $port =~ String {
+                fail('The port needs to converted to use a port or port_range')
+            }
+
+            if $notrack == true {
+                fail('Support for notrack not yet added to the nft provider')
+            }
+        }
+
         default: { fail('invalid provider') }
     }
 }

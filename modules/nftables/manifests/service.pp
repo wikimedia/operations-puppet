@@ -18,7 +18,7 @@
 define nftables::service (
     Wmflib::Protocol              $proto,
     Wmflib::Ensure                $ensure     = present,
-    Integer[1,99]                 $prio       = 10,
+    Integer[0,99]                 $prio       = 10,
     Optional[String]              $desc       = undef,
     Array[Stdlib::Port]           $port       = [],
     Optional[Firewall::Portrange] $port_range = undef,
