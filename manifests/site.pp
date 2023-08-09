@@ -778,6 +778,11 @@ node 'db1159.eqiad.wmnet' {
 node 'db1118.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
+# Temporary testing host for T335080
+node 'db1119.eqiad.wmnet' {
+    role(mariadb::misc::phabricator)
+}
+
 
 
 # m3 codfw master
