@@ -1,3 +1,4 @@
+#!/bin/bash
 # Source system's bashrc
 if [ -f /etc/bash.bashrc ]; then
     . /etc/bash.bashrc
@@ -51,7 +52,7 @@ function envoy-runtime-set {
 }
 
 function gitroot() {
-    cd `git rev-parse --show-toplevel`
+    cd "$(git rev-parse --show-toplevel)" || return
 }
 
 # Docker-related shortcuts. Only defined if docker is present.
@@ -59,7 +60,7 @@ if command -v docker > /dev/null; then
     debian-shell() {
         DISTRO=${1:-buster}
         shift
-        docker run --rm -ti $@ docker-registry.discovery.wmnet/$DISTRO:latest /bin/bash
+        docker run --rm -ti "$@" docker-registry.discovery.wmnet/$DISTRO:latest /bin/bash
     }
 
     docker-root-shell() {
@@ -70,5 +71,16 @@ if command -v docker > /dev/null; then
             echo "usage: docker-root-shell IMAGE:TAG"
             return 1
         fi
+    }
+fi
+
+# Kafkacat-related shortcuts.
+if command -v kafkacat > /dev/null; then
+    kafkaread() {
+        TOPIC=$1
+        if [ ! -n "$TOPIC" ]; then
+            echo "usage: kafkaread <topic>";
+        fi
+        kafkacat -C -b "$(hostname -f)":9093 -t "$TOPIC" -X security.protocol=SSL
     }
 fi

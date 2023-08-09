@@ -1,0 +1,26 @@
+#!/bin/bash
+# Makes a curl call to a local varnish
+curl-local-varnish() {
+    URL=$1
+    shift
+    test -n "$URL" || curl-local-usage varnish
+    DOMAIN=$(awk -F/ '{print $3}'  <<<"$URL")
+    URL_PATH=$(awk -F/ '{out=""; for(i=4;i<=NF;i++){out=out"/"$i}; print out}' <<<"$URL")
+    curl --connect-to "$DOMAIN:80:$HOSTNAME:3120" -H 'X-Forwarded-Proto: https' "$@" "http://$DOMAIN$URL_PATH"
+}
+
+# Makes a curl call to a local trafficserver
+curl-local-trafficserver() {
+    URL=$1
+    shift
+    test -n "$URL" || curl-local-usage trafficserver
+    DOMAIN=$(awk -F/ '{print $3}'  <<<"$URL")
+    # TODO: apply some basic url translations like the restbase ones here?
+    URL_PATH=$(awk -F/ '{out=""; for(i=4;i<=NF;i++){out=out"/"$i}; print out}' <<<"$URL")
+    curl --connect-to "$DOMAIN:80:$HOSTNAME:3128" -H 'X-Forwarded-Proto: https' "$@" "http://$DOMAIN$URL_PATH"
+}
+
+curl-local-usage() {
+    echo "Usage: curl-local-${1} URL [CURL OPTIONS]"
+    exit 1
+}
