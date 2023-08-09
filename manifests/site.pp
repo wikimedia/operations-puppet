@@ -125,7 +125,7 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # New an-worker nodes T327295
 node /^an-worker11(4[9]|5[0-6])\.eqiad\.wmnet$/ {
-    role(insetup::data_engineering)
+    role(insetup::core_platform)
 }
 
 # Staging environment of Superset and Turnilo
