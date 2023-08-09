@@ -806,6 +806,8 @@ groups:
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
+    approval:
+      - Nicholas Skaggs
   mediawiki-testers:
     description: People who can strace and tcpdump on canary appservers for testing mediawiki
     gid: 797
