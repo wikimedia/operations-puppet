@@ -71,6 +71,7 @@ class bird(
       mode    => '0640',
       content => template($config_template),
       notify  => Systemd::Service['bird'],
+      require => Package['bird2'],
   }
 
   service { 'prometheus-bird-exporter':
