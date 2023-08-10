@@ -218,7 +218,7 @@ profile::analytics::refinery::job::test::gobblin::gobblin_jar_file: /srv/deploym
 
 # This parameter can be used to disable ingestion via gobblin temporarily,
 # such as when Hadoop maintenance work is required
-profile::analytics::refinery::job::test::gobblin::ensure_timers: absent
+profile::analytics::refinery::job::test::gobblin::ensure_timers: present
 
 # We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
 profile::base::remove_python2_on_bullseye: false
