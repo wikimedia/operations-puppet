@@ -49,10 +49,6 @@ cache::alternate_domains:
     caching: 'websockets'
   git.wikimedia.org:
     caching: 'normal'
-  grafana-cloud.wikimedia.org:
-    caching: 'pass'
-  grafana-labs.wikimedia.org:
-    caching: 'pass'
   grafana-next.wikimedia.org:
     caching: 'pass'
   grafana-rw.wikimedia.org:

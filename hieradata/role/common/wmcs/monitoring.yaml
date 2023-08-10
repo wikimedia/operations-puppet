@@ -67,19 +67,9 @@ profile::grafana::config:
     disable_sanitize_html: true
 
 # envoy for TLS termination for grafana-labs/graphite-labs behind ATS
-profile::tlsproxy::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-  - server_names: ["*"]
-    port: 80
+profile::envoy::ensure: absent
 profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
 profile::tlsproxy::envoy::ssl_provider: "cfssl"
-profile::tlsproxy::envoy::cfssl_options:
-  hosts:
-    - grafana-labs.discovery.wmnet
-    - graphite-labs.discovery.wmnet
-    - grafana-labs.wikimedia.org
-    - grafana-cloud.wikimedia.org
-profile::tlsproxy::envoy::sni_support: "no"
 
 profile::grafana::enable_cas: false
 
