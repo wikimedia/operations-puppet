@@ -244,6 +244,8 @@ profile::gitlab::runner::allowed_images:
   - "docker.elastic.co/elasticsearch/*:*"
   # Toolforge CI images
   - "docker-registry.tools.wmflabs.org/cloud-cicd*"
+  # SonarQube cli image
+  - "sonarsource/sonar-scanner-cli:*"
 profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
