@@ -228,6 +228,7 @@ Components: main
  component/jdk8
  component/kubernetes116
  component/kubernetes123
+ component/libmysql-java
  component/logrotate
  component/memcached-tls
  component/puppet7
