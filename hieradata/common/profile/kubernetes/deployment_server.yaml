@@ -220,6 +220,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: wikifunctions
         - name: wikifunctions-deploy
+    geo-analytics:
+      usernames:
+        - name: geo-analytics
+        - name: geo-analytics-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:

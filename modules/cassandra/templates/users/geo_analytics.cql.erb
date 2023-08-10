@@ -1,0 +1,5 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE ROLE IF NOT EXISTS geo_analytics WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT SELECT ON "local_group_default_T_editors_bycountry".data TO 'geo_analytics';
