@@ -42,11 +42,6 @@ class presto::server(
 
     ensure_packages('presto-cli')
     ensure_packages('presto-server')
-    # Add package python-is-python3 if bullseye. Debian 11 bullseye has unversioned /usr/bin/python required by presto dependency airlift
-    if debian::codename::ge('bullseye') {
-        ensure_packages('python-is-python3')
-    }
-
 
     # Explicitly adding the 'presto' user
     # to the catalog, even if created by the presto-server package,
