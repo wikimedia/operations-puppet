@@ -34,8 +34,8 @@ profile::cloudceph::auth::deploy::selected_creds:
 - eqiad1-compute
 - admin
 
-# Backup things:
 profile::wmcs::backy2::cluster_name: ceph
+profile::wmcs::backy2::backup_time: '*-*-* 14:00:00'
 profile::monitoring::monitor_systemd: false
 
 profile::contacts::role_contacts: ['WMCS']
