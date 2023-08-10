@@ -1,8 +1,5 @@
-# == Class profile::tlsproxy::envoy
-#
-# Sets up TLS termination using the envoy proxy.
-#
-# === Examples
+# @summary Sets up TLS termination using the envoy proxy.
+# @example
 # Example hiera setups for common use-cases.
 #
 # Set up a global TLS proxy to apache listening on TCP port 444.
@@ -46,7 +43,10 @@
 #                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure
 #                 Default [{server_name: ['*'], port: 80}]
-# @param global_cert_name The name of the certificate to install via sslcert::certificate
+# @param global_cert_name The use of this certificate depends on the value of ssl_provider.
+#   when ssl_provider is sslcert this value is passed to sslcert::certificate { $global_cert_name: }
+#   when ssl_provider is acme this value ise passed to acme_chief::cert {$global_cert_name: }
+#   when ssl_provider is cfssl this alue is passed to profile::pki::get_cert($cfssl_label, $global_cert_name, ...)
 # @param access_log Whether to use an access log or not.
 # @param header_key_format Allows capitalizing headers or maintain the original headers case on HTTP/1.1 requests
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
