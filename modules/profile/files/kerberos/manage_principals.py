@@ -7,7 +7,6 @@ import os
 import pexpect
 import random
 import smtplib
-import socket
 import string
 import subprocess
 import sys
@@ -99,7 +98,7 @@ def get_principal_info(principal, realm):
 def send_email(email_address, principal, password, subject):
     try:
         msg = EmailMessage()
-        msg['From'] = 'root@' + socket.getfqdn()
+        msg['From'] = 'noc@wikimedia.org'
         msg['To'] = email_address
         msg['Subject'] = subject
         text_to_send = """
