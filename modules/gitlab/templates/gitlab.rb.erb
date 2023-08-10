@@ -233,4 +233,14 @@ gitlab_rails['object_store']['connection'] = {
   'aws_secret_access_key' => '<%= @thanos_storage_password %>',
   'host' => 'thanos-swift.discovery.wmnet',
 }
+
+gitlab_rails['object_store']['objects']['artifacts']['bucket'] = 'gitlab-artifacts'
+gitlab_rails['object_store']['objects']['packages']['bucket'] = 'gitlab-packages'
+
+gitlab_rails['object_store']['objects']['external_diffs']['enabled'] = false
+gitlab_rails['object_store']['objects']['lfs']['enabled'] = false
+gitlab_rails['object_store']['objects']['uploads']['enabled'] = false
+gitlab_rails['object_store']['objects']['dependency_proxy']['enabled'] = false
+gitlab_rails['object_store']['objects']['terraform_state']['enabled'] = false
+gitlab_rails['object_store']['objects']['pages']['enabled'] = false
 <% end %>
