@@ -1,4 +1,4 @@
 # Disable Docker to stop collecting extra labels/info T337856
 [Service]
 ExecStart=
-ExecStart=/usr/bin/cadvisor --listen_ip=<%= @facts['networking']['ip'] %> --port=<%= @port %> --enable_metrics=<%= @metrics_enabled.join(',') %> --docker=/dev/null
+ExecStart=/usr/bin/cadvisor --listen_ip=<%= @listen_address %> --port=<%= @port %> --enable_metrics=<%= @metrics_enabled.join(',') %> --docker=/dev/null
