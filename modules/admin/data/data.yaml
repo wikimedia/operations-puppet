@@ -176,7 +176,7 @@ groups:
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, essexigyan, itamar, haak, erayfield,
-              dbrant]
+              dbrant, tsev]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -5403,7 +5403,8 @@ users:
     email: tsevener@wikimedia.org
     uid: 21065
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAkjnbs4HB51M6dc1RvfKTNQuKcz19u023Pmo0XfX8L7 tonisevener@wmf3283'
   bscarone:
     ensure: absent
     realname: Bruno Scarone
