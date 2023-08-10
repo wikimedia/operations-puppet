@@ -24,18 +24,3 @@ profile::wmcs::backy2::backup_time: '*-*-* 2:00:00'
 profile::monitoring::monitor_systemd: false
 
 profile::contacts::role_contacts: ['WMCS']
-
-profile::cloudceph::auth::deploy::configuration:
-  eqiad1-compute:
-    group: root
-    owner: root
-    mode: "0440"
-    caps:
-      mon: profile rbd
-      osd: profile rbd-read-only pool=eqiad1-glance-images, profile rbd pool=eqiad1-compute
-  admin:
-    caps:
-      mds: allow *
-      mgr: allow *
-      mon: allow *
-      osd: allow *
