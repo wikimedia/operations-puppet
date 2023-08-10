@@ -171,7 +171,18 @@ define scap::target(
                 "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} status",
                 "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} try-restart",
                 "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} force-reload",
-                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} graceful-stop"
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} graceful-stop",
+                # T343447 Required for Scap to be able to disable services on secondary targets (/usr/sbin/service does
+                # not offer enable/disable operations)
+                "ALL=(root) NOPASSWD: /bin/systemctl enable ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl disable ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl start ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl stop ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl restart ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl reload ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl status ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl try-restart ${svc_name}",
+                "ALL=(root) NOPASSWD: /bin/systemctl reload-or-restart ${svc_name}",
             ]
 
             if !defined(Sudo::User["scap_${deploy_user}_${svc_name}"]) {

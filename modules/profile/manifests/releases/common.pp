@@ -15,15 +15,23 @@ class profile::releases::common(
 
     # when there is more than one releases server per DC
     # we can't rely on primary_dc alone
-    $motd_ensure = $primary_server ? {
+    $secondary_ensure = $primary_server ? {
         $::fqdn => 'absent',
         default => 'present',
     }
 
     motd::script { 'rsync_source_warning':
-        ensure   => $motd_ensure,
+        ensure   => $secondary_ensure,
         priority => 1,
         content  => template('role/releases/rsync_source_warning.motd.erb'),
+    }
+
+    file { '/etc/scap.secondary':
+        ensure  => $secondary_ensure,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => 'Signal file to inform Scap this is a secondary host',
     }
 
     $all_secondary_servers = join($secondary_servers, ' ')
