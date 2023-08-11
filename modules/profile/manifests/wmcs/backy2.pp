@@ -4,6 +4,7 @@ class profile::wmcs::backy2(
     String               $ceph_vm_pool    = lookup('profile::cloudceph::client::rbd::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
     String               $db_pass         = lookup('profile::wmcs::backy2::db_pass'),
+    String               $backup_dir      = lookup('profile::wmcs::backy2::backup_dir'),
 ) {
     require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
@@ -13,6 +14,7 @@ class profile::wmcs::backy2(
     class {'::backy2':
         cluster_name => $cluster_name,
         db_pass      => $db_pass,
+        backup_dir   => $backup_dir,
     }
 
     file { '/etc/wmcs_backup_instances.yaml':

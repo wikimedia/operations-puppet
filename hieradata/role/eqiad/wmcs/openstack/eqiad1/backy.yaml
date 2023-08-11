@@ -24,6 +24,7 @@ profile::cloudceph::auth::deploy::selected_creds:
 
 # Backup things:
 profile::wmcs::backy2::cluster_name: ceph
+profile::wmcs::backy2::backup_dir: '/srv/backy2/data'
 profile::monitoring::monitor_systemd: false
 cluster: wmcs
 

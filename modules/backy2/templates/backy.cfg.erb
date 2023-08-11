@@ -90,7 +90,7 @@ type: backy2.data_backends.file
 # Store data to this path. A structure of 2 folders depth will be created
 # in this path (e.g. '0a/33'). Blocks of DEFAULTS.block_size will be stored
 # there. This is your backup storage!
-path: /srv/backy2/data
+path: <%= @backup_dir %>
 
 # How many writes to perform in parallel. This is useful if your backup space
 # can perform parallel writes faster than serial ones.

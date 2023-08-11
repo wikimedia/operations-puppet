@@ -23,6 +23,7 @@ class backy2(
     String       $cluster_name,
     String       $db_pass,
     String       $rados_name = 'client.admin',
+    String       $backup_dir = '/srv/backy2/data',
     ) {
 
     # The upstream backy2 deb is available from
