@@ -1711,7 +1711,7 @@ class profile::prometheus::ops (
     # Job definition for cloudlb haproxy
     $cloudlb_haproxy_jobs = [
       {
-        'job_name'        => 'cloudlb_harpoxy',
+        'job_name'        => 'cloudlb_haproxy',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/cloudlb_haproxy_*.yaml"] },
