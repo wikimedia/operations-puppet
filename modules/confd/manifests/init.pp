@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary Installs confd and monitoring/logging setup
-# @param ensure the ensure parameter
+# == Class confd
+#
+# Installs confd and monitoring/logging setup
+#
 class confd(
-    Wmflib::Ensure $ensure = present,
+    Wmflib::Ensure   $ensure        = present,
 ) {
 
     ### Install confd ###
@@ -28,8 +30,8 @@ class confd(
     # https://phabricator.wikimedia.org/T321678
     $run_dir = '/var/run/confd-template'
 
-    # Force creation here to avoid find complaining with
-    # find: ‘/var/run/confd-template’: No such file or directory
+    # Force creation here to avoid the following spam from puppet:
+    # Info: /Stage[main]/Confd/Tidy[/var/run/confd-template]: File does not exist
     # Normally confd creates the directory on errors
     file { $run_dir:
         ensure => directory,
@@ -38,12 +40,11 @@ class confd(
         group  => 'root',
     }
 
-    systemd::timer::job { "clean-${run_dir}":
-        ensure      => $ensure,
-        description => "Clean old stale files in ${run_dir}",
-        user        => 'root',
-        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/30'},  # Every 30 minutes
-        command     => "/usr/bin/find ${run_dir} -mtime +30 -delete",
+    tidy { $run_dir:
+        age     => '30m',
+        type    => 'mtime',
+        recurse => true,
+        backup  => false,
     }
 
     # Used by modules/profile/files/mediawiki/maintenance/mw-cli-wrapper.py
