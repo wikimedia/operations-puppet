@@ -43,7 +43,7 @@ class profile::gitlab(
     Systemd::Timer::Schedule $ldap_group_sync_interval = lookup('profile::gitlab::ldap_group_sync_interval_interval'),
     Boolean $thanos_storage_enabled = lookup('profile::gitlab::thanos_storage_enabled', {default_value => false}),
     String $thanos_storage_username = lookup('profile::gitlab::thanos_storage_username', {default_value => ''}),
-    Hash[String, String] $thanos_storage_password = lookup('profile::thanos::swift::accounts_keys'),
+    Hash[String, String] $thanos_storage_password = lookup('profile::thanos::swift::accounts_keys', {default_value => {}}),
 ){
 
     $acme_chief_cert = 'gitlab'
