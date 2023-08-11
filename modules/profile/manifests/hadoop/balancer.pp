@@ -8,6 +8,9 @@ class profile::hadoop::balancer(
 ) {
     require ::profile::hadoop::common
 
+    # This package provides the lockfile-check, lockfile-create, and lockfile-remove commands.
+    ensure_packages('lockfile-progs')
+
     file { '/usr/local/bin/hdfs-balancer':
         source => 'puppet:///modules/profile/hadoop/hdfs-balancer',
         mode   => '0754',
