@@ -13,6 +13,7 @@ class profile::configmaster (
     Boolean             $enable_nda     = lookup('profile::configmaster::enable_nda'),
     Boolean             $proxy_sha1     = lookup('profile::configmaster::proxy_sha1'),
 ) {
+    ensure_packages(['python3-conftool'])
     $real_server_aliases = $server_aliases + [
         'pybal-config',
     ]
