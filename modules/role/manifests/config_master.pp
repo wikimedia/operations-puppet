@@ -9,6 +9,7 @@ class role::config_master {
 
     include profile::base::production
     include profile::firewall
+    include profile::conftool::client
     include profile::discovery::client
     include profile::httpd
     include profile::configmaster

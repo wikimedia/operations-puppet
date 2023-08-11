@@ -1,8 +1,8 @@
-profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::contacts::role_contacts: ["Infrastructure Foundations"]
 profile::configmaster::proxy_sha1: true
-profile::configmaster::server_name: config-master.wikimedia.org
+profile::configmaster::server_name: "config-master.wikimedia.org"
 profile::configmaster::server_aliases:
-  - 'config-master.discovery.wmnet'
+  - "config-master.discovery.wmnet"
   - "config-master.%{::site}.wmnet"
   - "%{facts.networking.fqdn}"
 profile::configmaster::enable_nda: true
@@ -12,5 +12,6 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts: "%{alias('profile::configmaster::server_aliases')}"
 
 profile::discovery::path: "/srv/config-master/discovery"
-profile::conftool::state::ensure: present
+profile::conftool::state::ensure: "present"
 profile::conftool::state::query_interval: 30
+profile::conftool::client::etcd_user: "root"
