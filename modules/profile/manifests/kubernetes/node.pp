@@ -192,6 +192,11 @@ class profile::kubernetes::node (
         content  => 'if $msg contains "run-docker-runtime\\\\x2drunc-moby-" and $msg contains ".mount: Succeeded." then { stop }',
     }
 
+    rsyslog::conf { 'kubernetes-node-filters':
+      priority => 10,
+      source   => 'puppet:///modules/profile/kubernetes/node/kubernetes-node-filters.rsyslog.conf',
+    }
+
     # We've seen issues with tailing container logs as kubelet a lot of inotify instances.
     # Increase the inotify limits (from Debian default 8192, 128). The new values don't have a real meaning,
     # they've been copied from what we use on prometheus nodes.
