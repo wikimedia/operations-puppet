@@ -55,10 +55,8 @@ class profile::durum (
     nginx::site { 'durum':
         content => template('profile/durum/nginx.conf.erb'),
         require => [
-          File[$index_file],
-          File[$uuid_js_file],
-          File[$check_js_file],
-          File[$css_file],
+          File[$index_file, $uuid_js_file, $check_js_file, $css_file],
+          Acme_chief::Cert['durum'],
         ]
     }
 
