@@ -5972,7 +5972,7 @@ users:
     uid: 21271
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKqqF3EjMr1y5oM+5qfjBrQq/BhRsoHLA4DGZYtWKaE monica.pinedo@wikimedia.de'
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM5JYD88f9NiE6Kg0G7lIVdsZUC2Sp8gDif/kgnkuq/j monicapinedo@wmde-102496'
   roti:
     ensure: present
     realname: Robert Timm
