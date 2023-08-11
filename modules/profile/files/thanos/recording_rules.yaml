@@ -154,3 +154,20 @@ groups:
           "exporter", "squid",
           "", ""
           )
+  - name: istio_slos
+    rules:
+      # istio_request_duration_milliseconds_{bucket,count} and istio_requests_total are used for LiftWing SLO dashboards.
+      # They may be useful for other k8s services, which is why we don't limit them to the ML clusters.
+      # We have three metrics to compute (latency buckets, count) and request rate (for 2xx vs 5xx etc)
+      # We also want to compute the rate _before_ the sum for Prometheus reasons:
+      # https://www.robustperception.io/rate-then-sum-never-sum-then-rate/
+      #
+      # SLx: Buckets for latency
+      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_bucket:rate5m
+        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (rate(istio_request_duration_milliseconds_bucket{}[5m]))
+      # SLx: Total requests for latency
+      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_count:rate5m
+        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (rate(istio_request_duration_milliseconds_count{}[5m]))
+      # SLx: Request counts with status
+      - record: destsvc_rev_ns_rc_rf:istio_requests_total:rate5m
+        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, response_code, response_flags, site, prometheus) (rate(istio_requests_total{}[5m]))
