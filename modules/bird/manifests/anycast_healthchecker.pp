@@ -21,14 +21,20 @@ class bird::anycast_healthchecker(
 
     ensure_packages(['anycast-healthchecker'])
 
-    file { '/etc/anycast-healthchecker.conf':
-        ensure       => file,
-        owner        => 'bird',
-        group        => 'bird',
-        mode         => '0664',
-        content      => template('bird/anycast-healthchecker.conf.erb'),
-        validate_cmd => '/usr/bin/anycast-healthchecker -f % --check',
-        require      => Package['anycast-healthchecker'],
+    file {
+        default:
+            ensure  => file,
+            owner   => 'bird',
+            group   => 'bird',
+            mode    => '0664',
+            require => Package['anycast-healthchecker'];
+        '/etc/anycast-healthchecker.conf':
+            content      => template('bird/anycast-healthchecker.conf.erb'),
+            validate_cmd => '/usr/bin/anycast-healthchecker -f % --check';
+        '/etc/bird/anycast-prefixes.conf':
+            replace      => false;  # The content is managed by anycast-healthchecker
+        '/etc/bird/anycast6-prefixes.conf':
+            replace      => false;  # The content is managed by anycast-healthchecker
     }
 
     file {'/var/run/anycast-healthchecker/':
