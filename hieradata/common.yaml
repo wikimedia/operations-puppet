@@ -1227,8 +1227,9 @@ authdns_addrs:
     address: '208.80.154.238'
   ns1-v4:
     address: '208.80.153.231'
-  ns2-v4:
-    address: '91.198.174.239'
+  # ns2-v4 is the same as nsa-v4 for knams migration, so don't duplicate it
+  #ns2-v4:
+  #  address: '91.198.174.239'
   nsa-v4:
     address: '198.35.27.27'
     skip_loopback: true # bird::anycast takes care of this one
