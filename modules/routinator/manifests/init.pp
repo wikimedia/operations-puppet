@@ -58,7 +58,15 @@ class routinator(
         group  => 'routinator',
         mode   => '0755',
     }
-
+    mount { '/var/lib/routinator/repository':
+        ensure  => 'mounted',
+        device  => 'tmpfs',
+        fstype  => 'tmpfs',
+        options => 'uid=routinator,gid=routinator,mode=755,size=4g',
+        atboot  => true,
+        require => File['/var/lib/routinator/repository'],
+        before  => Service['routinator'],
+    }
     systemd::service { 'routinator':
         override       => true,
         content        => template('routinator/routinator.systemd_override.erb'),
@@ -75,4 +83,5 @@ class routinator(
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C routinator',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/RPKI#Process',
     }
+
   }
