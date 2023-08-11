@@ -114,6 +114,9 @@ class nginx(
     if $::realm == 'production' {
         # nginx will buffer e.g. large body content into this directory
         #  very briefly, so keep it off the disks.
+        file { '/var/lib/nginx':
+            ensure => directory,
+        }
         mount { '/var/lib/nginx':
             ensure  => stdlib::ensure($ensure, 'mounted'),
             device  => 'tmpfs',
@@ -122,6 +125,7 @@ class nginx(
             pass    => 0,
             dump    => 0,
             before  => Service['nginx'],
+            require => File['/var/lib/nginx'],
         }
     }
 }
