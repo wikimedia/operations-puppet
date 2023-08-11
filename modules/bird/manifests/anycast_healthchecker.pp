@@ -49,10 +49,12 @@ class bird::anycast_healthchecker(
     }
 
     file {'/var/log/anycast-healthchecker/':
-        ensure => directory,
-        owner  => 'bird',
-        group  => 'bird',
-        mode   => '0775',
+        ensure  => directory,
+        owner   => 'bird',
+        group   => 'bird',
+        mode    => '0775',
+        recurse => true,
+        before  => Service['anycast-healthchecker'],
     }
 
     if $bind_service {
