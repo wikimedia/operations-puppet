@@ -232,8 +232,6 @@ role::wmcs::openstack::eqiad1::virt:
   target-q: TBD
 role::wmcs::openstack::eqiad1::virt_ceph:
   target-q: TBD
-role::wmcs::openstack::eqiad1::virt_ceph_and_backy:
-  target-q: TBD
 role::wmcs::openstack::codfw1dev::virt_ceph:
   target-q: TBD
 role::configcluster_stretch:
