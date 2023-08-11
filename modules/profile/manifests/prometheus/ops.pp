@@ -2541,26 +2541,4 @@ class profile::prometheus::ops (
     prometheus::pint::source { 'ops':
         port => $port,
     }
-
-    # Demo config for switches running node_exporter on SONiC
-    # https://phabricator.wikimedia.org/T335027
-    if $::site == 'eqiad' {
-        $sonic_demo_config = [{
-          'labels' => {
-            'cluster' => 'sonic'
-          },
-          'targets' => [
-            'lsw1-e8-eqiad.mgmt.eqiad.wmnet:9100'
-          ]
-        }]
-
-        file { "${targets_path}/node_sonic_eqiad.yaml":
-            backup  => false,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => to_yaml($sonic_demo_config);
-        }
-    }
-
 }
