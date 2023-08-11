@@ -1205,6 +1205,7 @@ service::catalog:
     probes:
       - type: http
         expect_redirect: true
+        host: wikitech.wikimedia.org
     page: false
     port: 7443
     sites:
