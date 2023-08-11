@@ -151,6 +151,15 @@ class profile::firewall (
 
         'nftables': {
             include profile::firewall::nftables_base_sets
+
+            # The following priorities apply:
+            # < 100 - Anything which should precede the base firewall
+            # 100   - The base firewall definition
+            # > 100 - Freely available for changes which come after the base setup
+            nftables::file { 'base':
+                order   => 100,
+                content => file('profile/firewall/base.nft'),
+            }
         }
 
         default: { fail("unknown provider: ${provider}") }

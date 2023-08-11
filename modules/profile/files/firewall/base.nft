@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+table inet base {
+
+    # Include all Puppet-managed sets
+    include "/etc/nftables/sets/*.nft"
+
+    chain input {
+	type filter hook input priority 0 ; policy drop;
+
+	ct state related,established accept
+	iifname "lo" accept
+	pkttype multicast accept
+	meta l4proto ipv6-icmp accept
+	ip protocol icmp accept
+
+	# Include all Puppet-managed service definitions for incoming traffic
+	include "/etc/nftables/input/*.nft"
+    }
+
+    chain output {
+	type filter hook output priority 0 ; policy accept;
+    }
+}
