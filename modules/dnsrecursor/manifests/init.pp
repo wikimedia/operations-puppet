@@ -60,7 +60,7 @@ class dnsrecursor (
     $wmf_authdns = [
         '208.80.154.238',
         '208.80.153.231',
-        '91.198.174.239',
+        '198.35.27.27',
     ]
     $wmf_authdns_semi = join($wmf_authdns, ';')
     $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}, 20.172.in-addr.arpa=${wmf_authdns_semi}"
