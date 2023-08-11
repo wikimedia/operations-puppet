@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # This is a simple validator for external pybal node
 # definition files.  These are loaded and eval'd
 # line by line.  A faulty eval will cause issues.
@@ -11,13 +11,13 @@ import socket
 
 def die(msg):
     error = "[invalid]: %s" % (msg,)
-    print >>sys.stderr, error
+    print(error, file=sys.stderr)
     sys.exit(1)
 
 
 def drop_privileges(uid_name='nobody',
                     gid_name='nogroup',
-                    umask=077):
+                    umask=0o77):
     """ Drop privileges
     :param uid_name: str
     :param gid_name: str
@@ -46,22 +46,22 @@ def main():
     drop_privileges()
 
     eligible_servers = []
-    for l in clines.splitlines():
+    for line in clines.splitlines():
 
         # this mimics internal pybal behavior
-        l = l.rstrip('\n').strip()
-        if l.startswith('#') or not l:
+        line = line.rstrip('\n').strip()
+        if line.startswith('#') or not line:
             continue
 
         try:
-            server = eval(l)
+            server = eval(line)
             assert type(server) == dict
             assert all(map(lambda k: k in server,
                            ['host', 'enabled', 'weight']))
             socket.gethostbyname_ex(server['host'])
             eligible_servers.append(server)
         except Exception as e:
-            die('%s %s' % (l, e))
+            die('%s %s' % (line, e))
 
     # We assume empty pools are errant
     if not eligible_servers:
@@ -69,4 +69,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print main() or 'no issues'
+    print(main() or 'no issues')
