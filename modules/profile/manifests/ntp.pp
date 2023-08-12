@@ -38,6 +38,7 @@ class profile::ntp (
       '198.35.26.0 mask 255.255.254.0',
       '103.102.166.0 mask 255.255.255.0',
       '185.15.58.0 mask 255.255.255.0',
+      '185.15.59.0 mask 255.255.255.0',
       '2620:0:860:: mask ffff:ffff:fffc::',
       '2a02:ec80:: mask ffff:ffff::',
       '2001:df2:e500:: mask ffff:ffff:ffff::',

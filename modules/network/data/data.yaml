@@ -270,12 +270,24 @@ network::subnets:
         public1-lvs-esams:
           ipv4: 91.198.174.192/27
           ipv6: 2620:0:862:ed1a::/64
+        public1-bw27-esams:
+          ipv4: 185.15.59.0/27
+          ipv6: 2a02:ec80:300:1::/64
+        public1-by27-esams:
+          ipv4: 185.15.59.32/27
+          ipv6: 2a02:ec80:300:2::/64
       private:
         private1-esams:
           ipv4: 10.20.0.0/24
           ipv6: 2620:0:862:102::/64
         private1-lvs-esams:
           ipv4: 10.2.3.0/24
+        private1-bw27-esams:
+          ipv4: 10.80.0.0/24
+          ipv6: 2a02:ec80:300:101::/64
+        private1-by27-esams:
+          ipv4: 10.80.1.0/24
+          ipv6: 2a02:ec80:300:102::/64
     ulsfo:
       public:
         public1-ulsfo:

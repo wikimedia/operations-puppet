@@ -380,6 +380,39 @@ group {
         option routers 10.20.0.1;
         option domain-name "esams.wmnet";
     }
+
+    # public1-bw27-esams subnet
+    subnet 185.15.59.0 netmask 255.255.255.224 {
+        option subnet-mask 255.255.255.224;
+        option broadcast-address 185.15.59.31;
+        option routers 185.15.59.1;
+        option domain-name "wikimedia.org";
+    }
+
+    # public1-by27-esams subnet
+    subnet 185.15.59.32 netmask 255.255.255.224 {
+        option subnet-mask 255.255.255.224;
+        option broadcast-address 185.15.59.63;
+        option routers 185.15.59.33;
+        option domain-name "wikimedia.org";
+    }
+
+    # private1-bw27-esams subnet
+    subnet 10.80.0.0 netmask 255.255.255.0 {
+        option subnet-mask 255.255.255.0;
+        option broadcast-address 10.80.0.255;
+        option routers 10.80.0.1;
+        option domain-name "esams.wmnet";
+    }
+
+    # private1-by27-esams subnet
+    subnet 10.80.1.0 netmask 255.255.255.0 {
+        option subnet-mask 255.255.255.0;
+        option broadcast-address 10.80.1.255;
+        option routers 10.80.1.1;
+        option domain-name "esams.wmnet";
+    }
+
 }
 
 #
