@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Backup servers running backy2 to backup VM drives
-class role::wmcs::openstack::eqiad1::backy {
+class role::wmcs::openstack::eqiad1::instance_backups {
     system::role { $name: }
     include profile::base::production
     include profile::firewall
@@ -19,4 +19,5 @@ class role::wmcs::openstack::eqiad1::backy {
     include profile::wmcs::backy2
 
     include profile::wmcs::backup_glance_images
+    include profile::wmcs::backup_instances
 }

@@ -1688,7 +1688,7 @@ node /^clouddb1021\.eqiad\./ {
 }
 
 node /^cloudbackup100[34]\.eqiad\./ {
-    role(wmcs::openstack::eqiad1::backy)
+    role(wmcs::openstack::eqiad1::instance_backups)
 }
 
 # Generates and stores cinder backups

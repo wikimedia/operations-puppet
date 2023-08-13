@@ -1,11 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+
 require_relative '../../../../rake_modules/spec_helper'
 
-describe 'profile::wmcs::backy2' do
+describe 'profile::wmcs::backup_instances' do
   on_supported_os(WMFConfig.test_on(10)).each do |os, os_facts|
     context "on #{os}" do
       let(:params) {{
-        'cluster_name' => 'dummy_cluster',
-        'data_dir' => '/dummy/data/dir',
+        'ceph_vm_pool' => 'dummy_ceph_vm_pool',
+        'backup_interval' => '*-*-* 1:00:00',
       }}
       let(:pre_condition) {
         "class { '::ceph::common':
