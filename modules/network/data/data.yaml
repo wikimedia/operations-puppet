@@ -63,8 +63,8 @@ network::management:
   codfw:
     - 10.193.0.0/16
   esams:
+    - 10.80.128.0/17 # knams, we only use the first network for each DC in automation.conf.erb
     - 10.21.0.0/24 # old esams
-    - 10.80.128.0/17
   eqsin:
     - 10.132.128.0/17
   drmrs:
