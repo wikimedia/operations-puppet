@@ -5982,6 +5982,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM6q+AiKMUiZFeeODnplXSu12Dx8QNLG9YPmfsLbSSazCNOzBK0wuKtmzqQ3e4tL32J7kyjiIKRgoyEfEikLpi8='
+  kpayne:
+    ensure: present
+    realname: Kara Lynne Payne
+    email: kara.payne@wikimedia.de
+    uid: 32212
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2rcD7HPKDRY5qREx2jQ7ls4McLYYCEiWS94r/GeF70 kapa@C363'
 
 ldap_only_users:
   adavenport:
@@ -6573,10 +6581,6 @@ ldap_only_users:
     ensure: present
     realname: Wendy Quarshie
     email: wquarshie@wikimedia.org
-  kpayne:
-    ensure: present
-    realname: Kara Lynne Payne
-    email: kara.payne@wikimedia.de
   elal:
     ensure: present
     realname: Elena Aleynikova
