@@ -17,7 +17,7 @@ import yaml
 from rbd2backy2 import (
     BackupEntry,
     RBDSnapshot,
-    ceph_vms,
+    ceph_named_volumes,
     cleanup,
     get_backups,
     get_snapshots_for_image,
@@ -95,10 +95,27 @@ class InstanceBackupsConfig(MinimalConfig):
 class ImageBackupsConfig(MinimalConfig):
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_images.yaml"
 
+    # Backup everything everywhere
+    def get_host_for_image(self, project: str, image_id: Optional[str] = None) -> str:
+        return socket.gethostname()
+
 
 @dataclass
 class VolumeBackupsConfig(MinimalConfig):
+    exclude_volumes: Dict[str, List[Regex]]
+    project_assignments: Dict[str, str]
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_volumes.yaml"
+
+    def get_host_for_project(self, project: str) -> str:
+        return self.project_assignments.get(project, self.project_assignments["ALLOTHERS"])
+
+    def get_host_for_image(self, project: str, image_id: Optional[str] = None) -> str:
+        if image_id is not None:
+            for volume_regex in self.exclude_volumes.get(project, []):
+                if re.match(volume_regex, image_id):
+                    return f"excluded_from_backups (matches {volume_regex})"
+
+        return self.get_host_for_project(project=project)
 
 
 @dataclass
@@ -113,7 +130,7 @@ class ImageBackup:
 
     @classmethod
     def from_entry_and_images(cls, entry: BackupEntry, images: Dict[str, Dict[str, Any]]):
-        image_id = entry.name.split("_", 1)[0]
+        image_id = entry.name.split("-", 1)[1]
         if image_id not in images:
             logging.warning("Unable to find image with id %s", image_id)
 
@@ -1169,7 +1186,7 @@ class InstanceBackupsState:
         assigned_vms: List[Dict[str, Any]] = []
         this_hostname = socket.gethostname()
         server_id_to_server_dict = get_servers_info(from_cache)
-        ceph_servers = ceph_vms(pool=self.config.ceph_pool)
+        ceph_servers = ceph_named_volumes(pool=self.config.ceph_pool, postfix="_disk")
         for server_id, server_info in server_id_to_server_dict.items():
             if server_id not in ceph_servers:
                 continue
@@ -1245,6 +1262,8 @@ class ImageBackupsState:
     image_backups: Dict[str, ImageBackups]
     images_info: Dict[str, Dict[str, Any]]
     config: ImageBackupsConfig
+    image_prefix: str = ""
+    image_postfix: str = ""
     size_mb: int = 0
 
     def add_image_backup(self, image_backup: ImageBackup) -> bool:
@@ -1323,7 +1342,15 @@ class ImageBackupsState:
         if failed_snapshots:
             sys.exit(1)
 
-    def create_image_backup(self, image_id: str, noop: bool = True) -> None:
+    def create_image_backup(self, project_name: str, image_id: str, noop: bool = True) -> None:
+        this_hostname = socket.gethostname()
+        assigned_hostname = self.config.get_host_for_image(project=project_name, image_id=image_id)
+        if assigned_hostname != this_hostname:
+            raise Exception(
+                f"VM {image_id} should be backed up on host "
+                f"{assigned_hostname} not this host {this_hostname}."
+            )
+
         logging.info(
             "%sBacking up image %s",
             "NOOP:" if noop else "",
@@ -1384,6 +1411,47 @@ class ImageBackupsState:
             len(all_images),
         )
 
+    def get_assigned_images(self) -> List[Dict[str, Any]]:
+        assigned_images: List[Dict[str, Any]] = []
+        this_hostname = socket.gethostname()
+        image_id_to_image_dict = self.images_info
+        ceph_vols = ceph_named_volumes(
+            pool=self.config.ceph_pool, prefix=self.image_prefix, postfix=self.image_postfix
+        )
+        for image_id, image_info in image_id_to_image_dict.items():
+            if image_id not in ceph_vols:
+                continue
+            project = image_info.get("os-vol-tenant-attr:tenant_id", "no_project")
+            id = image_info.get("id", "no_id")
+            if this_hostname == self.config.get_host_for_image(project=project, image_id=id):
+                assigned_images.append(image_info)
+        return assigned_images
+
+    def backup_assigned_images(self, noop: bool = True) -> None:
+        tries = 3
+        for image_info in self.get_assigned_images():
+            cur_try = 0
+            image_name = image_info.get("name", "no_name")
+            image_id = image_info.get("id", "no_id")
+            project_id = image_info.get("os-vol-tenant-attr:tenant_id", "no_project")
+            while cur_try < tries:
+                try:
+                    self.create_image_backup(
+                        image_id=image_id,
+                        project_name=project_id,
+                        noop=noop,
+                    )
+                    break
+
+                except Exception as error:
+                    logging.warning(
+                        f"Got an error trying to backup {image_name}, try "
+                        f"n#{cur_try} of {tries}: {error}"
+                    )
+                    cur_try += 1
+                    if cur_try == tries:
+                        raise
+
     def __str__(self) -> str:
         self.update_usages()
         return (
@@ -1430,11 +1498,9 @@ def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
 
 def get_volumes_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(VOLUMES_CACHE_FILE):
-        logging.debug("Getting volumes from the server...")
+        logging.debug("Getting images from the server...")
         clients = mwopenstackclients.Clients(oscloud="novaadmin")
-        volume_id_to_volume_info = {
-            f"volume-{volume.id}": volume.to_dict() for volume in clients.allvolumes()
-        }
+        volume_id_to_volume_info = {volume.id: volume.to_dict() for volume in clients.allvolumes()}
         with open(VOLUMES_CACHE_FILE, "w") as cache_fd:
             logging.debug("Writing volumes to cache...")
             cache_fd.write(json.dumps(volume_id_to_volume_info))
@@ -1464,7 +1530,10 @@ def get_current_volumes_state(from_cache: bool = False) -> ImageBackupsState:
 
     logging.debug("Creating volume summaries")
     volume_backups_state = ImageBackupsState(
-        config=config, image_backups={}, images_info=volume_id_to_volume_dict
+        config=config,
+        image_backups={},
+        images_info=volume_id_to_volume_dict,
+        image_prefix="volume-",
     )
     for backup_entry in backup_entries:
         volume_backups_state.add_image_backup(
@@ -1895,19 +1964,40 @@ def _add_volumes_parser(subparser: argparse.ArgumentParser) -> None:
             image_id=args.volume_id,
         )
     )
-
-    backup_volume_parser = volumes_subparser.add_parser(
-        "backup-all-volumes",
-        help="Trigger a backup for all the volumes",
+    get_assigned_volumes_parser = volumes_subparser.add_parser(
+        "get-assigned-volumes",
+        help=(
+            "Show the list of volumes handled by this host. Note that it only "
+            "shows known volumes, if it was deleted from openstack it will not "
+            "show up, though you might be able to see it's backups (without "
+            "name) in the summary."
+        ),
     )
-    backup_volume_parser.add_argument(
+    get_assigned_volumes_parser.set_defaults(
+        func=lambda: print(
+            "\n".join(
+                (
+                    f"{volume_info.get('os-vol-tenant-attr:tenant_id', 'no_project')}"
+                    f":{volume_info.get('id', 'no_id')}"
+                )
+                for volume_info in get_current_volumes_state(
+                    from_cache=args.from_cache
+                ).get_assigned_images()
+            )
+        )
+    )
+    backup_assigned_volumes_parser = volumes_subparser.add_parser(
+        "backup-assigned-volumes",
+        help="Creates a backup for each VM assigned to the host it run in.",
+    )
+    backup_assigned_volumes_parser.add_argument(
         "-n",
         "--noop",
         action="store_true",
         help=("If set, will not really do anything, just tell you what " "would be done."),
     )
-    backup_volume_parser.set_defaults(
-        func=lambda: get_current_volumes_state(from_cache=args.from_cache).backup_all_images(
+    backup_assigned_volumes_parser.set_defaults(
+        func=lambda: get_current_volumes_state(from_cache=args.from_cache).backup_assigned_images(
             noop=args.noop
         )
     )

@@ -543,13 +543,25 @@ def ceph_volumes(pool):
     return [line.decode("utf8") for line in output.splitlines()]
 
 
-# Convenience function for returning only VM volumes in a given pool
-def ceph_vms(pool):
+# Convenience function for returning only particular volumes in a given pool
+def ceph_named_volumes(pool, prefix="", postfix=""):
     volumes = ceph_volumes(pool)
     ids = []
     for volume in volumes:
-        if volume.endswith("_disk"):
-            ids.append(volume[: -len(b"_disk")])
+        shortname = volume
+        if prefix:
+            if volume.startswith(prefix):
+                shortname = shortname[len(prefix) :]  # noqa: E203
+            else:
+                continue
+
+        if postfix:
+            if shortname.endswith(postfix):
+                shortname = shortname[: -len(postfix)]
+            else:
+                continue
+
+        ids.append(shortname)
 
     return ids
 
