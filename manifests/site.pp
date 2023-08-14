@@ -189,6 +189,11 @@ node /^an-airflow1006\.eqiad\./ {
     role(analytics_cluster::airflow::analytics_product)
     }
 
+# WMDE instance of Apache Airflow
+node /^an-airflow1007\.eqiad\./ {
+    role(insetup::data_engineering)
+    }
+
 # Analytics Zookeeper cluster
 node /^an-conf100[1-3]\.eqiad\./ {
     role(analytics_cluster::zookeeper)
