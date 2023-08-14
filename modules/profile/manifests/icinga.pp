@@ -93,7 +93,6 @@ class profile::icinga(
     # the usual use case. see T229621
     class { 'icinga::monitor::cloudelastic': }
 
-    class { 'icinga::monitor::gerrit': }
     class { 'icinga::monitor::librenms': }
     class { 'icinga::monitor::debmonitor': }
     class { 'icinga::monitor::gitlab': }
