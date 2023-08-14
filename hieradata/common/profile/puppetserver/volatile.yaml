@@ -1,0 +1,1 @@
+profile::puppetserver::volatile::geoip_fetch_private: true

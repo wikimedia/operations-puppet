@@ -464,6 +464,7 @@ profile::puppetserver::scripts::has_puppetdb: false
 profile::puppetserver::scripts::upload_facts: false
 profile::puppetserver::scripts::http_proxy: ~
 profile::puppetserver::scripts::realm_override: ~
+profile::puppetserver::volatile::geoip_fetch_private: false
 
 profile::backup::director_seed: changeme
 profile::debdeploy::client::exclude_mounts: []
