@@ -22,3 +22,4 @@ profile::puppetserver::auto_restart: true
 profile::puppetserver::hierarchy:
   - name: "common"
     path: "common.yaml"
+profile::puppetserver::extra_mounts: {}

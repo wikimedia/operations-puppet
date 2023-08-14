@@ -24,6 +24,7 @@
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
 # @param enable_jmx
+# @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
 class profile::puppetserver (
     Stdlib::Fqdn                   $server_id                 = lookup('profile::puppetserver::server_id'),
     Stdlib::Unixpath               $code_dir                  = lookup('profile::puppetserver::code_dir'),
@@ -47,7 +48,8 @@ class profile::puppetserver (
     Boolean                        $auto_restart              = lookup('profile::puppetserver::auto_restart'),
     Optional[Stdlib::Filesource]   $ca_public_key             = lookup('profile::puppetserver::ca_public_key'),
     Optional[Stdlib::Filesource]   $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
-    Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret')
+    Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret'),
+    Hash[String, Stdlib::Unixpath] $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
 
 ) {
     if $git_pull {
