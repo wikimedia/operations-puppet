@@ -1416,6 +1416,8 @@ cache_hosts:
 - 2a02:ec80:300:102:10:80:1:7    # cp3071.esams.wmnet
 - 10.80.1.6                      # cp3073.esams.wmnet
 - 2a02:ec80:300:102:10:80:1:6    # cp3073.esams.wmnet
+- 10.80.1.3                      # cp3079.esams.wmnet
+- 2a02:ec80:300:102:10:80:1:3    # cp3079.esams.wmnet
 - 10.80.1.2                      # cp3081.esams.wmnet
 - 2a02:ec80:300:102:10:80:1:2    # cp3081.esams.wmnet
 - 10.128.0.19                    # cp4037.ulsfo.wmnet
