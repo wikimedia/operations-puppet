@@ -1,14 +1,3 @@
 profile::openstack::eqiad1::galera::server_id: 4
 
-profile::openstack::eqiad1::cinder_backup_volumes:
-  tools:
-    volumes:
-      - tools-harbor
-      - tools-docker-registry-data
-      - tools-aptly-data
-      - tools-db-2
-      - tools-nfs
-    FULL_FREQUENCY: 7
-    PURGE_AFTER: 30
-    FULL_FREQUENCY_OFFSET: 4
-    FREQUENCY: 2
+profile::openstack::eqiad1::cinder_backup_volumes: {}
