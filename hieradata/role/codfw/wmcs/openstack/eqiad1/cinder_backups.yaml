@@ -40,3 +40,14 @@ profile::wmcs::backy2::backup_cinder_volumes::enabled: true
 profile::wmcs::backy2::backup_cinder_volumes::div: 2
 profile::wmcs::backy2::backup_cinder_volumes::remainder: 0
 profile::wmcs::backy2::cluster_name: ceph
+
+profile::cloudceph::mon::hosts:
+  "cloudcephmon1001.eqiad.wmnet":
+    public:
+      addr: "10.64.20.67"
+  "cloudcephmon1002.eqiad.wmnet":
+    public:
+      addr: "10.64.20.68"
+  "cloudcephmon1003.eqiad.wmnet":
+    public:
+      addr: "10.64.20.69"
