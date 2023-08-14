@@ -3914,3 +3914,23 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+
+  config-master:
+    description: config-master.wikimedia.org service for browsing configuration data from etcd.
+    encryption: true
+    ip:
+      codfw:
+        default: 10.192.0.15
+      eqiad:
+        default: 10.64.0.110
+    page: false
+    probes:
+      - type: http
+    port: 443
+    sites:
+      - eqiad
+      - codfw
+    state: production
+    discovery:
+      - dnsdisc: pki
+        active_active: true
