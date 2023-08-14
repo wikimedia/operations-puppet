@@ -22,7 +22,7 @@ class profile::wmcs::backup_cinder_volumes(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('profile/wmcs/backy2/wmcs_backup_images.yaml.erb');
+        content => template('profile/wmcs/backy2/wmcs_backup_volumes.yaml.erb');
     }
 
     $timers_ensure = $enabled ? {
