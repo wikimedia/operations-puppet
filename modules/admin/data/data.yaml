@@ -6796,3 +6796,7 @@ ldap_only_users:
     ensure: present
     realname: Mareike Heuer
     email: mareike.heuer@wikimedia.de
+  amyt:
+    ensure: present
+    realname: Amy Tsay
+    email: atsay@wikimedia.org
