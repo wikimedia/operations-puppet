@@ -473,6 +473,18 @@ node /^cp30(5[13579]|6[135])\.esams\./ {
 }
 
 #
+# knams caches
+#
+
+node /^cp30(6[6789]|7[0123])\.esams\./ {
+    role(cache::text)
+}
+
+node /^cp30(7[456789]|8[01])\.esams\./ {
+    role(cache::upload)
+}
+
+#
 # ulsfo caches
 #
 
