@@ -11,6 +11,8 @@ class profile::wmcs::backup_cinder_volumes(
     Boolean              $enabled          = lookup('profile::wmcs::backy2::backup_cinder_volumes::enabled'),
 ) {
     require profile::cloudceph::auth::deploy
+    require profile::openstack::eqiad1::clientpackages
+
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::wmcs::backup_glance_images: Admin keyring not defined, things might not work as expected.': }
     }
