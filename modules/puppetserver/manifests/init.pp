@@ -21,6 +21,7 @@
 # @param g10k_sources a list of g10k sources to configure
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
+# @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
 class puppetserver (
     Wmflib::Ensure                           $ensure                    = 'present',
     Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
@@ -43,6 +44,7 @@ class puppetserver (
     Boolean                                  $auto_restart              = true,
     Stdlib::Port                             $jmx_port                  = 8141,
     Hash[String, Puppetmaster::R10k::Source] $g10k_sources              = {},
+    Hash[String, Stdlib::Unixpath]           $extra_mounts              = {},
 ) {
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',
@@ -145,7 +147,7 @@ class puppetserver (
 
     # TODO: puppetserver has support for graphite and jmx (with jolokia)
     # we will need to work out which is best
-    $metrics_params = { 'server_id' => $server_id }
+    $metrics_params = { 'server_id'                    => $server_id }
     $puppetserver_params = {
         'ruby_load_path'       => $ruby_load_path,
         'config_dir'           => $config_dir,
@@ -173,6 +175,21 @@ class puppetserver (
     $web_server_params = {
         'listen_host' => $listen_host,
     }
+    # Ensure additional mounts exist
+    unless $extra_mounts.empty {
+        wmflib::dir::mkdir_p($extra_mounts.values(), {mode => '0555'})
+    }
+    $fileserver_content = $extra_mounts.reduce("# Managed by puppet\n") |$memo, $value| {
+        $tmp = @("CONTENT")
+        [${value[0]}]
+            path ${value[1]}
+        | CONTENT
+        # Note If we add memo to the heredoc above we get the following error
+        #  Syntax error at '['
+        # Have not been able to recreate in a simple repro i.e. the following works
+        # https://phabricator.wikimedia.org/P50573
+        "${memo}${tmp}"
+    }
     file {
         default:
             ensure  => stdlib::ensure($ensure, 'file'),
@@ -189,6 +206,8 @@ class puppetserver (
             content => epp('puppetserver/webserver.conf.epp', $web_server_params);
         '/etc/puppet/hiera.yaml':
             content => $hiera_config.to_yaml;
+        '/etc/puppet/fileserver.conf':
+            content => $fileserver_content;
         '/etc/default/puppetserver':
             content => epp('puppetserver/environment_file.epp', $environment_file_params),
             notify  => $service_restart_notify;

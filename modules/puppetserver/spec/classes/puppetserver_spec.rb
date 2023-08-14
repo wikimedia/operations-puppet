@@ -22,6 +22,25 @@ describe 'puppetserver' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('puppetserver::g10k').with_ensure('present') }
       end
+      context "with extra_mounts" do
+        let(:params) do
+          {
+            extra_mounts: {
+              'test_mount1' => '/srv/extra_mount1',
+              'test_mount2' => '/srv/extra_mount2'
+            }
+          }
+        end
+        it do
+          is_expected.to contain_file('/etc/puppet/fileserver.conf')
+            .with_content(%r{
+                          \[test_mount1\]
+                          \s+path\s/srv/extra_mount1\s+
+                          \[test_mount2\]
+                          \s+path\s/srv/extra_mount2
+                          }x)
+        end
+      end
     end
   end
 end
