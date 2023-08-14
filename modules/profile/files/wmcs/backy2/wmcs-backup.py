@@ -121,6 +121,7 @@ class VolumeBackupsConfig(MinimalConfig):
 @dataclass
 class ImageBackup:
     image_id: str
+    ceph_id: str
     image_name: str
     image_info: Dict[str, Any]
     backup_entry: BackupEntry
@@ -130,6 +131,7 @@ class ImageBackup:
 
     @classmethod
     def from_entry_and_images(cls, entry: BackupEntry, images: Dict[str, Dict[str, Any]]):
+        ceph_id = entry.name
         image_id = entry.name.split("-", 1)[1]
         if image_id not in images:
             logging.warning("Unable to find image with id %s", image_id)
@@ -139,6 +141,7 @@ class ImageBackup:
         return cls(
             backup_entry=entry,
             image_id=image_id,
+            ceph_id=ceph_id,
             image_name=image_info.get("name", "no_name"),
             image_info=image_info,
             snapshot_entry=None,
@@ -202,11 +205,12 @@ class ImageBackup:
         cls,
         pool: str,
         image_id: str,
+        ceph_id: str,
         image_info: Dict[str, Dict[str, Any]],
         live_for_days: int,
         noop: bool = True,
     ):
-        image_name = f"{image_id}"
+        image_name = f"{ceph_id}"
         snapshot_name = (
             datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + f"_{socket.gethostname()}"
         )
@@ -222,6 +226,7 @@ class ImageBackup:
 
         return cls(
             image_id=image_id,
+            ceph_id=ceph_id,
             image_info=image_info,
             image_name=image_info.get("name", "no_name"),
             backup_entry=new_entry,
@@ -248,6 +253,7 @@ class ImageBackup:
 class ImageBackups:
     backups: List[ImageBackup]
     image_id: str
+    ceph_id: str
     image_name: Optional[str]
     image_info: Dict[str, Any]
     config: ImageBackupsConfig
@@ -306,7 +312,7 @@ class ImageBackups:
 
         # Get the latest known backup with a valid snapshot
         all_snapshots_for_image = get_snapshots_for_image(
-            pool=self.config.ceph_pool, image_name=self.image_id
+            pool=self.config.ceph_pool, image_name=self.ceph_id
         )
         last_snapshot_with_backup = None
         for backup in sorted(
@@ -381,6 +387,7 @@ class ImageBackups:
             new_backup = ImageBackup.create_full_backup(
                 pool=self.config.ceph_pool,
                 image_id=self.image_id,
+                ceph_id=self.ceph_id,
                 image_info=self.image_info,
                 live_for_days=self.config.live_for_days,
                 noop=noop,
@@ -389,7 +396,7 @@ class ImageBackups:
         else:
             new_backup = ImageBackup.create_diff_backup(
                 pool=self.config.ceph_pool,
-                image_id=self.image_id,
+                image_id=self.ceph_id,
                 image_info=self.image_info,
                 reference_backup=last_backup_with_snapshot,
                 live_for_days=self.config.live_for_days,
@@ -1277,6 +1284,7 @@ class ImageBackupsState:
                 backups=[],
                 image_name=image_backup.image_name,
                 image_id=image_backup.image_id,
+                ceph_id=image_backup.ceph_id,
                 image_info=image_backup.image_info,
             )
 
@@ -1342,14 +1350,19 @@ class ImageBackupsState:
         if failed_snapshots:
             sys.exit(1)
 
-    def create_image_backup(self, project_name: str, image_id: str, noop: bool = True) -> None:
-        this_hostname = socket.gethostname()
-        assigned_hostname = self.config.get_host_for_image(project=project_name, image_id=image_id)
-        if assigned_hostname != this_hostname:
-            raise Exception(
-                f"VM {image_id} should be backed up on host "
-                f"{assigned_hostname} not this host {this_hostname}."
+    def create_image_backup(
+        self, image_id: str, project_name: str = None, noop: bool = True
+    ) -> None:
+        if project_name:
+            this_hostname = socket.gethostname()
+            assigned_hostname = self.config.get_host_for_image(
+                project=project_name, image_id=image_id
             )
+            if assigned_hostname != this_hostname:
+                raise Exception(
+                    f"VM {image_id} should be backed up on host "
+                    f"{assigned_hostname} not this host {this_hostname}."
+                )
 
         logging.info(
             "%sBacking up image %s",
@@ -1372,6 +1385,7 @@ class ImageBackupsState:
                 backups=[],
                 image_name=image_info.get("name", "no_name"),
                 image_id=image_id,
+                ceph_id=self.image_prefix + image_id + self.image_postfix,
                 image_info=image_info,
             )
         else:
