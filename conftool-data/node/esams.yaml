@@ -7,7 +7,8 @@ esams:
     cp3058.esams.wmnet: [cdn, ats-be]
     cp3060.esams.wmnet: [cdn, ats-be]
     cp3062.esams.wmnet: [cdn, ats-be]
-    cp3064.esams.wmnet: [cdn, ats-be]
+    cp3064.esams.wmnet: [cdn, ats-be]  # all knams below this
+    cp3073.esams.wmnet: [cdn, ats-be]
   cache_upload:
     cp3051.esams.wmnet: [cdn, ats-be]
     cp3053.esams.wmnet: [cdn, ats-be]
