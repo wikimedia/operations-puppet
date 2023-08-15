@@ -1150,7 +1150,6 @@ phabricator_server: phab1004.eqiad.wmnet
 # have ferm rules.
 jenkins_controller_hosts:
     - contint1002.wikimedia.org
-    - contint2001.wikimedia.org
     - contint2002.wikimedia.org
 
 kerberos_realm_name: WIKIMEDIA

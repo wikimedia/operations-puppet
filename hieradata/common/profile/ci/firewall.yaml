@@ -3,6 +3,5 @@
 # Use ip addresses since the values are injected in iptables rules.
 #
 profile::ci::firewall::zuul_merger_hosts:
-    - 208.80.153.15 # contint2001.wikimedia.org
     - 208.80.154.132 # contint1002.wikimedia.org
     - 208.80.153.39  # contint2002.wikimedia.org

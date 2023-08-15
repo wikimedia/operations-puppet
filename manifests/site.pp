@@ -440,7 +440,7 @@ node /^kafka-test10(10|0[6-9])\.eqiad\./ {
     role(kafka::test::broker)
 }
 
-node /^(contint1002|contint2001|contint2002)\.wikimedia\./ {
+node /^(contint1002|contint2002)\.wikimedia\./ {
     role(ci)
 }
 

@@ -37,8 +37,8 @@ profile::zuul::merger::conf:
 
 profile::zuul::merger::ferm_srange: >-
   (($LABS_NETWORKS
-  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), A)
-  @resolve((contint1002.wikimedia.org contint2001.wikimedia.org contint2002.wikimedia.org), AAAA)))
+  @resolve((contint1002.wikimedia.org contint2002.wikimedia.org), A)
+  @resolve((contint1002.wikimedia.org contint2002.wikimedia.org), AAAA)))
 
 # Zuul server
 
