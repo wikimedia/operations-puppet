@@ -1,7 +1,7 @@
 cr1-esams.wikimedia.org;juniper;up;
 cr2-esams.wikimedia.org;juniper;up;
-asw1-bw27-drmrs.mgmt.esams.wmnet;juniper;up;
-asw1-by27-drmrs.mgmt.esams.wmnet;juniper;up;
+asw1-bw27-esams.mgmt.esams.wmnet;juniper;up;
+asw1-by27-esams.mgmt.esams.wmnet;juniper;up;
 cr1-eqiad.wikimedia.org;juniper;up;
 cr2-eqiad.wikimedia.org;juniper;up;
 cr2-eqord.wikimedia.org;juniper;up;
