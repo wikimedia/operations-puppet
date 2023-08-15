@@ -410,7 +410,7 @@ groups:
               ahoelzl, nathillard]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng]
+              analytics-research, analytics-platform-eng, analytics-wmde]
     approval:
       - Olja Dimitrjevic
       - Dan Andreescu
@@ -755,7 +755,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
+    members: &analytics_wmde_users_members [goransm, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova, sihe, ollieshotton,
               muja, andrewtavis-wmde, manuel-wmde, kpayne]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
@@ -917,7 +917,7 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@search',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@search',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@search',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+                 'ALL = NOPASSWD: /bin/journalctl -u airflow-*']
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes
@@ -1000,7 +1000,7 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@research',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@research',
       'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@research',
-      'ALL = NOPASSWD: /bin/journalctl *'
+      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
     ]
     system_members: [analytics-research]
   analytics-platform-eng-admins:
@@ -1024,7 +1024,7 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@platform_eng',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@platform_eng',
       'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform_eng',
-      'ALL = NOPASSWD: /bin/journalctl *'
+      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
     ]
     system_members: [analytics-platform-eng]
     approval:
@@ -1049,11 +1049,34 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@analytics_product',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@analytics_product',
       'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@analytics_product',
-      'ALL = NOPASSWD: /bin/journalctl *'
+      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
     ]
     system_members: [analytics-product]
     approval:
       - Mikhail Popov
+  airflow-wmde-admins:
+    gid: 951
+    description: Group of users for managing WMDE related analytics/data jobs and for deploying airflow-dags/wmde
+    members: [*analytics_wmde_users_members, andrewtavis-wmde, manuel-wmde]
+    privileges: [
+      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
+      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@wmde *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@wmde *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@wmde *',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@wmde',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@wmde',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@wmde',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@wmde',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@wmde',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@wmde',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@wmde',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@wmde',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@wmde',
+      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
+    ]
+    system_members: [analytics-wmde]
+    approval:
+      - Kara Lynne Payne
   research-deployers:
     gid: 835
     description: Created for deploying airflow-dags/research
@@ -1202,6 +1225,10 @@ groups:
   #   gid: 925
   #   system: true
   #   members: []
+  analytics-wmde:
+    gid: 927
+    system: true
+    members: []
 
 users:
   reprepro:
@@ -1382,6 +1409,14 @@ users:
   #   gid: 925
   #   home_dir: /var/lib/gerrit
   #   shell: /bin/bash
+  analytics-wmde:
+    ensure: present
+    system: true
+    uid: 927
+    gid: 927
+    home_dir: none
+    shell: /bin/bash
+    krb: present
   rush:
     ensure: absent
     gid: 500
