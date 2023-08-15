@@ -24,30 +24,39 @@ from prometheus_client.parser import text_fd_to_metric_families
 class PyBalIPVSDiff(object):
     def __init__(self, argument_list):
         ap = argparse.ArgumentParser(description=__doc__)
-        ap.add_argument('--pybal-url',
-                        help='pybal pools instrumentation URL',
-                        type=str,
-                        default='http://localhost:9090/pools')
-        ap.add_argument('--prometheus-url',
-                        help='prometheus node exporter URL',
-                        type=str,
-                        default='http://localhost:9100/metrics')
-        ap.add_argument('--req-timeout',
-                        help='HTTP request timeout in seconds',
-                        type=float,
-                        default=1.0)
-        ap.add_argument('--pybal-config',
-                        help='pybal config file path',
-                        type=str,
-                        default='/etc/pybal/pybal.conf')
+        ap.add_argument(
+            '--pybal-url',
+            help='pybal pools instrumentation URL',
+            type=str,
+            default='http://localhost:9090/pools',
+        )
+        ap.add_argument(
+            '--prometheus-url',
+            help='prometheus node exporter URL',
+            type=str,
+            default='http://localhost:9100/metrics',
+        )
+        ap.add_argument(
+            '--req-timeout',
+            help='HTTP request timeout in seconds',
+            type=float,
+            default=1.0,
+        )
+        ap.add_argument(
+            '--pybal-config',
+            help='pybal config file path',
+            type=str,
+            default='/etc/pybal/pybal.conf',
+        )
         self.args = ap.parse_args(argument_list)
 
     def get_url(self, url):
         try:
             req = urllib2.urlopen(url, timeout=self.args.req_timeout)
         except urllib2.HTTPError as e:
-            print("UNKNOWN: Status code %s returned while getting %s"
-                  % (e.getcode(), url))
+            print(
+                "UNKNOWN: Status code %s returned while getting %s" % (e.getcode(), url)
+            )
             return 3
         else:
             return req.read()
@@ -99,8 +108,9 @@ class PyBalIPVSDiff(object):
         for section in pybal_config.sections():
             if section == 'global':
                 continue
-            service = '{}:{}'.format(pybal_config.get(section, 'ip'),
-                                     pybal_config.get(section, 'port'))
+            service = '{}:{}'.format(
+                pybal_config.get(section, 'ip'), pybal_config.get(section, 'port')
+            )
             services.add(service)
 
         return services
@@ -129,32 +139,41 @@ class PyBalIPVSDiff(object):
             print("UNKNOWN: %s" % err)
             return 3
 
-        return_code = 0
+        error_msg = []
 
         if pybal_services - ipvs_services:
-            print("CRITICAL: Services known to PyBal but not to IPVS: %s" %
-                  (pybal_services - ipvs_services))
-            return_code = 2
+            error_msg.append(
+                "Services known to PyBal but not to IPVS: {}".format(
+                    pybal_services - ipvs_services
+                )
+            )
 
         if ipvs_services - pybal_services:
-            print("CRITICAL: Services in IPVS but unknown to PyBal: %s" %
-                  (ipvs_services - pybal_services))
-            return_code = 2
-
+            error_msg.append(
+                "Services in IPVS but unknown to PyBal: {}".format(
+                    ipvs_services - pybal_services
+                )
+            )
         if pybal_hosts - ipvs_hosts:
-            print("CRITICAL: Hosts known to PyBal but not to IPVS: %s" %
-                  (pybal_hosts - ipvs_hosts))
-            return_code = 2
+            error_msg.append(
+                "Hosts known to PyBal but not to IPVS: {}".format(
+                    pybal_hosts - ipvs_hosts
+                )
+            )
 
         if ipvs_hosts - pybal_hosts:
-            print("CRITICAL: Hosts in IPVS but unknown to PyBal: %s" %
-                  (ipvs_hosts - pybal_hosts))
-            return_code = 2
+            error_msg.append(
+                "Hosts in IPVS but unknown to PyBal: {}".format(
+                    ipvs_hosts - pybal_hosts
+                )
+            )
 
-        if return_code == 0:
-            print("OK: no difference between hosts in IPVS/PyBal")
+        if error_msg:
+            print("CRITICAL: Mismatch between IPVS and PyBal\n", "\n".join(error_msg))
+            return 2
 
-        return return_code
+        print("OK: no difference between hosts in IPVS/PyBal")
+        return 0
 
 
 if __name__ == "__main__":
