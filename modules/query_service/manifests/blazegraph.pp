@@ -54,7 +54,7 @@ define query_service::blazegraph(
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            before  => Systemd::Unit[$title],
+            before  => Service[$title],
         }
     }
 
@@ -64,8 +64,18 @@ define query_service::blazegraph(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        before  => Systemd::Unit[$title],
+        before  => Service[$title],
     }
+
+    file { "/etc/${title}/allowlist.txt":
+        ensure => present,
+        source => 'puppet:///modules/query_service/allowlist.txt',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        before => Service[$title],
+    }
+
 
     query_service::logback_config { $title:
         logstash_logback_port => $logstash_logback_port,
