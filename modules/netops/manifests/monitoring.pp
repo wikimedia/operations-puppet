@@ -62,7 +62,7 @@ class netops::monitoring(
     $oob = {
         'mr1-eqiad.oob' => { ipv4 => '149.97.228.94',  ipv6 => '2607:f6f0:1000:1194::2', parents => ['mr1-eqiad'] },
         'mr1-codfw.oob' => { ipv4 => '216.117.46.36', parents => ['mr1-codfw'] },
-        'mr1-esams.oob' => { ipv4 => '164.138.24.90', parents => ['mr1-esams'] },
+        'mr1-esams.oob' => { ipv4 => '185.27.16.142', ipv6 => '2a00:1188:5:e::4', parents => ['mr1-esams'] },
         'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102',   ipv6 => '2607:fb58:9000:7::2',  parents => ['mr1-ulsfo'] },
         'mr1-eqsin.oob' => { ipv4 => '27.111.227.106',  ipv6 => '2403:b100:3001:9::2',  parents => ['mr1-eqsin'] },
         'mr1-drmrs.oob' => { ipv4 => '193.251.154.146',  ipv6 => '2001:688:0:4::2d4',  parents => ['mr1-drmrs'] },
@@ -70,8 +70,8 @@ class netops::monitoring(
         're0.cr2-eqiad.mgmt' => { ipv4 => '10.65.0.14',      parents => ['msw1-eqiad'] },
         're0.cr1-codfw.mgmt' => { ipv4 => '10.193.0.10',     parents => ['msw1-codfw'] },
         're0.cr2-codfw.mgmt' => { ipv4 => '10.193.0.12',     parents => ['msw1-codfw'] },
-        're0.cr3-esams.mgmt' => { ipv4 => '10.21.0.119',     parents => ['mr1-esams'] },
-        're0.cr2-esams.mgmt' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
+        'cr2-esams.mgmt' => { ipv4 => '10.80.128.19',     parents => ['mr1-esams'] },
+        're0.cr1-esams.mgmt' => { ipv4 => '10.80.128.2',     parents => ['mr1-esams'] },
         'cr3-ulsfo.mgmt' => { ipv4 => '10.128.128.4',    parents => ['mr1-ulsfo'] },
         'cr4-ulsfo.mgmt' => { ipv4 => '10.128.128.5',    parents => ['mr1-ulsfo'] },
         'cr3-eqsin.mgmt' => { ipv4 => '10.132.128.7',    parents => ['mr1-eqsin'] },
@@ -161,6 +161,9 @@ class netops::monitoring(
         # drmrs
         'asw1-b12-drmrs.mgmt' => { ipv4 => '10.136.128.3',   parents => ['mr1-drmrs'] },
         'asw1-b13-drmrs.mgmt' => { ipv4 => '10.136.128.4',   parents => ['mr1-drmrs'] },
+        # esams
+        'asw1-bw27-esams.mgmt' => { ipv4 => '10.80.128.3',   parents => ['mr1-esams'] },
+        'asw1-by27-esams.mgmt' => { ipv4 => '10.80.128.5',   parents => ['mr1-esams'] },
     }
     create_resources(netops::check, $l3_switches_mgmt, $l3_switches_mgmt_defaults)
 

@@ -2387,52 +2387,50 @@ infra_devices:
     site: eqdfw
     role: cr
 
-  cr3-esams:
-    ipv4: 91.198.174.245
-    ipv6: 2620:0:862:ffff::5
-    vrrp_peer: cr2-esams.wikimedia.org
-    alarms: true
+  cr1-esams:
+    ipv4: 185.15.59.128
+    ipv6: 2a02:ec80:300:ffff::1
     site: esams
     role: cr
   cr2-esams:
-    ipv4: 91.198.174.244
-    ipv6: 2620:0:862:ffff::3
-    alarms: true
+    ipv4: 185.15.59.129
+    ipv6: 2a02:ec80:300:ffff::2
     site: esams
     role: cr
   mr1-esams:
-    ipv4: '91.198.174.247'
-    ipv6: '2620:0:862:ffff::1'
+    ipv4: 185.15.59.130
+    ipv6: 2a02:ec80:300:ffff::3
     parents:
-    - asw2-esams
+    - asw1-by27-esams
+    - asw1-bw27-esams
     site: esams
     role: mr
-  asw2-esams:
-    ipv4: 10.21.0.8
-    parents:
-    - cr3-esams
-    - cr2-esams
-    site: esams
-    role: l2sw
-  ripe-atlas-esams:
-    ipv4: 91.198.174.132
-    ipv6: 2620:0:862:201:91:198:174:132
-    parents:
-    - asw2-esams
-    site: esams
-    role: atlas
-  scs-oe16-esams:
-    ipv4: 10.21.0.9
+  scs-by27-esams:
+    ipv4: 10.80.128.6
     parents:
     - mr1-esams
     site: esams
     role: scs
-
-  cr3-knams:
-    ipv4: 91.198.174.246
-    ipv6: 2620:0:862:ffff::4
-    site: knams
-    role: cr
+  asw1-by27-esams:
+    ipv4: 185.15.59.132
+    ipv6: 2a02:ec80:300:ffff::5
+    parents:
+    - cr1-esams
+    - cr2-esams
+    site: esams
+    role: l3sw
+  asw1-bw27-esams:
+    ipv4: 185.15.59.131
+    ipv6: 2a02:ec80:300:ffff::4
+    parents:
+    - cr1-esams
+    - cr2-esams
+    site: esams
+    role: l3sw
+  asw2-esams:  # old esams - remove after all hosts are decom
+    ipv4: 10.21.0.8
+    site: esams
+    role: l2sw
 
   cr3-ulsfo:
     ipv4: 198.35.26.192
