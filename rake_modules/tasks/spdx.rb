@@ -3,7 +3,7 @@ require 'rake_modules/monkey_patch'
 
 SPDX_GLOB = "{modules,manifests,rake_modules,utils}/{**/*,*}"
 SPDX_TAG = "SPDX-License-Identifier: Apache-2.0"
-IGNORE_EXT_PATTERN = /\A\.(?:json|pem|key|csr|crt)\z/i
+IGNORE_EXT_PATTERN = /\A\.(?:json|pem|key|csr|crt|txt)\z/i
 IGNORE_FILE = ['README', 'CONTRIBUTOR', 'boot.txt']
 class UnknownExtensionError < StandardError
   attr_reader :filename
