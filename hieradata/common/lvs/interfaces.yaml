@@ -225,14 +225,14 @@ lvs::interfaces::vlan_data:
     iface:
       lvs3008: 'eno12399np0:185.15.59.8'
       lvs3009: 'eno12409np1:185.15.59.9'
-      lvs3010: 'enp175s0f0np0:185.15.59.10'
+      lvs3010: 'eno12399np0:185.15.59.10'
   public1-by27-esams:
     id: "312"
     netmask: '255.255.255.224'
     iface:
       lvs3008: 'eno12409np1:185.15.59.40'
       lvs3009: 'eno12399np0:185.15.59.41'
-      lvs3010: 'enp175s0f1np1:185.15.59.42'
+      lvs3010: 'eno12409np1:185.15.59.42'
   private1-bw27-esams:
     id: "321"
     netmask: '255.255.255.0'
@@ -243,4 +243,4 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.255.0'
     iface:
       lvs3008: 'eno12409np1:10.80.1.8'
-      lvs3010: 'enp175s0f1np1:10.80.1.10'
+      lvs3010: 'eno12409np1:10.80.1.10'
