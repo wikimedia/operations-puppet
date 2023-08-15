@@ -2004,17 +2004,6 @@ ripeatlas_measurements:
       - '32390540'  # anchors traceroutes
       - '32391312'  # probes pings
       - '32391311'  # probes traceroutes
-  esams:  # https://atlas.ripe.net/frames/probes/6671/
-    ipv4:
-      - '23449935'  # anchors pings
-      - '23449934'  # anchors traceroutes
-      - '23484811'  # probes pings
-      - '23484810'  # probes traceroutes
-    ipv6:
-      - '23449938'  # anchors pings
-      - '23449937'  # anchors traceroutes
-      - '23484824'  # probes pings
-      - '23484823'  # probes traceroutes
   ulsfo:  # https://atlas.ripe.net/frames/probes/6095/
     ipv4:
       - '1791307'  # anchors pings
