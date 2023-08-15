@@ -6,7 +6,7 @@ class profile::lvs::configuration {
             'production' => $::site ? {
                 'eqiad' => [ 'lvs1017', 'lvs1020' ],
                 'codfw' => [ 'lvs2011', 'lvs2014' ],
-                'esams' => [ 'lvs3005', 'lvs3007' ],
+                'esams' => [ 'lvs3005', 'lvs3007', 'lvs3008' ],
                 'ulsfo' => [ 'lvs4008', 'lvs4010' ],
                 'eqsin' => [ 'lvs5004', 'lvs5006' ],
                 'drmrs' => [ 'lvs6001', 'lvs6003' ],
@@ -66,6 +66,7 @@ class profile::lvs::configuration {
         'lvs3005'      => 'high-traffic1',
         'lvs3006'      => 'high-traffic2',
         'lvs3007'      => 'secondary',
+        'lvs3008'      => 'high-traffic1',
         'lvs3009'      => 'high-traffic2',
         'lvs4008'      => 'high-traffic1',
         'lvs4009'      => 'high-traffic2',
