@@ -232,6 +232,8 @@ gitlab_rails['object_store']['connection'] = {
   'aws_access_key_id' => '<%= @thanos_storage_username %>',
   'aws_secret_access_key' => '<%= @thanos_storage_password %>',
   'host' => 'thanos-swift.discovery.wmnet',
+  'path_style' => true,
+  'enable_signature_v4_streaming' => false,
 }
 
 gitlab_rails['object_store']['objects']['artifacts']['bucket'] = 'gitlab-artifacts'
@@ -243,4 +245,9 @@ gitlab_rails['object_store']['objects']['uploads']['enabled'] = false
 gitlab_rails['object_store']['objects']['dependency_proxy']['enabled'] = false
 gitlab_rails['object_store']['objects']['terraform_state']['enabled'] = false
 gitlab_rails['object_store']['objects']['pages']['enabled'] = false
+
+gitlab_rails['env'] = {
+  # This is needed to let Gitlab/Excon pick up the wmf signed certificates
+  'SSL_CERT_DIR' => '/etc/ssl/certs',
+}
 <% end %>
