@@ -1,5 +1,0 @@
-profile::bird::neighbors_list:
-  - 91.198.174.245      # cr3-esams loopback v4
-  - 2620:0:862:ffff::5  # cr3-esams loopback v6
-  - 91.198.174.244      # cr2-esams loopback v4
-  - 2620:0:862:ffff::3  # cr2-esams loopback v6
