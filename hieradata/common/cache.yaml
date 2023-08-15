@@ -27,9 +27,13 @@ cache::nodes:
       - 'cp3060.esams.wmnet'
       - 'cp3062.esams.wmnet'
       - 'cp3064.esams.wmnet'  # all knams below this
+      - 'cp3066.esams.wmnet'
       - 'cp3067.esams.wmnet'
+      - 'cp3068.esams.wmnet'
       - 'cp3069.esams.wmnet'
+      - 'cp3070.esams.wmnet'
       - 'cp3071.esams.wmnet'
+      - 'cp3072.esams.wmnet'
       - 'cp3073.esams.wmnet'
     ulsfo:
       - 'cp4037.ulsfo.wmnet'
@@ -86,9 +90,13 @@ cache::nodes:
       - 'cp3061.esams.wmnet'
       - 'cp3063.esams.wmnet'
       - 'cp3065.esams.wmnet'  # knams
+      - 'cp3074.esams.wmnet'
       - 'cp3075.esams.wmnet'
+      - 'cp3076.esams.wmnet'
       - 'cp3077.esams.wmnet'
+      - 'cp3078.esams.wmnet'
       - 'cp3079.esams.wmnet'
+      - 'cp3080.esams.wmnet'
       - 'cp3081.esams.wmnet'
     ulsfo:
       - 'cp4045.ulsfo.wmnet'
