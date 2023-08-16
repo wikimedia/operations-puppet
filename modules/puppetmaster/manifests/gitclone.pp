@@ -55,7 +55,7 @@ class puppetmaster::gitclone(
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             require => Git::Clone['operations/software'];
     }
-    file {[$puppetmaster::volatiledir, "${puppetmaster::volatiledir}/misc"]:
+    file {$puppetmaster::volatiledir:
         ensure => directory,
         owner  => 'root',
         group  => 'puppet',
