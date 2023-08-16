@@ -1361,12 +1361,9 @@ node /^ganeti300[57]\.esams\./ {
     role(ganeti)
 }
 
-node /^ganeti3006\.esams\./ {
-    role(insetup::infrastructure_foundations)
-}
-
-node /^ganeti3008\.esams\./ {
-    role(insetup::infrastructure_foundations)
+# esams02 / BW27 Ganeti cluster
+node /^ganeti300[68]\.esams\./ {
+    role(ganeti)
 }
 
 node /^ganeti400[5678]\.ulsfo\./ {
