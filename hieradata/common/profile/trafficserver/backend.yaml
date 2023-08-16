@@ -28,8 +28,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://config-master.wikimedia.org
-      replacement: https://config-master.eqiad.wmnet
-      #replacement: https://config-master.codfw.wmnet
+      replacement: https://config-master.discovery.wmnet
     - type: map
       target: http://cxserver.wikimedia.org
       replacement: https://cxserver.discovery.wmnet:4002
