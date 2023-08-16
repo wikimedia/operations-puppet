@@ -27,7 +27,6 @@ class profile::pybal(
         'bgp-peer-address' => $::hostname ? {
             /^lvs10[0-9][0-9]$/ => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
             /^lvs20[0-9][0-9]$/ => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
-            /^lvs300[5-7]$/     => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
             /^lvs30(08|10)$/    => "[ '10.80.0.1' ]", # asw1-bw27-esams gateway
             /^lvs3009$/         => "[ '10.80.1.1' ]", # asw1-by27-esams gateway
             /^lvs40[0-9][0-9]$/ => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo

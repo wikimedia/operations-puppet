@@ -173,13 +173,6 @@ lvs::interfaces::vlan_data:
       'lvs2011': 'enp152s0f1np1:10.192.49.8'
       'lvs2012': 'enp152s0f1np1:10.192.49.9'
       'lvs2013': 'enp152s0f1np1:10.192.49.10'
-  public1-esams:
-    id: "100"
-    netmask: '255.255.255.128'
-    iface:
-      lvs3005: 'enp175s0f0np0:91.198.174.15'
-      lvs3006: 'enp175s0f0np0:91.198.174.16'
-      lvs3007: 'enp175s0f0np0:91.198.174.17'
   public1-ulsfo:
     id: "1201"
     netmask: '255.255.255.240'

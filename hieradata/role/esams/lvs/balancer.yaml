@@ -1,7 +1,6 @@
 profile::pybal::config_host: conf1009.eqiad.wmnet
 profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
-  - public1-esams  # old esams
   - public1-bw27-esams
   - public1-by27-esams
   - private1-bw27-esams
