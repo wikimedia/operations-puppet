@@ -1627,9 +1627,9 @@ service::catalog:
       eqiad:
         ncredirlb: 208.80.154.232
         ncredirlb6: 2620:0:861:ed1a::9
-      esams:
-        ncredirlb: 91.198.174.194
-        ncredirlb6: 2620:0:862:ed1a::3
+      #esams:
+      #  ncredirlb: 91.198.174.194
+      #  ncredirlb6: 2620:0:862:ed1a::3
       ulsfo:
         ncredirlb: 198.35.26.98
         ncredirlb6: 2620:0:863:ed1a::3

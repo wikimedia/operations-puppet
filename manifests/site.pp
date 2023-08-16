@@ -2498,10 +2498,6 @@ node /^ncredir200[12]\.codfw\./ {
     role(ncredir)
 }
 
-node /^ncredir300[12]\.esams\./ {
-    role(ncredir)
-}
-
 node /^ncredir400[12]\.ulsfo\./ {
     role(ncredir)
 }
