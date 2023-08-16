@@ -90,7 +90,6 @@ class profile::tlsproxy::envoy(
     # By default use the server profile
     $base_cfssl_options = {
         'profile' => 'server',
-        'ensure'  => stdlib::ensure($ensure, 'file'),
         'owner'   => 'envoy',
         'group'   => 'envoy',
         'outdir'  => '/etc/envoy/ssl',
