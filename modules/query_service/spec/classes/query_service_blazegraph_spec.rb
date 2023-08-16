@@ -37,7 +37,8 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
-      .with_content(%r{runBlazegraph.sh -f /etc/wdqs/RWStore.wikidata.properties})
+      .with_content(%r{ExecStart=/usr/bin/java})
+      .with_content(/--port 9999/)
     }
     it { is_expected.to contain_file('/etc/wdqs/RWStore.wikidata.properties')
       .with_content(%r{AbstractJournal.file=/srv/wdqs/wikidata.jnl})
@@ -81,7 +82,7 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
-      .with_content(/runBlazegraph.sh -f RWStore.wikidata.properties/)
+      .with_content(%r{ExecStart=/usr/bin/java})
     }
   end
 end
@@ -122,13 +123,8 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-categories.service')
-      .with_content(%r{runBlazegraph.sh -f /etc/wdqs/RWStore.categories.properties})
-    }
-    it { is_expected.to contain_file('/lib/systemd/system/wdqs-categories.service')
-      .with_content(%r{BLAZEGRAPH_CONFIG=/etc/default/wdqs-categories})
-    }
-    it { is_expected.to contain_file('/etc/default/wdqs-categories')
-      .with_content(/PORT=9090/)
+      .with_content(%r{-Dcom.bigdata.rdf.sail.webapp.ConfigParams.propertyFile=/etc/wdqs/RWStore.categories.properties})
+      .with_content(/--port 9090/)
     }
     it { is_expected.to contain_file('/etc/wdqs/RWStore.categories.properties')
       .with_content(%r{AbstractJournal.file=/srv/wdqs/categories.jnl})
