@@ -1139,8 +1139,6 @@ profile::cassandra::settings:
     trickle_fsync: false
     client_encryption_enabled: true
     disk_failure_policy: best_effort
-    server_encryption_optional: true
-    legacy_ssl_storage_port_enabled: true
   users:
     - restbase
 
