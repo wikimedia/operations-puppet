@@ -1,13 +1,5 @@
 esams:
   cache_text:
-    cp3050.esams.wmnet: [cdn, ats-be]
-    cp3052.esams.wmnet: [cdn, ats-be]
-    cp3054.esams.wmnet: [cdn, ats-be]
-    cp3056.esams.wmnet: [cdn, ats-be]
-    cp3058.esams.wmnet: [cdn, ats-be]
-    cp3060.esams.wmnet: [cdn, ats-be]
-    cp3062.esams.wmnet: [cdn, ats-be]
-    cp3064.esams.wmnet: [cdn, ats-be]  # all knams below this
     cp3066.esams.wmnet: [cdn, ats-be]
     cp3067.esams.wmnet: [cdn, ats-be]
     cp3068.esams.wmnet: [cdn, ats-be]
@@ -17,14 +9,6 @@ esams:
     cp3072.esams.wmnet: [cdn, ats-be]
     cp3073.esams.wmnet: [cdn, ats-be]
   cache_upload:
-    cp3051.esams.wmnet: [cdn, ats-be]
-    cp3053.esams.wmnet: [cdn, ats-be]
-    cp3055.esams.wmnet: [cdn, ats-be]
-    cp3057.esams.wmnet: [cdn, ats-be]
-    cp3059.esams.wmnet: [cdn, ats-be]
-    cp3061.esams.wmnet: [cdn, ats-be]
-    cp3063.esams.wmnet: [cdn, ats-be]
-    cp3065.esams.wmnet: [cdn, ats-be]  # all knams below this
     cp3074.esams.wmnet: [cdn, ats-be]
     cp3075.esams.wmnet: [cdn, ats-be]
     cp3076.esams.wmnet: [cdn, ats-be]

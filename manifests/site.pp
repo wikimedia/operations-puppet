@@ -457,18 +457,6 @@ node /^cp20(28|3[02468]|4[02])\.codfw\./ {
 }
 
 #
-# esams caches
-#
-
-node /^cp30(5[02468]|6[024])\.esams\./ {
-    role(cache::text)
-}
-
-node /^cp30(5[13579]|6[135])\.esams\./ {
-    role(cache::upload)
-}
-
-#
 # knams caches
 #
 
