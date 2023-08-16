@@ -44,6 +44,7 @@ class confd(
         user        => 'root',
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/30'},  # Every 30 minutes
         command     => "/usr/bin/find ${run_dir} -mtime +30 -delete",
+        require     => File[$run_dir],
     }
 
     # Used by modules/profile/files/mediawiki/maintenance/mw-cli-wrapper.py
