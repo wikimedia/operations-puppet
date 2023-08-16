@@ -16,6 +16,7 @@ Usage: mw-debug-repl [-e] [-d <datacenter>] [-w <wiki-name>|<wiki-name>]
 OPTIONS:
   -e                 Launch eval.php, instead of the default shell.php as REPL
   -d|--datacenter    Pick a specific datacenter (by default the master will be picked)
+  -v|--verbose       Use verbose logging (equivalent of passing --d 2 to REPL)
   -w|--wiki          Pick a wiki. For compatibility reasons, the flag can be omitted.
   -h|--help          Show this help message
 
@@ -38,10 +39,11 @@ EOF
 ### Main script
 
 REPL="shell.php"
+PARAMS=""
 WIKI=""
 DC=""
 
-OPTS=$(getopt -o hew:d: -l help,wiki:,datacenter: -- "$@")
+OPTS=$(getopt -o hew:d:v -l help,wiki:,datacenter:,verbose -- "$@")
 eval set -- "$OPTS"
 while true; do
     case "$1" in
@@ -54,6 +56,8 @@ while true; do
             WIKI="$2"; shift 2;;
         -d | --datacenter )
             DC="$2"; shift 2;;
+        -v | --verbose )
+            PARAMS="$PARAMS --d 2"; shift;;
         -- )
             shift; break;;
         *)
@@ -83,4 +87,4 @@ if [ -z "$PODNAME" ]; then
     exit 1
 fi
 echo "Now running $REPL for $WIKI inside ${PODNAME}..."
-kubectl -n mw-debug exec "$PODNAME" -c mediawiki-pinkunicorn-app -ti -- php /srv/mediawiki/multiversion/MWScript.php "$REPL" --wiki "$WIKI"
+kubectl -n mw-debug exec "$PODNAME" -c mediawiki-pinkunicorn-app -ti -- php /srv/mediawiki/multiversion/MWScript.php "$REPL" --wiki "$WIKI" $PARAMS
