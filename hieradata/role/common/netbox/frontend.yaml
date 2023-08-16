@@ -106,6 +106,9 @@ profile::netbox::ganeti_sync_profiles:
     - profile: esams
       url: ganeti01.svc.esams.wmnet
       site: esams
+    - profile: esams
+      url: ganeti02.svc.esams.wmnet
+      site: esams
     - profile: eqsin
       url: ganeti01.svc.eqsin.wmnet
       site: eqsin
