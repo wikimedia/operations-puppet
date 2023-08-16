@@ -286,8 +286,7 @@ mediawiki_test_environment:
 # These two Hadoop workers have GPU cards present.
 hadoop_gpu_workers:
   __regex: !ruby/regexp /^an-worker(110[0-1])\.eqiad\.wmnet$/
-  profile::amd_gpu::rocm_version: '42'
-  profile::base::use_linux510_on_buster: true
+  profile::amd_gpu::rocm_version: '54'
 
 # These six hosts are different from the other Hadoop workers in that they
 # have 24 x 2.5" data drives, as opposed to 12 x 3.5" drives.
