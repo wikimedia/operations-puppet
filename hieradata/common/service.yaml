@@ -3932,5 +3932,5 @@ service::catalog:
       - codfw
     state: production
     discovery:
-      - dnsdisc: pki
+      - dnsdisc: config-master
         active_active: true
