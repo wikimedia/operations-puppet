@@ -338,10 +338,6 @@ node /^bast2003\.wikimedia\./ {
     role(bastionhost)
 }
 
-node /^bast3006\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
-}
-
 node /^bast3007\.wikimedia\./ {
     role(insetup::infrastructure_foundations)
 }
@@ -2626,7 +2622,7 @@ node /^pc10(15|16)\.eqiad\./ {
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
-node /^ping[123]003\.(eqiad|codfw|esams)\./ {
+node /^ping[12]003\.(eqiad|codfw)\./ {
     role(ping_offload)
 }
 
