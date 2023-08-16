@@ -1515,10 +1515,10 @@ node /^install[12]004\.wikimedia\./ {
 }
 
 node /^install3003\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(installserver)
 }
 
-node /^install[3456]002\.wikimedia\./ {
+node /^install[456]002\.wikimedia\./ {
     role(installserver)
 }
 
