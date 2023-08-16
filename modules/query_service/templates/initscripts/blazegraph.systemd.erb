@@ -4,9 +4,9 @@ Description=Query Service - Blazegraph - <%= @title %>
 
 [Service]
 Type=simple
-Environment="BLAZEGRAPH_CONFIG=/etc/default/<%= @title %>"
 WorkingDirectory=<%= @package_dir %>
-ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
+ExecStart=/usr/bin/sh -c '/usr/bin/java <%= @blazegraph_args.join(" \\\n    ") %>'
+
 User=<%= @username %>
 StandardOutput=journal+console
 Restart=always

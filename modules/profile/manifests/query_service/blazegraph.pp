@@ -36,12 +36,6 @@ define profile::query_service::blazegraph (
     }
 
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $default_extra_jvm_opts = [
-        '-XX:+UseNUMA',
-        '-XX:+UnlockExperimentalVMOptions',
-        '-XX:G1NewSizePercent=20',
-        '-XX:+ParallelRefProcEnabled',
-    ]
 
     $event_service_jvm_opts = $sparql_query_stream ? {
         default => [
@@ -106,8 +100,7 @@ define profile::query_service::blazegraph (
         port                  => $blazegraph_port,
         config_file_name      => $config_file_name,
         heap_size             => $heap_size,
-        extra_jvm_opts        => $default_extra_jvm_opts
-                                    + $event_service_jvm_opts
+        extra_jvm_opts        => $event_service_jvm_opts
                                     + $extra_jvm_opts
                                     + $prometheus_jvm_opts
                                     + $jvmquake_jvm_opts,
