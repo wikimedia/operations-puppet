@@ -21,7 +21,11 @@ class profile::configmaster (
     $document_root = '/srv/config-master'
     $protected_uri = '/nda'
     $nda_dir       = "${document_root}${protected_uri}"
-    $vhost_settings = {'enable_nda' => $enable_nda, 'proxy_sha1' => $proxy_sha1}
+    $vhost_settings = {
+        'enable_nda'       => $enable_nda,
+        'proxy_sha1'       => $proxy_sha1,
+        'puppet_ca_server' => $puppet_ca_server,
+    }
 
     file { $document_root:
         ensure => directory,

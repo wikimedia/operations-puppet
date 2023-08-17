@@ -16,26 +16,26 @@
          Require all granted
          Options +Indexes +Followsymlinks
          AllowOverride None
-     </Directory>
+    </Directory>
 
 <%- if @vhost_settings['enable_nda'] -%>
-     <Directory "<%= @document_root %><%= @protected_uri %>">
+    <Directory "<%= @document_root %><%= @protected_uri %>">
   <%- @cas_auth_settings.each_pair do |key, setting| -%>
     <%- if setting.is_a?(Array) -%>
       <%- setting.each do |_setting| -%>
-      <%= key %> <%= _setting %>
+         <%= key %> <%= _setting %>
       <%- end -%>
     <%- else -%>
-      <%= key %> <%= setting %>
+         <%= key %> <%= setting %>
     <%- end -%>
   <%- end -%>
-     </Directory>
+    </Directory>
 <%- end -%>
 
 <%- if @vhost_settings['proxy_sha1'] -%>
-    ProxyPass /puppet-sha1.txt https://<%= @puppet_ca_server %>/puppet-sha1.txt
-    ProxyPass /labsprivate-sha1.txt https://<%= @puppet_ca_server %>/labsprivate-sha1.txt
+    ProxyPass /puppet-sha1.txt https://<%= @vhost_settings['puppet_ca_server'] %>/puppet-sha1.txt
+    ProxyPass /labsprivate-sha1.txt https://<%= @vhost_settings['puppet_ca_server'] %>/labsprivate-sha1.txt
 <%- end -%>
-     CustomLog ${APACHE_LOG_DIR}/configmaster-access.log wmf
-     ErrorLog ${APACHE_LOG_DIR}/configmaster-error.log
+    CustomLog ${APACHE_LOG_DIR}/configmaster-access.log wmf
+    ErrorLog ${APACHE_LOG_DIR}/configmaster-error.log
 </VirtualHost>
