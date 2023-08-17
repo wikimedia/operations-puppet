@@ -190,8 +190,8 @@ unless enabled
 end
 
 if failcount > 0 # rubocop:disable Style/NumericPredicate
-  report = YAML.safe_load(File.read(reportfile))
-  failed_resources = report["resource_statuses"].select { |_, r| r["failed"] }.map { |_, r| r["resource"] }
+  report = YAML.safe_load(File.read(reportfile), [Puppet::Transaction::Report])
+  failed_resources = report.resource_statuses.select { |_, r| r.failed }.map { |_, r| r.resource }
   failed_resources = failed_resources[0..PRINT_FAILED_RESOURCES_NO]
   puts "WARNING: Puppet has #{failcount} failures. " +
       "Last run #{human_time_since_last_run} ago with #{failcount} failures. " +
