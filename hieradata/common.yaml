@@ -1682,7 +1682,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
-    #- '^ncredir300[12]\.esams\.wmnet$'
+    - '^ncredir300[34]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
     - '^ncredir600[12]\.drmrs\.wmnet$'
@@ -1732,7 +1732,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
-    #- '^ncredir300[12]\.esams\.wmnet$'
+    - '^ncredir300[34]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
     - '^ncredir600[12]\.drmrs\.wmnet$'
@@ -1782,7 +1782,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
-    #- '^ncredir300[12]\.esams\.wmnet$'
+    - '^ncredir300[34]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
     - '^ncredir600[12]\.drmrs\.wmnet$'
@@ -1824,7 +1824,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
-    #- '^ncredir300[12]\.esams\.wmnet$'
+    - '^ncredir300[34]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
     - '^ncredir600[12]\.drmrs\.wmnet$'
@@ -1878,7 +1878,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
-    #- '^ncredir300[12]\.esams\.wmnet$'
+    - '^ncredir300[34]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
     - '^ncredir600[12]\.drmrs\.wmnet$'
@@ -1932,7 +1932,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
-    #- '^ncredir300[12]\.esams\.wmnet$'
+    - '^ncredir300[34]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
     - '^ncredir600[12]\.drmrs\.wmnet$'
