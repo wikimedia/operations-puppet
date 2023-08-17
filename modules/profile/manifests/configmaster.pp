@@ -6,12 +6,12 @@
 # @param enable_nda if true enable the nda uri
 # @param proxy_sha1 if true proxy the sha1's used by puppet-merge from the puppetmaster ca host
 class profile::configmaster (
-    $conftool_prefix                    = lookup('conftool_prefix'),
-    Stdlib::Fqdn $puppet_ca_server      = lookup('puppet_ca_server'),
-    Stdlib::Host $server_name           = lookup('profile::configmaster::server_name'),
-    Array[Stdlib::Host] $server_aliases = lookup('profile::configmaster::server_aliases'),
-    Boolean             $enable_nda     = lookup('profile::configmaster::enable_nda'),
-    Boolean             $proxy_sha1     = lookup('profile::configmaster::proxy_sha1'),
+    Stdlib::Unixpath    $conftool_prefix  = lookup('conftool_prefix'),
+    Stdlib::Fqdn        $puppet_ca_server = lookup('puppet_ca_server'),
+    Stdlib::Host        $server_name      = lookup('profile::configmaster::server_name'),
+    Array[Stdlib::Host] $server_aliases   = lookup('profile::configmaster::server_aliases'),
+    Boolean             $enable_nda       = lookup('profile::configmaster::enable_nda'),
+    Boolean             $proxy_sha1       = lookup('profile::configmaster::proxy_sha1'),
 ) {
     ensure_packages(['python3-conftool'])
     $real_server_aliases = $server_aliases + [
@@ -21,7 +21,7 @@ class profile::configmaster (
     $document_root = '/srv/config-master'
     $protected_uri = '/nda'
     $nda_dir       = "${document_root}${protected_uri}"
-    $vhost_settings = { 'enable_nda' => $enable_nda }
+    $vhost_settings = {'enable_nda' => $enable_nda, 'proxy_sha1' => $proxy_sha1}
 
     file { $document_root:
         ensure => directory,
@@ -58,7 +58,7 @@ class profile::configmaster (
     # Script to dump pool states to a json file. Used by Amir's tool
     # fault-tolerance.toolforge.org
     file { '/usr/local/bin/dump-conftool-pools':
-        ensure => present,
+        ensure => file,
         source => 'puppet:///modules/profile/conftool/dump-pools-json.py',
         owner  => 'root',
         group  => 'root',
