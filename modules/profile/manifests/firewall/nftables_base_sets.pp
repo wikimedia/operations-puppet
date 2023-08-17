@@ -6,7 +6,13 @@ class profile::firewall::nftables_base_sets () {
     include network::constants
 
     nftables::set { 'INTERNAL':
-        hosts => ['10.0.0.0/8', '2620:0:860:100::/56', '2620:0:861:100::/56', '2620:0:862:100::/56', '2620:0:863:100::/56'],
+        hosts => ['10.0.0.0/8',
+                  '2620:0:860:100::/56',  # eqsin
+                  '2620:0:861:100::/56',  # eqiad
+                  '2620:0:863:100::/56',  # ulsfo
+                  '2a02:ec80:300:100::/56',  # esams
+                  '2a02:ec80:600:100::/56',  # drmrs
+                  '2001:df2:e500:100::/56'],  # eqsin
     }
 
     # $DOMAIN_NETWORKS is a set of all networks belonging to a domain.

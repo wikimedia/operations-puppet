@@ -68,8 +68,6 @@ monitoring::groups:
     description: Equipment with asw-d-codfw as uplink
   cloudsw1-b1-codfw:
     description: Equipment with cloudsw1-b1-codfw as uplink
-  asw2-esams:  # old esams
-    description: Equipment with asw2-esams as uplink
   asw1-by27-esams:
     description: Equipment with asw1-by27-esams as uplink
   asw1-bw27-esams:

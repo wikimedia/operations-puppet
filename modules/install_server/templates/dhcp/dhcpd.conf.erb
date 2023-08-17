@@ -365,22 +365,6 @@ group {
 group {
     next-server <%= @tftp_servers["esams"] %>;
 
-    # public1-esams subnet
-    subnet 91.198.174.0 netmask 255.255.255.128 {
-        option subnet-mask 255.255.255.128;
-        option broadcast-address 91.198.174.127;
-        option routers 91.198.174.1;
-        option domain-name "wikimedia.org";
-    }
-
-    # private1-esams subnet
-    subnet 10.20.0.0 netmask 255.255.255.0 {
-        option subnet-mask 255.255.255.0;
-        option broadcast-address 10.20.0.255;
-        option routers 10.20.0.1;
-        option domain-name "esams.wmnet";
-    }
-
     # public1-bw27-esams subnet
     subnet 185.15.59.0 netmask 255.255.255.224 {
         option subnet-mask 255.255.255.224;

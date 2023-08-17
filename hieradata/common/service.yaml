@@ -1627,9 +1627,9 @@ service::catalog:
       eqiad:
         ncredirlb: 208.80.154.232
         ncredirlb6: 2620:0:861:ed1a::9
-      #esams:
-      #  ncredirlb: 91.198.174.194
-      #  ncredirlb6: 2620:0:862:ed1a::3
+      esams:
+        ncredirlb: 185.15.59.226
+        ncredirlb6: 2a02:ec80:300:ed1a::3
       ulsfo:
         ncredirlb: 198.35.26.98
         ncredirlb6: 2620:0:863:ed1a::3
@@ -2627,10 +2627,10 @@ service::catalog:
         textlb: 103.102.166.224
         textlb6: 2001:df2:e500:ed1a::1
       esams: &id009
-        testlb: 91.198.174.193
-        testlb6: 2620:0:862:ed1a::2
-        textlb: 91.198.174.192
-        textlb6: 2620:0:862:ed1a::1
+        testlb: 185.15.59.225
+        testlb6: 2a02:ec80:300:ed1a::2
+        textlb: 185.15.59.224
+        textlb6: 2a02:ec80:300:ed1a::1
       ulsfo: &id010
         testlb: 198.35.26.97
         testlb6: 2620:0:863:ed1a::2
@@ -2789,8 +2789,8 @@ service::catalog:
         uploadlb: 103.102.166.240
         uploadlb6: 2001:df2:e500:ed1a::2:b
       esams: &id014
-        uploadlb: 91.198.174.208
-        uploadlb6: 2620:0:862:ed1a::2:b
+        uploadlb: 185.15.59.240
+        uploadlb6: 2a02:ec80:300:ed1a::2:b
       ulsfo: &id015
         uploadlb: 198.35.26.112
         uploadlb6: 2620:0:863:ed1a::2:b

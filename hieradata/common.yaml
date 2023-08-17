@@ -2397,10 +2397,6 @@ infra_devices:
     - cr2-esams
     site: esams
     role: l3sw
-  asw2-esams:  # old esams - remove after all hosts are decom
-    ipv4: 10.21.0.8
-    site: esams
-    role: l2sw
 
   cr3-ulsfo:
     ipv4: 198.35.26.192
