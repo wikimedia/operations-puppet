@@ -180,6 +180,7 @@ profile::cassandra::settings:
     - image_suggestions
     - aqs_testing
     - device_analytics
+    - geo_analytics
     - fgoodwin
 
 profile::cassandra::client_ips:
