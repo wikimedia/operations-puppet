@@ -5878,7 +5878,7 @@ users:
     uid: 42507
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBf4B0qbsjMS/bbYiDVoYhrnRRe1y30/JOvjpo4cZqix ppenloglou-ctr@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILk9fMuOdj1wrz7g5ZZtWxZuEPFzXi84oIy/Pr945VpW ppenloglou@wikimedia.org
   andrewtavis-wmde:
     ensure: present
     realname: Andrew McAllister
