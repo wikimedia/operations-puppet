@@ -1142,6 +1142,9 @@ profile::cassandra::settings:
   users:
     - restbase
 
+# Port to use for SSL certificate monitoring
+profile::cassandra::monitor_tls_port: 7000
+
 #
 # General
 #
