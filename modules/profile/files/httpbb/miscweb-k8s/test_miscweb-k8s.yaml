@@ -80,3 +80,28 @@ https://dbtree.wikimedia.org:
   assert_status: 200
   assert_body_contains: 'tendril and dbtree'
 
+https://wikiworkshop.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: wikiworkshop.org/2023
+- path: /2022
+  assert_status: 301
+  assert_headers:
+    Location: http://wikiworkshop.org/2022/
+- path: /2021/
+  assert_status: 200
+  assert_body_contains: Wiki Workshop 2021
+- path: /2022/
+  assert_status: 200
+  assert_body_contains: Wiki Workshop 2022
+
+https://www.wikiworkshop.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikiworkshop.org/
+
+https://research.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: WikiResearch

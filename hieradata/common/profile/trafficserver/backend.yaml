@@ -217,7 +217,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://releases.discovery.wmnet
     - type: map
       target: http://research.wikimedia.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://rt.wikimedia.org
       replacement: https://rt.discovery.wmnet
@@ -287,10 +287,10 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
     - type: map
       target: http://wikiworkshop.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://www.wikiworkshop.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://yarn.wikimedia.org
       replacement: https://an-tool1008.eqiad.wmnet
