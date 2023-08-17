@@ -17,6 +17,6 @@ esams:
     cp3079.esams.wmnet: [cdn, ats-be]
     cp3080.esams.wmnet: [cdn, ats-be]
     cp3081.esams.wmnet: [cdn, ats-be]
-  #ncredir:
-  #  ncredir3001.esams.wmnet: [nginx]
-  #  ncredir3002.esams.wmnet: [nginx]
+  ncredir:
+    ncredir3003.esams.wmnet: [nginx]
+    ncredir3004.esams.wmnet: [nginx]
