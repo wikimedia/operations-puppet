@@ -103,9 +103,9 @@ profile::netbox::ganeti_sync_profiles:
     - profile: ulsfo
       url: ganeti01.svc.ulsfo.wmnet
       site: ulsfo
-#    - profile: esams
-#      url: ganeti01.svc.esams.wmnet
-#      site: esams
+    - profile: esams01
+      url: ganeti01.svc.esams.wmnet
+      site: esams
     - profile: esams02
       url: ganeti02.svc.esams.wmnet
       site: esams
