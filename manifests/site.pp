@@ -1013,7 +1013,7 @@ node /^(doh[123456]00[12])\.wikimedia\./ {
     role(wikidough)
 }
 
-node /^doh300[34]\.esams\./ {
+node /^doh300[34]\.wikimedia\./ {
     role(insetup::traffic)
 }
 
