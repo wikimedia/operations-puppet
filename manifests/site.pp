@@ -2507,7 +2507,7 @@ node /^ncredir200[12]\.codfw\./ {
 }
 
 node /^ncredir300[34]\.esams\./ {
-    role(insetup::traffic)
+    role(ncredir)
 }
 
 node /^ncredir400[12]\.ulsfo\./ {
