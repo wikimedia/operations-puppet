@@ -2631,7 +2631,7 @@ node /^prometheus100[56]\.eqiad\./ {
     role(prometheus)
 }
 
-node /^prometheus[3456]00[12]\.(esams|ulsfo|eqsin|drmrs)\./ {
+node /^prometheus[3456]00[1-9]\.(esams|ulsfo|eqsin|drmrs)\./ {
     role(prometheus::pop)
 }
 
