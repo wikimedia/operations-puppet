@@ -51,6 +51,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_search'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'search:platform'
+  search_update_pipeline:
+    access:       '.admin'
+    account_name: 'AUTH_search-update-pipeline'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'search-update-pipeline:prod'
   mw_event_enrichment:
     access:       '.admin'
     account_name: 'AUTH_mw-event-enrichment'
