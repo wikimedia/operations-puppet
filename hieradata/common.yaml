@@ -2567,19 +2567,6 @@ blackbox_smoke_hosts:
     site: codfw
     rack: D5
 
-  ganeti3001.esams.wmnet:
-    realm: production
-    site: esams
-    rack: OE14
-  ganeti3002.esams.wmnet:
-    realm: production
-    site: esams
-    rack: OE15
-  ganeti3003.esams.wmnet:
-    realm: production
-    site: esams
-    rack: OE16
-
   ganeti4005.ulsfo.wmnet:
     realm: production
     site: ulsfo

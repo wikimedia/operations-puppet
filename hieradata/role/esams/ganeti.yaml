@@ -1,7 +1,0 @@
-cluster: ganeti
-profile::ganeti::nodes:
-  - ganeti3001.esams.wmnet
-  - ganeti3002.esams.wmnet
-  - ganeti3003.esams.wmnet
-profile::ganeti::rapi::certificate: ganeti01.svc.esams.wmnet
-profile::ganeti::ganeti3: true
