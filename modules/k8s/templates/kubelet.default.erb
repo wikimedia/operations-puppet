@@ -23,7 +23,6 @@ if !@node_labels.empty?
   daemon_args.push("--node-labels=#{@node_labels.sort.join(',')}")
 end
 
-
 # Command line arguments will override KubeletConfig settings. So this is still fine.
 if @extra_params
   daemon_args.concat(@extra_params)
@@ -33,6 +32,18 @@ if @ipv6dualstack
   daemon_args.push("--node-ip=#{@facts['ipaddress']},#{@facts['ipaddress6']}")
 else
   daemon_args.push("--node-ip=#{@facts['ipaddress']}")
+end
+
+if @system_reserved
+  reserved = []
+  for key in ['cpu', 'memory', 'pid', 'ephemeral-storage']
+    if !@system_reserved[key].nil? && !@system_reserved[key].empty?
+      reserved.push("#{key}=#{@system_reserved[key]}")
+    end
+  end
+  if !reserved.empty?
+    daemon_args.push("--system-reserved=#{reserved.join(',')}")
+  end
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

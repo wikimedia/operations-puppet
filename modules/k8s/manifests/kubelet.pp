@@ -17,6 +17,7 @@ class k8s::kubelet (
     Optional[Array[String]] $node_labels = [],
     Optional[Array[K8s::Core::V1Taint]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
+    Optional[K8s::ReservedResource] $system_reserved = undef,
 ) {
     k8s::package { 'kubelet':
         package => 'node',
@@ -56,6 +57,13 @@ class k8s::kubelet (
         registerWithTaints => $node_taints,
         # Use systemd cgroup driver
         cgroupDriver       => 'systemd',
+        # evictionHard is set to kubelet defaults apart from memory.available (which defaults to 100M)
+        evictionHard       => {
+            'imagefs.available' => '15%',
+            'memory.available'  => '300M',
+            'nodefs.available'  => '10%',
+            'nodefs.inodesFree' => '5%',
+        },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     file { $config_file:

@@ -108,6 +108,58 @@ class profile::kubernetes::node (
     ]
 
     $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}")
+
+    if $facts['fqdn'] in $k8s_config['control_plane_nodes'] {
+        $system_reserved = undef
+    } else {
+        # If this node is not a master, compute reserved system resources
+        # Reserve memory:
+        # * 25% of the first 4 GiB == 1 GiB
+        # * 20% of the next 4 GiB == 0.8 GiB
+        # * 10% of the next 8 GiB == 0.8 GiB
+        # *  6% of the next 112 GiB == 6.72 GiB
+        # *  3% of anything above 128 GiB
+        $one_gib_bytes = 1074176000
+        $system_mem_bytes = $facts['memory']['system']['total_bytes']
+        if $system_mem_bytes <= $one_gib_bytes * 4 {
+            $reserved_mem_bytes = 25 * $system_mem_bytes / 100
+        } elsif $system_mem_bytes <= $one_gib_bytes * 8 {
+            $reserved_mem_bytes = $one_gib_bytes + 20 * ($system_mem_bytes - $one_gib_bytes * 4) / 100
+        } elsif $system_mem_bytes <= $one_gib_bytes * 16 {
+            $reserved_mem_bytes = 1.8 * $one_gib_bytes + 10 * ($system_mem_bytes - $one_gib_bytes * 8) / 100
+        } elsif $system_mem_bytes <= $one_gib_bytes * 128 {
+            $reserved_mem_bytes = 2.6 * $one_gib_bytes + 6 * ($system_mem_bytes - $one_gib_bytes * 16) / 100
+        } else {
+            $reserved_mem_bytes = 9.32 * $one_gib_bytes + 3 * ($system_mem_bytes - $one_gib_bytes * 128) / 100
+        }
+
+        # Reserve CPU
+        # 6% of the first core
+        # 1% of the second core
+        # 0.5% of the next 2 cores (up to 4)
+        # 0.01% of all cores above 4
+        #
+        # WARNING/FIXME: We currently cap reserved CPUs at 2 because we don't have enough
+        # resources in wikikube clusters to satisfy the calculated resources currently.
+        # See: T277876
+        $system_cpus = $facts['processorcount']
+        if $system_cpus == 1 {
+            $reserved_cpus = 0.06
+        } elsif $system_cpus == 2 {
+            $reserved_cpus = 0.07
+        } elsif $system_cpus <= 4 {
+            $reserved_cpus = (0.07 + 0.5 * ($system_cpus - 2) / 100) * $system_cpus
+        } else {
+            $reserved_cpus = (0.08 + 0.01 * ($system_cpus - 4) / 100) * $system_cpus
+        }
+
+        $system_reserved = {
+            # FIXME: reserved_cpus is capped at 2, see comment above.
+            'cpu' => sprintf('%.1f', min($reserved_cpus, 2.0)),
+            'memory' => sprintf('%.2fGi', $reserved_mem_bytes / 1024.0 / 1024.0 / 1024.0),
+        }
+    }
+
     class { 'k8s::kubelet':
         cni                             => $k8s_config['use_cni'],
         cluster_dns                     => $k8s_config['cluster_dns'],
@@ -120,6 +172,7 @@ class profile::kubernetes::node (
         version                         => $k8s_config['version'],
         ipv6dualstack                   => $k8s_config['ipv6dualstack'],
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
+        system_reserved                 => $system_reserved,
     }
 
     # Setup kube-proxy
