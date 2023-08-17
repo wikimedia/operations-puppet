@@ -37,7 +37,7 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
-      .with_content(%r{ExecStart=/usr/bin/java})
+      .with_content(%r{ExecStart=.*/usr/bin/java})
       .with_content(/--port 9999/)
     }
     it { is_expected.to contain_file('/etc/wdqs/RWStore.wikidata.properties')
@@ -82,7 +82,7 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
-      .with_content(%r{ExecStart=/usr/bin/java})
+      .with_content(%r{ExecStart=.*/usr/bin/java})
     }
   end
 end

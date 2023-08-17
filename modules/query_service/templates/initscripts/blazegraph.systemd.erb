@@ -5,7 +5,7 @@ Description=Query Service - Blazegraph - <%= @title %>
 [Service]
 Type=simple
 WorkingDirectory=<%= @package_dir %>
-ExecStart=/usr/bin/java <%= @blazegraph_args.join(" \\\n    ") %>
+ExecStart=/usr/bin/sh -c '/usr/bin/java <%= @blazegraph_args.join(" \\\n    ") %>'
 
 User=<%= @username %>
 StandardOutput=journal+console
