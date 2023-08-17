@@ -400,7 +400,7 @@ profile::puppetserver::reports: ["store"]
 profile::puppetserver::puppetdb_urls: []
 profile::puppetserver::puppetdb_submit_only_urls: []
 profile::puppetserver::code_dir: "/srv/puppet_code"
-profile::puppetserver::enable_ca: false
+profile::puppetserver::ca_server: "%{facts.networking.fqdn}"
 profile::puppetserver::intermediate_ca: false
 profile::puppetserver::ca_public_key: ~
 profile::puppetserver::ca_crl: ~

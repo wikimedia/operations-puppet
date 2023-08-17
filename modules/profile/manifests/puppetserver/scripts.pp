@@ -2,13 +2,12 @@
 # @summary
 #   This class installs some puppetserver server side scripts required for the
 #   manifests
+#   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Manually_update_cloud
 # @param keep_reports_minutes
 #   Number of minutes to keep older reports for before deleting them.
 #   The job to remove these is run only every 8 hours, however,
 #   to prevent excess load on the prod puppetservers.
 # @param has_puppetdb inidcate if the system uses puppetdb
-# @param upload_facts use the upload facts feature
-#   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Manually_update_cloud
 # @param http_proxy the http proxy to use
 # @param realm_override
 #   this is use to override the realm used for the facts upload. its only really
@@ -17,10 +16,12 @@
 class profile::puppetserver::scripts (
     Integer                   $keep_reports_minutes = lookup('profile::puppetserver::scripts::keep_reports_minutes'),
     Boolean                   $has_puppetdb         = lookup('profile::puppetserver::scripts::has_puppetdb'),
-    Boolean                   $upload_facts         = lookup('profile::puppetserver::scripts::upload_facts'),
     Optional[Stdlib::HTTPUrl] $http_proxy           = lookup('profile::puppetserver::scripts::http_proxy'),
     Optional[String[1]]       $realm_override       = lookup('profile::puppetserver::scripts::realm_override'),
 ){
+    include profile::puppetserver
+    # only upload facts from the ca server
+    $upload_facts = $profile::puppetserver::enable_ca
     # export and sanitize facts for puppet compiler
     ensure_packages(['python3-cryptography', 'python3-requests', 'python3-yaml'])
 

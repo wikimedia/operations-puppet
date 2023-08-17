@@ -14,7 +14,7 @@
 # @param listen_host host to bind webserver socket
 # @param server_id hostname for metrics and ca_server
 # @param autosign if true autosign agent certs
-# @param enable_ca indicate if the ca is enabled
+# @param ca_server the fqdn of the ca_server
 # @param intermediate_ca configure puppet Ca with an intermediate CA
 # @param ca_public_key location of the intermediate ca content
 # @param separate_ssldir use seperate ssldir for the server.  usefull in cloud setup
@@ -42,7 +42,7 @@ class profile::puppetserver (
     Boolean                        $autosign                  = lookup('profile::puppetserver::autosign', { 'default_value' => false }),
     Boolean                        $git_pull                  = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
     Boolean                        $separate_ssldir           = lookup('profile::puppetserver::separate_ssldir'),
-    Boolean                        $enable_ca                 = lookup('profile::puppetserver::enable_ca'),
+    Stdlib::Fqdn                   $ca_server                 = lookup('profile::puppetserver::ca_server'),
     Boolean                        $intermediate_ca           = lookup('profile::puppetserver::intermediate_ca'),
     Boolean                        $enable_jmx                = lookup('profile::puppetserver::enable_jmx'),
     Boolean                        $auto_restart              = lookup('profile::puppetserver::auto_restart'),
@@ -52,6 +52,7 @@ class profile::puppetserver (
     Hash[String, Stdlib::Unixpath] $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
 
 ) {
+    $enable_ca = $ca_server == $facts['networking']['fqdn']
     if $git_pull {
         include profile::puppetserver::git
         $paths = {
@@ -85,8 +86,8 @@ class profile::puppetserver (
     }
 
     $exluded_args = [
-        'enc_source', 'git_pull', 'enable_ca', 'intermediate_ca',
-        'ca_public_key', 'ca_crl', 'ca_private_key_secret'
+        'enc_source', 'git_pull', 'ca_server', 'intermediate_ca',
+        'ca_public_key', 'ca_crl', 'ca_private_key_secret',
     ]
     class { 'puppetserver':
         *            => wmflib::resource::filter_params($exluded_args),
