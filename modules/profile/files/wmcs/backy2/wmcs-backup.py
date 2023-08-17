@@ -159,12 +159,12 @@ class ImageBackup:
         cls,
         pool: str,
         image_id: str,
+        ceph_id: str,
         image_info: Dict[str, Dict[str, Any]],
         reference_backup: "ImageBackup",
         live_for_days: int,
         noop: bool = True,
     ):
-        image_name = f"{image_id}"
         snapshot_name = (
             datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + f"_{socket.gethostname()}"
         )
@@ -178,7 +178,7 @@ class ImageBackup:
             )
 
         new_entry = BackupEntry.create_diff_backup(
-            image_name=image_name,
+            image_name=ceph_id,
             snapshot_name=snapshot_name,
             pool=pool,
             rbd_reference_snapshot=reference_backup.backup_entry.get_snapshot(pool=pool),
@@ -189,6 +189,7 @@ class ImageBackup:
 
         return cls(
             image_id=image_id,
+            ceph_id=ceph_id,
             image_name=image_info.get("name", "no_name"),
             image_info=image_info,
             backup_entry=new_entry,
@@ -396,7 +397,8 @@ class ImageBackups:
         else:
             new_backup = ImageBackup.create_diff_backup(
                 pool=self.config.ceph_pool,
-                image_id=self.ceph_id,
+                image_id=self.image_id,
+                ceph_id=self.ceph_id,
                 image_info=self.image_info,
                 reference_backup=last_backup_with_snapshot,
                 live_for_days=self.config.live_for_days,
