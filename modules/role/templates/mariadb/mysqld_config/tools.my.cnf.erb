@@ -56,6 +56,9 @@ max_binlog_size                = 100M
 binlog_format                  = <%= @binlog_format %>
 expire_logs_days               = 14
 slave_transaction_retries      = 4294967295
+# remember it is one table/wildcard per line
+# T344411
+replicate_wild_ignore_table    = s51698\_\_yetkin.wanted\_items
 
 table_open_cache               = 5000
 table_definition_cache         = 4000
