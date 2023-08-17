@@ -1013,6 +1013,10 @@ node /^(doh[123456]00[12])\.wikimedia\./ {
     role(wikidough)
 }
 
+node /^doh300[34]\.esams\./ {
+    role(insetup::traffic)
+}
+
 # durum for Wikidough (T289536)
 node /^durum[123456]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\./ {
     role(durum)
