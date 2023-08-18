@@ -420,6 +420,8 @@ groups:
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
+                 'ALL = (analytics-deploy)  NOPASSWD: /usr/bin/git describe *',
+                 'ALL = (analytics-deploy)  NOPASSWD: /usr/bin/git log *',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/systemctl start *',
                  'ALL = NOPASSWD: /bin/systemctl restart *',
