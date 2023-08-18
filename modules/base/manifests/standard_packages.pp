@@ -27,10 +27,7 @@ class base::standard_packages (
     }
     package { 'tzdata': ensure => latest }
 
-    # packages only available in buster and later
-    if debian::codename::ge('buster') {
-        ensure_packages(['python3-wmflib'])
-    }
+    ensure_packages(['python3-wmflib'])
 
     # Starting with Ruby 3 (which is the default in bookworm), SortedSet is no longer part
     # of the set implementation in the standard library, so needs to be installed separately
@@ -46,14 +43,6 @@ class base::standard_packages (
     # git-fat hasn't been ported to Python 3 yet, T279509
     if debian::codename::lt('bullseye') {
         ensure_packages('git-fat')
-    }
-
-    # pxz was removed in buster. In xz >= 5.2 (so stretch and later), xz has
-    #      builtin threading support using the -T option, so pxz was removed
-    # apt-transport-https is a transition package in Buster, apt has HTTPS support by default
-    if debian::codename::lt('buster') {
-        ensure_packages('pxz')
-        ensure_packages('apt-transport-https')
     }
 
     # uninstall these packages
@@ -90,27 +79,13 @@ class base::standard_packages (
         # See <https://www.mcelog.org/faq.html#18>.
         if $::processor0 !~ /AMD/ {
             ensure_packages('intel-microcode')
-            if debian::codename::le('stretch') {
-                $mcelog_ensure = versioncmp($::kernelversion, '4.12') ? {
-                    -1      => 'present',
-                    default => 'absent',
-                }
-                package { 'mcelog':
-                    ensure => $mcelog_ensure,
-                }
-                profile::auto_restarts::service { 'mcelog':
-                    ensure => $mcelog_ensure,
-                }
-            }
         }
-        # rasdaemon replaces mcelog on buster
-        if debian::codename::ge('buster') {
-            ensure_packages('rasdaemon')
-            service { 'rasdaemon':
-                ensure => 'running'
-            }
-            profile::auto_restarts::service { 'rasdaemon': }
+
+        ensure_packages('rasdaemon')
+        service { 'rasdaemon':
+            ensure => 'running'
         }
+        profile::auto_restarts::service { 'rasdaemon': }
 
         # for HP servers only - install the backplane health service and CLI
         # As of February 2018, we are using a version of Facter where manufacturer
@@ -126,17 +101,6 @@ class base::standard_packages (
     }
 
     case debian::codename() {
-        'stretch': {
-            # A dist upgrade to stretch leaves some old binary packages around, remove those
-            $absent_packages = [
-                'libapt-inst1.5', 'libapt-pkg4.12', 'libdns-export100', 'libirs-export91',
-                'libisc-export95', 'libisccfg-export90', 'liblwres90', 'libgnutls-deb0-28',
-                'libhogweed2', 'libjasper1', 'libnettle4', 'libruby2.1', 'ruby2.1', 'libpsl0',
-                'libwiretap4', 'libwsutil4', 'libbind9-90', 'libdns100', 'libisc95', 'libisccc90',
-                'libisccfg90', 'python-reportbug', 'libpng12-0'
-            ]
-            $purged_packages = []
-        }
         'buster': {
             # A dist upgrade to buster leaves some old binary packages around, remove those
             $absent_packages = [

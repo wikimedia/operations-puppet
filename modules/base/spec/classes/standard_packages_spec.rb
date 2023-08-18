@@ -13,10 +13,6 @@ describe 'base::standard_packages' do
         let(:installed_packages) { ['ack'] }
         let(:absent_packages) { ['libbind9-140'] }
         let(:purged_packages) { ['mcelog'] }
-      when 'stretch'
-        let(:installed_packages) { ['ack'] }
-        let(:absent_packages) { ['libapt-inst1.5'] }
-        let(:purged_packages) { [] }
       else
         let(:installed_packages) { ['ack-grep'] }
         let(:absent_packages) { [] }
