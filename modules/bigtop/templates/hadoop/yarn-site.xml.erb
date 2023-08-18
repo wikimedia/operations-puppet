@@ -302,7 +302,11 @@ end
     <value>/var/log/hadoop-yarn/apps</value>
   </property>
 
-
+  <property>
+    <description>What type of compression should be used for yarn logs.</description>
+    <name>yarn.nodemanager.log-aggregation.compression-type</name>
+    <value><%= @yarn_nodemanager_log_aggregation_compression_type %></value>
+  </property>
   <property>
       <name>yarn.app.mapreduce.am.staging-dir</name>
       <value>/user</value>
