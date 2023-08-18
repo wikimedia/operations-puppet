@@ -92,7 +92,7 @@ class profile::superset (
         # for superset in the 'Alpha' role.
         $auth_settings = {
             'AUTH_USER_REGISTRATION'        => 'True',
-            'AUTH_USER_REGISTRATION_ROLE'   => 'Alpha',
+            'AUTH_USER_REGISTRATION_ROLE'   => 'WMF Analyst',
         }
     }
     else {
