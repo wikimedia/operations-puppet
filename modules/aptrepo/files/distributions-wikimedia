@@ -305,6 +305,7 @@ Components: main
  component/dnsdist
  component/puppet5
  component/puppetdb7
+ component/wmf-laptop
  thirdparty/hwraid
 UDebComponents: main
 Update:
