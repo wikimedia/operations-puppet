@@ -12,11 +12,6 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 
-if [ "${LSB_RELEASE}" = "stretch" ]; then
-  # we dont use this service, also the reimage script assumes it is the first to run puppet
-  in-target systemctl mask puppet.service
-fi
-
 # On Bookworm install a Puppet 5 agent backport, otherwise we can't renew the host cert
 # https://phabricator.wikimedia.org/T330495
 if [ "${LSB_RELEASE}" = "bookworm" ]; then
