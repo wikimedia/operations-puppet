@@ -1248,6 +1248,9 @@ class InstanceBackupsState:
         backups_removed = 0
         for project_backups in self.projects_backups.values():
             for vm_backups in project_backups.vms_backups.values():
+                if not vm_backups.vm_id.endswith("_disk"):
+                    print("Not a vm backup, skipping: %s" % vm_backups.vm_id)
+                    continue
                 vm_id_project = (vm_backups.vm_id, project_backups.project)
                 if vm_id_project not in handled_vm_ids_projects:
                     logging.info(
