@@ -5998,6 +5998,7 @@ users:
     email: osefu@wikimedia.org
     uid: 44965
     gid: 500
+    krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP3p3IF96m0/MLPgxWxgEbo6QyGZEMc8fj6bn3H8lag6'
 
