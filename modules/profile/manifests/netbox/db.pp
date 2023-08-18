@@ -81,12 +81,10 @@ class profile::netbox::db (
         }
 
         if !empty($frontends) {
-            $frontends_ferm = join($frontends, ' ')
-
             ferm::service { 'netbox_fe':
                 proto  => 'tcp',
-                port   => '5432',
-                srange => "(@resolve((${frontends_ferm})) @resolve((${frontends_ferm}), AAAA))",
+                port   => 5432,
+                srange => $frontends,
             }
         }
 
@@ -138,12 +136,11 @@ class profile::netbox::db (
         }
 
         if !empty($replicas) {
-            $replicas_ferm = join($replicas, ' ')
             # Access to postgres primary from postgres replicas
             ferm::service { 'netbox_postgres':
                 proto  => 'tcp',
-                port   => '5432',
-                srange => "(@resolve((${replicas_ferm})) @resolve((${replicas_ferm}), AAAA))",
+                port   => 5432,
+                srange => $replicas,
             }
         }
         # On the primary node, do a daily DB dump

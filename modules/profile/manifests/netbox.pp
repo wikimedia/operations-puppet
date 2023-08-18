@@ -219,7 +219,7 @@ class profile::netbox (
 
     ferm::service { 'netbox_https':
         proto => 'tcp',
-        port  => '443',
+        port  => 443,
         desc  => 'Public HTTPS for Netbox',
     }
 
