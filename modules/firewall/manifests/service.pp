@@ -10,17 +10,17 @@
 # @param drange the destination range to configure
 # @param notrack set the rule with no state tracking
 define firewall::service(
-    Wmflib::Protocol            $proto,
-                                $port,
-    Wmflib::Ensure              $ensure = present,
-    Optional[String]            $desc = '',
-    Integer[0,99]               $prio = 10,
-    Optional[Stdlib::Portrange] $port_range = undef,
-                                $srange = undef,
-                                $drange = undef,
-    Optional[Array[String[1]]]  $src_sets = undef,
-    Optional[Array[String[1]]]  $dst_sets = undef,
-    Boolean                     $notrack = false,
+    Wmflib::Protocol              $proto,
+                                  $port,
+    Wmflib::Ensure                $ensure = present,
+    Optional[String]              $desc = '',
+    Integer[0,99]                 $prio = 10,
+    Optional[Firewall::Portrange] $port_range = undef,
+                                  $srange = undef,
+                                  $drange = undef,
+    Optional[Array[String[1]]]    $src_sets = undef,
+    Optional[Array[String[1]]]    $dst_sets = undef,
+    Boolean                       $notrack = false,
 ) {
     include firewall
     case $firewall::provider {
