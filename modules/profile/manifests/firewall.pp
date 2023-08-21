@@ -66,16 +66,16 @@ class profile::firewall (
         }
     }
 
-    ferm::service { 'ssh-from-bastion':
+    firewall::service { 'ssh-from-bastion':
         proto  => 'tcp',
         port   => 22,
-        srange => "(${bastion_hosts.join(' ')})",
+        srange => $bastion_hosts,
     }
 
-    ferm::service { 'ssh-from-cumin-masters':
-        proto  => 'tcp',
-        port   => 22,
-        srange => '$CUMIN_MASTERS',
+    firewall::service { 'ssh-from-cumin-masters':
+        proto    => 'tcp',
+        port     => 22,
+        src_sets => ['CUMIN_MASTERS'],
     }
 
     unless $monitoring_hosts.empty() {
