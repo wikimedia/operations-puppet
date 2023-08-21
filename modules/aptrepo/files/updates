@@ -18,17 +18,6 @@ Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
-Name: hp-mcp-stretch
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
-Components: non-free>thirdparty/hwraid
-UDebComponents:
-GetInRelease: no
-Suite: stretch/current
-Architectures: amd64
-# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
-VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
-ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
-
 Name: hp-mcp-buster
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty/hwraid
@@ -64,46 +53,6 @@ VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 # For Bookworm and later only the packages installed via the raid classes (based on detecting PCI IDs in the
 # custom raid fact) have been listed. Currently only ssacli (perccli gets installed via the private repo)
 ListShellHook: grep-dctrl -e -S 'ssacli' || [ $? -eq 1 ]
-
-Name: elastic55
-Method: https://artifacts.elastic.co/packages/5.x/apt
-Components: main>thirdparty/elastic55
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch' -a -F Version --eq 5.5.2 \) -o \( -S 'kibana' -a -F Version --eq 5.5.2 \) -o \( -S logstash -a -F Version --eq 1:5.5.2-1 \) || [ $? -eq 1 ]
-
-Name: elastic56
-Method: https://artifacts.elastic.co/packages/5.x/apt
-Components: main>thirdparty/elastic56
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch' -a -F Version --eq 5.6.15 \) -o \( -S 'kibana' -a -F Version --eq 5.6.15 \) -o \( -S logstash -a -F Version --eq 1:5.6.15-1 \) || [ $? -eq 1 ]
-
-Name: elastic65
-Method: https://artifacts.elastic.co/packages/oss-6.x/apt
-Components: main>thirdparty/elastic65
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 6.5.4 \) -o \( -S 'kibana-oss' -a -F Version --eq 6.5.4 \) -o \( -S logstash -a -F Version --eq 1:6.8.21-1 \) || [ $? -eq 1 ]
-
-Name: elastic68
-Method: https://artifacts.elastic.co/packages/oss-6.x/apt
-Components: main>thirdparty/elastic68
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 6.8.23 \) -o \( -S 'kibana-oss' -a -F Version --eq 6.8.23 \) -o \( -S logstash-oss -a -F Version --eq 1:6.8.23-1 \) || [ $? -eq 1 ]
 
 Name: elastic710
 Method: https://artifacts.elastic.co/packages/oss-7.x/apt
@@ -182,15 +131,6 @@ Architectures: amd64
 VerifyRelease: 8B1DA6120C2BF624
 ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
 
-Name: mono-project-stretch
-Method: https://download.mono-project.com/repo/debian
-Components: main>thirdparty/mono-project-stretch
-UDebComponents:
-Suite: stable-stretch
-Architectures: amd64 source
-VerifyRelease: A6A19B38D3D831EF
-ListShellHook: grep-dctrl -e -S '^(cecil|cli-common|core-setup|fsharp|gtk-sharp2|libgdiplus|mod-mono|mono|mono-basic|mono-llvm|mono-tools|monodevelop|msbuild|nuget|nunit|referenceassemblies-pcl|xamarin-gtk-theme|xsp)$' || [ $? -eq 1 ]
-
 Name: thirdparty/kubeadm-k8s-kubernetes.io-1-22
 Method: https://apt.kubernetes.io/
 Suite: kubernetes-xenial
@@ -235,15 +175,6 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 294AC4827C1A168A
 ListShellHook: grep-dctrl -e -P '^helm$' -a -FVersion --ge 3.3 || [ $? -eq 1 ]
-
-Name: thirdparty/docker-ci
-Method: https://download.docker.com/linux/debian/
-Suite: stretch
-Components: stable>thirdparty/ci
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
 
 Name: thirdparty/docker-ci-buster
 Method: https://download.docker.com/linux/debian/
