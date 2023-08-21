@@ -1,0 +1,2 @@
+profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::monitoring::notifications_enabled: false
