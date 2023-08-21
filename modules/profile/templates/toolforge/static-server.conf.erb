@@ -66,15 +66,15 @@ server {
         rewrite ^/cdnjs(.*)$ $1 break;
         proxy_pass https://cdnjs.cloudflare.com;
         # Get rid of CloudFlare headers that not helpful here.
-        proxy_hide_header        CF-Cache-Status;
-        proxy_hide_header        CF-Cdnjs-Via;
-        proxy_hide_header        CF-RAY;
-        proxy_hide_header        Expect-CT;
-        proxy_hide_header        Alt-Svc;
-        proxy_hide_header        NEL;
-        proxy_hide_header        Report-To;
-        proxy_hide_header        Strict-Transport-Security;
-        proxy_hide_header        cf-request-id;
+        proxy_hide_header CF-Cache-Status;
+        proxy_hide_header CF-Cdnjs-Via;
+        proxy_hide_header CF-RAY;
+        proxy_hide_header Expect-CT;
+        proxy_hide_header Alt-Svc;
+        proxy_hide_header NEL;
+        proxy_hide_header Report-To;
+        proxy_hide_header Strict-Transport-Security;
+        proxy_hide_header CF-Request-Id;
         proxy_intercept_errors on;
         error_page 301 302 307 308 = @handle_redirects;
     }
@@ -94,14 +94,15 @@ server {
 
       rewrite ^/$redirect_uri break;
       proxy_pass https://ajax.cdnjs.com;
-      proxy_hide_header        CF-Cache-Status;
-      proxy_hide_header        CF-Cdnjs-Via;
-      proxy_hide_header        CF-RAY;
-      proxy_hide_header        Expect-CT;
+      proxy_hide_header CF-Cache-Status;
+      proxy_hide_header CF-Cdnjs-Via;
+      proxy_hide_header CF-RAY;
+      proxy_hide_header Expect-CT;
       proxy_hide_header Alt-Svc;
       proxy_hide_header NEL;
       proxy_hide_header Report-To;
       proxy_hide_header Strict-Transport-Security;
+      proxy_hide_header CF-Request-Id;
     }
 
     # Special handling for /fontcdn, reverse proxy to google's fonts service
