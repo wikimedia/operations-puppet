@@ -209,6 +209,11 @@ class profile::puppetmaster::frontend(
         configuration  => $ip_reputation_config,
         http_proxy     => $http_proxy,
     }
+    # Sync swift rings
+    class { 'profile::swift::fetch_rings':
+        volatile_dir => '/var/lib/puppet/volatile',
+    }
+
 
 }
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
