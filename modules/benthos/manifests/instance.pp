@@ -5,7 +5,6 @@
 #
 define benthos::instance(
     String $config,
-    Stdlib::Port $port,
     Hash[String, Any] $env_variables = undef,
     Wmflib::Ensure $ensure = present,
 ) {

@@ -30,7 +30,6 @@ class profile::benthos(
             ensure        => $instance_config['ensure'],
             env_variables => $base_env_variables + $custom_env_variables,
             config        => template("profile/benthos/instances/${instance}.yaml.erb"),
-            port          => $instance_config['port'],
         }
     }
 }
