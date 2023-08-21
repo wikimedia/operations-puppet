@@ -43,24 +43,17 @@ class facilities (
     }
 
     # esams, single phase PDUs
-    facilities::monitor_pdu_1phase { 'ps1-oe14-esams':
-        ip    => '10.21.0.16',
+    facilities::monitor_pdu_1phase { 'ps1-bw27-esams':
+        ip    => '10.80.128.33',
         # PoPs don't have row diversity, using rack
-        row   => 'OE14',
+        row   => 'BW27',
         site  => 'esams',
         model => 'sentry4',
     }
-    facilities::monitor_pdu_1phase { 'ps1-oe15-esams':
-        ip    => '10.21.0.17',
+    facilities::monitor_pdu_1phase { 'ps1-by27-esams':
+        ip    => '10.80.128.34',
         # PoPs don't have row diversity, using rack
-        row   => 'OE15',
-        site  => 'esams',
-        model => 'sentry4',
-    }
-    facilities::monitor_pdu_1phase { 'ps1-oe16-esams':
-        ip    => '10.21.0.18',
-        # PoPs don't have row diversity, using rack
-        row   => 'OE16',
+        row   => 'BY27',
         site  => 'esams',
         model => 'sentry4',
     }
