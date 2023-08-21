@@ -119,3 +119,5 @@ profile::monitoring::nrpe_check_disk_options:
   '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i
   "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse --exclude-type=fuse.fuse_dfs
   --exclude-type=tracefs --exclude-type=tmpfs'
+
+profile::contacts::role_contacts: ['Data Engineering']
