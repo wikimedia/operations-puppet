@@ -139,23 +139,23 @@ class profile::kubernetes::node (
         # 0.5% of the next 2 cores (up to 4)
         # 0.01% of all cores above 4
         #
-        # WARNING/FIXME: We currently cap reserved CPUs at 2 because we don't have enough
-        # resources in wikikube clusters to satisfy the calculated resources currently.
+        # WARNING/FIXME: We currently don't reserved CPUs because we don't have enough
+        # resources in wikikube clusters to satisfy the calculated resources.
         # See: T277876
-        $system_cpus = $facts['processorcount']
-        if $system_cpus == 1 {
-            $reserved_cpus = 0.06
-        } elsif $system_cpus == 2 {
-            $reserved_cpus = 0.07
-        } elsif $system_cpus <= 4 {
-            $reserved_cpus = (0.07 + 0.5 * ($system_cpus - 2) / 100) * $system_cpus
-        } else {
-            $reserved_cpus = (0.08 + 0.01 * ($system_cpus - 4) / 100) * $system_cpus
-        }
+        # $system_cpus = $facts['processorcount']
+        # if $system_cpus == 1 {
+        #     $reserved_cpus = 0.06
+        # } elsif $system_cpus == 2 {
+        #     $reserved_cpus = 0.07
+        # } elsif $system_cpus <= 4 {
+        #     $reserved_cpus = (0.07 + 0.5 * ($system_cpus - 2) / 100) * $system_cpus
+        # } else {
+        #     $reserved_cpus = (0.08 + 0.01 * ($system_cpus - 4) / 100) * $system_cpus
+        # }
 
         $system_reserved = {
-            # FIXME: reserved_cpus is capped at 2, see comment above.
-            'cpu' => sprintf('%.1f', min($reserved_cpus, 2.0)),
+            # FIXME: We're currently not reserving CPUs because of limited hardware resources
+            # 'cpu' => sprintf('%.1f', $reserved_cpus),
             'memory' => sprintf('%.2fGi', $reserved_mem_bytes / 1024.0 / 1024.0 / 1024.0),
         }
     }
