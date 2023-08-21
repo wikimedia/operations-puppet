@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              akhatun, jameel, jminor, awjrichards, ntsako, jkieserman]
+              akhatun, jameel, jminor, awjrichards, ntsako, jkieserman, skvjold]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -391,7 +391,7 @@ groups:
               ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, skvjold, madasan,
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
               essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
@@ -5165,11 +5165,10 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5/YSLfsC+/YmMmMx91QzJ/yAsl4e3ubOFnBIqvPY2W galmac-prod
     krb: present
   skvjold:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 20201
     realname: Margeigh Novotny
-    email: mnovotny@wikimedia.org
     ssh_keys: []
   frankie:
     ensure: present
