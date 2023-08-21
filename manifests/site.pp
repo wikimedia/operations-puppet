@@ -1638,7 +1638,7 @@ node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
 
-node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-6])\.(codfw|eqiad)\./ {
+node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-6]|5[5-8])\.(codfw|eqiad)\./ {
     role(kubernetes::worker)
 }
 
@@ -2853,14 +2853,6 @@ node /^thanos-fe100[1234]\.eqiad\./ {
 
 node /^thanos-fe200[1234]\.codfw\./ {
     role(thanos::frontend)
-}
-
-# Thumbor servers are being decommissioned T334488
-node /^thumbor100[1256]\.eqiad\./ {
-    role(insetup::serviceops)
-}
-node /^thumbor200[3456]\.codfw\./ {
-    role(insetup::serviceops)
 }
 
 # deployment servers
