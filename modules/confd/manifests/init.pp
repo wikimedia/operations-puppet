@@ -28,14 +28,9 @@ class confd(
     # https://phabricator.wikimedia.org/T321678
     $run_dir = '/var/run/confd-template'
 
-    # Force creation here to avoid find complaining with
-    # find: ‘/var/run/confd-template’: No such file or directory
-    # Normally confd creates the directory on errors
-    file { $run_dir:
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+    # Force run_dir creation on boot, so the timer doesn't fail
+    systemd::tmpfile { $run_dir:
+        content => "d ${run_dir} 0755 root root",
     }
 
     systemd::timer::job { 'clean-confd-rundir':
@@ -43,8 +38,7 @@ class confd(
         description => "Clean old stale files in ${run_dir}",
         user        => 'root',
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/30'},  # Every 30 minutes
-        command     => "/usr/bin/find ${run_dir} -mtime +30 -delete",
-        require     => File[$run_dir],
+        command     => "/usr/bin/find ${run_dir} -type f -mtime +30 -delete",
     }
 
     # Used by modules/profile/files/mediawiki/maintenance/mw-cli-wrapper.py
