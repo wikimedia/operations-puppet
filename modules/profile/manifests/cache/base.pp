@@ -20,6 +20,7 @@ class profile::cache::base(
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
     String $conftool_prefix                          = lookup('conftool_prefix'),
     Boolean $use_ip_reputation                       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
+    Boolean $use_noflow_iface_preup                  = lookup('profile::cache::base::use_noflow_iface_preup', {'default_value' => false}),
 ){
 
     require network::constants
@@ -56,7 +57,9 @@ class profile::cache::base(
     if $performance_tweaks {
         # Only production needs system perf tweaks
         class { '::cpufrequtils': }
-        class { 'cacheproxy::performance': }
+        class { 'cacheproxy::performance':
+            use_noflow_iface_preup => $use_noflow_iface_preup,
+        }
     }
     # Basic varnish classes
 

@@ -4,8 +4,9 @@
 # This class contains production-specific performance hacks
 # These should have zero functional effect, they are merely system-level
 # tweaks to support heavy load/traffic.
-class cacheproxy::performance {
-
+class cacheproxy::performance (
+    Boolean $use_noflow_iface_preup = false,
+) {
     $iface_primary = $facts['interface_primary']
 
     # Bump min_free_kbytes to ensure network buffers are available quickly
@@ -74,7 +75,9 @@ class cacheproxy::performance {
     }
 
     # Disable ethernet PAUSE behavior, dropping is better than buffering (in reasonable cases!)
-    interface::noflow { $iface_primary: }
+    interface::noflow { $iface_primary:
+        use_noflow_iface_preup => $use_noflow_iface_preup,
+    }
 
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
