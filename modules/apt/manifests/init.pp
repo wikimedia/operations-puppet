@@ -87,11 +87,8 @@ class apt(
         #   foo/updates to foo-security (since the former was confusingly
         #   similar to foo-updates (what was called volatile.debian.org
         #   in the past)
-        # Stretch has been removed, so the apt config only ships stub entries
         if debian::codename::eq('bullseye') {
             $apt_template    = 'apt/base-apt-conf-bullseye.erb'
-        } elsif debian::codename::eq('stretch') {
-            $apt_template    = 'apt/base-apt-conf-stretch.erb'
         } elsif debian::codename::eq('buster') {
             $apt_template    = 'apt/base-apt-conf-buster.erb'
         }
@@ -183,21 +180,17 @@ class apt(
         keyfile    => $wikimedia_apt_keyfile,
     }
 
-    if debian::codename::ge('buster'){
-        apt::repository { 'debian-backports':
-            uri        => 'http://mirrors.wikimedia.org/debian/',
-            dist       => "${::lsbdistcodename}-backports",
-            components => 'main contrib non-free',
-        }
+    apt::repository { 'debian-backports':
+        uri        => 'http://mirrors.wikimedia.org/debian/',
+        dist       => "${::lsbdistcodename}-backports",
+        components => 'main contrib non-free',
     }
 
-    if debian::codename::ge('buster'){
-        apt::repository { 'debian-debug':
-            uri        => 'http://deb.debian.org/debian-debug',
-            dist       => "${::lsbdistcodename}-debug",
-            components => 'main contrib non-free',
-            source     => false,
-        }
+    apt::repository { 'debian-debug':
+        uri        => 'http://deb.debian.org/debian-debug',
+        dist       => "${::lsbdistcodename}-debug",
+        components => 'main contrib non-free',
+        source     => false,
     }
 
     apt::conf { 'InstallRecommends':
@@ -208,14 +201,12 @@ class apt(
         before   => File['/etc/apt/apt.conf'],
     }
 
-    if debian::codename::ge('buster') {
-        apt::conf { 'apt-harden':
-            ensure   => 'present',
-            priority => '30',
-            key      => 'APT::Sandbox::Seccomp',
-            value    => true,
-            before   => File['/etc/apt/apt.conf'],
-        }
+    apt::conf { 'apt-harden':
+        ensure   => 'present',
+        priority => '30',
+        key      => 'APT::Sandbox::Seccomp',
+        value    => true,
+        before   => File['/etc/apt/apt.conf'],
     }
 
     # This will munge /etc/apt/apt.conf that get's created during installation
