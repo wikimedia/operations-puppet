@@ -45,11 +45,11 @@ class profile::dragonfly::dfdaemon (
 
   # This is the port dfget (called by dfdaemon) will listen and serve chunks on.
   # dfdaemon itself does not receive connections from outside.
-  ferm::service { 'dragonfly_dfget':
-    ensure => $ensure,
-    proto  => 'tcp',
-    port   => '15001',
-    srange => '$DOMAIN_NETWORKS',
+  firewall::service { 'dragonfly_dfget':
+    ensure   => $ensure,
+    proto    => 'tcp',
+    port     => 15001,
+    src_sets => ['DOMAIN_NETWORKS'],
   }
 
   # TODO: Add monitoring
