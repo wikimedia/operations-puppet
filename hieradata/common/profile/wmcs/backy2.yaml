@@ -1,1 +1,2 @@
 profile::wmcs::backy2::backup_dir: '/srv/backy2/data'
+profile::wmcs::backy2::postgres_root_dir: '/var/lib/postgresql'

@@ -40,6 +40,7 @@ profile::wmcs::backy2::backup_cinder_volumes::enabled: true
 profile::wmcs::backy2::backup_cinder_volumes::div: 2
 profile::wmcs::backy2::backup_cinder_volumes::remainder: 0
 profile::wmcs::backy2::cluster_name: ceph
+profile::wmcs::backy2::postgres_root_dir: '/srv/cinder-backups/postgresql'
 
 profile::cloudceph::mon::hosts:
   "cloudcephmon1001.eqiad.wmnet":
