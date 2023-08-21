@@ -29,7 +29,7 @@ class profile::benthos(
         benthos::instance { $instance:
             ensure        => $instance_config['ensure'],
             env_variables => $base_env_variables + $custom_env_variables,
-            config        => template("profile/benthos/instances/${instance}.yaml.erb"),
+            config_source => "profile/benthos/instances/${instance}.yaml",
         }
     }
 }

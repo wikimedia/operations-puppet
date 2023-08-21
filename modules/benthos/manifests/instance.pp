@@ -4,7 +4,7 @@
 # Deploy a self-contained Benthos instance.
 #
 define benthos::instance(
-    String $config,
+    String $config_source,
     Hash[String, Any] $env_variables = undef,
     Wmflib::Ensure $ensure = present,
 ) {
@@ -21,7 +21,7 @@ define benthos::instance(
         owner        => 'benthos',
         group        => 'benthos',
         mode         => '0755',
-        content      => $config,
+        source       => "puppet:///modules/${config_source}",
         validate_cmd => '/usr/bin/benthos lint --skip-env-var-check %',
     }
 
