@@ -146,7 +146,7 @@ profile::cassandra::settings:
   cluster_name: "Analytics Query Service Storage"
   tls_cluster_name: aqs
   start_rpc: false
-  target_version: '3.x'
+  target_version: '4.x'
   default_instance_params:
     max_heap_size: 16g
     # 1/4 heap size, no more than 100m/thread
@@ -170,11 +170,14 @@ profile::cassandra::settings:
     permissions_validity_in_ms: 600000
 
     # Enable node-to-node encryption only between datacenters.
-    internode_encryption: dc
+    internode_encryption: all
 
     # Enable client encryption, though optional for the time being (see: T307798).
     client_encryption_enabled: true
     client_encryption_optional: true
+
+    server_encryption_optional: true
+    legacy_ssl_storage_port_enabled: true
   users:
     - aqs
     - image_suggestions
@@ -182,6 +185,9 @@ profile::cassandra::settings:
     - device_analytics
     - geo_analytics
     - fgoodwin
+
+# Port to use for SSL certificate monitoring
+profile::cassandra::monitor_tls_port: 7000
 
 profile::cassandra::client_ips:
   # required for image-suggestions and other tools.
