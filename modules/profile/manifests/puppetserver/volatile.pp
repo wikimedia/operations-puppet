@@ -38,7 +38,8 @@ class profile::puppetserver::volatile (
         user         => 'root',
         manage_user  => false,
         outfile      => "${base_path}/external_cloud_vendors/public_clouds.json",
-        conftool     => $profile::puppetserver::enable_ca,
+        # TODO: when puppet 7 production set to $profile::puppetserver::enable_ca
+        conftool     => false,
         http_proxy   => $http_proxy,
         private_repo => $private_repo_path,
     }
