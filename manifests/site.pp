@@ -1009,7 +1009,7 @@ node /^doc[12]00[123]\.(codfw|eqiad)\./ {
 }
 
 # Wikidough (T252132)
-node /^(doh[123456]00[12])\.wikimedia\./ {
+node /^(doh[123456]00[1234])\.wikimedia\./ {
     role(wikidough)
 }
 
