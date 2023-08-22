@@ -44,7 +44,7 @@ class profile::puppetserver::volatile (
         private_repo => $private_repo_path,
     }
     class { 'ip_reputation_vendors':
-        ensure         => stdlib::ensure($ip_reputation_proxies.empty()),
+        ensure         => stdlib::ensure(!$ip_reputation_proxies.empty()),
         user           => 'root',
         manage_user    => false,
         outfile        => "${base_path}/ip_reputation_vendors/proxies.json",
