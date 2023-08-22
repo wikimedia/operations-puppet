@@ -3,6 +3,8 @@
 #
 
 # Determine the site the server is in
+# NOTE: Adding a new site or updating private ranges?
+# Please update the ranges in mediawiki-config/wmf-config/reverse-proxy.php.
 
 $site = $facts['ipaddress'] ? {
     /^208\.80\.15[23]\./                                      => 'codfw',
