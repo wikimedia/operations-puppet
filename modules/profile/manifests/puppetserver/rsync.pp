@@ -39,7 +39,7 @@ class profile::puppetserver::rsync {
         logging_enabled    => false,
     }
     firewall::service { 'Rsync port to puppetservers':
-        ensure => $sync_ensure,
+        ensure => stdlib::ensure($profile::puppetserver::enable_ca),
         proto  => 'tcp',
         port   => [873],
         srange => wmflib::role::hosts('puppetserver') - $facts['networking']['fqdn'],

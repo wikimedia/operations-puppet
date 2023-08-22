@@ -95,7 +95,7 @@ class profile::puppetserver (
     }
     $config_dir = $puppetserver::puppetserver_config_dir
     $ssl_dir = $puppetserver::ssl_dir
-    $ca_dir = "${puppetserver::ssl_dir}/ca"
+    $ca_dir = $puppetserver::ca_dir
     $ca_private_key = $ca_private_key_secret.then |$x| { Sensitive(secret($x)) }
     class { 'puppetserver::ca':
         enable          => $enable_ca,

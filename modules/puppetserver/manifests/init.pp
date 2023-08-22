@@ -64,8 +64,9 @@ class puppetserver (
     # This is defined in /puppetserver.conf
     # This is used in systemd
     $config_d_dir = "${puppetserver_config_dir}/conf.d"
+    $ca_dir = "${puppetserver_config_dir}/ca"
     $bootstap_config_dir = "${puppetserver_config_dir}/services.d"
-    $ssl_dir = '/var/lib/puppet/server/ssl'
+    $ssl_dir = $separate_ssldir.bool2str('/var/lib/puppet/server/ssl', '/var/lib/puppet/ssl')
     $environments_dir = "${code_dir}/environments"
 
     $service_reload_notify = $auto_restart ? {
