@@ -21,6 +21,11 @@ class profile::puppetserver::volatile (
     unless $profile::puppetserver::extra_mounts.has_key('volatile') {
         fail("Must define a volatile entry in profile::puppetserver::extra_mounts to use ${title}")
     }
+    include profile::puppetserver::git
+    unless $profile::puppetserver::git::repos.has_key('private') {
+        fail("Must define a private entry in profile::puppetserver::git::repos to use ${title}")
+    }
+    $private_repo_path = "${profile::puppetserver::git::basedir}/private"
     $base_path            = $profile::puppetserver::extra_mounts['volatile']
     $geoip_destdir        = "${base_path}/GeoIP"
     $geoip_destdir_ipinfo = "${base_path}/GeoIPInfo"
@@ -30,11 +35,12 @@ class profile::puppetserver::volatile (
     }
 
     class { 'external_clouds_vendors':
-        user        => 'root',
-        manage_user => false,
-        outfile     => "${base_path}/external_cloud_vendors/public_clouds.json",
-        conftool    => $profile::puppetserver::enable_ca,
-        http_proxy  => $http_proxy,
+        user         => 'root',
+        manage_user  => false,
+        outfile      => "${base_path}/external_cloud_vendors/public_clouds.json",
+        conftool     => $profile::puppetserver::enable_ca,
+        http_proxy   => $http_proxy,
+        private_repo => $private_repo_path,
     }
     class { 'ip_reputation_vendors':
         ensure         => stdlib::ensure($ip_reputation_proxies.empty()),
