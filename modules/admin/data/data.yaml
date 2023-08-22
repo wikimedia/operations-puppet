@@ -221,7 +221,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon, roti]
+    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon, roti, rickijay]
     approval:
       - Monica Pinedo
       - Leszek Manicki
@@ -5999,6 +5999,15 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP3p3IF96m0/MLPgxWxgEbo6QyGZEMc8fj6bn3H8lag6'
+  rickijay:
+    ensure: present
+    realname: Ricki Jay
+    email: ricki.jay@wikimedia.de
+    uid: 44914
+    gid: 500
+    krb: present
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZMvLWML3HYfq2Tc1TvfUFInGtmN8DS01pcdYDetuiCklmTUFuRwYfeIhevlpwFKxauefEDs04YH/i0aupTfrGfORRtS/qLhn8lSQY3z73c/XlMOYwozfHeojc5eBUhEQXSPMbhm5cCZyBjubj933HFwA1FSA2gMju4m53ehQPJEH5U8CG2br4iSNcRDNn+YmLvXcmXGl8ehw0dSVyFJwaakbbP+Xux2c0mQnmjafBWoxEz8ExyIC/8EgZqRIMcPJYswobp73h+eI2A58MClPQnuJz7n4p0NxzUFJW88dfwLjk5d1o7prCisp2NpI7CKhwsd409zTbWGsqSMcqW4vLP1ZWltJISOSUrxU1byrJJW5u5Z3sWuOtOjjAU6ZBFxjEuK/LtPeLMa813CpKfMEwVHV+6/0u7ymsGFN+7eoOOT7CGwe/Fjhym9zyUqkNtFKPo2I/Ib6HDOpYsAjuNupND7+7L7D3XzWWTduvTlWJo3vJ8F6pJGYZqFyaT4Q1GTk= ricki.jay@wikimedia.de'
 
 ldap_only_users:
   adavenport:
