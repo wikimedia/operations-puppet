@@ -301,6 +301,14 @@ profile::kubernetes::deployment_server::services:
         - name: revertrisk-deploy
           owner: root
           group: deploy-ml-service
+    readability:
+      usernames:
+        - name: readability
+          owner: root
+          group: deploy-ml-service
+        - name: readability-deploy
+          owner: root
+          group: deploy-ml-service
     ores-legacy:
       usernames:
         - name: ores-legacy
