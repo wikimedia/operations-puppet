@@ -6,15 +6,17 @@
 # @param manage_user set to false if the user is managed elsewhere
 # @param conftool set to true if you want to upload data to etcd.
 # @param outfile location to write the results
+# @param private_repo location of the private_repo
 # @param http_proxy http proxy server to use will be used for both http and https
 class external_clouds_vendors (
-    Wmflib::Ensure            $ensure      = 'present',
-    String[1]                 $user        = 'external-clouds-fetcher',
-    String[1]                 $group       = 'root',
-    Boolean                   $manage_user = true,
-    Boolean                   $conftool    = false,
-    Stdlib::Unixpath          $outfile     = '/srv/external_clouds_vendors/public_clouds.json',
-    Optional[Stdlib::HTTPUrl] $http_proxy  = undef,
+    Wmflib::Ensure            $ensure       = 'present',
+    String[1]                 $user         = 'external-clouds-fetcher',
+    String[1]                 $group        = 'root',
+    Boolean                   $manage_user  = true,
+    Boolean                   $conftool     = false,
+    Stdlib::Unixpath          $outfile      = '/srv/external_clouds_vendors/public_clouds.json',
+    Stdlib::Unixpath          $private_repo = '/srv/private',
+    Optional[Stdlib::HTTPUrl] $http_proxy   = undef,
 ) {
     ensure_packages(['python3-lxml', 'python3-netaddr', 'python3-requests', 'python3-wmflib', 'python3-conftool', 'python3-git'])
     if $manage_user {
@@ -55,7 +57,7 @@ class external_clouds_vendors (
         content => '{}',
     }
     $opts = $conftool.bool2str('-c', '')
-    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets ${opts} -vv ${outfile}"
+    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets --repo ${private_repo} ${opts} -vv ${outfile}"
     systemd::timer::job { 'dump_cloud_ip_ranges':
         ensure            => $ensure,
         command           => $command,
