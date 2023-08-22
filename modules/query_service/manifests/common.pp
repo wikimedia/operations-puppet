@@ -121,6 +121,16 @@ class query_service::common(
         mode    => '0644',
     }
 
+    file { "/etc/${deploy_name}/allowlist.txt":
+        ensure => present,
+        source => 'puppet:///modules/query_service/allowlist.txt',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        before => Service[$title],
+    }
+
+
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer job takes care of
     # cleaning up GC logs older than 30 days.

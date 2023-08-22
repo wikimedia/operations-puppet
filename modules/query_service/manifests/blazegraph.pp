@@ -67,16 +67,6 @@ define query_service::blazegraph(
         before  => Service[$title],
     }
 
-    file { '/etc/query_service/allowlist.txt':
-        ensure => present,
-        source => 'puppet:///modules/query_service/allowlist.txt',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        before => Service[$title],
-    }
-
-
     query_service::logback_config { $title:
         logstash_logback_port => $logstash_logback_port,
         deploy_name           => $deploy_name,
