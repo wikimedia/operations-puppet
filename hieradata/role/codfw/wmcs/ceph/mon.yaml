@@ -1,5 +1,4 @@
 profile::admin::groups:
   - wmcs-roots
-  - labtest-roots
 
 profile::monitoring::notifications_enabled: false

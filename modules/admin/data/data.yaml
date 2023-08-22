@@ -722,10 +722,9 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808, taavi, sstefanova, raymond-ndibe]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval:
-      - Nicholas Skaggs
+    members: []
+    privileges: []
+    deprecated: true
   swift-roots:
     gid: 777
     description: users who have root on swift servers

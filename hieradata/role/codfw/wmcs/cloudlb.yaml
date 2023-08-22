@@ -1,6 +1,5 @@
 profile::admin::groups:
   - wmcs-roots
-  - labtest-roots
 
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
