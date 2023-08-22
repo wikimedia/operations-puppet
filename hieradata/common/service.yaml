@@ -2843,8 +2843,8 @@ service::catalog:
     lvs:
       class: low-traffic
       conftool:
-        cluster: thumbor
-        service: thumbor
+        cluster: kubernetes
+        service: kubesvc
       depool_threshold: ".5"
       enabled: true
       monitors:
