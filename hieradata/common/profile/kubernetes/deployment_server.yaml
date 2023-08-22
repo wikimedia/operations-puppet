@@ -224,6 +224,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: geo-analytics
         - name: geo-analytics-deploy
+    media-analytics:
+      usernames:
+        - name: media-analytics
+        - name: media-analytics-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:

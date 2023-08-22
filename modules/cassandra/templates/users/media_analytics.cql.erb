@@ -1,0 +1,7 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE ROLE IF NOT EXISTS media_analytics WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT SELECT ON "local_group_default_T_mediarequest_per_referer".data TO 'media_analytics';
+GRANT SELECT ON "local_group_default_T_mediarequest_per_file".data TO 'media_analytics';
+GRANT SELECT ON "local_group_default_T_mediarequest_top_files".data TO 'media_analytics';

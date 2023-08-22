@@ -182,6 +182,7 @@ profile::cassandra::settings:
     - aqs_testing
     - device_analytics
     - geo_analytics
+    - media_analytics
     - fgoodwin
 
 # Port to use for SSL certificate monitoring
