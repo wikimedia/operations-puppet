@@ -67,7 +67,7 @@ define query_service::blazegraph(
         before  => Service[$title],
     }
 
-    file { "/etc/${title}/allowlist.txt":
+    file { '/etc/query_service/allowlist.txt':
         ensure => present,
         source => 'puppet:///modules/query_service/allowlist.txt',
         owner  => 'root',
