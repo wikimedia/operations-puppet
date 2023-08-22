@@ -246,5 +246,8 @@ gitlab_rails['object_store']['objects']['pages']['enabled'] = false
 gitlab_rails['env'] = {
   # This is needed to let Gitlab/Excon pick up the wmf signed certificates
   'SSL_CERT_DIR' => '/etc/ssl/certs',
+<%- if @local_gems_enabled -%>
+  'BUNDLE_GEMFILE' => 'Gemfile.local',
+<%- end %>
 }
 <% end %>

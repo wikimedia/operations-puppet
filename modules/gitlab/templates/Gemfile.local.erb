@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+# Wrap original Gemfile
+eval_gemfile('Gemfile')
+
+# Load local gems for each given directory
+<%- @local_gems.each do |path, gems| -%>
+path(<%= path.inspect %>) do
+<%- gems.each do |gem| -%>
+  gem <%= gem.inspect %>
+<%- end -%>
+end
+<%- end -%>

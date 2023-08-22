@@ -17,6 +17,8 @@ class gitlab (
     Stdlib::Unixpath $data_dir                                  = '/var/opt/gitlab/git-data',
     Stdlib::Unixpath $cert_path                                 = "${config_dir}/ssl/${gitlab_domain}.pem",
     Stdlib::Unixpath $key_path                                  = "${config_dir}/ssl/${gitlab_domain}.key",
+    Stdlib::Unixpath $rails_path                                = '/opt/gitlab/embedded/service/gitlab-rails',
+    Stdlib::Unixpath $embedded_bin_path                         = '/opt/gitlab/embedded/bin',
     Boolean          $listen_https                              = true,
     Boolean          $enable_backup                             = true,
     Integer[1]       $backup_keep_time                          = 604800,
@@ -66,6 +68,8 @@ class gitlab (
     Boolean                  $thanos_storage_enabled            = false,
     String                   $thanos_storage_username           = '',
     String                   $thanos_storage_password           = '',
+    Boolean                  $local_gems_enabled                = false,
+    Hash[Stdlib::Unixpath, Array[String]] $local_gems           = {},
 
 ) {
     $oidc_defaults = {
@@ -118,6 +122,7 @@ class gitlab (
         group => 'root',
         mode  => '0500',
     })
+
     file {'/etc/gitlab/gitlab.rb':
         ensure  => $ensure,
         owner   => 'root',
@@ -125,6 +130,35 @@ class gitlab (
         mode    => '0400',
         content => template('gitlab/gitlab.rb.erb'),
         notify  => Exec['Reconfigure GitLab'],
+    }
+
+    $gemfile_local_ensure = $local_gems_enabled ? {
+        true    => $ensure,
+        default => 'absent',
+    }
+
+    file { "${rails_path}/Gemfile.local":
+        ensure  => stdlib::ensure($gemfile_local_ensure),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('gitlab/Gemfile.local.erb'),
+        require => Package['gitlab-ce'],
+        notify  => Exec['Recreate GitLab Gemfile.local.lock'],
+    }
+
+    # Generate a Gemfile.local.lock, starting with Gemfile.lock as a base to
+    # avoid attempts to resolve/update newer versions of upstream gem dependencies
+    exec { 'Recreate GitLab Gemfile.local.lock':
+        command     => "/bin/sh -c \"/usr/bin/cp Gemfile.lock Gemfile.local.lock && ${embedded_bin_path}/bundle lock --local\"",
+        cwd         => $rails_path,
+        environment => [
+            'BUNDLE_GEMFILE=Gemfile.local',
+            'BUNDLE_IGNORE_CONFIG=1',
+        ],
+        refreshonly => true,
+        require     => Package['gitlab-ce'],
+        notify      => Service['gitlab-ce'],
     }
 
     # From: https://github.com/voxpupuli/puppet-gitlab/blob/master/manifests/service.pp
