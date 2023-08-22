@@ -205,7 +205,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
       target: http://query.wikidata.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://commons-query.wikimedia.org
       replacement: https://wcqs.discovery.wmnet
