@@ -11,7 +11,7 @@
 # @param notrack set the rule with no state tracking
 define firewall::service(
     Wmflib::Protocol              $proto,
-                                  $port,
+                                  $port   = undef,
     Wmflib::Ensure                $ensure = present,
     Optional[String]              $desc = '',
     Integer[0,99]                 $prio = 10,
