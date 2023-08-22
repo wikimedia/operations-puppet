@@ -1,9 +1,13 @@
-autoload -Uz promptinit 
+autoload -Uz promptinit
 promptinit
 autoload -Uz compinit
 compinit
+autoload -U up-line-or-search
+autoload -U down-line-or-search
 
 bindkey -e
+bindkey "${terminfo[kcud1]}" down-line-or-search
+bindkey "${terminfo[kcuu1]}" up-line-or-search
 
 PROMPT='%F{cyan}%m%f %F{green}%2~%f %(?.%F{green}.%F{red})%#%f '
 RPROMPT='[%F{yellow}%*%f]'
@@ -15,18 +19,16 @@ HISTSIZE=1000000
 SAVEHIST=1000000
 HISTFILE=~/.zsh_history
 
-setopt appendhistory
-setopt incappendhistory
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_ignore_space
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_minus
+setopt hist_ignore_dups
+setopt hist_reduce_blanks
+setopt inc_append_history
+setopt auto_cd
 
 # slashes are words.
 WORDCHARS=${WORDCHARS/\/}
-
-# Use modern completion system
-autoload -Uz compinit
-compinit
 
 eval "$(dircolors -b)"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
