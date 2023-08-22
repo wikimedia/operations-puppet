@@ -20,7 +20,7 @@ define firewall::client(
     case $firewall::provider {
         'ferm': {
             ferm::client { $title:
-                * => wmflib::dump_params(),
+                * => wmflib::resource::dump_params(),
             }
         }
         default: { fail('invalid provider') }

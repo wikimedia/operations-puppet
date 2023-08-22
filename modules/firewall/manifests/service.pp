@@ -26,7 +26,7 @@ define firewall::service(
     case $firewall::provider {
         'ferm': {
             ferm::service { $title:
-                * => wmflib::dump_params(),
+                * => wmflib::resource::dump_params(),
             }
         }
         'nftables': {
