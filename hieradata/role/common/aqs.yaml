@@ -176,8 +176,6 @@ profile::cassandra::settings:
     client_encryption_enabled: true
     client_encryption_optional: true
 
-    server_encryption_optional: true
-    legacy_ssl_storage_port_enabled: true
   users:
     - aqs
     - image_suggestions
