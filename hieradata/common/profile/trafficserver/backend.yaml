@@ -52,7 +52,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://debmonitor.discovery.wmnet:7443
     - type: map
       target: http://design.wikimedia.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://docker-registry.wikimedia.org
       replacement: https://docker-registry.discovery.wmnet
@@ -127,7 +127,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://mw-misc.discovery.wmnet:30443
     - type: map
       target: http://os-reports.wikimedia.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://ores.wikimedia.org
       replacement: https://ores.discovery.wmnet
@@ -205,7 +205,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
       target: http://query.wikidata.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://commons-query.wikimedia.org
       replacement: https://wcqs.discovery.wmnet
@@ -217,7 +217,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://releases.discovery.wmnet
     - type: map
       target: http://research.wikimedia.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://rt.wikimedia.org
       replacement: https://rt.discovery.wmnet
@@ -226,13 +226,13 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://schema.discovery.wmnet
     - type: map
       target: http://security.wikimedia.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://static-codereview.wikimedia.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://stats.wikimedia.org
       replacement: https://analytics-web.discovery.wmnet:8443
@@ -287,10 +287,10 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
     - type: map
       target: http://wikiworkshop.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://www.wikiworkshop.org
-      replacement: https://webserver-misc-codfw.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
       target: http://yarn.wikimedia.org
       replacement: https://an-tool1008.eqiad.wmnet
