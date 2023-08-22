@@ -9,7 +9,7 @@ ExecStart=/usr/bin/jwt-authorizer \
   --listen=<%= @listen %> \
   --socket-mode=<%= @mode %> \
   --keys-url=<%= @keys_url %> \
-  --issuer=<%= @issuer %> \
+  --issuers=<%= @issuers.join(',') %> \
   <%- if @validation_template %>
   --validation-template=<%= @validation_template_path %> \
   <%- end %>

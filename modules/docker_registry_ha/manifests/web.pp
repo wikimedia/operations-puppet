@@ -23,7 +23,7 @@ class docker_registry_ha::web (
     Optional[String] $ssl_certificate_name=undef,
     Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips=[],
     Stdlib::HTTPUrl $jwt_keys_url='https://gitlab.wikimedia.org/-/jwks',
-    Stdlib::Host $jwt_issuer='gitlab.wikimedia.org',
+    Array[String] $jwt_issuers=['https://gitlab.wikimedia.org'],
     Boolean $read_only_mode=false,
     String $homepage='/srv/homepage',
     Boolean $nginx_cache=true,
@@ -164,7 +164,7 @@ class docker_registry_ha::web (
         owner               => 'www-data',
         group               => 'www-data',
         keys_url            => $jwt_keys_url,
-        issuer              => $jwt_issuer,
+        issuers             => $jwt_issuers,
         validation_template => 'puppet:///modules/docker_registry_ha/jwt-validations.tmpl',
     }
 

@@ -9,7 +9,7 @@
 #               unix:///some/unix.sock)
 # @param keys_url URL from which to periodically fetch public JSON Web Token
 #                 issuer keys for validating bearer tokens.
-# @param issuer Issuer name to enforce on tokens.
+# @param issuers List of accepted issuers for tokens.
 # @param ensure Systemd service state.
 # @param owner Service process owner.
 # @param group Service process group owner.
@@ -22,7 +22,7 @@
 define jwt_authorizer::service(
     String $listen,
     Stdlib::HTTPUrl $keys_url,
-    Stdlib::Host $issuer,
+    Array[String] $issuers,
     Wmflib::Ensure $ensure = 'present',
     String $owner = 'www-data',
     String $group = 'www-data',
