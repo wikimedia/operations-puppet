@@ -2,7 +2,11 @@
 # This profiles ships the base network set definitions for nftables (the equivalent to what is provided
 # by modules/base/templates/firewall/defs.erb for Ferm. If you make changes, remember to update both,
 # unless you are fully sure one of the definitions will exclusively be used with hosts using Ferm or nft
-class profile::firewall::nftables_base_sets () {
+class profile::firewall::nftables_base_sets (
+    Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts'),
+    Array[Stdlib::Host]        $prometheus_nodes = lookup('prometheus_nodes'),
+) {
+
     include network::constants
 
     nftables::set { 'INTERNAL':
@@ -128,5 +132,17 @@ class profile::firewall::nftables_base_sets () {
 
     nftables::set { 'MYSQL_ROOT_CLIENTS':
         hosts => $network::constants::mysql_root_clients,
+    }
+
+    unless $monitoring_hosts.empty() {
+        nftables::set { 'MONITORING_HOSTS':
+            hosts => $monitoring_hosts,
+        }
+    }
+
+    unless $prometheus_nodes.empty() {
+        nftables::set { 'PROMETHEUS_HOSTS':
+            hosts => $prometheus_nodes,
+        }
     }
 }
