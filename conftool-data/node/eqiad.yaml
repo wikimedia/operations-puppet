@@ -325,6 +325,12 @@ eqiad:
     kubernetes1020.eqiad.wmnet: [thumbor]
     kubernetes1021.eqiad.wmnet: [thumbor]
     kubernetes1022.eqiad.wmnet: [thumbor]
+    kubernetes1023.eqiad.wmnet: [thumbor]
+    kubernetes1024.eqiad.wmnet: [thumbor]
+    kubernetes1025.eqiad.wmnet: [thumbor]
+    kubernetes1026.eqiad.wmnet: [thumbor]
+    kubernetes1057.eqiad.wmnet: [thumbor]
+    kubernetes1058.eqiad.wmnet: [thumbor]
   prometheus:
     prometheus1005.eqiad.wmnet: [prometheus]
     prometheus1006.eqiad.wmnet: [prometheus]
@@ -381,6 +387,8 @@ eqiad:
     kubernetes1024.eqiad.wmnet: [kubesvc]
     kubernetes1025.eqiad.wmnet: [kubesvc]
     kubernetes1026.eqiad.wmnet: [kubesvc]
+    kubernetes1057.eqiad.wmnet: [kubesvc]
+    kubernetes1058.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1001.eqiad.wmnet: [kubemaster]
     kubestagemaster1002.eqiad.wmnet: [kubemaster]

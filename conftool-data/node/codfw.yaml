@@ -331,6 +331,10 @@ codfw:
     kubernetes2020.codfw.wmnet: [thumbor]
     kubernetes2021.codfw.wmnet: [thumbor]
     kubernetes2022.codfw.wmnet: [thumbor]
+    kubernetes2023.codfw.wmnet: [thumbor]
+    kubernetes2024.codfw.wmnet: [thumbor]
+    kubernetes2055.codfw.wmnet: [thumbor]
+    kubernetes2056.codfw.wmnet: [thumbor]
   prometheus:
     prometheus2005.codfw.wmnet: [prometheus]
     prometheus2006.codfw.wmnet: [prometheus]
@@ -379,6 +383,8 @@ codfw:
     kubernetes2022.codfw.wmnet: [kubesvc]
     kubernetes2023.codfw.wmnet: [kubesvc]
     kubernetes2024.codfw.wmnet: [kubesvc]
+    kubernetes2055.codfw.wmnet: [kubesvc]
+    kubernetes2056.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2001.codfw.wmnet: [kubemaster]
     kubestagemaster2002.codfw.wmnet: [kubemaster]
