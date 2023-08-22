@@ -1,7 +1,4 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-# /etc/query_service is a symlink that resolves to wcqs or wdqs,
-# depending on the host's role.
-ALLOWLIST="/etc/query_service/allowlist.txt"
 HEAP_SIZE="<%= @heap_size %>"
 BLAZEGRAPH_MAIN_NS="<%= @blazegraph_main_ns %>"
 LOG_CONFIG=/etc/<%= @deploy_name %>/logback-<%= @title %>.xml

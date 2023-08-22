@@ -54,7 +54,7 @@ define query_service::blazegraph(
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            before  => Service[$title],
+            before  => Systemd::Unit[$title],
         }
     }
 
@@ -64,7 +64,7 @@ define query_service::blazegraph(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        before  => Service[$title],
+        before  => Systemd::Unit[$title],
     }
 
     query_service::logback_config { $title:
