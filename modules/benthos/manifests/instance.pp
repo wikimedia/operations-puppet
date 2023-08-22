@@ -3,8 +3,12 @@
 #
 # Deploy a self-contained Benthos instance.
 #
+# Please note: the 'port' parameter is used by prometheus to figure out which ports to scrape,
+# even if it's unused here.
+#
 define benthos::instance(
     String $config_source,
+    Stdlib::Port $port,
     Hash[String, Any] $env_variables = undef,
     Wmflib::Ensure $ensure = present,
 ) {
