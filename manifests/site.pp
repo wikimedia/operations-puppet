@@ -1647,6 +1647,11 @@ node /^kubestage200[12]\.codfw\./ {
     role(kubernetes::staging::worker)
 }
 
+# codfw new kubernetes nodes T342534
+node /^kubernetes20(2[5-9]|3[0-9]|4[0-9]|5[0-4])\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 node /^cloudvirt200[1-3]\-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
