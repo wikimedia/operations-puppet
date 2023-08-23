@@ -39,7 +39,7 @@ groups:
               josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell, wikitrent,
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
-              stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, lwatson, s-mukuti,
+              stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti,
               kchapman, ryanbrounley]
   wikidev:
     gid: 500
@@ -6745,8 +6745,9 @@ ldap_only_users:
     realname: Kelton Hurd
     email: khurd@wikimedia.org
   lwatson:
-    ensure: absent
+    ensure: present
     realname: Lauralyn Watson
+    email: lwatson@wikimedia.org
   s-mukuti:
     ensure: absent
     realname: Sarah Mukuti
