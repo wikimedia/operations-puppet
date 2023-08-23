@@ -78,15 +78,14 @@ class profile::firewall (
         src_sets => ['CUMIN_MASTERS'],
     }
 
-    unless $monitoring_hosts.empty() {
-        ferm::rule { 'monitoring-all':
-            rule   => "saddr (${monitoring_hosts.join(' ')}) ACCEPT;",
-        }
-    }
-
-    unless $prometheus_nodes.empty() {
-        ferm::rule { 'prometheus-all':
-            rule   => "saddr @resolve((${prometheus_nodes.join(' ')})) ACCEPT;",
+    $all_monitoring_hosts = $prometheus_nodes + $monitoring_hosts
+    unless $all_monitoring_hosts.empty() {
+        ['udp', 'tcp'].each |$proto| {
+            firewall::service { "full-monitoring-metrics-access-${proto}":
+                proto      => $proto,
+                port_range => [1,65535],
+                srange     => $all_monitoring_hosts,
+            }
         }
     }
 
