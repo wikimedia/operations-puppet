@@ -53,8 +53,8 @@ class profile::firewall (
             },
         }
     }
-    if $enable_logging {
-        include profile::firewall::log
+    if $enable_logging and $provider == 'ferm' {
+        include profile::firewall::log::ferm
     }
 
     if $manage_nf_conntrack and !$facts['wmflib']['is_container'] {

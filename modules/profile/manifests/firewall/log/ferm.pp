@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-# Firewall logging class
+# Firewall logging class when using the ferm provider
 # @param log_burst configure log burst
 # @param log_rate the logging rate to use
 # @param separate_file if true log to a seperate file
-class profile::firewall::log (
+class profile::firewall::log::ferm (
     Integer                                  $log_burst     = lookup('profile::firewall::log::log_burst'),
     Pattern[/\d+\/(second|minute|hour|day)/] $log_rate      = lookup('profile::firewall::log::log_rate'),
     Boolean                                  $separate_file = lookup('profile::firewall::log::separate_file')
