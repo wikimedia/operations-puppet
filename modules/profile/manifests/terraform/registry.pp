@@ -12,7 +12,7 @@ class profile::terraform::registry (
     content => template('profile/terraform/registry/vhost.conf.erb'),
   }
 
-  ensure_packages(['python3-flask'])
+  ensure_packages(['python3-flask', 'python3-semver'])
 
   file { '/usr/local/bin/tf-registry-uwsgi.py':
     source => 'puppet:///modules/profile/terraform/registry/tf-registry-uwsgi.py',
