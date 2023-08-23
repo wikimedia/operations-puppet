@@ -34,7 +34,6 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://netbox-next\.wikimedia\.org\/[\w\/]*'
     required_groups:
-      - ops
       - wmf
       - nda
   gitlab_oidc:
@@ -48,7 +47,6 @@ profile::idp::services:
     service_id: 'https://gitlab(-replica|-replica-old)\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
-      - ops
       - nda
       - wmf
   juniper:
@@ -60,7 +58,6 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://datahub-frontend\.k8s-staging\.discovery\.wmnet(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
 profile::idp::ldap_attributes:
