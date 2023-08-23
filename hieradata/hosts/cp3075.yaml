@@ -1,4 +1,5 @@
 profile::cache::varnish::frontend::single_backend: true
+profile::cache::varnish::frontend::fe_mem_gb_reserved: 100
 
 profile::trafficserver::backend::storage_elements:
   - devname: nvme0n1
