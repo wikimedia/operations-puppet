@@ -556,6 +556,8 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: deployment-memc08
       shard02:
         host: deployment-memc09
+  wikifunctions:
+    eqiad: {}
 
 profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; test'
 profile::prometheus::memcached_exporter::arguments: ''
