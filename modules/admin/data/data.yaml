@@ -6810,3 +6810,7 @@ ldap_only_users:
     ensure: present
     realname: Amy Tsay
     email: atsay@wikimedia.org
+  vriley:
+    ensure: present
+    realname: Valerie Riley
+    email: vriley@wikimedia.org
