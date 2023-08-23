@@ -295,8 +295,15 @@ class icinga(
     # Purge unmanaged nagios_host and nagios_services resources
     # This will only happen for non exported resources, that is resources that
     # are declared by the icinga host itself
-    resources { 'nagios_host': purge => true, }
-    resources { 'nagios_service': purge => true, }
+    resources { 'nagios_host':
+        purge  => true,
+        notify => Service['icinga'],
+    }
+
+    resources { 'nagios_service':
+        purge  => true,
+        notify => Service['icinga'],
+    }
 
     # Applies a patch to disable autocomplete.js on search text input
     # `patch` appears to be a system package in stretch
