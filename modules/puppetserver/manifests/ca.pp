@@ -31,14 +31,13 @@ class puppetserver::ca (
     $key_file = "${custom_ca_dir}/ca.key"
     $crl_file = "${custom_ca_dir}/crl.pem"
 
-    # TODO: we need to ensure we mask puppetserver before importing the ca
     if $intermediate_ca {
         file {
             default:
                 ensure => file,
                 owner  => $puppetserver::owner,
                 mode   => '0400',
-                before => Exec['import intermidiate CA file'];
+                before => Exec['import intermediate CA file'];
             $custom_ca_dir:
                 ensure => directory;
             $ca_file:
@@ -54,10 +53,10 @@ class puppetserver::ca (
          --private-key ${key_file} \
          --crl-chain ${crl_file}
         |- COMMAND
-        exec{'import intermidiate CA file':
+        exec{'import intermediate CA file':
             command => $command,
             creates => "${puppetserver::config_dir}/puppetserver/ca",
-            before  => Service['puppetserver'],
         }
+        Package['puppetserver'] ~> Exec['import intermediate CA file'] ~> Systemd::Unmask['puppetserver.service']
     }
 }

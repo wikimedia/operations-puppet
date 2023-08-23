@@ -93,6 +93,19 @@ class puppetserver (
         },
     )
 
+    # Shared by profile::puppet::agent, but needs to have the correct
+    # permissions prior to starting Puppet
+    ensure_resource(
+        'file',
+        '/var/lib/puppet',
+        {
+            'ensure' => 'directory',
+            'owner'  => 'puppet',
+            'group'  => 'puppet',
+            'mode'   => '0751',
+        },
+    )
+
     wmflib::dir::mkdir_p(
         [
             $ssl_dir,
@@ -120,6 +133,7 @@ class puppetserver (
         order   => '20',
         content => $config,
         notify  => $service_reload_notify,
+        require => Systemd::Unmask['puppetserver.service'],
     }
     if ! $puppetdb_urls.empty {
         concat::fragment { 'server-storeconfigs':
@@ -127,6 +141,7 @@ class puppetserver (
             order   => '21',
             content => "storeconfigs = true\nstoreconfigs_backend = puppetdb\n",
             notify  => $service_reload_notify,
+            require => Systemd::Unmask['puppetserver.service'],
         }
     }
     if $enc_path {
@@ -135,6 +150,7 @@ class puppetserver (
             order   => '22',
             content => "node_terminus = exec\nexternal_nodes = ${enc_path}\n",
             notify  => $service_reload_notify,
+            require => Systemd::Unmask['puppetserver.service'],
         }
     }
     if $autosign {
@@ -143,6 +159,7 @@ class puppetserver (
             order   => '23',
             content => "autosign = ${autosign}\n",
             notify  => $service_reload_notify,
+            require => Systemd::Unmask['puppetserver.service'],
         }
     }
 
@@ -194,7 +211,7 @@ class puppetserver (
     file {
         default:
             ensure  => stdlib::ensure($ensure, 'file'),
-            require => Package['puppetserver'],
+            require => Systemd::Unmask['puppetserver.service'],
             notify  => $service_reload_notify;
         "${config_d_dir}/metrics.conf":
             content => epp('puppetserver/metrics.conf.epp', $metrics_params);
