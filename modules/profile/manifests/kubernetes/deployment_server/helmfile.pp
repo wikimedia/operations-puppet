@@ -19,15 +19,14 @@ class profile::kubernetes::deployment_server::helmfile (
         srcdir     => '/srv/deployment-charts',
     }
 
-    # Install the private values for each deployment.
     $general_private_dir = "${profile::kubernetes::deployment_server::global_config::general_dir}/private"
 
-    # "service_group" holds a value for each k8s cluster group that we run (main, ml-serve, etc..).
-    $services.each |String $service_group, Hash $service_data| {
-        $merged_services = deep_merge($service_data, $services_secrets[$service_group])
-        $private_dir = "${general_private_dir}/${service_group}_services"
+    # Install the private values for each service
+    k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
+        $merged_services = deep_merge($services[$cluster_group], $services_secrets[$cluster_group])
 
-        # Per "service_group" private directory
+        # Per "cluster_group" private directory for services
+        $private_dir = "${general_private_dir}/${cluster_group}_services"
         file { $private_dir:
             ensure => directory,
             owner  => 'root',
@@ -35,7 +34,7 @@ class profile::kubernetes::deployment_server::helmfile (
             mode   => '0750',
         }
 
-        # New-style private directories are one per service, not per cluster too.
+        # New-style private directories are one per service, not per cluster.
         $merged_services.each |String $svcname, Hash $data| {
             $permissions = $data['private_files'] ? {
                 undef   => $user_defaults,
@@ -55,7 +54,8 @@ class profile::kubernetes::deployment_server::helmfile (
                 recurse => true,
             }
         }
-        k8s::fetch_cluster_groups()[$service_group].each | String $cluster_name, K8s::ClusterConfig $_| {
+
+        $cluster.each() | String $cluster_name, K8s::ClusterConfig $_ | {
             $merged_services.map |String $svcname, Hash $data| {
                 # Permission and file presence setup
                 if $data['private_files'] {
@@ -85,6 +85,6 @@ class profile::kubernetes::deployment_server::helmfile (
                     }
                 }
             }
-        } # end k8s::fetch_cluster_groups
-    } # end services
+        }
+    }
 }
