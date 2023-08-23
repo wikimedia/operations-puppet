@@ -44,13 +44,16 @@ class profile::kubernetes::deployment_server::helmfile (
         }
         if $admin_services_secrets[$cluster_group] {
             $admin_services_secrets[$cluster_group].each | String $svcname, Hash $data | {
-                file { "${admin_private_dir}/${svcname}":
-                    ensure  => directory,
-                    owner   => 'root',
-                    group   => 'root',
-                    mode    => '0750',
-                    force   => true,
-                    recurse => true,
+                $admin_service_dir = "${admin_private_dir}/${svcname}"
+                unless defined(File[$admin_service_dir]) {
+                    file { $admin_service_dir:
+                        ensure  => directory,
+                        owner   => 'root',
+                        group   => 'root',
+                        mode    => '0750',
+                        force   => true,
+                        recurse => true,
+                    }
                 }
             }
         }
