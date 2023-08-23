@@ -313,18 +313,6 @@ profile::kubernetes::deployment_server::services:
         - name: experimental-deploy
           owner: root
           group: deploy-ml-service
-    kubeflow-kfserving:
-      usernames: []
-      private_files:
-        owner: "root"
-        group: "root"
-        mode: "640"
-    knative-serving:
-      usernames: []
-      private_files:
-        owner: "root"
-        group: "root"
-        mode: "640"
   dse-k8s:
     rdf-streaming-updater:
       usernames:
@@ -338,10 +326,3 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: stream-enrichment-poc
         - name: stream-enrichment-poc-deploy
-  aux-k8s:
-    cfssl-issuer:
-      usernames: []
-      private_files:
-        owner: "root"
-        group: "root"
-        mode: "640"
