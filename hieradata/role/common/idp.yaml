@@ -22,7 +22,6 @@ profile::idp::services:
     id: 1
     service_id: 'https://icinga\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
     properties:
@@ -48,14 +47,12 @@ profile::idp::services:
     id: 4
     service_id: 'https://graphite\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   logstash:
     id: 6
     service_id: 'https://(cas-)?logstash\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   people:
@@ -67,63 +64,54 @@ profile::idp::services:
     id: 8
     service_id: 'https://librenms\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   piwik:
     id: 9
     service_id: 'https://piwik\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   yarn:
     id: 10
     service_id: 'https://yarn\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   turnilo:
     id: 11
     service_id: 'https://turnilo\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   superset:
     id: 12
     service_id: 'https://superset\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   thanos:
     id: 13
     service_id: 'https://thanos\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   hue:
     id: 14
     service_id: 'https://hue\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   alerts:
     id: 15
     service_id: 'https://alerts\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   grafana:
     id: 16
     service_id: 'https://grafana(-next)?(-rw)?\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
       - grafana-admin
@@ -131,8 +119,6 @@ profile::idp::services:
     id: 17
     service_id: '^https://orchestrator\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
-      - sre-admins
       - nda
       - wmf
   rt:
@@ -144,7 +130,6 @@ profile::idp::services:
     id: 20
     service_id: 'https://config-master\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   klaxon:
@@ -156,7 +141,6 @@ profile::idp::services:
     id: 22
     service_id: 'https://netbox(-next)?\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - wmf
       - nda
   gitlab:
@@ -171,28 +155,24 @@ profile::idp::services:
     id: 25
     service_id: 'https://gitlab-replica(-new|-old)?\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - wmf
       - nda
   superset-next:
     id: 26
     service_id: 'https://superset-next\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   prometheus:
     id: 27
     service_id: 'https://prometheus-[^.]+\.wikimedia.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   dispatch:
     id: 28
     service_id: 'https://dispatch\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
       - nda
       - wmf
   idm:
@@ -214,7 +194,6 @@ profile::idp::services:
     service_id: 'https://gitlab(-replica|-replica-old)\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
-      - ops
       - nda
       - wmf
   netbox_oidc:
@@ -222,7 +201,6 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://netbox(-next)?\.wikimedia\.org\/[\w\/]*'
     required_groups:
-      - ops
       - wmf
 profile::idp::ldap_attributes:
   - cn
