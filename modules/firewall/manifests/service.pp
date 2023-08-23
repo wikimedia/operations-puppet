@@ -23,9 +23,12 @@ define firewall::service(
     Boolean                       $notrack = false,
 ) {
     include firewall
+
+    $escaped_title = regsubst($title, '\W', '_', 'G')
+
     case $firewall::provider {
         'ferm': {
-            ferm::service { $title:
+            ferm::service { $escaped_title:
                 * => wmflib::resource::dump_params(),
             }
         }
