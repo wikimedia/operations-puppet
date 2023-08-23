@@ -7,6 +7,7 @@ class profile::kubernetes::deployment_server::helmfile (
     Hash[String, Hash[String, Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { 'default_value' => {} }),
     Hash[String, Any] $services_secrets                                 = lookup('profile::kubernetes::deployment_server_secrets::services', { 'default_value' => {} }),
     Hash[String, Any] $default_secrets                                  = lookup('profile::kubernetes::deployment_server_secrets::defaults', { 'default_value' => {} }),
+    Hash[String, Any] $admin_services_secrets                           = lookup('profile::kubernetes::deployment_server_secrets::admin_services', { 'default_value' => {} }),
     String $helm_user_group                                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
 ) {
     # Add the global configuration for all deployments.
@@ -20,22 +21,42 @@ class profile::kubernetes::deployment_server::helmfile (
     }
 
     $general_private_dir = "${profile::kubernetes::deployment_server::global_config::general_dir}/private"
+    # Private directories for admin services
+    $admin_private_dir = "${general_private_dir}/admin"
+    file { $admin_private_dir:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
+    }
 
     # Install the private values for each service
     k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
         $merged_services = deep_merge($services[$cluster_group], $services_secrets[$cluster_group])
 
         # Per "cluster_group" private directory for services
-        $private_dir = "${general_private_dir}/${cluster_group}_services"
-        file { $private_dir:
+        $service_private_dir = "${general_private_dir}/${cluster_group}_services"
+        file { $service_private_dir:
             ensure => directory,
             owner  => 'root',
             group  => $helm_user_group,
             mode   => '0750',
         }
+        if $admin_services_secrets[$cluster_group] {
+            $admin_services_secrets[$cluster_group].each | String $svcname, Hash $data | {
+                file { "${admin_private_dir}/${svcname}":
+                    ensure  => directory,
+                    owner   => 'root',
+                    group   => 'root',
+                    mode    => '0750',
+                    force   => true,
+                    recurse => true,
+                }
+            }
+        }
 
         # New-style private directories are one per service, not per cluster.
-        $merged_services.each |String $svcname, Hash $data| {
+        $merged_services.each | String $svcname, Hash $data | {
             $permissions = $data['private_files'] ? {
                 undef   => $user_defaults,
                 default => $data['private_files']
@@ -45,7 +66,7 @@ class profile::kubernetes::deployment_server::helmfile (
                 'present' => directory,
                 default   => $data['ensure'],
             }
-            file { "${private_dir}/${svcname}":
+            file { "${service_private_dir}/${svcname}":
                 ensure  => $service_dir_ensure,
                 owner   => $permissions['owner'],
                 group   => $permissions['group'],
@@ -56,7 +77,7 @@ class profile::kubernetes::deployment_server::helmfile (
         }
 
         $cluster.each() | String $cluster_name, K8s::ClusterConfig $_ | {
-            $merged_services.map |String $svcname, Hash $data| {
+            $merged_services.map | String $svcname, Hash $data | {
                 # Permission and file presence setup
                 if $data['private_files'] {
                     $permissions = $user_defaults.merge($data['private_files'])
@@ -75,13 +96,28 @@ class profile::kubernetes::deployment_server::helmfile (
                     # This allows to avoid having to copy/paste certs inside of yaml files directly,
                     # for example.
                     $secret_data = wmflib::inject_secret($raw_data)
-                    file { "${private_dir}/${svcname}/${cluster_name}.yaml":
+                    file { "${service_private_dir}/${svcname}/${cluster_name}.yaml":
                         ensure  => $service_ensure,
                         owner   => $permissions['owner'],
                         group   => $permissions['group'],
                         mode    => $permissions['mode'],
                         content => to_yaml($secret_data),
-                        require => "File[${private_dir}/${svcname}]",
+                        require => "File[${service_private_dir}/${svcname}]",
+                    }
+                }
+            }
+
+            if $admin_services_secrets[$cluster_group] {
+                $admin_services_secrets[$cluster_group].each | String $svcname, Hash $data | {
+                    unless $data[$cluster_name].empty {
+                        $secret_data = wmflib::inject_secret($data[$cluster_name])
+                        file { "${admin_private_dir}/${svcname}/${cluster_name}.yaml":
+                            owner   => 'root',
+                            group   => 'root',
+                            mode    => '0440',
+                            content => to_yaml($secret_data),
+                            require => "File[${admin_private_dir}/${svcname}]",
+                        }
                     }
                 }
             }
