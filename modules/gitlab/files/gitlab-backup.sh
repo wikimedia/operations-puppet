@@ -21,8 +21,8 @@
 #
 # tar           Leave backup archives in the intermediate directory, skip tar creatio
 
-. gitlab-backup-restore-common.sh
-. gitlab-backup-config.sh
+. /srv/gitlab-backup/gitlab-backup-restore-common.sh
+. /srv/gitlab-backup/gitlab-backup-config.sh
 
 lock_backups
 

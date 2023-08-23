@@ -14,7 +14,7 @@ abort_if_locked() {
         timeout_date="$(cat ${LOCKFILE})"
 
         if [ "${current_date}" -lt "${timeout_date}" ]; then
-            echo "A backup process is already running, or has not timed out. (Current: ${current_date}, Timeout: ${timeout_date})"
+            echo "A backup or restore process is already running, or has not timed out. (Current: ${current_date}, Timeout: ${timeout_date})"
             exit 1
         fi
     fi
@@ -25,12 +25,15 @@ lock_backups() {
 
     trap unlock SIGINT SIGHUP SIGABRT EXIT
 
-    echo "Creating lockfile"
+    echo -n "Creating lockfile... "
     timeout=$(expr $(date +%s) + ${TIMEOUT_DURATION})
     echo "${timeout}" > $LOCKFILE
+
+    echo "Done"
 }
 
 unlock() {
-    echo "Cleaning up -- removing ${LOCKFILE}"
+    echo -n "Cleaning up -- removing ${LOCKFILE}... "
     rm -f ${LOCKFILE}
+    echo "Done"
 }
