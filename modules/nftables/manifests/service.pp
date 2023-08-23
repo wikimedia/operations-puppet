@@ -20,12 +20,13 @@ define nftables::service (
     Wmflib::Ensure                $ensure     = present,
     Integer[0,99]                 $prio       = 10,
     Optional[String]              $desc       = undef,
-    Array[Stdlib::Port]           $port       = [],
+    Nftables::Port                $port       = undef,
     Optional[Firewall::Portrange] $port_range = undef,
     Array[Stdlib::IP::Address]    $src_ips    = [],
     Array[Stdlib::IP::Address]    $dst_ips    = [],
     Array[String[1]]              $src_sets   = [],
     Array[String[1]]              $dst_sets   = [],
+    Boolean                       $notrack    = false,
 ) {
     # TODO: notrack is not implemented yet
     # TODO: there is a nftables construct 'concatenation' that can drastically
@@ -33,12 +34,14 @@ define nftables::service (
     # this define doesn't support it, but we may in the future!
     # see https://wiki.nftables.org/wiki-nftables/index.php/Concatenations
 
+    $_port = [$port].flatten
+
     # figure out transport protocol statements
-    if !$port.empty() and $port_range {
+    if !$_port.empty() and $port_range {
         fail('You can only pass an array of ports or a range, but not both')
     }
 
-    if !$port.empty() {
+    if !$_port.empty() {
         $port_stmt = "${proto} dport { ${port.sort.join(', ')} }"
     } elsif $port_range {
         if $port_range[0] >= $port_range[1] {
