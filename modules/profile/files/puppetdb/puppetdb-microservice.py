@@ -52,19 +52,20 @@ def _puppetdb_request(*paths, json=None, redacted=False):
     If the redacted parameter is True only the certname of the matched
     objects is returned.
     """
-    url = '/'.join([PUPPETDB_BASE_URL, *paths])
-    if json is not None:
-        results = requests.post(url, json=json)
-    else:
-        results = requests.get(url)
-
-    if results.status_code != 200:
-        abort(results.status_code)
-
     if redacted:
-        return [{'certname': result['certname']} for result in results.json()]
+        json['query'] = [
+            "extract",
+            ["certname"],
+            json['query'],
+            ["group_by", "certname"],
+        ]
+    url = '/'.join([PUPPETDB_BASE_URL, *paths])
+    response = requests.post(url, json=json)
 
-    return results.json()
+    if response.status_code != 200:
+        abort(response.status_code)
+
+    return response.json()
 
 
 @app.route("/")
