@@ -204,3 +204,5 @@ profile::ssh::server::host_keys:
     BE1hTiiqwL3Cc3xMyULBg05JVyZXqboKW3eNVt+MGxpD5ztlOGVFrdRI1P+YS8KigkEmLs
     MYo0ebD8xrGgs5AAAAEmpoYXRoYXdheUBza2l0dGxlcw==
     -----END OPENSSH PRIVATE KEY-----
+# TODO: Runs but is a large CPU hog for reasons not fully understood
+profile::prometheus::cadvisor::ensure: absent
