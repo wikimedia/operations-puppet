@@ -23,6 +23,8 @@ Allowed queries:
 
 import requests
 
+from json import loads
+
 from flask import Flask, abort, jsonify, request
 
 # Allowed Facts
@@ -56,7 +58,7 @@ def _puppetdb_request(*paths, json=None, redacted=False):
         json['query'] = [
             "extract",
             ["certname"],
-            json['query'],
+            loads(json['query']),
             ["group_by", "certname"],
         ]
     url = '/'.join([PUPPETDB_BASE_URL, *paths])
