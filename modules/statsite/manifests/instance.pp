@@ -30,7 +30,6 @@ define statsite::instance(
 ) {
     $python = $::lsbdistcodename ? {
         default => 'python3',
-        stretch => 'python',
         buster  => 'python',
     }
 
