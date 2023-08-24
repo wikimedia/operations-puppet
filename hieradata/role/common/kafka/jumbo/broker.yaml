@@ -3,6 +3,8 @@ contactgroups: 'admins,analytics'
 
 cluster: kafka_jumbo
 
+# kafka-jumbo allows message of up to 10 MB - See #T344688
+kafka_message_max_bytes: 10485760
 
 profile::kafka::broker::kafka_cluster_name: jumbo
 
