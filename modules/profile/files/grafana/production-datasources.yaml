@@ -3,6 +3,12 @@
 
 apiVersion: 1
 
+deleteDatasources:
+  - name: codfw prometheus/global
+    orgId: 1
+  - name: eqiad prometheus/global
+    orgId: 1
+
 datasources:
  - name: graphite
    type: graphite
