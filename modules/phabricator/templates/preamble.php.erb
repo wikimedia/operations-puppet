@@ -72,7 +72,6 @@ class redirector {
             // dynamic redirect:
             $this->redirect_and_exit($redirect);
           } else {
-            error_log('redirector: could not find task for '.$fieldValue);
             echo 'Task not found for '.$fieldValue;
             exit(404);
           }
