@@ -61,10 +61,10 @@ class profile::sre::os_updates (
             owner  => 'root',
             group  => 'root',
             mode   => '0444';
-        '/etc/wikimedia/os-updates/stretch.yaml':
-            source => 'puppet:///modules/profile/sre/stretch.yaml';
         '/etc/wikimedia/os-updates/buster.yaml':
             source => 'puppet:///modules/profile/sre/buster.yaml';
+        '/etc/wikimedia/os-updates/bullseye.yaml':
+            source => 'puppet:///modules/profile/sre/bullseye.yaml';
     }
 
     # The reports could be run on any Cumin host, but only generate it once

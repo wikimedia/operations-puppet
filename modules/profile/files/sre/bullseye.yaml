@@ -1,0 +1,393 @@
+# SPDX-License-Identifier: Apache-2.0
+role::mediawiki::canary_appserver:
+  target-q: TBD
+role::mediawiki::appserver::canary_api:
+  target-q: TBD
+role::mediawiki::appserver:
+  target-q: TBD
+role::mediawiki::memcached:
+  target-q: TBD
+role::mediawiki::memcached::gutter:
+  target-q: TBD
+role::etcd::v3::kubernetes:
+  target-q: TBD
+role::etcd::v3::kubernetes::staging:
+  target-q: TBD
+role::etcd::v3::ml_etcd:
+  target-q: TBD
+role::etcd::v3::ml_etcd::staging:
+  target-q: TBD
+role::lists:
+  target-q: TBD
+role::configcluster:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::backy:
+  target-q: TBD
+role::installserver:
+  target-q: TBD
+role::webperf::xhgui:
+  target-q: TBD
+role::pybaltest:
+  target-q: TBD
+role::ci:
+  target-q: TBD
+role::mw_rc_irc:
+  target-q: TBD
+role::vrts:
+  target-q: TBD
+role::logging::mediawiki::udp2log:
+  target-q: TBD
+role::parsoid:
+  target-q: TBD
+role::wdqs::internal:
+  target-q: TBD
+role::wdqs::public:
+  target-q: TBD
+role::wdqs::test:
+  target-q: TBD
+role::wcqs::public:
+  target-q: TBD
+role::sessionstore:
+  target-q: TBD
+role::dumps::generation::server::xmldumps:
+  target-q: TBD
+role::dumps::generation::server::misccrons:
+  target-q: TBD
+role::dumps::generation::server::xmlfallback:
+  target-q: TBD
+role::openldap::rw:
+  target-q: TBD
+role::parsoid::testing:
+  target-q: TBD
+role::parsoid::testreduce:
+  target-q: TBD
+role::eventschemas::service:
+  target-q: TBD
+role::restbase::production:
+  target-q: TBD
+role::ores:
+  target-q: TBD
+role::orespoolcounter:
+  target-q: TBD
+role::mariadb::parsercache:
+  target-q: TBD
+role::ncredir:
+  target-q: TBD
+role::mediawiki::jobrunner:
+  target-q: TBD
+role::mediawiki::appserver::api:
+  target-q: TBD
+role::swift::proxy:
+  target-q: TBD
+role::lvs::balancer:
+  target-q: TBD
+role::spare::system:
+  target-q: TBD
+role::maps::replica:
+  target-q: TBD
+role::maps::master:
+  target-q: TBD
+role::ping_offload:
+  target-q: TBD
+role::planet:
+  target-q: 2023-4
+role::ganeti:
+  target-q: TBD
+role::alerting_host:
+  target-q: TBD
+role::analytics_cluster::launcher:
+  target-q: TBD
+role::analytics_cluster::ui::staging:
+  target-q: TBD
+role::analytics_cluster::ui::superset:
+  target-q: TBD
+role::analytics_cluster::ui::superset::staging:
+  target-q: TBD
+role::analytics_cluster::presto::server:
+  target-q: TBD
+role::analytics_cluster::hadoop::worker:
+  target-q: TBD
+role::analytics_cluster::turnilo:
+  target-q: TBD
+role::search::airflow:
+  target-q: TBD
+role::analytics_cluster::airflow::research:
+  target-q: TBD
+role::analytics_cluster::airflow::platform_eng:
+  target-q: TBD
+role::analytics_cluster::airflow::platform_eng_legacy:
+  target-q: TBD
+role::aqs:
+  target-q: TBD
+role::bastionhost:
+  target-q: TBD
+role::cache::upload:
+  target-q: TBD
+role::cache::text:
+  target-q: TBD
+role::test:
+  target-q: TBD
+role::mariadb::core:
+  target-q: TBD
+role::mariadb::misc:
+  target-q: TBD
+role::mariadb::misc::analytics::backup:
+  target-q: TBD
+role::mariadb::core_test:
+  target-q: TBD
+role::mariadb::misc::phabricator:
+  target-q: TBD
+role::mariadb::core_multiinstance:
+  target-q: TBD
+role::mariadb::analytics_replica:
+  target-q: TBD
+role::mariadb::backup_source:
+  target-q: TBD
+role::mariadb::sanitarium_multiinstance:
+  target-q: TBD
+role::mariadb::sanitarium_master:
+  target-q: TBD
+role::mariadb::misc::multiinstance:
+  target-q: TBD
+role::mariadb::misc::eventlogging::replica:
+  target-q: TBD
+role::mariadb::backups:
+  target-q: TBD
+role::mariadb::proxy::master:
+  target-q: TBD
+role::mariadb::proxy::replicas:
+  target-q: TBD
+role::debmonitor::server:
+  target-q: TBD
+role::doc:
+  target-q: TBD
+role::druid::analytics::worker:
+  target-q: TBD
+role::druid::public::worker:
+  target-q: TBD
+role::elasticsearch::cirrus:
+  target-q: TBD
+role::mariadb::temporary_storage:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::virt:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::virt_ceph:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::virt_ceph:
+  target-q: TBD
+role::configcluster_stretch:
+  target-q: TBD
+role::deployment_server::kubernetes:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::net:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::net:
+  target-q: TBD
+role::miscweb:
+  target-q: TBD
+role::archiva:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::control:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::control:
+  target-q: TBD
+role::kafka::jumbo::broker:
+  target-q: TBD
+role::kafka::main:
+  target-q: TBD
+role::kafka::test::broker:
+  target-q: TBD
+role::kafka::main::logging:
+  target-q: TBD
+role::kafka::logging:
+  target-q: TBD
+role::analytics_cluster::hadoop::client:
+  target-q: TBD
+role::cluster::unprivmanagement:
+  target-q: TBD
+role::wmcs::db::wikireplicas::web_multiinstance:
+  target-q: TBD
+role::wmcs::db::wikireplicas::analytics_multiinstance:
+  target-q: TBD
+role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
+  target-q: TBD
+role::openldap::corp:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::cloudweb:
+  target-q: TBD
+role::piwik:
+  target-q: TBD
+role::webserver_misc_apps:
+  target-q: TBD
+role::mediawiki::maintenance:
+  target-q: TBD
+role::netmon:
+  target-q: TBD
+role::analytics_cluster::coordinator:
+  target-q: TBD
+role::analytics_cluster::coordinator::replica:
+  target-q: TBD
+role::analytics_cluster::hadoop::master:
+  target-q: TBD
+role::analytics_cluster::hadoop::standby:
+  target-q: TBD
+role::analytics_test_cluster::client:
+  target-q: TBD
+role::analytics_cluster::hadoop::ui:
+  target-q: TBD
+role::analytics_test_cluster::hadoop::master:
+  target-q: TBD
+role::analytics_test_cluster::hadoop::standby:
+  target-q: TBD
+role::analytics_test_cluster::coordinator:
+  target-q: TBD
+role::analytics_test_cluster::hadoop::ui:
+  target-q: TBD
+role::analytics_test_cluster::presto::server:
+  target-q: TBD
+role::druid::test_analytics::worker:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::db:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::services:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::cloudgw:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::services:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::cloudweb:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::cloudgw:
+  target-q: TBD
+role::eventlogging::analytics:
+  target-q: TBD
+role::dumps::web::htmldumps:
+  target-q: TBD
+role::kafka::monitoring_buster:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
+  target-q: TBD
+role::microsites::peopleweb:
+  target-q: TBD
+role::prometheus::pop:
+  target-q: TBD
+role::redis::misc::master:
+  target-q: TBD
+role::redis::misc::slave:
+  target-q: TBD
+role::docker_registry_ha::registry:
+  target-q: TBD
+role::releases:
+  target-q: TBD
+role::elasticsearch::relforge:
+  target-q: TBD
+role::dumps::generation::worker::dumper_monitor:
+  target-q: TBD
+role::dumps::generation::worker::dumper_misc_crons_only:
+  target-q: TBD
+role::dumps::generation::worker::testbed:
+  target-q: TBD
+role::dumps::generation::worker::dumper:
+  target-q: TBD
+role::statistics::explorer:
+  target-q: TBD
+role::analytics_cluster::webserver:
+  target-q: TBD
+role::analytics_test_cluster::hadoop::worker:
+  target-q: TBD
+role::analytics_cluster::hadoop::yarn:
+  target-q: TBD
+role::syslog::centralserver:
+  target-q: TBD
+role::dns::auth:
+  target-q: TBD
+role::logging::opensearch::data:
+  target-q: TBD
+role::logging::opensearch::collector:
+  target-q: TBD
+role::wmcs::ceph::osd:
+  target-q: TBD
+role::wmcs::ceph::mon:
+  target-q: TBD
+role::wmcs::monitoring:
+  target-q: TBD
+role::dnsbox:
+  target-q: TBD
+role::grafana:
+  target-q: TBD
+role::analytics_cluster::zookeeper:
+  target-q: TBD
+role::zookeeper::test:
+  target-q: TBD
+role::apt_repo:
+  target-q: TBD
+role::poolcounter::server:
+  target-q: TBD
+role::orchestrator:
+  target-q: TBD
+role::durum:
+  target-q: TBD
+role::thanos::backend:
+  target-q: TBD
+role::requesttracker:
+  target-q: TBD
+role::url_downloader:
+  target-q: TBD
+role::gerrit:
+  target-q: TBD
+role::dragonfly::supernode:
+  target-q: TBD
+role::puppetdb:
+  target-q: TBD
+role::puppetmaster::frontend:
+  target-q: TBD
+role::puppetmaster::backend:
+  target-q: TBD
+role::sretest:
+  target-q: TBD
+role::wikidough:
+  target-q: TBD
+role::kerberos::kdc:
+  target-q: TBD
+role::pki::multirootca:
+  target-q: TBD
+role::pki::root:
+  target-q: TBD
+role::search::loader:
+  target-q: TBD
+role::chartmuseum:
+  target-q: TBD
+role::acme_chief:
+  target-q: TBD
+role::mw_rc_irc:
+  target-q: TBD
+role::aphlict:
+  target-q: TBD
+role::phabricator:
+  target-q: TBD
+role::insetup::search_platform:
+  target-q: TBD
+role::insetup::core_platform:
+  target-q: TBD
+role::insetup_noferm:
+  target-q: TBD
+role::insetup::data_persistence:
+  target-q: TBD
+role::insetup::serviceops:
+  target-q: TBD
+role::insetup::observability:
+  target-q: TBD
+role::insetup::infrastructure_foundations:
+  target-q: TBD
+role::insetup::data_engineering:
+  target-q: TBD
+role::insetup::traffic:
+  target-q: TBD
+role::ml_cache::storage:
+  target-q: TBD
+role::apifeatureusage::logstash:
+  target-q: TBD
+role::dispatch::backend:
+  target-q: TBD
+role::cassandra_dev:
+  target-q: TBD
