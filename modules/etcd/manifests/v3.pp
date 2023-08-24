@@ -86,7 +86,6 @@ class etcd::v3 (
     unless $srv_dns or $peers_list {
         fail('We need either the domain name for DNS discovery or an explicit peers list')
     }
-    debian::codename::require::min('stretch')
 
     # Base parameters
     # All parameters are listed here, and will end up in
