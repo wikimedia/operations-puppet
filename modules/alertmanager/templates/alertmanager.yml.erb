@@ -137,7 +137,7 @@ route:
           # Default to #dcops project if none of the site routes match
           receiver: 'dcops-task'
           routes:
-<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "knams", "ulsfo", "drmrs", "eqsin"].each do |site| -%>
+<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "ulsfo", "drmrs", "eqsin"].each do |site| -%>
             - match_re:
                 instance: '^.*<%= site %>.*$'
               receiver: 'dcops-<%= site %>-task'
@@ -492,12 +492,6 @@ receivers:
   webhook_configs:
     # #ops-eqdfw
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-xjetsywotsnrlml3xpok'
-      send_resolved: false
-
-- name: 'dcops-knams-task'
-  webhook_configs:
-    # #ops-esams (no ops-knams project)
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-yyw3x6n3sdjeyzq3xbmo'
       send_resolved: false
 
 - name: 'search-platform-task'

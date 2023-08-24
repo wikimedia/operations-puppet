@@ -457,7 +457,7 @@ node /^cp20(28|3[02468]|4[02])\.codfw\./ {
 }
 
 #
-# knams caches
+# esams caches
 #
 
 node /^cp30(6[6789]|7[0123])\.esams\./ {

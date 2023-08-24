@@ -7,6 +7,5 @@ type Wmflib::Sites = Enum[
   'eqord',
   'eqsin',
   'esams',
-  'knams',
   'ulsfo',
 ]

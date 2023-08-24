@@ -26,7 +26,7 @@ rsnyc
 wikimeda
 (?<!WMF)[^1][[:digit:]]{3}\.eqiad\.wmnet
 (?<!WMF)[^2][[:digit:]]{3}\.codfw\.wmnet
-(?<!WMF)[^3][[:digit:]]{3}\.(esams|knams)\.wmnet
+(?<!WMF)[^3][[:digit:]]{3}\.esams\.wmnet
 (?<!WMF)[^4][[:digit:]]{3}\.ulsfo\.wmnet
 (?<!WMF)[^5][[:digit:]]{3}\.eqsin\.wmnet
 (?<!WMF)[^6][[:digit:]]{3}\.drmrs\.wmnet
