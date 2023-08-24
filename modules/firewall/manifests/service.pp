@@ -50,6 +50,26 @@ define firewall::service(
             if $notrack == true {
                 fail('Support for notrack not yet added to the nft provider')
             }
+
+            $src_ips = $srange.map |$srange| {
+                $srange ? {
+                    Stdlib::IP::Address => $srange,
+                    default             => dnsquery::lookup($srange, true)
+                }
+            }.flatten.sort
+
+            $dst_ips = $drange.map |$drange| {
+                $drange ? {
+                    Stdlib::IP::Address => $drange,
+                    default             => dnsquery::lookup($drange, true)
+                }
+            }.flatten.sort
+
+            nftables::service { $title:
+                *       => wmflib::resource::filter_params('drange', 'srange'),
+                src_ips => $src_ips,
+                dst_ips => $dst_ips,
+            }
         }
 
         default: { fail('invalid provider') }
