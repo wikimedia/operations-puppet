@@ -124,8 +124,7 @@ class profile::doc (
         hosts_allow    => $gitlab_runner_hosts + $jenkins_releases_hosts,
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
-        # TODO: User should not be coupled to GitLab
-        auth_users     => ['gitlab'],
+        auth_users     => ['doc-publisher'],
         secrets_file   => '/etc/rsync.d/secrets',
         require        => [
             User['doc-uploader'],
