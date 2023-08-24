@@ -41,9 +41,8 @@ class profile::cache::haproxy(
         }
     }
 
-    # variables used inside HAProxy's systemd unit
+    # variable used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
-    $exec_start = '/usr/sbin/haproxy -Ws'
 
     apt::package_from_component { 'haproxy':
         component       => "thirdparty/${haproxy_version}",

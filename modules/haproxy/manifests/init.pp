@@ -85,12 +85,6 @@ class haproxy(
         ensure => absent,
     }
 
-    # The ExecStart script is different on buster compared to earlier debians
-    $exec_start = debian::codename::lt('buster') ? {
-        true    => '/usr/sbin/haproxy-systemd-wrapper',
-        default => '/usr/sbin/haproxy -Ws',
-    }
-
     file { '/etc/default/haproxy':
         ensure  => present,
         mode    => '0644',

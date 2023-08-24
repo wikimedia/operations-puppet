@@ -12,7 +12,7 @@ EnvironmentFile=-/etc/default/haproxy
 ExecStartPre=/usr/local/sbin/update-ocsp-all
 <% end -%>
 ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
-ExecStart=<%= @exec_start %> -f ${CONFIG} -p $PIDFILE $EXTRAOPTS
+ExecStart=/usr/sbin/haproxy -Ws -f ${CONFIG} -p $PIDFILE $EXTRAOPTS
 ExecReload=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
 ExecReload=/bin/kill -USR2 $MAINPID
 KillMode=mixed
