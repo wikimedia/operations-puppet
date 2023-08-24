@@ -601,14 +601,15 @@ class bigtop::hadoop(
         default => "${config_directory}/net-topology.sh",
     }
 
-    file { '/usr/local/bin/hadoop-hdfs-net-topology.py':
-        source => 'puppet:///modules/profile/files/hadoop/hadoop-hdfs-net-topology.py',
-        mode   => '0755',
-    }
-
     $net_topology_config_ensure = $net_topology ? {
         undef   => 'absent',
         default => 'present',
+    }
+
+    file { '/usr/local/bin/hadoop-hdfs-net-topology.py':
+        ensure => $net_topology_config_ensure,
+        source => 'puppet:///modules/profile/files/hadoop/hadoop-hdfs-net-topology.py',
+        mode   => '0755',
     }
 
     file { "${config_directory}/net-topology.ini":
