@@ -58,6 +58,15 @@ define query_service::blazegraph(
         }
     }
 
+    file { "/etc/${deploy_name}/allowlist-${title}.txt":
+        ensure => present,
+        source => 'puppet:///modules/query_service/allowlist.txt',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        before => Service[$title],
+    }
+
     file { "/etc/default/${title}":
         ensure  => present,
         content => template('query_service/blazegraph-default.erb'),
