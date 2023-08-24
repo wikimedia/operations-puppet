@@ -6,7 +6,7 @@ all: P{*}
 edges: A:esams or A:ulsfo or A:eqsin or A:drmrs
 
 # Distros
-<% ['stretch', 'buster', 'bullseye', 'bookworm'].each do |distro| -%>
+<% ['buster', 'bullseye', 'bookworm'].each do |distro| -%>
 <%= distro %>: P{F:lsbdistcodename = <%= distro %>}
 <% end -%>
 
