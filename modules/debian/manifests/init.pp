@@ -7,10 +7,10 @@ class debian {
     }
     $supported = {
         'Debian'   => {
-            'stretch'  => 9,
             'buster'   => 10,
             'bullseye' => 11,
             'bookworm' => 12,
+            'trixie'   => 13,
         },
     }
     # Before a debian release is stable /etc/debian_version, which is what
