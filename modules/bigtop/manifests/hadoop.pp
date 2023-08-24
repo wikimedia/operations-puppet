@@ -608,7 +608,7 @@ class bigtop::hadoop(
 
     file { '/usr/local/bin/hadoop-hdfs-net-topology.py':
         ensure => $net_topology_config_ensure,
-        source => 'puppet:///modules/profile/files/hadoop/hadoop-hdfs-net-topology.py',
+        source => 'puppet:///modules/profile/hadoop/hadoop-hdfs-net-topology.py',
         mode   => '0755',
     }
 
