@@ -306,7 +306,6 @@ class icinga(
     }
 
     # Applies a patch to disable autocomplete.js on search text input
-    # `patch` appears to be a system package in stretch
     $patches_dir = '/usr/share/icinga/patches'
 
     file { $patches_dir:

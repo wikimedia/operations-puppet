@@ -26,7 +26,7 @@
 #  The distribution for which the packages are built, defaults to the
 #  ${::lsbdistcodename}-wikimedia suite of the current distro by default.
 #  If a package is specifically only available for a given distro, it can
-#  also be listed like "stretch-wikimedia"
+#  also be listed like "bookworm-wikimedia"
 #
 # [*uri*]
 #  Where the packages are installed from, defaults to http://apt.wikimedia.org/wikimedia

@@ -11,7 +11,6 @@
 #        Enables Ceph messenger version 2 ( >= Nautilus release)
 #    - $enable_libvirt_rbd
 #        Configure Ceph for libvirt based RBD clients
-#        Currently requires openstack::nova::compute::service::ocata::stretch
 #    - $osd_hosts [Optional]
 #        Hash that defines the ceph object storage hosts, and public and private IPv4 information
 #    - $radosgw_port [Optional]

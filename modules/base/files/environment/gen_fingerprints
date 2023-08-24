@@ -10,19 +10,6 @@
 # Print fingerprint matrix for all allowed Host Keys
 # with all allowed ciphers and MD5 and SHA-256 algos
 #
-# Changelog:
-#
-# 2018-03-11 (0.2): (Kepi)
-# - Support for newer versions of OpenSSH
-# - Added visual keys for all algos too - only in recent OpenSSH versions
-#
-# 2018-05-14 (0.21): (Dzahn)
-# - Fix issue displaying fingerprints on Debian stretch,
-#   revert to "for-loop" used in version 0.1 instead of "while read".
-#
-# 2019-09-25 (0.22): (Luca)
-# - Remove MD5 from the list of available fingerprints
-#
 # standard sshd config path
 SSHD_CONFIG=/etc/ssh/sshd_config
 

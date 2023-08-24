@@ -8,7 +8,7 @@
 #
 # [*distribution*]
 # Target Distribution (e.g: buster, bullseye, etc)
-# Default: 'stretch'
+# Default: 'bullseye'
 #
 # [*components*]
 # List of distribution components to install. Passed as is to pbuilder, space

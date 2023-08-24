@@ -5,7 +5,6 @@ class profile::mariadb::proxy::multiinstance_replicas(
     Enum['analytics', 'web']        $replica_type      = lookup('profile::mariadb::proxy::multiinstance_replicas::replica_type'),
     ) {
 
-    # This template is for stretch/HA1.7, may not work on earlier/later versions
     $replicas_template = 'multi-db-replicas.cfg.erb'
 
     # Generate a hash of valid backend servers for each section from puppetdb

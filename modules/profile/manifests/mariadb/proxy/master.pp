@@ -6,7 +6,6 @@ class profile::mariadb::proxy::master (
     $secondary_addr = lookup('profile::mariadb::proxy::master::secondary_addr'),
     ) {
 
-    # this template is for stretch/HA1.7, may not work on earlier/later versions
     $master_template = 'db-master.cfg.erb'
 
     file { '/etc/haproxy/conf.d/db-master.cfg':

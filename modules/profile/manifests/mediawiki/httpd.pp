@@ -162,7 +162,7 @@ class profile::mediawiki::httpd(
     ::httpd::conf { 'wikimedia_cluster':
         content => "SetEnvIf Request_URI \".\" SERVERGROUP=${cluster}\n"
     }
-    # Starting with stretch libapache2-mod-security2 includes the following
+    # Starting with Debian 9 libapache2-mod-security2 includes the following
     # in /etc/apache2/mods-enabled/security2.conf:
     #   # Include OWASP ModSecurity CRS rules if installed
     #   IncludeOptional /usr/share/modsecurity-crs/owasp-crs*.load
