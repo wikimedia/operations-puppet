@@ -1,6 +1,6 @@
 syntax on
 set mouse-=a
-color ron
+color desert
 set nu
 setlocal spell spelllang=en_gb
 hi clear SpellBad
@@ -8,11 +8,7 @@ hi SpellBad cterm=underline
 set spellcapcheck=''
 set nospell
 au BufRead,BufNewFile *.nse set ft=lua
-au BufRead,BufNewFile *.cf set ft=cf3
 au BufRead,BufNewFile *.j2 set ft=jinja
-call pathogen#infect()
-"
-
 set shiftwidth=2
 set softtabstop=2
 set tabstop=4
@@ -55,36 +51,3 @@ set viminfo='20,\"80,c
 filetype plugin indent on
 hi PreProc ctermfg=Green
 hi Normal guibg=grey95
-if &term =~ "xteam.*"
-    let &t_ti = &t_ti . "\e[?2004h"
-    let &t_te = "\e[?2004l" . &t_te
-    function XTermPasteBegin(ret)
-        set pastetoggle=<Esc>[201~
-        set paste
-        return a:ret
-    endfunction
-    map <expr> <Esc>[200~ XTermPasteBegin("i")
-    imap <expr> <Esc>[200~ XTermPasteBegin("")
-    cmap <Esc>[200~ <Nop>
-    cmap <Esc>[201~ <Nop>
-endif
-
-function! CleverTab()
-    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-  return "\<Tab>"
-    else
-	return "\<C-N>"
-endfunction
-inoremap <Tab> <C-R>=CleverTab()<CR>
-
-function Py2()
-  let g:syntastic_python_pylint_exe = '/usr/bin/pylint'
-endfunction
-
-function Py3()
-  let g:syntastic_python_pylint_exe = '/usr/bin/pylint3'
-  let g:syntastic_python_python_exe = '/usr/bin/python3'
-  let g:syntastic_python_python_args = '-m py_compile'
-endfunction
-
-call Py3()
