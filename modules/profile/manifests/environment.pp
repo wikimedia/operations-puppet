@@ -91,8 +91,6 @@ class profile::environment (
         }
     }
 
-    # /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator only present in Buster and later
-    $_export_systemd_env = $export_systemd_env and debian::codename::ge('buster')
     file { '/etc/zsh/zshenv':
         ensure  => file,
         owner   => 'root',
@@ -102,7 +100,7 @@ class profile::environment (
         content => template('profile/environment/zshenv.erb'),
     }
     file { '/etc/profile.d/systemd-environment.sh':
-        ensure => stdlib::ensure($_export_systemd_env, 'file'),
+        ensure => stdlib::ensure($export_systemd_env, 'file'),
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
