@@ -57,9 +57,6 @@ class profile::mediawiki::php(
     }
     # Use component/php74 if php 7.4 is installed.
     if ('7.4' in $php_versions) {
-        if debian::codename::lt('buster') {
-            fail('php 7.4 is only available on buster or above.')
-        }
         apt::repository { 'wikimedia-php74':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
