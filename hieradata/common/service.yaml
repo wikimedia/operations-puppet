@@ -226,6 +226,42 @@ service::catalog:
       - dnsdisc: k8s-ingress-aux
         active_active: false
 
+  jaeger-collector-http:
+    description: Jaeger tracing, collector (HTTP)
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: tcp
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+    state: service_setup
+
+  jaeger-collector-grpc:
+    description: Jaeger tracing, collector (GRPC)
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: tcp
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+    state: service_setup
+
+  jaeger-query:
+    description: Jaeger tracing, query UI
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: tcp
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+    state: service_setup
+
   blubberoid:
     description: Blubberoid, blubberoid.discovery.wmnet (https)
     encryption: true
