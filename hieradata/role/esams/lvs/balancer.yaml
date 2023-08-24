@@ -5,6 +5,7 @@ profile::lvs::tagged_subnets:
   - public1-by27-esams
   - private1-bw27-esams
   - private1-by27-esams
+
 profile::lvs::interface_tweaks:
-  enp175s0f0np0:
+  eno12399np0:
     txqlen: 10000
