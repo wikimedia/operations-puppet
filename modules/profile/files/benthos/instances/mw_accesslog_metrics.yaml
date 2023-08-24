@@ -25,7 +25,7 @@ pipeline:
       metric:
         type: counter_by
         name: mediawiki_http_response_size_bytes_total
-        value: ${! json("http~1response~1bytes") }
+        value: ${! json("http~1response~1bytes").int64() }
         labels:
           handler: ${! json("labels~1handler") }
           method:  ${! json("http~1request~1method") }
@@ -35,7 +35,7 @@ pipeline:
       metric:
         type: timing  # timing converts to histogram or summary based on metrics settings
         name: mediawiki_http_requests_duration
-        value: ${! json("event~1duration")*1000 }  # event.duration is us, benthos wants ns
+        value: ${! json("event~1duration").int64() * 1000 }  # event.duration is us, benthos wants ns
         labels:
           handler: ${! json("labels~1handler") }
           method:  ${! json("http~1request~1method") }
@@ -45,7 +45,7 @@ pipeline:
       metric:
         type: timing  # timing converts to histogram or summary based on metrics settings
         name: mediawiki_requests_by_endpoint_duration
-        value: ${! json("event~1duration")*1000 }  # event.duration is us, benthos wants ns
+        value: ${! json("event~1duration").int64() * 1000 }  # event.duration is us, benthos wants ns
         labels:
           handler:  ${! json("labels~1handler") }
           method:   ${! json("http~1request~1method") }
