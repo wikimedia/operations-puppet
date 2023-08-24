@@ -1,0 +1,81 @@
+# SPDX-License-Identifier: Apache-2.0
+# Any value that needs to be injected in the template should be passed
+# as environment variable (see https://www.benthos.dev/docs/configuration/interpolation/)
+#
+http:
+  enabled: true
+  address: 0.0.0.0:${PORT}
+  root_path: /benthos
+
+input:
+  label: accesslog
+  kafka_franz:
+    seed_brokers: [ "${KAFKA_BROKERS}" ]
+    topics: [ "${KAFKA_TOPICS}" ]
+    tls:
+      enabled: true
+    consumer_group: "benthos-mw-accesslog-metrics"
+    batching:
+      count: 2048
+      period: 100ms
+
+pipeline:
+  processors:
+    - label: response_size_bytes
+      metric:
+        type: counter_by
+        name: mediawiki_http_response_size_bytes_total
+        value: ${! json("http~1response~1bytes") }
+        labels:
+          handler: ${! json("labels~1handler") }
+          method:  ${! json("http~1request~1method") }
+          code:    ${! json("http~1response~1status_code") }
+
+    - label: requests_duration
+      metric:
+        type: timing  # timing converts to histogram or summary based on metrics settings
+        name: mediawiki_http_requests_duration
+        value: ${! json("event~1duration")*1000 }  # event.duration is us, benthos wants ns
+        labels:
+          handler: ${! json("labels~1handler") }
+          method:  ${! json("http~1request~1method") }
+          code:    ${! json("http~1response~1status_code") }
+
+    - label: requests_by_endpoint_duration
+      metric:
+        type: timing  # timing converts to histogram or summary based on metrics settings
+        name: mediawiki_requests_by_endpoint_duration
+        value: ${! json("event~1duration")*1000 }  # event.duration is us, benthos wants ns
+        labels:
+          handler:  ${! json("labels~1handler") }
+          method:   ${! json("http~1request~1method") }
+          code:     ${! json("http~1response~1status_code") }
+          endpoint: |-
+            ${! match json("url~1path") {
+                this.has_prefix("/wiki/")       => "website"
+                this.has_prefix("/w/index.php") => "website"
+                this.has_prefix("/w/api.php")   => "api"
+                this.has_prefix("/w/rest.php")  => "rest_api"
+                this.has_prefix("/w/load.php")  => "load"
+                _                               => "other"
+            }}
+
+output:
+  # metrics are a "side effect" and output is not needed
+  label: drop
+  drop: {}
+
+metrics:
+  prometheus:
+    use_histogram_timing: true
+    # use buckets that are useful for mediawiki metrics
+    histogram_buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 20, 30, 60]
+    add_process_metrics: true
+    add_go_metrics: true
+
+  mapping: |
+    # remove the benthos processing-related labels from mediawiki metrics
+    meta label = if this.has_prefix("mediawiki") { deleted() }
+    meta path  = if this.has_prefix("mediawiki") { deleted() }
+
+    root = if this.has_prefix("mediawiki") { this } else { "benthos_" + this }

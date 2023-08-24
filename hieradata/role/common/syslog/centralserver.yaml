@@ -44,3 +44,12 @@ profile::benthos::instances:
       topics:
       - "webrequest_text"
       - "webrequest_upload"
+
+  # independent for each site
+  mw_accesslog_metrics:
+    port: 4152
+    kafka:
+      cluster: logging
+      site: "%{::site}"
+      topics:
+      - "mediawiki.httpd.accesslog"
