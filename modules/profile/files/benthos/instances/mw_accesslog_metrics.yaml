@@ -4,7 +4,7 @@
 #
 http:
   enabled: true
-  address: 0.0.0.0:${PORT}
+  address: "0.0.0.0:${PORT}"
   root_path: /benthos
 
 input:

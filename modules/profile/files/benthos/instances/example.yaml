@@ -4,7 +4,7 @@
 #
 http:
   enabled: true
-  address: 0.0.0.0:${PORT}
+  address: "0.0.0.0:${PORT}"
   root_path: /benthos
 
 input:
@@ -21,8 +21,8 @@ pipeline:
     bloblang: |
       root = if random_int() % 10 != 0 { deleted() }
 
-  -  label: "geoip"
-      bloblang: |
+  - label: "geoip"
+    bloblang: |
       root = this
       root.asn = this.ip.geoip_asn(path: "/usr/share/GeoIP/GeoIP2-Country.mmdb").AutonomousSystemNumber
 
