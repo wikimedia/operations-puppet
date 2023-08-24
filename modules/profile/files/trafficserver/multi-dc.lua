@@ -142,7 +142,7 @@ local function use_local_dc()
     end
 
     -- CentralAuth login
-    if host == "login.wikimedia.org" or path == "/wiki/Special:CentralAutoLogin" then
+    if host == "login.wikimedia.org" or string.find(path, "/wiki/Special:CentralAutoLogin") == 1 then
         return false
     end
 

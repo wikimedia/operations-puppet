@@ -275,7 +275,20 @@ describe("Multi-DC router", function ()
       {
         method = "GET",
         uri_args = "",
-        uri = "/wiki/Special:CentralAutoLogin",
+        uri = "/wiki/Special:CentralAutoLogin/setCookies",
+        header = {Host = "en.wikipedia.org"}
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("sends loginwiki", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/wiki/Special:CentralLogin/start",
         header = {Host = "login.wikimedia.org"}
       }
     )
