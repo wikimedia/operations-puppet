@@ -79,7 +79,7 @@ class profile::aptrepo::wikimedia (
     class { 'aptrepo::tftp': }
     include profile::backup::host
 
-    class { 'aptrepo:ztp_juniper': }
+    class { 'aptrepo::ztp_juniper': }
 
     # The repository data
     backup::set { 'srv-wikimedia': }
