@@ -12,10 +12,10 @@ class role::bastionhost{
 
     backup::set {'home': }
 
-    ferm::service { 'ssh':
+    firewall::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',
         prio  => 3,
         proto => 'tcp',
-        port  => 'ssh',
+        port  => 22,
     }
 }
