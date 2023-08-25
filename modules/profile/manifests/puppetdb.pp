@@ -160,6 +160,11 @@ class profile::puppetdb (
         mode   => '0555',
         source => 'puppet:///modules/profile/puppetdb/pdb_changes.py',
     }
+    file { '/usr/local/bin/kernel_report':
+        ensure => file,
+        mode   => '0555',
+        source => 'puppet:///modules/profile/puppetdb/kernel_report.py',
+    }
     $sites.each |$site, $config| {
         profile::puppetdb::site { $site:
             * => $config,
