@@ -39,7 +39,7 @@ class profile::aptrepo::wikimedia (
     ferm::service { 'aptrepos_private_http':
         proto  => 'tcp',
         port   => [$private_repo_port],
-        srange => '$DOMAIN_NETWORKS',
+        srange => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
 
     class { 'aptrepo::common':
