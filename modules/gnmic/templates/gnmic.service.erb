@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Managed by Puppet
+[Unit]
+Description=gNMIc telemetry collector
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/gnmic --config /etc/gnmic.yaml subscribe --watch-config
+Restart=on-failure
+RestartSec=0
+SyslogIdentifier=gnmic
+User=gnmic
+Group=gnmic
+
+[Install]
+WantedBy=multi-user.target
