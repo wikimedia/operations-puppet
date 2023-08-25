@@ -347,7 +347,7 @@ node /^bast4004\.wikimedia\./ {
 }
 
 node /^bast4005\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 node /^bast5003\.wikimedia\./ {
@@ -355,7 +355,7 @@ node /^bast5003\.wikimedia\./ {
 }
 
 node /^bast5004\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 node /^bast6002\.wikimedia\./ {
@@ -363,7 +363,7 @@ node /^bast6002\.wikimedia\./ {
 }
 
 node /^bast6003\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(bastionhost)
 }
 
 # Debian package/docker images building host in production
