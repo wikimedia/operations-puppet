@@ -4524,7 +4524,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGmQXo1DfnvomYfLMuK4d/3lD2/t/3qPLYNMWvM1ZdlS rmaung@wmf2436
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASWBpeq1Ju1EHwv5Jd7aupwy787kls1Az2ffAPWIPfJ rebeccamaung@MacBook-Pro
   lilients:
     ensure: present
     realname: Svantje Lilienthal
