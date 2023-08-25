@@ -20,10 +20,9 @@ Allowed queries:
   sensitive information like class parameters are exposed to the
   caller.
 """
+from json import loads
 
 import requests
-
-from json import loads
 
 from flask import Flask, abort, jsonify, request
 
@@ -55,10 +54,13 @@ def _puppetdb_request(*paths, json=None, redacted=False):
     objects is returned.
     """
     if redacted:
+        # Sometimes json['query'] is a string other times its an object
+        # possibly just my testing with curl
+        query = loads(json['query']) if isinstance(json['query'], str) else json['query']
         json['query'] = [
             "extract",
             ["certname"],
-            loads(json['query']),
+            query,
             ["group_by", "certname"],
         ]
     url = '/'.join([PUPPETDB_BASE_URL, *paths])
