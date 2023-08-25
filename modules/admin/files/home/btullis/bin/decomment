@@ -1,8 +1,0 @@
-#!/bin/bash
-# The is a utility script to assist humans to read files
-# It strips the following types of line from an input file or from stdin:
-# 1) Blank lines
-# 2) Lines starting with zero or more spaces, followed by a hash
-# 3) Lines starting with a semi-colon
-[ $# -ge 1 -a -f "$1" ] && INPUT="$1" || INPUT="-"
-egrep -v '^($|[[:space:]]*#|\;)' $INPUT
