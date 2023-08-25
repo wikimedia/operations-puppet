@@ -23,5 +23,3 @@ profile::ci::package_builder::extra_packages:
         - eatmydata
     buster:
         - eatmydata
-    stretch:
-        - eatmydata
