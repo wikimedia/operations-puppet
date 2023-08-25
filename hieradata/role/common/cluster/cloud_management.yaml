@@ -2,6 +2,8 @@ cluster: cloud_management
 profile::admin::groups:
   - datacenter-ops
   - os-installers
+  - wmcs-roots
+  - wmcs-admin
 profile::contacts::role_contacts: ['WMCS']
 profile::cumin::monitor_agentrun: false
 profile::cumin::master::email_alerts: false
