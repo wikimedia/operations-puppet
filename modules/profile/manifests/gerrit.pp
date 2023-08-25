@@ -40,30 +40,29 @@ class profile::gerrit(
     }
 
     # ssh from users to gerrit
-    ferm::service { 'gerrit_ssh_users':
+    firewall::service { 'gerrit_ssh_users':
         proto  => 'tcp',
-        port   => '29418',
-        drange => "(${ipv4} ${ipv6})",
+        port   => 29418,
+        drange => [$ipv4, $ipv6],
     }
 
     # ssh between gerrit servers for cluster support
-    $ssh_allowed_hosts_ferm=join($ssh_allowed_hosts, ' ')
-    ferm::service { 'gerrit_ssh_cluster':
-        port   => '22',
+    firewall::service { 'gerrit_ssh_cluster':
+        port   => 22,
         proto  => 'tcp',
-        srange => "(@resolve((${ssh_allowed_hosts_ferm})) @resolve((${ssh_allowed_hosts_ferm}), AAAA))",
+        srange => $ssh_allowed_hosts,
     }
 
-    ferm::service { 'gerrit_http':
+    firewall::service { 'gerrit_http':
         proto  => 'tcp',
-        port   => 'http',
-        drange => "(${ipv4} ${ipv6})",
+        port   => 80,
+        drange => [$ipv4, $ipv6],
     }
 
-    ferm::service { 'gerrit_https':
+    firewall::service { 'gerrit_https':
         proto  => 'tcp',
-        port   => 'https',
-        drange => "(${ipv4} ${ipv6})",
+        port   => 443,
+        drange => [$ipv4, $ipv6],
     }
 
     if $backups_enabled and $backup_set != undef {
