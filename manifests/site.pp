@@ -1927,8 +1927,8 @@ node /^moss-be100[12]\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
-# New moss-be nodes T276642
-node /^moss-be200[12]\.codfw\./ {
+# New moss-be nodes T276642 and T342674
+node /^moss-be200[123]\.codfw\./ {
     role(insetup::data_persistence)
 }
 
