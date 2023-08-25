@@ -1,3 +1,5 @@
+profile::contacts::role_contacts:
+  - 'WMCS'
 # This host proxies the wikireplica-analytics service
 
 # Firewall rules for cloud are in the multiinstance profile
