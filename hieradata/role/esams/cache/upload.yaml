@@ -1,0 +1,13 @@
+profile::trafficserver::backend::storage_elements:
+  - devname: nvme0n1
+    id: disk.0
+  - devname: nvme1n1
+    id: disk.1
+
+profile::cache::varnish::frontend::cache_be_opts:
+    port: 3128
+    connect_timeout: '3s'
+    first_byte_timeout: '65s'
+    between_bytes_timeout: '33s'
+    max_connections: 400000
+    probe: 'varnish'
