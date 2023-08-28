@@ -8,4 +8,8 @@ webserver: {
     client-auth: want
     ssl-host: <%= $listen_host %>
     ssl-port: 8140
+    # By default puppetserver just serves the servers cert, but we want to
+    # provide the intermediate chain so clients like curl can verify up to the
+    # root CA.
+    ssl-cert-chain: /etc/puppet/puppetserver/ca/ca_crt.pem
 }
