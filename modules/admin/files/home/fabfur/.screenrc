@@ -1,0 +1,45 @@
+startup_message off		# Disable the copyright page
+altscreen on			# Clean the screen after editor exits
+
+termcapinfo xterm* ti@:te@	# enable SHIFT-PGUP / SHIFT-PGDOWN scroll
+
+defscrollback 30000		# Self-explain
+
+term xterm    			# Useful to avoid strange key behaviour in
+
+nonblock on    			# Tell  screen  how to deal with user 
+	 			# interfaces (displays) that cease to accept output
+vbell on			# Disable visual bell
+msgwait 10			# Defines the time a message is displayed if screen 
+				# is not disturbed by other activity
+
+shelltitle "sh"
+
+# Startup sessions
+
+screen    -t sh		1
+select 2			# Select the first session at startup
+
+# Some bind keys
+
+bind = resize =
+bind + resize +1
+bind - resize -1
+bind _ resize max
+bind c screen 1			# Window numbering starts at 1, not 0.
+bind 0 select 5
+bindkey "^[Od" prev		# change window with ctrl-left (conflicts with emacs)
+bindkey "^[Oc" next  		# change window with ctrl-right (conflicts with emacs)
+bind ` focus up
+
+backtick 1 10 10 bash -c "/usr/bin/uptime -p|sed -E 's/ months?/m/;s/ weeks?/w/;s/ days?/d/;s/ hours?/h/;s/ minutes?/m/'"
+
+# Settings for hardstatus bar
+
+hardstatus alwayslastline '%{= M} %H%{= G} %l %= %{= w}%-w%{+b g}%n*%t%{w}%+w%{-b d} %= |%{G}%1`%{-}|%{B}%c%a%{-}|'
+caption always '%{= wk} %200` %= %100` %='
+
+sorendition kw 	    	      	 # Change  the  way  screen does highlighting 
+	    			 # for text marking and printing messages
+
+hardcopydir ~/.screen		 # Defines a directory where hardcopy files will be placed
