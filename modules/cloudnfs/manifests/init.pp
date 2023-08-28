@@ -37,7 +37,7 @@ class cloudnfs (
         content => template('cloudnfs/nfs-kernel-server.erb'),
     }
 
-    # For some reason, on stretch, this isn't created during install of the nfs
+    # For some reason this isn't created during install of the nfs
     # server, which causes failures in the nfsdcltrack init
     file { '/var/lib/nfs/nfsdcltrack/':
         ensure => directory,

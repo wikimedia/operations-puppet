@@ -220,9 +220,9 @@ def stage_aptly():
         return
 
     # repo add:
-    # sudo aptly repo add stretch-tools jobutils_${VERSION}_all.deb
+    # sudo aptly repo add buster-tools jobutils_${VERSION}_all.deb
     # repo publish:
-    # sudo aptly publish --skip-signing update stretch-tools
+    # sudo aptly publish --skip-signing update buster-tools
     for repo in ctx.args.aptly_dist:
         for deb_file in ctx.deb_list:
             file_path = "{}/{}".format(ctx.random_dir, deb_file)
