@@ -18,13 +18,19 @@ case "$TERM" in
     xterm*|rxvt*)
         PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
         ;;
-    xterm-256color)
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-        ;;
     *)
         ;;
 esac
 
+# Set up colored prompt if in a terminal that supports colors, or
+# Use the Debian standard.
+#
+case "$TERM" in
+    xterm-256color)
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ ';;
+    *)
+    ;;
+esac
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases

@@ -1,1 +1,2 @@
-set mouse=-a
+set mouse=
+set ttymouse=
