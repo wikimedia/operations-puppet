@@ -1,0 +1,37 @@
+$include /etc/inputrc
+# Color files by types
+# Note that this may cause completion text blink in some terminals (e.g. xterm).
+set colored-stats On
+# Append char to indicate type
+set visible-stats On
+# Append slash when completing a symlink to a dir
+set mark-symlinked-directories On
+
+# Show beam in vi ins mode and block cursor for normal
+#
+# Replace \e[ number with any of these values
+# Ps = 0  -> blinking block.
+# Ps = 1  -> blinking block (default).
+# Ps = 2  -> steady block.
+# Ps = 3  -> blinking underline.
+# Ps = 4  -> steady underline.
+# Ps = 5  -> blinking bar (xterm).
+# Ps = 6  -> steady bar (xterm).
+set show-mode-in-prompt on
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
+
+# Remove annoying delay after hitting ESC
+set keyseq-timeout 0
+
+set keymap vi-command
+"\C-l": clear-screen
+
+set keymap vi-insert
+"\C-l": clear-screen
+"\C-e": end-of-line
+"\C-k": kill-line
+"\C-N": next-history
+"\C-P": previous-history
+
+set editing-mode vi
