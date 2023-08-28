@@ -27,7 +27,7 @@ pipeline:
         name: mediawiki_http_response_size_bytes_total
         value: ${! json("http~1response~1bytes").int64() }
         labels:
-          deployment: ${! json("labels~1deployment") }
+          deployment: ${! json("labels.deployment") }
           handler:    ${! json("labels~1handler") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
@@ -38,7 +38,7 @@ pipeline:
         name: mediawiki_http_requests_duration
         value: ${! json("event~1duration").int64() * 1000 }  # event.duration is us, benthos wants ns
         labels:
-          deployment: ${! json("labels~1deployment") }
+          deployment: ${! json("labels.deployment") }
           handler:    ${! json("labels~1handler") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
@@ -49,7 +49,7 @@ pipeline:
         name: mediawiki_requests_by_endpoint_duration
         value: ${! json("event~1duration").int64() * 1000 }  # event.duration is us, benthos wants ns
         labels:
-          deployment: ${! json("labels~1deployment") }
+          deployment: ${! json("labels.deployment") }
           handler:    ${! json("labels~1handler") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
