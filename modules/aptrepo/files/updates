@@ -110,7 +110,7 @@ Components: main>thirdparty/grafana
 UDebComponents:
 Suite: stable
 Architectures: amd64
-VerifyRelease: 9E439B102CF3C0C6
+VerifyRelease: 963FA27710458545
 ListShellHook: grep-dctrl \( -P 'grafana' --exact-match -a -FVersion --ge 9 -a -FVersion --lt 9.4 \) || [ $? -eq 1 ]
 
 Name: confluent
