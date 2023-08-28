@@ -23,6 +23,8 @@ class profile::grafana (
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
     Optional[Stdlib::Port] $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
     Stdlib::Filesource     $logo_file_source        = lookup('profile::grafana::logo_file_source',        { 'default_value' => 'puppet:///modules/profile/grafana/logo/wikimedia-logo.svg' }),
+    # This external config needs to be fetched as we handle the envoy autorestart in this profile
+    Wmflib::Ensure         $envoy_ensure            = lookup('profile::envoy::ensure',                    {'default_value' => 'present'})
 ) {
     include passwords::ldap::production
 
@@ -181,5 +183,7 @@ class profile::grafana (
     }
 
     profile::auto_restarts::service { 'apache2': }
-    profile::auto_restarts::service { 'envoyproxy': }
+    profile::auto_restarts::service { 'envoyproxy':
+        ensure => $envoy_ensure,
+    }
 }
