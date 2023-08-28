@@ -81,7 +81,6 @@ class package_builder(
         'gnome-pkg-tools',
         'gobject-introspection',
         'gradle',
-        'haveged',
         'ivy-debian-helper',
         'javahelper',
         'kernel-wedge',

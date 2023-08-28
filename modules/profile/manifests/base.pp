@@ -133,8 +133,4 @@ class profile::base (
     include profile::auto_restarts
 
     class { 'prometheus::node_debian_version': }
-
-    if $facts['is_virtual'] and debian::codename::lt('buster') and $facts['virtual'] != 'lxc' {
-        class { 'haveged': }
-    }
 }
