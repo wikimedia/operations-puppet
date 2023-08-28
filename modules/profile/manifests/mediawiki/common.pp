@@ -73,6 +73,11 @@ class profile::mediawiki::common(
     }
 
     include ::profile::rsyslog::udp_localhost_compat
+
+    class { '::profile::prometheus::statsd_exporter':
+        relay_address => '',
+    }
+
     include ::profile::mediawiki::php
 
     # furl is a cURL-like command-line tool for making FastCGI requests.
