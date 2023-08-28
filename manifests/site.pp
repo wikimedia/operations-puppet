@@ -773,6 +773,7 @@ node /^db1195\.eqiad\./ {
     role(mariadb::misc)
 }
 
+# Temporary testing for T341489
 node /^db1118\.eqiad\./ {
     role(mariadb::misc)
 }
