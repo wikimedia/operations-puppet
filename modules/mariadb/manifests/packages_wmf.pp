@@ -11,9 +11,7 @@ class mariadb::packages_wmf (
         'grc',
     ])
 
-    if debian::codename::ge('buster') {
-        ensure_packages('mariadb-backup')
-    }
+    ensure_packages('mariadb-backup')
 
     # Manual override until all hosts are in >10.1.44-1 or >10.4.13-1
     file { '/usr/local/bin/mbstream':
