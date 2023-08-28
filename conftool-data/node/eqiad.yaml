@@ -340,7 +340,6 @@ eqiad:
     wcqs1003.eqiad.wmnet: [wcqs]
   wdqs:
     wdqs1004.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
-    wdqs1005.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs1006.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs1007.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs1012.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]

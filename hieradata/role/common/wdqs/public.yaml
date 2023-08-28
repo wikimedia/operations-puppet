@@ -18,7 +18,6 @@ profile::query_service::lag_warning: 21600 # 6 hours
 profile::query_service::lag_critical: 43200 # 12 hours
 profile::query_service::nodes:
   - 'wdqs1004.eqiad.wmnet'
-  - 'wdqs1005.eqiad.wmnet'
   - 'wdqs1006.eqiad.wmnet'
   - 'wdqs1007.eqiad.wmnet'
   - 'wdqs1012.eqiad.wmnet'
