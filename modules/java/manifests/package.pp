@@ -13,11 +13,6 @@ define java::package(
     Boolean           $hardened_tls = false,
     Java::Egd_source  $egd_source   = '/dev/random',
 ) {
-
-    if $egd_source != '/dev/random' and
-            (debian::codename::lt('buster') or !('rdrand' in $facts['cpu_details']['flags'])) {
-        warning("EDG Source (${egd_source}) is considered insecure on this system")
-    }
     # Hack to work around https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6202721
     $_egd_source = ($egd_source == '/dev/urandom') ? {
         true    => '/dev/./urandom',
