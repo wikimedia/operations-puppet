@@ -1,5 +1,5 @@
-# db1118 - temporary in m3
-mariadb::shard: 'm3'
+# db1118 - temporary in m2
+mariadb::shard: 'm2'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false
 mariadb::package: 'wmf-mariadb106'
