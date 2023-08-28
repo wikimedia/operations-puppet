@@ -94,19 +94,15 @@ def write_value(path, value):
     open(path, 'w').write(value)
 
 
-def cmd_nofail(cmd, capture_output=False):
+def cmd_nofail(cmd):
     """echo + exec cmd with normal output, raises on rv!=0"""
     print('Executing: %s' % cmd)
-    # TODO: switch to capture_output once we drop stretch support
-    # however this will also capture stderr which may not bee needed
     return subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE)
 
 
-def cmd_failable(cmd, capture_output=False):
+def cmd_failable(cmd):
     """echo + exec cmd with normal output, ignores errors"""
     print('Executing: %s' % cmd)
-    # TODO: switch to capture_output once we drop stretch support
-    # however this will also capture stderr which may not bee needed
     return subprocess.run(cmd, shell=True, check=False, stdout=subprocess.PIPE)
 
 
@@ -173,11 +169,11 @@ def get_ethtool_queues(device):
     Returns:
         int: The number of queues configured
     """
-    current_config = cmd_nofail('ethtool -l {}'.format(device), True)
+    current_config = cmd_nofail(f'ethtool -l {device}')
     for line in current_config.stdout.decode().splitlines()[-4:]:
         if line.startswith('Combined:'):
             return int(line.split()[-1])
-    raise KeyError('{}:unable to get current queue count from ethtool'.format(device))
+    raise KeyError(f'{device}:unable to get current queue count from ethtool')
 
 
 def set_ethtool_queues(device, driver, desired_queues):
@@ -191,26 +187,20 @@ def set_ethtool_queues(device, driver, desired_queues):
     """
     supported_driver_prefix = ('bnx2x', 'bnxt_en', 'i40e')
     if not driver.startswith(supported_driver_prefix):
-        print('Interface ({}) has unsuported driver, not setting queue count'.format(device))
+        print(f'Interface ({device}) has unsuported driver, not setting queue count')
         return
 
     if desired_queues == get_ethtool_queues(device):
         return
 
-    cmd_nofail(
-        'ethtool -L {device} combined {num_queues}'.format(
-            device=device, num_queues=desired_queues
-        )
-    )
+    cmd_nofail(f'ethtool -L {device} combined {desired_queues}')
 
     for _ in range(10):
         if desired_queues == get_ethtool_queues(device):
             return
         # sleep for a second before re-probing
         sleep(1)
-    raise RuntimeError(
-        '{}: unable to set current queue count with ethtool'.format(device)
-    )
+    raise RuntimeError(f'{device}: unable to set current queue count with ethtool')
 
 
 def get_bnx2x_cos_queue_map(tx_queues, rx_queues):
