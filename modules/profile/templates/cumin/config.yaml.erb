@@ -6,8 +6,8 @@ environment:
     SSH_AUTH_SOCK: /run/keyholder/proxy.sock
 
 puppetdb:
-    host: <%= @puppetdb_host %>
-    port: <%= @puppetdb_port %>
+    host: <%= @puppetdb_micro_host %>
+    port: <%= @puppetdb_micro_port %>
     api_version: 4
     urllib3_disable_warnings:
       - SubjectAltNameWarning  # Temporary fix for T158757

@@ -1,0 +1,2 @@
+profile::cumin::cloud_master::puppetdb_micro_host: puppetdb-api.discovery.wmnet
+profile::cumin::cloud_master::puppetdb_micro_port: "%{alias('profile::puppetdb::microservice::port')}"

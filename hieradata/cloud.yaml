@@ -806,6 +806,11 @@ profile::puppetboard::vhost_next: ~
 profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
 
+profile::cumin::cloud_master::puppetdb_micro_host: puppetdb-api.discovery.wmnet
+profile::cumin::cloud_master::puppetdb_micro_port: "%{alias('profile::puppetdb::microservice::port')}"
+
+profile::cumin::master::puppetdb_micro_host: puppetdb-api.discovery.wmnet
+profile::cumin::master::puppetdb_micro_port: "%{alias('profile::puppetdb::microservice::port')}"
 profile::cumin::master::email_alerts: false
 profile::cumin::master::insetup_role_report_day: 0 # disabled
 

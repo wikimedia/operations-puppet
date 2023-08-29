@@ -1,17 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to manage cumin masters
-# @param puppetdb_host the host running puppetdb
 # @param datacenters list of datacenters
 # @param kerberos_kadmin_host the host running kerberos kadmin
 # @param monitor_agentrun weather to monitor agent runs
+# @param puppetdb_micro_host the host running puppetdb-api micro service
+# @param puppetdb_micro_port the port running puppetdb-api micro service
 # @param email_alerts whether to send email alerts
 # @param insetup_role_report_day The day of the month to run the insetup role report
 # @param cumin_connect_timeout the timeout value for cumin
 class profile::cumin::master (
-    Stdlib::Host  $puppetdb_host           = lookup('puppetdb_host'),
     Array[String] $datacenters             = lookup('datacenters'),
     Stdlib::Host  $kerberos_kadmin_host    = lookup('kerberos_kadmin_server_primary'),
     Boolean       $monitor_agentrun        = lookup('profile::cumin::monitor_agentrun'),
+    Stdlib::Host  $puppetdb_micro_host     = lookup('profile::cumin::master::puppetdb_micro_host'),
+    Stdlib::Port  $puppetdb_micro_port     = lookup('profile::cumin::master::puppetdb_micro_port'),
     Boolean       $email_alerts            = lookup('profile::cumin::master::email_alerts'),
     Integer[0,31] $insetup_role_report_day = lookup('profile::cumin::master::insetup_role_report_day'),
     Integer       $cumin_connect_timeout   = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),

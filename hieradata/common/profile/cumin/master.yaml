@@ -1,2 +1,4 @@
+profile::cumin::master::puppetdb_micro_host: puppetdb-api.discovery.wmnet
+profile::cumin::master::puppetdb_micro_port: "%{alias('profile::puppetdb::microservice::port')}"
 profile::cumin::master::email_alerts: false
 profile::cumin::master::insetup_role_report_day: 0  # disabled

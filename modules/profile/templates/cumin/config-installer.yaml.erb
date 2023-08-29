@@ -3,8 +3,8 @@ log_file: <%= @cumin_log_path %>/cumin-installer.log
 default_backend: direct
 
 puppetdb:
-    host: <%= @puppetdb_host %>
-    port: 443
+    host: <%= @puppetdb_micro_host %>
+    port: <%= @puppetdb_micro_port %>
     api_version: 4
     urllib3_disable_warnings:
       - SubjectAltNameWarning  # Temporary fix for T158757

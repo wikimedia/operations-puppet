@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to manage cloud_cumin masters
-# @param puppetdb_host the host running puppetdb
 # @param datacenters list of datacenters
 # @param kerberos_kadmin_host the host running kerberos kadmin
+# @param puppetdb_micro_host the host running puppetdb-api micro service
+# @param puppetdb_micro_port the port running puppetdb-api micro service
 class profile::cumin::cloud_master (
-    Stdlib::Host  $puppetdb_host         = lookup('puppetdb_host'),
     Array[String] $datacenters           = lookup('datacenters'),
     Stdlib::Host  $kerberos_kadmin_host  = lookup('kerberos_kadmin_server_primary'),
-    Stdlib::Port  $puppetdb_port         = lookup('profile::puppetdb::microservice::port'),
     String        $keystone_protocol     = lookup('profile::openstack::base::keystone::auth_protocol'),
     Stdlib::Host  $keystone_api_fqdn     = lookup('profile::cumin::cloud_master::keystone_api_fqdn'),
     Stdlib::Port  $keystone_port         = lookup('profile::openstack::base::keystone::public_port'),
@@ -15,6 +14,8 @@ class profile::cumin::cloud_master (
     String        $observer_password     = lookup('profile::openstack::main::observer_password'),
     Stdlib::Host  $nova_dhcp_domain      = lookup('profile::cumin::cloud_master::nova_dhcp_domain'),
     String        $openstack_region      = lookup('profile::cumin::cloud_master::openstack_region'),
+    Stdlib::Host  $puppetdb_micro_host   = lookup('profile::cumin::cloud_master::puppetdb_micro_host'),
+    Stdlib::Port  $puppetdb_micro_port   = lookup('profile::cumin::cloud_master::puppetdb_micro_port'),
     Integer       $cumin_connect_timeout = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
 ) {
     include passwords::phabricator
