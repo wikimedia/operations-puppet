@@ -25,12 +25,14 @@ define httpd::mod_conf(
             command => "/usr/sbin/a2enmod ${mod}",
             creates => "/etc/apache2/mods-enabled/${loadfile}",
             notify  => Service['apache2'],
+            require => Package['apache2'],
         }
     } else {
         exec { "ensure_${ensure}_mod_${mod}":
             command => "/usr/sbin/a2dismod -f ${mod}",
             onlyif  => "/usr/bin/test -L /etc/apache2/mods-enabled/${loadfile}",
             notify  => Service['apache2'],
+            require => Package['apache2'],
         }
     }
 }
