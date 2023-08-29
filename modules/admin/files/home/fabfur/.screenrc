@@ -5,8 +5,6 @@ termcapinfo xterm* ti@:te@	# enable SHIFT-PGUP / SHIFT-PGDOWN scroll
 
 defscrollback 30000		# Self-explain
 
-term xterm    			# Useful to avoid strange key behaviour in
-
 nonblock on    			# Tell  screen  how to deal with user 
 	 			# interfaces (displays) that cease to accept output
 vbell on			# Disable visual bell
