@@ -8,13 +8,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 import toml
-try:
-    from toml.decoder import TomlDecodeError
-except ImportError:
-    # stretch hosts have an older version of python toml
-    class TomlDecodeError(Exception):
-        pass
-
+import toml.decoder  # type: ignore
 from prometheus_client import (  # type: ignore
     CollectorRegistry,
     Gauge,
@@ -58,12 +52,12 @@ def inspect_template_dest(
     log.debug("Inspecting destination file %s", template_dest)
 
     if not template_dest.exists():
-        log.warning("%s not found", template_dest)
+        log.warning(f"{template_dest} not found")
         metrics["healthy"].labels(resource.name).set(0)
         metrics["error_timestamp"].labels(resource.name).set(-1)
         return
 
-    template_state = list(runpath.glob("." + template_dest.name + "*"))
+    template_state = list(runpath.glob(f".{template_dest.name}*"))
 
     if len(template_state) == 0:
         metrics["healthy"].labels(resource.name).set(1)
@@ -73,7 +67,7 @@ def inspect_template_dest(
     for state in template_state:
         state_mtime = state.stat().st_mtime
         if state_mtime > template_dest_mtime:
-            log.warning("State file %s newer than %s", state, template_dest.name)
+            log.warning(f"State file {state} newer than {template_dest.name}")
             metrics["healthy"].labels(resource.name).set(0)
             metrics["error_timestamp"].labels(resource.name).set(state_mtime)
             return
@@ -85,11 +79,9 @@ def inspect_resources(confd_path: Path, runpath: Path, metrics: Mapping[str, Gau
     for resource in confd_path.glob("*.toml"):
         try:
             log.debug("Inspecting resource %s", resource)
-            # TODO: we can pash the Path object when no longer on stretch
-            with resource.open('r') as fh:
-                config = toml.load(fh)
+            config = toml.load(resource)
             inspect_template_dest(resource, config, runpath, metrics)
-        except (TomlDecodeError, FileNotFoundError):
+        except (toml.decoder.TomlDecodeError, FileNotFoundError):
             metrics["healthy"].labels(resource.name).set(0)
 
 
