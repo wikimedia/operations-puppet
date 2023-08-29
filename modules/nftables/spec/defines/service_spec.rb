@@ -48,6 +48,15 @@ describe 'nftables::service' do
         end
       end
 
+      describe 'single port as integer, no array' do
+        let(:params) { super().merge(port: 1234) }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .with_content("# Managed by puppet\n# some desc\ntcp dport { 1234 } accept\n")
+        end
+      end
+
       describe 'custom prio - small number' do
         let(:params) { super().merge(port: [80], prio: 3) }
         it { is_expected.to compile.with_all_deps }

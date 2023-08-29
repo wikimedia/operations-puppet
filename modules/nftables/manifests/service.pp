@@ -42,7 +42,7 @@ define nftables::service (
     }
 
     if !$_port.empty() {
-        $port_stmt = "${proto} dport { ${port.sort.join(', ')} }"
+        $port_stmt = "${proto} dport { ${_port.sort.join(', ')} }"
     } elsif $port_range {
         if $port_range[0] >= $port_range[1] {
             fail("Incorrect port range ${port_range[0]} >= ${port_range[1]}")
