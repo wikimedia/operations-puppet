@@ -5,6 +5,8 @@
 # @param kerberos_kadmin_host the host running kerberos kadmin
 # @param monitor_agentrun weather to monitor agent runs
 # @param email_alerts whether to send email alerts
+# @param insetup_role_report_day The day of the month to run the insetup role report
+# @param cumin_connect_timeout the timeout value for cumin
 class profile::cumin::master (
     Stdlib::Host  $puppetdb_host           = lookup('puppetdb_host'),
     Array[String] $datacenters             = lookup('datacenters'),
