@@ -11,9 +11,9 @@ class profile::mediawiki::maintenance::growthexperiments {
     # Ensure that a sufficiently large pool of link recommendations is available.
     profile::mediawiki::maintenance::growthexperiments::refreshlinkrecommendations { [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]: }
 
-    # Track link recommendation pool size
+    # Track task pool size
     profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --tasktype link-recommendation --topictype ores --statsd --output none',
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --topictype ores --statsd --output none',
         interval => '*-*-* *:11:00',
     }
 
