@@ -86,7 +86,7 @@ def get_current_quarter():
     return "{}-{}".format(today.year, (today.month-1)//3+1)
 
 
-# Fetch all roles and return a dictionary of fdqn[rolename]
+# Fetch all roles and return a dictionary of fqdn[rolename]
 def get_roles(puppetdb_host):
     fqdns_roles = {}
 
