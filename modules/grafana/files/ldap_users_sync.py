@@ -128,21 +128,6 @@ class GrafanaSyncer(object):
         LOG.info(f"Created user {login} name {name} email {email}")
         return r.json()
 
-    def _update_user(self, login, name, email):
-        """Update a user's login meta information (name, email) if needed."""
-
-        r = self.api.get(f"users/lookup?loginOrEmail={login}")
-        r.raise_for_status()
-        meta = r.json()
-
-        if meta["name"] == name and meta["email"] == email:
-            return meta
-
-        update_user = {"email": email, "name": name, "login": login, "id": meta["id"]}
-        r = self.api.put(f"users/{meta['id']}", json=update_user)
-        r.raise_for_status()
-        return update_user
-
     def set_role(self, uid, role):
         r = self.api.patch(f"orgs/{self.orgid}/users/{uid}", json={"role": role})
         r.raise_for_status()
@@ -179,9 +164,13 @@ class GrafanaSyncer(object):
                 if self.commit:
                     grafana_uid = self._create_user(user, name, email)["id"]
             else:
-                LOG.debug(f"Updating user {user} name {name} email {email}")
-                if self.commit:
-                    grafana_uid = self._update_user(user, name, email)["id"]
+                grafana_meta = existing_users[user]
+                grafana_uid = grafana_meta["id"]
+                if grafana_meta['name'] != name or grafana_meta['email'] != email:
+                    LOG.debug(f"Updating (re-creating) user {user} name {name} email {email}")
+                    if self.commit:
+                        self.delete_user(grafana_uid)
+                        grafana_uid = self._create_user(user, name, email)["id"]
 
             LOG.debug(f"Setting role {role} for {user}")
             if self.commit:
