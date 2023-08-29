@@ -309,7 +309,7 @@ profile::kubernetes::deployment_server::general:
   default:
     # envoy
     mesh:
-      image_version: 1.23.10-2
+      image_version: 1.23.10-2-s2
       telemetry:
         enabled: true
     # prometheus-statsd-exporter
