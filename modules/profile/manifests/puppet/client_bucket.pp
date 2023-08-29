@@ -5,6 +5,10 @@ class profile::puppet::client_bucket(
     Integer          $file_age = lookup('profile::puppet::client_bucket::file_age'),
     Stdlib::Datasize $max_size = lookup('profile::puppet::client_bucket::max_size'),
 ){
+    file { '/var/lib/puppet/clientbucket':
+        ensure => directory,
+        mode   => '0750',
+    }
 
     systemd::timer::job { 'clean_puppet_client_bucket':
         ensure             => $ensure,
@@ -17,6 +21,7 @@ class profile::puppet::client_bucket(
         logging_enabled    => false,
         monitoring_enabled => false,
         user               => 'root',
+        require            => File['/var/lib/puppet/clientbucket'],
     }
     $script = @("SCRIPT"/L)
     #!/bin/bash
