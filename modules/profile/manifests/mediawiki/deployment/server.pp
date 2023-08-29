@@ -170,10 +170,10 @@ class profile::mediawiki::deployment::server(
             command                 => '/usr/bin/scap stage-train -Dfull_image_build:True --yes auto',
             send_mail               => true,
             send_mail_only_on_error => false,
-            environment             => {
-                'MAILTO'           => 'releng@lists.wikimedia.org',
-            },
+            send_mail_to            => 'releng@lists.wikimedia.org',
             interval                => {'start' => 'OnCalendar', 'interval' => $auto_deploy_interval},
+            monitoring_enabled      => false,
+            ignore_errors           => true,
         }
     }
 
