@@ -2657,11 +2657,6 @@ node /^puppetmaster[12]00[234]\.(codfw|eqiad)\./ {
     role(puppetmaster::backend)
 }
 
-# New Puppetserver node T334479
-node /^puppetserver1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
-}
-
 node /^puppetboard[12]002\.(codfw|eqiad)\./ {
     role(puppetboard)
 }
@@ -2679,6 +2674,11 @@ node /^puppetdb[12]003\.(codfw|eqiad)\./ {
 }
 
 node /^puppetserver[12]001\.(codfw|eqiad)\./ {
+    role(puppetserver)
+}
+
+# New Puppetserver node T334479
+node /^puppetserver1002\.eqiad\./ {
     role(puppetserver)
 }
 
