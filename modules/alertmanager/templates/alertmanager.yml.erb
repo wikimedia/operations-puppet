@@ -230,6 +230,12 @@ route:
         - match:
             severity: 'warning'
           receiver: 'abstract-wikipedia-warning'
+    - match:
+        team: 'growth'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'growth-critical'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -530,6 +536,12 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikipedia-abstract-alerts'
   email_configs:
     - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
+      send_resolved: true
+
+- name: 'growth-critical'
+  # growth-engine-room Slack channel
+  email_configs:
+    - to: 'growth-engine-room-aaaab2fjcsigknmf7zv7adyzum@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
 
 
