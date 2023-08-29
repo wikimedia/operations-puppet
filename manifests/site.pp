@@ -1437,6 +1437,10 @@ node /^cloudservices100[45]\.wikimedia\./ {
     role(wmcs::openstack::eqiad1::services)
 }
 
+node /^cloudservices1006\.eqiad\./ {
+    role(insetup::wmcs)
+}
+
 node /^cloudlb100[12]\.eqiad\./ {
     role(wmcs::cloudlb)
 }
