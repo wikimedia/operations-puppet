@@ -4,15 +4,9 @@ class openstack::util::admin_scripts(
     ) {
 
     # Installing this package ensures that we have all the UIDs that
-    #  are used to store an instance volume.  That's important for
-    #  when we rsync files via this host.
-    $libvirt = $facts['lsbdistcodename'] ? {
-        'stretch' => 'libvirt-clients',
-        'buster' => 'libvirt-clients',
-        'bullseye' => 'libvirt-clients',
-    }
-
-    package{ $libvirt :
+    # are used to store an instance volume.  That's important for
+    # when we rsync files via this host.
+    package{ 'libvirt-clients' :
         ensure => 'present',
     }
 
