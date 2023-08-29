@@ -8,8 +8,6 @@ username: prod-build
 password: <%= @password %>
 ca_bundle: /etc/ssl/certs/ca-certificates.crt
 base_images:
-  - <%= @registry %>/wikimedia-stretch:latest
-  - <%= @registry %>/stretch:latest
   - <%= @registry %>/buster:latest
   - <%= @registry %>/bullseye:latest
   - <%= @registry %>/bookworm:latest
