@@ -213,7 +213,7 @@ class profile::gitlab(
         enable_backup             => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         ssh_listen_addresses      => $ssh_listen_addresses,
         nginx_listen_addresses    => $nginx_listen_addresses,
-        enable_restore            => $active_host != $facts['fqdn'] and $facts['fqdn'] != 'gitlab1003.wikimedia.org', # enable restore on replicas
+        enable_restore            => $active_host != $facts['fqdn'], # enable restore on replicas
         cert_path                 => $cert_path,
         key_path                  => $key_path,
         gitlab_domain             => $service_name,
