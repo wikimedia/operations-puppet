@@ -9,17 +9,8 @@ mod 'augeasproviders_core',
     :ref => 'v3.2.1'
 
 mod 'concat',
-    # NOTE: Deviates from upstream v7.3.0
-    # TODO: migrate local fixes to gitlab.w.o and create a tag
-    # also see https://github.com/b4ldr/puppetlabs-concat/tree/puppet5.5
-    #
-    # 1. f507466942dbdb0684a1d04ea3d96d62d0ec70fa.:
-    #    This commit is reverted as the Regexp.match? operator is not availabe
-    #    on ruby 2.3, this commit may be reverted, once all our stretch
-    #    hosts are gone.
-    :local => true
-    # :git => 'https://github.com/puppetlabs/puppetlabs-concat',
-    # :ref => 'v7.3.0'
+    :git => 'https://github.com/puppetlabs/puppetlabs-concat',
+    :ref => 'v7.3.0'
 
 mod 'dnsquery',
     :git => 'https://github.com/voxpupuli/puppet-dnsquery.git',
