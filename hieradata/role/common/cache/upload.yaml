@@ -30,6 +30,7 @@ profile::cache::varnish::frontend::cache_be_opts:
 profile::cache::varnish::frontend::runtime_params:
     - default_ttl=86400
     - idle_send_timeout=125
+    - send_timeout=3620
     - nuke_limit=1000
 profile::cache::varnish::frontend::transient_gb: 10
 profile::cache::varnish::frontend::fe_vcl_config:
