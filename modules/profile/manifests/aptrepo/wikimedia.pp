@@ -15,21 +15,23 @@
 # @param homedir Where to store the GPG keys for signing. GPG keys will be
 #                stored in .gnupg relative to this path.
 # @param gpg_user Owner of the GPG keys.
+# @param ztp_juniper_root_password The hash of temp password used in Juniper ZTP file tempalate.
 # @param gpg_pubring The GPG public keyring for reprepro to use. Will be passed to secret().
 # @param gpg_secring The GPG secret keyring for reprepro to use. Will be passed to secret().
 # @param private_repo_port the port of the private repo web site
 
 class profile::aptrepo::wikimedia (
-    Stdlib::Fqdn           $primary_server    = lookup('profile::aptrepo::wikimedia::aptrepo_server'),
-    Array[Stdlib::Fqdn]    $secondary_servers = lookup('profile::aptrepo::wikimedia::aptrepo_servers_failover'),
-    String                 $aptrepo_vhost     = lookup('profile::aptrepo::wikimedia::aptrepo_hostname'),
-    Stdlib::Unixpath       $public_basedir    = lookup('profile::aptrepo::wikimedia::public_basedir'),
-    Stdlib::Unixpath       $private_basedir   = lookup('profile::aptrepo::wikimedia::private_basedir'),
-    Stdlib::Unixpath       $homedir           = lookup('profile::aptrepo::wikimedia::homedir'),
-    String                 $gpg_user          = lookup('profile::aptrepo::wikimedia::gpg_user'),
-    Optional[String]       $gpg_pubring       = lookup('profile::aptrepo::wikimedia::gpg_pubring'),
-    Optional[String]       $gpg_secring       = lookup('profile::aptrepo::wikimedia::gpg_secring'),
-    Optional[Stdlib::Port] $private_repo_port = lookup('profile::aptrepo::wikimedia::private_port'),
+    Stdlib::Fqdn           $primary_server            = lookup('profile::aptrepo::wikimedia::aptrepo_server'),
+    Array[Stdlib::Fqdn]    $secondary_servers         = lookup('profile::aptrepo::wikimedia::aptrepo_servers_failover'),
+    String                 $aptrepo_vhost             = lookup('profile::aptrepo::wikimedia::aptrepo_hostname'),
+    Stdlib::Unixpath       $public_basedir            = lookup('profile::aptrepo::wikimedia::public_basedir'),
+    Stdlib::Unixpath       $private_basedir           = lookup('profile::aptrepo::wikimedia::private_basedir'),
+    Stdlib::Unixpath       $homedir                   = lookup('profile::aptrepo::wikimedia::homedir'),
+    String                 $gpg_user                  = lookup('profile::aptrepo::wikimedia::gpg_user'),
+    String                 $ztp_juniper_root_password = lookup('profile::aptrepo::wikimedia::ztp_juniper_root_password'),
+    Optional[String]       $gpg_pubring               = lookup('profile::aptrepo::wikimedia::gpg_pubring'),
+    Optional[String]       $gpg_secring               = lookup('profile::aptrepo::wikimedia::gpg_secring'),
+    Optional[Stdlib::Port] $private_repo_port         = lookup('profile::aptrepo::wikimedia::private_port'),
 ) {
     ferm::service { 'aptrepos_public_http':
         proto => 'tcp',
@@ -79,7 +81,9 @@ class profile::aptrepo::wikimedia (
     class { 'aptrepo::tftp': }
     include profile::backup::host
 
-    class { 'aptrepo::ztp_juniper': }
+    class { 'aptrepo::ztp_juniper':
+        ztp_juniper_root_password => $ztp_juniper_root_password
+    }
 
     # The repository data
     backup::set { 'srv-wikimedia': }

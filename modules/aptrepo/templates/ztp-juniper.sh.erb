@@ -11,13 +11,14 @@ KEY='"<%= @homer_key %>"'
 ROOT_PASSWORD='"<%= @ztp_juniper_root_password %>"'
 
 # Get the current IP and gateway from the ones assigned by DHCP
-MGMT_IP=$(cli -c "show interfaces em0.0 brief" | awk '/inet/ {print $NF}')
+MGMT_IP=$(cli -c "show route table inet.0 protocol local" | awk -F"/" '/^[1-9.]+/{ print $1 }')
+MGMT_PFXLEN=$(cli -c "show route table inet.0 protocol direct" | awk -F"/| " '/^[1-9.]+/ { print $2 }')
 MGMT_GW=$(route -n get | awk '/^default/ { print $NF }')
 
 # Set the minimum configuration to later allow Homer to run
 cli -c "configure; \
         delete interfaces em0 unit 0 family inet dhcp ; \
-        set interfaces em0 unit 0 family inet address $MGMT_IP ; \
+        set interfaces em0 unit 0 family inet address $MGMT_IP/$MGMT_PFXLEN ; \
         set system management-instance ; \
         set routing-instances mgmt_junos routing-options static route 0.0.0.0/0 next-hop $MGMT_GW ; \
         set system root-authentication encrypted-password $ROOT_PASSWORD ; \
@@ -28,3 +29,4 @@ cli -c "configure; \
         set system services ssh root-login deny ; \
         set system services netconf ssh; \
         commit and-quit "
+

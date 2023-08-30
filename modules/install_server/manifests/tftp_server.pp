@@ -12,9 +12,7 @@
 # Sample Usage:
 #   include install_server::tftp_server
 
-class install_server::tftp_server (
-    String $ztp_juniper_root_password,
-) {
+class install_server::tftp_server () {
 
     file { '/srv/tftpboot':
         # config files in the puppet repository,

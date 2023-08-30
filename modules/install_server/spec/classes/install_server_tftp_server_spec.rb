@@ -4,7 +4,6 @@ describe 'install_server::tftp_server', :type => :class do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts){ facts }
-      let(:params) { { 'ztp_juniper_root_password' => 'dummy' } }
 
       it { is_expected.to compile }
       it { is_expected.to contain_package('atftpd').with_ensure('present') }

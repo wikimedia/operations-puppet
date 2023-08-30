@@ -18,15 +18,11 @@
 # Sample Usage:
 #       include ::profile::installserver::tftp
 
-class profile::installserver::tftp (
-    String $ztp_juniper_root_password = lookup('profile::installserver::tftp::ztp_juniper_root_password'),
-) {
+class profile::installserver::tftp () {
 
     ensure_packages('tftp')
 
-    class { 'install_server::tftp_server':
-      ztp_juniper_root_password => $ztp_juniper_root_password,
-    }
+    class { 'install_server::tftp_server': }
 
     ferm::service { 'tftp':
         proto  => 'udp',

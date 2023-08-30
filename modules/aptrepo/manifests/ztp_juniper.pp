@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Adds script which Juniper devices fetch/execute during ZTP provisioning
-class aptrepo::ztp_juniper () {
+class aptrepo::ztp_juniper (
+    String $ztp_juniper_root_password,
+) {
     $homer_key = secret('keyholder/homer.pub')
     file { '/srv/private/junos/ztp-juniper.sh':
         owner   => 'root',
