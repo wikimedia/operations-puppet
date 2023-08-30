@@ -3,6 +3,7 @@ class profile::netmon::httpd (
     $php_version = debian::codename() ? {
         'buster'   => 'php7.3',
         'bullseye' => 'php7.4',
+        'bookworm' => 'php8.2',
         default    => 'php7.3',
     }
     # needed by librenms and netbox web servers
