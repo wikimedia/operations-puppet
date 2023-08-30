@@ -6,8 +6,8 @@ profile::trafficserver::backend::storage_elements:
 
 profile::cache::varnish::frontend::cache_be_opts:
     port: 3128
-    connect_timeout: '3s'
-    first_byte_timeout: '65s'
-    between_bytes_timeout: '33s'
+    connect_timeout: '5s'
+    first_byte_timeout: '35s'
+    between_bytes_timeout: '60s'
     max_connections: 400000
     probe: 'varnish'
