@@ -58,6 +58,7 @@ class profile::wikidough (
     acme_chief::cert { 'wikidough':
         puppet_svc => 'dnsdist',
         key_group  => '_dnsdist',
+        require    => Package['dnsdist'],
     }
 
     class { 'dnsdist':
