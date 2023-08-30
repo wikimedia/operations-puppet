@@ -157,7 +157,7 @@ class profile::idm(
             path               => '/',
             force_tls          => true,
             status_matches     => [200],
-            body_regex_matches => ['Bitu'],
+            body_regex_matches => ['signup'],
             follow_redirects   => true,
         }
     }
