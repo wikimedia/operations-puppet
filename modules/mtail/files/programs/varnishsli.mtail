@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 counter varnish_sli_all
+counter varnish_sli_bad
 counter varnish_sli_good
 
 hidden gauge internal_time
@@ -44,6 +45,11 @@ hidden gauge internal_time
     /\terror -\tfetcherror (?P<fetcherror>-|[ \.a-zA-Z\(\)0-9:]+)\t/ && internal_time < 0.1 {
         $fetcherror =~ /-|req\.body read error/ {
             varnish_sli_good++
+        } else {
+            varnish_sli_bad++
         }
+    } else {
+        varnish_sli_bad++
     }
+
 }

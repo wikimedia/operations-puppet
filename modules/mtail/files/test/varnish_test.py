@@ -138,3 +138,7 @@ class VarnishSLITest(unittest.TestCase):
         # timestamps sum go above threshold (0.100001 > 0.1).
         sli_good = self.store.get_samples('varnish_sli_good')
         self.assertIn(('', 9), sli_good)
+        # The bad requests should be recorded as "bad" since they didn't match
+        # any of the rules to make it good.
+        sli_bad = self.store.get_samples('varnish_sli_bad')
+        self.assertIn(('', 3), sli_bad)
