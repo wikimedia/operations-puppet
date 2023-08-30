@@ -63,7 +63,7 @@ role::wdqs::test:
   target-q: TBD
   phab-task: 323921
 role::wcqs::public:
-  target-q: TBD
+  target-q: 2023-3
   phab-task: 323921
 role::sessionstore:
   target-q: 2023-2
@@ -87,7 +87,7 @@ role::parsoid::testreduce:
 role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
-  target-q: 2023-2
+  target-q: 2023-3
   phab-task: 331713
 role::ores:
   target-q: 2023-2
@@ -515,7 +515,8 @@ role::ml_cache::storage:
 role::apifeatureusage::logstash:
   target-q: TBD
 role::dispatch::backend:
-  target-q: TBD
+  target-q: 2023-3
+  phab-task: 344937
 role::cassandra_dev:
   target-q: 2023-2
   phab-task: 313814
