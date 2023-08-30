@@ -10,8 +10,6 @@ class php(
     Hash $config_by_sapi               = {},
     Hash $extensions                   = {}
 ) {
-    debian::codename::require::min('stretch')
-
     # Basic configuration parameters.
     # Please note all these parameters can be overridden
     $base_config = {
