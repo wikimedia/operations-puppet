@@ -531,7 +531,7 @@ node /^db1208\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on eqiad
-node /^db1(106|128|132|134|135|163|169|184|186|206|207|218|219)\.eqiad\./ {
+node /^db1(106|119|128|132|134|135|163|169|184|186|206|207|218|219)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -790,13 +790,6 @@ node /^db2133\.codfw\./ {
 node /^db1159\.eqiad\./ {
     role(mariadb::misc::phabricator)
 }
-
-# Temporary testing host for T335080
-node /^db1119\.eqiad\./ {
-    role(mariadb::misc::phabricator)
-}
-
-
 
 # m3 codfw master
 node /^db2134\.codfw\./ {

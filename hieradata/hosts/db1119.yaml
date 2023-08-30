@@ -1,5 +1,5 @@
 # db1119
-mariadb::shard: 'm3'
+mariadb::shard: 's1'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false
 mariadb::package: 'wmf-mariadb106'
