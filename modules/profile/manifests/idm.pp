@@ -154,7 +154,7 @@ class profile::idm(
         prometheus::blackbox::check::http { 'idm.wikimedia.org':
             team               => 'infrastructure-foundations',
             severity           => 'critical',
-            path               => '/',
+            path               => '/signup/',
             force_tls          => true,
             status_matches     => [200],
             body_regex_matches => ['signup'],
