@@ -402,7 +402,7 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu]
+              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -6004,6 +6004,14 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZMvLWML3HYfq2Tc1TvfUFInGtmN8DS01pcdYDetuiCklmTUFuRwYfeIhevlpwFKxauefEDs04YH/i0aupTfrGfORRtS/qLhn8lSQY3z73c/XlMOYwozfHeojc5eBUhEQXSPMbhm5cCZyBjubj933HFwA1FSA2gMju4m53ehQPJEH5U8CG2br4iSNcRDNn+YmLvXcmXGl8ehw0dSVyFJwaakbbP+Xux2c0mQnmjafBWoxEz8ExyIC/8EgZqRIMcPJYswobp73h+eI2A58MClPQnuJz7n4p0NxzUFJW88dfwLjk5d1o7prCisp2NpI7CKhwsd409zTbWGsqSMcqW4vLP1ZWltJISOSUrxU1byrJJW5u5Z3sWuOtOjjAU6ZBFxjEuK/LtPeLMa813CpKfMEwVHV+6/0u7ymsGFN+7eoOOT7CGwe/Fjhym9zyUqkNtFKPo2I/Ib6HDOpYsAjuNupND7+7L7D3XzWWTduvTlWJo3vJ8F6pJGYZqFyaT4Q1GTk= ricki.jay@wikimedia.de'
+  mabualruz:
+    ensure: present
+    realname: Moh'd Abualruz
+    email: mabualruz@wikimedia.org
+    uid: 39232
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGla5S5N4SYzbpqWnSzO9AIk2EmjwRoQe807+yQ5zAT'
 
 ldap_only_users:
   adavenport:
@@ -6163,10 +6171,6 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
-  mabualruz:
-    ensure: present
-    realname: Moh'd Abualruz
-    email: mabualruz@wikimedia.org
   mattflaschen:
     ensure: present
     realname: Matthew Flaschen
