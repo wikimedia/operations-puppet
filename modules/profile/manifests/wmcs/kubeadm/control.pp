@@ -6,7 +6,7 @@ class profile::wmcs::kubeadm::control (
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::kubeadm::etcd_nodes',     {default_value => ['localhost']}),
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
-    String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version', {default_value => '1.21.8'}),
+    String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version'),
     Optional[String]    $encryption_key = lookup('profile::wmcs::kubeadm::encryption_key', {default_value => undef}),
     Optional[Integer]   $etcd_heartbeat_interval = lookup('profile::wmcs::kubeadm::etcd_heartbeat_interval', {default_value => undef}),
     Optional[Integer]   $etcd_election_timeout = lookup('profile::wmcs::kubeadm::etcd_election_timeout', {default_value => undef}),
