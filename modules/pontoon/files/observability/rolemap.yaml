@@ -44,8 +44,8 @@ acme_chief:
   - pontoon-acmechief-01.monitoring.eqiad1.wikimedia.cloud
 
 netmon:
-  - pontoon-netmon-01.monitoring.eqiad1.wikimedia.cloud
   - pontoon-netmon-02.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-netmon-03.monitoring.eqiad1.wikimedia.cloud
 
 apt_repo:
   - pontoon-apt-01.monitoring.eqiad1.wikimedia.cloud
