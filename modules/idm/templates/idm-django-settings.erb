@@ -171,7 +171,8 @@ SIGNUP_USERNAME_VALIDATORS = ['ldapbackend.validators.LDAPUsernameValidator',
                               'signups.validators.UsernameValidator']
 
 SIGNUP_UID_VALIDATORS = ['ldapbackend.validators.unix_username_regex_validator',
-                         'ldapbackend.validators.unix_username_length_validator']
+                         'ldapbackend.validators.unix_username_length_validator',
+                         'signups.validators.UsernameValidator']
 
 # Display Wikimedia Foundation Signup message
 SIGNUP_INFO_TEMPLATE = 'signup_info_wmf.html'
