@@ -2,23 +2,6 @@
 #
 # * relevant cert expiry is monitored in icinga::monitor::certs
 class icinga::monitor::toollabs {
-
-    # monitoring of https://meta.wikimedia.org/wiki/PAWS
-    @monitoring::host { 'paws.wmcloud.org':
-        host_fqdn     => 'paws.wmcloud.org',
-        contact_group => 'team-paws',
-    }
-
-    monitoring::service { 'paws_main_page':
-        description    => 'PAWS Main page',
-        check_command  => 'check_http_url!hub.paws.wmcloud.org!/hub/login',
-        host           => 'paws.wmcloud.org',
-        contact_group  => 'team-paws',
-        check_interval => 5,
-        retry_interval => 5,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/PAWS',
-    }
-
     # this homepage is served by a tool running within tools
     # itself. On a bastion 'become admin' to see source and
     # 'webservice restart' if needed.
