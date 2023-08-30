@@ -35,10 +35,7 @@ class profile::gnmi_telemetry (
     exec { 'generate network device bundle':
         command => $command,
         unless  => $unless,
-        require => File[
-            $profile::base::certificates::trusted_certs['bundle'],
-            $network_devices_ca_path,
-        ],
+        require => File[$network_devices_ca_path],
     }
 
     $targets = Hash($infra_devices.filter |$device, $attributes| {
