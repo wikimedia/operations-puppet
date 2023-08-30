@@ -284,3 +284,21 @@ profile::cache::haproxy::enable_coredumps: true
 # T337825
 profile::cache::kafka::certificate::use_pki_settings: true
 profile::cache::kafka::certificate::ssl_key_password: undef
+
+profile::trafficserver::backend::http_settings:
+  accept_no_activity_timeout: 180
+  connect_attempts_timeout: 9
+  keep_alive_no_activity_timeout_in: 120
+  keep_alive_no_activity_timeout_out: 120
+  post_connect_attempts_timeout: 11
+  transaction_no_activity_timeout_in: 200
+  transaction_no_activity_timeout_out: 180
+  transaction_active_timeout_in: 900
+  transaction_active_timeout_out: 205
+  send_100_continue_response: 0
+  max_post_size: 0
+  keep_alive_enabled_out: 1
+  keep_alive_post_out: 1
+  server_session_sharing_match: both
+  server_session_sharing_pool: thread
+  allow_half_open: 1
