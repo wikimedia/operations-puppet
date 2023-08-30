@@ -178,7 +178,7 @@
 #
 #   [*yarn_nodemanager_log_aggregation_compression_type*]
 #     This is the compression protocol used to store ran aggregated logs.
-#     Possible values: none, gzip, lzo
+#     Possible values: none, gz, lzo
 #     Default: none
 #
 #   [*yarn_nodemanager_resource_memory_mb*]
@@ -378,7 +378,7 @@ class bigtop::hadoop(
     $mapreduce_output_compression                       = false,
     $mapreduce_output_compression_codec                 = 'org.apache.hadoop.io.compress.DefaultCodec',
     $mapreduce_output_compression_type                  = 'RECORD',
-    $yarn_nodemanager_log_aggregation_compression_type  = 'gzip',
+    $yarn_nodemanager_log_aggregation_compression_type  = 'gz',
     $yarn_nodemanager_resource_memory_mb                = undef,
     $yarn_nodemanager_resource_cpu_vcores               = max($::processorcount - 1, 1 + 0),
     $yarn_nodemanager_nofiles_ulimit                    = 65536,
