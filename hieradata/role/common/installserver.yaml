@@ -16,11 +16,3 @@ profile::installserver::proxy::custom_acls:
     dst:
       - restricted.bastion.wmcloud.org
       - bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
-  cloudcumin_wmbot:
-    task: T325756
-    port: 64835
-    dst_type: host
-    src:
-      - 'cluster::cloud_management'
-    dst:
-      - wm-bot.wm-bot.wmcloud.org
