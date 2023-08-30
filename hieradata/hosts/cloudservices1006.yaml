@@ -1,4 +1,8 @@
 ---
+# TODO: this is here to unblock the installer, likely not required
+profile::openstack::eqiad1::pdns::hosts:
+  - "ns0-next.openstack.eqiad1.wikimediacloud.org"
+
 # TODO: remove the '-next' suffix when ready
 profile::openstack::base::pdns::query_local_address: ns0-next.openstack.eqiad1.wikimediacloud.org
 profile::openstack::base::pdns::auth::listen_on:
