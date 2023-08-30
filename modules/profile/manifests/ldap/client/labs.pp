@@ -9,10 +9,6 @@ class profile::ldap::client::labs(
         fail('profile::ldap::client::labs: only Cloud VPS VMs are supported')
     }
 
-    if debian::codename::le('stretch') {
-        fail('profile::ldap::client::labs: only Debian Buster and newer are supported')
-    }
-
     # bypass pam_access restrictions for local commands
     security::access::config { 'labs-local':
         content  => "+:ALL:LOCAL\n",
