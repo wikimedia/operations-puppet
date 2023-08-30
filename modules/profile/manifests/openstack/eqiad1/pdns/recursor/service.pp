@@ -12,13 +12,19 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
 
-    # This iterates on $hosts and returns the entry in $hosts with the same
-    #  ipv4 as $::fqdn
-    $service_pdns_host = $pdns_hosts.reduce(false) |$memo, $service_host_fqdn| {
-        if (ipresolve($::fqdn,4) == ipresolve($service_host_fqdn,4)) {
-            $service_host_fqdn
-        } else {
-            $memo
+    if $::hostname == 'cloudservices1006' {
+        $actual_pdns_hosts = $pdns_hosts
+    } else {
+        # TODO: this branch can go away when we no longer have servers in the old setup
+
+        # This iterates on $hosts and returns the entry in $hosts with the same
+        #  ipv4 as $::fqdn
+        $actual_pdns_hosts = $pdns_hosts.reduce(false) |$memo, $service_host_fqdn| {
+            if (ipresolve($::fqdn,4) == ipresolve($service_host_fqdn,4)) {
+                [$service_host_fqdn]
+            } else {
+                $memo
+            }
         }
     }
 
@@ -28,7 +34,7 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     class {'::profile::openstack::base::pdns::recursor::service':
         keystone_api_fqdn     => $keystone_api_fqdn,
         observer_password     => $observer_password,
-        pdns_hosts            => [$service_pdns_host],
+        pdns_hosts            => $actual_pdns_hosts,
         pdns_recursor         => $recursor_service_name,
         legacy_tld            => $legacy_tld,
         private_reverse_zones => $private_reverse_zones,
