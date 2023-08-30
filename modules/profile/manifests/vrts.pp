@@ -16,6 +16,7 @@ class profile::vrts(
     String $download_url             = lookup('profile::vrts::download_url'),
     String $http_proxy               = lookup('profile::vrts::http_proxy'),
     String $https_proxy              = lookup('profile::vrts::https_proxy'),
+    String $dns_name                 = lookup('profile::vrts::public_dns'),
     Boolean $local_database          = lookup('profile::vrts::local_database', {default_value => false}),
     Stdlib::Unixpath $db_datadir     = lookup('profile::vrts::db_datadir', {default_value => '/var/lib/mysql'}),
 ){
@@ -50,6 +51,7 @@ class profile::vrts(
         download_url       => $download_url,
         http_proxy         => $http_proxy,
         https_proxy        => $https_proxy,
+        public_dns         => $dns_name,
     }
 
     class { '::httpd':
@@ -103,7 +105,7 @@ class profile::vrts(
     }
 
     if $active_host == $facts['fqdn'] {
-        prometheus::blackbox::check::http { 'ticket.wikimedia.org':
+        prometheus::blackbox::check::http { $dns_name:
             team               => 'serviceops-collab',
             severity           => 'task',
             path               => '/otrs/index.pl',
@@ -111,7 +113,7 @@ class profile::vrts(
             ip_families        => ['ip4'],
             force_tls          => true,
             body_regex_matches => ['wikimedia'],
-    }
+        }
     }
 
     # can conflict with ferm module

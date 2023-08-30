@@ -56,9 +56,12 @@ class vrts(
     String $download_url,
     String $http_proxy,
     String $https_proxy,
+    String $public_dns,
 ) {
     # Implementation classes
-    include ::vrts::web
+    class { '::vrts::web':
+        domain_name => $public_dns,
+    }
     class { '::vrts::mail':
         vrts_mysql_database => $exim_database_name,
         vrts_mysql_user     => $exim_database_user,

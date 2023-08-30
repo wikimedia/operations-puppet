@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 # HTTP -> HTTPS is these days ensured by varnish
 <VirtualHost *:80>
-    ServerName ticket.wikimedia.org
+    ServerName <%= @domain_name %>
 
     # Make an access log, so we know when people abuse OTRS's insecure interface
     CustomLog /var/log/apache2/otrs-access.log wmf

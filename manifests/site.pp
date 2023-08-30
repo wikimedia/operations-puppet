@@ -2548,7 +2548,7 @@ node /^vrts1001\.eqiad\./ {
 }
 
 node /^vrts1002\.eqiad\./ {
-    role(insetup::serviceops_collab)
+    role(vrts)
 }
 
 # T323515: WIP

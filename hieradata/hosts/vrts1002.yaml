@@ -1,8 +1,8 @@
 profile::admin::groups:
   - vrts-roots
-profile::vrts::active_host: 'vrts1001.eqiad.wmnet'
+profile::vrts::active_host: 'vrts1002.eqiad.wmnet'
 profile::vrts::passive_host: 'vrts2001.codfw.wmnet'
-profile::vrts::database_host: m2-master.eqiad.wmnet
+profile::vrts::database_host: db1118.eqiad.wmnet
 profile::vrts::database_name: otrs
 profile::vrts::database_user: otrs
 profile::vrts::database_port: '3306'
@@ -17,9 +17,10 @@ profile::vrts::http_proxy: 'webproxy.eqiad.wmnet:8080'
 profile::mail::default_mail_relay::enabled: false
 
 # envoy for TLS termination behind ATS
+# TODO: Setup Test Domain Name
 profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
 profile::tlsproxy::envoy::tls_port: 1443
 
 profile::contacts::role_contacts: ['ServiceOps-Collab']
 
-profile::vrts::public_dns: "ticket.wikimedia.org"
+profile::vrts::public_dns: "ticket-test.wikimedia.org"

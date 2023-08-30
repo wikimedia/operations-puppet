@@ -13,7 +13,9 @@
 # Sample Usage:
 #   include vrts::web
 #
-class vrts::web {
+class vrts::web(
+    String $domain_name,
+){
 
     # We override the default mpm_prefork to set the apache setting for
     # MaxConnectionsPerChild. The chosen number is experimentally derived from
@@ -26,7 +28,7 @@ class vrts::web {
         source => 'puppet:///modules/vrts/mpm_prefork.conf',
     }
 
-    httpd::site { 'ticket.wikimedia.org':
+    httpd::site { $domain_name:
         content => template('vrts/ticket.wikimedia.org.erb'),
     }
 
