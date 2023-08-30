@@ -5,7 +5,7 @@ Description=gNMIc telemetry collector
 After=network.target
 
 [Service]
-Type=forking
+Type=simple
 ExecStart=/usr/local/bin/gnmic --config /etc/gnmic.yaml subscribe --watch-config
 Restart=on-failure
 RestartSec=0
