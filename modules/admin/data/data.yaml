@@ -6808,3 +6808,7 @@ ldap_only_users:
     ensure: present
     realname: Valerie Riley
     email: vriley@wikimedia.org
+  arnaudb:
+    ensure: present
+    realname: Arnaud Bran
+    email: abran@wikimedia.org
