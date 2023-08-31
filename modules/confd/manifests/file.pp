@@ -43,18 +43,12 @@ define confd::file (
     Boolean $relative_prefix = true,
 ) {
 
-    if $instance == 'main' {
-        # On the main instance, we don't define $prefix
-        # globally from the command line, but instead we prepend it
-        # to the single templates.
-        # This is done for historical reasons - we did this to allow multiple
-        # definitions which would use different prefixes, but it's a hack.
-        # TODO: use multiple instances instead of this hack.
-        include confd::default_instance
-        $confd_prefix = $confd::default_instance::prefix
-    } else {
-        $confd_prefix = ''
+    include confd
+    unless $confd::instances.has_key($instance) {
+        fail("confd class has no instance configuered for: ${instance}")
     }
+    # TODO: currently prefix is optional, what do we do if its undef?
+    $confd_prefix = $confd::instances[$instance]['prefix']
 
     $label = $instance ? {
         'main'  => 'confd',

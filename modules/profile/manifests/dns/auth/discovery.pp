@@ -57,10 +57,7 @@ class profile::dns::auth::discovery(
         source => 'puppet:///modules/profile/dns/auth/authdns-check-active-passive',
     }
 
-    class { 'confd::default_instance':
-        prefix  => $conftool_prefix,
-        srv_dns => "${::site}.wmnet",
-    }
+    include profile::confd
 
     $discovery_services.each |$svc_data| {
         $keyspace = '/discovery'

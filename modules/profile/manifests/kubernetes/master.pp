@@ -77,12 +77,17 @@ class profile::kubernetes::master (
         content => systemd_template('kubernetes-publish-sa-cert'),
     }
     # Setup a confd instance with the k8s etcd as backend (to fetch other control-planes sa certs from)
-    confd::instance { 'k8s':
-        ensure  => present,
-        backend => 'etcdv3',
-        prefix  => $confd_prefix,
-        # confd with etcdv3 does not work well with srv_dns as it does not prepend the scheme in that case
-        hosts   => $k8s_config['etcd_urls'],
+    $instances =  {
+        'k8s'   =>  {
+            'ensure'  => 'present',
+            'backend' => 'etcdv3',
+            'prefix'  => $confd_prefix,
+            # confd with etcdv3 does not work well with srv_dns as it does not prepend the scheme in that case
+            'hosts'   => $k8s_config['etcd_urls'],
+        },
+    }
+    class { 'profile::confd':
+        instances => $instances,
     }
     # Write out the service account certs form all control-planes into one file
     $kube_apiserver_sa_certs = '/etc/kubernetes/pki/kube-apiserver-sa-certs.pem'

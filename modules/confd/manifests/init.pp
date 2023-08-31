@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Installs confd and monitoring/logging setup
 # @param ensure the ensure parameter
+# @param instances a hash of instances
 class confd(
-    Wmflib::Ensure $ensure = present,
+    Wmflib::Ensure     $ensure    = present,
+    Hash[String, Hash] $instances = {'main' => {}},
 ) {
 
     ### Install confd ###
@@ -64,5 +66,9 @@ class confd(
         priority => 20,
         require  => File['/etc/logrotate.d/confd'],
     }
-
+    $instances.each |$title, $params| {
+        confd::instance { $title:
+            * => $params,
+        }
+    }
 }

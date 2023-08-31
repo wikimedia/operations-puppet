@@ -10,14 +10,16 @@
 
 class profile::conftool::state(
     Wmflib::Ensure $ensure = lookup('profile::conftool::state::ensure'),
-    String $prefix = lookup('conftool_prefix'),
     Integer $query_interval = lookup('profile::conftool::state::query_interval'),
 ) {
-    class { 'confd::default_instance':
-        ensure   => $ensure,
-        prefix   => $prefix,
-        interval => $query_interval,
-        srv_dns  => "${::site}.wmnet",
+    $instances = {
+        'main' => {
+            'ensure'   => $ensure,
+            'interval' => $query_interval,
+        },
+    }
+    class { 'profile::confd':
+        instances => $instances,
     }
 
     $base_dir = '/etc/conftool-state'

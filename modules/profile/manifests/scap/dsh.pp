@@ -5,13 +5,15 @@ class profile::scap::dsh(
     Hash $groups = lookup('scap::dsh::groups'),
     Array[Stdlib::Host] $proxies = lookup('scap::dsh::scap_proxies', {'default_value' => []}),
     Array[Stdlib::Host] $masters = lookup('scap::dsh::scap_masters', {'default_value' => []}),
-    String $conftool_prefix = lookup('conftool_prefix'),
 ){
 
-    class { 'confd::default_instance':
-        interval => 300,
-        prefix   => $conftool_prefix,
-        srv_dns  => "${::site}.wmnet",
+    $instances = {
+        'main' => {
+            'interval' => 300,
+        },
+    }
+    class { 'profile::confd':
+        instances => $instances,
     }
 
     $scap_targets = {

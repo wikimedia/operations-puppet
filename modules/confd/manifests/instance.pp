@@ -32,7 +32,7 @@ define confd::instance (
     Integer                          $interval      = 3,
     Optional[String]                 $prefix        = undef,
 ) {
-    require confd
+    assert_private()
     $label = $name ? {
         'main'  => 'confd',
         default => sprintf('confd-%s', regsubst($name, '/', '_', 'G')),
