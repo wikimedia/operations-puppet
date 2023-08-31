@@ -6,16 +6,6 @@ class profile::microsites::wikiworkshop {
         content => template('profile/wikiworkshop/apache-wikiworkshop.org.erb'),
     }
 
-    prometheus::blackbox::check::http { 'wikiworkshop.org':
-        team               => 'serviceops-collab',
-        severity           => 'task',
-        path               => '/2023/',
-        ip_families        => ['ip4'],
-        force_tls          => true,
-        status_matches     => [200],
-        body_regex_matches => ['Wiki Workshop'],
-    }
-
     wmflib::dir::mkdir_p('/srv/org/wikimedia/wikiworkshop')
 
     git::clone { 'research/wikiworkshop':

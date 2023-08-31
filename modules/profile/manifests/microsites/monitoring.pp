@@ -87,4 +87,30 @@ class profile::microsites::monitoring {
         ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
         certificate_expiry_days => 9,
     }
+
+    prometheus::blackbox::check::http { 'wikiworkshop.org':
+        team                    => 'serviceops-collab',
+        severity                => 'task',
+        path                    => '/2023/',
+        ip_families             => ['ip4'],
+        force_tls               => true,
+        status_matches          => [200],
+        body_regex_matches      => ['Wiki Workshop'],
+        port                    => 30443, # Kubernetes Ingress port
+        ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
+        certificate_expiry_days => 9,
+    }
+
+    prometheus::blackbox::check::http { 'research.wikimedia.org':
+        team                    => 'serviceops-collab',
+        severity                => 'task',
+        path                    => '/',
+        ip_families             => ['ip4'],
+        force_tls               => true,
+        status_matches          => [200],
+        body_regex_matches      => ['Wikimedia Research'],
+        port                    => 30443, # Kubernetes Ingress port
+        ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
+        certificate_expiry_days => 9,
+    }
 }
