@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 ceph_pool: <%= @ceph_volume_pool %>
-live_for_days: 7
+live_for_days: 10
 
 exclude_volumes:
   cloudinfra-nfs:
@@ -18,4 +18,5 @@ exclude_volumes:
 project_assignments:
   ALLOTHERS: cloudbackup2001
   tools: cloudbackup2002
+  paws: cloudbackup2002
   clouddb-services: cloudbackup2002
