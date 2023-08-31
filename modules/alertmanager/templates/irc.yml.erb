@@ -30,7 +30,7 @@ msg_template: >-
   ({{ .GroupLabels.alertname }})
   {{.Status}}:{{ if .Alerts | len | le 2 }} ({{ .Alerts | len }}){{ end }}
   {{ if eq .GroupLabels.alertname "DatasourceError" -}}
-  {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }}
+  {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/DatasourceError
   {{- else -}}
   {{ (index .Alerts 0).Annotations.summary }}
   {{- end }}
