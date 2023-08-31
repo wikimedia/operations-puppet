@@ -7,10 +7,4 @@ class profile::openstack::eqiad1::nova::conductor::service(
     class {'::profile::openstack::base::nova::conductor::service':
         version         => $version,
     }
-
-    class {'::openstack::nova::conductor::monitor':
-        active         => true,
-        critical       => false,
-        contact_groups => 'wmcs-team-email',
-    }
 }

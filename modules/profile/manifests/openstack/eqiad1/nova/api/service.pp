@@ -10,10 +10,4 @@ class profile::openstack::eqiad1::nova::api::service(
         dhcp_domain   => $dhcp_domain,
         haproxy_nodes => $haproxy_nodes,
     }
-
-    class {'::openstack::nova::api::monitor':
-        active         => true,
-        critical       => false,
-        contact_groups => 'wmcs-team-email',
-    }
 }

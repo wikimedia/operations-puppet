@@ -30,8 +30,4 @@ class profile::openstack::eqiad1::glance (
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
     contain '::profile::openstack::base::glance'
-
-    class { 'openstack::glance::monitor':
-        contact_groups => 'wmcs-team-email,admins',
-    }
 }

@@ -79,11 +79,4 @@ class profile::openstack::codfw1dev::keystone::service(
         wsgi_server => $wsgi_server,
     }
     contain '::profile::openstack::base::keystone::hooks'
-
-    class {'::openstack::keystone::monitor::services':
-        active      => true,
-        auth_port   => $auth_port,
-        public_port => $public_port,
-    }
-    contain '::openstack::keystone::monitor::services'
 }

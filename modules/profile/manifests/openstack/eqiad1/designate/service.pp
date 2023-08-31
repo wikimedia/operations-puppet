@@ -48,9 +48,4 @@ class profile::openstack::eqiad1::designate::service(
         enforce_policy_scope              => $enforce_policy_scope,
         enforce_new_policy_defaults       => $enforce_new_policy_defaults,
     }
-
-    class {'::openstack::designate::monitor':
-        active         => true,
-        contact_groups => 'wmcs-team-email',
-    }
 }

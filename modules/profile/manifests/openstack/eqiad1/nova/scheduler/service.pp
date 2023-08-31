@@ -7,10 +7,4 @@ class profile::openstack::eqiad1::nova::scheduler::service(
     class {'::profile::openstack::base::nova::scheduler::service':
         version         => $version,
     }
-
-    class {'::openstack::nova::scheduler::monitor':
-        active         => true,
-        critical       => false,
-        contact_groups => 'wmcs-team-email',
-    }
 }

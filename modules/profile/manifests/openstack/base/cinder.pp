@@ -59,7 +59,6 @@ class profile::openstack::base::cinder(
     }
 
     class { '::openstack::cinder::monitor':
-        active                => $active,
     }
 
     ferm::service { 'cinder-api-backend':

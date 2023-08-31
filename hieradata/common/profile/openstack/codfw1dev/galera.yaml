@@ -1,4 +1,2 @@
-profile::openstack::codfw1dev::galera::node_count: 3
-profile::openstack::codfw1dev::galera::test_username: "galera_monitor"
 profile::openstack::codfw1dev::galera::listen_port: 23306
 profile::openstack::codfw1dev::galera::backup_user: "galera_backup"

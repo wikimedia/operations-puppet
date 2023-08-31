@@ -39,7 +39,6 @@ class role::wmcs::openstack::codfw1dev::control {
     # include profile::openstack::codfw1dev::pdns::dns_floating_ip_updater
 
     include profile::openstack::codfw1dev::galera::node
-    include profile::openstack::codfw1dev::galera::monitoring
     include profile::openstack::codfw1dev::galera::backup
 
     include profile::openstack::codfw1dev::nova::fullstack::service
