@@ -307,6 +307,9 @@ profile::gitlab::restore_interval:
   start: 'OnCalendar'
   interval: '*-*-* 02:00:00'
 
+# Test usage of local gems - T337570
+profile::gitlab::local_gems_enabled: true
+
 # LDAP group sync configuration
 profile::gitlab::ldap_group_sync_user: ldapgroupsync
 profile::gitlab::ldap_group_sync_bot_user: ldap-sync-bot
