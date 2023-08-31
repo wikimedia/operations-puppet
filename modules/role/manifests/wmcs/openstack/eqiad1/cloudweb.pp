@@ -17,7 +17,6 @@ class role::wmcs::openstack::eqiad1::cloudweb {
 
     # Wikitech:
     include ::profile::openstack::eqiad1::wikitech::web
-    include ::profile::openstack::eqiad1::wikitech::monitor
 
     # Horizon:
     include ::profile::openstack::eqiad1::horizon::docker_deploy

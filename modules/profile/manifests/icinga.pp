@@ -68,6 +68,7 @@ class profile::icinga(
     class { 'icinga::monitor::cloudgw': }
     class { 'icinga::monitor::legal': }
     class { 'icinga::monitor::certs': }
+    class { 'icinga::monitor::wikitech_static': }
 
     # monitoring of content on commons (T124812)
     prometheus::blackbox::check::http { 'commons.wikimedia.org':

@@ -17,7 +17,6 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
 
     # Wikitech:
     include ::profile::openstack::codfw1dev::wikitech::web
-    include ::profile::openstack::codfw1dev::wikitech::monitor
 
     # Horizon:
     include ::profile::openstack::codfw1dev::horizon::docker_deploy

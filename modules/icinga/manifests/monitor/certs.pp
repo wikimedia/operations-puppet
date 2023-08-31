@@ -61,25 +61,4 @@ class icinga::monitor::certs {
         host          => 'phab.wmfusercontent.org',
         notes_url     => 'https://phabricator.wikimedia.org/tag/phabricator/',
     }
-
-    # wikitech-static.wikimedia.org (external, Rackspace)
-    @monitoring::host { 'wikitech-static.wikimedia.org':
-        host_fqdn     => 'wikitech-static.wikimedia.org',
-        contact_group => 'wmcs-bots,admins',
-    }
-    monitoring::service { 'https_wikitech-static':
-        description   => 'HTTPS-wikitech-static',
-        check_command => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
-        host          => 'wikitech-static.wikimedia.org',
-        contact_group => 'wmcs-bots,admins',
-        notes_url     => 'https://phabricator.wikimedia.org/project/view/2773/',
-    }
-
-    monitoring::service { 'https_status-wikimedia':
-        description   => 'HTTPS-status-wikimedia-org',
-        check_command => 'check_ssl_http_letsencrypt!status.wikimedia.org',
-        host          => 'wikitech-static.wikimedia.org',
-        contact_group => 'wikitech-static',
-        notes_url     => 'https://phabricator.wikimedia.org/project/view/2773/',
-    }
 }
