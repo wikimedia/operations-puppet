@@ -220,7 +220,7 @@ service::catalog:
     port: &k8s-ingress-aux_port 30443
     sites:
       - eqiad
-    state: service_setup
+    state: lvs_setup
     page: false
     discovery:
       - dnsdisc: k8s-ingress-aux
