@@ -10,6 +10,7 @@ class profile::kubernetes::deployment_server::global_config (
     Hash[String, Hash] $kafka_clusters                  = lookup('kafka_clusters'),
     Hash[String, Integer] $db_sections                  = lookup('profile::mariadb::section_ports'),
     String $helm_user_group                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
+    Hash[String, Hash] $zookeeper_clusters              = lookup('zookeeper_clusters'),
 
 ) {
     # General directory holding all configurations managed by puppet
@@ -82,7 +83,21 @@ class profile::kubernetes::deployment_server::global_config (
             $ret
         }.flatten()
         $retval = { $cl => $ips }
-    }.reduce({}) | $mem, $val| { $mem.merge($val) }
+    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+
+    $zookeeper_nodes = $zookeeper_clusters.map |$cl, $data| {
+        $ips = $data['hosts'].keys().map |$n| {
+            $v4 = ipresolve($n)
+            if (pick($data['ipv6'], true)) {
+                $v6 = ipresolve($n, 6)
+                $ret = ["${v4}/32", "${v6}/128"]
+            } else {
+                $ret = ["${v4}/32"]
+            }
+            $ret
+        }.flatten()
+        $retval = { $cl => $ips }
+    }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
     # Per-cluster general defaults.
     # Fetch clusters excluding aliases, for aliases we create symlinks to the actual cluster defaults
@@ -116,9 +131,10 @@ class profile::kubernetes::deployment_server::global_config (
           $general_values[$cluster_name],
           $deployment_config_opts,
           {
-            'services_proxy' => $proxies,
-            'kafka_brokers'  => $kafka_brokers,
-            'mariadb'        => {'section_ports' =>$db_sections },
+            'services_proxy'     => $proxies,
+            'kafka_brokers'      => $kafka_brokers,
+            'zookeeper_clusters' => $zookeeper_nodes,
+            'mariadb'            => { 'section_ports' => $db_sections },
           }
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
