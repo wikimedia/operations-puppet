@@ -1267,16 +1267,23 @@ class profile::prometheus::ops (
 
     $gnmi_jobs = [
       {
-        'job_name'        => 'gnmi',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
+        'job_name'               => 'gnmi',
+        'scheme'                 => 'http',
+        'file_sd_configs'        => [
           { 'files' => [ "${targets_path}/gnmi_*.yaml" ]}
         ],
-        'relabel_configs' => [
-        { 'source_labels' => ['target'],
-          'regex'         => '([^.]*).*', # Get the hostname from the FQDN
+        # Copy 'target' onto 'instance' and keep only the hostname
+        'metric_relabel_configs' => [
+        {
+          'source_labels' => ['target'],
+          'regex'         => '([^.]*).*',
           'target_label'  => 'instance',
           'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
+        },
+        # Complete the 'target' -> 'instance' rename by dropping the former
+        {
+          'regex'  => 'target',
+          'action' => 'labeldrop',
         },
         ],
       },
