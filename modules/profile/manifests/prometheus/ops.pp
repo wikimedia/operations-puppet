@@ -1285,6 +1285,12 @@ class profile::prometheus::ops (
           'regex'  => 'target',
           'action' => 'labeldrop',
         },
+        # Drop 'cluster' as it doesn't apply in this context
+        # and gets applied by 'class_config' automatically.
+        {
+          'regex'  => 'cluster',
+          'action' => 'labeldrop',
+        },
         ],
       },
     ]
