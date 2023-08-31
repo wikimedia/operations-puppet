@@ -3836,7 +3836,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   media-analytics:
     description: media-analytics AQS2 service, media-analytics.discovery.wmnet
@@ -3850,7 +3850,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   # Services has no LVS
   pki:
