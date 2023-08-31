@@ -106,8 +106,7 @@ fi
 
 # Skip hosts that are already on the given config version, if --unless-version is set
 if [[ -n "${version}" ]]; then
-    puppet_config_version | fgrep -q "$version" && exit 0
+    puppet_config_version | grep --fixed-strings --quiet "$version" && exit 0
 fi
 
-puppet agent --onetime --no-daemonize $verbose_opts --no-splay --show_diff \
-       --ignorecache --no-usecacheonfailure
+puppet agent --onetime --no-daemonize "$verbose_opts" --no-splay --show_diff --no-usecacheonfailure
