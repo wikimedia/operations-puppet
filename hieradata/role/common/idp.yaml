@@ -202,6 +202,14 @@ profile::idp::services:
     service_id: 'https://netbox(-next)?\.wikimedia\.org\/[\w\/]*'
     required_groups:
       - wmf
+  datahub:
+    id: 34
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://datahub\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
