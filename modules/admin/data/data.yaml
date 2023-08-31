@@ -62,7 +62,7 @@ groups:
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
-              nskaggs, fabfur, taavi]
+              nskaggs, fabfur, taavi, arnaudb]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -2634,6 +2634,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWNAMYh92QyZNjHcTyoapyWSKkQBSFJVgKWNW+5of3fiJ0frczz9R+MW2RiRPjdh2VoOzEdMboRogr7O5I1D2x07cVYpTNYEx4cPmzg7xLKUqPY0zxJGZz7g2zlXr1RtiM21MTNiG+tF1ndnB3KYa1LB9fA8pSgQkGz+UjFWGg2/LD6tLzNA8yB+MjV0X+nEtC+i58L5nchMN/m3RsyfCGOnJxPAsOCbQpolITCKSVceRPI/FvBAbaaUidL7MvfkgFTUjf+NX2b25ZdIVYD4BVGHrkw3fFQpPYdidEyLMN/wnu5leZskoOnuMzn2AgHQEBdsrKeV/umdFq3SjGJkkR jynus@yuvi
     uid: 12161
     email: jcrespo@wikimedia.org
+  arnaudb:
+    ensure: present
+    gid: 500
+    name: arnaudb
+    realname: Arnaud Bran
+    email: abran@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJRgKToaNE+1bhWonrUMY1zb6yZnbPzdYvDJJP62Kcu abran@wikimedia.org
+    uid: 45103
   moushira:
     ensure: absent
     gid: 500
@@ -6812,7 +6821,3 @@ ldap_only_users:
     ensure: present
     realname: Valerie Riley
     email: vriley@wikimedia.org
-  arnaudb:
-    ensure: present
-    realname: Arnaud Bran
-    email: abran@wikimedia.org
