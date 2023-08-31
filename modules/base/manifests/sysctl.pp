@@ -146,24 +146,18 @@ class base::sysctl (
     # The security fix for CVE-2019-11479 introduced a new sysctl setting which clamps
     # the lower value for the advertised MSS. The Linux patch retains the formerly
     # hardcoded default of 48 for backwards compatibility reasons. We're setting it to
-    # 538 which is the minimum MTU for IPv4 minus the size of the headers, which should
-    # allow all legitimate traffic while avoiding the resource exhaustion.
+    # 536 which is the minimum MTU for IPv4 minus the default headers (see RFC9293 3.7.1)
+    # This should allow all legitimate traffic while avoiding the resource exhaustion.  
+    # We also explicitly enable TCP selective acks.
     #
-    # All the kernels which have CVE-2019-11479 backported, also have the fixes for
-    # CVE-2019-11477 and CVE-2019-11478 applied. Re-enable TCP selective acknowledments
-    # on all hosts which have been rebooted to that kernel and keep it disabled for all
-    # servers still running an unfixed kernel.
-    if $facts.has_key('kernel_details') and
-        $facts['kernel_details']['sysctl_settings']['net.ipv4.tcp_min_snd_mss'] {
-        sysctl::parameters{'tcp_min_snd_mss':
-            values  => {
-                'net.ipv4.tcp_min_snd_mss' => '538',
-                'net.ipv4.tcp_sack'        => 1,
-            },
-        }
-    } else {
-        sysctl::parameters{'disable_tcp_sack':
-            values  => { 'net.ipv4.tcp_sack' => 0 },
-        }
+    # To prevent an attack whereby a user can force us to cache an MTU for a destination
+    # lower than the smallest TCP packets allowed, we also set the minimum route pmtu
+    # cache value to min MSS + 40 = 576 (T344829).
+    sysctl::parameters{'tcp_min_snd_mss':
+        values  => {
+            'net.ipv4.route.min_pmtu'  => '576',
+            'net.ipv4.tcp_min_snd_mss' => '536',
+            'net.ipv4.tcp_sack'        => 1,
+        },
     }
 }
