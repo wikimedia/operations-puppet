@@ -1273,7 +1273,7 @@ class profile::prometheus::ops (
           { 'files' => [ "${targets_path}/gnmi_*.yaml" ]}
         ],
         'relabel_configs' => [
-        { 'source_labels' => ['__param_target'],
+        { 'source_labels' => ['target'],
           'regex'         => '([^.]*).*', # Get the hostname from the FQDN
           'target_label'  => 'instance',
           'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
