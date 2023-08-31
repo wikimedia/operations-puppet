@@ -2838,6 +2838,10 @@ node /^testreduce1001\.eqiad\./ {
     role(parsoid::testreduce)
 }
 
+node /^testreduce1002\.eqiad\./ {
+    role(insetup::serviceops)
+}
+
 # Test instances for Ganeti test cluster
 node /^testvm200[1-9]\.codfw\./ {
     role(test)
