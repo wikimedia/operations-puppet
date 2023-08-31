@@ -3,6 +3,7 @@ class profile::mediawiki::common(
     Stdlib::Port $logstash_syslog_port = lookup('logstash_syslog_port'),
     String $log_aggregator = lookup('udp2log_aggregator'),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
+    Array $histogram_buckets = lookup('profile::prometheus::statsd_exporter::histogram_buckets', { 'default_value' => [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30, 60],}),
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
     Optional[Boolean] $is_scap_master = lookup('profile::mediawiki::scap_client::is_master', {'default_value' => false}),
@@ -75,7 +76,9 @@ class profile::mediawiki::common(
     include ::profile::rsyslog::udp_localhost_compat
 
     class { '::profile::prometheus::statsd_exporter':
-        relay_address => '',
+        relay_address     => '',
+        timer_type        => 'histogram',
+        histogram_buckets => $histogram_buckets,
     }
 
     include ::profile::mediawiki::php
