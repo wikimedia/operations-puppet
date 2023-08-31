@@ -1708,37 +1708,11 @@ class profile::prometheus::ops (
         port       => 9901,
     }
 
-    # Job definition for openstack haproxy
-    $openstack_haproxy_jobs = [
-      {
-        'job_name'        => 'openstack_haproxy',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/openstack_haproxy_*.yaml"] },
-        ],
-      },
-    ]
-
-    prometheus::class_config{ "openstack_haproxy_${::site}":
-        dest       => "${targets_path}/openstack_haproxy_${::site}.yaml",
-        class_name => 'profile::openstack::eqiad1::haproxy',
-        port       => 9900,
-    }
-
-    # Job definition for cloudlb haproxy
-    $cloudlb_haproxy_jobs = [
-      {
-        'job_name'        => 'cloudlb_haproxy',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/cloudlb_haproxy_*.yaml"] },
-        ],
-      },
-    ]
-    prometheus::class_config{ "cloudlb_haproxy_${::site}":
-        dest       => "${targets_path}/cloudlb_haproxy_${::site}.yaml",
-        class_name => 'profile::wmcs::cloudlb::haproxy',
-        port       => 9900,
+    file { [
+      "${targets_path}/cloudlb_haproxy_${::site}.yaml",
+      "${targets_path}/openstack_haproxy_${::site}.yaml",
+    ]:
+      ensure => absent,
     }
 
     $statsd_exporter_jobs = [
@@ -2447,8 +2421,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
-            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $openstack_haproxy_jobs,
-            $cloudlb_haproxy_jobs, $gnmi_jobs,
+            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,

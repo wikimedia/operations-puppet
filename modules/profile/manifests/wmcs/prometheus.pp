@@ -217,6 +217,31 @@ class profile::wmcs::prometheus(
         }
     ]
 
+    # Job definition for cloudlb haproxy
+    $cloudlb_haproxy_jobs = [
+        {
+            'job_name'        => 'cloudlb-haproxy',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/cloudlb_haproxy_*.yaml"] },
+            ],
+        },
+    ]
+
+    prometheus::class_config { "cloudlb_haproxy_${::site}":
+        dest       => "${targets_path}/cloudlb_haproxy_${::site}.yaml",
+        class_name => 'profile::wmcs::cloudlb::haproxy',
+        port       => 9900,
+    }
+
+    # This is not cloudlb, but for the sake of simplicity on the alert rules
+    # is included as one. The HAProxies on cloudcontrols are going away.
+    prometheus::class_config { "openstack_haproxy_${::site}":
+        dest       => "${targets_path}/cloudlb_haproxy_${::site}_openstack.yaml",
+        class_name => 'profile::openstack::eqiad1::haproxy',
+        port       => 9900,
+    }
+
     prometheus::server { 'labs':
         listen_address                 => '127.0.0.1:9900',
         storage_retention              => $storage_retention,
@@ -231,7 +256,7 @@ class profile::wmcs::prometheus(
         scrape_configs_extra           => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
-            $galera_jobs,
+            $galera_jobs, $cloudlb_haproxy_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],
