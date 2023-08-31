@@ -1,12 +1,4 @@
 # Debian
-squeeze
-squeeze-wikimedia
-wheezy
-wheezy-wikimedia
-jessie
-jessie-wikimedia
-stretch
-stretch-wikimedia
 buster
 buster-wikimedia
 bullseye
@@ -19,26 +11,5 @@ sid-wikimedia
 # Aliases
 oldstable
 stable
-testing
 unstable
-experimental
 
-# Ubuntu
-dapper
-hardy
-karmic
-lucid
-maverick
-natty
-oneiric
-precise
-quantal
-raring
-saucy
-trusty
-trusty-wikimedia
-utopic
-vivid
-wily
-xenial
-yakkety

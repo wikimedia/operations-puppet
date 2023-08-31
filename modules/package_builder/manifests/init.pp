@@ -44,19 +44,6 @@ class package_builder(
         },
     }
 
-    # Install lintian from backports to make sure it checks the latest version
-    # of the Debian Policy
-    apt::pin { 'lintian':
-        pin      => "release a=${debian::codename()}-backports",
-        package  => 'lintian',
-        priority => 1001,
-        before   => Package['lintian'],
-    }
-
-    package { 'lintian':
-        ensure => present,
-    }
-
     ensure_packages([
         'apache2-dev',
         'build-essential',
@@ -85,6 +72,7 @@ class package_builder(
         'javahelper',
         'kernel-wedge',
         'libdistro-info-perl',
+        'lintian',
         'maven-debian-helper',
         'maven-repo-helper',
         'openstack-pkg-tools',
@@ -120,19 +108,17 @@ class package_builder(
     }
 
     file { '/usr/share/lintian/profiles/wikimedia':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        require => Package['lintian'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
     }
 
     file { '/usr/share/lintian/profiles/wikimedia/main.profile':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/package_builder/wikimedia.profile',
-        require => File['/usr/share/lintian/profiles/wikimedia'],
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/package_builder/wikimedia.profile',
     }
 
     file { '/usr/share/lintian/vendors/wikimedia':
@@ -141,7 +127,6 @@ class package_builder(
         group   => 'root',
         recurse => remote,
         source  => 'puppet:///modules/package_builder/lintian-wikimedia',
-        require => Package['lintian'],
     }
 
     # Ship an apt configuration to integrate deb-src entries for older distros
@@ -179,12 +164,11 @@ class package_builder(
     }
 
     file { '/etc/lintianrc':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/package_builder/lintianrc',
-        require => Package['lintian'],
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/package_builder/lintianrc',
     }
 
     # Dependency info
