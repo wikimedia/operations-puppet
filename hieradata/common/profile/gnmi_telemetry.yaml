@@ -17,6 +17,7 @@ profile::gnmi_telemetry::outputs:
     metric-prefix: "gnmi"
     cache: {}
     event-processors:
+       - description-to-tag
        - queues-counters-only
        - delete-tag-name
        - group-by-queue-number
@@ -30,6 +31,11 @@ profile::gnmi_telemetry::subscriptions:
     encoding: proto
 
 profile::gnmi_telemetry::processors:
+  description-to-tag:
+    event-value-tag:
+      value-name: "/interfaces/interface/state/description"
+      tag-name: "interface_description"
+      consume: false
   queues-counters-only:
     event-allow:
       condition: ".tags | has(\"out-queue_queue-number\")"
