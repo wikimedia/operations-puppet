@@ -61,7 +61,6 @@ environ_packages = {
         "pygments",  # T71050
         "pyicu",  # T102165
         "pyinotify",  # T59003
-        # T248376 -- needs backport pinning on stretch "requests",
         "rsvg",  # T58996
         "scipy",  # T103136
         "sqlalchemy",

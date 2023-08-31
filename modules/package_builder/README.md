@@ -83,14 +83,14 @@ Examples:
     WIKIMEDIA=yes DIST=bullseye pdebuild
 
 The commands above are equivalent and will both build a package for the
-stretch distribution using the Wikimedia apt repository.
+bullseye distribution using the Wikimedia apt repository.
 
 Backports repos
 ===============
 
 Packages from the Debian backports repositories can be used to satisfy
 dependencies as well. To use the backports repository for the distribution
-selected (e.g. stretch-backports), use either of:
+selected (e.g. bullseye-backports), use either of:
 
     DIST=bullseye BACKPORTS=yes pdebuild
     DIST=bullseye-backports pdebuild

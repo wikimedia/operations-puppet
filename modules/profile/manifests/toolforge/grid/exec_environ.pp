@@ -213,7 +213,7 @@ class profile::toolforge::grid::exec_environ {
         # python-flask-oauth is not in Debian
         # python-oursql is not in Debian
         'python-socketio-client',      # T86015
-        #python-wikitools is apparently not in Debian (at least stretch)
+        #python-wikitools is apparently not in Debian
         'python-mwclient',             # T218242
 
         # Fonts for vCat tool.
@@ -269,7 +269,6 @@ class profile::toolforge::grid::exec_environ {
         'libnfnetlink0',
         'libnspr4',
         'libnss3',
-        #libnss3-1d is not in stretch
         'libotf0',
         'libpcsclite1',
         'libquadmath0',
