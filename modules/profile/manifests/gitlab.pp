@@ -21,6 +21,7 @@ class profile::gitlab(
     Boolean $csp_report_only = lookup('profile::gitlab::csp_enabled', {default_value => false}),
     Integer[1] $backup_keep_time = lookup('profile::gitlab::backup_keep_time'),
     Boolean  $smtp_enabled = lookup('profile::gitlab::smtp_enabled'),
+    Array[Gitlab::Projects] $default_projects_features = lookup('profile::gitlab::default_projects_features', {default_value => []}),
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => {}}),
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
@@ -210,6 +211,7 @@ class profile::gitlab(
         csp_report_only           => $csp_report_only,
         backup_keep_time          => $backup_keep_time,
         smtp_enabled              => $smtp_enabled,
+        default_projects_features => $default_projects_features,
         enable_backup             => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         ssh_listen_addresses      => $ssh_listen_addresses,
         nginx_listen_addresses    => $nginx_listen_addresses,
