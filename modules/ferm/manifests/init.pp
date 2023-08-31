@@ -1,17 +1,11 @@
 # ferm is a frontend for iptables
 # https://wiki.debian.org/ferm
-# @param ensure ensure parameter
-class ferm (
-    Wmflib::Ensure $ensure ='present'
-) {
+class ferm {
     # @resolve requires libnet-dns-perl
-    package { ['ferm', 'iptables', 'libnet-dns-perl', 'conntrack']:
-        ensure => stdlib::ensure($ensure, package),
-    }
 
     if !$facts['wmflib']['is_container'] {
         file { '/etc/modprobe.d/nf_conntrack.conf':
-            ensure => stdlib::ensure($ensure, 'file'),
+            ensure => file,
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
@@ -25,7 +19,7 @@ class ferm (
         # Add the nf_conntrack module via /etc/modules-load.d/ which loads
         #   them before systemd-sysctl.service is executed.
         file { '/etc/modules-load.d/conntrack.conf':
-            ensure  => stdlib::ensure($ensure, 'file'),
+            ensure  => file,
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
@@ -35,15 +29,17 @@ class ferm (
         }
     }
 
-    file { '/usr/local/sbin/ferm-status':
-        ensure  => stdlib::ensure($ensure, 'file'),
+    ensure_packages(['ferm', 'iptables', 'libnet-dns-perl', 'conntrack'])
+
+    file {'/usr/local/sbin/ferm-status':
+        ensure  => file,
         mode    => '0550',
         owner   => 'root',
         group   => 'root',
         content => file('ferm/ferm_status.py'),
     }
     service { 'ferm':
-        ensure  => stdlib::ensure($ensure, 'service'),
+        ensure  => 'running',
         # This is a bit of an abuse of the puppet DSL
         # We use the status command to ensure that the rules on disk match the rules loaded in the
         # kernel if not we want to reload the rule base
@@ -61,7 +57,7 @@ class ferm (
     }
 
     file { '/etc/ferm/ferm.conf':
-        ensure  => stdlib::ensure($ensure, 'file'),
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -71,12 +67,12 @@ class ferm (
     }
 
     file { '/etc/ferm' :
-        ensure => stdlib::ensure($ensure, 'directory'),
+        ensure => directory,
         mode   => '2751',
         group  => 'adm',
     }
     file { '/etc/ferm/functions.conf' :
-        ensure  => stdlib::ensure($ensure, 'file'),
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -86,7 +82,7 @@ class ferm (
     }
 
     file { '/etc/ferm/conf.d' :
-        ensure  => stdlib::ensure($ensure, 'directory'),
+        ensure  => directory,
         owner   => 'root',
         group   => 'adm',
         mode    => '0551',
@@ -97,7 +93,7 @@ class ferm (
     }
 
     file { '/etc/default/ferm' :
-        ensure  => stdlib::ensure($ensure, 'file'),
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
