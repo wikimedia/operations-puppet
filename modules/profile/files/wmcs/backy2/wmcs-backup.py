@@ -149,7 +149,13 @@ class ImageBackup:
         )
 
     def remove(self, pool: str, noop: bool = True) -> None:
-        maybe_snapshot = self.backup_entry.get_snapshot(pool=pool)
+        maybe_snapshot = None
+        try:
+            maybe_snapshot = self.backup_entry.get_snapshot(pool=pool)
+        except Exception:
+            # happens when ceph stuff is not there, we want to delete the
+            # backup too if that's the case
+            pass
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
             maybe_snapshot.remove(noop=noop)
@@ -452,9 +458,14 @@ class ImageBackups:
             self.backups.pop(self.backups.index(backup))
             self.size_mb -= backup.size_mb
             backup.remove(pool=self.config.ceph_pool, noop=noop)
-
         else:
             raise Exception(f"Backup {backup} is not known to {self}")
+
+    def remove(self, noop: bool = True) -> None:
+        # The list() here is to not lose our place when
+        #  remove_backup changes self.backups
+        for backup in list(self.backups):
+            self.remove_backup(backup, noop)
 
     def __str__(self) -> str:
         # we don't have diff backups
@@ -1471,6 +1482,30 @@ class ImageBackupsState:
                     if cur_try == tries:
                         raise
 
+    def remove_unhandled_backups(self, from_cache: bool = True, noop: bool = True) -> None:
+        logging.info("%sSearching for unhandled backups...", "NOOP:" if noop else "")
+        handled_image_ids: List[str] = [
+            images_info["id"] for images_info in self.get_assigned_images()
+        ]
+        backups_removed = 0
+        for image_backups in self.image_backups.values():
+            if image_backups.image_id not in handled_image_ids:
+                print("Unhandled image %s" % image_backups.image_id)
+                logging.info(
+                    "%sRemoving unhandled image backups:\n%s",
+                    "NOOP:" if noop else "",
+                    indent_lines(str(image_backups)),
+                )
+                backups_removed += len(image_backups.backups)
+                image_backups.remove(noop=noop)
+
+        logging.info("%sRemoved %d backups.", "NOOP:" if noop else "", backups_removed)
+        if backups_removed > 0:
+            logging.info("Cleaning up leftover backy blocks (this frees the space)...")
+            cleanup(noop=noop)
+        else:
+            logging.info("No backups removed, skipping cleanup")
+
     def __str__(self) -> str:
         self.update_usages()
         return (
@@ -2018,6 +2053,26 @@ def _add_volumes_parser(subparser: argparse.ArgumentParser) -> None:
     backup_assigned_volumes_parser.set_defaults(
         func=lambda: get_current_volumes_state(from_cache=args.from_cache).backup_assigned_images(
             noop=args.noop
+        )
+    )
+
+    remove_unhandled_backups_parser = volumes_subparser.add_parser(
+        "remove-unhandled-backups",
+        help=(
+            "Remove any backups that don't match any handled volume. This might "
+            "happen if a machine is now backed up in another host or was "
+            "deleted."
+        ),
+    )
+    remove_unhandled_backups_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=("If set, will not really do anything, just tell you what " "would be done."),
+    )
+    remove_unhandled_backups_parser.set_defaults(
+        func=lambda: get_current_volumes_state(from_cache=args.from_cache).remove_unhandled_backups(
+            from_cache=args.from_cache, noop=args.noop
         )
     )
 
