@@ -119,7 +119,7 @@ nginx['log_format'] = 'escape=json\' \'@cee: {\'
 
 # Default feature settings:
 <%- ['issues', 'wiki', 'snippets'].each do |project| -%>
-gitlab_rails['gitlab_default_projects_features_<%= project %>'] = <%= @project_features.include?(project) %>
+gitlab_rails['gitlab_default_projects_features_<%= project %>'] = <%= @default_projects_features.include?(project) %>
 <%- end -%>
 
 # The directory where Git repositories will be stored

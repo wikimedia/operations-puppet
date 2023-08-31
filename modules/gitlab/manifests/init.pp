@@ -35,7 +35,7 @@ class gitlab (
     Boolean          $enable_prometheus                         = false,
     Boolean          $enable_grafana                            = false,
     Boolean          $enable_alertmanager                       = false,
-    Array[Gitlab::Projects] $project_features                   = [],
+    Array[Gitlab::Projects] $default_projects_features          = [],
     Boolean          $smtp_enabled                              = true,
     Integer          $smtp_port                                 = 25,
     Stdlib::IP::Address $exporter_default_listen                = '127.0.0.1',
