@@ -14,6 +14,7 @@ profile::gnmi_telemetry::ports:
 profile::gnmi_telemetry::outputs:
   prom-output:
     type: prometheus
+    metric-prefix: "gnmi"
     cache: {}
     event-processors:
        - queues-counters-only

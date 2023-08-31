@@ -1265,6 +1265,29 @@ class profile::prometheus::ops (
         port       => 9209,
     }
 
+    $gnmi_jobs = [
+      {
+        'job_name'        => 'gnmi',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/gnmi_*.yaml" ]}
+        ],
+        'relabel_configs' => [
+        { 'source_labels' => ['__param_target'],
+          'regex'         => '([^.]*).*', # Get the hostname from the FQDN
+          'target_label'  => 'instance',
+          'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
+        },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "gnmi_${::site}":
+        dest       => "${targets_path}/gnmi_${::site}.yaml",
+        class_name => 'role::netinsights',
+        port       => 9804,
+    }
+
     $squid_jobs = [
       {
         'job_name'        => 'squid',
@@ -2425,7 +2448,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $openstack_haproxy_jobs,
-            $cloudlb_haproxy_jobs,
+            $cloudlb_haproxy_jobs, $gnmi_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
