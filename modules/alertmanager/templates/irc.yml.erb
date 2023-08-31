@@ -29,7 +29,11 @@ msg_once_per_alert_group: yes
 msg_template: >-
   ({{ .GroupLabels.alertname }})
   {{.Status}}:{{ if .Alerts | len | le 2 }} ({{ .Alerts | len }}){{ end }}
+  {{ if eq .GroupLabels.alertname "DatasourceError" -}}
+  {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }}
+  {{- else -}}
   {{ (index .Alerts 0).Annotations.summary }}
+  {{- end -}}
   {{ if (index .CommonAnnotations "runbook") }}- {{ .CommonAnnotations.runbook }}{{ end }}
   {{ if (index .CommonAnnotations "dashboard") }}- {{ .CommonAnnotations.dashboard }}{{ end }}
   -
