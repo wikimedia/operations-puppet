@@ -1,8 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary wrapper class to provide common interface to ferm and nft
+# @summary wrapper class to provide common interface to ferm and nftables
 # @param provider which firewall provider to use
 class firewall (
     Firewall::Provider $provider = 'ferm'
 ) {
-    class { $provider: }  # lint:ignore:wmf_styleguide
+    class { 'ferm':  # lint:ignore:wmf_styleguide
+        ensure => stdlib::ensure($provider == 'ferm'),
+    }
+
+    if $provider == 'nftables' {
+        class { 'nftables': } # lint:ignore:wmf_styleguide
+    }
 }
