@@ -73,4 +73,5 @@ GRANT USAGE ON *.* TO 's53272'@'%' WITH MAX_USER_CONNECTIONS 200;
 GRANT PROCESS, SUPER ON *.* TO 'wmf-pt-kill'@'localhost' IDENTIFIED VIA unix_socket;
 
 -- Currently only on the legacy wikireplicas for information gathering. T272723
+-- Re-added on the new replicas T345211
 GRANT PROCESS ON *.* TO 'querysampler'@'%';
