@@ -143,13 +143,13 @@ class graphite::web(
     profile::auto_restarts::service { 'uwsgi-graphite-web': }
 
     file { '/usr/local/sbin/graphite-index':
-        source  => "puppet:///modules/graphite/graphite-index.${::lsbdistcodename}.py",
+        source  => 'puppet:///modules/graphite/graphite-index.py',
         mode    => '0555',
         require => Uwsgi::App['graphite-web'],
     }
 
     file { '/usr/local/sbin/graphite-auth':
-        source  => "puppet:///modules/graphite/graphite-auth.${::lsbdistcodename}.py",
+        source  => 'puppet:///modules/graphite/graphite-auth.py',
         mode    => '0555',
         require => Uwsgi::App['graphite-web'],
     }
