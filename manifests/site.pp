@@ -343,7 +343,7 @@ node /^bast3007\.wikimedia\./ {
 }
 
 node /^bast4004\.wikimedia\./ {
-    role(bastionhost)
+    role(insetup::infrastructure_foundations)
 }
 
 node /^bast4005\.wikimedia\./ {
@@ -351,7 +351,7 @@ node /^bast4005\.wikimedia\./ {
 }
 
 node /^bast5003\.wikimedia\./ {
-    role(bastionhost)
+    role(insetup::infrastructure_foundations)
 }
 
 node /^bast5004\.wikimedia\./ {
@@ -359,7 +359,7 @@ node /^bast5004\.wikimedia\./ {
 }
 
 node /^bast6002\.wikimedia\./ {
-    role(bastionhost)
+    role(insetup::infrastructure_foundations)
 }
 
 node /^bast6003\.wikimedia\./ {
