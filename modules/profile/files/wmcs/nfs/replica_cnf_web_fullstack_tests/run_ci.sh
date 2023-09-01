@@ -92,12 +92,12 @@ start_server() {
     CONF_FILE=ci_config.yaml \
     PORT=8081 \
     PYTHONPATH=$PWD/../replica_cnf_api_service \
-        python ../replica_cnf_api_service/replica_cnf_api_service/views.py &
+        python ../replica_cnf_api_service/replica_cnf_api_service/views.py 2>&1 &
     SERVER_PID=$!
 }
 
 start_fake_toolforge_envvars() {
-    python $PWD/../replica_cnf_api_service/tests/mock_envvars.py &
+    python $PWD/../replica_cnf_api_service/tests/mock_envvars.py 2>&1 &
     ENVVARS_SERVER_PID=$!
     # wait for the server to start
     max_wait=0
