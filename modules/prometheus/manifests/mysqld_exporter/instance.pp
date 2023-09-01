@@ -42,16 +42,8 @@ define prometheus::mysqld_exporter::instance (
         'collect.slave_status',
     ]
 
-    if debian::codename::ge('buster') {
-        $option_switch = '--'
-        $version_specific_options = ['no-collect.info_schema.tables']
-    } else {
-        $option_switch = '-'
-        $version_specific_options = [
-            'collect.info_schema.processlist.min_time 0',
-            'collect.info_schema.tables false',
-        ]
-    }
+    $option_switch = '--'
+    $version_specific_options = ['no-collect.info_schema.tables']
 
     #We only want to restart if the service is running
     #(which it won't be if the relevant mariadb isn't)
