@@ -95,10 +95,11 @@ class TaskGen < ::Rake::TaskLib
       # skip scripts in user home dirs
       next if file.start_with?('modules/admin/files/home')
       shebang = File.open(file) {|f| f.readline}
-      match = shebang.match(/#!.*python(\d)/)
+      match = shebang.match(/#!.*python(\d?)/)
       if !match || !match.captures
         files_unknown_version << file
-      elsif match.captures[0] == '2'
+      # If the shebang has no version, it's calling the 'python' binary which is python2
+      elsif match.captures[0] == '2' || match.captures[0] == ''
         py_files[:py2] << file
       elsif match.captures[0] == '3'
         py_files[:py3] << file
