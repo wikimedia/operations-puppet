@@ -195,7 +195,8 @@ profile::services_proxy::envoy::listeners:
   - name: wikifunctions
     port: 6034
     service: wikifunctions
-    timeout: "120s"
+    # function calls are terminated after 15s + some room for the orchestrator to answer
+    timeout: "15.5s"
     uses_ingress: true
 
   # Non-discovery records
