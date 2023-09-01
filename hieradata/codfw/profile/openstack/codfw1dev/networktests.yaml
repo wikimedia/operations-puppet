@@ -4,7 +4,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     FLOATING_VM_FQDN: proxy-02.proxy-codfw1dev.codfw1dev.wikimedia.cloud
     FLOATING_VM_IP: 185.15.57.6
     VM_IP_PREFIX: 172.16.128.
-    NO_FLOATING_VM: tools-codfw1dev-k8s-worker-1.tools-codfw1dev.codfw1dev.wikimedia.cloud
+    NO_FLOATING_VM: tools-codfw1dev-k8s-worker-2.tools-codfw1dev.codfw1dev.wikimedia.cloud
     GENERAL_PUPPETMASTER: puppetmaster-02.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     LOCAL_PUPPETMASTER: cloudinfra-internal-puppetmaster-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     CLOUDGW_A_IP: 208.80.153.188
@@ -26,6 +26,6 @@ profile::openstack::codfw1dev::networktests::envvars:
     KEYSTONE_URL: https://openstack.codfw1dev.wikimediacloud.org:25000/v3
     DUMPSFILE: /mnt/nfs/dumps-clouddumps1001.wikimedia.org/index.html
     DUMPS_FLOATING_VM_FQDN: tools-codfw1dev-bastion-3.tools-codfw1dev.codfw1dev.wikimedia.cloud
-    DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-1.tools-codfw1dev.codfw1dev.wikimedia.cloud
+    DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-2.tools-codfw1dev.codfw1dev.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
