@@ -40,8 +40,7 @@ class profile::base::production (
             interface::add_ip6_mapped { 'main': }
         }
 
-        # we backported prometheus-ipmi-exporter to buster
-        if $facts['has_ipmi'] and debian::codename::ge('buster') {
+        if $facts['has_ipmi'] {
             class { 'prometheus::ipmi_exporter': }
         }
 
