@@ -12,6 +12,8 @@
 # [*interval*] The frequency with which the job must be executed, expressed as
 #              one of the Calendar expressions accepted by systemd. See systemd.time(7)
 #
+# [*splay*] Sets a maximum delay to wait before starting the timer
+#
 # [*ensure*] Either 'present' or 'absent'. Default: present
 #
 define profile::mediawiki::periodic_job(
@@ -20,7 +22,8 @@ define profile::mediawiki::periodic_job(
         Systemd::Timer::Interval,
         Systemd::Timer::Datetime
     ] $interval,
-    Wmflib::Ensure $ensure = present
+    Wmflib::Ensure $ensure = present,
+    Optional[Integer] $splay = undef,
 ) {
     require ::profile::mediawiki::common
     require ::profile::conftool::state
@@ -34,6 +37,7 @@ define profile::mediawiki::periodic_job(
         logfile_basedir   => '/var/log/mediawiki',
         logfile_group     => $::mediawiki::users::web,
         syslog_identifier => "mediawiki_job_${title}",
+        splay             => $splay,
         require           => File['/usr/local/bin/mw-cli-wrapper']
     }
 }
