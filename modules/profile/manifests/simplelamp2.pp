@@ -16,7 +16,6 @@ class profile::simplelamp2(
 
     # TODO: another use case for php_version fact
     $apache_php_module = debian::codename() ? {
-        'stretch'  => 'php7.0',
         'buster'   => 'php7.3',
         'bullseye' => 'php7.4',
         default    => fail("unsupported on ${debian::codename()}"),
