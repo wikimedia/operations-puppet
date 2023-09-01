@@ -2837,7 +2837,7 @@ node /^testreduce1001\.eqiad\./ {
 }
 
 node /^testreduce1002\.eqiad\./ {
-    role(insetup::serviceops)
+    role(parsoid::testreduce)
 }
 
 # Test instances for Ganeti test cluster
