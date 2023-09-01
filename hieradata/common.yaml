@@ -2065,9 +2065,6 @@ infra_devices:
     role: cr
   pfw3-eqiad:
     ipv4: 208.80.154.219
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: pfw
   mr1-eqiad:
@@ -2091,30 +2088,18 @@ infra_devices:
     role: msw
   asw2-a-eqiad:
     ipv4: 10.65.0.21
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: l2sw
   asw2-b-eqiad:
     ipv4: 10.65.0.25
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: l2sw
   asw2-c-eqiad:
     ipv4: 10.65.0.26
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: l2sw
   asw2-d-eqiad:
     ipv4: 10.65.0.27
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: l2sw
   fasw-c-eqiad:
@@ -2158,33 +2143,21 @@ infra_devices:
   cloudsw1-c8-eqiad:
     ipv4: 10.64.146.252
     ipv6: 2620:0:861:11b::252
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: l3sw
   cloudsw1-d5-eqiad:
     ipv4: 10.64.146.253
     ipv6: 2620:0:861:11b::253
-    parents:
-    - cr1-eqiad
-    - cr2-eqiad
     site: eqiad
     role: l3sw
   cloudsw1-e4-eqiad:
     ipv4: 10.64.146.254
     ipv6: 2620:0:861:11b::254
-    parents:
-    - cloudsw1-c8-eqiad
-    - cloudsw1-d5-eqiad
     site: eqiad
     role: l3sw
   cloudsw1-f4-eqiad:
     ipv4: 10.64.146.255
     ipv6: 2620:0:861:11b::255
-    parents:
-    - cloudsw1-c8-eqiad
-    - cloudsw1-d5-eqiad
     site: eqiad
     role: l3sw
   ssw1-e1-eqiad:
@@ -2195,25 +2168,16 @@ infra_devices:
   lsw1-e1-eqiad:
     ipv4: 10.64.146.3
     ipv6: 2620:0:861:11b::3
-    parents:
-    - ssw1-e1-eqiad
-    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-e2-eqiad:
     ipv4: 10.64.146.4
     ipv6: 2620:0:861:11b::4
-    parents:
-    - ssw1-e1-eqiad
-    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-e3-eqiad:
     ipv4: 10.64.146.5
     ipv6: 2620:0:861:11b::5
-    parents:
-    - ssw1-e1-eqiad
-    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   ssw1-f1-eqiad:
@@ -2224,25 +2188,16 @@ infra_devices:
   lsw1-f1-eqiad:
     ipv4: 10.64.146.7
     ipv6: 2620:0:861:11b::7
-    parents:
-    - ssw1-e1-eqiad
-    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-f2-eqiad:
     ipv4: 10.64.146.8
     ipv6: 2620:0:861:11b::8
-    parents:
-    - ssw1-e1-eqiad
-    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
   lsw1-f3-eqiad:
     ipv4: 10.64.146.9
     ipv6: 2620:0:861:11b::9
-    parents:
-    - ssw1-e1-eqiad
-    - ssw1-f1-eqiad
     site: eqiad
     role: l3sw
 
@@ -2267,9 +2222,6 @@ infra_devices:
     role: cr
   pfw3-codfw:
     ipv4: 208.80.153.197
-    parents:
-    - cr1-codfw
-    - cr2-codfw
     site: codfw
     role: pfw
   mr1-codfw:
@@ -2287,30 +2239,18 @@ infra_devices:
     role: msw
   asw-a-codfw:
     ipv4: 10.193.0.16
-    parents:
-    - cr1-codfw
-    - cr2-codfw
     site: codfw
     role: l2sw
   asw-b-codfw:
     ipv4: 10.193.0.17
-    parents:
-    - cr1-codfw
-    - cr2-codfw
     site: codfw
     role: l2sw
   asw-c-codfw:
     ipv4: 10.193.0.18
-    parents:
-    - cr1-codfw
-    - cr2-codfw
     site: codfw
     role: l2sw
   asw-d-codfw:
     ipv4: 10.193.0.19
-    parents:
-    - cr1-codfw
-    - cr2-codfw
     site: codfw
     role: l2sw
   fasw-c-codfw:
@@ -2322,9 +2262,6 @@ infra_devices:
   cloudsw1-b1-codfw:
     ipv4: 10.192.255.255
     ipv6: 2620:0:860:13f::1
-    parents:
-    - cr1-codfw
-    - cr2-codfw
     site: codfw
     role: l3sw
   ripe-atlas-codfw:
@@ -2366,9 +2303,6 @@ infra_devices:
   mr1-esams:
     ipv4: 185.15.59.130
     ipv6: 2a02:ec80:300:ffff::3
-    parents:
-    - asw1-by27-esams
-    - asw1-bw27-esams
     site: esams
     role: mr
   scs-by27-esams:
@@ -2380,17 +2314,11 @@ infra_devices:
   asw1-by27-esams:
     ipv4: 185.15.59.132
     ipv6: 2a02:ec80:300:ffff::5
-    parents:
-    - cr1-esams
-    - cr2-esams
     site: esams
     role: l3sw
   asw1-bw27-esams:
     ipv4: 185.15.59.131
     ipv6: 2a02:ec80:300:ffff::4
-    parents:
-    - cr1-esams
-    - cr2-esams
     site: esams
     role: l3sw
 
@@ -2414,9 +2342,6 @@ infra_devices:
     role: mr
   asw2-ulsfo:
     ipv4: 10.128.128.7
-    parents:
-    - cr3-ulsfo
-    - cr4-ulsfo
     site: ulsfo
     role: l2sw
   ripe-atlas-ulsfo:
@@ -2453,9 +2378,6 @@ infra_devices:
     role: mr
   asw1-eqsin:
     ipv4: 10.132.128.4
-    parents:
-    - cr2-eqsin
-    - cr3-eqsin
     site: eqsin
     role: l2sw
   ripe-atlas-eqsin:
@@ -2485,9 +2407,6 @@ infra_devices:
   mr1-drmrs:
     ipv4: '185.15.58.130'
     ipv6: '2a02:ec80:600:ffff::3'
-    parents:
-    - asw1-b12-drmrs
-    - asw1-b13-drmrs
     site: drmrs
     role: mr
   scs-drmrs:
@@ -2499,17 +2418,11 @@ infra_devices:
   asw1-b12-drmrs:
     ipv4: 185.15.58.131
     ipv6: 2a02:ec80:600:ffff::4
-    parents:
-    - cr1-drmrs
-    - cr2-drmrs
     site: drmrs
     role: l3sw
   asw1-b13-drmrs:
     ipv4: 185.15.58.132
     ipv6: 2a02:ec80:600:ffff::5
-    parents:
-    - cr1-drmrs
-    - cr2-drmrs
     site: drmrs
     role: l3sw
 
