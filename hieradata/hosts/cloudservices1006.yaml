@@ -22,3 +22,5 @@ profile::bird::advertise_vips:
 # once all cloudservices hosts are in the same network setup
 # before that, cloudservices1006 is the only node in the new network setup
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.255.1
+
+profile::openstack::eqiad1::designate::db_host: "openstack-next.eqiad1.wikimediacloud.org"
