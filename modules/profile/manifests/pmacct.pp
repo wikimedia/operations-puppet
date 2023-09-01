@@ -44,23 +44,21 @@ class profile::pmacct (
         networks          => $::network::constants::external_networks,
     }
 
-    ferm::service { 'bgp':
-        proto  => 'tcp',
-        port   => '179',
-        desc   => 'BGP',
-        srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
+    firewall::service { 'bgp':
+        proto    => 'tcp',
+        port     => 179,
+        src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
     }
 
-    ferm::service { 'netflow':
-        proto  => 'udp',
-        port   => '2100',
-        desc   => 'NetFlow',
-        srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
+    firewall::service { 'netflow':
+        proto    => 'udp',
+        port     => 2100,
+        src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
     }
-    ferm::service { 'sflow':
-        proto  => 'udp',
-        port   => '6343',
-        desc   => 'SFlow',
-        srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
+
+    firewall::service { 'sflow':
+        proto    => 'udp',
+        port     => 6343,
+        src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
     }
 }
