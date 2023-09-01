@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # SPDX-License-Identifier: Apache-2.0
 # THIS FILE IS MANAGED BY PUPPET
 
