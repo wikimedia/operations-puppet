@@ -176,7 +176,8 @@ profile::wmcs::cloudlb::haproxy::config:
   mysql:
     type: tcp
     firewall:
-      restricted_to_fqdns: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      # open to internal cloud-private networks only
+      open_to_cloud_private: true
     frontends:
       - port: 3306
     backend:

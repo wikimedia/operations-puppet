@@ -40,6 +40,8 @@ define cloudlb::haproxy::service (
     $frontends.each | Integer $index, CloudLB::HAProxy::Service::Frontend $frontend | {
         if $firewall['restricted_to_fqdns'] {
             $srange = $firewall['restricted_to_fqdns']
+        } elsif $firewall['open_to_cloud_private'] {
+            $srange = $::network::constants::cloud_private_networks
         } else {
             if $firewall['open_to_internet'] {
                 $srange = undef

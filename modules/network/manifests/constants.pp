@@ -30,6 +30,17 @@ class network::constants {
     $labs_networks = slice_network_constants('labs')
     # $cloud_networks_public contains basically general egress NAT and floating IP addresses
     $cloud_networks_public = slice_network_constants('labs', { 'sphere' => 'public' })
+
+    # this selects all 'labs' (...cloud) realm networks in eqiad & codfw that have a private subnet with name
+    # cloud-private that contains an 'ipv4' attribute
+    $cloud_private_networks = ['eqiad', 'codfw'].map |$dc| {
+        $all_network_subnets['labs'][$dc]['private'].filter | $subnet | {
+            $subnet[0] =~ /cloud-private/
+        }.map | $subnet, $value | {
+            $value['ipv4']
+        }
+    }.flatten.delete_undef_values.sort
+
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
 

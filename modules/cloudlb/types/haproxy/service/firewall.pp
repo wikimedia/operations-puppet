@@ -4,6 +4,9 @@ type CloudLB::HAProxy::Service::Firewall = Variant[
         'open_to_internet' => Boolean,
     }],
     Struct[{
+        'open_to_cloud_private' => Boolean,
+    }],
+    Struct[{
         'restricted_to_fqdns' => Array[Stdlib::Fqdn],
     }],
 ]

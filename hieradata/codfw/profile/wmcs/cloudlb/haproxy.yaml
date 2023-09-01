@@ -219,8 +219,8 @@ profile::wmcs::cloudlb::haproxy::config:
   mysql:
     type: tcp
     firewall:
-      # open to internal networks only
-      open_to_internet: false
+      # open to internal cloud-private networks only
+      open_to_cloud_private: true
     frontends:
       - port: 3306
     backend:
