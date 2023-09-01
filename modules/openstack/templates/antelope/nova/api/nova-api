@@ -57,8 +57,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 	fi
 
 	# Sid doesn't have /usr/bin/uwsgi_python3, so we need
-	# to search for a more specific daemon name. For stretch
-	# /usr/bin/uwsgi_python3 is fine.
+	# to search for a more specific daemon name.
 	for i in 37 39 ; do
 		if [ -x /usr/bin/uwsgi_python${i} ] ; then
 			DAEMON=/usr/bin/uwsgi_python${i}
