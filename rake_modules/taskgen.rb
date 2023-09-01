@@ -108,9 +108,10 @@ class TaskGen < ::Rake::TaskLib
         files_unknown_version << file
       end
     end
-    py_files[default] += files_unknown_version
     puts "python2 files: #{py_files[:py2].length}".green unless py_files[:py2].empty?
     puts "python3 files: #{py_files[:py3].length}".green unless py_files[:py3].empty?
+    puts "python files without a version (assumed #{default}): #{files_unknown_version.length}".yellow unless files_unknown_version.empty?
+    py_files[default] += files_unknown_version
     py_files
   end
 
