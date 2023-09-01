@@ -501,7 +501,7 @@ class TaskGen < ::Rake::TaskLib
   def setup_tox
     tasks = []
     namespace :tox do
-      if @changed_files.include?('tox.ini')
+      if @changed_files.include?('tox.ini') || @changed_files.include?('rake_modules/taskgen.rb')
         py_files = sort_python_files(Dir.glob('**/*.py'))
         ENV['TOX_PY2_FILES'] = py_files[:py2].join(' ')
         ENV['TOX_PY3_FILES'] = py_files[:py3].join(' ')
