@@ -33,7 +33,7 @@ msg_template: >-
   {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }}
   {{- else -}}
   {{ (index .Alerts 0).Annotations.summary }}
-  {{- end -}}
+  {{- end }}
   {{ if (index .CommonAnnotations "runbook") }}- {{ .CommonAnnotations.runbook }}{{ end }}
   {{ if (index .CommonAnnotations "dashboard") }}- {{ .CommonAnnotations.dashboard }}{{ end }}
   -
