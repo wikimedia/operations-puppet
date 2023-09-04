@@ -109,4 +109,4 @@ if [[ -n "${version}" ]]; then
     puppet_config_version | grep --fixed-strings --quiet "$version" && exit 0
 fi
 
-puppet agent --onetime --no-daemonize "$verbose_opts" --no-splay --show_diff --no-usecacheonfailure
+puppet agent --onetime --no-daemonize $verbose_opts --no-splay --show_diff --no-usecacheonfailure
