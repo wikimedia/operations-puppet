@@ -54,4 +54,6 @@ profile::mediawiki::php::restarts::ensure: present
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
 
+# Enable icu67 component - T345561
+profile::mediawiki::php::icu67: true
 profile::contacts::role_contacts: ["ServiceOps"]

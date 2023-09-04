@@ -48,6 +48,8 @@ profile::mediawiki::php::restarts::ensure: present
 # We set the restart watermark at 200 MB, which is approximately how much
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
+# Enable icu67 component - T345561
+profile::mediawiki::php::icu67: true
 profile::contacts::role_contacts: ["ServiceOps"]
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
