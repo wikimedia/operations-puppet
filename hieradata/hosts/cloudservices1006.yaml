@@ -9,8 +9,6 @@ profile::openstack::eqiad1::haproxy_nodes:
   - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.private.eqiad.wikimedia.cloud
-profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1006.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::keystone_host: "openstack-next.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::keystone_api_fqdn: "openstack-next.eqiad1.wikimediacloud.org"
 
