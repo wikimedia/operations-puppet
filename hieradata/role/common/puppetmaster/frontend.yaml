@@ -27,8 +27,8 @@ profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::common::reports:
   - puppetdb
   - logstash
+profile::puppetmaster::common::puppetdb_port: 8443
 profile::conftool::client::etcd_user: 'root'
-profile::puppetmaster::common::command_broadcast: true
 profile::configmaster::server_name: config-master.wikimedia.org
 profile::configmaster::server_aliases:
   - 'config-master.eqiad.wmnet'

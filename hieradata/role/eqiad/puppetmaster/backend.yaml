@@ -1,4 +1,2 @@
 profile::puppetmaster::common::puppetdb_hosts:
-  - puppetdb1002.eqiad.wmnet
-profile::puppetmaster::common::puppetdb_submit_only_hosts:
-  - https://puppetdb1003.eqiad.wmnet:8443
+  - puppetdb1003.eqiad.wmnet
