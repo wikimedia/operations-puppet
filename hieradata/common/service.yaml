@@ -236,7 +236,7 @@ service::catalog:
     port: *k8s-ingress-aux_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   jaeger-collector-grpc:
     description: Jaeger tracing, collector (GRPC)
@@ -248,7 +248,7 @@ service::catalog:
     port: *k8s-ingress-aux_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   jaeger-query:
     description: Jaeger tracing, query UI
@@ -260,7 +260,7 @@ service::catalog:
     port: *k8s-ingress-aux_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   blubberoid:
     description: Blubberoid, blubberoid.discovery.wmnet (https)
