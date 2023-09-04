@@ -15,3 +15,7 @@ profile::openstack::eqiad1::designate_hosts:
   - cloudservices1006.private.eqiad.wikimedia.cloud
   - cloudservices1004.wikimedia.org
   - cloudservices1005.wikimedia.org
+
+# TODO: move to hieradata/role/eqiad/wmcs/openstack/eqiad1/control.yaml
+# when the migration is completed
+profile::memcached::srange: "%{lookup('profile::wmcs::cloud_private_subnet::supernet')}"
