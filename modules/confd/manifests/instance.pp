@@ -86,13 +86,8 @@ define confd::instance (
         },
         user        => 'root',
     }
-    # Any change to a service configuration or to a template should reload confd.
-    if $name == 'main' {
-        # TODO: remove this special casing once we're sure this is a noop.
-        Confd::File <| |> ~> Service['confd']
-    } else {
-        Confd::File <| instance == $name |> ~> Service[$label]
-    }
+    # Any change to a this instances service configuration or to a template should reload confd.
+    Confd::File <| instance == $name |> ~> Service[$label]
 
     nrpe::monitor_systemd_unit_state { $label:
         require => Service[$label],

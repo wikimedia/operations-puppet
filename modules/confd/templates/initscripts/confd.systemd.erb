@@ -7,9 +7,8 @@ else
 end
 if @name != 'main'
    # On non-main instances, we also pass:
-   # * -prefix here instead of delegating it to individual confd::file definitions.
    # * -confdir to tell confd to search its definitions in the right path
-   opts += " -confdir #{@path} -prefix #{@prefix}"
+   opts += " -confdir #{@path}"
 end
 -%>
 [Unit]
