@@ -52,21 +52,23 @@ define ferm::service(
 
     if $src_sets {
         $sets_base_src = $src_sets.map | $set | { sprintf('$%s', $set) }
-        $_src_sets = join($sets_base_src, ' ')
 
         # If more than one entry is given the srange needs to be wrapped in brackets
         if $sets_base_src.length > 1 {
-            $_src_sets = sprintf('(%s)', $_src_sets)
+            $_src_sets = sprintf('(%s)', join($sets_base_src, ' '))
+        } else {
+            $_src_sets = join($sets_base_src, ' ')
         }
     }
 
     if $dst_sets {
         $sets_base_dst = $dst_sets.map | $set | { sprintf('$%s', $set) }
-        $_dst_sets = join($sets_base_dst, ' ')
 
         # If more than one entry is given the drange needs to be wrapped in brackets
         if $sets_base_dst.length > 1 {
-            $_dst_sets = sprintf('(%s)', $_dst_sets)
+            $_dst_sets = sprintf('(%s)', join($sets_base_dst, ' '))
+        } else {
+            $_dst_sets = join($sets_base_dst, ' ')
         }
     }
 
