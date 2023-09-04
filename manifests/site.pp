@@ -1618,7 +1618,11 @@ node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
 
-node /^kubernetes[12]0(0[5-9]|1[0-9]|2[0-6]|5[5-8])\.(codfw|eqiad)\./ {
+node /^kubernetes10(0[5-9]|1[0-9]|2[0-6]|5[7-8])\.eqiad\./ {
+    role(kubernetes::worker)
+}
+
+node /^kubernetes20(0[5-9]|1[0-9]|2[0-4]|5[5-6])\.codfw\./ {
     role(kubernetes::worker)
 }
 
