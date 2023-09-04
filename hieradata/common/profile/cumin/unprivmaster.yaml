@@ -1,1 +1,1 @@
-profile::cumin::unprivmaster::puppetdb_micro_host: 'puppetdb-api-next.discovery.wmnet'
+profile::cumin::unprivmaster::puppetdb_micro_host: 'puppetdb-api.discovery.wmnet'
