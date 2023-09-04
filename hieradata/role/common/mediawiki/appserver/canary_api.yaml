@@ -52,6 +52,8 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 profile::mediawiki::php::fpm_workers_multiplier: 2.0
 # Register stack traces for any request taking more than 5 seconds
 profile::mediawiki::php::slowlog_limit: 5
+# Enable icu67 component - T345561
+profile::mediawiki::php::icu67: true
 profile::mediawiki::php::absented_php_versions:
   - "7.2"
 
