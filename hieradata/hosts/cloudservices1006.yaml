@@ -4,6 +4,8 @@
 # for thinks like galera and memcached
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.private.eqiad.wikimedia.cloud
+profile::openstack::eqiad1::keystone_host: "openstack-next.eqiad1.wikimediacloud.org"
+profile::openstack::eqiad1::keystone_api_fqdn: "openstack-next.eqiad1.wikimediacloud.org"
 
 # TODO: this is here to unblock the installer, likely not required
 profile::openstack::eqiad1::pdns::hosts:
