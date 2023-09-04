@@ -26,12 +26,11 @@ profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
 profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'
 
 # TODO: as of this writting, this is overridden per cloudservice host, and when ready
-# we need to drop such override plus the '-next' suffix here
-profile::openstack::eqiad1::pdns::recursor_service_name: ns-recursor-next.openstack.eqiad1.wikimediacloud.org
+# we need to drop such override
+profile::openstack::eqiad1::pdns::recursor_service_name: ns-recursor.openstack.eqiad1.wikimediacloud.org
 profile::bird::advertise_vips:
   # NOTE: this is a shared BGP-based anycast VIP. There also a non-shared per-host adddress
-  # TODO: remove the '-next' suffix when ready
-  ns-recursor-next.openstack.eqiad1.wikimediacloud.org:
+  ns-recursor.openstack.eqiad1.wikimediacloud.org:
     ensure: present
     service_type: "pdns recursor"
     address: 172.20.255.1
