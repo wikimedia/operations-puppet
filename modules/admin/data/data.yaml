@@ -40,7 +40,7 @@ groups:
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
-              kchapman, ryanbrounley, oleksandrtsyba-wmde]
+              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6485,9 +6485,8 @@ ldap_only_users:
     realname: Nik Gkountas
     email: ngkountas@wikimedia.org
   vhargyono:
-    ensure: present
+    ensure: absent
     realname: Vasanthi Hargyono
-    email: vhargyono@wikimedia.org
   kuz:
     ensure: absent
     realname: Andrew Kuznetsov
