@@ -6,6 +6,7 @@ class profile::mediawiki::common(
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
     Optional[Boolean] $is_scap_master = lookup('profile::mediawiki::scap_client::is_master', {'default_value' => false}),
+    Optional[Boolean] $enable_icu67 = lookup('profile::mediawiki::php::icu67', {'default_value' => false})
 ){
     # Enable the memory cgroup
     require ::profile::base::memory_cgroup
@@ -49,6 +50,16 @@ class profile::mediawiki::common(
     } else {
         class { '::mediawiki::users':
             web => 'www-data'
+        }
+    }
+
+    if $enable_icu67 {
+        if debian::codename::eq('buster') {
+            apt::repository { 'icu67':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => 'buster-wikimedia',
+                components => 'component/icu67',
+            }
         }
     }
 
