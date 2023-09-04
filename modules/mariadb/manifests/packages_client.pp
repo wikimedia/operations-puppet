@@ -11,10 +11,6 @@ class mariadb::packages_client (
         'grc',                   # used to colorize paged sql output
         'python3-pymysql',       # dependency for some utilities- TODO: delete & add as dependency
         'python3-tabulate',      # dependency for some utilities- TODO: delete & add as dependency
+        'mariadb-backup',        # TODO(kormat): this is likely not needed, and could be removed
     ])
-
-    # TODO(kormat): this is likely not needed, and could be removed.
-    if debian::codename::ge('buster') {
-        ensure_packages('mariadb-backup')
-    }
 }
