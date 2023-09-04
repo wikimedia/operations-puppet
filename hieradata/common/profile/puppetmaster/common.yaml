@@ -6,6 +6,7 @@ profile::puppetmaster::common::ssl_verify_depth: 1
 profile::puppetmaster::common::netbox_hiera_enable: true
 profile::puppetmaster::common::enable_merge_cli: true
 profile::puppetmaster::common::disable_env_config: false
+profile::puppetmaster::common::puppetdb_port: 443
 profile::puppetmaster::common::reports:
   - puppetdb
 profile::puppetmaster::common::puppetdb_submit_only_hosts: []

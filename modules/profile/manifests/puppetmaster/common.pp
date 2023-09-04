@@ -5,6 +5,7 @@
 #           to ::puppetmaster as $config
 # @param storeconfigs Accepts values of 'puppetdb', 'activerecord', and 'none'
 # @param puppetdb_hosts list of puppetdb hosts
+# @param puppetdb_port The port to connect to
 # @param command_broadcast
 # @param ssl_verify_depth ssl verify depth
 # @param netbox_hiera_enable add the netbox-hiera repo
@@ -23,6 +24,7 @@ class profile::puppetmaster::common (
     Enum['puppetdb', 'none'] $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs'),
     Array[Puppetmaster::Report] $reports   = lookup('profile::puppetmaster::common::reports'),
     Array[Stdlib::Host] $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
+    Stdlib::Port        $puppetdb_port     = lookup('profile::puppetmaster::common::puppetdb_port'),
     Array[Stdlib::HTTPSUrl] $puppetdb_submit_only_hosts = lookup('profile::puppetmaster::common::puppetdb_submit_only_hosts'),
 ) {
     $env_config = $disable_env_config ? {
@@ -47,6 +49,7 @@ class profile::puppetmaster::common (
     if $storeconfigs == 'puppetdb' {
         class { 'puppetmaster::puppetdb::client':
             hosts             => $puppetdb_hosts,
+            port              => $puppetdb_port,
             command_broadcast => $command_broadcast,
             submit_only_hosts => $puppetdb_submit_only_hosts,
         }
