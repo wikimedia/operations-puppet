@@ -1,4 +1,10 @@
 ---
+# TODO: not required after the whole control plane is on the next network setup
+# This is here to force designate to talk to cloudcontrol using the cloud-private link
+# for thinks like galera and memcached
+profile::openstack::eqiad1::openstack_controllers:
+  - cloudcontrol1005.private.eqiad.wikimedia.cloud
+
 # TODO: this is here to unblock the installer, likely not required
 profile::openstack::eqiad1::pdns::hosts:
   - "ns0-next.openstack.eqiad1.wikimediacloud.org"
