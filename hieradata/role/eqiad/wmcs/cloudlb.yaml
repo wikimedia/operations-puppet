@@ -21,8 +21,6 @@ profile::openstack::eqiad1::openstack_controllers:
 # for the cloud-private addresses, so that's why this override here.
 profile::openstack::eqiad1::designate_hosts:
   - cloudservices1006.private.eqiad.wikimedia.cloud
-  - cloudservices1004.wikimedia.org
-  - cloudservices1005.wikimedia.org
 
 profile::bird::advertise_vips:
   # TODO: the FQDN needs update (remove the -next)
