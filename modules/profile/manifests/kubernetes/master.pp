@@ -10,6 +10,9 @@ class profile::kubernetes::master (
     Stdlib::Unixpath $ssl_cert_path = lookup('profile::kubernetes::master::ssl_cert_path'),
     # TODO: Remove ssl_key_path after T329826 is resolved
     Stdlib::Unixpath $ssl_key_path  = lookup('profile::kubernetes::master::ssl_key_path'),
+    # TODO: Remove pki_sa_signing switch after T329826 is resolved
+    Boolean        $pki_sa_signing  = lookup('profile::kubernetes::master::pki_sa_signing', { 'default_value' => false }),
+    Boolean  $cergen_sa_validation  = lookup('profile::kubernetes::master::cergen_sa_validation', { 'default_value' => true }),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     # Comma separated list of etcd URLs is consumed by the kube-publish-sa-cert service
@@ -71,14 +74,22 @@ class profile::kubernetes::master (
         'outdir'          => '/etc/kubernetes/pki',
         'notify_services' => ['kube-apiserver', 'kube-publish-sa-cert'],
     })
+
+    # FIXME: T329826 by default the key of the cergen_sa_cert is used to sign service-account tokens
+    # FIXME: Remove selector after T329826 is resolved
+    $sa_signing_cert = $pki_sa_signing ? {
+        true    => $sa_cert,
+        default => $cergen_sa_cert,
+    }
+
     $confd_prefix = '/kube-apiserver-sa-certs'
     # Add a one-shot service that writes the public sa_cert to etcd for all control-planes to fetch
     systemd::service { 'kube-publish-sa-cert':
         content => systemd_template('kubernetes-publish-sa-cert'),
     }
     # Setup a confd instance with the k8s etcd as backend (to fetch other control-planes sa certs from)
-    $instances =  {
-        'k8s'   =>  {
+    $instances = {
+        'k8s' => {
             'ensure'  => 'present',
             'backend' => 'etcdv3',
             'prefix'  => $confd_prefix,
@@ -97,14 +108,19 @@ class profile::kubernetes::master (
         watch_keys => ['/'],
         # Add all but the local cert to the file (the local one will be used unconditionally)
         content    => "{{range gets \"/*\"}}{{if ne .Key \"/${facts['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
-        # FIXME: T329826 Don't reload apiserver until we know it's working properly
-        #reload     => '/bin/systemctl reload kube-apiserver.service',
+        reload     => '/bin/systemctl reload kube-apiserver.service',
     }
 
-    # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert
-    # to validate service-account tokens to not disrupt already provisioned 1.23 clusters.
-    # FIXME: T329826 Add $kube_apiserver_sa_certs here when it's working properly
-    $additional_sa_certs = [$cergen_sa_cert['cert'], $sa_cert['cert']]
+    # Add all certificates that should be used for validation of service account tokens.
+    # (e.g. the local one as well as the certs from other control planes, distributed via confd)
+    # FIXME: T329826 ensure we always use the cergen_sa_cert and the PKI sa_cert to validate
+    #        service-account tokens to not disrupt already provisioned 1.23 clusters.
+    # WARNING: T329826 when switching to $pki_sa_signing, existing sa tokens will still be signed
+    #          by the cergen key. Because of that the cergen cert is still used for validation.
+    $additional_sa_certs = $cergen_sa_validation ? {
+        true    => [$cergen_sa_cert['cert'], $sa_cert['cert'], $kube_apiserver_sa_certs],
+        default => [$sa_cert['cert'], $kube_apiserver_sa_certs],
+    }
 
     # Client certificate used to authenticate against kubelets
     $kubelet_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kube-apiserver-kubelet-client', {
@@ -144,8 +160,7 @@ class profile::kubernetes::master (
     class { 'k8s::apiserver':
         etcd_servers            => $etcd_servers,
         apiserver_cert          => $apiserver_cert,
-        # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case
-        sa_cert                 => $cergen_sa_cert,
+        sa_cert                 => $sa_signing_cert,
         additional_sa_certs     => $additional_sa_certs,
         kubelet_client_cert     => $kubelet_client_cert,
         frontproxy_cert         => $frontproxy_cert,
@@ -196,8 +211,7 @@ class profile::kubernetes::master (
         group       => 'kube',
     }
     class { 'k8s::controller':
-        # FIXME: T329826 the key of the cergen_sa_cert is used to sign service-account tokens in any case
-        service_account_private_key_file => $cergen_sa_cert['key'],
+        service_account_private_key_file => $sa_signing_cert['key'],
         ca_file                          => $sa_cert['chain'],
         kubeconfig                       => $controllermanager_kubeconfig,
         version                          => $k8s_config['version'],
