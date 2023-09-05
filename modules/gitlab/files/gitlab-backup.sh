@@ -40,6 +40,8 @@ case "$1" in
     # This is intended for use in cookbooks and other situations where we want to create a lock file without running a backup.
     # Since the lockfile has already been created we just need to un-trap the signals so we can exit without removing the lock
     trap - SIGINT SIGHUP SIGABRT EXIT;;
+    "unlock")
+    unlock_backups;;
     *)
     echo "Please run script with parameter [full, partial, config, failover]"; exit 1 ;;
 esac

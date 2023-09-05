@@ -23,7 +23,7 @@ abort_if_locked() {
 lock_backups() {
     abort_if_locked
 
-    trap unlock SIGINT SIGHUP SIGABRT EXIT
+    trap unlock_backups SIGINT SIGHUP SIGABRT EXIT
 
     echo -n "Creating lockfile... "
     timeout=$(expr $(date +%s) + ${TIMEOUT_DURATION})
@@ -32,7 +32,7 @@ lock_backups() {
     echo "Done"
 }
 
-unlock() {
+unlock_backups() {
     echo -n "Cleaning up -- removing ${LOCKFILE}... "
     rm -f ${LOCKFILE}
     echo "Done"
