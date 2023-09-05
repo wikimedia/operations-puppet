@@ -996,12 +996,8 @@ node /^(doh[123456]00[1234])\.wikimedia\./ {
 }
 
 # durum for Wikidough (T289536)
-node /^durum[123456]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\./ {
+node /^durum[123456]00[1234]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\./ {
     role(durum)
-}
-
-node /^durum300[34]\.esams\./ {
-    role(insetup::traffic)
 }
 
 # Dragonfly Supernode (T286054)
