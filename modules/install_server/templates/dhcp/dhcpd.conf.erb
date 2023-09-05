@@ -78,23 +78,24 @@ group {
     # Private subnets
     group {
         option domain-name "codfw.wmnet";
-        option subnet-mask 255.255.252.0;
+        option subnet-mask 255.255.255.0;
 
         # private1-a-codfw
         subnet 10.192.0.0 netmask 255.255.252.0 {
             option broadcast-address 10.192.3.255;
+            option subnet-mask 255.255.252.0;
             option routers 10.192.0.1;
         }
 
         # private1-b-codfw
         subnet 10.192.16.0 netmask 255.255.252.0 {
             option broadcast-address 10.192.19.255;
+            option subnet-mask 255.255.252.0;
             option routers 10.192.16.1;
         }
 
         # cloud-hosts1-codfw
         subnet 10.192.20.0 netmask 255.255.255.0 {
-            option subnet-mask 255.255.255.0;
             option broadcast-address 10.192.20.255;
             option routers 10.192.20.1;
         }
@@ -102,13 +103,105 @@ group {
         # private1-c-codfw
         subnet 10.192.32.0 netmask 255.255.252.0 {
             option broadcast-address 10.192.35.255;
+            option subnet-mask 255.255.252.0;
             option routers 10.192.32.1;
         }
 
         # private1-d-codfw
         subnet 10.192.48.0 netmask 255.255.252.0 {
             option broadcast-address 10.192.51.255;
+            option subnet-mask 255.255.252.0;
             option routers 10.192.48.1;
+        }
+
+        # private1-a1-codfw
+        subnet 10.192.4.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.4.255;
+            option routers 10.192.4.1;
+        }
+
+        # private1-a2-codfw
+        subnet 10.192.23.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.23.255;
+            option routers 10.192.23.1;
+        }
+
+        # private1-a3-codfw
+        subnet 10.192.5.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.5.255;
+            option routers 10.192.5.1;
+        }
+
+        # private1-a4-codfw
+        subnet 10.192.6.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.6.255;
+            option routers 10.192.6.1;
+        }
+
+        # private1-a5-codfw
+        subnet 10.192.7.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.7.255;
+            option routers 10.192.7.1;
+        }
+
+        # private1-a6-codfw
+        subnet 10.192.8.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.8.255;
+            option routers 10.192.8.1;
+        }
+
+        # private1-a7-codfw
+        subnet 10.192.9.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.9.255;
+            option routers 10.192.9.1;
+        }
+
+        # private1-a8-codfw
+        subnet 10.192.10.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.10.255;
+            option routers 10.192.10.1;
+        }
+
+        # private1-b2-codfw
+        subnet 10.192.11.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.11.255;
+            option routers 10.192.11.1;
+        }
+
+        # private1-b3-codfw
+        subnet 10.192.12.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.12.255;
+            option routers 10.192.12.1;
+        }
+
+        # private1-b4-codfw
+        subnet 10.192.13.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.13.255;
+            option routers 10.192.13.1;
+        }
+
+        # private1-b5-codfw
+        subnet 10.192.14.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.14.255;
+            option routers 10.192.14.1;
+        }
+
+        # private1-b6-codfw
+        subnet 10.192.15.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.15.255;
+            option routers 10.192.15.1;
+        }
+
+        # private1-b7-codfw
+        subnet 10.192.21.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.21.255;
+            option routers 10.192.21.1;
+        }
+
+        # private1-b8-codfw
+        subnet 10.192.22.0 netmask 255.255.255.0 {
+            option broadcast-address 10.192.22.255;
+            option routers 10.192.22.1;
         }
     }
 }
