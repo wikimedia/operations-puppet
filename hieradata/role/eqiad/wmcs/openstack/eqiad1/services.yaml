@@ -14,7 +14,7 @@ prometheus_nodes:
 profile::openstack::eqiad1::designate_hosts:
   - cloudservices1004.wikimedia.org
   - cloudservices1005.wikimedia.org
-  - cloudservices1006.private.eqiad.wikimedia.cloud
+  - cloudservices1006.eqiad.wmnet
 
 contactgroups: wmcs-team-email
 
