@@ -12,7 +12,8 @@ profile::openstack::eqiad1::openstack_controllers:
 profile::openstack::eqiad1::keystone_host: "openstack-next.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::keystone_api_fqdn: "openstack-next.eqiad1.wikimediacloud.org"
 
-# TODO: this is here to unblock the installer, likely not required
+# Add the third host locally so these can talk to each other but clients
+#  don't try to use the new dns server yet.
 profile::openstack::eqiad1::pdns::hosts:
   - "ns0-next.openstack.eqiad1.wikimediacloud.org"
   - "ns0.openstack.eqiad1.wikimediacloud.org"
