@@ -5884,7 +5884,8 @@ users:
     email: ppenloglou@wikimedia.org
     uid: 42507
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPROgSF5rtGxEB6vZzaDZXYj0zJE88NbG1jEwe+Sf6t ppenloglou@wikimedia.org
   andrewtavis-wmde:
     ensure: present
     realname: Andrew McAllister
