@@ -15,6 +15,8 @@ profile::openstack::eqiad1::keystone_api_fqdn: "openstack-next.eqiad1.wikimediac
 # TODO: this is here to unblock the installer, likely not required
 profile::openstack::eqiad1::pdns::hosts:
   - "ns0-next.openstack.eqiad1.wikimediacloud.org"
+  - "ns0.openstack.eqiad1.wikimediacloud.org"
+  - "ns1.openstack.eqiad1.wikimediacloud.org"
 
 # TODO: remove the '-next' suffix when ready
 profile::openstack::base::pdns::query_local_address: ns0-next.openstack.eqiad1.wikimediacloud.org
