@@ -1318,6 +1318,10 @@ node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\./ {
     role(ganeti)
 }
 
+node /^ganeti-test100[12]\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^ganeti-test200[123]\.codfw\./ {
     role(ganeti_test)
 }
