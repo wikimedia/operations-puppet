@@ -269,6 +269,7 @@
 #     A mapping of FQDN hostname to 'rack'.  This will be used by to render the
 #     configuration for script that will be used for Hadoop node rack awareness.
 #
+#
 #   [*fair_scheduler_template*]
 #     The fair-scheduler.xml queue configuration template.
 #     If you set this to false or undef, FairScheduler will
@@ -609,14 +610,14 @@ class bigtop::hadoop(
         path => $config_directory,
     }
 
-    # Use $net_topology_script_content as net-topology.sh if it was given.
+    # Use the wrapper script needed to generate net_topology if provided
     $net_topology_script_ensure = $net_topology_script_content ? {
         undef   => 'absent',
         default => 'present',
     }
     $net_topology_script_path = $net_topology_script_content ? {
         undef   => undef,
-        default => "${config_directory}/net-topology.sh",
+        default => '/usr/local/bin/generate_net_topology.sh',
     }
 
     $net_topology_config_ensure = $net_topology ? {
@@ -637,9 +638,9 @@ class bigtop::hadoop(
 
     if $net_topology_script_path{
         file { $net_topology_script_path:
-            ensure  => $net_topology_script_ensure,
-            mode    => '0755',
-            content => $net_topology_script_content,
+            ensure => $net_topology_script_ensure,
+            source => 'puppet:///modules/profile/hadoop/generate_net_topology.sh',
+            mode   => '0755',
         }
     }
 

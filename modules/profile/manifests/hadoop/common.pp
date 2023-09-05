@@ -417,11 +417,11 @@ class profile::hadoop::common (
 
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
-    # If specified, this will be rendered into the net-topology.py.erb script.
+    # If specified, this will run the wrapper script needed to generate net_topology
     $net_topology = $hadoop_config['net_topology']
     $net_topology_script_content = $net_topology ? {
         undef   => undef,
-        default => template('profile/hadoop/net-topology.py.erb'),
+        default => '/usr/local/bin/generate_net_topology.sh',
     }
 
     $core_site_extra_properties_default = {
