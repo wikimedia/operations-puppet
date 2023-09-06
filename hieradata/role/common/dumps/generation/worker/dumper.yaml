@@ -9,4 +9,4 @@ profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::apc_shm_size: 128M
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
-profile::contacts::role_contacts: ["Core Platform"]
+profile::contacts::role_contacts: ["Data Engineering"]
