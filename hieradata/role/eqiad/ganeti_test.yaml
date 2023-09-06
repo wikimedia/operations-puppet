@@ -1,0 +1,5 @@
+---
+profile::ganeti::nodes:
+  - ganeti-test1001.eqiad.wmnet
+  - ganeti-test1002.eqiad.wmnet
+profile::ganeti::rapi::certificate: ganeti-test01.svc.eqiad.wmnet

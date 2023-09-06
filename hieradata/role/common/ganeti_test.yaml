@@ -19,9 +19,4 @@ profile::debdeploy::client::filter_services:
 profile::base::production::enable_ip6_mapped: false
 
 cluster: ganeti_test
-profile::ganeti::nodes:
-  - ganeti-test2001.codfw.wmnet
-  - ganeti-test2002.codfw.wmnet
-  - ganeti-test2003.codfw.wmnet
-profile::ganeti::rapi::certificate: ganeti-test01.svc.codfw.wmnet
 profile::contacts::role_contacts: ['Infrastructure Foundations']

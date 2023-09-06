@@ -527,6 +527,7 @@ wikimedia_clusters:
   ganeti_test:
     description: "Ganeti Virt cluster test environment"
     sites:
+      eqiad: []
       codfw: []
   backup:
     description: "Backup cluster (bacula, databases and media)"
