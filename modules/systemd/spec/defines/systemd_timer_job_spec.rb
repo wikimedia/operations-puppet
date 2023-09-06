@@ -13,15 +13,15 @@ describe 'systemd::timer::job' do
       let(:facts) { facts }
       let(:pre_condition) { mock }
       let(:title) { 'dummy-test' }
-      context "with logging" do
-        let(:params) {
-          {
-            description: 'Some description',
-            command: '/bin/true',
-            interval: {start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
-            user: 'root',
-          }
+      let(:params) do
+        {
+          description: 'Some description',
+          command: '/bin/true',
+          interval: {start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
+          user: 'root',
         }
+      end
+      context "with logging" do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_systemd__unit('dummy-test.service')
@@ -35,28 +35,17 @@ describe 'systemd::timer::job' do
         end
       end
       context "without logging" do
-        let(:params) {
-          {
-            description: 'Some description',
-            command: '/bin/true',
-            interval: {start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
-            user: 'root',
-            logging_enabled: false,
-          }
-        }
+        let(:params) { super().merge(logging_enabled: false) }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.not_to contain_systemd__syslog('dummy-test') }
       end
       context "with several intervals" do
-        let(:params) {
-          {
-            description: 'Some description',
-            command: '/bin/true',
+        let(:params) do
+          super().merge(
             interval: [{start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
-                       {start: 'OnCalendar', interval: 'Wed,Thu *-*-* 00:00:00'},],
-          user: 'root',
-          }
-        }
+                       {start: 'OnCalendar', interval: 'Wed,Thu *-*-* 00:00:00'},]
+          )
+        end
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_systemd__unit('dummy-test.service')
@@ -66,14 +55,7 @@ describe 'systemd::timer::job' do
         it { is_expected.not_to contain_exec('systemd start for dummy-test.service') }
       end
       context "with OnUnitInactiveSec" do
-        let(:params) {
-          {
-            description: 'Some description',
-            command: '/bin/true',
-            interval: [{start: 'OnUnitInactiveSec', interval: '3600s'},],
-            user: 'root',
-          }
-        }
+        let(:params) { super().merge(interval: [{ start: 'OnUnitInactiveSec', interval: '3600s' }]) }
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_systemd__timer('dummy-test')
@@ -83,15 +65,7 @@ describe 'systemd::timer::job' do
         end
       end
       context 'with splay' do
-        let(:params) {
-          {
-            description: 'Timer with splay set',
-            command: '/bin/true',
-            interval: {start: 'OnCalendar', interval: 'Daily'},
-            user: 'root',
-            splay: 42,
-          }
-        }
+        let(:params) { super().merge(splay: 42) }
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_systemd__timer('dummy-test')
