@@ -414,7 +414,7 @@ profile::puppetserver::hiera_data_dir: "%{lookup('profile::puppetserver::code_di
 profile::puppetserver::hierarchy:
   - name: "Http Yaml"
     data_hash: cloudlib::httpyaml
-    uri: "http://puppet-enc.cloudinfra.wmcloud.org:8100/v1/%{literal('%')}{::wmcs_project}/node/%{literal('%')}{facts.networking.fqdn}"
+    uri: "https://puppet-enc.cloudinfra.wmcloud.org/v1/%{literal('%')}{::wmcs_project}/node/%{literal('%')}{facts.networking.fqdn}"
   - name: "cloud hierarchy"
     paths:
       - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/hosts/%{literal('%')}{facts.networking.hostname}.yaml"
