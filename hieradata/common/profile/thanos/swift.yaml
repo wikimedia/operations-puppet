@@ -25,6 +25,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_wdqs'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'wdqs:flink'
+  wdqs_savepoints:
+    access:       '.admin'
+    account_name: 'AUTH_wdqs'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'wdqs:savepoints'
   mlserve_prod:
     access:       '.admin'
     account_name: 'AUTH_mlserve'
