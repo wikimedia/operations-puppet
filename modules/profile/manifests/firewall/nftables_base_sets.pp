@@ -3,8 +3,20 @@
 # by modules/base/templates/firewall/defs.erb for Ferm. If you make changes, remember to update both,
 # unless you are fully sure one of the definitions will exclusively be used with hosts using Ferm or nft
 class profile::firewall::nftables_base_sets (
-    Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts'),
-    Array[Stdlib::Host]        $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::IP::Address] $cache_hosts           = lookup('cache_hosts'),
+    Array[Stdlib::IP::Address] $cumin_masters         = lookup('cumin_masters'),
+    Array[Stdlib::IP::Address] $deployment_hosts      = lookup('deployment_hosts'),
+    Array[Stdlib::IP::Address] $druid_public_hosts    = lookup('druid_public_hosts'),
+    Array[Stdlib::IP::Address] $kafka_brokers_jumbo   = lookup('kafka_brokers_jumbo'),
+    Array[Stdlib::IP::Address] $kafka_brokers_logging = lookup('kafka_brokers_logging'),
+    Array[Stdlib::IP::Address] $kafka_brokers_main    = lookup('kafka_brokers_main'),
+    Array[Stdlib::IP::Address] $kafkamon_hosts        = lookup('kafkamon_hosts'),
+    Array[Stdlib::IP::Address] $labstore_hosts        = lookup('labstore_hosts'),
+    Array[Stdlib::IP::Address] $monitoring_hosts      = lookup('monitoring_hosts'),
+    Array[Stdlib::IP::Address] $mysql_root_clients    = lookup('mysql_root_clients'),
+    Array[Stdlib::Host]        $prometheus_nodes      = lookup('prometheus_nodes'),
+    Array[Stdlib::IP::Address] $zookeeper_flink_hosts = lookup('zookeeper_flink_hosts'),
+    Array[Stdlib::IP::Address] $zookeeper_hosts_main  = lookup('zookeeper_hosts_main'),
 ) {
 
     include network::constants
@@ -87,51 +99,51 @@ class profile::firewall::nftables_base_sets (
     }
 
     nftables::set { 'DEPLOYMENT_HOSTS':
-        hosts => $network::constants::deployment_hosts,
+        hosts => $deployment_hosts,
     }
 
     nftables::set { 'CUMIN_MASTERS':
-        hosts => $network::constants::cumin_masters,
+        hosts => $cumin_masters,
     }
 
     nftables::set { 'CACHES':
-        hosts => $network::constants::cache_hosts,
+        hosts => $cache_hosts,
     }
 
     nftables::set { 'KAFKA_BROKERS_MAIN':
-        hosts => $network::constants::kafka_brokers_main,
+        hosts => $kafka_brokers_main,
     }
 
     nftables::set { 'KAFKA_BROKERS_JUMBO':
-        hosts => $network::constants::kafka_brokers_jumbo,
+        hosts => $kafka_brokers_jumbo,
     }
 
     nftables::set { 'KAFKA_BROKERS_LOGGING':
-        hosts => $network::constants::kafka_brokers_logging,
+        hosts => $kafka_brokers_logging,
     }
 
     nftables::set { 'KAFKAMON_HOSTS':
-        hosts => $network::constants::kafkamon_hosts,
+        hosts => $kafkamon_hosts,
     }
 
     nftables::set { 'ZOOKEEPER_HOSTS_MAIN':
-        hosts => $network::constants::zookeeper_hosts_main,
+        hosts => $zookeeper_hosts_main,
     }
 
     nftables::set { 'ZOOKEEPER_FLINK_HOSTS':
-        hosts => $network::constants::zookeeper_flink_hosts,
+        hosts => $zookeeper_flink_hosts,
     }
 
     nftables::set { 'DRUID_PUBLIC_HOSTS':
-        hosts => $network::constants::druid_public_hosts,
+        hosts => $druid_public_hosts,
     }
 
     nftables::set { 'LABSTORE_HOSTS':
-        hosts => $network::constants::labstore_hosts,
+        hosts => $labstore_hosts,
     }
 
     nftables::set { 'MYSQL_ROOT_CLIENTS':
-        hosts => $network::constants::mysql_root_clients,
+        hosts => $mysql_root_clients,
     }
 
     unless $monitoring_hosts.empty() {
