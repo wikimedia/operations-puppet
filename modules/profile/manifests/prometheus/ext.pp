@@ -70,7 +70,7 @@ class profile::prometheus::ext (
 
     prometheus::class_config{ "webperf_arclamp_${::site}":
         dest       => "${targets_path}/webperf_arclamp_${::site}.yaml",
-        class_name => 'profile::webperf::arclamp',
+        class_name => 'profile::arclamp::processor',
         port       => 80,
     }
 
