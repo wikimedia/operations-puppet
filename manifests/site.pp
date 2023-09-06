@@ -2908,7 +2908,7 @@ node /^wdqs100[38]\.eqiad\./ {
     role(wdqs::internal)
 }
 
-node /^wdqs1011\.eqiad\./ {
+node /^wdqs101[16]\.eqiad\./ {
     role(wdqs::internal)
 }
 
@@ -2916,7 +2916,7 @@ node /^wdqs100[467]\.eqiad\./ {
     role(wdqs::public)
 }
 
-node /^wdqs101[2-6]\.eqiad\./ {
+node /^wdqs101[2-5]\.eqiad\./ {
     role(wdqs::public)
 }
 
