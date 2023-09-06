@@ -94,9 +94,9 @@ class profile::firewall::nftables_base_sets (
         hosts => $network::constants::mgmt_networks,
     }
 
-    nftables::set { 'NETWORK_INFRA':
-        hosts => $network::constants::network_infra.values,
-    }
+    # nftables::set { 'NETWORK_INFRA':
+    #     hosts => $network::constants::network_infra.values,
+    # }
 
     nftables::set { 'DEPLOYMENT_HOSTS':
         hosts => $deployment_hosts,
