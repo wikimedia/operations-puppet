@@ -1126,9 +1126,10 @@ class profile::prometheus::ops (
         },
     ]
     prometheus::class_config{ "envoy_${::site}":
-        dest       => "${targets_path}/envoy_${::site}.yaml",
-        class_name => 'profile::envoy',
-        port       => 9631,
+        dest             => "${targets_path}/envoy_${::site}.yaml",
+        class_name       => 'profile::envoy',
+        port             => 9631,
+        class_parameters => { ensure => 'present' },
     }
 
     $pdu_jobs = [
