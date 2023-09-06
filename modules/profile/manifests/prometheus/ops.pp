@@ -1975,7 +1975,7 @@ class profile::prometheus::ops (
 
     # Find instances of prometheus::blackbox_check_endpoint
     $blackbox_check_endpoint_jobs_query = [
-        'AND',
+        'and',
         ['=', 'type', 'Prometheus::Blackbox_check_endpoint'],
         ['=', 'parameters.site', $::site]
     ]
