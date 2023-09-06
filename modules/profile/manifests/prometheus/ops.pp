@@ -1973,26 +1973,6 @@ class profile::prometheus::ops (
         port       => 443,
     }
 
-    # Find instances of prometheus::blackbox_check_endpoint
-    $blackbox_check_endpoint_jobs_query = [
-        'and',
-        ['=', 'type', 'Prometheus::Blackbox_check_endpoint'],
-        ['=', 'parameters.site', $::site]
-    ]
-    $blackbox_check_endpoint_jobs_raw = query_resources(false, $blackbox_check_endpoint_jobs_query, false)
-
-    # Build config from the returned resource parameters
-    $exported_blackbox_jobs = $blackbox_check_endpoint_jobs_raw.map |$job| {
-        {
-            'job_name'        => "swagger_${job['parameters']['job_name']}",
-            'scrape_timeout'  => "${job['parameters']['timeout']}s",
-            'static_configs'  => [{'targets' => $job['parameters']['targets']}],
-            'params'          => $job['parameters']['params'],
-            'metrics_path'    => $job['parameters']['metrics_path'],
-            'relabel_configs' => $job['parameters']['relabel_configs']
-        }
-    }
-
     $thanos_jobs = [
       {
         'job_name'        => 'thanos-query',
@@ -2429,7 +2409,7 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
-            $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
+            $atlas_exporter_jobs, $cadvisor_jobs,
             $envoy_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
