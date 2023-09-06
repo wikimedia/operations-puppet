@@ -62,7 +62,7 @@ groups:
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
-              nskaggs, fabfur, taavi, arnaudb]
+              nskaggs, fabfur, taavi, arnaudb, brouberol]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -402,7 +402,7 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz]
+              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -6024,6 +6024,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGla5S5N4SYzbpqWnSzO9AIk2EmjwRoQe807+yQ5zAT'
+  brouberol:
+    ensure: present
+    realname: Balthazar Rouberol
+    email: brouberol@wikimedia.org
+    uid: 45143
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKunax7NU1Zx304QaTggTnIjXuY8rxgKTwReUMIffoIR brouberol@wikimedia.org'
 
 ldap_only_users:
   adavenport:
