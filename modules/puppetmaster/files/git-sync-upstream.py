@@ -118,9 +118,6 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
         prometheus_gauge.labels(repo_path).set(0)
         return False
 
-    # Ensure that submodules are up to date in the local clone
-    repo.git.submodule("update", "--init", "--recursive")
-
     # For the sake of future rollbacks, tag the repo in the state we've just
     # set up
     repo.create_tag(tagname)
@@ -166,6 +163,9 @@ gauge_is_up_to_date = Gauge(
 if args.git_user != 'root':
     # Switch to git user for git operations
     os.seteuid(pwd.getpwnam(args.git_user).pw_uid)
+    old_environ = os.environ.copy()
+    os.environ['USER'] = args.git_user
+    os.environ['HOME'] = pwd.getpwnam(args.git_user).pw_dir
 
 if args.private:
     resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
@@ -193,6 +193,7 @@ else:
 if os.geteuid != 0:
     # Switch back to root
     os.seteuid(0)
+    os.environ = old_environ
 
 if args.prometheus_file is not None:
     write_to_textfile(args.prometheus_file, prometheus_registry)
