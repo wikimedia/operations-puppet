@@ -88,8 +88,7 @@ class base::kernel(
     # Settings to mitigate fragmentsmack. The low settings need to be applied
     # before the high settings, otherwise the new high settings are lower than
     # the current kernel defaults which results in sysctl rejecting the value
-    # The latest kernel update for stretch also pushes these settings by default
-    # in the kernel, so at some point this can be removed in puppet
+    # T345724 for potential followups
     sysctl::parameters { 'ipfrag_low':
         values   => {
             'net.ipv4.ipfrag_low_thresh'  => '196608',
