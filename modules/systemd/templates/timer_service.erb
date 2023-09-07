@@ -55,3 +55,6 @@ StandardError=<%= @stderr %>
 <%- if @working_directory -%>
 WorkingDirectory=<%= @working_directory %>
 <%- end -%>
+<% unless @path_exists.nil? -%>
+ConditionPathExists=<%= @path_exists %>
+<%- end -%>

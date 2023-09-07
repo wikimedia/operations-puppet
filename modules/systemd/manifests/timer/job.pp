@@ -98,6 +98,7 @@
 #   Setting the value allows to run a timer job after another service.
 # @param group
 #   The unix group to run the service unit as
+# @param path_exists sets the ConditionPathExists value for the timer
 define systemd::timer::job (
     Variant[
         Systemd::Timer::Schedule,
@@ -137,7 +138,13 @@ define systemd::timer::job (
     Optional[Systemd::Command]              $exec_start_pre            = undef,
     Optional[String]                        $after                     = undef,
     Optional[String]                        $group                     = undef,
+    Optional[String]                        $path_exists               = undef,
 ) {
+
+    unless $path_exists =~ Undef or $path_exists =~ Stdlib::UnixPath
+            or ($path_exists[0] == '!' and $path_exists[1,-1] =~ Stdlib::UnixPath) {
+        fail('$path_exists must either be Stdlib::UnixPath or Stdlib::UnixPath prefixed with `!`')
+    }
     # Systemd doesn't play well with spaces in unit names, so check for that
     if $title =~ /\s/ {
         fail("Invalid title '${title}' for systemd timer - it should not include spaces.")

@@ -72,6 +72,30 @@ describe 'systemd::timer::job' do
             .with_splay(42)
         end
       end
+      context 'with path_exists' do
+        let(:params) { super().merge(path_exists: '/foo/bar') }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_systemd__unit('dummy-test.service')
+            .with_content(%r{^ConditionPathExists=/foo/bar})
+        end
+      end
+      context 'with negate path_exists' do
+        let(:params) { super().merge(path_exists: '!/foo/bar') }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_systemd__unit('dummy-test.service')
+            .with_content(%r{^ConditionPathExists=!/foo/bar})
+        end
+      end
+      context 'with path_exists error' do
+        let(:params) { super().merge(path_exists: 'invalid') }
+        it do
+          is_expected.to compile.and_raise_error(
+            /\$path_exists must either be Stdlib::UnixPath or Stdlib::UnixPath prefixed with `!`/
+          )
+        end
+      end
     end
   end
 end
