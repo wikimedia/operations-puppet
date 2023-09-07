@@ -2,7 +2,7 @@
 class profile::puppetserver::wmcs {
     include profile::openstack::base::puppetmaster::enc_client
     class { 'profile::puppetserver':
-        enc => $profile::openstack::base::puppetmaster::enc_client::enc_path
+        enc_path => $profile::openstack::base::puppetmaster::enc_client::enc_path
     }
     class { 'puppetmaster::gitsync':
         base_dir => $profile::puppetserver::git::basedir,
