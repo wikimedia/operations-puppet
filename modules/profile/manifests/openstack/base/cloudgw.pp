@@ -21,8 +21,7 @@ class profile::openstack::base::cloudgw (
     Optional[Array[Stdlib::IP::Address::V4::Cidr]] $public_cidrs = lookup('profile::wmcs::cloud_private_subnet::public_cidrs', {default_value => []}),
 ) {
     class { '::nftables':
-        ensure_package => 'present',
-        ensure_service => 'present',
+        ensure => 'present',
     }
 
     ensure_packages('vlan')
