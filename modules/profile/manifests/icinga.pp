@@ -214,11 +214,11 @@ class profile::icinga(
         }
 
         file { '/usr/local/sbin/sync_icinga_state':
-          ensure  => present,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0755',
-          content => file('role/icinga/sync_icinga_state.sh'),
+          ensure => present,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0755',
+          source => 'puppet:///modules/profile/icinga/sync_icinga_state.sh',
         }
 
         profile::auto_restarts::service { 'apache2': }
