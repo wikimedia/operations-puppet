@@ -15,8 +15,7 @@
 # - $use_deployed_config: Whether we should use config in deployed repo or our own
 # - $extra_jvm_opts: Extra JVM configs for blazegraph
 # - $use_geospatial: Turn on blazegraph geospatial features
-# - $journal: Name to assign instance journal. Must be unique per data_dir
-# - $debug: configure a debug port to allow attaching a debugger to the JVM
+# - $journal: Name to assign instance journal. Must be unique per data_dir.
 define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -35,7 +34,6 @@ define query_service::blazegraph(
     String $federation_user_agent,
     String $prefixes_file,
     Boolean $use_oauth,
-    Boolean $debug = false,
 ) {
     $data_file = "${data_dir}/${journal}.jnl"
 
@@ -60,15 +58,22 @@ define query_service::blazegraph(
         }
     }
 
-    $allow_list_file = "/etc/${deploy_name}/allowlist-${title}.txt"
-
-    file { $allow_list_file:
+    file { "/etc/${deploy_name}/allowlist-${title}.txt":
         ensure => present,
         source => 'puppet:///modules/query_service/allowlist.txt',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
         before => Service[$title],
+    }
+
+    file { "/etc/default/${title}":
+        ensure  => present,
+        content => template('query_service/blazegraph-default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        before  => Systemd::Unit[$title],
     }
 
     query_service::logback_config { $title:
@@ -79,76 +84,6 @@ define query_service::blazegraph(
         evaluators            => true,
         throttle              => true,
     }
-
-    $debug_arg = $debug ? {
-        true  => [ '-agentlib:jdwp=transport=dt_socket,server=y,address=5005,suspend=n' ],
-        false => [],
-    }
-
-    $gc_ops = [
-        '-XX:+UnlockExperimentalVMOptions',
-        '-XX:+UseNUMA',
-        '-XX:G1NewSizePercent=20',
-        '-XX:+ParallelRefProcEnabled',
-    ]
-
-    $gc_logs = [
-        "-Xloggc:${log_dir}/${title}_jvm_gc.%%p-%%t.log", # %p and %t are escaped so that they are not interpreted by systemd
-        '-XX:+PrintGCDetails',
-        '-XX:+PrintGCDateStamps',
-        '-XX:+PrintGCTimeStamps',
-        '-XX:+PrintAdaptiveSizePolicy',
-        '-XX:+PrintReferenceGC',
-        '-XX:+PrintGCCause',
-        '-XX:+PrintGCApplicationStoppedTime',
-        '-XX:+PrintTenuringDistribution',
-        '-XX:+UseGCLogFileRotation',
-        '-XX:NumberOfGCLogFiles=10',
-        '-XX:GCLogFileSize=20M',
-    ]
-
-    $logback_config = [ "-Dlogback.configurationFile=/etc/${deploy_name}/logback-${title}.xml" ]
-
-    $blazegraph_standard_opts = [
-        '-Dwdqs.jwt-identity-filter.jwt-identity-cookie-name=wcqsSession',
-        '-Dwdqs.jwt-identity-filter.jwt-identity-claim=username',
-        "-DwikibaseServiceWhitelist=${allow_list_file}",
-        "-Dcom.bigdata.rdf.sail.webapp.ConfigParams.propertyFile=${config_file}",
-        '-Dorg.eclipse.jetty.server.Request.maxFormContentSize=200000000',
-        '-Dcom.bigdata.rdf.sparql.ast.QueryHints.analytic=true',
-        '-Dcom.bigdata.rdf.sparql.ast.QueryHints.analyticMaxMemoryPerQuery=1073741824',
-        '-DASTOptimizerClass=org.wikidata.query.rdf.blazegraph.WikibaseOptimizers',
-        '-Dorg.wikidata.query.rdf.blazegraph.inline.literal.WKTSerializer.noGlobe=2',
-        '-Dcom.bigdata.rdf.sail.webapp.client.RemoteRepository.maxRequestURLLength=7168',
-        "-Dcom.bigdata.rdf.sail.sparql.PrefixDeclProcessor.additionalDeclsFile=${package_dir}/${prefixes_file}",
-        "-Dorg.wikidata.query.rdf.blazegraph.mwapi.MWApiServiceFactory.config=${package_dir}/mwservices.json",
-        '-Dcom.bigdata.rdf.sail.webapp.client.HttpClientConfigurator=org.wikidata.query.rdf.blazegraph.ProxiedHttpConnectionFactory',
-        "-DblazegraphDefaultNamespace=${blazegraph_main_ns}",
-    ]
-
-    $oauth_run = $use_oauth ? {
-        true    => [ 'mw-oauth-proxy-*.war' ],
-        default => [],
-    }
-
-    $blazegraph_args = [ '-server', '-XX:+UseG1GC', "-Xmx${heap_size}" ]
-        + $debug_arg
-        + $gc_ops
-        + $gc_logs
-        + $logback_config
-        + $extra_jvm_opts
-        + $blazegraph_standard_opts
-        + [
-            "-Dhttp.userAgent=\"${federation_user_agent}\"",
-            '-Dorg.eclipse.jetty.annotations.AnnotationParser.LEVEL=OFF',
-            '-cp "jetty-runner*.jar:lib/logging/*"',
-            'org.eclipse.jetty.runner.Runner',
-            '--host localhost',
-            "--port ${port}",
-            '--path /bigdata',
-            'blazegraph-service-*.war',
-        ]
-        + $oauth_run
 
     # Blazegraph service
     systemd::unit { $title:
