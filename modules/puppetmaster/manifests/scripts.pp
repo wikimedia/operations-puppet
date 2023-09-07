@@ -61,5 +61,6 @@ class puppetmaster::scripts(
         description => 'Clears out older puppet reports.',
         command     => "/usr/bin/find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete",
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '8h'},
+        path_exists => '/var/lib/puppet/reports',
     }
 }
