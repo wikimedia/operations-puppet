@@ -162,7 +162,7 @@ class puppetmaster(
         ca_server => $ca_server,
         paths     => $paths,
         masters   => $servers.keys(),
-        workers   => $all_workers,
+        workers   => $all_workers + wmflib::role::hosts('puppetserver'),
 
     }
 

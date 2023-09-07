@@ -51,12 +51,12 @@ class profile::puppetmaster::backend(
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve((${$servers.keys.join(' ')})))",
+        srange => $servers.keys,
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',
         port   => 8141,
-        srange => "(@resolve((${$servers.keys.join(' ')})))",
+        srange => $servers.keys,
     }
     include profile::conftool::client
 }
