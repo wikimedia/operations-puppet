@@ -5,8 +5,14 @@ class ferm (
     Wmflib::Ensure $ensure ='present'
 ) {
     # @resolve requires libnet-dns-perl
-    package { ['ferm', 'iptables', 'libnet-dns-perl', 'conntrack']:
+    package { ['iptables', 'libnet-dns-perl', 'conntrack']:
         ensure => stdlib::ensure($ensure, package),
+    }
+
+    if $ensure == 'present' {
+        ensure_packages('ferm')
+    } elsif $ensure == 'absent' {
+        ensure_packages(['ferm'], {'ensure' => 'purged'})
     }
 
     if !$facts['wmflib']['is_container'] {
@@ -108,7 +114,7 @@ class ferm (
 
     # Starting with Bullseye iptables default to the nft backend, but for ferm
     # we need the legacy backend
-    if debian::codename::ge('bullseye') {
+    if debian::codename::ge('bullseye') and $ensure == 'present' {
         alternatives::select { 'iptables':
             path    => '/usr/sbin/iptables-legacy',
             require => Package['iptables'],
