@@ -34,7 +34,7 @@ define nftables::service (
     # this define doesn't support it, but we may in the future!
     # see https://wiki.nftables.org/wiki-nftables/index.php/Concatenations
 
-    $_port = [$port].flatten
+    $_port = $port.then |$x| { [$x].flatten }
 
     # figure out transport protocol statements
     if !$_port.empty() and $port_range {
