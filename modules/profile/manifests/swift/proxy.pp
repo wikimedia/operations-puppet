@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-# @param puppetservers the list of active puppetservers
 class profile::swift::proxy (
     Hash $accounts                             = lookup('profile::swift::accounts'),
     Hash[String, Hash] $global_account_keys   = lookup('profile::swift::global_account_keys'),
@@ -15,7 +14,6 @@ class profile::swift::proxy (
     String $proxy_service_host                 = lookup('profile::swift::proxy::proxy_service_host'),
     Array[String] $shard_container_list        = lookup('profile::swift::proxy::shard_container_list'),
     Hash[String, Puppetmaster::Backends] $puppetmasters = lookup('puppetmaster::servers'),
-    Array[Stdlib::Fqdn] $puppetservers         = lookup('puppetservers'),
     Optional[Stdlib::Host] $statsd_host        = lookup('profile::swift::proxy::statsd_host'),
     Optional[Stdlib::Port] $statsd_port        = lookup('profile::swift::proxy::statsd_port'),
     Optional[String] $dispersion_account       = lookup('profile::swift::proxy::dispersion_account'),
@@ -24,6 +22,8 @@ class profile::swift::proxy (
     Optional[String] $thumborhost              = lookup('profile::swift::proxy::thumborhost'),
     Optional[String] $inactivedc_thumborhost   = lookup('profile::swift::proxy::inactivedc_thumborhost'),
 ){
+
+    $puppetservers = wmflib::role::hosts('puppetserver')
 
     class { 'swift':
         hash_path_suffix => $hash_path_suffix,

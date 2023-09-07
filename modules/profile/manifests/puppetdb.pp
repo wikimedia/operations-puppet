@@ -2,7 +2,6 @@
 # @summary profile to configure puppetdb
 # @param puppetmasters the list of puppetmasters
 # @param master the write instance
-# @param puppetservers if present also configure access for puppetservers
 # @param jvm_opts additional jvm options
 # @param elk_logging enable elk_logging
 # @param ca_path the to the certificate authority
@@ -33,7 +32,6 @@
 class profile::puppetdb (
     Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
     Stdlib::Host                         $master                = lookup('profile::puppetdb::master'),
-    Array[Stdlib::Host]                  $puppetservers         = lookup('profile::puppetdb::puppetservers'),
     String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
     Boolean                              $elk_logging           = lookup('profile::puppetdb::elk_logging'),
     Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
@@ -124,6 +122,7 @@ class profile::puppetdb (
         notrack => true,
         srange  => "@resolve((${puppetmasters_ferm}))",
     }
+    $puppetservers = wmflib::role::hosts('puppetserver')
     unless $puppetservers.empty() {
         ferm::service { 'puppetserveres access to puppetdb':
             proto   => 'tcp',

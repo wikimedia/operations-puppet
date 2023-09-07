@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-# @param puppetservers the list of active puppetservers
 class profile::thanos::swift::frontend (
     Array $thanos_backends                   = lookup('profile::thanos::backends'),
     Array $thanos_frontends                  = lookup('profile::thanos::frontends'),
@@ -14,7 +13,6 @@ class profile::thanos::swift::frontend (
     String $stats_reporter_host              = lookup('profile::swift::stats_reporter_host'),
     Array[String] $shard_container_list      = lookup('profile::swift::proxy::shard_container_list'),
     Hash[String, Puppetmaster::Backends] $puppetmasters = lookup('puppetmaster::servers'),
-    Array[Stdlib::Fqdn] $puppetservers       = lookup('puppetservers'),
     Optional[Stdlib::Host] $statsd_host      = lookup('profile::swift::proxy::statsd_host'),
     Optional[Stdlib::Port] $statsd_port      = lookup('profile::swift::proxy::statsd_port'),
     Optional[String] $dispersion_account     = lookup('profile::swift::proxy::dispersion_account'),
@@ -23,6 +21,7 @@ class profile::thanos::swift::frontend (
     Optional[String] $inactivedc_thumborhost = lookup('profile::swift::proxy::inactivedc_thumborhost'),
     Optional[String] $read_affinity          = lookup('profile::thanos::swift::read_affinity', { 'default_value' => undef }),
 ) {
+    $puppetservers = wmflib::role::hosts('puppetserver')
     # TODO: combine this profile with profile::swift::proxy
 
     class { '::swift':
