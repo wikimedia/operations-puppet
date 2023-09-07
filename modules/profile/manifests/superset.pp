@@ -65,7 +65,7 @@ class profile::superset (
     String $admin_password                        = lookup('profile::superset::admin_password', { 'default_value' => 'admin' }),
     String $secret_key                            = lookup('profile::superset::secret_key', { 'default_value' => 'not_really_a_secret_key' }),
     Boolean $ldap_proxy_enabled                   = lookup('profile::superset::ldap_proxy_enabled', { 'default_value' => false }),
-    Optional[String] $statsd                      = lookup('statsd', { 'default_value' => undef }),
+    Optional[String] $statsd                      = lookup('profile::superset::statsd', { 'default_value' => undef }),
     String $gunicorn_app                          = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
     Boolean $enable_cas                           = lookup('profile::superset::enable_cas'),
     Optional[String] $metadata_cache_uri          = lookup('profile::superset::metadata_cache_uri', { 'default_value' => undef }),
@@ -140,6 +140,8 @@ class profile::superset (
         filter_state_cache_uri      => $filter_state_cache_uri,
         explore_form_data_cache_uri => $explore_form_data_cache_uri,
     }
+
+    class { 'profile::prometheus::statsd_exporter': }
 
     monitoring::service { 'superset':
         description   => 'superset',

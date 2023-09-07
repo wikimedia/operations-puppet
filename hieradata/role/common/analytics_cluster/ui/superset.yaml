@@ -18,6 +18,7 @@ profile::superset::metadata_cache_uri: 'localhost'
 profile::superset::filter_state_cache_uri: 'localhost'
 profile::superset::explore_form_data_cache_uri: 'localhost'
 profile::superset::server_name: 'superset.wikimedia.org'
+profile::superset::statsd: 'localhost:9125'
 
 # TLS Terminator settings
 # Please note: the service name is used to pick up the
