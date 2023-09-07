@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
-class openstack::nova::common::antelope::bullseye(
+class openstack::nova::common::antelope::bookworm(
 ) {
-    require ::openstack::serverpackages::antelope::bullseye
+    require ::openstack::serverpackages::antelope::bookworm
 
     $packages = [
         'unzip',

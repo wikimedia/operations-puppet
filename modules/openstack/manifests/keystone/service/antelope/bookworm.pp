@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
-class openstack::keystone::service::antelope::bullseye(
+class openstack::keystone::service::antelope::bookworm(
     Stdlib::Port $public_bind_port,
     Stdlib::Port $admin_bind_port,
 ) {
-    require ::openstack::serverpackages::antelope::bullseye
+    require ::openstack::serverpackages::antelope::bookworm
 
     $packages = [
         'keystone',
@@ -19,7 +19,7 @@ class openstack::keystone::service::antelope::bullseye(
     ensure_packages($packages)
 
     # Temporary (?) time-out for apache + mod_wsgi which don't work with Keystone
-    # on bullseye
+    # on bookworm
     file { '/etc/init.d/keystone':
         mode    => '0755',
         content => template('openstack/antelope/keystone/keystone-public-service.erb'),

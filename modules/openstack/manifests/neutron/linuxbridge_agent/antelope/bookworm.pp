@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
-class openstack::neutron::linuxbridge_agent::antelope::bullseye(
+class openstack::neutron::linuxbridge_agent::antelope::bookworm(
 ) {
-    require ::openstack::serverpackages::antelope::bullseye
+    require ::openstack::serverpackages::antelope::bookworm
 
     package { 'libosinfo-1.0-0':
         ensure => 'present',

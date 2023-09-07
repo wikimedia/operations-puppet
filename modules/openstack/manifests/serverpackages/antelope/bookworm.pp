@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
-class openstack::serverpackages::antelope::bullseye(
+class openstack::serverpackages::antelope::bookworm(
 ){
-    $bullseye_bpo_packages = [
+    $bookworm_bpo_packages = [
       'librados2',
       'librgw2',
       'librbd1',
@@ -17,64 +17,64 @@ class openstack::serverpackages::antelope::bullseye(
       'libradosstriper1',
     ]
 
-    apt::pin { 'openstack-antelope-bullseye-bpo':
-        package  => join($bullseye_bpo_packages, ' '),
-        pin      => 'release n=bullseye-backports',
+    apt::pin { 'openstack-antelope-bookworm-bpo':
+        package  => join($bookworm_bpo_packages, ' '),
+        pin      => 'release n=bookworm-backports',
         priority => 1002,
     }
 
     # Force these packages to come from the nochange bpo
     #  even if they're available in the wikimedia repo.
     # This gets us the versions we require.
-    $bullseye_bpo_nochange_packages = [
+    $bookworm_bpo_nochange_packages = [
       'uwsgi-plugin-python3',
       'uwsgi-core',
       'librdkafka1',
       'python3-eventlet',
     ]
 
-    apt::pin { 'openstack-antelope-bullseye-bpo-nochange':
-        package  => join($bullseye_bpo_nochange_packages, ' '),
-        pin      => 'release n=bullseye-antelope-backports-nochange',
+    apt::pin { 'openstack-antelope-bookworm-bpo-nochange':
+        package  => join($bookworm_bpo_nochange_packages, ' '),
+        pin      => 'release n=bookworm-antelope-backports-nochange',
         priority => 1002,
     }
 
-    # Don't install systemd from bullseye-backports or bpo -- T247013
+    # Don't install systemd from bookworm-backports or bpo -- T247013
     apt::pin { 'systemd':
-        pin      => 'release n=bullseye',
+        pin      => 'release n=bookworm',
         package  => 'systemd libpam-systemd',
         priority => 1001,
     }
 
-    apt::repository { 'openstack-antelope-bullseye':
+    apt::repository { 'openstack-antelope-bookworm':
         uri        => 'http://mirrors.wikimedia.org/osbpo',
-        dist       => 'bullseye-antelope-backports',
+        dist       => 'bookworm-antelope-backports',
         components => 'main',
         source     => false,
         keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
-        notify     => Exec['openstack-antelope-bullseye-apt-upgrade'],
+        notify     => Exec['openstack-antelope-bookworm-apt-upgrade'],
     }
 
-    apt::repository { 'openstack-antelope-bullseye-nochange':
+    apt::repository { 'openstack-antelope-bookworm-nochange':
         uri        => 'http://mirrors.wikimedia.org/osbpo',
-        dist       => 'bullseye-antelope-backports-nochange',
+        dist       => 'bookworm-antelope-backports-nochange',
         components => 'main',
         source     => false,
         keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
-        notify     => Exec['openstack-antelope-bullseye-apt-upgrade'],
+        notify     => Exec['openstack-antelope-bookworm-apt-upgrade'],
     }
 
     # ensure apt can see the repo before any further Package[] declaration
     # so this proper repo/pinning configuration applies in the same puppet
     # agent run
-    exec { 'openstack-antelope-bullseye-apt-upgrade':
+    exec { 'openstack-antelope-bookworm-apt-upgrade':
         command     => '/usr/bin/apt-get update',
-        require     => [Apt::Repository['openstack-antelope-bullseye'],
-                        Apt::Repository['openstack-antelope-bullseye-nochange']],
-        subscribe   => [Apt::Repository['openstack-antelope-bullseye'],
-                        Apt::Repository['openstack-antelope-bullseye-nochange']],
+        require     => [Apt::Repository['openstack-antelope-bookworm'],
+                        Apt::Repository['openstack-antelope-bookworm-nochange']],
+        subscribe   => [Apt::Repository['openstack-antelope-bookworm'],
+                        Apt::Repository['openstack-antelope-bookworm-nochange']],
         refreshonly => true,
         logoutput   => true,
     }
-    Exec['openstack-antelope-bullseye-apt-upgrade'] -> Package <| title != 'gnupg' |>
+    Exec['openstack-antelope-bookworm-apt-upgrade'] -> Package <| title != 'gnupg' |>
 }

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
-class openstack::nova::compute::service::antelope::bullseye() {
-    require openstack::serverpackages::antelope::bullseye
+class openstack::nova::compute::service::antelope::bookworm() {
+    require openstack::serverpackages::antelope::bookworm
 
     # the libvirt-daemon-system install may trigger an update-initramfs run.
     # under some circumstances, the busybox package may not be installed, thus
