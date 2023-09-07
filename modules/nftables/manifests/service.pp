@@ -38,18 +38,18 @@ define nftables::service (
 
     # figure out transport protocol statements
     if !$_port.empty() and $port_range {
-        fail('You can only pass an array of ports or a range, but not both')
+        fail("${title}: You can only pass an array of ports or a range, but not both")
     }
 
     if !$_port.empty() {
         $port_stmt = "${proto} dport { ${_port.sort.join(', ')} }"
     } elsif $port_range {
         if $port_range[0] >= $port_range[1] {
-            fail("Incorrect port range ${port_range[0]} >= ${port_range[1]}")
+            fail("${title}: Incorrect port range ${port_range[0]} >= ${port_range[1]}")
         }
         $port_stmt = "${proto} dport ${port_range.join('-')}"
     } elsif $port.empty() and !$port_range {
-        fail('You need at least one of port or port_range')
+        fail("${title}: You need at least one of port or port_range")
     }
 
     # figure out IPv4 source statements
