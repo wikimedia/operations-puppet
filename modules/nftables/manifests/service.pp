@@ -20,7 +20,7 @@ define nftables::service (
     Wmflib::Ensure                $ensure     = present,
     Integer[0,99]                 $prio       = 10,
     Optional[String]              $desc       = undef,
-    Nftables::Port                $port       = undef,
+    Optional[Nftables::Port]      $port       = undef,
     Optional[Firewall::Portrange] $port_range = undef,
     Array[Stdlib::IP::Address]    $src_ips    = [],
     Array[Stdlib::IP::Address]    $dst_ips    = [],
