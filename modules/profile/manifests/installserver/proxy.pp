@@ -21,7 +21,7 @@ class profile::installserver::proxy(
     $syslog_priority = 'info'
     class { 'squid':
         ensure              => $ensure,
-        config_content      => template('role/caching-proxy/squid.conf.erb'),
+        config_content      => template('profile/installserver/proxy/squid.conf.erb'),
         logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
     }
 
