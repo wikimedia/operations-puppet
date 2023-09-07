@@ -13,8 +13,4 @@ class role::sretest {
     include profile::base::production
     include profile::firewall
     include profile::sretest
-
-    if debian::codename::le('bullseye') {
-        include profile::opentelemetry::collector
-    }
 }

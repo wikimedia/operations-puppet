@@ -1,11 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile for sretest hosts
 class profile::sretest {
-    if debian::codename::eq('buster') {
-        include profile::docker::firewall
-        include profile::base::cuminunpriv
-    }
-
     $cache_nodes = lookup('cache::nodes')  # lint:ignore:wmf_styleguide
     file { '/var/tmp/testing':
         ensure  => directory,
