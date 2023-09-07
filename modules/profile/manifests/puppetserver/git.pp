@@ -6,21 +6,17 @@
 # @param group the group owner of the git repo
 # @param control_repo the name of the main puppet control repo
 # @param repos addtional repos to configure
-# @param additional_servers used to add hardcoded serveres not yet avaliable in puppetdb.
-#   usefull for transition and potentialy adding new servers
 class profile::puppetserver::git (
     Wmflib::Ensure      $ensure             = lookup('profile::puppetserver::git::ensure'),
     Stdlib::Unixpath    $basedir            = lookup('profile::puppetserver::git::basedir'),
     String[1]           $user               = lookup('profile::puppetserver::git::user'),
     String[1]           $group              = lookup('profile::puppetserver::git::group'),
     String[1]           $control_repo       = lookup('profile::puppetserver::git::control_repo'),
-    Array[Stdlib::Fqdn] $additional_servers = lookup('profile::puppetserver::git::additional_servers'),
     Hash[String, Hash]  $repos              = lookup('profile::puppetserver::git::repos'),
 ) {
     $servers = (wmflib::role::hosts('puppetmaster::frontend') +
                 wmflib::role::hosts('puppetmaster::backend') +
-                wmflib::role::hosts('puppetserver') +
-                $additional_servers).sort.unique
+                wmflib::role::hosts('puppetserver')).sort.unique
     unless $repos.has_key($control_repo) {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
@@ -30,6 +26,13 @@ class profile::puppetserver::git (
     systemd::sysuser { $user:
         home_dir => $home_dir,
         shell    => '/bin/sh',
+    }
+    file { $home_dir:
+        ensure  => directory,
+        owner   => $user,
+        group   => $user,
+        mode    => '0755',
+        require => Systemd::Sysuser[$user],
     }
     # TODO: refactor this so its closer to the g10k code
     # This is required to run g10k as root
