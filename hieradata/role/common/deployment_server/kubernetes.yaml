@@ -222,9 +222,6 @@ scap::sources:
   # Cassandra logback encoder for Logstash
   cassandra/logstash-logback-encoder:
     repository: operations/software/logstash-logback-encoder
-  # Time-window compaction strategy for Cassandra
-  cassandra/twcs:
-    repository: operations/software/cassandra-twcs
   homer/deploy:
     repository: operations/software/homer/deploy
   zuul/deploy:
