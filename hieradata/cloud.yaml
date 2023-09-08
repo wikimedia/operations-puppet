@@ -322,6 +322,7 @@ profile::puppetdb::tmpfs_stockpile_queue: false
 profile::puppetdb::clean_stockpile: false
 profile::puppetdb::facts_blacklist: []
 profile::puppetdb::facts_blacklist_type: "literal"
+profile::puppetdb::db_ro_host: ~
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 443

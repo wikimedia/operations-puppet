@@ -20,6 +20,7 @@
 # @param ca_path the to use for client auth
 # @param puppetdb_pass the puppetdb password
 # @param puppetdb_ro_pass the puppetdb read only password
+# @param db_ro_host Postgres host for read queries
 # @param log_level the log log_level
 # @param tmpfs_stockpile_queue if true use tmpfs fort the stockpile queue
 # @param facts_blacklist a liust of facts to blacklist from insertion to the db
@@ -35,6 +36,7 @@ class puppetmaster::puppetdb(
     Stdlib::Unixpath           $ca_path               = '/etc/ssl/certs/Puppet_Internal_CA.pem',
     String                     $puppetdb_pass         = '',
     String                     $puppetdb_ro_pass      = '',
+    Optional[Stdlib::Host]     $db_ro_host            = undef,
     Puppetdb::Loglevel         $log_level             = 'info',
     Boolean                    $tmpfs_stockpile_queue = false,
     Array[String]              $facts_blacklist       = [],
@@ -78,7 +80,7 @@ class puppetmaster::puppetdb(
 
     class { 'puppetdb::app':
         db_rw_host            => $master,
-        db_ro_host            => $facts['networking']['fqdn'],
+        db_ro_host            => $db_ro_host,
         db_password           => $puppetdb_pass,
         db_ro_password        => $puppetdb_ro_pass,
         jvm_opts              => $jvm_opts,

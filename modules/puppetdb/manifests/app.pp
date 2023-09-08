@@ -43,7 +43,7 @@ class puppetdb::app(
     Stdlib::Host                  $db_rw_host                 = $facts['networking']['fqdn'],
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
     Optional[Stdlib::IP::Address] $bind_ip_insecure           = undef,
-    Optional[String]              $db_ro_host                 = undef,
+    Optional[Stdlib::Host]        $db_ro_host                 = undef,
     Optional[String]              $db_password                = undef,
     Optional[String]              $db_ro_password             = undef,
 ) {
@@ -99,21 +99,22 @@ class puppetdb::app(
         mode    => '0750',
         recurse => true,
         purge   => true,
+        require => Package['puppetdb'],
     }
     if debian::codename::ge('bookworm') {
         file { '/etc/puppetdb/conf.d/auth.conf':
-            ensure => file,
-            owner  => 'puppetdb',
-            group  => 'root',
-            mode   => '0750',
-            source => 'puppet:///modules/puppetdb/auth.conf',
+            ensure  => file,
+            owner   => 'puppetdb',
+            group   => 'root',
+            mode    => '0750',
+            source  => 'puppet:///modules/puppetdb/auth.conf',
+            require => Package['puppetdb'],
         }
     }
 
 
     $postgres_uri = "ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
     $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?${postgres_uri}"
-    $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?${postgres_uri}"
 
     $db_settings = {
         'report-ttl'           => $report_ttl,
@@ -126,16 +127,17 @@ class puppetdb::app(
         'facts-blacklist-type' => $facts_blacklist_type,
         'facts-blacklist'      => $facts_blacklist.join(', '),
     }
-    $read_db_settings = {
-        'subname'  => $postgres_ro_db_subname,
-        'username' => 'puppetdb_ro',
-        'password' => $db_ro_password,
-    }
-
     puppetdb::config { 'database':
         settings => $db_settings,
     }
+
     if $db_ro_host and $db_driver == 'postgres' {
+        $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?${postgres_uri}"
+        $read_db_settings = {
+            'subname'  => $postgres_ro_db_subname,
+            'username' => 'puppetdb_ro',
+            'password' => $db_ro_password,
+        }
         puppetdb::config { 'read-database':
             settings => $read_db_settings,
         }

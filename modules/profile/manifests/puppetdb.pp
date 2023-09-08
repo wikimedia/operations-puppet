@@ -41,6 +41,7 @@ class profile::puppetdb (
     Boolean                              $clean_stockpile       = lookup('profile::puppetdb::clean_stockpile'),
     String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
     String                               $puppetdb_ro_pass      = lookup('puppetdb::password::ro'),
+    Optional[Stdlib::Host]               $db_ro_host            = lookup('profile::puppetdb::db_ro_host'),
     Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
     # TODO: rename to facts-blocklist when on 6.13.0 - T254646
     # https://puppet.com/docs/puppetdb/6/release_notes.html#puppetdb-6130
@@ -72,6 +73,7 @@ class profile::puppetdb (
         ca_content            => $ca_content,
         puppetdb_pass         => $puppetdb_pass,
         puppetdb_ro_pass      => $puppetdb_ro_pass,
+        db_ro_host            => $db_ro_host,
         log_level             => $log_level,
         tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
         facts_blacklist       => $facts_blacklist,
