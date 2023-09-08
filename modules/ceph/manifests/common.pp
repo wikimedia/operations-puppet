@@ -13,9 +13,8 @@ class ceph::common (
     Stdlib::Unixpath $home_dir,
     String           $ceph_repository_component,
 ) {
-    # this class should support both buster & bullseye
+    # this class should support buster and later versions
     debian::codename::require::min('buster')
-    debian::codename::require::max('bullseye')
 
     group { 'ceph':
         ensure => present,
