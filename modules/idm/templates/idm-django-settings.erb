@@ -168,11 +168,14 @@ BITU_NOTIFICATION = {
 # Signup settings:
 # Enable validators
 SIGNUP_USERNAME_VALIDATORS = ['ldapbackend.validators.LDAPUsernameValidator',
+                              'ldapbackend.validators.LDAPCommonNameValidator',
                               'signups.validators.UsernameValidator']
 
 SIGNUP_UID_VALIDATORS = ['ldapbackend.validators.unix_username_regex_validator',
                          'ldapbackend.validators.unix_username_length_validator',
-                         'signups.validators.UsernameValidator']
+                         'signups.validators.UsernameValidator',
+                         'ldapbackend.validators.LDAPUsernameValidator',
+                         'ldapbackend.validators.LDAPCommonNameValidator']
 
 # Display Wikimedia Foundation Signup message
 SIGNUP_INFO_TEMPLATE = 'signup_info_wmf.html'
