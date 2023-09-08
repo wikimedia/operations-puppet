@@ -9,13 +9,12 @@ class ganeti::prometheus(
     String $rapi_ro_user,
     String $rapi_ro_password,
 ) {
-
     ensure_packages('prometheus-ganeti-exporter')
 
     ferm::service {'ganeti-prometheus-exporter':
-        proto  => 'tcp',
-        port   => 8080,
-        srange => '$PRODUCTION_NETWORKS',
+        proto    => 'tcp',
+        port     => 8080,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
     # Configuration files for Ganeti Prometheus exporter
