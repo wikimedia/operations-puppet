@@ -14,9 +14,6 @@
 class haproxy::cloud::base (
     Stdlib::Filesource $mainfile = 'puppet:///modules/haproxy/cloud/haproxy.cfg',
 ) {
-
-    debian::codename::require::min('buster')
-
     ensure_packages(['socat', 'haproxy'])
 
     file { '/etc/haproxy/conf.d':

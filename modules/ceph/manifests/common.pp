@@ -13,9 +13,6 @@ class ceph::common (
     Stdlib::Unixpath $home_dir,
     String           $ceph_repository_component,
 ) {
-    # this class should support buster and later versions
-    debian::codename::require::min('buster')
-
     group { 'ceph':
         ensure => present,
         system => true,

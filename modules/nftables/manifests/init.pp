@@ -2,8 +2,6 @@
 class nftables (
     Wmflib::Ensure $ensure = 'absent',
 ) {
-    debian::codename::require::min('buster')
-
     package { 'nftables':
         ensure => $ensure,
     }
