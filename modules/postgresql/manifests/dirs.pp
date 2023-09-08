@@ -37,16 +37,20 @@ class postgresql::dirs(
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
     file {  [ $root_dir, "${root_dir}/${_pgversion}" ] :
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => 'postgres',
-        group  => 'postgres',
-        mode   => '0755',
+        ensure  => stdlib::ensure($ensure, 'directory'),
+        owner   => 'postgres',
+        group   => 'postgres',
+        mode    => '0755',
+        # We don't manage the postgres user directly, but the package adds it.
+        require => Package["postgresql-${_pgversion}"],
     }
 
     file { $data_dir:
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => 'postgres',
-        group  => 'postgres',
-        mode   => '0700',
+        ensure  => stdlib::ensure($ensure, 'directory'),
+        owner   => 'postgres',
+        group   => 'postgres',
+        mode    => '0700',
+        # We don't manage the postgres user directly, but the package adds it.
+        require => Package["postgresql-${_pgversion}"],
     }
 }

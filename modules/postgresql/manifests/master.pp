@@ -95,7 +95,7 @@ class postgresql::master(
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/master.conf.erb'),
-        require => Class['postgresql::server'],
+        require => Package["postgresql-${_pgversion}"],
     }
 
     if $ensure == 'present' {
@@ -103,7 +103,8 @@ class postgresql::master(
             command => "/usr/lib/postgresql/${_pgversion}/bin/initdb --locale ${locale} -D ${data_dir}",
             user    => 'postgres',
             unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
-            require => Class['postgresql::server'],
+            before  => Service["postgresql@${_pgversion}-main.service"],
+            require => Package["postgresql-${_pgversion}"],
         }
     }
     $psql_cmd   = "/usr/bin/psql --tuples-only --no-align --command \"%s\""

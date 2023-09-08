@@ -85,6 +85,10 @@ define postgresql::user (
             command => "/usr/bin/createuser --no-superuser --no-createdb --no-createrole ${user}",
             user    => 'postgres',
             unless  => $userexists,
+            require => [
+                Package["postgresql-${_pgversion}"],
+                Service["postgresql@${_pgversion}-main.service"],
+            ]
         }
 
         # This will not be run on a slave as it is read-only
@@ -94,6 +98,7 @@ define postgresql::user (
                 user      => 'postgres',
                 unless    => $password_check,
                 subscribe => Exec["create_user-${name}"],
+                require   => Package["postgresql-${_pgversion}"],
             }
         }
     } elsif $ensure == 'absent' {
@@ -101,6 +106,7 @@ define postgresql::user (
             command => "/usr/bin/dropuser ${user}",
             user    => 'postgres',
             onlyif  => "${userexists} && ${user_dbs}",
+            require => Package["postgresql-${_pgversion}"],
         }
     }
 

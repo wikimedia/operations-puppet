@@ -59,6 +59,18 @@ class postgresql::server(
         default => $pgversion,
     }
 
+    $service_name = "postgresql@${_pgversion}-main.service"
+    $data_dir = "${root_dir}/${_pgversion}/main"
+
+    systemd::mask { $service_name:
+        unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
+    }
+
+    # Mask the service on package installation, since we are setting up
+    # databases via puppet.
+    Systemd::Mask[$service_name]
+        -> Package["postgresql-${_pgversion}"]
+        -> Service[$service_name]
 
     package { [
         "postgresql-${_pgversion}",
@@ -78,10 +90,6 @@ class postgresql::server(
         root_dir  => $root_dir,
     }
 
-    $data_dir = "${root_dir}/${_pgversion}/main"
-
-    $service_name = 'postgresql'
-
     exec { 'pgreload':
         command     => "/usr/bin/pg_ctlcluster ${_pgversion} main reload",
         user        => 'postgres',
@@ -95,7 +103,10 @@ class postgresql::server(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            require => Puppet::Expose_agent_certs['/etc/postgresql'],
+            require => [
+                Puppet::Expose_agent_certs['/etc/postgresql'],
+                Package["postgresql-${_pgversion}"],
+            ],
             before  => Service[$service_name],
         }
 
@@ -106,11 +117,13 @@ class postgresql::server(
             user            => 'postgres',
             group           => 'postgres',
             ssldir          => $ssldir,
+            require         => Package["postgresql-${_pgversion}"],
         }
     }
 
     service { $service_name:
         ensure  => stdlib::ensure($ensure, 'service'),
+        require => Package["postgresql-${_pgversion}"],
     }
 
     file { "/etc/postgresql/${_pgversion}/main/postgresql.conf":
@@ -119,5 +132,6 @@ class postgresql::server(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        require => Package["postgresql-${_pgversion}"],
     }
 }
