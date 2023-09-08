@@ -92,7 +92,7 @@ define profile::analytics::refinery::job::refine_job (
 
     # If $refinery_job_jar not given, use the symlink at artifacts/refinery-job.jar
     $_refinery_job_jar = $refinery_job_jar ? {
-        undef   => "${refinery_path}/artifacts/refinery-job.jar",
+        undef   => "${refinery_path}/artifacts/refinery-job-shaded.jar",
         default => $refinery_job_jar,
     }
 
