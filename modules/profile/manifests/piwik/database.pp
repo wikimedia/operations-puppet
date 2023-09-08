@@ -7,8 +7,8 @@
 # basic configs added to the standard Debian mysql deployment.
 #
 class profile::piwik::database(
-    $database_port           = lookup('profile::piwik::database', { 'default_value' => 3306 }),
-    $backup_hosts_ferm_range = lookup('profile::piwik::database::backup_hosts_ferm_range', { 'default_value' => undef }),
+    Stdlib::Port $database_port = lookup('profile::piwik::database', { 'default_value' => 3306 }),
+    $backup_hosts_ferm_range    = lookup('profile::piwik::database::backup_hosts_ferm_range', { 'default_value' => undef }),
 ) {
 
     package { 'mysql-server':
