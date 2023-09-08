@@ -96,10 +96,10 @@ class profile::firewall (
                 # unmanaged files under /etc/ferm/conf.d are purged
                 # so we define the file to stop it being deleted
                 file { '/etc/ferm/conf.d/00_defs_requestctl':
-                    ensure => 'file',
+                    ensure => stdlib::ensure($provider == 'ferm', 'file'),
                 }
                 confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-                    ensure          => 'present',
+                    ensure          => stdlib::ensure($provider == 'ferm'),
                     reload          => '/bin/systemctl reload ferm',
                     watch_keys      => ['/request-ipblocks/abuse'],
                     content         => file('profile/firewall/defs_requestctl.tpl'),
