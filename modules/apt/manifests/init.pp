@@ -59,7 +59,7 @@ class apt(
             source => 'puppet:///modules/apt/sources-deb822-header.txt',
         }
         apt::repository { 'debian':
-            uri           => 'http://mirrors.wikimedia.org/debian',
+            uri           => "http://${mirror}/debian",
             dist          => $facts['os']['distro']['codename'],
             components    => 'main contrib non-free non-free-firmware',
             concat_target => $debian_sources,
@@ -75,7 +75,7 @@ class apt(
             notify        => Exec['apt-get update'],
         }
         apt::repository { 'debian-updates':
-            uri           => 'http://mirrors.wikimedia.org/debian',
+            uri           => "http://${mirror}/debian",
             dist          => "${facts['os']['distro']['codename']}-updates",
             components    => 'main contrib non-free non-free-firmware',
             keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
@@ -181,7 +181,7 @@ class apt(
     }
 
     apt::repository { 'debian-backports':
-        uri        => 'http://mirrors.wikimedia.org/debian/',
+        uri        => "http://${mirror}/debian/",
         dist       => "${::lsbdistcodename}-backports",
         components => 'main contrib non-free',
     }
