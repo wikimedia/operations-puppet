@@ -18,7 +18,7 @@ do
 
 	if ! grep -q "^${HOST}\." "${FILE}"; then
 		echo "Host $HOST is not in $GROUP dsh group"
-		exit 2
+		exit 1
 	fi
 done;
 
