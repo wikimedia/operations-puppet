@@ -309,6 +309,14 @@ profile::kubernetes::deployment_server::services:
         - name: ores-legacy-deploy
           owner: root
           group: deploy-ml-service
+    recommendation-api-ng:
+      usernames:
+        - name: recommendation-api-ng
+          owner: root
+          group: deploy-ml-service
+        - name: recommendation-api-ng-deploy
+          owner: root
+          group: deploy-ml-service
     experimental:
       usernames:
         - name: experimental
