@@ -146,7 +146,4 @@ class profile::cumin::master (
         owner    => 'root',
         group    => 'root',
     }
-    if $monitor_agentrun {
-        include profile::cumin::monitoring_agentrun
-    }
 }
