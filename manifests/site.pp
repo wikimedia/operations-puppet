@@ -1724,6 +1724,11 @@ node /^ldap-replica100[3-4]\.wikimedia\./ {
     role(openldap::replica)
 }
 
+# Read-only ldap replicas in eqiad (bookworm)
+node /^ldap-replica100[5-6]\.wikimedia\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^ldap-rw1001\.wikimedia\./ {
     role(insetup::infrastructure_foundations)
 }
@@ -1737,7 +1742,11 @@ node /^ldap-replica200[5-6]\.wikimedia\./ {
     role(openldap::replica)
 }
 
-# Read-only ldap replicas in codfw
+# Read-only ldap replicas in codfw (bookworm)
+node /^ldap-replica200[7-8]\.wikimedia\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^lists2001\.codfw\./ {
     role(insetup::data_persistence)
 }
