@@ -19,15 +19,14 @@ from oslo_config import cfg
 from designate.central import rpcapi as central_rpcapi
 from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
-from keystoneauth1.identity.v3 import Password as KeystonePassword
-from keystoneauth1 import session as keystone_session
-from keystoneclient.v3 import client as keystone_client
 from novaclient import client as novaclient
 from oslo_log import log as logging
 
 import pipes
 import requests
 import subprocess
+
+import wmfdesignatelib
 
 LOG = logging.getLogger(__name__)
 central_api = central_rpcapi.CentralAPI()
@@ -45,21 +44,21 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         :param criterion: Criterion to search and destroy records
         """
 
+        keystone = wmfdesignatelib.get_keystone_client()
+
         zone = self.get_zone(cfg.CONF[self.name].domain_id)
 
         data = extra.copy()
         LOG.debug('Event data: %s' % data)
         data['zone'] = zone['name']
 
-        data['project_name'] = data['tenant_id']
+        data['project_name'] = wmfdesignatelib.project_name_from_id(keystone, data['tenant_id'])
 
         event_data = data.copy()
 
         fqdn = cfg.CONF[self.name].fqdn_format % event_data
         fqdn = fqdn.rstrip('.')
 
-        keystone = keystone_client.Client(
-            session=self._get_keystone_session(), interface='public', connect_retries=5)
         region_recs = keystone.regions.list()
         regions = [region.id for region in region_recs]
         if len(regions) > 1:
@@ -187,17 +186,6 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         else:
             return resp.json()['routes']
 
-    def _get_keystone_session(self, project_name='admin'):
-        auth = KeystonePassword(
-            auth_url=cfg.CONF['keystone_authtoken'].www_authenticate_uri,
-            username=cfg.CONF['keystone_authtoken'].username,
-            password=cfg.CONF['keystone_authtoken'].password,
-            user_domain_name='Default',
-            project_domain_name='Default',
-            project_name=project_name)
-
-        return(keystone_session.Session(auth=auth))
-
     def _get_proxy_client(self, project):
         proxy_url = self._get_proxy_endpoint().replace("$(tenant_id)s", project)
         session = self._get_keystone_session(project)
@@ -206,8 +194,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
     def _get_proxy_endpoint(self):
         if not self.proxy_endpoint:
 
-            keystone = keystone_client.Client(
-                session=self._get_keystone_session(), interface='public', connect_retries=5)
+            keystone = wmfdesignatelib.get_keystone_client()
             services = keystone.services.list()
 
             for service in services:
@@ -234,8 +221,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
     def _get_enc_endpoint(self):
         if not self.enc_endpoint:
-            keystone = keystone_client.Client(
-                session=self._get_keystone_session(), interface='public', connect_retries=5)
+            keystone = wmfdesignatelib.get_keystone_client()
             service = keystone.services.list(type="puppet-enc")[0]
 
             self.enc_endpoint = keystone.endpoints.list(

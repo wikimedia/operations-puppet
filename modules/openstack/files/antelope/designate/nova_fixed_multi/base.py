@@ -26,6 +26,8 @@ from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
 from designate.objects import Record
 
+import wmfdesignatelib
+
 LOG = logging.getLogger(__name__)
 central_api = central_rpcapi.CentralAPI()
 
@@ -90,9 +92,8 @@ class BaseAddressMultiHandler(BaseAddressHandler):
 
         context = DesignateContext.get_admin_context(all_tenants=True)
 
-        # We have a hack elsewhere in keystone to ensure that tenant id == tenant name.
-        #  So... we can safely use the id in the fqdn.
-        data['project_name'] = data['tenant_id']
+        keystone = wmfdesignatelib.get_keystone_client()
+        data['project_name'] = wmfdesignatelib.project_name_from_id(keystone, data['tenant_id'])
 
         for addr in addresses:
             event_data = data.copy()

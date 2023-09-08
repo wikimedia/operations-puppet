@@ -69,6 +69,13 @@ class openstack::designate::service(
         recurse => true,
     }
 
+    file { '/usr/lib/python3/dist-packages/wmfdesignatelib.py':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => "puppet:///modules/openstack/${version}/designate/wmfdesignatelib.py",
+    }
+
     # Stage pools.yaml.  Updating this file won't change active config;
     #  for that a user will need to manually run
     #
