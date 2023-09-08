@@ -11,7 +11,7 @@ profile::bird::advertise_vips:
     check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 10.3.0.1 -l -d www.wikipedia.org -t 1'
     ensure: present
     service_type: recdns
-  nsa.wikimedia.org:
+  ns2.wikimedia.org:
     address: 198.35.27.27 # VIP to advertise (limited to a /32)
     check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 198.35.27.27 -a -l -d www.wikipedia.org -t 1'
     ensure: present
