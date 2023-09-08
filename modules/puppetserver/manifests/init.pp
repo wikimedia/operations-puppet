@@ -105,10 +105,15 @@ class puppetserver (
             'mode'   => '0751',
         },
     )
+    file { $ssl_dir:
+        ensure => directory,
+        owner  => $owner,
+        group  => $group,
+        mode   => '0751',
+    }
 
     wmflib::dir::mkdir_p(
         [
-            $ssl_dir,
             $puppetserver_config_dir,
             $bootstap_config_dir,
         ],
