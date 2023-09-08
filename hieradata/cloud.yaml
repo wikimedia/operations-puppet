@@ -274,6 +274,7 @@ profile::nginx::managed: true
 profile::nginx::variant: "light"
 profile::nginx::tmpfs_size: "1g"
 profile::nginx::modules: []
+profile::nginx::lib_on_tmpfs: true
 
 profile::puppetdb::puppetservers: []
 profile::puppetdb::gc_interval: 20
