@@ -109,7 +109,7 @@ class puppetserver (
         ensure => directory,
         owner  => $owner,
         group  => $group,
-        mode   => '0751',
+        mode   => '0771',
     }
 
     wmflib::dir::mkdir_p(
