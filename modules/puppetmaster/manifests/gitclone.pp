@@ -131,6 +131,7 @@ class puppetmaster::gitclone(
 
             # Syncing hooks
             # This hook updates /var/lib and pushes changes to the backend workers
+            $puppet_servers = wmflib::role::hosts('puppetserver')
             file { "${private_repo_dir}/.git/hooks/post-commit":
                 ensure  => file,
                 content => template('puppetmaster/git-master-postcommit.erb'),
