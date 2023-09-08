@@ -1254,12 +1254,6 @@ node /^flerovium\.eqiad\./ {
     role(analytics_cluster::hadoop::client)
 }
 
-# Backup system, see T176506.
-# This is a reserved system. Ask Otto or Faidon.
-node /^furud\.codfw\./ {
-    role(analytics_cluster::hadoop::client)
-}
-
 # Etcd clusters for kubernetes, v3
 node /^kubetcd[12]00[456]\.(eqiad|codfw)\./ {
     role(etcd::v3::kubernetes)

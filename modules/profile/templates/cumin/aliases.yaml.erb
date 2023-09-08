@@ -170,7 +170,7 @@ hadoop-coordinator: A:hadoop-coordinator-primary or A:hadoop-coordinator-seconda
 hadoop-coordinator-primary: P{O:analytics_cluster::coordinator}
 hadoop-coordinator-secondary: P{O:analytics_cluster::coordinator::replica}
 hadoop-coordinator-test: P{O:analytics_test_cluster::coordinator}
-hadoop-hdfs-backup: P{flerovium.eqiad.wmnet or furud.codfw.wmnet}
+hadoop-hdfs-backup: P{flerovium.eqiad.wmnet}
 hadoop-hdfs-journal: P{C:bigtop::hadoop::journalnode} and A:hadoop-worker
 hadoop-master: P{O:analytics_cluster::hadoop::master}
 hadoop-standby: P{O:analytics_cluster::hadoop::standby}
