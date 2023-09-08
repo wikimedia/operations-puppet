@@ -61,8 +61,8 @@ class profile::puppetserver::scripts (
         ensure      => 'present',
         user        => 'root',
         description => 'Clears out older puppet reports.',
-        command     => "/usr/bin/find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete",
+        command     => "/usr/bin/find /var/lib/puppetserver/reports -type f -mmin +${keep_reports_minutes} -delete",
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '8h'},
-        path_exists => '/var/lib/puppet/reports',
+        path_exists => '/var/lib/puppetserver/reports',
     }
 }
