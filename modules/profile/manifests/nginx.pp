@@ -15,19 +15,23 @@
 #    installed via libnginx-mod-http-foo packages. Use "custom" and the profile::nginx::modules
 #    variable to use that scheme.
 # @param modules If using variant=custom (Bookworm and later), install these additional packages
-# @param tmpfs_size The tmpfs_size
+# @param lib_on_tmpfs Mount /var/lib/nginx on a tmpfs volume to reduce disk
+#        writes
+# @param tmpfs_size The /var/lib/nginx tmpfs size
 class profile::nginx (
-    Wmflib::Ensure                            $ensure     = lookup('profile::nginx::ensure'),
-    Boolean                                   $managed    = lookup('profile::nginx::managed'),
-    Enum['full', 'extras', 'light', 'custom'] $variant    = lookup('profile::nginx::variant'),
-    String                                    $tmpfs_size = lookup('profile::nginx::tmpfs_size'),
-    Array[String]                             $modules    = lookup('profile::nginx::modules'),
+    Wmflib::Ensure                            $ensure       = lookup('profile::nginx::ensure'),
+    Boolean                                   $managed      = lookup('profile::nginx::managed'),
+    Enum['full', 'extras', 'light', 'custom'] $variant      = lookup('profile::nginx::variant'),
+    Boolean                                   $lib_on_tmpfs = lookup('profile::nginx::lib_on_tmpfs'),
+    String                                    $tmpfs_size   = lookup('profile::nginx::tmpfs_size'),
+    Array[String]                             $modules      = lookup('profile::nginx::modules'),
 ) {
     class {'nginx':
-        ensure     => $ensure,
-        managed    => $managed,
-        variant    => $variant,
-        tmpfs_size => $tmpfs_size,
-        modules    => $modules,
+        ensure       => $ensure,
+        managed      => $managed,
+        variant      => $variant,
+        lib_on_tmpfs => $lib_on_tmpfs,
+        tmpfs_size   => $tmpfs_size,
+        modules      => $modules,
     }
 }

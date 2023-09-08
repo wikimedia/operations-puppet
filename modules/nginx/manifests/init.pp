@@ -29,10 +29,14 @@
 #   Only the module name needs to be passed, so e.g. echo to install the
 #   packaged libnginx-mod-http-echo module
 #
+# @param lib_on_tmpfs Mount /var/lib/nginx on a tmpfs volume to reduce disk
+#        writes
+# @param tmpfs_size The /var/lib/nginx tmpfs size
 class nginx(
     Wmflib::Ensure                            $ensure = 'present',
     Boolean                                   $managed = true,
     Enum['full', 'extras', 'light', 'custom'] $variant = 'full',
+    Boolean                                   $lib_on_tmpfs = true,
     String                                    $tmpfs_size = '1g',
     Array[String]                             $modules = [],
 ){
@@ -111,7 +115,7 @@ class nginx(
         File <| tag == 'ssl' |> -> Service['nginx']
     }
 
-    if $::realm == 'production' {
+    if $lib_on_tmpfs {
         # nginx will buffer e.g. large body content into this directory
         #  very briefly, so keep it off the disks.
         file { '/var/lib/nginx':
