@@ -47,17 +47,25 @@ class puppetdb::app(
     Optional[String]              $db_password                = undef,
     Optional[String]              $db_ro_password             = undef,
 ) {
+    # We don't want debian's dbconfig to configure our database, since we are
+    # configuring it via puppet.
+    ensure_packages(['dbconfig-no-thanks'])
+
     # PuppetDB installation
-    ensure_packages('puppetdb')
+    package { 'puppetdb':
+        ensure  => installed,
+        require => Package['dbconfig-no-thanks'],
+    }
 
     $vardir              = '/var/lib/puppetdb'
     $stockpile_queue_dir = "${vardir}/stockpile/cmd/q"
 
     file { $vardir:
-        ensure => directory,
-        owner  => 'puppetdb',
-        group  => 'puppetdb',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'puppetdb',
+        group   => 'puppetdb',
+        mode    => '0755',
+        require => Package['puppetdb'],
     }
     $stockpile_mount_ensure = $tmpfs_stockpile_queue ? {
         true    => 'mounted',
