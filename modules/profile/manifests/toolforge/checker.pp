@@ -15,7 +15,6 @@ class profile::toolforge::checker {
     ensure_packages([
         'python3-flask',
         'python3-ldap3',
-        'python3-pymysql',
         'python3-redis',
         'python3-requests',
         'python3-yaml',
@@ -33,7 +32,7 @@ class profile::toolforge::checker {
 
     $checks = {
         'cron'                   => '/cron',
-        'db_toolsdb'             => '/db/toolsdb',
+        'db_toolsdb'             => absent,
         'dns_private'            => '/dns/private',
         'etcd_kubernetes'        => '/etcd/k8s',
         'grid_continuous_buster' => '/grid/continuous/buster',
@@ -48,14 +47,18 @@ class profile::toolforge::checker {
         'webservice_kubernetes'  => '/webservice/kubernetes',
     }
 
-    $check_names = keys($checks).map |$name| { "toolschecker_${name}" }
+    $checks.each |String $name, Variant[String, Wmflib::Ensure] $path| {
+        $ensure = $path ? {
+            Wmflib::Ensure => $path,
+            default        => 'present',
+        }
 
-    $checks.each |String $name, String $path| {
         # Provision a separate uwsgi service for each check endpoint.
         # This is done so that we can use 'harakiri mode' which will terminate
         # the entire uwsgi process if a request takes longer than the
         # configured maximum response time.
         uwsgi::app { "toolschecker_${name}":
+            ensure   => $ensure,
             settings => {
                 uwsgi => {
                     need-plugins     => 'python3',
@@ -78,6 +81,9 @@ class profile::toolforge::checker {
             require  => File[$wsgi_file],
         }
     }
+
+    $present_checks = $checks.filter |String $name, Variant[String, Wmflib::Ensure] $path| { !($path =~ Wmflib::Ensure) }
+    $check_names = keys($present_checks).map |$name| { "toolschecker_${name}" }
 
     # Reverse proxy in front the collection of uwsgi containers
     nginx::site { 'toolschecker-nginx':

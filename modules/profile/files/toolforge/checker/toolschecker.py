@@ -30,7 +30,6 @@ import uuid
 
 import flask
 import ldap3
-import pymysql
 import redis
 import requests
 import yaml
@@ -97,58 +96,6 @@ def cron_check():
     if time.time() - mtime < tenminutes:
         return True
     return False
-
-
-def mysql_query_check(host, query):
-    """Run a simple known query, verify the db returns."""
-    connection = pymysql.connect(
-        host,
-        read_default_file=os.path.join(__dir__, 'replica.my.cnf'),
-    )
-    cur = connection.cursor()
-    cur.execute(query)
-    result = cur.fetchone()
-    if result:
-        return True
-    return False
-
-
-def mysql_read_write_check(host, db):
-    """Write, read, and delete a single record.
-
-    The existing db must have a table named 'test' with one field, also named
-    'test'"""
-    success = False
-    try:
-        connection = pymysql.connect(
-            host,
-            read_default_file=os.path.join(__dir__, 'replica.my.cnf'),
-            db=db
-        )
-        cur = connection.cursor()
-        magicnumber = int(time.time())
-        cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
-        connection.commit()
-        cur.execute("SELECT * FROM test WHERE test=%s" % magicnumber)
-        result = cur.fetchone()
-        if result:
-            cur.execute("DELETE FROM test WHERE test=%s" % magicnumber)
-            connection.commit()
-            success = True
-    finally:
-        if cur:
-            cur.close()
-        if connection:
-            connection.close()
-    return success
-
-
-@check("/db/toolsdb")
-def db_toolsdb():
-    return mysql_read_write_check(
-        "tools.db.svc.eqiad.wmflabs",
-        "s52524__rwtest"
-    )
 
 
 @check("/dns/private")

@@ -1,4 +1,4 @@
-<% @checks.each_key do |check_name| %>
+<% @present_checks.each_key do |check_name| %>
 upstream toolschecker_<%= check_name %> {
     server unix:/tmp/uwsgi-<%= check_name %>.sock;
 }
@@ -6,7 +6,7 @@ upstream toolschecker_<%= check_name %> {
 
 server {
     listen 80;
-    <% @checks.each_pair do |check_name, path| %>
+    <% @present_checks.each_pair do |check_name, path| %>
     location <%= path %> {
         include uwsgi_params;
         uwsgi_pass toolschecker_<%= check_name %>;
