@@ -86,10 +86,11 @@ class profile::wmcs::metricsinfra::prometheus(
     profile::wmcs::metricsinfra::prometheus_configurator::output_config { 'prometheus':
         kind    => 'prometheus',
         options => {
-            base_directory  => $base_path,
-            units_to_reload => [
-                'prometheus@cloud.service',
-            ]
+            base_directory   => $base_path,
+            units_to_reload  => ['prometheus@cloud.service', 'prometheus-blackbox-exporter.service'],
+            blackbox_address => 'localhost:9115',
+            blackbox_dir     => '/etc/prometheus/blackbox.yml.d',
+            blackbox_reload  => '/usr/local/bin/prometheus-assemble-config blackbox',
         },
     }
 
@@ -104,5 +105,6 @@ class profile::wmcs::metricsinfra::prometheus(
     class { 'prometheus::blackbox_exporter':
         manage_config   => false,
         default_modules => 'absent',
+        directory_group => 'prometheus-configurator',
     }
 }
