@@ -26,19 +26,7 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/wmf-legal/',
     }
 
-    # toolforge.org and wmcloud.org wildcard certs
-    @monitoring::host { 'admin.toolforge.org':
-        host_fqdn     => 'admin.toolforge.org',
-        contact_group => 'wmcs-bots',
-    }
-    monitoring::service { 'https_toolforge':
-        description   => 'HTTPS-toolforge',
-        check_command => 'check_ssl_http_letsencrypt!admin.toolforge.org',
-        host          => 'admin.toolforge.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
-        contact_group => 'wmcs-team',
-    }
-
+    # *.wmcloud.org wildcard cert
     @monitoring::host { 'codesearch.wmcloud.org':
         host_fqdn     => 'codesearch.wmcloud.org',
         contact_group => 'wmcs-bots',

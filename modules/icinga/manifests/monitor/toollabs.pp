@@ -1,6 +1,4 @@
 # Toolforge end points worth production monitoring
-#
-# * relevant cert expiry is monitored in icinga::monitor::certs
 class icinga::monitor::toollabs {
     # this homepage is served by a tool running within tools
     # itself. On a bastion 'become admin' to see source and
