@@ -1,12 +1,12 @@
-# === Parameters
-#
-# [*$nginx_scrape_uri*]
-#  The URI where nginx is providing the raw stats page
-#
+# @param status_port port that the internal nginx status page will listen on
 class prometheus::nginx_exporter (
-    Stdlib::HTTPUrl $nginx_scrape_uri = 'http://localhost:8080/nginx_status',
+    Stdlib::Port $status_port = 19113,
 ) {
     ensure_packages('prometheus-nginx-exporter')
+
+    nginx::status_site { 'prometheus-exporter':
+        port => $status_port,
+    }
 
     # in Debian Buster, the default is to produce metrics at :9113/metrics
     # extend the ARGS with more parameters if you need to change the defaults
@@ -19,13 +19,14 @@ class prometheus::nginx_exporter (
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => "ARGS='-nginx.scrape-uri=${nginx_scrape_uri}'\n",
+        content => "ARGS='-nginx.scrape-uri=http://localhost:${status_port}/nginx_status'\n",
         require => Package['prometheus-nginx-exporter'],
     }
 
     service { 'prometheus-nginx-exporter':
         ensure    => running,
         subscribe => File['/etc/default/prometheus-nginx-exporter'],
+        require   => Service['nginx'],
     }
 
     profile::auto_restarts::service { 'prometheus-nginx-exporter': }

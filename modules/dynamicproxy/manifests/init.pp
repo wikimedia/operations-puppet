@@ -255,7 +255,4 @@ class dynamicproxy (
         require => File['/etc/nginx/lua/resty'],
         source  => 'puppet:///modules/dynamicproxy/redis.lua',
     }
-
-    # T209709
-    nginx::status_site { 'status': }
 }
