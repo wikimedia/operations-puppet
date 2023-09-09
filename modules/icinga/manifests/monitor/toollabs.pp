@@ -1,30 +1,5 @@
 # Toolforge end points worth production monitoring
-class icinga::monitor::toollabs {
-    # this homepage is served by a tool running within tools
-    # itself. On a bastion 'become admin' to see source and
-    # 'webservice restart' if needed.
-    @monitoring::host { 'tools.wmflabs.org':
-        host_fqdn => 'tools.wmflabs.org',
-    }
-
-    monitoring::service { 'tools.wmflabs.org':
-        description   => 'toolschecker: tools homepage (admin tool)',
-        check_command => 'check_http_slow!20',
-        host          => 'tools.wmflabs.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team',
-    }
-
-    # Monitors the tools nginx proxy by hitting the health endpoint
-    # defined in dynamicproxy nginx.conf
-    monitoring::service {'tools-proxy':
-        description   => 'toolschecker: tools nginx proxy health',
-        check_command => 'check_http_url!tools.wmflabs.org!/.well-known/healthz',
-        host          => 'tools.wmflabs.org',
-        contact_group => 'wmcs-team',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
-
+class icinga::monitor::toollabs () {
     # Complex checks via a wsgi app running on a cluster for this purpose.
     # See profile::toolforge::checker for more details.
     $test_entry_host = 'checker.tools.wmflabs.org'
