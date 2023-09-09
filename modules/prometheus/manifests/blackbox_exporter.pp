@@ -5,9 +5,18 @@
 #
 # This does 'active' checks over TCP / UDP / ICMP / HTTP / DNS
 # and reports status to the prometheus scraper
-
+#
+# @param manage_config whether to prune unmanaged config files
+# @param directory_owner user to own the configuration .d directory
+# @param directory_group group to own the configuration .d directory
+# @param default_modules whether to provision some default modules
+# @param http_proxy HTTP proxy to use with some default modules
 class prometheus::blackbox_exporter(
-    Optional[Stdlib::HTTPUrl] $http_proxy = undef,
+    Boolean                   $manage_config   = true,
+    String[1]                 $directory_owner = 'root',
+    String[1]                 $directory_group = 'root',
+    Wmflib::Ensure            $default_modules = 'present',
+    Optional[Stdlib::HTTPUrl] $http_proxy      = undef,
 ) {
     require prometheus::assemble_config
 
@@ -24,15 +33,16 @@ class prometheus::blackbox_exporter(
 
     file { '/etc/prometheus/blackbox.yml.d':
         ensure  => directory,
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        recurse => true,
-        purge   => true,
+        mode    => '0775',
+        owner   => $directory_owner,
+        group   => $directory_group,
+        recurse => $manage_config,
+        purge   => $manage_config,
     }
 
     ['misc', 'common'].each |$frag| {
         prometheus::blackbox::module { $frag:
+            ensure  => $default_modules,
             content => template("prometheus/blackbox_exporter/${frag}.yml.erb"),
         }
     }

@@ -101,5 +101,8 @@ class profile::wmcs::metricsinfra::prometheus(
         base_path           => '',
     }
 
-    class { 'prometheus::blackbox_exporter': }
+    class { 'prometheus::blackbox_exporter':
+        manage_config   => false,
+        default_modules => 'absent',
+    }
 }
