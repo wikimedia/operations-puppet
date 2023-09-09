@@ -237,5 +237,5 @@ class dynamicproxy (
     }
 
     # T209709
-    nginx::status_site { 'diamond-monitor-proxy': }
+    nginx::status_site { 'status': }
 }

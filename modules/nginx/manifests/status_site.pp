@@ -13,11 +13,9 @@
 define nginx::status_site(
     Wmflib::Ensure $ensure = 'present',
     Stdlib::Port   $port   = 8080,
-){
-
-    nginx::site { 'status':
+) {
+    nginx::site { $title:
         ensure  => $ensure,
         content => template('nginx/status.nginx.erb'),
     }
-
 }

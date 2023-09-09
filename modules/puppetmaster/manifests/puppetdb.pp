@@ -72,7 +72,7 @@ class puppetmaster::puppetdb(
     }
 
     # T209709
-    nginx::status_site { $facts['networking']['fqdn']:
+    nginx::status_site { 'status':
         port => 10080,
     }
 

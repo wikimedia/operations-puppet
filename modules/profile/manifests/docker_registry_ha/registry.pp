@@ -99,7 +99,7 @@ class profile::docker_registry_ha::registry(
     }
 
     # T209709
-    nginx::status_site { $::fqdn:
+    nginx::status_site { 'status':
         port => 10080,
     }
 
