@@ -6,7 +6,7 @@
 # This expects to run as the 'prometheus' user and will use its credentials,
 #  found in /var/lib/prometheus/.my.cnf
 #
-# Logs are written to /var/log/nodecheck/nodecheck.log
+# Logs are written to the systemd journal
 #
 from flask import Flask
 import logging
@@ -14,8 +14,7 @@ from os.path import exists
 import subprocess
 
 
-logging.basicConfig(filename='/var/log/nodecheck/nodecheck.log',
-                    encoding='utf-8', level=logging.WARNING)
+logging.basicConfig(level=logging.WARNING)
 
 # no need to log every single healthcheck request
 werklog = logging.getLogger('werkzeug')

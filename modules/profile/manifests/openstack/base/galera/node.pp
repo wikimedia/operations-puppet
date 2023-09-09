@@ -13,13 +13,6 @@ class profile::openstack::base::galera::node(
 ) {
     $socket = '/var/run/mysqld/mysqld.sock'
     $datadir = '/srv/sqldata'
-    file { $datadir:
-        ensure => directory,
-        owner  => 'mysql',
-        group  => 'mysql',
-        mode   => '0755',
-    }
-
     class {'::galera':
         cluster_nodes   => $openstack_controllers,
         server_id       => $server_id,
@@ -83,14 +76,13 @@ class profile::openstack::base::galera::node(
     # This is a flask app that replies
     # with a 200 or error so we get a real healthcheck for haproxy
     file { '/var/log/nodecheck':
-        ensure => directory,
-        owner  => 'prometheus',
-        group  => 'prometheus',
-        mode   => '0755',
+        ensure  => absent,
+        recurse => true,
+        force   => true,
+        purge   => true,
     }
     logrotate::conf { 'nodecheck':
-        ensure => present,
-        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck_logrotate.conf',
+        ensure => absent,
     }
     file { '/usr/local/sbin/galera-nodecheck.py':
         owner  => 'root',

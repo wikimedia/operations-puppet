@@ -61,6 +61,14 @@ class galera(
         ensure  => absent,
     }
 
+    file { $datadir:
+        ensure  => directory,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0755',
+        require => Package['mariadb-server'],
+    }
+
     $cluster_node_ips = $cluster_nodes.map |$host| { ipresolve($host, 4) }
     $wsrep_node_address = dnsquery::a($wsrep_node_name) || { ['127.0.0.1'] }[0]
 
@@ -69,6 +77,7 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/server.cnf.erb'),
+        require => Package['mariadb-server'],
     }
 
     file { '/etc/mysql/mariadb.conf.d/50-mysql-clients.cnf':
@@ -76,6 +85,7 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/client.cnf.erb'),
+        require => Package['mariadb-server'],
     }
 
     file { '/etc/mysql/mariadb.conf.d/50-mysqldump.cnf':
@@ -83,5 +93,6 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/mysqldump.cnf.erb'),
+        require => Package['mariadb-server'],
     }
 }
