@@ -78,7 +78,7 @@ class profile::wmcs::metricsinfra::prometheus(
     }
 
     prometheus::web { 'cloud':
-        proxy_pass   => 'http://localhost:9900',
+        proxy_pass   => 'http://localhost:9900/',
         require      => Httpd::Site['prometheus'],
         redirect_url => '',
     }
