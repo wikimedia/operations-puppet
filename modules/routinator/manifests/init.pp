@@ -62,7 +62,7 @@ class routinator(
         ensure  => 'mounted',
         device  => 'tmpfs',
         fstype  => 'tmpfs',
-        options => 'uid=routinator,gid=routinator,mode=755,size=4g',
+        options => 'uid=routinator,gid=routinator,mode=755,size=4g,nr_inodes=2M',
         atboot  => true,
         require => File['/var/lib/routinator/repository'],
         before  => Service['routinator'],
