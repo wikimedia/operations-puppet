@@ -10,8 +10,7 @@ profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
 
 profile::resolving::nameservers:
-  - 208.80.154.143
-  - 208.80.154.24
+  - 172.20.255.1
 
 mail_smarthost:
 - 'mx-out03.wmcloud.org'

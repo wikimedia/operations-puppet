@@ -24,6 +24,8 @@ profile::openstack::base::cloudgw::dmz_cidr:
   - "185.15.59.224"
   # VMs --> wiki (upload-lb.esams)
   - "185.15.59.240"
+  # VMs --> ns-recursor.openstack.eqiad1.wikimediacloud.org
+  - "172.20.255.1"
   # VMs --> ns-recursor1.openstack.eqiad1.wikimediacloud.org
   - "208.80.154.24"
   # VMs --> ns-recursor0.openstack.eqiad1.wikimediacloud.org

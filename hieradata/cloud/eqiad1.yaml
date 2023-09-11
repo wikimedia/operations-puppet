@@ -5,8 +5,7 @@ datacenters: [eqiad]
 has_nrpe: false
 
 profile::resolving::nameservers:
-  - "ns-recursor0.openstack.eqiad1.wikimediacloud.org"
-  - "ns-recursor1.openstack.eqiad1.wikimediacloud.org"
+  - "ns-recursor.openstack.eqiad1.wikimediacloud.org"
 
 ldap:
   ro-server: ldap-ro.eqiad.wikimedia.org

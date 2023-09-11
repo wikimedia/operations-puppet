@@ -5,5 +5,4 @@ profile::resolving::nameservers:
   - 127.0.0.53
 
 profile::pontoon::sd_nameservers:
-  - 208.80.154.143
-  - 208.80.154.24
+  - 172.20.255.1
