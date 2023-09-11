@@ -71,23 +71,6 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-pause-cloud.py",
     }
 
-    # Script to migrate from nova-network region to neutron region
-    #  (hopefully this will only be needed transitionally)
-    file { '/usr/local/sbin/wmcs-region-migrate':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-region-migrate.py",
-    }
-    file { '/usr/local/sbin/wmcs-region-migrate-security-groups':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-region-migrate-security-groups.py",
-    }
-
     # Script to migrate (with suspension) instances between compute nodes
     file { '/usr/local/sbin/wmcs-live-migrate':
         ensure => 'present',
