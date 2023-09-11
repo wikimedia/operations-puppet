@@ -89,30 +89,31 @@ class profile::firewall (
         }
     }
 
+    if $defs_from_etcd {
+        # unmanaged files under /etc/ferm/conf.d are purged
+        # so we define the file to stop it being deleted
+        file { '/etc/ferm/conf.d/00_defs_requestctl':
+            ensure => stdlib::ensure($provider == 'ferm', 'file'),
+        }
+        confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
+            ensure          => stdlib::ensure($provider == 'ferm'),
+            reload          => '/bin/systemctl reload ferm',
+            watch_keys      => ['/request-ipblocks/abuse'],
+            content         => file('profile/firewall/defs_requestctl.tpl'),
+            prefix          => $conftool_prefix,
+            relative_prefix => false,
+        }
+    }
+
     case $provider {
         'ferm': {
-
             if $defs_from_etcd {
-                # unmanaged files under /etc/ferm/conf.d are purged
-                # so we define the file to stop it being deleted
-                file { '/etc/ferm/conf.d/00_defs_requestctl':
-                    ensure => stdlib::ensure($provider == 'ferm', 'file'),
-                }
-                confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-                    ensure          => stdlib::ensure($provider == 'ferm'),
-                    reload          => '/bin/systemctl reload ferm',
-                    watch_keys      => ['/request-ipblocks/abuse'],
-                    content         => file('profile/firewall/defs_requestctl.tpl'),
-                    prefix          => $conftool_prefix,
-                    relative_prefix => false,
-                }
                 ferm::rule { 'drop-blocked-nets':
                     prio => '01',
                     rule => 'saddr $BLOCKED_NETS DROP;',
                     desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
                 }
             }
-
             ferm::conf { 'main':
                 prio   => '02',
                 source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
