@@ -60,6 +60,9 @@ class Clients(object):
         self.observerclient = None
         self.observersess = None
 
+        # Cache these relationships since we have to do an exhaustive search
+        self.project_ids_for_names = {}
+
         if oscloud:
             cloud_config = openstack.config.OpenStackConfig().get_all_clouds()
             for cloud in cloud_config:
@@ -201,6 +204,29 @@ class Clients(object):
                 timeout=300,
             )
         return self.observerclient
+
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
+    def project_id_for_name(self, project_name):
+        if not self.project_ids_for_names or project_name not in self.project_ids_for_names:
+            for project in self.allprojects():
+                self.project_ids_for_names[project.name] = project.id
+        if project_name not in self.project_ids_for_names:
+            raise Exception("project name %s not found", project_name)
+        return self.project_ids_for_names[project_name]
+
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(9),
+        wait=wait_random(min=5, max=15),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
+    def project_name_for_id(self, project_id):
+        return self.observerkeystoneclient().projects.get(project_id).name
 
     @retry(
         reraise=True,
