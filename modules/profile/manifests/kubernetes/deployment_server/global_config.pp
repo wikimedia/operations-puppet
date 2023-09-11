@@ -60,6 +60,7 @@ class profile::kubernetes::deployment_server::global_config (
                 'retry_policy' => $listener['retry'],
                 'xfp' => $listener['xfp'],
                 'uses_ingress' => $listener['uses_ingress'],
+                'sets_sni' => $listener['sets_sni'],
                 'upstream' => {
                     'ips' => $ip_addresses,
                     'address' => $address,

@@ -9,4 +9,5 @@ type Profile::Service_listener =  Struct[{
     'retry'        => Optional[Hash],
     'keepalive'    => Optional[String],
     'uses_ingress' => Optional[Boolean],
+    'sets_sni'     => Optional[Boolean],
 }]

@@ -124,7 +124,10 @@ profile::services_proxy::envoy::listeners:
     port: 6022
     service: thanos-swift
     timeout: "120s"
-    uses_ingress: true # this is a test for T339890
+    # drop this value once all k8s charts have updated the mesh module.
+    # sets_sni should replace, long term, uses_ingress.
+    uses_ingress: true
+    sets_sni: true
   - name: schema
     port: 6023
     service: schema
@@ -178,7 +181,10 @@ profile::services_proxy::envoy::listeners:
     service: image-suggestion
     timeout: "10s"
     keepalive: "4s"
+    # drop this value once all k8s charts have updated the mesh module.
+    # sets_sni should replace, long term, uses_ingress.
     uses_ingress: true
+    sets_sni: true
   - name: inference
     port: 6031
     service: inference
@@ -198,7 +204,10 @@ profile::services_proxy::envoy::listeners:
     service: wikifunctions
     # function calls are terminated after 15s + some room for the orchestrator to answer
     timeout: "15.5s"
+    # drop this value once all k8s charts have updated the mesh module.
+    # sets_sni should replace, long term, uses_ingress.
     uses_ingress: true
+    sets_sni: true
 
   # Non-discovery records
   # Eqiad ports are at 61xx
@@ -314,7 +323,10 @@ profile::services_proxy::envoy::listeners:
     port: 6504
     service: machinetranslation
     timeout: "120s"
+    # drop this value once all k8s charts have updated the mesh module.
+    # sets_sni should replace, long term, uses_ingress.
     uses_ingress: true
+    sets_sni: true
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:

@@ -41,7 +41,7 @@ filter_chains:
               <%- if @listener['http_host'] -%>
               host_rewrite_literal: <%= @listener['http_host'] %>
               <%- end -%>
-              <%- if @listener['uses_ingress'] && !@listener['http_host'] -%>
+              <%- if @listener['sets_sni'] && !@listener['http_host'] -%>
               auto_host_rewrite: true
               <%- end -%>
               cluster: <%= @svc_name %>

@@ -31,7 +31,7 @@ transport_socket:
   name: envoy.transport_sockets.tls
   typed_config:
     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-    <%- if @listener['uses_ingress'] -%>
+    <%- if @listener['sets_sni'] -%>
     sni: <%= @address %>
     <%- end -%>
     common_tls_context:
