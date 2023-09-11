@@ -11,6 +11,7 @@
 # @param file_template_property Property to be used for determining the file name (e.g.
 #   /srv/syslog/<property>/syslog.log) of the log file.
 # @param acme_cert_name name for acme-chief cert to use for tls clients
+# @param ssl_provider Choose to use cfssl or the puppet agent certs
 class rsyslog::receiver (
     Stdlib::Port                    $udp_port               = 514,
     Stdlib::Port                    $tcp_port               = 6514,
@@ -20,8 +21,14 @@ class rsyslog::receiver (
     Rsyslog::TLS::Auth_mode         $tls_auth_mode          = 'x509/certvalid',
     Rsyslog::TLS::Driver            $tls_netstream_driver   = 'gtls',
     Enum['fromhost-ip', 'hostname'] $file_template_property = 'hostname',
-    Optional[Stdlib::Fqdn]          $acme_cert_name         = undef
+    Optional[Stdlib::Fqdn]          $acme_cert_name         = undef,
+    Enum['puppet', 'cfssl', 'acme'] $ssl_provider           = 'puppet',
 ) {
+    # force acme if we have a acme_cert_name to remain backwards compatible
+    $_ssl_provider = ($acme_cert_name =~ NotUndef).bool2str('acme', $ssl_provider)
+    if $ssl_provider == 'acme' and $ssl_provider =~ Undef {
+        fail('you must set \$acme_cert_name when \$ssl_provider is acme')
+    }
     if $tls_netstream_driver == 'gtls' {
         # Unlike rsyslog-openssl (see below), rsyslog-gnutls is available
         # in buster, but on buster systems, we need a newer version of
@@ -55,20 +62,29 @@ class rsyslog::receiver (
         fail("rsyslog log and archive are the same: ${log_directory}")
     }
 
-    if $acme_cert_name {
-        $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
-        $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.alt.chained.crt"
-        $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
-    } else {
-        # SSL configuration
-        # TODO: consider using profile::pki::get_cert
-        puppet::expose_agent_certs { '/etc/rsyslog-receiver':
-            provide_private => true,
+    # SSL configuration
+    case $_ssl_provider {
+        'acme': {
+            $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
+            $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.alt.chained.crt"
+            $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
         }
+        'puppet': {
+            puppet::expose_agent_certs { '/etc/rsyslog-receiver':
+                provide_private => true,
+            }
 
-        $ca_file = '/var/lib/puppet/ssl/certs/ca.pem'
-        $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
-        $key_file = '/etc/rsyslog-receiver/ssl/server.key'
+            $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
+            $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
+            $key_file = '/etc/rsyslog-receiver/ssl/server.key'
+        }
+        'cfssl': {
+            $ssl_paths = profile::pki::get_cert('syslog')
+            $cert_file = $ssl_paths['chained']
+            $key_file = $ssl_paths['key']
+            $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
+        }
+        default: { fail("unknown provider: ${ssl_provider}") }
     }
 
     systemd::unit { 'rsyslog':
