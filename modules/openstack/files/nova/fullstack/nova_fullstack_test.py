@@ -39,6 +39,7 @@ import novaclient
 import yaml
 from keystoneauth1 import session as keystone_session
 from keystoneauth1.identity.v3 import Password as KeystonePassword
+from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
 from novaclient.v2.client import Client as NovaClient
 from novaclient.v2.flavors import Flavor
@@ -697,7 +698,7 @@ class NovaCliAuth:
         )
 
 
-def get_nova_cli(nova_auth: NovaCliAuth) -> NovaClient:
+def get_keystone_session(nova_auth: NovaCliAuth) -> keystone_session.Session:
     keystone_auth = KeystonePassword(
         auth_url=nova_auth.keystone_url,
         username=nova_auth.user,
@@ -707,12 +708,28 @@ def get_nova_cli(nova_auth: NovaCliAuth) -> NovaClient:
         project_name=nova_auth.project_name,
     )
 
-    session = keystone_session.Session(auth=keystone_auth)
+    return keystone_session.Session(auth=keystone_auth)
+
+
+def get_nova_cli(nova_auth: NovaCliAuth) -> NovaClient:
     # We specify 2.19 because that's the earliest version that supports
     # updating VM description
     return nova_client.Client(
-        version="2.19", session=session, region_name=nova_auth.region_name
+        version="2.19",
+        session=get_keystone_session(nova_auth),
+        region_name=nova_auth.region_name,
     )
+
+
+def get_keystone_cli(nova_auth: NovaCliAuth) -> NovaClient:
+    return keystone_client.Client(
+        session=get_keystone_session(nova_auth), interface="public"
+    )
+
+
+def project_name_from_id(keystoneclient, project_id):
+    project = keystoneclient.projects.get(project_id)
+    return project.name
 
 
 def cleanup_leaked_vms(
@@ -795,6 +812,7 @@ def main():
         loop_start = round(time.time(), 2)
 
         nova_cli = get_nova_cli(nova_auth=auth)
+        keystone_cli = get_keystone_cli(nova_auth=auth)
 
         all_vms: List[Server] = nova_cli.servers.list()
         LOGGER.debug(all_vms)
@@ -835,9 +853,8 @@ def main():
             )
             stat_handler.add_stat("verify.creation", verify_creation_time)
             new_vm = new_vm.update(description="Running tests...")
-            vm_fqdn = (
-                f"{new_vm.name}.{new_vm.tenant_id}.{args.deployment}.wikimedia.cloud"
-            )
+            project_name = project_name_from_id(keystone_cli, new_vm.tenant_id)
+            vm_fqdn = f"{new_vm.name}.{project_name}.{args.deployment}.wikimedia.cloud"
 
             vm_addr = verify_vm_ipaddr(vm=new_vm)
 
