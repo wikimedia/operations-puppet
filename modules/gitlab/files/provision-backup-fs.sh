@@ -31,10 +31,12 @@ mount_fs() {
     echo "Mountpoint $MOUNT_POINT already exists, skipping creation"
   fi
 
-  if ! grep -q "^$RAID_NAME $MOUNT_POINT " /etc/fstab ; then
-    echo "$RAID_NAME $MOUNT_POINT ext4 defaults 0 0" >> /etc/fstab
+  DISK_UUID=`blkid $RAID_NAME -o export | grep UUID`
+
+  if ! grep -q "^$DISK_UUID $MOUNT_POINT " /etc/fstab ; then
+    echo "$DISK_UUID $MOUNT_POINT ext4 defaults,nofail 0 0" >> /etc/fstab
   else
-    echo "fstab entry for $RAID_NAME at $MOUNT_POINT already exists, skipping creation"
+    echo "fstab entry for $DISK_UUID at $MOUNT_POINT already exists, skipping creation"
   fi
 
   if ! findmnt $MOUNT_POINT; then
