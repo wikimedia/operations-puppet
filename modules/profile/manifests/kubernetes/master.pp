@@ -11,7 +11,7 @@ class profile::kubernetes::master (
     # TODO: Remove ssl_key_path after T329826 is resolved
     Stdlib::Unixpath $ssl_key_path  = lookup('profile::kubernetes::master::ssl_key_path'),
     # TODO: Remove pki_sa_signing switch after T329826 is resolved
-    Boolean        $pki_sa_signing  = lookup('profile::kubernetes::master::pki_sa_signing', { 'default_value' => false }),
+    Boolean        $pki_sa_signing  = lookup('profile::kubernetes::master::pki_sa_signing', { 'default_value' => true }),
     Boolean  $cergen_sa_validation  = lookup('profile::kubernetes::master::cergen_sa_validation', { 'default_value' => true }),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
