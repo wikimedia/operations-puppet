@@ -38,8 +38,8 @@ import yaml
 
 import mwopenstackclients
 
-sysclients = mwopenstackclients.clients(oscloud='ossystemadmin')
-clients = mwopenstackclients.clients(oscloud='novaadmin')
+sysclients = mwopenstackclients.clients(oscloud="ossystemadmin")
+clients = mwopenstackclients.clients(oscloud="novaadmin")
 
 
 def designate_endpoint_and_token():
@@ -130,7 +130,9 @@ def purge_duplicates(project_id, delete=False):
         print("checking zone: %s" % zone["name"])
 
         req = requests.get(
-            "%s/v2/zones/%s/recordsets" % (endpoint, zone["id"]), headers=headers, verify=False
+            "%s/v2/zones/%s/recordsets" % (endpoint, zone["id"]),
+            headers=headers,
+            verify=False,
         )
         req.raise_for_status()
         recordsets = yaml.safe_load(req.text)["recordsets"]
@@ -140,26 +142,42 @@ def purge_duplicates(project_id, delete=False):
         instances = clients.allinstances(allregions=True)
         all_possible_names = []
         all_eqiad_nova_instances_legacy = [
-            "%s.%s.eqiad.wmflabs." % (instance.name.lower(), instance.tenant_id)
+            "%s.%s.eqiad.wmflabs."
+            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
             for instance in instances
         ]
         all_possible_names.extend(all_eqiad_nova_instances_legacy)
-        all_eqiad_nova_instances = [
-            "%s.%s.eqiad1.wikimedia.cloud." % (instance.name.lower(), instance.tenant_id)
+        all_eqiad_nova_instances_project_id = [
+            "%s.%s.eqiad1.wikimedia.cloud."
+            % (instance.name.lower(), instance.tenant_id)
             for instance in instances
         ]
-        all_possible_names.extend(all_eqiad_nova_instances)
+        all_possible_names.extend(all_eqiad_nova_instances_project_id)
+        all_eqiad_nova_instances_project_name = [
+            "%s.%s.eqiad1.wikimedia.cloud."
+            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
+            for instance in instances
+        ]
+        all_possible_names.extend(all_eqiad_nova_instances_project_name)
         all_eqiad_nova_shortname_instances = [
             "%s.eqiad.wmflabs." % (instance.name.lower()) for instance in instances
         ]
         all_possible_names.extend(all_eqiad_nova_shortname_instances)
-        all_codfw1dev_nova_instances = [
-            "%s.%s.codfw1dev.wikimedia.cloud." % (instance.name.lower(), instance.tenant_id)
+        all_codfw1dev_nova_instances_project_id = [
+            "%s.%s.codfw1dev.wikimedia.cloud."
+            % (instance.name.lower(), instance.tenant_id)
             for instance in instances
         ]
-        all_possible_names.extend(all_codfw1dev_nova_instances)
+        all_possible_names.extend(all_codfw1dev_nova_instances_project_id)
+        all_codfw1dev_nova_instances_project_name = [
+            "%s.%s.codfw1dev.wikimedia.cloud."
+            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
+            for instance in instances
+        ]
+        all_possible_names.extend(all_codfw1dev_nova_instances_project_name)
         all_codfw1dev_nova_instances_legacy = [
-            "%s.%s.codfw1dev.cloud." % (instance.name.lower(), instance.tenant_id)
+            "%s.%s.codfw1dev.cloud."
+            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
             for instance in instances
         ]
         all_possible_names.extend(all_codfw1dev_nova_instances_legacy)
@@ -182,11 +200,20 @@ def purge_duplicates(project_id, delete=False):
                 if name not in all_possible_names:
                     print(("%s is linked to missing instance %s" % (recordsetid, name)))
                     if delete:
-                        delete_recordset(endpoint, token, project_id, zone["id"], recordsetid)
+                        delete_recordset(
+                            endpoint, token, project_id, zone["id"], recordsetid
+                        )
                 # If the instance exists, check to see that it doesn't have multiple IPs.
                 if len(recordset["records"]) > 1:
-                    print(("A record for %s has multiple IPs: %s" % (name, recordset["records"])))
-                    print("This needs cleanup but that isn't implemented and almost never happens.")
+                    print(
+                        (
+                            "A record for %s has multiple IPs: %s"
+                            % (name, recordset["records"])
+                        )
+                    )
+                    print(
+                        "This needs cleanup but that isn't implemented and almost never happens."
+                    )
             elif recordset["type"] == "PTR":
                 # Check each record in this set and verify that instances still exist.
                 originalrecords = recordset["records"]
@@ -212,17 +239,27 @@ def purge_duplicates(project_id, delete=False):
                             ptrcounts[record.lower()].append(recordset["name"])
                             print(
                                 "Found %s ptr recordsets for the same VM: %s"
-                                % (len(ptrcounts[record.lower()]), ptrcounts[record.lower()])
+                                % (
+                                    len(ptrcounts[record.lower()]),
+                                    ptrcounts[record.lower()],
+                                )
                             )
                         else:
                             ptrcounts[record.lower()] = [recordset["name"]]
 
                     else:
-                        print(("PTR %s is linked to missing instance %s" % (recordsetid, record)))
+                        print(
+                            (
+                                "PTR %s is linked to missing instance %s"
+                                % (recordsetid, record)
+                            )
+                        )
                 if not goodrecords:
                     if delete:
                         print("Deleting the whole recordset.")
-                        delete_recordset(endpoint, token, project_id, zone["id"], recordsetid)
+                        delete_recordset(
+                            endpoint, token, project_id, zone["id"], recordsetid
+                        )
                 else:
                     if len(goodrecords) != len(originalrecords):
                         if delete:
@@ -233,13 +270,23 @@ def purge_duplicates(project_id, delete=False):
                                 )
                             )
                             edit_recordset(
-                                endpoint, token, project_id, zone["id"], recordset, goodrecords
+                                endpoint,
+                                token,
+                                project_id,
+                                zone["id"],
+                                recordset,
+                                goodrecords,
                             )
 
 
-parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked dns records.")
+parser = argparse.ArgumentParser(
+    description="Find (and, optionally, remove) leaked dns records."
+)
 parser.add_argument(
-    "--delete", dest="delete", help="Actually delete leaked records", action="store_true"
+    "--delete",
+    dest="delete",
+    help="Actually delete leaked records",
+    action="store_true",
 )
 args = parser.parse_args()
 
