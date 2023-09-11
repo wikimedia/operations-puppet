@@ -48,22 +48,24 @@ class ferm (
         group   => 'root',
         content => file('ferm/ferm_status.py'),
     }
-    service { 'ferm':
-        ensure  => stdlib::ensure($ensure, 'service'),
-        # This is a bit of an abuse of the puppet DSL
-        # We use the status command to ensure that the rules on disk match the rules loaded in the
-        # kernel if not we want to reload the rule base
-        status  => '/usr/local/sbin/ferm-status',
-        # When the service status command fails, puppet set the service status to stopped:
-        # https://github.com/puppetlabs/puppet/blob/main/lib/puppet/provider/service/base.rb#L77
-        # which means that it call the starcmd (not restartcmd). As such we need top update the start command
-        # so that it calls systemd reload instead of systemd restart.  however we also need to account for
-        # when the services is actually stopped which is why we use reload-or-restart.
-        start   => '/bin/systemctl reload-or-restart ferm',
-        require => [
-            Package['ferm'],
-            File['/usr/local/sbin/ferm-status'],
-        ],
+    if $ensure == 'present' {
+        service { 'ferm':
+            ensure  => running,
+            # This is a bit of an abuse of the puppet DSL
+            # We use the status command to ensure that the rules on disk match the rules loaded in the
+            # kernel if not we want to reload the rule base
+            status  => '/usr/local/sbin/ferm-status',
+            # When the service status command fails, puppet set the service status to stopped:
+            # https://github.com/puppetlabs/puppet/blob/main/lib/puppet/provider/service/base.rb#L77
+            # which means that it call the starcmd (not restartcmd). As such we need top update the start command
+            # so that it calls systemd reload instead of systemd restart.  however we also need to account for
+            # when the services is actually stopped which is why we use reload-or-restart.
+            start   => '/bin/systemctl reload-or-restart ferm',
+            require => [
+                Package['ferm'],
+                File['/usr/local/sbin/ferm-status'],
+            ],
+        }
     }
 
     file { '/etc/ferm/ferm.conf':
@@ -78,6 +80,7 @@ class ferm (
 
     file { '/etc/ferm' :
         ensure => stdlib::ensure($ensure, 'directory'),
+        force  => true,
         mode   => '2751',
         group  => 'adm',
     }
@@ -98,6 +101,7 @@ class ferm (
         mode    => '0551',
         recurse => true,
         purge   => true,
+        force   => true,
         require => Package['ferm'],
         notify  => Service['ferm'],
     }
