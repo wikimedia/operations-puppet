@@ -26,6 +26,10 @@ log "Applying storage migrations"
 log "Restarting PHD"
 $systemctl start phd
 
+# T314460 - avoid race condition that leads to 'Unable to load the "Arcanist" library.'
+log "Restarting PHP 7.3"
+$systemctl restart php7.3-fpm.service
+
 log "Reloading apache"
 $systemctl reload apache2
 
