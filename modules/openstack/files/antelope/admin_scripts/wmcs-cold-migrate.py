@@ -137,9 +137,6 @@ class NovaInstance(object):
         destination_fqdn = config.destination_fqdn
         source = self.instance._info["OS-EXT-SRV-ATTR:host"]
         virshid = self.instance._info["OS-EXT-SRV-ATTR:instance_name"]
-        instance_fqdn = "{}.{}.{}.wmflabs".format(
-            self.instance._info["name"], self.instance._info["tenant_id"], config.datacenter
-        )
         source_fqdn = "{}.{}.wmnet".format(source, config.datacenter)
 
         logging.info(
@@ -194,7 +191,7 @@ class NovaInstance(object):
                 while confirm != "cleanup":
                     confirm = raw_input(
                         "Verify that %s is healthy, then type "
-                        "'cleanup' to delete old instance files:  " % instance_fqdn
+                        "'cleanup' to delete old instance files:  " % self.instance._info["name"]
                     )
 
                 logging.info("removing old instance from libvirt on {}".format(source))
