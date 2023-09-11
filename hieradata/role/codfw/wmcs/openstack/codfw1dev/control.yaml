@@ -44,7 +44,7 @@ profile::cloudceph::auth::deploy::selected_creds:
 
 # inject these particular nameservers into VMs
 profile::openstack::base::nova::fullstack::nameservers:
-  - ns-recursor.openstack.codfw1dev.wikimediacloud.org
+  - ns0.openstack.codfw1dev.wikimediacloud.org
 
 ldap:
   ro-server: cloudservices2004-dev.codfw.wmnet
