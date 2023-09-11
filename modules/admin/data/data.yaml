@@ -638,7 +638,7 @@ groups:
   datacenter-ops:
     gid: 765
     description: Group of datacenter ops engineers
-    members: [wpao, jclark, pt1979, robh, jhancock]
+    members: [wpao, jclark, pt1979, robh, jhancock, vriley]
     privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
                  'ALL = NOPASSWD: /usr/local/bin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
@@ -6032,6 +6032,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKunax7NU1Zx304QaTggTnIjXuY8rxgKTwReUMIffoIR brouberol@wikimedia.org'
+  vriley:
+    ensure: present
+    realname: Valerie Riley
+    email: vriley@wikimedia.org
+    uid: 44998
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKek6E2VVl5ZvPgoP/w7HHmKJl/7Xbaibz8iZRzGWWty'
 
 ldap_only_users:
   adavenport:
@@ -6827,7 +6835,3 @@ ldap_only_users:
     ensure: present
     realname: Amy Tsay
     email: atsay@wikimedia.org
-  vriley:
-    ensure: present
-    realname: Valerie Riley
-    email: vriley@wikimedia.org
