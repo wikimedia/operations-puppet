@@ -28,11 +28,7 @@ profile::gitlab::runner::user: 'gitlab-runner'
 profile::gitlab::runner::restrict_firewall: true
 profile::gitlab::runner::allowed_services:
   dns-0:
-    host: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
-    port: 53
-    proto: udp
-  dns-1:
-    host: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
+    host: 'ns-recursor.openstack.eqiad1.wikimediacloud.org'
     port: 53
     proto: udp
   docker-internal-dns:

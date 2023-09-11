@@ -26,14 +26,8 @@ profile::openstack::base::cloudgw::dmz_cidr:
   - "185.15.59.240"
   # VMs --> ns-recursor.openstack.eqiad1.wikimediacloud.org
   - "172.20.255.1"
-  # VMs --> ns-recursor1.openstack.eqiad1.wikimediacloud.org
-  - "208.80.154.24"
-  # VMs --> ns-recursor0.openstack.eqiad1.wikimediacloud.org
-  - "208.80.154.143"
-  # VMs --> ns-recursor1.openstack.codfw1dev.wikimediacloud.org
-  - "208.80.153.118"
-  # VMs --> ns-recursor0.openstack.codfw1dev.wikimediacloud.org
-  - "208.80.153.78"
+  # VMs --> ns-recursor.openstack.codfw1dev.wikimediacloud.org
+  - "172.20.254.1"
   # VMs --> gerrit-replica.wikimedia.org
   - "208.80.153.107"
   # VMs --> gerrit.wikimedia.org
