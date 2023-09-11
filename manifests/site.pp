@@ -2826,6 +2826,11 @@ node /^titan200[1-2]\.codfw\./ {
     role(insetup::observability)
 }
 
+# eqiad new titan node T342179
+node /^titan100[1-2]\.eqiad\./ {
+    role(insetup::observability)
+}
+
 # parsoid visual diff and roundtrip testing (T257940)
 # also see scandium.eqiad.wmnet
 node /^testreduce1001\.eqiad\./ {
