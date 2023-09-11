@@ -15,19 +15,18 @@ profile::openstack::eqiad1::keystone_api_fqdn: "openstack-next.eqiad1.wikimediac
 # Add the third host locally so these can talk to each other but clients
 #  don't try to use the new dns server yet.
 profile::openstack::eqiad1::pdns::hosts:
-  - "ns1-next.openstack.eqiad1.wikimediacloud.org"
   - "ns0.openstack.eqiad1.wikimediacloud.org"
   - "ns1.openstack.eqiad1.wikimediacloud.org"
 
 # TODO: remove the '-next' suffix when ready
-profile::openstack::base::pdns::query_local_address: ns1-next.openstack.eqiad1.wikimediacloud.org
+profile::openstack::base::pdns::query_local_address: ns1.openstack.eqiad1.wikimediacloud.org
 profile::openstack::base::pdns::auth::listen_on:
-  - 185.15.56.163  # ns1-next.openstack.eqiad1.wikimediacloud.org
+  - 185.15.56.163  # ns1.openstack.eqiad1.wikimediacloud.org
 
 profile::bird::advertise_vips:
   # NOTE: this is the per-host address. There is another shared VIP.
   # TODO: remove the -next suffix when ready
-  ns1-next.openstack.eqiad1.wikimediacloud.org:
+  ns1.openstack.eqiad1.wikimediacloud.org:
     ensure: present
     service_type: "pdns auth"
     address: 185.15.56.163
