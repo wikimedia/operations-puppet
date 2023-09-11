@@ -2,8 +2,8 @@
 
 CREATE TABLE project (
 	id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	name VARCHAR(256) NOT NULL,
-	UNIQUE INDEX u_project_name (name)
+	openstack_id VARCHAR(256) NOT NULL,
+	UNIQUE INDEX u_project_openstack_id (openstack_id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE route (

@@ -91,8 +91,7 @@ class Project(db.Model):
     Not represented at the Redis level at all
     """
     id = db.Column(db.Integer, primary_key=True)
-    # this is actually what openstack calls "project id"
-    name = db.Column(db.String(256), unique=True)
+    openstack_id = db.Column(db.String(256), unique=True)
 
 
 class Route(db.Model):
@@ -293,12 +292,12 @@ def enforce_policy(rule, project_id):
     )
 
 
-@app.route('/v1/<project_name>/zones', methods=['GET'])
-def list_zones(project_name):
-    enforce_policy('proxy:zones:index', project_name)
+@app.route('/v1/<project_id>/zones', methods=['GET'])
+def list_zones(project_id):
+    enforce_policy('proxy:zones:index', project_id)
 
     try:
-        enforce_policy('proxy:zones:use_deprecated', project_name)
+        enforce_policy('proxy:zones:use_deprecated', project_id)
     except Forbidden:
         use_deprecated = False
     else:
@@ -316,11 +315,11 @@ def list_zones(project_name):
     return flask.jsonify(data)
 
 
-@app.route('/v1/<project_name>/mapping', methods=['GET'])
-def all_mappings(project_name):
-    enforce_policy('proxy:index', project_name)
+@app.route('/v1/<project_id>/mapping', methods=['GET'])
+def all_mappings(project_id):
+    enforce_policy('proxy:index', project_id)
 
-    project = Project.query.filter_by(name=project_name).first()
+    project = Project.query.filter_by(openstack_id=project_id).first()
     data = {'routes': []}
 
     if project:
@@ -333,8 +332,8 @@ def all_mappings(project_name):
     return flask.jsonify(**data)
 
 
-@app.route('/v1/<project_name>/mapping', methods=['PUT'])
-def create_mapping(project_name):
+@app.route('/v1/<project_id>/mapping', methods=['PUT'])
+def create_mapping(project_id):
     data = flask.request.get_json(True)
 
     if 'domain' not in data or 'backends' not in data or not isinstance(data['backends'], list):
@@ -344,24 +343,24 @@ def create_mapping(project_name):
         return "Invalid domain", 400
     backend_urls = data['backends']
 
-    project = Project.query.filter_by(name=project_name).first()
+    project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
-        project = Project(name=project_name)
+        project = Project(openstack_id=project_id)
         db.session.add(project)
 
     route = Route.query.filter_by(domain=domain).first()
     if route is None:
-        enforce_policy('proxy:create', project_name)
-        if not dns.can_use_hostname(project_name, domain):
+        enforce_policy('proxy:create', project_id)
+        if not dns.can_use_hostname(project_id, domain):
             return flask.jsonify({"error": f"Can't use domain {domain}"}), 403
 
-        dns.add_records_for(project_name, domain)
+        dns.add_records_for(project_id, domain)
         route = Route(domain=domain, project=project)
         db.session.add(route)
     elif route.project_id != project.id:
         return "Can't edit backend of another project", 403
     else:
-        enforce_policy('proxy:update', project_name)
+        enforce_policy('proxy:update', project_id)
 
     for backend_url in backend_urls:
         # FIXME: Add validation for making sure these are valid
@@ -375,11 +374,11 @@ def create_mapping(project_name):
     return "", 200
 
 
-@app.route('/v1/<project_name>/mapping/<domain>', methods=['DELETE'])
-def delete_mapping(project_name, domain):
-    enforce_policy('proxy:delete', project_name)
+@app.route('/v1/<project_id>/mapping/<domain>', methods=['DELETE'])
+def delete_mapping(project_id, domain):
+    enforce_policy('proxy:delete', project_id)
 
-    project = Project.query.filter_by(name=project_name).first()
+    project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
         return "No such domain", 400
 
@@ -392,16 +391,16 @@ def delete_mapping(project_name, domain):
 
     redis_store.delete_route(route)
 
-    dns.delete_records_for(project_name, domain)
+    dns.delete_records_for(project_id, domain)
 
     return "deleted", 200
 
 
-@app.route('/v1/<project_name>/mapping/<domain>', methods=['GET'])
-def get_mapping(project_name, domain):
-    enforce_policy('proxy:view', project_name)
+@app.route('/v1/<project_id>/mapping/<domain>', methods=['GET'])
+def get_mapping(project_id, domain):
+    enforce_policy('proxy:view', project_id)
 
-    project = Project.query.filter_by(name=project_name).first()
+    project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
         return "No such domain", 400
 
@@ -414,13 +413,13 @@ def get_mapping(project_name, domain):
     return flask.jsonify(**data)
 
 
-@app.route('/v1/<project_name>/mapping/<domain>', methods=['POST'])
-def update_mapping(project_name, domain):
-    project = Project.query.filter_by(name=project_name).first()
+@app.route('/v1/<project_id>/mapping/<domain>', methods=['POST'])
+def update_mapping(project_id, domain):
+    project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
         return "No such domain", 400
 
-    enforce_policy('proxy:update', project_name)
+    enforce_policy('proxy:update', project_id)
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
